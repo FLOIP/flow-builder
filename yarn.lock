@@ -2493,6 +2493,11 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
+anim-event@^1.0.16:
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/anim-event/-/anim-event-1.0.16.tgz#846b63b363dba6eaf462acebcf1a929f5b9f4d34"
+  integrity sha512-NjKiD2C9xyBgQh4SwjPzsTSIdoi3P95lgo28z0BDvAqsa7HbZaOjkAmOr2aVrm05WgNk0OrKiax+NX6ASgUduw==
+
 ansi-align@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ansi-align/-/ansi-align-3.0.0.tgz#b536b371cf687caaef236c18d3e21fe3797467cb"
@@ -4583,6 +4588,11 @@ cssom@^0.4.1:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/cssom/-/cssom-0.4.4.tgz#5a66cf93d2d0b661d80bf6a44fb65f5c2e4e0a10"
   integrity sha512-p3pvU7r1MyyqbTk+WbNJIgJjG2VmTIaB10rI93LzVPrmDJKkzKYMtxxyAvQXR/NS6otuzveI7+7BBq3SjBS2mw==
+
+cssprefix@^2.0.16:
+  version "2.0.16"
+  resolved "https://registry.yarnpkg.com/cssprefix/-/cssprefix-2.0.16.tgz#0c3cfea46e4fe0505b0fab81824665d0a23c17ce"
+  integrity sha1-DDz+pG5P4FBbD6uBgkZl0KI8F84=
 
 cssstyle@^1.0.0:
   version "1.4.0"
@@ -8348,6 +8358,11 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+m-class-list@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/m-class-list/-/m-class-list-1.1.9.tgz#998c2d802fcefb3da7dfb26e182a19470f0a0fa2"
+  integrity sha1-mYwtgC/O+z2n37JuGCoZRw8KD6I=
+
 make-dir@^2.0.0, make-dir@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-2.1.0.tgz#5f0310e18b8be898cc07009295a30ae41e91e6f5"
@@ -9650,6 +9665,11 @@ pkg-up@2.0.0:
   dependencies:
     find-up "^2.1.0"
 
+plain-draggable@^2.5.12:
+  version "2.5.12"
+  resolved "https://registry.yarnpkg.com/plain-draggable/-/plain-draggable-2.5.12.tgz#d97c6d91740c0afd6c9738245efd2698ddf56a66"
+  integrity sha512-NVt88QV/MffzEPPRYB77OQjHJ0jtKcyjQcHhBjPvHiMNE1qKSz6eSlJB8YYi5reRxMHVJeOq4jZXTMozHe1SCQ==
+
 pn@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/pn/-/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
@@ -9668,6 +9688,11 @@ pnp-webpack-plugin@^1.6.4:
   integrity sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==
   dependencies:
     ts-pnp "^1.1.6"
+
+pointer-event@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/pointer-event/-/pointer-event-1.0.0.tgz#4e3a35b3b5180ade97f2e26cb32e92b7d57876a7"
+  integrity sha512-BhISTofIpcdOi5ZmlNXMMExiYeVyqGMRL/47n7fdru9GHZIYmmLw3YmRZIes5g+8Bm+I38rlbb2wT8Ie6472tA==
 
 polished@^3.3.1:
   version "3.6.5"

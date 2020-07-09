@@ -6,7 +6,7 @@
       :startY="y"
       @dragged="onMoved">
 
-    <header 
+    <header
         class="block-target draggable-handle"
         :class="{
              'initial': false,
@@ -30,7 +30,7 @@
     </div>
 
     <div class="block-exits">
-      <div v-for="exit in block.exits" 
+      <div v-for="exit in block.exits"
            :key="exit.uuid"
            class="block-exit"
            :class="{
@@ -42,11 +42,11 @@
            }"
            @mouseenter="isConnectionSourceRelocateActive && activateExitAsDropZone($event, exit)"
            @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)">
-        
+
         <div class="total-label-container">
           <span class="label label-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
         </div>
-        
+
         <template v-if="exit.destinationBlock == null">
           <plain-draggable class="handle-create-link btn btn-default btn-xs"
                            :class="{
@@ -69,7 +69,7 @@
               <i class="glyphicon glyphicon-move"></i>
               {{exit.tag}}
             </div>
-  
+
             <connection :key="`exit/${exit.uuid}/line-for-draft`"
                         :positionCacheKey="`_`"
                         :exit="exit"
@@ -112,10 +112,10 @@
 <script>
   import {isNumber} from 'lodash'
   import {mapActions, mapMutations, mapState} from 'vuex'
-  import PlainDraggable from "../PlainDraggable"
+  import PlainDraggable from '../ common/PlainDraggable.vue'
   import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
-  import {OperationKind} from "@/stores/builder";
-  import Connection from "@/components/builder/Connection";
+  import {OperationKind} from '@/stores/builder'
+  import Connection from '@/components/builder/Connection.vue'
 
   export default {
     props: ['block', 'x', 'y'],
@@ -130,7 +130,7 @@
         livePosition: null,
       }
     },
-    
+
     computed: {
       ...mapState('flow', ['resources']),
       ...mapState('builder', ['operations']),
@@ -138,10 +138,10 @@
       hasLayout() {
         return isNumber(this.x) && isNumber(this.y)
       },
-      
-      // todo: does this component know too much, what out of the above mapped state can be mapped? 
-      // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context 
-      
+
+      // todo: does this component know too much, what out of the above mapped state can be mapped?
+      // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
+
       isConnectionSourceRelocateActive: ({operations}) => !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
       isConnectionCreateActive: ({operations}) => !!operations[OperationKind.CONNECTION_CREATE].data,
       isBlockActivated: ({block, operations}) => {
@@ -152,11 +152,11 @@
 
     methods: {
       ...mapMutations('builder', ['setBlockPositionTo']),
-      
+
       ...mapActions('builder', {
         _removeConnectionFrom: 'removeConnectionFrom'
       }),
-      
+
       ...mapActions('builder', [
         // ConnectionSourceRelocate
         'initializeConnectionSourceRelocateWith',
@@ -170,7 +170,7 @@
         'setConnectionCreateTargetBlockToNullFrom',
         'applyConnectionCreate',
       ]),
-      
+
       resolveTextResource(uuid) {
         const {resources} = this
         const context = {
@@ -179,24 +179,24 @@
           mode: SupportedMode.SMS}
         const resource = new ResourceResolver(context)// as IContext) // this isn't ts
             .resolve(uuid);
-        
-        return resource.hasText() 
-            ? resource.getText() 
+
+        return resource.hasText()
+            ? resource.getText()
             : uuid
       },
 
       // todo: push NodeExit into it's own vue component
       isExitActivatedForRelocate(exit) {
         const data = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data
-        return data 
-            && data.to 
+        return data
+            && data.to
             && data.to.exitId === exit.uuid
       },
 
       isExitActivatedForCreate(exit) {
         const data = this.operations[OperationKind.CONNECTION_CREATE].data
-        return data 
-            && data.source 
+        return data
+            && data.source
             && data.source.exitId === exit.uuid
       },
 
@@ -204,18 +204,18 @@
         const {block} = this
         this.setConnectionSourceRelocateValue({block, exit})
       },
-      
+
       deactivateExitAsDropZone(e, exit) {
         const {block} = this
         this.setConnectionSourceRelocateValueToNullFrom({block, exit})
       },
-      
+
       // eslint-disable-next-line no-unused-vars
       activateBlockAsDropZone(e) {
         const {block} = this
         this.setConnectionCreateTargetBlock({block})
       },
-      
+
       // eslint-disable-next-line no-unused-vars
       deactivateBlockAsDropZone(e) {
         const {block} = this
@@ -224,7 +224,7 @@
 
       onMoved({position: {left: x, top: y}}) {
         // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
-        
+
         const {block} = this
         this.setBlockPositionTo({position: {x, y}, block})
       },
@@ -237,14 +237,14 @@
       onCreateExitDragStarted({draggable}, exit) {
         const {block} = this
         const {left: x, top: y} = draggable
-        
+
         this.initializeConnectionCreateWith({
           block,
-          exit, 
+          exit,
           position: {x, y}})
 
         // since mouseenter + mouseleave will not occur when draggable is below cursor
-        // we simply snap the draggable out from under the cursor during this operation 
+        // we simply snap the draggable out from under the cursor during this operation
         draggable.left += 60
       },
 
@@ -262,14 +262,14 @@
       onMoveExitDragStarted({draggable}, exit) {
         const {block} = this
         const {left: x, top: y} = draggable
-        
+
         this.initializeConnectionSourceRelocateWith({
           block,
-          exit, 
+          exit,
           position: {x, y}})
 
         // since mouseenter + mouseleave will not occur when draggable is below cursor
-        // we simply snap the draggable out from under the cursor during this operation 
+        // we simply snap the draggable out from under the cursor during this operation
         draggable.left += 60
       },
 
@@ -283,7 +283,7 @@
       onMoveExitDragEnded({draggable}) {
         const {x: left, y: top} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data.position
         Object.assign(draggable, {left, top})
-        
+
         this.applyConnectionSourceRelocate()
       },
     },
@@ -295,11 +295,11 @@
     background-color: #FFFFFF;
     /*background-image: -webkit-gradient(linear, left top, left bottom, from(white), to(#E7E7E7));*/
     /*background-image: linear-gradient(white, #E7E7E7);*/
-    
+
     border: 1px solid #aaa;
     border-radius: 0.3em;
     box-shadow: 0px 3px 6px #CACACA;
-    
+
     color: #575757;
     min-width: 122px;
 
@@ -314,16 +314,16 @@
       line-height: 12px;
       margin: 0;
     }
-    
+
     .block-type {
       font-size: 11px;
       margin-bottom: 0.4em;
     }
-    
+
     .block-target {
       height: 80px;
     }
-    
+
     .block-connection-target {
       position: absolute;
       left: 50%;
@@ -342,13 +342,13 @@
     .block-exits {
       display: flex;
       white-space: nowrap;
-      
+
       .block-exit {
         display: inline-block;
         flex: auto;
         min-width: 30px;
         /*max-width: 140px;*/
-        
+
         text-align: center;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -356,11 +356,11 @@
 
         /*border-left: 1px solid #aaa;*/
         /*border-top: 1px solid #aaa;*/
-        
+
         &:first-child {
           border-left: none;
         }
-        
+
         &:hover {
           background-color: #42B1CA;
           background-image: -webkit-gradient(linear, left top, left bottom, from(#72c5d7), to(#42B1CA));
