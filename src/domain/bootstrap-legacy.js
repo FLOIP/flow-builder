@@ -2,8 +2,8 @@ import Lang from 'lang.js'
 import moment from 'moment'
 import jquery from 'jquery'
 
-global.__APP__ = require('../app.config')
-global.__CONTEXT__ = require('../builder.config')
+global.__APP__ = require('../../app.config')
+global.__CONTEXT__ = require('../../builder.config')
 
 global.Lang = new Lang
 global.Lang.setLocale(global.__APP__.locale)
