@@ -10,7 +10,7 @@ Vue.config.productionTip = false
 
 import '@/domain/bootstrap-legacy'
 
-new Vue({
+global.viamo = new Vue({
   router,
   store: new Vuex.Store<IRootState>(store),
   render: (h) => h(App),
