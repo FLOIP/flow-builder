@@ -13,7 +13,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '.'
-import {IRootState} from '@/stores'
+import {IRootState} from '@/store'
 import {defaults, snakeCase} from 'lodash'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
@@ -24,11 +24,11 @@ export const mutations: MutationTree<IFlowsState> = {
   flow_activateBlock(state, {blockId}: {blockId: string}) {
     state.activeBlock = blockId
   },
-  
+
   flow_addBlock(state, {flowId, block}: {flowId: string, block: IBlock}) {
     const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
     const length = flow.blocks.push(block)
-    
+
     if (length === 1) {
       flow.firstBlockId = block.uuid
     }
@@ -39,7 +39,7 @@ export const mutations: MutationTree<IFlowsState> = {
     const block: IBlock = findBlockWith(blockId, flow)  // @throws ValidationException when block absent
     flow.exitBlockId = block.uuid
   },
-  
+
   flow_setFirstBlockId(state, {flowId, blockId}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow)  // @throws ValidationException when block absent
@@ -63,35 +63,35 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     if (length === 1) {
       state.firstFlowId = flow.uuid
     }
-    
+
     return flow
   },
-  
+
   async flow_addBlankBlockByType({commit, dispatch, state}, {type}: {type: string}): Promise<IBlock> {
     // if (!state[type]) {
       // todo: for some reason {snakeCase} from 'lodash' doesn't work?
       // todo: for some reason dynamic imports aren't working w/ storybook build
       // const modulePath = `./block-types/${type.replace('\\', '_')}BlockStore.ts`
       // const store = await import(modulePath)
-      
+
       // this.registerModule(['flow', BLOCK_TYPE], store)
     // }
-    
+
     const block = await dispatch(`flow/${type}/createWith`, { // standardize this for each block type
       props: {uuid: (new IdGeneratorUuidV4).generate()}
     }, {root: true})
 
     commit('flow_addBlock', {block})
-    
-    return block 
+
+    return block
   },
-  
+
   async flow_addBlankResource({dispatch, commit}): Promise<IResourceDefinition> {
     const resource = await dispatch('resource_createWith', {
       props: {uuid: (new IdGeneratorUuidV4).generate()}})
 
     commit('resource_add', {resource})
-    
+
     return resource
   },
 
@@ -115,6 +115,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 }
 
 export const DEFAULT_MODES = [
-  SupportedMode.SMS, 
-  SupportedMode.USSD, 
+  SupportedMode.SMS,
+  SupportedMode.USSD,
   SupportedMode.IVR]

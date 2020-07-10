@@ -1,0 +1,478 @@
+{
+  "ui": {
+    "routes": {
+      "trees": {
+        "editTree": {
+          "name": "editTree",
+          "path": "\/trees\/{treeId}\/{component?}\/{mode?}",
+          "params": ["treeId", "component", "mode"],
+          "methods": ["GET", "HEAD"]
+        }
+      }
+    },
+    "languages": [
+      {"id": "1", "name": "English", "abbreviation": "EN"},
+      {"id": "2", "name": "Spanish", "abbreviation": "ES"}
+    ],
+    "blockClasses": {
+      "MessageBlock": {
+        "name": "Message",
+        "defaultConnections": 1,
+        "hasContent": 1
+      },
+      "MultipleChoiceQuestionBlock": {
+        "name": "Multiple Choice Question",
+        "defaultConnections": 1,
+        "hasContent": 1,
+        "dividerBefore": 1,
+        "interactionClass": "BlockQuestionInteraction",
+        "is_interactive": 1,
+        "isSummarizable": true,
+        "canSetSubscriberProperty": true
+      },
+      "NumericQuestionBlock": {
+        "name": "Numeric Question",
+        "defaultConnections": 1,
+        "hasContent": 1,
+        "interactionClass": "BlockQuestionInteraction",
+        "is_interactive": 1,
+        "isSummarizable": true,
+        "canSetSubscriberProperty": true
+      },
+      "OpenQuestionBlock": {
+        "name": "Open-Ended Question",
+        "defaultConnections": 1,
+        "hasContent": 1,
+        "interactionClass": "BlockQuestionInteraction",
+        "is_interactive": 1,
+        "isSummarizable": true,
+        "canSetSubscriberProperty": true
+      },
+      "DecisionBranchBlock": {
+        "name": "Decision Branch",
+        "defaultConnections": 2,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "branchingMenu": 1
+      },
+      "NumericBranchBlock": {
+        "name": "Numeric Branch",
+        "defaultConnections": 2,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "branchingMenu": 1,
+        "isEnabledForContentType": {"clipboard": true}
+      },
+      "RandomBranchBlock": {
+        "name": "Random Branch",
+        "defaultConnections": 2,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "branchingMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "SubscriberBranchBlock": {
+        "name": "Branch via Subscriber Data",
+        "defaultConnections": 2,
+        "dividerBefore": 1,
+        "hiddenInMenu": 0,
+        "branchingMenu": 1,
+        "isEnabledForContentType": {"clipboard": true}
+      },
+      "GroupBranchBlock": {
+        "name": "Branch via Group Membership",
+        "defaultConnections": 2,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "branchingMenu": 1,
+        "isEnabledForContentType": {"clipboard": true}
+      },
+      "GroupSizeBranchBlock": {
+        "name": "Branch via Group Size",
+        "defaultConnections": 2,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "branchingMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "CurrentTimeBranchBlock": {
+        "name": "Branch via Current Time",
+        "defaultConnections": 2,
+        "hiddenInMenu": 0,
+        "branchingMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "CollaborativeFilteringRatioBranchBlock": {
+        "name": "Branch via Collaborative Filtering Ratio",
+        "defaultConnections": 2,
+        "hiddenInMenu": 0,
+        "branchingMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "ContentTypeBranchBlock": {
+        "name": "Branch via Content Type",
+        "defaultConnections": 2,
+        "dividerBefore": 1,
+        "hiddenInMenu": 0,
+        "branchingMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "RunTreeBlock": {
+        "name": "Run Another Tree",
+        "defaultConnections": 1,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isSummarizable": true
+      },
+      "MarkCallCompleteBlock": {
+        "name": "Mark Call as Complete",
+        "defaultConnections": 1,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "LanguageSelectorBlock": {
+        "name": "Language Selector",
+        "defaultConnections": 1,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": false},
+        "is_interactive": true
+      },
+      "WebhookBlock": {
+        "name": "Webhook",
+        "defaultConnections": 1,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "TriggerOutgoingCallBlock": {
+        "name": "Trigger Outgoing Call",
+        "defaultConnections": 1,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "SummaryBlock": {
+        "name": "Summary",
+        "defaultConnections": 2,
+        "hasContent": 0,
+        "dividerBefore": 0,
+        "interactionClass": "BlockQuestionInteraction",
+        "is_interactive": 1,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"voice": false, "sms": false, "ussd": false, "social": false},
+        "isSummarizable": true
+      },
+      "SubscriberPropertiesSnapshotBlock": {
+        "name": "Subscriber Properties Snapshot",
+        "defaultConnections": 1,
+        "hasContent": 0,
+        "interactionClass": "BlockQuestionInteraction",
+        "is_interactive": 1,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1
+      },
+      "SubscriberPropertyBlock": {
+        "name": "Edit Subscriber Property",
+        "defaultConnections": 1,
+        "dividerBefore": 1,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": true}
+      },
+      "GroupPropertyBlock": {
+        "name": "Edit Group Membership",
+        "defaultConnections": 1,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": true}
+      },
+      "ConnectToAnOperatorBlock": {
+        "name": "Connect to an Operator",
+        "defaultConnections": 0,
+        "dividerBefore": 1,
+        "hiddenInMenu": 1,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "RandomOrderMultipleChoiceQuestionBlock": {
+        "name": "Random Order Multiple Choice Question",
+        "defaultConnections": 1,
+        "hasContent": 1,
+        "dividerBefore": 1,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "interactionClass": "BlockQuestionInteraction",
+        "is_interactive": 1,
+        "isEnabledForContentType": {"clipboard": false, "sms": false, "ussd": false, "social": false},
+        "canSetSubscriberProperty": true
+      },
+      "DirectorySelectionBlock": {
+        "name": "Directory Selection Block",
+        "defaultConnections": 1,
+        "hasContent": 1,
+        "dividerBefore": 0,
+        "advancedMenu": 1,
+        "interactionClass": "BlockQuestionInteraction",
+        "is_interactive": 1,
+        "isEnabledForContentType": [],
+        "isSummarizable": true,
+        "canSetSubscriberProperty": true,
+        "hiddenInMenu": 1
+      },
+      "MultipleSelectMultipleChoiceQuestionBlock": {
+        "name": "Multiple Select Multiple Choice Question",
+        "defaultConnections": 1,
+        "hasContent": 1,
+        "dividerBefore": 0,
+        "interactionClass": "BlockQuestionInteraction",
+        "is_interactive": 1,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"voice": false, "sms": false, "ussd": false, "social": false, "clipboard": true},
+        "isSummarizable": true
+      },
+      "WeatherForecastBlock": {
+        "name": "Create Weather Forecast",
+        "defaultConnections": 1,
+        "dividerBefore": 1,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "WeatherAlertsBlock": {
+        "name": "Create Weather Alerts",
+        "defaultConnections": 1,
+        "hasContent": 1,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "CallHistoryBranchBlock": {
+        "name": "Branch via Call History",
+        "defaultConnections": 2,
+        "dividerBefore": 1,
+        "hiddenInMenu": 0,
+        "branchingMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "BillSubscriberBlock": {
+        "name": "Bill Subscriber",
+        "defaultConnections": 3,
+        "dividerBefore": 1,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "LocationBlock": {
+        "name": "Location Selector",
+        "defaultConnections": 1,
+        "hasContent": 1,
+        "dividerBefore": 1,
+        "is_interactive": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "CollaborativeFilteringQuestionBlock": {
+        "name": "Collaborative Filtering Question",
+        "defaultConnections": 1,
+        "hasContent": 1,
+        "interactionClass": "BlockQuestionInteraction",
+        "is_interactive": 1,
+        "dividerBefore": 1,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "CollaborativeFilteringRatingBlock": {
+        "name": "Collaborative Filtering Rating",
+        "defaultConnections": 1,
+        "hasContent": 1,
+        "interactionClass": "BlockQuestionInteraction",
+        "is_interactive": 1,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "IdValidationBlock": {
+        "name": "Branch via Valid Code",
+        "defaultConnections": 2,
+        "dividerBefore": 1,
+        "hiddenInMenu": 0,
+        "branchingMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "ConnectToOperatorBlock": {
+        "name": "Connect to an Operator",
+        "defaultConnections": 3,
+        "advancedMenu": 1,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "AirtimeTransferBlock": {
+        "name": "Airtime Credit Transfer",
+        "defaultConnections": 3,
+        "advancedMenu": 1,
+        "dividerBefore": 0,
+        "hiddenInMenu": 0,
+        "isEnabledForContentType": {"clipboard": false}
+      },
+      "CallBackWithCallCenterBlock": {
+        "name": "Call Back With Call Center",
+        "defaultConnections": 1,
+        "hiddenInMenu": 0,
+        "advancedMenu": 1,
+        "isEnabledForContentType": {"clipboard": false}
+      }
+    },
+    "blockTags": [],
+    "contentBlockTypes": [
+      "MessageBlock",
+      "MultipleChoiceQuestionBlock",
+      "NumericQuestionBlock",
+      "OpenQuestionBlock",
+      "WebhookContentBlock",
+      "RandomOrderMultipleChoiceQuestionBlock",
+      "DirectorySelectionBlock",
+      "MultipleSelectMultipleChoiceQuestionBlock",
+      "WeatherAlertsBlock",
+      "LocationBlock",
+      "CollaborativeFilteringQuestionBlock",
+      "CollaborativeFilteringRatingBlock"
+    ],
+    "callCenterQueues": [],
+    "originalTreeJson": {
+      "id": "1",
+      "details": {
+        "title": "My first Flow",
+        "description": "",
+        "enabledLanguages": ["1"],
+        "hasVoice": 1,
+        "hasUssd": 1,
+        "hasSms": 1,
+        "hasSocial": 0,
+        "hasClipboard": 0,
+        "syncedLanguage": "",
+        "startingBlockKey": "",
+        "savedByUserOrganisationId": null
+      },
+      "treeSetId": "1",
+      "createdAt": {
+        "date": "2020-07-10T12:54:10-06:00"
+      },
+      "editedAt": "2020-07-10T12:54:10-06:00",
+      "updatedAt": {
+        "date": "2020-07-10T12:54:10-06:00"},
+      "otherVersionsCount": 0,
+      "isDuplicateOf": null,
+      "duplicateTree": null,
+      "floipSyncedAt": null,
+      "orgId": null,
+      "blocks": [],
+      "connections": [],
+      "hasVoice": 1,
+      "hasSms": 1,
+      "hasUssd": 1,
+      "hasSocial": 0,
+      "hasClipboard": 0
+    },
+    "originalValidationResults": [],
+    "isTreeImport": 0,
+    "importTreeJson": null,
+    "isEditable": 0,
+    "isEditableLocked": 0,
+    "orgTimezone": "America/Toronto",
+    "subscriberCount": 0,
+    "subscriberPropertyFields": [],
+    "subscriberPropertyFieldDataTypes": [
+      "text",
+      "location",
+      "number",
+      "map_coordinates",
+      "boolean",
+      "phone",
+      "multiple_choice",
+      "date"
+    ],
+    "treeTitles": {},
+    "treeSetTitles": {},
+    "groupNames": {},
+    "groups": [],
+    "languageNames": {"1": "English", "2": "Spanish"},
+    "languageSelectors": [],
+    "apiKey": null,
+    "publicId": null,
+    "operatorContacts": [],
+    "interactionTotals": [],
+    "org": {
+      "id": null,
+      "org_name": "Sample Org"
+    },
+    "outgoingCallGroups": [],
+    "scheduleTypes": [
+      {
+        "id": "1",
+        "type": "now",
+        "description": "Now"
+      },
+      {
+        "id": "2",
+        "type": "fixed",
+        "description": "Fixed Date"
+      },
+      {
+        "id": "3",
+        "type": "routine",
+        "description": "Routine"
+      },
+      {
+        "id": "4",
+        "type": "repeating",
+        "description": "Repeating"
+      },
+      {
+        "id": "5",
+        "type": "continuous",
+        "description": "Continuous"
+      }
+    ],
+    "currentDate": "2020-07-10T12:54:10-06:00",
+    "currentTime": "00:00",
+    "surveysEnabled": true,
+    "surveySets": [],
+    "messageSets": [],
+    "treeSets": [],
+    "enabledFeatures": []
+  },
+  "audio": {
+    "library": [
+      {
+        "id": "586533",
+        "filename": "5cae2f49b605a6.45924131",
+        "description": "02_flowers_for_albert.mp3",
+        "language_id": null,
+        "duration_seconds": "357.712",
+        "original_extension": "mp3",
+        "created_at": "2019-04-10 18:00:52"
+      },
+      {
+        "id": "309466",
+        "filename": "598283afde6f31.04148017",
+        "description": "59727a6e9aa807.99829966.ogg",
+        "language_id": "206062",
+        "duration_seconds": "4.69462",
+        "original_extension": "ogg",
+        "created_at": "2017-08-03 02:00:16"
+      }
+    ],
+    "recording": {
+      "recorders": [],
+      "isCalling": {},
+      "isRecorderSelectorVisible": false
+    }
+  }
+}

@@ -1,19 +1,8 @@
 <template>
   <div id="app">
-    <builder-canvas />
-    <!--    <router-view />-->
+    <router-view />
   </div>
 </template>
-
-<script>
-import {BuilderCanvas} from '@/components/builder/BuilderCanvas.vue'
-
-export default {
-  components: {
-    BuilderCanvas,
-  },
-}
-</script>
 
 <style lang="scss">
 #app {

@@ -1,6 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '../index'
-import {IRootState} from '@/stores'
+import {IRootState} from '@/store'
 import {
   IBlockExitTestRequired,
   IFlow,
@@ -27,17 +27,17 @@ export const mutations: MutationTree<IFlowsState> = {
     //     'We can access root getters and state via this (aka $store)',
     //     {flow, flow2})
   },
-  
+
   renameChoiceKey(state, {blockId, key, desiredKey}) {
     const block: ISelectOneResponseBlock = findBlockOnActiveFlowWith(
-        blockId, 
+        blockId,
         (this.state as unknown as {flow: IContext}).flow as unknown as IContext
     ) as ISelectOneResponseBlock
-    
+
     if (key === desiredKey) { // this would end up deleting the resource ref below
       return // bail
     }
-    
+
     // todo: handle case where resourceId is `resource.values[0].value` and not an actual resourceId
     Vue.set(block.config.choices, desiredKey, block.config.choices[key])
     delete block.config.choices[key]
@@ -59,7 +59,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: (new IdGeneratorUuidV4).generate(),
-          test: '@(true)', // todo: get started on a basic expression api 
+          test: '@(true)', // todo: get started on a basic expression api
         }) as IBlockExitTestRequired}, {root: true})
     ]
 
@@ -86,18 +86,18 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const {
       languages: {0: {id: languageId}},
       supportedModes: modes}: IFlow = this.getters['flow/activeFlow']
-    
+
     const variant: IResourceDefinitionVariantOverModesFilter = {
-      languageId, 
-      modes, 
+      languageId,
+      modes,
       contentType: SupportedContentType.TEXT}
 
     // change this to setOrCreate
     commit('flow/resource_setValue', {resourceId, filter: variant, value}, {root: true}) // we're assuming this pseudo-variant exists
-    
+
     // todo: update block exit label
   },
-  
+
   createChoiceValueForDefaultLanguage() {
     // const resourceId = commit('flow/resource_create', {variants: []}, {root: true})
     // setChoiceResource({blockId, key, resourceId})

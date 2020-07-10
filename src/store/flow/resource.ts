@@ -8,8 +8,8 @@ import {
 import ValidationException from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import {cloneDeep, defaults, difference, find, first, isEmpty, isEqual, keyBy, map, pick, without} from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
-import {IFlowsState} from '@/stores/flow/index'
-import {IRootState} from '@/stores'
+import {IFlowsState} from '@/store/flow/index'
+import {IRootState} from '@/store'
 
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
@@ -32,12 +32,12 @@ export const mutations: MutationTree<IFlowsState> = {
     findResourceVariantOverModesWith(resourceId, filter, state as unknown as IContext)
         .value = value || ''
   },
-  
-  // @note -- modes in this case does not tighten filter, but rather exists solely for update operation 
-  resource_setModes(state, 
-                     {resourceId, filter, modes}: 
+
+  // @note -- modes in this case does not tighten filter, but rather exists solely for update operation
+  resource_setModes(state,
+                     {resourceId, filter, modes}:
                          {resourceId: string, filter: IResourceDefinitionVariantOverModesFilter} & {modes: SupportedMode[]}) {
-    
+
     if (isEmpty(modes)) {
       // todo: create type that requires both resourceId & modes with (N>1) entries
       throw new ValidationException('`mode` is required to assign mode on `IResourceDefinitionVariantOverModes`.')
@@ -61,9 +61,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   resource_setOrCreateValueModeSpecific(
-      {commit, dispatch, state}, 
+      {commit, dispatch, state},
       {resourceId, filter, value}: {resourceId: string, filter: IResourceDefinitionVariantOverModes, value: string}) {
-    
+
     try {
       // @note - `find()` raises when absent; this verifies its presence
       findResourceVariantOverModesWith(resourceId, filter, state as unknown as IContext)
@@ -72,15 +72,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       if (!(e instanceof ValidationException)) {
         throw e
       }
-      
+
       commit('resource_createVariant', {resourceId, variant: Object.assign(cloneDeep(filter), {value})})
     }
   },
 
   resource_setValueModeSpecific(
-      {commit, dispatch, state}, 
+      {commit, dispatch, state},
       {resourceId, filter, value}: {resourceId: string, filter: IResourceDefinitionVariantOverModes} & {value: string, mode: SupportedMode}) {
-    
+
     // find resource variant over modes
     const
         mode = first(filter.modes[0]),
@@ -89,18 +89,18 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     if (variant.modes.length > 1) { // need to disambiguate b/c value is spread over multiple modes
       // remove mode from existing variant
       commit('resource_setModes', {
-        resourceId, 
-        filter: variant, 
+        resourceId,
+        filter: variant,
         modes: without(variant.modes, mode)})
-      
+
       // // generate new variant-over-modes with single targeted mode
       commit('resource_createVariant', {
-        resourceId, 
+        resourceId,
         variant: Object.assign(
-            cloneDeep(variant), 
+            cloneDeep(variant),
             {mode, value})
       })
-      
+
       return // specialized case, we're done here
     }
 
@@ -111,7 +111,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 export type IResourceDefinitionVariantOverModesFilter = Partial<IResourceDefinitionVariantOverModes>
 export type IResourceDefinitionVariantOverModesFilterAsKey = Omit<IResourceDefinitionVariantOverModes, 'value'>
 
-export type IResourceDefinitionVariantOverModesFilterWithResourceId = 
+export type IResourceDefinitionVariantOverModesFilterWithResourceId =
     Partial<IResourceDefinitionVariantOverModes> & {resourceId: string}
 
 export function findResourceWith(uuid: string, {resources}: IContext): IResourceDefinition {
@@ -134,7 +134,7 @@ export function findResourceVariantOverModesWith(
 }
 
 export function findResourceVariantOverModesOn(
-    resource: IResourceDefinition, 
+    resource: IResourceDefinition,
     filter: IResourceDefinitionVariantOverModesFilter) {
 
   const
@@ -147,8 +147,8 @@ export function findResourceVariantOverModesOn(
 
   if (variant == null) {
     throw new ValidationException(`Unable to find resource variant (over modes) on context: (
-      ${resource.uuid}, 
-      ${JSON.stringify(filter)}) in 
+      ${resource.uuid},
+      ${JSON.stringify(filter)}) in
         ${JSON.stringify(map(resource.values, v => pick(v, keysForComparison)))}`)
   }
 

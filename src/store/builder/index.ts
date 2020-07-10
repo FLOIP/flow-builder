@@ -1,8 +1,8 @@
 import {flatMap, isEqual, keyBy, mapValues} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
-import {IRootState} from "@/stores"
+import {IRootState} from "@/store"
 import {IBlock, ValidationException} from "@floip/flow-runner"
-import {IDeepBlockExitIdWithinFlow} from "@/stores/flow/block"
+import {IDeepBlockExitIdWithinFlow} from "@/store/flow/block"
 
 
 export enum OperationKind { // todo migrate these to flight-monitor

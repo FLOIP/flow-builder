@@ -1,0 +1,16 @@
+  {
+    "locale": "en",
+    "defaultLocales": {"en": "English", "fr": "Fran\u00e7ais"},
+    "orgTimezone": "America/Toronto",
+    "permissions": {
+      "edit-collabofiltering-statements": true,
+      "edit-content": true,
+      "export-collabofiltering-submissions": true,
+      "export-result-details": true,
+      "moderate-collabofiltering-candidates": true,
+      "send-call-to-records": true,
+      "view-personal-info": true
+    },
+    "constants": null
+  }
+

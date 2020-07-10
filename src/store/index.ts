@@ -1,15 +1,18 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import {StoreOptions} from 'vuex'
+import {IFlowsState, store as flow} from './flow'
+import {IBuilderState, store as builder} from './builder'
 
-Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+export interface IRootState {
+  builder: IBuilderState,
+  flow: IFlowsState,
+}
+
+export const store: StoreOptions<IRootState> = {
   modules: {
+    builder,
+    flow,
   },
-});
+}
+
+export default store

@@ -1,0 +1,325 @@
+<template>
+  <affix class="tree-workspace-panel-heading panel-heading">
+<!--    <tree-update-conflict-modal/>-->
+    <div class="tree-workspace-panel-heading-contents">
+      <div class="btn-toolbar">
+        <div class="btn-group">
+          <router-link :to="treeViewUrl" class="btn btn-default active">
+            {{trans('trees.tree-view')}}
+          </router-link>
+          <router-link :to="resourceViewUrl"
+              class="btn btn-default"
+              @click.native="handleResourceViewerSelected">
+            {{trans('trees.resource-view')}}
+          </router-link>
+        </div>
+
+        <template v-if="ui.isEditableLocked">
+          <a v-if="isFeatureViewResultsEnabled"
+             :href="viewResultsUrl"
+             :title="trans('trees.view-results')"
+             class="btn btn-default">
+            <span class="glyphicon glyphicon-signal"></span>
+          </a>
+        </template>
+        <a v-else
+            :href="editOrViewTreeJsUrl"
+            :title="trans('trees.click-to-toggle-editing')"
+            class="btn btn-default"
+            :class="{active: ui.isEditable}"
+            @click="attemptSaveTree">
+          {{trans('trees.edit-tree')}}
+        </a>
+
+        <a v-if="!ui.isEditable && isFeatureTreeDuplicateEnabled"
+            :href="duplicateTreeLink"
+            class="btn btn-default"
+            :title="trans('trees.duplicate-entire-tree')">
+          <span class="glyphicon glyphicon-tags"/>
+        </a>
+
+<!--        <interaction-totals-date-range-configuration v-if="ui.isEditableLocked && isFeatureUpdateInteractionTotalsEnabled"/>-->
+
+        <div v-if="ui.isEditable" class="btn-group">
+          <button type="button"
+              class="btn btn-default dropdown-toggle"
+              data-toggle="dropdown">
+            {{trans('trees.add-block')}} <span class="caret"/>
+          </button>
+
+          <ul class="dropdown-menu" role="menu">
+            <template v-for="(classDetails, className) in rootBlockClassesToDisplay">
+              <li v-if="shouldDisplayDividerBefore(rootBlockClassesToDisplay, className)"
+                  :key="className + 'divider'"
+                  class="divider"/>
+              <li :key="className + 'item'">
+                <a v-if="isBlockAvailableByBlockClass[className]"
+                    href="#"
+                    class="tree-add-block"
+                    :data-block-type="className"
+                    :data-default-num-connections="classDetails['defaultConnections']">
+                  {{translateTreeClassName(className)}}
+                </a>
+              </li>
+            </template>
+
+            <li class="divider"/>
+
+            <li class="menu-item dropdown dropdown-submenu">
+              <a href="#"
+                  class="dropdown-toggle"
+                  data-toggle="dropdown">
+                {{trans('trees.branching')}}
+              </a>
+              <ul class="dropdown-menu">
+                <template v-for="(classDetails, className) in rootDropdownClassesToDisplay">
+                  <li v-if="shouldDisplayDividerBefore(rootDropdownClassesToDisplay, className)"
+                      :key="className + 'divider'"
+                      class="divider"/>
+                  <li :key="className + 'item'">
+                    <a v-if="isBlockAvailableByBlockClass[className]"
+                        href="#"
+                        class="tree-add-block"
+                        :data-block-type="className"
+                        :data-default-num-connections="classDetails['defaultConnections']">
+                      {{translateTreeClassName(className)}}
+                    </a>
+                  </li>
+                </template>
+              </ul>
+            </li>
+
+            <li class="divider"/>
+
+            <li class="menu-item dropdown dropdown-submenu">
+              <a href="#"
+                  class="dropdown-toggle"
+                  data-toggle="dropdown">{{'trees.advanced' | trans}}
+              </a>
+              <ul class="dropdown-menu">
+                <template v-for="(classDetails, className) in advancedDropdownClassesToDisplay">
+                  <li v-if="shouldDisplayDividerBefore(advancedDropdownClassesToDisplay, className)"
+                      :key="className + 'divider'"
+                      class="divider"/>
+                  <li :key="className + 'item'">
+                    <a v-if="isBlockAvailableByBlockClass[className]"
+                        href="#"
+                        class="tree-add-block"
+                        :data-block-type="className"
+                        :data-default-num-connections="classDetails['defaultConnections']">
+                      {{translateTreeClassName(className)}}
+                    </a>
+                  </li>
+                </template>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <button v-if="ui.isEditable"
+            type="button"
+            class="btn btn-default tree-duplicate-block"
+            :disabled="!jsKey">
+          {{trans('trees.duplicate')}}
+        </button>
+
+        <button v-if="ui.isEditable"
+            type="button"
+            class="btn btn-default tree-delete-block"
+            :disabled="!jsKey">
+          {{trans('trees.delete')}}
+        </button>
+
+        <div class="btn-group pull-right">
+          <button v-if="ui.isEditable && isFeatureTreeSaveEnabled"
+              type="button"
+              class="btn btn-primary tree-save-tree"
+              :title="trans('trees.save-changes-to-the-tree')"
+              :disabled="isTreeSaving || !hasChanges"
+              @click="attemptSaveTree">
+            {{saveButtonText}}
+          </button>
+
+          <template v-if="isFeatureTreeSendEnabled">
+            <a v-if="can('edit-content')"
+                :href="publishVersionUrl"
+                class="btn btn-success"
+                :disabled="isTreeSaving || !isTreeValid"
+                :title="isTreeValid ? 'trees.publish-this-version-of-the-tree' : 'trees.fix-validation-errors-before-publishing' | trans">
+              {{'trees.publish' | trans}}
+            </a>
+            <a v-if="can('send-outgoing-call')"
+                :href="sendOutgoingCallUrl"
+                class="btn btn-success tree-send-tree-call"
+                :disabled="isTreeSaving || !isTreeValid"
+                :title="trans('trees.schedule-and-send-an-outgoing-call')">
+              {{trans('trees.send')}}
+            </a>
+          </template>
+        </div>
+      </div>
+    </div>
+  </affix>
+</template>
+<script>
+  import lang from 'lib/filters/lang'
+  import Permissions from 'lib/mixins/Permissions'
+  import Routes from 'lib/mixins/Routes'
+  import {mapActions, mapGetters, mapState} from 'vuex'
+  import lodash from 'lodash'
+  import flow from 'lodash/fp/flow'
+  import pickBy from 'lodash/fp/pickBy'
+  import {affix as Affix} from 'vue-strap'
+  // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
+  // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
+
+  export default {
+    components: {
+      Affix,
+      // TreeUpdateConflictModal,
+      // InteractionTotalsDateRangeConfiguration
+    },
+    mixins: [
+      lang,
+      Permissions,
+      Routes,
+    ],
+    computed: {
+      ...mapState({
+        tree: ({trees: {tree}}) => tree,
+        ui: ({trees: {ui}}) => ui,
+      }),
+      ...mapGetters([
+        'isEditable',
+        'isTreeSaving',
+        'isBlockAvailableByBlockClass',
+        'hasChanges',
+        'isTreeValid',
+        'selectedBlock',
+        'isFeatureTreeSaveEnabled',
+        'isFeatureTreeSendEnabled',
+        'isFeatureTreeDuplicateEnabled',
+        'isFeatureViewResultsEnabled',
+        'isFeatureUpdateInteractionTotalsEnabled',
+      ]),
+      jsKey() {
+        return lodash.get(this.selectedBlock, 'jsKey')
+      },
+      editTreeUrl() {
+        return this.editTreeRoute()
+      },
+      treeViewUrl() {
+        return this.editTreeRoute({
+          component: 'interaction-designer',
+        })
+      },
+      resourceViewUrl() {
+        return this.editTreeRoute({
+          component: 'resource-viewer',
+        })
+      },
+      viewResultsUrl() {
+        return this.isFeatureViewResultsEnabled ? this.editTreeRoute({component: 'results'}) : ''
+      },
+      viewResultsSetUrl() {
+        return this.isFeatureViewResultsEnabled
+            ? this.route('trees.viewTreeSetResults', {treeSetId: this.tree.treeSetId})
+            : ''
+      },
+      downloadAudioUrl() {
+        return this.editTreeRoute({
+          component: 'downloadaudio',
+        })
+      },
+      sendOutgoingCallUrl() {
+        return this.isTreeValid ? `/outgoing/new?tree=${this.tree.id}` : ''
+      },
+      publishVersionUrl() {
+        return this.isTreeValid ? `/trees/${this.tree.id}/publishversion` : ''
+      },
+      editOrViewTreeJsUrl() {
+        if (this.ui.isEditable) {
+          return this.editTreeRoute({
+            component: 'interaction-designer',
+            mode: 'view',
+          })
+        } else {
+          return this.editTreeRoute({
+            component: 'interaction-designer',
+            mode: 'edit',
+          })
+        }
+      },
+      duplicateTreeLink() {
+        return this.isFeatureTreeDuplicateEnabled
+            ? this.route('trees.duplicateTreeAndContinue', {treeId: this.tree.id})
+            : ''
+      },
+
+      saveButtonText() {
+        if (this.hasChanges) {
+          return this.trans('trees.save')
+        } else {
+          return this.trans('trees.saved')
+        }
+      },
+
+      rootBlockClassesToDisplay() {
+        return flow(
+            pickBy(classDetails => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+            pickBy(classDetails => !this.hasClassDetail(classDetails, 'advancedMenu')),
+            pickBy(classDetails => !this.hasClassDetail(classDetails, 'branchingMenu')),
+        )(this.ui.blockClasses)
+      },
+
+      rootDropdownClassesToDisplay() {
+        return flow(
+            pickBy(classDetails => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+            pickBy(classDetails => this.hasClassDetail(classDetails, 'branchingMenu')),
+        )(this.ui.blockClasses)
+      },
+
+      advancedDropdownClassesToDisplay() {
+        return flow(
+            pickBy(classDetails => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+            pickBy(classDetails => this.hasClassDetail(classDetails, 'advancedMenu')),
+        )(this.ui.blockClasses)
+      },
+      canViewResultsTotals() {
+        return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
+      },
+    },
+    methods: {
+      ...mapActions(['attemptSaveTree']),
+      editTreeRoute({component = null, mode = null} = {}) {
+        const context = this.removeNilValues({
+          treeId: this.tree.id,
+          component,
+          mode,
+        })
+        return this.route('trees.editTree', context)
+      },
+      hasClassDetail(classDetails, attribute) {
+        return !lodash.isNil(classDetails[attribute]) && classDetails[attribute]
+      },
+      translateTreeClassName(className) {
+        return this.trans(`trees.${className}`)
+      },
+      shouldDisplayDividerBefore(blockClasses, className) {
+        const shouldShowDividerBeforeBlock = lodash.pickBy(
+            blockClasses,
+            classDetails => this.hasClassDetail(classDetails, 'dividerBefore'),
+        )[className]
+        return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
+      },
+      handleResourceViewerSelected() {
+        this.$el.scrollIntoView(true)
+      },
+
+      // This could be extracted to a helper mixin of some sort so it can be used in other places
+      removeNilValues(obj) {
+        return lodash.pickBy(obj, lodash.identity)
+      },
+    },
+  }
+</script>

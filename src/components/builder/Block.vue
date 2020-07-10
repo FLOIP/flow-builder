@@ -114,7 +114,7 @@
   import {mapActions, mapMutations, mapState} from 'vuex'
   import PlainDraggable from '../ common/PlainDraggable.vue'
   import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
-  import {OperationKind} from '@/stores/builder'
+  import {OperationKind} from '@/store/builder'
   import Connection from '@/components/builder/Connection.vue'
 
   export default {

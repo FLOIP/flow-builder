@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
+import {routes as treesRoutes} from './trees'
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,9 @@ const routes: Array<RouteConfig> = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
+
+  // todo: rename trees module + url path to builder + add extensible children as intx-design & resource-viewer
+  ...treesRoutes,
 ];
 
 const router = new VueRouter({
