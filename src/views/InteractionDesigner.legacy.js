@@ -21,8 +21,8 @@ export default {
     // Start up running the app
     // This in turn calls the jsPlumb initial setup
     // And binds events related to the primary Tree workspace
-    const {jsPlumb, app} = global
-    jsPlumb.ready(this.initializeAll)
+    // const {jsPlumb, app} = global
+    // jsPlumb.ready(this.initializeAll)
 
     // Handles delete keydown event on a selected block.
     this.bindBlockDeleteOnKeydown()
@@ -44,8 +44,8 @@ export default {
 
   methods: {
     initializeAll: function() {
-      this.initializeJsPlumb()
-      this.resetJsPlumbBindings()
+      // this.initializeJsPlumb()
+      // this.resetJsPlumbBindings()
       app.tree.updateFloipAlert();
     },
 
@@ -97,14 +97,14 @@ export default {
       })
     },
 
-    initializeJsPlumb() {
-      const {app} = global
-      app.jsPlumb = app.jsPlumbFactory()
-    },
+    // initializeJsPlumb() {
+    //   const {app} = global
+    //   app.jsPlumb = app.jsPlumbFactory()
+    // },
 
-    attachJsPlumbEventListeners: _.once(function () {
-      app.jsPlumb.attachEventListeners();
-    }),
+    // attachJsPlumbEventListeners: _.once(function () {
+    //   app.jsPlumb.attachEventListeners();
+    // }),
 
     addNewBlock: function(e) {
 
@@ -167,7 +167,7 @@ export default {
         blockData = this.processNewContentTypeBranchBlock(blockData);
       }
 
-      this.initializeJsPlumbValidateCodeBlock(blockData)
+      // this.initializeJsPlumbValidateCodeBlock(blockData)
 
       if (type == 'WebhookBlock' || type == 'WebhookContentBlock') {
         this.setWebhookConfigIfPossible(blockData)
@@ -175,7 +175,7 @@ export default {
 
       blockData = _.merge(_.cloneDeep(this.$store.state.trees.ui.commonBlockDefaults), blockData);
       app.tree.addBlock(blockData)
-      this.resetJsPlumbBindings(false)
+      // this.resetJsPlumbBindings(false)
 
       this.$store.dispatch('discoverTallestBlockForDesignerWorkspaceHeight', {aboveTallest: true})
 
@@ -296,7 +296,7 @@ export default {
       });
 
       // Redraw all connections related to that block:
-      this.resetJsPlumbBindings(true, app.ui.mostRecentlyDeletedBlock.jsKey)
+      // this.resetJsPlumbBindings(true, app.ui.mostRecentlyDeletedBlock.jsKey)
 
       // Set mostRecentlyDeletedBlock to false so that
       // multiple undo presses do not add duplicate blocks.
@@ -317,14 +317,14 @@ export default {
       // Remove the connections from each of the nodes at the bottom of the block
       _.each(_.range(1, numConnections + 1), function(index) {
 
-        app.jsPlumb.detachAllConnections(selectedBlockKey + '_node_' + index);
+        // app.jsPlumb.detachAllConnections(selectedBlockKey + '_node_' + index);
 
       });
 
       // Remove any connections connected to the "target" / top of the block
       // Fortunately these call the jsPlumb binding for removing a connection
       // which in turn is set to remove the entry from the app.tree.get('connections') array. Yay!
-      app.jsPlumb.detachAllConnections(selectedBlockKey + '_target');
+      // app.jsPlumb.detachAllConnections(selectedBlockKey + '_target');
 
       // Remove the block element from the DOM via jQuery
       $(selectedBlockElement).remove();
@@ -368,21 +368,21 @@ export default {
       this.selectBlock(duplicateBlock.jsKey);
 
       // Add jsPlumb triggers
-      this.resetJsPlumbBindings(false)
+      // this.resetJsPlumbBindings(false)
 
       // Flag for a new save
       app.ui.change('Duplicated block.');
     },
 
-    resetJsPlumbBindings(shouldRegenerateConnections=true, selectedBlockKey) {
-      const handleDragStop = this.discoverTallestBlockForDesignerWorkspaceHeight.bind(null, {aboveTallest: true})
-
-      app.jsPlumb.resetBindings(
-          app.tree.get('connections'),
-          shouldRegenerateConnections,
-          selectedBlockKey,
-          handleDragStop)
-    },
+    // resetJsPlumbBindings(shouldRegenerateConnections=true, selectedBlockKey) {
+    //   const handleDragStop = this.discoverTallestBlockForDesignerWorkspaceHeight.bind(null, {aboveTallest: true})
+    //
+    //   app.jsPlumb.resetBindings(
+    //       app.tree.get('connections'),
+    //       shouldRegenerateConnections,
+    //       selectedBlockKey,
+    //       handleDragStop)
+    // },
 
     selectBlock: function(blockKey) {
       app.ui.selectedBlock = blockKey;

@@ -611,14 +611,14 @@ export default {
       // Remove the connections from each of the nodes at the bottom of the block
       _.each(_.range(1, numConnections + 1), function(index) {
         console.debug('Removing connections at', index, 'for', selectedBlockKey)
-        app.jsPlumb.detachAllConnections(selectedBlockKey + '_node_' + index);
+        // app.jsPlumb.detachAllConnections(selectedBlockKey + '_node_' + index);
 
       });
 
       // Remove any connections connected to the "target" / top of the block
       // Fortunately these call the jsPlumb binding for removing a connection
       // which in turn is set to remove the entry from the app.tree.get('connections') array. Yay!
-      app.jsPlumb.detachAllConnections(selectedBlockKey + '_target');
+      // app.jsPlumb.detachAllConnections(selectedBlockKey + '_target');
 
       // Update the actual block data to use the new number:
       selectedBlock['uiData']['numConnections'] = newNumConnections;
@@ -632,7 +632,7 @@ export default {
 
       // once in vuejs, can we'll be able to just do a [dis]connect via connections diff
       const handleDragStop = dispatch.bind(null, 'discoverTallestBlockForDesignerWorkspaceHeight', {aboveTallest: true})
-      app.jsPlumb.resetBindings(app.tree.get('connections'), true, selectedBlockKey, handleDragStop)
+      // app.jsPlumb.resetBindings(app.tree.get('connections'), true, selectedBlockKey, handleDragStop)
 
       app.ui.change('Changed number of block connections.');
     },
