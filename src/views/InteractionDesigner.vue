@@ -28,6 +28,9 @@
 
     <div class="panel-body tree-contents">
       <div id="tree-workspace" class="tree-block-container" :style="{'min-height': `${designerWorkspaceHeight}px`}">
+
+        <builder-canvas />
+
 <!--        <js-plumb-block v-for="block in tree.blocks"-->
 <!--                        :key="block.jsKey"-->
 <!--                        :block="block"-->
@@ -56,6 +59,8 @@
   // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
   import TreeBuilderToolbar from '@/components/builder/toolbar/TreeBuilderToolbar'
 
+  import {BuilderCanvas} from '@/components/builder/BuilderCanvas'
+
   // import '../TreeDiffLogger'
 
   export default {
@@ -70,6 +75,7 @@
       // TreeEditor,
       // TreeViewer,
       TreeBuilderToolbar,
+      BuilderCanvas,
       // TreeUpdateConflictModal,
     },
 
