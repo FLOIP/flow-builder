@@ -27,7 +27,7 @@ window.app = window.app || {};
 	app.Tree = function (attrs) {
 		this.attributes = attrs;
 	};
-	
+
 	app.Tree.prototype = {
 		get(attr) {
 			return this.attributes[attr]
@@ -36,7 +36,7 @@ window.app = window.app || {};
 		toJSON(options) {
 			return _.clone(this.attributes)
 		},
-		
+
 		// Default attributes for the todo
 		// and ensure that each todo created has `title` and `completed` keys.
 		defaults: {
@@ -60,7 +60,7 @@ window.app = window.app || {};
 			blocks: [],
 			connections: []
 		},
-		
+
 		_defaultReviewedState: {},
 
     upgrade: function () {
@@ -223,9 +223,9 @@ window.app = window.app || {};
 					.filter(function (block) {return block.type === 'SubscriberBranchBlock'})
 					.filter(function (block) {return  block.customData.action === 'startDate'})
 					.forEach(function (block) {
-						viamo.$set(block.customData, 'action', 'customData')
-						viamo.$set(block.customData, 'customDataMethod', block.customData.startDateMethod)
-						viamo.$set(block.customData, 'customDataValue', block.customData.startDateReference)
+						builder.$set(block.customData, 'action', 'customData')
+						builder.$set(block.customData, 'customDataMethod', block.customData.startDateMethod)
+						builder.$set(block.customData, 'customDataValue', block.customData.startDateReference)
 
 						var propertyField = app.ui.findSubscriberPropertyField({name: 'start_date'})
 
@@ -234,12 +234,12 @@ window.app = window.app || {};
 						delete block.customData.propertyFieldId
 
 						if (propertyField) {
-							viamo.$set(block.customData, 'propertyFieldId', propertyField.id)
+							builder.$set(block.customData, 'propertyFieldId', propertyField.id)
 						} else {
-							viamo.$set(block.customData, 'propertyFieldId', null)
+							builder.$set(block.customData, 'propertyFieldId', null)
 						}
 
-						viamo.$set(block.customData, 'upgradedFromStartDate', true)
+						builder.$set(block.customData, 'upgradedFromStartDate', true)
 					})
 		},
 

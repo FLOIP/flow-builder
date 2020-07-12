@@ -14,7 +14,7 @@
 <script lang="ts">
   import {mapState} from 'vuex'
   import {Component, Vue} from 'vue-property-decorator'
-  import Block from "@/components/builder/Block.vue"
+  import Block from "@/components/interaction-designer/Block.vue"
 
   @Component({
     components: {

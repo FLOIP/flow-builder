@@ -46,20 +46,25 @@
 
 <script>
   import lang from 'lib/filters/lang'
-  import lodash from 'lodash'
+  import lodash, {forEach} from 'lodash'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   import {affix as Affix} from 'vue-strap'
 
   // import * as BlockTypes from './block-types'
   // import JsPlumbBlock from './JsPlumbBlock'
-  import stores from '@/store/trees'
+
+  import treesStore from '@/store/trees' // needs to be registered separately because it doesn't currently support namespacing
+  import flowStore from '@/store/flow'
+  import builderStore from '@/store/builder'
+
+
   // import TreeEditor from './TreeEditor'
   // import TreeViewer from './TreeViewer'
   import LegacyInteractionDesigner from './InteractionDesigner.legacy'
   // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
-  import TreeBuilderToolbar from '@/components/builder/toolbar/TreeBuilderToolbar'
+  import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar'
 
-  import {BuilderCanvas} from '@/components/builder/BuilderCanvas'
+  import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
 
   // import '../TreeDiffLogger'
 
@@ -146,11 +151,19 @@
     },
 
     created() {
-      if (!this.$store.state.trees) {
-        lodash.forEach(stores.modules, (v, k) => this.$store.registerModule(k, v))
-        this.initializeTreeModel()
-      }
+      const {$store} = this
+      const modules = {
+        // treesStore was originally implemented globally, it's state is expected to be at root
+        ...treesStore.modules,
+        flow: flowStore,
+        builder: builderStore}
 
+      forEach(modules, (v, k) =>
+        !$store.hasModule(k) && $store.registerModule(k, v))
+
+      global.builder = this // initialize global reference for legacy + debugging
+
+      // this.initializeTreeModel()
       this.updateIsEditableFromParams(this.mode) // `this.mode` comes from captured param in js-routes
     },
 
@@ -209,6 +222,19 @@
 </script>
 
 <style lang="scss">
+  // Colors + dimensions
+  $dot-size: 1px;
+  $dot-space: 22px;
+  $dot-color: CornflowerBlue;
+  $bg-color: white;
+
+  #tree-workspace {
+    background:
+      linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
+      linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center, $dot-color;
+    background-size: $dot-space $dot-space;
+  }
+
   // @note - these styles have been extracted so the output can be reused between storybook and voto5
   /*@import "resources/assets/js/trees/components/InteractionDesigner.scss";*/
 </style>

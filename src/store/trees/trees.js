@@ -9,6 +9,7 @@ import flights from 'store/common/flight-monitor'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 import _every from 'lodash/fp/every'
+import {bootstrapLegacyGlobalDependencies} from './bootstrap-legacy-global-dependencies'
 
 const every = _every.convert({cap: false})
 
@@ -23,12 +24,16 @@ export default {
   modules: {flights},
 
   state() {
-    const audio = get(global, '__AUDIO__')
+    const {
+      app,
+      __AUDIO__: audio,
+      __TREES_UI__: ui,
+    } = bootstrapLegacyGlobalDependencies()
+
     // todo: audio recording feature is likely to be unavailable for standalone app - How do we want to isolate these?
     set(app, 'audioChoice.audioLibrary', audio.library)
     set(app, 'audioChoice.recorderList', audio.recording.recorders)
 
-    let ui = lodash.get(global, '__TREES_UI__')
     lodash.defaultsDeep(ui, {
       audioFiles: audio.library,
       callCenterQueues: null,

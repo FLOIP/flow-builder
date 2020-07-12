@@ -115,7 +115,7 @@
   import PlainDraggable from '../common/PlainDraggable.vue'
   import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
   import {OperationKind} from '@/store/builder'
-  import Connection from '@/components/builder/Connection.vue'
+  import Connection from '@/components/interaction-designer/Connection.vue'
 
   export default {
     props: ['block', 'x', 'y'],

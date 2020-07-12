@@ -20,7 +20,7 @@ window.app = window.app || {};
 	app.ui.change = function(textNotification) {
     console.log('app.ui.change', textNotification);
 
-    var selectedBlock = viamo.$store.getters.selectedBlock
+    var selectedBlock = builder.$store.getters.selectedBlock
 
     if (!selectedBlock) {return}
 
@@ -43,7 +43,7 @@ window.app = window.app || {};
 
 	app.dataControl = {};
 	app.dataControl.send = function () {
-    if (!viamo.$store.getters.isFeatureTreeSaveEnabled) {
+    if (!builder.$store.getters.isFeatureTreeSaveEnabled) {
       console.info('Feature `treeSave` is disabled')
       return
     }
@@ -56,7 +56,7 @@ window.app = window.app || {};
 			return;
 		}
 
-		var treeUpdatedConflict = viamo.$store.state.trees.ui.treeUpdateConflict;
+		var treeUpdatedConflict = builder.$store.state.trees.ui.treeUpdateConflict;
 		app.ui.saveCurrentlyInProgress = 1;
 
 		app.audioChoice.setTopUpdatesBar(Lang.trans('trees.saving-tree'));
@@ -96,7 +96,7 @@ window.app = window.app || {};
 							message: response.responseJSON.message,
 						}
 					};
-					viamo.$store.dispatch('setTreeUpdateConflictStatus', payload);
+					builder.$store.dispatch('setTreeUpdateConflictStatus', payload);
 				} else {
 					console.error(response)
 					app.audioChoice.setTopUpdatesBar(Lang.trans('trees.error-while-saving-tree'), 1);
@@ -287,8 +287,8 @@ window.app = window.app || {};
     var shareableLinkTemplate = _.template(JST["legacy/templates/shareable-link-sets-template.html"])
 
     $('body').append(shareableLinkTemplate({
-      defaultLocales: viamo.$store.state.defaultLocales,
-      orgEnabledLanguages: viamo.$store.state.orgEnabledLanguages,
+      defaultLocales: builder.$store.state.defaultLocales,
+      orgEnabledLanguages: builder.$store.state.orgEnabledLanguages,
     }))
 
     // Assign button clicks

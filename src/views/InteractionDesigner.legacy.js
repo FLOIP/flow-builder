@@ -34,7 +34,7 @@ export default {
     // Bind a handler to watch for page exits when the page is unsaved
     // window.onbeforeunload = function () {
     $(window).on('beforeunload', function()	{
-      if (viamo.$store.getters.isEditable && viamo.$store.getters.hasChanges) {
+      if (builder.$store.getters.isEditable && builder.$store.getters.hasChanges) {
         return 'You have unsaved changes. Are you sure you want to leave this page?';
       }
     });
@@ -389,7 +389,7 @@ export default {
     },
 
     saveTreeRepeater: function() {
-      if (viamo.$store.getters.isFeatureTreeSaveEnabled) {
+      if (builder.$store.getters.isFeatureTreeSaveEnabled) {
         this.attemptSaveTree();
         _.delay(this.saveTreeRepeater, app.ui.saveTimer * 1000);
       } else {
