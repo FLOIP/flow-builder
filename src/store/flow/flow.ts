@@ -1,30 +1,38 @@
 import {
+  findBlockOnActiveFlowWith,
   findBlockWith,
   findFlowWith,
   getActiveFlowFrom,
+  FlowRunner,
   SupportedMode,
   SupportedContentType,
   IBlock,
   IContext,
   IFlow,
-  IResourceDefinition
+  IResourceDefinition,
+  ValidationException,
 } from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '.'
 import {IRootState} from '@/store'
-import {defaults, snakeCase} from 'lodash'
+import {defaults, snakeCase, forEach} from 'lodash'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  activeFlow: state => state.flows.length && getActiveFlowFrom(state as unknown as IContext)
+  activeFlow: state => state.flows.length && getActiveFlowFrom(state as unknown as IContext),
+  activeBlock: state => {
+    // const ctx = state as unknown as IContext
+    // if (!FlowRunner.prototype.isInitialized(ctx)) {
+    //   return
+    // }
+    //
+    // const {interaction: {blockId}} = FlowRunner.prototype.hydrateRichCursorFrom(ctx)
+    // return findBlockOnActiveFlowWith(blockId, ctx)
+  }
 }
 
 export const mutations: MutationTree<IFlowsState> = {
-  flow_activateBlock(state, {blockId}: {blockId: string}) {
-    state.activeBlock = blockId
-  },
-
   flow_addBlock(state, {flowId, block}: {flowId: string, block: IBlock}) {
     const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
     const length = flow.blocks.push(block)
@@ -32,6 +40,44 @@ export const mutations: MutationTree<IFlowsState> = {
     if (length === 1) {
       flow.firstBlockId = block.uuid
     }
+  },
+
+  flow_removeBlock(state, {flowId, blockId}: {flowId: string, blockId: IBlock['uuid']}) {
+    const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
+    const block: IBlock = findBlockWith(blockId, flow)  // @throws ValidationException when block absent
+
+    if (block == null) {
+      throw new ValidationException('Unable to delete block absent from flow')
+    }
+
+    const {blocks} = flow
+    blocks.splice(
+      blocks.indexOf(block),
+      1)
+
+    // clean up stale references
+    // 1. flow.firstBlockId
+    // 2. flow.exitBlockId
+    // 3. flow.blocks.*.exits.*.destinationBlock
+    // 4. activeBlockId (we should likely trail a ghost of previous selection and select that one next)
+
+    // todo: convert this whole operation to an ActionTree member
+    // todo: use mutations for these:
+    if (flow.firstBlockId === blockId) {
+      flow.firstBlockId = '' // todo: make this optional for builder
+    }
+
+    if (flow.exitBlockId === blockId) {
+      flow.exitBlockId = undefined
+    }
+
+
+    forEach(blocks, ({exits}) => {
+      const exitsTowardUs = exits.filter(e => e.destinationBlock === blockId)
+      forEach(exitsTowardUs, e => e.destinationBlock = undefined)
+    })
+
+    this.state.builder.activeBlockId = null
   },
 
   flow_setExitBlockId(state, {flowId, blockId}) {
@@ -67,7 +113,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return flow
   },
 
-  async flow_addBlankBlockByType({commit, dispatch, state}, {type}: {type: string}): Promise<IBlock> {
+  async flow_addBlankBlockByType({commit, dispatch, state}, {type, ...props}: Partial<IBlock>): Promise<IBlock> {
     // if (!state[type]) {
       // todo: for some reason {snakeCase} from 'lodash' doesn't work?
       // todo: for some reason dynamic imports aren't working w/ storybook build
@@ -78,8 +124,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // }
 
     const block = await dispatch(`flow/${type}/createWith`, { // standardize this for each block type
-      props: {uuid: (new IdGeneratorUuidV4).generate()}
+      props: {
+        uuid: (new IdGeneratorUuidV4).generate(),
+        ...props,
+      }
     }, {root: true})
+
+    defaults(block, { // a key is prerequisite for reactivity, even optional params
+      label: undefined,
+      semanticLabel: undefined})
 
     commit('flow_addBlock', {block})
 

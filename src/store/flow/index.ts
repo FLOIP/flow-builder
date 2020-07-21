@@ -20,23 +20,23 @@ import {
 export interface IFlowsState {
   flows: IFlow[],
   resources: IResourceDefinition[],
-  
+
   firstFlowId: string | null,
   // @note - for exciting future
   nestedFlowBlockInteractionIdStack: string[],
-  
-  activeBlock: string | null,
+
+  // activeBlock: string | null, // this is actually a getter over IContext
 }
 
 export const stateFactory = (): IFlowsState => ({
   flows: [],
   resources: [],
-  // mode: null, ?? We're going to need to hard-code a mode to lookup resources on 
+  // mode: null, ?? We're going to need to hard-code a mode to lookup resources on
 
   firstFlowId: null,
   nestedFlowBlockInteractionIdStack: [], // todo: not quite right -- pulled from IContext
-  
-  activeBlock: null,
+
+  // activeBlock: null,
 })
 
 export const getters: GetterTree<IFlowsState, IRootState> = {

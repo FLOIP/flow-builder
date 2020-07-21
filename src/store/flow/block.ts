@@ -14,9 +14,9 @@ import {defaults} from 'lodash'
 import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  activeBlock: (state: IFlowsState) => state.flows.length
-    && state.activeBlock
-    && findBlockOnActiveFlowWith(state.activeBlock, state as unknown as IContext) || null,
+  // activeBlock: (state: IFlowsState) => state.flows.length
+  //   && state.activeBlock
+  //   && findBlockOnActiveFlowWith(state.activeBlock, state as unknown as IContext) || null,
 
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
   //       the interesting bit is that resources are _all_ resources... so we could follow suit here? :shrug:

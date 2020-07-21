@@ -42,10 +42,11 @@ export function bootstrapLegacyGlobalDependencies() {
   Object.assign(global, exported)
 
   // required inline due to front-loading of imports and having jQuery dependency
+  require('bootstrap')
   require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker')
   $.fn.datetimepicker.defaults.locale = Lang.getLocale()
 
   return exported
 }
 
-export default bootstrapLegacyGlobalDependencies()
+export default bootstrapLegacyGlobalDependencies

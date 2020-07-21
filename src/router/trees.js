@@ -4,12 +4,12 @@ export const routes = [{
 },
   // {
   // path: '/trees/:id/resource-viewer',
-  // component: () => import(/* webpackChunkName:"/js/trees" */ '@/views/ResourceViewer')
+  // component: () => import(/* webpackChunkName:"chunk-resource-editor" */ '@/views/ResourceViewer')
 // },
 {
   path: '/trees/:id/interaction-designer/:mode',
   props: true,
-  component: () => import(/* webpackChunkName:"/js/trees" */ '@/views/InteractionDesigner.vue')
+  component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue')
 }, {
   path: '/trees/:id',
   redirect: '/trees/:id/interaction-designer/view'
@@ -25,7 +25,7 @@ export const routes = [{
 }, {
   path: '/trees/:id',
   alias: '/trees/:id/interaction-designer/edit',
-  component: () => import(/* webpackChunkName:"/js/trees" */ '@/views/InteractionDesigner.vue')
+  component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue')
 }]
 
 export default routes

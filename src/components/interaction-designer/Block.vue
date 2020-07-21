@@ -2,9 +2,11 @@
   <plain-draggable
       v-if="hasLayout"
       class="block"
+      :class="{active: isBlockActivated}"
       :startX="x"
       :startY="y"
-      @dragged="onMoved">
+      @dragged="onMoved"
+      @dragStarted="selectBlock">
 
     <header
         class="block-target draggable-handle"
@@ -133,7 +135,7 @@
 
     computed: {
       ...mapState('flow', ['resources']),
-      ...mapState('builder', ['operations']),
+      ...mapState('builder', ['activeBlockId', 'operations']),
 
       hasLayout() {
         return isNumber(this.x) && isNumber(this.y)
@@ -144,7 +146,11 @@
 
       isConnectionSourceRelocateActive: ({operations}) => !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
       isConnectionCreateActive: ({operations}) => !!operations[OperationKind.CONNECTION_CREATE].data,
-      isBlockActivated: ({block, operations}) => {
+      isBlockActivated: ({activeBlockId, block, operations}) => {
+        if (activeBlockId && activeBlockId === block.uuid) {
+          return true
+        }
+
         const data = operations[OperationKind.CONNECTION_CREATE].data
         return data && data.target === block.uuid
       },
@@ -170,6 +176,8 @@
         'setConnectionCreateTargetBlockToNullFrom',
         'applyConnectionCreate',
       ]),
+
+      ...mapMutations('builder', ['activateBlock']),
 
       resolveTextResource(uuid) {
         const {resources} = this
@@ -286,6 +294,11 @@
 
         this.applyConnectionSourceRelocate()
       },
+
+      selectBlock() {
+        const {block: {uuid: blockId}} = this
+        this.activateBlock({blockId})
+      },
     },
   }
 </script>
@@ -370,5 +383,8 @@
       }
     }
 
+    &.active {
+      background-color: #fff8dc;
+    }
   }
 </style>

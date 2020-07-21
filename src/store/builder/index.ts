@@ -39,6 +39,8 @@ interface IPosition {
 
 
 export interface IBuilderState {
+  activeBlockId: IBlock['uuid'] | null,
+
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation,
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation,
@@ -47,6 +49,8 @@ export interface IBuilderState {
 }
 
 export const stateFactory = (): IBuilderState => ({
+  activeBlockId: null,
+
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: {
       kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
@@ -59,6 +63,8 @@ export const stateFactory = (): IBuilderState => ({
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
+  activeBlock: ({activeBlockId}, {blocksById}) => activeBlockId ? blocksById[activeBlockId] : null,
+
   blocksById: (state, getters, rootState, rootGetters) => {
     const {blocks} = rootGetters['flow/activeFlow']
     return keyBy(blocks, 'uuid')
@@ -72,6 +78,13 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 }
 
 export const mutations: MutationTree<IBuilderState> = {
+  activateBlock(state, {blockId}: {blockId: IBlock['uuid']}) {
+    state.activeBlockId = blockId
+
+    // simulate engaging with specified block
+    // FlowRunner.prototype.navigateTo(block, state as unknown as IContext)
+  },
+
   setOperation({operations}, {operation}: {operation: SupportedOperation}) {
     operations[operation.kind] = operation
   },
@@ -229,6 +242,16 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
 
     const operation: IConnectionCreateOperation = {kind: OperationKind.CONNECTION_CREATE, data: null}
     commit('setOperation', {operation})
+  },
+
+  async importFlowsAndResources({dispatch, commit, state, rootState}, {flows, resources}) {
+    console.debug('importing flow...')
+
+    const {flow: flowState} = rootState
+
+    flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flows)
+    flowState.firstFlowId = flows[0].uuid
+    flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resources)
   },
 
   async loadFlow({dispatch, commit, state}) {

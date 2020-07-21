@@ -1,14 +1,13 @@
 <template>
-  <span class="leader-line" 
+  <span class="leader-line"
         :repositionHook="JSON.stringify(repositionHook)" />
 </template>
 
 <script>
+  // import LeaderLine from 'leader-line'
+  const {LeaderLine} = window
   import {throttle} from 'lodash'
   import {mapGetters} from 'vuex'
-
-  // import LeaderLine from 'leader-line'
-  const LeaderLine = window.LeaderLine
 
   export default {
     props: ['block', 'exit', 'position'],
@@ -21,12 +20,12 @@
 
     computed: {
       ...mapGetters('builder', ['blocksById']),
-      
+
       sourceId: ({exit}) => `exit/${exit.uuid}/handle`,
       targetId: ({exit}) => exit.destinationBlock
           ? `block/${exit.destinationBlock}/handle`
           : `exit/${exit.uuid}/pseudo-block-handle`,
-      
+
       sourcePosition() {
         const {block} = this
         const {xPosition, yPosition} = block.platform_metadata.io_viamo.uiData
@@ -38,7 +37,7 @@
         if (!block) {
           return
         }
-        
+
         const {xPosition, yPosition} = block.platform_metadata.io_viamo.uiData
         return {x: xPosition, y: yPosition}
       },
@@ -82,7 +81,7 @@
       this.debouncedReposition = throttle(this.reposition, 100)
     },
 
-    destroyed() {
+    beforeDestroy() {
       this.line.remove()
     },
 
@@ -100,19 +99,19 @@
       const options = {
         startPlug: 'square',
 
-        startPlugColor: '#E1026F',
-        endPlugColor: '#531944',
+        startPlugColor: 'rgb(225,2,111, 1)',
+        endPlugColor: 'rgb(83,25,68, 1)',
         gradient: true,
 
         startSocket: 'bottom',
         // endSocket: 'auto',
 
         size: 3,
-        // outline: false,
-        // outlineColor: '#240b1d',
+        outline: true,
+        outlineColor: '#ffffff',
         // outlineSize: 0.08,
 
-        // path: 'grid',
+        path: 'grid',
         // path: 'fluid',
         // path: 'arc',
         // path: 'magnet',
