@@ -1,0 +1,101 @@
+<template>
+  <div>
+    <h3 class="no-room-above">
+      {{'flow-builder.numeric-response-block' | trans}}
+    </h3>
+
+    <block-name-editor :block="block" />
+    <block-label-editor :block="block" />
+    <block-semantic-label-editor :block="block" />
+
+    <block-minimum-numeric-editor :block="block" @commitValidationMinimumChange="updateValidationMin"/>
+    <block-maximum-numeric-editor :block="block" @commitValidationMaximumChange="updateValidationMax"/>
+
+    <block-max-digit-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxResponseCharactersChange="updateMaxDigits"/>
+
+    <resource-editor v-if="promptResource"
+                     :resource="promptResource"
+                     :flow="flow" />
+
+    <first-block-editor-button
+        :flow="flow"
+        :block-id="block.uuid" />
+
+    <block-id :block="block" />
+  </div>
+</template>
+
+<script lang="ts">
+  import Vue from 'vue'
+  import {namespace} from 'vuex-class'
+  import {Component, Prop} from 'vue-property-decorator'
+
+  import {IBlockExit, IFlow} from '@floip/flow-runner'
+  import INumericResponseBlock from '@floip/flow-runner/src/model/block/INumericResponseBlock'
+  import {
+    IResourceDefinition,
+  } from '@floip/flow-runner/src/domain/IResourceResolver'
+
+  import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+  import BlockNameEditor from '../block-editors/NameEditor.vue'
+  import BlockLabelEditor from '../block-editors/LabelEditor.vue'
+  import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
+  import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
+  import BlockId from '../block-editors/BlockId.vue'
+  import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue'
+  import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
+  import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
+
+  import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
+
+  const flowVuexNamespace = namespace('flow')
+  const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+
+  @Component<any>({
+    components: {
+      ResourceEditor,
+      BlockNameEditor,
+      BlockLabelEditor,
+      BlockSemanticLabelEditor,
+      FirstBlockEditorButton,
+      BlockId,
+      BlockMinimumNumericEditor,
+      BlockMaximumNumericEditor,
+      BlockMaxDigitEditor,
+    },
+  })
+  class NumericResponseBlock extends Vue {
+    @Prop()readonly block!: INumericResponseBlock
+    @Prop()readonly flow!: IFlow
+
+    created() {
+        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+            this.$store.registerModule(['flow', BLOCK_TYPE], NumericStore)
+        }
+    }
+    get promptResource(): IResourceDefinition {
+      return this.resourcesByUuid[this.block.config.prompt]
+    }
+
+    updateValidationMin(value) {
+      this.setValidationMinimum({blockId: this.block.uuid, value})
+    }
+
+    updateValidationMax(value) {
+      this.setValidationMaximum({blockId: this.block.uuid, value})
+    }
+
+    updateMaxDigits(value) {
+      this.setMaxDigits({blockId: this.block.uuid, value})
+    }
+
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+    @flowVuexNamespace.Getter hasVoiceMode
+
+    @blockVuexNamespace.Action setValidationMinimum!: ({blockId: string, value: number}) => Promise<string>
+    @blockVuexNamespace.Action setValidationMaximum!: ({blockId: string, value: number}) => Promise<string>
+    @blockVuexNamespace.Action setMaxDigits!: ({blockId: string, value: number}) => Promise<string>
+  }
+
+  export default MobilePrimitives_NumericResponseBlock
+</script>

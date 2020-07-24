@@ -15,9 +15,65 @@
       {"id": "2", "name": "Spanish", "abbreviation": "ES"}
     ],
     "blockClasses": {
-      "MobilePrimitives\\SelectOneResponse": {
-        "name": "Select One Response",
-        "type": "MobilePrimitives\\SelectOneResponse"
+      "ConsoleIO\\PrintBlock": {
+        "name": "ConsoleIO\\PrintBlock",
+        "type": "ConsoleIO\\PrintBlock",
+        "is_interactive": false
+      },
+      "ConsoleIO\\ReadBlock": {
+        "name": "ConsoleIO\\ReadBlock",
+        "type": "ConsoleIO\\ReadBlock",
+        "is_interactive": true
+      },
+      "Core\\CaseBlock": {
+        "name": "Core\\CaseBlock",
+        "type": "Core\\CaseBlock",
+        "is_interactive": false
+      },
+      "Core\\LogBlock": {
+        "name": "Core\\LogBlock",
+        "type": "Core\\LogBlock",
+        "is_interactive": false
+      },
+      "Core\\OutputBlock": {
+        "name": "Core\\OutputBlock",
+        "type": "Core\\OutputBlock",
+        "is_interactive": false
+      },
+      "Core\\RunFlowBlock": {
+        "name": "Core\\RunFlowBlock",
+        "type": "Core\\RunFlowBlock",
+        "is_interactive": false
+      },
+      "MobilePrimitives\\MessageBlock": {
+        "name": "MobilePrimitives\\MessageBlock",
+        "type": "MobilePrimitives\\MessageBlock",
+        "is_interactive": true
+      },
+      "MobilePrimitives\\NumericResponseBlock": {
+        "name": "MobilePrimitives\\NumericResponseBlock",
+        "type": "MobilePrimitives\\NumericResponseBlock",
+        "is_interactive": true
+      },
+      "MobilePrimitives\\OpenResponseBlock": {
+        "name": "MobilePrimitives\\OpenResponseBlock",
+        "type": "MobilePrimitives\\OpenResponseBlock",
+        "is_interactive": true
+      },
+      "MobilePrimitives\\SelectOneResponseBlock": {
+        "name": "MobilePrimitives\\SelectOneResponseBlock",
+        "type": "MobilePrimitives\\SelectOneResponseBlock",
+        "is_interactive": true
+      },
+      "SmartDevices\\LocationResponseBlock": {
+        "name": "SmartDevices\\LocationResponseBlock",
+        "type": "SmartDevices\\LocationResponseBlock",
+        "is_interactive": true
+      },
+      "SmartDevices\\PhotoResponseBlock": {
+        "name": "SmartDevices\\PhotoResponseBlock",
+        "type": "SmartDevices\\PhotoResponseBlock",
+        "is_interactive": true
       }
     },
     "blockTags": [],

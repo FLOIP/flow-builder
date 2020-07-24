@@ -87,7 +87,7 @@
 </template>
 
 <script>
-  import lang from 'lib/filters/lang'
+  import lang from '@/lib/filters/lang'
 	import lodash from 'lodash'
   import {mapGetters, mapState} from 'vuex'
 	import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'

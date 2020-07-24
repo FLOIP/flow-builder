@@ -44,12 +44,12 @@
 </template>
 
 <script>
-  import lang from 'lib/filters/lang'
+  import lang from '@/lib/filters/lang'
   import lodash, {forEach} from 'lodash'
   import Vue from 'vue'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   import {affix as Affix} from 'vue-strap'
-  // import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/SelectOneResponseBlock.vue'
+  // import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
 
   // import * as BlockTypes from './block-types'
   // import JsPlumbBlock from './JsPlumbBlock'

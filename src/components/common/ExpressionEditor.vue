@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import TextEditor from './TextEditor'
+  import TextEditor from '@/components/common/TextEditor'
 
   export default {
     components: {

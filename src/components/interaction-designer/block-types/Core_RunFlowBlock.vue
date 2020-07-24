@@ -38,19 +38,19 @@
 
   import IRunFlowBlock from '@floip/flow-runner/src/model/block/IRunFlowBlock'
   import {IFlow} from '@floip/flow-runner'
-  import {IFlowsState} from '@/store/flow'
+  import {IFlowsState} from '@/store/flow/index'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import BlockId from '../block-editors/BlockId.vue'
 
-  import RunAnotherFlowStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunAnotherFlowBlockStore'
+  import RunAnotherFlowStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
   @Component<any>({
-    name: 'RunAnotherFlowBlock',
+    name: 'Core_RunFlowBlock.vue',
     components: {
       BlockNameEditor,
       BlockLabelEditor,
@@ -58,16 +58,16 @@
       FirstBlockEditorButton,
       BlockId,
     },
-    created() {
-      //TODO - better way to do this?
-      if (!this.$store.state.flow[BLOCK_TYPE]) {
-        this.$store.registerModule(['flow', BLOCK_TYPE], RunAnotherFlowStore)
-      }
-    },
   })
   class RunAnotherFlowBlock extends Vue {
     @Prop()readonly block!: IRunFlowBlock
     @Prop()readonly flow!: IFlow
+
+    created() {
+        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+            this.$store.registerModule(['flow', BLOCK_TYPE], RunAnotherFlowStore)
+        }
+    }
 
     get destinationFlowId(): string {
       //TODO - fix IRunFlowBlockConfig - it should have flow_id according to spec - not flowId
@@ -81,8 +81,8 @@
     @blockVuexNamespace.Action setDestinationFlowId!: (
       {blockId, newDestinationFlowId}: {blockId: string; newDestinationFlowId: string}
     ) => Promise<string>
-    @blockVuexNamespace.Getter otherFlows!: () => Promise<IFlowsState[]>
+    @blockVuexNamespace.Getter otherFlows!: IFlowsState[]
   }
 
-  export default RunAnotherFlowBlock
+  export default Core_RunAnotherFlowBlock
 </script>

@@ -3,7 +3,7 @@ import lodash from 'lodash'
 import {get, set} from 'lodash'
 import Vue from 'vue'
 
-import {routeFrom} from 'lib/mixins/Routes'
+import {routeFrom} from '@/lib/mixins/Routes'
 import flights from 'store/common/flight-monitor'
 
 import flow from 'lodash/fp/flow'

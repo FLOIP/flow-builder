@@ -1,7 +1,7 @@
 import lodash from 'lodash'
 import axios from 'axios'
 import Vue from 'vue'
-import {routeFrom} from 'lib/mixins/Routes'
+import {routeFrom} from '@/lib/mixins/Routes'
 
 
 export default {

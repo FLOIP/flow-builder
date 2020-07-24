@@ -187,9 +187,9 @@
 
 </template>
 <script>
-  import lang from 'lib/filters/lang'
-  import Permissions from 'lib/mixins/Permissions'
-  import Routes from 'lib/mixins/Routes'
+  import lang from '@/lib/filters/lang'
+  import Permissions from '@/lib/mixins/Permissions'
+  import Routes from '@/lib/mixins/Routes'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   import lodash, {isEmpty} from 'lodash'
   import flow from 'lodash/fp/flow'

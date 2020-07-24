@@ -1,9 +1,7 @@
 import {
-  findBlockOnActiveFlowWith,
   findBlockWith,
   findFlowWith,
   getActiveFlowFrom,
-  FlowRunner,
   SupportedMode,
   SupportedContentType,
   IBlock,
@@ -17,19 +15,13 @@ import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '.'
 import {IRootState} from '@/store'
-import {defaults, snakeCase, forEach} from 'lodash'
+import {defaults, includes, forEach} from 'lodash'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   activeFlow: state => state.flows.length && getActiveFlowFrom(state as unknown as IContext),
-  activeBlock: state => {
-    // const ctx = state as unknown as IContext
-    // if (!FlowRunner.prototype.isInitialized(ctx)) {
-    //   return
-    // }
-    //
-    // const {interaction: {blockId}} = FlowRunner.prototype.hydrateRichCursorFrom(ctx)
-    // return findBlockOnActiveFlowWith(blockId, ctx)
-  }
+
+  hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some(mode => includes(getters.activeFlow.supportedModes || [], mode)),
+  hasVoiceMode: (state, getters) => includes(getters.activeFlow.supportedModes || [], SupportedMode.IVR)
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -91,6 +83,27 @@ export const mutations: MutationTree<IFlowsState> = {
     const block: IBlock = findBlockWith(blockId, flow)  // @throws ValidationException when block absent
     flow.firstBlockId = block.uuid
   },
+  flow_setName(state, {flowId, value}) {
+    findFlowWith(flowId, state as unknown as IContext).name = value
+  },
+
+  flow_setLabel(state, {flowId, value}) {
+    findFlowWith(flowId, state as unknown as IContext).label = value
+  },
+
+  flow_setInteractionTimeout(state, {flowId, value}) {
+    findFlowWith(flowId, state as unknown as IContext).interactionTimeout = value
+  },
+
+  flow_setSupportedMode(state, {flowId, value}) {
+    const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
+    flow.supportedModes = Array.isArray(value) ? value : [value]
+  },
+
+  flow_setLanguages(state, {flowId, value}) {
+    const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
+    flow.languages = Array.isArray(value) ? value : [value]
+  },
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
@@ -147,12 +160,42 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     return resource
   },
+  async flow_addBlankResourceForEnabledModesAndLangs({getters, dispatch, commit}): Promise<IResourceDefinition> {
+    //TODO - figure out of there should only be one value here at first? How would the resource editor change this?
+    //TODO - is this right for setup of languages?
+    //TODO - How will we add more blank values as supported languages are changed in the flow? We should probably also do this for modes rather than doing all possible modes here.
+    const values = getters['activeFlow'].languages.reduce((memo: object[], language: {id: string, name: string}) => {
+      //Let's just create all the modes. We might need them but if they are switched off they just don't get used
+      Object.values(SupportedMode).forEach((mode: string) => {
+        memo.push({
+          languageId: language.id,
+          value: '',
+          //TODO - this is not right but we can't always get it from the Mode - LogBlock for example has text content for the IVR mode. Condsider this when we redesign the resource editor
+          contentType: SupportedContentType.TEXT,
+          modes: [
+            mode
+          ],
+        })
+      })
+      return memo
+    }, [])
+    const blankResource = await dispatch('resource_createWith', {
+      props: {
+        uuid: (new IdGeneratorUuidV4()).generate(),
+        values: values,
+      },
+    })
+    commit('resource_add', {resource: blankResource})
+
+    return blankResource
+  },
 
   async flow_createWith({dispatch, commit, state}, {props}: {props: {uuid: string} & Partial<IFlow>}): Promise<IFlow> {
     return {
       ...defaults(props, {
         orgId: '', // awful default value, but we've typed it to string
         name: '',
+        label: '', // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
         lastModified: moment().format('c'),
         interactionTimeout: 30,
         platformMetadata: {},

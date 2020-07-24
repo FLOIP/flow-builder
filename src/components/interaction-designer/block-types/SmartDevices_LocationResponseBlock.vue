@@ -1,0 +1,84 @@
+<template>
+  <div>
+    <h3 class="no-room-above">
+      {{'flow-builder.location-response-block' | trans}}
+    </h3>
+
+    <block-name-editor :block="block" />
+    <block-label-editor :block="block" />
+    <block-semantic-label-editor :block="block" />
+
+    <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold"/>
+    <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout"/>
+
+    <first-block-editor-button
+        :flow="flow"
+        :block-id="block.uuid" />
+
+    <block-id :block="block" />
+  </div>
+</template>
+
+<script lang="ts">
+  import Vue from 'vue'
+  import {namespace} from 'vuex-class'
+  import {Component, Prop} from 'vue-property-decorator'
+
+  import {IBlockExit, IFlow} from '@floip/flow-runner'
+  import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
+  import {
+    IResourceDefinition,
+  } from '@floip/flow-runner/src/domain/IResourceResolver'
+
+  import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+  import BlockNameEditor from '../block-editors/NameEditor.vue'
+  import BlockLabelEditor from '../block-editors/LabelEditor.vue'
+  import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
+  import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
+  import BlockId from '../block-editors/BlockId.vue'
+  import BlockThresholdEditor from '../block-editors/ThresholdEditor.vue'
+  import BlockTimeoutEditor from '../block-editors/TimeoutEditor.vue'
+
+  import LocationStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
+
+  const flowVuexNamespace = namespace('flow')
+  const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+
+  @Component<any>({
+    components: {
+      ResourceEditor,
+      BlockNameEditor,
+      BlockLabelEditor,
+      BlockSemanticLabelEditor,
+      FirstBlockEditorButton,
+      BlockId,
+      BlockThresholdEditor,
+      BlockTimeoutEditor,
+    },
+  })
+  class LocationResponseBlock extends Vue {
+    @Prop()readonly block!: ILocationResponseBlock
+    @Prop()readonly flow!: IFlow
+
+    created() {
+        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+            this.$store.registerModule(['flow', BLOCK_TYPE], LocationStore)
+        }
+    }
+
+    updateThreshold(value: number) {
+      this.setAccuracyThreshold({blockId: this.block.uuid, value})
+    }
+
+    updateTimeout(value: number) {
+      this.setAccuracyTimeout({blockId: this.block.uuid, value})
+    }
+
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+
+    @blockVuexNamespace.Action setAccuracyThreshold!: ({blockId, value}: {blockId: string, value: number}) => Promise<string>
+    @blockVuexNamespace.Action setAccuracyTimeout!: ({blockId, value}: {blockId: string, value: number}) => Promise<string>
+  }
+
+  export default SmartDevices_LocationResponseBlock
+</script>

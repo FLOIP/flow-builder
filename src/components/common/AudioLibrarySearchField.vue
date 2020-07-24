@@ -45,7 +45,7 @@
 
         <template v-if="hasPrevious || hasNext">
           <li role="separator" class="divider"></li>
-          
+
           <li class="pagers">
             <a @click.prevent="decrementPage" href="#" :class="{disabled: !hasPrevious}" class="col-md-6">
               <i class="glyphicon glyphicon-chevron-left"></i>
@@ -74,7 +74,7 @@
 	import fuse from 'fuse.js'
 	import lodash from 'lodash'
 	import VueFocus from 'vue-focus'
-  import lang from 'lib/filters/lang'
+  import lang from '@/lib/filters/lang'
 
 	export default {
 		props: ['langId', 'audioFiles'],

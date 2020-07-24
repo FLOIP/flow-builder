@@ -2,49 +2,29 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {
   IBlockExitTestRequired,
-  IBlockExit,
   findBlockOnActiveFlowWith,
   IContext,
 } from '@floip/flow-runner'
 import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import ICaseBlock from '@floip/flow-runner/src/model/block/ICaseBlock'
-import {defaults, find, without} from 'lodash'
+import {defaults} from 'lodash'
 import {IFlowsState} from '../index'
+
+import { allItemsHaveValue, twoItemsBlank} from '../utils/listBuilder'
 
 export const BLOCK_TYPE = 'Core\\Case'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   allExitsHaveTests: (state, getters, rootState, rootGetters): boolean => {
-    return rootGetters['flow/activeBlock'].exits.every((exit: IBlockExitTestRequired) => !!exit.test)
+    return allItemsHaveValue(rootGetters['flow/activeBlock'].exits, 'test')
   },
   twoExitsBlank: (state, getters, rootState, rootGetters): boolean => {
-    let blankNumber = 0
-
-    return rootGetters['flow/activeBlock'].exits.some((exit: IBlockExitTestRequired) => {
-      if (!exit.test) {
-        blankNumber += 1
-      }
-
-      if (blankNumber > 1) {
-        return true
-      }
-
-      return false
-    })
+    return twoItemsBlank(rootGetters['flow/activeBlock'].exits, 'test')
   },
 
 }
 
 export const mutations: MutationTree<IFlowsState> = {
-  popFirstEmptyExit(state, {blockId}: {blockId: string}) {
-    //TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    const block = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext)
-    const exitToRemove = find(block.exits, (exit: IBlockExit) => !exit.test)
-    if (exitToRemove) {
-      block.exits = without(block.exits, exitToRemove)
-    }
-  },
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
@@ -64,7 +44,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }, {root: true})
       commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: exit}, {root: true})
     } else if (getters.twoExitsBlank) {
-      commit('popFirstEmptyExit', {blockId: activeBlock.uuid})
+      commit('flow/block_popFirstExitWithoutTest', {blockId: activeBlock.uuid}, {root: true})
     }
   },
   async createWith({dispatch}, {props}: {props: {uuid: string} & Partial<ICaseBlock>}) {
@@ -72,7 +52,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: (new IdGeneratorUuidV4()).generate(),
-          test: '', // todo: get started on a basic expression api
+          test: '',
         }) as IBlockExitTestRequired,
       }, {root: true}),
     ]
