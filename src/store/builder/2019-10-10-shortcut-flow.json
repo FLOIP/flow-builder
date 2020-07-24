@@ -6,7 +6,11 @@
       "label": "",
       "lastModified": "2019-10-10 23:46:30.000000+00:00",
       "interactionTimeout": 172800,
-      "supportedModes": [],
+      "supportedModes": [
+        "sms",
+        "ivr",
+        "ussd"
+      ],
       "languages": [
         {
           "id": "1",
