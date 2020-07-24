@@ -40,7 +40,7 @@
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
   import BlockFormatStringEditor from '../block-editors/FormatStringEditor.vue'
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-  import TextEditor from '../../components/common/TextEditor.vue'
+  import TextEditor from '@/components/common/TextEditor.vue'
   import BlockId from '../block-editors/BlockId.vue'
 
   import ReadStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'

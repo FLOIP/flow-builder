@@ -15,64 +15,64 @@
       {"id": "2", "name": "Spanish", "abbreviation": "ES"}
     ],
     "blockClasses": {
-      "ConsoleIO\\PrintBlock": {
-        "name": "ConsoleIO\\PrintBlock",
-        "type": "ConsoleIO\\PrintBlock",
+      "ConsoleIO\\Print": {
+        "name": "ConsoleIO\\Print",
+        "type": "ConsoleIO\\Print",
         "is_interactive": false
       },
-      "ConsoleIO\\ReadBlock": {
-        "name": "ConsoleIO\\ReadBlock",
-        "type": "ConsoleIO\\ReadBlock",
+      "ConsoleIO\\Read": {
+        "name": "ConsoleIO\\Read",
+        "type": "ConsoleIO\\Read",
         "is_interactive": true
       },
-      "Core\\CaseBlock": {
-        "name": "Core\\CaseBlock",
-        "type": "Core\\CaseBlock",
+      "Core\\Case": {
+        "name": "Core\\Case",
+        "type": "Core\\Case",
         "is_interactive": false
       },
-      "Core\\LogBlock": {
-        "name": "Core\\LogBlock",
-        "type": "Core\\LogBlock",
+      "Core\\Log": {
+        "name": "Core\\Log",
+        "type": "Core\\Log",
         "is_interactive": false
       },
-      "Core\\OutputBlock": {
-        "name": "Core\\OutputBlock",
-        "type": "Core\\OutputBlock",
+      "Core\\Output": {
+        "name": "Core\\Output",
+        "type": "Core\\Output",
         "is_interactive": false
       },
-      "Core\\RunFlowBlock": {
-        "name": "Core\\RunFlowBlock",
-        "type": "Core\\RunFlowBlock",
+      "Core\\RunFlow": {
+        "name": "Core\\RunFlow",
+        "type": "Core\\RunFlow",
         "is_interactive": false
       },
-      "MobilePrimitives\\MessageBlock": {
-        "name": "MobilePrimitives\\MessageBlock",
-        "type": "MobilePrimitives\\MessageBlock",
+      "MobilePrimitives\\Message": {
+        "name": "MobilePrimitives\\Message",
+        "type": "MobilePrimitives\\Message",
         "is_interactive": true
       },
-      "MobilePrimitives\\NumericResponseBlock": {
-        "name": "MobilePrimitives\\NumericResponseBlock",
-        "type": "MobilePrimitives\\NumericResponseBlock",
+      "MobilePrimitives\\NumericResponse": {
+        "name": "MobilePrimitives\\NumericResponse",
+        "type": "MobilePrimitives\\NumericResponse",
         "is_interactive": true
       },
-      "MobilePrimitives\\OpenResponseBlock": {
-        "name": "MobilePrimitives\\OpenResponseBlock",
-        "type": "MobilePrimitives\\OpenResponseBlock",
+      "MobilePrimitives\\OpenResponse": {
+        "name": "MobilePrimitives\\OpenResponse",
+        "type": "MobilePrimitives\\OpenResponse",
         "is_interactive": true
       },
-      "MobilePrimitives\\SelectOneResponseBlock": {
-        "name": "MobilePrimitives\\SelectOneResponseBlock",
-        "type": "MobilePrimitives\\SelectOneResponseBlock",
+      "MobilePrimitives\\SelectOneResponse": {
+        "name": "MobilePrimitives\\SelectOneResponse",
+        "type": "MobilePrimitives\\SelectOneResponse",
         "is_interactive": true
       },
-      "SmartDevices\\LocationResponseBlock": {
-        "name": "SmartDevices\\LocationResponseBlock",
-        "type": "SmartDevices\\LocationResponseBlock",
+      "SmartDevices\\LocationResponse": {
+        "name": "SmartDevices\\LocationResponse",
+        "type": "SmartDevices\\LocationResponse",
         "is_interactive": true
       },
-      "SmartDevices\\PhotoResponseBlock": {
-        "name": "SmartDevices\\PhotoResponseBlock",
-        "type": "SmartDevices\\PhotoResponseBlock",
+      "SmartDevices\\PhotoResponse": {
+        "name": "SmartDevices\\PhotoResponse",
+        "type": "SmartDevices\\PhotoResponse",
         "is_interactive": true
       }
     },
