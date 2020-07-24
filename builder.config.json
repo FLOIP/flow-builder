@@ -11,8 +11,24 @@
       }
     },
     "languages": [
-      {"id": "1", "name": "English", "abbreviation": "EN"},
-      {"id": "2", "name": "Spanish", "abbreviation": "ES"}
+      {
+        "id": "1",
+        "name": "English",
+        "abbreviation": "EN",
+        "orgId": "1008107874829627392",
+        "rightToLeft": false,
+        "code": null,
+        "deletedAt": null
+      },
+      {
+        "id": "2",
+        "name": "Spanish",
+        "abbreviation": "ES",
+        "orgId": "1008107874829627392",
+        "rightToLeft": false,
+        "code": null,
+        "deletedAt": null
+      }
     ],
     "blockClasses": {
       "ConsoleIO\\Print": {
