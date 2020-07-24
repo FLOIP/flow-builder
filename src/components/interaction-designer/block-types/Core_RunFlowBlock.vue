@@ -59,12 +59,12 @@
       BlockId,
     },
   })
-  class RunAnotherFlowBlock extends Vue {
+  class Core_RunAnotherFlowBlock extends Vue {
     @Prop()readonly block!: IRunFlowBlock
     @Prop()readonly flow!: IFlow
 
     created() {
-        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
             this.$store.registerModule(['flow', BLOCK_TYPE], RunAnotherFlowStore)
         }
     }

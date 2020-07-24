@@ -51,12 +51,12 @@
       BlockId,
     },
   })
-  class MessageBlock extends Vue {
+  class MobilePrimitives_MessageBlock extends Vue {
     @Prop()readonly block!: IMessageBlock
     @Prop()readonly flow!: IFlow
 
     created() {
-        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
             this.$store.registerModule(['flow', BLOCK_TYPE], MessageStore)
         }
     }

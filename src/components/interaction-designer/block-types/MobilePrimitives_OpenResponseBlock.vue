@@ -40,8 +40,8 @@
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import BlockId from '../block-editors/BlockId.vue'
-  import BlockMaxDurationSecondsEditor from '../block-editors/MaxDurationSecondsEditor'
-  import BlockMaxResponseCharactersEditor from '../block-editors/MaxResponseCharactersEditor'
+  import BlockMaxDurationSecondsEditor from '../block-editors/MaxDurationSecondsEditor.vue'
+  import BlockMaxResponseCharactersEditor from '../block-editors/MaxResponseCharactersEditor.vue'
 
   import OpenResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
 
@@ -60,12 +60,12 @@
       BlockMaxResponseCharactersEditor,
     },
   })
-  class OpenResponseBlock extends Vue {
+  class MobilePrimitives_OpenResponseBlock extends Vue {
     @Prop()readonly block!: IOpenResponseBlock
     @Prop()readonly flow!: IFlow
 
     created() {
-        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
             this.$store.registerModule(['flow', BLOCK_TYPE], OpenResponseStore)
         }
     }

@@ -16,10 +16,10 @@ export const BLOCK_TYPE = 'Core\\Case'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   allExitsHaveTests: (state, getters, rootState, rootGetters): boolean => {
-    return allItemsHaveValue(rootGetters['flow/activeBlock'].exits, 'test')
+    return allItemsHaveValue(rootGetters['builder/activeBlock'].exits, 'test')
   },
   twoExitsBlank: (state, getters, rootState, rootGetters): boolean => {
-    return twoItemsBlank(rootGetters['flow/activeBlock'].exits, 'test')
+    return twoItemsBlank(rootGetters['builder/activeBlock'].exits, 'test')
   },
 
 }
@@ -29,9 +29,9 @@ export const mutations: MutationTree<IFlowsState> = {
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async editCaseBlockExit({commit, dispatch, getters, rootGetters}, {identifier, value}: {identifier: string; value: string}) {
-    const activeBlock = rootGetters['flow/activeBlock']
+    const activeBlock = rootGetters['builder/activeBlock']
     await dispatch('flow/block_updateBlockExitWith', {
-      blockId: rootGetters['flow/activeBlock'].uuid,
+      blockId: rootGetters['builder/activeBlock'].uuid,
       exitId: identifier,
       value,
     }, {root: true})

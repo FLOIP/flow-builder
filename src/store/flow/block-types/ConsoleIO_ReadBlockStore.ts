@@ -12,7 +12,7 @@ export const BLOCK_TYPE = 'ConsoleIO\\Read'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   destinationVariablesFields: (state, getters, rootState, rootGetters): string[] => {
-    const activeBlock = rootGetters['flow/activeBlock']
+    const activeBlock = rootGetters['builder/activeBlock']
     // TODO: correct the destination variables array according to scanf library we're using, and think about consecutive % or other error we should avoid
     return new Array(split(activeBlock.config.format_string || '', "%").length - 1)
   },
@@ -22,7 +22,7 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async setFormatString({commit, rootGetters}, newFormatString: string) {
-    const activeBlock = rootGetters['flow/activeBlock']
+    const activeBlock = rootGetters['builder/activeBlock']
     const newConfig = {
       format_string: newFormatString,
     }
@@ -34,7 +34,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return newConfig
   },
   async editDestinationVariable({commit, dispatch, getters, rootGetters}, {variableName, keyIndex} : {variableName: string, keyIndex: number}) {
-    const activeBlock = rootGetters['flow/activeBlock']
+    const activeBlock = rootGetters['builder/activeBlock']
     let newDestinationVariables = activeBlock.config.destination_variables || []
     newDestinationVariables[keyIndex] = variableName
     commit('flow/block_updateConfigByKey', {

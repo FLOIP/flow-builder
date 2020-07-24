@@ -74,7 +74,7 @@
     @Prop()readonly block!: ISelectOneResponseBlock
     @Prop()readonly flow!: IFlow
     created() {
-      if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+      if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
         this.$store.registerModule(['flow', BLOCK_TYPE], SelectOneStore)
       }
     }

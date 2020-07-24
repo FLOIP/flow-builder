@@ -25,7 +25,7 @@ import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/l
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   inflatedChoices: (state, getters, rootState, rootGetters): object => {
-    const currentBlock = rootGetters['flow/activeBlock']
+    const currentBlock = rootGetters['builder/activeBlock']
     let choices: {[key: string]: IResourceDefinition} = {}
     return Object.keys(currentBlock.config.choices).reduce((memo, choiceKey): {[key: string]: IResourceDefinition} => {
       memo[choiceKey] = rootGetters['flow/resourcesByUuid'][currentBlock.config.choices[choiceKey]]
@@ -82,13 +82,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return !someItemsHaveValue(getters.inflatedChoices[key].values, "value")
     })
     if (choiceToRemove) {
-      commit('deleteChoiceByKey', {choiceKeyToRemove: choiceToRemove, blockId: rootGetters['flow/activeBlock'].uuid})
-      return rootGetters['flow/activeBlock'].config.choices[choiceToRemove]
+      commit('deleteChoiceByKey', {choiceKeyToRemove: choiceToRemove, blockId: rootGetters['builder/activeBlock'].uuid})
+      return rootGetters['builder/activeBlock'].config.choices[choiceToRemove]
     }
     return null
   },
   async editSelectOneResponseBlockChoice({commit, dispatch, getters, rootGetters}) {
-    const activeBlock = rootGetters['flow/activeBlock']
+    const activeBlock = rootGetters['builder/activeBlock']
     if (getters.allChoicesHaveContent) {
       const newIndex = parseInt(max(Object.keys(activeBlock.config.choices)) || "0")+1
       const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})

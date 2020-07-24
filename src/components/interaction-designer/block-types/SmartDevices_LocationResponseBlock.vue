@@ -25,7 +25,7 @@
   import {Component, Prop} from 'vue-property-decorator'
 
   import {IBlockExit, IFlow} from '@floip/flow-runner'
-  import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
+  // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
   import {
     IResourceDefinition,
   } from '@floip/flow-runner/src/domain/IResourceResolver'
@@ -56,12 +56,12 @@
       BlockTimeoutEditor,
     },
   })
-  class LocationResponseBlock extends Vue {
+  class SmartDevices_LocationResponseBlock extends Vue {
     @Prop()readonly block!: ILocationResponseBlock
     @Prop()readonly flow!: IFlow
 
     created() {
-        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
             this.$store.registerModule(['flow', BLOCK_TYPE], LocationStore)
         }
     }

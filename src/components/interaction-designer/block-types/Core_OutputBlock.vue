@@ -52,12 +52,12 @@
       BlockId,
     },
   })
-  class OutputBlock extends Vue {
+  class Core_OutputBlock extends Vue {
     @Prop()readonly block!: IOutputBlock
     @Prop()readonly flow!: IFlow
 
     created() {
-        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
             this.$store.registerModule(['flow', BLOCK_TYPE], OutputStore)
         }
     }

@@ -64,12 +64,12 @@
       BlockMaxDigitEditor,
     },
   })
-  class NumericResponseBlock extends Vue {
+  class MobilePrimitives_NumericResponseBlock extends Vue {
     @Prop()readonly block!: INumericResponseBlock
     @Prop()readonly flow!: IFlow
 
     created() {
-        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
             this.$store.registerModule(['flow', BLOCK_TYPE], NumericStore)
         }
     }

@@ -12,7 +12,7 @@
   import Vue from 'vue'
   import TextEditor from '@/components/common/TextEditor'
   import {Component, Prop} from 'vue-property-decorator'
-  import IFlow from '@floip/flow-runner'
+  import {IFlow} from '@floip/flow-runner'
   import {namespace} from 'vuex-class'
   const flowVuexNamespace = namespace('flow')
   @Component<any>(

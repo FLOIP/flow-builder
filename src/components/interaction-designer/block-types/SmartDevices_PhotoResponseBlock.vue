@@ -22,7 +22,7 @@
   import {Component, Prop} from 'vue-property-decorator'
 
   import {IBlockExit, IFlow} from '@floip/flow-runner'
-  import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
+  // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
   import {
     IResourceDefinition,
   } from '@floip/flow-runner/src/domain/IResourceResolver'
@@ -45,12 +45,12 @@
       BlockId,
     },
   })
-  class PhotoResponseBlock extends Vue {
+  class SmartDevices_PhotoResponseBlock extends Vue {
     @Prop()readonly block!: IPhotoResponseBlock
     @Prop()readonly flow!: IFlow
 
     created() {
-        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
             this.$store.registerModule(['flow', BLOCK_TYPE], PhotoStore)
         }
     }

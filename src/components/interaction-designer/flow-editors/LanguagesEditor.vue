@@ -35,14 +35,14 @@
 
     private availableLanguages: ILanguage[] =  [
       {
-        id: 1,
+        id: '1',
         name: "English",
         abbreviation: "EN",
         orgId:"",
         rightToLeft:true,
       },
       {
-        id: 2,
+        id: '2',
         name: "French",
         abbreviation: "FR",
         orgId:"",

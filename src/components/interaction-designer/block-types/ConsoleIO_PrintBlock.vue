@@ -51,12 +51,12 @@
       BlockId,
     },
   })
-  class PrintBlock extends Vue {
+  class ConsoleIO_PrintBlock extends Vue {
     @Prop()readonly block!: IPrintBlock
     @Prop()readonly flow!: IFlow
 
     created() {
-        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
             this.$store.registerModule(['flow', BLOCK_TYPE], PrintStore)
         }
     }

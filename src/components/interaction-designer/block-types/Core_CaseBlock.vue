@@ -56,12 +56,12 @@
       BlockId,
     },
   })
-  class CaseBlock extends Vue {
+  class Core_CaseBlock extends Vue {
     @Prop()readonly block!: ICaseBlock
     @Prop()readonly flow!: IFlow
 
     created() {
-        if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
             this.$store.registerModule(['flow', BLOCK_TYPE], CaseStore)
         }
     }

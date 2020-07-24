@@ -16,7 +16,7 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async setMaxDurationSeconds({commit, rootGetters}, newDuration: number) {
-    const activeBlock = rootGetters['flow/activeBlock']
+    const activeBlock = rootGetters['builder/activeBlock']
     commit('flow/block_updateConfigByKey', {
       blockId: activeBlock.uuid,
       key: 'ivr',
@@ -27,7 +27,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return newDuration
   },
   async setMaxResponseCharacters({commit, rootGetters}, newLength: number) {
-    const activeBlock = rootGetters['flow/activeBlock']
+    const activeBlock = rootGetters['builder/activeBlock']
     const value = {
       maxResponseCharacters: newLength,
     }
