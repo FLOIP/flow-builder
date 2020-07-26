@@ -15,12 +15,13 @@
 <script>
   import {mapMutations} from 'vuex'
   import TextEditor from '@/components/common/TextEditor'
+  import lang from '@/lib/filters/lang'
 
   export default {
-    name: 'NameEditor',
     components: {
       TextEditor,
     },
+    mixins: [lang],
     props: {
       //TODO - where should this come from - here and in other cases? Platform metadata? Need to write a story for this mode
       isEditable: {
@@ -41,6 +42,7 @@
           this.block_setName({blockId: this.block.uuid, value})
         },
       },
+
     },
     methods: {
       ...mapMutations('flow', ['block_setName']),

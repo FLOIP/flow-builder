@@ -56,6 +56,7 @@
   import BlockId from '../block-editors/BlockId.vue'
 
   import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+  import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -69,6 +70,8 @@
       ResourceEditor,
       BlockId,
     },
+
+    mixins: [lang],
   })
   export class MobilePrimitives_SelectOneResponseBlock extends Vue {
     @Prop()readonly block!: ISelectOneResponseBlock

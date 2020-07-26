@@ -27,9 +27,7 @@
 
   import {IFlow} from '@floip/flow-runner'
   import IPrintBlock from '@floip/flow-runner/src/model/block/IPrintBlock'
-  import {
-    IResourceDefinition,
-  } from '@floip/flow-runner/src/domain/IResourceResolver'
+  import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -38,6 +36,7 @@
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import BlockId from '../block-editors/BlockId.vue'
   import PrintStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
+  import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
 
@@ -50,6 +49,8 @@
       FirstBlockEditorButton,
       BlockId,
     },
+
+    mixins: [lang],
   })
   class ConsoleIO_PrintBlock extends Vue {
     @Prop()readonly block!: IPrintBlock

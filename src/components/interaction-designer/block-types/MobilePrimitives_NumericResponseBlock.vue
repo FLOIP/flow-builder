@@ -32,9 +32,7 @@
 
   import {IBlockExit, IFlow} from '@floip/flow-runner'
   import INumericResponseBlock from '@floip/flow-runner/src/model/block/INumericResponseBlock'
-  import {
-    IResourceDefinition,
-  } from '@floip/flow-runner/src/domain/IResourceResolver'
+  import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -47,6 +45,7 @@
   import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
 
   import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
+  import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -63,6 +62,8 @@
       BlockMaximumNumericEditor,
       BlockMaxDigitEditor,
     },
+
+    mixins: [lang],
   })
   class MobilePrimitives_NumericResponseBlock extends Vue {
     @Prop()readonly block!: INumericResponseBlock

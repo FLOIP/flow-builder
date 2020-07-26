@@ -44,6 +44,7 @@
   import BlockMaxResponseCharactersEditor from '../block-editors/MaxResponseCharactersEditor.vue'
 
   import OpenResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
+  import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -59,6 +60,8 @@
       BlockMaxDurationSecondsEditor,
       BlockMaxResponseCharactersEditor,
     },
+
+    mixins: [lang],
   })
   class MobilePrimitives_OpenResponseBlock extends Vue {
     @Prop()readonly block!: IOpenResponseBlock

@@ -21,7 +21,7 @@
   import {namespace} from 'vuex-class'
   import {Component, Prop} from 'vue-property-decorator'
 
-  import {IBlockExit, IFlow} from '@floip/flow-runner'
+  import {IBlock, IBlockExit, IFlow} from '@floip/flow-runner'
   // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
   import {
     IResourceDefinition,
@@ -33,6 +33,7 @@
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import BlockId from '../block-editors/BlockId.vue'
   import PhotoStore, {BLOCK_TYPE} from "@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore";
+  import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
 
@@ -44,15 +45,18 @@
       FirstBlockEditorButton,
       BlockId,
     },
+
+    mixins: [lang],
   })
   class SmartDevices_PhotoResponseBlock extends Vue {
-    @Prop()readonly block!: IPhotoResponseBlock
+    // @Prop()readonly block!: IPhotoResponseBlock
+    @Prop()readonly block!: IBlock
     @Prop()readonly flow!: IFlow
 
     created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], PhotoStore)
-        }
+      if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
+        this.$store.registerModule(['flow', BLOCK_TYPE], PhotoStore)
+      }
     }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}

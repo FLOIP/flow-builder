@@ -46,11 +46,11 @@
   import BlockId from '../block-editors/BlockId.vue'
 
   import RunAnotherFlowStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
+  import lang from '@/lib/filters/lang'
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
   @Component<any>({
-    name: 'Core_RunFlowBlock.vue',
     components: {
       BlockNameEditor,
       BlockLabelEditor,
@@ -58,6 +58,8 @@
       FirstBlockEditorButton,
       BlockId,
     },
+
+    mixins: [lang],
   })
   class Core_RunAnotherFlowBlock extends Vue {
     @Prop()readonly block!: IRunFlowBlock

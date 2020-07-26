@@ -40,13 +40,13 @@
   import BlockId from '../block-editors/BlockId.vue'
 
   import CaseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
+  import lang from '@/lib/filters/lang'
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
   //providing this generic is required by tsserver checking but not in the build run by yarn storybook
   //TODO - understand what is going on here and if there is something more correct we should have instead
   @Component<any>({
-    name: 'Core_CaseBlock.vue',
     components: {
       ExpressionEditor,
       BlockNameEditor,
@@ -55,6 +55,8 @@
       FirstBlockEditorButton,
       BlockId,
     },
+
+    mixins: [lang],
   })
   class Core_CaseBlock extends Vue {
     @Prop()readonly block!: ICaseBlock

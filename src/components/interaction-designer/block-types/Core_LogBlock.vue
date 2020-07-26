@@ -27,9 +27,7 @@
 
   import {IFlow} from '@floip/flow-runner'
   import ILogBlock from '@floip/flow-runner/src/model/block/ILogBlock'
-  import {
-    IResourceDefinition,
-  } from '@floip/flow-runner/src/domain/IResourceResolver'
+  import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -42,7 +40,6 @@
   const flowVuexNamespace = namespace('flow')
 
   @Component<any>({
-    name: 'Core_LogBlock.vue',
     components: {
       ResourceEditor,
       BlockNameEditor,

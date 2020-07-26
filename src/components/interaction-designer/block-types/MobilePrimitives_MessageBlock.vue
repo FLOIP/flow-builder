@@ -27,9 +27,7 @@
 
   import {IFlow} from '@floip/flow-runner'
   import IMessageBlock from '@floip/flow-runner/src/model/block/IMessageBlock'
-  import {
-    IResourceDefinition,
-  } from '@floip/flow-runner/src/domain/IResourceResolver'
+  import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -38,6 +36,7 @@
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import BlockId from '../block-editors/BlockId.vue'
   import MessageStore, {BLOCK_TYPE} from "@/store/flow/block-types/MobilePrimitives_MessageBlockStore";
+  import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
 
@@ -50,6 +49,8 @@
       FirstBlockEditorButton,
       BlockId,
     },
+
+    mixins: [lang],
   })
   class MobilePrimitives_MessageBlock extends Vue {
     @Prop()readonly block!: IMessageBlock

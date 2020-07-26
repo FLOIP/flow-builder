@@ -11,7 +11,6 @@
   import TextEditor from '@/components/common/TextEditor'
 
   export default {
-    name: 'LabelEditor',
     components: {
       TextEditor,
     },

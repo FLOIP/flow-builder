@@ -10,9 +10,9 @@
 <script>
   import {mapMutations} from 'vuex'
   import TextEditor from '@/components/common/TextEditor'
+  import lang from '@/lib/filters/lang';
 
   export default {
-    name: 'LabelEditor',
     components: {
       TextEditor,
     },
@@ -26,6 +26,7 @@
         required: true,
       },
     },
+    mixins: [lang],
     computed: {
       label: {
         get() {

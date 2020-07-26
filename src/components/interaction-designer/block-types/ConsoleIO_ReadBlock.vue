@@ -44,7 +44,7 @@
   import BlockId from '../block-editors/BlockId.vue'
 
   import ReadStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
-  import {IFlowsState} from '@/store/flow'
+  import lang from '@/lib/filters/lang'
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -59,6 +59,8 @@
       TextEditor,
       BlockId,
     },
+
+    mixins: [lang],
   })
   class ConsoleIO_ReadBlock extends Vue {
     @Prop()readonly block!: IReadBlock
@@ -69,6 +71,7 @@
             this.$store.registerModule(['flow', BLOCK_TYPE], ReadStore)
         }
     }
+
     filterVariableName(e) {
       if (e.key.match(/\W+|Enter/g)) {
         e.preventDefault()
