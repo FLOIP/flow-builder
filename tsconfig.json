@@ -7,6 +7,7 @@
     "importHelpers": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
+    "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
@@ -25,6 +26,9 @@
       "dom",
       "dom.iterable",
       "scripthost"
+    ],
+    "plugins": [
+      {"name": "ts-vue-plugin"}
     ]
   },
   "include": [
