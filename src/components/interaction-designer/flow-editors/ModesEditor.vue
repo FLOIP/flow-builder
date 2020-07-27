@@ -32,13 +32,7 @@
     @Prop({default: true}) readonly isEditable!: boolean
     @Prop() readonly flow!: IFlow
 
-    private availableModes: SupportedMode[] = [
-      SupportedMode.IVR,
-      SupportedMode.SMS,
-      SupportedMode.USSD,
-      SupportedMode.OFFLINE,
-      SupportedMode.RICH_MESSAGING
-    ]
+    private availableModes = Object.values(SupportedMode)
 
     get flowSelectedModes(): SupportedMode[] {
       return this.flow.supportedModes
