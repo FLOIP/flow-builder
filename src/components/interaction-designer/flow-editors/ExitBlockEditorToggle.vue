@@ -6,8 +6,8 @@
             class="btn btn-default btn-sm"
             :class="{active: isExitBlock}"
             @click="toggleExitBlock">
-          <template v-if="isExitBlock">{{'trees.unset-as-exit-block' | trans}}</template>
-          <template v-else>{{'trees.set-as-exit-block' | trans}}</template>
+          <template v-if="isExitBlock">{{'flow-builder.unset-as-exit-block' | trans}}</template>
+          <template v-else>{{'flow-builder.set-as-exit-block' | trans}}</template>
         </button>
       </div>
     </template>

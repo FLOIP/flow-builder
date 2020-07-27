@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="no-room-above">{{'trees.edit-multiple-choice-question' | trans}}</h3>
+    <h3 class="no-room-above">{{'flow-builder.edit-multiple-choice-question' | trans}}</h3>
 
     <block-name-editor :block="block" />
     <block-label-editor :block="block" />
@@ -24,8 +24,8 @@
     <block-id :block="block" />
 
     <!--    <div class="form-group">-->
-<!--      <label>{{ 'trees.choice-options' | trans }}</label><br/>-->
-<!--      <button @click="showSetChoiceOptionsModal" class="btn btn-default btn-sm">{{ 'trees.set-choice-options' | trans }}</button>-->
+<!--      <label>{{ 'flow-builder.choice-options' | trans }}</label><br/>-->
+<!--      <button @click="showSetChoiceOptionsModal" class="btn btn-default btn-sm">{{ 'flow-builder.set-choice-options' | trans }}</button>-->
 <!--    </div>-->
 
 <!--    <block-output-branching-config></block-output-branching-config>-->

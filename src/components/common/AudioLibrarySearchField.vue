@@ -14,7 +14,7 @@
              @blur="deactivate"
              @input="resetPagination"
              type="text"
-             :placeholder="'trees.search-audio-library' | trans"
+             :placeholder="'flow-builder.search-audio-library' | trans"
              :disabled="isEntireLibraryModeEnabled"
              class="form-control">
     </div>
@@ -26,7 +26,7 @@
             <button @click="toggleAudioLibrary" class="close">x</button>
 
             <i class="glyphicon glyphicon-info-sign"></i>
-            {{'trees.showing-entire-audio-library'|trans}}&hellip;
+            {{'flow-builder.showing-entire-audio-library'|trans}}&hellip;
           </a>
         </li>
         <li role="separator" class="divider"></li>
@@ -37,23 +37,23 @@
           <a @click.prevent="select(audio)" href="#">{{audio.description}}</a>
         </li>
         <li v-if="query.length >= 3 && !search(query).length" class="disabled">
-          <a @click.prevent="" href="#">{{'trees.no-audio-files-found-for-X' | trans}} "<em>{{query}}</em>".</a>
+          <a @click.prevent="" href="#">{{'flow-builder.no-audio-files-found-for-X' | trans}} "<em>{{query}}</em>".</a>
         </li>
         <li v-if="query && query.length < 3" class="disabled">
-          <a @click.prevent="" href="#">{{'trees.enter-at-least-three-chars' | trans}}</a>
+          <a @click.prevent="" href="#">{{'flow-builder.enter-at-least-three-chars' | trans}}</a>
         </li>
 
         <template v-if="hasPrevious || hasNext">
           <li role="separator" class="divider"></li>
-          
+
           <li class="pagers">
             <a @click.prevent="decrementPage" href="#" :class="{disabled: !hasPrevious}" class="col-md-6">
               <i class="glyphicon glyphicon-chevron-left"></i>
-              {{'trees.previous' | trans}}
+              {{'flow-builder.previous' | trans}}
             </a>
 
             <a @click.prevent="incrementPage" href="#" :class="{disabled: !hasNext}" class="col-md-6 text-right">
-              {{'trees.next' | trans}}
+              {{'flow-builder.next' | trans}}
               <i class="glyphicon glyphicon-chevron-right"></i>
             </a>
           </li>
@@ -63,7 +63,7 @@
       <li v-if="isAudioLibraryEmpty" class="disabled">
         <a @click.prevent="" href="#">
           <i class="glyphicon glyphicon-warning-sign"></i>
-          {{'trees.audio-lib-empty-for-this-org' | trans}}
+          {{'flow-builder.audio-lib-empty-for-this-org' | trans}}
         </a>
       </li>
     </ul>
@@ -123,14 +123,14 @@
 					return []
         }
 
-				console.debug('trees.ResourceViewer.AudioLibrarySearchField', 'searching', query)
+				console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'searching', query)
 
 				if (query in this.cache) {
-					console.debug('trees.ResourceViewer.AudioLibrarySearchField', 'cache hit', query)
+					console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache hit', query)
 					return this.cache[query]
 				}
 
-				console.debug('trees.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
+				console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
 
 				const keys = ['filename', 'description']
 				return this.cache[query] = new fuse(this.audioFiles, {keys}).search(query)

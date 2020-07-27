@@ -2,7 +2,7 @@
   <div class="resource-editor">
     <template v-for="{id: languageId, name: language} in flow.languages">
       <div class="block-content-editor-lang">
-        <h4>{{language || 'trees.unknown-language' | trans}}</h4>
+        <h4>{{language || 'flow-builder.unknown-language' | trans}}</h4>
       </div>
 
       <template v-for="mode in flow.supportedModes">

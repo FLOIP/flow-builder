@@ -17,9 +17,9 @@
       </button>
 
       <ul class="dropdown-menu dropdown-menu-right">
-        <li><a :href="`/audiofiles/download/${audioFile.filename}/original`" target="_blank" class="tree-block-audio-files-download-original">{{'trees.original-file'|trans}}</a></li>
-        <li><a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">{{'trees.download-X-format'|trans({kind: '.ogg'})}}</a></li>
-        <li><a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">{{'trees.download-X-format'|trans({kind: '.ul'})}}</a></li>
+        <li><a :href="`/audiofiles/download/${audioFile.filename}/original`" target="_blank" class="tree-block-audio-files-download-original">{{'flow-builder.original-file'|trans}}</a></li>
+        <li><a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">{{'flow-builder.download-X-format'|trans({kind: '.ogg'})}}</a></li>
+        <li><a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">{{'flow-builder.download-X-format'|trans({kind: '.ul'})}}</a></li>
       </ul>
     </div>
 

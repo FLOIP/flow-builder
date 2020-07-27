@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label>{{'trees.choices' | trans}}</label>
+    <label>{{'flow-builder.choices' | trans}}</label>
 
     <div v-for="n in (choices.length + 1)" class="form-group">
       <slot :api="api"

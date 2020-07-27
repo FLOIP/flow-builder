@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.run-another-flow-block' | trans}}
+      {{'flow-builder.edit-run-flow-block' | trans}}
     </h3>
 
     <block-name-editor :block="block" />

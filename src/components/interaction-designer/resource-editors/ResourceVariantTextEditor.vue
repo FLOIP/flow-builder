@@ -33,10 +33,10 @@
 
       <tooltip
           v-if="doesContentContainExpression"
-          :content="`<p>${trans('trees.youre-using-floip-expressions')}</p>
+          :content="`<p>${trans('flow-builder.youre-using-floip-expressions')}</p>
                      <p>
-                       <strong>${trans('trees.pro-tip')}:</strong>
-                       ${trans('trees.floip-expressions-escape-with-double-at-symbol')}
+                       <strong>${trans('flow-builder.pro-tip')}:</strong>
+                       ${trans('flow-builder.floip-expressions-escape-with-double-at-symbol')}
                      </p>`"
           effect="scale"
           placement="top">
@@ -62,16 +62,16 @@
           <strong>
             <a href="https://floip.gitbooks.io/flow-specification/content/fundamentals/expressions.html"
                target="_blank">FLOIP Expression</a>
-            {{'trees.error-found' | trans}}
+            {{'flow-builder.error-found' | trans}}
           </strong>
         </p>
 
         <p><!-- NOTE: Funky source formatting to mitigate spaces between parens -->
           <em>
             {{contentExpressionAST.message}}
-            (<span v-if="contentExpressionAST.location.start.line !== 1">{{'trees.on-line' | trans}}
+            (<span v-if="contentExpressionAST.location.start.line !== 1">{{'flow-builder.on-line' | trans}}
               {{contentExpressionAST.location.start.line}},
-            </span>{{'trees.at-character' | trans}} {{contentExpressionAST.location.start.column}})
+            </span>{{'flow-builder.at-character' | trans}} {{contentExpressionAST.location.start.column}})
           </em>
         </p>
       </div>
@@ -80,7 +80,7 @@
     <template v-if="!isEditable">
       <p v-if="content">{{content}}</p>
       <p v-else>
-        <em class="text-muted">{{'trees.no-sms-content-yet' | trans}}</em>
+        <em class="text-muted">{{'flow-builder.no-sms-content-yet' | trans}}</em>
       </p>
     </template>
   </div>
