@@ -38,13 +38,13 @@ export const Default = () => ({
     // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
     const flowOne = await this.flow_createWith({
       props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My other flow'}})
-    // @ts-ignore - TS2339: Property 'flow_addFlow' does not exist on type
-    await this.flow_addFlow(flowOne)
+    // @ts-ignore - TS2339: Property 'flow_add' does not exist on type
+    await this.flow_add(flowOne)
     // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
     const flowTwo = await this.flow_createWith({
       props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My third flow'}})
-    // @ts-ignore - TS2339: Property 'flow_addFlow' does not exist on type
-    await this.flow_addFlow(flowTwo)
+    // @ts-ignore - TS2339: Property 'flow_add' does not exist on type
+    await this.flow_add(flowTwo)
   },
   computed: {
     ...mapGetters('flow', [
@@ -56,7 +56,7 @@ export const Default = () => ({
     ...mapMutations('flow', ['flow_activateBlock']),
     ...mapActions('flow', [
       'flow_addBlankFlow',
-      'flow_addFlow',
+      'flow_add',
       'flow_createWith',
       'flow_addBlankBlockByType']),
   }
