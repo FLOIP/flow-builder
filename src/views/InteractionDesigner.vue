@@ -1,9 +1,11 @@
 <template>
-  <div class="interaction-designer-contents panel panel-default">
+  <div class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
-    <div class="tree-sidebar-menu-container">
-      <div class="tree-sidebar-menu" id="tree-sidebar">
+    <div v-if="activeBlock"
+         class="tree-sidebar-container">
+      <div class="tree-sidebar"
+           :class="[`category-${blockClasses[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
@@ -33,12 +35,9 @@
       </div>
     </div>
 
-    <div class="panel-body tree-contents">
-      <div id="tree-workspace"
-           class="tree-block-container"
-           :style="{'min-height': `${designerWorkspaceHeight}px`}">
-        <builder-canvas @click.native="handleCanvasSelected" />
-      </div>
+    <div class="tree-contents"
+         :style="{'min-height': `${designerWorkspaceHeight}px`}">
+      <builder-canvas @click.native="handleCanvasSelected" />
     </div>
   </div>
 </template>
@@ -48,7 +47,7 @@
   import lodash, {forEach} from 'lodash'
   import Vue from 'vue'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-  import {affix as Affix} from 'vue-strap'
+  // import {affix as Affix} from 'vue-strap'
   // import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
 
   // import * as BlockTypes from './block-types'
@@ -76,7 +75,7 @@
 
     components: {
       // ...BlockTypes,
-      Affix,
+      // Affix,
       // JsPlumbBlock,
       // TreeEditor,
       // TreeViewer,
@@ -121,7 +120,12 @@
         'validationResults',
       ]),
       ...mapState({
+
+        // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
         designerWorkspaceHeight: ({trees: {tree, ui}}) => ui.designerWorkspaceHeight,
+
+
+
         tree: ({trees: {tree, ui}}) => tree,
         validationResultsEmptyTree: ({trees: {tree, ui}}) => !tree.blocks.length,
         hasVoice: ({trees: {tree}}) => tree.details.hasVoice,
@@ -260,7 +264,7 @@
 <style src="bootstrap/dist/css/bootstrap.css"></style>
 <style src="bootstrap/dist/css/bootstrap-theme.css"></style>
 <!--<style src="../css/voto3.css"></style>-->
-<style src="../css/InteractionDesigner.css"></style>
+<!--<style src="../css/InteractionDesigner.css"></style>-->
 
 <style lang="scss">
   // Colors + dimensions
@@ -269,12 +273,152 @@
   $dot-color: CornflowerBlue;
   $bg-color: white;
 
-  #tree-workspace {
+  $toolbar-height: 56px;
+  $sidebar-width: 365px;
+
+  body {
     background:
       linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
       linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center, $dot-color;
     background-size: $dot-space $dot-space;
   }
+
+  .tree-sidebar-container {
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1*10;
+
+    height: 100vh;
+    width: $sidebar-width;
+    overflow-y: scroll;
+
+    padding: 1em;
+    padding-top: $toolbar-height;
+
+    .tree-sidebar {
+      background-color: #eaeaea;
+      border: 1px solid #5b5b5b;
+      border-radius: 0.3em;
+      box-shadow: 0px 3px 6px #CACACA;
+
+      padding: 1em;
+      margin-top: 1em;
+    }
+  }
+
+  .tree-builder-toolbar {
+    position: fixed;
+    z-index: 2*10;
+    left: 0;
+    top: 0;
+
+    width: 100vw;
+
+    border-bottom: 1px solid darkgrey;
+    background: #eee;
+  }
+
+  .tree-contents {
+    margin-top: $toolbar-height;
+    padding-right: $sidebar-width;
+    padding-bottom: 200px;
+  }
+
+  // color categorizations
+  $category-0-faint: #fbfdfb;
+  $category-0-light: #97BD8A;
+  $category-0-dark: #97BD8A;
+
+  $category-1-faint: white;
+  $category-1-light: #6897BB;
+  $category-1-dark: #6897BB;
+
+  $category-2-faint: white;
+  $category-2-light: #C69557;
+  $category-2-dark: #C69557;
+
+  .tree-sidebar-container {
+    .tree-sidebar {
+      &.category-0 {
+        border-color: $category-0-light;
+        background-color: $category-0-faint;
+
+        h3 {
+          color: $category-0-dark;
+        }
+      }
+
+      &.category-1 {
+        border-color: $category-1-light;
+        background-color: $category-1-faint;
+
+        h3 {
+          color: $category-1-dark;
+        }
+      }
+
+      &.category-2 {
+        border-color: $category-2-light;
+        background-color: $category-2-faint;
+
+        h3 {
+          color: $category-2-dark;
+        }
+      }
+    }
+  }
+
+  .block {
+    &.category-0 {
+      border-color: $category-0-light;
+
+      .block-type {
+        color: $category-0-dark;
+      }
+
+      .block-exits .block-exit .block-exit-tag {
+        background-color: $category-0-light;
+      }
+
+      .block-target:hover {
+        border: 1px dashed $category-0-light;
+      }
+    }
+
+    &.category-1 {
+      border-color: $category-1-light;
+
+      .block-type {
+        color: $category-1-dark;
+      }
+
+      .block-exits .block-exit .block-exit-tag {
+        background-color: $category-1-light;
+      }
+
+      .block-target:hover {
+        border: 1px dashed $category-1-light;
+      }
+    }
+
+    &.category-2 {
+      border-color: $category-2-light;
+
+      .block-type {
+        color: $category-2-dark;
+      }
+
+      .block-exits .block-exit .block-exit-tag {
+        background-color: $category-2-light;
+      }
+
+      .block-target:hover {
+        border: 1px dashed $category-2-light;
+      }
+    }
+  }
+
 
   // @note - these styles have been extracted so the output can be reused between storybook and voto5
   /*@import "resources/assets/js/trees/components/InteractionDesigner.scss";*/

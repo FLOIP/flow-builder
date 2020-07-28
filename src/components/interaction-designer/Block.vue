@@ -2,13 +2,17 @@
   <plain-draggable
       v-if="hasLayout"
       class="block"
-      :class="{active: isBlockActivated}"
+      :class="{
+        active: isBlockActivated,
+        [`category-${blockClasses[block.type].category}`]: true,
+      }"
       :startX="x"
       :startY="y"
       @dragged="onMoved"
       @dragStarted="selectBlock">
 
     <header
+        :id="`block/${block.uuid}/handle`"
         class="block-target draggable-handle"
         :class="{
              'initial': false,
@@ -20,16 +24,12 @@
         @mouseenter="isConnectionCreateActive && activateBlockAsDropZone($event)"
         @mouseleave="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
 
-      <p class="block-type">
+      <p class="block-type text-muted">
         {{block.type}}
       </p>
 
       <h3 class="block-label">{{block.label}}</h3>
     </header>
-
-    <div class="block-connection-target" :id="`block/${block.uuid}/handle`">
-      <i class="glyphicon glyphicon-transfer"></i>
-    </div>
 
     <div class="block-exits">
       <div v-for="exit in block.exits"
@@ -49,6 +49,8 @@
           <span class="label label-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
         </div>
 
+        <h3 class="block-exit-tag label label-warning">{{exit.tag}}</h3>
+
         <template v-if="exit.destinationBlock == null">
           <plain-draggable class="handle-create-link btn btn-default btn-xs"
                            :class="{
@@ -58,8 +60,7 @@
                            @dragStarted="onCreateExitDragStarted($event, exit)"
                            @dragged="onCreateExitDragged($event)"
                            @dragEnded="onCreateExitDragEnded($event, exit)">
-            <i class="glyphicon glyphicon-transfer"></i>
-            {{exit.tag}}
+            <i class="glyphicon glyphicon-move"></i>
           </plain-draggable>
 
           <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
@@ -69,41 +70,41 @@
                            }"
                  :id="`exit/${exit.uuid}/handle`">
               <i class="glyphicon glyphicon-move"></i>
-              {{exit.tag}}
             </div>
 
             <connection :key="`exit/${exit.uuid}/line-for-draft`"
                         :positionCacheKey="`_`"
                         :exit="exit"
                         :block="block"
-                        :position="livePosition" />
+                        :position="livePosition"
+                        :color-category="blockClasses[block.type].category" />
           </template>
         </template>
 
         <template v-if="exit.destinationBlock != null">
-          <div class="btn btn-danger btn-xs"
-               title="Click to remove this connection"
-               @click="removeConnectionFrom(exit)">
-            <span class="glyphicon glyphicon-remove"></span>
-          </div>
-
-          <plain-draggable class="handle-move-link btn btn-default btn-xs"
+          <plain-draggable class="block-exit-move-handle handle-move-link btn btn-default btn-xs"
                            :class="{
-                               'btn-info': exit.destinationBlock != null,
+                               // 'btn-default': exit.destinationBlock != null,
                            }"
                            :id="`exit/${exit.uuid}/handle`"
                            @dragStarted="onMoveExitDragStarted($event, exit)"
                            @dragged="onMoveExitDragged($event)"
                            @dragEnded="onMoveExitDragEnded($event, exit)">
             <i class="glyphicon glyphicon-move"></i>
-            {{exit.tag}}
           </plain-draggable>
+
+          <div class="block-exit-remove btn btn-danger btn-xs"
+               title="Click to remove this connection"
+               @click="removeConnectionFrom(exit)">
+            <span class="glyphicon glyphicon-remove"></span>
+          </div>
 
           <connection :key="`exit/${exit.uuid}/line`"
                       :positionCacheKey="`_`"
                       :block="block"
                       :exit="exit"
-                      :position="livePosition" />
+                      :position="livePosition"
+                      :color-category="blockClasses[block.type].category" />
         </template>
 
       </div>
@@ -136,6 +137,9 @@
     computed: {
       ...mapState('flow', ['resources']),
       ...mapState('builder', ['activeBlockId', 'operations']),
+      ...mapState({
+        blockClasses: ({trees: {ui}}) => ui.blockClasses,
+      }),
 
       hasLayout() {
         return isNumber(this.x) && isNumber(this.y)
@@ -305,86 +309,92 @@
 
 <style lang="scss">
   .block {
-    background-color: #FFFFFF;
-    /*background-image: -webkit-gradient(linear, left top, left bottom, from(white), to(#E7E7E7));*/
-    /*background-image: linear-gradient(white, #E7E7E7);*/
-
-    border: 1px solid #aaa;
-    border-radius: 0.3em;
-    box-shadow: 0px 3px 6px #CACACA;
-
-    color: #575757;
-    min-width: 122px;
-
     position: absolute;
     left: 0;
     top: 0;
-    /*z-index: 20;*/
+
+    min-width: 122px;
+    padding: 0.4em;
+
+    background-color: white;
+    color: #575757;
+    border: 1px solid #5b5b5b;
+
+    border-radius: 0.3em;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+
 
     .block-label {
-      font-size: 11px;
-      font-weight: bolder;
-      line-height: 12px;
-      margin: 0;
+      font-size: 14px;
+      font-weight: normal;
     }
 
     .block-type {
       font-size: 11px;
+      font-weight: bolder;
+      margin-right: 1em;
       margin-bottom: 0.4em;
     }
 
     .block-target {
-      height: 80px;
+      min-height: 6em;
+      border: 1px dashed transparent;
+      border-bottom: 1px solid #eee;
+      border-radius: 0.3em;
+      padding: 0.1em;
     }
 
-    .block-connection-target {
-      position: absolute;
-      left: 50%;
-      bottom: 100%;
-      width: 2em;
-      height: 2em;
-
-      text-align: center;
-      padding-top: 5px;
-      margin-left: -0.75em;
-
-      border: 1px solid #aaa;
-      background-color: white;
+    .block-target:hover {
+      border-color: #5b5b5b;
     }
 
     .block-exits {
       display: flex;
       white-space: nowrap;
+      position: relative;
+      top: 3em;
+      margin-top: -2em;
 
       .block-exit {
         display: inline-block;
-        flex: auto;
-        min-width: 30px;
-        /*max-width: 140px;*/
+        /*flex: auto;*/
+        min-width: 6em;
+        max-width: 140px;
+        padding-left: 1em;
+        padding-right: 1em;
 
         text-align: center;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
 
-        /*border-left: 1px solid #aaa;*/
-        /*border-top: 1px solid #aaa;*/
+        .block-exit-tag  {
+          display: block;
 
-        &:first-child {
-          border-left: none;
+          margin: 0;
+          margin-bottom: 2em;
+          padding: 0.4em;
+
+          background-color: #5b5b5b;
+          border: none;
+
+          font-weight: normal;
+          font-size: 12px;
         }
 
-        &:hover {
-          background-color: #42B1CA;
-          background-image: -webkit-gradient(linear, left top, left bottom, from(#72c5d7), to(#42B1CA));
-          background-image: linear-gradient(#72c5d7, #42B1CA);
-          color: white;
+        .block-exit-move-handle {
+          margin-right: 0.5em;
+        }
+
+        .block-exit-remove {
+          background-image: none;
         }
       }
     }
 
     &.active {
-      background-color: #fff8dc;
+      border-width: 2px;
+      box-shadow: 0px 3px 6px #CACACA;
     }
   }
 </style>

@@ -86,12 +86,12 @@
 </script>
 
 <style>
-  .draggable-handle {
-    border: 4px dashed transparent;
-    border-radius: 0.5em;
-  }
+  /*.draggable-handle {*/
+  /*  border: 4px dashed transparent;*/
+  /*  border-radius: 0.5em;*/
+  /*}*/
 
-  .draggable-handle:hover {
-    border-color: royalblue;
-  }
+  /*.draggable-handle:hover {*/
+  /*  border-color: royalblue;*/
+  /*}*/
 </style>
