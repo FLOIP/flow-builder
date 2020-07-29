@@ -17,7 +17,7 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async editOutputExpression({commit}, {blockId, value}: {blockId: string; value: string}) {
+  async editOutputExpression({commit}, {blockId, value}: {blockId: string; value: string}): Promise<string> {
     commit('flow/block_updateConfig', {blockId, newConfig: {value}}, {root: true})
     return value
   },
@@ -26,6 +26,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: (new IdGeneratorUuidV4()).generate(),
+          tag: 'Default',
+          label: 'Default',
         }) as IBlockExit,
       }, {root: true}),
     ]

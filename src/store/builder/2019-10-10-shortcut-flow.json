@@ -6,11 +6,15 @@
       "label": "",
       "lastModified": "2019-10-10 23:46:30.000000+00:00",
       "interactionTimeout": 172800,
-      "supportedModes": [],
+      "supportedModes": [
+        "sms",
+        "ivr",
+        "ussd"
+      ],
       "languages": [
         {
-          "id": "22",
-          "name": "enCA",
+          "id": "1",
+          "name": "English",
           "abbreviation": "EN",
           "orgId": "1008107874829627392",
           "rightToLeft": false,

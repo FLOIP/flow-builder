@@ -8,8 +8,8 @@
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
 
-<!--          <flow-editor v-if="!activeBlock"-->
-<!--                       :flow="activeFlow" />-->
+          <flow-editor v-if="!activeBlock"
+                       :flow="activeFlow" />
 
           <div v-if="activeBlock"
                :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
@@ -44,12 +44,12 @@
 </template>
 
 <script>
-  import lang from 'lib/filters/lang'
+  import lang from '@/lib/filters/lang'
   import lodash, {forEach} from 'lodash'
   import Vue from 'vue'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   import {affix as Affix} from 'vue-strap'
-  // import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/SelectOneResponseBlock.vue'
+  // import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
 
   // import * as BlockTypes from './block-types'
   // import JsPlumbBlock from './JsPlumbBlock'
@@ -64,7 +64,7 @@
   // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
   // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
   import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
-
+  import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
   import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
 
   // import '../TreeDiffLogger'
@@ -82,6 +82,7 @@
       // TreeViewer,
       TreeBuilderToolbar,
       BuilderCanvas,
+      FlowEditor,
       // TreeUpdateConflictModal,
     },
 

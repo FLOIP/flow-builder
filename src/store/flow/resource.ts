@@ -6,7 +6,7 @@ import {
   SupportedMode
 } from '@floip/flow-runner'
 import ValidationException from '@floip/flow-runner/src/domain/exceptions/ValidationException'
-import {cloneDeep, defaults, difference, find, first, isEmpty, isEqual, keyBy, map, pick, without} from 'lodash'
+import {cloneDeep, defaults, difference, find, first, findIndex, isEmpty, isEqual, keyBy, map, pick, without} from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '@/store/flow/index'
 import {IRootState} from '@/store'
@@ -19,6 +19,13 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 export const mutations: MutationTree<IFlowsState> = {
   resource_add({resources}, {resource}: {resource: IResourceDefinition}) {
     resources.push(resource)
+  },
+
+  //currently unused - see todo
+  resource_delete({resources}, {resourceId}: {resourceId: string}) {
+    //TODO - we need an action that can clean resources and then call this to actuall remove. We need logic to truly check resources are unused
+    const resourceIndex = findIndex(resources, (resource) => resource.uuid === resourceId)
+    resources.splice(resourceIndex, 1)
   },
 
   resource_createVariant(state, {resourceId, variant}: {resourceId: string, variant: IResourceDefinitionVariantOverModes}) {
@@ -181,18 +188,40 @@ export function findOrGenerateStubbedVariantOn(
   }
 }
 
-export function discoverContentTypesFor(mode: SupportedMode): SupportedContentType[] {
+export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourceDefinition): SupportedContentType[] {
+
   const
       TEXT = SupportedContentType.TEXT,
       AUDIO = SupportedContentType.AUDIO,
       IMAGE = SupportedContentType.IMAGE,
       VIDEO = SupportedContentType.VIDEO
 
-  return { // @note -- contentType order inadvertently determines render order on UI.
+  const defaultModeMappings = { // @note -- contentType order inadvertently determines render order on UI.
     [SupportedMode.IVR]: [AUDIO], // voice
     [SupportedMode.SMS]: [TEXT],
     [SupportedMode.USSD]: [TEXT],
     [SupportedMode.OFFLINE]: [TEXT, IMAGE, VIDEO], // clipboard
     [SupportedMode.RICH_MESSAGING]: [TEXT, IMAGE, VIDEO], // social
-  }[mode]
+  }
+
+  if (!resource || !resource.values.length) {
+    return defaultModeMappings[mode]
+  }
+
+  let contentTypeOverrides: {[key in SupportedMode]?: string[]} = {}
+
+  //TODO - think harder about this - what happens when a mode has a non standard content type - e.g. ivr on a log block
+  //What happens in a future localised resource world on things like LogBlock? Do we need a log resource value for every language?
+  contentTypeOverrides = resource.values.reduce((contentTypeOverrides, value) => {
+    value.modes.reduce((contentTypeOverrides, resourceMode) => {
+      if (!contentTypeOverrides[resourceMode]) {
+        contentTypeOverrides[resourceMode] = []
+      }
+      contentTypeOverrides[resourceMode]!.push(value.contentType)
+      return contentTypeOverrides
+    }, contentTypeOverrides)
+    return contentTypeOverrides
+  }, contentTypeOverrides)
+
+  return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]
 }

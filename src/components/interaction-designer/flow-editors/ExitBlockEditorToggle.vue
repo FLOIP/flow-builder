@@ -15,21 +15,18 @@
 </template>
 
 <script>
-  import lang from 'lib/filters/lang'
   import {mapMutations} from 'vuex'
 
   export default {
     props: {
       flow: Object,
       blockId: String, // toggle for particular block
-
+      
       isEditable: {
         type: Boolean,
         default: true,
       },
     },
-
-    mixins: [lang],
 
     computed: {
       isExitBlock() {
@@ -39,7 +36,7 @@
 
     methods: {
       ...mapMutations('flow', ['flow_setExitBlockId']),
-
+      
       toggleExitBlock() {
         this.flow_setExitBlockId({
           flowId: this.flow.uuid,

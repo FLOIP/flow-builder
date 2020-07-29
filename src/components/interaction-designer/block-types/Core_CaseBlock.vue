@@ -31,7 +31,7 @@
 
   import ICaseBlock from '@floip/flow-runner/src/model/block/ICaseBlock'
   import {IBlockExitTestRequired, IFlow, IBlockExit} from '@floip/flow-runner'
-  import ExpressionEditor from '../../common/ExpressionEditor.vue'
+  import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -46,7 +46,7 @@
   //providing this generic is required by tsserver checking but not in the build run by yarn storybook
   //TODO - understand what is going on here and if there is something more correct we should have instead
   @Component<any>({
-    name: 'CaseBlock',
+    name: 'Core_CaseBlock.vue',
     components: {
       ExpressionEditor,
       BlockNameEditor,
@@ -55,16 +55,16 @@
       FirstBlockEditorButton,
       BlockId,
     },
-    created() {
-      //TODO - better way to do this?
-      if (!this.$store.state.flow[BLOCK_TYPE]) {
-        this.$store.registerModule(['flow', BLOCK_TYPE], CaseStore)
-      }
-    },
   })
-  class CaseBlock extends Vue {
+  class Core_CaseBlock extends Vue {
     @Prop()readonly block!: ICaseBlock
     @Prop()readonly flow!: IFlow
+
+    created() {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
+            this.$store.registerModule(['flow', BLOCK_TYPE], CaseStore)
+        }
+    }
 
     get exits(): IBlockExitTestRequired[] {
       return this.block.exits
@@ -73,5 +73,5 @@
     @blockVuexNamespace.Action editCaseBlockExit!: ({exitId, value}: {exitId: string; value: string}) => Promise<IBlockExit>
   }
 
-  export default CaseBlock
+  export default Core_CaseBlock
 </script>

@@ -28,7 +28,7 @@
 
   import IOutputBlock from '@floip/flow-runner/src/model/block/IOutputBlock'
   import {IFlow} from '@floip/flow-runner'
-  import ExpressionEditor from '../../common/ExpressionEditor.vue'
+  import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -42,7 +42,7 @@
   //providing this generic is required by tsserver checking but not in the build run by yarn storybook
   //TODO - understand what is going on here and if there is something more correct we should have instead
   @Component<any>({
-    name: 'OutputBlock',
+    name: 'Core_OutputBlock.vue',
     components: {
       ExpressionEditor,
       BlockNameEditor,
@@ -51,27 +51,27 @@
       FirstBlockEditorButton,
       BlockId,
     },
-    created() {
-      //TODO - better way to do this?
-      if (!this.$store.state.flow[BLOCK_TYPE]) {
-        this.$store.registerModule(['flow', BLOCK_TYPE], OutputStore)
-      }
-    },
   })
-  class OutputBlock extends Vue {
+  class Core_OutputBlock extends Vue {
     @Prop()readonly block!: IOutputBlock
     @Prop()readonly flow!: IFlow
+
+    created() {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
+            this.$store.registerModule(['flow', BLOCK_TYPE], OutputStore)
+        }
+    }
 
     get value(): string {
       return this.block.config.value || ''
     }
 
-    @blockVuexNamespace.Action editOutputExpression!: (params: {blockId: string; value: string}) => Promise<string>
+    @blockVuexNamespace.Action editOutputExpression!: (params: {blockId: string, value: string}) => Promise<string>
 
     commitExpressionChange(value: string): Promise<string> {
-      this.editOutputExpression({blockId: this.block.uuid, value})
+      return this.editOutputExpression({blockId: this.block.uuid, value})
     }
   }
 
-  export default OutputBlock
+  export default Core_OutputBlock
 </script>

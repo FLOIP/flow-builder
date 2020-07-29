@@ -40,8 +40,8 @@
 </template>
 
 <script>
-  import lang from 'lib/filters/lang'
-	import momentFilters from 'lib/filters/moment'
+  import lang from '@/lib/filters/lang'
+	import momentFilters from '@/lib/filters/moment'
   // import VueAudio from 'vue-audio'
   import Icon from 'vue-awesome/components/Icon'
   import {dropdown as Dropdown} from 'vue-strap'

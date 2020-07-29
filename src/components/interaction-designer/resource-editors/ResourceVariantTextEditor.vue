@@ -87,7 +87,7 @@
 </template>
 
 <script>
-  import lang from 'lib/filters/lang'
+  import lang from '@/lib/filters/lang'
   import {parse as floipExpressionParser} from '@floip/expression-parser'
   import {isObject, some} from 'lodash'
   import VueFocus from 'vue-focus'

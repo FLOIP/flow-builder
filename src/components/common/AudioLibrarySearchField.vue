@@ -74,7 +74,7 @@
 	import fuse from 'fuse.js'
 	import lodash from 'lodash'
 	import VueFocus from 'vue-focus'
-  import lang from 'lib/filters/lang'
+  import lang from '@/lib/filters/lang'
 
 	export default {
 		props: ['langId', 'audioFiles'],

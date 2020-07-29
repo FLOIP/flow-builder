@@ -6,13 +6,12 @@
 
 <script lang="ts">
   //TODO - is block editors the right place for this?
-  import lang from '@/lib/filters/lang'
   import Vue from 'vue'
   import {IBlock} from '@floip/flow-runner'
   import {Component, Prop} from 'vue-property-decorator'
 
   @Component<any>({
-    mixins: [lang],
+    name: 'BlockId',
   })
   class BlockId extends Vue {
     @Prop()readonly block!: IBlock
@@ -21,6 +20,6 @@
       return this.block.uuid || ''
     }
   }
-
+  
   export default BlockId
 </script>

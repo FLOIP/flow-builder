@@ -114,7 +114,7 @@
 <script>
   import {isNumber} from 'lodash'
   import {mapActions, mapMutations, mapState} from 'vuex'
-  import PlainDraggable from '../common/PlainDraggable.vue'
+  import PlainDraggable from '@/components/common/PlainDraggable.vue'
   import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
   import {OperationKind} from '@/store/builder'
   import Connection from '@/components/interaction-designer/Connection.vue'

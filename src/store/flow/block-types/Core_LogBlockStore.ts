@@ -2,7 +2,6 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {
   SupportedContentType,
-  SupportedMode,
   IBlockExit,
 } from '@floip/flow-runner'
 import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
@@ -19,33 +18,14 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async createWith({rootGetters, commit, dispatch}, {props}: {props: {uuid: string} & Partial<ILogBlock>}) {
-    //TODO - figure out of there should only be one value here at first? How would the resource editor change this?
-    //TODO - is this right for setup of languages?
-    const values = rootGetters['flow/activeFlow'].languages.reduce((memo: object[], language: {id: string, name: string}) => {
-      Object.values(SupportedMode).forEach((mode: string) => {
-        memo.push({
-          languageId: language.id,
-          value: '',
-          contentType: SupportedContentType.TEXT,
-          modes: [
-            mode
-          ],
-        })
-      })
-      return memo
-    }, [])
-    const blankLogResource = await dispatch('flow/resource_createWith', {
-      props: {
-        uuid: (new IdGeneratorUuidV4()).generate(),
-        values: values,
-      },
-    }, {root: true})
-    commit('flow/resource_add', {resource: blankLogResource}, {root: true})
+    const blankLogResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
 
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: (new IdGeneratorUuidV4()).generate(),
+          tag: 'Default',
+          label: 'Default',
         }) as IBlockExit,
       }, {root: true}),
     ]
