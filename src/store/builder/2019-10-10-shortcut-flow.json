@@ -353,7 +353,7 @@
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '2'), AND(channel.mode != 'ivr', OR(block.value = '2', LOWER(block.value) = 'no'))))"
             }
           ],
-          "type": "MobilePrimitives\\SelectOneResponse"
+          "type": "MobilePrimitives\\SelectManyResponses"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb933994fe",
