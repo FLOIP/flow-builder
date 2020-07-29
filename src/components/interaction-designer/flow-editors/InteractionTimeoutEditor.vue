@@ -29,7 +29,7 @@
     @Prop() readonly flow!: IFlow
 
     get interactionTimeout(): number {
-      return this.flow.interactionTimeout
+      return this.flow.interactionTimeout || ''
     }
 
     set interactionTimeout(value: number) {
