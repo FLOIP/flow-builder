@@ -33,25 +33,8 @@
     @Prop({default: true}) readonly isEditable!: boolean
     @Prop() readonly flow!: IFlow
 
-    private availableLanguages: ILanguage[] =  [
-      {
-        id: '1',
-        name: "English",
-        abbreviation: "EN",
-        orgId:"",
-        rightToLeft:true,
-      },
-      {
-        id: '2',
-        name: "French",
-        abbreviation: "FR",
-        orgId:"",
-        rightToLeft:true,
-      }
-    ]
-
     get languages(): ILanguage[] {
-      return this.availableLanguages // TODO: get from valid source (eg: store) once merged in flow-builder
+      return this.$store.state.trees.ui.languages
     }
 
     get flowSelectedLanguages(): ILanguage[] {
