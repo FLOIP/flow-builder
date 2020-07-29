@@ -22,6 +22,14 @@
                                         :is-editable="true || isEditable"
                                         :enable-autogen-button="true || enableAutogenButton" />
 
+          <!-- <div v-if="tree.details.hasVoice" class="block-content-editor-audio col-md-4">-->
+                <!--:selectedAudioFile="block.audioFiles[langId]"-->
+            <audio-library-selector
+                :audioFiles="availableAudio"
+                :langId="languageId"
+                @select="selectAudioFileFor"
+                @clear="selectAudioFileFor" />
+          <!-- </div> -->
         </template>
       </template>
     </template>
@@ -29,12 +37,26 @@
 </template>
 
 <script lang="ts">
+  import {
+    Getter,
+  } from 'vuex-class'
   import {IFlow, IResourceDefinition} from '@floip/flow-runner'
   import lang from '@/lib/filters/lang'
   import {Component} from 'vue-property-decorator'
   import Vue from 'vue'
   import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
   import {discoverContentTypesFor, findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
+  import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
+
+  interface IAudioFile {
+    id: string,
+    filename: string, 
+    description: string, 
+    language_id: string, 
+    duration_seconds: string, 
+    original_extension: string,
+    created_at: string
+  }
 
   @Component({
     props: {
@@ -52,12 +74,28 @@
     mixins: [lang],
 
     components: {
+      AudioLibrarySelector,
       ResourceVariantTextEditor,
     },
   })
   export class ResourceEditor extends Vue {
     discoverContentTypesFor = discoverContentTypesFor
     findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
+
+			//selectAudioFileFor({langId, value}) {
+				//const {jsKey} = this.block
+				//this.$store.commit('updateAudioFileFor', {jsKey, langId, value})
+				//this.$store.commit('updateReviewedStateFor', {jsKey, langId, value: false})
+				//this.debouncedSaveTree();
+			//},
+
+			//toggleReviewedStateFor(langId) {
+				//const previousVal = !!lodash.get(this.block.customData.reviewed, langId, false)
+				//this.$store.commit('updateReviewedStateFor', {jsKey: this.block.jsKey, langId, value: !previousVal})
+				//this.debouncedSaveTree()
+			//}
+
+    @Getter availableAudio!: IAudioFile[] 
   }
 
   export default ResourceEditor

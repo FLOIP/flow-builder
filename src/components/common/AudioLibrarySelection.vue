@@ -12,7 +12,7 @@
 
     <div class="btn-group audio-library-selection-download-dropdown">
       <button type="button" class="btn btn-flat dropdown-toggle" data-toggle="dropdown">
-        <icon  name="download" />
+        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
         <span class="caret"></span>
       </button>
 
@@ -42,19 +42,14 @@
 <script>
   import lang from '@/lib/filters/lang'
 	import momentFilters from '@/lib/filters/moment'
-  // import VueAudio from 'vue-audio'
-  import Icon from 'vue-awesome/components/Icon'
   import {dropdown as Dropdown} from 'vue-strap'
-  import 'vue-awesome/icons/download'
 
 
   export default {
 		props: ['audioFile', 'selected', 'selectable'],
 
 		mixins: [lang, momentFilters],
-		components: {Dropdown, Icon,
-      // VueAudio
-    },
+		components: {Dropdown},
 
 		computed: {
 			audioFileUrl() {
