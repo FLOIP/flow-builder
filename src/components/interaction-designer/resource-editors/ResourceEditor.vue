@@ -6,7 +6,7 @@
       </div>
 
       <template v-for="mode in flow.supportedModes">
-        <h5>{{`trees.${mode}-content` | trans}}</h5>
+        <h5>{{`flow-builder.${mode}-content` | trans}}</h5>
 
         <!-- TODO - Is passing around resouce the right way to do overrides? Is it even necessary? See comments in discoverContentTypesFor function -->
         <template v-for="contentType in discoverContentTypesFor(mode, resource)">

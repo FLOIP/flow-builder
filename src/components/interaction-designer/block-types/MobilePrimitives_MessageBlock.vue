@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.message-block' | trans}}
+      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <block-name-editor :block="block" />
@@ -38,6 +38,7 @@
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import BlockId from '../block-editors/BlockId.vue'
   import MessageStore, {BLOCK_TYPE} from "@/store/flow/block-types/MobilePrimitives_MessageBlockStore";
+  import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
 
@@ -50,6 +51,7 @@
       FirstBlockEditorButton,
       BlockId,
     },
+    mixins: [lang],
   })
   class MobilePrimitives_MessageBlock extends Vue {
     @Prop()readonly block!: IMessageBlock

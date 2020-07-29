@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h3 class="no-room-above">{{'flow-builder.select-one-response-block' | trans}}</h3>
+    <h3 class="no-room-above">
+      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
+    </h3>
 
     <block-name-editor :block="block" />
     <block-label-editor :block="block" />
@@ -56,6 +58,7 @@
   import BlockId from '../block-editors/BlockId.vue'
 
   import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+  import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -69,6 +72,7 @@
       ResourceEditor,
       BlockId,
     },
+    mixins: [lang],
   })
   export class MobilePrimitives_SelectOneResponseBlock extends Vue {
     @Prop()readonly block!: ISelectOneResponseBlock

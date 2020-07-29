@@ -11,11 +11,13 @@
 <script>
   import FloatEditor from '@/components/common/FloatEditor'
   import {get} from 'lodash'
+  import lang from '@/lib/filters/lang'
 
   export default {
     components: {
       FloatEditor,
     },
+    mixins: [lang],
     props: {
       isEditable: {
         default: true,

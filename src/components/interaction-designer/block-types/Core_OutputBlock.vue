@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.edit-output-block' | trans}}
+      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <block-name-editor :block="block" />
@@ -36,6 +36,7 @@
   import BlockId from '../block-editors/BlockId.vue'
 
   import OutputStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
+  import lang from '@/lib/filters/lang'
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -51,6 +52,7 @@
       FirstBlockEditorButton,
       BlockId,
     },
+    mixins: [lang],
   })
   class Core_OutputBlock extends Vue {
     @Prop()readonly block!: IOutputBlock

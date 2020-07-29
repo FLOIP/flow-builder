@@ -5,7 +5,7 @@
               v-focus="isSelected"
               @focus="select"
               @blur="deselect"
-              :placeholder="`trees.enter-${resourceVariant.contentType}-content` | trans"
+              :placeholder="`flow-builder.enter-${resourceVariant.contentType}-content` | trans"
               class="form-control"></textarea>
 
       <button @click="select"

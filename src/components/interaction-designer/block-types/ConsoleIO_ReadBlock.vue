@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.read-block' | trans}}
+      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <block-name-editor :block="block" />
@@ -45,7 +45,7 @@
 
   import ReadStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
   import {IFlowsState} from '@/store/flow'
-
+  import lang from '@/lib/filters/lang'
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
   @Component<any>({
@@ -59,6 +59,7 @@
       TextEditor,
       BlockId,
     },
+    mixins: [lang],
   })
   class ConsoleIO_ReadBlock extends Vue {
     @Prop()readonly block!: IReadBlock

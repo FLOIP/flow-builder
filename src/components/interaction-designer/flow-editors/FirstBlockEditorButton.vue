@@ -21,12 +21,14 @@
 
 <script>
   import {mapMutations} from 'vuex'
+  import lang from '@/lib/filters/lang'
 
   export default {
+    mixins: [lang],
     props: {
       flow: Object,
       blockId: String, // set for particular block
-      
+
       isEditable: {
         type: Boolean,
         default: true,

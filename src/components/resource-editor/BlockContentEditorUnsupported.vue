@@ -23,7 +23,7 @@
         :title="'Block ID - ' + block.jsKey">
       <span v-if="block.customData.label">{{block.customData.label}} - </span>
       {{block.customData.title || $options.filters.trans('flow-builder.untitled-block')}}
-      <small>{{`trees.${block.type}` | trans}}</small>
+      <small>{{`flow-builder.${block.type}` | trans}}</small>
     </h4>
   </div>
 </template>
