@@ -1,5 +1,12 @@
 {
   "en.flow-builder": {
+    "flow-name":  "Flow name",
+    "flow-label": "Flow label",
+    "Interaction-timeout":  "Interaction timeout",
+    "modes": "Modes",
+    "enter-flow-name": "Enter flow name",
+    "enter-flow-label":"Enter flow label",
+    "maximum-digits": "Maximum digits",
     "AirtimeTransferBlock": "Transfer Airtime",
     "BillSubscriberBlock": "Bill Contact",
     "CallBackWithCallCenterBlock": "Call Back With Call Center Block",
@@ -1518,6 +1525,13 @@
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
   },
   "fr.flow-builder": {
+    "flow-name":  "Nom du flux",
+    "flow-label": "Libélé du flux",
+    "Interaction-timeout":  "délai d'interaction",
+    "modes": "Modes",
+    "enter-flow-name": "Entrez le nom de flux",
+    "enter-flow-label":"Entrez l'étiquette de flux",
+    "maximum-digits": "Nombre maximum",
     "AirtimeTransferBlock": "temps d'antenne de transfert",
     "BillSubscriberBlock": "Bill Contactez",
     "CallBackWithCallCenterBlock": "Téléphonique avec le centre d'appels Bloc",
