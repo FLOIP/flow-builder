@@ -8,10 +8,13 @@
     <block-label-editor :block="block" />
     <block-semantic-label-editor :block="block" />
 
-    <expression-editor :label="'flow-builder.output-expression' | trans"
-        :placeholder="'flow-builder.edit-expression' | trans"
-        :current-expression="value"
-        @commitExpressionChange="commitExpressionChange"/>
+    <div v-for="(exit,i) in exits" class="form-group form-inline">
+      <expression-editor :label="i+1"
+          :placeholder="'flow-builder.edit-expression' | trans"
+          :current-expression="exit.test"
+          :expression-identifier="exit.uuid"
+          @commitExpressionChange="editCaseBlockExit"/>
+    </div>
 
     <first-block-editor-button
         :flow="flow"
@@ -26,23 +29,24 @@
   import {namespace} from 'vuex-class'
   import {Component, Prop} from 'vue-property-decorator'
 
-  import IOutputBlock from '@floip/flow-runner/src/model/block/IOutputBlock'
-  import {IFlow} from '@floip/flow-runner'
-  import ExpressionEditor from '../../common/ExpressionEditor.vue'
+  import ICaseBlock from '@floip/flow-runner/src/model/block/ICaseBlock'
+  import {IBlockExitTestRequired, IFlow, IBlockExit} from '@floip/flow-runner'
+  import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
+
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import BlockId from '../block-editors/BlockId.vue'
 
-  import OutputStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
+  import CaseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
   //providing this generic is required by tsserver checking but not in the build run by yarn storybook
   //TODO - understand what is going on here and if there is something more correct we should have instead
   @Component<any>({
-    name: 'OutputBlock',
+    name: 'Core_CaseBlock.vue',
     components: {
       ExpressionEditor,
       BlockNameEditor,
@@ -51,27 +55,23 @@
       FirstBlockEditorButton,
       BlockId,
     },
-    created() {
-      //TODO - better way to do this?
-      if (!this.$store.state.flow[BLOCK_TYPE]) {
-        this.$store.registerModule(['flow', BLOCK_TYPE], OutputStore)
-      }
-    },
   })
-  class OutputBlock extends Vue {
-    @Prop()readonly block!: IOutputBlock
+  class Core_CaseBlock extends Vue {
+    @Prop()readonly block!: ICaseBlock
     @Prop()readonly flow!: IFlow
 
-    get value(): string {
-      return this.block.config.value || ''
+    created() {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
+            this.$store.registerModule(['flow', BLOCK_TYPE], CaseStore)
+        }
     }
 
-    @blockVuexNamespace.Action editOutputExpression!: (params: {blockId: string; value: string}) => Promise<string>
-
-    commitExpressionChange(value: string): Promise<string> {
-      this.editOutputExpression({blockId: this.block.uuid, value})
+    get exits(): IBlockExitTestRequired[] {
+      return this.block.exits
     }
+
+    @blockVuexNamespace.Action editCaseBlockExit!: ({exitId, value}: {exitId: string; value: string}) => Promise<IBlockExit>
   }
 
-  export default OutputBlock
+  export default Core_CaseBlock
 </script>

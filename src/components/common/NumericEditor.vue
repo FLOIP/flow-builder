@@ -1,12 +1,17 @@
 <template>
-  <div class="form-group">
+  <div class="number-editor">
     <label>{{label}}</label>
-    <textarea v-if="isEditable"
-        class="form-control"
-        :placeholder="placeholder"
-        :value="value"
-        @keydown="$emit('keydown', $event)"
-        @input="$emit('input', $event.target.value)"/>
+    <div v-if="isEditable">
+      <input
+          type="number"
+          min="0"
+          class="form-control"
+          :placeholder="placeholder"
+          :value="value"
+          @keydown="$emit('keydown', $event)"
+          @input="$emit('input', $event.target.value)"
+      />
+    </div>
 
     <p v-else>
       {{value}}
@@ -28,10 +33,10 @@
       },
       placeholder: {
         type: String,
-        required: true,
+        default: "",
       },
       value: {
-        type: String,
+        type: [String, Number],
         required: true,
       },
     },

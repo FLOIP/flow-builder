@@ -1,14 +1,13 @@
 <template>
   <div>
-    <text-editor v-model="label"
+    <text-editor v-model="formatString"
         :is-editable="isEditable"
-        :label="'flow-builder.block-label' | trans"
-        :placeholder="'flow-builder.enter-block-label' | trans"/>
+        :label="'flow-builder.format-string' | trans"
+        :placeholder="'flow-builder.enter-format-string' | trans"/>
   </div>
 </template>
 
 <script>
-  import {mapMutations} from 'vuex'
   import TextEditor from '@/components/common/TextEditor'
 
   export default {
@@ -27,17 +26,14 @@
       },
     },
     computed: {
-      label: {
+      formatString: {
         get() {
-          return this.block.label
+          return this.block.config.format_string
         },
         set(value) {
-          this.block_setLabel({blockId: this.block.uuid, value})
+          this.$emit('commitFormatStringChange', value)
         },
       },
-    },
-    methods: {
-      ...mapMutations('flow', ['block_setLabel']),
     },
   }
 </script>

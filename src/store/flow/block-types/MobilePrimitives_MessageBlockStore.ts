@@ -1,27 +1,26 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {
+  SupportedContentType,
+  SupportedMode,
   IBlockExit,
 } from '@floip/flow-runner'
 import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import IOutputBlock from '@floip/flow-runner/src/model/block/IOutputBlock'
+import IMessageBlock from '@floip/flow-runner/src/model/block/IMessageBlock'
 import {defaults} from 'lodash'
 import {IFlowsState} from '../index'
 
-export const BLOCK_TYPE = 'Core\\Output'
+export const BLOCK_TYPE = 'MobilePrimitives\\Message'
 
-export const getters: GetterTree<IFlowsState, IRootState> = {
-}
+export const getters: GetterTree<IFlowsState, IRootState> = {}
 
 export const mutations: MutationTree<IFlowsState> = {
 }
-
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async editOutputExpression({commit}, {blockId, value}: {blockId: string; value: string}): Promise<string> {
-    commit('flow/block_updateConfig', {blockId, newConfig: {value}}, {root: true})
-    return value
-  },
-  async createWith({dispatch}, {props}: {props: {uuid: string} & Partial<IOutputBlock>}) {
+
+  async createWith({rootGetters, commit, dispatch}, {props}: {props: {uuid: string} & Partial<IMessageBlock>}) {
+    const blankMessageResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
+
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
@@ -37,10 +36,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       name: '',
       label: '',
       semanticLabel: '',
-      config: {
-        value: '',
-      },
       exits,
+      config: {
+        prompt: blankMessageResource.uuid,
+        messageAudio: '' // TODO: remove this once flow-runner doesn't require it anymore
+      },
     })
   },
 

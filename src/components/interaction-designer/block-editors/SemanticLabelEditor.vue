@@ -8,9 +8,8 @@
 </template>
 
 <script>
-  import lang from 'lib/filters/lang'
   import {mapMutations} from 'vuex'
-  import TextEditor from '../../common/TextEditor'
+  import TextEditor from '@/components/common/TextEditor'
 
   export default {
     name: 'SemanticLabelEditor',
@@ -27,7 +26,6 @@
         required: true,
       },
     },
-    mixins: [lang],
     computed: {
       semanticLabel: {
         get() {

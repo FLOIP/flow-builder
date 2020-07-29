@@ -15,9 +15,65 @@
       {"id": "2", "name": "Spanish", "abbreviation": "ES"}
     ],
     "blockClasses": {
+      "ConsoleIO\\Print": {
+        "name": "ConsoleIO\\Print",
+        "type": "ConsoleIO\\Print",
+        "is_interactive": false
+      },
+      "ConsoleIO\\Read": {
+        "name": "ConsoleIO\\Read",
+        "type": "ConsoleIO\\Read",
+        "is_interactive": true
+      },
+      "Core\\Case": {
+        "name": "Core\\Case",
+        "type": "Core\\Case",
+        "is_interactive": false
+      },
+      "Core\\Log": {
+        "name": "Core\\Log",
+        "type": "Core\\Log",
+        "is_interactive": false
+      },
+      "Core\\Output": {
+        "name": "Core\\Output",
+        "type": "Core\\Output",
+        "is_interactive": false
+      },
+      "Core\\RunFlow": {
+        "name": "Core\\RunFlow",
+        "type": "Core\\RunFlow",
+        "is_interactive": false
+      },
+      "MobilePrimitives\\Message": {
+        "name": "MobilePrimitives\\Message",
+        "type": "MobilePrimitives\\Message",
+        "is_interactive": true
+      },
+      "MobilePrimitives\\NumericResponse": {
+        "name": "MobilePrimitives\\NumericResponse",
+        "type": "MobilePrimitives\\NumericResponse",
+        "is_interactive": true
+      },
+      "MobilePrimitives\\OpenResponse": {
+        "name": "MobilePrimitives\\OpenResponse",
+        "type": "MobilePrimitives\\OpenResponse",
+        "is_interactive": true
+      },
       "MobilePrimitives\\SelectOneResponse": {
-        "name": "Select One Response",
-        "type": "MobilePrimitives\\SelectOneResponse"
+        "name": "MobilePrimitives\\SelectOneResponse",
+        "type": "MobilePrimitives\\SelectOneResponse",
+        "is_interactive": true
+      },
+      "SmartDevices\\LocationResponse": {
+        "name": "SmartDevices\\LocationResponse",
+        "type": "SmartDevices\\LocationResponse",
+        "is_interactive": true
+      },
+      "SmartDevices\\PhotoResponse": {
+        "name": "SmartDevices\\PhotoResponse",
+        "type": "SmartDevices\\PhotoResponse",
+        "is_interactive": true
       }
     },
     "blockTags": [],

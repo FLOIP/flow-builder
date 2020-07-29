@@ -37,11 +37,12 @@
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import BlockId from '../block-editors/BlockId.vue'
+  import LogStore, {BLOCK_TYPE} from "@/store/flow/block-types/Core_LogBlockStore";
 
   const flowVuexNamespace = namespace('flow')
 
   @Component<any>({
-    name: 'LogBlock',
+    name: 'Core_LogBlock.vue',
     components: {
       ResourceEditor,
       BlockNameEditor,
@@ -51,16 +52,21 @@
       BlockId,
     },
   })
-  class LogBlock extends Vue {
+  class Core_LogBlock extends Vue {
     @Prop()readonly block!: ILogBlock
     @Prop()readonly flow!: IFlow
 
+    created() {
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
+            this.$store.registerModule(['flow', BLOCK_TYPE], LogStore)
+        }
+    }
     get promptResource(): IResourceDefinition {
       return this.resourcesByUuid[this.block.config.message]
     }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
   }
-  
-  export default LogBlock
+
+  export default Core_LogBlock
 </script>

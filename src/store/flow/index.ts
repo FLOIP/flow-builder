@@ -31,7 +31,6 @@ export interface IFlowsState {
 export const stateFactory = (): IFlowsState => ({
   flows: [],
   resources: [],
-  // mode: null, ?? We're going to need to hard-code a mode to lookup resources on
 
   firstFlowId: null,
   nestedFlowBlockInteractionIdStack: [], // todo: not quite right -- pulled from IContext

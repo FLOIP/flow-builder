@@ -1,0 +1,41 @@
+<template>
+  <div class="form-group flow-name">
+    <text-editor v-model="label"
+        :is-editable="isEditable"
+        :label="'flow-builder.flow-label' | trans"
+        :placeholder="'flow-builder.enter-flow-label' | trans">
+    </text-editor>
+  </div>
+</template>
+
+<script lang="ts">
+  import Vue from 'vue'
+  import TextEditor from '@/components/common/TextEditor'
+  import {Component, Prop} from 'vue-property-decorator'
+  import {IFlow} from '@floip/flow-runner'
+  import {namespace} from 'vuex-class'
+  const flowVuexNamespace = namespace('flow')
+  @Component<any>(
+    {
+      components: {
+        TextEditor,
+      },
+    }
+  )
+  class FlowLabelEditor extends Vue {
+    @Prop({default: true}) readonly isEditable!: boolean
+    @Prop() readonly flow!: IFlow
+
+    get label(): string {
+      return this.flow.label || ""
+    }
+
+    set label(value: string) {
+      this.flow_setLabel({flowId:this.flow.uuid, value})
+    }
+
+    @flowVuexNamespace.Mutation flow_setLabel
+  }
+
+  export default FlowLabelEditor
+</script>
