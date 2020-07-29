@@ -39,7 +39,9 @@
               "yes": "29841127-3247-461e-829a-89c000000000",
               "no": "29841127-3247-461e-829a-94d800000000"
             },
-            "prompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc"
+            "prompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
+            "questionPrompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
+            "choicesPrompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc"
           },
           "platform_metadata": {
             "io_viamo": {
@@ -287,7 +289,9 @@
               "yes": "29841127-3247-461e-829c-9fe800000000",
               "no": "29841127-3247-461e-829c-ab6800000000"
             },
-            "prompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75"
+            "prompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
+            "questionPrompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
+            "choicesPrompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75"
           },
           "platform_metadata": {
             "io_viamo": {
