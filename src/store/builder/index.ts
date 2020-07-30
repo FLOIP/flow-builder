@@ -244,14 +244,44 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     commit('setOperation', {operation})
   },
 
-  async importFlowsAndResources({dispatch, commit, state, rootState}, {flows, resources}) {
+  /**
+   * Import from an API response with schema
+   * [
+   *  { uuid: 'xxxx', name: 'flow1', ..., resources: [ (...flow1 resources) ]},
+   *  { uuid: 'yyyy', name: 'flow2', ..., resources: [ (...flow1 resources) ]}
+   * ]
+   * Transform the schema into an IFlowsState schema
+   * [
+   *  flows: [
+   *    { uuid: 'xxxx', name: 'flow1', ...},
+   *    { uuid: 'yyyy', name: 'flow2', ...}]
+   *  ],
+   *  resources: [(...flow1 resources), (...flow1 resources)],
+   *  firstFlowId: 'xxxx'
+   * ]
+   * @param dispatch
+   * @param commit
+   * @param state
+   * @param rootState
+   * @param flows
+   */
+  async importFlowsAndResources({dispatch, commit, state, rootState}, flows) {
     console.debug('importing flow...')
-
+    console.log(flows)
     const {flow: flowState} = rootState
-
-    flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flows)
+    let flowList = []
+    let resourcesList = []
+    for(let key in flows) {
+      const item = flows[key]
+      const currentResources = item.resources
+      const currentFlow = {...item}
+      delete currentFlow.resources
+      flowList.push(currentFlow)
+      resourcesList.push(...currentResources)
+    }
+    flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flowList)
     flowState.firstFlowId = flows[0].uuid
-    flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resources)
+    flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resourcesList)
   },
 
   async loadFlow({dispatch, commit, state}) {

@@ -197,6 +197,7 @@
   import {affix as Affix} from 'vue-strap'
   // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
   // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
+  import convertKeysToCamelCase from '@floip/flow-runner/src/flow-spec/DataObjectPopertyNameCamelCaseConverter'
 
   export default {
     components: {
@@ -248,8 +249,10 @@
         },
 
         set(value) {
-          console.log(value)
-          this.importFlowsAndResources(JSON.parse(value))
+          this.importFlowsAndResources(convertKeysToCamelCase(
+            JSON.parse(value),
+            ['platform_metadata', 'io_viamo']
+          ))
         }
       },
 
