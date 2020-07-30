@@ -1,5 +1,6 @@
 <template>
   <div class="resource-editor">
+    <label v-if="label">{{label}}</label>
     <template v-for="{id: languageId, name: language} in flow.languages">
       <div class="block-content-editor-lang">
         <h4>{{language || 'flow-builder.unknown-language' | trans}}</h4>
@@ -38,15 +39,17 @@
 
   @Component({
     props: {
-      flow: {
-        type: Object as () => IFlow,
-        default: null,
-      },
-
-      resource: {
-        type: Object as () => IResourceDefinition,
-        default: null,
-      }
+        flow: {
+            type: Object as () => IFlow,
+            default: null,
+        },
+        label: {
+            type: [String, Number],
+        },
+        resource: {
+            type: Object as () => IResourceDefinition,
+            default: null,
+        }
     },
 
     mixins: [lang],
