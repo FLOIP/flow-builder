@@ -33,7 +33,7 @@
       },
       placeholder: {
         type: String,
-        default: "",
+        default: '',
       },
       value: {
         type: [String, Number],

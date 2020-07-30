@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.numeric-response-block' | trans}}
+      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <block-name-editor :block="block" />
@@ -47,6 +47,7 @@
   import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
 
   import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
+  import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -63,6 +64,7 @@
       BlockMaximumNumericEditor,
       BlockMaxDigitEditor,
     },
+    mixins: [lang],
   })
   class MobilePrimitives_NumericResponseBlock extends Vue {
     @Prop()readonly block!: INumericResponseBlock

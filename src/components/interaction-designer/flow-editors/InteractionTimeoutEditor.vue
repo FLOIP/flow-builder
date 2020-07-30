@@ -14,19 +14,22 @@
   import {IFlow} from '@floip/flow-runner'
   import NumericEditor from '@/components/common/NumericEditor'
   import {namespace} from 'vuex-class'
+  import lang from '@/lib/filters/lang'
+
   const flowVuexNamespace = namespace('flow')
 
   @Component<any>({
     components: {
       NumericEditor,
     },
+    mixins: [lang],
   })
   class InteractionTimeoutEditor extends Vue {
     @Prop({default: true}) readonly isEditable!: boolean
     @Prop() readonly flow!: IFlow
 
     get interactionTimeout(): number {
-      return this.flow.interactionTimeout
+      return this.flow.interactionTimeout || ''
     }
 
     set interactionTimeout(value: number) {

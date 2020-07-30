@@ -1,12 +1,13 @@
 <template>
   <div class="resource-editor">
+    <label v-if="label">{{label}}</label>
     <template v-for="{id: languageId, name: language} in flow.languages">
       <div class="block-content-editor-lang">
-        <h4>{{language || 'trees.unknown-language' | trans}}</h4>
+        <h4>{{language || 'flow-builder.unknown-language' | trans}}</h4>
       </div>
 
       <template v-for="mode in flow.supportedModes">
-        <h5>{{`trees.${mode}-content` | trans}}</h5>
+        <h5>{{`flow-builder.${mode}-content` | trans}}</h5>
 
         <!-- TODO - Is passing around resouce the right way to do overrides? Is it even necessary? See comments in discoverContentTypesFor function -->
         <template v-for="contentType in discoverContentTypesFor(mode, resource)">
@@ -60,15 +61,17 @@
 
   @Component({
     props: {
-      flow: {
-        type: Object as () => IFlow,
-        default: null,
-      },
-
-      resource: {
-        type: Object as () => IResourceDefinition,
-        default: null,
-      }
+        flow: {
+            type: Object as () => IFlow,
+            default: null,
+        },
+        label: {
+            type: [String, Number],
+        },
+        resource: {
+            type: Object as () => IResourceDefinition,
+            default: null,
+        }
     },
 
     mixins: [lang],

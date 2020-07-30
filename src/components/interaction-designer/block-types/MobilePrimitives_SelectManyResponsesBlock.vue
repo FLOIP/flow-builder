@@ -40,15 +40,10 @@
 </template>
 
 <script lang="ts">
-  import {IBlock, IFlow} from '@floip/flow-runner'
-  import ISelectOneResponseBlock from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
+  import {Component} from 'vue-property-decorator'
   import {
     IResourceDefinition,
   } from '@floip/flow-runner/src/domain/IResourceResolver'
-  import Vue from 'vue'
-  import {namespace} from 'vuex-class'
-  import {Component, Prop, Watch} from 'vue-property-decorator'
-
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -57,10 +52,13 @@
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockId from '../block-editors/BlockId.vue'
 
-  import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+  import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
+
+  import SelectManyResponsesStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponsesBlockStore'
+
+  import {namespace} from 'vuex-class'
   import lang from '@/lib/filters/lang'
 
-  const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
   @Component<any>({
@@ -74,39 +72,16 @@
     },
     mixins: [lang],
   })
-  export class MobilePrimitives_SelectOneResponseBlock extends Vue {
-    @Prop()readonly block!: ISelectOneResponseBlock
-    @Prop()readonly flow!: IFlow
-
+  export class MobilePrimitives_SelectManyResponsesBlock extends SelectOneResponseBlock {
     beforeCreate() {
-      if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-        this.$store.registerModule(['flow', BLOCK_TYPE], SelectOneStore)
-      }
+        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
+            this.$store.registerModule(['flow', BLOCK_TYPE], SelectManyResponsesStore)
+        }
     }
 
-    get promptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.prompt]
-    }
-    get questionPromptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.questionPrompt || ""]
-    }
-    get choicesPromptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.choicesPrompt || ""]
-    }
-
-    @Watch('inflatedChoices', {deep: true})
-    onChoicesChanged(newChoices: object) {
-      this.editSelectOneResponseBlockChoice()
-    }
-
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
     @blockVuexNamespace.Getter inflatedChoices!: {[key: string]: IResourceDefinition}
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
   }
 
-  export default MobilePrimitives_SelectOneResponseBlock
+  export default MobilePrimitives_SelectManyResponsesBlock
 </script>
-
-<style>
-
-</style>

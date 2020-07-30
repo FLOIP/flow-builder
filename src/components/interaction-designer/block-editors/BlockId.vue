@@ -9,9 +9,11 @@
   import Vue from 'vue'
   import {IBlock} from '@floip/flow-runner'
   import {Component, Prop} from 'vue-property-decorator'
+  import lang from '@/lib/filters/lang'
 
   @Component<any>({
     name: 'BlockId',
+    mixins: [lang],
   })
   class BlockId extends Vue {
     @Prop()readonly block!: IBlock
@@ -20,6 +22,6 @@
       return this.block.uuid || ''
     }
   }
-  
+
   export default BlockId
 </script>
