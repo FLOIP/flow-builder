@@ -1,7 +1,7 @@
 import {flatMap, isEqual, keyBy, mapValues} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {IRootState} from "@/store"
-import {IBlock, ValidationException} from "@floip/flow-runner"
+import {IBlock, SupportedMode, ValidationException} from "@floip/flow-runner"
 import {IDeepBlockExitIdWithinFlow} from "@/store/flow/block"
 
 
@@ -271,17 +271,28 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     const {flow: flowState} = rootState
     let flowList = []
     let resourcesList = []
+    const defaultSupportedMode = [
+      SupportedMode.IVR,
+      SupportedMode.SMS,
+      SupportedMode.USSD,
+    ]
     for(let key in flows) {
       const item = flows[key]
       const currentResources = item.resources
       const currentFlow = {...item}
       delete currentFlow.resources
+      if (!currentFlow.hasOwnProperty('supportedModes') || !currentFlow.supportedModes.length) { // default activated modes if not set
+        currentFlow.supportedModes = defaultSupportedMode
+      }
       flowList.push(currentFlow)
       resourcesList.push(...currentResources)
     }
     flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flowList)
     flowState.firstFlowId = flows[0].uuid
     flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resourcesList)
+
+    // make sure we use the same languages ids
+    rootState.trees.ui.languages = flowList[0].languages
   },
 
   async loadFlow({dispatch, commit, state}) {
