@@ -13,7 +13,7 @@
       ],
       "languages": [
         {
-          "id": "1",
+          "id": "22",
           "name": "English",
           "abbreviation": "EN",
           "orgId": "1008107874829627392",
@@ -824,6 +824,14 @@
             "offline"
           ],
           "value": "How many books per year do they read?"
+        },
+        {
+          "languageId": "22",
+          "contentType": "audio",
+          "modes": [
+            "ivr"
+          ],
+          "value": "How many books per year do they read?"
         }
       ]
     },
@@ -885,13 +893,20 @@
           "languageId": "22",
           "contentType": "text",
           "modes": [
-            "ivr",
             "sms",
             "ussd",
             "rich_messaging",
             "offline"
           ],
           "value": "Thanks for entering info about your dependents"
+        },
+        {
+          "languageId": "22",
+          "contentType": "audio",
+          "modes": [
+            "ivr"
+          ],
+          "value": "123"
         }
       ]
     }
