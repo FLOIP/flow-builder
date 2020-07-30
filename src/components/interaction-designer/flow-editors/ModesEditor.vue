@@ -22,11 +22,13 @@
   import {IFlow} from '@floip/flow-runner'
   import NumericEditor from '@/components/common/NumericEditor'
   import {SupportedMode} from '@floip/flow-runner'
+  import lang from '@/lib/filters/lang'
 
   @Component<any>({
     components: {
       NumericEditor,
     },
+    mixins: [lang]
   })
   class ModeEditor extends Vue {
     @Prop({default: true}) readonly isEditable!: boolean

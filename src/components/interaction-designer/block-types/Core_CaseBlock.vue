@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.edit-case-block' | trans}}
+      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <block-name-editor :block="block" />
@@ -40,6 +40,7 @@
   import BlockId from '../block-editors/BlockId.vue'
 
   import CaseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
+  import lang from '@/lib/filters/lang'
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -55,6 +56,7 @@
       FirstBlockEditorButton,
       BlockId,
     },
+    mixins: [lang],
   })
   class Core_CaseBlock extends Vue {
     @Prop()readonly block!: ICaseBlock

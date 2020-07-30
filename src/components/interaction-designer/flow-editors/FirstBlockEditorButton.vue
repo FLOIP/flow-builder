@@ -1,17 +1,17 @@
 <template>
   <div class="starting-block-button">
     <template v-if="true || isEditable">
-      <h4>{{'trees.options' | trans}}</h4>
+      <h4>{{'flow-builder.options' | trans}}</h4>
       <div class="form-group">
         <button type="button"
             class="btn btn-default btn-sm"
             :disabled="isStartBlock"
             @click="setStartBlock">
           <template v-if="isStartBlock">
-            {{'trees.currently-set-as-starting-block' | trans}}
+            {{'flow-builder.currently-set-as-starting-block' | trans}}
           </template>
           <template v-else>
-            {{'trees.set-as-starting-block' | trans}}
+            {{'flow-builder.set-as-starting-block' | trans}}
           </template>
         </button>
       </div>
@@ -21,12 +21,14 @@
 
 <script>
   import {mapMutations} from 'vuex'
+  import lang from '@/lib/filters/lang'
 
   export default {
+    mixins: [lang],
     props: {
       flow: Object,
       blockId: String, // set for particular block
-      
+
       isEditable: {
         type: Boolean,
         default: true,

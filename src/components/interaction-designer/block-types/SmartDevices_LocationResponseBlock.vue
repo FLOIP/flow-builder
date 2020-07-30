@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.location-response-block' | trans}}
+      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <block-name-editor :block="block" />
@@ -40,6 +40,7 @@
   import BlockTimeoutEditor from '../block-editors/TimeoutEditor.vue'
 
   import LocationStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
+  import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -55,6 +56,7 @@
       BlockThresholdEditor,
       BlockTimeoutEditor,
     },
+    mixins: [lang],
   })
   class SmartDevices_LocationResponseBlock extends Vue {
     @Prop()readonly block!: ILocationResponseBlock

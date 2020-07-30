@@ -2,7 +2,7 @@
   <div class="form-group block-validation-min">
     <numeric-editor v-model.number="minValue"
         :is-editable="isEditable"
-        :label="'flow-builder.Minimum-value-(inclusive)' | trans"
+        :label="'flow-builder.minimum-value-(inclusive)' | trans"
         :placeholder="'flow-builder.enter-value' | trans">
     </numeric-editor>
   </div>
@@ -11,11 +11,13 @@
 <script>
   import NumericEditor from '@/components/common/NumericEditor'
   import {get} from 'lodash'
+  import lang from '@/lib/filters/lang'
 
   export default {
     components: {
       NumericEditor,
     },
+    mixins: [lang],
     props: {
       isEditable: {
         default: true,
