@@ -36,7 +36,7 @@
     </div>
 
     <div class="tree-contents"
-         :style="{'min-height': `${designerWorkspaceHeight}px`}">
+         :x-style="{'min-height': `${designerWorkspaceHeight}px`}">
       <builder-canvas @click.native="handleCanvasSelected" />
     </div>
   </div>
@@ -205,23 +205,23 @@
         forEach(blockClasses, async ({type}) => {
           const normalizedType = type.replace('\\', '_')
           const typeWithoutSeparators = type.replace(/\\/g, '')
-
-          // if ($store.hasModule(type)) {
-          //   return
-          // }
-          //
-          // const storeForType = await import(
-          //   `../store/flow/block-types/${normalizedType}BlockStore`)
-          // $store.registerModule(['flow', type], storeForType)
-
-          const {default: componentDefaultExport} = await import(
+          const {
+            default: componentDefaultExport,
+            factory: componentFactory,
+          } = await import(
             `../components/interaction-designer/block-types/${normalizedType}Block.vue`)
-          Vue.component(`Flow${typeWithoutSeparators}`, componentDefaultExport)
+
+          const component = componentFactory
+            ? componentFactory.bind(null, this)
+            : componentDefaultExport
+
+          Vue.component(`Flow${typeWithoutSeparators}`, component)
         })
       },
 
       handleCanvasSelected({target}) {
         if (!target.classList.contains('builder-canvas')) {
+          console.debug('InteractionDesigner / Non-canvas selection mitigated')
           return
         }
 
@@ -270,8 +270,8 @@
   // Colors + dimensions
   $dot-size: 1px;
   $dot-space: 22px;
-  $dot-color: CornflowerBlue;
-  $bg-color: white;
+  $dot-color: #333;
+  $bg-color: #fcfcfc;
 
   $toolbar-height: 56px;
   $sidebar-width: 365px;
@@ -287,7 +287,7 @@
     position: fixed;
     right: 0;
     top: 0;
-    z-index: 1*10;
+    z-index: 2*10;
 
     height: 100vh;
     width: $sidebar-width;
@@ -309,7 +309,7 @@
 
   .tree-builder-toolbar {
     position: fixed;
-    z-index: 2*10;
+    z-index: 3*10;
     left: 0;
     top: 0;
 
@@ -319,24 +319,17 @@
     background: #eee;
   }
 
-  .tree-contents {
-    margin-top: $toolbar-height;
-    padding-right: $sidebar-width;
-    padding-bottom: 200px;
-  }
 
   // color categorizations
   $category-0-faint: #fbfdfb;
   $category-0-light: #97BD8A;
-  $category-0-dark: #97BD8A;
-
-  $category-1-faint: white;
+  $category-0-dark: #38542f;
+  $category-1-faint: #fdfdfe;
   $category-1-light: #6897BB;
-  $category-1-dark: #6897BB;
-
-  $category-2-faint: white;
+  $category-1-dark: #30516a;
+  $category-2-faint: #fdfbf8;
   $category-2-light: #C69557;
-  $category-2-dark: #C69557;
+  $category-2-dark: #6e4e25;
 
   .tree-sidebar-container {
     .tree-sidebar {
@@ -370,55 +363,32 @@
   }
 
   .block {
-    &.category-0 {
-      border-color: $category-0-light;
+    @mixin block-category($i, $faint, $light, $dark) {
+      &.category-#{$i} {
+        border-color: $light;
 
-      .block-type {
-        color: $category-0-dark;
-      }
+        .block-type {
+          color: $light;
+        }
 
-      .block-exits .block-exit .block-exit-tag {
-        background-color: $category-0-light;
-      }
+        .block-exits .block-exit .block-exit-tag {
+          background-color: $light;
+        }
 
-      .block-target:hover {
-        border: 1px dashed $category-0-light;
-      }
-    }
+        .block-target:hover {
+          border: 1px dashed $light;
+        }
 
-    &.category-1 {
-      border-color: $category-1-light;
-
-      .block-type {
-        color: $category-1-dark;
-      }
-
-      .block-exits .block-exit .block-exit-tag {
-        background-color: $category-1-light;
-      }
-
-      .block-target:hover {
-        border: 1px dashed $category-1-light;
+        &.active {
+          background-color: $faint;
+        }
       }
     }
 
-    &.category-2 {
-      border-color: $category-2-light;
-
-      .block-type {
-        color: $category-2-dark;
-      }
-
-      .block-exits .block-exit .block-exit-tag {
-        background-color: $category-2-light;
-      }
-
-      .block-target:hover {
-        border: 1px dashed $category-2-light;
-      }
-    }
+    @include block-category(0, $category-0-faint, $category-0-light, $category-0-dark);
+    @include block-category(1, $category-1-faint, $category-1-light, $category-1-dark);
+    @include block-category(2, $category-2-faint, $category-2-light, $category-2-dark);
   }
-
 
   // @note - these styles have been extracted so the output can be reused between storybook and voto5
   /*@import "resources/assets/js/trees/components/InteractionDesigner.scss";*/

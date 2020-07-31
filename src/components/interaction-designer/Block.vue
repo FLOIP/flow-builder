@@ -52,7 +52,7 @@
         <h3 class="block-exit-tag label label-warning">{{exit.tag}}</h3>
 
         <template v-if="exit.destinationBlock == null">
-          <plain-draggable class="handle-create-link btn btn-default btn-xs"
+          <plain-draggable class="handle-create-link btn btn-default btn-xs btn-flat"
                            :class="{
                                'btn-info': exit.destinationBlock != null,
                            }"
@@ -82,7 +82,7 @@
         </template>
 
         <template v-if="exit.destinationBlock != null">
-          <plain-draggable class="block-exit-move-handle handle-move-link btn btn-default btn-xs"
+          <plain-draggable class="block-exit-move-handle handle-move-link btn btn-default btn-xs btn-flat"
                            :class="{
                                // 'btn-default': exit.destinationBlock != null,
                            }"
@@ -308,10 +308,16 @@
 </script>
 
 <style lang="scss">
+  .btn-default.btn-flat {
+    @extend .btn-default;
+    background: transparent;
+  }
+
   .block {
     position: absolute;
     left: 0;
     top: 0;
+    z-index: 1*10;
 
     min-width: 122px;
     padding: 0.4em;
@@ -322,7 +328,11 @@
 
     border-radius: 0.3em;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    opacity: 0.9;
 
+    transition:
+      opacity 200ms ease-in-out,
+      background-color 200ms ease-in-out;
 
     .block-label {
       font-size: 14px;
@@ -340,20 +350,22 @@
       min-height: 6em;
       border: 1px dashed transparent;
       border-bottom: 1px solid #eee;
-      border-radius: 0.3em;
       padding: 0.1em;
-    }
 
-    .block-target:hover {
-      border-color: #5b5b5b;
+      transition: border-radius 200ms ease-in-out;
+
+      &:hover {
+        border-radius: 0.3em;
+        border-color: #5b5b5b;
+      }
     }
 
     .block-exits {
       display: flex;
       white-space: nowrap;
       position: relative;
-      top: 3em;
-      margin-top: -2em;
+      top: 0em;
+      margin-top: 1em;
 
       .block-exit {
         display: inline-block;
@@ -371,8 +383,7 @@
         .block-exit-tag  {
           display: block;
 
-          margin: 0;
-          margin-bottom: 2em;
+          margin: 0 0 0.5em 0;
           padding: 0.4em;
 
           background-color: #5b5b5b;
@@ -388,13 +399,28 @@
 
         .block-exit-remove {
           background-image: none;
+          opacity: 0;
+          transition: opacity 200ms ease-in-out;
         }
       }
     }
 
+    // state mutations
+
     &.active {
       border-width: 2px;
       box-shadow: 0px 3px 6px #CACACA;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &.active,
+    &:hover {
+      .block-exit .block-exit-remove {
+        opacity: 1;
+      }
     }
   }
 </style>

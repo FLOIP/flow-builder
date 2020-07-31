@@ -99,13 +99,13 @@
       const categoryColorMappings = {
         'category-0-faint': '#fbfdfb',
         'category-0-light': '#97BD8A',
-        'category-0-dark': '#97BD8A',
-        'category-1-faint': 'white',
+        'category-0-dark': '#38542f',
+        'category-1-faint': '#fdfdfe',
         'category-1-light': '#6897BB',
-        'category-1-dark': '#6897BB',
-        'category-2-faint': 'white',
+        'category-1-dark': '#30516a',
+        'category-2-faint': '#fdfbf8',
         'category-2-light': '#C69557',
-        'category-2-dark': '#C69557',
+        'category-2-dark': '#6e4e25',
       }
 
 
