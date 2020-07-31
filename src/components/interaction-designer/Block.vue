@@ -238,7 +238,8 @@
         // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
 
         const {block} = this
-        this.setBlockPositionTo({position: {x, y}, block})
+        this.$nextTick(() =>
+          this.setBlockPositionTo({position: {x, y}, block}))
       },
 
       removeConnectionFrom(exit) {
