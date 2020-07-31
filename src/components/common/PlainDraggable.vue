@@ -61,7 +61,7 @@
       const handle = this.$el.querySelectorAll('.draggable-handle')[0]
 
       this.draggable = new PlainDraggable(this.$el, {
-          containment: {left: 0, top: 0, width: 99999, height: 99999}, // canvas size
+          containment: document.body,
           autoScroll: true,
           onDrag: this.handleDragged,
           onDragStart: this.handleDragStarted,
