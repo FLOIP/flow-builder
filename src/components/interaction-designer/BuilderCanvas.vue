@@ -46,5 +46,7 @@
   }
 
   .builder-canvas {
+    width: 9999px;
+    height: 9999px;
   }
 </style>
