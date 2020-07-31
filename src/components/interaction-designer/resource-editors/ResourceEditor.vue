@@ -21,8 +21,18 @@
                                         :mode="mode"
 
                                         :is-editable="true || isEditable"
+                                        v-if="contentType === SupportedContentType.TEXT"
                                         :enable-autogen-button="true || enableAutogenButton" />
 
+          <div v-if="contentType === SupportedContentType.AUDIO">
+            <audio-library-selector
+                :audioFiles="availableAudio"
+                :langId="languageId"
+                :resourceId="resource.uuid"
+                :selectedAudioFile="findOrGenerateStubbedVariantOn(
+                   resource,
+                   {languageId, contentType, modes: [mode]}).value"/>
+          </div>
         </template>
       </template>
     </template>
@@ -30,12 +40,31 @@
 </template>
 
 <script lang="ts">
-  import {IFlow, IResourceDefinition} from '@floip/flow-runner'
+  import {
+    Getter,
+  } from 'vuex-class'
+  import {
+    IFlow,
+    IResourceDefinition,
+    SupportedContentType,
+    SupportedMode,
+  } from '@floip/flow-runner'
   import lang from '@/lib/filters/lang'
   import {Component} from 'vue-property-decorator'
   import Vue from 'vue'
   import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
   import {discoverContentTypesFor, findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
+  import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
+
+  interface IAudioFile {
+    id: string,
+    filename: string, 
+    description: string, 
+    language_id: string, 
+    duration_seconds: string, 
+    original_extension: string,
+    created_at: string
+  }
 
   @Component({
     props: {
@@ -55,12 +84,17 @@
     mixins: [lang],
 
     components: {
+      AudioLibrarySelector,
       ResourceVariantTextEditor,
     },
   })
   export class ResourceEditor extends Vue {
     discoverContentTypesFor = discoverContentTypesFor
     findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
+    SupportedMode = SupportedMode 
+    SupportedContentType = SupportedContentType 
+
+    @Getter availableAudio!: IAudioFile[] 
   }
 
   export default ResourceEditor

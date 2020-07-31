@@ -8,10 +8,10 @@
               :placeholder="`flow-builder.enter-${resourceVariant.contentType}-content` | trans"
               class="form-control"></textarea>
 
-      <button @click="select"
+      <!-- <button @click="select"
               class="btn btn-xs btn-default">
         <i class="glyphicon glyphicon-pencil"></i>
-      </button>
+      </button> -->
     </div>
 
     <div class="content-toolbar">
