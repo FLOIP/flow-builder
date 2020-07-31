@@ -46,6 +46,7 @@
 
   import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -69,11 +70,6 @@
     @Prop()readonly block!: INumericResponseBlock
     @Prop()readonly flow!: IFlow
 
-    created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], NumericStore)
-        }
-    }
     get promptResource(): IResourceDefinition {
       return this.resourcesByUuid[this.block.config.prompt]
     }
@@ -99,4 +95,5 @@
   }
 
   export default MobilePrimitives_NumericResponseBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, NumericStore)
 </script>

@@ -45,6 +45,7 @@
 
   import ReadStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -65,12 +66,6 @@
   class ConsoleIO_ReadBlock extends Vue {
     @Prop()readonly block!: IReadBlock
     @Prop()readonly flow!: IFlow
-
-    created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], ReadStore)
-        }
-    }
 
     filterVariableName(e) {
       if (e.key.match(/\W+|Enter/g)) {
@@ -93,4 +88,5 @@
   }
 
   export default ConsoleIO_ReadBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, ReadStore)
 </script>

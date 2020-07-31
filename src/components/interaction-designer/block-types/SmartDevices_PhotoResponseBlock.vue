@@ -34,6 +34,7 @@
   import BlockId from '../block-editors/BlockId.vue'
   import PhotoStore, {BLOCK_TYPE} from "@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore";
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const flowVuexNamespace = namespace('flow')
 
@@ -53,14 +54,9 @@
     @Prop()readonly block!: IBlock
     @Prop()readonly flow!: IFlow
 
-    created() {
-      if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-        this.$store.registerModule(['flow', BLOCK_TYPE], PhotoStore)
-      }
-    }
-
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
   }
 
   export default SmartDevices_PhotoResponseBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, PhotoStore)
 </script>

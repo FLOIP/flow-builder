@@ -26,6 +26,10 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 
 export const mutations: MutationTree<IFlowsState> = {
   flow_addBlock(state, {flowId, block}: {flowId: string, block: IBlock}) {
+    if (block == null) {
+      throw new ValidationException('Unable to add null block to flow')
+    }
+
     const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
     const length = flow.blocks.push(block)
 

@@ -37,6 +37,7 @@
   import BlockId from '../block-editors/BlockId.vue'
   import MessageStore, {BLOCK_TYPE} from "@/store/flow/block-types/MobilePrimitives_MessageBlockStore";
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const flowVuexNamespace = namespace('flow')
 
@@ -56,11 +57,6 @@
     @Prop()readonly block!: IMessageBlock
     @Prop()readonly flow!: IFlow
 
-    created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], MessageStore)
-        }
-    }
     get promptResource(): IResourceDefinition {
       return this.resourcesByUuid[this.block.config.prompt]
     }
@@ -69,4 +65,5 @@
   }
 
   export default MobilePrimitives_MessageBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, MessageStore)
 </script>

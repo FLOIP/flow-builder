@@ -47,6 +47,7 @@
 
   import RunAnotherFlowStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -65,12 +66,6 @@
     @Prop()readonly block!: IRunFlowBlock
     @Prop()readonly flow!: IFlow
 
-    created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], RunAnotherFlowStore)
-        }
-    }
-
     get destinationFlowId(): string {
       //TODO - fix IRunFlowBlockConfig - it should have flow_id according to spec - not flowId
       return this.block.config.flowId || ''
@@ -87,4 +82,5 @@
   }
 
   export default Core_RunAnotherFlowBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, RunAnotherFlowStore)
 </script>

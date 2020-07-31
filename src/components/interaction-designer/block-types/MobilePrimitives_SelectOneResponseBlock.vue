@@ -57,6 +57,7 @@
 
   import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -98,17 +99,5 @@
   }
 
   export default MobilePrimitives_SelectOneResponseBlock
-
-  export async function factory(builder: Vue) {
-    if (!builder.$store.hasModule(['flow', BLOCK_TYPE])) {
-      builder.$store.registerModule(['flow', BLOCK_TYPE], SelectOneStore)
-    }
-
-    return MobilePrimitives_SelectOneResponseBlock
-  }
-
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectOneStore)
 </script>
-
-<style>
-
-</style>

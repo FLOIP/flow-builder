@@ -41,6 +41,7 @@
 
   import LocationStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -64,12 +65,6 @@
     // @Prop()readonly block!: ILocationResponseBlock
     @Prop()readonly flow!: IFlow
 
-    created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], LocationStore)
-        }
-    }
-
     updateThreshold(value: number) {
       this.setAccuracyThreshold({blockId: this.block.uuid, value})
     }
@@ -85,4 +80,5 @@
   }
 
   export default SmartDevices_LocationResponseBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LocationStore)
 </script>

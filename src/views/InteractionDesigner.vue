@@ -44,7 +44,7 @@
 
 <script>
   import lang from '@/lib/filters/lang'
-  import lodash, {forEach} from 'lodash'
+  import lodash, {forEach, invoke} from 'lodash'
   import Vue from 'vue'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   // import {affix as Affix} from 'vue-strap'
@@ -205,17 +205,11 @@
         forEach(blockClasses, async ({type}) => {
           const normalizedType = type.replace('\\', '_')
           const typeWithoutSeparators = type.replace(/\\/g, '')
-          const {
-            default: componentDefaultExport,
-            factory: componentFactory,
-          } = await import(
+          const exported = await import(
             `../components/interaction-designer/block-types/${normalizedType}Block.vue`)
 
-          const component = componentFactory
-            ? componentFactory.bind(null, this)
-            : componentDefaultExport
-
-          Vue.component(`Flow${typeWithoutSeparators}`, component)
+          invoke(exported, 'install', this)
+          Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
         })
       },
 
@@ -304,6 +298,10 @@
 
       padding: 1em;
       margin-top: 1em;
+
+      transition:
+        200ms background-color ease-in-out,
+        200ms border-color ease-in-out;
     }
   }
 

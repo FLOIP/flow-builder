@@ -36,6 +36,7 @@
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import BlockId from '../block-editors/BlockId.vue'
   import LogStore, {BLOCK_TYPE} from "@/store/flow/block-types/Core_LogBlockStore";
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const flowVuexNamespace = namespace('flow')
 
@@ -53,11 +54,6 @@
     @Prop()readonly block!: ILogBlock
     @Prop()readonly flow!: IFlow
 
-    created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], LogStore)
-        }
-    }
     get promptResource(): IResourceDefinition {
       return this.resourcesByUuid[this.block.config.message]
     }
@@ -66,4 +62,5 @@
   }
 
   export default Core_LogBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LogStore)
 </script>

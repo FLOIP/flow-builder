@@ -37,6 +37,7 @@
 
   import OutputStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -58,12 +59,6 @@
     @Prop()readonly block!: IOutputBlock
     @Prop()readonly flow!: IFlow
 
-    created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], OutputStore)
-        }
-    }
-
     get value(): string {
       return this.block.config.value || ''
     }
@@ -76,4 +71,5 @@
   }
 
   export default Core_OutputBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, OutputStore)
 </script>
