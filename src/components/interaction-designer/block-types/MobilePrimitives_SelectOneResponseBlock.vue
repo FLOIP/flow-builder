@@ -76,11 +76,6 @@
   export class MobilePrimitives_SelectOneResponseBlock extends Vue {
     @Prop()readonly block!: ISelectOneResponseBlock
     @Prop()readonly flow!: IFlow
-    created() {
-      if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-        this.$store.registerModule(['flow', BLOCK_TYPE], SelectOneStore)
-      }
-    }
 
     get promptResource(): IResourceDefinition {
       return this.resourcesByUuid[this.block.config.prompt]
@@ -103,6 +98,15 @@
   }
 
   export default MobilePrimitives_SelectOneResponseBlock
+
+  export async function factory(builder: Vue) {
+    if (!builder.$store.hasModule(['flow', BLOCK_TYPE])) {
+      builder.$store.registerModule(['flow', BLOCK_TYPE], SelectOneStore)
+    }
+
+    return MobilePrimitives_SelectOneResponseBlock
+  }
+
 </script>
 
 <style>
