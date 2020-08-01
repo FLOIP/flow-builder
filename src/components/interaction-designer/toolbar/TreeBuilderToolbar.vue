@@ -251,7 +251,6 @@
         },
 
         set(value) {
-            console.log("SET flow")
             this.importFlowsAndResources(convertKeysCase(
                 JSON.parse(value),
                 'CAMEL',
