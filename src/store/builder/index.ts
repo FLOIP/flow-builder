@@ -245,54 +245,35 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   },
 
   /**
-   * Import from an API response with schema
-   * [
-   *  { uuid: 'xxxx', name: 'flow1', ..., resources: [ (...flow1 resources) ]},
-   *  { uuid: 'yyyy', name: 'flow2', ..., resources: [ (...flow1 resources) ]}
-   * ]
-   * Transform the schema into an IFlowsState schema
-   * [
+   * Import Flows And Resources from importer tool
+   *
+   * The imported JSON should be compatible with IFlowsState
+   * {
    *  flows: [
    *    { uuid: 'xxxx', name: 'flow1', ...},
    *    { uuid: 'yyyy', name: 'flow2', ...}]
    *  ],
-   *  resources: [(...flow1 resources), (...flow1 resources)],
-   *  firstFlowId: 'xxxx'
-   * ]
+   *  resources: [
+   *    { uuid: 'xxxx-flow1-resource1', values: [...]},
+   *    { uuid: 'xxxx-flow1-resource2', values: [...]},
+   *    { uuid: 'xxxx-flow2-resource1', values: [...]},
+   *    ...
+   *  ]
+   * }
    * @param dispatch
    * @param commit
    * @param state
    * @param rootState
    * @param flows
    */
-  async importFlowsAndResources({dispatch, commit, state, rootState}, flows) {
-    console.debug('importing flow...')
-    console.log(flows)
+  async importFlowsAndResources({dispatch, commit, state, rootState}, {flows, resources}) {
+    console.debug('importing flows & resources ...')
+    console.log({flows, resources})
     const {flow: flowState} = rootState
-    let flowList = []
-    let resourcesList = []
-    const defaultSupportedMode = [
-      SupportedMode.IVR,
-      SupportedMode.SMS,
-      SupportedMode.USSD,
-    ]
-    for(let key in flows) {
-      const item = flows[key]
-      const currentResources = item.resources
-      const currentFlow = {...item}
-      delete currentFlow.resources
-      if (!currentFlow.hasOwnProperty('supportedModes') || !currentFlow.supportedModes.length) { // default activated modes if not set
-        currentFlow.supportedModes = defaultSupportedMode
-      }
-      flowList.push(currentFlow)
-      resourcesList.push(...currentResources)
-    }
-    flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flowList)
-    flowState.firstFlowId = flows[0].uuid
-    flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resourcesList)
 
-    // make sure we use the same languages ids
-    rootState.trees.ui.languages = flowList[0].languages
+    flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flows)
+    flowState.firstFlowId = flows[0].uuid
+    flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resources)
   },
 
   async loadFlow({dispatch, commit, state}) {

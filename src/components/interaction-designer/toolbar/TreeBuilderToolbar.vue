@@ -242,10 +242,12 @@
       flow: {
         get() {
           const {flows, resources} = this
-            return JSON.stringify(convertKeysCase({flows, resources},
+            return JSON.stringify(
+                convertKeysCase({flows, resources},
                 'SNAKE',
                 ['platformMetadata', 'ioViamo']),
-                null, 2)
+                null,
+                2)
         },
 
         set(value) {

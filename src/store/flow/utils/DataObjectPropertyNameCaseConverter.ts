@@ -16,7 +16,6 @@ export default function convertKeysCase(x: any, caseType: string = 'CAMEL', excl
   }
 
   return reduce(x, (memo: any, value: any, key: string) => {
-    console.log("convert to " + caseType)
     let currentKey = caseType === 'CAMEL' ? camelCase(key) : snakeCase(key)
     memo[includes(exclusions, key) ? key : currentKey] =
         convertKeysCase(value, caseType, exclusions)
