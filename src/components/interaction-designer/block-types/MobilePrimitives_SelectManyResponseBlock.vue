@@ -54,7 +54,7 @@
 
   import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
 
-  import SelectManyResponsesStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponsesBlockStore'
+  import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 
   import {namespace} from 'vuex-class'
   import lang from '@/lib/filters/lang'
@@ -72,10 +72,10 @@
     },
     mixins: [lang],
   })
-  export class MobilePrimitives_SelectManyResponsesBlock extends SelectOneResponseBlock {
+  export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
     beforeCreate() {
         if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], SelectManyResponsesStore)
+            this.$store.registerModule(['flow', BLOCK_TYPE], SelectManyResponseStore)
         }
     }
 
@@ -83,5 +83,5 @@
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
   }
 
-  export default MobilePrimitives_SelectManyResponsesBlock
+  export default MobilePrimitives_SelectManyResponseBlock
 </script>
