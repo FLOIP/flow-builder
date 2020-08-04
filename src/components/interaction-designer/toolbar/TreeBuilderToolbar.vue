@@ -186,7 +186,7 @@
 
 
 </template>
-<script>
+<script lang="ts">
   import lang from '@/lib/filters/lang'
   import Permissions from '@/lib/mixins/Permissions'
   import Routes from '@/lib/mixins/Routes'
@@ -197,6 +197,7 @@
   import {affix as Affix} from 'vue-strap'
   // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
   // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
+  import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
 
   export default {
     components: {
@@ -241,15 +242,20 @@
       flow: {
         get() {
           const {flows, resources} = this
-          return JSON.stringify({
-            flows,
-            resources,
-          }, null, 2)
+            return JSON.stringify(
+                convertKeysCase({flows, resources},
+                'SNAKE',
+                ['platformMetadata', 'ioViamo']),
+                null,
+                2)
         },
 
         set(value) {
-          console.log(value)
-          this.importFlowsAndResources(JSON.parse(value))
+            this.importFlowsAndResources(convertKeysCase(
+                JSON.parse(value),
+                'CAMEL',
+                ['platform_metadata', 'io_viamo']
+            ))
         }
       },
 

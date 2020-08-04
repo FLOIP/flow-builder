@@ -3,7 +3,7 @@
     <numeric-editor v-model.number="maxResponse"
         :is-editable="isEditable"
         :label="'flow-builder.max-response-characters' | trans"
-        :placeholder="'flow-builder.enter-max-value' | trans">
+        :placeholder="'flow-builder.enter-value' | trans">
     </numeric-editor>
     <small class="text-muted">
       {{'flow-builder.unlimited-if-not-defined-or-set-as-zero' | trans}}

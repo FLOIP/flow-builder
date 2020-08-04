@@ -1,7 +1,7 @@
 import {flatMap, isEqual, keyBy, mapValues} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {IRootState} from "@/store"
-import {IBlock, ValidationException} from "@floip/flow-runner"
+import {IBlock, SupportedMode, ValidationException} from "@floip/flow-runner"
 import {IDeepBlockExitIdWithinFlow} from "@/store/flow/block"
 
 
@@ -244,14 +244,52 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     commit('setOperation', {operation})
   },
 
+  /**
+   * Import Flows And Resources from importer tool
+   *
+   * The imported JSON should be compatible with IFlowsState
+   * {
+   *  flows: [
+   *    { uuid: 'xxxx', name: 'flow1', ...},
+   *    { uuid: 'yyyy', name: 'flow2', ...}]
+   *  ],
+   *  resources: [
+   *    { uuid: 'xxxx-flow1-resource1', values: [...]},
+   *    { uuid: 'xxxx-flow1-resource2', values: [...]},
+   *    { uuid: 'xxxx-flow2-resource1', values: [...]},
+   *    ...
+   *  ]
+   * }
+   * @param dispatch
+   * @param commit
+   * @param state
+   * @param rootState
+   * @param flows
+   */
   async importFlowsAndResources({dispatch, commit, state, rootState}, {flows, resources}) {
-    console.debug('importing flow...')
-
+    console.debug('importing flows & resources ...')
+    console.log({flows, resources})
     const {flow: flowState} = rootState
+    const defaultSupportedMode = [
+      SupportedMode.IVR,
+      SupportedMode.SMS,
+      SupportedMode.USSD,
+    ]
 
+    // add default activated modes if not set yet
+    for(let key in flows) {
+      if (!flows[key].hasOwnProperty('supportedModes') || !flows[key].supportedModes.length) {
+        flows[key].supportedModes = defaultSupportedMode
+      }
+    }
+
+    // Update flow state
     flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flows)
     flowState.firstFlowId = flows[0].uuid
     flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resources)
+
+    // make sure we use the same languages ids on both UI & Flows
+    rootState.trees.ui.languages = flows[0].languages
   },
 
   async loadFlow({dispatch, commit, state}) {

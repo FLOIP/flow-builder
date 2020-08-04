@@ -3,7 +3,7 @@
     <numeric-editor v-model.number="duration"
         :is-editable="isEditable"
         :label="'flow-builder.max-duration-in-seconds' | trans"
-        :placeholder="'flow-builder.enter-max-value' | trans">
+        :placeholder="'flow-builder.enter-value' | trans">
     </numeric-editor>
   </div>
 </template>
