@@ -2,6 +2,7 @@ import ImportedLang from 'lang.js'
 import ImportedMoment from 'moment'
 import ImportedJquery from 'jquery'
 import {merge} from 'lodash'
+import source from '../../assets/messages.json';
 
 export function bootstrapLegacyGlobalDependencies() {
   // initialize configuration sources
@@ -16,6 +17,7 @@ export function bootstrapLegacyGlobalDependencies() {
 
   // configure libraries
   const Lang = new ImportedLang
+  Lang.setMessages(source)
   Lang.setLocale(__APP__.locale)
   Lang.defaultLocale = 'en'
 

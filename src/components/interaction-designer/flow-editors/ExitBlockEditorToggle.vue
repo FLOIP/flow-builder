@@ -6,8 +6,8 @@
             class="btn btn-default btn-sm"
             :class="{active: isExitBlock}"
             @click="toggleExitBlock">
-          <template v-if="isExitBlock">{{'trees.unset-as-exit-block' | trans}}</template>
-          <template v-else>{{'trees.set-as-exit-block' | trans}}</template>
+          <template v-if="isExitBlock">{{'flow-builder.unset-as-exit-block' | trans}}</template>
+          <template v-else>{{'flow-builder.set-as-exit-block' | trans}}</template>
         </button>
       </div>
     </template>
@@ -16,12 +16,14 @@
 
 <script>
   import {mapMutations} from 'vuex'
+  import lang from '@/lib/filters/lang'
 
   export default {
+    mixins: [lang],
     props: {
       flow: Object,
       blockId: String, // toggle for particular block
-      
+
       isEditable: {
         type: Boolean,
         default: true,
@@ -36,7 +38,7 @@
 
     methods: {
       ...mapMutations('flow', ['flow_setExitBlockId']),
-      
+
       toggleExitBlock() {
         this.flow_setExitBlockId({
           flowId: this.flow.uuid,

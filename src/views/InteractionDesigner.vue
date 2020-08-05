@@ -10,8 +10,8 @@
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
 
-<!--          <flow-editor v-if="!activeBlock"-->
-<!--                       :flow="activeFlow" />-->
+          <flow-editor v-if="!activeBlock"
+                       :flow="activeFlow" />
 
           <div v-if="activeBlock"
                :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
@@ -63,7 +63,7 @@
   // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
   // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
   import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
-
+  import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
   import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
 
   // import '../TreeDiffLogger'
@@ -81,6 +81,7 @@
       // TreeViewer,
       TreeBuilderToolbar,
       BuilderCanvas,
+      FlowEditor,
       // TreeUpdateConflictModal,
     },
 

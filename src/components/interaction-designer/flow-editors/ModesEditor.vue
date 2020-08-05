@@ -1,7 +1,7 @@
 <template>
   <div class="form-group flow-modes">
     <label>{{'flow-builder.modes' | trans}}</label>
-    <div v-for="mode in supportedModes"
+    <div v-for="mode in availableModes"
         :key="mode"
         class="checkbox">
       <label>
@@ -22,23 +22,19 @@
   import {IFlow} from '@floip/flow-runner'
   import NumericEditor from '@/components/common/NumericEditor'
   import {SupportedMode} from '@floip/flow-runner'
+  import lang from '@/lib/filters/lang'
 
   @Component<any>({
     components: {
       NumericEditor,
     },
+    mixins: [lang]
   })
   class ModeEditor extends Vue {
     @Prop({default: true}) readonly isEditable!: boolean
     @Prop() readonly flow!: IFlow
 
-    private supportedModes: SupportedMode[] =  [
-      SupportedMode.IVR,
-      SupportedMode.SMS,
-      SupportedMode.USSD,
-      SupportedMode.OFFLINE,
-      SupportedMode.RICH_MESSAGING
-    ]
+    private availableModes = Object.values(SupportedMode)
 
     get flowSelectedModes(): SupportedMode[] {
       return this.flow.supportedModes

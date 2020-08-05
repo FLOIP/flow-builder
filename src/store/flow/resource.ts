@@ -90,7 +90,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     // find resource variant over modes
     const
-        mode = first(filter.modes[0]),
+        mode = first(filter.modes),
         variant = findResourceVariantOverModesWith(resourceId, filter, state as unknown as IContext)
 
     if (variant.modes.length > 1) { // need to disambiguate b/c value is spread over multiple modes
@@ -105,7 +105,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         resourceId,
         variant: Object.assign(
             cloneDeep(variant),
-            {mode, value})
+            {modes: [mode], value})
       })
 
       return // specialized case, we're done here

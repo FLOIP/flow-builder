@@ -9,6 +9,7 @@
           :placeholder="placeholder"
           :value="value"
           :step="step"
+          @keypress="filterFloat"
           @keydown="$emit('keydown', $event)"
           @input="$emit('input', $event.target.value)"
       />
@@ -43,6 +44,13 @@
       value: {
         type: [String, Number],
         required: true,
+      },
+    },
+    methods: {
+      filterFloat(e) {
+        if (!e.key.match(/[0-9\-.,]/g)) {
+          e.preventDefault()
+        }
       },
     },
   }

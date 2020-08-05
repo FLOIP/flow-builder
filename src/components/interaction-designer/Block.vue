@@ -25,7 +25,7 @@
         @mouseleave="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
 
       <p class="block-type text-muted">
-        {{block.type}}
+        {{trans(`flow-builder.${block.type}`)}}
       </p>
 
       <h3 class="block-label">{{block.label}}</h3>
@@ -119,10 +119,11 @@
   import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
   import {OperationKind} from '@/store/builder'
   import Connection from '@/components/interaction-designer/Connection.vue'
+  import lang from '@/lib/filters/lang'
 
   export default {
     props: ['block', 'x', 'y'],
-
+    mixins: [lang],
     components: {
       Connection,
       PlainDraggable,

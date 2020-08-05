@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.location-response-block' | trans}}
+      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <block-name-editor :block="block" />
@@ -57,7 +57,6 @@
       BlockThresholdEditor,
       BlockTimeoutEditor,
     },
-
     mixins: [lang],
   })
   class SmartDevices_LocationResponseBlock extends Vue {

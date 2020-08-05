@@ -8,6 +8,7 @@
           class="form-control"
           :placeholder="placeholder"
           :value="value"
+          @keypress="filterNumeric"
           @keydown="$emit('keydown', $event)"
           @input="$emit('input', $event.target.value)"
       />
@@ -21,6 +22,8 @@
 </template>
 
 <script>
+  import { mapMutations } from 'vuex';
+
   export default {
     props: {
       isEditable: {
@@ -33,11 +36,18 @@
       },
       placeholder: {
         type: String,
-        default: "",
+        default: '',
       },
       value: {
         type: [String, Number],
         required: true,
+      },
+    },
+    methods: {
+      filterNumeric(e) {
+        if (!e.key.match(/[0-9\-]/g)) {
+          e.preventDefault()
+        }
       },
     },
   }
