@@ -45,7 +45,7 @@
     },
     methods: {
       filterNumeric(e) {
-        if (!e.key.match(/[0-9\-.,]/g)) {
+        if (!e.key.match(/[0-9\-]/g)) {
           e.preventDefault()
         }
       },
