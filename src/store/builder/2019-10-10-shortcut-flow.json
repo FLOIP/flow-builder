@@ -222,6 +222,7 @@
               "uuid": "29841127-3247-4610-8037-cdc5300939f6",
               "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
               "default": true,
+              "test": "",
               "tag": "DEFAULT",
               "label": "29841127-3247-4610-8037-cdc5300939f6",
               "semanticLabel": ""
