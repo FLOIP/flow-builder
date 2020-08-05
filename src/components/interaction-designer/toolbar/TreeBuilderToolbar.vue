@@ -2,7 +2,7 @@
   <div class="tree-builder-toolbar">
     <div v-if="isImporterVisible"
          class="flows-importer alert alert-info">
-      <h3>Flows Importer</h3>
+      <h3>{{trans('flow-builder.flow-importer')}}</h3>
       <textarea v-model="flow"
                 class=""
                 rows="15"></textarea>
@@ -15,7 +15,7 @@
           <button class="btn btn-default"
                   :class="{active: isImporterVisible}"
                   @click="toggleImportExport">
-            Import / Export
+            {{trans('flow-builder.import-export')}}
           </button>
 
           <div v-if="isResourceEditorEnabled" class="btn-group">

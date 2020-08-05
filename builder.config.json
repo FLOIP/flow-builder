@@ -81,9 +81,9 @@
         "type": "MobilePrimitives\\SelectOneResponse",
         "is_interactive": true
       },
-      "MobilePrimitives\\SelectManyResponses": {
-        "name": "MobilePrimitives\\SelectManyResponses",
-        "type": "MobilePrimitives\\SelectManyResponses",
+      "MobilePrimitives\\SelectManyResponse": {
+        "name": "MobilePrimitives\\SelectManyResponse",
+        "type": "MobilePrimitives\\SelectManyResponse",
         "is_interactive": true
       },
       "SmartDevices\\LocationResponse": {
