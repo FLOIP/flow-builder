@@ -157,8 +157,15 @@
             {
               "uuid": "29841127-3247-4610-8037-cdc52896a851",
               "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb92667e05",
-              "tag": "1",
-              "label": "29841127-3247-4610-8037-cdc52896a851",
+              "tag": "Default",
+              "label": "Default",
+              "semanticLabel": ""
+            },
+            {
+              "uuid": "29841127-3247-4610-8037-cdc52896a852",
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
+              "tag": "Error",
+              "label": "Error",
               "semanticLabel": ""
             }
           ],
@@ -273,8 +280,8 @@
             {
               "uuid": "29841127-3247-4610-8037-cdc54cda3755",
               "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
-              "tag": "1",
-              "label": "29841127-3247-4610-8037-cdc54cda3755",
+              "tag": "Default",
+              "label": "Default",
               "semanticLabel": ""
             }
           ],
@@ -408,8 +415,15 @@
             {
               "uuid": "29841127-3247-4610-8037-cdc5827e3339",
               "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
-              "tag": "1",
-              "label": "29841127-3247-4610-8037-cdc5827e3339",
+              "tag": "Default",
+              "label": "Default",
+              "semanticLabel": ""
+            },
+            {
+              "uuid": "29841127-3247-4610-8037-cdc5827e3340",
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
+              "tag": "Error",
+              "label": "Error",
               "semanticLabel": ""
             }
           ],
@@ -461,8 +475,15 @@
             {
               "uuid": "29841127-3247-4610-8037-cdc58ffc925d",
               "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
-              "tag": "1",
-              "label": "29841127-3247-4610-8037-cdc58ffc925d",
+              "tag": "Default",
+              "label": "Default",
+              "semanticLabel": ""
+            },
+            {
+              "uuid": "29841127-3247-4610-8037-cdc58ffc925e",
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
+              "tag": "Error",
+              "label": "Error",
               "semanticLabel": ""
             }
           ],
@@ -511,8 +532,8 @@
             {
               "uuid": "29841127-3247-4610-8037-cdc5985884ed",
               "destinationBlock": null,
-              "tag": "1",
-              "label": "29841127-3247-4610-8037-cdc5985884ed",
+              "tag": "Default",
+              "label": "Default",
               "semanticLabel": ""
             }
           ],
