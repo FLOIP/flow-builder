@@ -58,6 +58,7 @@
 
   import {namespace} from 'vuex-class'
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -73,15 +74,10 @@
     mixins: [lang],
   })
   export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
-    beforeCreate() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], SelectManyResponseStore)
-        }
-    }
-
     @blockVuexNamespace.Getter inflatedChoices!: {[key: string]: IResourceDefinition}
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
   }
 
   export default MobilePrimitives_SelectManyResponseBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectManyResponseStore)
 </script>

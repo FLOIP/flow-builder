@@ -2,16 +2,12 @@
   <div class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
-    <div v-if="activeBlock"
-         class="tree-sidebar-container">
-      <div class="tree-sidebar"
+    <div class="tree-sidebar-container">
+      <div v-if="activeBlock" class="tree-sidebar"
            :class="[`category-${blockClasses[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
-
-          <flow-editor v-if="!activeBlock"
-                       :flow="activeFlow" />
 
           <div v-if="activeBlock"
                :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
@@ -32,6 +28,11 @@
 <!--          v-if="sidebarType === 'BlockViewer'"-->
 <!--          :data-for-block-id="jsKey" />-->
 
+      </div>
+      <div v-else class="tree-sidebar">
+        <div class="tree-sidebar-edit-block">
+          <flow-editor :flow="activeFlow" />
+        </div>
       </div>
     </div>
 
