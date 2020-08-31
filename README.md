@@ -2,6 +2,11 @@
 
 flow-builder provides an open source frontend for authoring [flow interoperability project specification](https://floip.gitbook.io/flow-specification/) compliant flows. It enables the importing, editing and exporting of flow json, as well as authoring from scratch. Such flows can then be run using a compatible flow runner such as [FLOIP/flow-runner](https://github.com/FLOIP/flow-runner).
 
+## What are flows
+
+Flows are a modern paradign for describing the logic of digital information systems that interact with individuals,
+often for the purpose of (a) collecting data or (b) providing information through interactive requests. Some common examples of this are in mobile services using voice-based or SMS-based conversations over basic mobile phones. Flows follow the "flowchart" paradigm, consisting of actions (nodes) and connections between actions, which can incorporate decision-making logic.
+
 ## Usage
 
 To begin, you can create a new flow by visiting X. From there, you can either start with a blank flow (a flow without blocks) and get editing:
