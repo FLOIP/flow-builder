@@ -8,11 +8,13 @@ To begin, you can create a new flow by visiting X. From there, you can either st
 
 ![Flow without blocks](./docs/images/screenshot-no-blocks.png)
 
-Or you can use the Import/Export panel and copy in an existing flow:
+Or you can use the Import/Export panel and text field to copy in an existing flow:
 
 ![Imported flow](./docs/images/screenshot-imported-flow.png)
 
 Edits using the builder will then be reflected in the flow JSON in this panel and vice versa.
+
+To export, simply copy the json in this panel to a file. 
 
 ## Project setup
 ```
