@@ -43,8 +43,11 @@ yarn lint
 
 ## Future extensions and improvements
 
-- Documentation on integration of this UI into another app
+- Documentation on integration of this UI into another app including configuration of routes used for server side persistence
 - Validations and human readable validation error messages for the full flow spec - compulsory fields, string formats etc.
 - Documentation on extending this library - adding support for new block types or extending existing block types
+- More fully featured resource editing including audio upload
+- A way to add to the supportable languages
+- Guidance for integration into a permissions system for flow editing/viewing
 - Fix and reenable storybook examples
 - Add regression testing pipeline for storyshots
