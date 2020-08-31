@@ -9,7 +9,7 @@ often for the purpose of (a) collecting data or (b) providing information throug
 
 ## Usage
 
-To begin, you can create a new flow by visiting X. From there, you can either start with a blank flow (a flow without blocks) and get editing:
+To begin, you can create a new flow by visiting [localhost:8080/trees/create](http://localhost:8080/trees/create). From there, you can either start with a blank flow (a flow without blocks) and get editing:
 
 ![Flow without blocks](./docs/images/screenshot-no-blocks.png)
 
