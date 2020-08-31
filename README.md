@@ -27,21 +27,13 @@ yarn install
 yarn serve
 ```
 
-And visit [localhost:8080/trees/create] to create a new flow or [localhost:8080/trees/1/edit] to edit an example flow.
+And visit [localhost:8080/trees/create](http://localhost:8080/trees/create) to create a new flow or [localhost:8080/trees/1/edit](http://localhost:8080/trees/1/edit) to edit an example flow.
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+Note, `yarn serve` will also hot reload for development.
 
 ### Compiles and minifies for production
 ```
 yarn build
-```
-
-### Run your unit tests
-```
-yarn test:unit
 ```
 
 ### Lints and fixes files
@@ -49,5 +41,10 @@ yarn test:unit
 yarn lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Future extensions and improvements
+
+- Documentation on integration of this UI into another app
+- Validations and human readable validation error messages for the full flow spec - compulsory fields, string formats etc.
+- Documentation on extending this library - adding support for new block types or extending existing block types
+- Fix and reenable storybook examples
+- Add regression testing pipeline for storyshots
