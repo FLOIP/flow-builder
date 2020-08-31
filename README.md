@@ -41,6 +41,12 @@ yarn build
 yarn lint
 ```
 
+## An explanation of the app.config.json file vs the builder.config.json file
+
+`app.config.json` is intended to support the configuration needed when integrating this flow building ui into a larger platform or application while `builder.config.json` is intended to configure those features which are core to the flow builder - the blocks enabled, languages or content types supported etc.
+
+More detail to follow.
+
 ## Future extensions and improvements
 
 - Documentation on integration of this UI into another app including configuration of routes used for server side persistence
