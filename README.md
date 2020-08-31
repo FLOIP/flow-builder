@@ -18,8 +18,16 @@ To export, simply copy the json in this panel to a file.
 
 ## Project setup
 ```
+git clone git@github.com:FLOIP/flow-builder.git
+
+cd flow-builder
+
 yarn install
+
+yarn serve
 ```
+
+And visit [localhost:8080/trees/create] to create a new flow or [localhost:8080/trees/1/edit] to edit an example flow.
 
 ### Compiles and hot-reloads for development
 ```
