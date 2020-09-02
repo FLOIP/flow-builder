@@ -7,20 +7,6 @@ flow-builder provides an open source frontend for authoring [flow interoperabili
 Flows are a modern paradign for describing the logic of digital information systems that interact with individuals,
 often for the purpose of (a) collecting data or (b) providing information through interactive requests. Some common examples of this are in mobile services using voice-based or SMS-based conversations over basic mobile phones. Flows follow the "flowchart" paradigm, consisting of actions (nodes) and connections between actions, which can incorporate decision-making logic.
 
-## Usage
-
-To begin, you can create a new flow by visiting [localhost:8080/trees/create](http://localhost:8080/trees/create). From there, you can either start with a blank flow (a flow without blocks) and get editing:
-
-![Flow without blocks](./docs/images/screenshot-no-blocks.png)
-
-Or you can use the Import/Export panel and text field to copy in an existing flow:
-
-![Imported flow](./docs/images/screenshot-imported-flow.png)
-
-Edits using the builder will then be reflected in the flow JSON in this panel and vice versa.
-
-To export, simply copy the json in this panel to a file. 
-
 ## Project setup
 ```
 git clone git@github.com:FLOIP/flow-builder.git
@@ -45,8 +31,27 @@ yarn build
 ```
 yarn lint
 ```
+## Usage
 
-## An explanation of the app.config.json file vs the builder.config.json file
+### Create new flow
+
+To begin, you can create a new flow by visiting [localhost:8080/trees/create](http://localhost:8080/trees/create). From there, you can start with a blank flow (a flow without blocks) and get editing:
+
+![Flow without blocks](./docs/images/screenshot-no-blocks.png)
+
+### Import existing flow
+
+Or you can use the Import/Export panel and text field to copy in an existing flow:
+
+![Imported flow](./docs/images/screenshot-imported-flow.png)
+
+Edits using the builder will then be reflected in the flow JSON in this panel and vice versa.
+
+### Export flow
+
+To export, simply copy the json in this panel to a file. 
+
+## An explanation of app.config.json vs builder.config.json
 
 `app.config.json` is intended to support the configuration needed when integrating this flow building ui into a larger platform or application while `builder.config.json` is intended to configure those features which are core to the flow builder - the blocks enabled, languages or content types supported etc.
 
