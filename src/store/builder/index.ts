@@ -1,4 +1,4 @@
-import {flatMap, isEqual, keyBy, mapValues} from 'lodash'
+import {flatMap, isEqual, keyBy, map, mapValues} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {IRootState} from "@/store"
@@ -284,4 +284,20 @@ export function createDefaultBlockTypeInstallerFor(
   return (builder: Vue) =>
     builder.$store.hasModule(['flow', blockType])
     || builder.$store.registerModule(['flow', blockType], storeForBlockType)
+}
+
+export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock, positionOverride) {
+  return [
+    // coords
+    [source.platform_metadata.io_viamo.uiData.xPosition, source.platform_metadata.io_viamo.uiData.yPosition],
+    [target.platform_metadata.io_viamo.uiData.xPosition, target.platform_metadata.io_viamo.uiData.yPosition],
+
+    // block titles
+    source.label,
+    target.label,
+
+    // other exit titles // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
+    ...map(source.exits, 'tag'),
+    ...map(target && target.exits, 'tag'),
+  ]
 }

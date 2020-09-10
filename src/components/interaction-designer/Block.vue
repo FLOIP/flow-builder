@@ -28,7 +28,10 @@
         {{block.type}}
       </p>
 
-      <h3 class="block-label">{{block.label}}</h3>
+      <h3 class="block-label"
+          :class="{'empty': !block.label}">
+        {{block.label || 'Untitled block'}}
+      </h3>
     </header>
 
     <div class="block-exits">
@@ -73,9 +76,10 @@
             </div>
 
             <connection :key="`exit/${exit.uuid}/line-for-draft`"
-                        :positionCacheKey="`_`"
+                        :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
+                        :source="block"
+                        :target="blocksById[exit.destinationBlock]"
                         :exit="exit"
-                        :block="block"
                         :position="livePosition"
                         :color-category="blockClasses[block.type].category" />
           </template>
@@ -100,8 +104,9 @@
           </div>
 
           <connection :key="`exit/${exit.uuid}/line`"
-                      :positionCacheKey="`_`"
-                      :block="block"
+                      :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
+                      :source="block"
+                      :target="blocksById[exit.destinationBlock]"
                       :exit="exit"
                       :position="livePosition"
                       :color-category="blockClasses[block.type].category" />
@@ -114,10 +119,10 @@
 
 <script>
   import {isNumber} from 'lodash'
-  import {mapActions, mapMutations, mapState} from 'vuex'
+  import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   import PlainDraggable from '@/components/common/PlainDraggable.vue'
   import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
-  import {OperationKind} from '@/store/builder'
+  import {OperationKind, generateConnectionLayoutKeyFor} from '@/store/builder'
   import Connection from '@/components/interaction-designer/Connection.vue'
 
   export default {
@@ -141,6 +146,8 @@
         blockClasses: ({trees: {ui}}) => ui.blockClasses,
       }),
 
+      ...mapGetters('builder', ['blocksById']),
+
       hasLayout() {
         return isNumber(this.x) && isNumber(this.y)
       },
@@ -161,6 +168,11 @@
     },
 
     methods: {
+      // todo: how do we decide whether or not this should be an action or a vanilla domain function?
+      ...{
+        generateConnectionLayoutKeyFor,
+      },
+
       ...mapMutations('builder', ['setBlockPositionTo']),
 
       ...mapActions('builder', {
@@ -259,6 +271,7 @@
         // since mouseenter + mouseleave will not occur when draggable is below cursor
         // we simply snap the draggable out from under the cursor during this operation
         draggable.left += 60
+        draggable.top += 40
       },
 
       onCreateExitDragged({position: {left: x, top: y}}) {
@@ -284,6 +297,8 @@
         // since mouseenter + mouseleave will not occur when draggable is below cursor
         // we simply snap the draggable out from under the cursor during this operation
         draggable.left += 60
+        draggable.top += 40
+
       },
 
       onMoveExitDragged({position: {left: x, top: y}}) {
@@ -322,6 +337,8 @@
 
     min-width: 122px;
     padding: 0.4em;
+    scroll-margin: 35px;
+    scroll-margin-top: 100px;
 
     background-color: white;
     color: #575757;
@@ -338,6 +355,10 @@
     .block-label {
       font-size: 14px;
       font-weight: normal;
+
+      &.empty {
+        color: #aaa;
+      }
     }
 
     .block-type {
@@ -377,12 +398,12 @@
         padding-right: 1em;
 
         text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
 
         .block-exit-tag  {
           display: block;
+
+          min-width: 6em;
+          max-width: 140px;
 
           margin: 0 0 0.5em 0;
           padding: 0.4em;
@@ -392,6 +413,10 @@
 
           font-weight: normal;
           font-size: 12px;
+
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
 
         .block-exit-move-handle {
@@ -410,7 +435,7 @@
 
     &.active {
       border-width: 2px;
-      box-shadow: 0px 3px 6px #CACACA;
+      box-shadow: 0 3px 6px #CACACA;
     }
 
     &:hover {
