@@ -22,6 +22,7 @@
   import FlowLanguagesEditor from './LanguagesEditor'
   import FlowModesEditor from './ModesEditor'
   import {namespace} from 'vuex-class'
+  import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
 
@@ -33,6 +34,7 @@
         FlowLanguagesEditor,
         FlowModesEditor
       },
+      mixins: [lang],
     }
   )
   class FlowEditor extends Vue {

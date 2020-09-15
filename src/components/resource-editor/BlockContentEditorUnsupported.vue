@@ -15,15 +15,15 @@
         <span class="label label-default">{{tag}}</span>
       </li>
       <li>
-        <span class="label label-info">{{'trees.block-type-unsupported-in-resource-view' | trans}}</span>
+        <span class="label label-info">{{'flow-builder.block-type-unsupported-in-resource-view' | trans}}</span>
       </li>
     </ul>
 
     <h4 :class="{'text-muted': !block.customData.title}"
         :title="'Block ID - ' + block.jsKey">
       <span v-if="block.customData.label">{{block.customData.label}} - </span>
-      {{block.customData.title || $options.filters.trans('trees.untitled-block')}}
-      <small>{{`trees.${block.type}` | trans}}</small>
+      {{block.customData.title || $options.filters.trans('flow-builder.untitled-block')}}
+      <small>{{`flow-builder.${block.type}` | trans}}</small>
     </h4>
   </div>
 </template>

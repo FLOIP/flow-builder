@@ -9,11 +9,13 @@
 
 <script>
   import TextEditor from '@/components/common/TextEditor'
+  import lang from '@/lib/filters/lang'
 
   export default {
     components: {
       TextEditor,
     },
+    mixins: [lang],
     props: {
       isEditable: {
         default: true,

@@ -2,16 +2,12 @@
   <div class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
-    <div class="tree-sidebar-container"
-         :class="{'slide-out': !activeBlock}">
-      <div class="tree-sidebar"
-           :class="[`category-${activeBlock && blockClasses[activeBlock.type].category}`]">
+    <div class="tree-sidebar-container">
+      <div v-if="activeBlock" class="tree-sidebar"
+           :class="[`category-${blockClasses[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
-
-<!--          <flow-editor v-if="!activeBlock"-->
-<!--                       :flow="activeFlow" />-->
 
           <div v-if="activeBlock"
                :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
@@ -32,6 +28,11 @@
 <!--          v-if="sidebarType === 'BlockViewer'"-->
 <!--          :data-for-block-id="jsKey" />-->
 
+      </div>
+      <div v-else class="tree-sidebar">
+        <div class="tree-sidebar-edit-block">
+          <flow-editor :flow="activeFlow" />
+        </div>
       </div>
     </div>
 
@@ -63,7 +64,7 @@
   // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
   // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
   import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
-
+  import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
   import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
 
   // import '../TreeDiffLogger'
@@ -81,6 +82,7 @@
       // TreeViewer,
       TreeBuilderToolbar,
       BuilderCanvas,
+      FlowEditor,
       // TreeUpdateConflictModal,
     },
 

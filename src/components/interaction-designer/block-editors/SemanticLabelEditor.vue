@@ -16,6 +16,7 @@
     components: {
       TextEditor,
     },
+    mixins: [lang],
     props: {
       isEditable: {
         default: true,

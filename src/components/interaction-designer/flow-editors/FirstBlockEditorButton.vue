@@ -1,17 +1,17 @@
 <template>
   <div class="starting-block-button">
     <template v-if="true || isEditable">
-      <h4>{{'trees.options' | trans}}</h4>
+      <h4>{{'flow-builder.options' | trans}}</h4>
       <div class="form-group">
         <button type="button"
             class="btn btn-default btn-sm"
             :disabled="isStartBlock"
             @click="setStartBlock">
           <template v-if="isStartBlock">
-            {{'trees.currently-set-as-starting-block' | trans}}
+            {{'flow-builder.currently-set-as-starting-block' | trans}}
           </template>
           <template v-else>
-            {{'trees.set-as-starting-block' | trans}}
+            {{'flow-builder.set-as-starting-block' | trans}}
           </template>
         </button>
       </div>
@@ -19,11 +19,15 @@
   </div>
 </template>
 
-<script>
-  import {mapMutations} from 'vuex'
+<script lang="ts">
+  import Vue from 'vue'
+  import {Component, Prop} from 'vue-property-decorator'
   import lang from '@/lib/filters/lang'
+  import {namespace} from "vuex-class"
 
-  export default {
+  const flowVuexNamespace = namespace('flow')
+
+  @Component<any>({
     props: {
       flow: Object,
       blockId: String, // set for particular block
@@ -35,20 +39,18 @@
     },
 
     mixins: [lang],
+  })
+  class FirstBlockEditorButton extends Vue {
+    get isStartBlock() {
+      return this.blockId === this.flow.firstBlockId
+    }
 
-    computed: {
-      isStartBlock() {
-        return this.blockId === this.flow.firstBlockId
-      },
-    },
+    setStartBlock() {
+      const {flow: {uuid: flowId}, blockId} = this
+      this.flow_setFirstBlockId({flowId, blockId})
+    }
 
-    methods: {
-      ...mapMutations('flow', ['flow_setFirstBlockId']),
-
-      setStartBlock() {
-        const {flow: {uuid: flowId}, blockId} = this
-        this.flow_setFirstBlockId({flowId, blockId})
-      },
-    },
+    @flowVuexNamespace.Mutation flow_setFirstBlockId
   }
+  export default FirstBlockEditorButton
 </script>

@@ -2,6 +2,7 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {
   SupportedContentType,
+  SupportedMode,
   IBlockExit,
 } from '@floip/flow-runner'
 import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
@@ -18,7 +19,12 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async createWith({rootGetters, commit, dispatch}, {props}: {props: {uuid: string} & Partial<ILogBlock>}) {
-    const blankLogResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
+    //Every resource - no matter the mode - must be text in the logblock
+    let contentTypeOverrides: {[key in SupportedMode]?: SupportedContentType} = {}
+    const blankLogResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', Object.values(SupportedMode).reduce((memo, mode) => {
+      memo[mode] = SupportedContentType.TEXT
+      return memo
+    }, contentTypeOverrides), {root: true})
 
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {

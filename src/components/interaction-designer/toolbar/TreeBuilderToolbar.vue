@@ -2,7 +2,7 @@
   <div class="tree-builder-toolbar">
     <div v-if="isImporterVisible"
          class="flows-importer alert alert-info">
-      <h3>Flows Importer</h3>
+      <h3>{{trans('flow-builder.flow-importer')}}</h3>
       <textarea v-model="flow"
                 class="flow-importer"
                 rows="15"></textarea>
@@ -16,41 +16,41 @@
                   :class="{active: isImporterVisible}"
                   @click="toggleImportExport">
             <i class="glyphicon glyphicon-chevron-up"></i>
-            Import / Export
+            {{trans('flow-builder.import-export')}}
           </button>
 
           <div v-if="isResourceEditorEnabled" class="btn-group">
             <router-link :to="treeViewUrl" class="btn btn-default active">
-              {{trans('trees.tree-view')}}
+              {{trans('flow-builder.flow-view')}}
             </router-link>
             <router-link :to="resourceViewUrl"
                          class="btn btn-default"
                          @click.native="handleResourceViewerSelected">
-              {{trans('trees.resource-view')}}
+              {{trans('flow-builder.resource-view')}}
             </router-link>
           </div>
 
           <template v-if="ui.isEditableLocked">
             <a v-if="isFeatureViewResultsEnabled"
                :href="viewResultsUrl"
-               :title="trans('trees.view-results')"
+               :title="trans('flow-builder.view-results')"
                class="btn btn-default">
               <span class="glyphicon glyphicon-signal"></span>
             </a>
           </template>
           <a v-else
              :href="editOrViewTreeJsUrl"
-             :title="trans('trees.click-to-toggle-editing')"
+             :title="trans('flow-builder.click-to-toggle-editing')"
              class="btn btn-default"
              :class="{active: ui.isEditable}"
              @click="attemptSaveTree">
-            {{trans('trees.edit-tree')}}
+            {{trans('flow-builder.edit-flow')}}
           </a>
 
           <a v-if="!ui.isEditable && isFeatureTreeDuplicateEnabled"
              :href="duplicateTreeLink"
              class="btn btn-default"
-             :title="trans('trees.duplicate-entire-tree')">
+             :title="trans('flow-builder.duplicate-entire-flow')">
             <span class="glyphicon glyphicon-tags"/>
           </a>
 
@@ -60,7 +60,7 @@
             <button type="button"
                     class="btn btn-default dropdown-toggle"
                     data-toggle="dropdown">
-              {{trans('trees.add-block')}} <span class="caret"/>
+              {{trans('flow-builder.add-block')}} <span class="caret"/>
             </button>
 
             <ul class="dropdown-menu" role="menu">
@@ -87,7 +87,7 @@
                   <a href="#"
                      class="dropdown-toggle"
                      data-toggle="dropdown">
-                    {{trans('trees.branching')}}
+                    {{trans('flow-builder.branching')}}
                   </a>
                   <ul class="dropdown-menu">
                     <template v-for="(classDetails, className) in rootDropdownClassesToDisplay">
@@ -114,7 +114,7 @@
                 <li class="menu-item dropdown dropdown-submenu">
                   <a href="#"
                      class="dropdown-toggle"
-                     data-toggle="dropdown">{{'trees.advanced' | trans}}
+                     data-toggle="dropdown">{{'flow-builder.advanced' | trans}}
                   </a>
                   <ul class="dropdown-menu">
                     <template v-for="(classDetails, className) in advancedDropdownClassesToDisplay">
@@ -141,7 +141,7 @@
 <!--                  type="button"-->
 <!--                  class="btn btn-default tree-duplicate-block"-->
 <!--                  :disabled="!jsKey">-->
-<!--            {{trans('trees.duplicate')}}-->
+<!--            {{trans('flow-builder.duplicate')}}-->
 <!--          </button>-->
 
           <button v-if="ui.isEditable"
@@ -149,14 +149,14 @@
                   class="btn btn-default tree-delete-block"
                   @click.prevent="handleRemoveActivatedBlockTriggered"
                   :disabled="!activeBlockId">
-            {{trans('trees.delete')}}
+            {{trans('flow-builder.delete')}}
           </button>
 
           <div class="btn-group pull-right">
             <button v-if="ui.isEditable && isFeatureTreeSaveEnabled"
                     type="button"
                     class="btn btn-primary tree-save-tree"
-                    :title="trans('trees.save-changes-to-the-tree')"
+                    :title="trans('flow-builder.save-changes-to-the-flow')"
                     :disabled="isTreeSaving || !hasChanges"
                     @click="attemptSaveTree">
               {{saveButtonText}}
@@ -167,15 +167,15 @@
                  :href="publishVersionUrl"
                  class="btn btn-success"
                  :disabled="isTreeSaving || !isTreeValid"
-                 :title="isTreeValid ? 'trees.publish-this-version-of-the-tree' : 'trees.fix-validation-errors-before-publishing' | trans">
-                {{'trees.publish' | trans}}
+                 :title="isTreeValid ? 'flow-builder.publish-this-version-of-the-flow' : 'flow-builder.fix-validation-errors-before-publishing' | trans">
+                {{'flow-builder.publish' | trans}}
               </a>
               <a v-if="can('send-outgoing-call')"
                  :href="sendOutgoingCallUrl"
                  class="btn btn-success tree-send-tree-call"
                  :disabled="isTreeSaving || !isTreeValid"
-                 :title="trans('trees.schedule-and-send-an-outgoing-call')">
-                {{trans('trees.send')}}
+                 :title="trans('flow-builder.schedule-and-send-an-outgoing-call')">
+                {{trans('flow-builder.send')}}
               </a>
             </template>
           </div>
@@ -187,7 +187,7 @@
 
 
 </template>
-<script>
+<script lang="ts">
   import lang from '@/lib/filters/lang'
   import Permissions from '@/lib/mixins/Permissions'
   import Routes from '@/lib/mixins/Routes'
@@ -198,6 +198,7 @@
   // import {affix as Affix} from 'vue-strap'
   // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
   // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
+  import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
 
   export default {
     components: {
@@ -242,15 +243,20 @@
       flow: {
         get() {
           const {flows, resources} = this
-          return JSON.stringify({
-            flows,
-            resources,
-          }, null, 2)
+            return JSON.stringify(
+                convertKeysCase({flows, resources},
+                'SNAKE',
+                ['platformMetadata', 'ioViamo']),
+                null,
+                2)
         },
 
         set(value) {
-          console.log(value)
-          this.importFlowsAndResources(JSON.parse(value))
+            this.importFlowsAndResources(convertKeysCase(
+                JSON.parse(value),
+                'CAMEL',
+                ['platform_metadata', 'io_viamo']
+            ))
         }
       },
 
@@ -314,9 +320,9 @@
 
       saveButtonText() {
         if (this.hasChanges) {
-          return this.trans('trees.save')
+          return this.trans('flow-builder.save')
         } else {
-          return this.trans('trees.saved')
+          return this.trans('flow-builder.saved')
         }
       },
 
@@ -382,7 +388,7 @@
         return !lodash.isNil(classDetails[attribute]) && classDetails[attribute]
       },
       translateTreeClassName(className) {
-        return this.trans(`trees.${className}`)
+        return this.trans(`flow-builder.${className}`)
       },
       shouldDisplayDividerBefore(blockClasses, className) {
         const shouldShowDividerBeforeBlock = lodash.pickBy(

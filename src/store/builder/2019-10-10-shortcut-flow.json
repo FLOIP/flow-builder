@@ -6,11 +6,15 @@
       "label": "",
       "lastModified": "2019-10-10 23:46:30.000000+00:00",
       "interactionTimeout": 172800,
-      "supportedModes": [],
+      "supportedModes": [
+        "sms",
+        "ivr",
+        "ussd"
+      ],
       "languages": [
         {
           "id": "22",
-          "name": "enCA",
+          "name": "English",
           "abbreviation": "EN",
           "orgId": "1008107874829627392",
           "rightToLeft": false,
@@ -35,7 +39,9 @@
               "yes": "29841127-3247-461e-829a-89c000000000",
               "no": "29841127-3247-461e-829a-94d800000000"
             },
-            "prompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc"
+            "prompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
+            "questionPrompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
+            "choicesPrompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc"
           },
           "platform_metadata": {
             "io_viamo": {
@@ -151,8 +157,15 @@
             {
               "uuid": "29841127-3247-4610-8037-cdc52896a851",
               "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb92667e05",
-              "tag": "1",
-              "label": "29841127-3247-4610-8037-cdc52896a851",
+              "tag": "Default",
+              "label": "Default",
+              "semanticLabel": ""
+            },
+            {
+              "uuid": "29841127-3247-4610-8037-cdc52896a852",
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
+              "tag": "Error",
+              "label": "Error",
               "semanticLabel": ""
             }
           ],
@@ -216,6 +229,7 @@
               "uuid": "29841127-3247-4610-8037-cdc5300939f6",
               "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
               "default": true,
+              "test": "",
               "tag": "DEFAULT",
               "label": "29841127-3247-4610-8037-cdc5300939f6",
               "semanticLabel": ""
@@ -266,8 +280,8 @@
             {
               "uuid": "29841127-3247-4610-8037-cdc54cda3755",
               "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
-              "tag": "1",
-              "label": "29841127-3247-4610-8037-cdc54cda3755",
+              "tag": "Default",
+              "label": "Default",
               "semanticLabel": ""
             }
           ],
@@ -283,7 +297,9 @@
               "yes": "29841127-3247-461e-829c-9fe800000000",
               "no": "29841127-3247-461e-829c-ab6800000000"
             },
-            "prompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75"
+            "prompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
+            "questionPrompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
+            "choicesPrompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75"
           },
           "platform_metadata": {
             "io_viamo": {
@@ -349,7 +365,7 @@
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '2'), AND(channel.mode != 'ivr', OR(block.value = '2', LOWER(block.value) = 'no'))))"
             }
           ],
-          "type": "MobilePrimitives\\SelectOneResponse"
+          "type": "MobilePrimitives\\SelectManyResponse"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb933994fe",
@@ -399,8 +415,15 @@
             {
               "uuid": "29841127-3247-4610-8037-cdc5827e3339",
               "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
-              "tag": "1",
-              "label": "29841127-3247-4610-8037-cdc5827e3339",
+              "tag": "Default",
+              "label": "Default",
+              "semanticLabel": ""
+            },
+            {
+              "uuid": "29841127-3247-4610-8037-cdc5827e3340",
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
+              "tag": "Error",
+              "label": "Error",
               "semanticLabel": ""
             }
           ],
@@ -452,8 +475,15 @@
             {
               "uuid": "29841127-3247-4610-8037-cdc58ffc925d",
               "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
-              "tag": "1",
-              "label": "29841127-3247-4610-8037-cdc58ffc925d",
+              "tag": "Default",
+              "label": "Default",
+              "semanticLabel": ""
+            },
+            {
+              "uuid": "29841127-3247-4610-8037-cdc58ffc925e",
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
+              "tag": "Error",
+              "label": "Error",
               "semanticLabel": ""
             }
           ],
@@ -502,8 +532,8 @@
             {
               "uuid": "29841127-3247-4610-8037-cdc5985884ed",
               "destinationBlock": null,
-              "tag": "1",
-              "label": "29841127-3247-4610-8037-cdc5985884ed",
+              "tag": "Default",
+              "label": "Default",
               "semanticLabel": ""
             }
           ],
@@ -816,6 +846,14 @@
             "offline"
           ],
           "value": "How many books per year do they read?"
+        },
+        {
+          "languageId": "22",
+          "contentType": "audio",
+          "modes": [
+            "ivr"
+          ],
+          "value": "How many books per year do they read?"
         }
       ]
     },
@@ -877,13 +915,20 @@
           "languageId": "22",
           "contentType": "text",
           "modes": [
-            "ivr",
             "sms",
             "ussd",
             "rich_messaging",
             "offline"
           ],
           "value": "Thanks for entering info about your dependents"
+        },
+        {
+          "languageId": "22",
+          "contentType": "audio",
+          "modes": [
+            "ivr"
+          ],
+          "value": "123"
         }
       ]
     }

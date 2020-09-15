@@ -14,6 +14,8 @@
   import {Component, Prop} from 'vue-property-decorator'
   import {IFlow} from '@floip/flow-runner'
   import {namespace} from 'vuex-class'
+  import lang from '@/lib/filters/lang'
+
   const flowVuexNamespace = namespace('flow')
 
   @Component<any>(
@@ -21,6 +23,7 @@
       components: {
         TextEditor,
       },
+      mixins: [lang],
     }
   )
   class FlowNameEditor extends Vue {
