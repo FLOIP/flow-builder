@@ -382,8 +382,14 @@
           color: $light;
         }
 
-        .block-exits .block-exit .block-exit-tag {
-          background-color: $light;
+        .block-exits .block-exit {
+          .block-exit-tag {
+            background-color: $light;
+          }
+
+          &.activated {
+            border-color: $light;
+          }
         }
 
         .block-target:hover {

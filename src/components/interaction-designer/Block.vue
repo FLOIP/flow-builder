@@ -374,6 +374,7 @@
 
     min-width: 122px;
     padding: 0.4em;
+    padding-bottom: 0.25em;
     scroll-margin: 35px;
     scroll-margin-top: 100px;
 
@@ -424,16 +425,18 @@
       white-space: nowrap;
       position: relative;
       top: 0em;
-      margin-top: 1em;
+      margin-top: 0.25em;
 
       .block-exit {
         display: inline-block;
+        border: 1px dashed transparent;
+        transition: border-radius 200ms ease-in-out;
+
         /*flex: auto;*/
         min-width: 6em;
         max-width: 140px;
-        padding-left: 1em;
-        padding-right: 1em;
 
+        padding: 0.25em 1em;
         text-align: center;
 
         .block-exit-tag  {
@@ -465,7 +468,13 @@
           opacity: 0;
           transition: opacity 200ms ease-in-out;
         }
+
+        &.activated {
+          border-radius: 0.3em;
+          border-color: #333333;
+        }
       }
+
     }
 
     // state mutations
