@@ -163,8 +163,6 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   },
 
   applyConnectionSourceRelocate({dispatch, commit, state: {operations}}) {
-    debugger
-
     const data = operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data
     if (!data) {
       throw new ValidationException(`Unable to complete uninitialized operation: ${JSON.stringify(data)}`)
