@@ -126,6 +126,13 @@
         // path: 'fluid',
         // path: 'arc',
         // path: 'magnet',
+
+        middleLabel: LeaderLine.captionLabel(this.exit.tag, {
+          color: categoryColorMappings[`category-${this.colorCategory}-dark`],
+          fontSize: 12,
+          // lineOffset: 65,
+        }),
+
       }
 
       // const {sourcePosition, targetPosition} = this
@@ -133,9 +140,14 @@
       //     LeaderLine.pointAnchor(document.body, sourcePosition),
       //     LeaderLine.pointAnchor(document.body, targetPosition), options)
 
-      this.line = new LeaderLine(
-          document.getElementById(this.sourceId),
-          document.getElementById(this.targetId), options)
+
+      const blockPaddingOffset = {x: 34, y: -7}
+      const start = document.getElementById(this.sourceId);
+      const end = this.position
+        ? document.getElementById(this.targetId)
+        : LeaderLine.pointAnchor(document.getElementById(this.targetId), blockPaddingOffset)
+
+      this.line = new LeaderLine(start, end, options)
 
       // stop listening to scroll and window resize hooks
       // LeaderLine.positionByWindowResize = false

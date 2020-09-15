@@ -296,8 +296,8 @@
 
         // since mouseenter + mouseleave will not occur when draggable is below cursor
         // we simply snap the draggable out from under the cursor during this operation
-        draggable.left += 60
-        draggable.top += 40
+        draggable.left += 30
+        draggable.top += 25
       },
 
       onCreateExitDragged({position: {left: x, top: y}}) {
@@ -328,8 +328,8 @@
 
         // since mouseenter + mouseleave will not occur when draggable is below cursor
         // we simply snap the draggable out from under the cursor during this operation
-        draggable.left += 60
-        draggable.top += 40
+        draggable.left += 30
+        draggable.top += 25
 
       },
 
