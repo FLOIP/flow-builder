@@ -45,9 +45,13 @@
         // @note - intentional side-effect; todo: move this into vuex responding to data changes
         this.$nextTick(this.reposition) // todo: we only want this called if something changes.
 
-        const {source} = this
+          // generate drafts while 'between exits' or 'source/destination unknown'
+        // todo: push these out into ?block?
+        const source = this.source || {
+          ...set({}, 'platform_metadata.io_viamo.uiData.xPosition', this.position.x),
+          ...set({}, 'platform_metadata.io_viamo.uiData.yPosition', this.position.y)}
+
         const target = this.target || {
-          // generate draft target while 'between exits' or 'destination unknown'
           ...set({}, 'platform_metadata.io_viamo.uiData.xPosition', this.position.x),
           ...set({}, 'platform_metadata.io_viamo.uiData.yPosition', this.position.y)}
 
@@ -58,7 +62,19 @@
 
     methods: {
       reposition() {
-        this.line && this.line.position()
+        if (!this.line) {
+          return
+        }
+
+        const position = this.line.position()
+
+        console.debug('connection', 'repositioning', {
+          source: this.source?.uuid,
+          target: this.target?.uuid,
+          position,
+          x: this.line.top,
+          y: this.line.left,
+        })
       }
     },
 

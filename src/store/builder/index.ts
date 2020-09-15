@@ -118,7 +118,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // [OperationKind.CONNECTION_SOURCE_RELOCATE] //////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // todo: do operations warrant their own store?
+  // todo: do operations warrant their own store? Maybe a generic store that handles a common behaviour
 
   initializeConnectionSourceRelocateWith({commit}, {
     block: {uuid: blockId},
@@ -163,6 +163,8 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   },
 
   applyConnectionSourceRelocate({dispatch, commit, state: {operations}}) {
+    debugger
+
     const data = operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data
     if (!data) {
       throw new ValidationException(`Unable to complete uninitialized operation: ${JSON.stringify(data)}`)
@@ -286,7 +288,8 @@ export function createDefaultBlockTypeInstallerFor(
     || builder.$store.registerModule(['flow', blockType], storeForBlockType)
 }
 
-export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock, positionOverride) {
+export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
+  console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
     [source.platform_metadata.io_viamo.uiData.xPosition, source.platform_metadata.io_viamo.uiData.yPosition],
@@ -298,6 +301,6 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock, p
 
     // other exit titles // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
     ...map(source.exits, 'tag'),
-    ...map(target && target.exits, 'tag'),
+    ...map(target.exits, 'tag'),
   ]
 }

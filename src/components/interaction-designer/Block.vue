@@ -60,6 +60,8 @@
                                'btn-info': exit.destinationBlock != null,
                            }"
                            :id="`exit/${exit.uuid}/pseudo-block-handle`"
+                           :key="`exit/${exit.uuid}/pseudo-block-handle`"
+                           @initialized="handleDraggableInitializedFor(exit, $event)"
                            @dragStarted="onCreateExitDragStarted($event, exit)"
                            @dragged="onCreateExitDragged($event)"
                            @dragEnded="onCreateExitDragEnded($event, exit)">
@@ -91,6 +93,8 @@
                                // 'btn-default': exit.destinationBlock != null,
                            }"
                            :id="`exit/${exit.uuid}/handle`"
+                           :key="`exit/${exit.uuid}/handle`"
+                           @initialized="handleDraggableInitializedFor(exit, $event)"
                            @dragStarted="onMoveExitDragStarted($event, exit)"
                            @dragged="onMoveExitDragged($event)"
                            @dragEnded="onMoveExitDragEnded($event, exit)">
@@ -105,7 +109,7 @@
 
           <connection :key="`exit/${exit.uuid}/line`"
                       :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
-                      :source="block"
+                      :source="livePosition ? null : block"
                       :target="blocksById[exit.destinationBlock]"
                       :exit="exit"
                       :position="livePosition"
@@ -118,7 +122,7 @@
 </template>
 
 <script>
-  import {isNumber} from 'lodash'
+  import {isNumber, forEach} from 'lodash'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   import PlainDraggable from '@/components/common/PlainDraggable.vue'
   import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
@@ -133,9 +137,14 @@
       PlainDraggable,
     },
 
+    created() {
+      this.draggablesByExitId = {} // todo: these need to be (better) lifecycle-managed (eg. mcq add/remove exit).
+    },
+
     data() {
       return {
         livePosition: null,
+        // draggablesByExitId: {}, // no need to vuejs-observe these
       }
     },
 
@@ -250,13 +259,29 @@
         // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
 
         const {block} = this
-        this.$nextTick(() =>
-          this.setBlockPositionTo({position: {x, y}, block}))
+        this.$nextTick(() => {
+          this.setBlockPositionTo({position: {x, y}, block})
+
+          forEach(this.draggablesByExitId, draggable =>
+            draggable.position())
+
+          console.debug('Block', 'onMoved', 'positioned all of', this.draggablesByExitId)
+        })
       },
 
       removeConnectionFrom(exit) {
         const {block} = this
         this._removeConnectionFrom({block, exit})
+      },
+
+      handleDraggableInitializedFor({uuid}, {draggable}) {
+        this.draggablesByExitId[uuid] = draggable
+
+        const {left, top} = draggable
+        const {uuid: blockId} = this.block
+
+
+        console.debug('Block', 'handleDraggableInitializedFor', {blockId, exitId: uuid, coords: {left, top}})
       },
 
       onCreateExitDragStarted({draggable}, exit) {
@@ -280,9 +305,15 @@
 
       onCreateExitDragEnded({draggable}) {
         const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE].data.position
+
+        console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
+        console.debug('Block', 'onCreateExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
+
         Object.assign(draggable, {left, top})
 
         this.applyConnectionCreate()
+
+        this.livePosition = null
       },
 
       onMoveExitDragStarted({draggable}, exit) {
@@ -310,9 +341,14 @@
 
       onMoveExitDragEnded({draggable}) {
         const {x: left, y: top} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data.position
+
+        console.debug('Block', 'onMoveExitDragEnded', 'operation.data.position', {left, top})
+        console.debug('Block', 'onMoveExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
+
         Object.assign(draggable, {left, top})
 
         this.applyConnectionSourceRelocate()
+        this.livePosition = null
       },
 
       selectBlock() {

@@ -2,10 +2,10 @@
   <div class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
-    <div v-if="activeBlock"
-         class="tree-sidebar-container">
+    <div class="tree-sidebar-container"
+         :class="{'slide-out': !activeBlock}">
       <div class="tree-sidebar"
-           :class="[`category-${blockClasses[activeBlock.type].category}`]">
+           :class="[`category-${activeBlock && blockClasses[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
@@ -215,7 +215,7 @@
 
       handleCanvasSelected({target}) {
         if (!target.classList.contains('builder-canvas')) {
-          console.debug('InteractionDesigner / Non-canvas selection mitigated')
+          console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
           return
         }
 
@@ -289,12 +289,13 @@
 
     padding: 1em;
     padding-top: $toolbar-height;
+    transition: right 200ms ease-in-out;
 
     .tree-sidebar {
       background-color: #eaeaea;
       border: 1px solid #5b5b5b;
       border-radius: 0.3em;
-      box-shadow: 0px 3px 6px #CACACA;
+      box-shadow: 0 3px 6px #CACACA;
 
       padding: 1em;
       margin-top: 1em;
@@ -302,6 +303,10 @@
       transition:
         200ms background-color ease-in-out,
         200ms border-color ease-in-out;
+    }
+
+    &.slide-out {
+      right: -$sidebar-width;
     }
   }
 
@@ -315,6 +320,8 @@
 
     border-bottom: 1px solid darkgrey;
     background: #eee;
+
+    box-shadow: 0 3px 6px #CACACA;
   }
 
 
