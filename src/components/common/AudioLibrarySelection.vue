@@ -6,12 +6,12 @@
            'tree-audio-control-text-container-selected': !selectable}">
 
     <button @click.prevent="clear"
-            class="audio-library-selection-clear-selection btn-flat pull-right">
+            class="audio-library-selection-clear-selection btn-ghost pull-right">
       <i class="glyphicon glyphicon-remove"></i>
     </button>
 
     <div class="btn-group audio-library-selection-download-dropdown">
-      <button type="button" class="btn btn-flat dropdown-toggle" data-toggle="dropdown">
+      <button type="button" class="btn btn-ghost dropdown-toggle" data-toggle="dropdown">
         <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
         <span class="caret"></span>
       </button>
@@ -68,10 +68,9 @@
 </script>
 
 <style lang="scss">
-  .btn-flat {
+  .btn-ghost {
+    background: transparent;
     border: none;
-    background-color: transparent;
-    background: none;
   }
 
   .audio-library-selection {
