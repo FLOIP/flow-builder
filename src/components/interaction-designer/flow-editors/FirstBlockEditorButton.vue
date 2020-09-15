@@ -19,12 +19,15 @@
   </div>
 </template>
 
-<script>
-  import {mapMutations} from 'vuex'
+<script lang="ts">
+  import Vue from 'vue'
+  import {Component, Prop} from 'vue-property-decorator'
   import lang from '@/lib/filters/lang'
+  import {namespace} from "vuex-class"
 
-  export default {
-    mixins: [lang],
+  const flowVuexNamespace = namespace('flow')
+
+  @Component<any>({
     props: {
       flow: Object,
       blockId: String, // set for particular block
@@ -35,19 +38,19 @@
       },
     },
 
-    computed: {
-      isStartBlock() {
-        return this.blockId === this.flow.firstBlockId
-      },
-    },
+    mixins: [lang],
+  })
+  class FirstBlockEditorButton extends Vue {
+    get isStartBlock() {
+      return this.blockId === this.flow.firstBlockId
+    }
 
-    methods: {
-      ...mapMutations('flow', ['flow_setFirstBlockId']),
+    setStartBlock() {
+      const {flow: {uuid: flowId}, blockId} = this
+      this.flow_setFirstBlockId({flowId, blockId})
+    }
 
-      setStartBlock() {
-        const {flow: {uuid: flowId}, blockId} = this
-        this.flow_setFirstBlockId({flowId, blockId})
-      },
-    },
+    @flowVuexNamespace.Mutation flow_setFirstBlockId
   }
+  export default FirstBlockEditorButton
 </script>

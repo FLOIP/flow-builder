@@ -41,13 +41,13 @@
 
   import CaseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
   //providing this generic is required by tsserver checking but not in the build run by yarn storybook
   //TODO - understand what is going on here and if there is something more correct we should have instead
   @Component<any>({
-    name: 'Core_CaseBlock.vue',
     components: {
       ExpressionEditor,
       BlockNameEditor,
@@ -62,12 +62,6 @@
     @Prop()readonly block!: ICaseBlock
     @Prop()readonly flow!: IFlow
 
-    created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], CaseStore)
-        }
-    }
-
     get exits(): IBlockExitTestRequired[] {
       return this.block.exits
     }
@@ -76,4 +70,5 @@
   }
 
   export default Core_CaseBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, CaseStore)
 </script>

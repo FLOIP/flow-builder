@@ -45,6 +45,7 @@
 
   import OpenResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -66,12 +67,6 @@
     @Prop()readonly block!: IOpenResponseBlock
     @Prop()readonly flow!: IFlow
 
-    created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], OpenResponseStore)
-        }
-    }
-
     get promptResource(): IResourceDefinition {
       return this.resourcesByUuid[this.block.config.prompt]
     }
@@ -85,4 +80,5 @@
   }
 
   export default MobilePrimitives_OpenResponseBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, OpenResponseStore)
 </script>

@@ -1,15 +1,13 @@
 <template>
-  <div class="interaction-designer-contents panel panel-default">
+  <div class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
-    <div class="tree-sidebar-menu-container">
-      <div class="tree-sidebar-menu" id="tree-sidebar">
+    <div class="tree-sidebar-container">
+      <div v-if="activeBlock" class="tree-sidebar"
+           :class="[`category-${blockClasses[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
-
-          <flow-editor v-if="!activeBlock"
-                       :flow="activeFlow" />
 
           <div v-if="activeBlock"
                :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
@@ -31,24 +29,26 @@
 <!--          :data-for-block-id="jsKey" />-->
 
       </div>
+      <div v-else class="tree-sidebar">
+        <div class="tree-sidebar-edit-block">
+          <flow-editor :flow="activeFlow" />
+        </div>
+      </div>
     </div>
 
-    <div class="panel-body tree-contents">
-      <div id="tree-workspace"
-           class="tree-block-container"
-           :style="{'min-height': `${designerWorkspaceHeight}px`}">
-        <builder-canvas @click.native="handleCanvasSelected" />
-      </div>
+    <div class="tree-contents"
+         :x-style="{'min-height': `${designerWorkspaceHeight}px`}">
+      <builder-canvas @click.native="handleCanvasSelected" />
     </div>
   </div>
 </template>
 
 <script>
   import lang from '@/lib/filters/lang'
-  import lodash, {forEach} from 'lodash'
+  import lodash, {forEach, invoke} from 'lodash'
   import Vue from 'vue'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-  import {affix as Affix} from 'vue-strap'
+  // import {affix as Affix} from 'vue-strap'
   // import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
 
   // import * as BlockTypes from './block-types'
@@ -76,7 +76,7 @@
 
     components: {
       // ...BlockTypes,
-      Affix,
+      // Affix,
       // JsPlumbBlock,
       // TreeEditor,
       // TreeViewer,
@@ -122,7 +122,12 @@
         'validationResults',
       ]),
       ...mapState({
+
+        // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
         designerWorkspaceHeight: ({trees: {tree, ui}}) => ui.designerWorkspaceHeight,
+
+
+
         tree: ({trees: {tree, ui}}) => tree,
         validationResultsEmptyTree: ({trees: {tree, ui}}) => !tree.blocks.length,
         hasVoice: ({trees: {tree}}) => tree.details.hasVoice,
@@ -202,23 +207,17 @@
         forEach(blockClasses, async ({type}) => {
           const normalizedType = type.replace('\\', '_')
           const typeWithoutSeparators = type.replace(/\\/g, '')
-
-          // if ($store.hasModule(type)) {
-          //   return
-          // }
-          //
-          // const storeForType = await import(
-          //   `../store/flow/block-types/${normalizedType}BlockStore`)
-          // $store.registerModule(['flow', type], storeForType)
-
-          const {default: componentDefaultExport} = await import(
+          const exported = await import(
             `../components/interaction-designer/block-types/${normalizedType}Block.vue`)
-          Vue.component(`Flow${typeWithoutSeparators}`, componentDefaultExport)
+
+          invoke(exported, 'install', this)
+          Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
         })
       },
 
       handleCanvasSelected({target}) {
         if (!target.classList.contains('builder-canvas')) {
+          console.debug('InteractionDesigner / Non-canvas selection mitigated')
           return
         }
 
@@ -261,20 +260,134 @@
 <style src="bootstrap/dist/css/bootstrap.css"></style>
 <style src="bootstrap/dist/css/bootstrap-theme.css"></style>
 <!--<style src="../css/voto3.css"></style>-->
-<style src="../css/InteractionDesigner.css"></style>
+<!--<style src="../css/InteractionDesigner.css"></style>-->
 
 <style lang="scss">
   // Colors + dimensions
   $dot-size: 1px;
   $dot-space: 22px;
-  $dot-color: CornflowerBlue;
-  $bg-color: white;
+  $dot-color: #333;
+  $bg-color: #fcfcfc;
 
-  #tree-workspace {
+  $toolbar-height: 56px;
+  $sidebar-width: 365px;
+
+  body {
     background:
       linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
       linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center, $dot-color;
     background-size: $dot-space $dot-space;
+  }
+
+  .tree-sidebar-container {
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 2*10;
+
+    height: 100vh;
+    width: $sidebar-width;
+    overflow-y: scroll;
+
+    padding: 1em;
+    padding-top: $toolbar-height;
+
+    .tree-sidebar {
+      background-color: #eaeaea;
+      border: 1px solid #5b5b5b;
+      border-radius: 0.3em;
+      box-shadow: 0px 3px 6px #CACACA;
+
+      padding: 1em;
+      margin-top: 1em;
+
+      transition:
+        200ms background-color ease-in-out,
+        200ms border-color ease-in-out;
+    }
+  }
+
+  .tree-builder-toolbar {
+    position: fixed;
+    z-index: 3*10;
+    left: 0;
+    top: 0;
+
+    width: 100vw;
+
+    border-bottom: 1px solid darkgrey;
+    background: #eee;
+  }
+
+
+  // color categorizations
+  $category-0-faint: #fbfdfb;
+  $category-0-light: #97BD8A;
+  $category-0-dark: #38542f;
+  $category-1-faint: #fdfdfe;
+  $category-1-light: #6897BB;
+  $category-1-dark: #30516a;
+  $category-2-faint: #fdfbf8;
+  $category-2-light: #C69557;
+  $category-2-dark: #6e4e25;
+
+  .tree-sidebar-container {
+    .tree-sidebar {
+      &.category-0 {
+        border-color: $category-0-light;
+        background-color: $category-0-faint;
+
+        h3 {
+          color: $category-0-dark;
+        }
+      }
+
+      &.category-1 {
+        border-color: $category-1-light;
+        background-color: $category-1-faint;
+
+        h3 {
+          color: $category-1-dark;
+        }
+      }
+
+      &.category-2 {
+        border-color: $category-2-light;
+        background-color: $category-2-faint;
+
+        h3 {
+          color: $category-2-dark;
+        }
+      }
+    }
+  }
+
+  .block {
+    @mixin block-category($i, $faint, $light, $dark) {
+      &.category-#{$i} {
+        border-color: $light;
+
+        .block-type {
+          color: $light;
+        }
+
+        .block-exits .block-exit .block-exit-tag {
+          background-color: $light;
+        }
+
+        .block-target:hover {
+          border: 1px dashed $light;
+        }
+
+        &.active {
+          background-color: $faint;
+        }
+      }
+    }
+
+    @include block-category(0, $category-0-faint, $category-0-light, $category-0-dark);
+    @include block-category(1, $category-1-faint, $category-1-light, $category-1-dark);
+    @include block-category(2, $category-2-faint, $category-2-light, $category-2-dark);
   }
 
   // @note - these styles have been extracted so the output can be reused between storybook and voto5

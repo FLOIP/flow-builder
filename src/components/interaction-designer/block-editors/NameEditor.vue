@@ -18,7 +18,6 @@
   import lang from '@/lib/filters/lang'
 
   export default {
-    name: 'NameEditor',
     components: {
       TextEditor,
     },
@@ -43,6 +42,7 @@
           this.block_setName({blockId: this.block.uuid, value})
         },
       },
+
     },
     methods: {
       ...mapMutations('flow', ['block_setName']),

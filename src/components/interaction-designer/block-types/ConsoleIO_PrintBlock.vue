@@ -27,9 +27,7 @@
 
   import {IFlow} from '@floip/flow-runner'
   import IPrintBlock from '@floip/flow-runner/src/model/block/IPrintBlock'
-  import {
-    IResourceDefinition,
-  } from '@floip/flow-runner/src/domain/IResourceResolver'
+  import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -39,6 +37,7 @@
   import BlockId from '../block-editors/BlockId.vue'
   import PrintStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const flowVuexNamespace = namespace('flow')
 
@@ -57,12 +56,6 @@
     @Prop()readonly block!: IPrintBlock
     @Prop()readonly flow!: IFlow
 
-    created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], PrintStore)
-        }
-    }
-
     get promptResource(): IResourceDefinition {
       return this.resourcesByUuid[this.block.config.message]
     }
@@ -71,4 +64,5 @@
   }
 
   export default ConsoleIO_PrintBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, PrintStore)
 </script>

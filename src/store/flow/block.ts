@@ -1,16 +1,20 @@
-import {findBlockOnActiveFlowWith, IContext, IBlockExit, IResourceDefinition} from '@floip/flow-runner'
+import {
+  IContext,
+  IBlock,
+  IBlockExit,
+  IResourceDefinition,
+  findBlockExitWith,
+  ValidationException,
+  findBlockOnActiveFlowWith,
+} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '.'
 import {IRootState} from '@/store'
 import {defaults, without} from 'lodash'
 import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import { popFirstEmptyItem } from './utils/listBuilder'
+import {popFirstEmptyItem} from './utils/listBuilder'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  activeBlock: (state: IFlowsState) => state.flows.length
-    && state.activeBlock
-    && findBlockOnActiveFlowWith(state.activeBlock, state as unknown as IContext) || null,
-
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
   //       the interesting bit is that resources are _all_ resources... so we could follow suit here? :shrug:
   // blocksByUuid: ({flows}) => map(resources, 'uuid')
@@ -63,6 +67,11 @@ export const mutations: MutationTree<IFlowsState> = {
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
   },
+  block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    findBlockExitWith(exitId, block)
+      .destinationBlock = destinationBlockId
+  },
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
@@ -91,4 +100,34 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     //TODO - handle other props apart from test
     commit('block_setExitTest', {blockId, exitId, value})
   },
+
+  async block_swapBlockExitDestinationBlockIds(
+    {commit, state},
+    {first, second}: {first: IDeepBlockExitIdWithinFlow, second: IDeepBlockExitIdWithinFlow}) {
+
+    if (!first || !second) {
+      throw new ValidationException(`Unable to swap destinationBlockId on null: ${JSON.stringify({first, second})}`)
+    }
+
+    const firstBlock = findBlockOnActiveFlowWith(first.blockId, state as unknown as IContext)
+    const secondBlock = findBlockOnActiveFlowWith(second.blockId, state as unknown as IContext)
+
+    const {destinationBlock: firstDesinationBlockId} = findBlockExitWith(first.exitId, firstBlock)
+    const {destinationBlock: secondDesinationBlockId} = findBlockExitWith(second.exitId, secondBlock)
+
+    commit('block_setBlockExitDestinationBlockId', {
+      blockId: first.blockId,
+      exitId: first.exitId,
+      destinationBlockId: secondDesinationBlockId})
+
+    commit('block_setBlockExitDestinationBlockId', {
+      blockId: second.blockId,
+      exitId: second.exitId,
+      destinationBlockId: firstDesinationBlockId})
+  },
+}
+
+export interface IDeepBlockExitIdWithinFlow {
+  blockId: IBlock['uuid'],
+  exitId: IBlockExit['uuid'],
 }

@@ -10,7 +10,7 @@
   import {mapGetters} from 'vuex'
 
   export default {
-    props: ['block', 'exit', 'position'],
+    props: ['block', 'exit', 'position', 'colorCategory'],
 
     data() {
       return {
@@ -96,15 +96,29 @@
       //       What I'm thinking is that we can just leverage these x/y's? How do we then update them?
       // new LeaderLine(element1, LeaderLine.pointAnchor(element3, {x: 10, y: 30}));
 
+      const categoryColorMappings = {
+        'category-0-faint': '#fbfdfb',
+        'category-0-light': '#97BD8A',
+        'category-0-dark': '#38542f',
+        'category-1-faint': '#fdfdfe',
+        'category-1-light': '#6897BB',
+        'category-1-dark': '#30516a',
+        'category-2-faint': '#fdfbf8',
+        'category-2-light': '#C69557',
+        'category-2-dark': '#6e4e25',
+      }
+
+
+
       const options = {
         startPlug: 'square',
 
-        startPlugColor: 'rgb(225,2,111, 1)',
-        endPlugColor: 'rgb(83,25,68, 1)',
+        startPlugColor: categoryColorMappings[`category-${this.colorCategory}-light`],
+        endPlugColor: categoryColorMappings[`category-${this.colorCategory}-dark`],
         gradient: true,
 
         startSocket: 'bottom',
-        // endSocket: 'auto',
+        endSocket: 'top',
 
         size: 3,
         outline: true,

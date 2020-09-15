@@ -1,4 +1,5 @@
 import {flatMap, isEqual, keyBy, mapValues} from 'lodash'
+import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {IRootState} from "@/store"
 import {IBlock, SupportedMode, ValidationException} from "@floip/flow-runner"
@@ -313,3 +314,12 @@ export const store: Module<IBuilderState, IRootState> = {
 }
 
 export default store
+
+export function createDefaultBlockTypeInstallerFor(
+    blockType: IBlock['type'],
+    storeForBlockType: Module<any, IRootState>) {
+
+  return (builder: Vue) =>
+    builder.$store.hasModule(['flow', blockType])
+    || builder.$store.registerModule(['flow', blockType], storeForBlockType)
+}

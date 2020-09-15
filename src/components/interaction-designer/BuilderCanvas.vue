@@ -46,8 +46,7 @@
   }
 
   .builder-canvas {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 9999px;
+    height: 9999px;
   }
 </style>

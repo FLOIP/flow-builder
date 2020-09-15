@@ -12,7 +12,7 @@
     },
     "languages": [
       {
-        "id": "1",
+        "id": "22",
         "name": "English",
         "abbreviation": "EN",
         "orgId": "1008107874829627392",
@@ -21,7 +21,7 @@
         "deletedAt": null
       },
       {
-        "id": "2",
+        "id": "23",
         "name": "Spanish",
         "abbreviation": "ES",
         "orgId": "1008107874829627392",
@@ -34,52 +34,72 @@
       "ConsoleIO\\Print": {
         "name": "ConsoleIO\\Print",
         "type": "ConsoleIO\\Print",
-        "is_interactive": false
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0
       },
       "ConsoleIO\\Read": {
         "name": "ConsoleIO\\Read",
         "type": "ConsoleIO\\Read",
-        "is_interactive": true
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1
       },
       "Core\\Case": {
         "name": "Core\\Case",
         "type": "Core\\Case",
-        "is_interactive": false
+        "is_interactive": false,
+        "is_branching": true,
+        "category":  2
       },
       "Core\\Log": {
         "name": "Core\\Log",
         "type": "Core\\Log",
-        "is_interactive": false
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0
       },
       "Core\\Output": {
         "name": "Core\\Output",
         "type": "Core\\Output",
-        "is_interactive": false
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0
       },
       "Core\\RunFlow": {
         "name": "Core\\RunFlow",
         "type": "Core\\RunFlow",
-        "is_interactive": false
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0
       },
       "MobilePrimitives\\Message": {
         "name": "MobilePrimitives\\Message",
         "type": "MobilePrimitives\\Message",
-        "is_interactive": true
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1
       },
       "MobilePrimitives\\NumericResponse": {
         "name": "MobilePrimitives\\NumericResponse",
         "type": "MobilePrimitives\\NumericResponse",
-        "is_interactive": true
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1
       },
       "MobilePrimitives\\OpenResponse": {
         "name": "MobilePrimitives\\OpenResponse",
         "type": "MobilePrimitives\\OpenResponse",
-        "is_interactive": true
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1
       },
       "MobilePrimitives\\SelectOneResponse": {
         "name": "MobilePrimitives\\SelectOneResponse",
         "type": "MobilePrimitives\\SelectOneResponse",
-        "is_interactive": true
+        "is_interactive": true,
+        "is_branching": true,
+        "category":  2
       },
       "MobilePrimitives\\SelectManyResponse": {
         "name": "MobilePrimitives\\SelectManyResponse",
@@ -89,12 +109,16 @@
       "SmartDevices\\LocationResponse": {
         "name": "SmartDevices\\LocationResponse",
         "type": "SmartDevices\\LocationResponse",
-        "is_interactive": true
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1
       },
       "SmartDevices\\PhotoResponse": {
         "name": "SmartDevices\\PhotoResponse",
         "type": "SmartDevices\\PhotoResponse",
-        "is_interactive": true
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1
       }
     },
     "blockTags": [],

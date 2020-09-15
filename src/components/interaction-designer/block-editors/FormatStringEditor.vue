@@ -12,7 +12,6 @@
   import lang from '@/lib/filters/lang'
 
   export default {
-    name: 'LabelEditor',
     components: {
       TextEditor,
     },

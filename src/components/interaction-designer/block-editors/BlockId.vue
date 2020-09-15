@@ -12,7 +12,6 @@
   import lang from '@/lib/filters/lang'
 
   @Component<any>({
-    name: 'BlockId',
     mixins: [lang],
   })
   class BlockId extends Vue {

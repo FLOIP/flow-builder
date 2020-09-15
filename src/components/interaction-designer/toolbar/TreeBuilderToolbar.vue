@@ -4,7 +4,7 @@
          class="flows-importer alert alert-info">
       <h3>{{trans('flow-builder.flow-importer')}}</h3>
       <textarea v-model="flow"
-                class=""
+                class="flow-importer"
                 rows="15"></textarea>
     </div>
 
@@ -15,6 +15,7 @@
           <button class="btn btn-default"
                   :class="{active: isImporterVisible}"
                   @click="toggleImportExport">
+            <i class="glyphicon glyphicon-chevron-up"></i>
             {{trans('flow-builder.import-export')}}
           </button>
 
@@ -194,14 +195,14 @@
   import lodash, {isEmpty} from 'lodash'
   import flow from 'lodash/fp/flow'
   import pickBy from 'lodash/fp/pickBy'
-  import {affix as Affix} from 'vue-strap'
+  // import {affix as Affix} from 'vue-strap'
   // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
   // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
   import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
 
   export default {
     components: {
-      Affix,
+      // Affix,
       // TreeUpdateConflictModal,
       // InteractionTotalsDateRangeConfiguration
     },
@@ -410,8 +411,6 @@
 
 <style lang="scss">
   .tree-builder-toolbar {
-    padding-right: 366px;
-
     .flows-importer textarea {
       display: block;
       width: 100%;

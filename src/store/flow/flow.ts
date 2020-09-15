@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import {
   findBlockWith,
   findFlowWith,
@@ -27,6 +28,10 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 
 export const mutations: MutationTree<IFlowsState> = {
   flow_addBlock(state, {flowId, block}: {flowId: string, block: IBlock}) {
+    if (block == null) {
+      throw new ValidationException('Unable to add null block to flow')
+    }
+
     const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
     const length = flow.blocks.push(block)
 
@@ -82,7 +87,7 @@ export const mutations: MutationTree<IFlowsState> = {
   flow_setFirstBlockId(state, {flowId, blockId}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow)  // @throws ValidationException when block absent
-    flow.firstBlockId = block.uuid
+    Vue.set(flow, 'firstBlockId', block.uuid)
   },
   flow_setName(state, {flowId, value}) {
     findFlowWith(flowId, state as unknown as IContext).name = value

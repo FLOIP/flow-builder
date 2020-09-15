@@ -59,6 +59,7 @@
 
   import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
   import lang from '@/lib/filters/lang'
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
 
   const flowVuexNamespace = namespace('flow')
   const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -77,12 +78,6 @@
   export class MobilePrimitives_SelectOneResponseBlock extends Vue {
     @Prop()readonly block!: ISelectOneResponseBlock
     @Prop()readonly flow!: IFlow
-
-    beforeCreate() {
-      if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-        this.$store.registerModule(['flow', BLOCK_TYPE], SelectOneStore)
-      }
-    }
 
     get promptResource(): IResourceDefinition {
       return this.resourcesByUuid[this.block.config.prompt]
@@ -105,8 +100,5 @@
   }
 
   export default MobilePrimitives_SelectOneResponseBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectOneStore)
 </script>
-
-<style>
-
-</style>

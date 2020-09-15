@@ -27,9 +27,7 @@
 
   import {IFlow} from '@floip/flow-runner'
   import ILogBlock from '@floip/flow-runner/src/model/block/ILogBlock'
-  import {
-    IResourceDefinition,
-  } from '@floip/flow-runner/src/domain/IResourceResolver'
+  import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -38,12 +36,12 @@
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import BlockId from '../block-editors/BlockId.vue'
   import LogStore, {BLOCK_TYPE} from "@/store/flow/block-types/Core_LogBlockStore";
+  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
   import lang from '@/lib/filters/lang'
 
   const flowVuexNamespace = namespace('flow')
 
   @Component<any>({
-    name: 'Core_LogBlock.vue',
     components: {
       ResourceEditor,
       BlockNameEditor,
@@ -58,11 +56,6 @@
     @Prop()readonly block!: ILogBlock
     @Prop()readonly flow!: IFlow
 
-    created() {
-        if (!this.$store.hasModule(['flow', BLOCK_TYPE])) {
-            this.$store.registerModule(['flow', BLOCK_TYPE], LogStore)
-        }
-    }
     get promptResource(): IResourceDefinition {
       return this.resourcesByUuid[this.block.config.message]
     }
@@ -71,4 +64,5 @@
   }
 
   export default Core_LogBlock
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LogStore)
 </script>
