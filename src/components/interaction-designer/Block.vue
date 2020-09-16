@@ -28,7 +28,10 @@
         {{trans(`flow-builder.${block.type}`)}}
       </p>
 
-      <h3 class="block-label">{{block.label}}</h3>
+      <h3 class="block-label"
+          :class="{'empty': !block.label}">
+        {{block.label || 'Untitled block'}}
+      </h3>
     </header>
 
     <div class="block-exits">
@@ -57,6 +60,8 @@
                                'btn-info': exit.destinationBlock != null,
                            }"
                            :id="`exit/${exit.uuid}/pseudo-block-handle`"
+                           :key="`exit/${exit.uuid}/pseudo-block-handle`"
+                           @initialized="handleDraggableInitializedFor(exit, $event)"
                            @dragStarted="onCreateExitDragStarted($event, exit)"
                            @dragged="onCreateExitDragged($event)"
                            @dragEnded="onCreateExitDragEnded($event, exit)">
@@ -73,9 +78,10 @@
             </div>
 
             <connection :key="`exit/${exit.uuid}/line-for-draft`"
-                        :positionCacheKey="`_`"
+                        :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
+                        :source="block"
+                        :target="blocksById[exit.destinationBlock]"
                         :exit="exit"
-                        :block="block"
                         :position="livePosition"
                         :color-category="blockClasses[block.type].category" />
           </template>
@@ -87,6 +93,8 @@
                                // 'btn-default': exit.destinationBlock != null,
                            }"
                            :id="`exit/${exit.uuid}/handle`"
+                           :key="`exit/${exit.uuid}/handle`"
+                           @initialized="handleDraggableInitializedFor(exit, $event)"
                            @dragStarted="onMoveExitDragStarted($event, exit)"
                            @dragged="onMoveExitDragged($event)"
                            @dragEnded="onMoveExitDragEnded($event, exit)">
@@ -100,8 +108,9 @@
           </div>
 
           <connection :key="`exit/${exit.uuid}/line`"
-                      :positionCacheKey="`_`"
-                      :block="block"
+                      :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
+                      :source="livePosition ? null : block"
+                      :target="blocksById[exit.destinationBlock]"
                       :exit="exit"
                       :position="livePosition"
                       :color-category="blockClasses[block.type].category" />
@@ -113,11 +122,11 @@
 </template>
 
 <script>
-  import {isNumber} from 'lodash'
-  import {mapActions, mapMutations, mapState} from 'vuex'
+  import {isNumber, forEach} from 'lodash'
+  import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   import PlainDraggable from '@/components/common/PlainDraggable.vue'
   import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
-  import {OperationKind} from '@/store/builder'
+  import {OperationKind, generateConnectionLayoutKeyFor} from '@/store/builder'
   import Connection from '@/components/interaction-designer/Connection.vue'
   import lang from '@/lib/filters/lang'
 
@@ -129,9 +138,14 @@
       PlainDraggable,
     },
 
+    created() {
+      this.draggablesByExitId = {} // todo: these need to be (better) lifecycle-managed (eg. mcq add/remove exit).
+    },
+
     data() {
       return {
         livePosition: null,
+        // draggablesByExitId: {}, // no need to vuejs-observe these
       }
     },
 
@@ -141,6 +155,8 @@
       ...mapState({
         blockClasses: ({trees: {ui}}) => ui.blockClasses,
       }),
+
+      ...mapGetters('builder', ['blocksById']),
 
       hasLayout() {
         return isNumber(this.x) && isNumber(this.y)
@@ -162,6 +178,11 @@
     },
 
     methods: {
+      // todo: how do we decide whether or not this should be an action or a vanilla domain function?
+      ...{
+        generateConnectionLayoutKeyFor,
+      },
+
       ...mapMutations('builder', ['setBlockPositionTo']),
 
       ...mapActions('builder', {
@@ -239,13 +260,29 @@
         // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
 
         const {block} = this
-        this.$nextTick(() =>
-          this.setBlockPositionTo({position: {x, y}, block}))
+        this.$nextTick(() => {
+          this.setBlockPositionTo({position: {x, y}, block})
+
+          forEach(this.draggablesByExitId, draggable =>
+            draggable.position())
+
+          console.debug('Block', 'onMoved', 'positioned all of', this.draggablesByExitId)
+        })
       },
 
       removeConnectionFrom(exit) {
         const {block} = this
         this._removeConnectionFrom({block, exit})
+      },
+
+      handleDraggableInitializedFor({uuid}, {draggable}) {
+        this.draggablesByExitId[uuid] = draggable
+
+        const {left, top} = draggable
+        const {uuid: blockId} = this.block
+
+
+        console.debug('Block', 'handleDraggableInitializedFor', {blockId, exitId: uuid, coords: {left, top}})
       },
 
       onCreateExitDragStarted({draggable}, exit) {
@@ -259,7 +296,8 @@
 
         // since mouseenter + mouseleave will not occur when draggable is below cursor
         // we simply snap the draggable out from under the cursor during this operation
-        draggable.left += 60
+        draggable.left += 30
+        draggable.top += 25
       },
 
       onCreateExitDragged({position: {left: x, top: y}}) {
@@ -268,9 +306,15 @@
 
       onCreateExitDragEnded({draggable}) {
         const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE].data.position
+
+        console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
+        console.debug('Block', 'onCreateExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
+
         Object.assign(draggable, {left, top})
 
         this.applyConnectionCreate()
+
+        this.livePosition = null
       },
 
       onMoveExitDragStarted({draggable}, exit) {
@@ -284,7 +328,9 @@
 
         // since mouseenter + mouseleave will not occur when draggable is below cursor
         // we simply snap the draggable out from under the cursor during this operation
-        draggable.left += 60
+        draggable.left += 30
+        draggable.top += 25
+
       },
 
       onMoveExitDragged({position: {left: x, top: y}}) {
@@ -296,9 +342,14 @@
 
       onMoveExitDragEnded({draggable}) {
         const {x: left, y: top} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data.position
+
+        console.debug('Block', 'onMoveExitDragEnded', 'operation.data.position', {left, top})
+        console.debug('Block', 'onMoveExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
+
         Object.assign(draggable, {left, top})
 
         this.applyConnectionSourceRelocate()
+        this.livePosition = null
       },
 
       selectBlock() {
@@ -323,6 +374,9 @@
 
     min-width: 122px;
     padding: 0.4em;
+    padding-bottom: 0.25em;
+    scroll-margin: 35px;
+    scroll-margin-top: 100px;
 
     background-color: white;
     color: #575757;
@@ -339,6 +393,10 @@
     .block-label {
       font-size: 14px;
       font-weight: normal;
+
+      &.empty {
+        color: #aaa;
+      }
     }
 
     .block-type {
@@ -367,23 +425,25 @@
       white-space: nowrap;
       position: relative;
       top: 0em;
-      margin-top: 1em;
+      margin-top: 0.25em;
 
       .block-exit {
         display: inline-block;
+        border: 1px dashed transparent;
+        transition: border-radius 200ms ease-in-out;
+
         /*flex: auto;*/
         min-width: 6em;
         max-width: 140px;
-        padding-left: 1em;
-        padding-right: 1em;
 
+        padding: 0.25em 1em;
         text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
 
         .block-exit-tag  {
           display: block;
+
+          min-width: 6em;
+          max-width: 140px;
 
           margin: 0 0 0.5em 0;
           padding: 0.4em;
@@ -393,6 +453,10 @@
 
           font-weight: normal;
           font-size: 12px;
+
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
 
         .block-exit-move-handle {
@@ -404,14 +468,20 @@
           opacity: 0;
           transition: opacity 200ms ease-in-out;
         }
+
+        &.activated {
+          border-radius: 0.3em;
+          border-color: #333333;
+        }
       }
+
     }
 
     // state mutations
 
     &.active {
       border-width: 2px;
-      box-shadow: 0px 3px 6px #CACACA;
+      box-shadow: 0 3px 6px #CACACA;
     }
 
     &:hover {

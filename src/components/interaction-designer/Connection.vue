@@ -1,16 +1,25 @@
 <template>
-  <span class="leader-line"
-        :repositionHook="JSON.stringify(repositionHook)" />
+  <span class="connection"
+        :reposition-hook="repositionHook" />
 </template>
 
 <script>
   // import LeaderLine from 'leader-line'
   const {LeaderLine} = window
-  import {throttle} from 'lodash'
+  import {set} from 'lodash'
   import {mapGetters} from 'vuex'
 
   export default {
-    props: ['block', 'exit', 'position', 'colorCategory'],
+    props: {
+      exit: Object,
+
+      repaintCacheKeyGenerator: Function,
+      source: Object,
+      target: Object,
+      position: Object,
+
+      colorCategory: Number,
+    },
 
     data() {
       return {
@@ -26,59 +35,47 @@
           ? `block/${exit.destinationBlock}/handle`
           : `exit/${exit.uuid}/pseudo-block-handle`,
 
-      sourcePosition() {
-        const {block} = this
-        const {xPosition, yPosition} = block.platform_metadata.io_viamo.uiData
-        return {x: xPosition, y: yPosition}
-      },
-
-      targetPosition() {
-        const block = this.blocksById[this.exit.destinationBlock]
-        if (!block) {
-          return
-        }
-
-        const {xPosition, yPosition} = block.platform_metadata.io_viamo.uiData
-        return {x: xPosition, y: yPosition}
-      },
-
-      handlePosition() {
-        return this.position
-      },
-
       // todo: externalize as `positionCacheKey` + deprecate `position` prop
       //       but rather include that in `positionCacheKey`'s domain definition
       repositionHook() {
-        const {sourcePosition, targetPosition, handlePosition} = this
-
-        // if (this.line) { // intentional side-effect
-        //   // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        //   this.line.start = LeaderLine.pointAnchor(document.body, sourcePosition)
-        //   // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        //   this.line.end = LeaderLine.pointAnchor(document.body, targetPosition)
-        // }
-
-        this.$nextTick(this.reposition)
-
-        return {
-          sourcePosition,
-          targetPosition,
-          handlePosition,
+        if (!this.repaintCacheKeyGenerator) {
+          return null
         }
-      }
+
+        // @note - intentional side-effect; todo: move this into vuex responding to data changes
+        this.$nextTick(this.reposition) // todo: we only want this called if something changes.
+
+          // generate drafts while 'between exits' or 'source/destination unknown'
+        // todo: push these out into ?block?
+        const source = this.source || {
+          ...set({}, 'platform_metadata.io_viamo.uiData.xPosition', this.position.x),
+          ...set({}, 'platform_metadata.io_viamo.uiData.yPosition', this.position.y)}
+
+        const target = this.target || {
+          ...set({}, 'platform_metadata.io_viamo.uiData.xPosition', this.position.x),
+          ...set({}, 'platform_metadata.io_viamo.uiData.yPosition', this.position.y)}
+
+        return this.repaintCacheKeyGenerator(source, target)
+          .join('\n')
+      },
     },
 
     methods: {
-      debouncedReposition: () => {
-      },
-
       reposition() {
-        this.line && this.line.position()
-      }
-    },
+        if (!this.line) {
+          return
+        }
 
-    created() {
-      this.debouncedReposition = throttle(this.reposition, 100)
+        const position = this.line.position()
+
+        console.debug('connection', 'repositioning', {
+          source: this.source?.uuid,
+          target: this.target?.uuid,
+          position,
+          x: this.line.top,
+          y: this.line.left,
+        })
+      }
     },
 
     beforeDestroy() {
@@ -129,6 +126,13 @@
         // path: 'fluid',
         // path: 'arc',
         // path: 'magnet',
+
+        middleLabel: LeaderLine.captionLabel(this.exit.tag, {
+          color: categoryColorMappings[`category-${this.colorCategory}-dark`],
+          fontSize: 12,
+          // lineOffset: 65,
+        }),
+
       }
 
       // const {sourcePosition, targetPosition} = this
@@ -136,12 +140,18 @@
       //     LeaderLine.pointAnchor(document.body, sourcePosition),
       //     LeaderLine.pointAnchor(document.body, targetPosition), options)
 
-      // stop listening to scroll and window resize hooks
-      LeaderLine.positionByWindowResize = false
 
-      this.line = new LeaderLine(
-          document.getElementById(this.sourceId),
-          document.getElementById(this.targetId), options)
+      const blockPaddingOffset = {x: 34, y: -7}
+      const start = document.getElementById(this.sourceId);
+      const end = this.position
+        ? document.getElementById(this.targetId)
+        : LeaderLine.pointAnchor(document.getElementById(this.targetId), blockPaddingOffset)
+
+      this.line = new LeaderLine(start, end, options)
+
+      // stop listening to scroll and window resize hooks
+      // LeaderLine.positionByWindowResize = false
+      // this.line.positionByWindowResize = false
     }
   }
 </script>

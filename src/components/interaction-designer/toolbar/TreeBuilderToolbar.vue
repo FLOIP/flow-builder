@@ -137,12 +137,12 @@
             </ul>
           </div>
 
-          <button v-if="ui.isEditable"
-                  type="button"
-                  class="btn btn-default tree-duplicate-block"
-                  :disabled="!jsKey">
-            {{trans('flow-builder.duplicate')}}
-          </button>
+<!--          <button v-if="ui.isEditable"-->
+<!--                  type="button"-->
+<!--                  class="btn btn-default tree-duplicate-block"-->
+<!--                  :disabled="!jsKey">-->
+<!--            {{trans('flow-builder.duplicate')}}-->
+<!--          </button>-->
 
           <button v-if="ui.isEditable"
                   type="button"

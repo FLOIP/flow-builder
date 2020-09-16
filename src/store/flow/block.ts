@@ -112,18 +112,27 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const firstBlock = findBlockOnActiveFlowWith(first.blockId, state as unknown as IContext)
     const secondBlock = findBlockOnActiveFlowWith(second.blockId, state as unknown as IContext)
 
-    const {destinationBlock: firstDesinationBlockId} = findBlockExitWith(first.exitId, firstBlock)
-    const {destinationBlock: secondDesinationBlockId} = findBlockExitWith(second.exitId, secondBlock)
+    const {destinationBlock: firstDestinationBlockId} = findBlockExitWith(first.exitId, firstBlock)
+    const {destinationBlock: secondDestinationBlockId} = findBlockExitWith(second.exitId, secondBlock)
 
-    commit('block_setBlockExitDestinationBlockId', {
-      blockId: first.blockId,
-      exitId: first.exitId,
-      destinationBlockId: secondDesinationBlockId})
+
+
+
+    // todo: this works only when the exit we're targetting is empty
+    // todo: blah --- a repaint from HMR redraws it correctly -- why?!
+    // todo: blah --- a repaint from HMR also draws an additional exit :( Is there a cache break on connection key we need to leverage here?
+
+
 
     commit('block_setBlockExitDestinationBlockId', {
       blockId: second.blockId,
       exitId: second.exitId,
-      destinationBlockId: firstDesinationBlockId})
+      destinationBlockId: firstDestinationBlockId})
+
+    commit('block_setBlockExitDestinationBlockId', {
+      blockId: first.blockId,
+      exitId: first.exitId,
+      destinationBlockId: secondDestinationBlockId})
   },
 }
 
