@@ -8,8 +8,8 @@ import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSet
 Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)
 
-import {SelectOneResponseBlock} from '@/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
-import {FlowBuilderSidebarEditorContainer} from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
+import SelectOneResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
+import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {IRootState, store} from '@/store'
 import selectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 

@@ -8,8 +8,8 @@ import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSet
 Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)
 
-import {selectManyResponseBlock} from '@/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue'
-import {FlowBuilderSidebarEditorContainer} from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
+import selectManyResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue'
+import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {IRootState, store} from '@/store'
 import selectManyStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {namespace} from 'vuex-class'
