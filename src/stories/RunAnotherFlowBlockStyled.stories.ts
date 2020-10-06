@@ -1,0 +1,63 @@
+import Vue from 'vue'
+import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
+import RunAnotherFlowBlock from '../block-types/RunAnotherFlowBlock.vue'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+
+import stubbedFilters from './story-utils/stubbedFilters'
+import { baseMounted } from './story-utils/storeSetup'
+
+import {IRootState, store} from '../../stores'
+import runAnotherFlowBlockStore, {BLOCK_TYPE} from '../../stores/flow/block-types/Core_RunAnotherFlowBlockStore'
+
+Vue.filter('trans', stubbedFilters.trans)
+Vue.use(Vuex)
+
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+
+export default {
+  title: 'Core/Run Another Flow Block Styled',
+  // Our exports that end in "Data" are not stories.
+  excludeStories: /.*Data$/,
+}
+
+const RunAnotherFlowBlockTemplate = `
+  <flow-builder-sidebar-editor-container :block="activeBlock">
+    <run-another-flow-block 
+      :block="activeBlock" 
+      :flow="activeFlow"/>
+  </flow-builder-sidebar-editor-container>
+`
+
+// default run another flow block state
+export const Default = () => ({
+  components: {RunAnotherFlowBlock, FlowBuilderSidebarEditorContainer},
+  template: RunAnotherFlowBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
+  async mounted() {
+    await baseMounted.bind(this)(BLOCK_TYPE, runAnotherFlowBlockStore)
+    // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
+    const flowOne = await this.flow_createWith({
+      props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My other flow'}})
+    // @ts-ignore - TS2339: Property 'flow_addFlow' does not exist on type
+    await this.flow_addFlow(flowOne)
+    // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
+    const flowTwo = await this.flow_createWith({
+      props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My third flow'}})
+    // @ts-ignore - TS2339: Property 'flow_addFlow' does not exist on type
+    await this.flow_addFlow(flowTwo)
+  },
+  computed: {
+    ...mapGetters('flow', [
+      'activeFlow',
+      'activeBlock',
+    ]),
+  },
+  methods: {
+    ...mapMutations('flow', ['flow_activateBlock']),
+    ...mapActions('flow', [
+      'flow_addBlankFlow',
+      'flow_addFlow',
+      'flow_createWith',
+      'flow_addBlankBlockByType']),
+  }
+})
