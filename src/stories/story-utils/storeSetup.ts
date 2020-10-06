@@ -1,4 +1,4 @@
-import {IRootState} from '../../../stores'
+import {IRootState} from '@/store'
 import Vue from 'vue'
 import {namespace} from 'vuex-class'
 const flowVuexNamespace = namespace('flow')

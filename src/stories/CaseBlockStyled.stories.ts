@@ -2,14 +2,14 @@ import Vue from 'vue'
 import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
 import {Component} from 'vue-property-decorator'
 
-import CaseBlock from '../block-types/CaseBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+import CaseBlock from '@/components/interaction-designer/block-types/Core_CaseBlock.vue'
+import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 
-import {IRootState, store} from '../../stores'
-import caseBlockStore, {BLOCK_TYPE} from '../../stores/flow/block-types/Core_CaseBlockStore'
+import {IRootState, store} from '@/store'
+import caseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 
-import stubbedFilters from './story-utils/stubbedFilters'
-import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
+import stubbedFilters from '@/stories/story-utils/stubbedFilters'
+import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
 
 Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)

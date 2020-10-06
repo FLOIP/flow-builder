@@ -2,14 +2,14 @@ import Vue from 'vue'
 import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
 import {Component} from 'vue-property-decorator'
 
-import LogBlock from '../block-types/LogBlock.vue'
-import PlainFlowBuilderBlockEditorContainer from './story-utils/PlainFlowBuilderBlockEditorContainer.vue'
+import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock'
+import PlainFlowBuilderBlockEditorContainer from '@/stories/story-utils/PlainFlowBuilderBlockEditorContainer.vue'
 
-import {IRootState, store} from '../../stores'
-import logBlockStore, {BLOCK_TYPE} from '../../stores/flow/block-types/Core_LogBlockStore'
+import {IRootState, store} from '@/store'
+import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 
-import stubbedFilters from './story-utils/stubbedFilters'
-import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
+import stubbedFilters from '@/stories/story-utils/stubbedFilters'
+import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
 
 Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)

@@ -3,15 +3,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import ReadBlock from '../block-types/ReadBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+import ReadBlock from '@/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue'
+import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 
-import {IRootState, store} from '../../stores'
-import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '../../stores/flow/block-types/Core_CaseBlockStore'
-import readBlockStore, {BLOCK_TYPE} from '../../stores/flow/block-types/ConsoleIo_ReadBlockStore'
+import {IRootState, store} from '@/store'
+import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
+import readBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIo_ReadBlockStore'
 
-import stubbedFilters from './story-utils/stubbedFilters'
-import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
+import stubbedFilters from '@/stories/story-utils/stubbedFilters'
+import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 

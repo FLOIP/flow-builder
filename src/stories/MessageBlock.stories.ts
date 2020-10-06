@@ -3,21 +3,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import MessageBlock from '../block-types/MessageBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+import MessageBlock from '@/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue'
+import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 
-import {IRootState, store} from '../../stores'
-import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '../../stores/flow/block-types/Core_CaseBlockStore'
-import messageBlockStore, {BLOCK_TYPE} from '../../stores/flow/block-types/MobilePrimitives_MessageBlockStore'
+import {IRootState, store} from '@/store'
+import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
+import messageBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
 
-import stubbedFilters from './story-utils/stubbedFilters'
-import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
+import stubbedFilters from '@/stories/story-utils/stubbedFilters'
+import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
 
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import {IFlow, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {get} from 'lodash'
-import {IResourceDefinitionVariantOverModesFilter} from '@/stores/flow/resource'
+import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
 
 Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)

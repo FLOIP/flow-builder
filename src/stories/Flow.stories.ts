@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {Component} from 'vue-property-decorator'
-import {IRootState, store} from '../../stores'
+import {IRootState, store} from '@/store'
 import FlowEditor from '../flow-editors/FlowEditor.vue'
 import {namespace} from 'vuex-class'
 import ILanguage from '@floip/flow-runner/dist/flow-spec/ILanguage'

@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import LocationResponseBlock from '../block-types/LocationResponseBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+import LocationResponseBlock from '@/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue'
+import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 
-import {IRootState, store} from '../../stores'
-import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '../../stores/flow/block-types/Core_CaseBlockStore'
-import locationResponseBlockStore, {BLOCK_TYPE} from '../../stores/flow/block-types/SmartDevices_LocationResponseBlockStore'
+import {IRootState, store} from '@/store'
+import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
+import locationResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 
-import stubbedFilters from './story-utils/stubbedFilters'
-import { baseMounted } from './story-utils/storeSetup'
+import stubbedFilters from '@/stories/story-utils/stubbedFilters'
+import { baseMounted } from '@/stories/story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 

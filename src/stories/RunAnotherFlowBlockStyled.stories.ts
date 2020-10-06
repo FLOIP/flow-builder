@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
-import RunAnotherFlowBlock from '../block-types/RunAnotherFlowBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+import RunAnotherFlowBlock from '@/components/interaction-designer/block-types/Core_RunFlowBlock.vue'
+import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 
-import stubbedFilters from './story-utils/stubbedFilters'
-import { baseMounted } from './story-utils/storeSetup'
+import stubbedFilters from '@/stories/story-utils/stubbedFilters'
+import { baseMounted } from '@/stories/story-utils/storeSetup'
 
-import {IRootState, store} from '../../stores'
-import runAnotherFlowBlockStore, {BLOCK_TYPE} from '../../stores/flow/block-types/Core_RunAnotherFlowBlockStore'
+import {IRootState, store} from '@/store'
+import runAnotherFlowBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
 
 Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)

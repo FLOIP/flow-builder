@@ -2,16 +2,16 @@ import Vue from 'vue'
 import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
 import {Component} from 'vue-property-decorator'
 
-import stubbedFilters from './story-utils/stubbedFilters'
-import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
+import stubbedFilters from '@/stories/story-utils/stubbedFilters'
+import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
 
 Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)
 
-import {SelectOneResponseBlock} from '../block-types/SelectOneResponseBlock.vue'
-import {FlowBuilderSidebarEditorContainer} from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import {IRootState, store} from '../../stores'
-import selectOneStore, {BLOCK_TYPE} from '../../stores/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import {SelectOneResponseBlock} from '@/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
+import {FlowBuilderSidebarEditorContainer} from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
+import {IRootState, store} from '@/store'
+import selectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 
 import {namespace} from 'vuex-class'
 import {get} from 'lodash'
@@ -23,7 +23,7 @@ import {
   SupportedContentType,
   IFlow,
 } from '@floip/flow-runner'
-import {IResourceDefinitionVariantOverModesFilter} from '@/stores/flow/resource'
+import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
 
 export default {
   component: SelectOneResponseBlock,
