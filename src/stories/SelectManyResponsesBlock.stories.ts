@@ -8,11 +8,10 @@ import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSet
 Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)
 
-import {SelectManyResponsesBlock} from '@/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue'
+import {selectManyResponseBlock} from '@/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue'
 import {FlowBuilderSidebarEditorContainer} from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {IRootState, store} from '@/store'
-import selectManyStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponsesBlockStore'
-
+import selectManyStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {namespace} from 'vuex-class'
 import {get} from 'lodash'
 
@@ -26,8 +25,8 @@ import {
 import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
 
 export default {
-  component: SelectManyResponsesBlock,
-  title: 'MobilePrimitives/SelectManyResponsesBlock',
+  component: selectManyResponseBlock,
+  title: 'MobilePrimitives/selectManyResponseBlock',
   store: new Vuex.Store({}),
 }
 
@@ -42,7 +41,7 @@ export default {
   
   components: {
     FlowBuilderSidebarEditorContainer,
-    SelectManyResponsesBlock,
+    selectManyResponseBlock,
   },
 
   store: new Vuex.Store<IRootState>(store),
@@ -68,7 +67,7 @@ export const InFlowBuilder = () => {
   
   components: {
     FlowBuilderSidebarEditorContainer,
-    SelectManyResponsesBlock,
+    selectManyResponseBlock,
   },
 
   store: new Vuex.Store<IRootState>(store),
@@ -95,7 +94,7 @@ export const IvrOnly = () => {
   
   components: {
     FlowBuilderSidebarEditorContainer,
-    SelectManyResponsesBlock,
+    selectManyResponseBlock,
   },
 
   store: new Vuex.Store<IRootState>(store),
@@ -122,7 +121,7 @@ export const MoreLanguages = () => {
   
   components: {
     FlowBuilderSidebarEditorContainer,
-    SelectManyResponsesBlock,
+    selectManyResponseBlock,
   },
 
   store: new Vuex.Store<IRootState>(store),
