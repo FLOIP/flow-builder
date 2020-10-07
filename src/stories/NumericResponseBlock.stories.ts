@@ -11,7 +11,7 @@ import {SupportedMode, IFlow, SupportedContentType} from '@floip/flow-runner'
 import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
 
 import stubbedFilters from '@/stories/story-utils/stubbedFilters'
-import { baseMounted } from '@/stories/story-utils/storeSetup'
+import {baseMounted, BaseMountedVueClass} from '@/stories/story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import {get} from 'lodash'
@@ -41,18 +41,7 @@ const BaseOptions = {
   template: NumericResponseBlockTemplate,
 }
 
-/**
- * Vue class used to gather required Getter, Mutation, Action for the BaseMounted binding
- */
-class BaseClass extends Vue {
-  @flowVuexNamespace.Getter activeBlock
-  @flowVuexNamespace.Getter activeFlow
-
-  @flowVuexNamespace.Mutation flow_activateBlock
-
-  @flowVuexNamespace.Action flow_addBlankFlow
-  @flowVuexNamespace.Action flow_addBlankBlockByType
-}
+class DefaultClass extends BaseMountedVueClass {}
 
 // default numeric-response block state
 export const Default = () => (
@@ -65,7 +54,7 @@ export const Default = () => (
       },
     }
   )
-  class CurrentClass extends BaseClass {}
+  class CurrentClass1 extends DefaultClass {}
 )
 
 export const ExistingDataForAllModes = () => (
@@ -88,7 +77,7 @@ export const ExistingDataForAllModes = () => (
       this.setMaxDigits({blockId, value:2})
     },
   })
-  class CurrentClass extends BaseClass {
+  class CurrentClass2 extends DefaultClass {
 
     setDescription(blockId) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
       this.block_setName({blockId: blockId, value: "A Name"})
@@ -119,14 +108,14 @@ export const ExistingDataForAllModes = () => (
       this.resource_setValue({resourceId, filter: variantIvr, value: "text for IVR"})
     }
     
-    @blockVuexNamespace.Action setValidationMinimum
-    @blockVuexNamespace.Action setValidationMaximum
-    @blockVuexNamespace.Action setMaxDigits
+    @blockVuexNamespace.Action setValidationMinimum:any
+    @blockVuexNamespace.Action setValidationMaximum:any
+    @blockVuexNamespace.Action setMaxDigits:any
 
-    @flowVuexNamespace.Mutation block_setName
-    @flowVuexNamespace.Mutation block_setLabel
-    @flowVuexNamespace.Mutation block_setSemanticLabel
-    @flowVuexNamespace.Mutation resource_setValue
+    @flowVuexNamespace.Mutation block_setName:any
+    @flowVuexNamespace.Mutation block_setLabel:any
+    @flowVuexNamespace.Mutation block_setSemanticLabel:any
+    @flowVuexNamespace.Mutation resource_setValue:any
   }
 )
 
@@ -151,7 +140,7 @@ export const ExistingDataForIvrOnly = () => (
       this.setResourceData(languageId, resourceId)
     },
   })
-  class CurrentClass extends BaseClass {
+  class CurrentClass3 extends DefaultClass {
     setDescription(blockId) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
       this.block_setName({blockId: blockId, value: "A Name"})
       this.block_setLabel({blockId: blockId, value: "A Label"})
@@ -181,15 +170,15 @@ export const ExistingDataForIvrOnly = () => (
       this.resource_setValue({resourceId, filter: variantIvr, value: "text for IVR"})
     }
 
-    @blockVuexNamespace.Action setValidationMinimum
-    @blockVuexNamespace.Action setValidationMaximum
-    @blockVuexNamespace.Action setMaxDigits
+    @blockVuexNamespace.Action setValidationMinimum:any
+    @blockVuexNamespace.Action setValidationMaximum:any
+    @blockVuexNamespace.Action setMaxDigits:any
 
-    @flowVuexNamespace.Mutation block_setName
-    @flowVuexNamespace.Mutation block_setLabel
-    @flowVuexNamespace.Mutation block_setSemanticLabel
-    @flowVuexNamespace.Mutation resource_setValue
-    @flowVuexNamespace.Mutation flow_setSupportedMode
+    @flowVuexNamespace.Mutation block_setName:any
+    @flowVuexNamespace.Mutation block_setLabel:any
+    @flowVuexNamespace.Mutation block_setSemanticLabel:any
+    @flowVuexNamespace.Mutation resource_setValue:any
+    @flowVuexNamespace.Mutation flow_setSupportedMode:any
   }
 )
 
@@ -213,7 +202,7 @@ export const ExistingDataForTextOnly = () => (
       this.setResourceData(languageId, resourceId)
     },
   })
-  class CurrentClass extends BaseClass {
+  class CurrentClass4 extends DefaultClass {
     setDescription(blockId) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
       this.block_setName({blockId: blockId, value: "A Name"})
       this.block_setLabel({blockId: blockId, value: "A Label"})
@@ -243,14 +232,14 @@ export const ExistingDataForTextOnly = () => (
       this.resource_setValue({resourceId, filter: variantIvr, value: "text for IVR"})
     }
 
-    @blockVuexNamespace.Action setValidationMinimum
-    @blockVuexNamespace.Action setValidationMaximum
+    @blockVuexNamespace.Action setValidationMinimum:any
+    @blockVuexNamespace.Action setValidationMaximum:any
 
-    @flowVuexNamespace.Mutation block_setName
-    @flowVuexNamespace.Mutation block_setLabel
-    @flowVuexNamespace.Mutation block_setSemanticLabel
-    @flowVuexNamespace.Mutation resource_setValue
-    @flowVuexNamespace.Mutation flow_setSupportedMode
+    @flowVuexNamespace.Mutation block_setName:any
+    @flowVuexNamespace.Mutation block_setLabel:any
+    @flowVuexNamespace.Mutation block_setSemanticLabel:any
+    @flowVuexNamespace.Mutation resource_setValue:any
+    @flowVuexNamespace.Mutation flow_setSupportedMode:any
   }
 )
 
@@ -275,10 +264,10 @@ export const NonStartingBlock = () => (
       },
     }
   )
-  class CurrentClass extends BaseClass {
-    @flowVuexNamespace.Mutation block_setName
-    @flowVuexNamespace.Mutation block_setLabel
-    @flowVuexNamespace.Mutation block_setSemanticLabel
-    @flowVuexNamespace.Mutation flow_setFirstBlockId
+  class CurrentClass5 extends DefaultClass {
+    @flowVuexNamespace.Mutation block_setName:any
+    @flowVuexNamespace.Mutation block_setLabel:any
+    @flowVuexNamespace.Mutation block_setSemanticLabel:any
+    @flowVuexNamespace.Mutation flow_setFirstBlockId:any
   }
 )

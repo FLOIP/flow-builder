@@ -8,6 +8,7 @@ import FlowEditor from '../flow-editors/FlowEditor.vue'
 import {namespace} from 'vuex-class'
 import ILanguage from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {SupportedMode} from '@floip/flow-runner'
+import {BaseMountedVueClass} from "@/stories/story-utils/storeSetup";
 
 const flowVuexNamespace = namespace('flow')
 
@@ -29,12 +30,7 @@ const BaseOptions = {
   template: FlowEditorTemplate,
 }
 
-class BaseClass extends Vue {
-  @flowVuexNamespace.Getter activeBlock
-  @flowVuexNamespace.Getter activeFlow
-
-  @flowVuexNamespace.Action flow_addBlankFlow
-}
+class BaseClass extends BaseMountedVueClass {}
 
 // Stories
 export const Default = () => (
@@ -84,11 +80,11 @@ export const ExistingDataPreFilled = () => (
       },
     }
   )
-  class CurrentClass extends BaseClass {
-    @flowVuexNamespace.Mutation flow_setName
-    @flowVuexNamespace.Mutation flow_setLabel
-    @flowVuexNamespace.Mutation flow_setInteractionTimeout
-    @flowVuexNamespace.Mutation flow_setSupportedMode
-    @flowVuexNamespace.Mutation flow_setLanguages
+  class CurrentClass2 extends BaseClass {
+    @flowVuexNamespace.Mutation flow_setName:any
+    @flowVuexNamespace.Mutation flow_setLabel:any
+    @flowVuexNamespace.Mutation flow_setInteractionTimeout:any
+    @flowVuexNamespace.Mutation flow_setSupportedMode:any
+    @flowVuexNamespace.Mutation flow_setLanguages:any
   }
 )

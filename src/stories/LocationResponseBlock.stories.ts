@@ -9,7 +9,7 @@ import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-
 import locationResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 
 import stubbedFilters from '@/stories/story-utils/stubbedFilters'
-import { baseMounted } from '@/stories/story-utils/storeSetup'
+import {baseMounted, BaseMountedVueClass} from '@/stories/story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 
@@ -38,19 +38,7 @@ const BaseOptions = {
   template: LocationResponseBlockTemplate,
 }
 
-/**
- * Vue class used to gather required Getter, Mutation, Action for the BaseMounted binding
- */
-class BaseClass extends Vue {
-  @flowVuexNamespace.Getter activeBlock
-  @flowVuexNamespace.Getter activeFlow
-
-  @flowVuexNamespace.Mutation flow_activateBlock
-
-  @flowVuexNamespace.Action flow_addBlankFlow
-  @flowVuexNamespace.Action flow_addBlankBlockByType
-}
-
+class DefaultClass extends BaseMountedVueClass {}
 // default location-response block state
 export const Default = () => (
   @Component<any>(
@@ -62,7 +50,7 @@ export const Default = () => (
       },
     }
   )
-  class CurrentClass extends BaseClass {}
+  class CurrentClass1 extends DefaultClass {}
 )
 
 export const ExistingDataPreFilled = () => (
@@ -77,7 +65,7 @@ export const ExistingDataPreFilled = () => (
       this.setAccuracyTimeout({blockId, value:145})
     },
   })
-  class CurrentClass extends BaseClass {
+  class CurrentClass2 extends DefaultClass {
 
     setDescription(blockId) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
       this.block_setName({blockId: blockId, value: "A Name"})
@@ -85,12 +73,12 @@ export const ExistingDataPreFilled = () => (
       this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
     }
     
-    @blockVuexNamespace.Action setAccuracyThreshold
-    @blockVuexNamespace.Action setAccuracyTimeout
+    @blockVuexNamespace.Action setAccuracyThreshold:any
+    @blockVuexNamespace.Action setAccuracyTimeout:any
 
-    @flowVuexNamespace.Mutation block_setName
-    @flowVuexNamespace.Mutation block_setLabel
-    @flowVuexNamespace.Mutation block_setSemanticLabel
+    @flowVuexNamespace.Mutation block_setName:any
+    @flowVuexNamespace.Mutation block_setLabel:any
+    @flowVuexNamespace.Mutation block_setSemanticLabel:any
   }
 )
 
@@ -115,10 +103,10 @@ export const NonStartingBlock = () => (
       },
     }
   )
-  class CurrentClass extends BaseClass {
-    @flowVuexNamespace.Mutation block_setName
-    @flowVuexNamespace.Mutation block_setLabel
-    @flowVuexNamespace.Mutation block_setSemanticLabel
-    @flowVuexNamespace.Mutation flow_setFirstBlockId
+  class CurrentClass3 extends DefaultClass {
+    @flowVuexNamespace.Mutation block_setName:any
+    @flowVuexNamespace.Mutation block_setLabel:any
+    @flowVuexNamespace.Mutation block_setSemanticLabel:any
+    @flowVuexNamespace.Mutation flow_setFirstBlockId:any
   }
 )
