@@ -61,21 +61,24 @@ export const ExistingDataBlock = () => ({
   computed: {
     ...mapGetters('flow', [
       'activeFlow',
+    ]),
+    ...mapGetters('builder', [
       'activeBlock',
     ]),
   },
-  
+
   methods: {
     ...mapMutations('flow', [
-      'flow_activateBlock',
-      'block_setName', 
-      'block_setLabel', 
-      'block_setSemanticLabel'
+      'block_setName',
+      'block_setLabel',
+      'block_setSemanticLabel',
+    ]),
+    ...mapMutations('builder', [
+      'activateBlock',
     ]),
     ...mapActions('flow', [
       'flow_addBlankFlow',
-      'flow_addBlankBlockByType',
-    ]),
+      'flow_addBlankBlockByType']),
     ...mapActions(`flow/${BLOCK_TYPE}`, [
       'editCaseBlockExit'
     ]),
