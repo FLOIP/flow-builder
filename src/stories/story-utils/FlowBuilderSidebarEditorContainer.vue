@@ -31,8 +31,8 @@
 </template>
 
 <script lang="ts">
-  import 'dist/css/InteractionDesigner.css'
-  import 'dist/css/voto3.css'
+  import '@/css/InteractionDesigner.css'
+  import '@/css/voto3.css'
 
   import Vue from 'vue'
   import {Component, Prop} from 'vue-property-decorator'
