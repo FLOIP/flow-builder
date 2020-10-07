@@ -11,7 +11,8 @@ import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-
 import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 
 import stubbedFilters from '@/stories/story-utils/stubbedFilters'
-import { baseMounted } from '@/stories/story-utils/storeSetup'
+import {baseMounted, BaseMountedVueClass} from '@/stories/story-utils/storeSetup'
+import {Component} from "vue-property-decorator";
 
 Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)
@@ -30,29 +31,17 @@ const LogBlockTemplate = `
   </flow-builder-sidebar-editor-container>
 `
 
-// default log block state
-export const Default = () => ({
+// default case block state
+@Component<any>({
   components: {LogBlock, FlowBuilderSidebarEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
   },
-
-  computed: {
-    ...mapGetters('flow', [
-      'activeFlow',
-      'activeBlock',
-    ]),
-  },
-  
-  methods: {
-    ...mapMutations('flow', ['flow_activateBlock']),
-    ...mapActions('flow', [
-      'flow_addBlankFlow',
-      'flow_addBlankBlockByType']),
-  }
 })
+class DefaultClass extends BaseMountedVueClass {}
+export const Default = () => (DefaultClass)
 
 export const ExistingDataBlock = () => ({
   components: {LogBlock, FlowBuilderSidebarEditorContainer},
@@ -69,20 +58,23 @@ export const ExistingDataBlock = () => ({
     // @ts-ignore - TS2339: Property 'block_setSemanticLabel' does not exist on type
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
   },
-
   computed: {
     ...mapGetters('flow', [
       'activeFlow',
+    ]),
+    ...mapGetters('builder', [
       'activeBlock',
     ]),
   },
-  
+
   methods: {
     ...mapMutations('flow', [
-      'flow_activateBlock',
-      'block_setName', 
-      'block_setLabel', 
+      'block_setName',
+      'block_setLabel',
       'block_setSemanticLabel'
+    ]),
+    ...mapMutations('builder', [
+      'activateBlock',
     ]),
     ...mapActions('flow', [
       'flow_addBlankFlow',
@@ -118,21 +110,24 @@ export const ExistingDataNonStartingBlock = () => ({
   computed: {
     ...mapGetters('flow', [
       'activeFlow',
+    ]),
+    ...mapGetters('builder', [
       'activeBlock',
     ]),
   },
-  
+
   methods: {
     ...mapMutations('flow', [
-      'flow_activateBlock',
-      'block_setName', 
-      'block_setLabel', 
+      'block_setName',
+      'block_setLabel',
       'block_setSemanticLabel',
-      'flow_setFirstBlockId',
+      'flow_setFirstBlockId'
+    ]),
+    ...mapMutations('builder', [
+      'activateBlock',
     ]),
     ...mapActions('flow', [
       'flow_addBlankFlow',
-      'flow_addBlankBlockByType',
-    ]),
+      'flow_addBlankBlockByType']),
   }
 })
