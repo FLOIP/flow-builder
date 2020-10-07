@@ -5,12 +5,13 @@ import OutputBlock from '@/components/interaction-designer/block-types/Core_Outp
 import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 import stubbedFilters from '@/stories/story-utils/stubbedFilters'
-import { baseMounted } from '@/stories/story-utils/storeSetup'
+import {baseMounted, BaseMountedVueClass} from '@/stories/story-utils/storeSetup'
 
 import {IRootState, store} from '@/store'
 import outputBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
+import {Component} from "vue-property-decorator";
 
-Vue.filter('trans', stubbedFilters.trans)
+Vue.filter('trans', stubbedFilters.trans)//TODO: remove once lang is fixed
 Vue.use(Vuex)
 
 export default {
@@ -26,25 +27,15 @@ const OutputBlockTemplate = `
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-
-// default output block state
-export const Default = () => ({
+// default log block state
+@Component<any>({
   components: {OutputBlock, FlowBuilderSidebarEditorContainer},
   template: OutputBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     await baseMounted.bind(this)(BLOCK_TYPE, outputBlockStore)
   },
-  computed: {
-    ...mapGetters('flow', [
-      'activeFlow',
-      'activeBlock',
-    ]),
-  },
-  methods: {
-    ...mapMutations('flow', ['flow_activateBlock']),
-    ...mapActions('flow', [
-      'flow_addBlankFlow',
-      'flow_addBlankBlockByType']),
-  }
+
 })
+class DefaultClass extends BaseMountedVueClass {}
+export const Default = () => (DefaultClass)

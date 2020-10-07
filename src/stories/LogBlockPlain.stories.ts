@@ -11,7 +11,7 @@ import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockS
 import stubbedFilters from '@/stories/story-utils/stubbedFilters'
 import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
 
-Vue.filter('trans', stubbedFilters.trans)
+Vue.filter('trans', stubbedFilters.trans)//TODO: remove once lang is fixed
 Vue.use(Vuex)
 
 export default {
