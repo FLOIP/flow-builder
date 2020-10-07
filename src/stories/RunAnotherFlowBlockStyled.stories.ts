@@ -1,15 +1,18 @@
 import Vue from 'vue'
-import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
+import Vuex from 'vuex'
 import RunAnotherFlowBlock from '@/components/interaction-designer/block-types/Core_RunFlowBlock.vue'
 import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
-
 import stubbedFilters from '@/stories/story-utils/stubbedFilters'
-import { baseMounted } from '@/stories/story-utils/storeSetup'
+import {baseMounted, BaseMountedVueClass} from '@/stories/story-utils/storeSetup'
 
 import {IRootState, store} from '@/store'
 import runAnotherFlowBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
+import {Component} from "vue-property-decorator";
+import {IFlow} from "@floip/flow-runner";
+import {namespace} from 'vuex-class'
+const flowVuexNamespace = namespace('flow')
 
-Vue.filter('trans', stubbedFilters.trans)
+Vue.filter('trans', stubbedFilters.trans)//TODO: remove once lang is fixed
 Vue.use(Vuex)
 
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
@@ -28,8 +31,8 @@ const RunAnotherFlowBlockTemplate = `
   </flow-builder-sidebar-editor-container>
 `
 
-// default run another flow block state
-export const Default = () => ({
+// default log block state
+@Component<any>({
   components: {RunAnotherFlowBlock, FlowBuilderSidebarEditorContainer},
   template: RunAnotherFlowBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
@@ -37,27 +40,20 @@ export const Default = () => ({
     await baseMounted.bind(this)(BLOCK_TYPE, runAnotherFlowBlockStore)
     // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
     const flowOne = await this.flow_createWith({
-      props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My other flow'}})
-    // @ts-ignore - TS2339: Property 'flow_addFlow' does not exist on type
-    await this.flow_addFlow(flowOne)
+      props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My other flow'}
+    })
+    // @ts-ignore - TS2339: Property 'flow_add' does not exist on type
+    await this.flow_add({flow:flowOne})
     // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
     const flowTwo = await this.flow_createWith({
-      props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My third flow'}})
-    // @ts-ignore - TS2339: Property 'flow_addFlow' does not exist on type
-    await this.flow_addFlow(flowTwo)
+      props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My third flow'}
+    })
+    // // @ts-ignore - TS2339: Property 'flow_add' does not exist on type
+    await this.flow_add({flow:flowTwo})
   },
-  computed: {
-    ...mapGetters('flow', [
-      'activeFlow',
-      'activeBlock',
-    ]),
-  },
-  methods: {
-    ...mapMutations('flow', ['flow_activateBlock']),
-    ...mapActions('flow', [
-      'flow_addBlankFlow',
-      'flow_addFlow',
-      'flow_createWith',
-      'flow_addBlankBlockByType']),
-  }
 })
+class DefaultClass extends BaseMountedVueClass {
+  @flowVuexNamespace.Action flow_add!: Promise<IFlow>
+  @flowVuexNamespace.Action flow_createWith!: Promise<IFlow>
+}
+export const Default = () => (DefaultClass)
