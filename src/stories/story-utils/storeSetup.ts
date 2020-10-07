@@ -2,6 +2,7 @@ import {IRootState} from '@/store'
 import Vue from 'vue'
 import {namespace} from 'vuex-class'
 const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 import {IBlock, IFlow} from '@floip/flow-runner'
 
 export const baseMounted = async function (BLOCK_TYPE: string, blockTypeStore: IRootState): Promise<any> {
@@ -23,8 +24,8 @@ export const baseMounted = async function (BLOCK_TYPE: string, blockTypeStore: I
   const block =  await this.flow_addBlankBlockByType({type: BLOCK_TYPE})
   const {uuid: blockId} = block 
   
-  // @ts-ignore - TS2339: Property 'flow_activateBlock' does not exist on type
-  this.flow_activateBlock({blockId})
+  // @ts-ignore - TS2339: Property 'flow_'activateBlock' does not exist on type
+  this.activateBlock({blockId})
 
   return { block, flow }
 }
@@ -32,10 +33,10 @@ export const baseMounted = async function (BLOCK_TYPE: string, blockTypeStore: I
  * Vue class used to gather required Getter, Mutation, Action for the BaseMounted binding
  */
 export class BaseMountedVueClass extends Vue {
-  @flowVuexNamespace.Getter activeBlock!: IBlock
+  @builderVuexNamespace.Getter activeBlock!: IBlock
   @flowVuexNamespace.Getter activeFlow!: IFlow
 
-  @flowVuexNamespace.Mutation flow_activateBlock!: void
+  @builderVuexNamespace.Mutation activateBlock!: void
 
   @flowVuexNamespace.Action flow_addBlankFlow!: Promise<IFlow>
   @flowVuexNamespace.Action flow_addBlankBlockByType!: Promise<IBlock>

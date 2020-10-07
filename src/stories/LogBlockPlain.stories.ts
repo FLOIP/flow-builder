@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
 import {Component} from 'vue-property-decorator'
 
-import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock'
+import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock.vue'
 import PlainFlowBuilderBlockEditorContainer from '@/stories/story-utils/PlainFlowBuilderBlockEditorContainer.vue'
 
 import {IRootState, store} from '@/store'
@@ -59,16 +59,20 @@ export const ExistingDataBlock = () => ({
   computed: {
     ...mapGetters('flow', [
       'activeFlow',
+    ]),
+    ...mapGetters('builder', [
       'activeBlock',
     ]),
   },
   
   methods: {
     ...mapMutations('flow', [
-      'flow_activateBlock',
       'block_setName', 
       'block_setLabel', 
       'block_setSemanticLabel'
+    ]),
+    ...mapMutations('builder', [
+      'activateBlock',
     ]),
     ...mapActions('flow', [
       'flow_addBlankFlow',
