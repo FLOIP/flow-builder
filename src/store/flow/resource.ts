@@ -143,15 +143,17 @@ export function findResourceVariantOverModesWith(
 export function findResourceVariantOverModesOn(
     resource: IResourceDefinition,
     filter: IResourceDefinitionVariantOverModesFilter) {
-
   const
       keysForComparison = without(Object.keys(filter), 'modes'), // b/c we do explicit partial matching on modes
-      filterWithComparatorKeys = pick(filter, keysForComparison),
-      variant = find<IResourceDefinitionVariantOverModes>(
-          resource.values,
-          v => isEqual(filterWithComparatorKeys, pick(v, keysForComparison))
-              && difference(filter.modes, v.modes).length === 0)
-
+      filterWithComparatorKeys = pick(filter, keysForComparison) //eg: {"languageId":"1","contentType":"text"}
+  let filterWithComparatorKeysAndArrayContentType = filterWithComparatorKeys //eg: {"languageId":"1","contentType":["text"]} //TODO: we may need to remove this one, once we have a clear idea which schema is used
+  if(!Array.isArray(filterWithComparatorKeysAndArrayContentType.contentType)) {
+    // @ts-ignore
+    filterWithComparatorKeysAndArrayContentType.contentType = [filterWithComparatorKeysAndArrayContentType.contentType]
+  }
+  let variant = find<IResourceDefinitionVariantOverModes>(
+          resource.values, v => (isEqual(filterWithComparatorKeys, pick(v, keysForComparison)) || isEqual(filterWithComparatorKeysAndArrayContentType, pick(v, keysForComparison)))
+                && difference(filter.modes, v.modes).length === 0)
   if (variant == null) {
     throw new ValidationException(`Unable to find resource variant (over modes) on context: (
       ${resource.uuid},
@@ -207,9 +209,7 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
   if (!resource || !resource.values.length) {
     return defaultModeMappings[mode]
   }
-
   let contentTypeOverrides: {[key in SupportedMode]?: string[]} = {}
-
   //TODO - think harder about this - what happens when a mode has a non standard content type - e.g. ivr on a log block
   //What happens in a future localised resource world on things like LogBlock? Do we need a log resource value for every language?
   contentTypeOverrides = resource.values.reduce((contentTypeOverrides, value) => {
@@ -222,6 +222,5 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
     }, contentTypeOverrides)
     return contentTypeOverrides
   }, contentTypeOverrides)
-
-  return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]
+  return Object.assign(defaultModeMappings, contentTypeOverrides)[mode][0]
 }

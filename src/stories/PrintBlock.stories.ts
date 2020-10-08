@@ -8,9 +8,8 @@ import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilder
 
 import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
-import printBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIo_PrintBlockStore'
+import printBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
 
-import stubbedFilters from '@/stories/story-utils/stubbedFilters'
 import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
 import {IFlow, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
@@ -18,7 +17,6 @@ import {get} from 'lodash'
 import {namespace} from 'vuex-class'
 import {Component} from 'vue-property-decorator'
 
-Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)
 
 const flowVuexNamespace = namespace('flow')
@@ -85,12 +83,12 @@ export const Default = () => {
       const variantIvr: IResourceDefinitionVariantOverModesFilter = {
         languageId,
         modes: [SupportedMode.IVR],
-        contentType: SupportedContentType.TEXT,
+        contentType: SupportedContentType.AUDIO,
       }
       // we're assuming this pseudo-variants exist
       this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
       this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-      this.resource_setValue({resourceId, filter: variantIvr, value: "text for IVR"})
+      this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/IVR audio.mp3"})
     },
   }
 )
