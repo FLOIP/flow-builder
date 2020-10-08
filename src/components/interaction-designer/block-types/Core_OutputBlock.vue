@@ -1,8 +1,7 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      <!-- TODO: Once lang is fixed, revert back to {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}-->
-      {{'flow-builder.edit-block-type' | trans}}
+       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <block-name-editor :block="block" />
