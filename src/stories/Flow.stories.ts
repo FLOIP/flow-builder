@@ -1,10 +1,9 @@
-import Vue from 'vue'
 import Vuex from 'vuex'
 
 import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
-import FlowEditor from '../flow-editors/FlowEditor.vue'
+import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import {namespace} from 'vuex-class'
 import ILanguage from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {SupportedMode} from '@floip/flow-runner'
@@ -30,61 +29,58 @@ const BaseOptions = {
   template: FlowEditorTemplate,
 }
 
-class BaseClass extends BaseMountedVueClass {}
-
 // Stories
-export const Default = () => (
-  @Component<any>(
+@Component<any>(
     {
-      ...BaseOptions,
-      store: new Vuex.Store<IRootState>(store),
-      async mounted() {
-        const {uuid: flowId} = await this.flow_addBlankFlow()
-        this.flow_setSupportedMode({flowId, value: []})
-      },
+        ...BaseOptions,
+        store: new Vuex.Store<IRootState>(store),
+        async mounted() {
+            const {uuid: flowId} = await this.flow_addBlankFlow()
+            this.flow_setSupportedMode({flowId, value: []})
+        },
     }
-  )
-  class CurrentClass extends BaseClass {
-    @flowVuexNamespace.Mutation flow_setSupportedMode
-  }
 )
+class CurrentClass extends BaseMountedVueClass {
+    @flowVuexNamespace.Mutation flow_setSupportedMode: any
+}
+export const Default = () => (CurrentClass)
 
-export const ExistingDataPreFilled = () => (
-  @Component<any>(
+//ExistingDataPreFilled
+@Component<any>(
     {
-      ...BaseOptions,
-      store: new Vuex.Store<IRootState>(store),
-      async mounted() {
-        const {uuid: flowId} = await this.flow_addBlankFlow()
-        const sampleLanguages: ILanguage[] = [
-          {
-            id: 1,
-            name: "English",
-            abbreviation: "EN",
-            orgId: "",
-            rightToLeft: true,
-          },
-        ]
+        ...BaseOptions,
+        store: new Vuex.Store<IRootState>(store),
+        async mounted() {
+            const {uuid: flowId} = await this.flow_addBlankFlow()
+            const sampleLanguages: ILanguage[] = [
+                {
+                    id: '1',
+                    name: "English",
+                    abbreviation: "EN",
+                    orgId: "",
+                    rightToLeft: true,
+                },
+            ]
 
-        const sampleModes = [
-          SupportedMode.SMS,
-          SupportedMode.IVR,
-          SupportedMode.RICH_MESSAGING
-        ]
+            const sampleModes = [
+                SupportedMode.SMS,
+                SupportedMode.IVR,
+                SupportedMode.RICH_MESSAGING
+            ]
 
-        this.flow_setName({flowId, value: "FlowName"})
-        this.flow_setLabel({flowId, value: "A flow label"})
-        this.flow_setInteractionTimeout({flowId, value: 20})
-        this.flow_setSupportedMode({flowId, value: sampleModes})
-        this.flow_setLanguages({flowId, value: sampleLanguages})
-      },
+            this.flow_setName({flowId, value: "FlowName"})
+            this.flow_setLabel({flowId, value: "A flow label"})
+            this.flow_setInteractionTimeout({flowId, value: 20})
+            this.flow_setSupportedMode({flowId, value: sampleModes})
+            this.flow_setLanguages({flowId, value: sampleLanguages})
+        },
     }
-  )
-  class CurrentClass2 extends BaseClass {
+)
+class CurrentClass2 extends BaseMountedVueClass {
     @flowVuexNamespace.Mutation flow_setName:any
     @flowVuexNamespace.Mutation flow_setLabel:any
     @flowVuexNamespace.Mutation flow_setInteractionTimeout:any
     @flowVuexNamespace.Mutation flow_setSupportedMode:any
     @flowVuexNamespace.Mutation flow_setLanguages:any
-  }
-)
+}
+export const ExistingDataPreFilled = () => (CurrentClass2)
