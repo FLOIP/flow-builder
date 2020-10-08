@@ -8,14 +8,12 @@ import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilder
 
 import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
-import readBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIo_ReadBlockStore'
+import readBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
 
-import stubbedFilters from '@/stories/story-utils/stubbedFilters'
 import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 
-Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)
 
 const flowVuexNamespace = namespace('flow')
