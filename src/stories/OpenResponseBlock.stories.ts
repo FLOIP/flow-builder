@@ -39,8 +39,6 @@ const BaseOptions = {
   template: OpenResponseBlockTemplate,
 }
 
-class DefaultClass extends BaseMountedVueClass {}
-
 // default open-response block state
 @Component<any>(
     {

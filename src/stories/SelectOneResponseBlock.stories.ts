@@ -2,10 +2,8 @@ import Vue from 'vue'
 import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
 import {Component} from 'vue-property-decorator'
 
-import stubbedFilters from '@/stories/story-utils/stubbedFilters'
 import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
 
-Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)
 
 import SelectOneResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
@@ -31,15 +29,16 @@ export default {
   store: new Vuex.Store({}),
 }
 
-@Component<any>({
-  template: `
+const SelectOneResponseBlockTemplate = `
     <flow-builder-sidebar-editor-container :block="activeBlock">
       <select-one-response-block
           :block="activeBlock"
           :flow="activeFlow"/>
     </flow-builder-sidebar-editor-container>
-  `,
-  
+  `
+
+@Component<any>({
+  template: SelectOneResponseBlockTemplate,
   components: {
     FlowBuilderSidebarEditorContainer,
     SelectOneResponseBlock,
@@ -58,13 +57,7 @@ export const InFlowBuilder = () => {
 }
 
 @Component<any>({
-  template: `
-    <flow-builder-sidebar-editor-container :block="activeBlock">
-      <select-one-response-block
-          :block="activeBlock"
-          :flow="activeFlow"/>
-    </flow-builder-sidebar-editor-container>
-  `,
+  template: SelectOneResponseBlockTemplate,
   
   components: {
     FlowBuilderSidebarEditorContainer,
@@ -85,13 +78,7 @@ export const IvrOnly = () => {
   return IvrOnlyClass
 }
 @Component<any>({
-  template: `
-    <flow-builder-sidebar-editor-container :block="activeBlock">
-      <select-one-response-block
-          :block="activeBlock"
-          :flow="activeFlow"/>
-    </flow-builder-sidebar-editor-container>
-  `,
+  template: SelectOneResponseBlockTemplate,
   
   components: {
     FlowBuilderSidebarEditorContainer,
@@ -112,13 +99,7 @@ export const MoreLanguages = () => {
   return MoreLanguagesClass
 }
 @Component<any>({
-  template: `
-    <flow-builder-sidebar-editor-container :block="activeBlock">
-      <select-one-response-block
-          :block="activeBlock"
-          :flow="activeFlow"/>
-    </flow-builder-sidebar-editor-container>
-  `,
+  template: SelectOneResponseBlockTemplate,
   
   components: {
     FlowBuilderSidebarEditorContainer,
@@ -154,16 +135,16 @@ export const MoreLanguages = () => {
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: [SupportedMode.IVR],
-      contentType: SupportedContentType.TEXT,
+      contentType: SupportedContentType.AUDIO,
     }
     // we're assuming this pseudo-variants exist
     this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
     this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId, filter: variantIvr, value: "text for IVR"})
+    this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
 
     this.resource_setValue({resourceId: choiceResourceId, filter: variantSms, value: "text for SMS"})
     this.resource_setValue({resourceId: choiceResourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId: choiceResourceId, filter: variantIvr, value: "text for IVR"})
+    this.resource_setValue({resourceId: choiceResourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
   },
 
 })
