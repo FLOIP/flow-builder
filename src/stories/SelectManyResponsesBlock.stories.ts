@@ -1,11 +1,9 @@
 import Vue from 'vue'
-import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
+import Vuex from 'vuex'
 import {Component} from 'vue-property-decorator'
 
-import stubbedFilters from '@/stories/story-utils/stubbedFilters'
 import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
 
-Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)
 
 import selectManyResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue'
@@ -30,14 +28,16 @@ export default {
   store: new Vuex.Store({}),
 }
 
-@Component<any>({
-  template: `
+const SelectManyTemplate = `
     <flow-builder-sidebar-editor-container :block="activeBlock">
-      <select-many-responses-block
+      <select-many-response-block
           :block="activeBlock"
           :flow="activeFlow"/>
     </flow-builder-sidebar-editor-container>
-  `,
+  `
+
+@Component<any>({
+  template: SelectManyTemplate,
   
   components: {
     FlowBuilderSidebarEditorContainer,
@@ -57,14 +57,7 @@ export const InFlowBuilder = () => {
 }
 
 @Component<any>({
-  template: `
-    <flow-builder-sidebar-editor-container :block="activeBlock">
-      <select-many-responses-block
-          :block="activeBlock"
-          :flow="activeFlow"/>
-    </flow-builder-sidebar-editor-container>
-  `,
-  
+  template: SelectManyTemplate,
   components: {
     FlowBuilderSidebarEditorContainer,
     selectManyResponseBlock,
@@ -84,13 +77,7 @@ export const IvrOnly = () => {
   return IvrOnlyClass
 }
 @Component<any>({
-  template: `
-    <flow-builder-sidebar-editor-container :block="activeBlock">
-      <select-many-responses-block
-          :block="activeBlock"
-          :flow="activeFlow"/>
-    </flow-builder-sidebar-editor-container>
-  `,
+  template: SelectManyTemplate,
   
   components: {
     FlowBuilderSidebarEditorContainer,
@@ -111,13 +98,7 @@ export const MoreLanguages = () => {
   return MoreLanguagesClass
 }
 @Component<any>({
-  template: `
-    <flow-builder-sidebar-editor-container :block="activeBlock">
-      <select-many-responses-block
-          :block="activeBlock"
-          :flow="activeFlow"/>
-    </flow-builder-sidebar-editor-container>
-  `,
+  template: SelectManyTemplate,
   
   components: {
     FlowBuilderSidebarEditorContainer,
@@ -153,16 +134,16 @@ export const MoreLanguages = () => {
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: [SupportedMode.IVR],
-      contentType: SupportedContentType.TEXT,
+      contentType: SupportedContentType.AUDIO,
     }
     // we're assuming this pseudo-variants exist
     this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
     this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId, filter: variantIvr, value: "text for IVR"})
+    this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
 
     this.resource_setValue({resourceId: choiceResourceId, filter: variantSms, value: "text for SMS"})
     this.resource_setValue({resourceId: choiceResourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId: choiceResourceId, filter: variantIvr, value: "text for IVR"})
+    this.resource_setValue({resourceId: choiceResourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
   },
 
 })
