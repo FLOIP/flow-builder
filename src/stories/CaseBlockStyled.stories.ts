@@ -8,10 +8,8 @@ import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilder
 import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 
-import stubbedFilters from '@/stories/story-utils/stubbedFilters'
 import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
 
-Vue.filter('trans', stubbedFilters.trans)
 Vue.use(Vuex)
 
 export default {

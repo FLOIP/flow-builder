@@ -10,11 +10,9 @@ import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 
-import stubbedFilters from '@/stories/story-utils/stubbedFilters'
 import {baseMounted, BaseMountedVueClass} from '@/stories/story-utils/storeSetup'
 import {Component} from "vue-property-decorator";
 
-Vue.filter('trans', stubbedFilters.trans)//TODO: remove once lang is fixed
 Vue.use(Vuex)
 
 export default {

@@ -4,14 +4,12 @@ import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
 import OutputBlock from '@/components/interaction-designer/block-types/Core_OutputBlock.vue'
 import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
 
-import stubbedFilters from '@/stories/story-utils/stubbedFilters'
 import {baseMounted, BaseMountedVueClass} from '@/stories/story-utils/storeSetup'
 
 import {IRootState, store} from '@/store'
 import outputBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
 import {Component} from "vue-property-decorator";
 
-Vue.filter('trans', stubbedFilters.trans)//TODO: remove once lang is fixed
 Vue.use(Vuex)
 
 export default {

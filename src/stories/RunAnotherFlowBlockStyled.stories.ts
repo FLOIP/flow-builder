@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import RunAnotherFlowBlock from '@/components/interaction-designer/block-types/Core_RunFlowBlock.vue'
 import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
-import stubbedFilters from '@/stories/story-utils/stubbedFilters'
 import {baseMounted, BaseMountedVueClass} from '@/stories/story-utils/storeSetup'
 
 import {IRootState, store} from '@/store'
@@ -12,7 +11,6 @@ import {IFlow} from "@floip/flow-runner";
 import {namespace} from 'vuex-class'
 const flowVuexNamespace = namespace('flow')
 
-Vue.filter('trans', stubbedFilters.trans)//TODO: remove once lang is fixed
 Vue.use(Vuex)
 
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
