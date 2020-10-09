@@ -41,6 +41,7 @@ const BaseOptions = {
         ...BaseOptions,
         store: new Vuex.Store<IRootState>(store),
         async mounted() {
+          // @ts-ignore
             await baseMounted.bind(this)(BLOCK_TYPE, photoResponseBlockStore)
         },
     }
@@ -53,6 +54,7 @@ export const Default = () => (CurrentClass1)
     ...BaseOptions,
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
+      // @ts-ignore
         const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, photoResponseBlockStore)
 
         this.setDescription(blockId)
@@ -77,6 +79,7 @@ export const ExistingDataPreFilled = () => (CurrentClass2)
         ...BaseOptions,
         store: new Vuex.Store<IRootState>(store),
         async mounted() {
+          // @ts-ignore
             const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, photoResponseBlockStore)
 
             this.block_setName({blockId: blockId, value: "A Name"})

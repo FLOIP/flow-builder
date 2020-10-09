@@ -35,6 +35,7 @@ const RunAnotherFlowBlockTemplate = `
   template: RunAnotherFlowBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
+    // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, runAnotherFlowBlockStore)
     // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
     const flowOne = await this.flow_createWith({

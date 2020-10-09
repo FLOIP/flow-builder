@@ -45,6 +45,7 @@ const BaseOptions = {
       ...BaseOptions,
       store: new Vuex.Store<IRootState>(store),
       async mounted() {
+        // @ts-ignore
         await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
       },
     }
@@ -57,6 +58,7 @@ export const Default = () => (CurrentClass1)
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
+    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
       languages: {
@@ -119,6 +121,7 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
+    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
       languages: {
@@ -182,6 +185,7 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
+    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
       languages: {
@@ -244,6 +248,7 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
       ...BaseOptions,
       store: new Vuex.Store<IRootState>(store),
       async mounted() {
+        // @ts-ignore
         const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
 
         this.block_setName({blockId: blockId, value: "A Name"})

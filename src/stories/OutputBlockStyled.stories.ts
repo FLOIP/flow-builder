@@ -31,6 +31,7 @@ const OutputBlockTemplate = `
   template: OutputBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
+    // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, outputBlockStore)
   },
 

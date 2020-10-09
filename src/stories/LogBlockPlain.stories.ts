@@ -32,6 +32,7 @@ const LogBlockTemplate = `
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
+    // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
   },
 
@@ -44,6 +45,7 @@ export const ExistingDataBlock = () => ({
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
+    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
 
     // @ts-ignore - TS2339: Property 'block_setName' does not exist on type

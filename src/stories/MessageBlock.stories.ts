@@ -42,6 +42,7 @@ const MessageBlockTemplate = `
     template: MessageBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
+      // @ts-ignore
       await baseMounted.bind(this)(BLOCK_TYPE, messageBlockStore)
     },
   }
@@ -56,6 +57,7 @@ export const Default = () => (DefaultClass)
     template: MessageBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
+      // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, messageBlockStore)
 
       //TODO - support sending props to baseMounted?
@@ -107,6 +109,7 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
     template: MessageBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
+      // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, messageBlockStore)
 
       // Fake a 1st block to make sure the current block won't be selected
