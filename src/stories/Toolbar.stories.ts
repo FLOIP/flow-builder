@@ -51,6 +51,21 @@ class DefaultClass extends BaseMountedClass {
 }
 export const Default = () => (DefaultClass)
 
+// Without Resource Editor toggle
+@Component<any>(
+  {
+    ...BaseOptions,
+    async mounted() {
+      this.updateIsEditable({value: 0})
+      this.removeEnabledFeature({value: 'resourceEditor'})
+    }
+  }
+)
+class ResourceEditorClass extends BaseMountedClass {
+
+}
+export const WithoutResourceEditorToggle = () => (ResourceEditorClass)
+
 // Edit flow
 @Component<any>(
   {
@@ -82,21 +97,6 @@ class SaveClass extends BaseMountedClass {
 
 }
 export const WithSaveButton = () => (SaveClass)
-
-// With Resource Editor toggle
-@Component<any>(
-  {
-    ...BaseOptions,
-    async mounted() {
-      this.updateIsEditable({value: 0})
-      this.addEnabledFeature({value: 'resourceEditor'})
-    }
-  }
-)
-class ResourceEditorClass extends BaseMountedClass {
-
-}
-export const WithResourceEditorToggle = () => (ResourceEditorClass)
 
 // With Extra right grouped button
 let BaseOptions2 = BaseOptions
