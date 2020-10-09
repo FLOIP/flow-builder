@@ -16,7 +16,7 @@ import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '.'
 import {IRootState} from '@/store'
-import {defaults, includes, forEach} from 'lodash'
+import {defaults, includes, forEach, cloneDeep, get} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
@@ -213,7 +213,28 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         firstBlockId: '',
       }),
     }
-  }
+  },
+
+  async flow_duplicateBlock({dispatch, commit, state}, {flowId, blockId}: {flowId: string, blockId: IBlock['uuid']}): Promise<IBlock> {
+    const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
+    const block: IBlock = findBlockWith(blockId, flow)  // @throws ValidationException when block absent
+
+    let duplicatedBlock = cloneDeep(block)
+
+    duplicatedBlock.uuid = (new IdGeneratorUuidV4).generate()
+    duplicatedBlock.platform_metadata = {
+      io_viamo: {
+        uiData: {
+          xPosition: get(block, 'platform_metadata.io_viamo.uiData.xPosition', 50) + 80,
+          yPosition: get(block, 'platform_metadata.io_viamo.uiData.yPosition', 50) + 80,
+        }
+      }
+    }
+
+    commit('flow_addBlock', {block: duplicatedBlock})
+
+    return duplicatedBlock
+  },
 }
 
 export const DEFAULT_MODES = [
