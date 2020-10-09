@@ -161,23 +161,7 @@
                     @click="attemptSaveTree">
               {{saveButtonText}}
             </button>
-
-            <template v-if="isFeatureTreeSendEnabled">
-              <a v-if="can('edit-content')"
-                 :href="publishVersionUrl"
-                 class="btn btn-success"
-                 :disabled="isTreeSaving || !isTreeValid"
-                 :title="isTreeValid ? 'flow-builder.publish-this-version-of-the-flow' : 'flow-builder.fix-validation-errors-before-publishing' | trans">
-                {{'flow-builder.publish' | trans}}
-              </a>
-              <a v-if="can('send-outgoing-call')"
-                 :href="sendOutgoingCallUrl"
-                 class="btn btn-success tree-send-tree-call"
-                 :disabled="isTreeSaving || !isTreeValid"
-                 :title="trans('flow-builder.schedule-and-send-an-outgoing-call')">
-                {{trans('flow-builder.send')}}
-              </a>
-            </template>
+            <slot name="right-grouped-buttons"/>
           </div>
         </div>
       </div>

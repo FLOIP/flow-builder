@@ -78,3 +78,40 @@ class CurrentClass3 extends BaseMountedClass {
   @Mutation removeEnabledFeature: any
 }
 export const WithSaveFlow = () => (CurrentClass3)
+
+// With Extra right grouped button
+let BaseOptions2 = BaseOptions
+BaseOptions2.template = `
+  <flow-builder-container>
+    <tree-builder-toolbar>
+      <template slot="right-grouped-buttons">
+        <a href="#"
+           class="btn btn-success"
+           :disabled="true"
+           title="another grouped button">
+           Action X
+        </a>
+        <a href="#"
+           class="btn btn-warning"
+           :disabled="false"
+           title="another grouped button">
+           Action Y
+        </a>
+      </template>
+    </tree-builder-toolbar>
+  </flow-builder-container>`
+@Component<any>(
+  {
+    ...BaseOptions,
+    async mounted() {
+      this.updateIsEditable({value: 1})
+      this.addEnabledFeature({value: 'treeSave'})
+    }
+  }
+)
+class CurrentClass4 extends BaseMountedClass {
+  @Mutation updateIsEditable: any
+  @Mutation addEnabledFeature: any
+  @Mutation removeEnabledFeature: any
+}
+export const WithGroupedButtonsSlot = () => (CurrentClass4)
