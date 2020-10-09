@@ -30,15 +30,7 @@
             </router-link>
           </div>
 
-          <template v-if="ui.isEditableLocked">
-            <a v-if="isFeatureViewResultsEnabled"
-               :href="viewResultsUrl"
-               :title="trans('flow-builder.view-results')"
-               class="btn btn-default">
-              <span class="glyphicon glyphicon-signal"></span>
-            </a>
-          </template>
-          <a v-else
+          <a v-if="!ui.isEditableLocked"
              :href="editOrViewTreeJsUrl"
              :title="trans('flow-builder.click-to-toggle-editing')"
              class="btn btn-default"
@@ -46,15 +38,6 @@
              @click="attemptSaveTree">
             {{trans('flow-builder.edit-flow')}}
           </a>
-
-          <a v-if="!ui.isEditable && isFeatureTreeDuplicateEnabled"
-             :href="duplicateTreeLink"
-             class="btn btn-default"
-             :title="trans('flow-builder.duplicate-entire-flow')">
-            <span class="glyphicon glyphicon-tags"/>
-          </a>
-
-          <!--        <interaction-totals-date-range-configuration v-if="ui.isEditableLocked && isFeatureUpdateInteractionTotalsEnabled"/>-->
 
           <div v-if="ui.isEditable" class="btn-group">
             <button type="button"
@@ -151,6 +134,8 @@
                   :disabled="!activeBlockId">
             {{trans('flow-builder.delete')}}
           </button>
+
+          <slot name="extra-buttons"/>
 
           <div class="btn-group pull-right">
             <button v-if="ui.isEditable && isFeatureTreeSaveEnabled"
