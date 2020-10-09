@@ -311,6 +311,18 @@ export default {
     	ui.isEditable = value
 		},
 
+    addEnabledFeature({ui}, {value}) {
+      if (ui.enabledFeatures.indexOf(value) < 0) {
+        ui.enabledFeatures.push(value);
+      }
+    },
+
+    removeEnabledFeature({ui}, {value}) {
+      if (ui.enabledFeatures.indexOf(value) > -1) {
+        ui.enabledFeatures = ui.enabledFeatures.filter((item) => item !== value)
+      }
+    },
+
 		setContentTypeEnabled({tree}, {contentType, isEnabled}) {
 			tree[`has${lodash.upperFirst(contentType)}`] = +isEnabled
     },

@@ -8,8 +8,6 @@ import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
 import TreeBuilderToolbar from "@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue";
 
-import {namespace} from 'vuex-class'
-
 export default {
   title: 'InteractionDesigner/Toolbar',
   // Our exports that end in "Data" are not stories.
@@ -54,10 +52,29 @@ export const Default = () => (CurrentClass)
     ...BaseOptions,
     async mounted() {
       this.updateIsEditable({value: 1})
+      this.removeEnabledFeature({value: 'treeSave'})
     }
   }
 )
 class CurrentClass2 extends BaseMountedClass {
   @Mutation updateIsEditable: any
+  @Mutation removeEnabledFeature: any
 }
 export const EditFlow = () => (CurrentClass2)
+
+// With Save flow
+@Component<any>(
+  {
+    ...BaseOptions,
+    async mounted() {
+      this.updateIsEditable({value: 1})
+      this.addEnabledFeature({value: 'treeSave'})
+    }
+  }
+)
+class CurrentClass3 extends BaseMountedClass {
+  @Mutation updateIsEditable: any
+  @Mutation addEnabledFeature: any
+  @Mutation removeEnabledFeature: any
+}
+export const WithSaveFlow = () => (CurrentClass3)
