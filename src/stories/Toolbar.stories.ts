@@ -62,7 +62,7 @@ class CurrentClass2 extends BaseMountedClass {
 }
 export const EditFlow = () => (CurrentClass2)
 
-// With Save flow
+// With Save button
 @Component<any>(
   {
     ...BaseOptions,
@@ -77,7 +77,7 @@ class CurrentClass3 extends BaseMountedClass {
   @Mutation addEnabledFeature: any
   @Mutation removeEnabledFeature: any
 }
-export const WithSaveFlow = () => (CurrentClass3)
+export const WithSaveButton = () => (CurrentClass3)
 
 // With Extra right grouped button
 let BaseOptions2 = BaseOptions
