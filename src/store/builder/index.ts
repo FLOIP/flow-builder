@@ -1,4 +1,4 @@
-import {flatMap, isEqual, keyBy, map, mapValues} from 'lodash'
+import {flatMap, isEqual, keyBy, map, mapValues, get} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {IRootState} from "@/store"
@@ -300,7 +300,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     const flowContext = require('./2019-10-10-shortcut-flow.json')
     const flow = flowContext.flows[0]
 
-    flowContext.resources.map(resource => commit('flow/resource_add', {resource}, {root: true}))
+    flowContext.resources.map((resource: any) => commit('flow/resource_add', {resource}, {root: true}))
     await dispatch('flow/flow_add', {flow}, {root: true})
   },
 }
@@ -328,8 +328,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
-    [source.platform_metadata.io_viamo.uiData.xPosition, source.platform_metadata.io_viamo.uiData.yPosition],
-    [target.platform_metadata.io_viamo.uiData.xPosition, target.platform_metadata.io_viamo.uiData.yPosition],
+    [get(source, 'platform_metadata.io_viamo.uiData.xPosition'), get(source, 'platform_metadata.io_viamo.uiData.yPosition')],
+    [get(target, 'platform_metadata.io_viamo.uiData.xPosition'), get(target, 'platform_metadata.io_viamo.uiData.yPosition')],
 
     // block titles
     source.label,
