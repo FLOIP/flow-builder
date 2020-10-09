@@ -78,6 +78,7 @@ export default {
     isFeatureTreeDuplicateEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeDuplicate'),
     isFeatureTreeViewVersionsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeViewVersions'),
     isFeatureTreeDuplicateOfEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeDuplicateOf'),
+    isResourceEditorEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'resourceEditor'),
     isFeatureUpdateInteractionTotalsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'updateInteractionTotals'),
     isFeatureAudioUploadEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'audioUpload'),
     isFeatureViewResultsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'viewResults'),

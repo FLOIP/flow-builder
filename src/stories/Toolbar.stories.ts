@@ -30,6 +30,10 @@ const BaseOptions = {
 }
 class BaseMountedClass extends Vue {
   @Action initializeTreeModel: any
+
+  @Mutation updateIsEditable: any
+  @Mutation addEnabledFeature: any
+  @Mutation removeEnabledFeature: any
 }
 
 // Default
@@ -38,13 +42,14 @@ class BaseMountedClass extends Vue {
         ...BaseOptions,
       async mounted() {
         this.updateIsEditable({value: 0})
+        this.addEnabledFeature({value: 'resourceEditor'})
       }
     }
 )
-class CurrentClass extends BaseMountedClass {
-  @Mutation updateIsEditable: any
+class DefaultClass extends BaseMountedClass {
+
 }
-export const Default = () => (CurrentClass)
+export const Default = () => (DefaultClass)
 
 // Edit flow
 @Component<any>(
@@ -52,15 +57,15 @@ export const Default = () => (CurrentClass)
     ...BaseOptions,
     async mounted() {
       this.updateIsEditable({value: 1})
+      this.addEnabledFeature({value: 'resourceEditor'})
       this.removeEnabledFeature({value: 'treeSave'})
     }
   }
 )
-class CurrentClass2 extends BaseMountedClass {
-  @Mutation updateIsEditable: any
-  @Mutation removeEnabledFeature: any
+class EditFlowClass extends BaseMountedClass {
+
 }
-export const EditFlow = () => (CurrentClass2)
+export const EditFlow = () => (EditFlowClass)
 
 // With Save button
 @Component<any>(
@@ -68,16 +73,30 @@ export const EditFlow = () => (CurrentClass2)
     ...BaseOptions,
     async mounted() {
       this.updateIsEditable({value: 1})
+      this.addEnabledFeature({value: 'resourceEditor'})
       this.addEnabledFeature({value: 'treeSave'})
     }
   }
 )
-class CurrentClass3 extends BaseMountedClass {
-  @Mutation updateIsEditable: any
-  @Mutation addEnabledFeature: any
-  @Mutation removeEnabledFeature: any
+class SaveClass extends BaseMountedClass {
+
 }
-export const WithSaveButton = () => (CurrentClass3)
+export const WithSaveButton = () => (SaveClass)
+
+// With Resource Editor toggle
+@Component<any>(
+  {
+    ...BaseOptions,
+    async mounted() {
+      this.updateIsEditable({value: 0})
+      this.addEnabledFeature({value: 'resourceEditor'})
+    }
+  }
+)
+class ResourceEditorClass extends BaseMountedClass {
+
+}
+export const WithResourceEditorToggle = () => (ResourceEditorClass)
 
 // With Extra right grouped button
 let BaseOptions2 = BaseOptions
@@ -105,16 +124,15 @@ BaseOptions2.template = `
     ...BaseOptions,
     async mounted() {
       this.updateIsEditable({value: 1})
+      this.addEnabledFeature({value: 'resourceEditor'})
       this.addEnabledFeature({value: 'treeSave'})
     }
   }
 )
-class CurrentClass4 extends BaseMountedClass {
-  @Mutation updateIsEditable: any
-  @Mutation addEnabledFeature: any
-  @Mutation removeEnabledFeature: any
+class GroupButtonsSlotClass extends BaseMountedClass {
+
 }
-export const WithGroupedButtonsSlot = () => (CurrentClass4)
+export const WithGroupedButtonsSlot = () => (GroupButtonsSlotClass)
 
 // With Extra buttons
 let BaseOptions3 = BaseOptions
@@ -142,13 +160,12 @@ BaseOptions3.template = `
     ...BaseOptions,
     async mounted() {
       this.updateIsEditable({value: 1})
+      this.addEnabledFeature({value: 'resourceEditor'})
       this.addEnabledFeature({value: 'treeSave'})
     }
   }
 )
-class CurrentClass5 extends BaseMountedClass {
-  @Mutation updateIsEditable: any
-  @Mutation addEnabledFeature: any
-  @Mutation removeEnabledFeature: any
+class ExtraButtonsSlotClass extends BaseMountedClass {
+  
 }
-export const WithExtraButtonsSlot = () => (CurrentClass5)
+export const WithExtraButtonsSlot = () => (ExtraButtonsSlotClass)

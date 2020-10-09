@@ -207,6 +207,7 @@
         'isFeatureTreeDuplicateEnabled',
         'isFeatureViewResultsEnabled',
         'isFeatureUpdateInteractionTotalsEnabled',
+        'isResourceEditorEnabled',
       ]),
 
       flow: {
@@ -227,10 +228,6 @@
                 ['platform_metadata', 'io_viamo']
             ))
         }
-      },
-
-      isResourceEditorEnabled() {
-        return false
       },
 
       jsKey() { // deprecate
