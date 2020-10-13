@@ -10,7 +10,7 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import TextEditor from '@/components/common/TextEditor'
+  import TextEditor from '@/components/common/TextEditor.vue'
   import {Component, Prop} from 'vue-property-decorator'
   import {IFlow} from '@floip/flow-runner'
   import {namespace} from 'vuex-class'

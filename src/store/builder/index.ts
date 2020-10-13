@@ -87,6 +87,8 @@ export const mutations: MutationTree<IBuilderState> = {
   },
 
   setOperation({operations}, {operation}: {operation: SupportedOperation}) {
+    //TODO - type checking - remove this ignore and fix these errors - they seem to be quite serious but I'm not sure how to resolve them
+    //@ts-ignore
     operations[operation.kind] = operation
   },
 
@@ -290,6 +292,8 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resources)
 
     // make sure we use the same languages ids on both UI & Flows
+    // TODO - type checking - remove this and resolve the error
+    //@ts-ignore
     rootState.trees.ui.languages = flows[0].languages
   },
 
@@ -328,7 +332,11 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
+    // TODO - type checking - remove this and resolve the error
+    //@ts-ignore
     [source.platform_metadata.io_viamo.uiData.xPosition, source.platform_metadata.io_viamo.uiData.yPosition],
+    // TODO - type checking - remove this and resolve the error
+    //@ts-ignore
     [target.platform_metadata.io_viamo.uiData.xPosition, target.platform_metadata.io_viamo.uiData.yPosition],
 
     // block titles

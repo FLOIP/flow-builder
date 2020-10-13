@@ -20,7 +20,7 @@
   import Vue from 'vue'
   import {Component, Prop} from 'vue-property-decorator'
   import {IFlow} from '@floip/flow-runner'
-  import NumericEditor from '@/components/common/NumericEditor'
+  import NumericEditor from '@/components/common/NumericEditor.vue'
   import {SupportedMode} from '@floip/flow-runner'
   import lang from '@/lib/filters/lang'
 

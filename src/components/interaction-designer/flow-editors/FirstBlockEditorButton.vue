@@ -22,6 +22,7 @@
 <script lang="ts">
   import Vue from 'vue'
   import {Component, Prop} from 'vue-property-decorator'
+  import {IFlow} from '@floip/flow-runner'
   import lang from '@/lib/filters/lang'
   import {namespace} from "vuex-class"
 
@@ -41,6 +42,10 @@
     mixins: [lang],
   })
   class FirstBlockEditorButton extends Vue {
+    @Prop({default: true}) readonly isEditable!: boolean
+    @Prop() readonly flow!: IFlow
+    @Prop() readonly blockId!: String 
+
     get isStartBlock() {
       return this.blockId === this.flow.firstBlockId
     }
