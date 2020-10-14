@@ -1,2 +1,0 @@
-(("undefined"!==typeof self?self:this)["webpackJsonpflow_builder"]=("undefined"!==typeof self?self:this)["webpackJsonpflow_builder"]||[]).push([[2],{f820:function(e,t,s){"use strict";s.r(t);var l=function(){var e=this,t=e.$createElement;e._self._c;return e._m(0)},n=[function(){var e=this,t=e.$createElement,s=e._self._c||t;return s("div",{staticClass:"about"},[s("h1",[e._v("This is an about page")])])}],f=s("2877"),u={},i=Object(f["a"])(u,l,n,!1,null,null,null);t["default"]=i.exports}}]);
-//# sourceMappingURL=flow-builder.umd.min.about.js.map

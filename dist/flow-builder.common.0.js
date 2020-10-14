@@ -205,7 +205,7 @@ var _components$mixins$pr;
       });
     }
   }
-}), Object(defineProperty["a" /* default */])(_components$mixins$pr, "methods", Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["d" /* mapMutations */])('flow', ['block_setSemanticLabel']))), _components$mixins$pr);
+}), Object(defineProperty["a" /* default */])(_components$mixins$pr, "methods", Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["c" /* mapMutations */])('flow', ['block_setSemanticLabel']))), _components$mixins$pr);
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue?vue&type=script&lang=js&
  /* harmony default export */ var block_editors_SemanticLabelEditorvue_type_script_lang_js_ = (SemanticLabelEditorvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
@@ -306,7 +306,7 @@ var _components$mixins$pr;
       });
     }
   }
-}), Object(defineProperty["a" /* default */])(_components$mixins$pr, "methods", Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["d" /* mapMutations */])('flow', ['block_setLabel']))), _components$mixins$pr);
+}), Object(defineProperty["a" /* default */])(_components$mixins$pr, "methods", Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["c" /* mapMutations */])('flow', ['block_setLabel']))), _components$mixins$pr);
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue?vue&type=script&lang=js&
  /* harmony default export */ var block_editors_LabelEditorvue_type_script_lang_js_ = (LabelEditorvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
@@ -613,7 +613,7 @@ var vue_strap = __webpack_require__("2ffd");
       };
     }
   },
-  methods: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["b" /* mapActions */])('flow', ['resource_setOrCreateValueModeSpecific'])), {}, {
+  methods: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["a" /* mapActions */])('flow', ['resource_setOrCreateValueModeSpecific'])), {}, {
     select: function select() {
       this.isSelected = true;
     },
@@ -657,7 +657,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 if (typeof ResourceVariantTextEditorvue_type_custom_index_0_blockType_x_style_lang_scss_scoped_true["default"] === 'function') Object(ResourceVariantTextEditorvue_type_custom_index_0_blockType_x_style_lang_scss_scoped_true["default"])(component)
 
 /* harmony default export */ var ResourceVariantTextEditor = (component.exports);
-// EXTERNAL MODULE: ./src/store/flow/resource.ts
+// EXTERNAL MODULE: ./src/store/flow/resource.ts + 1 modules
 var resource = __webpack_require__("393e");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/AudioLibrarySelector.vue?vue&type=template&id=797950bd&
@@ -1054,7 +1054,7 @@ var AudioLibrarySelection_component = Object(componentNormalizer["a" /* default 
       return !lodash_default.a.isEmpty(this.alternateSelections);
     }
   },
-  methods: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["b" /* mapActions */])('flow', ['resource_setOrCreateValueModeSpecific'])), {}, {
+  methods: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["a" /* mapActions */])('flow', ['resource_setOrCreateValueModeSpecific'])), {}, {
     clearSelection: function clearSelection() {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
@@ -1421,7 +1421,7 @@ var lang = __webpack_require__("3a37");
       }
     }
   },
-  methods: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["d" /* mapMutations */])('flow', ['block_setName'])), {}, {
+  methods: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["c" /* mapMutations */])('flow', ['block_setName'])), {}, {
     filterName: function filterName(e) {
       if (e.key.match(/\W+|Enter/g)) {
         e.preventDefault();

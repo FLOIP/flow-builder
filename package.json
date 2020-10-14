@@ -1,12 +1,12 @@
 {
   "name": "@floip/flow-builder",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "flow-builder provides an open source frontend for authoring flow interoperability project specification compliant flows.",
   "main": "./dist/flow-builder.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-bundle": "vue-cli-service build --target lib --name flow-builder src/main.ts",
+    "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "storybook:build": "vue-cli-service storybook:build -c config/storybook",
