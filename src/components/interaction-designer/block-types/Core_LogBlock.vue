@@ -51,6 +51,7 @@
   import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+  import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -66,6 +67,7 @@
   @Component<any>({
     components: {
       ResourceEditor,
+      ResourceVariantTextEditor,
       BlockNameEditor,
       BlockLabelEditor,
       BlockSemanticLabelEditor,
