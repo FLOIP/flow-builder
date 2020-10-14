@@ -57,8 +57,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: (new IdGeneratorUuidV4()).generate(),
-          tag: '(true)',
-          test: '(true)',
+          tag: '',
+          test: '',
         }) as IBlockExitTestRequired,
       }, {root: true}),
     ]
