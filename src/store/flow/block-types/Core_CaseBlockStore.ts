@@ -33,12 +33,17 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     await dispatch('flow/block_updateBlockExitWith', {
       blockId: rootGetters['builder/activeBlock'].uuid,
       exitId: identifier,
-      value,
+      props: {
+        tag: value,
+        test: value,
+      },
     }, {root: true})
+
     if (getters.allExitsHaveTests) {
       const exit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
         props: ({
           uuid: (new IdGeneratorUuidV4()).generate(),
+          tag: '',
           test: '', // todo: get started on a basic expression api
         }) as IBlockExitTestRequired,
       }, {root: true})
@@ -52,7 +57,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: (new IdGeneratorUuidV4()).generate(),
-          test: '',
+          tag: '(true)',
+          test: '(true)',
         }) as IBlockExitTestRequired,
       }, {root: true}),
     ]

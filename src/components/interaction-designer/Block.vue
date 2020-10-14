@@ -52,7 +52,7 @@
           <span class="label label-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
         </div>
 
-        <h3 class="block-exit-tag label label-warning">{{exit.tag}}</h3>
+        <h3 class="block-exit-tag label label-warning">{{exit.tag || '—'}}</h3>
 
         <template v-if="exit.destinationBlock == null">
           <plain-draggable class="handle-create-link btn btn-default btn-xs btn-flat"
@@ -407,7 +407,7 @@
     }
 
     .block-target {
-      min-height: 6em;
+      min-height: 4em;
       border: 1px dashed transparent;
       border-bottom: 1px solid #eee;
       padding: 0.1em;
