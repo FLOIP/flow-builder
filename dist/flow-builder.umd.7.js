@@ -54,10 +54,14 @@ var BlockId = __webpack_require__("792f");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue + 4 modules
 var MobilePrimitives_SelectOneResponseBlock = __webpack_require__("5c47");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.assign.js
+var es_object_assign = __webpack_require__("cca6");
+
 // EXTERNAL MODULE: ./src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts
 var MobilePrimitives_SelectOneResponseBlockStore = __webpack_require__("ecef");
 
 // CONCATENATED MODULE: ./src/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore.ts
+
 
 var BLOCK_TYPE = 'MobilePrimitives\\SelectManyResponse';
 var getters = Object.assign({}, MobilePrimitives_SelectOneResponseBlockStore["d" /* getters */]);
@@ -350,26 +354,29 @@ var component = Object(componentNormalizer["a" /* default */])(
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return actions; });
 /* harmony import */ var core_js_modules_es_array_every__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("a623");
 /* harmony import */ var core_js_modules_es_array_every__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_every__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var core_js_modules_es_array_reduce__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("13d5");
-/* harmony import */ var core_js_modules_es_array_reduce__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_reduce__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_es_array_some__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("45fc");
-/* harmony import */ var core_js_modules_es_array_some__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_some__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("b64b");
-/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("d3b7");
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("ddb0");
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("96cf");
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("1da1");
-/* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("9300");
-/* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("31aa");
-/* harmony import */ var _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("2ef0");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _utils_listBuilder__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("b199");
+/* harmony import */ var core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("e260");
+/* harmony import */ var core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es_array_reduce__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("13d5");
+/* harmony import */ var core_js_modules_es_array_reduce__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_reduce__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_array_some__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("45fc");
+/* harmony import */ var core_js_modules_es_array_some__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_some__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("b64b");
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("d3b7");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("ddb0");
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("96cf");
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("1da1");
+/* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("9300");
+/* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("31aa");
+/* harmony import */ var _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("2ef0");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _utils_listBuilder__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("b199");
+
 
 
 
@@ -394,13 +401,13 @@ var getters = {
   },
   allChoicesHaveContent: function allChoicesHaveContent(state, getters) {
     return Object.keys(getters.inflatedChoices).every(function (key) {
-      return Object(_utils_listBuilder__WEBPACK_IMPORTED_MODULE_11__[/* someItemsHaveValue */ "c"])(getters.inflatedChoices[key].values, "value");
+      return Object(_utils_listBuilder__WEBPACK_IMPORTED_MODULE_12__[/* someItemsHaveValue */ "c"])(getters.inflatedChoices[key].values, "value");
     });
   },
   twoChoicesBlank: function twoChoicesBlank(state, getters, rootState, rootGetters) {
     var blankNumber = 0;
     return Object.keys(getters.inflatedChoices).some(function (key) {
-      if (!Object(_utils_listBuilder__WEBPACK_IMPORTED_MODULE_11__[/* someItemsHaveValue */ "c"])(getters.inflatedChoices[key].values, "value")) {
+      if (!Object(_utils_listBuilder__WEBPACK_IMPORTED_MODULE_12__[/* someItemsHaveValue */ "c"])(getters.inflatedChoices[key].values, "value")) {
         blankNumber += 1;
       }
 
@@ -418,7 +425,7 @@ var mutations = {
         blockId = _ref.blockId;
     //TODO - this shouldn't be necessary
     // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_8__["findBlockOnActiveFlowWith"])(blockId, this.state.flow);
+    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_9__["findBlockOnActiveFlowWith"])(blockId, this.state.flow);
     delete block.config.choices[choiceKeyToRemove];
     var choices = {}; //rekey
 
@@ -433,21 +440,21 @@ var mutations = {
         newIndex = _ref2.newIndex;
     //TODO - this shouldn't be necessary
     // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_8__["findBlockOnActiveFlowWith"])(blockId, this.state.flow);
+    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_9__["findBlockOnActiveFlowWith"])(blockId, this.state.flow);
     block.config.choices[newIndex] = choiceId;
   }
 };
 var actions = {
   popFirstEmptyChoice: function popFirstEmptyChoice(_ref3) {
-    return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var commit, rootGetters, getters, choiceToRemove;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               commit = _ref3.commit, rootGetters = _ref3.rootGetters, getters = _ref3.getters;
-              choiceToRemove = Object(lodash__WEBPACK_IMPORTED_MODULE_10__["find"])(Object.keys(getters.inflatedChoices), function (key) {
-                return !Object(_utils_listBuilder__WEBPACK_IMPORTED_MODULE_11__[/* someItemsHaveValue */ "c"])(getters.inflatedChoices[key].values, "value");
+              choiceToRemove = Object(lodash__WEBPACK_IMPORTED_MODULE_11__["find"])(Object.keys(getters.inflatedChoices), function (key) {
+                return !Object(_utils_listBuilder__WEBPACK_IMPORTED_MODULE_12__[/* someItemsHaveValue */ "c"])(getters.inflatedChoices[key].values, "value");
               });
 
               if (!choiceToRemove) {
@@ -473,7 +480,7 @@ var actions = {
     }))();
   },
   editSelectOneResponseBlockChoice: function editSelectOneResponseBlockChoice(_ref4) {
-    return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
       var commit, dispatch, getters, rootGetters, activeBlock, newIndex, blankResource, exit, exitLabel;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
@@ -487,7 +494,7 @@ var actions = {
                 break;
               }
 
-              newIndex = parseInt(Object(lodash__WEBPACK_IMPORTED_MODULE_10__["max"])(Object.keys(activeBlock.config.choices)) || "0") + 1;
+              newIndex = parseInt(Object(lodash__WEBPACK_IMPORTED_MODULE_11__["max"])(Object.keys(activeBlock.config.choices)) || "0") + 1;
               _context2.next = 6;
               return dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {
                 root: true
@@ -509,7 +516,7 @@ var actions = {
               _context2.next = 11;
               return dispatch('flow/block_createBlockExitWith', {
                 props: {
-                  uuid: new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_9___default.a().generate(),
+                  uuid: new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_10___default.a().generate(),
                   test: 'block.value = ' + (newIndex - 1),
                   label: blankResource.uuid
                 }
@@ -567,7 +574,7 @@ var actions = {
   // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
   //       but, it doesn't seem to mention how this is configured
   createWith: function createWith(_ref5, _ref6) {
-    return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+    return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
       var state, commit, dispatch, props, blankResource, blankPromptResource, blankQuestionPromptResource, blankChoicesPromptResource, exits;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
@@ -606,7 +613,7 @@ var actions = {
               _context3.next = 16;
               return dispatch('flow/block_createBlockDefaultExitWith', {
                 props: {
-                  uuid: new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_9___default.a().generate(),
+                  uuid: new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_10___default.a().generate(),
                   tag: 'Default',
                   label: 'Default'
                 }
@@ -619,7 +626,7 @@ var actions = {
               _context3.next = 19;
               return dispatch('flow/block_createBlockExitWith', {
                 props: {
-                  uuid: new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_9___default.a().generate(),
+                  uuid: new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_10___default.a().generate(),
                   tag: 'Error',
                   label: 'Error'
                 }
@@ -630,7 +637,7 @@ var actions = {
             case 19:
               _context3.t1 = _context3.sent;
               exits = [_context3.t0, _context3.t1];
-              return _context3.abrupt("return", Object(lodash__WEBPACK_IMPORTED_MODULE_10__["defaults"])(props, {
+              return _context3.abrupt("return", Object(lodash__WEBPACK_IMPORTED_MODULE_11__["defaults"])(props, {
                 type: BLOCK_TYPE,
                 name: '',
                 label: '',
