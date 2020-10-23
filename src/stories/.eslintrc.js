@@ -1,9 +1,9 @@
-var eslintConfig = require('../.eslintrc.js');
+var eslintConfig = require('../../.eslintrc.js');
+//Note that this config is for the current folder only
 
 module.exports = Object.assign({}, eslintConfig, {
   "rules": Object.assign({}, eslintConfig.rules, {
     //necessary to allow devDependencies required for storybook
-    //in future this could be restricted to only the stories folder
     'import/no-extraneous-dependencies': ['error', {'devDependencies': true}]
   })
 })
