@@ -75,27 +75,27 @@ export const Default = () => (CurrentClass1)
 })
 class CurrentClass2 extends BaseMountedVueClass {
 
-  setDescription(blockId) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
+  setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
     this.block_setName({blockId: blockId, value: "A Name"})
     this.block_setLabel({blockId: blockId, value: "A Label"})
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
   }
 
-  setResourceData(languageId, resourceId) {
+  setResourceData(languageId: string, resourceId: string) {
     // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['sms'],
+      modes: [SupportedMode.SMS],
       contentType: SupportedContentType.TEXT,
     }
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ussd'],
+      modes: [SupportedMode.USSD],
       contentType: SupportedContentType.TEXT,
     }
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ivr'],
+      modes: [SupportedMode.IVR],
       contentType: SupportedContentType.AUDIO,
     }
     // we're assuming this pseudo-variants exist
@@ -135,27 +135,27 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
   },
 })
 class CurrentClass3 extends BaseMountedVueClass {
-  setDescription(blockId) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
+  setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
     this.block_setName({blockId: blockId, value: "A Name"})
     this.block_setLabel({blockId: blockId, value: "A Label"})
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
   }
 
-  setResourceData(languageId, resourceId) {
+  setResourceData(languageId: string, resourceId: string) {
     // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['sms'],
+      modes: [SupportedMode.SMS],
       contentType: SupportedContentType.TEXT,
     }
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ussd'],
+      modes: [SupportedMode.USSD],
       contentType: SupportedContentType.TEXT,
     }
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ivr'],
+      modes: [SupportedMode.IVR],
       contentType: SupportedContentType.AUDIO,
     }
     // we're assuming this pseudo-variants exist
@@ -195,27 +195,27 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
   },
 })
 class CurrentClass4 extends BaseMountedVueClass {
-  setDescription(blockId) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
+  setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
     this.block_setName({blockId: blockId, value: "A Name"})
     this.block_setLabel({blockId: blockId, value: "A Label"})
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
   }
 
-  setResourceData(languageId, resourceId) {
+  setResourceData(languageId: string, resourceId: string) {
     // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['sms'],
+      modes: [SupportedMode.SMS],
       contentType: SupportedContentType.TEXT,
     }
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ussd'],
+      modes: [SupportedMode.USSD],
       contentType: SupportedContentType.TEXT,
     }
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ivr'],
+      modes: [SupportedMode.IVR],
       contentType: SupportedContentType.AUDIO,
     }
     // we're assuming this pseudo-variants exist

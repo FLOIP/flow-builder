@@ -61,7 +61,7 @@ export const Default = () => (CurrentClass1)
     },
 })
 class CurrentClass2 extends BaseMountedVueClass {
-    setDescription(blockId) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
+    setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
         this.block_setName({blockId: blockId, value: "A Name"})
         this.block_setLabel({blockId: blockId, value: "A Label"})
         this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
