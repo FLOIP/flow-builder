@@ -25,7 +25,8 @@ const BaseOptions = {
   template: ToolbarTemplate,
   store: new Vuex.Store<IRootState>(store),
   created() {
-      this.initializeTreeModel()
+    // @ts-ignore
+    this.initializeTreeModel() // from trees store
   },
 }
 class BaseMountedClass extends Vue {
