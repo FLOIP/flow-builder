@@ -1,7 +1,8 @@
 import {StoreOptions} from 'vuex'
 import {IFlowsState, store as flow} from './flow'
 import {IBuilderState, store as builder} from './builder'
-import trees from './trees/trees'
+// @ts-ignore
+import trees from '@/store/trees/trees.js'
 
 export interface IRootState {
   builder: IBuilderState,

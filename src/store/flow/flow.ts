@@ -75,6 +75,7 @@ export const mutations: MutationTree<IFlowsState> = {
       forEach(exitsTowardUs, e => e.destinationBlock = undefined)
     })
 
+    // @ts-ignore
     this.state.builder.activeBlockId = null
   },
 

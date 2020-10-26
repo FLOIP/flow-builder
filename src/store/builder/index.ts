@@ -87,6 +87,7 @@ export const mutations: MutationTree<IBuilderState> = {
   },
 
   setOperation({operations}, {operation}: {operation: SupportedOperation}) {
+    // @ts-ignore
     operations[operation.kind] = operation
   },
 
