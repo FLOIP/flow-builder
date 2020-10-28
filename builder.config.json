@@ -105,6 +105,7 @@
         "name": "MobilePrimitives\\SelectManyResponse",
         "type": "MobilePrimitives\\SelectManyResponse",
         "is_interactive": true,
+        "is_branching": true,
         "category":  2
       },
       "SmartDevices\\LocationResponse": {

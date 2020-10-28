@@ -187,8 +187,7 @@ export function findOrGenerateStubbedVariantOn(
   }
 }
 
-export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourceDefinition): SupportedContentType[] {
-
+export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourceDefinition): SupportedContentType[]  {
   const
       TEXT = SupportedContentType.TEXT,
       AUDIO = SupportedContentType.AUDIO,
