@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-  import {IBlock, IFlow} from '@floip/flow-runner'
+  import {IFlow} from '@floip/flow-runner'
   import ISelectOneResponseBlock from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
   import {
     IResourceDefinition,

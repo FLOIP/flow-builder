@@ -1,9 +1,11 @@
-import {flatMap, isEqual, keyBy, map, mapValues} from 'lodash'
+import {cloneDeep, flatMap, isEqual, keyBy, map, mapValues} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {IRootState} from "@/store"
 import {IBlock, SupportedMode, ValidationException} from "@floip/flow-runner"
 import {IDeepBlockExitIdWithinFlow} from "@/store/flow/block"
+import createFormattedDate from "@floip/flow-runner/dist/domain/DateFormat";
+import IdGeneratorUuidV4 from "@floip/flow-runner/dist/domain/IdGeneratorUuidV4";
 
 
 export enum OperationKind { // todo migrate these to flight-monitor
@@ -293,15 +295,21 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     rootState.trees.ui.languages = flows[0].languages
   },
 
-  async loadFlow({dispatch, commit, state}) {
-    console.debug('loading flow...')
+  async loadFlow({dispatch, commit, state, rootState}) {
+    console.debug('builder', 'loading flow...')
 
     // todo: we need something like: set context
-    const flowContext = require('./2019-10-10-shortcut-flow.json')
+    const flowContext = require('./blank-flow.json')
     const flow = flowContext.flows[0]
+    flow.uuid = (new IdGeneratorUuidV4).generate()
+    flow.lastModified = createFormattedDate()
+    flow.languages = cloneDeep(rootState.trees.ui.languages)
 
-    flowContext.resources.map(resource => commit('flow/resource_add', {resource}, {root: true}))
+    flowContext.resources.forEach(resource => commit('flow/resource_add', {resource}, {root: true}))
+
     await dispatch('flow/flow_add', {flow}, {root: true})
+
+    console.debug('builder', 'flow loaded.')
   },
 }
 
