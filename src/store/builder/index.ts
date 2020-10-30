@@ -307,6 +307,8 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     const flow = flowContext.flows[0]
     flow.uuid = (new IdGeneratorUuidV4).generate()
     flow.lastModified = createFormattedDate()
+    // TODO - type checking - remove this and resolve the error
+    //@ts-ignore
     flow.languages = cloneDeep(rootState.trees.ui.languages)
 
     flowContext.resources.forEach(resource => commit('flow/resource_add', {resource}, {root: true}))

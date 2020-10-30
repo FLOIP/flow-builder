@@ -3,6 +3,9 @@ const path = require('path')
 module.exports = {
   lintOnSave: false,
   runtimeCompiler: true,
+  css: {
+    extract: false
+  },
   configureWebpack: {
     resolve: {
       modules: [
