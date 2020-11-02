@@ -84,17 +84,20 @@ class CurrentClass2 extends BaseMountedVueClass {
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: ['sms'],
-      contentType: SupportedContentType.TEXT,
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.TEXT],
     }
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: ['ussd'],
-      contentType: SupportedContentType.TEXT,
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.TEXT],
     }
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: ['ivr'],
-      contentType: SupportedContentType.AUDIO,
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.AUDIO],
     }
     // we're assuming this pseudo-variants exist
     this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
@@ -143,17 +146,20 @@ class CurrentClass3 extends BaseMountedVueClass {
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: ['sms'],
-      contentType: SupportedContentType.TEXT,
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.TEXT],
     }
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: ['ussd'],
-      contentType: SupportedContentType.TEXT,
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.TEXT],
     }
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: ['ivr'],
-      contentType: SupportedContentType.AUDIO,
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.AUDIO],
     }
     // we're assuming this pseudo-variants exist
     this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
@@ -202,17 +208,20 @@ class CurrentClass4 extends BaseMountedVueClass {
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: ['sms'],
-      contentType: SupportedContentType.TEXT,
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.TEXT],
     }
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: ['ussd'],
-      contentType: SupportedContentType.TEXT,
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.TEXT],
     }
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: ['ivr'],
-      contentType: SupportedContentType.AUDIO,
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.AUDIO],
     }
     // we're assuming this pseudo-variants exist
     this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
