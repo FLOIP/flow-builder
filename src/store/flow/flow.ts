@@ -221,7 +221,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow)  // @throws ValidationException when block absent
 
-    console.log(JSON.stringify(block))
     // Deep clone
     let duplicatedBlock = cloneDeep(block)
 
