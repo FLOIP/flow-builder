@@ -16,7 +16,7 @@ import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '.'
 import {IRootState} from '@/store'
-import {defaults, includes, forEach, cloneDeep, get} from 'lodash'
+import {defaults, includes, forEach, cloneDeep, get, has} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
@@ -221,9 +221,24 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow)  // @throws ValidationException when block absent
 
+    console.log(JSON.stringify(block))
+    // Deep clone
     let duplicatedBlock = cloneDeep(block)
 
+    // Set UUIDs, and remove non relevant props
     duplicatedBlock.uuid = (new IdGeneratorUuidV4).generate()
+
+    duplicatedBlock.exits.forEach(function myFunction(item, index, arr) {
+      item.uuid = (new IdGeneratorUuidV4).generate()
+      delete item.destinationBlock
+    })
+
+    if (has(duplicatedBlock.config, 'prompt')) {
+      // @ts-ignore
+      duplicatedBlock.config.prompt = (new IdGeneratorUuidV4()).generate();
+    }
+
+    // Set UI positions
     duplicatedBlock.platform_metadata = {
       io_viamo: {
         uiData: {
