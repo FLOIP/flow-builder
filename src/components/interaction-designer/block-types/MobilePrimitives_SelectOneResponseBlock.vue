@@ -9,25 +9,27 @@
     <block-semantic-label-editor :block="block" />
 
     <div class="prompt-resource">
-      <label>{{'flow-builder.prompt' | trans}}</label>
       <resource-editor v-if="promptResource"
+                       :label="'flow-builder.prompt' | trans"
                        :resource="promptResource"
                        :flow="flow" />
     </div>
     <div class="question-prompt-resource">
-      <label>{{'flow-builder.question-prompt' | trans}}</label>
       <resource-editor v-if="questionPromptResource"
+                       :label="'flow-builder.question-prompt' | trans"
                        :resource="questionPromptResource"
                        :flow="flow" />
     </div>
     <div class="choices-prompt-resource">
-      <label>{{'flow-builder.choices-prompt' | trans}}</label>
       <resource-editor v-if="choicesPromptResource"
+                       :label="'flow-builder.choices-prompt' | trans"
                        :resource="choicesPromptResource"
                        :flow="flow" />
     </div>
     <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group form-inline">
-      <resource-editor :label="choiceKey" :resource="inflatedChoices[choiceKey]" :flow="flow" />
+      <resource-editor :label="`Choice ${choiceKey}`"
+                       :resource="inflatedChoices[choiceKey]"
+                       :flow="flow" />
     </div>
 
     <first-block-editor-button
@@ -40,7 +42,7 @@
 </template>
 
 <script lang="ts">
-  import {IBlock, IFlow} from '@floip/flow-runner'
+  import {IFlow} from '@floip/flow-runner'
   import ISelectOneResponseBlock from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
   import {
     IResourceDefinition,
