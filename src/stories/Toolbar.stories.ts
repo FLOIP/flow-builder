@@ -7,11 +7,20 @@ import FlowBuilderContainer from "@/stories/story-utils/FlowBuilderContainer.vue
 import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
 import TreeBuilderToolbar from "@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue";
+import StoryRouter from 'storybook-vue-router';
+import {routes} from '@/router'
+
+// Allow story to load components which use <router-link>
+const decorators = [() => ({ template: '<div><story/></div>' })];
+decorators.push(StoryRouter({}, {
+  routes
+}))
 
 export default {
   title: 'InteractionDesigner/Toolbar',
   // Our exports that end in "Data" are not stories.
   excludeStories: /.*Data$/,
+  decorators
 }
 
 

@@ -5,7 +5,7 @@ import {routes as treesRoutes} from './trees'
 
 Vue.use(VueRouter);
 
-const routes: Array<RouteConfig> = [
+export const routes: Array<RouteConfig> = [
   // todo: rename trees module + url path to builder + add extensible children as intx-design & resource-viewer
   ...treesRoutes,
 ];
