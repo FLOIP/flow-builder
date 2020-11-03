@@ -145,15 +145,12 @@ export function findResourceVariantOverModesOn(
     filter: IResourceDefinitionVariantOverModesFilter) {
   const
       keysForComparison = without(Object.keys(filter), 'modes'), // b/c we do explicit partial matching on modes
-      filterWithComparatorKeys = pick(filter, keysForComparison) //eg: {"languageId":"1","contentType":"text"}
-  let filterWithComparatorKeysAndArrayContentType = filterWithComparatorKeys //eg: {"languageId":"1","contentType":["text"]} //TODO: we may need to remove this one, once we have a clear idea which schema is used
-  if(!Array.isArray(filterWithComparatorKeysAndArrayContentType.contentType)) {
-    // @ts-ignore
-    filterWithComparatorKeysAndArrayContentType.contentType = [filterWithComparatorKeysAndArrayContentType.contentType]
-  }
-  let variant = find<IResourceDefinitionVariantOverModes>(
-          resource.values, v => (isEqual(filterWithComparatorKeys, pick(v, keysForComparison)) || isEqual(filterWithComparatorKeysAndArrayContentType, pick(v, keysForComparison)))
-                && difference(filter.modes, v.modes).length === 0)
+      filterWithComparatorKeys = pick(filter, keysForComparison),
+      variant = find<IResourceDefinitionVariantOverModes>(
+          resource.values,
+          v => isEqual(filterWithComparatorKeys, pick(v, keysForComparison))
+              && difference(filter.modes, v.modes).length === 0)
+
   if (variant == null) {
     throw new ValidationException(`Unable to find resource variant (over modes) on context: (
       ${resource.uuid},
@@ -190,8 +187,7 @@ export function findOrGenerateStubbedVariantOn(
   }
 }
 
-export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourceDefinition): SupportedContentType[] {
-
+export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourceDefinition): SupportedContentType[]  {
   const
       TEXT = SupportedContentType.TEXT,
       AUDIO = SupportedContentType.AUDIO,
@@ -222,5 +218,6 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
     }, contentTypeOverrides)
     return contentTypeOverrides
   }, contentTypeOverrides)
-  return Object.assign(defaultModeMappings, contentTypeOverrides)[mode][0]
+
+  return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]
 }

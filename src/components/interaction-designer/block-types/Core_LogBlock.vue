@@ -8,9 +8,30 @@
     <block-label-editor :block="block" />
     <block-semantic-label-editor :block="block" />
 
-    <resource-editor v-if="promptResource"
-                     :resource="promptResource"
-                     :flow="flow" />
+    <div class="text-only-resource-editor">
+      <hr />
+
+      <h4>Log Message</h4>
+      <template v-for="{id: languageId, name: language} in flow.languages">
+        <div class="block-content-editor-lang">
+          <h5 class="label label-info">{{language || 'flow-builder.unknown-language' | trans}}</h5>
+        </div>
+
+        <template v-for="mode in flow.supportedModes">
+          <h5>{{`flow-builder.${mode}-content` | trans}}</h5>
+
+          <resource-variant-text-editor :resource-id="messageResource.uuid"
+                                        :resource-variant="findOrGenerateStubbedVariantOn(
+                                          messageResource,
+                                          {languageId, contentType: ['text'], modes: [mode]})"
+
+                                        :mode="mode"
+
+                                        :is-editable="true || isEditable"
+                                        :enable-autogen-button="true || enableAutogenButton" />
+        </template>
+      </template>
+    </div>
 
     <first-block-editor-button
         :flow="flow"
@@ -30,11 +51,13 @@
   import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+  import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import BlockId from '../block-editors/BlockId.vue'
+  import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
   import LogStore, {BLOCK_TYPE} from "@/store/flow/block-types/Core_LogBlockStore";
   import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
   import lang from '@/lib/filters/lang'
@@ -44,6 +67,7 @@
   @Component<any>({
     components: {
       ResourceEditor,
+      ResourceVariantTextEditor,
       BlockNameEditor,
       BlockLabelEditor,
       BlockSemanticLabelEditor,
@@ -56,7 +80,9 @@
     @Prop()readonly block!: ILogBlock
     @Prop()readonly flow!: IFlow
 
-    get promptResource(): IResourceDefinition {
+    findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
+
+    get messageResource(): IResourceDefinition {
       return this.resourcesByUuid[this.block.config.message]
     }
 

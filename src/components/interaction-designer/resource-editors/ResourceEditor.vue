@@ -1,16 +1,19 @@
 <template>
   <div class="resource-editor">
-    <label v-if="label">{{label}}</label>
+    <hr />
+
+    <h4 v-if="label">{{label}}</h4>
+
     <template v-for="{id: languageId, name: language} in flow.languages">
       <div class="block-content-editor-lang">
-        <h4>{{language || 'flow-builder.unknown-language' | trans}}</h4>
+        <h5 class="label label-info">{{language || 'flow-builder.unknown-language' | trans}}</h5>
       </div>
 
       <template v-for="mode in flow.supportedModes">
         <h5>{{`flow-builder.${mode}-content` | trans}}</h5>
 
         <!-- TODO - Is passing around resouce the right way to do overrides? Is it even necessary? See comments in discoverContentTypesFor function -->
-        <template v-for="contentType in discoverContentTypesFor(mode, resource)">
+        <template v-for="contentType in discoverContentTypesFor(mode)">
           <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
 
           <resource-variant-text-editor :resource-id="resource.uuid"
@@ -58,10 +61,10 @@
 
   interface IAudioFile {
     id: string,
-    filename: string, 
-    description: string, 
-    language_id: string, 
-    duration_seconds: string, 
+    filename: string,
+    description: string,
+    language_id: string,
+    duration_seconds: string,
     original_extension: string,
     created_at: string
   }
@@ -91,10 +94,10 @@
   export class ResourceEditor extends Vue {
     discoverContentTypesFor = discoverContentTypesFor
     findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
-    SupportedMode = SupportedMode 
-    SupportedContentType = SupportedContentType 
+    SupportedMode = SupportedMode
+    SupportedContentType = SupportedContentType
 
-    @Getter availableAudio!: IAudioFile[] 
+    @Getter availableAudio!: IAudioFile[]
   }
 
   export default ResourceEditor
