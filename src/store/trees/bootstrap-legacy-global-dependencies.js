@@ -4,10 +4,10 @@ import ImportedJquery from 'jquery'
 import {merge} from 'lodash'
 import source from '../../assets/messages.json';
 
-export function bootstrapLegacyGlobalDependencies() {
+export function bootstrapLegacyGlobalDependencies(appConfig, builderConfig) {
   // initialize configuration sources
-  const __APP__ = require('../../../app.config')
-  const __CONTEXT__ = require('../../../builder.config')
+  const __APP__ = Object.assign(require('../../../app.config'), appConfig);
+  const __CONTEXT__ = Object.assign(require('../../../builder.config'), builderConfig);
 
   // todo: the remaining legacy code still expects the ability to mutate data directly on `app.ui.*` rather than using trees store
   //      for now, we'll need to ensure app.ui === __TREES_UI__ */

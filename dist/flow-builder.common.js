@@ -56599,7 +56599,26 @@ module.exports = [
  // import '../TreeDiffLogger'
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['id', 'mode'],
+  props: {
+    id: {
+      type: String
+    },
+    mode: {
+      type: String
+    },
+    appConfig: {
+      type: Object,
+      default: function _default() {
+        return [];
+      }
+    },
+    builderConfig: {
+      type: Object,
+      default: function _default() {
+        return [];
+      }
+    }
+  },
   mixins: [_lib_filters_lang__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"]],
   components: {
     // ...BlockTypes,
@@ -56684,6 +56703,7 @@ module.exports = [
       builder: _store_builder__WEBPACK_IMPORTED_MODULE_16__[/* default */ "c"]
     });
 
+    modules.trees.configure(this.appConfig, this.builderConfig);
     Object(lodash__WEBPACK_IMPORTED_MODULE_11__["forEach"])(modules, function (v, k) {
       return !$store.hasModule(k) && $store.registerModule(k, v);
     });
@@ -60457,46 +60477,48 @@ module.exports = function (S, index, unicode) {
 /* harmony import */ var core_js_modules_es_array_includes__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_includes__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var core_js_modules_es_array_index_of__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("c975");
 /* harmony import */ var core_js_modules_es_array_index_of__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_index_of__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var core_js_modules_es_array_map__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("d81d");
-/* harmony import */ var core_js_modules_es_array_map__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_map__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var core_js_modules_es_array_splice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("a434");
-/* harmony import */ var core_js_modules_es_array_splice__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_splice__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("b0c0");
-/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("b64b");
-/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("d3b7");
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("2532");
-/* harmony import */ var core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("159b");
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__("ddb0");
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__("96cf");
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__("1da1");
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__("ade3");
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__("5530");
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__("d4ec");
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__("262e");
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_createSuper__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__("2caf");
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__("9072");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__("bc3a");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_22___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_22__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__("2ef0");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_23___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_23__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__("8bbf");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_24___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_24__);
-/* harmony import */ var _lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__("e5fd");
-/* harmony import */ var store_common_flight_monitor__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__("86a8");
-/* harmony import */ var lodash_fp_flow__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__("b429");
-/* harmony import */ var lodash_fp_flow__WEBPACK_IMPORTED_MODULE_27___default = /*#__PURE__*/__webpack_require__.n(lodash_fp_flow__WEBPACK_IMPORTED_MODULE_27__);
-/* harmony import */ var lodash_fp_pickBy__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__("512d");
-/* harmony import */ var lodash_fp_pickBy__WEBPACK_IMPORTED_MODULE_28___default = /*#__PURE__*/__webpack_require__.n(lodash_fp_pickBy__WEBPACK_IMPORTED_MODULE_28__);
-/* harmony import */ var lodash_fp_every__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__("5d69");
-/* harmony import */ var lodash_fp_every__WEBPACK_IMPORTED_MODULE_29___default = /*#__PURE__*/__webpack_require__.n(lodash_fp_every__WEBPACK_IMPORTED_MODULE_29__);
-/* harmony import */ var _bootstrap_legacy_global_dependencies__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__("aec9");
+/* harmony import */ var core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("e260");
+/* harmony import */ var core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_iterator__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var core_js_modules_es_array_map__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("d81d");
+/* harmony import */ var core_js_modules_es_array_map__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_map__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var core_js_modules_es_array_splice__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("a434");
+/* harmony import */ var core_js_modules_es_array_splice__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_splice__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("b0c0");
+/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("b64b");
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("d3b7");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("2532");
+/* harmony import */ var core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__("159b");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__("ddb0");
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__("96cf");
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__("1da1");
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__("ade3");
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__("5530");
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__("d4ec");
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__("262e");
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_createSuper__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__("2caf");
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__("9072");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__("bc3a");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_23___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_23__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__("2ef0");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_24___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_24__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__("8bbf");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_25___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_25__);
+/* harmony import */ var _lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__("e5fd");
+/* harmony import */ var store_common_flight_monitor__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__("86a8");
+/* harmony import */ var lodash_fp_flow__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__("b429");
+/* harmony import */ var lodash_fp_flow__WEBPACK_IMPORTED_MODULE_28___default = /*#__PURE__*/__webpack_require__.n(lodash_fp_flow__WEBPACK_IMPORTED_MODULE_28__);
+/* harmony import */ var lodash_fp_pickBy__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__("512d");
+/* harmony import */ var lodash_fp_pickBy__WEBPACK_IMPORTED_MODULE_29___default = /*#__PURE__*/__webpack_require__.n(lodash_fp_pickBy__WEBPACK_IMPORTED_MODULE_29__);
+/* harmony import */ var lodash_fp_every__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__("5d69");
+/* harmony import */ var lodash_fp_every__WEBPACK_IMPORTED_MODULE_30___default = /*#__PURE__*/__webpack_require__.n(lodash_fp_every__WEBPACK_IMPORTED_MODULE_30__);
+/* harmony import */ var _bootstrap_legacy_global_dependencies__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__("aec9");
 
 
 
@@ -60530,19 +60552,20 @@ module.exports = function (S, index, unicode) {
 
 
 
-var every = lodash_fp_every__WEBPACK_IMPORTED_MODULE_29___default.a.convert({
+
+var every = lodash_fp_every__WEBPACK_IMPORTED_MODULE_30___default.a.convert({
   cap: false
 });
 
 var ValidationError = /*#__PURE__*/function (_Error) {
-  Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_19__[/* default */ "a"])(ValidationError, _Error);
+  Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_20__[/* default */ "a"])(ValidationError, _Error);
 
-  var _super = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_createSuper__WEBPACK_IMPORTED_MODULE_20__[/* default */ "a"])(ValidationError);
+  var _super = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_createSuper__WEBPACK_IMPORTED_MODULE_21__[/* default */ "a"])(ValidationError);
 
   function ValidationError(validationResults) {
     var _this;
 
-    Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])(this, ValidationError);
+    Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_19__[/* default */ "a"])(this, ValidationError);
 
     _this = _super.call(this);
     _this.validationResults = validationResults;
@@ -60550,22 +60573,33 @@ var ValidationError = /*#__PURE__*/function (_Error) {
   }
 
   return ValidationError;
-}( /*#__PURE__*/Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_21__[/* default */ "a"])(Error));
+}( /*#__PURE__*/Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_22__[/* default */ "a"])(Error));
 
+var configOverrides = {
+  appConfigOverrides: {},
+  builderConfigOverrides: {}
+};
 /* harmony default export */ __webpack_exports__["a"] = ({
   modules: {
-    flights: store_common_flight_monitor__WEBPACK_IMPORTED_MODULE_26__[/* default */ "a"]
+    flights: store_common_flight_monitor__WEBPACK_IMPORTED_MODULE_27__[/* default */ "a"]
+  },
+  appConfigOverrides: {},
+  builderConfigOverrides: {},
+  configure: function configure(appConfig, builderConfig) {
+    configOverrides.appConfigOverrides = appConfig;
+    configOverrides.builderConfigOverrides = builderConfig;
+    console.log(configOverrides.appConfigOverrides);
   },
   state: function state() {
-    var _bootstrapLegacyGloba = Object(_bootstrap_legacy_global_dependencies__WEBPACK_IMPORTED_MODULE_30__[/* bootstrapLegacyGlobalDependencies */ "a"])(),
+    var _bootstrapLegacyGloba = Object(_bootstrap_legacy_global_dependencies__WEBPACK_IMPORTED_MODULE_31__[/* bootstrapLegacyGlobalDependencies */ "a"])(configOverrides.appConfigOverrides, configOverrides.builderConfigOverrides),
         app = _bootstrapLegacyGloba.app,
         audio = _bootstrapLegacyGloba.__AUDIO__,
         ui = _bootstrapLegacyGloba.__TREES_UI__; // todo: audio recording feature is likely to be unavailable for standalone app - How do we want to isolate these?
 
 
-    Object(lodash__WEBPACK_IMPORTED_MODULE_23__["set"])(app, 'audioChoice.audioLibrary', audio.library);
-    Object(lodash__WEBPACK_IMPORTED_MODULE_23__["set"])(app, 'audioChoice.recorderList', audio.recording.recorders);
-    lodash__WEBPACK_IMPORTED_MODULE_23___default.a.defaultsDeep(ui, {
+    Object(lodash__WEBPACK_IMPORTED_MODULE_24__["set"])(app, 'audioChoice.audioLibrary', audio.library);
+    Object(lodash__WEBPACK_IMPORTED_MODULE_24__["set"])(app, 'audioChoice.recorderList', audio.recording.recorders);
+    lodash__WEBPACK_IMPORTED_MODULE_24___default.a.defaultsDeep(ui, {
       audioFiles: audio.library,
       callCenterQueues: null,
       previousTreeJson: JSON.stringify(ui.originalTreeJson),
@@ -60600,110 +60634,110 @@ var ValidationError = /*#__PURE__*/function (_Error) {
   getters: {
     isFeatureCallCenterQueuesEnabled: function isFeatureCallCenterQueuesEnabled(_ref) {
       var ui = _ref.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'callCenterQueues';
       });
     },
     isFeatureCallToRecordEnabled: function isFeatureCallToRecordEnabled(_ref2) {
       var ui = _ref2.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'callToRecord';
       });
     },
     isFeatureMultimediaUploadEnabled: function isFeatureMultimediaUploadEnabled(_ref3) {
       var ui = _ref3.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'multimediaUpload';
       });
     },
     isFeatureTreesBatchLinkAudioEnabled: function isFeatureTreesBatchLinkAudioEnabled(_ref4) {
       var ui = _ref4.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treesBatchLinkAudio';
       });
     },
     isFeatureAddSubscriberPropertyFieldEnabled: function isFeatureAddSubscriberPropertyFieldEnabled(_ref5) {
       var ui = _ref5.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'addSubscriberPropertyField';
       });
     },
     isFeatureFloipPushEnabled: function isFeatureFloipPushEnabled(_ref6) {
       var ui = _ref6.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'floipPush';
       });
     },
     isFeatureTreeSaveEnabled: function isFeatureTreeSaveEnabled(_ref7) {
       var ui = _ref7.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treeSave';
       });
     },
     isFeatureTreeSendEnabled: function isFeatureTreeSendEnabled(_ref8) {
       var ui = _ref8.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treeSend';
       });
     },
     isFeatureTreeDuplicateEnabled: function isFeatureTreeDuplicateEnabled(_ref9) {
       var ui = _ref9.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treeDuplicate';
       });
     },
     isFeatureTreeViewVersionsEnabled: function isFeatureTreeViewVersionsEnabled(_ref10) {
       var ui = _ref10.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treeViewVersions';
       });
     },
     isFeatureTreeDuplicateOfEnabled: function isFeatureTreeDuplicateOfEnabled(_ref11) {
       var ui = _ref11.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treeDuplicateOf';
       });
     },
     isFeatureUpdateInteractionTotalsEnabled: function isFeatureUpdateInteractionTotalsEnabled(_ref12) {
       var ui = _ref12.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'updateInteractionTotals';
       });
     },
     isFeatureAudioUploadEnabled: function isFeatureAudioUploadEnabled(_ref13) {
       var ui = _ref13.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'audioUpload';
       });
     },
     isFeatureViewResultsEnabled: function isFeatureViewResultsEnabled(_ref14) {
       var ui = _ref14.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(ui.enabledFeatures, function (feature) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'viewResults';
       });
     },
     selectedBlock: function selectedBlock(_ref15, getters, rootState) {
       var tree = _ref15.tree,
           ui = _ref15.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(Object(lodash__WEBPACK_IMPORTED_MODULE_23__["get"])(tree, 'blocks', []), {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(Object(lodash__WEBPACK_IMPORTED_MODULE_24__["get"])(tree, 'blocks', []), {
         jsKey: ui.selectedBlock
       });
     },
     subscriberPropertyFields: function subscriberPropertyFields(_ref16) {
       var ui = _ref16.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(ui, "subscriberPropertyFields");
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(ui, "subscriberPropertyFields");
     },
     interactiveBlockClasses: function interactiveBlockClasses(_ref17, getters, rootState) {
       var ui = _ref17.ui;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.pickBy(ui.blockClasses, function (value, key) {
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.pickBy(ui.blockClasses, function (value, key) {
         return value.is_interactive;
       });
     },
     interactiveBlocksInTree: function interactiveBlocksInTree(_ref18, _ref19, rootState) {
       var tree = _ref18.tree;
       var interactiveBlockClasses = _ref19.interactiveBlockClasses;
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.filter(tree.blocks, function (b) {
-        return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.includes(Object.keys(interactiveBlockClasses), b.type);
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.filter(tree.blocks, function (b) {
+        return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.includes(Object.keys(interactiveBlockClasses), b.type);
       });
     },
     isEditable: function isEditable(_ref20) {
@@ -60739,7 +60773,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         return false;
       }
 
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(ui.blockClasses[getters.selectedBlock.type], 'isSummarizable', false);
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(ui.blockClasses[getters.selectedBlock.type], 'isSummarizable', false);
     },
     canSelectedBlockSetSubscriberProperty: function canSelectedBlockSetSubscriberProperty(_ref25, getters) {
       var ui = _ref25.ui;
@@ -60748,17 +60782,17 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         return false;
       }
 
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(ui.blockClasses[getters.selectedBlock.type], 'canSetSubscriberProperty', false);
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(ui.blockClasses[getters.selectedBlock.type], 'canSetSubscriberProperty', false);
     },
     languageSelectors: function languageSelectors(_ref26) {
       var ui = _ref26.ui;
       return ui.languageSelectors;
     },
     isBlockAvailableByBlockClass: function isBlockAvailableByBlockClass(state) {
-      return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.mapValues(state.ui.blockClasses, function (blockClass) {
-        var contentTypesToEnabledStatus = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(blockClass, 'isEnabledForContentType', []);
-        return lodash_fp_flow__WEBPACK_IMPORTED_MODULE_27___default()(lodash_fp_pickBy__WEBPACK_IMPORTED_MODULE_28___default()(function (isEnabled, contentType) {
-          return state.tree.details["has".concat(lodash__WEBPACK_IMPORTED_MODULE_23___default.a.startCase(contentType))];
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.mapValues(state.ui.blockClasses, function (blockClass) {
+        var contentTypesToEnabledStatus = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(blockClass, 'isEnabledForContentType', []);
+        return lodash_fp_flow__WEBPACK_IMPORTED_MODULE_28___default()(lodash_fp_pickBy__WEBPACK_IMPORTED_MODULE_29___default()(function (isEnabled, contentType) {
+          return state.tree.details["has".concat(lodash__WEBPACK_IMPORTED_MODULE_24___default.a.startCase(contentType))];
         }), every(function (isEnabled, contentType) {
           return contentTypesToEnabledStatus[contentType];
         }))(contentTypesToEnabledStatus);
@@ -60766,7 +60800,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
     },
     // todo: is this an accurate inverse of trees::hasIssues from ResourceViewer ?
     isTreeValid: function isTreeValid(state) {
-      return state.tree.blocks.length && !state.ui.originalTreeJsonValidationResults && lodash__WEBPACK_IMPORTED_MODULE_23___default.a.isEmpty(state.ui.validationResults);
+      return state.tree.blocks.length && !state.ui.originalTreeJsonValidationResults && lodash__WEBPACK_IMPORTED_MODULE_24___default.a.isEmpty(state.ui.validationResults);
     },
     jsonValidationResults: function jsonValidationResults(state) {
       return state.ui.originalTreeJsonValidationResults;
@@ -60841,10 +60875,10 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       var jsKey = _ref43.jsKey,
           key = _ref43.key,
           value = _ref43.value;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(block.customData, key, value);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block.customData, key, value);
     },
     updateBlockCustomDataWithNestedKeyFor: function updateBlockCustomDataWithNestedKeyFor(_ref44, _ref45) {
       var tree = _ref44.tree,
@@ -60852,11 +60886,11 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       var jsKey = _ref45.jsKey,
           nestedKey = _ref45.nestedKey,
           value = _ref45.value;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
-      var customData = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.cloneDeep(block.customData);
-      lodash__WEBPACK_IMPORTED_MODULE_23___default.a.set(customData, nestedKey, value);
+      var customData = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.cloneDeep(block.customData);
+      lodash__WEBPACK_IMPORTED_MODULE_24___default.a.set(customData, nestedKey, value);
       block.customData = customData;
     },
     updateBlockUiDataFor: function updateBlockUiDataFor(_ref46, _ref47) {
@@ -60865,19 +60899,19 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       var jsKey = _ref47.jsKey,
           key = _ref47.key,
           value = _ref47.value;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(block.uiData, key, value);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block.uiData, key, value);
     },
     updateMaxNumericDigits: function updateMaxNumericDigits(_ref48, _ref49) {
       var tree = _ref48.tree,
           ui = _ref48.ui;
       var value = _ref49.value;
-      var selectedBlock = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var selectedBlock = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: ui.selectedBlock
       });
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(selectedBlock, 'customData.maxNumericDigits', value);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(selectedBlock, 'customData.maxNumericDigits', value);
     },
     updateBlockContentFor: function updateBlockContentFor(_ref50, _ref51) {
       var tree = _ref50.tree,
@@ -60886,19 +60920,19 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           langId = _ref51.langId,
           jsKey = _ref51.jsKey,
           value = _ref51.value;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
 
       if (type === 'social') {
         //social has nested text content
         if (!block.socialContent[langId]) {
-          vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(block.socialContent, langId, {});
+          vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block.socialContent, langId, {});
         }
 
-        vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(block.socialContent[langId], 'text', value);
+        vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block.socialContent[langId], 'text', value);
       } else {
-        block["".concat(type, "Content")] = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"])({}, block["".concat(type, "Content")]), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])({}, langId, value));
+        block["".concat(type, "Content")] = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])({}, block["".concat(type, "Content")]), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"])({}, langId, value));
       }
     },
     updateBlockFileContentFor: function updateBlockFileContentFor(_ref52, _ref53) {
@@ -60911,19 +60945,19 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           fileType = _ref53.fileType,
           mimeType = _ref53.mimeType,
           contentType = _ref53.contentType;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
-      var content = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(block, contentType + 'Content');
+      var content = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(block, contentType + 'Content');
 
       if (content[langId] === undefined) {
-        vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(content, langId, {});
+        vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content, langId, {});
       }
 
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(content[langId], 'fileUrl', fileUrl);
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(content[langId], 'fileId', fileId);
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(content[langId], 'fileType', fileType);
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(content[langId], 'mimeType', mimeType);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content[langId], 'fileUrl', fileUrl);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content[langId], 'fileId', fileId);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content[langId], 'fileType', fileType);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content[langId], 'mimeType', mimeType);
     },
     updateBlockFileContentForAllLanguages: function updateBlockFileContentForAllLanguages(_ref54, _ref55) {
       var tree = _ref54.tree,
@@ -60934,24 +60968,24 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           fileType = _ref55.fileType,
           mimeType = _ref55.mimeType,
           contentType = _ref55.contentType;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
-      var content = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(block, contentType + 'Content');
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(content, 'allLanguagesFileUrl', fileUrl);
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(content, 'allLanguagesFileId', fileId);
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(content, 'allLanguagesFileType', fileType);
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(content, 'allLanguagesMimeType', mimeType);
+      var content = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(block, contentType + 'Content');
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content, 'allLanguagesFileUrl', fileUrl);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content, 'allLanguagesFileId', fileId);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content, 'allLanguagesFileType', fileType);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content, 'allLanguagesMimeType', mimeType);
     },
     initBlockAutoGenStateFor: function initBlockAutoGenStateFor(_ref56, _ref57) {
       var tree = _ref56.tree,
           ui = _ref56.ui;
       var type = _ref57.type,
           jsKey = _ref57.jsKey;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(block, "".concat(type, "AutogenLangs"), []);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block, "".concat(type, "AutogenLangs"), []);
     },
     updateBlockAutoGenStateFor: function updateBlockAutoGenStateFor(_ref58, _ref59) {
       var tree = _ref58.tree,
@@ -60960,7 +60994,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           langId = _ref59.langId,
           jsKey = _ref59.jsKey,
           enable = _ref59.value;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       }),
           i = block["".concat(type, "AutogenLangs")].indexOf(+langId),
@@ -60978,10 +61012,10 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       var langId = _ref61.langId,
           jsKey = _ref61.jsKey,
           value = _ref61.value;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
-      block.audioFiles = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"])({}, block.audioFiles), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])({}, langId, value)); // using delete because we depend on audioFile key presence in legacy
+      block.audioFiles = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])({}, block.audioFiles), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"])({}, langId, value)); // using delete because we depend on audioFile key presence in legacy
 
       !value && delete block.audioFiles[langId];
     },
@@ -60992,7 +61026,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           jsKey = _ref63.jsKey,
           value = _ref63.value;
 
-      var _lodash$find = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var _lodash$find = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       }),
           data = _lodash$find.customData;
@@ -61006,13 +61040,13 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           status = _ref65.status,
           message = _ref65.message;
       // ui.batchMatchAudioStatus = value
-      lodash__WEBPACK_IMPORTED_MODULE_23___default.a.extend(ui.batchMatchAudio, {
+      lodash__WEBPACK_IMPORTED_MODULE_24___default.a.extend(ui.batchMatchAudio, {
         results: value,
         status: status,
         message: message,
-        isEmpty: lodash__WEBPACK_IMPORTED_MODULE_23___default.a.chain(value) // isEmpty === {"block_1504124559063_84":{"7":null,"8":null,"9":null}
+        isEmpty: lodash__WEBPACK_IMPORTED_MODULE_24___default.a.chain(value) // isEmpty === {"block_1504124559063_84":{"7":null,"8":null,"9":null}
         .values().map(function (matchesByLang) {
-          return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.values(matchesByLang);
+          return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.values(matchesByLang);
         }).flatten().filter().isEmpty().value(),
         isFailure: status === 0,
         isPending: status === -1,
@@ -61028,7 +61062,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       var tree = _ref68.tree;
       var contentType = _ref69.contentType,
           isEnabled = _ref69.isEnabled;
-      tree["has".concat(lodash__WEBPACK_IMPORTED_MODULE_23___default.a.upperFirst(contentType))] = +isEnabled;
+      tree["has".concat(lodash__WEBPACK_IMPORTED_MODULE_24___default.a.upperFirst(contentType))] = +isEnabled;
     },
     addSubscriberPropertyField: function addSubscriberPropertyField(_ref70, _ref71) {
       var ui = _ref70.ui;
@@ -61041,7 +61075,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
     },
     setInteractionTotals: function setInteractionTotals(state, _ref73) {
       var interactionTotals = _ref73.interactionTotals;
-      vue__WEBPACK_IMPORTED_MODULE_24___default.a.set(state.ui, 'interactionTotals', interactionTotals);
+      vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(state.ui, 'interactionTotals', interactionTotals);
     }
   },
   actions: {
@@ -61095,7 +61129,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       }
     },
     attemptImportPersistence: function attemptImportPersistence(_ref77) {
-      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_15__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
         var commit, dispatch, _ref77$state, tree, ui, _ref77$state$ui, isTreeImport, originalTreeJsonValidationResults, hasImportValidationErrors, validationResults;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -61153,7 +61187,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       console.log('app.ui.change [via vuex.trees.uiChanged]', msg);
     },
     attemptSaveTree: function attemptSaveTree(_ref81) {
-      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_15__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
         var dispatch, _ref81$getters, hasChanges, isFeatureTreeSaveEnabled, ui, _global, app;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -61221,7 +61255,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       }))();
     },
     saveTree: function saveTree() {
-      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_15__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
         var _global2, app;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
@@ -61253,14 +61287,14 @@ var ValidationError = /*#__PURE__*/function (_Error) {
      * @returns {Promise<array>} a Promise that will return an array of the validation results.
      */
     validateTree: function validateTree(_ref82) {
-      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_15__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
         var dispatch, tree, validate;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 dispatch = _ref82.dispatch, tree = _ref82.state.tree;
-                validate = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(global.__TREE_FEATURES__, 'validation.validate');
+                validate = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(global.__TREE_FEATURES__, 'validation.validate');
 
                 if (!validate) {
                   _context4.next = 7;
@@ -61302,7 +61336,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
        *   uncomment the below line after adding an implementation */
       // throw new ValidationError([])
 
-      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_15__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
@@ -61320,7 +61354,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           tree = _ref83.state.tree;
       var jsKey = _ref84.jsKey,
           defaults = _ref84.values;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
 
@@ -61362,7 +61396,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           dispatch = _ref87.dispatch,
           tree = _ref87.state.tree;
       var jsKey = _ref88.jsKey;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
       var generatedText = block.customData.title;
@@ -61412,7 +61446,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           });
           generatedText += grammar.EN.conclusion;
         } else if (block.type == 'NumericQuestionBlock') {
-          maxDigits = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(block, 'customData.maxNumericDigits');
+          maxDigits = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(block, 'customData.maxNumericDigits');
 
           if (!maxDigits) {
             maxDigits = 3;
@@ -61427,8 +61461,8 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           generatedText = grammar.EN.validationCode;
         }
 
-        lodash__WEBPACK_IMPORTED_MODULE_23___default.a.forEach(['sms', 'ussd', 'social', 'clipboard'], function (contentType) {
-          if (tree.details["has".concat(lodash__WEBPACK_IMPORTED_MODULE_23___default.a.upperFirst(contentType))] && block["".concat(contentType, "AutogenLangs")].length) {
+        lodash__WEBPACK_IMPORTED_MODULE_24___default.a.forEach(['sms', 'ussd', 'social', 'clipboard'], function (contentType) {
+          if (tree.details["has".concat(lodash__WEBPACK_IMPORTED_MODULE_24___default.a.upperFirst(contentType))] && block["".concat(contentType, "AutogenLangs")].length) {
             _.each(block["".concat(contentType, "AutogenLangs")], function (languageId) {
               dispatch('updateTextContent', {
                 type: contentType,
@@ -61505,7 +61539,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           tree = _ref91.state.tree;
       var jsKey = _ref92.jsKey;
       console.debug('vuex.trees', 'setMcqOutputNames', jsKey);
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
 
@@ -61521,7 +61555,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         if (block.type === "SummaryBlock") {
           outputNames = [langJs.trans("trees.confirm"), langJs.trans("trees.reject")];
         } else {
-          outputNames = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.clone(lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(block, 'customData.choices', lodash__WEBPACK_IMPORTED_MODULE_23___default.a.range(1, block.customData.numChoices + 1)));
+          outputNames = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.clone(lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(block, 'customData.choices', lodash__WEBPACK_IMPORTED_MODULE_24___default.a.range(1, block.customData.numChoices + 1)));
         }
       } else {
         outputNames = [1];
@@ -61549,7 +61583,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           dispatch = _ref93.dispatch,
           tree = _ref93.state.tree;
       var jsKey = _ref94.jsKey;
-      var block = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(tree.blocks, {
+      var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
 
@@ -61560,15 +61594,15 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
       var isVoiceEnabled = tree.details.hasVoice,
           isTextChannelEnabled = tree.details.hasSms || tree.details.hasUssd || tree.details.hasSocial || tree.details.hasClipboard,
-          hasChoiceKeypresses = !lodash__WEBPACK_IMPORTED_MODULE_23___default.a.isEmpty(block.customData.choiceKeypresses),
+          hasChoiceKeypresses = !lodash__WEBPACK_IMPORTED_MODULE_24___default.a.isEmpty(block.customData.choiceKeypresses),
           fieldLabels;
 
       if (isVoiceEnabled && !isTextChannelEnabled && hasChoiceKeypresses) {
         fieldLabels = getChoiceKeyPressesFor(block);
       } else if (isVoiceEnabled && isTextChannelEnabled && hasChoiceKeypresses) {
-        fieldLabels = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.times(block.customData.numChoices, lodash__WEBPACK_IMPORTED_MODULE_23___default.a.constant('•'));
+        fieldLabels = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.times(block.customData.numChoices, lodash__WEBPACK_IMPORTED_MODULE_24___default.a.constant('•'));
       } else {
-        fieldLabels = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.range(1, block.customData.numChoices + 1);
+        fieldLabels = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.range(1, block.customData.numChoices + 1);
       }
 
       commit('updateBlockUiDataFor', {
@@ -61587,7 +61621,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       commit('setBatchMatchAudioResultsTo', {
         status: -1
       });
-      return axios__WEBPACK_IMPORTED_MODULE_22___default.a.post(Object(_lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_25__[/* routeFrom */ "b"])('trees.treesBatchLinkAudio', {
+      return axios__WEBPACK_IMPORTED_MODULE_23___default.a.post(Object(_lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_26__[/* routeFrom */ "b"])('trees.treesBatchLinkAudio', {
         treeId: treeId
       }, state.ui.routes), {
         pattern: pattern
@@ -61620,8 +61654,8 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         return;
       }
 
-      lodash__WEBPACK_IMPORTED_MODULE_23___default.a.forEach(results, function (byLang, jsKey) {
-        lodash__WEBPACK_IMPORTED_MODULE_23___default.a.forEach(byLang, function (matches, langId) {
+      lodash__WEBPACK_IMPORTED_MODULE_24___default.a.forEach(results, function (byLang, jsKey) {
+        lodash__WEBPACK_IMPORTED_MODULE_24___default.a.forEach(byLang, function (matches, langId) {
           dispatch('commitBatchMatchAudioFile', {
             jsKey: jsKey,
             langId: langId,
@@ -61650,14 +61684,14 @@ var ValidationError = /*#__PURE__*/function (_Error) {
           matches = _ref102.matches,
           replaceExisting = _ref102.replaceExisting;
 
-      var _lodash$find2 = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.find(blocks, {
+      var _lodash$find2 = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(blocks, {
         jsKey: jsKey
       }),
           audioFile = _lodash$find2.audioFiles[langId],
           hasSelection = !!audioFile,
-          isMulti = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(matches, 'length', 0) > 1,
-          match = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(matches, 0, null),
-          unchanged = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(audioFile, 'id') === lodash__WEBPACK_IMPORTED_MODULE_23___default.a.get(match, 'id');
+          isMulti = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(matches, 'length', 0) > 1,
+          match = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(matches, 0, null),
+          unchanged = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(audioFile, 'id') === lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(match, 'id');
 
       if (unchanged || isMulti || hasSelection && !replaceExisting) {
         return;
@@ -61681,12 +61715,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       var displayLabel = _ref104.displayLabel,
           dataType = _ref104.dataType,
           choices = _ref104.choices;
-      return axios__WEBPACK_IMPORTED_MODULE_22___default.a.post(Object(_lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_25__[/* routeFrom */ "b"])('trees.addSubscriberPropertyField', null, state.ui.routes), {
+      return axios__WEBPACK_IMPORTED_MODULE_23___default.a.post(Object(_lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_26__[/* routeFrom */ "b"])('trees.addSubscriberPropertyField', null, state.ui.routes), {
         displayLabel: displayLabel,
         dataType: dataType,
         choices: choices
       }).then(function (response) {
-        var filteredChoices = lodash__WEBPACK_IMPORTED_MODULE_23___default.a.filter(choices, function (c) {
+        var filteredChoices = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.filter(choices, function (c) {
           return !!c.value;
         });
         commit('addSubscriberPropertyField', {
@@ -61700,7 +61734,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       commit('setTreeUpdateConflictStatus', payload);
     },
     fetchInteractionTotals: function fetchInteractionTotals(_ref106, _ref107) {
-      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_15__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
         var state, commit, dispatch, getters, startDate, endDate, key, url, params, response;
         return regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
@@ -61719,7 +61753,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
               case 5:
                 key = 'interaction-totals';
-                url = Object(_lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_25__[/* routeFrom */ "b"])('trees.ajaxTotalInteractions', {
+                url = Object(_lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_26__[/* routeFrom */ "b"])('trees.ajaxTotalInteractions', {
                   treeId: state.tree.id
                 }, state.ui.routes);
                 params = {
@@ -61755,7 +61789,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
 var getChoiceKeyPressesFor = function getChoiceKeyPressesFor(block) {
   var keypresses = block.customData.choiceKeypresses;
-  return lodash__WEBPACK_IMPORTED_MODULE_23___default.a.range(1, block.customData.numChoices + 1).map(function (i) {
+  return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.range(1, block.customData.numChoices + 1).map(function (i) {
     return keypresses[i] || i;
   });
 };
@@ -70243,41 +70277,44 @@ exports.default = FlowRunner;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return bootstrapLegacyGlobalDependencies; });
-/* harmony import */ var lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("512e");
-/* harmony import */ var lang_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lang_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("c1df");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("1157");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("2ef0");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _assets_messages_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("e1e0");
-var _assets_messages_json__WEBPACK_IMPORTED_MODULE_4___namespace = /*#__PURE__*/__webpack_require__.t("e1e0", 1);
+/* harmony import */ var core_js_modules_es_object_assign__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("cca6");
+/* harmony import */ var core_js_modules_es_object_assign__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_assign__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("512e");
+/* harmony import */ var lang_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lang_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("c1df");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("1157");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("2ef0");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _assets_messages_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("e1e0");
+var _assets_messages_json__WEBPACK_IMPORTED_MODULE_5___namespace = /*#__PURE__*/__webpack_require__.t("e1e0", 1);
 
 
 
 
 
-function bootstrapLegacyGlobalDependencies() {
+
+function bootstrapLegacyGlobalDependencies(appConfig, builderConfig) {
   // initialize configuration sources
-  var __APP__ = __webpack_require__("8c90");
+  var __APP__ = Object.assign(__webpack_require__("8c90"), appConfig);
 
-  var __CONTEXT__ = __webpack_require__("c5aa"); // todo: the remaining legacy code still expects the ability to mutate data directly on `app.ui.*` rather than using trees store
+  var __CONTEXT__ = Object.assign(__webpack_require__("c5aa"), builderConfig); // todo: the remaining legacy code still expects the ability to mutate data directly on `app.ui.*` rather than using trees store
   //      for now, we'll need to ensure app.ui === __TREES_UI__ */
 
 
-  var app = Object(lodash__WEBPACK_IMPORTED_MODULE_3__["merge"])(global.app || {}, __CONTEXT__);
+  var app = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["merge"])(global.app || {}, __CONTEXT__);
   var __TREES_UI__ = app.ui;
   var __AUDIO__ = app.audio; // configure libraries
 
-  var Lang = new lang_js__WEBPACK_IMPORTED_MODULE_0___default.a();
-  Lang.setMessages(_assets_messages_json__WEBPACK_IMPORTED_MODULE_4__);
+  var Lang = new lang_js__WEBPACK_IMPORTED_MODULE_1___default.a();
+  Lang.setMessages(_assets_messages_json__WEBPACK_IMPORTED_MODULE_5__);
   Lang.setLocale(__APP__.locale);
   Lang.defaultLocale = 'en';
-  var moment = moment__WEBPACK_IMPORTED_MODULE_1___default.a;
+  var moment = moment__WEBPACK_IMPORTED_MODULE_2___default.a;
   moment.locale(Lang.getLocale());
-  var jQuery = jquery__WEBPACK_IMPORTED_MODULE_2___default.a;
-  var $ = jquery__WEBPACK_IMPORTED_MODULE_2___default.a; // export as globals (overwrites pre-existing)
+  var jQuery = jquery__WEBPACK_IMPORTED_MODULE_3___default.a;
+  var $ = jquery__WEBPACK_IMPORTED_MODULE_3___default.a; // export as globals (overwrites pre-existing)
 
   var exported = {
     Lang: Lang,
@@ -94315,12 +94352,12 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=template&id=8e85b462&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=template&id=35409f15&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"interaction-designer-contents"},[_c('tree-builder-toolbar'),_c('div',{staticClass:"tree-sidebar-container"},[(_vm.activeBlock)?_c('div',{staticClass:"tree-sidebar",class:[("category-" + (_vm.blockClasses[_vm.activeBlock.type].category))]},[_c('div',{staticClass:"tree-sidebar-edit-block",attrs:{"data-block-type":_vm.activeBlock && _vm.activeBlock.type,"data-for-block-id":_vm.activeBlock && _vm.activeBlock.uuid}},[(_vm.activeBlock)?_c(("Flow" + (_vm.activeBlock.type.replace(/\\/g, ''))),{tag:"div",attrs:{"block":_vm.activeBlock,"flow":_vm.activeFlow}}):_vm._e()],1)]):_c('div',{staticClass:"tree-sidebar"},[_c('div',{staticClass:"tree-sidebar-edit-block"},[_c('flow-editor',{attrs:{"flow":_vm.activeFlow}})],1)])]),_c('div',{staticClass:"tree-contents",attrs:{"x-style":{'min-height': (_vm.designerWorkspaceHeight + "px")}}},[_c('builder-canvas',{nativeOn:{"click":function($event){return _vm.handleCanvasSelected($event)}}})],1)],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/InteractionDesigner.vue?vue&type=template&id=8e85b462&
+// CONCATENATED MODULE: ./src/views/InteractionDesigner.vue?vue&type=template&id=35409f15&
 
 // EXTERNAL MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=script&lang=js&
 var InteractionDesignervue_type_script_lang_js_ = __webpack_require__("7865");

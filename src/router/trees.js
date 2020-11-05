@@ -8,7 +8,7 @@ export const routes = [{
 // },
 {
   path: '/trees/:id/interaction-designer/:mode',
-  props: true,
+  props: route => ({ id: route.params.id, mode: route.params.mode }),
   component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue')
 }, {
   path: '/trees/:id',

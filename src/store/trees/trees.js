@@ -20,15 +20,29 @@ class ValidationError extends Error {
   }
 }
 
+let configOverrides = {
+  appConfigOverrides: {},
+  builderConfigOverrides: {},
+}
+
 export default {
   modules: {flights},
+
+  appConfigOverrides: {},
+  builderConfigOverrides: {},
+
+  configure(appConfig, builderConfig) {
+    configOverrides.appConfigOverrides = appConfig
+    configOverrides.builderConfigOverrides = builderConfig
+    console.log(configOverrides.appConfigOverrides)
+  },
 
   state() {
     const {
       app,
       __AUDIO__: audio,
       __TREES_UI__: ui,
-    } = bootstrapLegacyGlobalDependencies()
+    } = bootstrapLegacyGlobalDependencies(configOverrides.appConfigOverrides, configOverrides.builderConfigOverrides)
 
     // todo: audio recording feature is likely to be unavailable for standalone app - How do we want to isolate these?
     set(app, 'audioChoice.audioLibrary', audio.library)

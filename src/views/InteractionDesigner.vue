@@ -70,7 +70,22 @@
   // import '../TreeDiffLogger'
 
   export default {
-    props: ['id', 'mode'],
+    props: { 
+      id: {type: String}, 
+      mode: {type: String}, 
+      appConfig: {
+        type: Object,
+        default: function() {
+          return []
+        }
+      },
+      builderConfig: {
+        type: Object,
+        default: function() {
+          return []
+        }
+      }
+    },
 
     mixins: [lang],
 
@@ -167,6 +182,8 @@
         ...treesStore.modules,
         flow: flowStore,
         builder: builderStore}
+
+      modules.trees.configure(this.appConfig, this.builderConfig);
 
       forEach(modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
