@@ -76,13 +76,13 @@
       appConfig: {
         type: Object,
         default: function() {
-          return []
+          return {}
         }
       },
       builderConfig: {
         type: Object,
         default: function() {
-          return []
+          return {}
         }
       }
     },
