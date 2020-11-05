@@ -2,6 +2,7 @@
   <div v-if="hasText" class="form-group block-max-response-characters">
     <numeric-editor v-model.number="maxResponse"
         :is-editable="isEditable"
+        :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.max-response-characters' | trans"
         :placeholder="'flow-builder.enter-value' | trans">
     </numeric-editor>
