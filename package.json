@@ -63,6 +63,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
+    "storybook-vue-router": "^1.0.7",
     "ts-vue-plugin": "^0.1.2",
     "typescript": "~3.9.3",
     "vue-cli-plugin-storybook": "~1.2.2",

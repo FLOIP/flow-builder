@@ -14,7 +14,7 @@ export const store: StoreOptions<IRootState> = {
   modules: {
     builder,
     flow,
-    trees, //This is useful for storybook stories
+    trees, // trees was originally implemented globally, expecting it's state at root
   },
 }
 

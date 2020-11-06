@@ -121,27 +121,27 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const blankQuestionPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     const blankChoicesPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
 
-    const exits: IBlockExit[] = [
-      await dispatch('flow/block_createBlockDefaultExitWith', {
-        props: ({
-          uuid: (new IdGeneratorUuidV4).generate(),
-          tag: 'Default',
-          label: 'Default',
-        }) as IBlockExit}, {root: true}),
-      await dispatch('flow/block_createBlockExitWith', {
-        props: ({
-          uuid: (new IdGeneratorUuidV4).generate(),
-          tag: 'Error',
-          label: 'Error',
-        }) as IBlockExit}, {root: true}),
-    ]
+    const defaultExitProps: Partial<IBlockExit> = {
+      uuid: (new IdGeneratorUuidV4).generate(),
+      tag: 'Default',
+      label: 'Default',
+    }
+
+    const errorExitProps: Partial<IBlockExit> = {
+      uuid: (new IdGeneratorUuidV4).generate(),
+      tag: 'Error',
+      label: 'Error',
+    }
 
     return defaults(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',
       semanticLabel: '',
-      exits,
+      exits: [
+        await dispatch('flow/block_createBlockDefaultExitWith', {props: defaultExitProps}, {root: true}),
+        await dispatch('flow/block_createBlockExitWith', {props: errorExitProps}, {root: true}),
+      ],
       config: {
         //TODO - waiting for Brett and Bart input on these prompts
         prompt: blankPromptResource.uuid,
@@ -150,7 +150,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         choices: {'1': blankResource.uuid},
       },
     })
-  },
+  }
+,
 
 }
 
