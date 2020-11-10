@@ -274,8 +274,6 @@
 	}
 </script>
 
-<style src="bootstrap/dist/css/bootstrap.css"></style>
-<style src="bootstrap/dist/css/bootstrap-theme.css"></style>
 <!--<style src="../css/voto3.css"></style>-->
 <!--<style src="../css/InteractionDesigner.css"></style>-->
 
@@ -289,7 +287,7 @@
   $toolbar-height: 56px;
   $sidebar-width: 365px;
 
-  body {
+  .interaction-designer-contents {
     background:
       linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
       linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center, $dot-color;
