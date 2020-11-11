@@ -2,12 +2,13 @@ import ImportedLang from 'lang.js'
 import ImportedMoment from 'moment'
 import ImportedJquery from 'jquery'
 import {merge} from 'lodash'
-import source from '../../assets/messages.json';
 
 export function bootstrapLegacyGlobalDependencies(appConfig, builderConfig) {
   // initialize configuration sources
   const __APP__ = Object.assign(require('../../../app.config'), appConfig);
   const __CONTEXT__ = Object.assign(require('../../../builder.config'), builderConfig);
+  const source = appConfig.i18n ? appConfig.i18n : require('../../assets/messages.json');
+
 
   // todo: the remaining legacy code still expects the ability to mutate data directly on `app.ui.*` rather than using trees store
   //      for now, we'll need to ensure app.ui === __TREES_UI__ */
@@ -43,10 +44,8 @@ export function bootstrapLegacyGlobalDependencies(appConfig, builderConfig) {
   }
   Object.assign(global, exported)
 
-  // required inline due to front-loading of imports and having jQuery dependency
-  //require('bootstrap')
-  //require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker')
-  //$.fn.datetimepicker.defaults.locale = Lang.getLocale()
+  require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker')
+  $.fn.datetimepicker.defaults.locale = Lang.getLocale()
 
   return exported
 }
