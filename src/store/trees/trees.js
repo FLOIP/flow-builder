@@ -34,7 +34,6 @@ export default {
   configure(appConfig, builderConfig) {
     configOverrides.appConfigOverrides = appConfig
     configOverrides.builderConfigOverrides = builderConfig
-    console.log(configOverrides.appConfigOverrides)
   },
 
   state() {
