@@ -4,7 +4,9 @@ import {namespace} from 'vuex-class'
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 import {findFlowWith, IBlock, IContext, IFlow} from '@floip/flow-runner'
-import {get} from 'lodash'
+import {get, isEmpty, cloneDeep} from 'lodash'
+
+let storyInitState: any = {}
 
 /**
  * Safe register block module
@@ -12,7 +14,7 @@ import {get} from 'lodash'
  */
 export const safeRegisterBlockModule = async function(BLOCK_TYPE: string, blockTypeStore: IRootState) {
   // @ts-ignore - TS2551: Property '$store' does not exist on type
-  if (this.$store.state['flow'][BLOCK_TYPE]) {
+  if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
     // @ts-ignore - TS2551: Property '$store' does not exist on type
     this.$store.unregisterModule(['flow', BLOCK_TYPE])
   }
@@ -22,7 +24,14 @@ export const safeRegisterBlockModule = async function(BLOCK_TYPE: string, blockT
 }
 
 export const baseMounted = async function (this: any, BLOCK_TYPE: string, blockTypeStore: IRootState): Promise<any> {
-  await safeRegisterBlockModule.bind(this)(BLOCK_TYPE, blockTypeStore)
+  if (isEmpty(storyInitState)) {
+    storyInitState = cloneDeep(this.$store.state)
+  } else {
+    // Make sure we have cleared state in store for each new mounted story, as we're using one flow to put blocks
+    Object.assign(this.$store.state, cloneDeep(storyInitState))
+  }
+
+  await safeRegisterBlockModule.bind(this)(BLOCK_TYPE, blockTypeStore);
 
   const firstFlowId = get(this.$store.state, 'flow.firstFlowId')
   let flow
