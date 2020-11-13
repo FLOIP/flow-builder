@@ -1,0 +1,108 @@
+src/store/trees/trees.js|334 col 10| // todo: this is also included via `../public/dist/js/legacy/trees` on tree-builder
+src/store/flow/resource.ts|49 col 10| // todo: create type that requires both resourceId & modes with (N>1) entries
+src/store/flow/block.ts|18 col 6| // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
+src/store/flow/flow.ts|116 col 6| // todo: this `flow_` prefix doesn't follow suit
+src/components/interaction-designer/resource-editors/ResourceEditor.vue|14 col 16| <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
+
+Misc unclear/questions
+
+
+
+Big issues - not nice to haves, not architecture or code improvements
+
+src/store/builder/index.ts|9 col 32| export enum OperationKind { // todo migrate these to flight-monitor
+src/store/builder/index.ts|12 col 41| BLOCK_RELOCATE = 'BLOCK_RELOCATE', // todo: we can now skip updating vuex on-the-fly and rather await a drop
+src/store/builder/index.ts|19 col 29| position: IPosition, // todo: rename to startingPosition
+src/store/builder/index.ts|28 col 29| position: IPosition, // todo: rename to startingPosition
+src/store/builder/index.ts|94 col 8| // todo: ensure our platform_metadata.io_viamo is always instantiated with builder // uiData props
+src/store/builder/index.ts|121 col 6| // todo: do operations warrant their own store?
+src/store/builder/index.ts|299 col 8| // todo: we need something like: set context
+src/components/interaction-designer/Connection.vue|49 col 10| // todo: externalize as `positionCacheKey` + deprecate `position` prop
+src/components/interaction-designer/Connection.vue|89 col 10| // todo: add an invisible centered dot on a node header
+src/components/interaction-designer/Connection.vue|94 col 10| // todo: I think we can do something like this instead; will this prevent all the hairy business if we use pointAnchors?
+src/components/common/PlainDraggable.vue|20 col 8| // todo: also set `handle` from props onPropsChanged()
+src/components/common/PlainDraggable.vue|58 col 10| // todo: modify this to instantiate blank draggable onCreate, then set options when props change
+src/components/common/PlainDraggable.vue|76 col 70| this.draggable.step = {x: 50, y: 50, width: 50, height: 50} // todo: why this doesn't work?
+src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue|365 col 60| uiData: {xPosition: 150, yPosition: 255}, // todo: selected block + (80,80)
+src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue|366 col 21| }}}) // todo push out to intx-designer
+
+Builder todos - alot of these are unclear to me - what is the relation between some of the lines and the comment? - "todo: we can now skip updating vuex on-the-fly and rather await a drop
+
+src/store/flow/utils/DataObjectPropertyNameCaseConverter.ts|1 col 4| // TODO:
+//  move this file into @floip to replace the convertKeysToCamelCase under '@floip/flow-runner/src/flow-spec/DataObjectPopertyNameCamelCaseConverter'
+//  and update convertKeysToCamelCase usage in @floip (tests, etc) to convertKeysCase
+src/store/flow/flow.ts|65 col 33| flow.firstBlockId = '' // todo: make this optional for builder
+src/store/flow/flow.ts|204 col 23| label: '', // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
+src/store/flow/block-types/SmartDevices_PhotoResponseBlockStore.ts|5 col 96| // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to create at flow-runner
+src/store/flow/block-types/SmartDevices_LocationResponseBlockStore.ts|5 col 102| // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
+src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue|28 col 104| // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
+src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue|25 col 98| // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
+src/store/flow/block-types/MobilePrimitives_MessageBlockStore.ts|42 col 29| messageAudio: '' // TODO: remove this once flow-runner doesn't require it anymore
+src/components/interaction-designer/block-types/Core_RunFlowBlock.vue|69 col 9| //TODO - fix IRunFlowBlockConfig - it should have flow_id according to spec - not flowId
+
+Misc general @floip ecosystem improvements including flow-runner changes 
+
+src/store/flow/resource.ts|53 col 8| // todo: this should likely validate whether or not we're intersecting with other variants with this operation
+
+Validations
+
+src/store/flow/block.ts|100 col 7| //TODO - handle other props apart from test
+
+Block todos - non urgent
+
+src/store/flow/index.ts|3 col 34| import {IRootState} from '..' // todo: create factory with generics so that IRootState is DI'd
+src/store/flow/index.ts|36 col 45| nestedFlowBlockInteractionIdStack: [], // todo: not quite right -- pulled from IContext
+
+Base store todos - non urgent
+
+src/store/flow/flow.ts|62 col 8| // todo: convert this whole operation to an ActionTree member
+src/store/flow/flow.ts|63 col 8| // todo: use mutations for these:
+src/store/flow/flow.ts|137 col 10| // todo: for some reason {snakeCase} from 'lodash' doesn't work?
+src/store/flow/flow.ts|138 col 10| // todo: for some reason dynamic imports aren't working w/ storybook build
+
+flow store stuff
+
+src/lib/mixins/BBEventProxy.js|3 col 4| // todo: add backbone as a dependency here, skip it from global js bundle
+
+bundle/build stuff
+
+src/router/trees.js|1 col 4| // todo: children of /trees base url
+src/router/index.ts|23 col 6| // todo: rename trees module + url path to builder + add extensible children as intx-design & resource-viewer
+
+router stuff
+
+GOT TO HERE!
+
+src/store/flow/block-types/Core_CaseBlockStore.ts|42 col 24| test: '', // todo: get started on a basic expression api
+
+src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts|60 col 7| //TODO - this shouldn't be necessary
+src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts|72 col 7| //TODO - this shouldn't be necessary
+src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts|116 col 6| // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
+src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts|146 col 11| //TODO - waiting for Brett and Bart input on these prompts
+
+src/store/flow/block-types/Core_RunFlowBlockStore.ts|15 col 7| //TODO - this should actually be container.flows?
+
+src/store/flow/block-types/ConsoleIO_ReadBlockStore.ts|16 col 8| // TODO: correct the destination variables array according to scanf library we're using, and think about consecutive % or other error we should avoid
+
+
+
+src/views/InteractionDesigner.vue|91 col 31| pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
+
+
+src/components/interaction-designer/block-editors/NameEditor.vue|26 col 9| //TODO - where should this come from - here and in other cases? Platform metadata? Need to write a story for this mode
+
+
+
+src/components/interaction-designer/Block.vue|149 col 10| // todo: does this component know too much, what out of the above mapped state can be mapped?
+src/components/interaction-designer/Block.vue|150 col 10| // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
+src/components/interaction-designer/Block.vue|201 col 10| // todo: push NodeExit into it's own vue component
+src/components/interaction-designer/Block.vue|239 col 12| // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
+src/components/interaction-designer/Block.vue|294 col 10| // todo: store the leaderlines in vuex and manip there --- aka the leaderline itself would simply _produce_ the
+
+
+
+Recheck master after merges - more todos?
+Go through all once classified and double check - was any of it actually secretly urgent?
+push branch with some of these todos deleted
+double check the ask is clear with all of these once we've gone through
+clarify in the tickets - do and then delete todo, search by todo text as they were deduped and may be identical in several places
