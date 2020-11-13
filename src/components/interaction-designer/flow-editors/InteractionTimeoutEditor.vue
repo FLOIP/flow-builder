@@ -2,6 +2,7 @@
   <div class="form-group flow-interaction-timeout">
     <numeric-editor v-model.number="interactionTimeout"
         :is-editable="isEditable"
+        :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.Interaction-timeout' | trans"
         :placeholder="'flow-builder.enter-value' | trans">
     </numeric-editor>

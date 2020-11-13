@@ -42,10 +42,15 @@
         type: [String, Number],
         required: true,
       },
+      regexNumericFiltering: {
+        type: String,
+        required: false,
+        default: '[0-9\-]',
+      },
     },
     methods: {
       filterNumeric(e) {
-        if (!e.key.match(/[0-9\-]/g)) {
+        if (!e.key.match(new RegExp(this.regexNumericFiltering, 'g'))) {
           e.preventDefault()
         }
       },

@@ -2,6 +2,7 @@
   <div class="form-group block-validation-min">
     <numeric-editor v-model.number="minValue"
         :is-editable="isEditable"
+        :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.minimum-value-(inclusive)' | trans"
         :placeholder="'flow-builder.enter-value' | trans">
     </numeric-editor>
