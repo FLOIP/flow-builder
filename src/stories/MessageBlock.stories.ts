@@ -10,7 +10,7 @@ import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import messageBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
 
-import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
+import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from '@/stories/story-utils/storeSetup'
 
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
@@ -113,7 +113,8 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, messageBlockStore)
 
       // Fake a 1st block to make sure the current block won't be selected
-      this.$store.registerModule(['flow', CASE_BLOCK_TYPE], caseBlockStore)
+      // @ts-ignore
+      await safeRegisterBlockModule.bind(this)(CASE_BLOCK_TYPE, caseBlockStore)
       const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
       const {uuid: caseBlockId} = caseBlock
 
