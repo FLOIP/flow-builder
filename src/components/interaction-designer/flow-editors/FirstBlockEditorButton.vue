@@ -41,13 +41,14 @@
     mixins: [lang],
   })
   class FirstBlockEditorButton extends Vue {
-    get isStartBlock() {
-      return this.blockId === this.flow.firstBlockId
-    }
+    isStartBlock = (this.blockId === this.flow.firstBlockId)
 
     setStartBlock() {
       const {flow: {uuid: flowId}, blockId} = this
       this.flow_setFirstBlockId({flowId, blockId})
+      // Weird behavior: the computed approach with `get isStartBlock()` is not triggered even this.flow.firstBlockId is really mutated when calling this.flow_setFirstBlockId()
+      // A workaround would be to use this data approach, and redefine it here
+      this.isStartBlock = (this.blockId === this.flow.firstBlockId)
     }
 
     @flowVuexNamespace.Mutation flow_setFirstBlockId
