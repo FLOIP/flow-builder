@@ -6,7 +6,7 @@
         <button type="button"
             class="btn btn-default btn-sm"
             :disabled="isStartBlock"
-            @click="setStartBlock">
+            @click="setStartBlock($event)">
           <template v-if="isStartBlock">
             {{'flow-builder.currently-set-as-starting-block' | trans}}
           </template>
@@ -46,16 +46,17 @@
       return this.blockId === this.flow.firstBlockId
     }
 
-    @Watch('flow.firstBlockId', { immediate: true})
+    @Watch('flow.firstBlockId', { immediate: true })
     onFlowFirstBlockIdChanged(firstBlockId: any, oldFirstBlockId: any) {
-      console.log(`flow firstBlockId has changed ${firstBlockId}`)
+      console.debug(`flow firstBlockId has changed ${firstBlockId}`)
     }
 
-    setStartBlock() {
+    setStartBlock(event) {
       const {flow: {uuid: flowId}, blockId} = this
       console.debug(`before set this.flow.firstBlockId = ${this.flow.firstBlockId}`)
       this.flow_setFirstBlockId({flowId, blockId})
       console.debug(`after set this.flow.firstBlockId = ${this.flow.firstBlockId}`)
+      event.target.blur()
     }
 
     @flowVuexNamespace.Mutation flow_setFirstBlockId
