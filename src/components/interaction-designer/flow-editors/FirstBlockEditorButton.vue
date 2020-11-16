@@ -21,7 +21,7 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import {Component, Prop} from 'vue-property-decorator'
+  import {Component, Prop, Watch} from 'vue-property-decorator'
   import lang from '@/lib/filters/lang'
   import {namespace} from "vuex-class"
 
@@ -44,6 +44,11 @@
     get isStartBlock() {
       console.debug(`compute isStartBlock for block.uuid ${this.blockId} & flow.firstBlockId ${this.flow.firstBlockId}`)
       return this.blockId === this.flow.firstBlockId
+    }
+
+    @Watch('flow.firstBlockId', { immediate: true})
+    onFlowFirstBlockIdChanged(firstBlockId: any, oldFirstBlockId: any) {
+      console.log(`flow firstBlockId has changed ${firstBlockId}`)
     }
 
     setStartBlock() {
