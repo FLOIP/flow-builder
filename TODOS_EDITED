@@ -4,6 +4,8 @@ src/store/flow/block.ts|18 col 6| // todo: do we do all bocks in all blocks, or 
 src/store/flow/flow.ts|116 col 6| // todo: this `flow_` prefix doesn't follow suit
 src/components/interaction-designer/resource-editors/ResourceEditor.vue|14 col 16| <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
 src/views/InteractionDesigner.vue|91 col 31| pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
+src/components/interaction-designer/Block.vue|149 col 10| // todo: does this component know too much, what out of the above mapped state can be mapped?
+src/components/interaction-designer/Block.vue|150 col 10| // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
 
 Misc unclear/questions
 
@@ -17,7 +19,6 @@ src/store/builder/index.ts|19 col 29| position: IPosition, // todo: rename to st
 src/store/builder/index.ts|28 col 29| position: IPosition, // todo: rename to startingPosition
 src/store/builder/index.ts|94 col 8| // todo: ensure our platform_metadata.io_viamo is always instantiated with builder // uiData props
 src/store/builder/index.ts|121 col 6| // todo: do operations warrant their own store?
-src/store/builder/index.ts|299 col 8| // todo: we need something like: set context
 src/components/interaction-designer/Connection.vue|49 col 10| // todo: externalize as `positionCacheKey` + deprecate `position` prop
 src/components/interaction-designer/Connection.vue|89 col 10| // todo: add an invisible centered dot on a node header
 src/components/interaction-designer/Connection.vue|94 col 10| // todo: I think we can do something like this instead; will this prevent all the hairy business if we use pointAnchors?
@@ -76,8 +77,6 @@ src/router/index.ts|23 col 6| // todo: rename trees module + url path to builder
 
 router stuff
 
-GOT TO HERE!
-
 src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts|116 col 6| // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
 
 select on ticket
@@ -94,6 +93,7 @@ edit/show toggle
 
 Recheck master after merges - more todos?
 Go through all once classified and double check - was any of it actually secretly urgent?
-push branch with some of these todos deleted
+create pr for deleted - remove todos file
 double check the ask is clear with all of these once we've gone through
 clarify in the tickets - do and then delete todo, search by todo text as they were deduped and may be identical in several places
+write ticket for unclear todos
