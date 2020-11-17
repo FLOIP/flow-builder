@@ -46,16 +46,17 @@
       return this.blockId === this.flow.firstBlockId
     }
 
-    @Watch('flow.firstBlockId', { immediate: true })
+    @Watch('flow.firstBlockId', { immediate: true }) //TODO: remove this after we fix the `set as starting block` action. Remove console as well
     onFlowFirstBlockIdChanged(firstBlockId: any, oldFirstBlockId: any) {
       console.debug(`flow firstBlockId has changed ${firstBlockId}`)
     }
 
     setStartBlock(event) {
       const {flow: {uuid: flowId}, blockId} = this
-      console.debug(`before set this.flow.firstBlockId = ${this.flow.firstBlockId}`)
+      console.debug(`before set, blockId = ${blockId}, this.flow.firstBlockId = ${this.flow.firstBlockId}`)
       this.flow_setFirstBlockId({flowId, blockId})
-      console.debug(`after set this.flow.firstBlockId = ${this.flow.firstBlockId}`)
+      console.debug(`after set, blockId = ${blockId}, this.flow.firstBlockId = ${this.flow.firstBlockId}`)
+      console.log(this.flow)
       event.target.blur()
     }
 
