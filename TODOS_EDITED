@@ -3,6 +3,7 @@ src/store/flow/resource.ts|49 col 10| // todo: create type that requires both re
 src/store/flow/block.ts|18 col 6| // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
 src/store/flow/flow.ts|116 col 6| // todo: this `flow_` prefix doesn't follow suit
 src/components/interaction-designer/resource-editors/ResourceEditor.vue|14 col 16| <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
+src/views/InteractionDesigner.vue|91 col 31| pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
 
 Misc unclear/questions
 
@@ -25,6 +26,9 @@ src/components/common/PlainDraggable.vue|58 col 10| // todo: modify this to inst
 src/components/common/PlainDraggable.vue|76 col 70| this.draggable.step = {x: 50, y: 50, width: 50, height: 50} // todo: why this doesn't work?
 src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue|365 col 60| uiData: {xPosition: 150, yPosition: 255}, // todo: selected block + (80,80)
 src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue|366 col 21| }}}) // todo push out to intx-designer
+src/components/interaction-designer/Block.vue|294 col 10| // todo: store the leaderlines in vuex and manip there --- aka the leaderline itself would simply _produce_ the
+src/components/interaction-designer/Block.vue|201 col 10| // todo: push NodeExit into it's own vue component
+src/components/interaction-designer/Block.vue|239 col 12| // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
 
 Builder todos - alot of these are unclear to me - what is the relation between some of the lines and the comment? - "todo: we can now skip updating vuex on-the-fly and rather await a drop
 
@@ -39,6 +43,7 @@ src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlo
 src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue|25 col 98| // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
 src/store/flow/block-types/MobilePrimitives_MessageBlockStore.ts|42 col 29| messageAudio: '' // TODO: remove this once flow-runner doesn't require it anymore
 src/components/interaction-designer/block-types/Core_RunFlowBlock.vue|69 col 9| //TODO - fix IRunFlowBlockConfig - it should have flow_id according to spec - not flowId
+src/store/flow/block-types/Core_RunFlowBlockStore.ts|15 col 7| //TODO - this should actually be container.flows?
 
 Misc general @floip ecosystem improvements including flow-runner changes 
 
@@ -73,33 +78,19 @@ router stuff
 
 GOT TO HERE!
 
-src/store/flow/block-types/Core_CaseBlockStore.ts|42 col 24| test: '', // todo: get started on a basic expression api
-
-src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts|60 col 7| //TODO - this shouldn't be necessary
-src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts|72 col 7| //TODO - this shouldn't be necessary
 src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts|116 col 6| // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
-src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts|146 col 11| //TODO - waiting for Brett and Bart input on these prompts
 
-src/store/flow/block-types/Core_RunFlowBlockStore.ts|15 col 7| //TODO - this should actually be container.flows?
+select on ticket
 
 src/store/flow/block-types/ConsoleIO_ReadBlockStore.ts|16 col 8| // TODO: correct the destination variables array according to scanf library we're using, and think about consecutive % or other error we should avoid
 
-
-
-src/views/InteractionDesigner.vue|91 col 31| pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
-
+scanf bugs - think about edge cases
 
 src/components/interaction-designer/block-editors/NameEditor.vue|26 col 9| //TODO - where should this come from - here and in other cases? Platform metadata? Need to write a story for this mode
 
+edit/show toggle
 
-
-src/components/interaction-designer/Block.vue|149 col 10| // todo: does this component know too much, what out of the above mapped state can be mapped?
-src/components/interaction-designer/Block.vue|150 col 10| // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
-src/components/interaction-designer/Block.vue|201 col 10| // todo: push NodeExit into it's own vue component
-src/components/interaction-designer/Block.vue|239 col 12| // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
-src/components/interaction-designer/Block.vue|294 col 10| // todo: store the leaderlines in vuex and manip there --- aka the leaderline itself would simply _produce_ the
-
-
+---
 
 Recheck master after merges - more todos?
 Go through all once classified and double check - was any of it actually secretly urgent?
