@@ -28,39 +28,23 @@
   const flowVuexNamespace = namespace('flow')
 
   @Component<any>({
-    props: {
-      flow: Object,
-      blockId: String, // set for particular block
-
-      isEditable: {
-        type: Boolean,
-        default: true,
-      },
-    },
-
     mixins: [lang],
   })
   class FirstBlockEditorButton extends Vue {
-    get isStartBlock() {
-      console.debug(`compute isStartBlock for block.uuid ${this.blockId} & flow.firstBlockId ${this.flow.firstBlockId}`)
-      return this.blockId === this.flow.firstBlockId
-    }
+    @Prop({default: true}) readonly isEditable!: boolean
+    @Prop()readonly blockId!: String
+    @Prop()readonly flow!: IFlow
 
-    @Watch('flow.firstBlockId', { immediate: true }) //TODO: remove this after we fix the `set as starting block` action. Remove console as well
-    onFlowFirstBlockIdChanged(firstBlockId: any, oldFirstBlockId: any) {
-      console.debug(`flow firstBlockId has changed ${firstBlockId}`)
+    get isStartBlock() {
+      return this.blockId === this.flow.firstBlockId
     }
 
     setStartBlock(event) {
       const {flow: {uuid: flowId}, blockId} = this
-      console.debug(`before set, blockId = ${blockId}, this.flow.firstBlockId = ${this.flow.firstBlockId}`)
       this.flow_setFirstBlockId({flowId, blockId})
-      console.debug(`after set, blockId = ${blockId}, this.flow.firstBlockId = ${this.flow.firstBlockId}`)
-      console.log(this.flow)
-      event.target.blur()
     }
 
-    @flowVuexNamespace.Mutation flow_setFirstBlockId
+    @flowVuexNamespace.Mutation flow_setFirstBlockId!: ({flowId, blockId}: {flowId: string, blockId: string}) => void
   }
   export default FirstBlockEditorButton
 </script>
