@@ -13,44 +13,8 @@ Misc unclear/questions
 
 Big issues - not nice to haves, not architecture or code improvements
 
-src/store/builder/index.ts|9 col 32| export enum OperationKind { // todo migrate these to flight-monitor
-src/store/builder/index.ts|12 col 41| BLOCK_RELOCATE = 'BLOCK_RELOCATE', // todo: we can now skip updating vuex on-the-fly and rather await a drop
-src/store/builder/index.ts|19 col 29| position: IPosition, // todo: rename to startingPosition
-src/store/builder/index.ts|28 col 29| position: IPosition, // todo: rename to startingPosition
-src/store/builder/index.ts|94 col 8| // todo: ensure our platform_metadata.io_viamo is always instantiated with builder // uiData props
-src/store/builder/index.ts|121 col 6| // todo: do operations warrant their own store?
-src/components/interaction-designer/Connection.vue|49 col 10| // todo: externalize as `positionCacheKey` + deprecate `position` prop
-src/components/interaction-designer/Connection.vue|89 col 10| // todo: add an invisible centered dot on a node header
-src/components/interaction-designer/Connection.vue|94 col 10| // todo: I think we can do something like this instead; will this prevent all the hairy business if we use pointAnchors?
-src/components/common/PlainDraggable.vue|20 col 8| // todo: also set `handle` from props onPropsChanged()
-src/components/common/PlainDraggable.vue|58 col 10| // todo: modify this to instantiate blank draggable onCreate, then set options when props change
-src/components/common/PlainDraggable.vue|76 col 70| this.draggable.step = {x: 50, y: 50, width: 50, height: 50} // todo: why this doesn't work?
-src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue|365 col 60| uiData: {xPosition: 150, yPosition: 255}, // todo: selected block + (80,80)
-src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue|366 col 21| }}}) // todo push out to intx-designer
-src/components/interaction-designer/Block.vue|294 col 10| // todo: store the leaderlines in vuex and manip there --- aka the leaderline itself would simply _produce_ the
-src/components/interaction-designer/Block.vue|201 col 10| // todo: push NodeExit into it's own vue component
-src/components/interaction-designer/Block.vue|239 col 12| // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
 
-Builder todos - alot of these are unclear to me - what is the relation between some of the lines and the comment? - "todo: we can now skip updating vuex on-the-fly and rather await a drop
-
-src/store/flow/utils/DataObjectPropertyNameCaseConverter.ts|1 col 4| // TODO:
-//  move this file into @floip to replace the convertKeysToCamelCase under '@floip/flow-runner/src/flow-spec/DataObjectPopertyNameCamelCaseConverter'
-//  and update convertKeysToCamelCase usage in @floip (tests, etc) to convertKeysCase
-src/store/flow/flow.ts|65 col 33| flow.firstBlockId = '' // todo: make this optional for builder
-src/store/flow/flow.ts|204 col 23| label: '', // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
-src/store/flow/block-types/SmartDevices_PhotoResponseBlockStore.ts|5 col 96| // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to create at flow-runner
-src/store/flow/block-types/SmartDevices_LocationResponseBlockStore.ts|5 col 102| // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
-src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue|28 col 104| // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
-src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue|25 col 98| // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
-src/store/flow/block-types/MobilePrimitives_MessageBlockStore.ts|42 col 29| messageAudio: '' // TODO: remove this once flow-runner doesn't require it anymore
-src/components/interaction-designer/block-types/Core_RunFlowBlock.vue|69 col 9| //TODO - fix IRunFlowBlockConfig - it should have flow_id according to spec - not flowId
-src/store/flow/block-types/Core_RunFlowBlockStore.ts|15 col 7| //TODO - this should actually be container.flows?
-
-Misc general @floip ecosystem improvements including flow-runner changes 
-
-src/store/flow/resource.ts|53 col 8| // todo: this should likely validate whether or not we're intersecting with other variants with this operation
-
-Validations
+//GOT TO HERE
 
 src/store/flow/block.ts|100 col 7| //TODO - handle other props apart from test
 
@@ -68,10 +32,6 @@ src/store/flow/flow.ts|138 col 10| // todo: for some reason dynamic imports aren
 
 flow store stuff
 
-src/lib/mixins/BBEventProxy.js|3 col 4| // todo: add backbone as a dependency here, skip it from global js bundle
-
-bundle/build stuff
-
 src/router/trees.js|1 col 4| // todo: children of /trees base url
 src/router/index.ts|23 col 6| // todo: rename trees module + url path to builder + add extensible children as intx-design & resource-viewer
 
@@ -79,7 +39,7 @@ router stuff
 
 src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts|116 col 6| // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
 
-select on ticket
+select one ticket
 
 src/store/flow/block-types/ConsoleIO_ReadBlockStore.ts|16 col 8| // TODO: correct the destination variables array according to scanf library we're using, and think about consecutive % or other error we should avoid
 
