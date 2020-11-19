@@ -4,7 +4,7 @@
     <div v-if="isEditable">
       <input
           type="number"
-          min="0"
+          :min="min"
           class="form-control"
           :placeholder="placeholder"
           :value="value"
@@ -45,10 +45,20 @@
         type: [String, Number],
         required: true,
       },
+      min: {
+        type: [String, Number],
+        required: false,
+        default: '', // Meaning it's accepting negative by default
+      },
+      regexFloatFiltering: {
+        type: String,
+        required: false,
+        default: '[0-9\-.,]',
+      },
     },
     methods: {
       filterFloat(e) {
-        if (!e.key.match(/[0-9\-.,]/g)) {
+        if (!e.key.match(new RegExp(this.regexFloatFiltering, 'g'))) {
           e.preventDefault()
         }
       },
