@@ -6,6 +6,7 @@ src/components/interaction-designer/resource-editors/ResourceEditor.vue|14 col 1
 src/views/InteractionDesigner.vue|91 col 31| pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
 src/components/interaction-designer/Block.vue|149 col 10| // todo: does this component know too much, what out of the above mapped state can be mapped?
 src/components/interaction-designer/Block.vue|150 col 10| // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
+src/store/flow/index.ts|36 col 45| nestedFlowBlockInteractionIdStack: [], // todo: not quite right -- pulled from IContext
 
 Misc unclear/questions
 
@@ -16,44 +17,11 @@ Big issues - not nice to haves, not architecture or code improvements
 
 //GOT TO HERE
 
-src/store/flow/block.ts|100 col 7| //TODO - handle other props apart from test
 
-Block todos - non urgent
 
-src/store/flow/index.ts|3 col 34| import {IRootState} from '..' // todo: create factory with generics so that IRootState is DI'd
-src/store/flow/index.ts|36 col 45| nestedFlowBlockInteractionIdStack: [], // todo: not quite right -- pulled from IContext
-
-Base store todos - non urgent
-
-src/store/flow/flow.ts|62 col 8| // todo: convert this whole operation to an ActionTree member
-src/store/flow/flow.ts|63 col 8| // todo: use mutations for these:
-src/store/flow/flow.ts|137 col 10| // todo: for some reason {snakeCase} from 'lodash' doesn't work?
-src/store/flow/flow.ts|138 col 10| // todo: for some reason dynamic imports aren't working w/ storybook build
-
-flow store stuff
-
-src/router/trees.js|1 col 4| // todo: children of /trees base url
-src/router/index.ts|23 col 6| // todo: rename trees module + url path to builder + add extensible children as intx-design & resource-viewer
-
-router stuff
-
-src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts|116 col 6| // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
 
 select one ticket
 
-src/store/flow/block-types/ConsoleIO_ReadBlockStore.ts|16 col 8| // TODO: correct the destination variables array according to scanf library we're using, and think about consecutive % or other error we should avoid
-
-scanf bugs - think about edge cases
-
-src/components/interaction-designer/block-editors/NameEditor.vue|26 col 9| //TODO - where should this come from - here and in other cases? Platform metadata? Need to write a story for this mode
-
-edit/show toggle
-
 ---
 
-Recheck master after merges - more todos?
-Go through all once classified and double check - was any of it actually secretly urgent?
 create pr for deleted - remove todos file
-double check the ask is clear with all of these once we've gone through
-clarify in the tickets - do and then delete todo, search by todo text as they were deduped and may be identical in several places
-write ticket for unclear todos
