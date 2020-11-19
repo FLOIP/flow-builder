@@ -21,7 +21,7 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import {Component, Prop, Watch} from 'vue-property-decorator'
+  import {Component, Prop} from 'vue-property-decorator'
   import lang from '@/lib/filters/lang'
   import {namespace} from "vuex-class"
 
