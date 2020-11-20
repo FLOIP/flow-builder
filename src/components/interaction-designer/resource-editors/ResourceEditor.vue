@@ -28,7 +28,7 @@
 
           <div v-if="contentType === SupportedContentType.AUDIO">
             <template v-if="true"><!-- TODO: check if !findAudioResourceVariantFor(langId, resource) + feature is enable -->
-<!--              <upload-monitor :uploadKey="`${block.jsKey}:${langId}`" />-->
+              <upload-monitor :uploadKey="`${block.uuid}:${languageId}`" />
 
               <ul class="nav nav-tabs">
                 <li class="active">
@@ -46,11 +46,10 @@
                       token: `${block.uuid}${languageId}`,
                       accept: 'audio/*'}"
                      href="#"
+                     @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
+                     @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
                   >
 <!--                    TODO: put these into the above <a> -->
-
-                    <!--                     @filesSubmitted="handleFilesSubmittedFor(`${block.jsKey}:${langId}`, $event)"-->
-                    <!--                     @fileSuccess="handleFileSuccessFor(`${block.jsKey}:${langId}`, langId, $event)"-->
                     {{'trees.upload' | trans}}
                   </a>
                 </li>
@@ -91,6 +90,7 @@
   import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
   import {discoverContentTypesFor, findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
   import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
+  import UploadMonitor from '../block-editors/UploadMonitor.vue'
 
   interface IAudioFile {
     id: string,
@@ -131,6 +131,7 @@
     components: {
       AudioLibrarySelector,
       ResourceVariantTextEditor,
+      UploadMonitor,
     },
   })
   export class ResourceEditor extends Vue {
@@ -138,6 +139,33 @@
     findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
     SupportedMode = SupportedMode
     SupportedContentType = SupportedContentType
+
+    debouncedSaveTree() {
+      lodash.debounce(function () {
+        this.$store.dispatch('attemptSaveTree')
+      }, 500)
+    }
+
+    handleFilesSubmittedFor(key, {data}) {
+      console.log(`call handleFilesSubmittedFor`)
+      this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
+    }
+
+    handleFileSuccessFor(key, langId, {data: {file, json}}) {
+      console.log(`call handleFileSuccessFor`)
+      const {uuid: jsKey} = this.block,
+          {
+            audio_file_id: id,
+            audio_uuid: filename,
+            created_at: {date: created_at},
+            description,
+            duration_seconds,
+          } = JSON.parse(json)
+
+      this.$store.commit('updateAudioFileFor', {jsKey, langId, value: {id, filename, created_at, description, duration_seconds}})
+      this.$store.commit('updateReviewedStateFor', {jsKey, langId, value: false})
+      this.debouncedSaveTree();
+    }
 
     @Getter availableAudio!: IAudioFile[]
     @Getter isFeatureAudioUploadEnabled
