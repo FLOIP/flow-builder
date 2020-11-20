@@ -48,7 +48,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         await dispatch('flow/block_createBlockExitWith', {props: errorExitProps}, {root: true}),
       ],
       config: {
-        //TODO - waiting for Brett and Bart input on these prompts
         prompt: blankPromptResource.uuid,
         questionPrompt: blankQuestionPromptResource.uuid,
         choicesPrompt: blankChoicesPromptResource.uuid,

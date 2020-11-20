@@ -142,7 +142,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       // this.registerModule(['flow', BLOCK_TYPE], store)
     // }
 
-    const block = await dispatch(`flow/${type}/createWith`, { // standardize this for each block type
+    const block = await dispatch(`flow/${type}/createWith`, { // todo: standardize this for each block type
       props: {
         uuid: (new IdGeneratorUuidV4).generate(),
         ...props,
