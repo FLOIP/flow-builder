@@ -7,6 +7,12 @@
           "path": "\/trees\/{treeId}\/{component?}\/{mode?}",
           "params": ["treeId", "component", "mode"],
           "methods": ["GET", "HEAD"]
+        },
+        "resumeableAudioUpload": {
+          "name": "resumeableAudioUpload",
+          "path": "\/audiofiles\/upload",
+          "params": [],
+          "methods": []
         }
       }
     },
@@ -240,7 +246,9 @@
     "surveySets": [],
     "messageSets": [],
     "treeSets": [],
-    "enabledFeatures": []
+    "enabledFeatures": [
+      "audioUpload"
+    ]
   },
   "audio": {
     "library": [
