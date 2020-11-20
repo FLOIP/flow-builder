@@ -4,7 +4,7 @@
       <h6>{{ 'trees.uploading' | trans }}&hellip; {{ upload.file.name }}</h6>
 
       <div class="progress">
-        <progress-bar :now="progress.toFixed(1)" label type="default" striped animated/>
+        <progress-bar :now="progress.toFixed(1) * 1" label type="default" striped animated/>
       </div>
     </div>
 
