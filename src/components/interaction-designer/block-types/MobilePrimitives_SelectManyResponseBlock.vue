@@ -12,23 +12,27 @@
       <resource-editor v-if="promptResource"
                        :label="'flow-builder.prompt' | trans"
                        :resource="promptResource"
+                       :block="block"
                        :flow="flow" />
     </div>
     <div class="question-prompt-resource">
       <resource-editor v-if="questionPromptResource"
                        :label="'flow-builder.question-prompt' | trans"
                        :resource="questionPromptResource"
+                       :block="block"
                        :flow="flow" />
     </div>
     <div class="choices-prompt-resource">
       <resource-editor v-if="choicesPromptResource"
                        :label="'flow-builder.choices-prompt' | trans"
                        :resource="choicesPromptResource"
+                       :block="block"
                        :flow="flow" />
     </div>
     <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group form-inline">
       <resource-editor :label="`Choice ${choiceKey}`"
                        :resource="inflatedChoices[choiceKey]"
+                       :block="block"
                        :flow="flow" />
     </div>
 

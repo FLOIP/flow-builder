@@ -27,6 +27,36 @@
                                         :enable-autogen-button="true || enableAutogenButton" />
 
           <div v-if="contentType === SupportedContentType.AUDIO">
+            <template v-if="true"><!-- TODO: check if !findAudioResourceVariantFor(langId, resource) + feature is enable -->
+<!--              <upload-monitor :uploadKey="`${block.jsKey}:${langId}`" />-->
+
+              <ul class="nav nav-tabs">
+                <li class="active">
+                  <a @click.prevent="" href="#">{{'trees.library' | trans}}</a>
+                </li>
+
+<!--                <li v-if="isFeatureAudioUploadEnabled">&lt;!&ndash; TODO: fix can() and use the condition can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled&ndash;&gt;-->
+<!--                  <a @click.prevent="triggerRecordViaPhoneFor(langId)" href="#">{{'trees.phone-recording' | trans}}</a>-->
+<!--                </li>-->
+
+                <li>
+                  <a v-if="isFeatureAudioUploadEnabled"
+                     v-flow-uploader="{
+                      target: route('trees.resumeableAudioUpload'),
+                      token: `${block.uuid}${languageId}`,
+                      accept: 'audio/*'}"
+                     href="#"
+                  >
+<!--                    TODO: put these into the above <a> -->
+
+                    <!--                     @filesSubmitted="handleFilesSubmittedFor(`${block.jsKey}:${langId}`, $event)"-->
+                    <!--                     @fileSuccess="handleFileSuccessFor(`${block.jsKey}:${langId}`, langId, $event)"-->
+                    {{'trees.upload' | trans}}
+                  </a>
+                </li>
+              </ul>
+            </template>
+
             <audio-library-selector
                 :audioFiles="availableAudio"
                 :langId="languageId"
@@ -46,12 +76,16 @@
     Getter,
   } from 'vuex-class'
   import {
+    IBlock,
     IFlow,
     IResourceDefinition,
     SupportedContentType,
     SupportedMode,
   } from '@floip/flow-runner'
   import lang from '@/lib/filters/lang'
+  import Permissions from '@/lib/mixins/Permissions'
+  import Routes from '@/lib/mixins/Routes'
+  import FlowUploader from '@/lib/mixins/FlowUploader'
   import {Component} from 'vue-property-decorator'
   import Vue from 'vue'
   import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
@@ -70,20 +104,29 @@
 
   @Component({
     props: {
-        flow: {
-            type: Object as () => IFlow,
-            default: null,
-        },
-        label: {
-            type: [String, Number],
-        },
-        resource: {
-            type: Object as () => IResourceDefinition,
-            default: null,
-        }
+      block: {
+        type: Object as () => IBlock,
+        required: true,
+      },
+      flow: {
+        type: Object as () => IFlow,
+        default: null,
+      },
+      label: {
+        type: [String, Number],
+      },
+      resource: {
+        type: Object as () => IResourceDefinition,
+        default: null,
+      }
     },
 
-    mixins: [lang],
+    mixins: [
+      lang,
+      FlowUploader,
+      Permissions,
+      Routes,
+    ],
 
     components: {
       AudioLibrarySelector,
@@ -97,6 +140,7 @@
     SupportedContentType = SupportedContentType
 
     @Getter availableAudio!: IAudioFile[]
+    @Getter isFeatureAudioUploadEnabled
   }
 
   export default ResourceEditor

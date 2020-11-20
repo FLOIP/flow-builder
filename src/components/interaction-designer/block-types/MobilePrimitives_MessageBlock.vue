@@ -10,6 +10,7 @@
 
     <resource-editor v-if="promptResource"
                      :resource="promptResource"
+                     :block="block"
                      :flow="flow" />
 
     <first-block-editor-button
