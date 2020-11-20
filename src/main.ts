@@ -17,6 +17,7 @@ new Vue({
 }).$mount('#app')
 
 // required inline due to front-loading of imports and having jQuery dependency
-window.onload = function() {
-  require('bootstrap')
-}
+import('jquery')
+  .then(() => {
+    import('bootstrap')
+  })

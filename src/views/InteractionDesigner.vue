@@ -183,10 +183,10 @@
         flow: flowStore,
         builder: builderStore}
 
-      modules.trees.configure(this.appConfig, this.builderConfig);
-
       forEach(modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
+
+      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
 
       global.builder = this // initialize global reference for legacy + debugging
 
@@ -210,7 +210,7 @@
 		},
 
     methods: {
-        ...mapMutations(['deselectBlocks']),
+        ...mapMutations(['deselectBlocks', 'configure']),
         ...mapMutations('builder', ['activateBlock']),
 
         ...mapActions([
