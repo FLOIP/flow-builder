@@ -1,4 +1,4 @@
-import Flow from '@flowjs/flow.js' // can't use this yet-- todo: upgrade php lib
+import Flow from '@flowjs/flow.js' // todo: can we use this ? or need to upgrade php lib (voto5 legacy todo)
 import lodash from 'lodash'
 
 export default {
@@ -13,7 +13,7 @@ export default {
               target,
               token: upload_token
             } = binding.value,
-            uploader = new global.Flow({
+            uploader = new Flow({
               target,
               singleFile: true,
               chunkSize: 1024 * 512, // kbytes, chunked?  ¯\_(ツ)_/¯
@@ -33,10 +33,10 @@ export default {
             .assign({accept})
             .value()
 
-        // todo: migrate to proxied catch-all handler
+        // todo: migrate to proxied catch-all handler (voto5 legacy todo)
         // uploader.on('catchAll', (name, file/*or files*/, e) => console.debug(name))
 
-        // todo: when do we call upload on a multiselect-upload and file-added triggered multiple times?
+        // todo: when do we call upload on a multiselect-upload and file-added triggered multiple times? (voto5 legacy todo)
         // uploader.on('fileAdded', (file, e) => dispatch(el, 'filesSubmitted', {file, uploader})) // uploader.upload()
         uploader.on('filesSubmitted', (files, e) => dispatch(el, 'filesSubmitted', {files, uploader})) // uploader.upload()
         uploader.on('fileProgress', (file, e) => dispatch(el, 'fileProgress', {file, uploader}))
