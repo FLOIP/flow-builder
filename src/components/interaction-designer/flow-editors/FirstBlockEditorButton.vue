@@ -33,7 +33,7 @@
   })
   class FirstBlockEditorButton extends Vue {
     @Prop({default: true}) readonly isEditable!: boolean
-    @Prop()readonly blockId!: String
+    @Prop()readonly blockId!: string
     @Prop()readonly flow!: IFlow
 
     get isStartBlock() {

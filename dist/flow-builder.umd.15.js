@@ -60,30 +60,38 @@ var FirstBlockEditorButton = __webpack_require__("192b");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
 var BlockId = __webpack_require__("792f");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=697ed170&
-var ThresholdEditorvue_type_template_id_697ed170_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group block-threshold"},[_c('float-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.accuracy-threshold-in-meters'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.threshold),callback:function ($$v) {_vm.threshold=_vm._n($$v)},expression:"threshold"}})],1)}
-var ThresholdEditorvue_type_template_id_697ed170_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=665feaa7&
+var ThresholdEditorvue_type_template_id_665feaa7_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group block-threshold"},[_c('float-editor',{attrs:{"is-editable":_vm.isEditable,"min":0,"regex-float-filtering":'[0-9.,]',"label":_vm._f("trans")('flow-builder.accuracy-threshold-in-meters'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.threshold),callback:function ($$v) {_vm.threshold=_vm._n($$v)},expression:"threshold"}})],1)}
+var ThresholdEditorvue_type_template_id_665feaa7_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=697ed170&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=665feaa7&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/FloatEditor.vue?vue&type=template&id=8af8c0b2&
-var FloatEditorvue_type_template_id_8af8c0b2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"float-editor"},[_c('label',[_vm._v(_vm._s(_vm.label))]),(_vm.isEditable)?_c('div',[_c('input',{staticClass:"form-control",attrs:{"type":"number","min":"0","placeholder":_vm.placeholder,"step":_vm.step},domProps:{"value":_vm.value},on:{"keypress":_vm.filterFloat,"keydown":function($event){return _vm.$emit('keydown', $event)},"input":function($event){return _vm.$emit('input', $event.target.value)}}})]):_c('p',[_vm._v(" "+_vm._s(_vm.value)+" ")]),_vm._t("default")],2)}
-var FloatEditorvue_type_template_id_8af8c0b2_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/FloatEditor.vue?vue&type=template&id=1a52cdca&
+var FloatEditorvue_type_template_id_1a52cdca_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"float-editor"},[_c('label',[_vm._v(_vm._s(_vm.label))]),(_vm.isEditable)?_c('div',[_c('input',{staticClass:"form-control",attrs:{"type":"number","min":_vm.min,"placeholder":_vm.placeholder,"step":_vm.step},domProps:{"value":_vm.value},on:{"keypress":_vm.filterFloat,"keydown":function($event){return _vm.$emit('keydown', $event)},"input":function($event){return _vm.$emit('input', $event.target.value)}}})]):_c('p',[_vm._v(" "+_vm._s(_vm.value)+" ")]),_vm._t("default")],2)}
+var FloatEditorvue_type_template_id_1a52cdca_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/common/FloatEditor.vue?vue&type=template&id=8af8c0b2&
+// CONCATENATED MODULE: ./src/components/common/FloatEditor.vue?vue&type=template&id=1a52cdca&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
 var es_number_constructor = __webpack_require__("a9e3");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.constructor.js
+var es_regexp_constructor = __webpack_require__("4d63");
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
 var es_regexp_exec = __webpack_require__("ac1f");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.to-string.js
+var es_regexp_to_string = __webpack_require__("25f0");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.match.js
 var es_string_match = __webpack_require__("466d");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/FloatEditor.vue?vue&type=script&lang=js&
+
+
 
 
 
@@ -132,11 +140,22 @@ var es_string_match = __webpack_require__("466d");
     value: {
       type: [String, Number],
       required: true
+    },
+    min: {
+      type: [String, Number],
+      required: false,
+      default: '' // Meaning it's accepting negative by default
+
+    },
+    regexFloatFiltering: {
+      type: String,
+      required: false,
+      default: '[0-9\-.,]'
     }
   },
   methods: {
     filterFloat: function filterFloat(e) {
-      if (!e.key.match(/[0-9\-.,]/g)) {
+      if (!e.key.match(new RegExp(this.regexFloatFiltering, 'g'))) {
         e.preventDefault();
       }
     }
@@ -157,8 +176,8 @@ var componentNormalizer = __webpack_require__("2877");
 
 var component = Object(componentNormalizer["a" /* default */])(
   common_FloatEditorvue_type_script_lang_js_,
-  FloatEditorvue_type_template_id_8af8c0b2_render,
-  FloatEditorvue_type_template_id_8af8c0b2_staticRenderFns,
+  FloatEditorvue_type_template_id_1a52cdca_render,
+  FloatEditorvue_type_template_id_1a52cdca_staticRenderFns,
   false,
   null,
   null,
@@ -174,6 +193,8 @@ var lodash = __webpack_require__("2ef0");
 var lang = __webpack_require__("3a37");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=script&lang=js&
+//
+//
 //
 //
 //
@@ -230,8 +251,8 @@ var lang = __webpack_require__("3a37");
 
 var ThresholdEditor_component = Object(componentNormalizer["a" /* default */])(
   block_editors_ThresholdEditorvue_type_script_lang_js_,
-  ThresholdEditorvue_type_template_id_697ed170_render,
-  ThresholdEditorvue_type_template_id_697ed170_staticRenderFns,
+  ThresholdEditorvue_type_template_id_665feaa7_render,
+  ThresholdEditorvue_type_template_id_665feaa7_staticRenderFns,
   false,
   null,
   null,
@@ -240,17 +261,18 @@ var ThresholdEditor_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var ThresholdEditor = (ThresholdEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=2bd41dc0&
-var TimeoutEditorvue_type_template_id_2bd41dc0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group block-timeout"},[_c('numeric-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.Accuracy-timeout-in-seconds'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.timeout),callback:function ($$v) {_vm.timeout=_vm._n($$v)},expression:"timeout"}})],1)}
-var TimeoutEditorvue_type_template_id_2bd41dc0_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=346c1fd3&
+var TimeoutEditorvue_type_template_id_346c1fd3_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group block-timeout"},[_c('numeric-editor',{attrs:{"is-editable":_vm.isEditable,"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.Accuracy-timeout-in-seconds'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.timeout),callback:function ($$v) {_vm.timeout=_vm._n($$v)},expression:"timeout"}})],1)}
+var TimeoutEditorvue_type_template_id_346c1fd3_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=2bd41dc0&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=346c1fd3&
 
 // EXTERNAL MODULE: ./src/components/common/NumericEditor.vue + 4 modules
 var NumericEditor = __webpack_require__("2f00");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=script&lang=js&
+//
 //
 //
 //
@@ -307,8 +329,8 @@ var NumericEditor = __webpack_require__("2f00");
 
 var TimeoutEditor_component = Object(componentNormalizer["a" /* default */])(
   block_editors_TimeoutEditorvue_type_script_lang_js_,
-  TimeoutEditorvue_type_template_id_2bd41dc0_render,
-  TimeoutEditorvue_type_template_id_2bd41dc0_staticRenderFns,
+  TimeoutEditorvue_type_template_id_346c1fd3_render,
+  TimeoutEditorvue_type_template_id_346c1fd3_staticRenderFns,
   false,
   null,
   null,

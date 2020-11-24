@@ -482,7 +482,6 @@ var actions = {
               _context3.t4 = _context3.sent;
               _context3.t5 = [_context3.t3, _context3.t4];
               _context3.t6 = {
-                //TODO - waiting for Brett and Bart input on these prompts
                 prompt: blankPromptResource.uuid,
                 questionPrompt: blankQuestionPromptResource.uuid,
                 choicesPrompt: blankChoicesPromptResource.uuid,

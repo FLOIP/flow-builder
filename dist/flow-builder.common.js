@@ -21865,12 +21865,12 @@ var LabelEditor_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var LabelEditor = (LabelEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue?vue&type=template&id=780f3a90&
-var InteractionTimeoutEditorvue_type_template_id_780f3a90_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-interaction-timeout"},[_c('numeric-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.Interaction-timeout'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.interactionTimeout),callback:function ($$v) {_vm.interactionTimeout=_vm._n($$v)},expression:"interactionTimeout"}})],1)}
-var InteractionTimeoutEditorvue_type_template_id_780f3a90_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue?vue&type=template&id=377db45f&
+var InteractionTimeoutEditorvue_type_template_id_377db45f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-interaction-timeout"},[_c('numeric-editor',{attrs:{"is-editable":_vm.isEditable,"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.Interaction-timeout'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.interactionTimeout),callback:function ($$v) {_vm.interactionTimeout=_vm._n($$v)},expression:"interactionTimeout"}})],1)}
+var InteractionTimeoutEditorvue_type_template_id_377db45f_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue?vue&type=template&id=780f3a90&
+// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue?vue&type=template&id=377db45f&
 
 // EXTERNAL MODULE: ./src/components/common/NumericEditor.vue + 4 modules
 var NumericEditor = __webpack_require__("2f00");
@@ -21943,8 +21943,8 @@ InteractionTimeoutEditorvue_type_script_lang_ts_InteractionTimeoutEditor = Objec
 
 var InteractionTimeoutEditor_component = Object(componentNormalizer["a" /* default */])(
   flow_editors_InteractionTimeoutEditorvue_type_script_lang_ts_,
-  InteractionTimeoutEditorvue_type_template_id_780f3a90_render,
-  InteractionTimeoutEditorvue_type_template_id_780f3a90_staticRenderFns,
+  InteractionTimeoutEditorvue_type_template_id_377db45f_render,
+  InteractionTimeoutEditorvue_type_template_id_377db45f_staticRenderFns,
   false,
   null,
   null,
@@ -39961,23 +39961,31 @@ exports.convertComplexFindOperationToMongoFormat = convertComplexFindOperationTo
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/NumericEditor.vue?vue&type=template&id=c30e135a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/NumericEditor.vue?vue&type=template&id=058cdf05&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"number-editor"},[_c('label',[_vm._v(_vm._s(_vm.label))]),(_vm.isEditable)?_c('div',[_c('input',{staticClass:"form-control",attrs:{"type":"number","min":"0","placeholder":_vm.placeholder},domProps:{"value":_vm.value},on:{"keypress":_vm.filterNumeric,"keydown":function($event){return _vm.$emit('keydown', $event)},"input":function($event){return _vm.$emit('input', $event.target.value)}}})]):_c('p',[_vm._v(" "+_vm._s(_vm.value)+" ")]),_vm._t("default")],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/common/NumericEditor.vue?vue&type=template&id=c30e135a&
+// CONCATENATED MODULE: ./src/components/common/NumericEditor.vue?vue&type=template&id=058cdf05&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
 var es_number_constructor = __webpack_require__("a9e3");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.constructor.js
+var es_regexp_constructor = __webpack_require__("4d63");
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
 var es_regexp_exec = __webpack_require__("ac1f");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.to-string.js
+var es_regexp_to_string = __webpack_require__("25f0");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.match.js
 var es_string_match = __webpack_require__("466d");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/NumericEditor.vue?vue&type=script&lang=js&
+
+
 
 
 
@@ -40022,11 +40030,16 @@ var es_string_match = __webpack_require__("466d");
     value: {
       type: [String, Number],
       required: true
+    },
+    regexNumericFiltering: {
+      type: String,
+      required: false,
+      default: '[0-9\-]'
     }
   },
   methods: {
     filterNumeric: function filterNumeric(e) {
-      if (!e.key.match(/[0-9\-]/g)) {
+      if (!e.key.match(new RegExp(this.regexNumericFiltering, 'g'))) {
         e.preventDefault();
       }
     }
@@ -47079,6 +47092,97 @@ function merge(a, b) {
 
 // CONCATENATED MODULE: ./node_modules/vuex-class/lib/index.js
 
+
+
+/***/ }),
+
+/***/ "4d63":
+/***/ (function(module, exports, __webpack_require__) {
+
+var DESCRIPTORS = __webpack_require__("83ab");
+var global = __webpack_require__("da84");
+var isForced = __webpack_require__("94ca");
+var inheritIfRequired = __webpack_require__("7156");
+var defineProperty = __webpack_require__("9bf2").f;
+var getOwnPropertyNames = __webpack_require__("241c").f;
+var isRegExp = __webpack_require__("44e7");
+var getFlags = __webpack_require__("ad6d");
+var stickyHelpers = __webpack_require__("9f7f");
+var redefine = __webpack_require__("6eeb");
+var fails = __webpack_require__("d039");
+var setInternalState = __webpack_require__("69f3").set;
+var setSpecies = __webpack_require__("2626");
+var wellKnownSymbol = __webpack_require__("b622");
+
+var MATCH = wellKnownSymbol('match');
+var NativeRegExp = global.RegExp;
+var RegExpPrototype = NativeRegExp.prototype;
+var re1 = /a/g;
+var re2 = /a/g;
+
+// "new" should create a new object, old webkit bug
+var CORRECT_NEW = new NativeRegExp(re1) !== re1;
+
+var UNSUPPORTED_Y = stickyHelpers.UNSUPPORTED_Y;
+
+var FORCED = DESCRIPTORS && isForced('RegExp', (!CORRECT_NEW || UNSUPPORTED_Y || fails(function () {
+  re2[MATCH] = false;
+  // RegExp constructor can alter flags and IsRegExp works correct with @@match
+  return NativeRegExp(re1) != re1 || NativeRegExp(re2) == re2 || NativeRegExp(re1, 'i') != '/a/i';
+})));
+
+// `RegExp` constructor
+// https://tc39.github.io/ecma262/#sec-regexp-constructor
+if (FORCED) {
+  var RegExpWrapper = function RegExp(pattern, flags) {
+    var thisIsRegExp = this instanceof RegExpWrapper;
+    var patternIsRegExp = isRegExp(pattern);
+    var flagsAreUndefined = flags === undefined;
+    var sticky;
+
+    if (!thisIsRegExp && patternIsRegExp && pattern.constructor === RegExpWrapper && flagsAreUndefined) {
+      return pattern;
+    }
+
+    if (CORRECT_NEW) {
+      if (patternIsRegExp && !flagsAreUndefined) pattern = pattern.source;
+    } else if (pattern instanceof RegExpWrapper) {
+      if (flagsAreUndefined) flags = getFlags.call(pattern);
+      pattern = pattern.source;
+    }
+
+    if (UNSUPPORTED_Y) {
+      sticky = !!flags && flags.indexOf('y') > -1;
+      if (sticky) flags = flags.replace(/y/g, '');
+    }
+
+    var result = inheritIfRequired(
+      CORRECT_NEW ? new NativeRegExp(pattern, flags) : NativeRegExp(pattern, flags),
+      thisIsRegExp ? this : RegExpPrototype,
+      RegExpWrapper
+    );
+
+    if (UNSUPPORTED_Y && sticky) setInternalState(result, { sticky: sticky });
+
+    return result;
+  };
+  var proxy = function (key) {
+    key in RegExpWrapper || defineProperty(RegExpWrapper, key, {
+      configurable: true,
+      get: function () { return NativeRegExp[key]; },
+      set: function (it) { NativeRegExp[key] = it; }
+    });
+  };
+  var keys = getOwnPropertyNames(NativeRegExp);
+  var index = 0;
+  while (keys.length > index) proxy(keys[index++]);
+  RegExpPrototype.constructor = RegExpWrapper;
+  RegExpWrapper.prototype = RegExpPrototype;
+  redefine(global, 'RegExp', RegExpWrapper);
+}
+
+// https://tc39.github.io/ecma262/#sec-get-regexp-@@species
+setSpecies('RegExp');
 
 
 /***/ }),
@@ -54486,9 +54590,12 @@ module.exports = [
       builder: _store_builder__WEBPACK_IMPORTED_MODULE_16__[/* default */ "c"]
     });
 
-    modules.trees.configure(this.appConfig, this.builderConfig);
     Object(lodash__WEBPACK_IMPORTED_MODULE_11__["forEach"])(modules, function (v, k) {
       return !$store.hasModule(k) && $store.registerModule(k, v);
+    });
+    this.configure({
+      appConfig: this.appConfig,
+      builderConfig: this.builderConfig
     });
     global.builder = this; // initialize global reference for legacy + debugging
 
@@ -54509,7 +54616,7 @@ module.exports = [
     });
     console.debug('Vuej tree interaction designer mounted!');
   },
-  methods: Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])({}, Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapMutations */ "c"])(['deselectBlocks'])), Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapMutations */ "c"])('builder', ['activateBlock'])), Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapActions */ "a"])(['attemptSaveTree', 'discoverTallestBlockForDesignerWorkspaceHeight', 'initializeTreeModel'])), {}, {
+  methods: Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])({}, Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapMutations */ "c"])(['deselectBlocks', 'configure'])), Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapMutations */ "c"])('builder', ['activateBlock'])), Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapActions */ "a"])(['attemptSaveTree', 'discoverTallestBlockForDesignerWorkspaceHeight', 'initializeTreeModel'])), {}, {
     registerBlockTypes: function registerBlockTypes() {
       var _this = this;
 
@@ -57462,7 +57569,7 @@ exports.skipRearg = {
 /***/ "8865":
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"flows\":[{\"uuid\":\"5b8c87d6-de90-4bc4-8668-4f040000006e\",\"name\":\"\",\"label\":\"\",\"lastModified\":\"2019-10-10 23:46:30.000000+00:00\",\"interactionTimeout\":172800,\"supportedModes\":[\"sms\",\"ivr\",\"ussd\"],\"languages\":[],\"platform_metadata\":{},\"blocks\":[]}],\"resources\":[]}");
+module.exports = JSON.parse("{\"flows\":[{\"uuid\":\"5b8c87d6-de90-4bc4-8668-4f040000006e\",\"name\":\"\",\"label\":\"\",\"lastModified\":\"2019-10-10 23:46:30.000000+00:00\",\"interactionTimeout\":172800,\"supportedModes\":[\"sms\",\"ivr\",\"ussd\"],\"languages\":[],\"platform_metadata\":{},\"blocks\":[],\"firstBlockId\":\"\"}],\"resources\":[]}");
 
 /***/ }),
 
@@ -57934,60 +58041,40 @@ var ValidationError = /*#__PURE__*/function (_Error) {
   return ValidationError;
 }( /*#__PURE__*/Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_22__[/* default */ "a"])(Error));
 
-var configOverrides = {
-  appConfigOverrides: {},
-  builderConfigOverrides: {}
-};
 /* harmony default export */ __webpack_exports__["a"] = ({
   modules: {
     flights: store_common_flight_monitor__WEBPACK_IMPORTED_MODULE_27__[/* default */ "a"]
   },
-  appConfigOverrides: {},
-  builderConfigOverrides: {},
-  configure: function configure(appConfig, builderConfig) {
-    configOverrides.appConfigOverrides = appConfig;
-    configOverrides.builderConfigOverrides = builderConfig;
-    console.log(configOverrides.appConfigOverrides);
-  },
   state: function state() {
-    var _bootstrapLegacyGloba = Object(_bootstrap_legacy_global_dependencies__WEBPACK_IMPORTED_MODULE_31__[/* bootstrapLegacyGlobalDependencies */ "a"])(configOverrides.appConfigOverrides, configOverrides.builderConfigOverrides),
-        app = _bootstrapLegacyGloba.app,
-        audio = _bootstrapLegacyGloba.__AUDIO__,
-        ui = _bootstrapLegacyGloba.__TREES_UI__; // todo: audio recording feature is likely to be unavailable for standalone app - How do we want to isolate these?
-
-
-    Object(lodash__WEBPACK_IMPORTED_MODULE_24__["set"])(app, 'audioChoice.audioLibrary', audio.library);
-    Object(lodash__WEBPACK_IMPORTED_MODULE_24__["set"])(app, 'audioChoice.recorderList', audio.recording.recorders);
-    lodash__WEBPACK_IMPORTED_MODULE_24___default.a.defaultsDeep(ui, {
-      audioFiles: audio.library,
-      callCenterQueues: null,
-      previousTreeJson: JSON.stringify(ui.originalTreeJson),
-
-      /** @note - `validationResults` has two states:
-       *            (1) `null` - indicating we have yet to save the tree since loading the page
-       *            (2) non-null or `[]` - indicating the tree has been saved and has gone through server-side validation */
-      validationResults: ui.originalValidationResults,
-      // todo: this is an empty list on page load, and shouldn't be?
-      originalTreeJsonValidationResults: null,
-      selectedBlock: null,
-      designerWorkspaceHeight: 1400,
-      currentZoom: 1,
-      batchMatchAudio: {
-        results: null,
-        status: 0,
-        message: null,
-        isFailure: false,
-        isPending: false,
-        isComplete: false
-      },
-      treeUpdateConflict: null,
-      enabledFeatures: [
-        /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
-      ]
-    });
     return {
       tree: null,
-      ui: ui
+      ui: {
+        audioFiles: null,
+        callCenterQueues: null,
+        previousTreeJson: null,
+
+        /** @note - `validationResults` has two states:
+         *            (1) `null` - indicating we have yet to save the tree since loading the page
+         *            (2) non-null or `[]` - indicating the tree has been saved and has gone through server-side validation */
+        validationResults: null,
+        // todo: this is an empty list on page load, and shouldn't be?
+        originalTreeJsonValidationResults: null,
+        selectedBlock: null,
+        designerWorkspaceHeight: 1400,
+        currentZoom: 1,
+        batchMatchAudio: {
+          results: null,
+          status: 0,
+          message: null,
+          isFailure: false,
+          isPending: false,
+          isComplete: false
+        },
+        treeUpdateConflict: null,
+        enabledFeatures: [
+          /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
+        ]
+      }
     };
   },
   getters: {
@@ -58195,8 +58282,27 @@ var configOverrides = {
     }
   },
   mutations: {
-    setWorkingTree: function setWorkingTree(state, _ref34) {
-      var treeData = _ref34.tree;
+    configure: function configure(_ref34, _ref35) {
+      var ui = _ref34.ui;
+      var appConfig = _ref35.appConfig,
+          builderConfig = _ref35.builderConfig;
+
+      var _bootstrapLegacyGloba = Object(_bootstrap_legacy_global_dependencies__WEBPACK_IMPORTED_MODULE_31__[/* bootstrapLegacyGlobalDependencies */ "a"])(appConfig, builderConfig),
+          app = _bootstrapLegacyGloba.app,
+          audio = _bootstrapLegacyGloba.__AUDIO__,
+          uiOverrides = _bootstrapLegacyGloba.__TREES_UI__; // todo: audio recording feature is likely to be unavailable for standalone app - How do we want to isolate these?
+
+
+      Object(lodash__WEBPACK_IMPORTED_MODULE_24__["set"])(app, 'audioChoice.audioLibrary', audio.library);
+      Object(lodash__WEBPACK_IMPORTED_MODULE_24__["set"])(app, 'audioChoice.recorderList', audio.recording.recorders);
+      lodash__WEBPACK_IMPORTED_MODULE_24___default.a.merge(ui, lodash__WEBPACK_IMPORTED_MODULE_24___default.a.merge(uiOverrides, {
+        audioFiles: audio.library,
+        previousTreeJson: JSON.stringify(uiOverrides.originalTreeJson),
+        validationResults: uiOverrides.originalValidationResults
+      }));
+    },
+    setWorkingTree: function setWorkingTree(state, _ref36) {
+      var treeData = _ref36.tree;
       var tree = new app.Tree(treeData);
       /** @property app.tree
        *  @deprecated We'll only need this until we've eradicated references in legacy. */
@@ -58204,47 +58310,47 @@ var configOverrides = {
       app.tree = tree;
       state.tree = tree.attributes;
     },
-    setDesignerWorkspaceHeight: function setDesignerWorkspaceHeight(_ref35, _ref36) {
-      var tree = _ref35.tree,
-          ui = _ref35.ui;
-      var height = _ref36.height;
-      ui.designerWorkspaceHeight = height;
-    },
-    setSelectedBlock: function setSelectedBlock(_ref37, _ref38) {
+    setDesignerWorkspaceHeight: function setDesignerWorkspaceHeight(_ref37, _ref38) {
       var tree = _ref37.tree,
           ui = _ref37.ui;
-      var jsKey = _ref38.jsKey;
-      ui.selectedBlock = jsKey || '';
+      var height = _ref38.height;
+      ui.designerWorkspaceHeight = height;
     },
-    deselectBlocks: function deselectBlocks(_ref39) {
+    setSelectedBlock: function setSelectedBlock(_ref39, _ref40) {
       var tree = _ref39.tree,
           ui = _ref39.ui;
+      var jsKey = _ref40.jsKey;
+      ui.selectedBlock = jsKey || '';
+    },
+    deselectBlocks: function deselectBlocks(_ref41) {
+      var tree = _ref41.tree,
+          ui = _ref41.ui;
       ui.selectedBlock = '';
     },
-    updateTreeDetailsWith: function updateTreeDetailsWith(_ref40, _ref41) {
-      var tree = _ref40.tree,
-          ui = _ref40.ui;
-      var key = _ref41.key,
-          value = _ref41.value;
-      tree.details[key] = value;
-    },
-    updateBlockCustomDataFor: function updateBlockCustomDataFor(_ref42, _ref43) {
+    updateTreeDetailsWith: function updateTreeDetailsWith(_ref42, _ref43) {
       var tree = _ref42.tree,
           ui = _ref42.ui;
-      var jsKey = _ref43.jsKey,
-          key = _ref43.key,
+      var key = _ref43.key,
           value = _ref43.value;
+      tree.details[key] = value;
+    },
+    updateBlockCustomDataFor: function updateBlockCustomDataFor(_ref44, _ref45) {
+      var tree = _ref44.tree,
+          ui = _ref44.ui;
+      var jsKey = _ref45.jsKey,
+          key = _ref45.key,
+          value = _ref45.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block.customData, key, value);
     },
-    updateBlockCustomDataWithNestedKeyFor: function updateBlockCustomDataWithNestedKeyFor(_ref44, _ref45) {
-      var tree = _ref44.tree,
-          ui = _ref44.ui;
-      var jsKey = _ref45.jsKey,
-          nestedKey = _ref45.nestedKey,
-          value = _ref45.value;
+    updateBlockCustomDataWithNestedKeyFor: function updateBlockCustomDataWithNestedKeyFor(_ref46, _ref47) {
+      var tree = _ref46.tree,
+          ui = _ref46.ui;
+      var jsKey = _ref47.jsKey,
+          nestedKey = _ref47.nestedKey,
+          value = _ref47.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58252,33 +58358,33 @@ var configOverrides = {
       lodash__WEBPACK_IMPORTED_MODULE_24___default.a.set(customData, nestedKey, value);
       block.customData = customData;
     },
-    updateBlockUiDataFor: function updateBlockUiDataFor(_ref46, _ref47) {
-      var tree = _ref46.tree,
-          ui = _ref46.ui;
-      var jsKey = _ref47.jsKey,
-          key = _ref47.key,
-          value = _ref47.value;
+    updateBlockUiDataFor: function updateBlockUiDataFor(_ref48, _ref49) {
+      var tree = _ref48.tree,
+          ui = _ref48.ui;
+      var jsKey = _ref49.jsKey,
+          key = _ref49.key,
+          value = _ref49.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block.uiData, key, value);
     },
-    updateMaxNumericDigits: function updateMaxNumericDigits(_ref48, _ref49) {
-      var tree = _ref48.tree,
-          ui = _ref48.ui;
-      var value = _ref49.value;
+    updateMaxNumericDigits: function updateMaxNumericDigits(_ref50, _ref51) {
+      var tree = _ref50.tree,
+          ui = _ref50.ui;
+      var value = _ref51.value;
       var selectedBlock = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: ui.selectedBlock
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(selectedBlock, 'customData.maxNumericDigits', value);
     },
-    updateBlockContentFor: function updateBlockContentFor(_ref50, _ref51) {
-      var tree = _ref50.tree,
-          ui = _ref50.ui;
-      var type = _ref51.type,
-          langId = _ref51.langId,
-          jsKey = _ref51.jsKey,
-          value = _ref51.value;
+    updateBlockContentFor: function updateBlockContentFor(_ref52, _ref53) {
+      var tree = _ref52.tree,
+          ui = _ref52.ui;
+      var type = _ref53.type,
+          langId = _ref53.langId,
+          jsKey = _ref53.jsKey,
+          value = _ref53.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58294,16 +58400,16 @@ var configOverrides = {
         block["".concat(type, "Content")] = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])({}, block["".concat(type, "Content")]), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"])({}, langId, value));
       }
     },
-    updateBlockFileContentFor: function updateBlockFileContentFor(_ref52, _ref53) {
-      var tree = _ref52.tree,
-          ui = _ref52.ui;
-      var langId = _ref53.langId,
-          jsKey = _ref53.jsKey,
-          fileUrl = _ref53.fileUrl,
-          fileId = _ref53.fileId,
-          fileType = _ref53.fileType,
-          mimeType = _ref53.mimeType,
-          contentType = _ref53.contentType;
+    updateBlockFileContentFor: function updateBlockFileContentFor(_ref54, _ref55) {
+      var tree = _ref54.tree,
+          ui = _ref54.ui;
+      var langId = _ref55.langId,
+          jsKey = _ref55.jsKey,
+          fileUrl = _ref55.fileUrl,
+          fileId = _ref55.fileId,
+          fileType = _ref55.fileType,
+          mimeType = _ref55.mimeType,
+          contentType = _ref55.contentType;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58318,15 +58424,15 @@ var configOverrides = {
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content[langId], 'fileType', fileType);
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content[langId], 'mimeType', mimeType);
     },
-    updateBlockFileContentForAllLanguages: function updateBlockFileContentForAllLanguages(_ref54, _ref55) {
-      var tree = _ref54.tree,
-          ui = _ref54.ui;
-      var jsKey = _ref55.jsKey,
-          fileUrl = _ref55.fileUrl,
-          fileId = _ref55.fileId,
-          fileType = _ref55.fileType,
-          mimeType = _ref55.mimeType,
-          contentType = _ref55.contentType;
+    updateBlockFileContentForAllLanguages: function updateBlockFileContentForAllLanguages(_ref56, _ref57) {
+      var tree = _ref56.tree,
+          ui = _ref56.ui;
+      var jsKey = _ref57.jsKey,
+          fileUrl = _ref57.fileUrl,
+          fileId = _ref57.fileId,
+          fileType = _ref57.fileType,
+          mimeType = _ref57.mimeType,
+          contentType = _ref57.contentType;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58336,23 +58442,23 @@ var configOverrides = {
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content, 'allLanguagesFileType', fileType);
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content, 'allLanguagesMimeType', mimeType);
     },
-    initBlockAutoGenStateFor: function initBlockAutoGenStateFor(_ref56, _ref57) {
-      var tree = _ref56.tree,
-          ui = _ref56.ui;
-      var type = _ref57.type,
-          jsKey = _ref57.jsKey;
+    initBlockAutoGenStateFor: function initBlockAutoGenStateFor(_ref58, _ref59) {
+      var tree = _ref58.tree,
+          ui = _ref58.ui;
+      var type = _ref59.type,
+          jsKey = _ref59.jsKey;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block, "".concat(type, "AutogenLangs"), []);
     },
-    updateBlockAutoGenStateFor: function updateBlockAutoGenStateFor(_ref58, _ref59) {
-      var tree = _ref58.tree,
-          ui = _ref58.ui;
-      var type = _ref59.type,
-          langId = _ref59.langId,
-          jsKey = _ref59.jsKey,
-          enable = _ref59.value;
+    updateBlockAutoGenStateFor: function updateBlockAutoGenStateFor(_ref60, _ref61) {
+      var tree = _ref60.tree,
+          ui = _ref60.ui;
+      var type = _ref61.type,
+          langId = _ref61.langId,
+          jsKey = _ref61.jsKey,
+          enable = _ref61.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       }),
@@ -58365,12 +58471,12 @@ var configOverrides = {
         !absent && block["".concat(type, "AutogenLangs")].splice(i, 1);
       }
     },
-    updateAudioFileFor: function updateAudioFileFor(_ref60, _ref61) {
-      var tree = _ref60.tree,
-          ui = _ref60.ui;
-      var langId = _ref61.langId,
-          jsKey = _ref61.jsKey,
-          value = _ref61.value;
+    updateAudioFileFor: function updateAudioFileFor(_ref62, _ref63) {
+      var tree = _ref62.tree,
+          ui = _ref62.ui;
+      var langId = _ref63.langId,
+          jsKey = _ref63.jsKey,
+          value = _ref63.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58378,12 +58484,12 @@ var configOverrides = {
 
       !value && delete block.audioFiles[langId];
     },
-    updateReviewedStateFor: function updateReviewedStateFor(_ref62, _ref63) {
-      var tree = _ref62.tree,
-          ui = _ref62.ui;
-      var langId = _ref63.langId,
-          jsKey = _ref63.jsKey,
-          value = _ref63.value;
+    updateReviewedStateFor: function updateReviewedStateFor(_ref64, _ref65) {
+      var tree = _ref64.tree,
+          ui = _ref64.ui;
+      var langId = _ref65.langId,
+          jsKey = _ref65.jsKey,
+          value = _ref65.value;
 
       var _lodash$find = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
@@ -58392,12 +58498,12 @@ var configOverrides = {
 
       data.reviewed[langId] = value;
     },
-    setBatchMatchAudioResultsTo: function setBatchMatchAudioResultsTo(_ref64, _ref65) {
-      var tree = _ref64.tree,
-          ui = _ref64.ui;
-      var value = _ref65.value,
-          status = _ref65.status,
-          message = _ref65.message;
+    setBatchMatchAudioResultsTo: function setBatchMatchAudioResultsTo(_ref66, _ref67) {
+      var tree = _ref66.tree,
+          ui = _ref66.ui;
+      var value = _ref67.value,
+          status = _ref67.status,
+          message = _ref67.message;
       // ui.batchMatchAudioStatus = value
       lodash__WEBPACK_IMPORTED_MODULE_24___default.a.extend(ui.batchMatchAudio, {
         results: value,
@@ -58412,35 +58518,35 @@ var configOverrides = {
         isComplete: status === 1
       });
     },
-    updateIsEditable: function updateIsEditable(_ref66, _ref67) {
-      var ui = _ref66.ui;
-      var value = _ref67.value;
+    updateIsEditable: function updateIsEditable(_ref68, _ref69) {
+      var ui = _ref68.ui;
+      var value = _ref69.value;
       ui.isEditable = value;
     },
-    setContentTypeEnabled: function setContentTypeEnabled(_ref68, _ref69) {
-      var tree = _ref68.tree;
-      var contentType = _ref69.contentType,
-          isEnabled = _ref69.isEnabled;
+    setContentTypeEnabled: function setContentTypeEnabled(_ref70, _ref71) {
+      var tree = _ref70.tree;
+      var contentType = _ref71.contentType,
+          isEnabled = _ref71.isEnabled;
       tree["has".concat(lodash__WEBPACK_IMPORTED_MODULE_24___default.a.upperFirst(contentType))] = +isEnabled;
     },
-    addSubscriberPropertyField: function addSubscriberPropertyField(_ref70, _ref71) {
-      var ui = _ref70.ui;
-      var property = _ref71.property;
+    addSubscriberPropertyField: function addSubscriberPropertyField(_ref72, _ref73) {
+      var ui = _ref72.ui;
+      var property = _ref73.property;
       ui.subscriberPropertyFields.push(property);
     },
-    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(state, _ref72) {
-      var treeUpdateConflict = _ref72.treeUpdateConflict;
+    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(state, _ref74) {
+      var treeUpdateConflict = _ref74.treeUpdateConflict;
       state.ui.treeUpdateConflict = treeUpdateConflict;
     },
-    setInteractionTotals: function setInteractionTotals(state, _ref73) {
-      var interactionTotals = _ref73.interactionTotals;
+    setInteractionTotals: function setInteractionTotals(state, _ref75) {
+      var interactionTotals = _ref75.interactionTotals;
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(state.ui, 'interactionTotals', interactionTotals);
     }
   },
   actions: {
-    initializeTreeModel: function initializeTreeModel(_ref74) {
-      var dispatch = _ref74.dispatch,
-          isTreeImport = _ref74.state.ui.isTreeImport;
+    initializeTreeModel: function initializeTreeModel(_ref76) {
+      var dispatch = _ref76.dispatch,
+          isTreeImport = _ref76.state.ui.isTreeImport;
 
       __webpack_require__("2d35"); // todo: this is also included via `../public/dist/js/legacy/trees` on tree-builder
       //       but we don't include that beast in storybook b/c of global dependency hierarchy
@@ -58454,19 +58560,19 @@ var configOverrides = {
       isTreeImport ? dispatch('initializeTreeModelFromImport') : dispatch('initializeTreeModelFromOriginalTreeJson');
     },
     // @note - these are the only actions that are outside the realm of an existing tree.
-    initializeTreeModelFromOriginalTreeJson: function initializeTreeModelFromOriginalTreeJson(_ref75) {
-      var commit = _ref75.commit,
-          dispatch = _ref75.dispatch,
-          ui = _ref75.state.ui;
+    initializeTreeModelFromOriginalTreeJson: function initializeTreeModelFromOriginalTreeJson(_ref77) {
+      var commit = _ref77.commit,
+          dispatch = _ref77.dispatch,
+          ui = _ref77.state.ui;
       commit('setWorkingTree', {
         tree: ui.originalTreeJson
       });
       dispatch('upgradeTreeModel'); // => this kinda sucks, because now we're dispatching vuex notifications for all these upgrades
     },
-    initializeTreeModelFromImport: function initializeTreeModelFromImport(_ref76) {
-      var commit = _ref76.commit,
-          dispatch = _ref76.dispatch,
-          ui = _ref76.state.ui;
+    initializeTreeModelFromImport: function initializeTreeModelFromImport(_ref78) {
+      var commit = _ref78.commit,
+          dispatch = _ref78.dispatch,
+          ui = _ref78.state.ui;
 
       var schema = app.Tree.createJsonSchemaFor(_.pluck(ui.languages, 'id'), _.keys(ui.blockClasses)),
           tree = app.Tree._mergeAndSanitizeImportedInto(ui.originalTreeJson, ui.importTreeJson);
@@ -58487,15 +58593,15 @@ var configOverrides = {
         dispatch('initializeTreeModelFromOriginalTreeJson');
       }
     },
-    attemptImportPersistence: function attemptImportPersistence(_ref77) {
+    attemptImportPersistence: function attemptImportPersistence(_ref79) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var commit, dispatch, _ref77$state, tree, ui, _ref77$state$ui, isTreeImport, originalTreeJsonValidationResults, hasImportValidationErrors, validationResults;
+        var commit, dispatch, _ref79$state, tree, ui, _ref79$state$ui, isTreeImport, originalTreeJsonValidationResults, hasImportValidationErrors, validationResults;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                commit = _ref77.commit, dispatch = _ref77.dispatch, _ref77$state = _ref77.state, tree = _ref77$state.tree, ui = _ref77$state.ui, _ref77$state$ui = _ref77$state.ui, isTreeImport = _ref77$state$ui.isTreeImport, originalTreeJsonValidationResults = _ref77$state$ui.originalTreeJsonValidationResults;
+                commit = _ref79.commit, dispatch = _ref79.dispatch, _ref79$state = _ref79.state, tree = _ref79$state.tree, ui = _ref79$state.ui, _ref79$state$ui = _ref79$state.ui, isTreeImport = _ref79$state$ui.isTreeImport, originalTreeJsonValidationResults = _ref79$state$ui.originalTreeJsonValidationResults;
                 hasImportValidationErrors = !!originalTreeJsonValidationResults;
 
                 if (!(!isTreeImport || hasImportValidationErrors)) {
@@ -58527,13 +58633,13 @@ var configOverrides = {
     upgradeTreeModel: function upgradeTreeModel() {
       app.tree.upgrade();
     },
-    discoverTallestBlockForDesignerWorkspaceHeight: function discoverTallestBlockForDesignerWorkspaceHeight(_ref78, _ref79) {
-      var commit = _ref78.commit,
-          dispatch = _ref78.dispatch,
-          state = _ref78.state;
-      var _ref79$buffer = _ref79.buffer,
-          buffer = _ref79$buffer === void 0 ? 350 : _ref79$buffer,
-          aboveTallest = _ref79.aboveTallest;
+    discoverTallestBlockForDesignerWorkspaceHeight: function discoverTallestBlockForDesignerWorkspaceHeight(_ref80, _ref81) {
+      var commit = _ref80.commit,
+          dispatch = _ref80.dispatch,
+          state = _ref80.state;
+      var _ref81$buffer = _ref81.buffer,
+          buffer = _ref81$buffer === void 0 ? 350 : _ref81$buffer,
+          aboveTallest = _ref81.aboveTallest;
       var initialHeight = aboveTallest ? app.tree.getTallestBlockPosition() : 0,
           minHeight = 1000,
           height = Math.max(buffer + initialHeight, minHeight);
@@ -58541,19 +58647,19 @@ var configOverrides = {
         height: height
       });
     },
-    uiChanged: function uiChanged(context, _ref80) {
-      var msg = _ref80.msg;
+    uiChanged: function uiChanged(context, _ref82) {
+      var msg = _ref82.msg;
       console.log('app.ui.change [via vuex.trees.uiChanged]', msg);
     },
-    attemptSaveTree: function attemptSaveTree(_ref81) {
+    attemptSaveTree: function attemptSaveTree(_ref83) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var dispatch, _ref81$getters, hasChanges, isFeatureTreeSaveEnabled, ui, _global, app;
+        var dispatch, _ref83$getters, hasChanges, isFeatureTreeSaveEnabled, ui, _global, app;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                dispatch = _ref81.dispatch, _ref81$getters = _ref81.getters, hasChanges = _ref81$getters.hasChanges, isFeatureTreeSaveEnabled = _ref81$getters.isFeatureTreeSaveEnabled, ui = _ref81.state.ui;
+                dispatch = _ref83.dispatch, _ref83$getters = _ref83.getters, hasChanges = _ref83$getters.hasChanges, isFeatureTreeSaveEnabled = _ref83$getters.isFeatureTreeSaveEnabled, ui = _ref83.state.ui;
 
                 if (!(!ui.isEditable || !hasChanges)) {
                   _context2.next = 4;
@@ -58645,14 +58751,14 @@ var configOverrides = {
      *            ValidationResults
      * @returns {Promise<array>} a Promise that will return an array of the validation results.
      */
-    validateTree: function validateTree(_ref82) {
+    validateTree: function validateTree(_ref84) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
         var dispatch, tree, validate;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                dispatch = _ref82.dispatch, tree = _ref82.state.tree;
+                dispatch = _ref84.dispatch, tree = _ref84.state.tree;
                 validate = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(global.__TREE_FEATURES__, 'validation.validate');
 
                 if (!validate) {
@@ -58707,12 +58813,12 @@ var configOverrides = {
         }, _callee5);
       }))();
     },
-    setDefaultBlockRepeatValues: function setDefaultBlockRepeatValues(_ref83, _ref84) {
-      var commit = _ref83.commit,
-          dispatch = _ref83.dispatch,
-          tree = _ref83.state.tree;
-      var jsKey = _ref84.jsKey,
-          defaults = _ref84.values;
+    setDefaultBlockRepeatValues: function setDefaultBlockRepeatValues(_ref85, _ref86) {
+      var commit = _ref85.commit,
+          dispatch = _ref85.dispatch,
+          tree = _ref85.state.tree;
+      var jsKey = _ref86.jsKey,
+          defaults = _ref86.values;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58725,13 +58831,13 @@ var configOverrides = {
         });
       }
     },
-    updateTextContent: function updateTextContent(_ref85, _ref86) {
-      var commit = _ref85.commit;
-      var type = _ref86.type,
-          jsKey = _ref86.jsKey,
-          langId = _ref86.langId,
-          value = _ref86.value,
-          disableAutoGen = _ref86.disableAutoGen;
+    updateTextContent: function updateTextContent(_ref87, _ref88) {
+      var commit = _ref87.commit;
+      var type = _ref88.type,
+          jsKey = _ref88.jsKey,
+          langId = _ref88.langId,
+          value = _ref88.value,
+          disableAutoGen = _ref88.disableAutoGen;
       commit('updateBlockContentFor', {
         type: type,
         jsKey: jsKey,
@@ -58750,11 +58856,11 @@ var configOverrides = {
         value: false
       });
     },
-    setContentFromQuestionText: function setContentFromQuestionText(_ref87, _ref88) {
-      var commit = _ref87.commit,
-          dispatch = _ref87.dispatch,
-          tree = _ref87.state.tree;
-      var jsKey = _ref88.jsKey;
+    setContentFromQuestionText: function setContentFromQuestionText(_ref89, _ref90) {
+      var commit = _ref89.commit,
+          dispatch = _ref89.dispatch,
+          tree = _ref89.state.tree;
+      var jsKey = _ref90.jsKey;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58835,12 +58941,12 @@ var configOverrides = {
         });
       }
     },
-    setBlockNumConnections: function setBlockNumConnections(_ref89, _ref90) {
-      var commit = _ref89.commit,
-          dispatch = _ref89.dispatch,
-          state = _ref89.state;
-      var newNumConnections = _ref90.value,
-          jsKey = _ref90.jsKey;
+    setBlockNumConnections: function setBlockNumConnections(_ref91, _ref92) {
+      var commit = _ref91.commit,
+          dispatch = _ref91.dispatch,
+          state = _ref91.state;
+      var newNumConnections = _ref92.value,
+          jsKey = _ref92.jsKey;
       console.debug('vuex.trees', 'setBlockNumConnections', newNumConnections, jsKey); // Remove any connection elements connected to the block
       // Remove the block from the UI
       // Change the data number of connections
@@ -58892,11 +58998,11 @@ var configOverrides = {
 
       app.ui.change('Changed number of block connections.');
     },
-    setMcqOutputNames: function setMcqOutputNames(_ref91, _ref92) {
-      var commit = _ref91.commit,
-          dispatch = _ref91.dispatch,
-          tree = _ref91.state.tree;
-      var jsKey = _ref92.jsKey;
+    setMcqOutputNames: function setMcqOutputNames(_ref93, _ref94) {
+      var commit = _ref93.commit,
+          dispatch = _ref93.dispatch,
+          tree = _ref93.state.tree;
+      var jsKey = _ref94.jsKey;
       console.debug('vuex.trees', 'setMcqOutputNames', jsKey);
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
@@ -58937,11 +59043,11 @@ var configOverrides = {
         value: outputNames.length
       });
     },
-    setMcqSidebarFieldLabels: function setMcqSidebarFieldLabels(_ref93, _ref94) {
-      var commit = _ref93.commit,
-          dispatch = _ref93.dispatch,
-          tree = _ref93.state.tree;
-      var jsKey = _ref94.jsKey;
+    setMcqSidebarFieldLabels: function setMcqSidebarFieldLabels(_ref95, _ref96) {
+      var commit = _ref95.commit,
+          dispatch = _ref95.dispatch,
+          tree = _ref95.state.tree;
+      var jsKey = _ref96.jsKey;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58970,13 +59076,13 @@ var configOverrides = {
         value: fieldLabels
       });
     },
-    batchMatchAudioTriggered: function batchMatchAudioTriggered(_ref95, _ref96) {
-      var commit = _ref95.commit,
-          dispatch = _ref95.dispatch,
-          state = _ref95.state;
-      var treeId = _ref96.treeId,
-          pattern = _ref96.pattern,
-          replaceExisting = _ref96.replaceExisting;
+    batchMatchAudioTriggered: function batchMatchAudioTriggered(_ref97, _ref98) {
+      var commit = _ref97.commit,
+          dispatch = _ref97.dispatch,
+          state = _ref97.state;
+      var treeId = _ref98.treeId,
+          pattern = _ref98.pattern,
+          replaceExisting = _ref98.replaceExisting;
       commit('setBatchMatchAudioResultsTo', {
         status: -1
       });
@@ -58984,8 +59090,8 @@ var configOverrides = {
         treeId: treeId
       }, state.ui.routes), {
         pattern: pattern
-      }).then(function (_ref97) {
-        var value = _ref97.data.matches;
+      }).then(function (_ref99) {
+        var value = _ref99.data.matches;
         commit('setBatchMatchAudioResultsTo', {
           status: 1,
           value: value
@@ -58993,21 +59099,21 @@ var configOverrides = {
         dispatch('commitAllBatchMatchAudioFiles', {
           replaceExisting: replaceExisting
         });
-      }).catch(function (_ref98) {
-        var message = _ref98.response.data.status_description;
+      }).catch(function (_ref100) {
+        var message = _ref100.response.data.status_description;
         return commit('setBatchMatchAudioResultsTo', {
           status: 0,
           message: message
         });
       });
     },
-    commitAllBatchMatchAudioFiles: function commitAllBatchMatchAudioFiles(_ref99, _ref100) {
-      var commit = _ref99.commit,
-          dispatch = _ref99.dispatch,
-          _ref99$state$ui$batch = _ref99.state.ui.batchMatchAudio,
-          isEmpty = _ref99$state$ui$batch.isEmpty,
-          results = _ref99$state$ui$batch.results;
-      var replaceExisting = _ref100.replaceExisting;
+    commitAllBatchMatchAudioFiles: function commitAllBatchMatchAudioFiles(_ref101, _ref102) {
+      var commit = _ref101.commit,
+          dispatch = _ref101.dispatch,
+          _ref101$state$ui$batc = _ref101.state.ui.batchMatchAudio,
+          isEmpty = _ref101$state$ui$batc.isEmpty,
+          results = _ref101$state$ui$batc.results;
+      var replaceExisting = _ref102.replaceExisting;
 
       if (isEmpty) {
         return;
@@ -59034,14 +59140,14 @@ var configOverrides = {
      | single + replace    | 1             | 1            | 0         |
      | multi  + replace    | 0             | 0            | 0         |
      ---------------------------------------------------------------- */
-    commitBatchMatchAudioFile: function commitBatchMatchAudioFile(_ref101, _ref102) {
-      var commit = _ref101.commit,
-          dispatch = _ref101.dispatch,
-          blocks = _ref101.state.tree.blocks;
-      var jsKey = _ref102.jsKey,
-          langId = _ref102.langId,
-          matches = _ref102.matches,
-          replaceExisting = _ref102.replaceExisting;
+    commitBatchMatchAudioFile: function commitBatchMatchAudioFile(_ref103, _ref104) {
+      var commit = _ref103.commit,
+          dispatch = _ref103.dispatch,
+          blocks = _ref103.state.tree.blocks;
+      var jsKey = _ref104.jsKey,
+          langId = _ref104.langId,
+          matches = _ref104.matches,
+          replaceExisting = _ref104.replaceExisting;
 
       var _lodash$find2 = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(blocks, {
         jsKey: jsKey
@@ -59067,13 +59173,13 @@ var configOverrides = {
         value: false
       });
     },
-    addSubscriberPropertyField: function addSubscriberPropertyField(_ref103, _ref104) {
-      var commit = _ref103.commit,
-          dispatch = _ref103.dispatch,
-          state = _ref103.state;
-      var displayLabel = _ref104.displayLabel,
-          dataType = _ref104.dataType,
-          choices = _ref104.choices;
+    addSubscriberPropertyField: function addSubscriberPropertyField(_ref105, _ref106) {
+      var commit = _ref105.commit,
+          dispatch = _ref105.dispatch,
+          state = _ref105.state;
+      var displayLabel = _ref106.displayLabel,
+          dataType = _ref106.dataType,
+          choices = _ref106.choices;
       return axios__WEBPACK_IMPORTED_MODULE_23___default.a.post(Object(_lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_26__[/* routeFrom */ "b"])('trees.addSubscriberPropertyField', null, state.ui.routes), {
         displayLabel: displayLabel,
         dataType: dataType,
@@ -59088,19 +59194,19 @@ var configOverrides = {
         return response;
       });
     },
-    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(_ref105, payload) {
-      var commit = _ref105.commit;
+    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(_ref107, payload) {
+      var commit = _ref107.commit;
       commit('setTreeUpdateConflictStatus', payload);
     },
-    fetchInteractionTotals: function fetchInteractionTotals(_ref106, _ref107) {
+    fetchInteractionTotals: function fetchInteractionTotals(_ref108, _ref109) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
         var state, commit, dispatch, getters, startDate, endDate, key, url, params, response;
         return regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                state = _ref106.state, commit = _ref106.commit, dispatch = _ref106.dispatch, getters = _ref106.getters;
-                startDate = _ref107.startDate, endDate = _ref107.endDate;
+                state = _ref108.state, commit = _ref108.commit, dispatch = _ref108.dispatch, getters = _ref108.getters;
+                startDate = _ref109.startDate, endDate = _ref109.endDate;
 
                 if (getters.isFeatureUpdateInteractionTotalsEnabled) {
                   _context6.next = 5;
@@ -64624,7 +64730,8 @@ var actions = {
               return _context2.abrupt("return", Object(objectSpread2["a" /* default */])({}, Object(lodash["defaults"])(props, {
                 label: resource.uuid,
                 tag: '',
-                config: {}
+                config: {},
+                destinationBlock: undefined
               })));
 
             case 7:
@@ -65125,6 +65232,56 @@ var flow_actions = {
           }
         }
       }, _callee6);
+    }))();
+  },
+  flow_duplicateBlock: function flow_duplicateBlock(_ref20, _ref21) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
+      var dispatch, commit, state, flowId, blockId, flow, block, duplicatedBlock;
+      return regeneratorRuntime.wrap(function _callee7$(_context7) {
+        while (1) {
+          switch (_context7.prev = _context7.next) {
+            case 0:
+              dispatch = _ref20.dispatch, commit = _ref20.commit, state = _ref20.state;
+              flowId = _ref21.flowId, blockId = _ref21.blockId;
+              flow = Object(dist["findFlowWith"])(flowId || state.firstFlowId || '', state);
+              block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
+              // Deep clone
+
+              duplicatedBlock = Object(lodash["cloneDeep"])(block); // Set UUIDs, and remove non relevant props
+
+              duplicatedBlock.uuid = new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
+              duplicatedBlock.exits.forEach(function myFunction(item, index, arr) {
+                item.uuid = new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
+                delete item.destinationBlock;
+              });
+
+              if (Object(lodash["has"])(duplicatedBlock.config, 'prompt')) {
+                // @ts-ignore
+                duplicatedBlock.config.prompt = new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
+              } // Set UI positions
+              // TODO - type checking - remove this and resolve the error
+              //@ts-ignore
+
+
+              duplicatedBlock.platform_metadata = {
+                io_viamo: {
+                  uiData: {
+                    xPosition: Object(lodash["get"])(block, 'platform_metadata.io_viamo.uiData.xPosition', 50) + 80,
+                    yPosition: Object(lodash["get"])(block, 'platform_metadata.io_viamo.uiData.yPosition', 50) + 80
+                  }
+                }
+              };
+              commit('flow_addBlock', {
+                block: duplicatedBlock
+              });
+              return _context7.abrupt("return", duplicatedBlock);
+
+            case 11:
+            case "end":
+              return _context7.stop();
+          }
+        }
+      }, _callee7);
     }))();
   }
 };
@@ -67585,11 +67742,14 @@ exports.default = FlowRunner;
 
 
 
-function bootstrapLegacyGlobalDependencies(appConfig, builderConfig) {
-  // initialize configuration sources
-  var __APP__ = Object.assign(__webpack_require__("8c90"), appConfig);
+function bootstrapLegacyGlobalDependencies() {
+  var appConfig = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var builderConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-  var __CONTEXT__ = Object.assign(__webpack_require__("c5aa"), builderConfig);
+  // initialize configuration sources
+  var __APP__ = !Object(lodash__WEBPACK_IMPORTED_MODULE_4__["isEmpty"])(appConfig) ? appConfig : __webpack_require__("8c90");
+
+  var __CONTEXT__ = !Object(lodash__WEBPACK_IMPORTED_MODULE_4__["isEmpty"])(builderConfig) ? builderConfig : __webpack_require__("c5aa");
 
   var source = appConfig.i18n ? appConfig.i18n : __webpack_require__("e1e0"); // todo: the remaining legacy code still expects the ability to mutate data directly on `app.ui.*` rather than using trees store
   //      for now, we'll need to ensure app.ui === __TREES_UI__ */
@@ -90846,12 +91006,12 @@ module.exports = setData;
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=28699d40&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tree-builder-toolbar"},[(_vm.isImporterVisible)?_c('div',{staticClass:"flows-importer alert alert-info"},[_c('h3',[_vm._v(_vm._s(_vm.trans('flow-builder.flow-importer')))]),_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.flow),expression:"flow"}],staticClass:"flow-importer",attrs:{"rows":"15"},domProps:{"value":(_vm.flow)},on:{"input":function($event){if($event.target.composing){ return; }_vm.flow=$event.target.value}}})]):_vm._e(),_c('div',{staticClass:"tree-workspace-panel-heading panel-heading"},[_c('div',{staticClass:"tree-workspace-panel-heading-contents"},[_c('div',{staticClass:"btn-toolbar"},[_c('button',{staticClass:"btn btn-default",class:{active: _vm.isImporterVisible},on:{"click":_vm.toggleImportExport}},[_c('i',{staticClass:"glyphicon glyphicon-chevron-up"}),_vm._v(" "+_vm._s(_vm.trans('flow-builder.import-export'))+" ")]),(_vm.isResourceEditorEnabled)?_c('div',{staticClass:"btn-group"},[_c('router-link',{staticClass:"btn btn-default active",attrs:{"to":_vm.treeViewUrl}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.flow-view'))+" ")]),_c('router-link',{staticClass:"btn btn-default",attrs:{"to":_vm.resourceViewUrl},nativeOn:{"click":function($event){return _vm.handleResourceViewerSelected($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.resource-view'))+" ")])],1):_vm._e(),(_vm.ui.isEditableLocked)?[(_vm.isFeatureViewResultsEnabled)?_c('a',{staticClass:"btn btn-default",attrs:{"href":_vm.viewResultsUrl,"title":_vm.trans('flow-builder.view-results')}},[_c('span',{staticClass:"glyphicon glyphicon-signal"})]):_vm._e()]:_c('a',{staticClass:"btn btn-default",class:{active: _vm.ui.isEditable},attrs:{"href":_vm.editOrViewTreeJsUrl,"title":_vm.trans('flow-builder.click-to-toggle-editing')},on:{"click":_vm.attemptSaveTree}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.edit-flow'))+" ")]),(!_vm.ui.isEditable && _vm.isFeatureTreeDuplicateEnabled)?_c('a',{staticClass:"btn btn-default",attrs:{"href":_vm.duplicateTreeLink,"title":_vm.trans('flow-builder.duplicate-entire-flow')}},[_c('span',{staticClass:"glyphicon glyphicon-tags"})]):_vm._e(),(_vm.ui.isEditable)?_c('div',{staticClass:"btn-group"},[_c('button',{staticClass:"btn btn-default dropdown-toggle",attrs:{"type":"button","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.add-block'))+" "),_c('span',{staticClass:"caret"})]),_c('ul',{staticClass:"dropdown-menu",attrs:{"role":"menu"}},[_vm._l((_vm.rootBlockClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootBlockClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']},on:{"click":function($event){$event.preventDefault();return _vm.handleAddBlockByTypeSelected(classDetails)}}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]}),(!_vm.isEmpty(_vm.rootDropdownClassesToDisplay))?[_c('li',{staticClass:"divider"}),_c('li',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.branching'))+" ")]),_c('ul',{staticClass:"dropdown-menu"},[_vm._l((_vm.rootDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootDropdownClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]})],2)])]:_vm._e(),(!_vm.isEmpty(_vm.advancedDropdownClassesToDisplay))?[_c('li',{staticClass:"divider"}),_c('li',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.advanced'))+" ")]),_c('ul',{staticClass:"dropdown-menu"},[_vm._l((_vm.advancedDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.advancedDropdownClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]})],2)])]:_vm._e()],2)]):_vm._e(),(_vm.ui.isEditable)?_c('button',{staticClass:"btn btn-default tree-delete-block",attrs:{"type":"button","disabled":!_vm.activeBlockId},on:{"click":function($event){$event.preventDefault();return _vm.handleRemoveActivatedBlockTriggered($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.delete'))+" ")]):_vm._e(),_c('div',{staticClass:"btn-group pull-right"},[(_vm.ui.isEditable && _vm.isFeatureTreeSaveEnabled)?_c('button',{staticClass:"btn btn-primary tree-save-tree",attrs:{"type":"button","title":_vm.trans('flow-builder.save-changes-to-the-flow'),"disabled":_vm.isTreeSaving || !_vm.hasChanges},on:{"click":_vm.attemptSaveTree}},[_vm._v(" "+_vm._s(_vm.saveButtonText)+" ")]):_vm._e(),(_vm.isFeatureTreeSendEnabled)?[(_vm.can('edit-content'))?_c('a',{staticClass:"btn btn-success",attrs:{"href":_vm.publishVersionUrl,"disabled":_vm.isTreeSaving || !_vm.isTreeValid,"title":_vm._f("trans")(_vm.isTreeValid ? 'flow-builder.publish-this-version-of-the-flow' : 'flow-builder.fix-validation-errors-before-publishing')}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.publish'))+" ")]):_vm._e(),(_vm.can('send-outgoing-call'))?_c('a',{staticClass:"btn btn-success tree-send-tree-call",attrs:{"href":_vm.sendOutgoingCallUrl,"disabled":_vm.isTreeSaving || !_vm.isTreeValid,"title":_vm.trans('flow-builder.schedule-and-send-an-outgoing-call')}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.send'))+" ")]):_vm._e()]:_vm._e()],2)],2)])])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=d987f5c6&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tree-builder-toolbar"},[(_vm.isImporterVisible)?_c('div',{staticClass:"flows-importer alert alert-info"},[_c('h3',[_vm._v(_vm._s(_vm.trans('flow-builder.flow-importer')))]),_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.flow),expression:"flow"}],staticClass:"flow-importer",attrs:{"rows":"15"},domProps:{"value":(_vm.flow)},on:{"input":function($event){if($event.target.composing){ return; }_vm.flow=$event.target.value}}})]):_vm._e(),_c('div',{staticClass:"tree-workspace-panel-heading panel-heading"},[_c('div',{staticClass:"tree-workspace-panel-heading-contents"},[_c('div',{staticClass:"btn-toolbar"},[_c('button',{staticClass:"btn btn-default",class:{active: _vm.isImporterVisible},on:{"click":_vm.toggleImportExport}},[_c('i',{staticClass:"glyphicon glyphicon-chevron-up"}),_vm._v(" "+_vm._s(_vm.trans('flow-builder.import-export'))+" ")]),(_vm.isResourceEditorEnabled)?_c('div',{staticClass:"btn-group"},[_c('router-link',{staticClass:"btn btn-default active",attrs:{"to":_vm.treeViewUrl}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.flow-view'))+" ")]),_c('router-link',{staticClass:"btn btn-default",attrs:{"to":_vm.resourceViewUrl},nativeOn:{"click":function($event){return _vm.handleResourceViewerSelected($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.resource-view'))+" ")])],1):_vm._e(),(_vm.ui.isEditableLocked)?[(_vm.isFeatureViewResultsEnabled)?_c('a',{staticClass:"btn btn-default",attrs:{"href":_vm.viewResultsUrl,"title":_vm.trans('flow-builder.view-results')}},[_c('span',{staticClass:"glyphicon glyphicon-signal"})]):_vm._e()]:_c('a',{staticClass:"btn btn-default",class:{active: _vm.ui.isEditable},attrs:{"href":_vm.editOrViewTreeJsUrl,"title":_vm.trans('flow-builder.click-to-toggle-editing')},on:{"click":_vm.attemptSaveTree}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.edit-flow'))+" ")]),(!_vm.ui.isEditable && _vm.isFeatureTreeDuplicateEnabled)?_c('a',{staticClass:"btn btn-default",attrs:{"href":_vm.duplicateTreeLink,"title":_vm.trans('flow-builder.duplicate-entire-flow')}},[_c('span',{staticClass:"glyphicon glyphicon-tags"})]):_vm._e(),(_vm.ui.isEditable)?_c('div',{staticClass:"btn-group"},[_c('button',{staticClass:"btn btn-default dropdown-toggle",attrs:{"type":"button","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.add-block'))+" "),_c('span',{staticClass:"caret"})]),_c('ul',{staticClass:"dropdown-menu",attrs:{"role":"menu"}},[_vm._l((_vm.rootBlockClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootBlockClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']},on:{"click":function($event){$event.preventDefault();return _vm.handleAddBlockByTypeSelected(classDetails)}}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]}),(!_vm.isEmpty(_vm.rootDropdownClassesToDisplay))?[_c('li',{staticClass:"divider"}),_c('li',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.branching'))+" ")]),_c('ul',{staticClass:"dropdown-menu"},[_vm._l((_vm.rootDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootDropdownClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]})],2)])]:_vm._e(),(!_vm.isEmpty(_vm.advancedDropdownClassesToDisplay))?[_c('li',{staticClass:"divider"}),_c('li',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.advanced'))+" ")]),_c('ul',{staticClass:"dropdown-menu"},[_vm._l((_vm.advancedDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.advancedDropdownClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]})],2)])]:_vm._e()],2)]):_vm._e(),(_vm.ui.isEditable)?_c('button',{staticClass:"btn btn-default tree-duplicate-block",attrs:{"type":"button","disabled":!_vm.activeBlockId},on:{"click":function($event){$event.preventDefault();return _vm.handleDuplicateActivatedBlockTriggered($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.duplicate'))+" ")]):_vm._e(),(_vm.ui.isEditable)?_c('button',{staticClass:"btn btn-default tree-delete-block",attrs:{"type":"button","disabled":!_vm.activeBlockId},on:{"click":function($event){$event.preventDefault();return _vm.handleRemoveActivatedBlockTriggered($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.delete'))+" ")]):_vm._e(),_c('div',{staticClass:"btn-group pull-right"},[(_vm.ui.isEditable && _vm.isFeatureTreeSaveEnabled)?_c('button',{staticClass:"btn btn-primary tree-save-tree",attrs:{"type":"button","title":_vm.trans('flow-builder.save-changes-to-the-flow'),"disabled":_vm.isTreeSaving || !_vm.hasChanges},on:{"click":_vm.attemptSaveTree}},[_vm._v(" "+_vm._s(_vm.saveButtonText)+" ")]):_vm._e(),(_vm.isFeatureTreeSendEnabled)?[(_vm.can('edit-content'))?_c('a',{staticClass:"btn btn-success",attrs:{"href":_vm.publishVersionUrl,"disabled":_vm.isTreeSaving || !_vm.isTreeValid,"title":_vm._f("trans")(_vm.isTreeValid ? 'flow-builder.publish-this-version-of-the-flow' : 'flow-builder.fix-validation-errors-before-publishing')}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.publish'))+" ")]):_vm._e(),(_vm.can('send-outgoing-call'))?_c('a',{staticClass:"btn btn-success tree-send-tree-call",attrs:{"href":_vm.sendOutgoingCallUrl,"disabled":_vm.isTreeSaving || !_vm.isTreeValid,"title":_vm.trans('flow-builder.schedule-and-send-an-outgoing-call')}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.send'))+" ")]):_vm._e()]:_vm._e()],2)],2)])])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=28699d40&
+// CONCATENATED MODULE: ./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=d987f5c6&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
 var objectSpread2 = __webpack_require__("5530");
@@ -91106,7 +91266,7 @@ function convertKeysCase(x) {
   }),
   methods: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({
     isEmpty: lodash["isEmpty"]
-  }, Object(vuex_esm["a" /* mapActions */])(['attemptSaveTree'])), Object(vuex_esm["c" /* mapMutations */])('flow', ['flow_removeBlock'])), Object(vuex_esm["a" /* mapActions */])('flow', ['flow_addBlankBlockByType'])), Object(vuex_esm["a" /* mapActions */])('builder', ['importFlowsAndResources'])), {}, {
+  }, Object(vuex_esm["a" /* mapActions */])(['attemptSaveTree'])), Object(vuex_esm["c" /* mapMutations */])('flow', ['flow_removeBlock'])), Object(vuex_esm["a" /* mapActions */])('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock'])), Object(vuex_esm["a" /* mapActions */])('builder', ['importFlowsAndResources'])), {}, {
     handleAddBlockByTypeSelected: function handleAddBlockByTypeSelected(_ref3) {
       var type = _ref3.type;
 
@@ -91128,6 +91288,12 @@ function convertKeysCase(x) {
     handleRemoveActivatedBlockTriggered: function handleRemoveActivatedBlockTriggered() {
       var blockId = this.activeBlockId;
       this.flow_removeBlock({
+        blockId: blockId
+      });
+    },
+    handleDuplicateActivatedBlockTriggered: function handleDuplicateActivatedBlockTriggered() {
+      var blockId = this.activeBlockId;
+      this.flow_duplicateBlock({
         blockId: blockId
       });
     },
@@ -91526,12 +91692,12 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=template&id=7d8570e8&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=template&id=44480c06&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"interaction-designer-contents"},[_c('tree-builder-toolbar'),_c('div',{staticClass:"tree-sidebar-container"},[(_vm.activeBlock)?_c('div',{staticClass:"tree-sidebar",class:[("category-" + (_vm.blockClasses[_vm.activeBlock.type].category))]},[_c('div',{staticClass:"tree-sidebar-edit-block",attrs:{"data-block-type":_vm.activeBlock && _vm.activeBlock.type,"data-for-block-id":_vm.activeBlock && _vm.activeBlock.uuid}},[(_vm.activeBlock)?_c(("Flow" + (_vm.activeBlock.type.replace(/\\/g, ''))),{tag:"div",attrs:{"block":_vm.activeBlock,"flow":_vm.activeFlow}}):_vm._e()],1)]):_c('div',{staticClass:"tree-sidebar"},[_c('div',{staticClass:"tree-sidebar-edit-block"},[_c('flow-editor',{attrs:{"flow":_vm.activeFlow}})],1)])]),_c('div',{staticClass:"tree-contents",attrs:{"x-style":{'min-height': (_vm.designerWorkspaceHeight + "px")}}},[_c('builder-canvas',{nativeOn:{"click":function($event){return _vm.handleCanvasSelected($event)}}})],1)],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/InteractionDesigner.vue?vue&type=template&id=7d8570e8&
+// CONCATENATED MODULE: ./src/views/InteractionDesigner.vue?vue&type=template&id=44480c06&
 
 // EXTERNAL MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=script&lang=js&
 var InteractionDesignervue_type_script_lang_js_ = __webpack_require__("7865");
