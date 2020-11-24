@@ -147,7 +147,7 @@ export default {
         const { status_description } = JSON.parse(json) || {};
         // TODO: enable showAppMessageFor and use it as follow
         // dispatch('showAppMessageFor', {message: status_description, isComplete: true}, {root: true})
-        console.debug(status_description);
+        console.debug(`Upload has error ${status_description}`);
         commit('setUploadStatusFor', {
           file,
           key,

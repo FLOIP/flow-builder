@@ -71,9 +71,10 @@
 </template>
 
 <script lang="ts">
-  import {
-    Getter,
-  } from 'vuex-class'
+import {
+  Getter,
+  namespace,
+} from 'vuex-class'
   import {
     IBlock,
     IFlow,
@@ -91,6 +92,8 @@
   import {discoverContentTypesFor, findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
   import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
   import UploadMonitor from '../block-editors/UploadMonitor.vue'
+
+  const flowVuexNamespace = namespace('flow')
 
   interface IAudioFile {
     id: string,
@@ -140,20 +143,14 @@
     SupportedMode = SupportedMode
     SupportedContentType = SupportedContentType
 
-    debouncedSaveTree() {
-      lodash.debounce(function () {
-        this.$store.dispatch('attemptSaveTree')
-      }, 500)
-    }
-
     handleFilesSubmittedFor(key, {data}) {
-      console.log(`call handleFilesSubmittedFor`)
+      console.debug(`call handleFilesSubmittedFor`)
       this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
     }
 
-    handleFileSuccessFor(key, langId, {data: {file, json}}) {
-      console.log(`call handleFileSuccessFor`)
-      const {uuid: jsKey} = this.block,
+    handleFileSuccessFor(key, langId, event) {
+      const {data: {file, json}} = event,
+          {uuid: jsKey} = this.block,
           {
             audio_file_id: id,
             audio_uuid: filename,
@@ -161,14 +158,23 @@
             description,
             duration_seconds,
           } = JSON.parse(json)
+      const extension = description.split('.')[description.split('.').length - 1]
 
-      this.$store.commit('updateAudioFileFor', {jsKey, langId, value: {id, filename, created_at, description, duration_seconds}})
-      this.$store.commit('updateReviewedStateFor', {jsKey, langId, value: false})
-      this.debouncedSaveTree();
+      this.resource_setOrCreateValueModeSpecific({
+        resourceId: this.resource.uuid,
+        filter: {languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
+        value: `https://www.viamo.io/audiofiles/play/${filename}/${extension}`
+      })
+      event.target.blur() // remove the focus from the `upload` Tab
+      // this.$store.commit('updateAudioFileFor', {jsKey, langId, value: {id, filename, created_at, description, duration_seconds}})
+      // this.$store.commit('updateReviewedStateFor', {jsKey, langId, value: false})
+      // this.debouncedSaveTree();
     }
 
     @Getter availableAudio!: IAudioFile[]
     @Getter isFeatureAudioUploadEnabled
+
+    @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific
   }
 
   export default ResourceEditor
