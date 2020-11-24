@@ -13,4 +13,11 @@ module.exports = {
       ],
     },
   },
-}
+  devServer: {
+    before(app) {
+      app.post('/audiofiles/upload', (req, res) => {
+        res.send('hello');
+      });
+    },
+  },
+};
