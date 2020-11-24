@@ -12,7 +12,6 @@
       <template v-for="mode in flow.supportedModes">
         <h5>{{`flow-builder.${mode}-content` | trans}}</h5>
 
-        <!-- TODO - Is passing around resouce the right way to do overrides? Is it even necessary? See comments in discoverContentTypesFor function -->
         <template v-for="contentType in discoverContentTypesFor(mode)">
           <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
 

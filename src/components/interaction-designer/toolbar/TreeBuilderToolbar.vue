@@ -137,12 +137,13 @@
             </ul>
           </div>
 
-<!--          <button v-if="ui.isEditable"-->
-<!--                  type="button"-->
-<!--                  class="btn btn-default tree-duplicate-block"-->
-<!--                  :disabled="!jsKey">-->
-<!--            {{trans('flow-builder.duplicate')}}-->
-<!--          </button>-->
+          <button v-if="ui.isEditable"
+                  type="button"
+                  class="btn btn-default tree-duplicate-block"
+                  @click.prevent="handleDuplicateActivatedBlockTriggered"
+                  :disabled="!activeBlockId">
+            {{trans('flow-builder.duplicate')}}
+          </button>
 
           <button v-if="ui.isEditable"
                   type="button"
@@ -356,7 +357,7 @@
 
       ...mapActions(['attemptSaveTree']),
       ...mapMutations('flow', ['flow_removeBlock']),
-      ...mapActions('flow', ['flow_addBlankBlockByType']),
+      ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
       ...mapActions('builder', ['importFlowsAndResources']),
 
       handleAddBlockByTypeSelected({type}) {
@@ -370,6 +371,11 @@
       handleRemoveActivatedBlockTriggered() {
         const {activeBlockId: blockId} = this
         this.flow_removeBlock({blockId})
+      },
+
+      handleDuplicateActivatedBlockTriggered() {
+        const {activeBlockId: blockId} = this
+        this.flow_duplicateBlock({blockId})
       },
 
       toggleImportExport() {
