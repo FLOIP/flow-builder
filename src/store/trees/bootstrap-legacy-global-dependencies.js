@@ -3,7 +3,7 @@ import ImportedMoment from 'moment'
 import ImportedJquery from 'jquery'
 import {merge, isEmpty} from 'lodash'
 
-export function bootstrapLegacyGlobalDependencies(appConfig = null, builderConfig = null) {
+export function bootstrapLegacyGlobalDependencies(appConfig = {}, builderConfig = {}) {
   // initialize configuration sources
   const __APP__ = !isEmpty(appConfig) ? appConfig : require('../../../app.config')
   const __CONTEXT__ = !isEmpty(builderConfig) ? builderConfig : require('../../../builder.config')
