@@ -297,7 +297,6 @@
   .tree-sidebar-container {
     position: fixed;
     right: 0;
-    top: 0;
     z-index: 2*10;
 
     height: 100vh;
@@ -331,8 +330,6 @@
   .tree-builder-toolbar {
     position: fixed;
     z-index: 3*10;
-    left: 0;
-    top: 0;
 
     width: 100vw;
 
