@@ -27,17 +27,13 @@
                                         :enable-autogen-button="true || enableAutogenButton" />
 
           <div v-if="contentType === SupportedContentType.AUDIO">
-            <template v-if="true"><!-- TODO: check if !findAudioResourceVariantFor(langId, resource) + feature is enable -->
+            <template v-if="!findAudioResourceVariantFor(resource, {languageId, contentType: contentType, modes: [mode]}).value">
               <upload-monitor :uploadKey="`${block.uuid}:${languageId}`" />
 
               <ul class="nav nav-tabs">
                 <li class="active">
                   <a @click.prevent="" href="#">{{'trees.library' | trans}}</a>
                 </li>
-
-<!--                <li v-if="isFeatureAudioUploadEnabled">&lt;!&ndash; TODO: fix can() and use the condition can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled&ndash;&gt;-->
-<!--                  <a @click.prevent="triggerRecordViaPhoneFor(langId)" href="#">{{'trees.phone-recording' | trans}}</a>-->
-<!--                </li>-->
 
                 <li>
                   <a v-if="isFeatureAudioUploadEnabled"
@@ -49,7 +45,6 @@
                      @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
                      @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
                   >
-<!--                    TODO: put these into the above <a> -->
                     {{'trees.upload' | trans}}
                   </a>
                 </li>
@@ -90,9 +85,15 @@ import {
   import {Component} from 'vue-property-decorator'
   import Vue from 'vue'
   import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
-  import {discoverContentTypesFor, findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
+  import {
+  discoverContentTypesFor,
+    findOrGenerateStubbedVariantOn,
+    findResourceVariantOverModesOn
+  } from '@/store/flow/resource'
   import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
   import UploadMonitor from '../block-editors/UploadMonitor.vue'
+import ValidationException from "@floip/flow-runner/src/domain/exceptions/ValidationException";
+import {cloneDeep} from "lodash";
 
   const flowVuexNamespace = namespace('flow')
 
@@ -141,6 +142,7 @@ import {
   export class ResourceEditor extends Vue {
     discoverContentTypesFor = discoverContentTypesFor
     findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
+    findResourceVariantOverModesOn = findResourceVariantOverModesOn
     SupportedMode = SupportedMode
     SupportedContentType = SupportedContentType
 
@@ -177,9 +179,19 @@ import {
       })
       event.target.blur() // remove the focus from the `upload` Tab
       this.pushAudioIntoLibrary(uploadedAudio)
-      // this.$store.commit('updateAudioFileFor', {jsKey, langId, value: {id, filename, created_at, description, duration_seconds}})
-      // this.$store.commit('updateReviewedStateFor', {jsKey, langId, value: false})
-      // this.debouncedSaveTree();
+    }
+
+    findAudioResourceVariantFor(resource, filter) {
+      // TODO: what would be the correct implementation here, why not using findOrGenerateStubbedVariantOn( ) instead of creating findAudioResourceVariantFor
+      try {
+        return findResourceVariantOverModesOn(resource, filter)
+      } catch (e) {
+        if (!(e instanceof ValidationException)) {
+          throw e
+        }
+
+        return Object.assign(cloneDeep(filter), {value: ''})
+      }
     }
 
     @Getter availableAudio!: IAudioFile[]

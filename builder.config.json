@@ -12,7 +12,7 @@
           "name": "resumeableAudioUpload",
           "path": "\/audiofiles\/upload",
           "params": [],
-          "methods": []
+          "methods": ["POST", "HEAD"]
         }
       }
     },
