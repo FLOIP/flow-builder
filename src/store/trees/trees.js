@@ -284,6 +284,10 @@ export default {
 			!value && delete block.audioFiles[langId]
 		},
 
+    pushAudioIntoLibrary({ tree, ui }, audio) {
+      ui.audioFiles.push(audio)
+    },
+
 		updateReviewedStateFor({tree, ui}, {langId, jsKey, value}) {
 			const {customData: data} = lodash.find(tree.blocks, {jsKey})
 			data.reviewed[langId] = value

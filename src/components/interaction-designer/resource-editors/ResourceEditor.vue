@@ -73,6 +73,7 @@
 <script lang="ts">
 import {
   Getter,
+  Mutation,
   namespace,
 } from 'vuex-class'
   import {
@@ -149,9 +150,9 @@ import {
     }
 
     handleFileSuccessFor(key, langId, event) {
-      const {data: {file, json}} = event,
-          {uuid: jsKey} = this.block,
-          {
+      const {data: {file, json}} = event
+      const {uuid: jsKey} = this.block
+      const {
             audio_file_id: id,
             audio_uuid: filename,
             created_at: {date: created_at},
@@ -159,6 +160,15 @@ import {
             duration_seconds,
           } = JSON.parse(json)
       const extension = description.split('.')[description.split('.').length - 1]
+      const uploadedAudio: IAudioFile = {
+        id,
+        filename,
+        description,
+        language_id: langId,
+        duration_seconds,
+        original_extension: extension,
+        created_at
+      }
 
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resource.uuid,
@@ -166,6 +176,7 @@ import {
         value: `https://www.viamo.io/audiofiles/play/${filename}/${extension}`
       })
       event.target.blur() // remove the focus from the `upload` Tab
+      this.pushAudioIntoLibrary(uploadedAudio)
       // this.$store.commit('updateAudioFileFor', {jsKey, langId, value: {id, filename, created_at, description, duration_seconds}})
       // this.$store.commit('updateReviewedStateFor', {jsKey, langId, value: false})
       // this.debouncedSaveTree();
@@ -173,6 +184,8 @@ import {
 
     @Getter availableAudio!: IAudioFile[]
     @Getter isFeatureAudioUploadEnabled
+
+    @Mutation pushAudioIntoLibrary
 
     @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific
   }
