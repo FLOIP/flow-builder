@@ -54,10 +54,7 @@
   // import * as BlockTypes from './block-types'
   // import JsPlumbBlock from './JsPlumbBlock'
 
-  import treesStore from '@/store/trees' // needs to be registered separately because it doesn't currently support namespacing
-  import flowStore from '@/store/flow'
-  import builderStore from '@/store/builder'
-
+  import {store} from '@/store'
 
   // import TreeEditor from './TreeEditor'
   // import TreeViewer from './TreeViewer'
@@ -177,13 +174,8 @@
 
     created() {
       const {$store} = this
-      const modules = {
-        // `treesStore` was originally implemented globally, expecting it's state at root
-        ...treesStore.modules,
-        flow: flowStore,
-        builder: builderStore}
 
-      forEach(modules, (v, k) =>
+      forEach(store.modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
 
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});

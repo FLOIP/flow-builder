@@ -143,7 +143,6 @@ export function findResourceVariantOverModesWith(
 export function findResourceVariantOverModesOn(
     resource: IResourceDefinition,
     filter: IResourceDefinitionVariantOverModesFilter) {
-
   const
       keysForComparison = without(Object.keys(filter), 'modes'), // b/c we do explicit partial matching on modes
       filterWithComparatorKeys = pick(filter, keysForComparison),
@@ -188,7 +187,7 @@ export function findOrGenerateStubbedVariantOn(
   }
 }
 
-export function discoverContentTypesFor(mode: SupportedMode): SupportedContentType[] {
+export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourceDefinition): SupportedContentType[]  {
   const
       TEXT = SupportedContentType.TEXT,
       AUDIO = SupportedContentType.AUDIO,
@@ -203,5 +202,22 @@ export function discoverContentTypesFor(mode: SupportedMode): SupportedContentTy
     [SupportedMode.RICH_MESSAGING]: [TEXT, IMAGE, VIDEO], // social
   }
 
-  return defaultModeMappings[mode]
+  if (!resource || !resource.values.length) {
+    return defaultModeMappings[mode]
+  }
+  let contentTypeOverrides: {[key in SupportedMode]?: string[]} = {}
+  //TODO - think harder about this - what happens when a mode has a non standard content type - e.g. ivr on a log block
+  //What happens in a future localised resource world on things like LogBlock? Do we need a log resource value for every language?
+  contentTypeOverrides = resource.values.reduce((contentTypeOverrides, value) => {
+    value.modes.reduce((contentTypeOverrides, resourceMode) => {
+      if (!contentTypeOverrides[resourceMode]) {
+        contentTypeOverrides[resourceMode] = []
+      }
+      contentTypeOverrides[resourceMode]!.push(value.contentType)
+      return contentTypeOverrides
+    }, contentTypeOverrides)
+    return contentTypeOverrides
+  }, contentTypeOverrides)
+
+  return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]
 }
