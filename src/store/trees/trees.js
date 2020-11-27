@@ -68,6 +68,7 @@ export default {
     isFeatureTreeDuplicateEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeDuplicate'),
     isFeatureTreeViewVersionsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeViewVersions'),
     isFeatureTreeDuplicateOfEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeDuplicateOf'),
+    isResourceEditorEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'resourceEditor'),
     isFeatureUpdateInteractionTotalsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'updateInteractionTotals'),
     isFeatureAudioUploadEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'audioUpload'),
     isFeatureViewResultsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'viewResults'),
@@ -318,6 +319,18 @@ export default {
 		updateIsEditable({ui}, {value}) {
     	ui.isEditable = value
 		},
+
+    addEnabledFeature({ui}, {value}) {
+      if (ui.enabledFeatures.indexOf(value) < 0) {
+        ui.enabledFeatures.push(value);
+      }
+    },
+
+    removeEnabledFeature({ui}, {value}) {
+      if (ui.enabledFeatures.indexOf(value) > -1) {
+        ui.enabledFeatures = ui.enabledFeatures.filter((item) => item !== value)
+      }
+    },
 
 		setContentTypeEnabled({tree}, {contentType, isEnabled}) {
 			tree[`has${lodash.upperFirst(contentType)}`] = +isEnabled

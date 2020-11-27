@@ -30,15 +30,7 @@
             </router-link>
           </div>
 
-          <template v-if="ui.isEditableLocked">
-            <a v-if="isFeatureViewResultsEnabled"
-               :href="viewResultsUrl"
-               :title="trans('flow-builder.view-results')"
-               class="btn btn-default">
-              <span class="glyphicon glyphicon-signal"></span>
-            </a>
-          </template>
-          <a v-else
+          <a v-if="!ui.isEditableLocked"
              :href="editOrViewTreeJsUrl"
              :title="trans('flow-builder.click-to-toggle-editing')"
              class="btn btn-default"
@@ -46,15 +38,6 @@
              @click="attemptSaveTree">
             {{trans('flow-builder.edit-flow')}}
           </a>
-
-          <a v-if="!ui.isEditable && isFeatureTreeDuplicateEnabled"
-             :href="duplicateTreeLink"
-             class="btn btn-default"
-             :title="trans('flow-builder.duplicate-entire-flow')">
-            <span class="glyphicon glyphicon-tags"/>
-          </a>
-
-          <!--        <interaction-totals-date-range-configuration v-if="ui.isEditableLocked && isFeatureUpdateInteractionTotalsEnabled"/>-->
 
           <div v-if="ui.isEditable" class="btn-group">
             <button type="button"
@@ -153,6 +136,8 @@
             {{trans('flow-builder.delete')}}
           </button>
 
+          <slot name="extra-buttons"/>
+
           <div class="btn-group pull-right">
             <button v-if="ui.isEditable && isFeatureTreeSaveEnabled"
                     type="button"
@@ -162,23 +147,7 @@
                     @click="attemptSaveTree">
               {{saveButtonText}}
             </button>
-
-            <template v-if="isFeatureTreeSendEnabled">
-              <a v-if="can('edit-content')"
-                 :href="publishVersionUrl"
-                 class="btn btn-success"
-                 :disabled="isTreeSaving || !isTreeValid"
-                 :title="isTreeValid ? 'flow-builder.publish-this-version-of-the-flow' : 'flow-builder.fix-validation-errors-before-publishing' | trans">
-                {{'flow-builder.publish' | trans}}
-              </a>
-              <a v-if="can('send-outgoing-call')"
-                 :href="sendOutgoingCallUrl"
-                 class="btn btn-success tree-send-tree-call"
-                 :disabled="isTreeSaving || !isTreeValid"
-                 :title="trans('flow-builder.schedule-and-send-an-outgoing-call')">
-                {{trans('flow-builder.send')}}
-              </a>
-            </template>
+            <slot name="right-grouped-buttons"/>
           </div>
         </div>
       </div>
@@ -239,6 +208,7 @@
         'isFeatureTreeDuplicateEnabled',
         'isFeatureViewResultsEnabled',
         'isFeatureUpdateInteractionTotalsEnabled',
+        'isResourceEditorEnabled',
       ]),
 
       flow: {
@@ -259,10 +229,6 @@
                 ['platform_metadata', 'io_viamo']
             ))
         }
-      },
-
-      isResourceEditorEnabled() {
-        return false
       },
 
       jsKey() { // deprecate
