@@ -1,6 +1,6 @@
 {
   "name": "@floip/flow-builder",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "flow-builder provides an open source frontend for authoring flow interoperability project specification compliant flows.",
   "main": "./dist/flow-builder.common.js",
   "files": [
