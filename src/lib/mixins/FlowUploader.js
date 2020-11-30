@@ -1,4 +1,4 @@
-import Flow from '@flowjs/flow.js'; // todo: can we use this ? or need to upgrade php lib (voto5 legacy todo)
+import Flow from '@flowjs/flow.js';
 import lodash from 'lodash';
 
 export default {

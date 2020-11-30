@@ -27,7 +27,7 @@
                                         :enable-autogen-button="true || enableAutogenButton" />
 
           <div v-if="contentType === SupportedContentType.AUDIO">
-            <template v-if="!findAudioResourceVariantFor(resource, {languageId, contentType: contentType, modes: [mode]}).value">
+            <template v-if="!findAudioResourceVariantFor(resource, {languageId, contentType: contentType, modes: [mode]})">
               <upload-monitor :uploadKey="`${block.uuid}:${languageId}`" />
 
               <ul class="nav nav-tabs">
@@ -175,22 +175,21 @@ import {cloneDeep} from "lodash";
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resource.uuid,
         filter: {languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
-        value: `https://www.viamo.io/audiofiles/play/${filename}/${extension}`
+        value: filename,
       })
       event.target.blur() // remove the focus from the `upload` Tab
       this.pushAudioIntoLibrary(uploadedAudio)
     }
 
     findAudioResourceVariantFor(resource, filter) {
-      // TODO: what would be the correct implementation here, why not using findOrGenerateStubbedVariantOn( ) instead of creating findAudioResourceVariantFor
       try {
-        return findResourceVariantOverModesOn(resource, filter)
+        return findResourceVariantOverModesOn(resource, filter).value
       } catch (e) {
         if (!(e instanceof ValidationException)) {
           throw e
         }
 
-        return Object.assign(cloneDeep(filter), {value: ''})
+        return null
       }
     }
 
