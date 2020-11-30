@@ -32,7 +32,7 @@
 
               <ul class="nav nav-tabs">
                 <li class="active">
-                  <a @click.prevent="" href="#">{{'trees.library' | trans}}</a>
+                  <a @click.prevent="" href="#">{{'flow-builder.library' | trans}}</a>
                 </li>
 
                 <li>
@@ -45,7 +45,7 @@
                      @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
                      @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
                   >
-                    {{'trees.upload' | trans}}
+                    {{'flow-builder.upload' | trans}}
                   </a>
                 </li>
               </ul>
