@@ -175,7 +175,7 @@ import {cloneDeep} from "lodash";
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resource.uuid,
         filter: {languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
-        value: filename,
+        value: description,
       })
       event.target.blur() // remove the focus from the `upload` Tab
       this.pushAudioIntoLibrary(uploadedAudio)
