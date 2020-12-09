@@ -16,16 +16,23 @@
 </template>
 
 <script lang="ts">
-import '@/css/InteractionDesigner.css'
-import '@/css/voto3.css'
+  import '@/css/InteractionDesigner.css'
+  import '@/css/voto3.css'
 
-import Vue from 'vue'
-import {Component, Prop} from 'vue-property-decorator'
+  import Vue from 'vue'
+  import {Component, Prop} from 'vue-property-decorator'
 
-@Component({})
-export class FlowBuilderContainer extends Vue {
+  import {
+    Mutation,
+  } from 'vuex-class'
 
-}
+  @Component({})
+  export class FlowBuilderContainer extends Vue {
+    created() {
+      this.configure({appConfig: {}, builderConfig: {}});
+    }
+    @Mutation configure
+  }
 
-export default FlowBuilderContainer
+  export default FlowBuilderContainer
 </script>
