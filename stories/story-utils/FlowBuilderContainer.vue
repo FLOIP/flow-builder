@@ -22,16 +22,8 @@
   import Vue from 'vue'
   import {Component, Prop} from 'vue-property-decorator'
 
-  import {
-    Mutation,
-  } from 'vuex-class'
-
   @Component({})
   export class FlowBuilderContainer extends Vue {
-    created() {
-      this.configure({appConfig: {}, builderConfig: {}});
-    }
-    @Mutation configure
   }
 
   export default FlowBuilderContainer

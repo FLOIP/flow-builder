@@ -34,12 +34,14 @@ const BaseOptions = {
   template: ToolbarTemplate,
   store: new Vuex.Store<IRootState>(store),
   created() {
-      this.initializeTreeModel()
-  },
+    this.configure({appConfig: {}, builderConfig: {}});
+    this.initializeTreeModel()
+  }
 }
 class BaseMountedClass extends Vue {
   @Action initializeTreeModel: any
 
+  @Mutation configure
   @Mutation updateIsEditable: any
   @Mutation addEnabledFeature: any
   @Mutation removeEnabledFeature: any
