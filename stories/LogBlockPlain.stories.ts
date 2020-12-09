@@ -3,12 +3,12 @@ import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
 import {Component} from 'vue-property-decorator'
 
 import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock.vue'
-import PlainFlowBuilderBlockEditorContainer from '@/stories/story-utils/PlainFlowBuilderBlockEditorContainer.vue'
+import PlainFlowBuilderBlockEditorContainer from './story-utils/PlainFlowBuilderBlockEditorContainer.vue'
 
 import {IRootState, store} from '@/store'
 import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 
-import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
+import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
 
 Vue.use(Vuex)
 

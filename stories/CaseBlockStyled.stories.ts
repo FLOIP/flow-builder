@@ -3,12 +3,12 @@ import Vuex from 'vuex'
 import {Component} from 'vue-property-decorator'
 
 import CaseBlock from '@/components/interaction-designer/block-types/Core_CaseBlock.vue'
-import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 
-import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
+import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
 import {namespace} from "vuex-class";
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)

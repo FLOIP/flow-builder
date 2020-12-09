@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import OpenResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_OpenResponseBlock.vue'
-import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
+import NumericResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
-import openResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
+import numericResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
 import {SupportedMode, IFlow, SupportedContentType} from '@floip/flow-runner'
 import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
 
-import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from '@/stories/story-utils/storeSetup'
+import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import {get} from 'lodash'
@@ -21,43 +21,43 @@ const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 export default {
-  title: 'MobilePrimitives/Open Response Block',
+  title: 'MobilePrimitives/Numeric Response Block',
   // Our exports that end in "Data" are not stories.
   excludeStories: /.*Data$/,
 }
 
-const OpenResponseBlockTemplate = `
+const NumericResponseBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <open-response-block 
+    <numeric-response-block 
       :block="activeBlock" 
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
 
 const BaseOptions = {
-  components: {OpenResponseBlock, FlowBuilderSidebarEditorContainer},
-  template: OpenResponseBlockTemplate,
+  components: {NumericResponseBlock, FlowBuilderSidebarEditorContainer},
+  template: NumericResponseBlockTemplate,
 }
 
-// default open-response block state
+// default numeric-response block state
 @Component<any>(
     {
       ...BaseOptions,
       store: new Vuex.Store<IRootState>(store),
       async mounted() {
-        await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
+        await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
       },
     }
 )
 class CurrentClass1 extends BaseMountedVueClass {}
 export const Default = () => (CurrentClass1)
 
-//ExistingDataForAllModes
+// ExistingDataForAllModes
 @Component<any>({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
       languages: {
         0: {id: languageId}
@@ -67,8 +67,9 @@ export const Default = () => (CurrentClass1)
 
     this.setDescription(blockId)
     this.setResourceData(languageId, resourceId)
-    this.setMaxDurationSeconds(3*60)
-    this.setMaxResponseCharacters(160)
+    this.setValidationMinimum({blockId, value:0})
+    this.setValidationMaximum({blockId, value:99})
+    this.setMaxDigits({blockId, value:2})
   },
 })
 class CurrentClass2 extends BaseMountedVueClass {
@@ -105,8 +106,9 @@ class CurrentClass2 extends BaseMountedVueClass {
     this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
   }
 
-  @blockVuexNamespace.Action setMaxDurationSeconds:any
-  @blockVuexNamespace.Action setMaxResponseCharacters:any
+  @blockVuexNamespace.Action setValidationMinimum:any
+  @blockVuexNamespace.Action setValidationMaximum:any
+  @blockVuexNamespace.Action setMaxDigits:any
 
   @flowVuexNamespace.Mutation block_setName:any
   @flowVuexNamespace.Mutation block_setLabel:any
@@ -115,12 +117,12 @@ class CurrentClass2 extends BaseMountedVueClass {
 }
 export const ExistingDataForAllModes = () => (CurrentClass2)
 
-//ExistingDataForIvrOnly
+// ExistingDataForIvrOnly
 @Component<any>({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
       languages: {
         0: {id: languageId}
@@ -129,7 +131,9 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
     const resourceId = get(this.activeBlock, `config.prompt`, '')
 
     this.flow_setSupportedMode({flowId, value: SupportedMode.IVR})
-    this.setMaxDurationSeconds(3*60)
+    this.setValidationMinimum({blockId, value:0})
+    this.setValidationMaximum({blockId, value:99})
+    this.setMaxDigits({blockId, value:2})
     this.setDescription(blockId)
     this.setResourceData(languageId, resourceId)
   },
@@ -167,7 +171,9 @@ class CurrentClass3 extends BaseMountedVueClass {
     this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
   }
 
-  @blockVuexNamespace.Action setMaxDurationSeconds:any
+  @blockVuexNamespace.Action setValidationMinimum:any
+  @blockVuexNamespace.Action setValidationMaximum:any
+  @blockVuexNamespace.Action setMaxDigits:any
 
   @flowVuexNamespace.Mutation block_setName:any
   @flowVuexNamespace.Mutation block_setLabel:any
@@ -182,7 +188,7 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
       languages: {
         0: {id: languageId}
@@ -191,7 +197,8 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
     const resourceId = get(this.activeBlock, `config.prompt`, '')
 
     this.flow_setSupportedMode({flowId, value: [SupportedMode.SMS, SupportedMode.USSD]})
-    this.setMaxResponseCharacters(160)
+    this.setValidationMinimum({blockId, value:0})
+    this.setValidationMaximum({blockId, value:99})
     this.setDescription(blockId)
     this.setResourceData(languageId, resourceId)
   },
@@ -229,7 +236,8 @@ class CurrentClass4 extends BaseMountedVueClass {
     this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
   }
 
-  @blockVuexNamespace.Action setMaxResponseCharacters:any
+  @blockVuexNamespace.Action setValidationMinimum:any
+  @blockVuexNamespace.Action setValidationMaximum:any
 
   @flowVuexNamespace.Mutation block_setName:any
   @flowVuexNamespace.Mutation block_setLabel:any
@@ -245,7 +253,7 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
       ...BaseOptions,
       store: new Vuex.Store<IRootState>(store),
       async mounted() {
-        const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
+        const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
 
         this.block_setName({blockId: blockId, value: "A Name"})
         this.block_setLabel({blockId: blockId, value: "A Label"})

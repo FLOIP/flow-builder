@@ -3,7 +3,7 @@ import Vue from 'vue'
 import {
     Action, Mutation
 } from 'vuex-class'
-import FlowBuilderContainer from "@/stories/story-utils/FlowBuilderContainer.vue";
+import FlowBuilderContainer from "./story-utils/FlowBuilderContainer.vue";
 import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
 import TreeBuilderToolbar from "@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue";
