@@ -947,6 +947,783 @@ module.exports.f = function getOwnPropertyNames(it) {
 
 /***/ }),
 
+/***/ "0613":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ store_store; });
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
+var objectSpread2 = __webpack_require__("5530");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.filter.js
+var es_array_filter = __webpack_require__("4de4");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
+var es_function_name = __webpack_require__("b0c0");
+
+// EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
+var runtime = __webpack_require__("96cf");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
+var asyncToGenerator = __webpack_require__("1da1");
+
+// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/index.js
+var dist = __webpack_require__("9300");
+
+// EXTERNAL MODULE: ./node_modules/lodash/lodash.js
+var lodash = __webpack_require__("2ef0");
+
+// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
+var IdGeneratorUuidV4 = __webpack_require__("31aa");
+var IdGeneratorUuidV4_default = /*#__PURE__*/__webpack_require__.n(IdGeneratorUuidV4);
+
+// EXTERNAL MODULE: ./src/store/flow/utils/listBuilder.ts
+var listBuilder = __webpack_require__("b199");
+
+// CONCATENATED MODULE: ./src/store/flow/block.ts
+
+
+
+
+
+
+
+
+
+var block_getters = {// todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
+  //       the interesting bit is that resources are _all_ resources... so we could follow suit here? :shrug:
+  // blocksByUuid: ({flows}) => map(resources, 'uuid')
+};
+var mutations = {
+  block_popFirstExitWithoutTest: function block_popFirstExitWithoutTest(state, _ref) {
+    var blockId = _ref.blockId;
+    //TODO - this shouldn't be necessary
+    // @ts-ignore - TS2339: Property 'flow' does not exist on type
+    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, this.state.flow);
+    block.exits = Object(listBuilder["b" /* popFirstEmptyItem */])(block.exits, "test");
+  },
+  block_popExitsByLabel: function block_popExitsByLabel(state, _ref2) {
+    var blockId = _ref2.blockId,
+        exitLabel = _ref2.exitLabel;
+    //TODO - this shouldn't be necessary
+    // @ts-ignore - TS2339: Property 'flow' does not exist on type
+    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, this.state.flow);
+    block.exits = block.exits.filter(function (item) {
+      return item.label !== exitLabel;
+    });
+  },
+  block_setName: function block_setName(state, _ref3) {
+    var blockId = _ref3.blockId,
+        value = _ref3.value;
+    Object(dist["findBlockOnActiveFlowWith"])(blockId, state).name = value;
+  },
+  block_setLabel: function block_setLabel(state, _ref4) {
+    var blockId = _ref4.blockId,
+        value = _ref4.value;
+    Object(dist["findBlockOnActiveFlowWith"])(blockId, state).label = value;
+  },
+  block_setSemanticLabel: function block_setSemanticLabel(state, _ref5) {
+    var blockId = _ref5.blockId,
+        value = _ref5.value;
+    Object(dist["findBlockOnActiveFlowWith"])(blockId, state).semanticLabel = value;
+  },
+  block_setExitTag: function block_setExitTag(state, _ref6) {
+    var exitId = _ref6.exitId,
+        blockId = _ref6.blockId,
+        value = _ref6.value;
+    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, state);
+    Object(dist["findBlockExitWith"])(exitId, block).tag = value;
+  },
+  block_setExitTest: function block_setExitTest(state, _ref7) {
+    var exitId = _ref7.exitId,
+        blockId = _ref7.blockId,
+        value = _ref7.value;
+    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, state);
+    Object(dist["findBlockExitWith"])(exitId, block).test = value;
+  },
+  block_pushNewExit: function block_pushNewExit(state, _ref8) {
+    var blockId = _ref8.blockId,
+        newExit = _ref8.newExit;
+    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, state);
+    block.exits.push(newExit);
+  },
+  block_updateConfig: function block_updateConfig(state, _ref9) {
+    var blockId = _ref9.blockId,
+        newConfig = _ref9.newConfig;
+    Object(dist["findBlockOnActiveFlowWith"])(blockId, state).config = newConfig;
+  },
+  block_updateConfigByKey: function block_updateConfigByKey(state, _ref10) {
+    var blockId = _ref10.blockId,
+        key = _ref10.key,
+        value = _ref10.value;
+    var currentConfig = Object(dist["findBlockOnActiveFlowWith"])(blockId, state).config;
+    currentConfig[key] = value;
+    Object(dist["findBlockOnActiveFlowWith"])(blockId, state).config = Object(objectSpread2["a" /* default */])({}, currentConfig);
+  },
+  block_setBlockExitDestinationBlockId: function block_setBlockExitDestinationBlockId(state, _ref11) {
+    var blockId = _ref11.blockId,
+        exitId = _ref11.exitId,
+        destinationBlockId = _ref11.destinationBlockId;
+    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, state);
+    Object(dist["findBlockExitWith"])(exitId, block).destinationBlock = destinationBlockId;
+  }
+};
+var actions = {
+  block_createBlockDefaultExitWith: function block_createBlockDefaultExitWith(_ref12, _ref13) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var dispatch, commit, state, props;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              dispatch = _ref12.dispatch, commit = _ref12.commit, state = _ref12.state;
+              props = _ref13.props;
+              _context.next = 4;
+              return dispatch('block_createBlockExitWith', {
+                props: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, props), {}, {
+                  default: true
+                })
+              });
+
+            case 4:
+              return _context.abrupt("return", _context.sent);
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  block_createBlockExitWith: function block_createBlockExitWith(_ref14, _ref15) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var dispatch, commit, state, props, resource;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              dispatch = _ref14.dispatch, commit = _ref14.commit, state = _ref14.state;
+              props = _ref15.props;
+              _context2.next = 4;
+              return dispatch('resource_createWith', {
+                props: {
+                  uuid: new IdGeneratorUuidV4_default.a().generate()
+                }
+              });
+
+            case 4:
+              resource = _context2.sent;
+              commit('resource_add', {
+                resource: resource
+              });
+              return _context2.abrupt("return", Object(objectSpread2["a" /* default */])({}, Object(lodash["defaults"])(props, {
+                label: resource.uuid,
+                tag: '',
+                config: {},
+                destinationBlock: undefined
+              })));
+
+            case 7:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  },
+  block_updateBlockExitWith: function block_updateBlockExitWith(_ref16, _ref17) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      var dispatch, commit, state, blockId, exitId, _ref17$props, test, tag;
+
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              dispatch = _ref16.dispatch, commit = _ref16.commit, state = _ref16.state;
+              blockId = _ref17.blockId, exitId = _ref17.exitId, _ref17$props = _ref17.props, test = _ref17$props.test, tag = _ref17$props.tag;
+              //TODO - handle other props apart from test
+              commit('block_setExitTag', {
+                blockId: blockId,
+                exitId: exitId,
+                value: tag
+              });
+              commit('block_setExitTest', {
+                blockId: blockId,
+                exitId: exitId,
+                value: test
+              });
+
+            case 4:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
+  },
+  block_swapBlockExitDestinationBlockIds: function block_swapBlockExitDestinationBlockIds(_ref18, _ref19) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+      var commit, state, first, second, firstBlock, secondBlock, _findBlockExitWith, firstDestinationBlockId, _findBlockExitWith2, secondDestinationBlockId;
+
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              commit = _ref18.commit, state = _ref18.state;
+              first = _ref19.first, second = _ref19.second;
+
+              if (!(!first || !second)) {
+                _context4.next = 4;
+                break;
+              }
+
+              throw new dist["ValidationException"]("Unable to swap destinationBlockId on null: ".concat(JSON.stringify({
+                first: first,
+                second: second
+              })));
+
+            case 4:
+              firstBlock = Object(dist["findBlockOnActiveFlowWith"])(first.blockId, state);
+              secondBlock = Object(dist["findBlockOnActiveFlowWith"])(second.blockId, state);
+              _findBlockExitWith = Object(dist["findBlockExitWith"])(first.exitId, firstBlock), firstDestinationBlockId = _findBlockExitWith.destinationBlock;
+              _findBlockExitWith2 = Object(dist["findBlockExitWith"])(second.exitId, secondBlock), secondDestinationBlockId = _findBlockExitWith2.destinationBlock; // todo: this works only when the exit we're targetting is empty
+              // todo: blah --- a repaint from HMR redraws it correctly -- why?!
+              // todo: blah --- a repaint from HMR also draws an additional exit :( Is there a cache break on connection key we need to leverage here?
+
+              commit('block_setBlockExitDestinationBlockId', {
+                blockId: second.blockId,
+                exitId: second.exitId,
+                destinationBlockId: firstDestinationBlockId
+              });
+              commit('block_setBlockExitDestinationBlockId', {
+                blockId: first.blockId,
+                exitId: first.exitId,
+                destinationBlockId: secondDestinationBlockId
+              });
+
+            case 10:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }))();
+  }
+};
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.for-each.js
+var es_array_for_each = __webpack_require__("4160");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.index-of.js
+var es_array_index_of = __webpack_require__("c975");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.reduce.js
+var es_array_reduce = __webpack_require__("13d5");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.some.js
+var es_array_some = __webpack_require__("45fc");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.splice.js
+var es_array_splice = __webpack_require__("a434");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.values.js
+var es_object_values = __webpack_require__("07ac");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.for-each.js
+var web_dom_collections_for_each = __webpack_require__("159b");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.js
+var es_symbol = __webpack_require__("a4d3");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.keys.js
+var es_object_keys = __webpack_require__("b64b");
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
+
+
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js
+
+
+
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = _objectWithoutPropertiesLoose(source, excluded);
+  var key, i;
+
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+
+  return target;
+}
+// EXTERNAL MODULE: external {"commonjs":"vue","commonjs2":"vue","root":"Vue"}
+var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
+var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
+
+// EXTERNAL MODULE: ./node_modules/moment/moment.js
+var moment = __webpack_require__("c1df");
+var moment_default = /*#__PURE__*/__webpack_require__.n(moment);
+
+// EXTERNAL MODULE: ./src/store/flow/resource.ts + 1 modules
+var flow_resource = __webpack_require__("393e");
+
+// CONCATENATED MODULE: ./src/store/flow/flow.ts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var flow_getters = {
+  activeFlow: function activeFlow(state) {
+    return state.flows.length && Object(dist["getActiveFlowFrom"])(state);
+  },
+  hasTextMode: function hasTextMode(state, getters) {
+    return [dist["SupportedMode"].USSD, dist["SupportedMode"].SMS].some(function (mode) {
+      return Object(lodash["includes"])(getters.activeFlow.supportedModes || [], mode);
+    });
+  },
+  hasVoiceMode: function hasVoiceMode(state, getters) {
+    return Object(lodash["includes"])(getters.activeFlow.supportedModes || [], dist["SupportedMode"].IVR);
+  }
+};
+var flow_mutations = {
+  flow_addBlock: function flow_addBlock(state, _ref) {
+    var flowId = _ref.flowId,
+        block = _ref.block;
+
+    if (block == null) {
+      throw new dist["ValidationException"]('Unable to add null block to flow');
+    }
+
+    var flow = Object(dist["findFlowWith"])(flowId || state.firstFlowId || '', state);
+    var length = flow.blocks.push(block);
+
+    if (length === 1) {
+      flow.firstBlockId = block.uuid;
+    }
+  },
+  flow_removeBlock: function flow_removeBlock(state, _ref2) {
+    var flowId = _ref2.flowId,
+        blockId = _ref2.blockId;
+    var flow = Object(dist["findFlowWith"])(flowId || state.firstFlowId || '', state);
+    var block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
+
+    if (block == null) {
+      throw new dist["ValidationException"]('Unable to delete block absent from flow');
+    }
+
+    var blocks = flow.blocks;
+    blocks.splice(blocks.indexOf(block), 1); // clean up stale references
+    // 1. flow.firstBlockId
+    // 2. flow.exitBlockId
+    // 3. flow.blocks.*.exits.*.destinationBlock
+    // 4. activeBlockId (we should likely trail a ghost of previous selection and select that one next)
+    // todo: convert this whole operation to an ActionTree member
+    // todo: use mutations for these:
+
+    if (flow.firstBlockId === blockId) {
+      flow.firstBlockId = ''; // todo: make this optional for builder
+    }
+
+    if (flow.exitBlockId === blockId) {
+      flow.exitBlockId = undefined;
+    }
+
+    Object(lodash["forEach"])(blocks, function (_ref3) {
+      var exits = _ref3.exits;
+      var exitsTowardUs = exits.filter(function (e) {
+        return e.destinationBlock === blockId;
+      });
+      Object(lodash["forEach"])(exitsTowardUs, function (e) {
+        return e.destinationBlock = undefined;
+      });
+    });
+    this.state.builder.activeBlockId = null;
+  },
+  flow_setExitBlockId: function flow_setExitBlockId(state, _ref4) {
+    var flowId = _ref4.flowId,
+        blockId = _ref4.blockId;
+    var flow = Object(dist["findFlowWith"])(flowId, state);
+    var block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
+
+    flow.exitBlockId = block.uuid;
+  },
+  flow_setFirstBlockId: function flow_setFirstBlockId(state, _ref5) {
+    var flowId = _ref5.flowId,
+        blockId = _ref5.blockId;
+    var flow = Object(dist["findFlowWith"])(flowId, state);
+    var block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
+
+    external_commonjs_vue_commonjs2_vue_root_Vue_default.a.set(flow, 'firstBlockId', block.uuid);
+  },
+  flow_setName: function flow_setName(state, _ref6) {
+    var flowId = _ref6.flowId,
+        value = _ref6.value;
+    Object(dist["findFlowWith"])(flowId, state).name = value;
+  },
+  flow_setLabel: function flow_setLabel(state, _ref7) {
+    var flowId = _ref7.flowId,
+        value = _ref7.value;
+    Object(dist["findFlowWith"])(flowId, state).label = value;
+  },
+  flow_setInteractionTimeout: function flow_setInteractionTimeout(state, _ref8) {
+    var flowId = _ref8.flowId,
+        value = _ref8.value;
+    Object(dist["findFlowWith"])(flowId, state).interactionTimeout = value;
+  },
+  flow_setSupportedMode: function flow_setSupportedMode(state, _ref9) {
+    var flowId = _ref9.flowId,
+        value = _ref9.value;
+    var flow = Object(dist["findFlowWith"])(flowId, state);
+    flow.supportedModes = Array.isArray(value) ? value : [value];
+  },
+  flow_setLanguages: function flow_setLanguages(state, _ref10) {
+    var flowId = _ref10.flowId,
+        value = _ref10.value;
+    var flow = Object(dist["findFlowWith"])(flowId, state);
+    flow.languages = Array.isArray(value) ? value : [value];
+  }
+};
+var flow_actions = {
+  // todo: this `flow_` prefix doesn't follow suit
+  //       because it's actually a method on the root state // IContext-ish type
+  //       (same as mutation: `flow_activateBlock` and `flow_add`
+  flow_addBlankFlow: function flow_addBlankFlow(_ref11) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var dispatch, commit, state, flow;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              dispatch = _ref11.dispatch, commit = _ref11.commit, state = _ref11.state;
+              _context.next = 3;
+              return dispatch('flow_createWith', {
+                props: {
+                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate()
+                }
+              });
+
+            case 3:
+              flow = _context.sent;
+              _context.next = 6;
+              return dispatch('flow_add', {
+                flow: flow
+              });
+
+            case 6:
+              return _context.abrupt("return", _context.sent);
+
+            case 7:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  flow_add: function flow_add(_ref12, _ref13) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var state, flow, length;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              state = _ref12.state;
+              flow = _ref13.flow;
+              length = state.flows.push(flow); // mutating here, because we need to define a root-level scope for this type of action
+
+              if (length === 1) {
+                state.firstFlowId = flow.uuid;
+              }
+
+              return _context2.abrupt("return", flow);
+
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  },
+  flow_addBlankBlockByType: function flow_addBlankBlockByType(_ref14, _ref15) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      var commit, dispatch, state, type, props, block;
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              commit = _ref14.commit, dispatch = _ref14.dispatch, state = _ref14.state;
+              type = _ref15.type, props = _objectWithoutProperties(_ref15, ["type"]);
+              _context3.next = 4;
+              return dispatch("flow/".concat(type, "/createWith"), {
+                props: Object(objectSpread2["a" /* default */])({
+                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate()
+                }, props)
+              }, {
+                root: true
+              });
+
+            case 4:
+              block = _context3.sent;
+              Object(lodash["defaults"])(block, {
+                label: undefined,
+                semanticLabel: undefined
+              });
+              commit('flow_addBlock', {
+                block: block
+              });
+              return _context3.abrupt("return", block);
+
+            case 8:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
+  },
+  flow_addBlankResource: function flow_addBlankResource(_ref16) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+      var dispatch, commit, resource;
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              dispatch = _ref16.dispatch, commit = _ref16.commit;
+              _context4.next = 3;
+              return dispatch('resource_createWith', {
+                props: {
+                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate()
+                }
+              });
+
+            case 3:
+              resource = _context4.sent;
+              commit('resource_add', {
+                resource: resource
+              });
+              return _context4.abrupt("return", resource);
+
+            case 6:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }))();
+  },
+  flow_addBlankResourceForEnabledModesAndLangs: function flow_addBlankResourceForEnabledModesAndLangs(_ref17) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+      var getters, dispatch, commit, values, blankResource;
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              getters = _ref17.getters, dispatch = _ref17.dispatch, commit = _ref17.commit;
+              //TODO - figure out of there should only be one value here at first? How would the resource editor change this?
+              //TODO - is this right for setup of languages?
+              //TODO - How will we add more blank values as supported languages are changed in the flow? We should probably also do this for modes rather than doing all possible modes here.
+              values = getters['activeFlow'].languages.reduce(function (memo, language) {
+                //Let's just create all the modes. We might need them but if they are switched off they just don't get used
+                Object.values(dist["SupportedMode"]).forEach(function (mode) {
+                  memo.push({
+                    languageId: language.id,
+                    value: '',
+                    contentType: Object(flow_resource["b" /* discoverContentTypesFor */])(mode),
+                    modes: [mode]
+                  });
+                });
+                return memo;
+              }, []);
+              _context5.next = 4;
+              return dispatch('resource_createWith', {
+                props: {
+                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate(),
+                  values: values
+                }
+              });
+
+            case 4:
+              blankResource = _context5.sent;
+              commit('resource_add', {
+                resource: blankResource
+              });
+              return _context5.abrupt("return", blankResource);
+
+            case 7:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5);
+    }))();
+  },
+  flow_createWith: function flow_createWith(_ref18, _ref19) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+      var dispatch, commit, state, props;
+      return regeneratorRuntime.wrap(function _callee6$(_context6) {
+        while (1) {
+          switch (_context6.prev = _context6.next) {
+            case 0:
+              dispatch = _ref18.dispatch, commit = _ref18.commit, state = _ref18.state;
+              props = _ref19.props;
+              return _context6.abrupt("return", Object(objectSpread2["a" /* default */])({}, Object(lodash["defaults"])(props, {
+                orgId: '',
+                name: '',
+                label: '',
+                lastModified: moment_default()().format('c'),
+                interactionTimeout: 30,
+                platformMetadata: {},
+                supportedModes: DEFAULT_MODES,
+                languages: [],
+                blocks: [],
+                firstBlockId: ''
+              })));
+
+            case 3:
+            case "end":
+              return _context6.stop();
+          }
+        }
+      }, _callee6);
+    }))();
+  },
+  flow_duplicateBlock: function flow_duplicateBlock(_ref20, _ref21) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
+      var dispatch, commit, state, flowId, blockId, flow, block, duplicatedBlock;
+      return regeneratorRuntime.wrap(function _callee7$(_context7) {
+        while (1) {
+          switch (_context7.prev = _context7.next) {
+            case 0:
+              dispatch = _ref20.dispatch, commit = _ref20.commit, state = _ref20.state;
+              flowId = _ref21.flowId, blockId = _ref21.blockId;
+              flow = Object(dist["findFlowWith"])(flowId || state.firstFlowId || '', state);
+              block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
+              // Deep clone
+
+              duplicatedBlock = Object(lodash["cloneDeep"])(block); // Set UUIDs, and remove non relevant props
+
+              duplicatedBlock.uuid = new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
+              duplicatedBlock.exits.forEach(function myFunction(item, index, arr) {
+                item.uuid = new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
+                delete item.destinationBlock;
+              });
+
+              if (Object(lodash["has"])(duplicatedBlock.config, 'prompt')) {
+                // @ts-ignore
+                duplicatedBlock.config.prompt = new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
+              } // Set UI positions
+              // TODO - type checking - remove this and resolve the error
+              //@ts-ignore
+
+
+              duplicatedBlock.platform_metadata = {
+                io_viamo: {
+                  uiData: {
+                    xPosition: Object(lodash["get"])(block, 'platform_metadata.io_viamo.uiData.xPosition', 50) + 80,
+                    yPosition: Object(lodash["get"])(block, 'platform_metadata.io_viamo.uiData.yPosition', 50) + 80
+                  }
+                }
+              };
+              commit('flow_addBlock', {
+                block: duplicatedBlock
+              });
+              return _context7.abrupt("return", duplicatedBlock);
+
+            case 11:
+            case "end":
+              return _context7.stop();
+          }
+        }
+      }, _callee7);
+    }))();
+  }
+};
+var DEFAULT_MODES = [dist["SupportedMode"].SMS, dist["SupportedMode"].USSD, dist["SupportedMode"].IVR];
+// CONCATENATED MODULE: ./src/store/flow/index.ts
+
+
+
+
+var stateFactory = function stateFactory() {
+  return {
+    flows: [],
+    resources: [],
+    firstFlowId: null,
+    nestedFlowBlockInteractionIdStack: []
+  };
+};
+var store_flow_getters = Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, flow_getters), block_getters), flow_resource["d" /* getters */]);
+var store_flow_mutations = Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, flow_mutations), mutations), flow_resource["e" /* mutations */]);
+var store_flow_actions = Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, flow_actions), actions), flow_resource["a" /* actions */]);
+var store = {
+  namespaced: true,
+  state: stateFactory,
+  getters: store_flow_getters,
+  mutations: store_flow_mutations,
+  actions: store_flow_actions
+};
+/* harmony default export */ var store_flow = (store);
+// EXTERNAL MODULE: ./src/store/builder/index.ts + 6 modules
+var builder = __webpack_require__("af98");
+
+// EXTERNAL MODULE: ./src/store/trees/trees.js
+var trees = __webpack_require__("8b8d");
+
+// CONCATENATED MODULE: ./src/store/index.ts
+
+
+
+var store_store = {
+  modules: {
+    builder: builder["d" /* store */],
+    flow: store,
+    trees: trees["a" /* default */]
+  }
+};
+/* harmony default export */ var src_store = (store_store);
+
+/***/ }),
+
 /***/ "0621":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17250,6 +18027,9 @@ module.exports = function (it) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _asyncToGenerator; });
 /* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("d3b7");
 /* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("e6cf");
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__);
+
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -20084,6 +20864,9 @@ var es_symbol_description = __webpack_require__("e01a");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.iterator.js
 var es_symbol_iterator = __webpack_require__("d28b");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
+var es_array_iterator = __webpack_require__("e260");
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
 var es_object_to_string = __webpack_require__("d3b7");
 
@@ -20094,6 +20877,7 @@ var es_string_iterator = __webpack_require__("3ca3");
 var web_dom_collections_iterator = __webpack_require__("ddb0");
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
+
 
 
 
@@ -20376,11 +21160,15 @@ __webpack_require__("7db0");
 
 __webpack_require__("4160");
 
+__webpack_require__("e260");
+
 __webpack_require__("d81d");
 
 __webpack_require__("13d5");
 
 __webpack_require__("fb6a");
+
+__webpack_require__("cca6");
 
 __webpack_require__("d3b7");
 
@@ -21652,7 +22440,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/FlowEditor.vue?vue&type=template&id=427f7bb2&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/FlowEditor.vue?vue&type=template&id=427f7bb2&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-flow'))+" ")]),_c('flow-name-editor',{attrs:{"flow":_vm.flow}}),_c('flow-label-editor',{attrs:{"flow":_vm.flow}}),_c('flow-interaction-timeout-editor',{attrs:{"flow":_vm.flow}}),_c('flow-languages-editor',{attrs:{"flow":_vm.flow},on:{"commitFlowLanguagesChange":_vm.updateFlowLanguages}}),_c('flow-modes-editor',{attrs:{"flow":_vm.flow},on:{"commitFlowModesChange":_vm.updateFlowModes}})],1)}
 var staticRenderFns = []
 
@@ -21681,7 +22469,7 @@ var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpac
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/vue-property-decorator.js
 var vue_property_decorator = __webpack_require__("60a3");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/NameEditor.vue?vue&type=template&id=a9aa38fa&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/NameEditor.vue?vue&type=template&id=a9aa38fa&
 var NameEditorvue_type_template_id_a9aa38fa_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-label"},[_c('text-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.flow-name'),"placeholder":_vm._f("trans")('flow-builder.enter-flow-name')},model:{value:(_vm.name),callback:function ($$v) {_vm.name=$$v},expression:"name"}})],1)}
 var NameEditorvue_type_template_id_a9aa38fa_staticRenderFns = []
 
@@ -21781,7 +22569,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var NameEditor = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/LabelEditor.vue?vue&type=template&id=63d28d50&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/LabelEditor.vue?vue&type=template&id=63d28d50&
 var LabelEditorvue_type_template_id_63d28d50_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-name"},[_c('text-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.flow-label'),"placeholder":_vm._f("trans")('flow-builder.enter-flow-label')},model:{value:(_vm.label),callback:function ($$v) {_vm.label=$$v},expression:"label"}})],1)}
 var LabelEditorvue_type_template_id_63d28d50_staticRenderFns = []
 
@@ -21865,7 +22653,7 @@ var LabelEditor_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var LabelEditor = (LabelEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue?vue&type=template&id=377db45f&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue?vue&type=template&id=377db45f&
 var InteractionTimeoutEditorvue_type_template_id_377db45f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-interaction-timeout"},[_c('numeric-editor',{attrs:{"is-editable":_vm.isEditable,"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.Interaction-timeout'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.interactionTimeout),callback:function ($$v) {_vm.interactionTimeout=_vm._n($$v)},expression:"interactionTimeout"}})],1)}
 var InteractionTimeoutEditorvue_type_template_id_377db45f_staticRenderFns = []
 
@@ -21953,7 +22741,7 @@ var InteractionTimeoutEditor_component = Object(componentNormalizer["a" /* defau
 )
 
 /* harmony default export */ var flow_editors_InteractionTimeoutEditor = (InteractionTimeoutEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/LanguagesEditor.vue?vue&type=template&id=5041fc1c&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/LanguagesEditor.vue?vue&type=template&id=5041fc1c&
 var LanguagesEditorvue_type_template_id_5041fc1c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-languages"},[_c('label',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.languages')))]),_vm._l((_vm.languages),function(language){return _c('div',{key:language.id,staticClass:"checkbox"},[_c('label',[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.flowSelectedLanguages),expression:"flowSelectedLanguages"}],staticClass:"flow-language-toggle-checkbox",attrs:{"type":"checkbox"},domProps:{"value":language,"checked":Array.isArray(_vm.flowSelectedLanguages)?_vm._i(_vm.flowSelectedLanguages,language)>-1:(_vm.flowSelectedLanguages)},on:{"change":function($event){var $$a=_vm.flowSelectedLanguages,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=language,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.flowSelectedLanguages=$$a.concat([$$v]))}else{$$i>-1&&(_vm.flowSelectedLanguages=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.flowSelectedLanguages=$$c}}}}),_vm._v(" "+_vm._s(language.name)+" ")])])})],2)}
 var LanguagesEditorvue_type_template_id_5041fc1c_staticRenderFns = []
 
@@ -22035,7 +22823,7 @@ var LanguagesEditor_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var flow_editors_LanguagesEditor = (LanguagesEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/ModesEditor.vue?vue&type=template&id=eec9a104&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/ModesEditor.vue?vue&type=template&id=eec9a104&
 var ModesEditorvue_type_template_id_eec9a104_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-modes"},[_c('label',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.modes')))]),_vm._l((_vm.availableModes),function(mode){return _c('div',{key:mode,staticClass:"checkbox"},[_c('label',[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.flowSelectedModes),expression:"flowSelectedModes"}],staticClass:"flow-mode-toggle-checkbox",attrs:{"type":"checkbox"},domProps:{"value":mode,"checked":Array.isArray(_vm.flowSelectedModes)?_vm._i(_vm.flowSelectedModes,mode)>-1:(_vm.flowSelectedModes)},on:{"change":function($event){var $$a=_vm.flowSelectedModes,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=mode,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.flowSelectedModes=$$a.concat([$$v]))}else{$$i>-1&&(_vm.flowSelectedModes=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.flowSelectedModes=$$c}}}}),_vm._v(" "+_vm._s(mode)+" ")])])})],2)}
 var ModesEditorvue_type_template_id_eec9a104_staticRenderFns = []
 
@@ -39961,7 +40749,7 @@ exports.convertComplexFindOperationToMongoFormat = convertComplexFindOperationTo
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/NumericEditor.vue?vue&type=template&id=058cdf05&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/NumericEditor.vue?vue&type=template&id=058cdf05&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"number-editor"},[_c('label',[_vm._v(_vm._s(_vm.label))]),(_vm.isEditable)?_c('div',[_c('input',{staticClass:"form-control",attrs:{"type":"number","min":"0","placeholder":_vm.placeholder},domProps:{"value":_vm.value},on:{"keypress":_vm.filterNumeric,"keydown":function($event){return _vm.$emit('keydown', $event)},"input":function($event){return _vm.$emit('input', $event.target.value)}}})]):_c('p',[_vm._v(" "+_vm._s(_vm.value)+" ")]),_vm._t("default")],2)}
 var staticRenderFns = []
 
@@ -42717,6 +43505,9 @@ var es_array_filter = __webpack_require__("4de4");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
 var es_array_iterator = __webpack_require__("e260");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.reduce.js
+var es_array_reduce = __webpack_require__("13d5");
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.splice.js
 var es_array_splice = __webpack_require__("a434");
 
@@ -42805,6 +43596,7 @@ var ValidationException_ValidationException = /*#__PURE__*/function (_Error) {
 var lodash = __webpack_require__("2ef0");
 
 // CONCATENATED MODULE: ./src/store/flow/resource.ts
+
 
 
 
@@ -43011,7 +43803,7 @@ function findOrGenerateStubbedVariantOn(resource, filter) {
     });
   }
 }
-function discoverContentTypesFor(mode) {
+function discoverContentTypesFor(mode, resource) {
   var _defaultModeMappings;
 
   var TEXT = dist["SupportedContentType"].TEXT,
@@ -43019,7 +43811,26 @@ function discoverContentTypesFor(mode) {
       IMAGE = dist["SupportedContentType"].IMAGE,
       VIDEO = dist["SupportedContentType"].VIDEO;
   var defaultModeMappings = (_defaultModeMappings = {}, Object(defineProperty["a" /* default */])(_defaultModeMappings, dist["SupportedMode"].IVR, [AUDIO]), Object(defineProperty["a" /* default */])(_defaultModeMappings, dist["SupportedMode"].SMS, [TEXT]), Object(defineProperty["a" /* default */])(_defaultModeMappings, dist["SupportedMode"].USSD, [TEXT]), Object(defineProperty["a" /* default */])(_defaultModeMappings, dist["SupportedMode"].OFFLINE, [TEXT, IMAGE, VIDEO]), Object(defineProperty["a" /* default */])(_defaultModeMappings, dist["SupportedMode"].RICH_MESSAGING, [TEXT, IMAGE, VIDEO]), _defaultModeMappings);
-  return defaultModeMappings[mode];
+
+  if (!resource || !resource.values.length) {
+    return defaultModeMappings[mode];
+  }
+
+  var contentTypeOverrides = {}; //TODO - think harder about this - what happens when a mode has a non standard content type - e.g. ivr on a log block
+  //What happens in a future localised resource world on things like LogBlock? Do we need a log resource value for every language?
+
+  contentTypeOverrides = resource.values.reduce(function (contentTypeOverrides, value) {
+    value.modes.reduce(function (contentTypeOverrides, resourceMode) {
+      if (!contentTypeOverrides[resourceMode]) {
+        contentTypeOverrides[resourceMode] = [];
+      }
+
+      contentTypeOverrides[resourceMode].push(value.contentType);
+      return contentTypeOverrides;
+    }, contentTypeOverrides);
+    return contentTypeOverrides;
+  }, contentTypeOverrides);
+  return Object.assign(defaultModeMappings, contentTypeOverrides)[mode];
 }
 
 /***/ }),
@@ -50022,25 +50833,6 @@ exports.$retarget = $retarget;
 
 /***/ }),
 
-/***/ "5b26":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _trees__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("8b8d");
-// import audio from './audio'
-// import multimediaUpload from './multimediaUpload'
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  modules: {
-    // audio,
-    // multimediaUpload,
-    trees: _trees__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"] // actions isolated to vuej app
-
-  }
-});
-
-/***/ }),
-
 /***/ "5c3a":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53472,6 +54264,8 @@ __webpack_require__("e01a");
 
 __webpack_require__("d28b");
 
+__webpack_require__("e260");
+
 __webpack_require__("d3b7");
 
 __webpack_require__("3ca3");
@@ -54404,12 +55198,10 @@ module.exports = [
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("8bbf");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_12__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__("2f62");
-/* harmony import */ var _store_trees__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__("5b26");
-/* harmony import */ var _store_flow__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__("9f11");
-/* harmony import */ var _store_builder__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__("af98");
-/* harmony import */ var _components_interaction_designer_toolbar_TreeBuilderToolbar_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__("f857");
-/* harmony import */ var _components_interaction_designer_flow_editors_FlowEditor_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__("2d9e");
-/* harmony import */ var _components_interaction_designer_BuilderCanvas__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__("c42d");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__("0613");
+/* harmony import */ var _components_interaction_designer_toolbar_TreeBuilderToolbar_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__("f857");
+/* harmony import */ var _components_interaction_designer_flow_editors_FlowEditor_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__("2d9e");
+/* harmony import */ var _components_interaction_designer_BuilderCanvas__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__("c42d");
 
 
 
@@ -54473,9 +55265,6 @@ module.exports = [
 // import * as BlockTypes from './block-types'
 // import JsPlumbBlock from './JsPlumbBlock'
 
- // needs to be registered separately because it doesn't currently support namespacing
-
-
  // import TreeEditor from './TreeEditor'
 // import TreeViewer from './TreeViewer'
 // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
@@ -54513,9 +55302,9 @@ module.exports = [
     // JsPlumbBlock,
     // TreeEditor,
     // TreeViewer,
-    TreeBuilderToolbar: _components_interaction_designer_toolbar_TreeBuilderToolbar_vue__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"],
-    BuilderCanvas: _components_interaction_designer_BuilderCanvas__WEBPACK_IMPORTED_MODULE_19__[/* BuilderCanvas */ "a"],
-    FlowEditor: _components_interaction_designer_flow_editors_FlowEditor_vue__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"] // TreeUpdateConflictModal,
+    TreeBuilderToolbar: _components_interaction_designer_toolbar_TreeBuilderToolbar_vue__WEBPACK_IMPORTED_MODULE_15__[/* default */ "a"],
+    BuilderCanvas: _components_interaction_designer_BuilderCanvas__WEBPACK_IMPORTED_MODULE_17__[/* BuilderCanvas */ "a"],
+    FlowEditor: _components_interaction_designer_flow_editors_FlowEditor_vue__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"] // TreeUpdateConflictModal,
 
   },
   data: function data() {
@@ -54584,13 +55373,7 @@ module.exports = [
   }),
   created: function created() {
     var $store = this.$store;
-
-    var modules = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])({}, _store_trees__WEBPACK_IMPORTED_MODULE_14__[/* default */ "a"].modules), {}, {
-      flow: _store_flow__WEBPACK_IMPORTED_MODULE_15__[/* default */ "a"],
-      builder: _store_builder__WEBPACK_IMPORTED_MODULE_16__[/* default */ "c"]
-    });
-
-    Object(lodash__WEBPACK_IMPORTED_MODULE_11__["forEach"])(modules, function (v, k) {
+    Object(lodash__WEBPACK_IMPORTED_MODULE_11__["forEach"])(_store__WEBPACK_IMPORTED_MODULE_14__[/* store */ "a"].modules, function (v, k) {
       return !$store.hasModule(k) && $store.registerModule(k, v);
     });
     this.configure({
@@ -56857,23 +57640,26 @@ exports.default = ExcellentHandler;
 /* unused harmony export FlightStatusToNameMap */
 /* harmony import */ var core_js_modules_es_array_find__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("7db0");
 /* harmony import */ var core_js_modules_es_array_find__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_find__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("b64b");
-/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("07ac");
-/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("5530");
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("96cf");
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("1da1");
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("ade3");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("bc3a");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("2ef0");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("4328");
-/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(qs__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("8bbf");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var core_js_modules_es_object_assign__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("cca6");
+/* harmony import */ var core_js_modules_es_object_assign__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_assign__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("b64b");
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("07ac");
+/* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("5530");
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("96cf");
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("1da1");
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("ade3");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("bc3a");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("2ef0");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("4328");
+/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(qs__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("8bbf");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_11__);
+
 
 
 
@@ -56895,7 +57681,7 @@ var Statuses = {
   SUCCESS: 1,
   FAILURE: 2
 };
-var FlightStatusToNameMap = (_FlightStatusToNameMa = {}, Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"])(_FlightStatusToNameMa, Statuses.PENDING, 'pending'), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"])(_FlightStatusToNameMa, Statuses.UNINITIALIZED, 'uninitialized'), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"])(_FlightStatusToNameMa, Statuses.SUCCESS, 'success'), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"])(_FlightStatusToNameMa, Statuses.FAILURE, 'failure'), _FlightStatusToNameMa);
+var FlightStatusToNameMap = (_FlightStatusToNameMa = {}, Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"])(_FlightStatusToNameMa, Statuses.PENDING, 'pending'), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"])(_FlightStatusToNameMa, Statuses.UNINITIALIZED, 'uninitialized'), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"])(_FlightStatusToNameMa, Statuses.SUCCESS, 'success'), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"])(_FlightStatusToNameMa, Statuses.FAILURE, 'failure'), _FlightStatusToNameMa);
 /* harmony default export */ __webpack_exports__["a"] = ({
   namespaced: true,
   state: function state() {
@@ -56909,7 +57695,7 @@ var FlightStatusToNameMap = (_FlightStatusToNameMa = {}, Object(_home_jacob_voto
       var key = _ref2.key,
           promise = _ref2.promise,
           cancellation = _ref2.cancellation;
-      vue__WEBPACK_IMPORTED_MODULE_10___default.a.set(flights, key, {
+      vue__WEBPACK_IMPORTED_MODULE_11___default.a.set(flights, key, {
         status: Statuses.PENDING,
         progress: 0,
         error: null,
@@ -56920,12 +57706,12 @@ var FlightStatusToNameMap = (_FlightStatusToNameMa = {}, Object(_home_jacob_voto
     cancel: function cancel(_ref3, _ref4) {
       var flights = _ref3.flights;
       var key = _ref4.key;
-      lodash__WEBPACK_IMPORTED_MODULE_8___default.a.invoke(flights, "".concat(key, ".cancel"));
+      lodash__WEBPACK_IMPORTED_MODULE_9___default.a.invoke(flights, "".concat(key, ".cancel"));
     }
   },
   actions: {
     create: function create(_ref5, _ref6) {
-      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
         var commit, dispatch, flights, key, promise, cancellation, previousFlight, flight, response;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -56947,7 +57733,7 @@ var FlightStatusToNameMap = (_FlightStatusToNameMa = {}, Object(_home_jacob_voto
                   cancellation: cancellation
                 });
                 flight = flights[key];
-                flight.id = "flight-".concat(lodash__WEBPACK_IMPORTED_MODULE_8___default.a.uniqueId());
+                flight.id = "flight-".concat(lodash__WEBPACK_IMPORTED_MODULE_9___default.a.uniqueId());
                 _context.prev = 7;
                 _context.next = 10;
                 return promise;
@@ -56982,12 +57768,12 @@ var FlightStatusToNameMap = (_FlightStatusToNameMa = {}, Object(_home_jacob_voto
           state = _ref7.state;
 
       var key = config.key,
-          _CancelToken$source = axios__WEBPACK_IMPORTED_MODULE_7__["CancelToken"].source(),
+          _CancelToken$source = axios__WEBPACK_IMPORTED_MODULE_8__["CancelToken"].source(),
           token = _CancelToken$source.token,
           cancellation = _CancelToken$source.cancel,
-          promise = axios__WEBPACK_IMPORTED_MODULE_7___default.a.request(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])({
+          promise = axios__WEBPACK_IMPORTED_MODULE_8___default.a.request(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"])({
         paramsSerializer: function paramsSerializer(p) {
-          return qs__WEBPACK_IMPORTED_MODULE_9___default.a.stringify(p, {
+          return qs__WEBPACK_IMPORTED_MODULE_10___default.a.stringify(p, {
             arrayFormat: 'bracket'
           });
         },
@@ -58144,62 +58930,68 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         return feature === 'treeDuplicateOf';
       });
     },
-    isFeatureUpdateInteractionTotalsEnabled: function isFeatureUpdateInteractionTotalsEnabled(_ref12) {
+    isResourceEditorEnabled: function isResourceEditorEnabled(_ref12) {
       var ui = _ref12.ui;
+      return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
+        return feature === 'resourceEditor';
+      });
+    },
+    isFeatureUpdateInteractionTotalsEnabled: function isFeatureUpdateInteractionTotalsEnabled(_ref13) {
+      var ui = _ref13.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'updateInteractionTotals';
       });
     },
-    isFeatureAudioUploadEnabled: function isFeatureAudioUploadEnabled(_ref13) {
-      var ui = _ref13.ui;
+    isFeatureAudioUploadEnabled: function isFeatureAudioUploadEnabled(_ref14) {
+      var ui = _ref14.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'audioUpload';
       });
     },
-    isFeatureViewResultsEnabled: function isFeatureViewResultsEnabled(_ref14) {
-      var ui = _ref14.ui;
+    isFeatureViewResultsEnabled: function isFeatureViewResultsEnabled(_ref15) {
+      var ui = _ref15.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'viewResults';
       });
     },
-    selectedBlock: function selectedBlock(_ref15, getters, rootState) {
-      var tree = _ref15.tree,
-          ui = _ref15.ui;
+    selectedBlock: function selectedBlock(_ref16, getters, rootState) {
+      var tree = _ref16.tree,
+          ui = _ref16.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(Object(lodash__WEBPACK_IMPORTED_MODULE_24__["get"])(tree, 'blocks', []), {
         jsKey: ui.selectedBlock
       });
     },
-    subscriberPropertyFields: function subscriberPropertyFields(_ref16) {
-      var ui = _ref16.ui;
+    subscriberPropertyFields: function subscriberPropertyFields(_ref17) {
+      var ui = _ref17.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(ui, "subscriberPropertyFields");
     },
-    interactiveBlockClasses: function interactiveBlockClasses(_ref17, getters, rootState) {
-      var ui = _ref17.ui;
+    interactiveBlockClasses: function interactiveBlockClasses(_ref18, getters, rootState) {
+      var ui = _ref18.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.pickBy(ui.blockClasses, function (value, key) {
         return value.is_interactive;
       });
     },
-    interactiveBlocksInTree: function interactiveBlocksInTree(_ref18, _ref19, rootState) {
-      var tree = _ref18.tree;
-      var interactiveBlockClasses = _ref19.interactiveBlockClasses;
+    interactiveBlocksInTree: function interactiveBlocksInTree(_ref19, _ref20, rootState) {
+      var tree = _ref19.tree;
+      var interactiveBlockClasses = _ref20.interactiveBlockClasses;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.filter(tree.blocks, function (b) {
         return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.includes(Object.keys(interactiveBlockClasses), b.type);
       });
     },
-    isEditable: function isEditable(_ref20) {
-      var ui = _ref20.ui;
+    isEditable: function isEditable(_ref21) {
+      var ui = _ref21.ui;
       return !!ui.isEditable;
     },
     // todo: trip a debounced version of this (for larger trees)
     // todo: which is faster lodash deep isEqual or JSON.stringify() ?
-    hasChanges: function hasChanges(_ref21) {
-      var tree = _ref21.tree,
-          ui = _ref21.ui;
-      return ui.previousTreeJson !== JSON.stringify(tree);
-    },
-    hasIssues: function hasIssues(_ref22) {
+    hasChanges: function hasChanges(_ref22) {
       var tree = _ref22.tree,
           ui = _ref22.ui;
+      return ui.previousTreeJson !== JSON.stringify(tree);
+    },
+    hasIssues: function hasIssues(_ref23) {
+      var tree = _ref23.tree,
+          ui = _ref23.ui;
       var validationResults = ui.validationResults,
           validationResultsFromPageLoad = ui.originalValidationResults,
           hasSavedSinceLoad = ui.validationResults;
@@ -58208,12 +59000,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
     isTreeSaving: function isTreeSaving(state) {
       return state.ui.saveCurrentlyInProgress;
     },
-    hasClipboard: function hasClipboard(_ref23) {
-      var tree = _ref23.tree;
+    hasClipboard: function hasClipboard(_ref24) {
+      var tree = _ref24.tree;
       return tree.details.hasClipboard;
     },
-    isSelectedBlockSupportedForSummary: function isSelectedBlockSupportedForSummary(_ref24, getters) {
-      var ui = _ref24.ui;
+    isSelectedBlockSupportedForSummary: function isSelectedBlockSupportedForSummary(_ref25, getters) {
+      var ui = _ref25.ui;
 
       if (!getters.selectedBlock) {
         return false;
@@ -58221,8 +59013,8 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(ui.blockClasses[getters.selectedBlock.type], 'isSummarizable', false);
     },
-    canSelectedBlockSetSubscriberProperty: function canSelectedBlockSetSubscriberProperty(_ref25, getters) {
-      var ui = _ref25.ui;
+    canSelectedBlockSetSubscriberProperty: function canSelectedBlockSetSubscriberProperty(_ref26, getters) {
+      var ui = _ref26.ui;
 
       if (!getters.selectedBlock) {
         return false;
@@ -58230,8 +59022,8 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(ui.blockClasses[getters.selectedBlock.type], 'canSetSubscriberProperty', false);
     },
-    languageSelectors: function languageSelectors(_ref26) {
-      var ui = _ref26.ui;
+    languageSelectors: function languageSelectors(_ref27) {
+      var ui = _ref27.ui;
       return ui.languageSelectors;
     },
     isBlockAvailableByBlockClass: function isBlockAvailableByBlockClass(state) {
@@ -58252,40 +59044,40 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       return state.ui.originalTreeJsonValidationResults;
     },
     // Duplicating \Voto\Core\Trees\Tree::getTitle
-    treeTitle: function treeTitle(_ref27) {
-      var tree = _ref27.tree;
+    treeTitle: function treeTitle(_ref28) {
+      var tree = _ref28.tree;
       return tree.title || 'Untitled Tree';
     },
-    languages: function languages(_ref28) {
-      var ui = _ref28.ui;
+    languages: function languages(_ref29) {
+      var ui = _ref29.ui;
       return ui.languages || [];
     },
-    availableAudio: function availableAudio(_ref29) {
-      var ui = _ref29.ui;
+    availableAudio: function availableAudio(_ref30) {
+      var ui = _ref30.ui;
       return ui.audioFiles || [];
     },
-    validationResults: function validationResults(_ref30) {
-      var ui = _ref30.ui;
+    validationResults: function validationResults(_ref31) {
+      var ui = _ref31.ui;
       return ui.validationResults;
     },
-    treeCreatedAt: function treeCreatedAt(_ref31) {
-      var tree = _ref31.tree;
+    treeCreatedAt: function treeCreatedAt(_ref32) {
+      var tree = _ref32.tree;
       return tree.createdAt.date;
     },
-    treeEditedAt: function treeEditedAt(_ref32) {
-      var tree = _ref32.tree;
+    treeEditedAt: function treeEditedAt(_ref33) {
+      var tree = _ref33.tree;
       return tree.editedAt.date;
     },
-    treeUpdatedAt: function treeUpdatedAt(_ref33) {
-      var tree = _ref33.tree;
+    treeUpdatedAt: function treeUpdatedAt(_ref34) {
+      var tree = _ref34.tree;
       return tree.updatedAt.date;
     }
   },
   mutations: {
-    configure: function configure(_ref34, _ref35) {
-      var ui = _ref34.ui;
-      var appConfig = _ref35.appConfig,
-          builderConfig = _ref35.builderConfig;
+    configure: function configure(_ref35, _ref36) {
+      var ui = _ref35.ui;
+      var appConfig = _ref36.appConfig,
+          builderConfig = _ref36.builderConfig;
 
       var _bootstrapLegacyGloba = Object(_bootstrap_legacy_global_dependencies__WEBPACK_IMPORTED_MODULE_31__[/* bootstrapLegacyGlobalDependencies */ "a"])(appConfig, builderConfig),
           app = _bootstrapLegacyGloba.app,
@@ -58301,8 +59093,8 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         validationResults: uiOverrides.originalValidationResults
       }));
     },
-    setWorkingTree: function setWorkingTree(state, _ref36) {
-      var treeData = _ref36.tree;
+    setWorkingTree: function setWorkingTree(state, _ref37) {
+      var treeData = _ref37.tree;
       var tree = new app.Tree(treeData);
       /** @property app.tree
        *  @deprecated We'll only need this until we've eradicated references in legacy. */
@@ -58310,47 +59102,47 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       app.tree = tree;
       state.tree = tree.attributes;
     },
-    setDesignerWorkspaceHeight: function setDesignerWorkspaceHeight(_ref37, _ref38) {
-      var tree = _ref37.tree,
-          ui = _ref37.ui;
-      var height = _ref38.height;
+    setDesignerWorkspaceHeight: function setDesignerWorkspaceHeight(_ref38, _ref39) {
+      var tree = _ref38.tree,
+          ui = _ref38.ui;
+      var height = _ref39.height;
       ui.designerWorkspaceHeight = height;
     },
-    setSelectedBlock: function setSelectedBlock(_ref39, _ref40) {
-      var tree = _ref39.tree,
-          ui = _ref39.ui;
-      var jsKey = _ref40.jsKey;
+    setSelectedBlock: function setSelectedBlock(_ref40, _ref41) {
+      var tree = _ref40.tree,
+          ui = _ref40.ui;
+      var jsKey = _ref41.jsKey;
       ui.selectedBlock = jsKey || '';
     },
-    deselectBlocks: function deselectBlocks(_ref41) {
-      var tree = _ref41.tree,
-          ui = _ref41.ui;
-      ui.selectedBlock = '';
-    },
-    updateTreeDetailsWith: function updateTreeDetailsWith(_ref42, _ref43) {
+    deselectBlocks: function deselectBlocks(_ref42) {
       var tree = _ref42.tree,
           ui = _ref42.ui;
-      var key = _ref43.key,
-          value = _ref43.value;
+      ui.selectedBlock = '';
+    },
+    updateTreeDetailsWith: function updateTreeDetailsWith(_ref43, _ref44) {
+      var tree = _ref43.tree,
+          ui = _ref43.ui;
+      var key = _ref44.key,
+          value = _ref44.value;
       tree.details[key] = value;
     },
-    updateBlockCustomDataFor: function updateBlockCustomDataFor(_ref44, _ref45) {
-      var tree = _ref44.tree,
-          ui = _ref44.ui;
-      var jsKey = _ref45.jsKey,
-          key = _ref45.key,
-          value = _ref45.value;
+    updateBlockCustomDataFor: function updateBlockCustomDataFor(_ref45, _ref46) {
+      var tree = _ref45.tree,
+          ui = _ref45.ui;
+      var jsKey = _ref46.jsKey,
+          key = _ref46.key,
+          value = _ref46.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block.customData, key, value);
     },
-    updateBlockCustomDataWithNestedKeyFor: function updateBlockCustomDataWithNestedKeyFor(_ref46, _ref47) {
-      var tree = _ref46.tree,
-          ui = _ref46.ui;
-      var jsKey = _ref47.jsKey,
-          nestedKey = _ref47.nestedKey,
-          value = _ref47.value;
+    updateBlockCustomDataWithNestedKeyFor: function updateBlockCustomDataWithNestedKeyFor(_ref47, _ref48) {
+      var tree = _ref47.tree,
+          ui = _ref47.ui;
+      var jsKey = _ref48.jsKey,
+          nestedKey = _ref48.nestedKey,
+          value = _ref48.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58358,33 +59150,33 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       lodash__WEBPACK_IMPORTED_MODULE_24___default.a.set(customData, nestedKey, value);
       block.customData = customData;
     },
-    updateBlockUiDataFor: function updateBlockUiDataFor(_ref48, _ref49) {
-      var tree = _ref48.tree,
-          ui = _ref48.ui;
-      var jsKey = _ref49.jsKey,
-          key = _ref49.key,
-          value = _ref49.value;
+    updateBlockUiDataFor: function updateBlockUiDataFor(_ref49, _ref50) {
+      var tree = _ref49.tree,
+          ui = _ref49.ui;
+      var jsKey = _ref50.jsKey,
+          key = _ref50.key,
+          value = _ref50.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block.uiData, key, value);
     },
-    updateMaxNumericDigits: function updateMaxNumericDigits(_ref50, _ref51) {
-      var tree = _ref50.tree,
-          ui = _ref50.ui;
-      var value = _ref51.value;
+    updateMaxNumericDigits: function updateMaxNumericDigits(_ref51, _ref52) {
+      var tree = _ref51.tree,
+          ui = _ref51.ui;
+      var value = _ref52.value;
       var selectedBlock = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: ui.selectedBlock
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(selectedBlock, 'customData.maxNumericDigits', value);
     },
-    updateBlockContentFor: function updateBlockContentFor(_ref52, _ref53) {
-      var tree = _ref52.tree,
-          ui = _ref52.ui;
-      var type = _ref53.type,
-          langId = _ref53.langId,
-          jsKey = _ref53.jsKey,
-          value = _ref53.value;
+    updateBlockContentFor: function updateBlockContentFor(_ref53, _ref54) {
+      var tree = _ref53.tree,
+          ui = _ref53.ui;
+      var type = _ref54.type,
+          langId = _ref54.langId,
+          jsKey = _ref54.jsKey,
+          value = _ref54.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58400,16 +59192,16 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         block["".concat(type, "Content")] = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])({}, block["".concat(type, "Content")]), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"])({}, langId, value));
       }
     },
-    updateBlockFileContentFor: function updateBlockFileContentFor(_ref54, _ref55) {
-      var tree = _ref54.tree,
-          ui = _ref54.ui;
-      var langId = _ref55.langId,
-          jsKey = _ref55.jsKey,
-          fileUrl = _ref55.fileUrl,
-          fileId = _ref55.fileId,
-          fileType = _ref55.fileType,
-          mimeType = _ref55.mimeType,
-          contentType = _ref55.contentType;
+    updateBlockFileContentFor: function updateBlockFileContentFor(_ref55, _ref56) {
+      var tree = _ref55.tree,
+          ui = _ref55.ui;
+      var langId = _ref56.langId,
+          jsKey = _ref56.jsKey,
+          fileUrl = _ref56.fileUrl,
+          fileId = _ref56.fileId,
+          fileType = _ref56.fileType,
+          mimeType = _ref56.mimeType,
+          contentType = _ref56.contentType;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58424,15 +59216,15 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content[langId], 'fileType', fileType);
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content[langId], 'mimeType', mimeType);
     },
-    updateBlockFileContentForAllLanguages: function updateBlockFileContentForAllLanguages(_ref56, _ref57) {
-      var tree = _ref56.tree,
-          ui = _ref56.ui;
-      var jsKey = _ref57.jsKey,
-          fileUrl = _ref57.fileUrl,
-          fileId = _ref57.fileId,
-          fileType = _ref57.fileType,
-          mimeType = _ref57.mimeType,
-          contentType = _ref57.contentType;
+    updateBlockFileContentForAllLanguages: function updateBlockFileContentForAllLanguages(_ref57, _ref58) {
+      var tree = _ref57.tree,
+          ui = _ref57.ui;
+      var jsKey = _ref58.jsKey,
+          fileUrl = _ref58.fileUrl,
+          fileId = _ref58.fileId,
+          fileType = _ref58.fileType,
+          mimeType = _ref58.mimeType,
+          contentType = _ref58.contentType;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58442,23 +59234,23 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content, 'allLanguagesFileType', fileType);
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content, 'allLanguagesMimeType', mimeType);
     },
-    initBlockAutoGenStateFor: function initBlockAutoGenStateFor(_ref58, _ref59) {
-      var tree = _ref58.tree,
-          ui = _ref58.ui;
-      var type = _ref59.type,
-          jsKey = _ref59.jsKey;
+    initBlockAutoGenStateFor: function initBlockAutoGenStateFor(_ref59, _ref60) {
+      var tree = _ref59.tree,
+          ui = _ref59.ui;
+      var type = _ref60.type,
+          jsKey = _ref60.jsKey;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block, "".concat(type, "AutogenLangs"), []);
     },
-    updateBlockAutoGenStateFor: function updateBlockAutoGenStateFor(_ref60, _ref61) {
-      var tree = _ref60.tree,
-          ui = _ref60.ui;
-      var type = _ref61.type,
-          langId = _ref61.langId,
-          jsKey = _ref61.jsKey,
-          enable = _ref61.value;
+    updateBlockAutoGenStateFor: function updateBlockAutoGenStateFor(_ref61, _ref62) {
+      var tree = _ref61.tree,
+          ui = _ref61.ui;
+      var type = _ref62.type,
+          langId = _ref62.langId,
+          jsKey = _ref62.jsKey,
+          enable = _ref62.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       }),
@@ -58471,12 +59263,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         !absent && block["".concat(type, "AutogenLangs")].splice(i, 1);
       }
     },
-    updateAudioFileFor: function updateAudioFileFor(_ref62, _ref63) {
-      var tree = _ref62.tree,
-          ui = _ref62.ui;
-      var langId = _ref63.langId,
-          jsKey = _ref63.jsKey,
-          value = _ref63.value;
+    updateAudioFileFor: function updateAudioFileFor(_ref63, _ref64) {
+      var tree = _ref63.tree,
+          ui = _ref63.ui;
+      var langId = _ref64.langId,
+          jsKey = _ref64.jsKey,
+          value = _ref64.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58484,12 +59276,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
       !value && delete block.audioFiles[langId];
     },
-    updateReviewedStateFor: function updateReviewedStateFor(_ref64, _ref65) {
-      var tree = _ref64.tree,
-          ui = _ref64.ui;
-      var langId = _ref65.langId,
-          jsKey = _ref65.jsKey,
-          value = _ref65.value;
+    updateReviewedStateFor: function updateReviewedStateFor(_ref65, _ref66) {
+      var tree = _ref65.tree,
+          ui = _ref65.ui;
+      var langId = _ref66.langId,
+          jsKey = _ref66.jsKey,
+          value = _ref66.value;
 
       var _lodash$find = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
@@ -58498,12 +59290,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
       data.reviewed[langId] = value;
     },
-    setBatchMatchAudioResultsTo: function setBatchMatchAudioResultsTo(_ref66, _ref67) {
-      var tree = _ref66.tree,
-          ui = _ref66.ui;
-      var value = _ref67.value,
-          status = _ref67.status,
-          message = _ref67.message;
+    setBatchMatchAudioResultsTo: function setBatchMatchAudioResultsTo(_ref67, _ref68) {
+      var tree = _ref67.tree,
+          ui = _ref67.ui;
+      var value = _ref68.value,
+          status = _ref68.status,
+          message = _ref68.message;
       // ui.batchMatchAudioStatus = value
       lodash__WEBPACK_IMPORTED_MODULE_24___default.a.extend(ui.batchMatchAudio, {
         results: value,
@@ -58518,35 +59310,53 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         isComplete: status === 1
       });
     },
-    updateIsEditable: function updateIsEditable(_ref68, _ref69) {
-      var ui = _ref68.ui;
-      var value = _ref69.value;
+    updateIsEditable: function updateIsEditable(_ref69, _ref70) {
+      var ui = _ref69.ui;
+      var value = _ref70.value;
       ui.isEditable = value;
     },
-    setContentTypeEnabled: function setContentTypeEnabled(_ref70, _ref71) {
-      var tree = _ref70.tree;
-      var contentType = _ref71.contentType,
-          isEnabled = _ref71.isEnabled;
+    addEnabledFeature: function addEnabledFeature(_ref71, _ref72) {
+      var ui = _ref71.ui;
+      var value = _ref72.value;
+
+      if (ui.enabledFeatures.indexOf(value) < 0) {
+        ui.enabledFeatures.push(value);
+      }
+    },
+    removeEnabledFeature: function removeEnabledFeature(_ref73, _ref74) {
+      var ui = _ref73.ui;
+      var value = _ref74.value;
+
+      if (ui.enabledFeatures.indexOf(value) > -1) {
+        ui.enabledFeatures = ui.enabledFeatures.filter(function (item) {
+          return item !== value;
+        });
+      }
+    },
+    setContentTypeEnabled: function setContentTypeEnabled(_ref75, _ref76) {
+      var tree = _ref75.tree;
+      var contentType = _ref76.contentType,
+          isEnabled = _ref76.isEnabled;
       tree["has".concat(lodash__WEBPACK_IMPORTED_MODULE_24___default.a.upperFirst(contentType))] = +isEnabled;
     },
-    addSubscriberPropertyField: function addSubscriberPropertyField(_ref72, _ref73) {
-      var ui = _ref72.ui;
-      var property = _ref73.property;
+    addSubscriberPropertyField: function addSubscriberPropertyField(_ref77, _ref78) {
+      var ui = _ref77.ui;
+      var property = _ref78.property;
       ui.subscriberPropertyFields.push(property);
     },
-    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(state, _ref74) {
-      var treeUpdateConflict = _ref74.treeUpdateConflict;
+    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(state, _ref79) {
+      var treeUpdateConflict = _ref79.treeUpdateConflict;
       state.ui.treeUpdateConflict = treeUpdateConflict;
     },
-    setInteractionTotals: function setInteractionTotals(state, _ref75) {
-      var interactionTotals = _ref75.interactionTotals;
+    setInteractionTotals: function setInteractionTotals(state, _ref80) {
+      var interactionTotals = _ref80.interactionTotals;
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(state.ui, 'interactionTotals', interactionTotals);
     }
   },
   actions: {
-    initializeTreeModel: function initializeTreeModel(_ref76) {
-      var dispatch = _ref76.dispatch,
-          isTreeImport = _ref76.state.ui.isTreeImport;
+    initializeTreeModel: function initializeTreeModel(_ref81) {
+      var dispatch = _ref81.dispatch,
+          isTreeImport = _ref81.state.ui.isTreeImport;
 
       __webpack_require__("2d35"); // todo: this is also included via `../public/dist/js/legacy/trees` on tree-builder
       //       but we don't include that beast in storybook b/c of global dependency hierarchy
@@ -58560,19 +59370,19 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       isTreeImport ? dispatch('initializeTreeModelFromImport') : dispatch('initializeTreeModelFromOriginalTreeJson');
     },
     // @note - these are the only actions that are outside the realm of an existing tree.
-    initializeTreeModelFromOriginalTreeJson: function initializeTreeModelFromOriginalTreeJson(_ref77) {
-      var commit = _ref77.commit,
-          dispatch = _ref77.dispatch,
-          ui = _ref77.state.ui;
+    initializeTreeModelFromOriginalTreeJson: function initializeTreeModelFromOriginalTreeJson(_ref82) {
+      var commit = _ref82.commit,
+          dispatch = _ref82.dispatch,
+          ui = _ref82.state.ui;
       commit('setWorkingTree', {
         tree: ui.originalTreeJson
       });
       dispatch('upgradeTreeModel'); // => this kinda sucks, because now we're dispatching vuex notifications for all these upgrades
     },
-    initializeTreeModelFromImport: function initializeTreeModelFromImport(_ref78) {
-      var commit = _ref78.commit,
-          dispatch = _ref78.dispatch,
-          ui = _ref78.state.ui;
+    initializeTreeModelFromImport: function initializeTreeModelFromImport(_ref83) {
+      var commit = _ref83.commit,
+          dispatch = _ref83.dispatch,
+          ui = _ref83.state.ui;
 
       var schema = app.Tree.createJsonSchemaFor(_.pluck(ui.languages, 'id'), _.keys(ui.blockClasses)),
           tree = app.Tree._mergeAndSanitizeImportedInto(ui.originalTreeJson, ui.importTreeJson);
@@ -58593,15 +59403,15 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         dispatch('initializeTreeModelFromOriginalTreeJson');
       }
     },
-    attemptImportPersistence: function attemptImportPersistence(_ref79) {
+    attemptImportPersistence: function attemptImportPersistence(_ref84) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var commit, dispatch, _ref79$state, tree, ui, _ref79$state$ui, isTreeImport, originalTreeJsonValidationResults, hasImportValidationErrors, validationResults;
+        var commit, dispatch, _ref84$state, tree, ui, _ref84$state$ui, isTreeImport, originalTreeJsonValidationResults, hasImportValidationErrors, validationResults;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                commit = _ref79.commit, dispatch = _ref79.dispatch, _ref79$state = _ref79.state, tree = _ref79$state.tree, ui = _ref79$state.ui, _ref79$state$ui = _ref79$state.ui, isTreeImport = _ref79$state$ui.isTreeImport, originalTreeJsonValidationResults = _ref79$state$ui.originalTreeJsonValidationResults;
+                commit = _ref84.commit, dispatch = _ref84.dispatch, _ref84$state = _ref84.state, tree = _ref84$state.tree, ui = _ref84$state.ui, _ref84$state$ui = _ref84$state.ui, isTreeImport = _ref84$state$ui.isTreeImport, originalTreeJsonValidationResults = _ref84$state$ui.originalTreeJsonValidationResults;
                 hasImportValidationErrors = !!originalTreeJsonValidationResults;
 
                 if (!(!isTreeImport || hasImportValidationErrors)) {
@@ -58633,13 +59443,13 @@ var ValidationError = /*#__PURE__*/function (_Error) {
     upgradeTreeModel: function upgradeTreeModel() {
       app.tree.upgrade();
     },
-    discoverTallestBlockForDesignerWorkspaceHeight: function discoverTallestBlockForDesignerWorkspaceHeight(_ref80, _ref81) {
-      var commit = _ref80.commit,
-          dispatch = _ref80.dispatch,
-          state = _ref80.state;
-      var _ref81$buffer = _ref81.buffer,
-          buffer = _ref81$buffer === void 0 ? 350 : _ref81$buffer,
-          aboveTallest = _ref81.aboveTallest;
+    discoverTallestBlockForDesignerWorkspaceHeight: function discoverTallestBlockForDesignerWorkspaceHeight(_ref85, _ref86) {
+      var commit = _ref85.commit,
+          dispatch = _ref85.dispatch,
+          state = _ref85.state;
+      var _ref86$buffer = _ref86.buffer,
+          buffer = _ref86$buffer === void 0 ? 350 : _ref86$buffer,
+          aboveTallest = _ref86.aboveTallest;
       var initialHeight = aboveTallest ? app.tree.getTallestBlockPosition() : 0,
           minHeight = 1000,
           height = Math.max(buffer + initialHeight, minHeight);
@@ -58647,19 +59457,19 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         height: height
       });
     },
-    uiChanged: function uiChanged(context, _ref82) {
-      var msg = _ref82.msg;
+    uiChanged: function uiChanged(context, _ref87) {
+      var msg = _ref87.msg;
       console.log('app.ui.change [via vuex.trees.uiChanged]', msg);
     },
-    attemptSaveTree: function attemptSaveTree(_ref83) {
+    attemptSaveTree: function attemptSaveTree(_ref88) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var dispatch, _ref83$getters, hasChanges, isFeatureTreeSaveEnabled, ui, _global, app;
+        var dispatch, _ref88$getters, hasChanges, isFeatureTreeSaveEnabled, ui, _global, app;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                dispatch = _ref83.dispatch, _ref83$getters = _ref83.getters, hasChanges = _ref83$getters.hasChanges, isFeatureTreeSaveEnabled = _ref83$getters.isFeatureTreeSaveEnabled, ui = _ref83.state.ui;
+                dispatch = _ref88.dispatch, _ref88$getters = _ref88.getters, hasChanges = _ref88$getters.hasChanges, isFeatureTreeSaveEnabled = _ref88$getters.isFeatureTreeSaveEnabled, ui = _ref88.state.ui;
 
                 if (!(!ui.isEditable || !hasChanges)) {
                   _context2.next = 4;
@@ -58751,14 +59561,14 @@ var ValidationError = /*#__PURE__*/function (_Error) {
      *            ValidationResults
      * @returns {Promise<array>} a Promise that will return an array of the validation results.
      */
-    validateTree: function validateTree(_ref84) {
+    validateTree: function validateTree(_ref89) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
         var dispatch, tree, validate;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                dispatch = _ref84.dispatch, tree = _ref84.state.tree;
+                dispatch = _ref89.dispatch, tree = _ref89.state.tree;
                 validate = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(global.__TREE_FEATURES__, 'validation.validate');
 
                 if (!validate) {
@@ -58813,12 +59623,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         }, _callee5);
       }))();
     },
-    setDefaultBlockRepeatValues: function setDefaultBlockRepeatValues(_ref85, _ref86) {
-      var commit = _ref85.commit,
-          dispatch = _ref85.dispatch,
-          tree = _ref85.state.tree;
-      var jsKey = _ref86.jsKey,
-          defaults = _ref86.values;
+    setDefaultBlockRepeatValues: function setDefaultBlockRepeatValues(_ref90, _ref91) {
+      var commit = _ref90.commit,
+          dispatch = _ref90.dispatch,
+          tree = _ref90.state.tree;
+      var jsKey = _ref91.jsKey,
+          defaults = _ref91.values;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58831,13 +59641,13 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         });
       }
     },
-    updateTextContent: function updateTextContent(_ref87, _ref88) {
-      var commit = _ref87.commit;
-      var type = _ref88.type,
-          jsKey = _ref88.jsKey,
-          langId = _ref88.langId,
-          value = _ref88.value,
-          disableAutoGen = _ref88.disableAutoGen;
+    updateTextContent: function updateTextContent(_ref92, _ref93) {
+      var commit = _ref92.commit;
+      var type = _ref93.type,
+          jsKey = _ref93.jsKey,
+          langId = _ref93.langId,
+          value = _ref93.value,
+          disableAutoGen = _ref93.disableAutoGen;
       commit('updateBlockContentFor', {
         type: type,
         jsKey: jsKey,
@@ -58856,11 +59666,11 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         value: false
       });
     },
-    setContentFromQuestionText: function setContentFromQuestionText(_ref89, _ref90) {
-      var commit = _ref89.commit,
-          dispatch = _ref89.dispatch,
-          tree = _ref89.state.tree;
-      var jsKey = _ref90.jsKey;
+    setContentFromQuestionText: function setContentFromQuestionText(_ref94, _ref95) {
+      var commit = _ref94.commit,
+          dispatch = _ref94.dispatch,
+          tree = _ref94.state.tree;
+      var jsKey = _ref95.jsKey;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -58941,12 +59751,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         });
       }
     },
-    setBlockNumConnections: function setBlockNumConnections(_ref91, _ref92) {
-      var commit = _ref91.commit,
-          dispatch = _ref91.dispatch,
-          state = _ref91.state;
-      var newNumConnections = _ref92.value,
-          jsKey = _ref92.jsKey;
+    setBlockNumConnections: function setBlockNumConnections(_ref96, _ref97) {
+      var commit = _ref96.commit,
+          dispatch = _ref96.dispatch,
+          state = _ref96.state;
+      var newNumConnections = _ref97.value,
+          jsKey = _ref97.jsKey;
       console.debug('vuex.trees', 'setBlockNumConnections', newNumConnections, jsKey); // Remove any connection elements connected to the block
       // Remove the block from the UI
       // Change the data number of connections
@@ -58998,11 +59808,11 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
       app.ui.change('Changed number of block connections.');
     },
-    setMcqOutputNames: function setMcqOutputNames(_ref93, _ref94) {
-      var commit = _ref93.commit,
-          dispatch = _ref93.dispatch,
-          tree = _ref93.state.tree;
-      var jsKey = _ref94.jsKey;
+    setMcqOutputNames: function setMcqOutputNames(_ref98, _ref99) {
+      var commit = _ref98.commit,
+          dispatch = _ref98.dispatch,
+          tree = _ref98.state.tree;
+      var jsKey = _ref99.jsKey;
       console.debug('vuex.trees', 'setMcqOutputNames', jsKey);
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
@@ -59043,11 +59853,11 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         value: outputNames.length
       });
     },
-    setMcqSidebarFieldLabels: function setMcqSidebarFieldLabels(_ref95, _ref96) {
-      var commit = _ref95.commit,
-          dispatch = _ref95.dispatch,
-          tree = _ref95.state.tree;
-      var jsKey = _ref96.jsKey;
+    setMcqSidebarFieldLabels: function setMcqSidebarFieldLabels(_ref100, _ref101) {
+      var commit = _ref100.commit,
+          dispatch = _ref100.dispatch,
+          tree = _ref100.state.tree;
+      var jsKey = _ref101.jsKey;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -59076,13 +59886,13 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         value: fieldLabels
       });
     },
-    batchMatchAudioTriggered: function batchMatchAudioTriggered(_ref97, _ref98) {
-      var commit = _ref97.commit,
-          dispatch = _ref97.dispatch,
-          state = _ref97.state;
-      var treeId = _ref98.treeId,
-          pattern = _ref98.pattern,
-          replaceExisting = _ref98.replaceExisting;
+    batchMatchAudioTriggered: function batchMatchAudioTriggered(_ref102, _ref103) {
+      var commit = _ref102.commit,
+          dispatch = _ref102.dispatch,
+          state = _ref102.state;
+      var treeId = _ref103.treeId,
+          pattern = _ref103.pattern,
+          replaceExisting = _ref103.replaceExisting;
       commit('setBatchMatchAudioResultsTo', {
         status: -1
       });
@@ -59090,8 +59900,8 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         treeId: treeId
       }, state.ui.routes), {
         pattern: pattern
-      }).then(function (_ref99) {
-        var value = _ref99.data.matches;
+      }).then(function (_ref104) {
+        var value = _ref104.data.matches;
         commit('setBatchMatchAudioResultsTo', {
           status: 1,
           value: value
@@ -59099,21 +59909,21 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         dispatch('commitAllBatchMatchAudioFiles', {
           replaceExisting: replaceExisting
         });
-      }).catch(function (_ref100) {
-        var message = _ref100.response.data.status_description;
+      }).catch(function (_ref105) {
+        var message = _ref105.response.data.status_description;
         return commit('setBatchMatchAudioResultsTo', {
           status: 0,
           message: message
         });
       });
     },
-    commitAllBatchMatchAudioFiles: function commitAllBatchMatchAudioFiles(_ref101, _ref102) {
-      var commit = _ref101.commit,
-          dispatch = _ref101.dispatch,
-          _ref101$state$ui$batc = _ref101.state.ui.batchMatchAudio,
-          isEmpty = _ref101$state$ui$batc.isEmpty,
-          results = _ref101$state$ui$batc.results;
-      var replaceExisting = _ref102.replaceExisting;
+    commitAllBatchMatchAudioFiles: function commitAllBatchMatchAudioFiles(_ref106, _ref107) {
+      var commit = _ref106.commit,
+          dispatch = _ref106.dispatch,
+          _ref106$state$ui$batc = _ref106.state.ui.batchMatchAudio,
+          isEmpty = _ref106$state$ui$batc.isEmpty,
+          results = _ref106$state$ui$batc.results;
+      var replaceExisting = _ref107.replaceExisting;
 
       if (isEmpty) {
         return;
@@ -59140,14 +59950,14 @@ var ValidationError = /*#__PURE__*/function (_Error) {
      | single + replace    | 1             | 1            | 0         |
      | multi  + replace    | 0             | 0            | 0         |
      ---------------------------------------------------------------- */
-    commitBatchMatchAudioFile: function commitBatchMatchAudioFile(_ref103, _ref104) {
-      var commit = _ref103.commit,
-          dispatch = _ref103.dispatch,
-          blocks = _ref103.state.tree.blocks;
-      var jsKey = _ref104.jsKey,
-          langId = _ref104.langId,
-          matches = _ref104.matches,
-          replaceExisting = _ref104.replaceExisting;
+    commitBatchMatchAudioFile: function commitBatchMatchAudioFile(_ref108, _ref109) {
+      var commit = _ref108.commit,
+          dispatch = _ref108.dispatch,
+          blocks = _ref108.state.tree.blocks;
+      var jsKey = _ref109.jsKey,
+          langId = _ref109.langId,
+          matches = _ref109.matches,
+          replaceExisting = _ref109.replaceExisting;
 
       var _lodash$find2 = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(blocks, {
         jsKey: jsKey
@@ -59173,13 +59983,13 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         value: false
       });
     },
-    addSubscriberPropertyField: function addSubscriberPropertyField(_ref105, _ref106) {
-      var commit = _ref105.commit,
-          dispatch = _ref105.dispatch,
-          state = _ref105.state;
-      var displayLabel = _ref106.displayLabel,
-          dataType = _ref106.dataType,
-          choices = _ref106.choices;
+    addSubscriberPropertyField: function addSubscriberPropertyField(_ref110, _ref111) {
+      var commit = _ref110.commit,
+          dispatch = _ref110.dispatch,
+          state = _ref110.state;
+      var displayLabel = _ref111.displayLabel,
+          dataType = _ref111.dataType,
+          choices = _ref111.choices;
       return axios__WEBPACK_IMPORTED_MODULE_23___default.a.post(Object(_lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_26__[/* routeFrom */ "b"])('trees.addSubscriberPropertyField', null, state.ui.routes), {
         displayLabel: displayLabel,
         dataType: dataType,
@@ -59194,19 +60004,19 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         return response;
       });
     },
-    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(_ref107, payload) {
-      var commit = _ref107.commit;
+    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(_ref112, payload) {
+      var commit = _ref112.commit;
       commit('setTreeUpdateConflictStatus', payload);
     },
-    fetchInteractionTotals: function fetchInteractionTotals(_ref108, _ref109) {
+    fetchInteractionTotals: function fetchInteractionTotals(_ref113, _ref114) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
         var state, commit, dispatch, getters, startDate, endDate, key, url, params, response;
         return regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                state = _ref108.state, commit = _ref108.commit, dispatch = _ref108.dispatch, getters = _ref108.getters;
-                startDate = _ref109.startDate, endDate = _ref109.endDate;
+                state = _ref113.state, commit = _ref113.commit, dispatch = _ref113.dispatch, getters = _ref113.getters;
+                startDate = _ref114.startDate, endDate = _ref114.endDate;
 
                 if (getters.isFeatureUpdateInteractionTotalsEnabled) {
                   _context6.next = 5;
@@ -60390,6 +61200,9 @@ exports.default = TextHandler;
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ wrapNativeSuper_wrapNativeSuper; });
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
+var es_array_iterator = __webpack_require__("e260");
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.map.js
 var es_map = __webpack_require__("4ec9");
 
@@ -60448,6 +61261,7 @@ function construct_construct(Parent, args, Class) {
   return construct_construct.apply(null, arguments);
 }
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/wrapNativeSuper.js
+
 
 
 
@@ -64555,764 +65369,6 @@ module.exports = function (IteratorConstructor, NAME, next) {
 
 /***/ }),
 
-/***/ "9f11":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// UNUSED EXPORTS: stateFactory, getters, mutations, actions, store
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
-var objectSpread2 = __webpack_require__("5530");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.filter.js
-var es_array_filter = __webpack_require__("4de4");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
-var es_function_name = __webpack_require__("b0c0");
-
-// EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
-var runtime = __webpack_require__("96cf");
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__("1da1");
-
-// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/index.js
-var dist = __webpack_require__("9300");
-
-// EXTERNAL MODULE: ./node_modules/lodash/lodash.js
-var lodash = __webpack_require__("2ef0");
-
-// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
-var IdGeneratorUuidV4 = __webpack_require__("31aa");
-var IdGeneratorUuidV4_default = /*#__PURE__*/__webpack_require__.n(IdGeneratorUuidV4);
-
-// EXTERNAL MODULE: ./src/store/flow/utils/listBuilder.ts
-var listBuilder = __webpack_require__("b199");
-
-// CONCATENATED MODULE: ./src/store/flow/block.ts
-
-
-
-
-
-
-
-
-
-var block_getters = {// todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
-  //       the interesting bit is that resources are _all_ resources... so we could follow suit here? :shrug:
-  // blocksByUuid: ({flows}) => map(resources, 'uuid')
-};
-var mutations = {
-  block_popFirstExitWithoutTest: function block_popFirstExitWithoutTest(state, _ref) {
-    var blockId = _ref.blockId;
-    //TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, this.state.flow);
-    block.exits = Object(listBuilder["b" /* popFirstEmptyItem */])(block.exits, "test");
-  },
-  block_popExitsByLabel: function block_popExitsByLabel(state, _ref2) {
-    var blockId = _ref2.blockId,
-        exitLabel = _ref2.exitLabel;
-    //TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, this.state.flow);
-    block.exits = block.exits.filter(function (item) {
-      return item.label !== exitLabel;
-    });
-  },
-  block_setName: function block_setName(state, _ref3) {
-    var blockId = _ref3.blockId,
-        value = _ref3.value;
-    Object(dist["findBlockOnActiveFlowWith"])(blockId, state).name = value;
-  },
-  block_setLabel: function block_setLabel(state, _ref4) {
-    var blockId = _ref4.blockId,
-        value = _ref4.value;
-    Object(dist["findBlockOnActiveFlowWith"])(blockId, state).label = value;
-  },
-  block_setSemanticLabel: function block_setSemanticLabel(state, _ref5) {
-    var blockId = _ref5.blockId,
-        value = _ref5.value;
-    Object(dist["findBlockOnActiveFlowWith"])(blockId, state).semanticLabel = value;
-  },
-  block_setExitTag: function block_setExitTag(state, _ref6) {
-    var exitId = _ref6.exitId,
-        blockId = _ref6.blockId,
-        value = _ref6.value;
-    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, state);
-    Object(dist["findBlockExitWith"])(exitId, block).tag = value;
-  },
-  block_setExitTest: function block_setExitTest(state, _ref7) {
-    var exitId = _ref7.exitId,
-        blockId = _ref7.blockId,
-        value = _ref7.value;
-    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, state);
-    Object(dist["findBlockExitWith"])(exitId, block).test = value;
-  },
-  block_pushNewExit: function block_pushNewExit(state, _ref8) {
-    var blockId = _ref8.blockId,
-        newExit = _ref8.newExit;
-    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, state);
-    block.exits.push(newExit);
-  },
-  block_updateConfig: function block_updateConfig(state, _ref9) {
-    var blockId = _ref9.blockId,
-        newConfig = _ref9.newConfig;
-    Object(dist["findBlockOnActiveFlowWith"])(blockId, state).config = newConfig;
-  },
-  block_updateConfigByKey: function block_updateConfigByKey(state, _ref10) {
-    var blockId = _ref10.blockId,
-        key = _ref10.key,
-        value = _ref10.value;
-    var currentConfig = Object(dist["findBlockOnActiveFlowWith"])(blockId, state).config;
-    currentConfig[key] = value;
-    Object(dist["findBlockOnActiveFlowWith"])(blockId, state).config = Object(objectSpread2["a" /* default */])({}, currentConfig);
-  },
-  block_setBlockExitDestinationBlockId: function block_setBlockExitDestinationBlockId(state, _ref11) {
-    var blockId = _ref11.blockId,
-        exitId = _ref11.exitId,
-        destinationBlockId = _ref11.destinationBlockId;
-    var block = Object(dist["findBlockOnActiveFlowWith"])(blockId, state);
-    Object(dist["findBlockExitWith"])(exitId, block).destinationBlock = destinationBlockId;
-  }
-};
-var actions = {
-  block_createBlockDefaultExitWith: function block_createBlockDefaultExitWith(_ref12, _ref13) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var dispatch, commit, state, props;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              dispatch = _ref12.dispatch, commit = _ref12.commit, state = _ref12.state;
-              props = _ref13.props;
-              _context.next = 4;
-              return dispatch('block_createBlockExitWith', {
-                props: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, props), {}, {
-                  default: true
-                })
-              });
-
-            case 4:
-              return _context.abrupt("return", _context.sent);
-
-            case 5:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  },
-  block_createBlockExitWith: function block_createBlockExitWith(_ref14, _ref15) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var dispatch, commit, state, props, resource;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              dispatch = _ref14.dispatch, commit = _ref14.commit, state = _ref14.state;
-              props = _ref15.props;
-              _context2.next = 4;
-              return dispatch('resource_createWith', {
-                props: {
-                  uuid: new IdGeneratorUuidV4_default.a().generate()
-                }
-              });
-
-            case 4:
-              resource = _context2.sent;
-              commit('resource_add', {
-                resource: resource
-              });
-              return _context2.abrupt("return", Object(objectSpread2["a" /* default */])({}, Object(lodash["defaults"])(props, {
-                label: resource.uuid,
-                tag: '',
-                config: {},
-                destinationBlock: undefined
-              })));
-
-            case 7:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }))();
-  },
-  block_updateBlockExitWith: function block_updateBlockExitWith(_ref16, _ref17) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-      var dispatch, commit, state, blockId, exitId, _ref17$props, test, tag;
-
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              dispatch = _ref16.dispatch, commit = _ref16.commit, state = _ref16.state;
-              blockId = _ref17.blockId, exitId = _ref17.exitId, _ref17$props = _ref17.props, test = _ref17$props.test, tag = _ref17$props.tag;
-              //TODO - handle other props apart from test
-              commit('block_setExitTag', {
-                blockId: blockId,
-                exitId: exitId,
-                value: tag
-              });
-              commit('block_setExitTest', {
-                blockId: blockId,
-                exitId: exitId,
-                value: test
-              });
-
-            case 4:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }))();
-  },
-  block_swapBlockExitDestinationBlockIds: function block_swapBlockExitDestinationBlockIds(_ref18, _ref19) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-      var commit, state, first, second, firstBlock, secondBlock, _findBlockExitWith, firstDestinationBlockId, _findBlockExitWith2, secondDestinationBlockId;
-
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
-        while (1) {
-          switch (_context4.prev = _context4.next) {
-            case 0:
-              commit = _ref18.commit, state = _ref18.state;
-              first = _ref19.first, second = _ref19.second;
-
-              if (!(!first || !second)) {
-                _context4.next = 4;
-                break;
-              }
-
-              throw new dist["ValidationException"]("Unable to swap destinationBlockId on null: ".concat(JSON.stringify({
-                first: first,
-                second: second
-              })));
-
-            case 4:
-              firstBlock = Object(dist["findBlockOnActiveFlowWith"])(first.blockId, state);
-              secondBlock = Object(dist["findBlockOnActiveFlowWith"])(second.blockId, state);
-              _findBlockExitWith = Object(dist["findBlockExitWith"])(first.exitId, firstBlock), firstDestinationBlockId = _findBlockExitWith.destinationBlock;
-              _findBlockExitWith2 = Object(dist["findBlockExitWith"])(second.exitId, secondBlock), secondDestinationBlockId = _findBlockExitWith2.destinationBlock; // todo: this works only when the exit we're targetting is empty
-              // todo: blah --- a repaint from HMR redraws it correctly -- why?!
-              // todo: blah --- a repaint from HMR also draws an additional exit :( Is there a cache break on connection key we need to leverage here?
-
-              commit('block_setBlockExitDestinationBlockId', {
-                blockId: second.blockId,
-                exitId: second.exitId,
-                destinationBlockId: firstDestinationBlockId
-              });
-              commit('block_setBlockExitDestinationBlockId', {
-                blockId: first.blockId,
-                exitId: first.exitId,
-                destinationBlockId: secondDestinationBlockId
-              });
-
-            case 10:
-            case "end":
-              return _context4.stop();
-          }
-        }
-      }, _callee4);
-    }))();
-  }
-};
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.for-each.js
-var es_array_for_each = __webpack_require__("4160");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.index-of.js
-var es_array_index_of = __webpack_require__("c975");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.reduce.js
-var es_array_reduce = __webpack_require__("13d5");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.some.js
-var es_array_some = __webpack_require__("45fc");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.splice.js
-var es_array_splice = __webpack_require__("a434");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.values.js
-var es_object_values = __webpack_require__("07ac");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.for-each.js
-var web_dom_collections_for_each = __webpack_require__("159b");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.js
-var es_symbol = __webpack_require__("a4d3");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.keys.js
-var es_object_keys = __webpack_require__("b64b");
-
-// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
-
-
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js
-
-
-
-function _objectWithoutProperties(source, excluded) {
-  if (source == null) return {};
-  var target = _objectWithoutPropertiesLoose(source, excluded);
-  var key, i;
-
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-
-  return target;
-}
-// EXTERNAL MODULE: external {"commonjs":"vue","commonjs2":"vue","root":"Vue"}
-var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
-var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
-
-// EXTERNAL MODULE: ./node_modules/moment/moment.js
-var moment = __webpack_require__("c1df");
-var moment_default = /*#__PURE__*/__webpack_require__.n(moment);
-
-// EXTERNAL MODULE: ./src/store/flow/resource.ts + 1 modules
-var flow_resource = __webpack_require__("393e");
-
-// CONCATENATED MODULE: ./src/store/flow/flow.ts
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var flow_getters = {
-  activeFlow: function activeFlow(state) {
-    return state.flows.length && Object(dist["getActiveFlowFrom"])(state);
-  },
-  hasTextMode: function hasTextMode(state, getters) {
-    return [dist["SupportedMode"].USSD, dist["SupportedMode"].SMS].some(function (mode) {
-      return Object(lodash["includes"])(getters.activeFlow.supportedModes || [], mode);
-    });
-  },
-  hasVoiceMode: function hasVoiceMode(state, getters) {
-    return Object(lodash["includes"])(getters.activeFlow.supportedModes || [], dist["SupportedMode"].IVR);
-  }
-};
-var flow_mutations = {
-  flow_addBlock: function flow_addBlock(state, _ref) {
-    var flowId = _ref.flowId,
-        block = _ref.block;
-
-    if (block == null) {
-      throw new dist["ValidationException"]('Unable to add null block to flow');
-    }
-
-    var flow = Object(dist["findFlowWith"])(flowId || state.firstFlowId || '', state);
-    var length = flow.blocks.push(block);
-
-    if (length === 1) {
-      flow.firstBlockId = block.uuid;
-    }
-  },
-  flow_removeBlock: function flow_removeBlock(state, _ref2) {
-    var flowId = _ref2.flowId,
-        blockId = _ref2.blockId;
-    var flow = Object(dist["findFlowWith"])(flowId || state.firstFlowId || '', state);
-    var block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
-
-    if (block == null) {
-      throw new dist["ValidationException"]('Unable to delete block absent from flow');
-    }
-
-    var blocks = flow.blocks;
-    blocks.splice(blocks.indexOf(block), 1); // clean up stale references
-    // 1. flow.firstBlockId
-    // 2. flow.exitBlockId
-    // 3. flow.blocks.*.exits.*.destinationBlock
-    // 4. activeBlockId (we should likely trail a ghost of previous selection and select that one next)
-    // todo: convert this whole operation to an ActionTree member
-    // todo: use mutations for these:
-
-    if (flow.firstBlockId === blockId) {
-      flow.firstBlockId = ''; // todo: make this optional for builder
-    }
-
-    if (flow.exitBlockId === blockId) {
-      flow.exitBlockId = undefined;
-    }
-
-    Object(lodash["forEach"])(blocks, function (_ref3) {
-      var exits = _ref3.exits;
-      var exitsTowardUs = exits.filter(function (e) {
-        return e.destinationBlock === blockId;
-      });
-      Object(lodash["forEach"])(exitsTowardUs, function (e) {
-        return e.destinationBlock = undefined;
-      });
-    });
-    this.state.builder.activeBlockId = null;
-  },
-  flow_setExitBlockId: function flow_setExitBlockId(state, _ref4) {
-    var flowId = _ref4.flowId,
-        blockId = _ref4.blockId;
-    var flow = Object(dist["findFlowWith"])(flowId, state);
-    var block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
-
-    flow.exitBlockId = block.uuid;
-  },
-  flow_setFirstBlockId: function flow_setFirstBlockId(state, _ref5) {
-    var flowId = _ref5.flowId,
-        blockId = _ref5.blockId;
-    var flow = Object(dist["findFlowWith"])(flowId, state);
-    var block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
-
-    external_commonjs_vue_commonjs2_vue_root_Vue_default.a.set(flow, 'firstBlockId', block.uuid);
-  },
-  flow_setName: function flow_setName(state, _ref6) {
-    var flowId = _ref6.flowId,
-        value = _ref6.value;
-    Object(dist["findFlowWith"])(flowId, state).name = value;
-  },
-  flow_setLabel: function flow_setLabel(state, _ref7) {
-    var flowId = _ref7.flowId,
-        value = _ref7.value;
-    Object(dist["findFlowWith"])(flowId, state).label = value;
-  },
-  flow_setInteractionTimeout: function flow_setInteractionTimeout(state, _ref8) {
-    var flowId = _ref8.flowId,
-        value = _ref8.value;
-    Object(dist["findFlowWith"])(flowId, state).interactionTimeout = value;
-  },
-  flow_setSupportedMode: function flow_setSupportedMode(state, _ref9) {
-    var flowId = _ref9.flowId,
-        value = _ref9.value;
-    var flow = Object(dist["findFlowWith"])(flowId, state);
-    flow.supportedModes = Array.isArray(value) ? value : [value];
-  },
-  flow_setLanguages: function flow_setLanguages(state, _ref10) {
-    var flowId = _ref10.flowId,
-        value = _ref10.value;
-    var flow = Object(dist["findFlowWith"])(flowId, state);
-    flow.languages = Array.isArray(value) ? value : [value];
-  }
-};
-var flow_actions = {
-  // todo: this `flow_` prefix doesn't follow suit
-  //       because it's actually a method on the root state // IContext-ish type
-  //       (same as mutation: `flow_activateBlock` and `flow_add`
-  flow_addBlankFlow: function flow_addBlankFlow(_ref11) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var dispatch, commit, state, flow;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              dispatch = _ref11.dispatch, commit = _ref11.commit, state = _ref11.state;
-              _context.next = 3;
-              return dispatch('flow_createWith', {
-                props: {
-                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate()
-                }
-              });
-
-            case 3:
-              flow = _context.sent;
-              _context.next = 6;
-              return dispatch('flow_add', {
-                flow: flow
-              });
-
-            case 6:
-              return _context.abrupt("return", _context.sent);
-
-            case 7:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  },
-  flow_add: function flow_add(_ref12, _ref13) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var state, flow, length;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              state = _ref12.state;
-              flow = _ref13.flow;
-              length = state.flows.push(flow); // mutating here, because we need to define a root-level scope for this type of action
-
-              if (length === 1) {
-                state.firstFlowId = flow.uuid;
-              }
-
-              return _context2.abrupt("return", flow);
-
-            case 5:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }))();
-  },
-  flow_addBlankBlockByType: function flow_addBlankBlockByType(_ref14, _ref15) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-      var commit, dispatch, state, type, props, block;
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              commit = _ref14.commit, dispatch = _ref14.dispatch, state = _ref14.state;
-              type = _ref15.type, props = _objectWithoutProperties(_ref15, ["type"]);
-              _context3.next = 4;
-              return dispatch("flow/".concat(type, "/createWith"), {
-                props: Object(objectSpread2["a" /* default */])({
-                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate()
-                }, props)
-              }, {
-                root: true
-              });
-
-            case 4:
-              block = _context3.sent;
-              Object(lodash["defaults"])(block, {
-                label: undefined,
-                semanticLabel: undefined
-              });
-              commit('flow_addBlock', {
-                block: block
-              });
-              return _context3.abrupt("return", block);
-
-            case 8:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }))();
-  },
-  flow_addBlankResource: function flow_addBlankResource(_ref16) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-      var dispatch, commit, resource;
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
-        while (1) {
-          switch (_context4.prev = _context4.next) {
-            case 0:
-              dispatch = _ref16.dispatch, commit = _ref16.commit;
-              _context4.next = 3;
-              return dispatch('resource_createWith', {
-                props: {
-                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate()
-                }
-              });
-
-            case 3:
-              resource = _context4.sent;
-              commit('resource_add', {
-                resource: resource
-              });
-              return _context4.abrupt("return", resource);
-
-            case 6:
-            case "end":
-              return _context4.stop();
-          }
-        }
-      }, _callee4);
-    }))();
-  },
-  flow_addBlankResourceForEnabledModesAndLangs: function flow_addBlankResourceForEnabledModesAndLangs(_ref17) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-      var getters, dispatch, commit, values, blankResource;
-      return regeneratorRuntime.wrap(function _callee5$(_context5) {
-        while (1) {
-          switch (_context5.prev = _context5.next) {
-            case 0:
-              getters = _ref17.getters, dispatch = _ref17.dispatch, commit = _ref17.commit;
-              //TODO - figure out of there should only be one value here at first? How would the resource editor change this?
-              //TODO - is this right for setup of languages?
-              //TODO - How will we add more blank values as supported languages are changed in the flow? We should probably also do this for modes rather than doing all possible modes here.
-              values = getters['activeFlow'].languages.reduce(function (memo, language) {
-                //Let's just create all the modes. We might need them but if they are switched off they just don't get used
-                Object.values(dist["SupportedMode"]).forEach(function (mode) {
-                  memo.push({
-                    languageId: language.id,
-                    value: '',
-                    contentType: Object(flow_resource["b" /* discoverContentTypesFor */])(mode),
-                    modes: [mode]
-                  });
-                });
-                return memo;
-              }, []);
-              _context5.next = 4;
-              return dispatch('resource_createWith', {
-                props: {
-                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate(),
-                  values: values
-                }
-              });
-
-            case 4:
-              blankResource = _context5.sent;
-              commit('resource_add', {
-                resource: blankResource
-              });
-              return _context5.abrupt("return", blankResource);
-
-            case 7:
-            case "end":
-              return _context5.stop();
-          }
-        }
-      }, _callee5);
-    }))();
-  },
-  flow_createWith: function flow_createWith(_ref18, _ref19) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-      var dispatch, commit, state, props;
-      return regeneratorRuntime.wrap(function _callee6$(_context6) {
-        while (1) {
-          switch (_context6.prev = _context6.next) {
-            case 0:
-              dispatch = _ref18.dispatch, commit = _ref18.commit, state = _ref18.state;
-              props = _ref19.props;
-              return _context6.abrupt("return", Object(objectSpread2["a" /* default */])({}, Object(lodash["defaults"])(props, {
-                orgId: '',
-                name: '',
-                label: '',
-                lastModified: moment_default()().format('c'),
-                interactionTimeout: 30,
-                platformMetadata: {},
-                supportedModes: DEFAULT_MODES,
-                languages: [],
-                blocks: [],
-                firstBlockId: ''
-              })));
-
-            case 3:
-            case "end":
-              return _context6.stop();
-          }
-        }
-      }, _callee6);
-    }))();
-  },
-  flow_duplicateBlock: function flow_duplicateBlock(_ref20, _ref21) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-      var dispatch, commit, state, flowId, blockId, flow, block, duplicatedBlock;
-      return regeneratorRuntime.wrap(function _callee7$(_context7) {
-        while (1) {
-          switch (_context7.prev = _context7.next) {
-            case 0:
-              dispatch = _ref20.dispatch, commit = _ref20.commit, state = _ref20.state;
-              flowId = _ref21.flowId, blockId = _ref21.blockId;
-              flow = Object(dist["findFlowWith"])(flowId || state.firstFlowId || '', state);
-              block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
-              // Deep clone
-
-              duplicatedBlock = Object(lodash["cloneDeep"])(block); // Set UUIDs, and remove non relevant props
-
-              duplicatedBlock.uuid = new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
-              duplicatedBlock.exits.forEach(function myFunction(item, index, arr) {
-                item.uuid = new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
-                delete item.destinationBlock;
-              });
-
-              if (Object(lodash["has"])(duplicatedBlock.config, 'prompt')) {
-                // @ts-ignore
-                duplicatedBlock.config.prompt = new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
-              } // Set UI positions
-              // TODO - type checking - remove this and resolve the error
-              //@ts-ignore
-
-
-              duplicatedBlock.platform_metadata = {
-                io_viamo: {
-                  uiData: {
-                    xPosition: Object(lodash["get"])(block, 'platform_metadata.io_viamo.uiData.xPosition', 50) + 80,
-                    yPosition: Object(lodash["get"])(block, 'platform_metadata.io_viamo.uiData.yPosition', 50) + 80
-                  }
-                }
-              };
-              commit('flow_addBlock', {
-                block: duplicatedBlock
-              });
-              return _context7.abrupt("return", duplicatedBlock);
-
-            case 11:
-            case "end":
-              return _context7.stop();
-          }
-        }
-      }, _callee7);
-    }))();
-  }
-};
-var DEFAULT_MODES = [dist["SupportedMode"].SMS, dist["SupportedMode"].USSD, dist["SupportedMode"].IVR];
-// CONCATENATED MODULE: ./src/store/flow/index.ts
-
-
-
-
-var stateFactory = function stateFactory() {
-  return {
-    flows: [],
-    resources: [],
-    firstFlowId: null,
-    nestedFlowBlockInteractionIdStack: []
-  };
-};
-var store_flow_getters = Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, flow_getters), block_getters), flow_resource["d" /* getters */]);
-var store_flow_mutations = Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, flow_mutations), mutations), flow_resource["e" /* mutations */]);
-var store_flow_actions = Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, flow_actions), actions), flow_resource["a" /* actions */]);
-var store = {
-  namespaced: true,
-  state: stateFactory,
-  getters: store_flow_getters,
-  mutations: store_flow_mutations,
-  actions: store_flow_actions
-};
-/* harmony default export */ var store_flow = __webpack_exports__["a"] = (store);
-
-/***/ }),
-
 /***/ "9f26":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -67797,10 +67853,11 @@ function bootstrapLegacyGlobalDependencies() {
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ OperationKind; });
+__webpack_require__.d(__webpack_exports__, "d", function() { return /* binding */ store; });
 __webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ createDefaultBlockTypeInstallerFor; });
-__webpack_require__.d(__webpack_exports__, "d", function() { return /* binding */ generateConnectionLayoutKeyFor; });
+__webpack_require__.d(__webpack_exports__, "c", function() { return /* binding */ generateConnectionLayoutKeyFor; });
 
-// UNUSED EXPORTS: stateFactory, getters, mutations, actions, store
+// UNUSED EXPORTS: stateFactory, getters, mutations, actions
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
@@ -67847,6 +67904,9 @@ var es_symbol_iterator = __webpack_require__("d28b");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.from.js
 var es_array_from = __webpack_require__("a630");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
+var es_array_iterator = __webpack_require__("e260");
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
 var es_object_to_string = __webpack_require__("d3b7");
 
@@ -67857,6 +67917,7 @@ var es_string_iterator = __webpack_require__("3ca3");
 var web_dom_collections_iterator = __webpack_require__("ddb0");
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/iterableToArray.js
+
 
 
 
@@ -68373,7 +68434,7 @@ var store = {
   mutations: mutations,
   actions: actions
 };
-/* harmony default export */ var builder = __webpack_exports__["c"] = (store);
+/* harmony default export */ var builder = (store);
 function createDefaultBlockTypeInstallerFor(blockType, storeForBlockType) {
   return function (builder) {
     return builder.$store.hasModule(['flow', blockType]) || builder.$store.registerModule(['flow', blockType], storeForBlockType);
@@ -77308,7 +77369,7 @@ module.exports = function transformData(data, headers, fns) {
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ BuilderCanvasvue_type_script_lang_ts_BuilderCanvas; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/BuilderCanvas.vue?vue&type=template&id=4cc35a95&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/BuilderCanvas.vue?vue&type=template&id=4cc35a95&scoped=true&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.flows.length)?_c('div',{staticClass:"builder-canvas no-select"},_vm._l((_vm.flows[0].blocks),function(block){return _c('block',{key:block.uuid,attrs:{"id":("block/" + (block.uuid)),"block":block,"x":block.platform_metadata.io_viamo.uiData.xPosition,"y":block.platform_metadata.io_viamo.uiData.yPosition}})}),1):_vm._e()}
 var staticRenderFns = []
 
@@ -77336,7 +77397,7 @@ var vuex_esm = __webpack_require__("2f62");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/vue-property-decorator.js
 var vue_property_decorator = __webpack_require__("60a3");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/Block.vue?vue&type=template&id=717a6bb4&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/Block.vue?vue&type=template&id=717a6bb4&
 var Blockvue_type_template_id_717a6bb4_render = function () {
 var _obj;
 var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.hasLayout)?_c('plain-draggable',{staticClass:"block",class:( _obj = {
@@ -77371,7 +77432,7 @@ var es_object_assign = __webpack_require__("cca6");
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __webpack_require__("2ef0");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/PlainDraggable.vue?vue&type=template&id=3b61d02a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/PlainDraggable.vue?vue&type=template&id=3b61d02a&
 var PlainDraggablevue_type_template_id_3b61d02a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._t("default")],2)}
 var PlainDraggablevue_type_template_id_3b61d02a_staticRenderFns = []
 
@@ -80442,7 +80503,7 @@ var dist = __webpack_require__("9300");
 // EXTERNAL MODULE: ./src/store/builder/index.ts + 6 modules
 var builder = __webpack_require__("af98");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/Connection.vue?vue&type=template&id=a2fa48ca&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/Connection.vue?vue&type=template&id=a2fa48ca&
 var Connectionvue_type_template_id_a2fa48ca_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"connection",attrs:{"reposition-hook":_vm.repositionHook}})}
 var Connectionvue_type_template_id_a2fa48ca_staticRenderFns = []
 
@@ -80791,7 +80852,7 @@ var lang = __webpack_require__("3a37");
     }
   }),
   methods: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, {
-    generateConnectionLayoutKeyFor: builder["d" /* generateConnectionLayoutKeyFor */]
+    generateConnectionLayoutKeyFor: builder["c" /* generateConnectionLayoutKeyFor */]
   }), Object(vuex_esm["c" /* mapMutations */])('builder', ['setBlockPositionTo'])), Object(vuex_esm["a" /* mapActions */])('builder', {
     _removeConnectionFrom: 'removeConnectionFrom'
   })), Object(vuex_esm["a" /* mapActions */])('builder', [// ConnectionSourceRelocate
@@ -85642,7 +85703,7 @@ $({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGT
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/TextEditor.vue?vue&type=template&id=4ab294e6&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/TextEditor.vue?vue&type=template&id=4ab294e6&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group"},[_c('label',[_vm._v(_vm._s(_vm.label))]),(_vm.isEditable)?_c('textarea',{staticClass:"form-control",attrs:{"placeholder":_vm.placeholder},domProps:{"value":_vm.value},on:{"keydown":function($event){return _vm.$emit('keydown', $event)},"input":function($event){return _vm.$emit('input', $event.target.value)}}}):_c('p',[_vm._v(" "+_vm._s(_vm.value)+" ")]),_vm._t("default")],2)}
 var staticRenderFns = []
 
@@ -91006,12 +91067,12 @@ module.exports = setData;
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=d987f5c6&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tree-builder-toolbar"},[(_vm.isImporterVisible)?_c('div',{staticClass:"flows-importer alert alert-info"},[_c('h3',[_vm._v(_vm._s(_vm.trans('flow-builder.flow-importer')))]),_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.flow),expression:"flow"}],staticClass:"flow-importer",attrs:{"rows":"15"},domProps:{"value":(_vm.flow)},on:{"input":function($event){if($event.target.composing){ return; }_vm.flow=$event.target.value}}})]):_vm._e(),_c('div',{staticClass:"tree-workspace-panel-heading panel-heading"},[_c('div',{staticClass:"tree-workspace-panel-heading-contents"},[_c('div',{staticClass:"btn-toolbar"},[_c('button',{staticClass:"btn btn-default",class:{active: _vm.isImporterVisible},on:{"click":_vm.toggleImportExport}},[_c('i',{staticClass:"glyphicon glyphicon-chevron-up"}),_vm._v(" "+_vm._s(_vm.trans('flow-builder.import-export'))+" ")]),(_vm.isResourceEditorEnabled)?_c('div',{staticClass:"btn-group"},[_c('router-link',{staticClass:"btn btn-default active",attrs:{"to":_vm.treeViewUrl}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.flow-view'))+" ")]),_c('router-link',{staticClass:"btn btn-default",attrs:{"to":_vm.resourceViewUrl},nativeOn:{"click":function($event){return _vm.handleResourceViewerSelected($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.resource-view'))+" ")])],1):_vm._e(),(_vm.ui.isEditableLocked)?[(_vm.isFeatureViewResultsEnabled)?_c('a',{staticClass:"btn btn-default",attrs:{"href":_vm.viewResultsUrl,"title":_vm.trans('flow-builder.view-results')}},[_c('span',{staticClass:"glyphicon glyphicon-signal"})]):_vm._e()]:_c('a',{staticClass:"btn btn-default",class:{active: _vm.ui.isEditable},attrs:{"href":_vm.editOrViewTreeJsUrl,"title":_vm.trans('flow-builder.click-to-toggle-editing')},on:{"click":_vm.attemptSaveTree}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.edit-flow'))+" ")]),(!_vm.ui.isEditable && _vm.isFeatureTreeDuplicateEnabled)?_c('a',{staticClass:"btn btn-default",attrs:{"href":_vm.duplicateTreeLink,"title":_vm.trans('flow-builder.duplicate-entire-flow')}},[_c('span',{staticClass:"glyphicon glyphicon-tags"})]):_vm._e(),(_vm.ui.isEditable)?_c('div',{staticClass:"btn-group"},[_c('button',{staticClass:"btn btn-default dropdown-toggle",attrs:{"type":"button","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.add-block'))+" "),_c('span',{staticClass:"caret"})]),_c('ul',{staticClass:"dropdown-menu",attrs:{"role":"menu"}},[_vm._l((_vm.rootBlockClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootBlockClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']},on:{"click":function($event){$event.preventDefault();return _vm.handleAddBlockByTypeSelected(classDetails)}}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]}),(!_vm.isEmpty(_vm.rootDropdownClassesToDisplay))?[_c('li',{staticClass:"divider"}),_c('li',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.branching'))+" ")]),_c('ul',{staticClass:"dropdown-menu"},[_vm._l((_vm.rootDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootDropdownClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]})],2)])]:_vm._e(),(!_vm.isEmpty(_vm.advancedDropdownClassesToDisplay))?[_c('li',{staticClass:"divider"}),_c('li',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.advanced'))+" ")]),_c('ul',{staticClass:"dropdown-menu"},[_vm._l((_vm.advancedDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.advancedDropdownClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]})],2)])]:_vm._e()],2)]):_vm._e(),(_vm.ui.isEditable)?_c('button',{staticClass:"btn btn-default tree-duplicate-block",attrs:{"type":"button","disabled":!_vm.activeBlockId},on:{"click":function($event){$event.preventDefault();return _vm.handleDuplicateActivatedBlockTriggered($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.duplicate'))+" ")]):_vm._e(),(_vm.ui.isEditable)?_c('button',{staticClass:"btn btn-default tree-delete-block",attrs:{"type":"button","disabled":!_vm.activeBlockId},on:{"click":function($event){$event.preventDefault();return _vm.handleRemoveActivatedBlockTriggered($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.delete'))+" ")]):_vm._e(),_c('div',{staticClass:"btn-group pull-right"},[(_vm.ui.isEditable && _vm.isFeatureTreeSaveEnabled)?_c('button',{staticClass:"btn btn-primary tree-save-tree",attrs:{"type":"button","title":_vm.trans('flow-builder.save-changes-to-the-flow'),"disabled":_vm.isTreeSaving || !_vm.hasChanges},on:{"click":_vm.attemptSaveTree}},[_vm._v(" "+_vm._s(_vm.saveButtonText)+" ")]):_vm._e(),(_vm.isFeatureTreeSendEnabled)?[(_vm.can('edit-content'))?_c('a',{staticClass:"btn btn-success",attrs:{"href":_vm.publishVersionUrl,"disabled":_vm.isTreeSaving || !_vm.isTreeValid,"title":_vm._f("trans")(_vm.isTreeValid ? 'flow-builder.publish-this-version-of-the-flow' : 'flow-builder.fix-validation-errors-before-publishing')}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.publish'))+" ")]):_vm._e(),(_vm.can('send-outgoing-call'))?_c('a',{staticClass:"btn btn-success tree-send-tree-call",attrs:{"href":_vm.sendOutgoingCallUrl,"disabled":_vm.isTreeSaving || !_vm.isTreeValid,"title":_vm.trans('flow-builder.schedule-and-send-an-outgoing-call')}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.send'))+" ")]):_vm._e()]:_vm._e()],2)],2)])])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=2e2fbf45&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tree-builder-toolbar"},[(_vm.isImporterVisible)?_c('div',{staticClass:"flows-importer alert alert-info"},[_c('h3',[_vm._v(_vm._s(_vm.trans('flow-builder.flow-importer')))]),_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.flow),expression:"flow"}],staticClass:"flow-importer",attrs:{"rows":"15"},domProps:{"value":(_vm.flow)},on:{"input":function($event){if($event.target.composing){ return; }_vm.flow=$event.target.value}}})]):_vm._e(),_c('div',{staticClass:"tree-workspace-panel-heading panel-heading"},[_c('div',{staticClass:"tree-workspace-panel-heading-contents"},[_c('div',{staticClass:"btn-toolbar"},[_c('button',{staticClass:"btn btn-default",class:{active: _vm.isImporterVisible},on:{"click":_vm.toggleImportExport}},[_c('i',{staticClass:"glyphicon glyphicon-chevron-up"}),_vm._v(" "+_vm._s(_vm.trans('flow-builder.import-export'))+" ")]),(_vm.isResourceEditorEnabled)?_c('div',{staticClass:"btn-group"},[_c('router-link',{staticClass:"btn btn-default active",attrs:{"to":_vm.treeViewUrl}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.flow-view'))+" ")]),_c('router-link',{staticClass:"btn btn-default",attrs:{"to":_vm.resourceViewUrl},nativeOn:{"click":function($event){return _vm.handleResourceViewerSelected($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.resource-view'))+" ")])],1):_vm._e(),(!_vm.ui.isEditableLocked)?_c('a',{staticClass:"btn btn-default",class:{active: _vm.ui.isEditable},attrs:{"href":_vm.editOrViewTreeJsUrl,"title":_vm.trans('flow-builder.click-to-toggle-editing')},on:{"click":_vm.attemptSaveTree}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.edit-flow'))+" ")]):_vm._e(),(_vm.ui.isEditable)?_c('div',{staticClass:"btn-group"},[_c('button',{staticClass:"btn btn-default dropdown-toggle",attrs:{"type":"button","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.add-block'))+" "),_c('span',{staticClass:"caret"})]),_c('ul',{staticClass:"dropdown-menu",attrs:{"role":"menu"}},[_vm._l((_vm.rootBlockClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootBlockClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']},on:{"click":function($event){$event.preventDefault();return _vm.handleAddBlockByTypeSelected(classDetails)}}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]}),(!_vm.isEmpty(_vm.rootDropdownClassesToDisplay))?[_c('li',{staticClass:"divider"}),_c('li',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.branching'))+" ")]),_c('ul',{staticClass:"dropdown-menu"},[_vm._l((_vm.rootDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootDropdownClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]})],2)])]:_vm._e(),(!_vm.isEmpty(_vm.advancedDropdownClassesToDisplay))?[_c('li',{staticClass:"divider"}),_c('li',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.advanced'))+" ")]),_c('ul',{staticClass:"dropdown-menu"},[_vm._l((_vm.advancedDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.advancedDropdownClassesToDisplay, className))?_c('li',{key:className + 'divider',staticClass:"divider"}):_vm._e(),_c('li',{key:className + 'item'},[(_vm.isBlockAvailableByBlockClass[className])?_c('a',{staticClass:"tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()])]})],2)])]:_vm._e()],2)]):_vm._e(),(_vm.ui.isEditable)?_c('button',{staticClass:"btn btn-default tree-duplicate-block",attrs:{"type":"button","disabled":!_vm.activeBlockId},on:{"click":function($event){$event.preventDefault();return _vm.handleDuplicateActivatedBlockTriggered($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.duplicate'))+" ")]):_vm._e(),(_vm.ui.isEditable)?_c('button',{staticClass:"btn btn-default tree-delete-block",attrs:{"type":"button","disabled":!_vm.activeBlockId},on:{"click":function($event){$event.preventDefault();return _vm.handleRemoveActivatedBlockTriggered($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.delete'))+" ")]):_vm._e(),_vm._t("extra-buttons"),_c('div',{staticClass:"btn-group pull-right"},[(_vm.ui.isEditable && _vm.isFeatureTreeSaveEnabled)?_c('button',{staticClass:"btn btn-primary tree-save-tree",attrs:{"type":"button","title":_vm.trans('flow-builder.save-changes-to-the-flow'),"disabled":_vm.isTreeSaving || !_vm.hasChanges},on:{"click":_vm.attemptSaveTree}},[_vm._v(" "+_vm._s(_vm.saveButtonText)+" ")]):_vm._e(),_vm._t("right-grouped-buttons")],2)],2)])])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=d987f5c6&
+// CONCATENATED MODULE: ./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=2e2fbf45&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
 var objectSpread2 = __webpack_require__("5530");
@@ -91152,7 +91213,7 @@ function convertKeysCase(x) {
       var _ui = _ref2.trees.ui;
       return _ui;
     }
-  })), Object(vuex_esm["b" /* mapGetters */])('flow', ['activeFlow'])), Object(vuex_esm["d" /* mapState */])('flow', ['flows', 'resources'])), Object(vuex_esm["d" /* mapState */])('builder', ['activeBlockId'])), Object(vuex_esm["b" /* mapGetters */])(['isEditable', 'isTreeSaving', 'isBlockAvailableByBlockClass', 'hasChanges', 'isTreeValid', 'selectedBlock', 'isFeatureTreeSaveEnabled', 'isFeatureTreeSendEnabled', 'isFeatureTreeDuplicateEnabled', 'isFeatureViewResultsEnabled', 'isFeatureUpdateInteractionTotalsEnabled'])), {}, {
+  })), Object(vuex_esm["b" /* mapGetters */])('flow', ['activeFlow'])), Object(vuex_esm["d" /* mapState */])('flow', ['flows', 'resources'])), Object(vuex_esm["d" /* mapState */])('builder', ['activeBlockId'])), Object(vuex_esm["b" /* mapGetters */])(['isEditable', 'isTreeSaving', 'isBlockAvailableByBlockClass', 'hasChanges', 'isTreeValid', 'selectedBlock', 'isFeatureTreeSaveEnabled', 'isFeatureTreeSendEnabled', 'isFeatureTreeDuplicateEnabled', 'isFeatureViewResultsEnabled', 'isFeatureUpdateInteractionTotalsEnabled', 'isResourceEditorEnabled'])), {}, {
     flow: {
       get: function get() {
         var flows = this.flows,
@@ -91165,9 +91226,6 @@ function convertKeysCase(x) {
       set: function set(value) {
         this.importFlowsAndResources(convertKeysCase(JSON.parse(value), 'CAMEL', ['platform_metadata', 'io_viamo']));
       }
-    },
-    isResourceEditorEnabled: function isResourceEditorEnabled() {
-      return false;
     },
     jsKey: function jsKey() {
       return lodash_default.a.get(this.selectedBlock, 'jsKey');
@@ -91692,12 +91750,12 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0297a3-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=template&id=a8be92b8&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"b019c1b8-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=template&id=ca0d2cec&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"interaction-designer-contents"},[_c('tree-builder-toolbar'),_c('div',{staticClass:"tree-sidebar-container"},[(_vm.activeBlock)?_c('div',{staticClass:"tree-sidebar",class:[("category-" + (_vm.blockClasses[_vm.activeBlock.type].category))]},[_c('div',{staticClass:"tree-sidebar-edit-block",attrs:{"data-block-type":_vm.activeBlock && _vm.activeBlock.type,"data-for-block-id":_vm.activeBlock && _vm.activeBlock.uuid}},[(_vm.activeBlock)?_c(("Flow" + (_vm.activeBlock.type.replace(/\\/g, ''))),{tag:"div",attrs:{"block":_vm.activeBlock,"flow":_vm.activeFlow}}):_vm._e()],1)]):_c('div',{staticClass:"tree-sidebar"},[_c('div',{staticClass:"tree-sidebar-edit-block"},[_c('flow-editor',{attrs:{"flow":_vm.activeFlow}})],1)])]),_c('div',{staticClass:"tree-contents",attrs:{"x-style":{'min-height': (_vm.designerWorkspaceHeight + "px")}}},[_c('builder-canvas',{nativeOn:{"click":function($event){return _vm.handleCanvasSelected($event)}}})],1)],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/InteractionDesigner.vue?vue&type=template&id=a8be92b8&
+// CONCATENATED MODULE: ./src/views/InteractionDesigner.vue?vue&type=template&id=ca0d2cec&
 
 // EXTERNAL MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=script&lang=js&
 var InteractionDesignervue_type_script_lang_js_ = __webpack_require__("7865");
