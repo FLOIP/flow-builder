@@ -1,48 +1,47 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import LocationResponseBlock from '@/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue'
-import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
+import PhotoResponseBlock from '@/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
-import locationResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
+import photoResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 
-import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from '@/stories/story-utils/storeSetup'
+import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 
 Vue.use(Vuex)
 
 const flowVuexNamespace = namespace('flow')
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 export default {
-  title: 'SmartDevices/Location Response Block',
+  title: 'SmartDevices/Photo Response Block',
   // Our exports that end in "Data" are not stories.
   excludeStories: /.*Data$/,
 }
 
-const LocationResponseBlockTemplate = `
+const PhotoResponseBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <location-response-block 
+    <photo-response-block 
       :block="activeBlock" 
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
 
 const BaseOptions = {
-  components: {LocationResponseBlock, FlowBuilderSidebarEditorContainer},
-  template: LocationResponseBlockTemplate,
+  components: {PhotoResponseBlock, FlowBuilderSidebarEditorContainer},
+  template: PhotoResponseBlockTemplate,
 }
 
-// default location-response block state
+// default photo-response block state
 @Component<any>(
     {
         ...BaseOptions,
         store: new Vuex.Store<IRootState>(store),
         async mounted() {
-            await baseMounted.bind(this)(BLOCK_TYPE, locationResponseBlockStore)
+            await baseMounted.bind(this)(BLOCK_TYPE, photoResponseBlockStore)
         },
     }
 )
@@ -54,11 +53,9 @@ export const Default = () => (CurrentClass1)
     ...BaseOptions,
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
-        const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, locationResponseBlockStore)
+        const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, photoResponseBlockStore)
 
         this.setDescription(blockId)
-        this.setAccuracyThreshold({blockId, value:10.3})
-        this.setAccuracyTimeout({blockId, value:145})
     },
 })
 class CurrentClass2 extends BaseMountedVueClass {
@@ -67,9 +64,6 @@ class CurrentClass2 extends BaseMountedVueClass {
         this.block_setLabel({blockId: blockId, value: "A Label"})
         this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
     }
-
-    @blockVuexNamespace.Action setAccuracyThreshold:any
-    @blockVuexNamespace.Action setAccuracyTimeout:any
 
     @flowVuexNamespace.Mutation block_setName:any
     @flowVuexNamespace.Mutation block_setLabel:any
@@ -83,7 +77,7 @@ export const ExistingDataPreFilled = () => (CurrentClass2)
         ...BaseOptions,
         store: new Vuex.Store<IRootState>(store),
         async mounted() {
-            const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, locationResponseBlockStore)
+            const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, photoResponseBlockStore)
 
             this.block_setName({blockId: blockId, value: "A Name"})
             this.block_setLabel({blockId: blockId, value: "A Label"})

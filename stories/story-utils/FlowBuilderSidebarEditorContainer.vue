@@ -24,18 +24,28 @@
   import Vue from 'vue'
   import {Component, Prop} from 'vue-property-decorator'
 
-import FlowBuilderContainer from "@/stories/story-utils/FlowBuilderContainer.vue";
-import {IFlow, IBlock} from '@floip/flow-runner'
+  import {
+    Mutation,
+  } from 'vuex-class'
 
-@Component({
-  components: {
-    FlowBuilderContainer
+  import FlowBuilderContainer from "./FlowBuilderContainer.vue";
+  import {IFlow, IBlock} from '@floip/flow-runner'
+
+  @Component({
+    components: {
+      FlowBuilderContainer
+    }
+  })
+  export class FlowBuilderSidebarEditorContainer extends Vue {
+    @Prop({default: null}) readonly block!: IBlock
+    @Prop({default: null}) readonly flow!: IFlow
+    created() {
+
+      this.configure({appConfig: {}, builderConfig: {}});
+
+    }
+    @Mutation configure
   }
-})
-export class FlowBuilderSidebarEditorContainer extends Vue {
-  @Prop({default: null}) readonly block!: IBlock
-  @Prop({default: null}) readonly flow!: IFlow
-}
 
-export default FlowBuilderSidebarEditorContainer
+  export default FlowBuilderSidebarEditorContainer
 </script>

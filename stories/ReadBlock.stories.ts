@@ -4,13 +4,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import ReadBlock from '@/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue'
-import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import readBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
 
-import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from '@/stories/story-utils/storeSetup'
+import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 

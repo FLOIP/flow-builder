@@ -1,16 +1,15 @@
 import Vue from 'vue'
-import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
+import Vuex from 'vuex'
 import {Component} from 'vue-property-decorator'
 
-import { baseMounted, BaseMountedVueClass } from '@/stories/story-utils/storeSetup'
+import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
 
 Vue.use(Vuex)
 
-import SelectOneResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
-import FlowBuilderSidebarEditorContainer from '@/stories/story-utils/FlowBuilderSidebarEditorContainer.vue'
+import selectManyResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {IRootState, store} from '@/store'
-import selectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
-
+import selectManyStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {namespace} from 'vuex-class'
 import {get} from 'lodash'
 
@@ -24,30 +23,31 @@ import {
 import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
 
 export default {
-  component: SelectOneResponseBlock,
-  title: 'MobilePrimitives/SelectOneResponseBlock',
+  component: selectManyResponseBlock,
+  title: 'MobilePrimitives/selectManyResponseBlock',
   store: new Vuex.Store({}),
 }
 
-const SelectOneResponseBlockTemplate = `
+const SelectManyTemplate = `
     <flow-builder-sidebar-editor-container :block="activeBlock">
-      <select-one-response-block
+      <select-many-response-block
           :block="activeBlock"
           :flow="activeFlow"/>
     </flow-builder-sidebar-editor-container>
   `
 
 @Component<any>({
-  template: SelectOneResponseBlockTemplate,
+  template: SelectManyTemplate,
+  
   components: {
     FlowBuilderSidebarEditorContainer,
-    SelectOneResponseBlock,
+    selectManyResponseBlock,
   },
 
   store: new Vuex.Store<IRootState>(store),
 
   async mounted() {
-    await baseMounted.bind(this)(BLOCK_TYPE, selectOneStore)
+    await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
   },
 })
 class InFlowBuilderClass extends BaseMountedVueClass {}
@@ -57,17 +57,16 @@ export const InFlowBuilder = () => {
 }
 
 @Component<any>({
-  template: SelectOneResponseBlockTemplate,
-  
+  template: SelectManyTemplate,
   components: {
     FlowBuilderSidebarEditorContainer,
-    SelectOneResponseBlock,
+    selectManyResponseBlock,
   },
 
   store: new Vuex.Store<IRootState>(store),
 
   async mounted() {
-    const {block, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectOneStore)
+    const {block, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
     flow.supportedModes = [SupportedMode.IVR]
   },
 
@@ -78,17 +77,17 @@ export const IvrOnly = () => {
   return IvrOnlyClass
 }
 @Component<any>({
-  template: SelectOneResponseBlockTemplate,
+  template: SelectManyTemplate,
   
   components: {
     FlowBuilderSidebarEditorContainer,
-    SelectOneResponseBlock,
+    selectManyResponseBlock,
   },
 
   store: new Vuex.Store<IRootState>(store),
 
   async mounted() {
-    const {block, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectOneStore)
+    const {block, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
     flow.languages = [{id: '1', name: 'English'}, {id: '2', name: 'French'}] // mutation
   },
 
@@ -99,17 +98,17 @@ export const MoreLanguages = () => {
   return MoreLanguagesClass
 }
 @Component<any>({
-  template: SelectOneResponseBlockTemplate,
+  template: SelectManyTemplate,
   
   components: {
     FlowBuilderSidebarEditorContainer,
-    SelectOneResponseBlock,
+    selectManyResponseBlock,
   },
 
   store: new Vuex.Store<IRootState>(store),
 
   async mounted() {
-    const {block: {uuid: blockId}, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectOneStore)
+    const {block: {uuid: blockId}, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
     this.block_setName({blockId: blockId, value: "A Name"})
     this.block_setLabel({blockId: blockId, value: "A Label"})
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})

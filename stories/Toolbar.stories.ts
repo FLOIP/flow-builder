@@ -3,7 +3,7 @@ import Vue from 'vue'
 import {
     Action, Mutation
 } from 'vuex-class'
-import FlowBuilderContainer from "@/stories/story-utils/FlowBuilderContainer.vue";
+import FlowBuilderContainer from "./story-utils/FlowBuilderContainer.vue";
 import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
 import TreeBuilderToolbar from "@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue";
@@ -34,12 +34,14 @@ const BaseOptions = {
   template: ToolbarTemplate,
   store: new Vuex.Store<IRootState>(store),
   created() {
-      this.initializeTreeModel()
-  },
+    this.configure({appConfig: {}, builderConfig: {}});
+    this.initializeTreeModel()
+  }
 }
 class BaseMountedClass extends Vue {
   @Action initializeTreeModel: any
 
+  @Mutation configure
   @Mutation updateIsEditable: any
   @Mutation addEnabledFeature: any
   @Mutation removeEnabledFeature: any
