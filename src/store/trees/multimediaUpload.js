@@ -92,25 +92,53 @@ export default {
           commit('setUploadStatusFor', {file, key, progress: 0, status: Statuses.UNINITIALIZED, message: null, cancel}))
 
       uploader.on('fileProgress', (file, e) => {
-        dispatch('showAppMessageFor', {message: `Upload in progress... ${_.parseInt(file.progress() * 100)}%`}, {root: true})
-        commit('setUploadStatusFor', {file, key, progress: file.progress(), status: Statuses.UPLOADING, message: null, cancel})
+        // TODO: enable showAppMessageFor and use it as follow
+        // dispatch('showAppMessageFor', {message: `Upload in progress... ${_.parseInt(file.progress() * 100)}%`}, {root: true})
+        console.debug(`Upload in progress... ${_.parseInt(file.progress() * 100)}%`)
+        commit('setUploadStatusFor', {
+          file,
+          key,
+          progress: file.progress(),
+          status: Statuses.UPLOADING,
+          message: null,
+          cancel
+        })
       })
 
       uploader.on('fileSuccess', (file, json) => {
-        dispatch('showAppMessageFor', {message: 'Upload successful!', isComplete: true}, {root: true})
-        commit('setUploadStatusFor', {file, key, progress: 1, status: Statuses.SUCCESS, message: null, cancel})
+        // TODO: enable showAppMessageFor and use it as follow
+        // dispatch('showAppMessageFor', {message: 'Upload successful!', isComplete: true}, {root: true})
+        console.debug('Upload successful!')
+        commit('setUploadStatusFor', {
+          file,
+          key,
+          progress: 1,
+          status: Statuses.SUCCESS,
+          message: null,
+          cancel
+        })
         // uploader.cancel() // clear for next batch
       })
 
       uploader.on('error', (json, file) => {
-        const {status_description} = JSON.parse(json) || {}
-        dispatch('showAppMessageFor', {message: status_description, isComplete: true}, {root: true})
-        commit('setUploadStatusFor', {file, key, status: Statuses.FAILURE, message: status_description, cancel})
+        const { status_description } = JSON.parse(json) || {}
+        // TODO: enable showAppMessageFor and use it as follow
+        // dispatch('showAppMessageFor', {message: status_description, isComplete: true}, {root: true})
+        console.debug(`Upload has error ${status_description}`)
+        commit('setUploadStatusFor', {
+          file,
+          key,
+          status: Statuses.FAILURE,
+          message: status_description,
+          cancel
+        })
         // uploader.cancel() // clear for retry
       })
 
       uploader.upload()
-      dispatch('showAppMessageFor', {message: 'Upload in progress...'}, {root: true})
+      // TODO: enable showAppMessageFor and use it as follow
+      // dispatch('showAppMessageFor', {message: 'Upload in progress...'}, {root: true})
+      console.debug('Upload in progress...')
     },
   },
 }
