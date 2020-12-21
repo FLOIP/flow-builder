@@ -54,10 +54,7 @@
   // import * as BlockTypes from './block-types'
   // import JsPlumbBlock from './JsPlumbBlock'
 
-  import treesStore from '@/store/trees' // needs to be registered separately because it doesn't currently support namespacing
-  import flowStore from '@/store/flow'
-  import builderStore from '@/store/builder'
-
+  import {store} from '@/store'
 
   // import TreeEditor from './TreeEditor'
   // import TreeViewer from './TreeViewer'
@@ -70,7 +67,22 @@
   // import '../TreeDiffLogger'
 
   export default {
-    props: ['id', 'mode'],
+    props: { 
+      id: {type: String}, 
+      mode: {type: String}, 
+      appConfig: {
+        type: Object,
+        default: function() {
+          return {}
+        }
+      },
+      builderConfig: {
+        type: Object,
+        default: function() {
+          return {}
+        }
+      }
+    },
 
     mixins: [lang],
 
@@ -162,14 +174,11 @@
 
     created() {
       const {$store} = this
-      const modules = {
-        // `treesStore` was originally implemented globally, expecting it's state at root
-        ...treesStore.modules,
-        flow: flowStore,
-        builder: builderStore}
 
-      forEach(modules, (v, k) =>
+      forEach(store.modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
+
+      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
 
       global.builder = this // initialize global reference for legacy + debugging
 
@@ -193,7 +202,7 @@
 		},
 
     methods: {
-        ...mapMutations(['deselectBlocks']),
+        ...mapMutations(['deselectBlocks', 'configure']),
         ...mapMutations('builder', ['activateBlock']),
 
         ...mapActions([
@@ -257,8 +266,6 @@
 	}
 </script>
 
-<style src="bootstrap/dist/css/bootstrap.css"></style>
-<style src="bootstrap/dist/css/bootstrap-theme.css"></style>
 <!--<style src="../css/voto3.css"></style>-->
 <!--<style src="../css/InteractionDesigner.css"></style>-->
 
@@ -272,7 +279,7 @@
   $toolbar-height: 56px;
   $sidebar-width: 365px;
 
-  body {
+  .interaction-designer-contents {
     background:
       linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
       linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center, $dot-color;
@@ -282,7 +289,6 @@
   .tree-sidebar-container {
     position: fixed;
     right: 0;
-    top: 0;
     z-index: 2*10;
 
     height: 100vh;
@@ -316,8 +322,6 @@
   .tree-builder-toolbar {
     position: fixed;
     z-index: 3*10;
-    left: 0;
-    top: 0;
 
     width: 100vw;
 

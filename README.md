@@ -66,6 +66,11 @@ Edits using the builder will then be reflected in the flow JSON in this panel an
 
 To export, simply copy the json in this panel to a file. 
 
+## Storybook
+
+1. You only need to serve it with `yarn storybook:serve`
+2. Then follow the provided url, by default it should be `http://localhost:6006/` (but in case the port `6006` is non-available, it may use different one)
+
 ## An explanation of app.config.json vs builder.config.json
 
 `app.config.json` is intended to support the configuration needed when integrating this flow building ui into a larger platform or application while `builder.config.json` is intended to configure those features which are core to the flow builder - the blocks enabled, languages or content types supported etc.
@@ -80,5 +85,4 @@ More detail to follow.
 - More fully featured resource editing including audio upload
 - A way to add to the supportable languages
 - Guidance for integration into a permissions system for flow editing/viewing
-- Fix and reenable storybook examples
 - Add regression testing pipeline for storyshots

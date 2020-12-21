@@ -20,48 +20,38 @@ class ValidationError extends Error {
   }
 }
 
+
 export default {
   modules: {flights},
 
   state() {
-    const {
-      app,
-      __AUDIO__: audio,
-      __TREES_UI__: ui,
-    } = bootstrapLegacyGlobalDependencies()
-
-    // todo: audio recording feature is likely to be unavailable for standalone app - How do we want to isolate these?
-    set(app, 'audioChoice.audioLibrary', audio.library)
-    set(app, 'audioChoice.recorderList', audio.recording.recorders)
-
-    lodash.defaultsDeep(ui, {
-      audioFiles: audio.library,
-      callCenterQueues: null,
-      previousTreeJson: JSON.stringify(ui.originalTreeJson),
-      /** @note - `validationResults` has two states:
-       *            (1) `null` - indicating we have yet to save the tree since loading the page
-       *            (2) non-null or `[]` - indicating the tree has been saved and has gone through server-side validation */
-      validationResults: ui.originalValidationResults, // todo: this is an empty list on page load, and shouldn't be?
-      originalTreeJsonValidationResults: null,
-      selectedBlock: null,
-      designerWorkspaceHeight: 1400,
-      currentZoom: 1,
-      batchMatchAudio: {
-        results: null,
-        status: 0,
-        message: null,
-        isFailure: false,
-        isPending: false,
-        isComplete: false
-      },
-      treeUpdateConflict: null,
-      enabledFeatures: [
-          /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
-      ],
-    })
     return {
       tree: null,
-      ui,
+      ui: {
+        audioFiles: null,
+        callCenterQueues: null,
+        previousTreeJson: null,
+        /** @note - `validationResults` has two states:
+         *            (1) `null` - indicating we have yet to save the tree since loading the page
+         *            (2) non-null or `[]` - indicating the tree has been saved and has gone through server-side validation */
+        validationResults: null, // todo: this is an empty list on page load, and shouldn't be?
+        originalTreeJsonValidationResults: null,
+        selectedBlock: null,
+        designerWorkspaceHeight: 1400,
+        currentZoom: 1,
+        batchMatchAudio: {
+          results: null,
+          status: 0,
+          message: null,
+          isFailure: false,
+          isPending: false,
+          isComplete: false
+        },
+        treeUpdateConflict: null,
+        enabledFeatures: [
+            /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
+        ],
+      }
     }
   },
 
@@ -78,6 +68,7 @@ export default {
     isFeatureTreeDuplicateEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeDuplicate'),
     isFeatureTreeViewVersionsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeViewVersions'),
     isFeatureTreeDuplicateOfEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeDuplicateOf'),
+    isResourceEditorEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'resourceEditor'),
     isFeatureUpdateInteractionTotalsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'updateInteractionTotals'),
     isFeatureAudioUploadEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'audioUpload'),
     isFeatureViewResultsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'viewResults'),
@@ -170,6 +161,24 @@ export default {
   },
 
   mutations: {
+
+    configure({ui}, {appConfig, builderConfig}) {
+      const {
+        app,
+        __AUDIO__: audio,
+        __TREES_UI__: uiOverrides,
+      } = bootstrapLegacyGlobalDependencies(appConfig, builderConfig)
+
+      // todo: audio recording feature is likely to be unavailable for standalone app - How do we want to isolate these?
+      set(app, 'audioChoice.audioLibrary', audio.library)
+      set(app, 'audioChoice.recorderList', audio.recording.recorders)
+
+      lodash.merge(ui, lodash.merge(uiOverrides, {
+        audioFiles: audio.library,
+        previousTreeJson: JSON.stringify(uiOverrides.originalTreeJson),
+        validationResults: uiOverrides.originalValidationResults,
+      }))
+    },
     setWorkingTree(state, {tree: treeData}) {
       const tree = new app.Tree(treeData)
       /** @property app.tree
@@ -314,6 +323,18 @@ export default {
 		updateIsEditable({ui}, {value}) {
     	ui.isEditable = value
 		},
+
+    addEnabledFeature({ui}, {value}) {
+      if (ui.enabledFeatures.indexOf(value) < 0) {
+        ui.enabledFeatures.push(value);
+      }
+    },
+
+    removeEnabledFeature({ui}, {value}) {
+      if (ui.enabledFeatures.indexOf(value) > -1) {
+        ui.enabledFeatures = ui.enabledFeatures.filter((item) => item !== value)
+      }
+    },
 
 		setContentTypeEnabled({tree}, {contentType, isEnabled}) {
 			tree[`has${lodash.upperFirst(contentType)}`] = +isEnabled

@@ -13,7 +13,7 @@
   import Vue from 'vue'
   import {Component, Prop} from 'vue-property-decorator'
   import {IFlow} from '@floip/flow-runner'
-  import NumericEditor from '@/components/common/NumericEditor'
+  import NumericEditor from '@/components/common/NumericEditor.vue'
   import {namespace} from 'vuex-class'
   import lang from '@/lib/filters/lang'
 
@@ -30,7 +30,8 @@
     @Prop() readonly flow!: IFlow
 
     get interactionTimeout(): number {
-      return this.flow.interactionTimeout || ''
+      //30 comes from src/store/flow/flow.ts
+      return this.flow.interactionTimeout || 30 
     }
 
     set interactionTimeout(value: number) {
