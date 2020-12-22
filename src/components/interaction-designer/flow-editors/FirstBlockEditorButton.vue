@@ -6,7 +6,7 @@
         <button type="button"
             class="btn btn-default btn-sm"
             :disabled="isStartBlock"
-            @click="setStartBlock">
+            @click="setStartBlock($event)">
           <template v-if="isStartBlock">
             {{'flow-builder.currently-set-as-starting-block' | trans}}
           </template>
@@ -22,35 +22,30 @@
 <script lang="ts">
   import Vue from 'vue'
   import {Component, Prop} from 'vue-property-decorator'
+  import {IFlow} from '@floip/flow-runner'
   import lang from '@/lib/filters/lang'
   import {namespace} from "vuex-class"
 
   const flowVuexNamespace = namespace('flow')
 
   @Component<any>({
-    props: {
-      flow: Object,
-      blockId: String, // set for particular block
-
-      isEditable: {
-        type: Boolean,
-        default: true,
-      },
-    },
-
     mixins: [lang],
   })
   class FirstBlockEditorButton extends Vue {
+    @Prop({default: true}) readonly isEditable!: boolean
+    @Prop()readonly blockId!: string
+    @Prop()readonly flow!: IFlow
+
     get isStartBlock() {
       return this.blockId === this.flow.firstBlockId
     }
 
-    setStartBlock() {
+    setStartBlock(event) {
       const {flow: {uuid: flowId}, blockId} = this
       this.flow_setFirstBlockId({flowId, blockId})
     }
 
-    @flowVuexNamespace.Mutation flow_setFirstBlockId
+    @flowVuexNamespace.Mutation flow_setFirstBlockId!: ({flowId, blockId}: {flowId: string, blockId: string}) => void
   }
   export default FirstBlockEditorButton
 </script>

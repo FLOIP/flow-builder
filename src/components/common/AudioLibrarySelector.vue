@@ -68,7 +68,7 @@
         this.resource_setOrCreateValueModeSpecific({
           resourceId: this.resourceId,
           filter: {languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
-          value: value.filename
+          value: value.description,
         })
       },
     }

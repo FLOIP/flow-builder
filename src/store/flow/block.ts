@@ -94,6 +94,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         label: resource.uuid,
         tag: '',
         config: {},
+        destinationBlock: undefined, // prerequisite for reactivity, even optional params
       }),
     }
   },

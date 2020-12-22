@@ -11,10 +11,11 @@
     <block-minimum-numeric-editor :block="block" @commitValidationMinimumChange="updateValidationMin"/>
     <block-maximum-numeric-editor :block="block" @commitValidationMaximumChange="updateValidationMax"/>
 
-    <block-max-digit-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxResponseCharactersChange="updateMaxDigits"/>
+    <block-max-digit-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDigitsChange="updateMaxDigits"/>
 
     <resource-editor v-if="promptResource"
                      :resource="promptResource"
+                     :block="block"
                      :flow="flow" />
 
     <first-block-editor-button

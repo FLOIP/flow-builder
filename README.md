@@ -7,7 +7,8 @@ flow-builder provides an open source frontend for authoring [flow interoperabili
 Flows are a modern paradign for describing the logic of digital information systems that interact with individuals,
 often for the purpose of (a) collecting data or (b) providing information through interactive requests. Some common examples of this are in mobile services using voice-based or SMS-based conversations over basic mobile phones. Flows follow the "flowchart" paradigm, consisting of actions (nodes) and connections between actions, which can incorporate decision-making logic.
 
-## Project setup
+## Project setup - Testing and Developing
+### Serving
 ```
 git clone git@github.com:FLOIP/flow-builder.git
 
@@ -31,6 +32,20 @@ yarn build
 ```
 yarn lint
 ```
+
+### webpack-dev-server stub routes
+
+For UI standalone usage, we implemented stub routes under `/vue.config.js`, eg: `/audiofiles/upload`
+Therefore, if we want to integrate the `flow-builder` repo into **other project**:
+- we should remove those stub routes
+- we should create equivalent routes (and their associated controllers) inside the project which will use the flow-builder
+
+### Changes on JS dependencies
+#### /src/lib/mixins/FlowUploader.js
+This is related to `Flow.js` library which is providing multiple simultaneous, stable and resumable uploads via the HTML5 File API.
+- On standalone UI, we import the Flow like `import Flow from '@flowjs/flow.js';` and use it inside the file like `new Flow(...)`
+- But when we integrate the flow-builder into other project, we may need to call a global Flow like `new global.Flow(...)`.
+
 ## Usage
 
 ### Create new flow
@@ -51,6 +66,11 @@ Edits using the builder will then be reflected in the flow JSON in this panel an
 
 To export, simply copy the json in this panel to a file. 
 
+## Storybook
+
+1. You only need to serve it with `yarn storybook:serve`
+2. Then follow the provided url, by default it should be `http://localhost:6006/` (but in case the port `6006` is non-available, it may use different one)
+
 ## An explanation of app.config.json vs builder.config.json
 
 `app.config.json` is intended to support the configuration needed when integrating this flow building ui into a larger platform or application while `builder.config.json` is intended to configure those features which are core to the flow builder - the blocks enabled, languages or content types supported etc.
@@ -65,5 +85,4 @@ More detail to follow.
 - More fully featured resource editing including audio upload
 - A way to add to the supportable languages
 - Guidance for integration into a permissions system for flow editing/viewing
-- Fix and reenable storybook examples
 - Add regression testing pipeline for storyshots

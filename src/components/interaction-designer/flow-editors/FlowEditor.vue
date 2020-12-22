@@ -19,8 +19,8 @@
   import FlowNameEditor from './NameEditor.vue'
   import FlowLabelEditor from './LabelEditor.vue'
   import FlowInteractionTimeoutEditor from './InteractionTimeoutEditor.vue'
-  import FlowLanguagesEditor from './LanguagesEditor'
-  import FlowModesEditor from './ModesEditor'
+  import FlowLanguagesEditor from './LanguagesEditor.vue'
+  import FlowModesEditor from './ModesEditor.vue'
   import {namespace} from 'vuex-class'
   import lang from '@/lib/filters/lang'
 

@@ -16,7 +16,7 @@ import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '.'
 import {IRootState} from '@/store'
-import {defaults, includes, forEach} from 'lodash'
+import {defaults, includes, forEach, cloneDeep, get, has} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
@@ -143,7 +143,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       // this.registerModule(['flow', BLOCK_TYPE], store)
     // }
 
-    const block = await dispatch(`flow/${type}/createWith`, { // standardize this for each block type
+    const block = await dispatch(`flow/${type}/createWith`, { // todo: standardize this for each block type
       props: {
         uuid: (new IdGeneratorUuidV4).generate(),
         ...props,
@@ -216,7 +216,44 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         firstBlockId: '',
       }),
     }
-  }
+  },
+
+  async flow_duplicateBlock({dispatch, commit, state}, {flowId, blockId}: {flowId: string, blockId: IBlock['uuid']}): Promise<IBlock> {
+    const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
+    const block: IBlock = findBlockWith(blockId, flow)  // @throws ValidationException when block absent
+
+    // Deep clone
+    let duplicatedBlock = cloneDeep(block)
+
+    // Set UUIDs, and remove non relevant props
+    duplicatedBlock.uuid = (new IdGeneratorUuidV4).generate()
+
+    duplicatedBlock.exits.forEach(function myFunction(item, index, arr) {
+      item.uuid = (new IdGeneratorUuidV4).generate()
+      delete item.destinationBlock
+    })
+
+    if (has(duplicatedBlock.config, 'prompt')) {
+      // @ts-ignore
+      duplicatedBlock.config.prompt = (new IdGeneratorUuidV4()).generate();
+    }
+
+    // Set UI positions
+    // TODO - type checking - remove this and resolve the error
+    //@ts-ignore
+    duplicatedBlock.platform_metadata = {
+      io_viamo: {
+        uiData: {
+          xPosition: get(block, 'platform_metadata.io_viamo.uiData.xPosition', 50) + 80,
+          yPosition: get(block, 'platform_metadata.io_viamo.uiData.yPosition', 50) + 80,
+        }
+      }
+    }
+
+    commit('flow_addBlock', {block: duplicatedBlock})
+
+    return duplicatedBlock
+  },
 }
 
 export const DEFAULT_MODES = [

@@ -23,7 +23,6 @@
     },
     mixins: [lang],
     props: {
-      //TODO - where should this come from - here and in other cases? Platform metadata? Need to write a story for this mode
       isEditable: {
         default: true,
         type: Boolean,

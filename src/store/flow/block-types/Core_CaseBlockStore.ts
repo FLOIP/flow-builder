@@ -44,7 +44,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         props: ({
           uuid: (new IdGeneratorUuidV4()).generate(),
           tag: '',
-          test: '', // todo: get started on a basic expression api
+          test: '',
         }) as IBlockExitTestRequired,
       }, {root: true})
       commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: exit}, {root: true})
