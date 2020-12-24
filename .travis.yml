@@ -3,4 +3,4 @@ node_js:
   - "stable"
 cache: yarn
 script:
-  - yarn test:unit
+  - yarn test:unit --no-cache
