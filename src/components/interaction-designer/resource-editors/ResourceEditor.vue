@@ -31,12 +31,13 @@
               <upload-monitor :uploadKey="`${block.uuid}:${languageId}`" />
 
               <ul class="nav nav-tabs">
-                <li class="active">
-                  <a @click.prevent="" href="#">{{'flow-builder.library' | trans}}</a>
+                <li class="nav-item">
+                  <a class="nav-link active" @click.prevent="" href="#">{{'flow-builder.library' | trans}}</a>
                 </li>
 
-                <li>
+                <li class="nav-item">
                   <a v-if="isFeatureAudioUploadEnabled"
+                     class="nav-link"
                      v-flow-uploader="{
                       target: route('trees.resumeableAudioUpload'),
                       token: `${block.uuid}${languageId}`,
