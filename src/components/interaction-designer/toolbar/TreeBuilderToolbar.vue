@@ -39,85 +39,82 @@
             {{trans('flow-builder.edit-flow')}}
           </a>
 
-          <div v-if="ui.isEditable" class="btn-group mr-2">
+          <div v-if="ui.isEditable" class="dropdown mr-2">
             <button type="button"
                     class="btn btn-outline-secondary dropdown-toggle"
                     data-toggle="dropdown">
-              {{trans('flow-builder.add-block')}} <span class="caret"/>
+              {{trans('flow-builder.add-block')}}
             </button>
 
-            <ul class="dropdown-menu" role="menu">
+            <div class="dropdown-menu">
               <template v-for="(classDetails, className) in rootBlockClassesToDisplay">
-                <li v-if="shouldDisplayDividerBefore(rootBlockClassesToDisplay, className)"
+                <a v-if="shouldDisplayDividerBefore(rootBlockClassesToDisplay, className)"
                     :key="className + 'divider'"
-                    class="divider"/>
-                <li :key="className + 'item'">
-                  <a v-if="isBlockAvailableByBlockClass[className]"
-                     href="#"
-                     @click.prevent="handleAddBlockByTypeSelected(classDetails)"
-                     class="tree-add-block"
-                     :data-block-type="className"
-                     :data-default-num-connections="classDetails['defaultConnections']">
-                    {{translateTreeClassName(className)}}
-                  </a>
-                </li>
+                    class="dropdown-divider"/>
+                <a v-if="isBlockAvailableByBlockClass[className]"
+                   href="#"
+                   :key="className + 'item'"
+                   @click.prevent="handleAddBlockByTypeSelected(classDetails)"
+                   class="dropdown-item tree-add-block"
+                   :data-block-type="className"
+                   :data-default-num-connections="classDetails['defaultConnections']">
+                  {{translateTreeClassName(className)}}
+                </a>
               </template>
 
               <template v-if="!isEmpty(rootDropdownClassesToDisplay)">
-                <li class="divider"/>
+                <a class="dropdown-divider"/>
 
-                <li class="menu-item dropdown dropdown-submenu">
+                <a class="menu-item dropdown dropdown-submenu">
                   <a href="#"
                      class="dropdown-toggle"
                      data-toggle="dropdown">
                     {{trans('flow-builder.branching')}}
                   </a>
-                  <ul class="dropdown-menu">
+                  <div class="dropdown-menu">
                     <template v-for="(classDetails, className) in rootDropdownClassesToDisplay">
-                      <li v-if="shouldDisplayDividerBefore(rootDropdownClassesToDisplay, className)"
+                      <a v-if="shouldDisplayDividerBefore(rootDropdownClassesToDisplay, className)"
                           :key="className + 'divider'"
-                          class="divider"/>
-                      <li :key="className + 'item'">
-                        <a v-if="isBlockAvailableByBlockClass[className]"
-                           href="#"
-                           class="tree-add-block"
-                           :data-block-type="className"
-                           :data-default-num-connections="classDetails['defaultConnections']">
-                          {{translateTreeClassName(className)}}
-                        </a>
-                      </li>
+                          class="dropdown-divider"/>
+                      <a v-if="isBlockAvailableByBlockClass[className]"
+                         href="#"
+                         :key="className + 'item'"
+                         class="dropdown-item tree-add-block"
+                         :data-block-type="className"
+                         :data-default-num-connections="classDetails['defaultConnections']">
+                        {{translateTreeClassName(className)}}
+                      </a>
                     </template>
-                  </ul>
-                </li>
+                  </div>
+                </a>
               </template>
 
               <template v-if="!isEmpty(advancedDropdownClassesToDisplay)">
-                <li class="divider"/>
+                <a class="dropdown-divider"/>
 
-                <li class="menu-item dropdown dropdown-submenu">
+                <a class="menu-item dropdown dropdown-submenu">
                   <a href="#"
                      class="dropdown-toggle"
                      data-toggle="dropdown">{{'flow-builder.advanced' | trans}}
                   </a>
-                  <ul class="dropdown-menu">
+                  <div class="dropdown-menu">
                     <template v-for="(classDetails, className) in advancedDropdownClassesToDisplay">
-                      <li v-if="shouldDisplayDividerBefore(advancedDropdownClassesToDisplay, className)"
+                      <a v-if="shouldDisplayDividerBefore(advancedDropdownClassesToDisplay, className)"
                           :key="className + 'divider'"
-                          class="divider"/>
-                      <li :key="className + 'item'">
-                        <a v-if="isBlockAvailableByBlockClass[className]"
-                           href="#"
-                           class="tree-add-block"
-                           :data-block-type="className"
-                           :data-default-num-connections="classDetails['defaultConnections']">
-                          {{translateTreeClassName(className)}}
-                        </a>
-                      </li>
+                          class="dropdown-divider"/>
+                      <a v-if="isBlockAvailableByBlockClass[className]"
+                         href="#"
+                         :key="className + 'item'"
+                         class="dropdown-item tree-add-block"
+                         :data-block-type="className"
+                         :data-default-num-connections="classDetails['defaultConnections']">
+                        {{translateTreeClassName(className)}}
+                      </a>
                     </template>
-                  </ul>
-                </li>
+                  </div>
+                </a>
               </template>
-            </ul>
+            </div>
           </div>
 
           <button v-if="ui.isEditable"
