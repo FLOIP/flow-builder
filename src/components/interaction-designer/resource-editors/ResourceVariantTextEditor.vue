@@ -31,16 +31,13 @@
         </template>
       </span>
 
-      <tooltip
+      <b-tooltip
           v-if="doesContentContainExpression"
-          :content="`<p>${trans('flow-builder.youre-using-floip-expressions')}</p>
+          v-b-tooltip.hover.top.html="`<p>${trans('flow-builder.youre-using-floip-expressions')}</p>
                      <p>
                        <strong>${trans('flow-builder.pro-tip')}:</strong>
                        ${trans('flow-builder.floip-expressions-escape-with-double-at-symbol')}
-                     </p>`"
-          effect="scale"
-          placement="top">
-
+                     </p>`">
         <a href="https://floip.gitbooks.io/flow-specification/content/fundamentals/expressions.html"
            target="_blank">
 
@@ -50,7 +47,7 @@
             <i v-else class="glyphicon glyphicon-ok-sign text-success"></i>
           </kbd>
         </a>
-      </tooltip>
+      </b-tooltip>
 
       <div v-if="doesContentContainExpressionError"
           class="alert alert-danger"
@@ -92,13 +89,13 @@
   import {isObject, some} from 'lodash'
   import VueFocus from 'vue-focus'
   import {mapActions} from 'vuex'
-  import {tooltip as Tooltip} from 'vue-strap'
+  import {BTooltip} from 'bootstrap-vue'
   // import BlockContentAutogenButton from './BlockContentAutogenButton'
 
   export default {
     components: {
       // BlockContentAutogenButton,
-      Tooltip,
+      BTooltip,
     },
 
     mixins: [lang, VueFocus.mixin],
