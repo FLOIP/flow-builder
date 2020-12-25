@@ -12,7 +12,7 @@
       <!--    <tree-update-conflict-modal/>-->
       <div class="tree-workspace-panel-heading-contents">
         <div class="btn-toolbar">
-          <button class="btn btn-secondary"
+          <button class="btn btn-outline-secondary "
                   :class="{active: isImporterVisible}"
                   @click="toggleImportExport">
             <i class="glyphicon glyphicon-chevron-up"></i>
@@ -20,7 +20,7 @@
           </button>
 
           <div v-if="isResourceEditorEnabled" class="btn-group">
-            <router-link :to="treeViewUrl" class="btn btn-secondary active">
+            <router-link :to="treeViewUrl" class="btn btn-outline-secondary active">
               {{trans('flow-builder.flow-view')}}
             </router-link>
             <router-link :to="resourceViewUrl"
@@ -33,7 +33,7 @@
           <a v-if="!ui.isEditableLocked"
              :href="editOrViewTreeJsUrl"
              :title="trans('flow-builder.click-to-toggle-editing')"
-             class="btn btn-secondary"
+             class="btn btn-outline-secondary"
              :class="{active: ui.isEditable}"
              @click="attemptSaveTree">
             {{trans('flow-builder.edit-flow')}}
@@ -41,7 +41,7 @@
 
           <div v-if="ui.isEditable" class="btn-group">
             <button type="button"
-                    class="btn btn-secondary dropdown-toggle"
+                    class="btn btn-outline-secondary dropdown-toggle"
                     data-toggle="dropdown">
               {{trans('flow-builder.add-block')}} <span class="caret"/>
             </button>
@@ -122,7 +122,7 @@
 
           <button v-if="ui.isEditable"
                   type="button"
-                  class="btn btn-secondary tree-duplicate-block"
+                  class="btn btn-outline-secondary tree-duplicate-block"
                   @click.prevent="handleDuplicateActivatedBlockTriggered"
                   :disabled="!activeBlockId">
             {{trans('flow-builder.duplicate')}}
@@ -130,7 +130,7 @@
 
           <button v-if="ui.isEditable"
                   type="button"
-                  class="btn btn-secondary tree-delete-block"
+                  class="btn btn-outline-secondary tree-delete-block"
                   @click.prevent="handleRemoveActivatedBlockTriggered"
                   :disabled="!activeBlockId">
             {{trans('flow-builder.delete')}}
