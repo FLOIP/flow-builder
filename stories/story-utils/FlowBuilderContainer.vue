@@ -17,7 +17,8 @@
 
 <script lang="ts">
   import '@/css/InteractionDesigner.css'
-  import '@/css/voto3.css'
+  import 'bootstrap'
+  import 'bootstrap/dist/css/bootstrap.min.css'
 
   import Vue from 'vue'
   import {Component, Prop} from 'vue-property-decorator'
