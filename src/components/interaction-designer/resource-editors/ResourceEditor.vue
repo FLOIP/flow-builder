@@ -6,7 +6,7 @@
 
     <template v-for="{id: languageId, name: language} in flow.languages">
       <div class="block-content-editor-lang">
-        <h5 class="label label-info">{{language || 'flow-builder.unknown-language' | trans}}</h5>
+        <h5 class="badge badge-info">{{language || 'flow-builder.unknown-language' | trans}}</h5>
       </div>
 
       <template v-for="mode in flow.supportedModes">

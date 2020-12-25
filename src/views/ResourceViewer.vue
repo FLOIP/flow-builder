@@ -223,7 +223,7 @@
             <template v-if="hasContent(block.type)">
               <ul class="list-inline pull-right h4">
                 <li v-for="tag in block.customData.tags">
-                  <span class="label label-default">{{tag}}</span>
+                  <span class="badge badge-default">{{tag}}</span>
                 </li>
               </ul>
 
