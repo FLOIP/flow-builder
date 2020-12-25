@@ -71,7 +71,7 @@
               class="col-md-2" />
 
           <div class="block-content-editor-reviewed col-md-1">
-            <button class="btn btn-default btn-xl"
+            <button class="btn btn-secondary btn-xl"
                     :class="{
                       active: block.customData.reviewed[langId],
                       'btn-success': block.customData.reviewed[langId]}"

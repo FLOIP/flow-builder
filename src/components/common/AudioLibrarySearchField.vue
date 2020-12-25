@@ -2,7 +2,7 @@
   <div class="audio-library-search-field dropdown">
     <div class="input-group">
       <span class="input-group-btn">
-        <button :class="{active: isEntireLibraryModeEnabled}" class="btn btn-default"
+        <button :class="{active: isEntireLibraryModeEnabled}" class="btn btn-secondary"
                 @click.prevent="toggleAudioLibrary">
           <i class="glyphicon glyphicon-search"></i>
           <span class="caret"></span>

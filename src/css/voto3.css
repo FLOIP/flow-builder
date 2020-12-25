@@ -4092,74 +4092,74 @@ fieldset[disabled] a.btn {
   pointer-events: none;
 }
 
-.btn-default {
+.btn-secondary {
   color: #333;
   background-color: #fff;
   border-color: #ccc;
 }
 
-.btn-default:focus,
-.btn-default.focus {
+.btn-secondary:focus,
+.btn-secondary.focus {
   color: #333;
   background-color: #e6e5e5;
   border-color: #8c8c8c;
 }
 
-.btn-default:hover {
+.btn-secondary:hover {
   color: #333;
   background-color: #e6e5e5;
   border-color: #adadad;
 }
 
-.btn-default:active,
-.btn-default.active,
-a.btn-default.select2-choice,
-.searchable.select2-dropdown-open.select2-drop-above a.btn-default.select2-choice,
-.open > .btn-default.dropdown-toggle {
+.btn-secondary:active,
+.btn-secondary.active,
+a.btn-secondary.select2-choice,
+.searchable.select2-dropdown-open.select2-drop-above a.btn-secondary.select2-choice,
+.open > .btn-secondary.dropdown-toggle {
   color: #333;
   background-color: #e6e5e5;
   border-color: #adadad;
 }
 
-.btn-default:active:hover,
-.btn-default:active:focus,
-.btn-default:active.focus,
-.btn-default.active:hover,
-a.btn-default.select2-choice:hover,
-.btn-default.active:focus,
-a.btn-default.select2-choice:focus,
-.btn-default.active.focus,
-a.btn-default.focus.select2-choice,
-.open > .btn-default.dropdown-toggle:hover,
-.open > .btn-default.dropdown-toggle:focus,
-.open > .btn-default.dropdown-toggle.focus {
+.btn-secondary:active:hover,
+.btn-secondary:active:focus,
+.btn-secondary:active.focus,
+.btn-secondary.active:hover,
+a.btn-secondary.select2-choice:hover,
+.btn-secondary.active:focus,
+a.btn-secondary.select2-choice:focus,
+.btn-secondary.active.focus,
+a.btn-secondary.focus.select2-choice,
+.open > .btn-secondary.dropdown-toggle:hover,
+.open > .btn-secondary.dropdown-toggle:focus,
+.open > .btn-secondary.dropdown-toggle.focus {
   color: #333;
   background-color: #d4d4d4;
   border-color: #8c8c8c;
 }
 
-.btn-default:active,
-.btn-default.active,
-a.btn-default.select2-choice,
-.searchable.select2-dropdown-open.select2-drop-above a.btn-default.select2-choice,
-.open > .btn-default.dropdown-toggle {
+.btn-secondary:active,
+.btn-secondary.active,
+a.btn-secondary.select2-choice,
+.searchable.select2-dropdown-open.select2-drop-above a.btn-secondary.select2-choice,
+.open > .btn-secondary.dropdown-toggle {
   background-image: none;
 }
 
-.btn-default.disabled:hover,
-.btn-default.disabled:focus,
-.btn-default.disabled.focus,
-.btn-default[disabled]:hover,
-.btn-default[disabled]:focus,
-.btn-default[disabled].focus,
-fieldset[disabled] .btn-default:hover,
-fieldset[disabled] .btn-default:focus,
-fieldset[disabled] .btn-default.focus {
+.btn-secondary.disabled:hover,
+.btn-secondary.disabled:focus,
+.btn-secondary.disabled.focus,
+.btn-secondary[disabled]:hover,
+.btn-secondary[disabled]:focus,
+.btn-secondary[disabled].focus,
+fieldset[disabled] .btn-secondary:hover,
+fieldset[disabled] .btn-secondary:focus,
+fieldset[disabled] .btn-secondary.focus {
   background-color: #fff;
   border-color: #ccc;
 }
 
-.btn-default .badge {
+.btn-secondary .badge {
   color: #fff;
   background-color: #333;
 }
@@ -8679,7 +8679,7 @@ button.close {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
-.btn-default,
+.btn-secondary,
 .btn-primary,
 .btn-success,
 .btn-info,
@@ -8690,10 +8690,10 @@ button.close {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
-.btn-default:active,
-.btn-default.active,
-a.btn-default.select2-choice,
-.searchable.select2-dropdown-open.select2-drop-above a.btn-default.select2-choice,
+.btn-secondary:active,
+.btn-secondary.active,
+a.btn-secondary.select2-choice,
+.searchable.select2-dropdown-open.select2-drop-above a.btn-secondary.select2-choice,
 .btn-primary:active,
 .btn-primary.active,
 a.btn-primary.select2-choice,
@@ -8718,9 +8718,9 @@ a.btn-danger.select2-choice,
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 
-.btn-default.disabled,
-.btn-default[disabled],
-fieldset[disabled] .btn-default,
+.btn-secondary.disabled,
+.btn-secondary[disabled],
+fieldset[disabled] .btn-secondary,
 .btn-primary.disabled,
 .btn-primary[disabled],
 fieldset[disabled]
@@ -8745,7 +8745,7 @@ fieldset[disabled]
   box-shadow: none;
 }
 
-.btn-default .badge,
+.btn-secondary .badge,
 .btn-primary .badge,
 .btn-success .badge,
 .btn-info .badge,
@@ -8761,7 +8761,7 @@ a.btn.select2-choice,
   background-image: none;
 }
 
-.btn-default {
+.btn-secondary {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#e0e0e0));
   background-image: linear-gradient(to bottom, #fff 0%, #e0e0e0 100%);
   background-repeat: repeat-x;
@@ -8773,43 +8773,43 @@ a.btn.select2-choice,
   border-color: #ccc;
 }
 
-.btn-default:hover,
-.btn-default:focus {
+.btn-secondary:hover,
+.btn-secondary:focus {
   background-color: #e0e0e0;
   background-position: 0 -15px;
 }
 
-.btn-default:active,
-.btn-default.active,
-a.btn-default.select2-choice,
-.searchable.select2-dropdown-open.select2-drop-above a.btn-default.select2-choice {
+.btn-secondary:active,
+.btn-secondary.active,
+a.btn-secondary.select2-choice,
+.searchable.select2-dropdown-open.select2-drop-above a.btn-secondary.select2-choice {
   background-color: #e0e0e0;
   border-color: #dbdbdb;
 }
 
-.btn-default.disabled,
-.btn-default.disabled:hover,
-.btn-default.disabled:focus,
-.btn-default.disabled.focus,
-.btn-default.disabled:active,
-.btn-default.disabled.active,
-a.btn-default.disabled.select2-choice,
-.btn-default[disabled],
-.btn-default[disabled]:hover,
-.btn-default[disabled]:focus,
-.btn-default[disabled].focus,
-.btn-default[disabled]:active,
-.btn-default[disabled].active,
-a.btn-default.select2-choice[disabled],
-fieldset[disabled] .btn-default,
-fieldset[disabled] .btn-default:hover,
-fieldset[disabled] .btn-default:focus,
-fieldset[disabled] .btn-default.focus,
-fieldset[disabled] .btn-default:active,
-fieldset[disabled] .btn-default.active,
-fieldset[disabled] a.btn-default.select2-choice,
-fieldset[disabled] .searchable.select2-dropdown-open.select2-drop-above a.btn-default.select2-choice,
-.searchable.select2-dropdown-open.select2-drop-above fieldset[disabled] a.btn-default.select2-choice {
+.btn-secondary.disabled,
+.btn-secondary.disabled:hover,
+.btn-secondary.disabled:focus,
+.btn-secondary.disabled.focus,
+.btn-secondary.disabled:active,
+.btn-secondary.disabled.active,
+a.btn-secondary.disabled.select2-choice,
+.btn-secondary[disabled],
+.btn-secondary[disabled]:hover,
+.btn-secondary[disabled]:focus,
+.btn-secondary[disabled].focus,
+.btn-secondary[disabled]:active,
+.btn-secondary[disabled].active,
+a.btn-secondary.select2-choice[disabled],
+fieldset[disabled] .btn-secondary,
+fieldset[disabled] .btn-secondary:hover,
+fieldset[disabled] .btn-secondary:focus,
+fieldset[disabled] .btn-secondary.focus,
+fieldset[disabled] .btn-secondary:active,
+fieldset[disabled] .btn-secondary.active,
+fieldset[disabled] a.btn-secondary.select2-choice,
+fieldset[disabled] .searchable.select2-dropdown-open.select2-drop-above a.btn-secondary.select2-choice,
+.searchable.select2-dropdown-open.select2-drop-above fieldset[disabled] a.btn-secondary.select2-choice {
   background-color: #e0e0e0;
   background-image: none;
 }

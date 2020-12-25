@@ -30,15 +30,15 @@
     <div class="panel-heading resource-viewer-panel-heading">
       <div class="btn-toolbar">
         <div class="btn-group">
-          <router-link :to="`/trees/${id}/interaction-designer`" @click.native="handleTreeEditorSelected" class="btn btn-default">
+          <router-link :to="`/trees/${id}/interaction-designer`" @click.native="handleTreeEditorSelected" class="btn btn-secondary">
             {{'trees.tree-view' | trans}}
           </router-link>
-          <router-link :to="`/trees/${id}/resource-viewer`" class="btn btn-default active">{{'trees.resource-view' | trans}}</router-link>
+          <router-link :to="`/trees/${id}/resource-viewer`" class="btn btn-secondary active">{{'trees.resource-view' | trans}}</router-link>
         </div>
 
         <button
             v-if="isFeatureTreesBatchLinkAudioEnabled"
-            class="btn btn-default"
+            class="btn btn-secondary"
             :class="{active: batchMatchAudioDialogShown}"
             @click="toggleBatchMatchAudioDialog">
           <i class="glyphicon glyphicon-random"></i>

@@ -55,7 +55,7 @@
         <h3 class="block-exit-tag label label-warning">{{exit.tag || '—'}}</h3>
 
         <template v-if="exit.destinationBlock == null">
-          <plain-draggable class="handle-create-link btn btn-default btn-xs btn-flat"
+          <plain-draggable class="handle-create-link btn btn-secondary btn-xs btn-flat"
                            :class="{
                                'btn-info': exit.destinationBlock != null,
                            }"
@@ -69,7 +69,7 @@
           </plain-draggable>
 
           <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
-            <div class="handle-move-link btn btn-default btn-xs"
+            <div class="handle-move-link btn btn-secondary btn-xs"
                  :class="{
                                'btn-info': exit.destinationBlock != null,
                            }"
@@ -88,9 +88,9 @@
         </template>
 
         <template v-if="exit.destinationBlock != null">
-          <plain-draggable class="block-exit-move-handle handle-move-link btn btn-default btn-xs btn-flat"
+          <plain-draggable class="block-exit-move-handle handle-move-link btn btn-secondary btn-xs btn-flat"
                            :class="{
-                               // 'btn-default': exit.destinationBlock != null,
+                               // 'btn-secondary': exit.destinationBlock != null,
                            }"
                            :id="`exit/${exit.uuid}/handle`"
                            :key="`exit/${exit.uuid}/handle`"
@@ -361,8 +361,8 @@
 </script>
 
 <style lang="scss">
-  .btn-default.btn-flat {
-    @extend .btn-default;
+  .btn-secondary.btn-flat {
+    @extend .btn-secondary;
     background: transparent;
   }
 

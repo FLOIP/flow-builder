@@ -33,7 +33,7 @@
 
       <button v-if="selectable"
               @click.prevent="select"
-              class="btn btn-default btn-xs">
+              class="btn btn-secondary btn-xs">
         <i class="glyphicon glyphicon-ok"></i>
       </button>
     </div>
