@@ -4,7 +4,17 @@ module.exports = {
   lintOnSave: false,
   runtimeCompiler: true,
   css: {
-    extract: false
+    extract: false,
+    loaderOptions: {
+      sass: {
+        prependData: `
+            @import './node_modules/bootstrap/scss/_functions.scss';
+            @import './node_modules/bootstrap/scss/_variables.scss';
+            @import './node_modules/bootstrap/scss/_mixins.scss';
+            @import '@/scss/bootstrap3_compatibility.scss';
+            `,
+      },
+    },
   },
   configureWebpack: {
     resolve: {
