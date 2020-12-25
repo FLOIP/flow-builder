@@ -32,7 +32,7 @@
               'has-success': block.customData.reviewed[langId]}">
         <div class="row">
           <div class="block-content-editor-lang col-md-1">
-            <h5 class="badge badge-info">{{languageNames[langId] || 'Unknown language'}}</h5>
+            <h7 class="badge badge-info">{{languageNames[langId] || 'Unknown language'}}</h6>
           </div>
 
           <div v-if="tree.details.hasVoice" class="block-content-editor-audio col-md-4">

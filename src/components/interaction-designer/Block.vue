@@ -55,7 +55,7 @@
         <h3 class="block-exit-tag label badge-warning">{{exit.tag || '—'}}</h3>
 
         <template v-if="exit.destinationBlock == null">
-          <plain-draggable class="handle-create-link btn btn-secondary btn-xs btn-flat"
+          <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
                            :class="{
                                'btn-info': exit.destinationBlock != null,
                            }"
@@ -88,7 +88,7 @@
         </template>
 
         <template v-if="exit.destinationBlock != null">
-          <plain-draggable class="block-exit-move-handle handle-move-link btn btn-secondary btn-xs btn-flat"
+          <plain-draggable class="block-exit-move-handle handle-move-link btn btn-outline-secondary btn-xs btn-flat"
                            :class="{
                                // 'btn-secondary': exit.destinationBlock != null,
                            }"
@@ -457,6 +457,7 @@
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
+          border-radius: 0.3em;
         }
 
         .block-exit-move-handle {
