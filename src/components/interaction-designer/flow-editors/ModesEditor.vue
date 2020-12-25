@@ -4,14 +4,12 @@
     <div v-for="mode in availableModes"
         :key="mode"
         class="checkbox">
-      <label>
-        <input
-            v-model="flowSelectedModes"
-            :value="mode"
-            type="checkbox"
-            class="flow-mode-toggle-checkbox"/>
-        {{mode}}
-      </label>
+      <input
+          v-model="flowSelectedModes"
+          :value="mode"
+          type="checkbox"
+          class="flow-mode-toggle-checkbox"/>
+      {{mode}}
     </div>
   </div>
 </template>
