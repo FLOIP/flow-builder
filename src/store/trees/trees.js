@@ -29,6 +29,7 @@ export default {
       tree: null,
       ui: {
         audioFiles: null,
+        blockClasses: null,
         callCenterQueues: null,
         previousTreeJson: null,
         /** @note - `validationResults` has two states:
@@ -164,7 +165,7 @@ export default {
 
   mutations: {
 
-    configure({ui}, {appConfig, builderConfig}) {
+    configure(state, {appConfig, builderConfig}) {
       const {
         app,
         __AUDIO__: audio,
@@ -175,11 +176,11 @@ export default {
       set(app, 'audioChoice.audioLibrary', audio.library)
       set(app, 'audioChoice.recorderList', audio.recording.recorders)
 
-      lodash.merge(ui, lodash.merge(uiOverrides, {
+      state.ui = lodash.assign(uiOverrides, {
         audioFiles: audio.library,
         previousTreeJson: JSON.stringify(uiOverrides.originalTreeJson),
         validationResults: uiOverrides.originalValidationResults,
-      }))
+      })
     },
     setWorkingTree(state, {tree: treeData}) {
       const tree = new app.Tree(treeData)
@@ -373,7 +374,7 @@ export default {
     // @note - these are the only actions that are outside the realm of an existing tree.
     initializeTreeModelFromOriginalTreeJson({commit, dispatch, state: {ui}}) {
       commit('setWorkingTree', {tree: ui.originalTreeJson})
-      dispatch('upgradeTreeModel') // => this kinda sucks, because now we're dispatching vuex notifications for all these upgrades
+      // dispatch('upgradeTreeModel') // => this kinda sucks, because now we're dispatching vuex notifications for all these upgrades
     },
 
     initializeTreeModelFromImport({commit, dispatch, state: {ui}}) {

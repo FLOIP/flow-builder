@@ -72,29 +72,28 @@ import {
   Mutation,
   namespace,
 } from 'vuex-class'
-  import {
-    IBlock,
-    IFlow,
-    IResourceDefinition,
-    SupportedContentType,
-    SupportedMode,
-  } from '@floip/flow-runner'
-  import lang from '@/lib/filters/lang'
-  import Permissions from '@/lib/mixins/Permissions'
-  import Routes from '@/lib/mixins/Routes'
-  import FlowUploader from '@/lib/mixins/FlowUploader'
-  import {Component} from 'vue-property-decorator'
-  import Vue from 'vue'
-  import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
-  import {
+import {
+  IBlock,
+  IFlow,
+  IResourceDefinition,
+  SupportedContentType,
+  SupportedMode,
+} from '@floip/flow-runner'
+import lang from '@/lib/filters/lang'
+import Permissions from '@/lib/mixins/Permissions'
+import Routes from '@/lib/mixins/Routes'
+import FlowUploader from '@/lib/mixins/FlowUploader'
+import {Component, Prop} from 'vue-property-decorator'
+import Vue from 'vue'
+import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
+import {
   discoverContentTypesFor,
-    findOrGenerateStubbedVariantOn,
-    findResourceVariantOverModesOn
-  } from '@/store/flow/resource'
-  import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
-  import UploadMonitor from '../block-editors/UploadMonitor.vue'
+  findOrGenerateStubbedVariantOn,
+  findResourceVariantOverModesOn
+} from '@/store/flow/resource'
+import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
+import UploadMonitor from '../block-editors/UploadMonitor.vue'
 import ValidationException from "@floip/flow-runner/src/domain/exceptions/ValidationException";
-import {cloneDeep} from "lodash";
 
   const flowVuexNamespace = namespace('flow')
 
@@ -141,6 +140,9 @@ import {cloneDeep} from "lodash";
     },
   })
   export class ResourceEditor extends Vue {
+    @Prop()readonly block!: IBlock
+    @Prop()readonly resource!: IResourceDefinition
+
     discoverContentTypesFor = discoverContentTypesFor
     findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
     findResourceVariantOverModesOn = findResourceVariantOverModesOn
