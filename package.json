@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
     "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
@@ -32,6 +33,7 @@
     "lodash": "^4.17.19",
     "m-class-list": "^1.1.9",
     "moment": "^2.27.0",
+    "node-sass": "4",
     "plain-draggable": "^2.5.12",
     "pointer-event": "^1.0.0",
     "vue": "^2.6.11",
@@ -65,7 +67,6 @@
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
-    "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "storybook-vue-router": "^1.0.7",
     "ts-vue-plugin": "^0.1.2",
