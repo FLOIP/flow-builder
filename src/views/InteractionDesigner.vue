@@ -67,9 +67,9 @@
   // import '../TreeDiffLogger'
 
   export default {
-    props: { 
-      id: {type: String}, 
-      mode: {type: String}, 
+    props: {
+      id: {type: String},
+      mode: {type: String},
       appConfig: {
         type: Object,
         default: function() {
@@ -173,18 +173,17 @@
     },
 
     created() {
-      const {$store} = this
+      global.builder = this // initialize global reference for legacy + debugging
 
+      const {$store} = this
       forEach(store.modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
 
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
 
-      global.builder = this // initialize global reference for legacy + debugging
-
       this.registerBlockTypes()
 
-      this.initializeTreeModel()
+      // this.initializeTreeModel()
       this.updateIsEditableFromParams(this.mode) // `this.mode` comes from captured param in js-routes
     },
 
@@ -196,7 +195,7 @@
     mounted() {
       this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
       this.deselectBlocks()
-      this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
+      // this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
 
       console.debug('Vuej tree interaction designer mounted!')
 		},

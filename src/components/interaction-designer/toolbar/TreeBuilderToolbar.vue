@@ -162,7 +162,7 @@
   import Permissions from '@/lib/mixins/Permissions'
   import Routes from '@/lib/mixins/Routes'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-  import lodash, {isEmpty} from 'lodash'
+  import lodash, {get, isEmpty, isNil} from 'lodash'
   import flow from 'lodash/fp/flow'
   import pickBy from 'lodash/fp/pickBy'
   // import {affix as Affix} from 'vue-strap'
@@ -324,14 +324,16 @@
       ...mapActions(['attemptSaveTree']),
       ...mapMutations('flow', ['flow_removeBlock']),
       ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
+      ...mapMutations('builder', ['activateBlock']),
       ...mapActions('builder', ['importFlowsAndResources']),
 
-      handleAddBlockByTypeSelected({type}) {
-        const {uuid: blockId} = this.flow_addBlankBlockByType({type, platform_metadata: {
+      async handleAddBlockByTypeSelected({type}) {
+        const {uuid: blockId} = await this.flow_addBlankBlockByType({type, platform_metadata: {
             io_viamo: {
               uiData: {xPosition: 150, yPosition: 255}, // todo: selected block + (80,80)
             }}}) // todo push out to intx-designer
-        // activateBlock({blockId})
+
+        this.activateBlock({blockId})
       },
 
       handleRemoveActivatedBlockTriggered() {
@@ -339,9 +341,10 @@
         this.flow_removeBlock({blockId})
       },
 
-      handleDuplicateActivatedBlockTriggered() {
+      async handleDuplicateActivatedBlockTriggered() {
         const {activeBlockId: blockId} = this
-        this.flow_duplicateBlock({blockId})
+        const {uuid: duplicateBlockId} = await this.flow_duplicateBlock({blockId})
+        this.activateBlock({blockId: duplicateBlockId})
       },
 
       toggleImportExport() {
@@ -350,7 +353,7 @@
 
       editTreeRoute({component = null, mode = null} = {}) {
         const context = this.removeNilValues({
-          treeId: this.tree.id,
+          treeId: get(this.tree, 'id', 0),
           component,
           mode,
         })
@@ -375,7 +378,7 @@
 
       // This could be extracted to a helper mixin of some sort so it can be used in other places
       removeNilValues(obj) {
-        return lodash.pickBy(obj, lodash.identity)
+        return lodash.pickBy(obj, (x) => !isNil(x))
       },
     },
   }
