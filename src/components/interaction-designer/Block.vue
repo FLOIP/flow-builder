@@ -52,7 +52,7 @@
           <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
         </div>
 
-        <h3 class="block-exit-tag label badge-warning">{{exit.tag || '—'}}</h3>
+        <h3 class="block-exit-tag badge badge-warning">{{exit.tag || '—'}}</h3>
 
         <template v-if="exit.destinationBlock == null">
           <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
@@ -457,7 +457,6 @@
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
-          border-radius: 0.3em;
         }
 
         .block-exit-move-handle {

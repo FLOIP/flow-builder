@@ -4,13 +4,15 @@
     <div v-for="language in languages"
         :key="language.id"
         class="checkbox">
-      <input
-          v-model="flowSelectedLanguages"
-          :value="language"
-          type="checkbox"
-          class="flow-language-toggle-checkbox"/>
+      <label class="font-weight-normal">
+        <input
+            v-model="flowSelectedLanguages"
+            :value="language"
+            type="checkbox"
+            class="flow-language-toggle-checkbox"/>
 
-      {{language.name}}
+        {{language.name}}
+      </label>
     </div>
   </div>
 </template>

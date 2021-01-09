@@ -31,23 +31,21 @@
         </template>
       </span>
 
-      <b-tooltip
-          v-if="doesContentContainExpression"
-          v-b-tooltip.hover.top.html="`<p>${trans('flow-builder.youre-using-floip-expressions')}</p>
+      <a v-if="doesContentContainExpression"
+         v-b-tooltip.hover.top.html="`<p>${trans('flow-builder.youre-using-floip-expressions')}</p>
                      <p>
                        <strong>${trans('flow-builder.pro-tip')}:</strong>
                        ${trans('flow-builder.floip-expressions-escape-with-double-at-symbol')}
-                     </p>`">
-        <a href="https://floip.gitbooks.io/flow-specification/content/fundamentals/expressions.html"
-           target="_blank">
+                     </p>`"
+        href="https://floip.gitbooks.io/flow-specification/content/fundamentals/expressions.html"
+        target="_blank">
 
-          <kbd style="margin-left: 1em">
-            <i class="glyphicon glyphicon-console"></i>
-            <i v-if="doesContentContainExpressionError" class="glyphicon glyphicon glyphicon-remove-sign text-danger"></i>
-            <i v-else class="glyphicon glyphicon-ok-sign text-success"></i>
-          </kbd>
-        </a>
-      </b-tooltip>
+        <kbd style="margin-left: 1em">
+          <i class="glyphicon glyphicon-console"></i>
+          <i v-if="doesContentContainExpressionError" class="glyphicon glyphicon glyphicon-remove-sign text-danger"></i>
+          <i v-else class="glyphicon glyphicon-ok-sign text-success"></i>
+        </kbd>
+      </a>
 
       <div v-if="doesContentContainExpressionError"
           class="alert alert-danger"
@@ -84,20 +82,21 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import lang from '@/lib/filters/lang'
   import {parse as floipExpressionParser} from '@floip/expression-parser'
   import {isObject, some} from 'lodash'
   import VueFocus from 'vue-focus'
   import {mapActions} from 'vuex'
-  import {BTooltip} from 'bootstrap-vue'
+  import {VBTooltipPlugin} from 'bootstrap-vue'
   // import BlockContentAutogenButton from './BlockContentAutogenButton'
+
+  Vue.use(VBTooltipPlugin)
 
   export default {
     components: {
       // BlockContentAutogenButton,
-      BTooltip,
     },
-
     mixins: [lang, VueFocus.mixin],
 
     props: {

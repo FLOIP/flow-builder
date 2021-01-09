@@ -195,6 +195,6 @@
   }
 
   .close {
-    pointer-events: all;
+    pointer-events: auto;
   }
 </style>
