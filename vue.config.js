@@ -45,6 +45,38 @@ module.exports = {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
       });
+
+      // Mock call to record start, with this format
+      // {uuid: ..., queue_id: ..., status: ..., status_description: ..., description: ...}
+      app.all('/calltorecord/start', (req, res) => {
+        const result = {
+          uuid: `${Math.random().toString(36).substr(2, 16)}.${Math.random().toString(36).substr(2, 10)}`,
+          queue_id: Math.floor(Math.random() * (1000 + 1)),
+          status: 'in_progress',
+          status_description: '',
+          description: 'call to record',
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result));
+      });
+
+      // Mock call to record status, with this format
+      // { audio_file_id: "148", status: "new", description: "my descr", status_description: "", uuid: "5ffcdb4d0d8742.58454366", duration_seconds: "4.54", created_at: "2021-01-11 23:12:50", key: "block_1586301986853_15:45", queueId: "5ffcdb4d0d8742.58454366" }
+      app.all('/calltorecord/status', (req, res) => {
+        const now = new Date().toISOString().split('T')
+        const result = {
+          audio_file_id: Math.floor(Math.random() * (1000 + 1)),
+          duration_seconds: Math.random() * 10,
+          status: 'new',
+          description: 'call to record',
+          uuid: req.query.uuid,
+          key: req.query.key,
+          queueId: req.query.queueId,
+          created_at: `${now[0]} ${now[1].split('.')[0]}`,
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result));
+      });
     },
   }
 };
