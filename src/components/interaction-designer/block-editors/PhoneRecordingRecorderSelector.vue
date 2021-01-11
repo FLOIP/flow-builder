@@ -17,8 +17,8 @@
         <thead>
         <tr>
           <th class="recorder-selector-field"></th>
-          <th>{{'flow-builder.name'|trans}}</th>
-          <th>{{'flow-builder.phone-number'|trans}}</th>
+          <th>{{ 'flow-builder.name'|trans }}</th>
+          <th>{{ 'flow-builder.phone-number'|trans }}</th>
         </tr>
         </thead>
         <tbody id="call-to-record-modal-list">
@@ -30,20 +30,20 @@
                    :id="`call-to-record-caller-${recorder.id}`"
                    :value="recorder">
           </td>
-          <td><label :for="`call-to-record-caller-${recorder.id}`">{{recorder.name}}</label></td>
-          <td><label :for="`call-to-record-caller-${recorder.id}`">{{recorder.phone}}</label></td>
+          <td><label :for="`call-to-record-caller-${recorder.id}`">{{ recorder.name }}</label></td>
+          <td><label :for="`call-to-record-caller-${recorder.id}`">{{ recorder.phone }}</label></td>
         </tr>
         </tbody>
       </table>
 
-      <h4>{{'flow-builder.add-a-description-to-this-recording'|trans}}</h4>
+      <h4>{{ 'flow-builder.add-a-description-to-this-recording'|trans }}</h4>
       <input v-model="description"
              type="text"
              class="form-control"
              rows="2"
              :placeholder="'flow-builder.optional-description'|trans">
 
-      <h4>{{'flow-builder.add-a-new-recorder'|trans}}</h4>
+      <h4>{{ 'flow-builder.add-a-new-recorder'|trans }}</h4>
       <table class="table">
         <tbody>
         <tr>
@@ -75,84 +75,97 @@
 </template>
 
 <script>
-  import lang from 'lib/filters/lang'
-  import lodash from 'lodash'
-  import {mapState} from 'vuex'
-  import {BModal} from 'bootstrap-vue'
+import lang from 'lib/filters/lang'
+import lodash from 'lodash'
+import { mapState } from 'vuex'
+import { BModal } from 'bootstrap-vue'
 
-  export default {
-    components: {
-      BModal
+export default {
+  components: {
+    BModal
+  },
+
+  props: {
+    isModalVisible: Boolean
+  },
+
+  mixins: [lang],
+
+  data() {
+    return {
+      selectedRecorder: null,
+      description: null,
+      draft: null
+    }
+  },
+
+  created() {
+    this.reset()
+  },
+
+  computed: {
+    ...mapState({
+      recorders: ({ audio: { recording: { recorders } } }) => recorders
+    }),
+  },
+
+  methods: {
+    reset() {
+      this.draft = {
+        name: null,
+        phone: null,
+        isNew: true
+      }
+      this.description = null
+      this.selectedRecorder = null
     },
 
-    props: {
-      isModalVisible: Boolean
-    },
+    handleModalClosed() {
+      const
+          description = this.description,
+          value = lodash.clone(this.selectedRecorder)
 
-    mixins: [lang],
-
-    data() {
-      return {
-        selectedRecorder: null,
-        description: null,
-        draft: null}
-    },
-
-    created() {
       this.reset()
+      this.$emit('input', {
+        value,
+        recorder: value,
+        description
+      })
     },
 
-    computed: {
-      ...mapState({
-        recorders: ({audio: {recording: {recorders}}}) => recorders
-      }),
+    handleModalCancelled() {
+      this.reset()
+
+      const
+          description = this.description,
+          value = lodash.clone(this.selectedRecorder)
+
+      this.$emit('input', {
+        value,
+        recorder: value,
+        description
+      })
     },
-
-    methods: {
-      reset() {
-        this.draft = {name: null, phone: null, isNew: true}
-        this.description = null
-        this.selectedRecorder = null
-      },
-
-      handleModalClosed() {
-        const
-            description = this.description,
-            value = lodash.clone(this.selectedRecorder)
-
-        this.reset()
-        this.$emit('input', {value, recorder: value, description})
-      },
-
-      handleModalCancelled() {
-        this.reset()
-
-        const
-            description = this.description,
-            value = lodash.clone(this.selectedRecorder)
-
-        this.$emit('input', {value, recorder: value, description})
-      },
-    },
-  }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-  .phone-recording-recorder-selector {
-    padding-top: 3em;
+.phone-recording-recorder-selector {
+  padding-top: 3em;
 
-    .modal-body {
-      h4, .h4 {
-        margin-top: 2em;
-      }
-    }
-
-    .table {
-      .recorder-selector-field {
-        width: 3em;
-        text-align: center;
-        vertical-align: middle;
-      }
+  .modal-body {
+    h4, .h4 {
+      margin-top: 2em;
     }
   }
+
+  .table {
+    .recorder-selector-field {
+      width: 3em;
+      text-align: center;
+      vertical-align: middle;
+    }
+  }
+}
 </style>
