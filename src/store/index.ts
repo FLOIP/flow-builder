@@ -2,11 +2,13 @@ import {StoreOptions} from 'vuex'
 import {IFlowsState, store as flow} from './flow'
 import {IBuilderState, store as builder} from './builder'
 import trees from './trees/trees'
+import audio from './trees/audio'
 
 export interface IRootState {
   builder: IBuilderState,
   flow: IFlowsState,
-  trees: any
+  trees: any,
+  audio: any,
 }
 
 export const store: StoreOptions<IRootState> = {
@@ -14,6 +16,7 @@ export const store: StoreOptions<IRootState> = {
     builder,
     flow,
     trees, // trees was originally implemented globally, expecting it's state at root
+    audio,
   },
 }
 
