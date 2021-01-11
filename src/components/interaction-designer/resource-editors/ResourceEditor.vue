@@ -63,6 +63,10 @@
                 :selectedAudioFile="findOrGenerateStubbedVariantOn(
                    resource,
                    {languageId, contentType, modes: [mode]}).value"/>
+
+<!--            can(['edit-content', 'send-call-to-records'], true) &&-->
+            <phone-recorder v-if="!findOrGenerateStubbedVariantOn(resource,{languageId, contentType, modes: [mode]}).value"
+                            :recordingKey="`${block.jsKey}:${languageId}`" />
           </div>
         </template>
       </template>
@@ -98,7 +102,7 @@ import {
   import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
   import UploadMonitor from '../block-editors/UploadMonitor.vue'
 import ValidationException from "@floip/flow-runner/src/domain/exceptions/ValidationException";
-import {cloneDeep} from "lodash";
+import PhoneRecorder from '@/components/interaction-designer/block-editors/PhoneRecorder.vue'
 
   const flowVuexNamespace = namespace('flow')
 
@@ -142,6 +146,7 @@ import {cloneDeep} from "lodash";
       AudioLibrarySelector,
       ResourceVariantTextEditor,
       UploadMonitor,
+      PhoneRecorder,
     },
   })
   export class ResourceEditor extends Vue {
