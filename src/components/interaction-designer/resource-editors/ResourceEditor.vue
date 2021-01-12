@@ -34,8 +34,7 @@
                 <li class="nav-item">
                   <a class="nav-link px-2 py-1 active" @click.prevent="" href="#">{{'flow-builder.library' | trans}}</a>
                 </li>
-<!--                can(['edit-content', 'send-call-to-records'], true) &&-->
-                <li v-if="isFeatureAudioUploadEnabled" class="nav-item">
+                <li v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled" class="nav-item">
                   <a @click.prevent="triggerRecordViaPhoneFor(languageId)" href="#" class="nav-link px-2 py-1">{{'flow-builder.phone-recording' | trans}}</a>
                 </li>
 
@@ -64,8 +63,7 @@
                    resource,
                    {languageId, contentType, modes: [mode]}).value"/>
 
-<!--            can(['edit-content', 'send-call-to-records'], true) &&-->
-            <phone-recorder v-if="!findOrGenerateStubbedVariantOn(resource,{languageId, contentType, modes: [mode]}).value"
+            <phone-recorder v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{languageId, contentType, modes: [mode]}).value"
                             :recordingKey="`${block.uuid}:${languageId}`" />
           </div>
         </template>
