@@ -66,7 +66,7 @@
 
 <!--            can(['edit-content', 'send-call-to-records'], true) &&-->
             <phone-recorder v-if="!findOrGenerateStubbedVariantOn(resource,{languageId, contentType, modes: [mode]}).value"
-                            :recordingKey="`${block.jsKey}:${languageId}`" />
+                            :recordingKey="`${block.uuid}:${languageId}`" />
           </div>
         </template>
       </template>
