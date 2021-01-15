@@ -11,7 +11,7 @@ import router from './router'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-// note: we use boostrap3 compatibility, check import in vue.config.js
+import 'scss/main.scss'
 
 Vue.use(Vuex)
 
