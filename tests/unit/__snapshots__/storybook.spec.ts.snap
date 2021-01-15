@@ -1,0 +1,882 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots ConsoleIo/Print Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots ConsoleIo/Print Block Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots ConsoleIo/Read Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots ConsoleIo/Read Block Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Core/Case Block Styled Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Core/Case Block Styled Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Core/Log Block Plain Default 1`] = `<!---->`;
+
+exports[`Storyshots Core/Log Block Plain Existing Data Block 1`] = `<!---->`;
+
+exports[`Storyshots Core/Log Block Styled Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Core/Log Block Styled Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Core/Log Block Styled Existing Data Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Core/Output Block Styled Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Core/Run Another Flow Block Styled Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Flow/Flow Editor Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots InteractionDesigner/Toolbar Default 1`] = `
+<div>
+  <div
+    class="viamo-app-container flow-builder-sidebar-editor-container"
+    id="viamo-app"
+  >
+    <div
+      class="container-full"
+    >
+      <div
+        class="main-content-container"
+      >
+        <section
+          id="tree-app"
+        >
+          <div
+            class="edit-tree"
+            id="tree-interaction-designer"
+          >
+            <div
+              class="interaction-designer-contents panel panel-default"
+            >
+              <div
+                class="tree-builder-toolbar"
+              >
+                <!---->
+                 
+                <div
+                  class="tree-workspace-panel-heading panel-heading"
+                >
+                  <div
+                    class="tree-workspace-panel-heading-contents"
+                  >
+                    <div
+                      class="btn-toolbar"
+                    >
+                      <button
+                        class="btn btn-default"
+                      >
+                        <i
+                          class="glyphicon glyphicon-chevron-up"
+                        />
+                        
+          Import / Export
+        
+                      </button>
+                       
+                      <!---->
+                       
+                      <a
+                        class="btn btn-default"
+                        href="/trees/1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+                        
+          Edit Flow
+        
+                      </a>
+                       
+                      <!---->
+                       
+                      <!---->
+                       
+                      <!---->
+                        
+                      <div
+                        class="btn-group pull-right"
+                      >
+                        <!---->
+                         
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
+<div>
+  <div
+    class="viamo-app-container flow-builder-sidebar-editor-container"
+    id="viamo-app"
+  >
+    <div
+      class="container-full"
+    >
+      <div
+        class="main-content-container"
+      >
+        <section
+          id="tree-app"
+        >
+          <div
+            class="edit-tree"
+            id="tree-interaction-designer"
+          >
+            <div
+              class="interaction-designer-contents panel panel-default"
+            >
+              <div
+                class="tree-builder-toolbar"
+              >
+                <!---->
+                 
+                <div
+                  class="tree-workspace-panel-heading panel-heading"
+                >
+                  <div
+                    class="tree-workspace-panel-heading-contents"
+                  >
+                    <div
+                      class="btn-toolbar"
+                    >
+                      <button
+                        class="btn btn-default"
+                      >
+                        <i
+                          class="glyphicon glyphicon-chevron-up"
+                        />
+                        
+          Import / Export
+        
+                      </button>
+                       
+                      <!---->
+                       
+                      <a
+                        class="btn btn-default"
+                        href="/trees/1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+                        
+          Edit Flow
+        
+                      </a>
+                       
+                      <!---->
+                       
+                      <!---->
+                       
+                      <!---->
+                        
+                      <div
+                        class="btn-group pull-right"
+                      >
+                        <!---->
+                         
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
+<div>
+  <div
+    class="viamo-app-container flow-builder-sidebar-editor-container"
+    id="viamo-app"
+  >
+    <div
+      class="container-full"
+    >
+      <div
+        class="main-content-container"
+      >
+        <section
+          id="tree-app"
+        >
+          <div
+            class="edit-tree"
+            id="tree-interaction-designer"
+          >
+            <div
+              class="interaction-designer-contents panel panel-default"
+            >
+              <div
+                class="tree-builder-toolbar"
+              >
+                <!---->
+                 
+                <div
+                  class="tree-workspace-panel-heading panel-heading"
+                >
+                  <div
+                    class="tree-workspace-panel-heading-contents"
+                  >
+                    <div
+                      class="btn-toolbar"
+                    >
+                      <button
+                        class="btn btn-default"
+                      >
+                        <i
+                          class="glyphicon glyphicon-chevron-up"
+                        />
+                        
+          Import / Export
+        
+                      </button>
+                       
+                      <div
+                        class="btn-group"
+                      >
+                        <a
+                          class="btn btn-default active"
+                          href="#/trees/1/interaction-designer"
+                        >
+                          
+            Flow view
+          
+                        </a>
+                         
+                        <a
+                          class="btn btn-default"
+                          href="#/trees/1/resource-viewer"
+                        >
+                          
+            Resources view
+          
+                        </a>
+                      </div>
+                       
+                      <a
+                        class="btn btn-default"
+                        href="/trees/1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+                        
+          Edit Flow
+        
+                      </a>
+                       
+                      <!---->
+                       
+                      <!---->
+                       
+                      <!---->
+                       
+                      <a
+                        class="btn btn-success"
+                        disabled="disabled"
+                        href="#"
+                        title="another grouped button"
+                      >
+                        
+           Action X
+        
+                      </a>
+                       
+                      <a
+                        class="btn btn-warning"
+                        href="#"
+                        title="another grouped button"
+                      >
+                        
+           Action Y
+        
+                      </a>
+                       
+                      <div
+                        class="btn-group pull-right"
+                      >
+                        <!---->
+                         
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = `
+<div>
+  <div
+    class="viamo-app-container flow-builder-sidebar-editor-container"
+    id="viamo-app"
+  >
+    <div
+      class="container-full"
+    >
+      <div
+        class="main-content-container"
+      >
+        <section
+          id="tree-app"
+        >
+          <div
+            class="edit-tree"
+            id="tree-interaction-designer"
+          >
+            <div
+              class="interaction-designer-contents panel panel-default"
+            >
+              <div
+                class="tree-builder-toolbar"
+              >
+                <!---->
+                 
+                <div
+                  class="tree-workspace-panel-heading panel-heading"
+                >
+                  <div
+                    class="tree-workspace-panel-heading-contents"
+                  >
+                    <div
+                      class="btn-toolbar"
+                    >
+                      <button
+                        class="btn btn-default"
+                      >
+                        <i
+                          class="glyphicon glyphicon-chevron-up"
+                        />
+                        
+          Import / Export
+        
+                      </button>
+                       
+                      <div
+                        class="btn-group"
+                      >
+                        <a
+                          class="btn btn-default active"
+                          href="#/trees/1/interaction-designer"
+                        >
+                          
+            Flow view
+          
+                        </a>
+                         
+                        <a
+                          class="btn btn-default"
+                          href="#/trees/1/resource-viewer"
+                        >
+                          
+            Resources view
+          
+                        </a>
+                      </div>
+                       
+                      <a
+                        class="btn btn-default"
+                        href="/trees/1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+                        
+          Edit Flow
+        
+                      </a>
+                       
+                      <!---->
+                       
+                      <!---->
+                       
+                      <!---->
+                        
+                      <div
+                        class="btn-group pull-right"
+                      >
+                        <!---->
+                         
+                        <a
+                          class="btn btn-success"
+                          disabled="disabled"
+                          href="#"
+                          title="another grouped button"
+                        >
+                          
+           Action X
+        
+                        </a>
+                         
+                        <a
+                          class="btn btn-warning"
+                          href="#"
+                          title="another grouped button"
+                        >
+                          
+           Action Y
+        
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
+<div>
+  <div
+    class="viamo-app-container flow-builder-sidebar-editor-container"
+    id="viamo-app"
+  >
+    <div
+      class="container-full"
+    >
+      <div
+        class="main-content-container"
+      >
+        <section
+          id="tree-app"
+        >
+          <div
+            class="edit-tree"
+            id="tree-interaction-designer"
+          >
+            <div
+              class="interaction-designer-contents panel panel-default"
+            >
+              <div
+                class="tree-builder-toolbar"
+              >
+                <!---->
+                 
+                <div
+                  class="tree-workspace-panel-heading panel-heading"
+                >
+                  <div
+                    class="tree-workspace-panel-heading-contents"
+                  >
+                    <div
+                      class="btn-toolbar"
+                    >
+                      <button
+                        class="btn btn-default"
+                      >
+                        <i
+                          class="glyphicon glyphicon-chevron-up"
+                        />
+                        
+          Import / Export
+        
+                      </button>
+                       
+                      <div
+                        class="btn-group"
+                      >
+                        <a
+                          class="btn btn-default active"
+                          href="#/trees/1/interaction-designer"
+                        >
+                          
+            Flow view
+          
+                        </a>
+                         
+                        <a
+                          class="btn btn-default"
+                          href="#/trees/1/resource-viewer"
+                        >
+                          
+            Resources view
+          
+                        </a>
+                      </div>
+                       
+                      <a
+                        class="btn btn-default"
+                        href="/trees/1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+                        
+          Edit Flow
+        
+                      </a>
+                       
+                      <!---->
+                       
+                      <!---->
+                       
+                      <!---->
+                        
+                      <div
+                        class="btn-group pull-right"
+                      >
+                        <!---->
+                         
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1`] = `
+<div>
+  <div
+    class="viamo-app-container flow-builder-sidebar-editor-container"
+    id="viamo-app"
+  >
+    <div
+      class="container-full"
+    >
+      <div
+        class="main-content-container"
+      >
+        <section
+          id="tree-app"
+        >
+          <div
+            class="edit-tree"
+            id="tree-interaction-designer"
+          >
+            <div
+              class="interaction-designer-contents panel panel-default"
+            >
+              <div
+                class="tree-builder-toolbar"
+              >
+                <!---->
+                 
+                <div
+                  class="tree-workspace-panel-heading panel-heading"
+                >
+                  <div
+                    class="tree-workspace-panel-heading-contents"
+                  >
+                    <div
+                      class="btn-toolbar"
+                    >
+                      <button
+                        class="btn btn-default"
+                      >
+                        <i
+                          class="glyphicon glyphicon-chevron-up"
+                        />
+                        
+          Import / Export
+        
+                      </button>
+                       
+                      <div
+                        class="btn-group"
+                      >
+                        <a
+                          class="btn btn-default active"
+                          href="#/trees/1/interaction-designer"
+                        >
+                          
+            Flow view
+          
+                        </a>
+                         
+                        <a
+                          class="btn btn-default"
+                          href="#/trees/1/resource-viewer"
+                        >
+                          
+            Resources view
+          
+                        </a>
+                      </div>
+                       
+                      <a
+                        class="btn btn-default"
+                        href="/trees/1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+                        
+          Edit Flow
+        
+                      </a>
+                       
+                      <!---->
+                       
+                      <!---->
+                       
+                      <!---->
+                        
+                      <div
+                        class="btn-group pull-right"
+                      >
+                        <!---->
+                         
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Message Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Message Block Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Numeric Response Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For All Modes 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Ivr Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Text Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Open Response Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For All Modes 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Ivr Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock Existing Data 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock In Flow Builder 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock Ivr Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock More Languages 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock Existing Data 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock In Flow Builder 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock Ivr Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock More Languages 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots SmartDevices/Location Response Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots SmartDevices/Location Response Block Existing Data Pre Filled 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots SmartDevices/Photo Response Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots SmartDevices/Photo Response Block Existing Data Pre Filled 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
