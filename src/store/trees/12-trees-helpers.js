@@ -1,5 +1,7 @@
 
 /*global Backbone */
+import _ from 'lodash';
+
 window.app = window.app || {};
 
 
