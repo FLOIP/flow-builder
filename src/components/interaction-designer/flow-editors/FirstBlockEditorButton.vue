@@ -4,7 +4,7 @@
       <h4>{{'flow-builder.options' | trans}}</h4>
       <div class="form-group">
         <button type="button"
-            class="btn btn-default btn-sm"
+            class="btn btn-secondary btn-sm"
             :disabled="isStartBlock"
             @click="setStartBlock($event)">
           <template v-if="isStartBlock">

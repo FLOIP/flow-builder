@@ -4,7 +4,7 @@
       <h6>{{ 'trees.uploading' | trans }}&hellip; {{ upload.file.name }}</h6>
 
       <div class="progress">
-        <progress-bar :now="progress.toFixed(1) * 1" label type="default" striped animated/>
+        <b-progress :value="progress * 1" show-value animated class="mb-3"/>
       </div>
     </div>
 
@@ -22,7 +22,7 @@ import lang from '@/lib/filters/lang';
 import lodash, { forEach } from 'lodash';
 
 import { mapState } from 'vuex';
-import { progressbar as ProgressBar } from 'vue-strap';
+import { BProgress } from 'bootstrap-vue'
 import multimediaUpload, { Statuses as UploadStatuses } from '@/store/trees/multimediaUpload';
 
 export default {
@@ -30,7 +30,7 @@ export default {
 
   mixins: [lang],
 
-  components: { ProgressBar },
+  components: { BProgress },
 
   computed: {
     ...mapState('multimediaUpload', ['uploadsById', 'uploadIdsByKey']),

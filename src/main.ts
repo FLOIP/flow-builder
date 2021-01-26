@@ -3,29 +3,21 @@ import Vuex from 'vuex'
 import App from './App.vue'
 import router from './router'
 
+
+/**
+ * This import modifies the jquery that should already be on the page globally at global.$
+ * e.g. adding $().modal() and other jquery plugins
+ */
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'scss/main.scss'
+
 Vue.use(Vuex)
 
 Vue.config.productionTip = false
 
-function exportAsGlobal(exports) {
-  Object.assign(window, exports)
-}
-
-async function initializeBootstrapFramework() {
-  import('bootstrap/dist/css/bootstrap.css')
-  import('bootstrap/dist/css/bootstrap-theme.css')
-
-  const {default: ImportedJquery} = await import('jquery')
-  exportAsGlobal({
-    $: ImportedJquery,
-    jQuery: ImportedJquery})
-
-  await import('bootstrap')
-}
-
 async function main() {
-  await initializeBootstrapFramework()
-
   new Vue({
     router,
     store: new Vuex.Store({}),

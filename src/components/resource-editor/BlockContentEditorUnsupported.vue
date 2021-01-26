@@ -12,10 +12,10 @@
   <div class="block-content-editor block-content-editor-unsupported">
     <ul class="list-inline pull-right h4">
       <li v-for="tag in block.customData.tags">
-        <span class="label label-default">{{tag}}</span>
+        <span class="badge badge-default">{{tag}}</span>
       </li>
       <li>
-        <span class="label label-info">{{'flow-builder.block-type-unsupported-in-resource-view' | trans}}</span>
+        <span class="badge badge-info">{{'flow-builder.block-type-unsupported-in-resource-view' | trans}}</span>
       </li>
     </ul>
 

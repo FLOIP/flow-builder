@@ -6,11 +6,11 @@
 
     <template v-for="{id: languageId, name: language} in flow.languages">
       <div class="block-content-editor-lang">
-        <h5 class="label label-info">{{language || 'flow-builder.unknown-language' | trans}}</h5>
+        <h5 class="badge badge-info">{{language || 'flow-builder.unknown-language' | trans}}</h5>
       </div>
 
       <template v-for="mode in flow.supportedModes">
-        <h5>{{`flow-builder.${mode}-content` | trans}}</h5>
+        <h6>{{`flow-builder.${mode}-content` | trans}}</h6>
 
         <template v-for="contentType in discoverContentTypesFor(mode)">
           <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
@@ -31,12 +31,13 @@
               <upload-monitor :uploadKey="`${block.uuid}:${languageId}`" />
 
               <ul class="nav nav-tabs">
-                <li class="active">
-                  <a @click.prevent="" href="#">{{'flow-builder.library' | trans}}</a>
+                <li class="nav-item">
+                  <a class="nav-link active" @click.prevent="" href="#">{{'flow-builder.library' | trans}}</a>
                 </li>
 
-                <li>
+                <li class="nav-item">
                   <a v-if="isFeatureAudioUploadEnabled"
+                     class="nav-link"
                      v-flow-uploader="{
                       target: route('trees.resumeableAudioUpload'),
                       token: `${block.uuid}${languageId}`,
