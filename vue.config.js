@@ -47,14 +47,14 @@ module.exports = {
       });
 
       // Mock call to record start, with this format
-      // {uuid: ..., queue_id: ..., status: ..., status_description: ..., description: ...}
+      // {uuid: ..., queue_id: ..., status: "in_progress", status_description: ..., description: ...}
       app.all('/calltorecord/start', (req, res) => {
         const result = {
           uuid: `${Math.random().toString(36).substr(2, 16)}.${Math.random().toString(36).substr(2, 10)}`,
           queue_id: Math.floor(Math.random() * (1000 + 1)),
           status: 'in_progress',
           status_description: '',
-          description: 'call to record',
+          description: 'test call to record.mp3',
         }
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
@@ -68,7 +68,7 @@ module.exports = {
           audio_file_id: Math.floor(Math.random() * (1000 + 1)),
           duration_seconds: Math.random() * 10,
           status: 'new',
-          description: 'call to record',
+          description: 'test call to record.mp3',
           uuid: req.query.uuid,
           key: req.query.key,
           queueId: req.query.queueId,
