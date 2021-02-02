@@ -49,7 +49,7 @@ module.exports = {
           queue_id: Math.floor(Math.random() * (1000 + 1)),
           status: 'in_progress',
           status_description: '',
-          description: 'test call to record.mp3',
+          description: 'Test call-to-record audio',
         }
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
@@ -63,7 +63,7 @@ module.exports = {
           audio_file_id: Math.floor(Math.random() * (1000 + 1)),
           duration_seconds: Math.random() * 10,
           status: req.body.is_first_call ? 'in_progress' : 'new', // `new` status tells the UI we had successful `recorded` audio
-          description: 'test call to record.mp3',
+          description: 'Test call-to-record audio',
           uuid: req.body.uuid,
           key: req.body.key,
           queueId: req.body.queueId,
