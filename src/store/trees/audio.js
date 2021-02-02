@@ -49,8 +49,10 @@ export default {
       // TODO: enable showAppMessageFor once available
       // dispatch('showAppMessageFor', {message: 'Atempting to call...'})
 
-      return axios.post(routeFrom('trees.calltorecordStart', null, rootState.trees.ui.routes), {recorder_phonenumber, recorder_name, is_new_recorder, description})
-          .then(({data: {uuid, queue_id: queueId, status, status_description, description}}) => {
+      return axios.post(routeFrom('trees.calltorecordStart', null, rootState.trees.ui.routes),
+        {recorder_phonenumber, recorder_name, is_new_recorder, description},
+        {headers: { 'Content-Type': 'multipart/form-data' }}
+          ).then(({data: {uuid, queue_id: queueId, status, status_description, description}}) => {
 
             // TODO: enable showAppMessageFor once available
             // if (status_description === 'error') {
@@ -63,14 +65,29 @@ export default {
             // TODO: enable showAppMessageFor once available
             // dispatch('showAppMessageFor', {message: 'Sending out call...'})
             commit('setRecordingStatusFor', {key, uuid, queueId, value: 'initiating_call'})
-            setTimeout(() => dispatch('fetchAudioRecordingStatusFor', {key, uuid, queueId}), 3000)
+            setTimeout(() => dispatch('fetchAudioRecordingStatusFor', {key, uuid, queueId, isFirstCall: true}), 3000)
           })
       // .catch(({response: {data: {status_description: message}}}) => )
     },
 
-    fetchAudioRecordingStatusFor({commit, dispatch, state, rootState}, {key, uuid, queueId}) {
-      return axios.post(routeFrom('trees.calltorecordStatus', null, rootState.trees.ui.routes), {uuid, queue_id: queueId})
-          .then(({data}) => dispatch('checkAudioRecordingStatusFor', {...data, key, uuid, queueId}))
+    /**
+     * fetch Audio Recording Status
+     *
+     * @param commit
+     * @param dispatch
+     * @param state
+     * @param rootState
+     * @param key
+     * @param uuid
+     * @param queueId
+     * @param isFirstCall, used on devServer to simulate intermediate statuses, eg: `in_progress`, then `recorded`
+     * @returns {Promise<AxiosResponse<any>>}
+     */
+    fetchAudioRecordingStatusFor({commit, dispatch, state, rootState}, {key, uuid, queueId, isFirstCall}) {
+      return axios.post(routeFrom('trees.calltorecordStatus', null, rootState.trees.ui.routes),
+        {uuid, queue_id: queueId, is_first_call: isFirstCall},
+        {headers: { 'Content-Type': 'application/json' }}
+        ).then(({data}) => dispatch('checkAudioRecordingStatusFor', {...data, key, uuid, queueId}))
       // .catch(({response: {data: {status_description: message}}}) => )
     },
 
@@ -115,8 +132,8 @@ export default {
         // todo: refactor @jory's audio file stuff so that we can reuse everywhere
       }
 
+      const isComplete = status === 'error' || status === 'new'
       // TODO: enable showAppMessageFor once available
-      // const isComplete = status === 'error' || status === 'new'
       // const fetchStatusMessageMap = {
       //   error: 'Error dialing number', // + hide
       //   new: 'Call recorded successfully', // + hide
@@ -129,10 +146,10 @@ export default {
       //   discard_and_record: 'Audio discarded, Recording again...'
       // }
       //
-      // if (isComplete) {
-      //   dispatch('showAppMessageFor', {message: fetchStatusMessageMap[status], isComplete: true})
-      //   return
-      // }
+      if (isComplete) {
+        // dispatch('showAppMessageFor', {message: fetchStatusMessageMap[status], isComplete: true})
+        return
+      }
       // dispatch('showAppMessageFor', {message: fetchStatusMessageMap[status]})
 
       const fetchStatusDelayMap = {
@@ -145,7 +162,7 @@ export default {
         discard_and_record: 3000,
       }
 
-      // setTimeout(_ => dispatch('fetchAudioRecordingStatusFor', {key, uuid, queueId}), fetchStatusDelayMap[status])
+      setTimeout(_ => dispatch('fetchAudioRecordingStatusFor', {key, uuid, queueId, isFirstCall: false}), fetchStatusDelayMap[status])
     },
   }
 }

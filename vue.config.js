@@ -1,4 +1,5 @@
 const path = require('path')
+const bodyParser = require('body-parser')
 
 module.exports = {
   lintOnSave: false,
@@ -27,6 +28,10 @@ module.exports = {
   },
   devServer: {
     before(app) {
+      // use bodyParser for axios request
+      app.use(bodyParser.urlencoded({ extended: true }))
+      app.use(bodyParser.json())
+
       // Mock a route to mimic this upload result format:
       // {"audio_file_id":147,"duration_seconds":"4.803250","description":"xyz.wav","created_at":{"date":"2020-11-24 01:41:58","timezone_type":3,"timezone":"UTC"},"audio_uuid":"5fbc64e0c74e90.82972899"}"
       app.all('/audiofiles/upload', (req, res) => {
@@ -67,11 +72,11 @@ module.exports = {
         const result = {
           audio_file_id: Math.floor(Math.random() * (1000 + 1)),
           duration_seconds: Math.random() * 10,
-          status: 'new',
+          status: req.body.is_first_call ? 'in_progress' : 'new', // `new` status tells the UI we had successful `recorded` audio
           description: 'test call to record.mp3',
-          uuid: req.query.uuid,
-          key: req.query.key,
-          queueId: req.query.queueId,
+          uuid: req.body.uuid,
+          key: req.body.key,
+          queueId: req.body.queueId,
           created_at: `${now[0]} ${now[1].split('.')[0]}`,
         }
         res.writeHead(200, { 'Content-Type': 'application/json' });
