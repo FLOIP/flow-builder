@@ -19,7 +19,7 @@ Vue.config.productionTip = false
 
 const mainStore = {
   state() {
-    // Make sure to have permissions loaded
+    // Make sure to have permissions & other contexts loaded from __APP__
     bootstrapLegacyGlobalDependencies({}, {})
     return {
       ...lodash.chain(global).get('__APP__', {}).value(),

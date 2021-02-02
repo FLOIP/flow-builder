@@ -22,10 +22,27 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '@/scss/main.scss'
 
+import Vuex from "vuex"
 import Vue from 'vue'
 import {Component, Prop} from 'vue-property-decorator'
+import lodash from "lodash"
+import {bootstrapLegacyGlobalDependencies} from '@/store/trees/bootstrap-legacy-global-dependencies'
 
-@Component({})
+Vue.use(Vuex)
+
+const mainStore = {
+  state() {
+    // Make sure to have permissions & other contexts loaded from __APP__
+    bootstrapLegacyGlobalDependencies({}, {})
+    return {
+      ...lodash.chain(global).get('__APP__', {}).value(),
+    }
+  }
+}
+
+@Component({
+  store: new Vuex.Store(mainStore)
+})
 export class FlowBuilderContainer extends Vue {
 }
 
