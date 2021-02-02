@@ -45,6 +45,7 @@ const BaseOptions = {
       ...BaseOptions,
       store: new Vuex.Store<IRootState>(store),
       async mounted() {
+        // @ts-ignore
         await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
       },
     }
@@ -57,6 +58,7 @@ export const Default = () => (CurrentClass1)
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
+    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
       languages: {
@@ -74,29 +76,29 @@ export const Default = () => (CurrentClass1)
 })
 class CurrentClass2 extends BaseMountedVueClass {
 
-  setDescription(blockId) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
+  setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
     this.block_setName({blockId: blockId, value: "A Name"})
     this.block_setLabel({blockId: blockId, value: "A Label"})
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
   }
 
-  setResourceData(languageId, resourceId) {
+  setResourceData(languageId: string, resourceId: string) {
     // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['sms'],
+      modes: [SupportedMode.SMS],
       // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.TEXT],
     }
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ussd'],
+      modes: [SupportedMode.USSD],
       // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.TEXT],
     }
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ivr'],
+      modes: [SupportedMode.IVR],
       // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.AUDIO],
     }
@@ -122,6 +124,7 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
+    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
       languages: {
@@ -139,29 +142,29 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
   },
 })
 class CurrentClass3 extends BaseMountedVueClass {
-  setDescription(blockId) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
+  setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
     this.block_setName({blockId: blockId, value: "A Name"})
     this.block_setLabel({blockId: blockId, value: "A Label"})
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
   }
 
-  setResourceData(languageId, resourceId) {
+  setResourceData(languageId: string, resourceId: string) {
     // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['sms'],
+      modes: [SupportedMode.SMS],
       // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.TEXT],
     }
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ussd'],
+      modes: [SupportedMode.USSD],
       // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.TEXT],
     }
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ivr'],
+      modes: [SupportedMode.IVR],
       // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.AUDIO],
     }
@@ -188,6 +191,7 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
+    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
       languages: {
@@ -204,29 +208,29 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
   },
 })
 class CurrentClass4 extends BaseMountedVueClass {
-  setDescription(blockId) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
+  setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
     this.block_setName({blockId: blockId, value: "A Name"})
     this.block_setLabel({blockId: blockId, value: "A Label"})
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
   }
 
-  setResourceData(languageId, resourceId) {
+  setResourceData(languageId: string, resourceId: string) {
     // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['sms'],
+      modes: [SupportedMode.SMS],
       // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.TEXT],
     }
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ussd'],
+      modes: [SupportedMode.USSD],
       // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.TEXT],
     }
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
-      modes: ['ivr'],
+      modes: [SupportedMode.IVR],
       // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.AUDIO],
     }
@@ -253,6 +257,7 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
       ...BaseOptions,
       store: new Vuex.Store<IRootState>(store),
       async mounted() {
+        // @ts-ignore
         const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
 
         this.block_setName({blockId: blockId, value: "A Name"})

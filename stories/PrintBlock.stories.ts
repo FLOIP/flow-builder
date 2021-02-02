@@ -42,6 +42,7 @@ const PrintBlockTemplate = `
   store: new Vuex.Store<IRootState>(store),
 
   async mounted() {
+    // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
   },
 })
@@ -55,6 +56,7 @@ export const Default = () => {
     template: PrintBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
+      // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
 
       //TODO - support sending props to baseMounted?
@@ -109,6 +111,7 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
     template: PrintBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
+      // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
 
       this.block_setName({blockId: blockId, value: "A Name"})
