@@ -19,9 +19,8 @@ export interface IRootState {
 }
 
 export const store: StoreOptions<IRootState> = {
-  state: {
-    ...lodash.chain(global).get('__APP__', {}).value(),
-  },
+  // @ts-ignore
+  state: {...lodash.chain(global).get('__APP__', {}).value()},
   modules: {
     builder,
     flow,
