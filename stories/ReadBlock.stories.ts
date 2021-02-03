@@ -39,7 +39,7 @@ const readBlockTemplate = `
     components: {ReadBlock, FlowBuilderSidebarEditorContainer},
     template: readBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
-    async mounted() {
+    async created() {
       // @ts-ignore
       await baseMounted.bind(this)(BLOCK_TYPE, readBlockStore)
     },
@@ -53,7 +53,7 @@ export const Default = () => (DefaultClass)
     components: {ReadBlock, FlowBuilderSidebarEditorContainer},
     template: readBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
-    async mounted() {
+    async created() {
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, readBlockStore)
 
@@ -79,7 +79,7 @@ export const ExistingDataBlock = () => (ExistingDataClass)
     components: {ReadBlock, FlowBuilderSidebarEditorContainer},
     template: readBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
-    async mounted() {
+    async created() {
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, readBlockStore)
 

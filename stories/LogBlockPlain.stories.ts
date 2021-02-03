@@ -31,7 +31,7 @@ const LogBlockTemplate = `
   components: {LogBlock, PlainFlowBuilderBlockEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
-  async mounted() {
+  async created() {
     // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
   },
@@ -44,7 +44,7 @@ export const ExistingDataBlock = () => ({
   components: {LogBlock, PlainFlowBuilderBlockEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
-  async mounted() {
+  async created() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
 

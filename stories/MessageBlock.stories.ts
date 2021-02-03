@@ -41,7 +41,7 @@ const MessageBlockTemplate = `
     components: {MessageBlock, FlowBuilderSidebarEditorContainer},
     template: MessageBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
-    async mounted() {
+    async created() {
       // @ts-ignore
       await baseMounted.bind(this)(BLOCK_TYPE, messageBlockStore)
     },
@@ -56,7 +56,7 @@ export const Default = () => (DefaultClass)
     components: {MessageBlock, FlowBuilderSidebarEditorContainer},
     template: MessageBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
-    async mounted() {
+    async created() {
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, messageBlockStore)
 
@@ -111,7 +111,7 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
     components: {MessageBlock, FlowBuilderSidebarEditorContainer},
     template: MessageBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
-    async mounted() {
+    async created() {
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, messageBlockStore)
 

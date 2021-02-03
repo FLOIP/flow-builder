@@ -38,7 +38,7 @@ const BaseOptions = {
 @Component<any>({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
-  async mounted() {
+  async created() {
     // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, caseBlockStore)
   },
@@ -50,7 +50,7 @@ export const Default = () => (DefaultClass)
 @Component<any>({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
-  async mounted() {
+  async created() {
     // @ts-ignore
     const { block } = await baseMounted.bind(this)(BLOCK_TYPE, caseBlockStore)
     const blockId = block.uuid
