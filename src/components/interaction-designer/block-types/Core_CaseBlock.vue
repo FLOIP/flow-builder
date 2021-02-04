@@ -63,7 +63,7 @@
     @Prop()readonly flow!: IFlow
 
     get exits(): IBlockExitTestRequired[] {
-      return this.block.exits
+      return this.block.exits || []
     }
 
     @blockVuexNamespace.Action editCaseBlockExit!: ({exitId, value}: {exitId: string; value: string}) => Promise<IBlockExit>
