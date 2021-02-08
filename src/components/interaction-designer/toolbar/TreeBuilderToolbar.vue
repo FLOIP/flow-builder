@@ -190,6 +190,7 @@
       }),
 
       ...mapGetters('flow', ['activeFlow']),
+      ...mapGetters('builder', ['activeBlock']),
       ...mapState('flow', ['flows', 'resources']),
       ...mapState('builder', ['activeBlockId']),
 
@@ -199,7 +200,6 @@
         'isBlockAvailableByBlockClass',
         'hasChanges',
         'isTreeValid',
-        'selectedBlock',
         'isFeatureTreeSaveEnabled',
         'isFeatureTreeSendEnabled',
         'isFeatureTreeDuplicateEnabled',
@@ -226,10 +226,6 @@
                 ['platform_metadata', 'io_viamo']
             ))
         }
-      },
-
-      jsKey() { // deprecate
-        return lodash.get(this.selectedBlock, 'jsKey')
       },
       editTreeUrl() {
         return this.editTreeRoute()
@@ -324,10 +320,22 @@
       ...mapActions('builder', ['importFlowsAndResources']),
 
       handleAddBlockByTypeSelected({type}) {
+        const xDelta = 80, yDelta = 80
+        let x = 150, y = 255
+        if (this.activeBlock) {
+          x = lodash.get(this.activeBlock, 'platform_metadata.io_viamo.uiData.xPosition', 0) + xDelta
+          y = lodash.get(this.activeBlock, 'platform_metadata.io_viamo.uiData.yPosition', 0) + yDelta
+        } else {
+          //
+        }
+
         const {uuid: blockId} = this.flow_addBlankBlockByType({type, platform_metadata: {
             io_viamo: {
-              uiData: {xPosition: 150, yPosition: 255}, // todo: selected block + (80,80)
-            }}}) // todo push out to intx-designer
+              uiData: {
+                xPosition: x,
+                yPosition: y,
+              },
+            }}}); // todo push out to intx-designer
         // activateBlock({blockId})
       },
 
