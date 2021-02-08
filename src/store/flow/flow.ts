@@ -249,6 +249,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
 
     commit('flow_addBlock', {block: duplicatedBlock})
+    commit('builder/activateBlock', {blockId: duplicatedBlock.uuid}, {root:true})
 
     return duplicatedBlock
   },
