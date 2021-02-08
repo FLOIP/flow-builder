@@ -318,8 +318,9 @@
       ...mapMutations('flow', ['flow_removeBlock']),
       ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
       ...mapActions('builder', ['importFlowsAndResources']),
+      ...mapMutations('builder', ['activateBlock']),
 
-      handleAddBlockByTypeSelected({type}) {
+      async handleAddBlockByTypeSelected({type}) {
         const xDelta = 80, yDelta = 80
         let x = 150, y = 255
         if (this.activeBlock) {
@@ -329,14 +330,14 @@
           //
         }
 
-        const {uuid: blockId} = this.flow_addBlankBlockByType({type, platform_metadata: {
+        const {uuid: blockId} = await this.flow_addBlankBlockByType({type, platform_metadata: {
             io_viamo: {
               uiData: {
                 xPosition: x,
                 yPosition: y,
               },
             }}}); // todo push out to intx-designer
-        // activateBlock({blockId})
+        this.activateBlock({blockId})
       },
 
       handleRemoveActivatedBlockTriggered() {
