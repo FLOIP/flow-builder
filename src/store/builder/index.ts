@@ -1,4 +1,4 @@
-import {cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get} from 'lodash'
+import lodash, {cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {IRootState} from "@/store"
@@ -353,4 +353,19 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
     ...map(source.exits, 'tag'),
     ...map(target.exits, 'tag'),
   ]
+}
+
+export function computeBlockPositionsFrom(block: IBlock) {
+  const xDelta = 80, yDelta = 80
+  let xPosition = 150, yPosition = 255
+  if (block) {
+    xPosition = lodash.get(block, 'platform_metadata.io_viamo.uiData.xPosition', 0) + xDelta
+    yPosition = lodash.get(block, 'platform_metadata.io_viamo.uiData.yPosition', 0) + yDelta
+  } else {
+    //
+  }
+
+  console.log(`new position ${JSON.stringify({xPosition, yPosition})}`)
+
+  return {xPosition, yPosition}
 }

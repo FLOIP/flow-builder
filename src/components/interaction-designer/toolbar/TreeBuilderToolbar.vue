@@ -166,6 +166,7 @@
   // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
   // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
   import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
+  import {computeBlockPositionsFrom} from '@/store/builder'
 
   export default {
     components: {
@@ -321,22 +322,14 @@
       ...mapMutations('builder', ['activateBlock']),
 
       async handleAddBlockByTypeSelected({type}) {
-        const xDelta = 80, yDelta = 80
-        let x = 150, y = 255
-        if (this.activeBlock) {
-          x = lodash.get(this.activeBlock, 'platform_metadata.io_viamo.uiData.xPosition', 0) + xDelta
-          y = lodash.get(this.activeBlock, 'platform_metadata.io_viamo.uiData.yPosition', 0) + yDelta
-        } else {
-          //
-        }
-
-        const {uuid: blockId} = await this.flow_addBlankBlockByType({type, platform_metadata: {
+        const {uuid: blockId} = await this.flow_addBlankBlockByType({
+          type,
+          platform_metadata: {
             io_viamo: {
-              uiData: {
-                xPosition: x,
-                yPosition: y,
-              },
-            }}}); // todo push out to intx-designer
+              uiData: computeBlockPositionsFrom(this.activeBlock)
+            }
+          }
+        }); // todo push out to intx-designer
         this.activateBlock({blockId})
       },
 
