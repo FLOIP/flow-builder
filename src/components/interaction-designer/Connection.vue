@@ -7,7 +7,19 @@
   // import LeaderLine from 'leader-line'
   const {LeaderLine} = window
   import {set} from 'lodash'
-  import {mapGetters} from 'vuex'
+import {mapState, mapGetters, mapMutations} from 'vuex'
+
+const categoryColorMappings = {
+  'category-0-faint': '#fbfdfb',
+  'category-0-light': '#97BD8A',
+  'category-0-dark': '#38542f',
+  'category-1-faint': '#fdfdfe',
+  'category-1-light': '#6897BB',
+  'category-1-dark': '#30516a',
+  'category-2-faint': '#fdfbf8',
+  'category-2-light': '#C69557',
+  'category-2-dark': '#6e4e25',
+}
 
   export default {
     props: {
@@ -28,7 +40,43 @@
     },
 
     computed: {
+      ...mapState('builder', ['activeConnection']),
       ...mapGetters('builder', ['blocksById']),
+
+      options() {
+        return {
+          startPlug: 'square',
+
+          startPlugColor: categoryColorMappings[`category-${this.colorCategory}-light`],
+          endPlugColor: categoryColorMappings[`category-${this.colorCategory}-dark`],
+          gradient: true,
+
+          startSocket: 'bottom',
+          endSocket: 'top',
+
+          size: 3,
+          outline: true,
+          outlineColor: '#ffffff',
+          // outlineSize: 0.08,
+
+          path: 'grid',
+          // path: 'fluid',
+          // path: 'arc',
+          // path: 'magnet',
+
+          middleLabel: LeaderLine.captionLabel(this.exit.tag, {
+            color: categoryColorMappings[`category-${this.colorCategory}-dark`],
+            fontSize: 12,
+            // lineOffset: 65,
+          }),
+        }
+      },
+
+      prominentOptions() {
+        return {
+          size: this.options.size + 2,
+        }
+      },
 
       sourceId: ({exit}) => `exit/${exit.uuid}/handle`,
       targetId: ({exit}) => exit.destinationBlock
@@ -58,9 +106,12 @@
         return this.repaintCacheKeyGenerator(source, target)
           .join('\n')
       },
+
+
     },
 
     methods: {
+      ...mapMutations('builder', ['activateConnection']),
       reposition() {
         if (!this.line) {
           return
@@ -75,6 +126,20 @@
           x: this.line.top,
           y: this.line.left,
         })
+      },
+      mouseOverHandler() {
+        console.log('mouseover')
+        this.line.setOptions(this.prominentOptions)
+      },
+      mouseOutHandler() {
+        console.log('mouseout')
+        this.line.setOptions(this.options)
+      },
+      clickHandler() {
+        console.log('clicked')
+        console.log(this.line)
+        this.line.setOptions(this.prominentOptions)
+        this.activateConnection({connectionLine: this.line})
       }
     },
 
@@ -93,48 +158,6 @@
       //       What I'm thinking is that we can just leverage these x/y's? How do we then update them?
       // new LeaderLine(element1, LeaderLine.pointAnchor(element3, {x: 10, y: 30}));
 
-      const categoryColorMappings = {
-        'category-0-faint': '#fbfdfb',
-        'category-0-light': '#97BD8A',
-        'category-0-dark': '#38542f',
-        'category-1-faint': '#fdfdfe',
-        'category-1-light': '#6897BB',
-        'category-1-dark': '#30516a',
-        'category-2-faint': '#fdfbf8',
-        'category-2-light': '#C69557',
-        'category-2-dark': '#6e4e25',
-      }
-
-
-
-      const options = {
-        startPlug: 'square',
-
-        startPlugColor: categoryColorMappings[`category-${this.colorCategory}-light`],
-        endPlugColor: categoryColorMappings[`category-${this.colorCategory}-dark`],
-        gradient: true,
-
-        startSocket: 'bottom',
-        endSocket: 'top',
-
-        size: 3,
-        outline: true,
-        outlineColor: '#ffffff',
-        // outlineSize: 0.08,
-
-        path: 'grid',
-        // path: 'fluid',
-        // path: 'arc',
-        // path: 'magnet',
-
-        middleLabel: LeaderLine.captionLabel(this.exit.tag, {
-          color: categoryColorMappings[`category-${this.colorCategory}-dark`],
-          fontSize: 12,
-          // lineOffset: 65,
-        }),
-
-      }
-
       // const {sourcePosition, targetPosition} = this
       // this.line = new LeaderLine(
       //     LeaderLine.pointAnchor(document.body, sourcePosition),
@@ -147,7 +170,22 @@
         ? document.getElementById(this.targetId)
         : LeaderLine.pointAnchor(document.getElementById(this.targetId), blockPaddingOffset)
 
-      this.line = new LeaderLine(start, end, options)
+      this.line = new LeaderLine(start, end, this.options)
+
+      // Add event listeners
+      const self = this
+      const connectionElement = document.getElementsByClassName('leader-line')[0]
+      connectionElement.addEventListener('click', function() {
+        self.clickHandler()
+      }, false);
+
+      connectionElement.addEventListener('mouseover', function() {
+        self.mouseOverHandler()
+      }, false);
+
+      connectionElement.addEventListener('mouseout', function() {
+        self.mouseOutHandler()
+      }, false);
 
       // stop listening to scroll and window resize hooks
       // LeaderLine.positionByWindowResize = false
@@ -155,3 +193,9 @@
     }
   }
 </script>
+<style lang="scss">
+svg.leader-line {
+  //this is important to add event listener on leader-line svg element
+  pointer-events: auto !important;
+}
+</style>

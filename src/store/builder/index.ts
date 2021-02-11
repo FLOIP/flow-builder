@@ -43,6 +43,7 @@ interface IPosition {
 
 export interface IBuilderState {
   activeBlockId: IBlock['uuid'] | null,
+  activeConnection: Object | null,
 
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation,
@@ -53,6 +54,7 @@ export interface IBuilderState {
 
 export const stateFactory = (): IBuilderState => ({
   activeBlockId: null,
+  activeConnection: null,
 
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: {
@@ -86,6 +88,12 @@ export const mutations: MutationTree<IBuilderState> = {
 
     // simulate engaging with specified block
     // FlowRunner.prototype.navigateTo(block, state as unknown as IContext)
+  },
+
+  activateConnection(state, {connectionLine}) {
+    console.log('activateConnection')
+    console.log(JSON.stringify(connectionLine))
+    state.activeConnection = connectionLine
   },
 
   setOperation({operations}, {operation}: {operation: SupportedOperation}) {
