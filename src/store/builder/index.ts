@@ -1,4 +1,4 @@
-import lodash, {cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get} from 'lodash'
+import {cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {IRootState} from "@/store"
@@ -359,8 +359,8 @@ export function computeBlockPositionsFrom(block: IBlock) {
   const xDelta = 80, yDelta = 80
   let xPosition = 150, yPosition = 255
   if (block) {
-    xPosition = lodash.get(block, 'platform_metadata.io_viamo.uiData.xPosition', 0) + xDelta
-    yPosition = lodash.get(block, 'platform_metadata.io_viamo.uiData.yPosition', 0) + yDelta
+    xPosition = get(block, 'platform_metadata.io_viamo.uiData.xPosition', 0) + xDelta
+    yPosition = get(block, 'platform_metadata.io_viamo.uiData.yPosition', 0) + yDelta
   } else {
     // put in the viewport center
     let builderCanvasElement = document.getElementsByClassName('builder-canvas')[0]
