@@ -362,10 +362,14 @@ export function computeBlockPositionsFrom(block: IBlock) {
     xPosition = lodash.get(block, 'platform_metadata.io_viamo.uiData.xPosition', 0) + xDelta
     yPosition = lodash.get(block, 'platform_metadata.io_viamo.uiData.yPosition', 0) + yDelta
   } else {
-    //
-  }
+    // put in the viewport center
+    let builderCanvasElement = document.getElementsByClassName('builder-canvas')[0]
+    let sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
+    const rect = builderCanvasElement.getBoundingClientRect()
 
-  console.log(`new position ${JSON.stringify({xPosition, yPosition})}`)
+    xPosition = Math.round(Math.abs(rect.left) + (window.innerWidth - sideBarElement.clientWidth) / 2)
+    yPosition = Math.round(Math.abs(rect.top) + window.innerHeight / 2)
+  }
 
   return {xPosition, yPosition}
 }
