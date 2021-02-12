@@ -139,7 +139,12 @@ const categoryColorMappings = {
         console.log('clicked')
         console.log(this.line)
         this.line.setOptions(this.prominentOptions)
-        this.activateConnection({connectionLine: this.line})
+        this.activateConnection({
+          connectionContext: {
+            exit: this.exit,
+            source: this.source,
+            target: this.target
+          }})
       }
     },
 
@@ -174,7 +179,7 @@ const categoryColorMappings = {
 
       // Add event listeners
       const self = this
-      const connectionElement = document.getElementsByClassName('leader-line')[0]
+      const connectionElement = document.querySelector('body>.leader-line:last-of-type') // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
       connectionElement.addEventListener('click', function() {
         self.clickHandler()
       }, false);
