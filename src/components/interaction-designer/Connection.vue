@@ -120,7 +120,7 @@ const categoryColorMappings = {
     },
 
     methods: {
-      ...mapMutations('builder', ['activateConnection']),
+      ...mapMutations('builder', ['activateConnection', 'deactivateConnection']),
       reposition() {
         if (!this.line) {
           return
@@ -145,7 +145,7 @@ const categoryColorMappings = {
         console.log('mouseout')
         if (!this.isPermanentlyActive) {
           this.line.setOptions(this.options)
-          this.activateConnection({connectionContext: null})
+          this.deactivateConnection({connectionContext: this.connectionContext})
         }
       },
       clickHandler() {
@@ -158,7 +158,7 @@ const categoryColorMappings = {
         console.log('clicked away')
         this.isPermanentlyActive = false
         this.line.setOptions(this.options)
-        this.activateConnection({connectionContext: null})
+        this.deactivateConnection({connectionContext: this.connectionContext})
       }
     },
 
@@ -200,7 +200,7 @@ const categoryColorMappings = {
       }, false)
       //TODO: fix fired twice
 
-      document.querySelector('.builder-canvas').addEventListener('click', function(event) {
+      document.addEventListener('click', function(event) {
         console.log("clicked on builder-canvas")
         console.log(self.line)
         try { // Do not listen if the connection was not fully set

@@ -1,4 +1,4 @@
-import {cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get} from 'lodash'
+import {cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get, filter, union} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {IRootState} from "@/store"
@@ -49,7 +49,7 @@ interface IPosition {
 
 export interface IBuilderState {
   activeBlockId: IBlock['uuid'] | null,
-  activeConnectionContext: IConnectionContext | null,
+  activeConnectionsContext: IConnectionContext[],
 
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation,
@@ -60,7 +60,7 @@ export interface IBuilderState {
 
 export const stateFactory = (): IBuilderState => ({
   activeBlockId: null,
-  activeConnectionContext: null,
+  activeConnectionsContext: [],
 
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: {
@@ -97,9 +97,13 @@ export const mutations: MutationTree<IBuilderState> = {
   },
 
   activateConnection(state, {connectionContext}) {
-    console.log('activateConnection')
-    console.log(JSON.stringify(connectionContext))
-    state.activeConnectionContext = connectionContext
+    state.activeConnectionsContext = union([connectionContext], state.activeConnectionsContext)
+  },
+
+  deactivateConnection(state, {connectionContext}) {
+    state.activeConnectionsContext = filter(state.activeConnectionsContext, function(context){
+      return context !== connectionContext
+    })
   },
 
   setOperation({operations}, {operation}: {operation: SupportedOperation}) {
