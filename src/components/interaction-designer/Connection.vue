@@ -120,7 +120,7 @@ const categoryColorMappings = {
     },
 
     methods: {
-      ...mapMutations('builder', ['activateConnection', 'deactivateConnection']),
+      ...mapMutations('builder', ['activateConnection', 'deactivateConnection', 'activateBlock']),
       reposition() {
         if (!this.line) {
           return
@@ -137,25 +137,22 @@ const categoryColorMappings = {
         })
       },
       mouseOverHandler() {
-        console.log('mouseover')
         this.line.setOptions(this.prominentOptions)
         this.activateConnection({connectionContext: this.connectionContext})
       },
       mouseOutHandler() {
-        console.log('mouseout')
         if (!this.isPermanentlyActive) {
           this.line.setOptions(this.options)
           this.deactivateConnection({connectionContext: this.connectionContext})
         }
       },
       clickHandler() {
-        console.log('clicked on')
         this.isPermanentlyActive = true
         this.line.setOptions(this.prominentOptions)
         this.activateConnection({connectionContext: this.connectionContext})
+        this.activateBlock({blockId: null})
       },
       clickAwayHandler() {
-        console.log('clicked away')
         this.isPermanentlyActive = false
         this.line.setOptions(this.options)
         this.deactivateConnection({connectionContext: this.connectionContext})
@@ -195,14 +192,10 @@ const categoryColorMappings = {
       const self = this
       const connectionElement = document.querySelector('body>.leader-line:last-of-type') // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
       connectionElement.addEventListener('click', function() {
-        console.log("clicked on leader-line")
         self.clickHandler()
       }, false)
-      //TODO: fix fired twice
 
       document.addEventListener('click', function(event) {
-        console.log("clicked on builder-canvas")
-        console.log(self.line)
         try { // Do not listen if the connection was not fully set
           const checkExistingEnd = self.line.end
         } catch (e) {
@@ -215,7 +208,6 @@ const categoryColorMappings = {
           self.clickAwayHandler()
         }
       }, false)
-      //TODO: fix fired twice
 
       connectionElement.addEventListener('mouseover', function() {
         self.mouseOverHandler()
