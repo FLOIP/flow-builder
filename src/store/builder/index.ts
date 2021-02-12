@@ -355,21 +355,28 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   ]
 }
 
-export function computeBlockPositionsFrom(block: IBlock) {
+export function computeBlockPositionsFrom(block: IBlock | null) {
   const xDelta = 80, yDelta = 80
-  let xPosition = 150, yPosition = 255
-  if (block) {
-    xPosition = get(block, 'platform_metadata.io_viamo.uiData.xPosition', 0) + xDelta
-    yPosition = get(block, 'platform_metadata.io_viamo.uiData.yPosition', 0) + yDelta
-  } else {
-    // put in the viewport center
-    let builderCanvasElement = document.getElementsByClassName('builder-canvas')[0]
-    let sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
-    const rect = builderCanvasElement.getBoundingClientRect()
 
-    xPosition = Math.round(Math.abs(rect.left) + (window.innerWidth - sideBarElement.clientWidth) / 2)
-    yPosition = Math.round(Math.abs(rect.top) + window.innerHeight / 2)
+  let xPosition = get(block, 'platform_metadata.io_viamo.uiData.xPosition')
+  let yPosition = get(block, 'platform_metadata.io_viamo.uiData.yPosition')
+
+  if (!xPosition || !yPosition) {
+    const viewPortCenter = getViewportCenter()
+    xPosition = viewPortCenter.x
+    yPosition = viewPortCenter.y
   }
 
-  return {xPosition, yPosition}
+  return {xPosition: xPosition + xDelta, yPosition: yPosition + yDelta}
+}
+
+export function getViewportCenter() {
+  let builderCanvasElement = document.getElementsByClassName('builder-canvas')[0]
+  let sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
+  const rect = builderCanvasElement.getBoundingClientRect()
+
+  return {
+    x: Math.round(Math.abs(rect.left) + (window.innerWidth - sideBarElement.clientWidth) / 2),
+    y: Math.round(Math.abs(rect.top) + window.innerHeight / 2)
+  }
 }
