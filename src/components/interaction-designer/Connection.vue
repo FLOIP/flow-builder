@@ -225,7 +225,11 @@ const categoryColorMappings = {
 </script>
 <style lang="scss">
 svg.leader-line {
-  //this is important to add event listener on leader-line svg element
+  cursor: pointer;
+}
+// Considering the parent svg.leader-line has `pointer-events: none;`,
+// this is important to listen SVG mouse events on shape only
+svg.leader-line *{
   pointer-events: auto !important;
 }
 </style>
