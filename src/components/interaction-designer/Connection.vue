@@ -36,6 +36,7 @@ const categoryColorMappings = {
     data() {
       return {
         // line: null, // no need to set up observers over this
+        isPermanentlyActive: false,
       }
     },
 
@@ -74,7 +75,15 @@ const categoryColorMappings = {
 
       prominentOptions() {
         return {
-          size: this.options.size + 2,
+          size: this.options.size + 3,
+        }
+      },
+
+      connectionContext() {
+        return {
+          source: this.source?.uuid,
+          target: this.target?.uuid,
+          exit: this.exit?.uuid,
         }
       },
 
@@ -130,27 +139,26 @@ const categoryColorMappings = {
       mouseOverHandler() {
         console.log('mouseover')
         this.line.setOptions(this.prominentOptions)
-        this.activateConnection({
-          connectionContext: {
-            source: this.source.uuid,
-            target: this.target.uuid,
-            exit: this.exit.uuid,
-          }})
+        this.activateConnection({connectionContext: this.connectionContext})
       },
       mouseOutHandler() {
         console.log('mouseout')
-        this.line.setOptions(this.options)
-        this.activateConnection({connectionContext: null})
+        if (!this.isPermanentlyActive) {
+          this.line.setOptions(this.options)
+          this.activateConnection({connectionContext: null})
+        }
       },
       clickHandler() {
-        console.log('clicked')
+        console.log('clicked on')
+        this.isPermanentlyActive = true
         this.line.setOptions(this.prominentOptions)
-        this.activateConnection({
-          connectionContext: {
-            source: this.source.uuid,
-            target: this.target.uuid,
-            exit: this.exit.uuid,
-          }})
+        this.activateConnection({connectionContext: this.connectionContext})
+      },
+      clickAwayHandler() {
+        console.log('clicked away')
+        this.isPermanentlyActive = false
+        this.line.setOptions(this.options)
+        this.activateConnection({connectionContext: null})
       }
     },
 
@@ -187,16 +195,35 @@ const categoryColorMappings = {
       const self = this
       const connectionElement = document.querySelector('body>.leader-line:last-of-type') // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
       connectionElement.addEventListener('click', function() {
+        console.log("clicked on leader-line")
         self.clickHandler()
-      }, false);
+      }, false)
+      //TODO: fix fired twice
+
+      document.querySelector('.builder-canvas').addEventListener('click', function(event) {
+        console.log("clicked on builder-canvas")
+        console.log(self.line)
+        try { // Do not listen if the connection was not fully set
+          const checkExistingEnd = self.line.end
+        } catch (e) {
+          return;
+        }
+
+        var isClickInside = connectionElement.contains(event.target);
+
+        if (!isClickInside) {
+          self.clickAwayHandler()
+        }
+      }, false)
+      //TODO: fix fired twice
 
       connectionElement.addEventListener('mouseover', function() {
         self.mouseOverHandler()
-      }, false);
+      }, false)
 
       connectionElement.addEventListener('mouseout', function() {
         self.mouseOutHandler()
-      }, false);
+      }, false)
 
       // stop listening to scroll and window resize hooks
       // LeaderLine.positionByWindowResize = false
