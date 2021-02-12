@@ -40,7 +40,7 @@ const categoryColorMappings = {
     },
 
     computed: {
-      ...mapState('builder', ['activeConnection']),
+      ...mapState('builder', ['activeConnectionContext']),
       ...mapGetters('builder', ['blocksById']),
 
       options() {
@@ -130,20 +130,26 @@ const categoryColorMappings = {
       mouseOverHandler() {
         console.log('mouseover')
         this.line.setOptions(this.prominentOptions)
+        this.activateConnection({
+          connectionContext: {
+            source: this.source.uuid,
+            target: this.target.uuid,
+            exit: this.exit.uuid,
+          }})
       },
       mouseOutHandler() {
         console.log('mouseout')
         this.line.setOptions(this.options)
+        this.activateConnection({connectionContext: null})
       },
       clickHandler() {
         console.log('clicked')
-        console.log(this.line)
         this.line.setOptions(this.prominentOptions)
         this.activateConnection({
           connectionContext: {
-            exit: this.exit,
-            source: this.source,
-            target: this.target
+            source: this.source.uuid,
+            target: this.target.uuid,
+            exit: this.exit.uuid,
           }})
       }
     },

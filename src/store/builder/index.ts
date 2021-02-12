@@ -2,7 +2,7 @@ import {cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {IRootState} from "@/store"
-import {IBlock, SupportedMode, ValidationException} from "@floip/flow-runner"
+import {IBlockExit, IBlock, SupportedMode, ValidationException} from "@floip/flow-runner"
 import {IDeepBlockExitIdWithinFlow} from "@/store/flow/block"
 import createFormattedDate from "@floip/flow-runner/dist/domain/DateFormat";
 import IdGeneratorUuidV4 from "@floip/flow-runner/dist/domain/IdGeneratorUuidV4";
@@ -32,6 +32,12 @@ export interface IConnectionCreateOperation {
   }
 }
 
+export interface IConnectionContext {
+  source: IBlock['uuid'],
+  target: IBlock['uuid'],
+  exit: IBlockExit['uuid'],
+}
+
 export type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation
 
 interface IPosition {
@@ -43,7 +49,7 @@ interface IPosition {
 
 export interface IBuilderState {
   activeBlockId: IBlock['uuid'] | null,
-  activeConnectionContext: Object | null,
+  activeConnectionContext: IConnectionContext | null,
 
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation,

@@ -151,7 +151,7 @@
 
     computed: {
       ...mapState('flow', ['resources']),
-      ...mapState('builder', ['activeBlockId', 'operations']),
+      ...mapState('builder', ['activeBlockId', 'operations', 'activeConnectionContext']),
       ...mapState({
         blockClasses: ({trees: {ui}}) => ui.blockClasses,
       }),
@@ -167,8 +167,9 @@
 
       isConnectionSourceRelocateActive: ({operations}) => !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
       isConnectionCreateActive: ({operations}) => !!operations[OperationKind.CONNECTION_CREATE].data,
-      isBlockActivated: ({activeBlockId, block, operations}) => {
-        if (activeBlockId && activeBlockId === block.uuid) {
+      isBlockActivated: ({activeBlockId, activeConnectionContext, block, operations}) => {
+        if (activeBlockId && activeBlockId === block.uuid
+            || activeConnectionContext && (activeConnectionContext.source === block.uuid || activeConnectionContext.target === block.uuid)) {
           return true
         }
 
