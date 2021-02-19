@@ -30,16 +30,18 @@
             </router-link>
           </div>
 
-          <a v-if="!ui.isEditableLocked"
-             :href="editOrViewTreeJsUrl"
-             :title="trans('flow-builder.click-to-toggle-editing')"
-             class="btn btn-outline-secondary mr-2"
-             :class="{active: ui.isEditable}"
-             @click="attemptSaveTree">
-            {{trans('flow-builder.edit-flow')}}
-          </a>
+          <div v-if="!ui.isEditableLocked">
+            <router-link :to="editOrViewTreeJsUrl"
+                         class="btn btn-outline-secondary mr-2"
+                         :class="{active: isEditable}"
+                         :title="trans('flow-builder.click-to-toggle-editing')"
+                         @click="attemptSaveTree"
+            >
+              {{trans('flow-builder.edit-flow')}}
+            </router-link>
+          </div>
 
-          <div v-if="ui.isEditable" class="dropdown mr-2">
+          <div v-if="isEditable" class="dropdown mr-2">
             <button type="button"
                     class="btn btn-outline-secondary dropdown-toggle"
                     data-toggle="dropdown">
@@ -117,7 +119,7 @@
             </div>
           </div>
 
-          <button v-if="ui.isEditable"
+          <button v-if="isEditable"
                   type="button"
                   class="btn btn-outline-secondary tree-duplicate-block mr-2"
                   @click.prevent="handleDuplicateActivatedBlockTriggered"
@@ -125,7 +127,7 @@
             {{trans('flow-builder.duplicate')}}
           </button>
 
-          <button v-if="ui.isEditable"
+          <button v-if="isEditable"
                   type="button"
                   class="btn btn-outline-secondary tree-delete-block mr-2"
                   @click.prevent="handleRemoveActivatedBlockTriggered"
@@ -136,7 +138,7 @@
           <slot name="extra-buttons"/>
 
           <div class="btn-group pull-right mr-2">
-            <button v-if="ui.isEditable && isFeatureTreeSaveEnabled"
+            <button v-if="isEditable && isFeatureTreeSaveEnabled"
                     type="button"
                     class="btn btn-primary tree-save-tree"
                     :title="trans('flow-builder.save-changes-to-the-flow')"
@@ -191,10 +193,10 @@
 
       ...mapGetters('flow', ['activeFlow']),
       ...mapState('flow', ['flows', 'resources']),
+      ...mapGetters('builder', ['isEditable']),
       ...mapState('builder', ['activeBlockId']),
 
       ...mapGetters([
-        'isEditable',
         'isTreeSaving',
         'isBlockAvailableByBlockClass',
         'hasChanges',
@@ -264,7 +266,7 @@
         return this.isTreeValid ? `/trees/${this.tree.id}/publishversion` : ''
       },
       editOrViewTreeJsUrl() {
-        if (this.ui.isEditable) {
+        if (this.isEditable) {
           return this.editTreeRoute({
             component: 'interaction-designer',
             mode: 'view',

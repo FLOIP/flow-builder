@@ -67,9 +67,9 @@
   // import '../TreeDiffLogger'
 
   export default {
-    props: { 
-      id: {type: String}, 
-      mode: {type: String}, 
+    props: {
+      id: {type: String},
+      mode: {type: String},
       appConfig: {
         type: Object,
         default: function() {
@@ -125,7 +125,6 @@
     computed: {
       ...mapGetters([
         'selectedBlock',
-        'isEditable',
         'hasChanges',
         'hasIssues',
         'isTreeSaving',
@@ -151,7 +150,7 @@
       }),
 
       ...mapGetters('flow', ['activeFlow']),
-      ...mapGetters('builder', ['activeBlock']),
+      ...mapGetters('builder', ['activeBlock', 'isEditable']),
 
       jsKey() {
         return lodash.get(this.selectedBlock, 'jsKey')
@@ -201,10 +200,16 @@
       console.debug('Vuej tree interaction designer mounted!')
 		},
 
+    watch: {
+      mode(newMode) {
+        this.updateIsEditableFromParams(newMode)
+      }
+    },
+
     methods: {
         ...mapMutations(['deselectBlocks', 'configure']),
         ...mapMutations('builder', ['activateBlock']),
-
+        ...mapActions('builder', ['setIsEditable']),
         ...mapActions([
           'attemptSaveTree',
           'discoverTallestBlockForDesignerWorkspaceHeight',
@@ -235,7 +240,7 @@
 
       updateIsEditableFromParams(mode) {
         const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!app.ui.isEditableLocked)
-        this.$store.commit('updateIsEditable', {value: isEditable})
+        this.setIsEditable(isEditable)
       },
 
       /** --------------------------------| has-editable-locked | not-editable-locked |

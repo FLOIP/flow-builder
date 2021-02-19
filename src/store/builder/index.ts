@@ -43,7 +43,7 @@ interface IPosition {
 
 export interface IBuilderState {
   activeBlockId: IBlock['uuid'] | null,
-
+  isEditable: boolean,
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation,
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation,
@@ -53,7 +53,7 @@ export interface IBuilderState {
 
 export const stateFactory = (): IBuilderState => ({
   activeBlockId: null,
-
+  isEditable: null,
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: {
       kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
@@ -78,6 +78,8 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 
   exitLabelsById: (state, getters, {flow: {flows}}, rootGetters) =>
       mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
+
+  isEditable: (state) => state.isEditable
 }
 
 export const mutations: MutationTree<IBuilderState> = {
@@ -104,6 +106,10 @@ export const mutations: MutationTree<IBuilderState> = {
     block.platform_metadata.io_viamo.uiData.xPosition = x
     block.platform_metadata.io_viamo.uiData.yPosition = y
   },
+
+  setIsEditable(state, value) {
+    state.isEditable = value
+  }
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
@@ -316,6 +322,10 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     await dispatch('flow/flow_add', {flow}, {root: true})
 
     console.debug('builder', 'flow loaded.')
+  },
+
+  setIsEditable({commit}, value) {
+    commit('setIsEditable', value)
   },
 }
 
