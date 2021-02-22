@@ -35,7 +35,7 @@
         }
         console.log(`has blocks[]`)
         console.log(this.flows[0].blocks)
-        const blockAtTheLowestPosition = lodash.maxBy(this.flows[0].blocks, 'platform_metadata.io_viamo.uiData.xPosition')
+        const blockAtTheLowestPosition = lodash.maxBy(this.flows[0].blocks, 'platform_metadata.io_viamo.uiData.yPosition')
 
         if (!blockAtTheLowestPosition) {
           return defaultHeight
@@ -51,8 +51,8 @@
 
         const blockHeight = 140 //blockElement.clientHeight
         console.log(`has element x position`)
-        console.log(lodash.get(blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.xPosition'));
-        return lodash.get(blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.xPosition') + blockHeight + 100
+        console.log(lodash.get(blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.yPosition'));
+        return lodash.get(blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.yPosition') + blockHeight + 100
       },
 
       canvasWidth() {
@@ -64,7 +64,7 @@
         console.log(`has blocks[]`)
         console.log(this.flows[0].blocks)
 
-        const blockAtTheFurthestRightPosition = lodash.maxBy(this.flows[0].blocks, 'platform_metadata.io_viamo.uiData.yPosition')
+        const blockAtTheFurthestRightPosition = lodash.maxBy(this.flows[0].blocks, 'platform_metadata.io_viamo.uiData.xPosition')
 
         if (!blockAtTheFurthestRightPosition) {
           return defaultWidth
@@ -81,8 +81,8 @@
 
         const blockWidth = 122 //blockElement.clientWidth
         console.log(`has element y position`)
-        console.log(lodash.get(blockAtTheFurthestRightPosition, 'platform_metadata.io_viamo.uiData.yPosition'))
-        return lodash.get(blockAtTheFurthestRightPosition, 'platform_metadata.io_viamo.uiData.yPosition') + blockWidth + 100
+        console.log(lodash.get(blockAtTheFurthestRightPosition, 'platform_metadata.io_viamo.uiData.xPosition'))
+        return lodash.get(blockAtTheFurthestRightPosition, 'platform_metadata.io_viamo.uiData.xPosition') + blockWidth + 100
       },
     },
 
