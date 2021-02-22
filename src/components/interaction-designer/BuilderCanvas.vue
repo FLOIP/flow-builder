@@ -28,41 +28,32 @@
       ...mapState('flow', ['flows']),
 
       canvasHeight() {
-        console.log(`lowest block`)
-        const defaultHeight = 500
+        const defaultHeight = 1500
         if (!this.flows[0].blocks && this.flows[0].blocks.length) {
           return defaultHeight
         }
-        console.log(`has blocks[]`)
-        console.log(this.flows[0].blocks)
+
         const blockAtTheLowestPosition = lodash.maxBy(this.flows[0].blocks, 'platform_metadata.io_viamo.uiData.yPosition')
 
         if (!blockAtTheLowestPosition) {
           return defaultHeight
         }
 
-        console.log(`has block`)
-        console.log(blockAtTheLowestPosition)
-        // const blockElement = document.getElementById(`block/${blockAtTheLowestPosition.uuid}`)
-        //
-        // if (!blockElement) {
-        //   return defaultHeight
-        // }
+        const blockElement = document.getElementById(`block/${blockAtTheLowestPosition.uuid}`)
 
-        const blockHeight = 140 //blockElement.clientHeight
-        console.log(`has element x position`)
-        console.log(lodash.get(blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.yPosition'));
+        if (!blockElement) {
+          return defaultHeight
+        }
+
+        const blockHeight = blockElement.clientHeight
         return lodash.get(blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.yPosition') + blockHeight + 100
       },
 
       canvasWidth() {
-        console.log(`rightest block`)
-        const defaultWidth = 500
+        const defaultWidth = 1500
         if (!this.flows[0].blocks && this.flows[0].blocks.length) {
-          return defaultWidth;
+          return defaultWidth
         }
-        console.log(`has blocks[]`)
-        console.log(this.flows[0].blocks)
 
         const blockAtTheFurthestRightPosition = lodash.maxBy(this.flows[0].blocks, 'platform_metadata.io_viamo.uiData.xPosition')
 
@@ -70,18 +61,13 @@
           return defaultWidth
         }
 
-        console.log(`has block`)
-        console.log(blockAtTheFurthestRightPosition)
+        const blockElement = document.getElementById(`block/${blockAtTheFurthestRightPosition.uuid}`)
 
-        // const blockElement = document.getElementById(`block/${blockAtTheFurthestRightPosition.uuid}`)
-        //
-        // if (!blockElement) {
-        //   return defaultWidth
-        // }
+        if (!blockElement) {
+          return defaultWidth
+        }
 
-        const blockWidth = 122 //blockElement.clientWidth
-        console.log(`has element y position`)
-        console.log(lodash.get(blockAtTheFurthestRightPosition, 'platform_metadata.io_viamo.uiData.xPosition'))
+        const blockWidth = blockElement.clientWidth
         return lodash.get(blockAtTheFurthestRightPosition, 'platform_metadata.io_viamo.uiData.xPosition') + blockWidth + 100
       },
     },
@@ -105,9 +91,4 @@
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
   }
-
-  /*.builder-canvas {*/
-  /*  width: 500px;*/
-  /*  height: 500px;*/
-  /*}*/
 </style>
