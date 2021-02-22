@@ -1,7 +1,7 @@
 <template>
   <div v-if="flows.length"
        class="builder-canvas no-select"
-       :style="{width: `${canvasWidth}px` , height: `${canvasHeight}px`}"
+       :style="{minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px`}"
   >
 
     <block v-for="block in flows[0].blocks"
