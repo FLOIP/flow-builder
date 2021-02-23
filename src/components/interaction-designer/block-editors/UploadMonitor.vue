@@ -22,7 +22,7 @@ import lang from '@/lib/filters/lang';
 import lodash, { forEach } from 'lodash';
 
 import { mapState } from 'vuex';
-import { BProgress } from 'bootstrap-vue'
+import { BProgress } from 'bootstrap-vue';
 import multimediaUpload, { Statuses as UploadStatuses } from '@/store/trees/multimediaUpload';
 
 export default {
@@ -55,13 +55,13 @@ export default {
   },
 
   created() {
-    const {$store} = this
+    const { $store } = this;
     const modules = {
       multimediaUpload,
-    }
+    };
 
-    forEach(modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
-  }
+    forEach(modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v));
+  },
 };
 </script>
 

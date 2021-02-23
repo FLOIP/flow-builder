@@ -13,44 +13,44 @@
 </template>
 
 <script>
-  import NumericEditor from '@/components/common/NumericEditor'
-  import {get} from 'lodash'
-  import lang from '@/lib/filters/lang'
+import NumericEditor from '@/components/common/NumericEditor';
+import { get } from 'lodash';
+import lang from '@/lib/filters/lang';
 
-  export default {
-    components: {
-      NumericEditor,
+export default {
+  components: {
+    NumericEditor,
+  },
+  mixins: [lang],
+  props: {
+    isEditable: {
+      default: true,
+      type: Boolean,
     },
-    mixins: [lang],
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
-      },
-      hasText: {
-        default: true,
-        type: Boolean,
-      },
-      block: {
-        type: Object,
-        required: true,
-      },
+    hasText: {
+      default: true,
+      type: Boolean,
     },
-    data() {
-      return {
-        defaultMaxLength: 0,
-      }
+    block: {
+      type: Object,
+      required: true,
     },
+  },
+  data() {
+    return {
+      defaultMaxLength: 0,
+    };
+  },
 
-    computed: {
-      maxResponse: {
-        get() {
-          return get(this.block, 'config.text.maxResponseCharacters', '')
-        },
-        set(value) {
-          this.$emit('commitMaxResponseCharactersChange', value)
-        }
-      }
-    }
-  }
+  computed: {
+    maxResponse: {
+      get() {
+        return get(this.block, 'config.text.maxResponseCharacters', '');
+      },
+      set(value) {
+        this.$emit('commitMaxResponseCharactersChange', value);
+      },
+    },
+  },
+};
 </script>

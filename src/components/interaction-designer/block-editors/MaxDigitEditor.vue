@@ -10,39 +10,39 @@
 </template>
 
 <script>
-  import NumericEditor from '@/components/common/NumericEditor'
-  import {get} from 'lodash'
-  import lang from '@/lib/filters/lang'
+import NumericEditor from '@/components/common/NumericEditor';
+import { get } from 'lodash';
+import lang from '@/lib/filters/lang';
 
-  export default {
-    components: {
-      NumericEditor,
+export default {
+  components: {
+    NumericEditor,
+  },
+  mixins: [lang],
+  props: {
+    isEditable: {
+      default: true,
+      type: Boolean,
     },
-    mixins: [lang],
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
-      },
-      block: {
-        type: Object,
-        required: true,
-      },
-      hasIvr: {
-        default: true,
-        type: Boolean,
-      },
+    block: {
+      type: Object,
+      required: true,
     },
+    hasIvr: {
+      default: true,
+      type: Boolean,
+    },
+  },
 
-    computed: {
-      maxDigits: {
-        get() {
-          return get(this.block, 'config.ivr.maxDigits', '')
-        },
-        set(value) {
-          this.$emit('commitMaxDigitsChange', value)
-        }
-      }
-    }
-  }
+  computed: {
+    maxDigits: {
+      get() {
+        return get(this.block, 'config.ivr.maxDigits', '');
+      },
+      set(value) {
+        this.$emit('commitMaxDigitsChange', value);
+      },
+    },
+  },
+};
 </script>

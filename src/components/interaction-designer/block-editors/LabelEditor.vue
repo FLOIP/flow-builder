@@ -8,38 +8,38 @@
 </template>
 
 <script>
-  import {mapMutations} from 'vuex'
-  import TextEditor from '@/components/common/TextEditor'
-  import lang from '@/lib/filters/lang';
+import { mapMutations } from 'vuex';
+import TextEditor from '@/components/common/TextEditor';
+import lang from '@/lib/filters/lang';
 
-  export default {
-    components: {
-      TextEditor,
+export default {
+  components: {
+    TextEditor,
+  },
+  mixins: [lang],
+  props: {
+    isEditable: {
+      default: true,
+      type: Boolean,
     },
-    mixins: [lang],
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
+    block: {
+      type: Object,
+      required: true,
+    },
+  },
+  mixins: [lang],
+  computed: {
+    label: {
+      get() {
+        return this.block.label;
       },
-      block: {
-        type: Object,
-        required: true,
+      set(value) {
+        this.block_setLabel({ blockId: this.block.uuid, value });
       },
     },
-    mixins: [lang],
-    computed: {
-      label: {
-        get() {
-          return this.block.label
-        },
-        set(value) {
-          this.block_setLabel({blockId: this.block.uuid, value})
-        },
-      },
-    },
-    methods: {
-      ...mapMutations('flow', ['block_setLabel']),
-    },
-  }
+  },
+  methods: {
+    ...mapMutations('flow', ['block_setLabel']),
+  },
+};
 </script>

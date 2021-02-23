@@ -41,30 +41,30 @@
 </template>
 
 <script>
-  import lang from '@/lib/filters/lang'
-  import momentFilters from '@/lib/filters/moment'
+import lang from '@/lib/filters/lang';
+import momentFilters from '@/lib/filters/moment';
 
-  export default {
-		props: ['audioFile', 'selected', 'selectable', 'langId'],
+export default {
+  props: ['audioFile', 'selected', 'selectable', 'langId'],
 
-		mixins: [lang, momentFilters],
+  mixins: [lang, momentFilters],
 
-		computed: {
-			audioFileUrl() {
-				return this.audioFile
-			}
-		},
+  computed: {
+    audioFileUrl() {
+      return this.audioFile;
+    },
+  },
 
-		methods: {
-			select() {
-				this.$emit('select')
-			},
+  methods: {
+    select() {
+      this.$emit('select');
+    },
 
-			clear() {
-				this.$emit('clear')
-			}
-		}
-	}
+    clear() {
+      this.$emit('clear');
+    },
+  },
+};
 </script>
 
 <style lang="scss">

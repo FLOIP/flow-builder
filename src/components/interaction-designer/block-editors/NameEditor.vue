@@ -13,43 +13,43 @@
 </template>
 
 <script>
-  import {mapMutations} from 'vuex'
-  import TextEditor from '@/components/common/TextEditor'
-  import lang from '@/lib/filters/lang'
+import { mapMutations } from 'vuex';
+import TextEditor from '@/components/common/TextEditor';
+import lang from '@/lib/filters/lang';
 
-  export default {
-    components: {
-      TextEditor,
+export default {
+  components: {
+    TextEditor,
+  },
+  mixins: [lang],
+  props: {
+    isEditable: {
+      default: true,
+      type: Boolean,
     },
-    mixins: [lang],
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
+    block: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    name: {
+      get() {
+        return this.block.name;
       },
-      block: {
-        type: Object,
-        required: true,
+      set(value) {
+        this.block_setName({ blockId: this.block.uuid, value });
       },
     },
-    computed: {
-      name: {
-        get() {
-          return this.block.name
-        },
-        set(value) {
-          this.block_setName({blockId: this.block.uuid, value})
-        },
-      },
 
+  },
+  methods: {
+    ...mapMutations('flow', ['block_setName']),
+    filterName(e) {
+      if (e.key.match(/\W+|Enter/g)) {
+        e.preventDefault();
+      }
     },
-    methods: {
-      ...mapMutations('flow', ['block_setName']),
-      filterName(e) {
-        if (e.key.match(/\W+|Enter/g)) {
-          e.preventDefault()
-        }
-      },
-    },
-  }
+  },
+};
 </script>

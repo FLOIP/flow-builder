@@ -71,41 +71,41 @@ import {
   Getter,
   Mutation,
   namespace,
-} from 'vuex-class'
-  import {
-    IBlock,
-    IFlow,
-    IResourceDefinition,
-    SupportedContentType,
-    SupportedMode,
-  } from '@floip/flow-runner'
-  import lang from '@/lib/filters/lang'
-  import Permissions from '@/lib/mixins/Permissions'
-  import Routes from '@/lib/mixins/Routes'
-  import FlowUploader from '@/lib/mixins/FlowUploader'
-  import {Component} from 'vue-property-decorator'
-  import Vue from 'vue'
-  import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
-  import {
+} from 'vuex-class';
+import {
+  IBlock,
+  IFlow,
+  IResourceDefinition,
+  SupportedContentType,
+  SupportedMode,
+} from '@floip/flow-runner';
+import lang from '@/lib/filters/lang';
+import Permissions from '@/lib/mixins/Permissions';
+import Routes from '@/lib/mixins/Routes';
+import FlowUploader from '@/lib/mixins/FlowUploader';
+import { Component } from 'vue-property-decorator';
+import Vue from 'vue';
+import {
   discoverContentTypesFor,
-    findOrGenerateStubbedVariantOn,
-    findResourceVariantOverModesOn
-  } from '@/store/flow/resource'
-  import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
-  import UploadMonitor from '../block-editors/UploadMonitor.vue'
-import ValidationException from "@floip/flow-runner/src/domain/exceptions/ValidationException";
-import {cloneDeep} from "lodash";
+  findOrGenerateStubbedVariantOn,
+  findResourceVariantOverModesOn,
+} from '@/store/flow/resource';
+import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue';
+import ValidationException from '@floip/flow-runner/src/domain/exceptions/ValidationException';
+import { cloneDeep } from 'lodash';
+import UploadMonitor from '../block-editors/UploadMonitor.vue';
+import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue';
 
-  const flowVuexNamespace = namespace('flow')
+const flowVuexNamespace = namespace('flow');
 
   interface IAudioFile {
-    id: string,
-    filename: string,
-    description: string,
-    language_id: string,
-    duration_seconds: string,
-    original_extension: string,
-    created_at: string
+    id: string;
+    filename: string;
+    description: string;
+    language_id: string;
+    duration_seconds: string;
+    original_extension: string;
+    created_at: string;
   }
 
   @Component({
@@ -124,7 +124,7 @@ import {cloneDeep} from "lodash";
       resource: {
         type: Object as () => IResourceDefinition,
         default: null,
-      }
+      },
     },
 
     mixins: [
@@ -140,29 +140,33 @@ import {cloneDeep} from "lodash";
       UploadMonitor,
     },
   })
-  export class ResourceEditor extends Vue {
+export class ResourceEditor extends Vue {
     discoverContentTypesFor = discoverContentTypesFor
+
     findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
+
     findResourceVariantOverModesOn = findResourceVariantOverModesOn
+
     SupportedMode = SupportedMode
+
     SupportedContentType = SupportedContentType
 
-    handleFilesSubmittedFor(key, {data}) {
-      console.debug(`call handleFilesSubmittedFor`)
-      this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
+    handleFilesSubmittedFor(key, { data }) {
+      console.debug('call handleFilesSubmittedFor');
+      this.$store.dispatch('multimediaUpload/uploadFiles', { ...data, key });
     }
 
     handleFileSuccessFor(key, langId, event) {
-      const {data: {file, json}} = event
-      const {uuid: jsKey} = this.block
+      const { data: { file, json } } = event;
+      const { uuid: jsKey } = this.block;
       const {
-            audio_file_id: id,
-            audio_uuid: filename,
-            created_at: {date: created_at},
-            description,
-            duration_seconds,
-          } = JSON.parse(json)
-      const extension = description.split('.')[description.split('.').length - 1]
+        audio_file_id: id,
+        audio_uuid: filename,
+        created_at: { date: created_at },
+        description,
+        duration_seconds,
+      } = JSON.parse(json);
+      const extension = description.split('.')[description.split('.').length - 1];
       const uploadedAudio: IAudioFile = {
         id,
         filename,
@@ -170,37 +174,38 @@ import {cloneDeep} from "lodash";
         language_id: langId,
         duration_seconds,
         original_extension: extension,
-        created_at
-      }
+        created_at,
+      };
 
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resource.uuid,
-        filter: {languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
+        filter: { languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
         value: description,
-      })
-      event.target.blur() // remove the focus from the `upload` Tab
-      this.pushAudioIntoLibrary(uploadedAudio)
+      });
+      event.target.blur(); // remove the focus from the `upload` Tab
+      this.pushAudioIntoLibrary(uploadedAudio);
     }
 
     findAudioResourceVariantFor(resource, filter) {
       try {
-        return findResourceVariantOverModesOn(resource, filter).value
+        return findResourceVariantOverModesOn(resource, filter).value;
       } catch (e) {
         if (!(e instanceof ValidationException)) {
-          throw e
+          throw e;
         }
 
-        return null
+        return null;
       }
     }
 
     @Getter availableAudio!: IAudioFile[]
+
     @Getter isFeatureAudioUploadEnabled
 
     @Mutation pushAudioIntoLibrary
 
     @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific
-  }
+}
 
-  export default ResourceEditor
+export default ResourceEditor;
 </script>

@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts">
-  import {mapState} from 'vuex'
-  import {Component, Vue} from 'vue-property-decorator'
-  import Block from "@/components/interaction-designer/Block.vue"
+import { mapState } from 'vuex';
+import { Component, Vue } from 'vue-property-decorator';
+import Block from '@/components/interaction-designer/Block.vue';
 
   @Component({
     components: {
@@ -26,13 +26,13 @@
     },
 
     mounted() {
-      this.$store.dispatch('builder/loadFlow')
+      this.$store.dispatch('builder/loadFlow');
     },
   })
-  export default class BuilderCanvas extends Vue {
-  }
+export default class BuilderCanvas extends Vue {
+}
 
-  export {BuilderCanvas}
+export { BuilderCanvas };
 </script>
 
 <style scoped>

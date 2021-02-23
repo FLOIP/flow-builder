@@ -17,33 +17,34 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component, Prop} from 'vue-property-decorator'
-  import {IFlow} from '@floip/flow-runner'
-  import NumericEditor from '@/components/common/NumericEditor.vue'
-  import {SupportedMode} from '@floip/flow-runner'
-  import lang from '@/lib/filters/lang'
+import Vue from 'vue';
+import { Component, Prop } from 'vue-property-decorator';
+import { IFlow, SupportedMode } from '@floip/flow-runner';
+import NumericEditor from '@/components/common/NumericEditor.vue';
+
+import lang from '@/lib/filters/lang';
 
   @Component<any>({
     components: {
       NumericEditor,
     },
-    mixins: [lang]
+    mixins: [lang],
   })
-  class ModeEditor extends Vue {
-    @Prop({default: true}) readonly isEditable!: boolean
+class ModeEditor extends Vue {
+    @Prop({ default: true }) readonly isEditable!: boolean
+
     @Prop() readonly flow!: IFlow
 
     private availableModes = Object.values(SupportedMode)
 
     get flowSelectedModes(): SupportedMode[] {
-      return this.flow.supportedModes
+      return this.flow.supportedModes;
     }
 
     set flowSelectedModes(value: SupportedMode[]) {
-      this.$emit('commitFlowModesChange', value)
+      this.$emit('commitFlowModesChange', value);
     }
   }
 
-  export default ModeEditor
+export default ModeEditor;
 </script>

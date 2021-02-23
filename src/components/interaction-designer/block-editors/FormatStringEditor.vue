@@ -8,33 +8,33 @@
 </template>
 
 <script>
-  import TextEditor from '@/components/common/TextEditor'
-  import lang from '@/lib/filters/lang'
+import TextEditor from '@/components/common/TextEditor';
+import lang from '@/lib/filters/lang';
 
-  export default {
-    components: {
-      TextEditor,
+export default {
+  components: {
+    TextEditor,
+  },
+  mixins: [lang],
+  props: {
+    isEditable: {
+      default: true,
+      type: Boolean,
     },
-    mixins: [lang],
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
+    block: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    formatString: {
+      get() {
+        return this.block.config.format_string;
       },
-      block: {
-        type: Object,
-        required: true,
+      set(value) {
+        this.$emit('commitFormatStringChange', value);
       },
     },
-    computed: {
-      formatString: {
-        get() {
-          return this.block.config.format_string
-        },
-        set(value) {
-          this.$emit('commitFormatStringChange', value)
-        },
-      },
-    },
-  }
+  },
+};
 </script>

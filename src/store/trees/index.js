@@ -1,6 +1,6 @@
 // import audio from './audio'
 // import multimediaUpload from './multimediaUpload'
-import trees from './trees'
+import trees from './trees';
 
 export default {
   modules: {
@@ -8,4 +8,4 @@ export default {
     // multimediaUpload,
     trees, // actions isolated to vuej app
   },
-}
+};

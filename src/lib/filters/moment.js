@@ -1,32 +1,32 @@
-import moment from 'moment'
+import moment from 'moment';
 
 export default {
   filters: {
     formatDate(date, format = 'llll') {
       if (!date) {
-        return ''
+        return '';
       }
-      return moment.utc(date).format(format)
+      return moment.utc(date).format(format);
     },
 
     fromNow(date, withoutSuffix) {
-      return moment.utc(date).fromNow(withoutSuffix)
+      return moment.utc(date).fromNow(withoutSuffix);
     },
 
     formatDuration(duration, unit = 'seconds', withSuffix) {
-      let currentLocale = moment.locale()
-      moment.locale('en') //this function only gets used in english.
-      let result = moment.duration(duration, unit).humanize(withSuffix)
-      moment.locale(currentLocale)
-      return result
+      const currentLocale = moment.locale();
+      moment.locale('en'); // this function only gets used in english.
+      const result = moment.duration(duration, unit).humanize(withSuffix);
+      moment.locale(currentLocale);
+      return result;
     },
 
     formatDurationLocalized(duration, locale, unit = 'seconds', withSuffix) {
-      let currentLocale = moment.locale()
-      moment.locale(locale) 
-      let result = moment.duration(duration, unit).humanize(withSuffix)
-      moment.locale(currentLocale)
-      return result
-    }
-  }
-}
+      const currentLocale = moment.locale();
+      moment.locale(locale);
+      const result = moment.duration(duration, unit).humanize(withSuffix);
+      moment.locale(currentLocale);
+      return result;
+    },
+  },
+};

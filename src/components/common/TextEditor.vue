@@ -16,24 +16,24 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
-      },
-      label: {
-        type: [String, Number],
-        required: true,
-      },
-      placeholder: {
-        type: String,
-        required: true,
-      },
-      value: {
-        type: String,
-        required: true,
-      },
+export default {
+  props: {
+    isEditable: {
+      default: true,
+      type: Boolean,
     },
-  }
+    label: {
+      type: [String, Number],
+      required: true,
+    },
+    placeholder: {
+      type: String,
+      required: true,
+    },
+    value: {
+      type: String,
+      required: true,
+    },
+  },
+};
 </script>

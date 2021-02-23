@@ -3,22 +3,22 @@ import lodash from 'lodash';
 
 export default {
   directives: {
-    ['flow-uploader']: {
+    'flow-uploader': {
       /**
        * This binding provides a bridge between Flow and vuejs such that we can continue using our resumable backend
        */
       bind(el, binding) {
         const {
-            accept,
-            target,
-            token: upload_token
-          } = binding.value,
-          uploader = new Flow({
-            target,
-            singleFile: true,
-            chunkSize: 1024 * 512, // kbytes, chunked?  ¯\_(ツ)_/¯
-            query: { upload_token }
-          });
+          accept,
+          target,
+          token: upload_token,
+        } = binding.value;
+        const uploader = new Flow({
+          target,
+          singleFile: true,
+          chunkSize: 1024 * 512, // kbytes, chunked?  ¯\_(ツ)_/¯
+          query: { upload_token },
+        });
 
         if (!uploader.support) {
           // Your browser doesn't support HTML5 uploads; please try Firefox or Chrome.
@@ -29,12 +29,12 @@ export default {
         uploader.assignBrowse(el);
 
         lodash.chain(el.children)
-        .find({
-          tagName: 'INPUT',
-          type: 'file'
-        })
-        .assign({ accept })
-        .value();
+          .find({
+            tagName: 'INPUT',
+            type: 'file',
+          })
+          .assign({ accept })
+          .value();
 
         // todo: migrate to proxied catch-all handler (voto5 legacy todo)
         // uploader.on('catchAll', (name, file/*or files*/, e) => console.debug(name))
@@ -43,28 +43,28 @@ export default {
         // uploader.on('fileAdded', (file, e) => dispatch(el, 'filesSubmitted', {file, uploader})) // uploader.upload()
         uploader.on('filesSubmitted', (files, e) => dispatch(el, 'filesSubmitted', {
           files,
-          uploader
+          uploader,
         })); // uploader.upload()
         uploader.on('fileProgress', (file, e) => dispatch(el, 'fileProgress', {
           file,
-          uploader
+          uploader,
         }));
         uploader.on('fileSuccess', (file, json) => dispatch(el, 'fileSuccess', {
           file,
           uploader,
-          json
+          json,
         })); // uploader.cancel()
         uploader.on('error', (message, file) => dispatch(el, 'fileSuccess', {
           file,
           uploader,
-          message
+          message,
         })); // uploader.cancel()
       },
 
       unbind(el, binding) {
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 const dispatch = (el, name, data) => {

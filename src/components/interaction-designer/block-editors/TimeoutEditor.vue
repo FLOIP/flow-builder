@@ -10,40 +10,40 @@
 </template>
 
 <script>
-  import NumericEditor from '@/components/common/NumericEditor'
-  import {get} from 'lodash'
-  import lang from '@/lib/filters/lang'
+import NumericEditor from '@/components/common/NumericEditor';
+import { get } from 'lodash';
+import lang from '@/lib/filters/lang';
 
-  export default {
-    components: {
-      NumericEditor,
+export default {
+  components: {
+    NumericEditor,
+  },
+  mixins: [lang],
+  props: {
+    isEditable: {
+      default: true,
+      type: Boolean,
     },
-    mixins: [lang],
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
-      },
-      block: {
-        type: Object,
-        required: true,
-      },
+    block: {
+      type: Object,
+      required: true,
     },
-    data() {
-      return {
-        defaultValue: 120,
-      }
-    },
+  },
+  data() {
+    return {
+      defaultValue: 120,
+    };
+  },
 
-    computed: {
-      timeout: {
-        get() {
-          return get(this.block, 'config.accuracyTimeoutSeconds', this.defaultValue)
-        },
-        set(value) {
-          this.$emit('commitAccuracyTimeoutSecondsChange', value)
-        }
-      }
-    }
-  }
+  computed: {
+    timeout: {
+      get() {
+        return get(this.block, 'config.accuracyTimeoutSeconds', this.defaultValue);
+      },
+      set(value) {
+        this.$emit('commitAccuracyTimeoutSecondsChange', value);
+      },
+    },
+  },
+};
 </script>

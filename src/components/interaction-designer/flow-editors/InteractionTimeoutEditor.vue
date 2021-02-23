@@ -10,14 +10,14 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component, Prop} from 'vue-property-decorator'
-  import {IFlow} from '@floip/flow-runner'
-  import NumericEditor from '@/components/common/NumericEditor.vue'
-  import {namespace} from 'vuex-class'
-  import lang from '@/lib/filters/lang'
+import Vue from 'vue';
+import { Component, Prop } from 'vue-property-decorator';
+import { IFlow } from '@floip/flow-runner';
+import NumericEditor from '@/components/common/NumericEditor.vue';
+import { namespace } from 'vuex-class';
+import lang from '@/lib/filters/lang';
 
-  const flowVuexNamespace = namespace('flow')
+const flowVuexNamespace = namespace('flow');
 
   @Component<any>({
     components: {
@@ -25,21 +25,22 @@
     },
     mixins: [lang],
   })
-  class InteractionTimeoutEditor extends Vue {
-    @Prop({default: true}) readonly isEditable!: boolean
+class InteractionTimeoutEditor extends Vue {
+    @Prop({ default: true }) readonly isEditable!: boolean
+
     @Prop() readonly flow!: IFlow
 
     get interactionTimeout(): number {
-      //30 comes from src/store/flow/flow.ts
-      return this.flow.interactionTimeout || 30 
+      // 30 comes from src/store/flow/flow.ts
+      return this.flow.interactionTimeout || 30;
     }
 
     set interactionTimeout(value: number) {
-      this.flow_setInteractionTimeout({flowId:this.flow.uuid, value})
+      this.flow_setInteractionTimeout({ flowId: this.flow.uuid, value });
     }
 
     @flowVuexNamespace.Mutation flow_setInteractionTimeout
   }
 
-  export default InteractionTimeoutEditor
+export default InteractionTimeoutEditor;
 </script>

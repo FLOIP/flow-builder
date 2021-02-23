@@ -42,27 +42,27 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {namespace} from 'vuex-class'
-  import {Component, Prop} from 'vue-property-decorator'
+import Vue from 'vue';
+import { namespace } from 'vuex-class';
+import { Component, Prop } from 'vue-property-decorator';
 
-  import {IFlow} from '@floip/flow-runner'
-  import ILogBlock from '@floip/flow-runner/src/model/block/ILogBlock'
-  import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
+import { IFlow } from '@floip/flow-runner';
+import ILogBlock from '@floip/flow-runner/src/model/block/ILogBlock';
+import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver';
 
-  import ResourceEditor from '../resource-editors/ResourceEditor.vue'
-  import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue'
-  import BlockNameEditor from '../block-editors/NameEditor.vue'
-  import BlockLabelEditor from '../block-editors/LabelEditor.vue'
-  import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-  import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-  import BlockId from '../block-editors/BlockId.vue'
-  import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
-  import LogStore, {BLOCK_TYPE} from "@/store/flow/block-types/Core_LogBlockStore";
-  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
-  import lang from '@/lib/filters/lang'
+import { findOrGenerateStubbedVariantOn } from '@/store/flow/resource';
+import LogStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_LogBlockStore';
+import { createDefaultBlockTypeInstallerFor } from '@/store/builder';
+import lang from '@/lib/filters/lang';
+import ResourceEditor from '../resource-editors/ResourceEditor.vue';
+import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue';
+import BlockNameEditor from '../block-editors/NameEditor.vue';
+import BlockLabelEditor from '../block-editors/LabelEditor.vue';
+import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue';
+import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue';
+import BlockId from '../block-editors/BlockId.vue';
 
-  const flowVuexNamespace = namespace('flow')
+const flowVuexNamespace = namespace('flow');
 
   @Component<any>({
     components: {
@@ -76,19 +76,20 @@
     },
     mixins: [lang],
   })
-  class Core_LogBlock extends Vue {
+class Core_LogBlock extends Vue {
     @Prop()readonly block!: ILogBlock
+
     @Prop()readonly flow!: IFlow
 
     findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
     get messageResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.message]
+      return this.resourcesByUuid[this.block.config.message];
     }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
   }
 
-  export default Core_LogBlock
-  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LogStore)
+export default Core_LogBlock;
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LogStore);
 </script>

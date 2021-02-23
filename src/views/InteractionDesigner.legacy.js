@@ -1,4 +1,4 @@
-import BBEventProxy from '@/lib/mixins/BBEventProxy'
+import BBEventProxy from '@/lib/mixins/BBEventProxy';
 
 export default {
   mixins: [BBEventProxy],
@@ -14,7 +14,7 @@ export default {
 
         'click .tree-toggle-editable': 'toggleEditable',
       },
-    }
+    };
   },
 
   mounted() {
@@ -25,15 +25,15 @@ export default {
     // jsPlumb.ready(this.initializeAll)
 
     // Handles delete keydown event on a selected block.
-    this.bindBlockDeleteOnKeydown()
-    this.bindUndoBlockDeleteOnKeydown()
+    this.bindBlockDeleteOnKeydown();
+    this.bindUndoBlockDeleteOnKeydown();
 
     // Queue up the repeating save function
     _.delay(this.saveTreeRepeater, app.ui.saveTimer * 1000);
 
     // Bind a handler to watch for page exits when the page is unsaved
     // window.onbeforeunload = function () {
-    $(window).on('beforeunload', function()	{
+    $(window).on('beforeunload', () => {
       if (builder.$store.getters.isEditable && builder.$store.getters.hasChanges) {
         return 'You have unsaved changes. Are you sure you want to leave this page?';
       }
@@ -43,21 +43,21 @@ export default {
   },
 
   methods: {
-    initializeAll: function() {
+    initializeAll() {
       // this.initializeJsPlumb()
       // this.resetJsPlumbBindings()
       app.tree.updateFloipAlert();
     },
 
     bindBlockDeleteOnKeydown() {
-      const {window, $, app} = global
+      const { window, $, app } = global;
 
-      $(window).keydown(e => {
+      $(window).keydown((e) => {
         if (!app.ui.isEditable) {
-          return
+          return;
         }
 
-        const tag = e.target.tagName.toLowerCase()
+        const tag = e.target.tagName.toLowerCase();
 
         // If we select a block and press either ctrl-delete, ctrl key-backspace, cmd-delete or cmd-backspace
         if ((e.metaKey || e.ctrlKey) && (e.keyCode === 46 || e.keyCode === 8)
@@ -66,22 +66,22 @@ export default {
             // deleting text in an input or textbox.
             && tag !== 'input'
             && tag !== 'textarea') {
-          e.preventDefault()
-          this.deleteBlock()
+          e.preventDefault();
+          this.deleteBlock();
         }
-      })
+      });
     },
 
     bindUndoBlockDeleteOnKeydown() {
-      const {window, $, app} = global
+      const { window, $, app } = global;
 
-      $(window).keydown(e => {
+      $(window).keydown((e) => {
         if (!app.ui.isEditable) {
-          return
+          return;
         }
 
         // Save name of element.
-        const tag = e.target.tagName.toLowerCase()
+        const tag = e.target.tagName.toLowerCase();
 
         // We allow undo only if we have a mostRecentlyDeletedBlock.
         // This limits undo to just one level.
@@ -92,9 +92,9 @@ export default {
             && app.ui.mostRecentlyDeletedBlock
             && tag !== 'input'
             && tag !== 'textarea') {
-          this.undoDeleteBlock()
+          this.undoDeleteBlock();
         }
-      })
+      });
     },
 
     // initializeJsPlumb() {
@@ -106,17 +106,16 @@ export default {
     //   app.jsPlumb.attachEventListeners();
     // }),
 
-    addNewBlock: function(e) {
-
+    addNewBlock(e) {
       // Prevent default to avoid scrolling-up from dropdown buttons.
       // per http://stackoverflow.com/a/6487346
       e.preventDefault();
 
-      var startingXPosition = 50;
-      var startingYPosition = 50;
-      var blockData;
+      let startingXPosition = 50;
+      let startingYPosition = 50;
+      let blockData;
 
-      var selectedBlock = app.tree.getBlock(app.ui.selectedBlock);
+      const selectedBlock = app.tree.getBlock(app.ui.selectedBlock);
       if (selectedBlock && selectedBlock.uiData) {
         if (selectedBlock.uiData.xPosition) {
           startingXPosition = selectedBlock.uiData.xPosition;
@@ -126,16 +125,9 @@ export default {
           // Need to add some clearance to get past the selected block
           startingYPosition = selectedBlock.uiData.yPosition + 150;
         }
-
-
-      }
-      else if (app.tree.getBlockKeys().length > 0) {
+      } else if (app.tree.getBlockKeys().length > 0) {
         startingYPosition = app.tree.getTallestBlockPosition(150);
       }
-
-
-
-
 
       // Thanks to
       // http://stackoverflow.com/a/5683169
@@ -154,13 +146,13 @@ export default {
       // automatically enable the autogen feature for content types that should autogen
       if (app.tree.getEnabledLanguages().length > 0) {
         blockData.smsAutogenLangs = blockData.smsAutogenLangs || [];
-        blockData.smsAutogenLangs.push(+app.tree.getEnabledLanguages()[0])
+        blockData.smsAutogenLangs.push(+app.tree.getEnabledLanguages()[0]);
 
         blockData.ussdAutogenLangs = blockData.ussdAutogenLangs || [];
-        blockData.ussdAutogenLangs.push(+app.tree.getEnabledLanguages()[0])
+        blockData.ussdAutogenLangs.push(+app.tree.getEnabledLanguages()[0]);
 
         blockData.socialAutogenLangs = blockData.socialAutogenLangs || [];
-        blockData.socialAutogenLangs.push(+app.tree.getEnabledLanguages()[0])
+        blockData.socialAutogenLangs.push(+app.tree.getEnabledLanguages()[0]);
       }
 
       if (type == 'ContentTypeBranchBlock') {
@@ -170,25 +162,25 @@ export default {
       // this.initializeJsPlumbValidateCodeBlock(blockData)
 
       if (type == 'WebhookBlock' || type == 'WebhookContentBlock') {
-        this.setWebhookConfigIfPossible(blockData)
+        this.setWebhookConfigIfPossible(blockData);
       }
 
       blockData = _.merge(_.cloneDeep(this.$store.state.trees.ui.commonBlockDefaults), blockData);
-      app.tree.addBlock(blockData)
+      app.tree.addBlock(blockData);
       // this.resetJsPlumbBindings(false)
 
-      this.$store.dispatch('discoverTallestBlockForDesignerWorkspaceHeight', {aboveTallest: true})
+      this.$store.dispatch('discoverTallestBlockForDesignerWorkspaceHeight', { aboveTallest: true });
 
       app.ui.change('New block added.');
     },
 
-    processNewContentTypeBranchBlock: function(blockData) {
+    processNewContentTypeBranchBlock(blockData) {
       console.log('Inside processNewContentTypeBranchBlock');
       console.log(blockData);
 
-      var numConnections = 0;
-      var outputTypes = [];
-      var outputNames = [];
+      let numConnections = 0;
+      const outputTypes = [];
+      const outputNames = [];
 
       if (app.tree.get('details').hasVoice) {
         numConnections += 1;
@@ -213,7 +205,7 @@ export default {
       if (app.tree.get('details').hasSocial) {
         numConnections += 1;
         outputTypes.push(10);
-        outputTypes.push(15); //Todo how can we push all social content types without needing to add a new number for each social network?
+        outputTypes.push(15); // Todo how can we push all social content types without needing to add a new number for each social network?
         outputNames.push('trees.output-social');
       }
 
@@ -223,15 +215,15 @@ export default {
 
       return blockData;
     },
-    initializeJsPlumbValidateCodeBlock: function (blockData) {
+    initializeJsPlumbValidateCodeBlock(blockData) {
       if (blockData.type === 'ValidateCodeBlock') {
         if (app.tree.get('details').hasClipboard) {
-          blockData.uiData.numConnections = 4
-          blockData.uiData.outputNames[3] = 'trees.offline'
+          blockData.uiData.numConnections = 4;
+          blockData.uiData.outputNames[3] = 'trees.offline';
         } else {
-          blockData.uiData.numConnections = 3
+          blockData.uiData.numConnections = 3;
           // Keep only the first three items in the array
-          blockData.uiData.outputNames.splice(3, 1)
+          blockData.uiData.outputNames.splice(3, 1);
         }
       }
     },
@@ -239,23 +231,21 @@ export default {
     // Called when adding a new Webhook block.
     // Automatically fills the URL, method, and secret for the new Webhook block
     // with the configuration of other webhook blocks in the tree.
-    setWebhookConfigIfPossible: function (blockData) {
-      var webhookBlockWithUrl = _.find(app.tree.get('blocks'), function(b) {
-        return (b.type === 'WebhookBlock' && b.customData.url) ||
-          (b.type === 'WebhookContentBlock' && b.customData.url)
-      });
+    setWebhookConfigIfPossible(blockData) {
+      const webhookBlockWithUrl = _.find(app.tree.get('blocks'), (b) => (b.type === 'WebhookBlock' && b.customData.url)
+          || (b.type === 'WebhookContentBlock' && b.customData.url));
 
       if (!webhookBlockWithUrl) {
         return;
       }
 
-      blockData.customData.url = webhookBlockWithUrl.customData.url
-      blockData.customData.title = webhookBlockWithUrl.customData.url
-      blockData.customData.secret = webhookBlockWithUrl.customData.secret
-      blockData.customData.method = webhookBlockWithUrl.customData.method
+      blockData.customData.url = webhookBlockWithUrl.customData.url;
+      blockData.customData.title = webhookBlockWithUrl.customData.url;
+      blockData.customData.secret = webhookBlockWithUrl.customData.secret;
+      blockData.customData.method = webhookBlockWithUrl.customData.method;
     },
 
-    saveCopyOfBlockBeforeDelete: function(selectedBlockKey) {
+    saveCopyOfBlockBeforeDelete(selectedBlockKey) {
       // Save the block we are just about to delete from the blocks array.
       app.ui.mostRecentlyDeletedBlock = app.tree.getBlock(selectedBlockKey);
 
@@ -268,29 +258,26 @@ export default {
       // going out of the block and connections coming into the block.
       // 	Loop through all connections and check if selectedBlockKey
       // can be found in any of the connections' startBlockKey or endBlockKey.
-      _.each(allConnections, function(connection) {
-        if(connection.endBlockKey == selectedBlockKey ||
-            connection.startBlockKey == selectedBlockKey) {
+      _.each(allConnections, (connection) => {
+        if (connection.endBlockKey == selectedBlockKey
+            || connection.startBlockKey == selectedBlockKey) {
           app.ui.mostRecentlyDeletedBlockConnections.push(connection);
         }
       });
-
     },
 
     // Bring back most recently deleted block and redraw connections
-    undoDeleteBlock: function() {
-
+    undoDeleteBlock() {
       // Add the most recently deleted block back into the blocks model.
       app.tree.get('blocks').push(app.ui.mostRecentlyDeletedBlock);
 
       // Loop through most recently deleted connections and
       // see if any of them are already in current connections.
       // If not, add the connection.
-      _.each(app.ui.mostRecentlyDeletedBlockConnections, function(connection) {
+      _.each(app.ui.mostRecentlyDeletedBlockConnections, (connection) => {
         if (_.includes(app.tree.get('connections'), connection)) {
           console.log('Ignoring duplicate connection...');
-        }
-        else {
+        } else {
           app.tree.get('connections').push(connection);
         }
       });
@@ -303,19 +290,18 @@ export default {
       app.ui.mostRecentlyDeletedBlock = false;
     },
 
-    deleteBlock: function() {
-
-      var selectedBlockKey = app.ui.selectedBlock;
-      var selectedBlockElement = $('#' + selectedBlockKey);
-      var selectedBlock = app.tree.getBlock(selectedBlockKey);
+    deleteBlock() {
+      const selectedBlockKey = app.ui.selectedBlock;
+      const selectedBlockElement = $(`#${selectedBlockKey}`);
+      const selectedBlock = app.tree.getBlock(selectedBlockKey);
 
       // Save copy of block and connections before deleting.
       this.saveCopyOfBlockBeforeDelete(selectedBlockKey);
 
-      var numConnections = selectedBlock['uiData']['numConnections'];
+      const { numConnections } = selectedBlock.uiData;
 
       // Remove the connections from each of the nodes at the bottom of the block
-      _.each(_.range(1, numConnections + 1), function(index) {
+      _.each(_.range(1, numConnections + 1), (index) => {
 
         // app.jsPlumb.detachAllConnections(selectedBlockKey + '_node_' + index);
 
@@ -332,8 +318,8 @@ export default {
       // Remove the actual entry from the model's blocks array
       app.tree.deleteBlock(selectedBlockKey);
 
-      //handle if the deleted block was a numeric question block - amend associated
-      if(selectedBlock.type == "NumericQuestionBlock") {
+      // handle if the deleted block was a numeric question block - amend associated
+      if (selectedBlock.type == 'NumericQuestionBlock') {
         app.tree.handleDeleteNumericQuestionBlockAssociations(selectedBlockKey);
       }
 
@@ -347,14 +333,12 @@ export default {
       }
 
       // Unselect the block (which also sets the sidebar back to tree details)
-      this.deselectBlocks()
+      this.deselectBlocks();
     },
 
-
-    duplicateSelectedBlock: function() {
-
-      var selectedBlock = app.tree.getBlock(app.ui.selectedBlock);
-      var duplicateBlock = _.cloneDeep(selectedBlock);
+    duplicateSelectedBlock() {
+      const selectedBlock = app.tree.getBlock(app.ui.selectedBlock);
+      const duplicateBlock = _.cloneDeep(selectedBlock);
 
       duplicateBlock.jsKey = app.tree.makeUniqueId('block_');
 
@@ -384,62 +368,59 @@ export default {
     //       handleDragStop)
     // },
 
-    selectBlock: function(blockKey) {
+    selectBlock(blockKey) {
       app.ui.selectedBlock = blockKey;
     },
 
-    saveTreeRepeater: function() {
+    saveTreeRepeater() {
       if (builder.$store.getters.isFeatureTreeSaveEnabled) {
         this.attemptSaveTree();
         _.delay(this.saveTreeRepeater, app.ui.saveTimer * 1000);
       } else {
-        console.info("Feature `treeSave` is disabled")
+        console.info('Feature `treeSave` is disabled');
       }
     },
 
-    makeEditable: function() {
-      this.$store.commit('updateIsEditable', {value: 1})
+    makeEditable() {
+      this.$store.commit('updateIsEditable', { value: 1 });
       // this.deselectBlocks()
       this.initializeAll(1);
     },
 
-    makeUnEditable: function() {
+    makeUnEditable() {
       // By default, save before un-editing.
       this.saveTree();
 
-      this.$store.commit('updateIsEditable', {value: 0})
+      this.$store.commit('updateIsEditable', { value: 0 });
       // this.deselectBlocks()
       this.initializeAll(1);
     },
 
-    toggleEditable: function() {
+    toggleEditable() {
       if (app.ui.isEditable == 0) {
         this.makeEditable();
-      }
-      else {
+      } else {
         this.makeUnEditable(1);
       }
     },
 
-    handleSelectBlock: function(e) {
-
+    handleSelectBlock(e) {
       e.stopPropagation();
 
-      var block = $(e.currentTarget).parent();
-      var blockKey = $(block).attr('id');
+      const block = $(e.currentTarget).parent();
+      const blockKey = $(block).attr('id');
 
       this.selectBlock(blockKey);
-
     },
 
     renderOutputNameFor(i, block) {
-      var name = _.get(block.uiData.outputNames, i, i + 1)
+      const name = _.get(block.uiData.outputNames, i, i + 1);
 
       return Lang.has(name)
-          ? Lang.trans(name)
-          : Lang.has("trees.output-" + _.kebabCase(name))
-              ? Lang.trans("trees.output-" + _.kebabCase(name))
-              : name
+        ? Lang.trans(name)
+        : Lang.has(`trees.output-${_.kebabCase(name)}`)
+          ? Lang.trans(`trees.output-${_.kebabCase(name)}`)
+          : name;
     },
   },
-}
+};
