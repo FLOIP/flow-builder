@@ -5,13 +5,13 @@
            'tree-audio-control-text-container-selectable': selectable,
            'tree-audio-control-text-container-selected': !selectable}">
 
-    <button @click.prevent="clear"
+    <button @click.prevent="clear" :disabled="!isEditable"
             class="audio-library-selection-clear-selection btn-ghost pull-right">
       <i class="glyphicon glyphicon-remove"></i>
     </button>
 
     <div class="btn-group audio-library-selection-download-dropdown">
-      <button type="button" class="btn btn-ghost dropdown-toggle" data-toggle="dropdown">
+      <button type="button" class="btn btn-ghost dropdown-toggle" data-toggle="dropdown" :disabled="!isEditable">
         <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
         <span class="caret"></span>
       </button>
@@ -41,30 +41,30 @@
 </template>
 
 <script>
-  import lang from '@/lib/filters/lang'
-  import momentFilters from '@/lib/filters/moment'
+import lang from '@/lib/filters/lang';
+import momentFilters from '@/lib/filters/moment';
 
-  export default {
-		props: ['audioFile', 'selected', 'selectable', 'langId'],
+export default {
+  props: ['audioFile', 'selected', 'selectable', 'langId', 'isEditable'],
 
-		mixins: [lang, momentFilters],
+  mixins: [lang, momentFilters],
 
-		computed: {
-			audioFileUrl() {
-				return this.audioFile
-			}
-		},
+  computed: {
+    audioFileUrl() {
+      return this.audioFile;
+    },
+  },
 
-		methods: {
-			select() {
-				this.$emit('select')
-			},
+  methods: {
+    select() {
+      this.$emit('select');
+    },
 
-			clear() {
-				this.$emit('clear')
-			}
-		}
-	}
+    clear() {
+      this.$emit('clear');
+    },
+  },
+};
 </script>
 
 <style lang="scss">
