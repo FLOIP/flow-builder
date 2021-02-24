@@ -6,7 +6,7 @@ export const routes = [
   },
   {
     path: '/flows/new',
-    component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/New.vue'),
+    component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/NewFlow.vue'),
   },
   {
     path: '/trees/create', /* no-op */

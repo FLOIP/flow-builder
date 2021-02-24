@@ -1,5 +1,6 @@
 <template>
   <div class="new-contents">
+    <flow-editor :flow="activeFlow" />
     <div class="row">
       <div class="col-sm-8 offset-sm-2">
         <h2>
@@ -108,7 +109,46 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+
+import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
+import lang from '@/lib/filters/lang'
+import { Component } from 'vue-property-decorator'
+import Vue from 'vue'
+import {Mutation, namespace} from 'vuex-class'
+import lodash, {forEach, invoke} from 'lodash'
+import {store} from '@/store'
+const flowVuexNamespace = namespace('flow')
+
+@Component<any>(
+  {
+    components: {
+      FlowEditor,
+    },
+    mixins: [lang],
+    async mounted() {
+        await this.flow_addBlankFlow()
+    },
+    async created() {
+      const {$store} = this
+
+      //TODO - all these stores?
+      forEach(store.modules, (v, k) =>
+        !$store.hasModule(k) && $store.registerModule(k, v))
+
+      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+    },
+  },
+)
+class NewFlow extends Vue {
+  @flowVuexNamespace.Action flow_addBlankFlow!: Promise<IFlow>
+  @flowVuexNamespace.Getter activeFlow!: IFlow
+  @Mutation configure 
+}
+
+export default NewFlow
+
 </script>
+
 <style lang="scss">
 </style>
