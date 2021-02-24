@@ -82,16 +82,16 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import lang from '@/lib/filters/lang'
-import { parse as floipExpressionParser } from '@floip/expression-parser'
-import { isObject, some } from 'lodash'
-import VueFocus from 'vue-focus'
-import { mapActions } from 'vuex'
-import { VBTooltipPlugin } from 'bootstrap-vue'
+import Vue from 'vue';
+import lang from '@/lib/filters/lang';
+import { parse as floipExpressionParser } from '@floip/expression-parser';
+import { isObject, some } from 'lodash';
+import VueFocus from 'vue-focus';
+import { mapActions } from 'vuex';
+import { VBTooltipPlugin } from 'bootstrap-vue';
 // import BlockContentAutogenButton from './BlockContentAutogenButton'
 
-Vue.use(VBTooltipPlugin)
+Vue.use(VBTooltipPlugin);
 
 export default {
   components: {
@@ -130,72 +130,72 @@ export default {
   computed: {
     content: {
       get() {
-        return this.resourceVariant.value
+        return this.resourceVariant.value;
       },
 
       set(value) {
-        const { resourceId, mode } = this
-        const { languageId, contentType } = this.resourceVariant
+        const { resourceId, mode } = this;
+        const { languageId, contentType } = this.resourceVariant;
 
         this.resource_setOrCreateValueModeSpecific({
           resourceId,
           filter: { languageId, contentType, modes: [mode] },
           value,
-        })
+        });
       },
     },
 
     contentExpressionAST() {
-      let ast = []
+      let ast = [];
 
       try {
-        ast = floipExpressionParser(this.content)
+        ast = floipExpressionParser(this.content);
       } catch (e) {
         if (e instanceof SyntaxError || e.name === 'SyntaxError') {
-          return e
+          return e;
         }
       }
 
-      const hasMembers = some(ast, isObject)
+      const hasMembers = some(ast, isObject);
       return hasMembers
         ? ast
-        : null
+        : null;
     },
 
     doesContentContainExpression() {
-      return !!this.contentExpressionAST
+      return !!this.contentExpressionAST;
     },
 
     doesContentContainExpressionError() {
-      return !!(this.contentExpressionAST instanceof Error)
+      return !!(this.contentExpressionAST instanceof Error);
     },
 
     characterCounter() {
       const
-        hasUnicode = !/^[\x00-\x7F]*$/.test(this.content)
-      const count = this.content.length
+        hasUnicode = !/^[\x00-\x7F]*$/.test(this.content);
+      const count = this.content.length;
 
-      console.debug('BlockTextContentEditorForLangAndType', 'characterCounter', { hasUnicode, count })
+      console.debug('BlockTextContentEditorForLangAndType', 'characterCounter', { hasUnicode, count });
 
       return {
         hasUnicode,
         count,
         pages: hasUnicode ? Math.ceil(count / 70) : Math.ceil(count / 160),
-      }
+      };
     },
   },
 
   methods: {
     ...mapActions('flow', ['resource_setOrCreateValueModeSpecific']),
 
-    select() { this.isSelected = true },
-    deselect() { this.isSelected = false },
+    select() { this.isSelected = true; },
+    deselect() { this.isSelected = false; },
 
     // debouncedSaveTree: debounce(function () {
     //   this.$store.dispatch('attemptSaveTree')
     // }, 500),
   },
-}
+};
 </script>
 
 <x-style lang="scss" scoped>

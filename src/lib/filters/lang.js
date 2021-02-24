@@ -1,7 +1,7 @@
-const proxy = (name, args) => (global.Lang
+const proxy = (name, args) => global.Lang
   ? global.Lang[name].apply(global.Lang, args)
-  : args[0])
-const createProxy = (name) => function () {
+  : args[0]
+const createProxy = name => function () {
   return proxy(name, arguments)
 }
 

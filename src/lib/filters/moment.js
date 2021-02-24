@@ -14,19 +14,19 @@ export default {
     },
 
     formatDuration(duration, unit = 'seconds', withSuffix) {
-      const currentLocale = moment.locale()
-      moment.locale('en') // this function only gets used in english.
-      const result = moment.duration(duration, unit).humanize(withSuffix)
+      let currentLocale = moment.locale()
+      moment.locale('en') //this function only gets used in english.
+      let result = moment.duration(duration, unit).humanize(withSuffix)
       moment.locale(currentLocale)
       return result
     },
 
     formatDurationLocalized(duration, locale, unit = 'seconds', withSuffix) {
-      const currentLocale = moment.locale()
-      moment.locale(locale)
-      const result = moment.duration(duration, unit).humanize(withSuffix)
+      let currentLocale = moment.locale()
+      moment.locale(locale) 
+      let result = moment.duration(duration, unit).humanize(withSuffix)
       moment.locale(currentLocale)
       return result
-    },
-  },
+    }
+  }
 }

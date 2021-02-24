@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-import TextEditor from '@/components/common/TextEditor'
-import lang from '@/lib/filters/lang'
+import { mapMutations } from 'vuex';
+import TextEditor from '@/components/common/TextEditor';
+import lang from '@/lib/filters/lang';
 
 export default {
   components: {
@@ -26,16 +26,16 @@ export default {
   computed: {
     semanticLabel: {
       get() {
-        return this.block.semanticLabel
+        return this.block.semanticLabel;
       },
       set(value) {
-        this.block_setSemanticLabel({ blockId: this.block.uuid, value })
+        this.block_setSemanticLabel({ blockId: this.block.uuid, value });
       },
     },
   },
   methods: {
     ...mapMutations('flow', ['block_setSemanticLabel']),
   },
-}
+};
 
 </script>

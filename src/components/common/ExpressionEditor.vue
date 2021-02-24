@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import TextEditor from '@/components/common/TextEditor'
+import TextEditor from '@/components/common/TextEditor';
 
 export default {
   components: {
@@ -33,18 +33,18 @@ export default {
   computed: {
     expression: {
       get() {
-        return this.currentExpression
+        return this.currentExpression;
       },
       set(value) {
         if (this.expressionIdentifier !== null) {
           value = {
             identifier: this.expressionIdentifier,
             value,
-          }
+          };
         }
-        this.$emit('commitExpressionChange', value)
+        this.$emit('commitExpressionChange', value);
       },
     },
   },
-}
+};
 </script>

@@ -29,30 +29,30 @@ export default {
     this.bindUndoBlockDeleteOnKeydown()
 
     // Queue up the repeating save function
-    _.delay(this.saveTreeRepeater, app.ui.saveTimer * 1000)
+    _.delay(this.saveTreeRepeater, app.ui.saveTimer * 1000);
 
     // Bind a handler to watch for page exits when the page is unsaved
     // window.onbeforeunload = function () {
-    $(window).on('beforeunload', () => {
+    $(window).on('beforeunload', function()	{
       if (builder.$store.getters.isEditable && builder.$store.getters.hasChanges) {
-        return 'You have unsaved changes. Are you sure you want to leave this page?'
+        return 'You have unsaved changes. Are you sure you want to leave this page?';
       }
-    })
+    });
 
-    console.log('InteractionDesigner.legacy initialized')
+    console.log('InteractionDesigner.legacy initialized');
   },
 
   methods: {
-    initializeAll() {
+    initializeAll: function() {
       // this.initializeJsPlumb()
       // this.resetJsPlumbBindings()
-      app.tree.updateFloipAlert()
+      app.tree.updateFloipAlert();
     },
 
     bindBlockDeleteOnKeydown() {
-      const { window, $, app } = global
+      const {window, $, app} = global
 
-      $(window).keydown((e) => {
+      $(window).keydown(e => {
         if (!app.ui.isEditable) {
           return
         }
@@ -73,9 +73,9 @@ export default {
     },
 
     bindUndoBlockDeleteOnKeydown() {
-      const { window, $, app } = global
+      const {window, $, app} = global
 
-      $(window).keydown((e) => {
+      $(window).keydown(e => {
         if (!app.ui.isEditable) {
           return
         }
@@ -106,57 +106,65 @@ export default {
     //   app.jsPlumb.attachEventListeners();
     // }),
 
-    addNewBlock(e) {
+    addNewBlock: function(e) {
+
       // Prevent default to avoid scrolling-up from dropdown buttons.
       // per http://stackoverflow.com/a/6487346
-      e.preventDefault()
+      e.preventDefault();
 
-      let startingXPosition = 50
-      let startingYPosition = 50
-      let blockData
+      var startingXPosition = 50;
+      var startingYPosition = 50;
+      var blockData;
 
-      const selectedBlock = app.tree.getBlock(app.ui.selectedBlock)
+      var selectedBlock = app.tree.getBlock(app.ui.selectedBlock);
       if (selectedBlock && selectedBlock.uiData) {
         if (selectedBlock.uiData.xPosition) {
-          startingXPosition = selectedBlock.uiData.xPosition
+          startingXPosition = selectedBlock.uiData.xPosition;
         }
 
         if (selectedBlock.uiData.yPosition) {
           // Need to add some clearance to get past the selected block
-          startingYPosition = selectedBlock.uiData.yPosition + 150
+          startingYPosition = selectedBlock.uiData.yPosition + 150;
         }
-      } else if (app.tree.getBlockKeys().length > 0) {
-        startingYPosition = app.tree.getTallestBlockPosition(150)
+
+
       }
+      else if (app.tree.getBlockKeys().length > 0) {
+        startingYPosition = app.tree.getTallestBlockPosition(150);
+      }
+
+
+
+
 
       // Thanks to
       // http://stackoverflow.com/a/5683169
-      const type = $(e.currentTarget).data('block-type')
-      const numConnections = $(e.currentTarget).data('default-num-connections')
+      const type = $(e.currentTarget).data('block-type');
+      const numConnections = $(e.currentTarget).data('default-num-connections');
 
-      blockData = _.extend({}, _.get(this.$store.state.trees.ui.blockDefaults, type, {}))
+      blockData = _.extend({}, _.get(this.$store.state.trees.ui.blockDefaults, type, {}));
 
       // Set initial values based on UI parameters
-      blockData.type = type
-      blockData.uiData = blockData.uiData || {}
-      blockData.uiData.xPosition = startingXPosition
-      blockData.uiData.yPosition = startingYPosition
-      blockData.uiData.numConnections = numConnections
+      blockData.type = type;
+      blockData.uiData = blockData.uiData || {};
+      blockData.uiData.xPosition = startingXPosition;
+      blockData.uiData.yPosition = startingYPosition;
+      blockData.uiData.numConnections = numConnections;
 
       // automatically enable the autogen feature for content types that should autogen
       if (app.tree.getEnabledLanguages().length > 0) {
-        blockData.smsAutogenLangs = blockData.smsAutogenLangs || []
+        blockData.smsAutogenLangs = blockData.smsAutogenLangs || [];
         blockData.smsAutogenLangs.push(+app.tree.getEnabledLanguages()[0])
 
-        blockData.ussdAutogenLangs = blockData.ussdAutogenLangs || []
+        blockData.ussdAutogenLangs = blockData.ussdAutogenLangs || [];
         blockData.ussdAutogenLangs.push(+app.tree.getEnabledLanguages()[0])
 
-        blockData.socialAutogenLangs = blockData.socialAutogenLangs || []
+        blockData.socialAutogenLangs = blockData.socialAutogenLangs || [];
         blockData.socialAutogenLangs.push(+app.tree.getEnabledLanguages()[0])
       }
 
       if (type == 'ContentTypeBranchBlock') {
-        blockData = this.processNewContentTypeBranchBlock(blockData)
+        blockData = this.processNewContentTypeBranchBlock(blockData);
       }
 
       // this.initializeJsPlumbValidateCodeBlock(blockData)
@@ -165,57 +173,57 @@ export default {
         this.setWebhookConfigIfPossible(blockData)
       }
 
-      blockData = _.merge(_.cloneDeep(this.$store.state.trees.ui.commonBlockDefaults), blockData)
+      blockData = _.merge(_.cloneDeep(this.$store.state.trees.ui.commonBlockDefaults), blockData);
       app.tree.addBlock(blockData)
       // this.resetJsPlumbBindings(false)
 
-      this.$store.dispatch('discoverTallestBlockForDesignerWorkspaceHeight', { aboveTallest: true })
+      this.$store.dispatch('discoverTallestBlockForDesignerWorkspaceHeight', {aboveTallest: true})
 
-      app.ui.change('New block added.')
+      app.ui.change('New block added.');
     },
 
-    processNewContentTypeBranchBlock(blockData) {
-      console.log('Inside processNewContentTypeBranchBlock')
-      console.log(blockData)
+    processNewContentTypeBranchBlock: function(blockData) {
+      console.log('Inside processNewContentTypeBranchBlock');
+      console.log(blockData);
 
-      let numConnections = 0
-      const outputTypes = []
-      const outputNames = []
+      var numConnections = 0;
+      var outputTypes = [];
+      var outputNames = [];
 
       if (app.tree.get('details').hasVoice) {
-        numConnections += 1
-        outputTypes.push(1)
-        outputNames.push('trees.output-voice')
+        numConnections += 1;
+        outputTypes.push(1);
+        outputNames.push('trees.output-voice');
       }
       if (app.tree.get('details').hasSms) {
-        numConnections += 1
-        outputTypes.push(2)
-        outputNames.push('trees.output-sms')
+        numConnections += 1;
+        outputTypes.push(2);
+        outputNames.push('trees.output-sms');
       }
       if (app.tree.get('details').hasClipboard) {
-        numConnections += 1
-        outputTypes.push(3)
-        outputNames.push('trees.output-clipboard')
+        numConnections += 1;
+        outputTypes.push(3);
+        outputNames.push('trees.output-clipboard');
       }
       if (app.tree.get('details').hasUssd) {
-        numConnections += 1
-        outputTypes.push(4)
-        outputNames.push('trees.output-ussd')
+        numConnections += 1;
+        outputTypes.push(4);
+        outputNames.push('trees.output-ussd');
       }
       if (app.tree.get('details').hasSocial) {
-        numConnections += 1
-        outputTypes.push(10)
-        outputTypes.push(15) // Todo how can we push all social content types without needing to add a new number for each social network?
-        outputNames.push('trees.output-social')
+        numConnections += 1;
+        outputTypes.push(10);
+        outputTypes.push(15); //Todo how can we push all social content types without needing to add a new number for each social network?
+        outputNames.push('trees.output-social');
       }
 
-      blockData.uiData.numConnections = numConnections
-      blockData.uiData.outputNames = outputNames
-      blockData.customData.outputTypes = outputTypes
+      blockData.uiData.numConnections = numConnections;
+      blockData.uiData.outputNames = outputNames;
+      blockData.customData.outputTypes = outputTypes;
 
-      return blockData
+      return blockData;
     },
-    initializeJsPlumbValidateCodeBlock(blockData) {
+    initializeJsPlumbValidateCodeBlock: function (blockData) {
       if (blockData.type === 'ValidateCodeBlock') {
         if (app.tree.get('details').hasClipboard) {
           blockData.uiData.numConnections = 4
@@ -231,12 +239,14 @@ export default {
     // Called when adding a new Webhook block.
     // Automatically fills the URL, method, and secret for the new Webhook block
     // with the configuration of other webhook blocks in the tree.
-    setWebhookConfigIfPossible(blockData) {
-      const webhookBlockWithUrl = _.find(app.tree.get('blocks'), (b) => (b.type === 'WebhookBlock' && b.customData.url)
-          || (b.type === 'WebhookContentBlock' && b.customData.url))
+    setWebhookConfigIfPossible: function (blockData) {
+      var webhookBlockWithUrl = _.find(app.tree.get('blocks'), function(b) {
+        return (b.type === 'WebhookBlock' && b.customData.url) ||
+          (b.type === 'WebhookContentBlock' && b.customData.url)
+      });
 
       if (!webhookBlockWithUrl) {
-        return
+        return;
       }
 
       blockData.customData.url = webhookBlockWithUrl.customData.url
@@ -245,67 +255,71 @@ export default {
       blockData.customData.method = webhookBlockWithUrl.customData.method
     },
 
-    saveCopyOfBlockBeforeDelete(selectedBlockKey) {
+    saveCopyOfBlockBeforeDelete: function(selectedBlockKey) {
       // Save the block we are just about to delete from the blocks array.
-      app.ui.mostRecentlyDeletedBlock = app.tree.getBlock(selectedBlockKey)
+      app.ui.mostRecentlyDeletedBlock = app.tree.getBlock(selectedBlockKey);
 
-      app.ui.mostRecentlyDeletedBlockConnections = []
+      app.ui.mostRecentlyDeletedBlockConnections = [];
 
       // Get array of all connections
-      const allConnections = app.tree.get('connections')
+      const allConnections = app.tree.get('connections');
 
       // Get array of block's own connections - both connections
       // going out of the block and connections coming into the block.
       // 	Loop through all connections and check if selectedBlockKey
       // can be found in any of the connections' startBlockKey or endBlockKey.
-      _.each(allConnections, (connection) => {
-        if (connection.endBlockKey == selectedBlockKey
-            || connection.startBlockKey == selectedBlockKey) {
-          app.ui.mostRecentlyDeletedBlockConnections.push(connection)
+      _.each(allConnections, function(connection) {
+        if(connection.endBlockKey == selectedBlockKey ||
+            connection.startBlockKey == selectedBlockKey) {
+          app.ui.mostRecentlyDeletedBlockConnections.push(connection);
         }
-      })
+      });
+
     },
 
     // Bring back most recently deleted block and redraw connections
-    undoDeleteBlock() {
+    undoDeleteBlock: function() {
+
       // Add the most recently deleted block back into the blocks model.
-      app.tree.get('blocks').push(app.ui.mostRecentlyDeletedBlock)
+      app.tree.get('blocks').push(app.ui.mostRecentlyDeletedBlock);
 
       // Loop through most recently deleted connections and
       // see if any of them are already in current connections.
       // If not, add the connection.
-      _.each(app.ui.mostRecentlyDeletedBlockConnections, (connection) => {
+      _.each(app.ui.mostRecentlyDeletedBlockConnections, function(connection) {
         if (_.includes(app.tree.get('connections'), connection)) {
-          console.log('Ignoring duplicate connection...')
-        } else {
-          app.tree.get('connections').push(connection)
+          console.log('Ignoring duplicate connection...');
         }
-      })
+        else {
+          app.tree.get('connections').push(connection);
+        }
+      });
 
       // Redraw all connections related to that block:
       // this.resetJsPlumbBindings(true, app.ui.mostRecentlyDeletedBlock.jsKey)
 
       // Set mostRecentlyDeletedBlock to false so that
       // multiple undo presses do not add duplicate blocks.
-      app.ui.mostRecentlyDeletedBlock = false
+      app.ui.mostRecentlyDeletedBlock = false;
     },
 
-    deleteBlock() {
-      const selectedBlockKey = app.ui.selectedBlock
-      const selectedBlockElement = $(`#${selectedBlockKey}`)
-      const selectedBlock = app.tree.getBlock(selectedBlockKey)
+    deleteBlock: function() {
+
+      var selectedBlockKey = app.ui.selectedBlock;
+      var selectedBlockElement = $('#' + selectedBlockKey);
+      var selectedBlock = app.tree.getBlock(selectedBlockKey);
 
       // Save copy of block and connections before deleting.
-      this.saveCopyOfBlockBeforeDelete(selectedBlockKey)
+      this.saveCopyOfBlockBeforeDelete(selectedBlockKey);
 
-      const { numConnections } = selectedBlock.uiData
+      var numConnections = selectedBlock['uiData']['numConnections'];
 
       // Remove the connections from each of the nodes at the bottom of the block
-      _.each(_.range(1, numConnections + 1), (index) => {
+      _.each(_.range(1, numConnections + 1), function(index) {
 
         // app.jsPlumb.detachAllConnections(selectedBlockKey + '_node_' + index);
 
-      })
+      });
 
       // Remove any connections connected to the "target" / top of the block
       // Fortunately these call the jsPlumb binding for removing a connection
@@ -313,49 +327,51 @@ export default {
       // app.jsPlumb.detachAllConnections(selectedBlockKey + '_target');
 
       // Remove the block element from the DOM via jQuery
-      $(selectedBlockElement).remove()
+      $(selectedBlockElement).remove();
 
       // Remove the actual entry from the model's blocks array
-      app.tree.deleteBlock(selectedBlockKey)
+      app.tree.deleteBlock(selectedBlockKey);
 
-      // handle if the deleted block was a numeric question block - amend associated
-      if (selectedBlock.type == 'NumericQuestionBlock') {
-        app.tree.handleDeleteNumericQuestionBlockAssociations(selectedBlockKey)
+      //handle if the deleted block was a numeric question block - amend associated
+      if(selectedBlock.type == "NumericQuestionBlock") {
+        app.tree.handleDeleteNumericQuestionBlockAssociations(selectedBlockKey);
       }
 
       // Flag that a change has occured:
-      app.ui.change('Block deleted.')
+      app.ui.change('Block deleted.');
 
       if (app.tree.get('details').startingBlockKey == '') {
         // Then, we just deleted the startingBlockId
-        app.tree.setStartingBlock(app.tree.getShortestBlockKey())
-        app.ui.change('New starting block set (to shortest).')
+        app.tree.setStartingBlock(app.tree.getShortestBlockKey());
+        app.ui.change('New starting block set (to shortest).');
       }
 
       // Unselect the block (which also sets the sidebar back to tree details)
       this.deselectBlocks()
     },
 
-    duplicateSelectedBlock() {
-      const selectedBlock = app.tree.getBlock(app.ui.selectedBlock)
-      const duplicateBlock = _.cloneDeep(selectedBlock)
 
-      duplicateBlock.jsKey = app.tree.makeUniqueId('block_')
+    duplicateSelectedBlock: function() {
 
-      duplicateBlock.uiData.xPosition += 80
-      duplicateBlock.uiData.yPosition += 60
+      var selectedBlock = app.tree.getBlock(app.ui.selectedBlock);
+      var duplicateBlock = _.cloneDeep(selectedBlock);
+
+      duplicateBlock.jsKey = app.tree.makeUniqueId('block_');
+
+      duplicateBlock.uiData.xPosition += 80;
+      duplicateBlock.uiData.yPosition += 60;
 
       // Add the new block into the data model
-      app.tree.get('blocks').push(duplicateBlock)
+      app.tree.get('blocks').push(duplicateBlock);
 
       // Select the new block
-      this.selectBlock(duplicateBlock.jsKey)
+      this.selectBlock(duplicateBlock.jsKey);
 
       // Add jsPlumb triggers
       // this.resetJsPlumbBindings(false)
 
       // Flag for a new save
-      app.ui.change('Duplicated block.')
+      app.ui.change('Duplicated block.');
     },
 
     // resetJsPlumbBindings(shouldRegenerateConnections=true, selectedBlockKey) {
@@ -368,59 +384,62 @@ export default {
     //       handleDragStop)
     // },
 
-    selectBlock(blockKey) {
-      app.ui.selectedBlock = blockKey
+    selectBlock: function(blockKey) {
+      app.ui.selectedBlock = blockKey;
     },
 
-    saveTreeRepeater() {
+    saveTreeRepeater: function() {
       if (builder.$store.getters.isFeatureTreeSaveEnabled) {
-        this.attemptSaveTree()
-        _.delay(this.saveTreeRepeater, app.ui.saveTimer * 1000)
+        this.attemptSaveTree();
+        _.delay(this.saveTreeRepeater, app.ui.saveTimer * 1000);
       } else {
-        console.info('Feature `treeSave` is disabled')
+        console.info("Feature `treeSave` is disabled")
       }
     },
 
-    makeEditable() {
-      this.$store.commit('updateIsEditable', { value: 1 })
+    makeEditable: function() {
+      this.$store.commit('updateIsEditable', {value: 1})
       // this.deselectBlocks()
-      this.initializeAll(1)
+      this.initializeAll(1);
     },
 
-    makeUnEditable() {
+    makeUnEditable: function() {
       // By default, save before un-editing.
-      this.saveTree()
+      this.saveTree();
 
-      this.$store.commit('updateIsEditable', { value: 0 })
+      this.$store.commit('updateIsEditable', {value: 0})
       // this.deselectBlocks()
-      this.initializeAll(1)
+      this.initializeAll(1);
     },
 
-    toggleEditable() {
+    toggleEditable: function() {
       if (app.ui.isEditable == 0) {
-        this.makeEditable()
-      } else {
-        this.makeUnEditable(1)
+        this.makeEditable();
+      }
+      else {
+        this.makeUnEditable(1);
       }
     },
 
-    handleSelectBlock(e) {
-      e.stopPropagation()
+    handleSelectBlock: function(e) {
 
-      const block = $(e.currentTarget).parent()
-      const blockKey = $(block).attr('id')
+      e.stopPropagation();
 
-      this.selectBlock(blockKey)
+      var block = $(e.currentTarget).parent();
+      var blockKey = $(block).attr('id');
+
+      this.selectBlock(blockKey);
+
     },
 
     renderOutputNameFor(i, block) {
-      const name = _.get(block.uiData.outputNames, i, i + 1)
+      var name = _.get(block.uiData.outputNames, i, i + 1)
 
       return Lang.has(name)
-        ? Lang.trans(name)
-        : Lang.has(`trees.output-${_.kebabCase(name)}`)
-          ? Lang.trans(`trees.output-${_.kebabCase(name)}`)
-          : name
+          ? Lang.trans(name)
+          : Lang.has("trees.output-" + _.kebabCase(name))
+              ? Lang.trans("trees.output-" + _.kebabCase(name))
+              : name
     },
   },
 }

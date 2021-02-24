@@ -4,7 +4,7 @@ module.exports = {
   lintOnSave: false,
   runtimeCompiler: true,
   css: {
-    extract: false,
+    extract: false
   },
   configureWebpack: {
     resolve: {
@@ -27,14 +27,15 @@ module.exports = {
           description: req.query.flowFilename,
           created_at: {
             date: `${now[0]} ${now[1].split('.')[0]}`,
-            timezone_type: 3,
-            timezone: 'UTC',
+            timezone_type:3,
+            timezone: "UTC"
           },
-          audio_uuid: `${Math.random().toString(36).substr(2, 16)}.${Math.random().toString(36).substr(2, 10)}`,
+          audio_uuid: `${Math.random().toString(36).substr(2, 16)}.${Math.random().toString(36).substr(2, 10)}`
         }
-        res.writeHead(200, { 'Content-Type': 'application/json' })
-        res.end(JSON.stringify(result))
-      })
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result));
+      });
     },
-  },
-}
+  }
+};
+

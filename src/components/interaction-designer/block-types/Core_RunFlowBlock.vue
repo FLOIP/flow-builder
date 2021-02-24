@@ -32,24 +32,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { namespace } from 'vuex-class'
-import { Component, Prop } from 'vue-property-decorator'
+import Vue from 'vue';
+import { namespace } from 'vuex-class';
+import { Component, Prop } from 'vue-property-decorator';
 
-import IRunFlowBlock from '@floip/flow-runner/src/model/block/IRunFlowBlock'
-import { IFlow } from '@floip/flow-runner'
-import { IFlowsState } from '@/store/flow/index'
-import RunAnotherFlowStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_RunFlowBlockStore'
-import lang from '@/lib/filters/lang'
-import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
-import BlockNameEditor from '../block-editors/NameEditor.vue'
-import BlockLabelEditor from '../block-editors/LabelEditor.vue'
-import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-import BlockId from '../block-editors/BlockId.vue'
+import IRunFlowBlock from '@floip/flow-runner/src/model/block/IRunFlowBlock';
+import { IFlow } from '@floip/flow-runner';
+import { IFlowsState } from '@/store/flow/index';
+import RunAnotherFlowStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_RunFlowBlockStore';
+import lang from '@/lib/filters/lang';
+import { createDefaultBlockTypeInstallerFor } from '@/store/builder';
+import BlockNameEditor from '../block-editors/NameEditor.vue';
+import BlockLabelEditor from '../block-editors/LabelEditor.vue';
+import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue';
+import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue';
+import BlockId from '../block-editors/BlockId.vue';
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
-const builderVuexNamespace = namespace('builder')
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`);
+const builderVuexNamespace = namespace('builder');
 
   @Component<any>({
     components: {
@@ -68,11 +68,11 @@ class Core_RunAnotherFlowBlock extends Vue {
 
     get destinationFlowId(): string {
       // TODO - fix IRunFlowBlockConfig - it should have flow_id according to spec - not flowId
-      return this.block.config.flowId || ''
+      return this.block.config.flowId || '';
     }
 
     set destinationFlowId(newDestinationFlowId: string) {
-      this.setDestinationFlowId({ blockId: this.block.uuid, newDestinationFlowId })
+      this.setDestinationFlowId({ blockId: this.block.uuid, newDestinationFlowId });
     }
 
     @blockVuexNamespace.Action setDestinationFlowId!: (
@@ -84,6 +84,6 @@ class Core_RunAnotherFlowBlock extends Vue {
     @builderVuexNamespace.Getter isEditable !: boolean
   }
 
-export default Core_RunAnotherFlowBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, RunAnotherFlowStore)
+export default Core_RunAnotherFlowBlock;
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, RunAnotherFlowStore);
 </script>

@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import TextEditor from '@/components/common/TextEditor'
-import lang from '@/lib/filters/lang'
+import TextEditor from '@/components/common/TextEditor';
+import lang from '@/lib/filters/lang';
 
 export default {
   components: {
@@ -24,12 +24,12 @@ export default {
   computed: {
     formatString: {
       get() {
-        return this.block.config.format_string
+        return this.block.config.format_string;
       },
       set(value) {
-        this.$emit('commitFormatStringChange', value)
+        this.$emit('commitFormatStringChange', value);
       },
     },
   },
-}
+};
 </script>

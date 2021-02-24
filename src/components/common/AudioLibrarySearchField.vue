@@ -69,10 +69,10 @@
 </template>
 
 <script>
-import fuse from 'fuse.js'
-import lodash from 'lodash'
-import VueFocus from 'vue-focus'
-import lang from '@/lib/filters/lang'
+import fuse from 'fuse.js';
+import lodash from 'lodash';
+import VueFocus from 'vue-focus';
+import lang from '@/lib/filters/lang';
 
 export default {
   props: ['langId', 'audioFiles'],
@@ -90,81 +90,81 @@ export default {
       // pagination
       offset: 0,
       limit: 10,
-    }
+    };
   },
 
   computed: {
     query() {
-      return lodash.trim(this.rawQuery)
+      return lodash.trim(this.rawQuery);
     },
 
     isAudioLibraryEmpty() {
-      return this.isActive && !this.audioFiles.length
+      return this.isActive && !this.audioFiles.length;
     },
 
     hasNext() {
-      return (this.search(this.query).length / (this.offset + 1)) > this.limit
+      return (this.search(this.query).length / (this.offset + 1)) > this.limit;
     },
 
     hasPrevious() {
-      return this.offset > 0
+      return this.offset > 0;
     },
   },
 
   methods: {
     search(query) {
 			  if (this.isEntireLibraryModeEnabled) {
-			    return this.audioFiles
+			    return this.audioFiles;
       }
 
       if (query.length < 3) {
-        return []
+        return [];
       }
 
-      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'searching', query)
+      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'searching', query);
 
       if (query in this.cache) {
-        console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache hit', query)
-        return this.cache[query]
+        console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache hit', query);
+        return this.cache[query];
       }
 
-      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
+      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query);
 
-      const keys = ['filename', 'description']
-      return this.cache[query] = new fuse(this.audioFiles, { keys }).search(query)
+      const keys = ['filename', 'description'];
+      return this.cache[query] = new fuse(this.audioFiles, { keys }).search(query);
     },
 
     // todo: push pagination into isolated component
     incrementPage() {
-      this.hasNext && (this.offset += 1)
+      this.hasNext && (this.offset += 1);
     },
 
     decrementPage() {
-      this.hasPrevious && (this.offset -= 1)
+      this.hasPrevious && (this.offset -= 1);
     },
 
     resetPagination() {
-			  this.offset = 0
+			  this.offset = 0;
     },
 
     toggleAudioLibrary() {
-      this.isEntireLibraryModeEnabled = !this.isEntireLibraryModeEnabled
-      this.resetPagination()
+      this.isEntireLibraryModeEnabled = !this.isEntireLibraryModeEnabled;
+      this.resetPagination();
     },
 
     select(audio) {
-      this.$emit('select', { value: audio, langId: this.langId })
+      this.$emit('select', { value: audio, langId: this.langId });
     },
 
     activate() {
-      this.isActive = true
+      this.isActive = true;
     },
 
     deactivate() {
-      this.isActive = false
+      this.isActive = false;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import NumericEditor from '@/components/common/NumericEditor'
-import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import NumericEditor from '@/components/common/NumericEditor';
+import { get } from 'lodash';
+import lang from '@/lib/filters/lang';
 
 export default {
   components: {
@@ -31,18 +31,18 @@ export default {
   data() {
     return {
       defaultMaxDuration: 0,
-    }
+    };
   },
 
   computed: {
     duration: {
       get() {
-        return get(this.block, 'config.ivr.maxDurationSeconds', '')
+        return get(this.block, 'config.ivr.maxDurationSeconds', '');
       },
       set(value) {
-        this.$emit('commitMaxDurationChange', value)
+        this.$emit('commitMaxDurationChange', value);
       },
     },
   },
-}
+};
 </script>

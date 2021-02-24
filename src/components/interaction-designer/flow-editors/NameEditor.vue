@@ -8,14 +8,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import TextEditor from '@/components/common/TextEditor.vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { IFlow } from '@floip/flow-runner'
-import { namespace } from 'vuex-class'
-import lang from '@/lib/filters/lang'
+import Vue from 'vue';
+import TextEditor from '@/components/common/TextEditor.vue';
+import { Component, Prop } from 'vue-property-decorator';
+import { IFlow } from '@floip/flow-runner';
+import { namespace } from 'vuex-class';
+import lang from '@/lib/filters/lang';
 
-const flowVuexNamespace = namespace('flow')
+const flowVuexNamespace = namespace('flow');
 
   @Component<any>(
     {
@@ -29,15 +29,15 @@ class FlowNameEditor extends Vue {
     @Prop()readonly flow!: IFlow
 
     get name(): string {
-      return this.flow.name || ''
+      return this.flow.name || '';
     }
 
     set name(value: string) {
-      this.flow_setName({ flowId: this.flow.uuid, value })
+      this.flow_setName({ flowId: this.flow.uuid, value });
     }
 
     @flowVuexNamespace.Mutation flow_setName!: ({ flowId, value }: {flowId: string; value: string}) => void
   }
 
-export default FlowNameEditor
+export default FlowNameEditor;
 </script>
