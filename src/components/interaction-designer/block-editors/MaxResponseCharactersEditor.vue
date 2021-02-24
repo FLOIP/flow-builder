@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import NumericEditor from '@/components/common/NumericEditor';
-import { get } from 'lodash';
-import lang from '@/lib/filters/lang';
+import NumericEditor from '@/components/common/NumericEditor'
+import { get } from 'lodash'
+import lang from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -34,18 +34,18 @@ export default {
   data() {
     return {
       defaultMaxLength: 0,
-    };
+    }
   },
 
   computed: {
     maxResponse: {
       get() {
-        return get(this.block, 'config.text.maxResponseCharacters', '');
+        return get(this.block, 'config.text.maxResponseCharacters', '')
       },
       set(value) {
-        this.$emit('commitMaxResponseCharactersChange', value);
+        this.$emit('commitMaxResponseCharactersChange', value)
       },
     },
   },
-};
+}
 </script>

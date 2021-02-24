@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import NumericEditor from '@/components/common/NumericEditor';
-import { get } from 'lodash';
-import lang from '@/lib/filters/lang';
+import NumericEditor from '@/components/common/NumericEditor'
+import { get } from 'lodash'
+import lang from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -27,18 +27,18 @@ export default {
   data() {
     return {
       defaultValue: 120,
-    };
+    }
   },
 
   computed: {
     timeout: {
       get() {
-        return get(this.block, 'config.accuracyTimeoutSeconds', this.defaultValue);
+        return get(this.block, 'config.accuracyTimeoutSeconds', this.defaultValue)
       },
       set(value) {
-        this.$emit('commitAccuracyTimeoutSecondsChange', value);
+        this.$emit('commitAccuracyTimeoutSecondsChange', value)
       },
     },
   },
-};
+}
 </script>

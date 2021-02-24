@@ -1,17 +1,17 @@
 import axios from 'axios'
-import lodash from 'lodash'
-import {get, set} from 'lodash'
+import lodash, { get, set } from 'lodash'
+
 import Vue from 'vue'
 
-import {routeFrom} from '@/lib/mixins/Routes'
+import { routeFrom } from '@/lib/mixins/Routes'
 import flights from '@/store/common/flight-monitor'
 
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 import _every from 'lodash/fp/every'
-import {bootstrapLegacyGlobalDependencies} from './bootstrap-legacy-global-dependencies'
+import { bootstrapLegacyGlobalDependencies } from './bootstrap-legacy-global-dependencies'
 
-const every = _every.convert({cap: false})
+const every = _every.convert({ cap: false })
 
 class ValidationError extends Error {
   constructor(validationResults) {
@@ -20,9 +20,8 @@ class ValidationError extends Error {
   }
 }
 
-
 export default {
-  modules: {flights},
+  modules: { flights },
 
   state() {
     return {
@@ -45,52 +44,49 @@ export default {
           message: null,
           isFailure: false,
           isPending: false,
-          isComplete: false
+          isComplete: false,
         },
         treeUpdateConflict: null,
         enabledFeatures: [
-            /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
+          /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
         ],
-      }
+      },
     }
   },
 
   getters: {
 
-    isFeatureCallCenterQueuesEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'callCenterQueues'),
-    isFeatureCallToRecordEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'callToRecord'),
-    isFeatureMultimediaUploadEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'multimediaUpload'),
-    isFeatureTreesBatchLinkAudioEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treesBatchLinkAudio'),
-    isFeatureAddSubscriberPropertyFieldEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'addSubscriberPropertyField'),
-    isFeatureFloipPushEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'floipPush'),
-    isFeatureTreeSaveEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeSave'),
-    isFeatureTreeSendEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeSend'),
-    isFeatureTreeDuplicateEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeDuplicate'),
-    isFeatureTreeViewVersionsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeViewVersions'),
-    isFeatureTreeDuplicateOfEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'treeDuplicateOf'),
-    isResourceEditorEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'resourceEditor'),
-    isFeatureUpdateInteractionTotalsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'updateInteractionTotals'),
-    isFeatureAudioUploadEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'audioUpload'),
-    isFeatureViewResultsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'viewResults'),
+    isFeatureCallCenterQueuesEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'callCenterQueues'),
+    isFeatureCallToRecordEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'callToRecord'),
+    isFeatureMultimediaUploadEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'multimediaUpload'),
+    isFeatureTreesBatchLinkAudioEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treesBatchLinkAudio'),
+    isFeatureAddSubscriberPropertyFieldEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'addSubscriberPropertyField'),
+    isFeatureFloipPushEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'floipPush'),
+    isFeatureTreeSaveEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSave'),
+    isFeatureTreeSendEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSend'),
+    isFeatureTreeDuplicateEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeDuplicate'),
+    isFeatureTreeViewVersionsEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeViewVersions'),
+    isFeatureTreeDuplicateOfEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeDuplicateOf'),
+    isResourceEditorEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'resourceEditor'),
+    isFeatureUpdateInteractionTotalsEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'updateInteractionTotals'),
+    isFeatureAudioUploadEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'audioUpload'),
+    isFeatureViewResultsEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'viewResults'),
 
-		selectedBlock: ({tree, ui}, getters, rootState) => lodash.find(get(tree, 'blocks', []), {jsKey: ui.selectedBlock}),
+    selectedBlock: ({ tree, ui }, getters, rootState) => lodash.find(get(tree, 'blocks', []), { jsKey: ui.selectedBlock }),
 
-    subscriberPropertyFields: ({ui}) => lodash.get(ui, "subscriberPropertyFields"),
+    subscriberPropertyFields: ({ ui }) => lodash.get(ui, 'subscriberPropertyFields'),
 
-		interactiveBlockClasses: ({ui}, getters, rootState) => lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
+    interactiveBlockClasses: ({ ui }, getters, rootState) => lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
 
-		interactiveBlocksInTree: ({tree}, {interactiveBlockClasses}, rootState) =>
-				lodash.filter(tree.blocks, b =>
-						lodash.includes(Object.keys(interactiveBlockClasses), b.type)
-				),
+    interactiveBlocksInTree: ({ tree }, { interactiveBlockClasses }, rootState) => lodash.filter(tree.blocks, (b) => lodash.includes(Object.keys(interactiveBlockClasses), b.type)),
 
-    isEditable: ({ui}) => !!ui.isEditable,
+    isEditable: ({ ui }) => !!ui.isEditable,
 
     // todo: trip a debounced version of this (for larger trees)
     // todo: which is faster lodash deep isEqual or JSON.stringify() ?
-    hasChanges: ({tree, ui}) => ui.previousTreeJson !== JSON.stringify(tree),
+    hasChanges: ({ tree, ui }) => ui.previousTreeJson !== JSON.stringify(tree),
 
-    hasIssues({tree, ui}) {
+    hasIssues({ tree, ui }) {
       const {
         validationResults,
         originalValidationResults: validationResultsFromPageLoad,
@@ -106,31 +102,31 @@ export default {
       return state.ui.saveCurrentlyInProgress
     },
 
-    hasClipboard: ({tree}) => tree.details.hasClipboard,
+    hasClipboard: ({ tree }) => tree.details.hasClipboard,
 
-    isSelectedBlockSupportedForSummary({ui}, getters) {
+    isSelectedBlockSupportedForSummary({ ui }, getters) {
       if (!getters.selectedBlock) {
         return false
       }
       return lodash.get(ui.blockClasses[getters.selectedBlock.type], 'isSummarizable', false)
     },
 
-    canSelectedBlockSetSubscriberProperty({ui}, getters) {
+    canSelectedBlockSetSubscriberProperty({ ui }, getters) {
       if (!getters.selectedBlock) {
         return false
       }
       return lodash.get(ui.blockClasses[getters.selectedBlock.type], 'canSetSubscriberProperty', false)
     },
 
-    languageSelectors: ({ui}) => ui.languageSelectors,
+    languageSelectors: ({ ui }) => ui.languageSelectors,
 
     isBlockAvailableByBlockClass(state) {
       return lodash.mapValues(state.ui.blockClasses, (blockClass) => {
         const contentTypesToEnabledStatus = lodash.get(blockClass, 'isEnabledForContentType', [])
 
         return flow(
-            pickBy((isEnabled, contentType) => state.tree.details[`has${lodash.startCase(contentType)}`]),
-            every((isEnabled, contentType) => contentTypesToEnabledStatus[contentType]),
+          pickBy((isEnabled, contentType) => state.tree.details[`has${lodash.startCase(contentType)}`]),
+          every((isEnabled, contentType) => contentTypesToEnabledStatus[contentType]),
         )(contentTypesToEnabledStatus)
       })
     },
@@ -147,22 +143,21 @@ export default {
     },
 
     // Duplicating \Voto\Core\Trees\Tree::getTitle
-    treeTitle: ({tree}) => tree.title || 'Untitled Tree',
+    treeTitle: ({ tree }) => tree.title || 'Untitled Tree',
 
-    languages: ({ui}) => ui.languages || [],
-    availableAudio: ({ui}) => ui.audioFiles || [],
+    languages: ({ ui }) => ui.languages || [],
+    availableAudio: ({ ui }) => ui.audioFiles || [],
 
+    validationResults: ({ ui }) => ui.validationResults,
 
-    validationResults: ({ui}) => ui.validationResults,
-
-    treeCreatedAt: ({tree}) => tree.createdAt.date,
-    treeEditedAt: ({tree}) => tree.editedAt.date,
-    treeUpdatedAt: ({tree}) => tree.updatedAt.date,
+    treeCreatedAt: ({ tree }) => tree.createdAt.date,
+    treeEditedAt: ({ tree }) => tree.editedAt.date,
+    treeUpdatedAt: ({ tree }) => tree.updatedAt.date,
   },
 
   mutations: {
 
-    configure({ui}, {appConfig, builderConfig}) {
+    configure({ ui }, { appConfig, builderConfig }) {
       const {
         app,
         __AUDIO__: audio,
@@ -179,7 +174,7 @@ export default {
         validationResults: uiOverrides.originalValidationResults,
       }))
     },
-    setWorkingTree(state, {tree: treeData}) {
+    setWorkingTree(state, { tree: treeData }) {
       const tree = new app.Tree(treeData)
       /** @property app.tree
        *  @deprecated We'll only need this until we've eradicated references in legacy. */
@@ -187,174 +182,183 @@ export default {
       state.tree = tree.attributes
     },
 
-    setDesignerWorkspaceHeight({tree, ui}, {height}) {
+    setDesignerWorkspaceHeight({ tree, ui }, { height }) {
       ui.designerWorkspaceHeight = height
     },
 
-    setSelectedBlock({tree, ui}, {jsKey}) {
+    setSelectedBlock({ tree, ui }, { jsKey }) {
       ui.selectedBlock = jsKey || ''
     },
 
-    deselectBlocks({tree, ui}) {
+    deselectBlocks({ tree, ui }) {
       ui.selectedBlock = ''
     },
 
-    updateTreeDetailsWith({tree, ui}, {key, value}) {
+    updateTreeDetailsWith({ tree, ui }, { key, value }) {
       tree.details[key] = value
     },
 
-    updateBlockCustomDataFor({tree, ui}, {jsKey, key, value}) {
-      const block = lodash.find(tree.blocks, {jsKey})
+    updateBlockCustomDataFor({ tree, ui }, { jsKey, key, value }) {
+      const block = lodash.find(tree.blocks, { jsKey })
       Vue.set(block.customData, key, value)
     },
 
-    updateBlockCustomDataWithNestedKeyFor({tree, ui}, {jsKey, nestedKey, value}) {
-      const block = lodash.find(tree.blocks, {jsKey})
-      let customData = lodash.cloneDeep(block.customData)
+    updateBlockCustomDataWithNestedKeyFor({ tree, ui }, { jsKey, nestedKey, value }) {
+      const block = lodash.find(tree.blocks, { jsKey })
+      const customData = lodash.cloneDeep(block.customData)
       lodash.set(customData, nestedKey, value)
       block.customData = customData
     },
 
-		updateBlockUiDataFor({tree, ui}, {jsKey, key, value}) {
-      const block = lodash.find(tree.blocks, {jsKey})
+    updateBlockUiDataFor({ tree, ui }, { jsKey, key, value }) {
+      const block = lodash.find(tree.blocks, { jsKey })
       Vue.set(block.uiData, key, value)
     },
 
-		updateMaxNumericDigits({tree, ui}, {value}) {
-			const selectedBlock = lodash.find(tree.blocks, {jsKey: ui.selectedBlock})
-			Vue.set(selectedBlock, 'customData.maxNumericDigits', value)
-		},
+    updateMaxNumericDigits({ tree, ui }, { value }) {
+      const selectedBlock = lodash.find(tree.blocks, { jsKey: ui.selectedBlock })
+      Vue.set(selectedBlock, 'customData.maxNumericDigits', value)
+    },
 
-		updateBlockContentFor({tree, ui}, {type, langId, jsKey, value}) {
-			const block = lodash.find(tree.blocks, {jsKey})
-			if (type === 'social') { //social has nested text content
-				if (!block.socialContent[langId]) {
-					Vue.set(block.socialContent, langId, {})
-				}
-				Vue.set(block.socialContent[langId], 'text', value)
-			} else {
-				block[`${type}Content`] = {
-					...block[`${type}Content`],
-					...{[langId]: value}}
-			}
-		},
+    updateBlockContentFor({ tree, ui }, {
+      type, langId, jsKey, value,
+    }) {
+      const block = lodash.find(tree.blocks, { jsKey })
+      if (type === 'social') { // social has nested text content
+        if (!block.socialContent[langId]) {
+          Vue.set(block.socialContent, langId, {})
+        }
+        Vue.set(block.socialContent[langId], 'text', value)
+      } else {
+        block[`${type}Content`] = {
+          ...block[`${type}Content`],
+          ...{ [langId]: value },
+        }
+      }
+    },
 
-    updateBlockFileContentFor({tree, ui}, {langId, jsKey, fileUrl, fileId, fileType, mimeType, contentType}) {
-			const block = lodash.find(tree.blocks, {jsKey})
+    updateBlockFileContentFor({ tree, ui }, {
+      langId, jsKey, fileUrl, fileId, fileType, mimeType, contentType,
+    }) {
+      const block = lodash.find(tree.blocks, { jsKey })
 
-
-      let content = lodash.get(block, contentType + 'Content')
-			if (content[langId] === undefined) {
-				Vue.set(content, langId, {})
-			}
-			Vue.set(content[langId], 'fileUrl', fileUrl)
+      const content = lodash.get(block, `${contentType}Content`)
+      if (content[langId] === undefined) {
+        Vue.set(content, langId, {})
+      }
+      Vue.set(content[langId], 'fileUrl', fileUrl)
       Vue.set(content[langId], 'fileId', fileId)
-			Vue.set(content[langId], 'fileType', fileType)
-			Vue.set(content[langId], 'mimeType', mimeType)
-		},
+      Vue.set(content[langId], 'fileType', fileType)
+      Vue.set(content[langId], 'mimeType', mimeType)
+    },
 
-		updateBlockFileContentForAllLanguages({tree, ui}, {jsKey, fileUrl, fileId, fileType, mimeType, contentType}) {
-			const block = lodash.find(tree.blocks, {jsKey})
+    updateBlockFileContentForAllLanguages({ tree, ui }, {
+      jsKey, fileUrl, fileId, fileType, mimeType, contentType,
+    }) {
+      const block = lodash.find(tree.blocks, { jsKey })
 
-
-      let content = lodash.get(block, contentType + 'Content')
+      const content = lodash.get(block, `${contentType}Content`)
 
       Vue.set(content, 'allLanguagesFileUrl', fileUrl)
       Vue.set(content, 'allLanguagesFileId', fileId)
-			Vue.set(content, 'allLanguagesFileType', fileType)
-			Vue.set(content, 'allLanguagesMimeType', mimeType)
-		},
+      Vue.set(content, 'allLanguagesFileType', fileType)
+      Vue.set(content, 'allLanguagesMimeType', mimeType)
+    },
 
-		initBlockAutoGenStateFor({tree, ui}, {type, jsKey}) {
-			const block = lodash.find(tree.blocks, {jsKey})
-			Vue.set(block, `${type}AutogenLangs`, [])
-		},
+    initBlockAutoGenStateFor({ tree, ui }, { type, jsKey }) {
+      const block = lodash.find(tree.blocks, { jsKey })
+      Vue.set(block, `${type}AutogenLangs`, [])
+    },
 
-		updateBlockAutoGenStateFor({tree, ui}, {type, langId, jsKey, value: enable}) {
-			const block = lodash.find(tree.blocks, {jsKey}),
-					i = block[`${type}AutogenLangs`].indexOf(+langId),
-					absent = i === -1
+    updateBlockAutoGenStateFor({ tree, ui }, {
+      type, langId, jsKey, value: enable,
+    }) {
+      const block = lodash.find(tree.blocks, { jsKey })
+      const i = block[`${type}AutogenLangs`].indexOf(+langId)
+      const absent = i === -1
 
-			if (enable) {
-				absent && block[`${type}AutogenLangs`].push(+langId)
-			} else {
-				!absent && block[`${type}AutogenLangs`].splice(i, 1)
-			}
-		},
+      if (enable) {
+        absent && block[`${type}AutogenLangs`].push(+langId)
+      } else {
+        !absent && block[`${type}AutogenLangs`].splice(i, 1)
+      }
+    },
 
-		updateAudioFileFor({tree, ui}, {langId, jsKey, value}) {
-			const block = lodash.find(tree.blocks, {jsKey})
+    updateAudioFileFor({ tree, ui }, { langId, jsKey, value }) {
+      const block = lodash.find(tree.blocks, { jsKey })
 
-			block.audioFiles = { // schedules a redraw
-				...block.audioFiles,
-				...{[langId]: value}}
+      block.audioFiles = { // schedules a redraw
+        ...block.audioFiles,
+        ...{ [langId]: value },
+      }
 
-			// using delete because we depend on audioFile key presence in legacy
-			!value && delete block.audioFiles[langId]
-		},
+      // using delete because we depend on audioFile key presence in legacy
+      !value && delete block.audioFiles[langId]
+    },
 
     pushAudioIntoLibrary({ tree, ui }, audio) {
       ui.audioFiles.push(audio)
     },
 
-		updateReviewedStateFor({tree, ui}, {langId, jsKey, value}) {
-			const {customData: data} = lodash.find(tree.blocks, {jsKey})
-			data.reviewed[langId] = value
-		},
+    updateReviewedStateFor({ tree, ui }, { langId, jsKey, value }) {
+      const { customData: data } = lodash.find(tree.blocks, { jsKey })
+      data.reviewed[langId] = value
+    },
 
-		setBatchMatchAudioResultsTo({tree, ui}, {value, status, message}) {
-			// ui.batchMatchAudioStatus = value
-			lodash.extend(ui.batchMatchAudio, {
-				results: value,
-				status: status,
-				message: message,
-				isEmpty: lodash.chain(value) // isEmpty === {"block_1504124559063_84":{"7":null,"8":null,"9":null}
-						.values()
-						.map((matchesByLang) => lodash.values(matchesByLang))
-						.flatten()
-						.filter()
-						.isEmpty()
-						.value(),
-				isFailure: status === 0,
-				isPending: status === -1,
-				isComplete: status === 1})
-		},
+    setBatchMatchAudioResultsTo({ tree, ui }, { value, status, message }) {
+      // ui.batchMatchAudioStatus = value
+      lodash.extend(ui.batchMatchAudio, {
+        results: value,
+        status,
+        message,
+        isEmpty: lodash.chain(value) // isEmpty === {"block_1504124559063_84":{"7":null,"8":null,"9":null}
+          .values()
+          .map((matchesByLang) => lodash.values(matchesByLang))
+          .flatten()
+          .filter()
+          .isEmpty()
+          .value(),
+        isFailure: status === 0,
+        isPending: status === -1,
+        isComplete: status === 1,
+      })
+    },
 
-		updateIsEditable({ui}, {value}) {
+    updateIsEditable({ ui }, { value }) {
     	ui.isEditable = value
-		},
+    },
 
-    addEnabledFeature({ui}, {value}) {
+    addEnabledFeature({ ui }, { value }) {
       if (ui.enabledFeatures.indexOf(value) < 0) {
-        ui.enabledFeatures.push(value);
+        ui.enabledFeatures.push(value)
       }
     },
 
-    removeEnabledFeature({ui}, {value}) {
+    removeEnabledFeature({ ui }, { value }) {
       if (ui.enabledFeatures.indexOf(value) > -1) {
         ui.enabledFeatures = ui.enabledFeatures.filter((item) => item !== value)
       }
     },
 
-		setContentTypeEnabled({tree}, {contentType, isEnabled}) {
-			tree[`has${lodash.upperFirst(contentType)}`] = +isEnabled
+    setContentTypeEnabled({ tree }, { contentType, isEnabled }) {
+      tree[`has${lodash.upperFirst(contentType)}`] = +isEnabled
     },
 
-    addSubscriberPropertyField({ui}, {property}) {
+    addSubscriberPropertyField({ ui }, { property }) {
       ui.subscriberPropertyFields.push(property)
     },
 
-    setTreeUpdateConflictStatus(state, {treeUpdateConflict}) {
-      state.ui.treeUpdateConflict =  treeUpdateConflict;
+    setTreeUpdateConflictStatus(state, { treeUpdateConflict }) {
+      state.ui.treeUpdateConflict = treeUpdateConflict
     },
 
-    setInteractionTotals(state, {interactionTotals}) {
+    setInteractionTotals(state, { interactionTotals }) {
       Vue.set(state.ui, 'interactionTotals', interactionTotals)
     },
   },
 
-	actions: {
-    initializeTreeModel({dispatch, state: {ui: {isTreeImport}}}) {
+  actions: {
+    initializeTreeModel({ dispatch, state: { ui: { isTreeImport } } }) {
       require('./10-trees-model')
       // todo: this is also included via `../public/dist/js/legacy/trees` on tree-builder
       //       but we don't include that beast in storybook b/c of global dependency hierarchy
@@ -364,27 +368,28 @@ export default {
       require('./12-trees-helpers')
 
       isTreeImport
-          ? dispatch('initializeTreeModelFromImport')
-          : dispatch('initializeTreeModelFromOriginalTreeJson')
+        ? dispatch('initializeTreeModelFromImport')
+        : dispatch('initializeTreeModelFromOriginalTreeJson')
     },
 
     // @note - these are the only actions that are outside the realm of an existing tree.
-    initializeTreeModelFromOriginalTreeJson({commit, dispatch, state: {ui}}) {
-      commit('setWorkingTree', {tree: ui.originalTreeJson})
+    initializeTreeModelFromOriginalTreeJson({ commit, dispatch, state: { ui } }) {
+      commit('setWorkingTree', { tree: ui.originalTreeJson })
       dispatch('upgradeTreeModel') // => this kinda sucks, because now we're dispatching vuex notifications for all these upgrades
     },
 
-    initializeTreeModelFromImport({commit, dispatch, state: {ui}}) {
+    initializeTreeModelFromImport({ commit, dispatch, state: { ui } }) {
       const schema = app.Tree.createJsonSchemaFor(
-          _.pluck(ui.languages, 'id'),
-          _.keys(ui.blockClasses)),
-          tree = app.Tree._mergeAndSanitizeImportedInto(ui.originalTreeJson, ui.importTreeJson)
+        _.pluck(ui.languages, 'id'),
+        _.keys(ui.blockClasses),
+      )
+      const tree = app.Tree._mergeAndSanitizeImportedInto(ui.originalTreeJson, ui.importTreeJson)
 
       try {
         app.Tree.validateTreeData(tree, schema)
         console.debug('Tree validation succeeded!')
 
-        commit('setWorkingTree', {tree})
+        commit('setWorkingTree', { tree })
         dispatch('upgradeTreeModel') // todo: this kinda sucks, because now we're dispatching vuex notifications for all these upgrades
         dispatch('attemptImportPersistence')
       } catch (validation) {
@@ -395,10 +400,14 @@ export default {
       }
     },
 
-    async attemptImportPersistence({commit, dispatch, state: {tree, ui, ui: {
-      isTreeImport,
-      originalTreeJsonValidationResults
-    }}}) {
+    async attemptImportPersistence({
+      commit, dispatch, state: {
+        tree, ui, ui: {
+          isTreeImport,
+          originalTreeJsonValidationResults,
+        },
+      },
+    }) {
       const hasImportValidationErrors = !!originalTreeJsonValidationResults
       if (!isTreeImport || hasImportValidationErrors) {
         return
@@ -416,20 +425,20 @@ export default {
       app.tree.upgrade()
     },
 
-    discoverTallestBlockForDesignerWorkspaceHeight({commit, dispatch, state}, {buffer=350, aboveTallest}) {
+    discoverTallestBlockForDesignerWorkspaceHeight({ commit, dispatch, state }, { buffer = 350, aboveTallest }) {
       const
-          initialHeight = aboveTallest ? app.tree.getTallestBlockPosition() : 0,
-          minHeight = 1000,
-          height = Math.max(buffer + initialHeight, minHeight);
+        initialHeight = aboveTallest ? app.tree.getTallestBlockPosition() : 0
+      const minHeight = 1000
+      const height = Math.max(buffer + initialHeight, minHeight)
 
-      commit('setDesignerWorkspaceHeight', {height})
+      commit('setDesignerWorkspaceHeight', { height })
     },
 
-    uiChanged(context, {msg}) {
+    uiChanged(context, { msg }) {
       console.log('app.ui.change [via vuex.trees.uiChanged]', msg)
     },
 
-    async attemptSaveTree({dispatch, getters: {hasChanges, isFeatureTreeSaveEnabled}, state: {ui}}) {
+    async attemptSaveTree({ dispatch, getters: { hasChanges, isFeatureTreeSaveEnabled }, state: { ui } }) {
       if (!ui.isEditable || !hasChanges) {
         console.info('trees', 'Decided against unnecessary tree save!')
         return // non-promise response implies no in-flight request -- aka no-op.
@@ -445,7 +454,7 @@ export default {
        *    results in another raw jQuery promise :P
        * todo: debounce this?
        */
-      const {app} = global
+      const { app } = global
 
       try {
         await dispatch('validateTree')
@@ -461,7 +470,7 @@ export default {
 
     async saveTree() {
       // todo: we still need a timer for this on data change -- can this be done on a watcher rather than polling?
-      const {app} = global
+      const { app } = global
       await app.dataControl.send()
     },
 
@@ -475,7 +484,7 @@ export default {
      *            ValidationResults
      * @returns {Promise<array>} a Promise that will return an array of the validation results.
      */
-    async validateTree({dispatch, state: {tree}}) {
+    async validateTree({ dispatch, state: { tree } }) {
       const validate = lodash.get(global.__TREE_FEATURES__, 'validation.validate')
       if (validate) {
         await validate(tree)
@@ -500,29 +509,35 @@ export default {
       // throw new ValidationError([])
     },
 
-    setDefaultBlockRepeatValues({commit, dispatch, state: {tree}}, {jsKey, values: defaults}) {
-      const block = lodash.find(tree.blocks, {jsKey})
+    setDefaultBlockRepeatValues({ commit, dispatch, state: { tree } }, { jsKey, values: defaults }) {
+      const block = lodash.find(tree.blocks, { jsKey })
 
-      for (let key in defaults) {
-        !(key in block.customData) && commit('updateBlockCustomDataFor', {jsKey, key, value: defaults[key]})
+      for (const key in defaults) {
+        !(key in block.customData) && commit('updateBlockCustomDataFor', { jsKey, key, value: defaults[key] })
       }
     },
 
-    updateTextContent({commit}, {type, jsKey, langId, value, disableAutoGen}) {
-      commit('updateBlockContentFor', {type, jsKey, langId, value})
-      commit('updateBlockAutoGenStateFor', {type, jsKey, langId, value: !disableAutoGen})
-      commit('updateReviewedStateFor', {jsKey, langId, value: false})
+    updateTextContent({ commit }, {
+      type, jsKey, langId, value, disableAutoGen,
+    }) {
+      commit('updateBlockContentFor', {
+        type, jsKey, langId, value,
+      })
+      commit('updateBlockAutoGenStateFor', {
+        type, jsKey, langId, value: !disableAutoGen,
+      })
+      commit('updateReviewedStateFor', { jsKey, langId, value: false })
     },
 
-    setContentFromQuestionText({commit, dispatch, state: {tree}}, {jsKey}) {
-      const block = lodash.find(tree.blocks, {jsKey})
+    setContentFromQuestionText({ commit, dispatch, state: { tree } }, { jsKey }) {
+      const block = lodash.find(tree.blocks, { jsKey })
 
-      var generatedText = block.customData.title
-      var isFirst
-      var maxDigits
+      let generatedText = block.customData.title
+      let isFirst
+      let maxDigits
 
       // todo: Let's not hand-roll pluralization — https://laravel.com/docs/5.4/localization#pluralization
-      var grammar = {
+      const grammar = {
         EN: {
           starter: 'Reply ',
           connector: ' for ',
@@ -532,18 +547,16 @@ export default {
           numericEndPlural: ' digits.',
           numericEndSingular: ' digit.',
           validationCode: 'Please reply with your unique code',
-        }
+        },
       }
 
       if (tree.details.hasSms || tree.details.hasUssd || tree.details.hasSocial || tree.details.hasClipboard) {
-
-				// todo: push these customizations into custom handlers on particular block types
+        // todo: push these customizations into custom handlers on particular block types
         if (block.type == 'MultipleChoiceQuestionBlock' || block.type == 'CollaborativeFilteringRatingBlock') {
-
-          generatedText += ' ' + grammar.EN.starter
+          generatedText += ` ${grammar.EN.starter}`
           isFirst = 1
 
-          block.customData.choices.forEach(function(choice, index) { // choices values
+          block.customData.choices.forEach((choice, index) => { // choices values
             if (isFirst != 1) {
               generatedText += grammar.EN.separator
             }
@@ -552,12 +565,11 @@ export default {
           })
 
           generatedText += grammar.EN.conclusion
-
         } else if (block.type == 'LocationBlock') {
-          generatedText += ' ' + grammar.EN.starter
+          generatedText += ` ${grammar.EN.starter}`
           isFirst = 1
 
-          block.customData.choices.forEach(function(choice, index) { // this is likely choice's name prop
+          block.customData.choices.forEach((choice, index) => { // this is likely choice's name prop
             // choiceResponse = $('#' + $(e).attr('id') + '_primaryoption').val()
             if (isFirst != 1) {
               generatedText += grammar.EN.separator
@@ -568,26 +580,24 @@ export default {
           })
 
           generatedText += grammar.EN.conclusion
-
         } else if (block.type == 'NumericQuestionBlock') {
-          maxDigits = lodash.get(block ,'customData.maxNumericDigits')
+          maxDigits = lodash.get(block, 'customData.maxNumericDigits')
           if (!maxDigits) {
             maxDigits = 3
           }
 
           if (maxDigits == '1') {
-            generatedText += ' ' + grammar.EN.numericStart + maxDigits + grammar.EN.numericEndSingular
+            generatedText += ` ${grammar.EN.numericStart}${maxDigits}${grammar.EN.numericEndSingular}`
+          } else {
+            generatedText += ` ${grammar.EN.numericStart}${maxDigits}${grammar.EN.numericEndPlural}`
           }
-          else {
-            generatedText += ' ' + grammar.EN.numericStart + maxDigits + grammar.EN.numericEndPlural
-          }
-        } else if (block.type == "IdValidationBlock") {
+        } else if (block.type == 'IdValidationBlock') {
           generatedText = grammar.EN.validationCode
         }
 
-        lodash.forEach(['sms', 'ussd', 'social', 'clipboard'], contentType => {
+        lodash.forEach(['sms', 'ussd', 'social', 'clipboard'], (contentType) => {
           if (tree.details[`has${lodash.upperFirst(contentType)}`] && block[`${contentType}AutogenLangs`].length) {
-            _.each(block[`${contentType}AutogenLangs`], function (languageId) {
+            _.each(block[`${contentType}AutogenLangs`], (languageId) => {
               dispatch('updateTextContent', {
                 type: contentType,
                 jsKey: block.jsKey,
@@ -602,7 +612,7 @@ export default {
       }
     },
 
-    setBlockNumConnections({commit, dispatch, state}, {value: newNumConnections, jsKey}) {
+    setBlockNumConnections({ commit, dispatch, state }, { value: newNumConnections, jsKey }) {
       console.debug('vuex.trees', 'setBlockNumConnections', newNumConnections, jsKey)
 
       // Remove any connection elements connected to the block
@@ -611,40 +621,37 @@ export default {
       // Re-add the block to the UI
       // Re-display the connections going to it
 
-      newNumConnections = _.parseInt(newNumConnections);
+      newNumConnections = _.parseInt(newNumConnections)
 
       // Make sure the new number of connections is a number
       if (!_.isFinite(newNumConnections)) {
-        newNumConnections = 1;
+        newNumConnections = 1
       }
       // Enforce appropriate limits on the number of connections:
       if (newNumConnections < 1) {
-        newNumConnections = 1;
+        newNumConnections = 1
       }
 
+      const selectedBlockKey = jsKey || app.ui.selectedBlock
+      const selectedBlock = app.tree.getBlock(selectedBlockKey)
 
-
-      var selectedBlockKey = jsKey || app.ui.selectedBlock;
-      var selectedBlock = app.tree.getBlock(selectedBlockKey);
-
-      var numConnections = selectedBlock['uiData']['numConnections'];
+      const { numConnections } = selectedBlock.uiData
 
       if (newNumConnections == numConnections) {
         // If there's no change, skip the intensive process of rebuilding all those connections
-        console.log('No change in the number of connections.');
-        return true;
+        console.log('No change in the number of connections.')
+        return true
       }
 
       // Otherwise: change the connections!
 
-      app.ui.lockConnections = 1;
+      app.ui.lockConnections = 1
 
       // Remove the connections from each of the nodes at the bottom of the block
-      _.each(_.range(1, numConnections + 1), function(index) {
+      _.each(_.range(1, numConnections + 1), (index) => {
         console.debug('Removing connections at', index, 'for', selectedBlockKey)
         // app.jsPlumb.detachAllConnections(selectedBlockKey + '_node_' + index);
-
-      });
+      })
 
       // Remove any connections connected to the "target" / top of the block
       // Fortunately these call the jsPlumb binding for removing a connection
@@ -652,37 +659,37 @@ export default {
       // app.jsPlumb.detachAllConnections(selectedBlockKey + '_target');
 
       // Update the actual block data to use the new number:
-      selectedBlock['uiData']['numConnections'] = newNumConnections;
+      selectedBlock.uiData.numConnections = newNumConnections
 
       // Remove any connections that are higher in outputKey (node) number than the new maximum numConnections:
-      app.tree.filterBlockConnectionsAboveMax(selectedBlockKey);
+      app.tree.filterBlockConnectionsAboveMax(selectedBlockKey)
 
       // Re-add disappeared connections?
 
-      app.ui.lockConnections = 0;
+      app.ui.lockConnections = 0
 
       // once in vuejs, can we'll be able to just do a [dis]connect via connections diff
-      const handleDragStop = dispatch.bind(null, 'discoverTallestBlockForDesignerWorkspaceHeight', {aboveTallest: true})
+      const handleDragStop = dispatch.bind(null, 'discoverTallestBlockForDesignerWorkspaceHeight', { aboveTallest: true })
       // app.jsPlumb.resetBindings(app.tree.get('connections'), true, selectedBlockKey, handleDragStop)
 
-      app.ui.change('Changed number of block connections.');
+      app.ui.change('Changed number of block connections.')
     },
 
-    setMcqOutputNames({commit, dispatch, state: {tree}}, {jsKey}) {
+    setMcqOutputNames({ commit, dispatch, state: { tree } }, { jsKey }) {
       console.debug('vuex.trees', 'setMcqOutputNames', jsKey)
 
-      const block = lodash.find(tree.blocks, {jsKey})
+      const block = lodash.find(tree.blocks, { jsKey })
       if (!block) {
         console.log('AppView::generateMcqOutputNamesFor()', 'Unable to find specified block.')
         return
       }
 
-      let isOutputBranchingEnabled = !!block.customData.branching,
-          outputNames
+      const isOutputBranchingEnabled = !!block.customData.branching
+      let outputNames
 
       if (isOutputBranchingEnabled) {
-        if (block.type === "SummaryBlock") {
-          outputNames = [langJs.trans("trees.confirm"), langJs.trans("trees.reject")]
+        if (block.type === 'SummaryBlock') {
+          outputNames = [langJs.trans('trees.confirm'), langJs.trans('trees.reject')]
         } else {
           outputNames = lodash.clone(lodash.get(block, 'customData.choices', lodash.range(1, block.customData.numChoices + 1)))
         }
@@ -690,27 +697,27 @@ export default {
         outputNames = [1]
       }
 
-      commit('updateBlockCustomDataFor', {jsKey, key: 'numChoices', value: outputNames.length})
+      commit('updateBlockCustomDataFor', { jsKey, key: 'numChoices', value: outputNames.length })
 
-      let isNoResponseExitEnabled = block.customData.addExitForNoResponse
+      const isNoResponseExitEnabled = block.customData.addExitForNoResponse
       isNoResponseExitEnabled && outputNames.push('trees.output-exit')
 
-      commit('updateBlockUiDataFor', {jsKey, key: 'outputNames', value: outputNames})
-      dispatch('setBlockNumConnections', {jsKey, value: outputNames.length})
+      commit('updateBlockUiDataFor', { jsKey, key: 'outputNames', value: outputNames })
+      dispatch('setBlockNumConnections', { jsKey, value: outputNames.length })
     },
 
-    setMcqSidebarFieldLabels({commit, dispatch, state: {tree}}, {jsKey}) {
-      const block = lodash.find(tree.blocks, {jsKey})
+    setMcqSidebarFieldLabels({ commit, dispatch, state: { tree } }, { jsKey }) {
+      const block = lodash.find(tree.blocks, { jsKey })
 
       if (!block || !isMCQBlock(block)) {
         console.log('AppView::generateMcqOutputNamesFor()', 'Wrong block type')
         return
       }
 
-      let isVoiceEnabled = tree.details.hasVoice,
-          isTextChannelEnabled = tree.details.hasSms || tree.details.hasUssd || tree.details.hasSocial || tree.details.hasClipboard,
-          hasChoiceKeypresses = !lodash.isEmpty(block.customData.choiceKeypresses),
-          fieldLabels
+      const isVoiceEnabled = tree.details.hasVoice
+      const isTextChannelEnabled = tree.details.hasSms || tree.details.hasUssd || tree.details.hasSocial || tree.details.hasClipboard
+      const hasChoiceKeypresses = !lodash.isEmpty(block.customData.choiceKeypresses)
+      let fieldLabels
 
       if (isVoiceEnabled && !isTextChannelEnabled && hasChoiceKeypresses) {
         fieldLabels = getChoiceKeyPressesFor(block)
@@ -720,45 +727,52 @@ export default {
         fieldLabels = lodash.range(1, block.customData.numChoices + 1)
       }
 
-      commit('updateBlockUiDataFor', {jsKey, key: 'fieldLabels', value: fieldLabels})
+      commit('updateBlockUiDataFor', { jsKey, key: 'fieldLabels', value: fieldLabels })
     },
 
-		batchMatchAudioTriggered({commit, dispatch, state}, {treeId, pattern, replaceExisting}) {
-			commit('setBatchMatchAudioResultsTo', {status: -1})
+    batchMatchAudioTriggered({ commit, dispatch, state }, { treeId, pattern, replaceExisting }) {
+      commit('setBatchMatchAudioResultsTo', { status: -1 })
 
-			return axios.post(routeFrom('trees.treesBatchLinkAudio', {treeId}, state.ui.routes), {pattern})
-					.then(({data: {matches: value}}) => {
-						commit('setBatchMatchAudioResultsTo', {status: 1, value})
-						dispatch('commitAllBatchMatchAudioFiles', {replaceExisting})
-					})
-					.catch(({response: {data: {status_description: message}}}) => commit('setBatchMatchAudioResultsTo', {
-						status: 0,
-						message
-					}))
-		},
+      return axios.post(routeFrom('trees.treesBatchLinkAudio', { treeId }, state.ui.routes), { pattern })
+        .then(({ data: { matches: value } }) => {
+          commit('setBatchMatchAudioResultsTo', { status: 1, value })
+          dispatch('commitAllBatchMatchAudioFiles', { replaceExisting })
+        })
+        .catch(({ response: { data: { status_description: message } } }) => commit('setBatchMatchAudioResultsTo', {
+          status: 0,
+          message,
+        }))
+    },
 
-		commitAllBatchMatchAudioFiles(
-				{commit, dispatch, state: {
-					ui: {
-						batchMatchAudio: {
-							isEmpty,
-							results}}}},
-				{replaceExisting}) {
+    commitAllBatchMatchAudioFiles(
+      {
+        commit, dispatch, state: {
+          ui: {
+            batchMatchAudio: {
+              isEmpty,
+              results,
+            },
+          },
+        },
+      },
+      { replaceExisting },
+    ) {
+      if (isEmpty) {
+        return
+      }
 
-			if (isEmpty) {
-				return
-			}
+      lodash.forEach(results, (byLang, jsKey) => {
+        lodash.forEach(byLang, (matches, langId) => {
+          dispatch('commitBatchMatchAudioFile', {
+            jsKey, langId, matches, replaceExisting,
+          })
+        })
+      })
 
-			lodash.forEach(results, (byLang, jsKey) => {
-				lodash.forEach(byLang, (matches, langId) => {
-					dispatch('commitBatchMatchAudioFile', {jsKey, langId, matches, replaceExisting})
-				})
-			})
+      dispatch('attemptSaveTree')
+    },
 
-			dispatch('attemptSaveTree')
-		},
-
-		/** ------------------ | has-selection | no-selection | unchanged |
+    /** ------------------ | has-selection | no-selection | unchanged |
 		 | null   + no-replace | 0             | 1            | 0         |
 		 | single + no-replace | 0             | 1            | 0         |
 		 | multi  + no-replace | 0             | 0            | 0         |
@@ -766,49 +780,53 @@ export default {
 		 | single + replace    | 1             | 1            | 0         |
 		 | multi  + replace    | 0             | 0            | 0         |
 		 ---------------------------------------------------------------- */
-		commitBatchMatchAudioFile(
-				{commit, dispatch, state: {tree: {blocks}}},
-				{jsKey, langId, matches, replaceExisting}) {
+    commitBatchMatchAudioFile(
+      { commit, dispatch, state: { tree: { blocks } } },
+      {
+        jsKey, langId, matches, replaceExisting,
+      },
+    ) {
+      const { audioFiles: { [langId]: audioFile } } = lodash.find(blocks, { jsKey })
+      const hasSelection = !!audioFile
+      const isMulti = lodash.get(matches, 'length', 0) > 1
+      const match = lodash.get(matches, 0, null)
+      const unchanged = lodash.get(audioFile, 'id') === lodash.get(match, 'id')
 
-			const {audioFiles: {[langId]: audioFile}} = lodash.find(blocks, {jsKey}),
-					hasSelection = !!audioFile,
-					isMulti = lodash.get(matches, 'length', 0) > 1,
-					match = lodash.get(matches, 0, null),
-					unchanged = lodash.get(audioFile, 'id') === lodash.get(match, 'id')
+      if (unchanged || isMulti || (hasSelection && !replaceExisting)) {
+        return
+      }
 
-			if (unchanged || isMulti || (hasSelection && !replaceExisting)) {
-				return
-			}
-
-			commit('updateAudioFileFor', {jsKey, langId, value: match})
-			commit('updateReviewedStateFor', {jsKey, langId, value: false})
-		},
-
-    addSubscriberPropertyField({commit, dispatch, state}, {displayLabel, dataType, choices}) {
-      return axios.post(routeFrom('trees.addSubscriberPropertyField', null, state.ui.routes), {displayLabel, dataType, choices})
-          .then(response => {
-            const filteredChoices = lodash.filter(choices, c => !!c.value)
-            commit('addSubscriberPropertyField', {property: response.data.data})
-            return response
-          })
+      commit('updateAudioFileFor', { jsKey, langId, value: match })
+      commit('updateReviewedStateFor', { jsKey, langId, value: false })
     },
 
-    setTreeUpdateConflictStatus({commit}, payload) {
-		  commit('setTreeUpdateConflictStatus', payload);
+    addSubscriberPropertyField({ commit, dispatch, state }, { displayLabel, dataType, choices }) {
+      return axios.post(routeFrom('trees.addSubscriberPropertyField', null, state.ui.routes), { displayLabel, dataType, choices })
+        .then((response) => {
+          const filteredChoices = lodash.filter(choices, (c) => !!c.value)
+          commit('addSubscriberPropertyField', { property: response.data.data })
+          return response
+        })
     },
 
-    async fetchInteractionTotals({state, commit, dispatch, getters}, {startDate, endDate}) {
+    setTreeUpdateConflictStatus({ commit }, payload) {
+		  commit('setTreeUpdateConflictStatus', payload)
+    },
+
+    async fetchInteractionTotals({
+      state, commit, dispatch, getters,
+    }, { startDate, endDate }) {
       if (!getters.isFeatureUpdateInteractionTotalsEnabled) {
         console.info('Feature `updateInteractionTotals` is disabled')
         return
       }
       const key = 'interaction-totals'
-      const url = routeFrom('trees.ajaxTotalInteractions', {treeId: state.tree.id}, state.ui.routes)
-      const params = {startDate, endDate}
+      const url = routeFrom('trees.ajaxTotalInteractions', { treeId: state.tree.id }, state.ui.routes)
+      const params = { startDate, endDate }
 
-      const response = await dispatch('flights/createCancellableXhr', {key, url, params})
+      const response = await dispatch('flights/createCancellableXhr', { key, url, params })
       if (response) {
-        commit('setInteractionTotals', {interactionTotals: response.data})
+        commit('setInteractionTotals', { interactionTotals: response.data })
       }
     },
   },
@@ -817,12 +835,9 @@ export default {
 const getChoiceKeyPressesFor = (block) => {
   const keypresses = block.customData.choiceKeypresses
   return lodash.range(1, block.customData.numChoices + 1)
-      .map(i => keypresses[i] || i)
+    .map((i) => keypresses[i] || i)
 }
 
-const isMCQBlock = (block) => {
-  return block.type === 'MultipleChoiceQuestionBlock'
+const isMCQBlock = (block) => block.type === 'MultipleChoiceQuestionBlock'
       || block.type === 'CollaborativeFilteringRatingBlock'
       || block.type === 'RandomOrderMultipleChoiceQuestionBlock'
-
-}

@@ -24,14 +24,14 @@
 </template>
 
 <script>
-import lodash from 'lodash';
-import { mapActions } from 'vuex';
+import lodash from 'lodash'
+import { mapActions } from 'vuex'
 import {
   SupportedContentType,
   SupportedMode,
-} from '@floip/flow-runner';
-import AudioLibrarySearchField from './AudioLibrarySearchField';
-import AudioLibrarySelection from './AudioLibrarySelection';
+} from '@floip/flow-runner'
+import AudioLibrarySearchField from './AudioLibrarySearchField'
+import AudioLibrarySelection from './AudioLibrarySelection'
 
 export default {
   props: [
@@ -51,7 +51,7 @@ export default {
 
   computed: {
     selectable() {
-      return !lodash.isEmpty(this.alternateSelections);
+      return !lodash.isEmpty(this.alternateSelections)
     },
   },
 
@@ -62,15 +62,15 @@ export default {
         resourceId: this.resourceId,
         filter: { languageId: this.langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
         value: '',
-      });
+      })
     },
     selectAudioFile({ value, langId }) {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
         filter: { languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
         value: value.description,
-      });
+      })
     },
   },
-};
+}
 </script>

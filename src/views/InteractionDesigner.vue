@@ -44,27 +44,27 @@
 </template>
 
 <script>
-import lang from '@/lib/filters/lang';
-import lodash, { forEach, invoke } from 'lodash';
-import Vue from 'vue';
+import lang from '@/lib/filters/lang'
+import lodash, { forEach, invoke } from 'lodash'
+import Vue from 'vue'
 import {
   mapActions, mapGetters, mapMutations, mapState,
-} from 'vuex';
+} from 'vuex'
 // import {affix as Affix} from 'vue-strap'
 // import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
 
 // import * as BlockTypes from './block-types'
 // import JsPlumbBlock from './JsPlumbBlock'
 
-import { store } from '@/store';
+import { store } from '@/store'
 
 // import TreeEditor from './TreeEditor'
 // import TreeViewer from './TreeViewer'
 // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
 // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
-import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue';
-import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue';
-import { BuilderCanvas } from '@/components/interaction-designer/BuilderCanvas';
+import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
+import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
+import { BuilderCanvas } from '@/components/interaction-designer/BuilderCanvas'
 
 // import '../TreeDiffLogger'
 
@@ -75,13 +75,13 @@ export default {
     appConfig: {
       type: Object,
       default() {
-        return {};
+        return {}
       },
     },
     builderConfig: {
       type: Object,
       default() {
-        return {};
+        return {}
       },
     },
   },
@@ -122,7 +122,7 @@ export default {
         'RecordGroupMessageBlock',
         'PlayGroupMessageBlock',
       ],
-    };
+    }
   },
 
   computed: {
@@ -154,55 +154,55 @@ export default {
     ...mapGetters('builder', ['activeBlock', 'isEditable']),
 
     jsKey() {
-      return lodash.get(this.selectedBlock, 'jsKey');
+      return lodash.get(this.selectedBlock, 'jsKey')
     },
 
     isPureVueBlock() { // pure vuejs block types handle readonly mode on their own
-      return _.includes(this.pureVuejsBlocks, lodash.get(this.selectedBlock, 'type'));
+      return _.includes(this.pureVuejsBlocks, lodash.get(this.selectedBlock, 'type'))
     },
 
     sidebarType() {
       const
-        blockType = lodash.get(this.selectedBlock, 'type');
-      const blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer');
+        blockType = lodash.get(this.selectedBlock, 'type')
+      const blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
 
       return this.isEditable
         ? blockType || 'TreeEditor'
-        : blockViewerType || 'TreeViewer';
+        : blockViewerType || 'TreeViewer'
     },
   },
 
   created() {
-    const { $store } = this;
+    const { $store } = this
 
-    forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v));
+    forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
-    this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig });
+    this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
 
-    global.builder = this; // initialize global reference for legacy + debugging
+    global.builder = this // initialize global reference for legacy + debugging
 
-    this.registerBlockTypes();
+    this.registerBlockTypes()
 
-    this.initializeTreeModel();
-    this.updateIsEditableFromParams(this.mode); // `this.mode` comes from captured param in js-routes
+    this.initializeTreeModel()
+    this.updateIsEditableFromParams(this.mode) // `this.mode` comes from captured param in js-routes
   },
 
   activated() {
-    this.deselectBlocks(); // todo: remove once we have jsKey in our js-route
+    this.deselectBlocks() // todo: remove once we have jsKey in our js-route
   },
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   mounted() {
-    this.hoistResourceViewerToPushState.bind(this, this.$route.hash);
-    this.deselectBlocks();
-    this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true });
+    this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
+    this.deselectBlocks()
+    this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
 
-    console.debug('Vuej tree interaction designer mounted!');
+    console.debug('Vuej tree interaction designer mounted!')
   },
 
   watch: {
     mode(newMode) {
-      this.updateIsEditableFromParams(newMode);
+      this.updateIsEditableFromParams(newMode)
     },
   },
 
@@ -216,30 +216,30 @@ export default {
       'initializeTreeModel']),
 
     async registerBlockTypes() {
-      const { blockClasses } = this;
+      const { blockClasses } = this
 
       forEach(blockClasses, async ({ type }) => {
-        const normalizedType = type.replace('\\', '_');
-        const typeWithoutSeparators = type.replace(/\\/g, '');
-        const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`);
+        const normalizedType = type.replace('\\', '_')
+        const typeWithoutSeparators = type.replace(/\\/g, '')
+        const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
 
-        invoke(exported, 'install', this);
-        Vue.component(`Flow${typeWithoutSeparators}`, exported.default);
-      });
+        invoke(exported, 'install', this)
+        Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
+      })
     },
 
     handleCanvasSelected({ target }) {
       if (!target.classList.contains('builder-canvas')) {
-        console.debug('InteractionDesigner', 'Non-canvas selection mitigated');
-        return;
+        console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
+        return
       }
 
-      this.activateBlock({ blockId: null });
+      this.activateBlock({ blockId: null })
     },
 
     updateIsEditableFromParams(mode) {
-      const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!app.ui.isEditableLocked);
-      this.setIsEditable(isEditable);
+      const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!app.ui.isEditableLocked)
+      this.setIsEditable(isEditable)
     },
 
     /** --------------------------------| has-editable-locked | not-editable-locked |
@@ -253,21 +253,21 @@ export default {
        ------------------------------------------------------------------------------ */
     discoverIsEditableFrom(mode, hash, isEditableLocked) {
       if (isEditableLocked) {
-        return false;
+        return false
       }
 
-      return !isEditableLocked && mode === 'edit' || !mode && lodash.endsWith(hash, '/edit');
+      return !isEditableLocked && mode === 'edit' || !mode && lodash.endsWith(hash, '/edit')
     },
 
 		  hoistResourceViewerToPushState(hash) {
       if (!_.endsWith(hash, '/resource-viewer')) {
-        return;
+        return
       }
 
-      this.$router.history.replace(`/trees/${this.id}/resource-viewer`);
+      this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
     },
   },
-};
+}
 </script>
 
 <!--<style src="../css/voto3.css"></style>-->
