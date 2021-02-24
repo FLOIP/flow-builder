@@ -321,6 +321,7 @@
       ...mapActions(['attemptSaveTree']),
       ...mapMutations('flow', ['flow_removeBlock']),
       ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
+      ...mapMutations('builder', ['activateBlock']),
       ...mapActions('builder', ['importFlowsAndResources']),
 
       handleAddBlockByTypeSelected({type}) {
@@ -334,6 +335,7 @@
       handleRemoveActivatedBlockTriggered() {
         const {activeBlockId: blockId} = this
         this.flow_removeBlock({blockId})
+        this.activateBlock({blockId: null})
       },
 
       handleDuplicateActivatedBlockTriggered() {

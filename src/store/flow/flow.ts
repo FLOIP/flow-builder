@@ -74,9 +74,6 @@ export const mutations: MutationTree<IFlowsState> = {
       const exitsTowardUs = exits.filter(e => e.destinationBlock === blockId)
       forEach(exitsTowardUs, e => e.destinationBlock = undefined)
     })
-
-    // @ts-ignore
-    this.state.builder.activeBlockId = null
   },
 
   flow_setExitBlockId(state, {flowId, blockId}) {
