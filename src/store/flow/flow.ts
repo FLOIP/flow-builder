@@ -231,12 +231,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
 
     if (has(duplicatedBlock.config, 'prompt')) {
-      // @ts-ignore
-      duplicatedBlock.config.prompt = (new IdGeneratorUuidV4()).generate();
+      Vue.set(duplicatedBlock.config, 'prompt', (new IdGeneratorUuidV4()).generate())
     }
 
     // Set UI positions
-    // TODO - type checking - remove this and resolve the error
+    // TODO - type checking - remove this and resolve the error once platform_metadata is added to IBlock interface
     //@ts-ignore
     duplicatedBlock.platform_metadata = {
       io_viamo: {
