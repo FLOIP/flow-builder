@@ -38,7 +38,6 @@
 
   import IRunFlowBlock from '@floip/flow-runner/src/model/block/IRunFlowBlock'
   import {IFlow} from '@floip/flow-runner'
-  import {IFlowsState} from '@/store/flow/index'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -77,7 +76,7 @@
     @blockVuexNamespace.Action setDestinationFlowId!: (
       {blockId, newDestinationFlowId}: {blockId: string; newDestinationFlowId: string}
     ) => Promise<string>
-    @blockVuexNamespace.Getter otherFlows!: IFlowsState[]
+    @blockVuexNamespace.Getter otherFlows!: IFlow[]
   }
 
   export default Core_RunAnotherFlowBlock

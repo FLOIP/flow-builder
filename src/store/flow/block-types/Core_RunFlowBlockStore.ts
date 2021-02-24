@@ -12,10 +12,7 @@ import {IFlowsState} from '../index'
 export const BLOCK_TYPE = 'Core\\RunFlow'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  otherFlows: (state, getters, rootState, rootGetters): IFlowsState[] => {
-    //TODO - this should actually be container.flows?
-    //TODO - why does this error in typescript? - flow does exist on IRootState etc...
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
+  otherFlows: (state, getters, rootState, rootGetters): IFlow[] => {
     return rootState.flow.flows.filter((flow: IFlow) => {
       return flow.uuid !== rootGetters['flow/activeFlow'].uuid
     })
