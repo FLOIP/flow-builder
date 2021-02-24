@@ -88,9 +88,7 @@ export const mutations: MutationTree<IBuilderState> = {
     // FlowRunner.prototype.navigateTo(block, state as unknown as IContext)
   },
 
-  setOperation({operations}, {operation}: {operation: SupportedOperation}) {
-    //TODO - type checking - remove this ignore and fix these errors - they seem to be quite serious but I'm not sure how to resolve them
-    //@ts-ignore
+  setOperation({operations}: {operations: any}, {operation}: {operation: SupportedOperation}) {
     operations[operation.kind] = operation
   },
 
