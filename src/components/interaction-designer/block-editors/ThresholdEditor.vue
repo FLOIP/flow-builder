@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import FloatEditor from '@/components/common/FloatEditor';
-import { get } from 'lodash';
-import lang from '@/lib/filters/lang';
+import FloatEditor from '@/components/common/FloatEditor'
+import { get } from 'lodash'
+import lang from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -28,18 +28,18 @@ export default {
   data() {
     return {
       defaultValue: 5.0,
-    };
+    }
   },
 
   computed: {
     threshold: {
       get() {
-        return get(this.block, 'config.accuracyThresholdMeters', this.defaultValue);
+        return get(this.block, 'config.accuracyThresholdMeters', this.defaultValue)
       },
       set(value) {
-        this.$emit('commitAccuracyThresholdMetersChange', value);
+        this.$emit('commitAccuracyThresholdMetersChange', value)
       },
     },
   },
-};
+}
 </script>

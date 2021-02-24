@@ -46,26 +46,26 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator'
 import {
   IResourceDefinition,
-} from '@floip/flow-runner/src/domain/IResourceResolver';
-import SelectManyResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore';
-import { namespace } from 'vuex-class';
-import lang from '@/lib/filters/lang';
-import { createDefaultBlockTypeInstallerFor } from '@/store/builder';
-import BlockNameEditor from '../block-editors/NameEditor.vue';
-import BlockLabelEditor from '../block-editors/LabelEditor.vue';
-import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue';
+} from '@floip/flow-runner/src/domain/IResourceResolver'
+import SelectManyResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
+import { namespace } from 'vuex-class'
+import lang from '@/lib/filters/lang'
+import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
+import BlockNameEditor from '../block-editors/NameEditor.vue'
+import BlockLabelEditor from '../block-editors/LabelEditor.vue'
+import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 
-import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue';
-import ResourceEditor from '../resource-editors/ResourceEditor.vue';
-import BlockId from '../block-editors/BlockId.vue';
+import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
+import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+import BlockId from '../block-editors/BlockId.vue'
 
-import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue';
+import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`);
-const builderVuexNamespace = namespace('builder');
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const builderVuexNamespace = namespace('builder')
 
   @Component<any>({
     components: {
@@ -86,6 +86,6 @@ export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseB
     @builderVuexNamespace.Getter isEditable !: boolean
 }
 
-export default MobilePrimitives_SelectManyResponseBlock;
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectManyResponseStore);
+export default MobilePrimitives_SelectManyResponseBlock
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectManyResponseStore)
 </script>

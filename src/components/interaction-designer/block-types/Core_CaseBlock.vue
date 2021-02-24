@@ -27,25 +27,25 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { namespace } from 'vuex-class';
-import { Component, Prop } from 'vue-property-decorator';
+import Vue from 'vue'
+import { namespace } from 'vuex-class'
+import { Component, Prop } from 'vue-property-decorator'
 
-import ICaseBlock from '@floip/flow-runner/src/model/block/ICaseBlock';
-import { IBlockExitTestRequired, IFlow, IBlockExit } from '@floip/flow-runner';
-import ExpressionEditor from '@/components/common/ExpressionEditor.vue';
+import ICaseBlock from '@floip/flow-runner/src/model/block/ICaseBlock'
+import { IBlockExitTestRequired, IFlow, IBlockExit } from '@floip/flow-runner'
+import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 
-import CaseStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_CaseBlockStore';
-import lang from '@/lib/filters/lang';
-import { createDefaultBlockTypeInstallerFor } from '@/store/builder';
-import BlockNameEditor from '../block-editors/NameEditor.vue';
-import BlockLabelEditor from '../block-editors/LabelEditor.vue';
-import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue';
-import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue';
-import BlockId from '../block-editors/BlockId.vue';
+import CaseStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_CaseBlockStore'
+import lang from '@/lib/filters/lang'
+import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
+import BlockNameEditor from '../block-editors/NameEditor.vue'
+import BlockLabelEditor from '../block-editors/LabelEditor.vue'
+import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
+import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
+import BlockId from '../block-editors/BlockId.vue'
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`);
-const builderVuexNamespace = namespace('builder');
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const builderVuexNamespace = namespace('builder')
 
   // providing this generic is required by tsserver checking but not in the build run by yarn storybook
   // TODO - understand what is going on here and if there is something more correct we should have instead
@@ -66,7 +66,7 @@ class Core_CaseBlock extends Vue {
     @Prop()readonly flow!: IFlow
 
     get exits(): IBlockExitTestRequired[] {
-      return this.block.exits;
+      return this.block.exits
     }
 
     @blockVuexNamespace.Action editCaseBlockExit!: ({ exitId, value }: {exitId: string; value: string}) => Promise<IBlockExit>
@@ -74,6 +74,6 @@ class Core_CaseBlock extends Vue {
     @builderVuexNamespace.Getter isEditable !: boolean
   }
 
-export default Core_CaseBlock;
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, CaseStore);
+export default Core_CaseBlock
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, CaseStore)
 </script>

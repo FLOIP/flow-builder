@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import lang from '@/lib/filters/lang';
-import momentFilters from '@/lib/filters/moment';
+import lang from '@/lib/filters/lang'
+import momentFilters from '@/lib/filters/moment'
 
 export default {
   props: ['audioFile', 'selected', 'selectable', 'langId'],
@@ -50,20 +50,20 @@ export default {
 
   computed: {
     audioFileUrl() {
-      return this.audioFile;
+      return this.audioFile
     },
   },
 
   methods: {
     select() {
-      this.$emit('select');
+      this.$emit('select')
     },
 
     clear() {
-      this.$emit('clear');
+      this.$emit('clear')
     },
   },
-};
+}
 </script>
 
 <style lang="scss">
