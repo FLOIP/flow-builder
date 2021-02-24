@@ -59,9 +59,9 @@ export default {
   methods: {
     filterFloat(e) {
       if (!e.key.match(new RegExp(this.regexFloatFiltering, 'g'))) {
-        e.preventDefault();
+        e.preventDefault()
       }
     },
   },
-};
+}
 </script>

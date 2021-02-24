@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
-import TextEditor from '@/components/common/TextEditor';
-import lang from '@/lib/filters/lang';
+import { mapMutations } from 'vuex'
+import TextEditor from '@/components/common/TextEditor'
+import lang from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -35,10 +35,10 @@ export default {
   computed: {
     name: {
       get() {
-        return this.block.name;
+        return this.block.name
       },
       set(value) {
-        this.block_setName({ blockId: this.block.uuid, value });
+        this.block_setName({ blockId: this.block.uuid, value })
       },
     },
 
@@ -47,9 +47,9 @@ export default {
     ...mapMutations('flow', ['block_setName']),
     filterName(e) {
       if (e.key.match(/\W+|Enter/g)) {
-        e.preventDefault();
+        e.preventDefault()
       }
     },
   },
-};
+}
 </script>

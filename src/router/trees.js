@@ -26,6 +26,6 @@ export const routes = [{
   path: '/trees/:id',
   alias: '/trees/:id/interaction-designer/edit',
   component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue'),
-}];
+}]
 
-export default routes;
+export default routes

@@ -1,23 +1,23 @@
-import { IFlow, IResourceDefinition } from '@floip/flow-runner';
+import { IFlow, IResourceDefinition } from '@floip/flow-runner'
 import {
   ActionTree, GetterTree, Module, MutationTree,
-} from 'vuex';
-import { IRootState } from '..'; // todo: create factory with generics so that IRootState is DI'd
+} from 'vuex'
+import { IRootState } from '..' // todo: create factory with generics so that IRootState is DI'd
 import {
   getters as blockGetters,
   mutations as blockMutations,
   actions as blockActions,
-} from './block';
+} from './block'
 import {
   actions as flowActions,
   getters as flowGetters,
   mutations as flowMutations,
-} from './flow';
+} from './flow'
 import {
   actions as resourceActions,
   getters as resourceGetters,
   mutations as resourceMutations,
-} from './resource';
+} from './resource'
 
 // type IFlowsState = Pick<IContext, 'flows' | 'firstFlowId' | 'resources' | 'nestedFlowBlockInteractionIdStack'>
 
@@ -40,25 +40,25 @@ export const stateFactory = (): IFlowsState => ({
   nestedFlowBlockInteractionIdStack: [], // todo: not quite right -- pulled from IContext
 
   // activeBlock: null,
-});
+})
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   ...flowGetters,
   ...blockGetters,
   ...resourceGetters,
-};
+}
 
 export const mutations: MutationTree<IFlowsState> = {
   ...flowMutations,
   ...blockMutations,
   ...resourceMutations,
-};
+}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   ...flowActions,
   ...blockActions,
   ...resourceActions,
-};
+}
 
 export const store: Module<IFlowsState, IRootState> = {
   namespaced: true,
@@ -66,6 +66,6 @@ export const store: Module<IFlowsState, IRootState> = {
   getters,
   mutations,
   actions,
-};
+}
 
-export default store;
+export default store

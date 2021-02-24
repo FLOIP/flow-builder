@@ -17,12 +17,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component, Prop } from 'vue-property-decorator';
-import { IFlow, SupportedMode } from '@floip/flow-runner';
-import NumericEditor from '@/components/common/NumericEditor.vue';
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import { IFlow, SupportedMode } from '@floip/flow-runner'
+import NumericEditor from '@/components/common/NumericEditor.vue'
 
-import lang from '@/lib/filters/lang';
+import lang from '@/lib/filters/lang'
 
   @Component<any>({
     components: {
@@ -38,13 +38,13 @@ class ModeEditor extends Vue {
     private availableModes = Object.values(SupportedMode)
 
     get flowSelectedModes(): SupportedMode[] {
-      return this.flow.supportedModes;
+      return this.flow.supportedModes
     }
 
     set flowSelectedModes(value: SupportedMode[]) {
-      this.$emit('commitFlowModesChange', value);
+      this.$emit('commitFlowModesChange', value)
     }
   }
 
-export default ModeEditor;
+export default ModeEditor
 </script>

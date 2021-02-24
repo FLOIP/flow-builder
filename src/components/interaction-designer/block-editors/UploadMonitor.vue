@@ -18,12 +18,12 @@
 </template>
 
 <script>
-import lang from '@/lib/filters/lang';
-import lodash, { forEach } from 'lodash';
+import lang from '@/lib/filters/lang'
+import lodash, { forEach } from 'lodash'
 
-import { mapState } from 'vuex';
-import { BProgress } from 'bootstrap-vue';
-import multimediaUpload, { Statuses as UploadStatuses } from '@/store/trees/multimediaUpload';
+import { mapState } from 'vuex'
+import { BProgress } from 'bootstrap-vue'
+import multimediaUpload, { Statuses as UploadStatuses } from '@/store/trees/multimediaUpload'
 
 export default {
   props: ['uploadKey'],
@@ -36,33 +36,33 @@ export default {
     ...mapState('multimediaUpload', ['uploadsById', 'uploadIdsByKey']),
 
     upload() {
-      return this.uploadsById[this.uploadIdsByKey[this.uploadKey]];
+      return this.uploadsById[this.uploadIdsByKey[this.uploadKey]]
     },
 
     hasProgress() {
       return this.upload
           && this.upload.status !== UploadStatuses.SUCCESS
-          && this.upload.status !== UploadStatuses.FAILURE;
+          && this.upload.status !== UploadStatuses.FAILURE
     },
 
     isFailure() {
-      return this.upload && this.upload.status === UploadStatuses.FAILURE;
+      return this.upload && this.upload.status === UploadStatuses.FAILURE
     },
 
     progress() {
-      return lodash.get(this.upload, 'progress', 0) * 100;
+      return lodash.get(this.upload, 'progress', 0) * 100
     },
   },
 
   created() {
-    const { $store } = this;
+    const { $store } = this
     const modules = {
       multimediaUpload,
-    };
+    }
 
-    forEach(modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v));
+    forEach(modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
   },
-};
+}
 </script>
 
 <style lang="scss">

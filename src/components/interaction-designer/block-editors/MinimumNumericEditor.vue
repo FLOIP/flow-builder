@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import NumericEditor from '@/components/common/NumericEditor';
-import { get } from 'lodash';
-import lang from '@/lib/filters/lang';
+import NumericEditor from '@/components/common/NumericEditor'
+import { get } from 'lodash'
+import lang from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -32,18 +32,18 @@ export default {
   data() {
     return {
       defaultValue: 0,
-    };
+    }
   },
 
   computed: {
     minValue: {
       get() {
-        return get(this.block, 'config.validationMinimum', this.defaultValue);
+        return get(this.block, 'config.validationMinimum', this.defaultValue)
       },
       set(value) {
-        this.$emit('commitValidationMinimumChange', value);
+        this.$emit('commitValidationMinimumChange', value)
       },
     },
   },
-};
+}
 </script>

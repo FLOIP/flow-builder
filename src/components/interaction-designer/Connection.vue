@@ -5,10 +5,10 @@
 
 <script>
 // import LeaderLine from 'leader-line'
-import { set } from 'lodash';
-import { mapGetters } from 'vuex';
+import { set } from 'lodash'
+import { mapGetters } from 'vuex'
 
-const { LeaderLine } = window;
+const { LeaderLine } = window
 
 export default {
   props: {
@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       // line: null, // no need to set up observers over this
-    };
+    }
   },
 
   computed: {
@@ -40,36 +40,36 @@ export default {
     //       but rather include that in `positionCacheKey`'s domain definition
     repositionHook() {
       if (!this.repaintCacheKeyGenerator) {
-        return null;
+        return null
       }
 
       // @note - intentional side-effect; todo: move this into vuex responding to data changes
-      this.$nextTick(this.reposition); // todo: we only want this called if something changes.
+      this.$nextTick(this.reposition) // todo: we only want this called if something changes.
 
       // generate drafts while 'between exits' or 'source/destination unknown'
       // todo: push these out into ?block?
       const source = this.source || {
         ...set({}, 'platform_metadata.io_viamo.uiData.xPosition', this.position.x),
         ...set({}, 'platform_metadata.io_viamo.uiData.yPosition', this.position.y),
-      };
+      }
 
       const target = this.target || {
         ...set({}, 'platform_metadata.io_viamo.uiData.xPosition', this.position.x),
         ...set({}, 'platform_metadata.io_viamo.uiData.yPosition', this.position.y),
-      };
+      }
 
       return this.repaintCacheKeyGenerator(source, target)
-        .join('\n');
+        .join('\n')
     },
   },
 
   methods: {
     reposition() {
       if (!this.line) {
-        return;
+        return
       }
 
-      const position = this.line.position();
+      const position = this.line.position()
 
       console.debug('connection', 'repositioning', {
         source: this.source?.uuid,
@@ -77,12 +77,12 @@ export default {
         position,
         x: this.line.top,
         y: this.line.left,
-      });
+      })
     },
   },
 
   beforeDestroy() {
-    this.line.remove();
+    this.line.remove()
   },
 
   mounted() {
@@ -106,7 +106,7 @@ export default {
       'category-2-faint': '#fdfbf8',
       'category-2-light': '#C69557',
       'category-2-dark': '#6e4e25',
-    };
+    }
 
     const options = {
       startPlug: 'square',
@@ -134,24 +134,24 @@ export default {
         // lineOffset: 65,
       }),
 
-    };
+    }
 
     // const {sourcePosition, targetPosition} = this
     // this.line = new LeaderLine(
     //     LeaderLine.pointAnchor(document.body, sourcePosition),
     //     LeaderLine.pointAnchor(document.body, targetPosition), options)
 
-    const blockPaddingOffset = { x: 34, y: -7 };
-    const start = document.getElementById(this.sourceId);
+    const blockPaddingOffset = { x: 34, y: -7 }
+    const start = document.getElementById(this.sourceId)
     const end = this.position
       ? document.getElementById(this.targetId)
-      : LeaderLine.pointAnchor(document.getElementById(this.targetId), blockPaddingOffset);
+      : LeaderLine.pointAnchor(document.getElementById(this.targetId), blockPaddingOffset)
 
-    this.line = new LeaderLine(start, end, options);
+    this.line = new LeaderLine(start, end, options)
 
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false
     // this.line.positionByWindowResize = false
   },
-};
+}
 </script>

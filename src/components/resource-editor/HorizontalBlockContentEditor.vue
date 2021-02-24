@@ -87,11 +87,11 @@
 </template>
 
 <script>
-import lang from '@/lib/filters/lang';
-import lodash from 'lodash';
-import { mapGetters, mapState } from 'vuex';
-import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue';
-import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType';
+import lang from '@/lib/filters/lang'
+import lodash from 'lodash'
+import { mapGetters, mapState } from 'vuex'
+import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
+import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType'
 
 export default {
   props: [
@@ -118,21 +118,21 @@ export default {
 
   methods: {
     debouncedSaveTree: lodash.debounce(function () {
-      this.$store.dispatch('attemptSaveTree');
+      this.$store.dispatch('attemptSaveTree')
     }, 500),
 
     selectAudioFileFor({ langId, value }) {
-      const { jsKey } = this.block;
-      this.$store.commit('updateAudioFileFor', { jsKey, langId, value });
-      this.$store.commit('updateReviewedStateFor', { jsKey, langId, value: false });
-      this.debouncedSaveTree();
+      const { jsKey } = this.block
+      this.$store.commit('updateAudioFileFor', { jsKey, langId, value })
+      this.$store.commit('updateReviewedStateFor', { jsKey, langId, value: false })
+      this.debouncedSaveTree()
     },
 
     toggleReviewedStateFor(langId) {
-      const previousVal = !!lodash.get(this.block.customData.reviewed, langId, false);
-      this.$store.commit('updateReviewedStateFor', { jsKey: this.block.jsKey, langId, value: !previousVal });
-      this.debouncedSaveTree();
+      const previousVal = !!lodash.get(this.block.customData.reviewed, langId, false)
+      this.$store.commit('updateReviewedStateFor', { jsKey: this.block.jsKey, langId, value: !previousVal })
+      this.debouncedSaveTree()
     },
   },
-};
+}
 </script>

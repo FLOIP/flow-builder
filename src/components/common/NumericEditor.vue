@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -51,9 +51,9 @@ export default {
   methods: {
     filterNumeric(e) {
       if (!e.key.match(new RegExp(this.regexNumericFiltering, 'g'))) {
-        e.preventDefault();
+        e.preventDefault()
       }
     },
   },
-};
+}
 </script>

@@ -3,23 +3,23 @@
 //  and update convertKeysToCamelCase usage in @floip (tests, etc) to convertKeysCase
 import {
   camelCase, snakeCase, includes, isArray, isObject, reduce,
-} from 'lodash';
+} from 'lodash'
 
-export const EXCLUDED_DATA_HIERARCHIES_BY_KEY = ['choices', 'platformMetadata', 'platform_metadata'];
+export const EXCLUDED_DATA_HIERARCHIES_BY_KEY = ['choices', 'platformMetadata', 'platform_metadata']
 
 export default function convertKeysCase(x: any, caseType = 'CAMEL', exclusions = EXCLUDED_DATA_HIERARCHIES_BY_KEY): any {
   if (isArray(x)) {
-    return x.map((_) => convertKeysCase(_, caseType, exclusions));
+    return x.map((_) => convertKeysCase(_, caseType, exclusions))
   }
 
   if (!isObject(x)) {
-    return x;
+    return x
   }
 
   return reduce(x, (memo: any, value: any, key: string) => {
-    const currentKey = caseType === 'CAMEL' ? camelCase(key) : snakeCase(key);
-    memo[includes(exclusions, key) ? key : currentKey] = convertKeysCase(value, caseType, exclusions);
+    const currentKey = caseType === 'CAMEL' ? camelCase(key) : snakeCase(key)
+    memo[includes(exclusions, key) ? key : currentKey] = convertKeysCase(value, caseType, exclusions)
 
-    return memo;
-  }, {});
+    return memo
+  }, {})
 }

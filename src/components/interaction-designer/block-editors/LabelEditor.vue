@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
-import TextEditor from '@/components/common/TextEditor';
-import lang from '@/lib/filters/lang';
+import { mapMutations } from 'vuex'
+import TextEditor from '@/components/common/TextEditor'
+import lang from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -31,15 +31,15 @@ export default {
   computed: {
     label: {
       get() {
-        return this.block.label;
+        return this.block.label
       },
       set(value) {
-        this.block_setLabel({ blockId: this.block.uuid, value });
+        this.block_setLabel({ blockId: this.block.uuid, value })
       },
     },
   },
   methods: {
     ...mapMutations('flow', ['block_setLabel']),
   },
-};
+}
 </script>

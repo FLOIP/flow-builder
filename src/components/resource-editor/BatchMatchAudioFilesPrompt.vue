@@ -141,9 +141,9 @@
 </template>
 
 <script>
-import lang from '@/lib/filters/lang';
-import lodash from 'lodash';
-import VueFocus from 'vue-focus';
+import lang from '@/lib/filters/lang'
+import lodash from 'lodash'
+import VueFocus from 'vue-focus'
 
 export default {
   props: ['focus', 'data', 'isAudioLibraryEmpty'],
@@ -154,35 +154,35 @@ export default {
       pattern: '',
       replaceExisting: true,
       expanded: false,
-    };
+    }
   },
 
   computed: {
     disabled() {
-      return this.data.isPending;
+      return this.data.isPending
     },
 
     isValid() {
       return lodash.includes(this.pattern, '[label]')
-            && lodash.includes(this.pattern, '[language]');
+            && lodash.includes(this.pattern, '[language]')
     },
   },
 
   methods: {
     cancel() {
-      this.$emit('cancel');
+      this.$emit('cancel')
     },
 
     confirm() {
       this.$emit('confirm', {
         value: this.pattern,
         replaceExisting: this.replaceExisting,
-      });
+      })
     },
 
     toggleExpanded() {
-      this.expanded = !this.expanded;
+      this.expanded = !this.expanded
     },
   },
-};
+}
 </script>

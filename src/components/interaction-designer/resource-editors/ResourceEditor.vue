@@ -71,32 +71,32 @@ import {
   Getter,
   Mutation,
   namespace,
-} from 'vuex-class';
+} from 'vuex-class'
 import {
   IBlock,
   IFlow,
   IResourceDefinition,
   SupportedContentType,
   SupportedMode,
-} from '@floip/flow-runner';
-import lang from '@/lib/filters/lang';
-import Permissions from '@/lib/mixins/Permissions';
-import Routes from '@/lib/mixins/Routes';
-import FlowUploader from '@/lib/mixins/FlowUploader';
-import { Component } from 'vue-property-decorator';
-import Vue from 'vue';
+} from '@floip/flow-runner'
+import lang from '@/lib/filters/lang'
+import Permissions from '@/lib/mixins/Permissions'
+import Routes from '@/lib/mixins/Routes'
+import FlowUploader from '@/lib/mixins/FlowUploader'
+import { Component } from 'vue-property-decorator'
+import Vue from 'vue'
 import {
   discoverContentTypesFor,
   findOrGenerateStubbedVariantOn,
   findResourceVariantOverModesOn,
-} from '@/store/flow/resource';
-import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue';
-import ValidationException from '@floip/flow-runner/src/domain/exceptions/ValidationException';
-import { cloneDeep } from 'lodash';
-import UploadMonitor from '../block-editors/UploadMonitor.vue';
-import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue';
+} from '@/store/flow/resource'
+import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
+import ValidationException from '@floip/flow-runner/src/domain/exceptions/ValidationException'
+import { cloneDeep } from 'lodash'
+import UploadMonitor from '../block-editors/UploadMonitor.vue'
+import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
 
-const flowVuexNamespace = namespace('flow');
+const flowVuexNamespace = namespace('flow')
 
   interface IAudioFile {
     id: string;
@@ -152,21 +152,21 @@ export class ResourceEditor extends Vue {
     SupportedContentType = SupportedContentType
 
     handleFilesSubmittedFor(key, { data }) {
-      console.debug('call handleFilesSubmittedFor');
-      this.$store.dispatch('multimediaUpload/uploadFiles', { ...data, key });
+      console.debug('call handleFilesSubmittedFor')
+      this.$store.dispatch('multimediaUpload/uploadFiles', { ...data, key })
     }
 
     handleFileSuccessFor(key, langId, event) {
-      const { data: { file, json } } = event;
-      const { uuid: jsKey } = this.block;
+      const { data: { file, json } } = event
+      const { uuid: jsKey } = this.block
       const {
         audio_file_id: id,
         audio_uuid: filename,
         created_at: { date: created_at },
         description,
         duration_seconds,
-      } = JSON.parse(json);
-      const extension = description.split('.')[description.split('.').length - 1];
+      } = JSON.parse(json)
+      const extension = description.split('.')[description.split('.').length - 1]
       const uploadedAudio: IAudioFile = {
         id,
         filename,
@@ -175,26 +175,26 @@ export class ResourceEditor extends Vue {
         duration_seconds,
         original_extension: extension,
         created_at,
-      };
+      }
 
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resource.uuid,
         filter: { languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
         value: description,
-      });
-      event.target.blur(); // remove the focus from the `upload` Tab
-      this.pushAudioIntoLibrary(uploadedAudio);
+      })
+      event.target.blur() // remove the focus from the `upload` Tab
+      this.pushAudioIntoLibrary(uploadedAudio)
     }
 
     findAudioResourceVariantFor(resource, filter) {
       try {
-        return findResourceVariantOverModesOn(resource, filter).value;
+        return findResourceVariantOverModesOn(resource, filter).value
       } catch (e) {
         if (!(e instanceof ValidationException)) {
-          throw e;
+          throw e
         }
 
-        return null;
+        return null
       }
     }
 
@@ -207,5 +207,5 @@ export class ResourceEditor extends Vue {
     @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific
 }
 
-export default ResourceEditor;
+export default ResourceEditor
 </script>
