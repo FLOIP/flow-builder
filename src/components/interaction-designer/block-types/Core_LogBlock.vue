@@ -3,39 +3,38 @@
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <block-name-editor :is-editable="isEditable" :block="block" />
-    <block-label-editor :is-editable="isEditable" :block="block" />
-    <block-semantic-label-editor :is-editable="isEditable" :block="block" />
+      <div class="text-only-resource-editor">
+        <hr />
 
-    <div class="text-only-resource-editor">
-      <hr />
+        <h4>Log Message</h4>
+        <template v-for="{id: languageId, name: language} in flow.languages">
+          <div class="block-content-editor-lang">
+            <h5 class="badge badge-info">
+              {{language || 'flow-builder.unknown-language' | trans}}
+            </h5>
+          </div>
 
-      <h4>Log Message</h4>
-      <template v-for="{id: languageId, name: language} in flow.languages">
-        <div class="block-content-editor-lang">
-          <h5 class="badge badge-info">{{language || 'flow-builder.unknown-language' | trans}}</h5>
-        </div>
-
-        <template v-for="mode in flow.supportedModes">
-          <h6>{{`flow-builder.${mode}-content` | trans}}</h6>
-
-          <resource-variant-text-editor :resource-id="messageResource.uuid"
-                                        :resource-variant="findOrGenerateStubbedVariantOn(
-                                          messageResource,
-                                          {languageId, contentType: ['text'], modes: [mode]})"
-
-                                        :mode="mode"
-
-                                        :is-editable="isEditable"
-                                        :enable-autogen-button="true || enableAutogenButton" />
+          <template v-for="mode in flow.supportedModes">
+            <h6>{{`flow-builder.${mode}-content` | trans}}</h6>
+            <resource-variant-text-editor :resource-id="messageResource.uuid"
+                                          :resource-variant="findOrGenerateStubbedVariantOn(
+                                            messageResource,
+                                            {languageId, contentType: ['text'], modes: [mode]})"
+                                          :mode="mode"
+                                          :enable-autogen-button="true || enableAutogenButton" />
+          </template>
         </template>
-      </template>
-    </div>
+      </div>
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>

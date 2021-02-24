@@ -8,7 +8,6 @@
         <input
             v-model="flowSelectedLanguages"
             :value="language"
-            :disabled="!isEditable"
             type="checkbox"
             class="flow-language-toggle-checkbox"/>
 
@@ -33,8 +32,6 @@ import lang from '@/lib/filters/lang';
     mixins: [lang],
   })
 class LanguagesEditor extends Vue {
-    @Prop({ default: true }) readonly isEditable!: boolean
-
     @Prop() readonly flow!: IFlow
 
     get languages(): ILanguage[] {

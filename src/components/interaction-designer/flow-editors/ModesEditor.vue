@@ -8,7 +8,6 @@
         <input
             v-model="flowSelectedModes"
             :value="mode"
-            :disabled="!isEditable"
             type="checkbox"
             class="flow-mode-toggle-checkbox"/>
         {{mode}}
@@ -32,8 +31,6 @@ import lang from '@/lib/filters/lang';
     mixins: [lang],
   })
 class ModeEditor extends Vue {
-    @Prop({ default: true }) readonly isEditable: boolean
-
     @Prop() readonly flow!: IFlow
 
     private availableModes = Object.values(SupportedMode)

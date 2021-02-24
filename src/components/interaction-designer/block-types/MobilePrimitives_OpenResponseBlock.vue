@@ -4,22 +4,23 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :is-editable="isEditable" :block="block" />
-    <block-label-editor :is-editable="isEditable" :block="block" />
-    <block-semantic-label-editor :is-editable="isEditable" :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <block-max-duration-seconds-editor :is-editable="isEditable" :block="block" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
-    <block-max-response-characters-editor :is-editable="isEditable" :block="block" :hasText="hasTextMode" @commitMaxResponseCharactersChange="setMaxResponseCharacters"/>
+      <block-max-duration-seconds-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
+      <block-max-response-characters-editor :block="block" :hasText="hasTextMode" @commitMaxResponseCharactersChange="setMaxResponseCharacters"/>
 
-    <resource-editor v-if="promptResource"
-                     :resource="promptResource"
-                     :is-editable="isEditable"
-                     :block="block"
-                     :flow="flow" />
+      <resource-editor v-if="promptResource"
+                       :resource="promptResource"
+                       :block="block"
+                       :flow="flow" />
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>

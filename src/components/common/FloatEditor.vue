@@ -3,7 +3,6 @@
     <label>{{label}}</label>
     <div>
       <input
-          :disabled="!isEditable"
           type="number"
           :min="min"
           class="form-control"
@@ -26,10 +25,6 @@
 <script>
 export default {
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean,
-    },
     label: {
       type: [String, Number],
       required: true,

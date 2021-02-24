@@ -4,25 +4,27 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :is-editable="isEditable" :block="block" />
-    <block-label-editor :is-editable="isEditable" :block="block" />
-    <block-semantic-label-editor :is-editable="isEditable" :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <!--Specific config-->
-    <block-format-string-editor :is-editable="isEditable" :block="block" @commitFormatStringChange="setFormatString"/>
+      <!--Specific config-->
+      <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString"/>
 
-    <div v-for="(variableStringFormat,i) in destinationVariablesFields" class="form-group form-inline">
-      <text-editor :label="i+1"
-          :placeholder="'flow-builder.edit-variable' | trans"
-          value=""
-          :is-editable="isEditable"
-          @keydown="filterVariableName"
-          @input="updatedestinationVariables($event, i)"/>
-    </div>
+      <div v-for="(variableStringFormat,i) in destinationVariablesFields"
+           class="form-group form-inline">
+        <text-editor :label="i+1"
+            :placeholder="'flow-builder.edit-variable' | trans"
+            value=""
+            @keydown="filterVariableName"
+            @input="updatedestinationVariables($event, i)"/>
+      </div>
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>

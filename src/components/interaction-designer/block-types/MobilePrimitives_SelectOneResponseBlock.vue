@@ -4,45 +4,43 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :is-editable="isEditable" :block="block" />
-    <block-label-editor :is-editable="isEditable" :block="block" />
-    <block-semantic-label-editor :is-editable="isEditable" :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <div class="prompt-resource">
-      <resource-editor v-if="promptResource"
-                       :label="'flow-builder.prompt' | trans"
-                       :resource="promptResource"
-                       :is-editable="isEditable"
-                       :block="block"
-                       :flow="flow" />
-    </div>
-    <div class="question-prompt-resource">
-      <resource-editor v-if="questionPromptResource"
-                       :label="'flow-builder.question-prompt' | trans"
-                       :resource="questionPromptResource"
-                       :is-editable="isEditable"
-                       :block="block"
-                       :flow="flow" />
-    </div>
-    <div class="choices-prompt-resource">
-      <resource-editor v-if="choicesPromptResource"
-                       :label="'flow-builder.choices-prompt' | trans"
-                       :resource="choicesPromptResource"
-                       :is-editable="isEditable"
-                       :block="block"
-                       :flow="flow" />
-    </div>
-    <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group form-inline">
-      <resource-editor :label="`Choice ${choiceKey}`"
-                       :resource="inflatedChoices[choiceKey]"
-                       :is-editable="isEditable"
-                       :block="block"
-                       :flow="flow" />
-    </div>
+      <div class="prompt-resource">
+        <resource-editor v-if="promptResource"
+                         :label="'flow-builder.prompt' | trans"
+                         :resource="promptResource"
+                         :block="block"
+                         :flow="flow" />
+      </div>
+      <div class="question-prompt-resource">
+        <resource-editor v-if="questionPromptResource"
+                         :label="'flow-builder.question-prompt' | trans"
+                         :resource="questionPromptResource"
+                         :block="block"
+                         :flow="flow" />
+      </div>
+      <div class="choices-prompt-resource">
+        <resource-editor v-if="choicesPromptResource"
+                         :label="'flow-builder.choices-prompt' | trans"
+                         :resource="choicesPromptResource"
+                         :block="block"
+                         :flow="flow" />
+      </div>
+      <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group form-inline">
+        <resource-editor :label="`Choice ${choiceKey}`"
+                         :resource="inflatedChoices[choiceKey]"
+                         :block="block"
+                         :flow="flow" />
+      </div>
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
 

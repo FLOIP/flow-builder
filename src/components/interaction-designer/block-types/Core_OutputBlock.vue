@@ -4,20 +4,20 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :is-editable="isEditable" :block="block" />
-    <block-label-editor :is-editable="isEditable" :block="block" />
-    <block-semantic-label-editor :is-editable="isEditable" :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <expression-editor :label="'flow-builder.output-expression' | trans"
-        :placeholder="'flow-builder.edit-expression' | trans"
-        :current-expression="value"
-        :is-editable="isEditable"
-        @commitExpressionChange="commitExpressionChange"/>
+      <expression-editor :label="'flow-builder.output-expression' | trans"
+          :placeholder="'flow-builder.edit-expression' | trans"
+          :current-expression="value"
+          @commitExpressionChange="commitExpressionChange"/>
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
-
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
     <block-id :block="block" />
   </div>
 </template>

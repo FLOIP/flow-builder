@@ -21,8 +21,6 @@
                                                 {languageId, contentType, modes: [mode]})"
 
                                         :mode="mode"
-
-                                        :is-editable="isEditable"
                                         v-if="contentType === SupportedContentType.TEXT"
                                         :enable-autogen-button="true || enableAutogenButton" />
 
@@ -56,7 +54,6 @@
                 :audioFiles="availableAudio"
                 :langId="languageId"
                 :resourceId="resource.uuid"
-                :is-editable="isEditable"
                 :selectedAudioFile="findOrGenerateStubbedVariantOn(
                    resource,
                    {languageId, contentType, modes: [mode]}).value"/>

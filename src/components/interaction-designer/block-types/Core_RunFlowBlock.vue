@@ -3,29 +3,29 @@
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <block-name-editor :is-editable="isEditable" :block="block" />
-    <block-label-editor :is-editable="isEditable" :block="block" />
-    <block-semantic-label-editor :is-editable="isEditable" :block="block" />
+      <div class="form-group">
+        <label>{{ 'flow-builder.destination-flow' | trans }}</label>
 
-    <div class="form-group">
-      <label>{{ 'flow-builder.destination-flow' | trans }}</label>
+        <select class="form-control" v-model="destinationFlowId">
+          <option value="">
+            {{ 'flow-builder.none-selected' | trans }}
+          </option>
+          <option v-for="(flow, i) in otherFlows"
+              :value="flow.uuid">
+            {{ flow.name }}
+          </option>
+        </select>
+      </div>
 
-      <select class="form-control" v-model="destinationFlowId" :disabled="!isEditable">
-        <option value="">
-          {{ 'flow-builder.none-selected' | trans }}
-        </option>
-
-        <option v-for="(flow, i) in otherFlows"
-            :value="flow.uuid">
-          {{ flow.name }}
-        </option>
-      </select>
-    </div>
-
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>

@@ -4,22 +4,23 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :is-editable="isEditable" :block="block" />
-    <block-label-editor :is-editable="isEditable" :block="block" />
-    <block-semantic-label-editor :is-editable="isEditable" :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <div v-for="(exit,i) in exits" class="form-group form-inline">
-      <expression-editor :label="i+1"
-          :placeholder="'flow-builder.edit-expression' | trans"
-          :current-expression="exit.test"
-          :expression-identifier="exit.uuid"
-          :is-editable="isEditable"
-          @commitExpressionChange="editCaseBlockExit"/>
-    </div>
+      <div v-for="(exit,i) in exits" class="form-group form-inline">
+        <expression-editor :label="i+1"
+            :placeholder="'flow-builder.edit-expression' | trans"
+            :current-expression="exit.test"
+            :expression-identifier="exit.uuid"
+            @commitExpressionChange="editCaseBlockExit"/>
+      </div>
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>

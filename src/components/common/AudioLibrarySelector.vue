@@ -3,7 +3,6 @@
     <audio-library-selection v-if="selectedAudioFile"
                              :audioFile="selectedAudioFile"
                              :langId="langId"
-                             :is-editable="isEditable"
                              @clear="clearSelection" />
 
     <template v-else>
@@ -19,7 +18,6 @@
       <audio-library-search-field
           :langId="langId"
           :audioFiles="audioFiles"
-          :is-editable="isEditable"
           @select="selectAudioFile" />
     </template>
   </div>
@@ -44,7 +42,6 @@ export default {
     'isPlaying',
     'audioPlayerUrl',
     'resourceId',
-    'isEditable',
   ],
 
   components: {

@@ -5,13 +5,12 @@
            'tree-audio-control-text-container-selectable': selectable,
            'tree-audio-control-text-container-selected': !selectable}">
 
-    <button @click.prevent="clear" :disabled="!isEditable"
-            class="audio-library-selection-clear-selection btn-ghost pull-right">
+    <button @click.prevent="clear" class="audio-library-selection-clear-selection btn-ghost pull-right">
       <i class="glyphicon glyphicon-remove"></i>
     </button>
 
     <div class="btn-group audio-library-selection-download-dropdown">
-      <button type="button" class="btn btn-ghost dropdown-toggle" data-toggle="dropdown" :disabled="!isEditable">
+      <button type="button" class="btn btn-ghost dropdown-toggle" data-toggle="dropdown">
         <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
         <span class="caret"></span>
       </button>
@@ -45,7 +44,7 @@ import lang from '@/lib/filters/lang';
 import momentFilters from '@/lib/filters/moment';
 
 export default {
-  props: ['audioFile', 'selected', 'selectable', 'langId', 'isEditable'],
+  props: ['audioFile', 'selected', 'selectable', 'langId'],
 
   mixins: [lang, momentFilters],
 

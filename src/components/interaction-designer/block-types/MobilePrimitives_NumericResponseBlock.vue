@@ -4,24 +4,25 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :is-editable="isEditable" :block="block" />
-    <block-label-editor :is-editable="isEditable" :block="block" />
-    <block-semantic-label-editor :is-editable="isEditable" :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <block-minimum-numeric-editor :is-editable="isEditable" :block="block" @commitValidationMinimumChange="updateValidationMin"/>
-    <block-maximum-numeric-editor :is-editable="isEditable" :block="block" @commitValidationMaximumChange="updateValidationMax"/>
+      <block-minimum-numeric-editor :block="block" @commitValidationMinimumChange="updateValidationMin"/>
+      <block-maximum-numeric-editor :block="block" @commitValidationMaximumChange="updateValidationMax"/>
 
-    <block-max-digit-editor :is-editable="isEditable" :block="block" :hasIvr="hasVoiceMode" @commitMaxDigitsChange="updateMaxDigits"/>
+      <block-max-digit-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDigitsChange="updateMaxDigits"/>
 
-    <resource-editor v-if="promptResource"
-                     :resource="promptResource"
-                     :is-editable="isEditable"
-                     :block="block"
-                     :flow="flow" />
+      <resource-editor v-if="promptResource"
+                       :resource="promptResource"
+                       :block="block"
+                       :flow="flow" />
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>

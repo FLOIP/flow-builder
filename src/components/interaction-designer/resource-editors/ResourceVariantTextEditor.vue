@@ -5,7 +5,6 @@
               v-focus="isSelected"
               @focus="select"
               @blur="deselect"
-              :disabled="!isEditable"
               :placeholder="`flow-builder.enter-${resourceVariant.contentType}-content` | trans"
               class="form-control"></textarea>
 

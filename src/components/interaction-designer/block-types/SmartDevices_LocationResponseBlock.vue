@@ -4,16 +4,18 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :is-editable="isEditable" :block="block" />
-    <block-label-editor :is-editable="isEditable" :block="block" />
-    <block-semantic-label-editor :is-editable="isEditable" :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor  :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <block-threshold-editor :block="block" :is-editable="isEditable" @commitAccuracyThresholdMetersChange="updateThreshold"/>
-    <block-timeout-editor :block="block" :is-editable="isEditable" @commitAccuracyTimeoutSecondsChange="updateTimeout"/>
+      <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold"/>
+      <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout"/>
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>

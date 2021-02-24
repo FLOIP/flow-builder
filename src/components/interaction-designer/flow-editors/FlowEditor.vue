@@ -4,17 +4,17 @@
       {{'flow-builder.edit-flow' | trans}}
     </h3>
 
-    <flow-name-editor :flow="flow" :is-editable="isEditable" />
-    <flow-label-editor :flow="flow" :is-editable="isEditable" />
-    <flow-interaction-timeout-editor :flow="flow" :is-editable="isEditable" />
-    <flow-languages-editor
-      :flow="flow"
-      :is-editable="isEditable"
-      @commitFlowLanguagesChange="updateFlowLanguages"/>
-    <flow-modes-editor
-      :flow="flow"
-      :is-editable="isEditable"
-      @commitFlowModesChange="updateFlowModes"/>
+    <fieldset :disabled="!isEditable">
+      <flow-name-editor :flow="flow" />
+      <flow-label-editor :flow="flow" />
+      <flow-interaction-timeout-editor :flow="flow" />
+      <flow-languages-editor
+        :flow="flow"
+        @commitFlowLanguagesChange="updateFlowLanguages"/>
+      <flow-modes-editor
+        :flow="flow"
+        @commitFlowModesChange="updateFlowModes"/>
+    </fieldset>
   </div>
 </template>
 

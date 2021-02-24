@@ -3,7 +3,6 @@
     <div class="input-group">
       <span class="input-group-prepend">
         <button :class="{active: isEntireLibraryModeEnabled}"
-                :disabled="!isEditable"
                 class="btn btn-outline-secondary dropdown-toggle"
                 @click.prevent="toggleAudioLibrary">
           <i class="glyphicon glyphicon-search"></i>
@@ -16,7 +15,7 @@
              @input="resetPagination"
              type="text"
              :placeholder="'flow-builder.search-audio-library' | trans"
-             :disabled="isEntireLibraryModeEnabled || !isEditable"
+             :disabled="isEntireLibraryModeEnabled"
              class="form-control">
     </div>
 
@@ -76,7 +75,7 @@ import VueFocus from 'vue-focus';
 import lang from '@/lib/filters/lang';
 
 export default {
-  props: ['langId', 'audioFiles', 'isEditable'],
+  props: ['langId', 'audioFiles'],
   mixins: [VueFocus.mixin, lang],
 
   data() {
