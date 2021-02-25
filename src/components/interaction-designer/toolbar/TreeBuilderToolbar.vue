@@ -30,12 +30,11 @@
             </router-link>
           </div>
 
-          <div v-if="!ui.isEditableLocked">
+          <div v-if="!ui.isEditableLocked" @click="attemptSaveTree">
             <router-link :to="editOrViewTreeJsUrl"
                          class="btn btn-outline-secondary mr-2"
                          :class="{active: isEditable}"
                          :title="trans('flow-builder.click-to-toggle-editing')"
-                         @click="attemptSaveTree"
             >
               {{trans('flow-builder.edit-flow')}}
             </router-link>
