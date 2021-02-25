@@ -300,22 +300,22 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   },
 
   async loadFlow({dispatch, commit, state, rootState}) {
-    console.debug('builder', 'loading flow...')
+    //console.debug('builder', 'loading flow...')
 
-    // todo: we need something like: set context
-    const flowContext = require('./blank-flow.json')
-    const flow = flowContext.flows[0]
-    flow.uuid = (new IdGeneratorUuidV4).generate()
-    flow.lastModified = createFormattedDate()
-    // TODO - type checking - remove this and resolve the error
-    //@ts-ignore
-    flow.languages = cloneDeep(rootState.trees.ui.languages)
+    //// todo: we need something like: set context
+    //const flowContext = require('./blank-flow.json')
+    //const flow = flowContext.flows[0]
+    //flow.uuid = (new IdGeneratorUuidV4).generate()
+    //flow.lastModified = createFormattedDate()
+    //// TODO - type checking - remove this and resolve the error
+    ////@ts-ignore
+    //flow.languages = cloneDeep(rootState.trees.ui.languages)
 
-    flowContext.resources.forEach((resource: any) => commit('flow/resource_add', {resource}, {root: true}))
+    //flowContext.resources.forEach((resource: any) => commit('flow/resource_add', {resource}, {root: true}))
 
-    await dispatch('flow/flow_add', {flow}, {root: true})
+    //await dispatch('flow/flow_add', {flow}, {root: true})
 
-    console.debug('builder', 'flow loaded.')
+    //console.debug('builder', 'flow loaded.')
   },
 }
 

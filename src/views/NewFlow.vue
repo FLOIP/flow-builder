@@ -1,13 +1,10 @@
 <template>
   <div class="new-contents">
-    <flow-editor :flow="activeFlow" />
     <div class="row">
       <div class="col-sm-8 offset-sm-2">
-        <h2>
-          Create Tree
-        </h2>
         <div class="card">
           <div class="card-body">
+            <flow-editor :flow="activeFlow" flow-header="flow-builder.create-flow" :sidebar=false />
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
@@ -98,9 +95,10 @@
               </div>
             </div>
             <div class="float-right">
-              <button class="btn btn-primary">
-                Save and continue
-              </button>
+              <router-link to="/trees/1/interaction-designer/edit"
+                           class="btn btn-primary">
+                {{trans('flow-builder.save-and-continue')}}
+              </router-link>
             </div>
           </div>
         </div>
@@ -132,7 +130,6 @@ const flowVuexNamespace = namespace('flow')
     async created() {
       const {$store} = this
 
-      //TODO - all these stores?
       forEach(store.modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
 
