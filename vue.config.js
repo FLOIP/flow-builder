@@ -35,6 +35,24 @@ module.exports = {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
       });
+      //fetch a flow (TODO - and associated resources?) by uuid
+      //"Fetch the flow using a newly configured GET route that will return something in the package/container spec, so we’ll have related resources on this response as well as a list of related flows (likely use-case is nested flows). Create a stub route in flow-builder for this for testing purposes."
+      app.get('/flows/:id/fetch', (req, res) => {
+        //const flowContext = require('./blank-flow.json')
+        //const flow = flowContext.flows[0]
+        res.end(req.params.id);
+      });
+      //"For now, let’s persist something in the shape of {flows, firstFlowId, resources}. This should be the format of the object we send in the post"
+      app.post('/flows/persist', (req, res) => {
+        //echo back the flow was posted
+        //TODO - What about persisting resources..?
+        res.end(JSON.stringify(req.params));
+      });
+      app.post('/flows/persist/fail', (req, res) => {
+        //route for demonstrating failure
+        //TODO - status code
+        res.end(null);
+      });
     },
   }
 };

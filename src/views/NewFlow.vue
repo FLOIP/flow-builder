@@ -7,9 +7,11 @@
             <flow-editor :flow="activeFlow" flow-header="flow-builder.create-flow" :sidebar=false />
 
             <div class="float-right">
+  //TODO - don't hard code this link, pull from config
               <router-link to="/trees/1/interaction-designer/edit"
                            class="btn btn-primary">
                 {{trans('flow-builder.save-and-continue')}}
+                //TODO add on submit action which attempts to persist, persist route echos flow back on success - replace the flow with this if not null, otherwise don't redirect and give generic "There was an error" message
               </router-link>
             </div>
           </div>

@@ -299,23 +299,22 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     rootState.trees.ui.languages = flows[0].languages
   },
 
-  async loadFlow({dispatch, commit, state, rootState}) {
-    //console.debug('builder', 'loading flow...')
+  //Called on fetch page
+  async loadFlow({dispatch, commit, state, rootState}, {uuid}) {
+    console.debug('builder', 'loading flow...')
 
-    //// todo: we need something like: set context
-    //const flowContext = require('./blank-flow.json')
-    //const flow = flowContext.flows[0]
-    //flow.uuid = (new IdGeneratorUuidV4).generate()
-    //flow.lastModified = createFormattedDate()
-    //// TODO - type checking - remove this and resolve the error
-    ////@ts-ignore
+    //const flow = Fetch from configured route with axios
+    // TODO - type checking - remove this and resolve the error
+    //@ts-ignore
+    //TODO - need this?
     //flow.languages = cloneDeep(rootState.trees.ui.languages)
 
+    //TODO - what about this? Does fetch just fetch from existing context..? Load context if nothing found? But then server has to find a context from a flow uuid and maybe load loads of unneeded things...
     //flowContext.resources.forEach((resource: any) => commit('flow/resource_add', {resource}, {root: true}))
 
-    //await dispatch('flow/flow_add', {flow}, {root: true})
+    await dispatch('flow/flow_add', {flow}, {root: true})
 
-    //console.debug('builder', 'flow loaded.')
+    console.debug('builder', 'flow loaded.')
   },
 }
 

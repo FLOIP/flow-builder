@@ -25,9 +25,6 @@
       ...mapState('flow', ['flows']),
     },
 
-    mounted() {
-      this.$store.dispatch('builder/loadFlow')
-    },
   })
   export default class BuilderCanvas extends Vue {
   }
