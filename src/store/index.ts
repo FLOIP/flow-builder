@@ -5,12 +5,6 @@ import {IBuilderState, store as builder} from './builder'
 import trees from '@/store/trees/trees.js'
 import audio from './trees/audio'
 
-import { bootstrapLegacyGlobalDependencies } from '@/store/trees/bootstrap-legacy-global-dependencies'
-import lodash from "lodash";
-
-// Make sure to have permissions & other contexts loaded from __APP__
-bootstrapLegacyGlobalDependencies({}, {})
-
 export interface IRootState {
   builder: IBuilderState,
   flow: IFlowsState,
@@ -19,8 +13,6 @@ export interface IRootState {
 }
 
 export const store: StoreOptions<IRootState> = {
-  // @ts-ignore
-  state: {...lodash.chain(global).get('__APP__', {}).value()},
   modules: {
     builder,
     flow,
