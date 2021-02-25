@@ -11,7 +11,7 @@ export default {
   state: lodash.chain(global)
       .get('__AUDIO__', {})
       .defaultsDeep({
-        library: {},
+        library: [],
         recording: {
           isCalling: {}, // keyed by `{jsKey}:{langId}`
           isRecorderSelectorVisible: false,
@@ -20,9 +20,15 @@ export default {
       })
       .value(),
 
-  getters: {},
+  getters: {
+    availableAudio: (state) => state.library || [],
+  },
 
   mutations: {
+    pushAudioIntoLibrary({ library, recording }, audio) {
+      library.push(audio)
+    },
+
     setRecordingStatusFor({recording: {isCalling}}, {key, value: status}) {
       Vue.set(isCalling, key, status)
     },
