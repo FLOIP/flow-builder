@@ -55,7 +55,7 @@ class BaseMountedClass extends Vue {
     {
         ...BaseOptions,
       async mounted() {
-        this.setIsEditable(0)
+        this.setIsEditable(false)
         this.addEnabledFeature({value: 'resourceEditor'})
       }
     }
@@ -70,7 +70,7 @@ export const Default = () => (DefaultClass)
   {
     ...BaseOptions,
     async mounted() {
-      this.setIsEditable(0)
+      this.setIsEditable(false)
       this.removeEnabledFeature({value: 'resourceEditor'})
     }
   }
@@ -85,7 +85,7 @@ export const WithoutResourceEditorToggle = () => (ResourceEditorClass)
   {
     ...BaseOptions,
     async mounted() {
-      this.setIsEditable(1)
+      this.setIsEditable(true)
       this.addEnabledFeature({value: 'resourceEditor'})
       this.removeEnabledFeature({value: 'treeSave'})
     }
@@ -101,7 +101,7 @@ export const EditFlow = () => (EditFlowClass)
   {
     ...BaseOptions,
     async mounted() {
-      this.setIsEditable(1)
+      this.setIsEditable(true)
       this.addEnabledFeature({value: 'resourceEditor'})
       this.addEnabledFeature({value: 'treeSave'})
     }
@@ -137,7 +137,7 @@ BaseOptions2.template = `
   {
     ...BaseOptions,
     async mounted() {
-      this.setIsEditable(1)
+      this.setIsEditable(true)
       this.addEnabledFeature({value: 'resourceEditor'})
       this.addEnabledFeature({value: 'treeSave'})
     }
@@ -173,7 +173,7 @@ BaseOptions3.template = `
   {
     ...BaseOptions,
     async mounted() {
-      this.setIsEditable(1)
+      this.setIsEditable(true)
       this.addEnabledFeature({value: 'resourceEditor'})
       this.addEnabledFeature({value: 'treeSave'})
     }
