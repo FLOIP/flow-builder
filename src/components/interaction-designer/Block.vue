@@ -6,7 +6,6 @@
         active: isBlockActivated,
         [`category-${blockClasses[block.type].category}`]: true,
       }"
-      :style="containerStyleFromConstants"
       :startX="x"
       :startY="y"
       @dragged="onMoved"
@@ -29,94 +28,96 @@
         {{trans(`flow-builder.${block.type}`)}}
       </p>
 
-      <h3 class="block-label"
+      <h3 class="block-label" :style="labelContainerDynamicStyle"
           :class="{'empty': !block.label}">
         {{block.label || 'Untitled block'}}
       </h3>
     </header>
 
     <div class="block-exits">
-      <div v-for="exit in block.exits"
-           :key="exit.uuid"
-           class="block-exit"
-           :class="{
+      <div :id="`exits-container/${block.uuid}`">
+        <div v-for="exit in block.exits"
+             :key="exit.uuid"
+             class="block-exit"
+             :class="{
              'initial': false,
              'pending': isConnectionSourceRelocateActive,
              'fulfilled': false,
              'rejected': false,
              'activated': isExitActivatedForRelocate(exit),
            }"
-           @mouseenter="isConnectionSourceRelocateActive && activateExitAsDropZone($event, exit)"
-           @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)">
+             @mouseenter="isConnectionSourceRelocateActive && activateExitAsDropZone($event, exit)"
+             @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)">
 
-        <div class="total-label-container">
-          <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
-        </div>
+          <div class="total-label-container">
+            <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
+          </div>
 
-        <h3 class="block-exit-tag badge badge-warning">{{exit.tag || '—'}}</h3>
+          <h3 class="block-exit-tag badge badge-warning">{{exit.tag || '—'}}</h3>
 
-        <template v-if="exit.destinationBlock == null">
-          <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
-                           :class="{
+          <template v-if="exit.destinationBlock == null">
+            <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
+                             :class="{
                                'btn-info': exit.destinationBlock != null,
                            }"
-                           :id="`exit/${exit.uuid}/pseudo-block-handle`"
-                           :key="`exit/${exit.uuid}/pseudo-block-handle`"
-                           @initialized="handleDraggableInitializedFor(exit, $event)"
-                           @dragStarted="onCreateExitDragStarted($event, exit)"
-                           @dragged="onCreateExitDragged($event)"
-                           @dragEnded="onCreateExitDragEnded($event, exit)">
-            <i class="glyphicon glyphicon-move"></i>
-          </plain-draggable>
-
-          <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
-            <div class="handle-move-link btn btn-secondary btn-xs"
-                 :class="{
-                               'btn-info': exit.destinationBlock != null,
-                           }"
-                 :id="`exit/${exit.uuid}/handle`">
+                             :id="`exit/${exit.uuid}/pseudo-block-handle`"
+                             :key="`exit/${exit.uuid}/pseudo-block-handle`"
+                             @initialized="handleDraggableInitializedFor(exit, $event)"
+                             @dragStarted="onCreateExitDragStarted($event, exit)"
+                             @dragged="onCreateExitDragged($event)"
+                             @dragEnded="onCreateExitDragEnded($event, exit)">
               <i class="glyphicon glyphicon-move"></i>
+            </plain-draggable>
+
+            <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
+              <div class="handle-move-link btn btn-secondary btn-xs"
+                   :class="{
+                               'btn-info': exit.destinationBlock != null,
+                           }"
+                   :id="`exit/${exit.uuid}/handle`">
+                <i class="glyphicon glyphicon-move"></i>
+              </div>
+
+              <connection :key="`exit/${exit.uuid}/line-for-draft`"
+                          :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
+                          :source="block"
+                          :target="blocksById[exit.destinationBlock]"
+                          :exit="exit"
+                          :position="livePosition"
+                          :color-category="blockClasses[block.type].category" />
+            </template>
+          </template>
+
+          <template v-if="exit.destinationBlock != null">
+            <plain-draggable class="block-exit-move-handle handle-move-link btn btn-outline-secondary btn-xs btn-flat"
+                             :class="{
+                               // 'btn-secondary': exit.destinationBlock != null,
+                           }"
+                             :id="`exit/${exit.uuid}/handle`"
+                             :key="`exit/${exit.uuid}/handle`"
+                             @initialized="handleDraggableInitializedFor(exit, $event)"
+                             @dragStarted="onMoveExitDragStarted($event, exit)"
+                             @dragged="onMoveExitDragged($event)"
+                             @dragEnded="onMoveExitDragEnded($event, exit)">
+              <i class="glyphicon glyphicon-move"></i>
+            </plain-draggable>
+
+            <div class="block-exit-remove btn btn-danger btn-xs"
+                 title="Click to remove this connection"
+                 @click="removeConnectionFrom(exit)">
+              <span class="glyphicon glyphicon-remove"></span>
             </div>
 
-            <connection :key="`exit/${exit.uuid}/line-for-draft`"
+            <connection :key="`exit/${exit.uuid}/line`"
                         :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
-                        :source="block"
+                        :source="livePosition ? null : block"
                         :target="blocksById[exit.destinationBlock]"
                         :exit="exit"
                         :position="livePosition"
                         :color-category="blockClasses[block.type].category" />
           </template>
-        </template>
 
-        <template v-if="exit.destinationBlock != null">
-          <plain-draggable class="block-exit-move-handle handle-move-link btn btn-outline-secondary btn-xs btn-flat"
-                           :class="{
-                               // 'btn-secondary': exit.destinationBlock != null,
-                           }"
-                           :id="`exit/${exit.uuid}/handle`"
-                           :key="`exit/${exit.uuid}/handle`"
-                           @initialized="handleDraggableInitializedFor(exit, $event)"
-                           @dragStarted="onMoveExitDragStarted($event, exit)"
-                           @dragged="onMoveExitDragged($event)"
-                           @dragEnded="onMoveExitDragEnded($event, exit)">
-            <i class="glyphicon glyphicon-move"></i>
-          </plain-draggable>
-
-          <div class="block-exit-remove btn btn-danger btn-xs"
-               title="Click to remove this connection"
-               @click="removeConnectionFrom(exit)">
-            <span class="glyphicon glyphicon-remove"></span>
-          </div>
-
-          <connection :key="`exit/${exit.uuid}/line`"
-                      :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
-                      :source="livePosition ? null : block"
-                      :target="blocksById[exit.destinationBlock]"
-                      :exit="exit"
-                      :position="livePosition"
-                      :color-category="blockClasses[block.type].category" />
-        </template>
-
+        </div>
       </div>
     </div>
   </plain-draggable>
@@ -131,20 +132,7 @@
   import Connection from '@/components/interaction-designer/Connection.vue'
   import lang from '@/lib/filters/lang'
 
-  const blockConstants = {
-    container: {
-      width: {
-        min: 300,
-        max: 650,
-      },
-    },
-    exit: {
-      width: {
-        min: 25,
-        max: 100,
-      }
-    }
-  }
+  const LABEL_CONTAINER_MAX_WIDTH = 650
 
   export default {
     props: ['block', 'x', 'y'],
@@ -158,9 +146,22 @@
       this.draggablesByExitId = {} // todo: these need to be (better) lifecycle-managed (eg. mcq add/remove exit).
     },
 
+    updated() {
+      // Update the label container max width
+      const currentBlockElement = document.getElementById(`exits-container/${this.block.uuid}`)
+      if (!currentBlockElement) {
+        return;
+      }
+
+      if (LABEL_CONTAINER_MAX_WIDTH < currentBlockElement.clientWidth) {
+        this.labelContainerMaxWidth = currentBlockElement.clientWidth
+      }
+    },
+
     data() {
       return {
         livePosition: null,
+        labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
         // draggablesByExitId: {}, // no need to vuejs-observe these
       }
     },
@@ -174,10 +175,25 @@
 
       ...mapGetters('builder', ['blocksById']),
 
-      containerStyleFromConstants() {
+      // labelContainerMaxWidth() {
+      //   const maxWidth = 640
+      //
+      //   const currentBlockElement = document.getElementById(`block/${this.block.uuid}`)
+      //   if (!currentBlockElement) {
+      //     return maxWidth
+      //   }
+      //
+      //   if (maxWidth < currentBlockElement.clientWidth) {
+      //     return currentBlockElement.clientWidth
+      //   }
+      //
+      //   return maxWidth
+      // },
+
+      labelContainerDynamicStyle() {
+        console.log(`get labelContainerMaxWidth ${this.labelContainerMaxWidth}`)
         return {
-          'min-width': `${blockConstants.container.width.min}px`,
-          'max-width': `${blockConstants.container.width.max}px`,
+          'max-width': `${this.labelContainerMaxWidth}px`
         }
       },
 
@@ -296,6 +312,7 @@
       removeConnectionFrom(exit) {
         const {block} = this
         this._removeConnectionFrom({block, exit})
+        this.labelContainerMaxWidth = this.labelContainerMaxWidth + 0 // force render, useful if the exit label is very short
       },
 
       handleDraggableInitializedFor({uuid}, {draggable}) {
@@ -395,6 +412,7 @@
     top: 0;
     z-index: 1*10;
 
+    min-width: 300px;
     padding: 0.4em;
     padding-bottom: 0.25em;
     scroll-margin: 35px;
@@ -415,6 +433,11 @@
     .block-label {
       font-size: 14px;
       font-weight: normal;
+      min-width: 300px;
+      max-width: 650px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &.empty {
         color: #aaa;
@@ -454,18 +477,14 @@
         border: 1px dashed transparent;
         transition: border-radius 200ms ease-in-out;
 
-        /*flex: auto;*/
-        min-width: 6em;
-        max-width: 140px;
-
         padding: 0.25em 1em;
         text-align: center;
 
         .block-exit-tag  {
           display: block;
 
-          min-width: 6em;
-          max-width: 140px;
+          min-width: 25px;
+          max-width: 100px;
 
           margin: 0 0 0.5em 0;
           padding: 0.4em;
