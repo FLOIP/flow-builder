@@ -175,21 +175,6 @@
 
       ...mapGetters('builder', ['blocksById']),
 
-      // labelContainerMaxWidth() {
-      //   const maxWidth = 640
-      //
-      //   const currentBlockElement = document.getElementById(`block/${this.block.uuid}`)
-      //   if (!currentBlockElement) {
-      //     return maxWidth
-      //   }
-      //
-      //   if (maxWidth < currentBlockElement.clientWidth) {
-      //     return currentBlockElement.clientWidth
-      //   }
-      //
-      //   return maxWidth
-      // },
-
       labelContainerDynamicStyle() {
         console.log(`get labelContainerMaxWidth ${this.labelContainerMaxWidth}`)
         return {
