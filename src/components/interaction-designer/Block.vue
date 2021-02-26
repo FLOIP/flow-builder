@@ -6,6 +6,7 @@
         active: isBlockActivated,
         [`category-${blockClasses[block.type].category}`]: true,
       }"
+      :style="containerStyleFromConstants"
       :startX="x"
       :startY="y"
       @dragged="onMoved"
@@ -130,6 +131,21 @@
   import Connection from '@/components/interaction-designer/Connection.vue'
   import lang from '@/lib/filters/lang'
 
+  const blockConstants = {
+    container: {
+      width: {
+        min: 300,
+        max: 650,
+      },
+    },
+    exit: {
+      width: {
+        min: 25,
+        max: 100,
+      }
+    }
+  }
+
   export default {
     props: ['block', 'x', 'y'],
     mixins: [lang],
@@ -157,6 +173,13 @@
       }),
 
       ...mapGetters('builder', ['blocksById']),
+
+      containerStyleFromConstants() {
+        return {
+          'min-width': `${blockConstants.container.width.min}px`,
+          'max-width': `${blockConstants.container.width.max}px`,
+        }
+      },
 
       hasLayout() {
         return isNumber(this.x) && isNumber(this.y)
@@ -372,7 +395,6 @@
     top: 0;
     z-index: 1*10;
 
-    min-width: 122px;
     padding: 0.4em;
     padding-bottom: 0.25em;
     scroll-margin: 35px;
