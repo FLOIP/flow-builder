@@ -41,7 +41,7 @@ const PrintBlockTemplate = `
   template: PrintBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
 
-  async created() {
+  async mounted() {
     // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
   },
@@ -55,7 +55,7 @@ export const Default = () => {
     components: {PrintBlock, FlowBuilderSidebarEditorContainer},
     template: PrintBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
-    async created() {
+    async mounted() {
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
 
@@ -110,7 +110,7 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
     components: {PrintBlock, FlowBuilderSidebarEditorContainer},
     template: PrintBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
-    async created() {
+    async mounted() {
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
 

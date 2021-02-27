@@ -44,7 +44,7 @@ const BaseOptions = {
     {
       ...BaseOptions,
       store: new Vuex.Store<IRootState>(store),
-      async created() {
+      async mounted() {
         // @ts-ignore
         await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
       },
@@ -57,7 +57,7 @@ export const Default = () => (CurrentClass1)
 @Component<any>({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
-  async created() {
+  async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
@@ -123,7 +123,7 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
 @Component<any>({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
-  async created() {
+  async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
@@ -190,7 +190,7 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
 @Component<any>({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
-  async created() {
+  async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
     const {
@@ -256,7 +256,7 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
     {
       ...BaseOptions,
       store: new Vuex.Store<IRootState>(store),
-      async created() {
+      async mounted() {
         // @ts-ignore
         const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, numericResponseBlockStore)
 

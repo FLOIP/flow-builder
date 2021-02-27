@@ -34,7 +34,7 @@ const RunAnotherFlowBlockTemplate = `
   components: {RunAnotherFlowBlock, FlowBuilderSidebarEditorContainer},
   template: RunAnotherFlowBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
-  async created() {
+  async mounted() {
     // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, runAnotherFlowBlockStore)
     // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type

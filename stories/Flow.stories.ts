@@ -34,7 +34,7 @@ const BaseOptions = {
     {
         ...BaseOptions,
         store: new Vuex.Store<IRootState>(store),
-        async created() {
+        async mounted() {
             const {uuid: flowId} = await this.flow_addBlankFlow()
             this.flow_setSupportedMode({flowId, value: []})
         },
@@ -50,7 +50,7 @@ export const Default = () => (CurrentClass)
     {
         ...BaseOptions,
         store: new Vuex.Store<IRootState>(store),
-        async created() {
+        async mounted() {
             const {uuid: flowId} = await this.flow_addBlankFlow()
             const sampleLanguages: ILanguage[] = [
                 {

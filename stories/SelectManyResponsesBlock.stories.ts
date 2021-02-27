@@ -46,7 +46,7 @@ const SelectManyTemplate = `
 
   store: new Vuex.Store<IRootState>(store),
 
-  async created() {
+  async mounted() {
     // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
   },
@@ -66,7 +66,7 @@ export const InFlowBuilder = () => {
 
   store: new Vuex.Store<IRootState>(store),
 
-  async created() {
+  async mounted() {
     // @ts-ignore
     const {block, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
     flow.supportedModes = [SupportedMode.IVR]
@@ -88,7 +88,7 @@ export const IvrOnly = () => {
 
   store: new Vuex.Store<IRootState>(store),
 
-  async created() {
+  async mounted() {
     // @ts-ignore
     const {block, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
     flow.languages = [{id: '1', name: 'English'}, {id: '2', name: 'French'}] // mutation
@@ -110,7 +110,7 @@ export const MoreLanguages = () => {
 
   store: new Vuex.Store<IRootState>(store),
 
-  async created() {
+  async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
     this.block_setName({blockId: blockId, value: "A Name"})
