@@ -61,7 +61,6 @@
   import LogStore, {BLOCK_TYPE} from "@/store/flow/block-types/Core_LogBlockStore";
   import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
   import lang from '@/lib/filters/lang'
-  import {get} from 'lodash'
 
   const flowVuexNamespace = namespace('flow')
 
@@ -84,7 +83,7 @@
     findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
     get messageResource(): IResourceDefinition {
-      return get(this.resourcesByUuid, this.block.config.message)
+      return this.resourcesByUuid[this.block.config.message]
     }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}

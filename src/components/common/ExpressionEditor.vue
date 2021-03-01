@@ -26,7 +26,7 @@
         required: true,
       },
       currentExpression: {
-        type: [String, undefined],
+        type: String,
         required: true,
       },
       expressionIdentifier: {
