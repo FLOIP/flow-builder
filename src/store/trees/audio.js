@@ -73,7 +73,18 @@ export default {
             commit('setRecordingStatusFor', {key, uuid, queueId, value: 'initiating_call'})
             setTimeout(() => dispatch('fetchAudioRecordingStatusFor', {key, uuid, queueId, isFirstCall: true}), 3000)
           })
-      // .catch(({response: {data: {status_description: message}}}) => )
+      .catch((error) => {
+        if (error.response) {
+          // Request made and server responded
+          console.log('Error Log', error.response.data.status_description.message);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log('Error Log', error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error Log', error.message);
+        }
+      })
     },
 
     /**
@@ -94,7 +105,18 @@ export default {
         {uuid, queue_id: queueId, is_first_call: isFirstCall},
         {headers: { 'Content-Type': 'application/json' }}
         ).then(({data}) => dispatch('checkAudioRecordingStatusFor', {...data, key, uuid, queueId}))
-      // .catch(({response: {data: {status_description: message}}}) => )
+        .catch((error) => {
+          if (error.response) {
+            // Request made and server responded
+            console.log('Error Log', error.response.data.status_description.message);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log('Error Log', error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error Log', error.message);
+          }
+        })
     },
 
     async checkAudioRecordingStatusFor({commit, dispatch, state}, data) {
