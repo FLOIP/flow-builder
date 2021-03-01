@@ -74,8 +74,18 @@ paths:
             should prevent these client side before we get to that point though)
           content: {}
       x-codegen-request-body-name: flow_container
+  /flows/import:
+    post:
+      tags:
+        - Flows
+      description: WIP
+      responses:
+        200:
+          description: WIP
   /blocks/{id}:
     post:
+      tags:
+        - Flows
       description: WIP
       parameters:
       - name: id
@@ -85,12 +95,6 @@ paths:
         schema:
           type: string
       responses: 
-        200:
-          description: WIP
-  /flows/import:
-    post:
-      description: WIP
-      responses:
         200:
           description: WIP
 components:

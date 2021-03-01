@@ -13,7 +13,7 @@
     "lint": "vue-cli-service lint",
     "storybook:build": "vue-cli-service storybook:build -c config/storybook",
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
-    "md-docs": "./node_modules/openapi-markdown/bin/index.js -i docs/routes/openapi/routes.yaml -o docs/routes/markdown/routes.md"
+    "md-docs": "./node_modules/widdershins/widdershins.js docs/routes/openapi/routes.yaml docs/routes/markdown/routes.md --language_tabs 'javascript:Javascript' --omitHeader"
   },
   "dependencies": {
     "@floip/flow-runner": "^0.0.78",
@@ -70,13 +70,13 @@
     "eslint-plugin-vue": "^6.2.2",
     "jest": "^26.6.3",
     "node-sass": "^4.14.1",
-    "openapi-markdown": "^1.2.3",
     "sass-loader": "^8.0.2",
     "storybook-vue-router": "^1.0.7",
     "ts-jest": "^26.4.4",
     "ts-vue-plugin": "^0.1.2",
     "typescript": "~3.9.3",
     "vue-cli-plugin-storybook": "~1.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "widdershins": "^4.0.1"
   }
 }
