@@ -1,77 +1,119 @@
-swagger: "2.0"
+openapi: 3.0.1
 info:
-  description: "This document describes the specification for any implementation of the server required for integration of the flow builder with a backend."
-  version: "1.0.0"
-  title: "Flow Builder Routes"
-basePath: "/"
+  title: Flow Builder Routes
+  description: This document describes the specification for any implementation of
+    the server required for integration of the flow builder with a backend.
+  version: 1.0.0
+servers:
+- url: /
 tags:
-- name: "Flows"
-  description: "Operations about flows and flow blocks"
+- name: Flows
+  description: Operations about flows and flow blocks
   externalDocs:
-    description: "Find out more about flows"
-    url: "https://floip.gitbook.io/flow-specification/"
+    description: Find out more about flows
+    url: https://floip.gitbook.io/flow-specification/
 paths:
   /flows/{id}:
     get:
       tags:
-        - "Flows"
-      summary: "Finds Flow in Container by ID"
-      produces:
-      - "application/json"
+      - Flows
+      summary: Finds Flow in Container by ID
       parameters:
-      - name: "id"
-        in: "path"
-        description: "ID of flow to return."
-        required: true
-        type: "string"
-      responses:
-        "200":
-          description: "Returns the flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources"
-          schema:
-            $ref: "#/definitions/FlowContainer"
-        "404":
-          description: "Flow not found"
-    post:
-      tags:
-        - "Flows"
-      summary: "Create or update a Flow and associated Resources. UUIDs are generated client side and for simplicity we allow creation and updates at a single endpoint. This follows the model where the builder frontend can work as a standalone app without a backend when necessary and not contain logic related to whether a Flow is persisted or not."
-      produces:
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: "Creates or updates a flow and it's associated resources by ID"
-        required: true
-        type: "string"
-      - name: "flow_container"
-        in: "body"
+      - name: id
+        in: path
+        description: ID of flow to return.
         required: true
         schema:
-          $ref: "#/definitions/FlowContainer"
+          type: string
       responses:
-        "200":
-          description: "Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources"
-          schema:
-            $ref: "#/definitions/FlowContainer"
-        "500":
-          description: "Error in flow creation including validation errors (the builder should prevent these client side before we get to that point though)"
-definitions:
-  FlowContainer:
-    type: "object"
-    properties:
-      specification_version:
-        type: "string"
-      uuid:
-        type: "string"
-      name:
-        type: "string"
-      description:
-        type: "string"
-      platform_metadata:
-        type: "object"
-      flows:
-        type: "array"
-        items:
-          type: "object"
-      resources:
-        type: "object"
+        200:
+          description: Returns the flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers
+            for full spec. The 'flows' attribute of the returned container will contain
+            the flow itself and any nested flows. 'resources' will contain any nested
+            resources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowContainer'
+        404:
+          description: Flow not found
+          content: {}
+    post:
+      tags:
+      - Flows
+      summary: Create or update a Flow and associated Resources. UUIDs are generated
+        client side and for simplicity we allow creation and updates at a single endpoint.
+        This follows the model where the builder frontend can work as a standalone
+        app without a backend when necessary and not contain logic related to whether
+        a Flow is persisted or not.
+      parameters:
+      - name: id
+        in: path
+        description: Creates or updates a flow and it's associated resources by ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/FlowContainer'
+        required: true
+      responses:
+        200:
+          description: Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers
+            for full spec. The 'flows' attribute of the returned container will contain
+            the flow itself and any nested flows. 'resources' will contain any nested
+            resources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowContainer'
+        500:
+          description: Error in flow creation including validation errors (the builder
+            should prevent these client side before we get to that point though)
+          content: {}
+      x-codegen-request-body-name: flow_container
+  /blocks/{id}:
+    post:
+      description: WIP
+      parameters:
+      - name: id
+        in: path
+        description: ID of the block.
+        required: true
+        schema:
+          type: string
+      responses: 
+        200:
+          description: WIP
+  /flows/import:
+    post:
+      description: WIP
+      responses:
+        200:
+          description: WIP
+components:
+  schemas:
+    FlowContainer:
+      type: object
+      properties:
+        specification_version:
+          type: string
+        uuid:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        platform_metadata:
+          type: object
+          properties: {}
+        flows:
+          type: array
+          items:
+            type: object
+            properties: {}
+        resources:
+          type: object
+          properties: {}

@@ -6,7 +6,7 @@ This document describes the specification for any implementation of the server r
 ### /flows/{id}
 
 #### GET
-##### Summary
+##### Summary:
 
 Finds Flow in Container by ID
 
@@ -18,13 +18,13 @@ Finds Flow in Container by ID
 
 ##### Responses
 
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | Returns the flow in a container on success. See <https://floip.gitbook.io/flow-specification/flows#containers> for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources | [FlowContainer](#flowcontainer) |
-| 404 | Flow not found |  |
+| Code | Description |
+| ---- | ----------- |
+| 200 | Returns the flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources |
+| 404 | Flow not found |
 
 #### POST
-##### Summary
+##### Summary:
 
 Create or update a Flow and associated Resources. UUIDs are generated client side and for simplicity we allow creation and updates at a single endpoint. This follows the model where the builder frontend can work as a standalone app without a backend when necessary and not contain logic related to whether a Flow is persisted or not.
 
@@ -33,16 +33,48 @@ Create or update a Flow and associated Resources. UUIDs are generated client sid
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | id | path | Creates or updates a flow and it's associated resources by ID | Yes | string |
-| flow_container | body |  | Yes | [FlowContainer](#flowcontainer) |
 
 ##### Responses
 
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | Echos back the sent flow in a container on success. See <https://floip.gitbook.io/flow-specification/flows#containers> for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources | [FlowContainer](#flowcontainer) |
-| 500 | Error in flow creation including validation errors (the builder should prevent these client side before we get to that point though) |  |
+| Code | Description |
+| ---- | ----------- |
+| 200 | Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources |
+| 500 | Error in flow creation including validation errors (the builder should prevent these client side before we get to that point though) |
+
+### /blocks/{id}
+
+#### POST
+##### Description:
+
+WIP
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| id | path | ID of the block. | Yes | string |
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | WIP |
+
+### /flows/import
+
+#### POST
+##### Description:
+
+WIP
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | WIP |
 
 ### Models
+
 
 #### FlowContainer
 
