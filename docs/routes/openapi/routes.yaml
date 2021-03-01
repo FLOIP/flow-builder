@@ -25,7 +25,7 @@ paths:
         description: ID of flow to return.
         required: true
         schema:
-          type: string
+          type: uuid 
       responses:
         200:
           description: Returns the flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers
@@ -54,7 +54,7 @@ paths:
         description: Creates or updates a flow and it's associated resources by ID
         required: true
         schema:
-          type: string
+          type: uuid 
       requestBody:
         content:
           '*/*':
@@ -97,7 +97,7 @@ paths:
         description: ID of the block.
         required: true
         schema:
-          type: string
+          type: uuid 
       responses: 
         200:
           description: WIP

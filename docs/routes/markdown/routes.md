@@ -50,7 +50,7 @@ fetch('/flows/{id}',
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|id|path|string|true|ID of flow to return.|
+|id|path|uuid|true|ID of flow to return.|
 
 > Example responses
 
@@ -130,7 +130,7 @@ fetch('/flows/{id}',
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|id|path|string|true|Creates or updates a flow and it's associated resources by ID|
+|id|path|uuid|true|Creates or updates a flow and it's associated resources by ID|
 |body|body|[FlowContainer](#schemaflowcontainer)|true|none|
 
 > Example responses
@@ -228,7 +228,7 @@ WIP
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|id|path|string|true|ID of the block.|
+|id|path|uuid|true|ID of the block.|
 
 <h3 id="persist-block-responses">Responses</h3>
 
