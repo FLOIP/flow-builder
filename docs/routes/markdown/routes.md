@@ -16,7 +16,9 @@ Operations about flows and flow blocks
 
 <a href="https://floip.gitbook.io/flow-specification/">Find out more about flows</a>
 
-## get__flows_{id}
+## Fetch Flow
+
+<a id="opIdFetch Flow"></a>
 
 > Code samples
 
@@ -44,7 +46,7 @@ fetch('/flows/{id}',
 
 *Finds Flow in Container by ID*
 
-<h3 id="get__flows_{id}-parameters">Parameters</h3>
+<h3 id="fetch-flow-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -68,20 +70,22 @@ fetch('/flows/{id}',
 }
 ```
 
-<h3 id="get__flows_{id}-responses">Responses</h3>
+<h3 id="fetch-flow-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Returns the flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources|[FlowContainer](#schemaflowcontainer)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Flow not found|None|
 
-<h3 id="get__flows_{id}-responseschema">Response Schema</h3>
+<h3 id="fetch-flow-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## post__flows_{id}
+## Persist Flow
+
+<a id="opIdPersist Flow"></a>
 
 > Code samples
 
@@ -122,7 +126,7 @@ fetch('/flows/{id}',
 
 > Body parameter
 
-<h3 id="post__flows_{id}-parameters">Parameters</h3>
+<h3 id="persist-flow-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -147,20 +151,22 @@ fetch('/flows/{id}',
 }
 ```
 
-<h3 id="post__flows_{id}-responses">Responses</h3>
+<h3 id="persist-flow-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources|[FlowContainer](#schemaflowcontainer)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Error in flow creation including validation errors (the builder should prevent these client side before we get to that point though)|None|
 
-<h3 id="post__flows_{id}-responseschema">Response Schema</h3>
+<h3 id="persist-flow-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
 </aside>
 
-## post__flows_import
+## Import Flow
+
+<a id="opIdImport Flow"></a>
 
 > Code samples
 
@@ -183,7 +189,7 @@ fetch('/flows/import',
 
 WIP
 
-<h3 id="post__flows_import-responses">Responses</h3>
+<h3 id="import-flow-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
@@ -193,7 +199,9 @@ WIP
 This operation does not require authentication
 </aside>
 
-## post__blocks_{id}
+## Persist Block
+
+<a id="opIdPersist Block"></a>
 
 > Code samples
 
@@ -216,13 +224,13 @@ fetch('/blocks/{id}',
 
 WIP
 
-<h3 id="post__blocks_{id}-parameters">Parameters</h3>
+<h3 id="persist-block-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |id|path|string|true|ID of the block.|
 
-<h3 id="post__blocks_{id}-responses">Responses</h3>
+<h3 id="persist-block-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|

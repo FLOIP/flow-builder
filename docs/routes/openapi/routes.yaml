@@ -17,6 +17,7 @@ paths:
     get:
       tags:
       - Flows
+      operationId: Fetch Flow
       summary: Finds Flow in Container by ID
       parameters:
       - name: id
@@ -41,6 +42,7 @@ paths:
     post:
       tags:
       - Flows
+      operationId: Persist Flow
       summary: Create or update a Flow and associated Resources. UUIDs are generated
         client side and for simplicity we allow creation and updates at a single endpoint.
         This follows the model where the builder frontend can work as a standalone
@@ -78,6 +80,7 @@ paths:
     post:
       tags:
         - Flows
+      operationId: Import Flow
       description: WIP
       responses:
         200:
@@ -87,6 +90,7 @@ paths:
       tags:
         - Flows
       description: WIP
+      operationId: Persist Block
       parameters:
       - name: id
         in: path
