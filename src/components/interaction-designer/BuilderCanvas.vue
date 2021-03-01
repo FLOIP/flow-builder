@@ -28,7 +28,7 @@
       ...mapState('flow', ['flows']),
 
       canvasHeight() {
-        const defaultHeight = 1500
+        const defaultHeight = window.screen.availHeight
         if (!this.flows[0].blocks && this.flows[0].blocks.length) {
           return defaultHeight
         }
@@ -50,7 +50,7 @@
       },
 
       canvasWidth() {
-        const defaultWidth = 1500
+        const defaultWidth = window.screen.availWidth
         if (!this.flows[0].blocks && this.flows[0].blocks.length) {
           return defaultWidth
         }
