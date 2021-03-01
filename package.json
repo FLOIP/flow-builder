@@ -71,6 +71,7 @@
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "storybook-vue-router": "^1.0.7",
+    "swagger-markdown": "^1.4.3",
     "ts-jest": "^26.4.4",
     "ts-vue-plugin": "^0.1.2",
     "typescript": "~3.9.3",
