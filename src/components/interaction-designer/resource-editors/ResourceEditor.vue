@@ -154,6 +154,7 @@ import {cloneDeep} from "lodash";
 
     handleFileSuccessFor(key, langId, event) {
       const {data: {file, json}} = event
+      //@ts-ignore
       const {uuid: jsKey} = this.block
       const {
             audio_file_id: id,
@@ -174,6 +175,7 @@ import {cloneDeep} from "lodash";
       }
 
       this.resource_setOrCreateValueModeSpecific({
+        //@ts-ignore
         resourceId: this.resource.uuid,
         filter: {languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
         value: description,
