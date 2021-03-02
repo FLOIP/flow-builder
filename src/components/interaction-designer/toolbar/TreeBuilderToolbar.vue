@@ -167,6 +167,7 @@ import pickBy from 'lodash/fp/pickBy'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
 import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
+import { computeBlockPositionsFrom } from '@/store/builder'
 
 export default {
   components: {
@@ -191,6 +192,7 @@ export default {
     }),
 
     ...mapGetters('flow', ['activeFlow']),
+    ...mapGetters('builder', ['activeBlock']),
     ...mapState('flow', ['flows', 'resources']),
     ...mapState('builder', ['activeBlockId']),
 
@@ -200,7 +202,6 @@ export default {
       'isBlockAvailableByBlockClass',
       'hasChanges',
       'isTreeValid',
-      'selectedBlock',
       'isFeatureTreeSaveEnabled',
       'isFeatureTreeSendEnabled',
       'isFeatureTreeDuplicateEnabled',
@@ -228,10 +229,6 @@ export default {
           ['platform_metadata', 'io_viamo'],
         ))
       },
-    },
-
-    jsKey() { // deprecate
-      return lodash.get(this.selectedBlock, 'jsKey')
     },
     editTreeUrl() {
       return this.editTreeRoute()
@@ -322,17 +319,18 @@ export default {
     ...mapMutations('flow', ['flow_removeBlock']),
     ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
     ...mapActions('builder', ['importFlowsAndResources']),
+    ...mapMutations('builder', ['activateBlock']),
 
-    handleAddBlockByTypeSelected({ type }) {
-      const { uuid: blockId } = this.flow_addBlankBlockByType({
+    async handleAddBlockByTypeSelected({ type }) {
+      const { uuid: blockId } = await this.flow_addBlankBlockByType({
         type,
         platform_metadata: {
           io_viamo: {
-            uiData: { xPosition: 150, yPosition: 255 }, // todo: selected block + (80,80)
+            uiData: computeBlockPositionsFrom(this.activeBlock),
           },
         },
       }) // todo push out to intx-designer
-      // activateBlock({blockId})
+      this.activateBlock({ blockId })
     },
 
     handleRemoveActivatedBlockTriggered() {

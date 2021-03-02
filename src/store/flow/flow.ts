@@ -19,6 +19,7 @@ import {
   defaults, includes, forEach, cloneDeep, get, has,
 } from 'lodash'
 import { discoverContentTypesFor } from '@/store/flow/resource'
+import { computeBlockPositionsFrom } from '@/store/builder'
 import { IFlowsState } from '.'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
@@ -244,14 +245,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // @ts-ignore
     duplicatedBlock.platform_metadata = {
       io_viamo: {
-        uiData: {
-          xPosition: get(block, 'platform_metadata.io_viamo.uiData.xPosition', 50) + 80,
-          yPosition: get(block, 'platform_metadata.io_viamo.uiData.yPosition', 50) + 80,
-        },
+        uiData: computeBlockPositionsFrom(block),
       },
     }
 
     commit('flow_addBlock', { block: duplicatedBlock })
+    commit('builder/activateBlock', { blockId: duplicatedBlock.uuid }, { root: true })
 
     return duplicatedBlock
   },
