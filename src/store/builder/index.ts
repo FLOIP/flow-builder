@@ -376,3 +376,29 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
     ...map(target.exits, 'tag'),
   ]
 }
+
+export function computeBlockPositionsFrom(block: IBlock | null) {
+  const xDelta = 80, yDelta = 80
+
+  let xPosition = get(block, 'platform_metadata.io_viamo.uiData.xPosition')
+  let yPosition = get(block, 'platform_metadata.io_viamo.uiData.yPosition')
+
+  if (!xPosition || !yPosition) {
+    const viewPortCenter = getViewportCenter()
+    xPosition = viewPortCenter.x
+    yPosition = viewPortCenter.y
+  }
+
+  return {xPosition: xPosition + xDelta, yPosition: yPosition + yDelta}
+}
+
+export function getViewportCenter() {
+  let builderCanvasElement = document.getElementsByClassName('builder-canvas')[0]
+  let sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
+  const rect = builderCanvasElement.getBoundingClientRect()
+
+  return {
+    x: Math.round(Math.abs(rect.left) + (window.innerWidth - sideBarElement.clientWidth) / 2),
+    y: Math.round(Math.abs(rect.top) + window.innerHeight / 2)
+  }
+}

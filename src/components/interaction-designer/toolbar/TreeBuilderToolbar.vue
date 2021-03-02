@@ -317,24 +317,26 @@ export default {
     },
   },
   methods: {
-    isEmpty,
+    methods: {
+      isEmpty,
 
-    ...mapActions(['attemptSaveTree']),
-    ...mapMutations('flow', ['flow_removeBlock']),
-    ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
-    ...mapActions('builder', ['importFlowsAndResources']),
+      ...mapActions(['attemptSaveTree']),
+      ...mapMutations('flow', ['flow_removeBlock']),
+      ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
+      ...mapActions('builder', ['importFlowsAndResources']),
+      ...mapMutations('builder', ['activateBlock']),
 
-    handleAddBlockByTypeSelected({ type }) {
-      const { uuid: blockId } = this.flow_addBlankBlockByType({
-        type,
-        platform_metadata: {
-          io_viamo: {
-            uiData: { xPosition: 150, yPosition: 255 }, // todo: selected block + (80,80)
-          },
-        },
-      }) // todo push out to intx-designer
-      // activateBlock({blockId})
-    },
+      async handleAddBlockByTypeSelected({type}) {
+        const {uuid: blockId} = await this.flow_addBlankBlockByType({
+          type,
+          platform_metadata: {
+            io_viamo: {
+              uiData: computeBlockPositionsFrom(this.activeBlock)
+            }
+          }
+        }); // todo push out to intx-designer
+        this.activateBlock({blockId})
+      },
 
     handleRemoveActivatedBlockTriggered() {
       const { activeBlockId: blockId } = this

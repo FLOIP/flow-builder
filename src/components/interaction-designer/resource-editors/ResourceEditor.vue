@@ -156,8 +156,9 @@ export class ResourceEditor extends Vue {
     }
 
     handleFileSuccessFor(key, langId, event) {
-      const { data: { file, json } } = event
-      const { uuid: jsKey } = this.block
+      const {data: {file, json}} = event
+      //@ts-ignore
+      const {uuid: jsKey} = this.block
       const {
         audio_file_id: id,
         audio_uuid: filename,
@@ -177,6 +178,7 @@ export class ResourceEditor extends Vue {
       }
 
       this.resource_setOrCreateValueModeSpecific({
+        //@ts-ignore
         resourceId: this.resource.uuid,
         filter: { languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
         value: description,
