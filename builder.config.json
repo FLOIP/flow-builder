@@ -285,18 +285,7 @@
       }
     ],
     "recording": {
-      "recorders": [
-        {
-          "id": 1,
-          "name": "Recorder 1",
-          "phone": "261331234567"
-        },
-        {
-          "id": 2,
-          "name": "Recorder 2",
-          "phone": "13061112222"
-        }
-      ],
+      "recorders": [],
       "isCalling": {},
       "isRecorderSelectorVisible": false
     }

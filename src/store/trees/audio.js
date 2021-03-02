@@ -15,7 +15,7 @@ export default {
         recording: {
           isCalling: {}, // keyed by `{jsKey}:{langId}`
           isRecorderSelectorVisible: false,
-          recorders: null,
+          recorders: [],
         },
       })
       .value(),
@@ -25,6 +25,10 @@ export default {
   },
 
   mutations: {
+    addRecorder({ recording }, recorder) {
+      recording.recorders = lodash.uniqBy(lodash.union(recording.recorders, [recorder]), 'id')
+    },
+
     pushAudioIntoLibrary({ library, recording }, audio) {
       library.push(audio)
     },
@@ -59,6 +63,12 @@ export default {
         {recorder_phonenumber, recorder_name, is_new_recorder, description},
         {headers: { 'Content-Type': 'multipart/form-data' }}
           ).then(({data: {uuid, queue_id: queueId, status, status_description, description}}) => {
+
+            commit('addRecorder', {
+              id: `${recorder_name.replace(/[\W_]+/g, '')}-${recorder_phonenumber}`,
+              name: recorder_name,
+              phone: recorder_phonenumber,
+            })
 
             // TODO: enable showAppMessageFor once available
             // if (status_description === 'error') {
