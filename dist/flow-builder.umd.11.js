@@ -10,17 +10,17 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"8467f54a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=template&id=c642b2be&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=template&id=b46ca542&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('div',{staticClass:"text-only-resource-editor"},[_c('hr'),_c('h4',[_vm._v("Log Message")]),_vm._l((_vm.flow.languages),function(ref){
 var languageId = ref.id;
 var language = ref.name;
-return [_c('div',{staticClass:"block-content-editor-lang"},[_c('h5',{staticClass:"label label-info"},[_vm._v(_vm._s(_vm._f("trans")(language || 'flow-builder.unknown-language')))])]),_vm._l((_vm.flow.supportedModes),function(mode){return [_c('h5',[_vm._v(_vm._s(_vm._f("trans")(("flow-builder." + mode + "-content"))))]),_c('resource-variant-text-editor',{attrs:{"resource-id":_vm.messageResource.uuid,"resource-variant":_vm.findOrGenerateStubbedVariantOn(
+return [_c('div',{staticClass:"block-content-editor-lang"},[_c('h5',{staticClass:"badge badge-info"},[_vm._v(_vm._s(_vm._f("trans")(language || 'flow-builder.unknown-language')))])]),_vm._l((_vm.flow.supportedModes),function(mode){return [_c('h6',[_vm._v(_vm._s(_vm._f("trans")(("flow-builder." + mode + "-content"))))]),_c('resource-variant-text-editor',{attrs:{"resource-id":_vm.messageResource.uuid,"resource-variant":_vm.findOrGenerateStubbedVariantOn(
                                         _vm.messageResource,
                                         {languageId: languageId, contentType: ['text'], modes: [mode]}),"mode":mode,"is-editable": true || false,"enable-autogen-button": true || false}})]})]})],2),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}}),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=template&id=c642b2be&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=template&id=b46ca542&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("d4ec");
@@ -31,7 +31,7 @@ var createClass = __webpack_require__("bee2");
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/inherits.js
 var inherits = __webpack_require__("262e");
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createSuper.js + 3 modules
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createSuper.js + 2 modules
 var createSuper = __webpack_require__("2caf");
 
 // EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
@@ -221,7 +221,7 @@ Core_LogBlockvue_type_script_lang_ts_Core_LogBlock = Object(tslib_es6["__decorat
   mixins: [lang["a" /* default */]]
 })], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock);
 /* harmony default export */ var Core_LogBlockvue_type_script_lang_ts_ = (Core_LogBlockvue_type_script_lang_ts_Core_LogBlock);
-var install = Object(builder["b" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, Core_LogBlockStore);
+var install = Object(builder["c" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, Core_LogBlockStore);
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=script&lang=ts&
  /* harmony default export */ var block_types_Core_LogBlockvue_type_script_lang_ts_ = (Core_LogBlockvue_type_script_lang_ts_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
