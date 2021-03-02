@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import axios from 'axios'
 import {
   findBlockWith,
   findFlowWith,
@@ -21,7 +22,17 @@ import {discoverContentTypesFor} from '@/store/flow/resource'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   activeFlow: state => state.flows.length && getActiveFlowFrom(state as unknown as IContext),
-
+  activeFlowContainer: state => {
+    return {
+      specification_version: "TODO",
+      uuid: "TODO",
+      name: "TODO",
+      description: "TODO",
+      platform_metadata: {},
+      flows: state.flows,
+      resources: state.resources
+    } as IContext
+  },
   hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some(mode => includes(getters.activeFlow.supportedModes || [], mode)),
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supportedModes || [], SupportedMode.IVR)
 }
@@ -114,6 +125,24 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
+  flow_persist({ state }, { persistRoute, flowContainer }) {
+    return axios.post(persistRoute, flowContainer)
+      .then(({data}) => {
+        const persistedState = data
+        console.log(persistedState)
+        //set the state to the echoes back state
+        //TODO - mutations for this?
+        state.flows = persistedState.flows
+        state.resources = persistedState.resources
+        if(state.flows[0]) {
+          state.firstFlowId = state.flows[0].uuid
+        }
+        return state
+      })
+      .catch(() => {
+        //TODO
+      })
+  },
   // todo: this `flow_` prefix doesn't follow suit
   //       because it's actually a method on the root state // IContext-ish type
   //       (same as mutation: `flow_activateBlock` and `flow_add`

@@ -1,6 +1,14 @@
 {
   "ui": {
     "routes": {
+      "flows": {
+        "persistFlow": {
+          "name": "editTree",
+          "path": "\/backend\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["POST"]
+        }
+      },
       "trees": {
         "editTree": {
           "name": "editTree",

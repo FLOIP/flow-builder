@@ -9,7 +9,8 @@
             <div class="float-right">
   //TODO - don't hard code this link, pull from config
               <router-link to="/trees/1/interaction-designer/edit"
-                           class="btn btn-primary">
+                class="btn btn-primary"
+                @click.native="handlePersistFlow">
                 {{trans('flow-builder.save-and-continue')}}
                 //TODO add on submit action which attempts to persist, persist route echos flow back on success - replace the flow with this if not null, otherwise don't redirect and give generic "There was an error" message
               </router-link>
@@ -25,19 +26,21 @@
 
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import lang from '@/lib/filters/lang'
+import Routes from '@/lib/mixins/Routes'
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import {Mutation, namespace} from 'vuex-class'
 import lodash, {forEach, invoke} from 'lodash'
 import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
+import {IFlow, IContext} from '@floip/flow-runner'
 
 @Component<any>(
   {
     components: {
       FlowEditor,
     },
-    mixins: [lang],
+    mixins: [lang, Routes],
     async mounted() {
         await this.flow_addBlankFlow()
     },
@@ -52,8 +55,18 @@ const flowVuexNamespace = namespace('flow')
   },
 )
 class NewFlow extends Vue {
+
+  handlePersistFlow() {
+    this.flow_persist({
+      persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
+      flowContainer: this.activeFlowContainer
+    })
+  }
+
   @flowVuexNamespace.Action flow_addBlankFlow!: Promise<IFlow>
+  @flowVuexNamespace.Action flow_persist!: Promise<IContext>
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Getter activeFlowContainer!: IContext
   @Mutation configure 
 }
 
