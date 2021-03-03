@@ -142,6 +142,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         //TODO
       })
   },
+  //In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
   flow_fetch({ state, getters }, { fetchRoute }) {
     //TODO - try getting from localstorage first? just memory? 
     // Do this if if this fails? always and then overwrite?
