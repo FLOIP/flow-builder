@@ -79,7 +79,7 @@ To export, simply copy the json in this panel to a file.
 
 More detail to follow.
 
-## Integrating/Embedding with a host app - config guide:
+## Integrating With/Embedding In a Host App - Configuration Guide:
 
 [See here](https://github.com/FLOIP/flow-builder/blob/master/docs/BUILDER_INTEGRATION.md)
 
