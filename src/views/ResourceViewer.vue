@@ -260,7 +260,7 @@
   import lang from '@/lib/filters/lang'
   import lodash from 'lodash'
 
-  import stores from '../stores'
+  import stores from '@/store'
   import HorizontalBlockContentEditor from '@/components/resource-editor/HorizontalBlockContentEditor'
   import BatchMatchAudioFilesPrompt from '@/components/resource-editor/BatchMatchAudioFilesPrompt'
   import BlockContentEditorUnsupported from '@/components/resource-editor/BlockContentEditorUnsupported'

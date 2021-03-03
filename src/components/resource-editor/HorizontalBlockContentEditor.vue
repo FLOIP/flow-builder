@@ -91,7 +91,8 @@
 	import lodash from 'lodash'
   import {mapGetters, mapState} from 'vuex'
 	import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
-	import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType'
+  //TODO: resolve this import when we want to use this current component correctly
+	// import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType'
 
 	export default {
 		props: [
@@ -104,7 +105,7 @@
 
 		components: {
 			AudioLibrarySelector,
-      BlockTextContentEditorForLangAndType,
+      // BlockTextContentEditorForLangAndType,
 		},
 
     mixins: [lang],
