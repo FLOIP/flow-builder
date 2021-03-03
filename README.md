@@ -79,6 +79,10 @@ To export, simply copy the json in this panel to a file.
 
 More detail to follow.
 
+## Integrating/Embedding with a host app - config guide:
+
+[See here](https://github.com/FLOIP/flow-builder/blob/VMO-3120-flow-lifecycle/docs/BUILDER_INTERGRATION.md)
+
 ## Future extensions and improvements
 
 - Documentation on integration of this UI into another app including configuration of routes used for server side persistence
