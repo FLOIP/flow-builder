@@ -4,7 +4,7 @@
       class="block"
       :class="{
         active: isBlockActivated,
-        [`category-${blockClasses[block.type].category}`]: true,
+        [`category-${blockClassFromBlockType(block.type).category}`]: true,
       }"
       :startX="x"
       :startY="y"
@@ -83,7 +83,7 @@
                         :target="blocksById[exit.destinationBlock]"
                         :exit="exit"
                         :position="livePosition"
-                        :color-category="blockClasses[block.type].category" />
+                        :color-category="blockClassFromBlockType(block.type).category" />
           </template>
         </template>
 
@@ -113,7 +113,7 @@
                       :target="blocksById[exit.destinationBlock]"
                       :exit="exit"
                       :position="livePosition"
-                      :color-category="blockClasses[block.type].category" />
+                      :color-category="blockClassFromBlockType(block.type).category" />
         </template>
 
       </div>
@@ -155,7 +155,7 @@
       ...mapState({
         blockClasses: ({trees: {ui}}) => ui.blockClasses,
       }),
-
+      ...mapGetters(['blockClassFromBlockType']),
       ...mapGetters('builder', ['blocksById']),
 
       hasLayout() {

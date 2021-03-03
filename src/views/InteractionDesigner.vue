@@ -4,7 +4,7 @@
 
     <div class="tree-sidebar-container">
       <div v-if="activeBlock" class="tree-sidebar"
-           :class="[`category-${blockClasses[activeBlock.type].category}`]">
+           :class="[`category-${blockClassFromBlockType(activeBlock.type).category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
@@ -125,6 +125,7 @@
     computed: {
       ...mapGetters([
         'selectedBlock',
+        'blockClassFromBlockType',
         'isEditable',
         'hasChanges',
         'hasIssues',
@@ -213,14 +214,12 @@
       async registerBlockTypes() {
         const {blockClasses} = this
 
-        forEach(blockClasses, async ({type}) => {
-          const normalizedType = type.replace('\\', '_')
+        forEach(blockClasses, async ({type}, key) => {
           const typeWithoutSeparators = type.replace(/\\/g, '')
-          const exported = await import(
-            `../components/interaction-designer/block-types/${normalizedType}Block.vue`)
+          const exported = await import(`@/${key}.vue`) // static path prefix such as `@/` is important, as webpack won't accept fully dynamic statement such as import(${key}.vue`)
 
           invoke(exported, 'install', this)
-          Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
+          this.$options.components[`Flow${typeWithoutSeparators}`] = exported.default
         })
       },
 

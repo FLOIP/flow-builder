@@ -818,7 +818,8 @@ window.app = window.app || {};
 				missingLanguageIdsSocialContent = [];
 				missingLanguageIdsClipboardContent = [];
 
-				if(app.ui.blockClasses[block.type].hasContent == 1){
+				const blockClass = _.pickBy(app.ui.blockClasses, (value, key) => value.type === block.type)
+				if(blockClass.hasContent == 1){
 
 					if(app.tree.get('details').hasVoice && _.keys(block.audioFiles).length < tree.enabledLanguages.length) {
 					missingLanguageIdsAudioFiles = _.difference(tree.enabledLanguages, _.keys(block.audioFiles));

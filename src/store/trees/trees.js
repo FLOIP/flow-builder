@@ -79,6 +79,8 @@ export default {
 
 		interactiveBlockClasses: ({ui}, getters, rootState) => lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
 
+    blockClassFromBlockType: ({ui}, getters, rootState) => (blockType) => lodash.values(lodash.pickBy(ui.blockClasses, (value, key) => value.type === blockType))[0],
+
 		interactiveBlocksInTree: ({tree}, {interactiveBlockClasses}, rootState) =>
 				lodash.filter(tree.blocks, b =>
 						lodash.includes(Object.keys(interactiveBlockClasses), b.type)
@@ -112,14 +114,14 @@ export default {
       if (!getters.selectedBlock) {
         return false
       }
-      return lodash.get(ui.blockClasses[getters.selectedBlock.type], 'isSummarizable', false)
+      return lodash.get(getters.blockClassFromBlockType(getters.selectedBlock.type), 'isSummarizable', false)
     },
 
     canSelectedBlockSetSubscriberProperty({ui}, getters) {
       if (!getters.selectedBlock) {
         return false
       }
-      return lodash.get(ui.blockClasses[getters.selectedBlock.type], 'canSetSubscriberProperty', false)
+      return lodash.get(getters.blockClassFromBlockType(getters.selectedBlock.type), 'canSetSubscriberProperty', false)
     },
 
     languageSelectors: ({ui}) => ui.languageSelectors,

@@ -37,91 +37,91 @@
       }
     ],
     "blockClasses": {
-      "ConsoleIO\\Print": {
+      "components/interaction-designer/block-types/ConsoleIO_PrintBlock": {
         "name": "ConsoleIO\\Print",
         "type": "ConsoleIO\\Print",
         "is_interactive": false,
         "is_branching": false,
         "category":  0
       },
-      "ConsoleIO\\Read": {
+      "components/interaction-designer/block-types/ConsoleIO_ReadBlock": {
         "name": "ConsoleIO\\Read",
         "type": "ConsoleIO\\Read",
         "is_interactive": true,
         "is_branching": false,
         "category":  1
       },
-      "Core\\Case": {
+      "components/interaction-designer/block-types/Core_CaseBlock": {
         "name": "Core\\Case",
         "type": "Core\\Case",
         "is_interactive": false,
         "is_branching": true,
         "category":  2
       },
-      "Core\\Log": {
+      "components/interaction-designer/block-types/Core_LogBlock": {
         "name": "Core\\Log",
         "type": "Core\\Log",
         "is_interactive": false,
         "is_branching": false,
         "category":  0
       },
-      "Core\\Output": {
+      "components/interaction-designer/block-types/Core_OutputBlock": {
         "name": "Core\\Output",
         "type": "Core\\Output",
         "is_interactive": false,
         "is_branching": false,
         "category":  0
       },
-      "Core\\RunFlow": {
+      "components/interaction-designer/block-types/Core_RunFlowBlock": {
         "name": "Core\\RunFlow",
         "type": "Core\\RunFlow",
         "is_interactive": false,
         "is_branching": false,
         "category":  0
       },
-      "MobilePrimitives\\Message": {
+      "components/interaction-designer/block-types/MobilePrimitives_MessageBlock": {
         "name": "MobilePrimitives\\Message",
         "type": "MobilePrimitives\\Message",
         "is_interactive": true,
         "is_branching": false,
         "category":  1
       },
-      "MobilePrimitives\\NumericResponse": {
+      "components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock": {
         "name": "MobilePrimitives\\NumericResponse",
         "type": "MobilePrimitives\\NumericResponse",
         "is_interactive": true,
         "is_branching": false,
         "category":  1
       },
-      "MobilePrimitives\\OpenResponse": {
+      "components/interaction-designer/block-types/MobilePrimitives_OpenResponseBlock": {
         "name": "MobilePrimitives\\OpenResponse",
         "type": "MobilePrimitives\\OpenResponse",
         "is_interactive": true,
         "is_branching": false,
         "category":  1
       },
-      "MobilePrimitives\\SelectOneResponse": {
+      "components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock": {
         "name": "MobilePrimitives\\SelectOneResponse",
         "type": "MobilePrimitives\\SelectOneResponse",
         "is_interactive": true,
         "is_branching": true,
         "category":  2
       },
-      "MobilePrimitives\\SelectManyResponse": {
+      "components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock": {
         "name": "MobilePrimitives\\SelectManyResponse",
         "type": "MobilePrimitives\\SelectManyResponse",
         "is_interactive": true,
         "is_branching": true,
         "category":  2
       },
-      "SmartDevices\\LocationResponse": {
+      "components/interaction-designer/block-types/SmartDevices_LocationResponseBlock": {
         "name": "SmartDevices\\LocationResponse",
         "type": "SmartDevices\\LocationResponse",
         "is_interactive": true,
         "is_branching": false,
         "category":  1
       },
-      "SmartDevices\\PhotoResponse": {
+      "components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock": {
         "name": "SmartDevices\\PhotoResponse",
         "type": "SmartDevices\\PhotoResponse",
         "is_interactive": true,
