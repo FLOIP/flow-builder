@@ -143,8 +143,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       })
   },
   flow_fetch({ state, getters }, { fetchRoute }) {
-    console.log("fetching")
-    console.log(fetchRoute)
+    //TODO - try getting from localstorage first? just memory? 
+    // Do this if if this fails? always and then overwrite?
     return axios.get(fetchRoute)
       .then(({data}) => {
         const fetchedState = data

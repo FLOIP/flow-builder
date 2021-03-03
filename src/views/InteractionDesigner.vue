@@ -45,6 +45,7 @@
 
 <script>
   import lang from '@/lib/filters/lang'
+  import Routes from '@/lib/mixins/Routes'
   import lodash, {forEach, invoke} from 'lodash'
   import Vue from 'vue'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
@@ -84,7 +85,7 @@
       }
     },
 
-    mixins: [lang],
+    mixins: [lang, Routes],
 
     components: {
       // ...BlockTypes,
@@ -197,6 +198,11 @@
 
     /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
     mounted() {
+
+      if(!this.activeFlow) {
+        this.$router.push(this.route('flows.fetchFlow', {flowId: this.id}))
+      }
+
       this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
       this.deselectBlocks()
       this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})

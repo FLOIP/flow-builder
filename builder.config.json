@@ -22,6 +22,7 @@
         "fetchFlow": {
           "name": "fetchFlow",
           "path": "\/flows\/{flowId}",
+          "params": ["flowId"],
           "methods": ["GET"]
         }
       },

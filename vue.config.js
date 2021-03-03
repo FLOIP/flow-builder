@@ -46,9 +46,14 @@ module.exports = {
       // (Other flows are there because they are nested in this first flow
       // ...and referenced by UUID I think)
       app.get('/backend/flows/:id', (req, res) => {
-        const flow = fs.readFileSync(`src/store/builder/${req.params.id}-flow.json`)
-        res.writeHead(200, { 'Content-Type': 'application/json' })
-        res.end(flow)
+        try {
+          const flow = fs.readFileSync(`src/store/builder/${req.params.id}-flow.json`)
+          res.writeHead(200, { 'Content-Type': 'application/json' })
+          res.end(flow)
+        } catch (err) {
+          res.writeHead(404, { 'Content-Type': 'application/json' })
+          res.end("Flow not found")
+        }
       })
       //In the success case, just echo the flow back
       app.post('/backend/flows/:id', bodyParser.json(), (req, res) => {
