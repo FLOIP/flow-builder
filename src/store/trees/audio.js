@@ -81,7 +81,7 @@ export default {
             // TODO: enable showAppMessageFor once available
             // dispatch('showAppMessageFor', {message: 'Sending out call...'})
             commit('setRecordingStatusFor', {key, uuid, queueId, value: 'initiating_call'})
-            setTimeout(() => dispatch('fetchAudioRecordingStatusFor', {key, uuid, queueId, isFirstCall: true}), 3000)
+            setTimeout(() => dispatch('fetchAudioRecordingStatusFor', {key, uuid, queueId}), 3000)
           })
       .catch((error) => {
         if (error.response) {
@@ -107,12 +107,11 @@ export default {
      * @param key
      * @param uuid
      * @param queueId
-     * @param isFirstCall, used on devServer to simulate intermediate statuses, eg: `in_progress`, then `recorded`
      * @returns {Promise<AxiosResponse<any>>}
      */
-    fetchAudioRecordingStatusFor({commit, dispatch, state, rootState}, {key, uuid, queueId, isFirstCall}) {
+    fetchAudioRecordingStatusFor({commit, dispatch, state, rootState}, {key, uuid, queueId}) {
       return axios.post(routeFrom('trees.calltorecordStatus', null, rootState.trees.ui.routes),
-        {uuid, queue_id: queueId, is_first_call: isFirstCall},
+        {uuid, queue_id: queueId},
         {headers: { 'Content-Type': 'application/json' }}
         ).then(({data}) => dispatch('checkAudioRecordingStatusFor', {...data, key, uuid, queueId}))
         .catch((error) => {
@@ -200,7 +199,7 @@ export default {
         discard_and_record: 3000,
       }
 
-      setTimeout(_ => dispatch('fetchAudioRecordingStatusFor', {key, uuid, queueId, isFirstCall: false}), fetchStatusDelayMap[status])
+      setTimeout(_ => dispatch('fetchAudioRecordingStatusFor', {key, uuid, queueId}), fetchStatusDelayMap[status])
     },
   }
 }

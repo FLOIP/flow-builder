@@ -1,5 +1,6 @@
 const path = require('path')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 
 module.exports = {
   lintOnSave: false,
@@ -21,6 +22,8 @@ module.exports = {
       // use bodyParser for axios request
       app.use(bodyParser.urlencoded({ extended: true }))
       app.use(bodyParser.json())
+
+      app.use(cookieParser())
 
       // Mock a route to mimic this upload result format:
       // {"audio_file_id":147,"duration_seconds":"4.803250","description":"xyz.wav","created_at":{"date":"2020-11-24 01:41:58","timezone_type":3,"timezone":"UTC"},"audio_uuid":"5fbc64e0c74e90.82972899"}"
@@ -51,6 +54,7 @@ module.exports = {
           status_description: '',
           description: 'Test call-to-record audio',
         }
+        res.cookie(result.uuid, 'in_progress')
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
       });
@@ -62,12 +66,15 @@ module.exports = {
         const result = {
           audio_file_id: Math.floor(Math.random() * (1000 + 1)),
           duration_seconds: Math.random() * 10,
-          status: req.body.is_first_call ? 'in_progress' : 'new', // `new` status tells the UI we had successful `recorded` audio
+          status: req.cookies[req.body.uuid],
           description: 'Test call-to-record audio',
           uuid: req.body.uuid,
           key: req.body.key,
           queueId: req.body.queueId,
           created_at: `${now[0]} ${now[1].split('.')[0]}`,
+        }
+        if (req.cookies[req.body.uuid] !== 'new') {
+          res.cookie(result.uuid, 'new') // `new` status tells the UI we had successful `recorded` audio
         }
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
