@@ -81,7 +81,7 @@ More detail to follow.
 
 ## Integrating/Embedding with a host app - config guide:
 
-[See here](https://github.com/FLOIP/flow-builder/blob/VMO-3120-flow-lifecycle/docs/BUILDER_INTERGRATION.md)
+[See here](https://github.com/FLOIP/flow-builder/blob/master/docs/BUILDER_INTEGRATION.md)
 
 ## Future extensions and improvements
 
