@@ -1,6 +1,12 @@
 <template>
-  <div class="new-contents">
-    <p>{{trans(message)}}</p>
+  <div class="fetch-contents">
+    <div class="d-flex h-100 text-center">
+      <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <main class="px-3">
+          <p>{{trans(message)}}</p>
+        </main>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -25,7 +31,7 @@ import {IFlow} from '@floip/flow-runner'
         if(flow) {
           this.$router.push(this.route('trees.editTree', {treeId: this.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'}))
         } else{
-          this.message = 'flows.flow-not-found'
+          this.message = 'flow-builder.flow-not-found'
         }
       })
     },
@@ -43,7 +49,7 @@ class FetchFlow extends Vue {
   //TODO - this should be uuid (elsewhere also)
   @Prop({required: true}) readonly id!: string 
 
-  message = 'flows.fetching-flow'
+  message = 'flow-builder.fetching-flow'
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action flow_fetch!: Promise<IFlow>
