@@ -133,6 +133,10 @@
             {{trans('flow-builder.delete')}}
           </button>
 
+          <router-link :to="route('flows.newFlow')" class="btn btn-outline-secondary mr-2">
+            {{trans('flow-builder.new-flow')}}
+          </router-link>
+
           <slot name="extra-buttons"/>
 
           <div class="btn-group pull-right mr-2">

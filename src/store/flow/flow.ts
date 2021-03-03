@@ -125,11 +125,10 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  flow_persist({ state }, { persistRoute, flowContainer }) {
+  flow_persist({ state, getters }, { persistRoute, flowContainer }) {
     return axios.post(persistRoute, flowContainer)
       .then(({data}) => {
         const persistedState = data
-        console.log(persistedState)
         //set the state to the echoes back state
         //TODO - mutations for this?
         state.flows = persistedState.flows
@@ -137,7 +136,26 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         if(state.flows[0]) {
           state.firstFlowId = state.flows[0].uuid
         }
-        return state
+        return getters.activeFlowContainer 
+      })
+      .catch(() => {
+        //TODO
+      })
+  },
+  flow_fetch({ state, getters }, { fetchRoute }) {
+    console.log("fetching")
+    console.log(fetchRoute)
+    return axios.get(fetchRoute)
+      .then(({data}) => {
+        const fetchedState = data
+        //set the state to the echoes back state
+        //TODO - mutations for this?
+        state.flows = fetchedState.flows
+        state.resources = fetchedState.resources
+        if(state.flows[0]) {
+          state.firstFlowId = state.flows[0].uuid
+        }
+        return getters.activeFlow
       })
       .catch(() => {
         //TODO

@@ -1,5 +1,7 @@
 {
   "en.flow-builder": {
+    "create-flow": "Create Flow",
+    "new-flow":  "New Flow",
     "flow-name":  "Flow name",
     "flow-label": "Flow label",
     "flow-importer": "Flow importer",
@@ -1531,6 +1533,8 @@
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
   },
   "fr.flow-builder": {
+    "create-flow": "Créer un Flux",
+    "new-flow":  "Nouveau Flux",
     "flow-name":  "Nom du flux",
     "flow-label": "Libélé du flux",
     "flow-importer": "importateur de flux",

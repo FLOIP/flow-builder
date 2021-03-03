@@ -3,10 +3,26 @@
     "routes": {
       "flows": {
         "persistFlow": {
-          "name": "editTree",
+          "name": "persistFlow",
           "path": "\/backend\/flows\/{flowId}",
           "params": ["flowId"],
           "methods": ["POST"]
+        },
+        "fetchFlowServer": {
+          "name": "fetchFlowServer",
+          "path": "\/backend\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["GET"]
+        },
+        "newFlow": {
+          "name": "newFlow",
+          "path": "\/flows\/new",
+          "methods": ["GET"]
+        },
+        "fetchFlow": {
+          "name": "fetchFlow",
+          "path": "\/flows\/{flowId}",
+          "methods": ["GET"]
         }
       },
       "trees": {

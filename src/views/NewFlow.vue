@@ -7,12 +7,11 @@
             <flow-editor :flow="activeFlow" flow-header="flow-builder.create-flow" :sidebar=false />
 
             <div class="float-right">
-  //TODO - don't hard code this link, pull from config
-              <router-link to="/trees/1/interaction-designer/edit"
+              <router-link :to="route('trees.editTree', {treeId: activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})"
                 class="btn btn-primary"
-                @click.native="handlePersistFlow">
+                event=""
+                @click.native.prevent="handlePersistFlow(route('trees.editTree', {treeId: activeFlow.uuid, component: 'interaction-designer', mode: 'edit'}))">
                 {{trans('flow-builder.save-and-continue')}}
-                //TODO add on submit action which attempts to persist, persist route echos flow back on success - replace the flow with this if not null, otherwise don't redirect and give generic "There was an error" message
               </router-link>
             </div>
           </div>
@@ -30,7 +29,7 @@ import Routes from '@/lib/mixins/Routes'
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import {Mutation, namespace} from 'vuex-class'
-import lodash, {forEach, invoke} from 'lodash'
+import lodash, {forEach} from 'lodash'
 import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
 import {IFlow, IContext} from '@floip/flow-runner'
@@ -56,10 +55,16 @@ import {IFlow, IContext} from '@floip/flow-runner'
 )
 class NewFlow extends Vue {
 
-  handlePersistFlow() {
+  handlePersistFlow(route) {
     this.flow_persist({
       persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
       flowContainer: this.activeFlowContainer
+    }).then((flowContainer) => {
+      if(flowContainer) {
+        this.$router.push(route)
+      } else {
+        //TODO - show error
+      }
     })
   }
 
