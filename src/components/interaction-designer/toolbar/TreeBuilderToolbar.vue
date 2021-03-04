@@ -168,6 +168,7 @@ import pickBy from 'lodash/fp/pickBy'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
 import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
+import { computeBlockPositionsFrom } from '@/store/builder'
 
 export default {
   components: {
@@ -212,11 +213,17 @@ export default {
 
     flow: {
       get() {
-        const { flows, resources } = this
+        const {
+          flows,
+          resources,
+        } = this
         return JSON.stringify(
-          convertKeysCase({ flows, resources },
-            'SNAKE',
-            ['platformMetadata', 'ioViamo']),
+          convertKeysCase({
+            flows,
+            resources,
+          },
+          'SNAKE',
+          ['platformMetadata', 'ioViamo']),
           null,
           2,
         )
@@ -317,26 +324,25 @@ export default {
     },
   },
   methods: {
-    methods: {
-      isEmpty,
+    isEmpty,
 
-      ...mapActions(['attemptSaveTree']),
-      ...mapMutations('flow', ['flow_removeBlock']),
-      ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
-      ...mapActions('builder', ['importFlowsAndResources']),
-      ...mapMutations('builder', ['activateBlock']),
+    ...mapActions(['attemptSaveTree']),
+    ...mapMutations('flow', ['flow_removeBlock']),
+    ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
+    ...mapActions('builder', ['importFlowsAndResources']),
+    ...mapMutations('builder', ['activateBlock']),
 
-      async handleAddBlockByTypeSelected({type}) {
-        const {uuid: blockId} = await this.flow_addBlankBlockByType({
-          type,
-          platform_metadata: {
-            io_viamo: {
-              uiData: computeBlockPositionsFrom(this.activeBlock)
-            }
-          }
-        }); // todo push out to intx-designer
-        this.activateBlock({blockId})
-      },
+    async handleAddBlockByTypeSelected({ type }) {
+      const { uuid: blockId } = await this.flow_addBlankBlockByType({
+        type,
+        platform_metadata: {
+          io_viamo: {
+            uiData: computeBlockPositionsFrom(this.activeBlock),
+          },
+        },
+      }) // todo push out to intx-designer
+      this.activateBlock({ blockId })
+    },
 
     handleRemoveActivatedBlockTriggered() {
       const { activeBlockId: blockId } = this
@@ -352,7 +358,10 @@ export default {
       this.isImporterVisible = !this.isImporterVisible
     },
 
-    editTreeRoute({ component = null, mode = null } = {}) {
+    editTreeRoute({
+      component = null,
+      mode = null,
+    } = {}) {
       const context = this.removeNilValues({
         treeId: this.tree.id,
         component,
