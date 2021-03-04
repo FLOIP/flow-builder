@@ -207,7 +207,7 @@
       //if nothing was found for the flow Id
       if(!this.activeFlow) {
         this.flow_setActiveFlowId({flowId: null})
-        this.$router.push(this.route('flows.fetchFlow', {flowId: this.id}))
+        this.$router.replace(`${this.route('flows.fetchFlow', {flowId: this.id})}?nextUrl=${this.$route.path}`)
       }
 
       this.hoistResourceViewerToPushState.bind(this, this.$route.hash)

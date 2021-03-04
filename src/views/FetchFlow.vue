@@ -7,6 +7,9 @@
           <router-link v-if="showNewButton" :to="route('flows.newFlow')"
             title="trans('flow-builder.create-a-new-flow')"
             class="mt-3 btn btn-outline-secondary mr-2 active">{{trans('flow-builder.new-flow')}}</router-link>
+          <router-link v-if="flowLink" :to="flowLink"
+              title="trans('flow-builder.edit-flow')"
+              class="mt-3 btn btn-outline-secondary mr-2 active">{{'flow-builder.go-to-flow'}}</router-link>
         </main>
       </div>
     </div>
@@ -30,9 +33,14 @@ import {IFlow} from '@floip/flow-runner'
     mixins: [lang, Routes],
     async mounted() {
       this.flow_fetch({fetchRoute: this.route('flows.fetchFlowServer', {flowId: this.id})}).then((flow) => {
-        console.log("fetched")
         if(flow) {
-          this.$router.push(this.route('trees.editTree', {treeId: this.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'}))
+          const nextUrl = this.$route.query.nextUrl
+          if(nextUrl) {
+            this.$router.replace(nextUrl)
+          } else {
+            this.message = 'flow-builder.flow-found'
+            this.flowLink = this.route('trees.editTree', {treeId: this.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})
+          }
         } else{
           this.message = 'flow-builder.flow-not-found'
           this.showNewButton = true
@@ -55,6 +63,7 @@ class FetchFlow extends Vue {
 
   message = 'flow-builder.fetching-flow'
   showNewButton = false
+  flowLink = null
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action flow_fetch!: Promise<IFlow>
