@@ -86,13 +86,11 @@ export default {
       .catch((error) => {
         if (error.response) {
           // Request made and server responded
-          console.log('Error Log', error.response.data.status_description.message);
+          console.error('Audio', error.response.data)
         } else if (error.request) {
-          // The request was made but no response was received
-          console.log('Error Log', error.request);
+          console.log('Audio', 'The request was made but no response was received', error)
         } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error Log', error.message);
+          console.log('Audio', 'Something happened in setting up the request that triggered an Error', error)
         }
       })
     },
@@ -117,13 +115,11 @@ export default {
         .catch((error) => {
           if (error.response) {
             // Request made and server responded
-            console.log('Error Log', error.response.data.status_description.message);
+            console.error('Audio', error.response.data)
           } else if (error.request) {
-            // The request was made but no response was received
-            console.log('Error Log', error.request);
+            console.log('Audio', 'The request was made but no response was received', error)
           } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error Log', error.message);
+            console.log('Audio', 'Something happened in setting up the request that triggered an Error', error)
           }
         })
     },
