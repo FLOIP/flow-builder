@@ -1,14 +1,10 @@
 <template>
-  <div class="clipboard-block-no-padding card-z1 font-roboto" :class="{'disabled-alpha': !isFocused}">
-    <div class="card-body">
-      <h4 class="card-title font-weight-regular text-color-title">
-        {{block.title}}
-      </h4>
-
-      <multimedia :key="block.id.toString()" :media-descriptor="mediaDescriptor"/>
-
-      <clipboard-content v-if="block.content" :content="block.content"/>
-
+  <div class="card">
+    <div class="card-body sm-padding-below font-roboto">
+      <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.name}}</h4>
+      <p class="card-text">
+        {{prompt.block.label}}
+      </p>
       <div class="numeric-input">
         <label class="numeric-input-label">
           <textarea
@@ -26,113 +22,69 @@
           <span>{{errorMessage}}</span>
         </small>
       </div>
-
       <block-action-buttons
-          :is-disabled="errorMessage"
-          :is-focused="isFocused"
-          :on-next-clicked="submitAnswer"
-          :is-block-interaction="isBlockInteraction"
-          :on-cancel-clicked="onActiveBlockChanged"/>
+        class="mt-3"
+        :is-disabled="false"
+        :is-focused="isFocused"
+        :on-next-clicked="submitAnswer"
+        :is-block-interaction="isBlockInteraction"
+        :on-cancel-clicked="onActiveBlockChanged"/>
     </div>
   </div>
 </template>
 <script>
-  import BlockActionButtons from '../BlockActionButtons'
-  import clipboardQuestionExecutor from '../../mixins/ClipboardQuestionExecutor'
-  import Multimedia from './Multimedia'
-  import MediaDescribable from '../../mixins/MediaDescribable'
+import { IContext, OpenPrompt } from '@floip/flow-runner'
+import BlockActionButtons from '../BlockActionButtons'
 
-  export default {
-    name: 'OpenQuestionBlock',
-    components: {
-      ClipboardContent: () => import(/* webpackChunkName:"/js/clipboard" */ './ClipboardContent'),
-      BlockActionButtons,
-      Multimedia,
-    },
-    mixins: [
-      clipboardQuestionExecutor,
-      MediaDescribable,
-    ],
-    props: {
-      /** @type OpenQuestionBlockPrompt */
-      currentQuestion: {},
+export default {
+  name: 'OpenQuestionBlock',
+  components: {
+    BlockActionButtons,
+  },
+  props: {
+    context: IContext,
+    prompt: OpenPrompt,
+    goNext: Function,
 
-      /** @type BlockInteraction */
-      blockInteraction: Object,
-
-      /** @type FlowState */
-      flowState: Object,
-
-      /** The root package of Clipboard */
-      viamo: Object,
-
-      executeBlock: {},
-      isBlockInteraction: Boolean,
-      activeBlockInteractionIndex: Number,
-      onActiveBlockChanged: Function,
-      isFocused: Boolean,
-    },
-    data() {
-      return {
-        enteredValue: '',
-        wasSelectedIndexChanged: false,
-        errorMessage: null,
-      }
-    },
-    computed: {
-      block() {
-        return this.blockInteraction.block
-      },
-    },
-    mounted() {
-      if (this.isBlockInteraction || this.blockInteraction.blockQuestionInteraction.openText) {
-        this.enteredValue = this.blockInteraction.blockQuestionInteraction.openText
-      }
-    },
-    methods: {
-      checkIsValid() {
-        this.wasSelectedIndexChanged = true
-        try {
-          this.block.validate(this.enteredValue)
-          this.errorMessage = null
-        } catch (e) {
-          this.handleErrorOnSubmission(e)
-        }
-      },
-
-      submitAnswer() {
-        try {
-          this.block.validate(this.enteredValue)
-          this.executeSubmitAnswer((currentQuestion) => {
-            try {
-              currentQuestion.submitAnswer(this.enteredValue)
-              this.executeBlock()
-              this.reset()
-            } catch (e) {
-              this.handleErrorOnSubmission(e)
-            }
-          })
-        } catch (e) {
-          this.handleErrorOnSubmission(e)
-        }
-      },
-
-      handleErrorOnSubmission(e) {
-        if (e.userSafeMessage) {
-          console.error(e.userSafeMessage.devMessage, e)
-          this.errorMessage = e.userSafeMessage.userMessage || 'An error has occurred'
-        } else {
-          console.error(e)
-        }
-      },
-
-      reset() {
-        this.enteredValue = ''
+    isBlockInteraction: Boolean,
+    onActiveBlockChanged: Function,
+    isFocused: Boolean,
+  },
+  data() {
+    return {
+      enteredValue: '',
+      errorMessage: null,
+    }
+  },
+  methods: {
+    checkIsValid() {
+      try {
+        this.block.validate(this.enteredValue)
         this.errorMessage = null
-        this.wasSelectedIndexChanged = false
-      },
+      } catch (e) {
+        this.handleErrorOnSubmission(e)
+      }
     },
-  }
+
+    submitAnswer() {
+      this.prompt.value = this.enteredValue
+      this.prompt.fulfill()
+      this.goNext()
+    },
+
+    handleErrorOnSubmission(e) {
+      if (e.userSafeMessage) {
+        console.error(e.userSafeMessage.devMessage, e)
+        this.errorMessage = e.userSafeMessage.userMessage || 'An error has occurred'
+      } else {
+        console.error(e)
+      }
+    },
+
+    reset() {
+    },
+  },
+}
 </script>
 <style lang="scss" scoped>
   .text-small {
@@ -142,20 +94,6 @@
   .invalid {
     margin-top: .25rem;
     color: #dc3545;
-  }
-
-  .card-title {
-    padding-top: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
-    margin: 0;
-  }
-
-  .card-text {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-bottom: 0 !important;
-    margin: 0;
   }
 
   .numeric-input {

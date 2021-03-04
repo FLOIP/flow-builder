@@ -1,149 +1,97 @@
 <template>
-  <div class="clipboard-block-no-padding card-z1 font-roboto"
-      :class="{'disabled-alpha': !isFocused}">
-    <div class="card-body">
+  <div class="card">
+    <div class="card-body sm-padding-below font-roboto">
+      <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.name}}</h4>
+      <p class="card-text">
+        {{prompt.block.label}}
+      </p>
 
-      <h4 class="card-title font-weight-regular text-color-title">{{ block.title }}</h4>
+            <div class="list-group sm-room-above">
+              <div v-if="isFocused">
+                <div v-for="(output, index) in options">
+                  <button
+                      type="button"
+                      class="list-group-item list-group-item-action"
+                      :class="isActive[index]"
+                      @click="changeSelection(index)"
+                      style="vertical-align:center">
+                    <i class="material-icons selectionIcon">{{ isSelected(index) ? "radio_button_checked" : "radio_button_unchecked" }}</i>
+                    {{output.title}}
+                  </button>
+                </div>
+              </div>
+              <div v-else-if="blockInteraction != null" class="unfocused-selected-list-item">
+                <button
+                    type="button"
+                    class="list-group-item list-group-item-action active">
+                  <i class="material-icons selectionIcon">radio_button_checked</i>
 
-      <Multimedia :key="block.id.toString()" :media-descriptor="mediaDescriptor"/>
+                  {{blockInteraction.output.title}}
+                </button>
+              </div>
+            </div>
 
-      <clipboard-content v-if="block.content" :content="block.content"/>
-
-      <div class="list-group sm-room-above">
-        <div v-if="isFocused">
-          <div v-for="(output, index) in options">
-            <button
-                type="button"
-                class="list-group-item list-group-item-action"
-                :class="isActive[index]"
-                @click="changeSelection(index)"
-                style="vertical-align:center">
-              <i class="material-icons selectionIcon">{{ isSelected(index) ? "radio_button_checked" : "radio_button_unchecked" }}</i>
-
-              {{output.title}}
-            </button>
-          </div>
-        </div>
-        <div v-else-if="blockInteraction != null" class="unfocused-selected-list-item">
-          <button
-              type="button"
-              class="list-group-item list-group-item-action active">
-            <i class="material-icons selectionIcon">radio_button_checked</i>
-
-            {{blockInteraction.output.title}}
-          </button>
-        </div>
-      </div>
-
-      <BlockActionButtons
-          :isDisabled="isDisabled"
-          :isFocused="isFocused"
-          :onNextClicked="submitAnswer"
-          :isBlockInteraction="isBlockInteraction"
-          :onCancelClicked="onActiveBlockChanged"/>
+      <block-action-buttons
+        class="sm-room-above"
+        :is-disabled="false"
+        :is-focused="isFocused"
+        :on-next-clicked="submitAnswer"
+        :is-block-interaction="isBlockInteraction"
+        :on-cancel-clicked="onActiveBlockChanged"/>
     </div>
   </div>
 </template>
 <script>
-  import lodash from 'lodash'
-  import BlockActionButtons from "../BlockActionButtons"
-  import ClipboardQuestionExecutor from "../../mixins/ClipboardQuestionExecutor"
-  import ArrayListUtils from "../../mixins/ArrayListUtils"
-  import Multimedia from "./Multimedia"
-  import MediaDescribable from "../../mixins/MediaDescribable"
+import { IContext, SelectOnePrompt } from '@floip/flow-runner'
+import BlockActionButtons from '../BlockActionButtons.vue'
 
-  export default {
-    name: 'MultipleChoiceQuestionBlock',
-    components: {
-      ClipboardContent: () => import(/* webpackChunkName:"/js/clipboard" */ './ClipboardContent'),
-      BlockActionButtons,
-      Multimedia
-    },
-    mixins: [
-      ClipboardQuestionExecutor,
-      ArrayListUtils,
-      MediaDescribable,
-    ],
-    props: {
-      /** @type MultipleChoiceQuestionBlockPrompt */
-      currentQuestion: Object,
+export default {
+  name: 'MultipleChoiceQuestionBlock',
+  components: {
+    BlockActionButtons,
+  },
+  props: {
+    context: IContext,
+    prompt: SelectOnePrompt,
+    goNext: Function,
 
-      /** @type BlockInteraction */
-      blockInteraction: Object,
-
-      /** @type FlowState */
-      flowState: Object,
-
-      /** The root package of Clipboard */
-      viamo: Object,
-
-      executeBlock: {},
-      isBlockInteraction: Boolean,
-      activeBlockInteractionIndex: Number,
-      onActiveBlockChanged: Function,
-      isFocused: Boolean,
-    },
-    data() {
-      return {
-        selectedItemIndex: null,
-        wasSelectedIndexChanged: false,
-      }
-    },
-
-    computed: {
-      block() {
-        return this.blockInteraction.block
-      },
-
-      options() {
-        return this.kotlinArrayListToArray(this.block.outputs)
-      },
-
-      isDisabled() {
-        return this.selectedItemIndex === null},
-      isActive() {
-        return lodash.map(this.options,
-            (option, index) => {
-              if (this.isSelected(index)) {
-                return "active"
-              } else {
-                return ""
-              }
-            })
-      }
-    },
-    methods: {
-      changeSelection(index) {
-        this.wasSelectedIndexChanged = true
-        this.selectedItemIndex = index
-      },
-
-      submitAnswer() {
-        this.executeSubmitAnswer(currentQuestion => {
-          currentQuestion.submitAnswer(this.options[this.selectedItemIndex])
-          this.executeBlock()
-          this.reset()
-        })
-      },
-
-      reset() {
-        this.selectedItemIndex = null
-        this.wasSelectedIndexChanged = false
-      },
-
-      isSelected(index) {
-        if (this.selectedItemIndex === null) {
-          // This case occurs when a suggestion is provided
-          this.selectedItemIndex = this.blockInteraction.blockQuestionInteraction.choiceId
-        }
-
-        return this.selectedItemIndex === index
-            || (this.isBlockInteraction
-                && !this.wasSelectedIndexChanged
-                && this.blockInteraction.output.outputIndex === index)
-      }
+    isBlockInteraction: Boolean,
+    onActiveBlockChanged: Function,
+    isFocused: Boolean,
+  },
+  data() {
+    return {
+      selectedItemIndex: null,
+      wasSelectedIndexChanged: false,
     }
-  }
+  },
+  methods: {
+    changeSelection(index) {
+      // this.wasSelectedIndexChanged = true
+      // this.selectedItemIndex = index
+    },
+
+    submitAnswer() {
+
+    },
+
+    reset() {
+
+    },
+
+    isSelected(index) {
+      // if (this.selectedItemIndex === null) {
+      //   // This case occurs when a suggestion is provided
+      //   this.selectedItemIndex = this.blockInteraction.blockQuestionInteraction.choiceId
+      // }
+      //
+      // return this.selectedItemIndex === index
+      //       || (this.isBlockInteraction
+      //           && !this.wasSelectedIndexChanged
+      //           && this.blockInteraction.output.outputIndex === index)
+    },
+  },
+}
 </script>
 <style lang="scss" scoped>
   i {
@@ -175,19 +123,5 @@
     border-bottom-width: 1px;
     border-bottom-color: rgba(0, 0, 0, 0.54);
     color: rgba(255, 255, 255, 0.87)
-  }
-
-  .card-title {
-    padding-top: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
-    margin: 0;
-  }
-
-  .card-text {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-bottom: 16px;
-    margin: 0;
   }
 </style>

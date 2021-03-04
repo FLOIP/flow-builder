@@ -1,13 +1,10 @@
 <template>
-  <div class="clipboard-block-no-padding card-z1 font-roboto"
-      :class="{'disabled-alpha': !isFocused}">
-    <div class="card-body">
-
-      <h4 class="card-title font-weight-regular text-color-title">{{block.title}}</h4>
-
-      <Multimedia :key="block.id.toString()" :media-descriptor="mediaDescriptor"/>
-
-      <clipboard-content v-if="block.content" :content="block.content"/>
+  <div class="card">
+    <div class="card-body sm-padding-below font-roboto">
+      <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.name}}</h4>
+      <p class="card-text">
+        {{prompt.block.label}}
+      </p>
 
       <div class="content-area sm-room-above">
         <!-- @duplicated from ResourceViewer.vue -->
@@ -16,9 +13,9 @@
             <i class="glyphicon glyphicon-search"></i>
           </div>
           <input
-              class="form-control"
-              :placeholder="'trees.filter-block-content' | trans"
-              v-model="query">
+            class="form-control"
+            :placeholder="'trees.filter-block-content' | trans"
+            v-model="query">
         </div>
 
         <div class="table-container">
@@ -40,178 +37,146 @@
         </div>
       </div>
 
-      <BlockActionButtons
-          :isDisabled="!hasSelection"
-          :isFocused="isFocused"
-          :onNextClicked="submitAnswer"
-          :isBlockInteraction="isBlockInteraction"
-          :onCancelClicked="onActiveBlockChanged"/>
+      <block-action-buttons
+        class="sm-room-above"
+        :is-disabled="false"
+        :is-focused="isFocused"
+        :on-next-clicked="submitAnswer"
+        :is-block-interaction="isBlockInteraction"
+        :on-cancel-clicked="onActiveBlockChanged"/>
     </div>
   </div>
+
 </template>
 
 <script>
-  import lodash from 'lodash'
-  import lang from 'lib/filters/lang'
-  import BlockActionButtons from "../BlockActionButtons"
-  import ClipboardQuestionExecutor from "../../mixins/ClipboardQuestionExecutor"
-  import ArrayListUtils from "../../mixins/ArrayListUtils"
-  import Multimedia from "./Multimedia"
-  import MediaDescribable from "../../mixins/MediaDescribable"
+import lodash from 'lodash'
+import lang from 'lib/filters/lang'
+import { IContext, MessagePrompt } from '@floip/flow-runner'
+import BlockActionButtons from '../BlockActionButtons.vue'
 
-  export default {
-    components: {
-      BlockActionButtons,
-      Multimedia,
-      ClipboardContent: () => import(/* webpackChunkName:"/js/clipboard" */ './ClipboardContent'),
-    },
-    mixins: [
-      ClipboardQuestionExecutor,
-      ArrayListUtils,
-      MediaDescribable,
-      lang,
-    ],
-    props: {
-      /** @type DirectorySelectionBlockPrompt */
-      currentQuestion: Object,
+export default {
+  components: {
+    BlockActionButtons,
+  },
+  props: {
+    context: IContext,
+    prompt: MessagePrompt,
+    goNext: Function,
 
-      /** @type BlockInteraction */
-      blockInteraction: Object,
+    isBlockInteraction: Boolean,
+    onActiveBlockChanged: Function,
+    isFocused: Boolean,
+  },
 
-      /** @type FlowState */
-      flowState: Object,
+  data() {
+    return {
+      selectedChoiceRow: null,
+      query: '',
+    }
+  },
 
-      /** The root package of Clipboard */
-      viamo: Object,
-
-      executeBlock: Function,
-      isBlockInteraction: Boolean,
-      activeBlockInteractionIndex: Number,
-      onActiveBlockChanged: Function,
-      isFocused: Boolean,
+  computed: {
+    primaryField() {
+      return lodash.get(this.choiceRowFields, 0, null)
     },
 
-    data() {
-      return {
-        selectedChoiceRow: null,
-        query: '',
-      }
+    secondaryFields() {
+      return lodash(this.choiceRowFields)
+        .tail()
+        .filter((field) => field.charAt(0) !== '#')
+        .value()
     },
 
-    mounted() {
-      this.selectedChoiceRow = this.previouslySelectedBlockInteraction
+    choiceRowsWithoutReservedFields() {
+      return lodash.map(this.choiceRows,
+        (row) => [
+          row[0],
+          ...lodash.takeRight(row, this.secondaryFields.length),
+        ])
     },
 
-    computed: {
+    choiceRows() {
+      return this.kotlinArrayListToArray(this.block.choiceRows).map((row) => row.toArray())
+    },
 
-      block() {
-        return this.blockInteraction.block
-      },
+    choiceRowFields() {
+      return this.kotlinArrayListToArray(this.block.choiceRowFields)
+    },
 
-      primaryField() {
-        return lodash.get(this.choiceRowFields, 0, null)
-      },
+    choiceRowFieldsWithoutReservedFields() {
+      return this.kotlinArrayListToArray(this.block.choiceRowFields).filter((f) => f[0] !== '#')
+    },
 
-      secondaryFields() {
-        return lodash(this.choiceRowFields)
-            .tail()
-            .filter(field => field.charAt(0) !== '#')
-            .value()
-      },
-
-      choiceRowsWithoutReservedFields() {
-        return lodash.map(this.choiceRows,
-            row => [
-              row[0],
-              ...lodash.takeRight(row, this.secondaryFields.length)
-            ])
-      },
-
-      choiceRows() {
-        return this.kotlinArrayListToArray(this.block.choiceRows).map(row => row.toArray())
-      },
-
-      choiceRowFields() {
-        return this.kotlinArrayListToArray(this.block.choiceRowFields)
-      },
-
-      choiceRowFieldsWithoutReservedFields() {
-        return this.kotlinArrayListToArray(this.block.choiceRowFields).filter(f => f[0] !== '#')
-      },
-
-      selection() {
-        return this.hasSelection
+    selection() {
+      return this.hasSelection
             && this.selectedChoiceRow
-                .map((f, i) => {
-                  return {
-                    name: this.choiceRowFieldsWithoutReservedFields[i],
-                    value: f
-                  }
-                })
-      },
-
-      hasSelection() {
-        return this.selectedChoiceRow !== null
-      },
-
-      rows() {
-        if (!this.isBlockInteraction && !this.isFocused) {
-          return []
-        } else if (!this.isFocused) {
-          return [this.previouslySelectedBlockInteraction]
-        } else if (this.query.length >= 1) {
-          return this.search(this.query)
-        } else {
-          return this.choiceRowsWithoutReservedFields
-        }
-      },
-
-      previouslySelectedBlockInteraction() {
-        if (this.isBlockInteraction || this.blockInteraction.blockQuestionInteraction.directorySelections) {
-          return this.kotlinArrayListToArray(this.blockInteraction.blockQuestionInteraction.directorySelections)
-              .map(directorySelection => directorySelection.value)
-        } else {
-          return null
-        }
-      },
+              .map((f, i) => ({
+                name: this.choiceRowFieldsWithoutReservedFields[i],
+                value: f,
+              }))
     },
 
-    methods: {
+    hasSelection() {
+      return this.selectedChoiceRow !== null
+    },
 
-      search(query) {
-        return lodash.map(this.block.fuzzySearchAsArrays(query),
-            row => [
-              row[0],
-              ...lodash.takeRight(row, this.secondaryFields.length)
-            ])
-      },
-
-      clearSearch() {
-        this.query = ''
-      },
-
-      select(row) {
-        this.selectedChoiceRow = row
-      },
-
-      isEqual(val1, val2) {
-        return lodash.isEqual(val1, val2)
-      },
-
-      submitAnswer() {
-        this.executeSubmitAnswer(currentQuestion => {
-          currentQuestion.submitAnswer(this.selection)
-          this.executeBlock()
-          this.reset()
-        })
-      },
-
-      reset() {
-        this.query = ''
-        this.selectedChoiceRow = null
+    rows() {
+      if (!this.isBlockInteraction && !this.isFocused) {
+        return []
+      } if (!this.isFocused) {
+        return [this.previouslySelectedBlockInteraction]
+      } if (this.query.length >= 1) {
+        return this.search(this.query)
       }
+      return this.choiceRowsWithoutReservedFields
     },
-  }
+
+    previouslySelectedBlockInteraction() {
+      if (this.isBlockInteraction || this.blockInteraction.blockQuestionInteraction.directorySelections) {
+        return this.kotlinArrayListToArray(this.blockInteraction.blockQuestionInteraction.directorySelections)
+          .map((directorySelection) => directorySelection.value)
+      }
+      return null
+    },
+  },
+
+  methods: {
+
+    search(query) {
+      return lodash.map(this.block.fuzzySearchAsArrays(query),
+        (row) => [
+          row[0],
+          ...lodash.takeRight(row, this.secondaryFields.length),
+        ])
+    },
+
+    clearSearch() {
+      this.query = ''
+    },
+
+    select(row) {
+      this.selectedChoiceRow = row
+    },
+
+    isEqual(val1, val2) {
+      return lodash.isEqual(val1, val2)
+    },
+
+    submitAnswer() {
+      this.executeSubmitAnswer((currentQuestion) => {
+        currentQuestion.submitAnswer(this.selection)
+        this.executeBlock()
+        this.reset()
+      })
+    },
+
+    reset() {
+      this.query = ''
+      this.selectedChoiceRow = null
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -247,19 +212,5 @@
 
   table {
     margin-bottom: 0;
-  }
-
-  .card-title {
-    padding-top: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
-    margin: 0;
-  }
-
-  .card-text {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-bottom: 16px;
-    margin: 0;
   }
 </style>
