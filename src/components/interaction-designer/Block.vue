@@ -35,7 +35,7 @@
     </header>
 
     <div class="block-exits">
-      <div v-for="exit in block.exits"
+      <div v-for="(exit, key) in block.exits"
            :key="exit.uuid"
            class="block-exit"
            :class="{
@@ -52,7 +52,7 @@
           <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
         </div>
 
-        <h3 class="block-exit-tag badge badge-warning">{{exit.tag || '—'}}</h3>
+        <h3 class="block-exit-tag badge badge-warning">{{visibleExitTag(key, exit)}}</h3>
 
         <template v-if="exit.destinationBlock == null">
           <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
@@ -129,6 +129,7 @@
   import {OperationKind, generateConnectionLayoutKeyFor} from '@/store/builder'
   import Connection from '@/components/interaction-designer/Connection.vue'
   import lang from '@/lib/filters/lang'
+  import {BLOCK_TYPE as BLOCK_TYPE__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
 
   export default {
     props: ['block', 'x', 'y'],
@@ -217,6 +218,19 @@
         return resource.hasText()
             ? resource.getText()
             : uuid
+      },
+
+      visibleExitTag(key, exit) {
+        if (!exit.tag) {
+          return '—'
+        }
+
+        const {block} = this
+        if (block.type === BLOCK_TYPE__CASE_BLOCK) {
+          return `${key + 1}: ${exit.tag}`
+        }
+
+        return exit.tag
       },
 
       // todo: push NodeExit into it's own vue component
