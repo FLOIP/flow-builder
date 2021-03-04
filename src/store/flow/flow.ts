@@ -43,6 +43,9 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       resources: state.resources
     } as IContext
   },
+  flowsList: state => {
+    return state.flows
+  },
   hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some(mode => includes(getters.activeFlow.supportedModes || [], mode)),
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supportedModes || [], SupportedMode.IVR)
 }

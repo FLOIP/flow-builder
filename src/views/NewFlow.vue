@@ -63,6 +63,7 @@ class NewFlow extends Vue {
       if(flowContainer) {
         this.$router.push(route)
       } else {
+        //TODO - minimal validation of flow - e.g. must have label?
         //TODO - show error
       }
     })

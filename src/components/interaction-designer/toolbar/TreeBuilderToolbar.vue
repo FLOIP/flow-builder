@@ -136,6 +136,9 @@
           <router-link :to="route('flows.newFlow')" class="btn btn-outline-secondary mr-2">
             {{trans('flow-builder.new-flow')}}
           </router-link>
+          <router-link :to="route('flows.home')" class="btn btn-outline-secondary mr-2">
+            {{trans('flow-builder.home')}}
+          </router-link>
 
           <slot name="extra-buttons"/>
 

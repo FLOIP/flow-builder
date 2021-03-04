@@ -24,6 +24,11 @@
           "path": "\/flows\/{flowId}",
           "params": ["flowId"],
           "methods": ["GET"]
+        },
+        "home": {
+          "name": "home",
+          "path": "\/",
+          "methods": ["GET"]
         }
       },
       "trees": {

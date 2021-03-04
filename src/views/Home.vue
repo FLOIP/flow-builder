@@ -7,6 +7,14 @@
           <router-link :to="route('flows.newFlow')"
             title="trans('flow-builder.create-a-new-flow')"
             class="mt-3 btn btn-outline-secondary mr-2 active">{{trans('flow-builder.new-flow')}}</router-link>
+          <div class="mt-4">
+            <h2>Existing Flows</h2>
+            <div v-for="flow in flowsList">
+              <router-link :to="route('trees.editTree', {treeId: flow.uuid, component: 'interaction-designer', mode: 'edit'})"
+                  title="trans('flow-builder.edit-flow')"
+                  class="mt-3 btn btn-outline-secondary mr-2 active">{{flow.label || flow.uuid}}</router-link>
+            </div>
+          </div>
         </main>
       </div>
     </div>
@@ -20,7 +28,8 @@ import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import { forEach } from 'lodash'
 import {store} from '@/store'
-import {Mutation} from 'vuex-class'
+import {Mutation, namespace} from 'vuex-class'
+const flowVuexNamespace = namespace('flow')
 
 @Component<any>(
   {
@@ -36,6 +45,7 @@ import {Mutation} from 'vuex-class'
   },
 )
 class Home extends Vue {
+  @flowVuexNamespace.Getter flowsList!: IFlow
   @Mutation configure
 }
 
