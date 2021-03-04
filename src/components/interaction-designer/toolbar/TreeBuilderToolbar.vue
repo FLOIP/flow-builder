@@ -32,6 +32,7 @@
 
           <router-link v-if="!ui.isEditableLocked"
              :to="editOrViewTreeJsUrl"
+             event=""
              :title="trans('flow-builder.click-to-toggle-editing')"
              class="btn btn-outline-secondary mr-2"
              :class="{active: ui.isEditable}"
@@ -336,7 +337,7 @@
             }}}) // todo push out to intx-designer
         // activateBlock({blockId})
       },
-      handlePersistFlow() {
+      handlePersistFlow(route) {
         this.setTreeSaving(1)
         this.flow_persist({
           persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
@@ -346,6 +347,8 @@
           if(!flowContainer) {
             //TODO - minimal validation of flow - e.g. must have label?
             //TODO - show error
+          } else if(route) {
+            this.$router.push(route)
           }
         })
       },

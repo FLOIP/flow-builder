@@ -52,6 +52,7 @@ export default {
             /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
         ],
         saveCurrentlyInProgress: 0,
+        isEditable: true
       }
     }
   },
