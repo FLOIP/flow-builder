@@ -146,238 +146,250 @@
             </button>
             <slot name="right-grouped-buttons"/>
           </div>
+
+          <div class="btn-group pull-right mr-2">
+            <button
+                    type="button"
+                    class="btn btn-primary"
+                    @click="showClipboard">
+              {{trans('flow-builder.show-clipboard-simulator')}}
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
   </div>
 
-
 </template>
 <script lang="ts">
-  import lang from '@/lib/filters/lang'
-  import Permissions from '@/lib/mixins/Permissions'
-  import Routes from '@/lib/mixins/Routes'
-  import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-  import lodash, {isEmpty} from 'lodash'
-  import flow from 'lodash/fp/flow'
-  import pickBy from 'lodash/fp/pickBy'
-  // import {affix as Affix} from 'vue-strap'
-  // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
-  // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
-  import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
-  import {computeBlockPositionsFrom} from '@/store/builder'
+import lang from '@/lib/filters/lang';
+import Permissions from '@/lib/mixins/Permissions';
+import Routes from '@/lib/mixins/Routes';
+import {
+  mapActions, mapGetters, mapMutations, mapState,
+} from 'vuex';
+import lodash, { isEmpty } from 'lodash';
+import flow from 'lodash/fp/flow';
+import pickBy from 'lodash/fp/pickBy';
+// import {affix as Affix} from 'vue-strap'
+// import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
+// import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
+import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter';
+import { computeBlockPositionsFrom } from '@/store/builder';
 
-  export default {
-    components: {
-      // Affix,
-      // TreeUpdateConflictModal,
-      // InteractionTotalsDateRangeConfiguration
-    },
-    mixins: [
-      lang,
-      Permissions,
-      Routes,
-    ],
-    data() {
-      return {
-        isImporterVisible: false,
-      }
-    },
-    computed: {
-      ...mapState({
-        tree: ({trees: {tree}}) => tree,
-        ui: ({trees: {ui}}) => ui,
-      }),
+export default {
+  components: {
+    // Affix,
+    // TreeUpdateConflictModal,
+    // InteractionTotalsDateRangeConfiguration
+  },
+  mixins: [
+    lang,
+    Permissions,
+    Routes,
+  ],
+  data() {
+    return {
+      isImporterVisible: false,
+    };
+  },
+  computed: {
+    ...mapState({
+      tree: ({ trees: { tree } }) => tree,
+      ui: ({ trees: { ui } }) => ui,
+    }),
 
-      ...mapGetters('flow', ['activeFlow']),
-      ...mapGetters('builder', ['activeBlock']),
-      ...mapState('flow', ['flows', 'resources']),
-      ...mapState('builder', ['activeBlockId']),
+    ...mapGetters('flow', ['activeFlow']),
+    ...mapGetters('builder', ['activeBlock']),
+    ...mapState('flow', ['flows', 'resources']),
+    ...mapState('builder', ['activeBlockId']),
+    ...mapGetters('clipboard', ['isSimulatorActive']),
 
-      ...mapGetters([
-        'isEditable',
-        'isTreeSaving',
-        'isBlockAvailableByBlockClass',
-        'hasChanges',
-        'isTreeValid',
-        'isFeatureTreeSaveEnabled',
-        'isFeatureTreeSendEnabled',
-        'isFeatureTreeDuplicateEnabled',
-        'isFeatureViewResultsEnabled',
-        'isFeatureUpdateInteractionTotalsEnabled',
-        'isResourceEditorEnabled',
-      ]),
+    ...mapGetters([
+      'isEditable',
+      'isTreeSaving',
+      'isBlockAvailableByBlockClass',
+      'hasChanges',
+      'isTreeValid',
+      'isFeatureTreeSaveEnabled',
+      'isFeatureTreeSendEnabled',
+      'isFeatureTreeDuplicateEnabled',
+      'isFeatureViewResultsEnabled',
+      'isFeatureUpdateInteractionTotalsEnabled',
+      'isResourceEditorEnabled',
+    ]),
 
-      flow: {
-        get() {
-          const {flows, resources} = this
-            return JSON.stringify(
-                convertKeysCase({flows, resources},
-                'SNAKE',
-                ['platformMetadata', 'ioViamo']),
-                null,
-                2)
-        },
-
-        set(value) {
-            this.importFlowsAndResources(convertKeysCase(
-                JSON.parse(value),
-                'CAMEL',
-                ['platform_metadata', 'io_viamo']
-            ))
-        }
+    flow: {
+      get() {
+        const { flows, resources } = this;
+        return JSON.stringify(
+          convertKeysCase({ flows, resources },
+            'SNAKE',
+            ['platformMetadata', 'ioViamo']),
+          null,
+          2,
+        );
       },
-      editTreeUrl() {
-        return this.editTreeRoute()
+
+      set(value) {
+        this.importFlowsAndResources(convertKeysCase(
+          JSON.parse(value),
+          'CAMEL',
+          ['platform_metadata', 'io_viamo'],
+        ));
       },
-      treeViewUrl() {
+    },
+    editTreeUrl() {
+      return this.editTreeRoute();
+    },
+    treeViewUrl() {
+      return this.editTreeRoute({
+        component: 'interaction-designer',
+      });
+    },
+    resourceViewUrl() {
+      return this.editTreeRoute({
+        component: 'resource-viewer',
+      });
+    },
+    viewResultsUrl() {
+      return this.isFeatureViewResultsEnabled ? this.editTreeRoute({ component: 'results' }) : '';
+    },
+    viewResultsSetUrl() {
+      return this.isFeatureViewResultsEnabled
+        ? this.route('trees.viewTreeSetResults', { treeSetId: this.tree.treeSetId })
+        : '';
+    },
+    downloadAudioUrl() {
+      return this.editTreeRoute({
+        component: 'downloadaudio',
+      });
+    },
+    sendOutgoingCallUrl() {
+      return this.isTreeValid ? `/outgoing/new?tree=${this.tree.id}` : '';
+    },
+    publishVersionUrl() {
+      return this.isTreeValid ? `/trees/${this.tree.id}/publishversion` : '';
+    },
+    editOrViewTreeJsUrl() {
+      if (this.ui.isEditable) {
         return this.editTreeRoute({
           component: 'interaction-designer',
-        })
-      },
-      resourceViewUrl() {
-        return this.editTreeRoute({
-          component: 'resource-viewer',
-        })
-      },
-      viewResultsUrl() {
-        return this.isFeatureViewResultsEnabled ? this.editTreeRoute({component: 'results'}) : ''
-      },
-      viewResultsSetUrl() {
-        return this.isFeatureViewResultsEnabled
-            ? this.route('trees.viewTreeSetResults', {treeSetId: this.tree.treeSetId})
-            : ''
-      },
-      downloadAudioUrl() {
-        return this.editTreeRoute({
-          component: 'downloadaudio',
-        })
-      },
-      sendOutgoingCallUrl() {
-        return this.isTreeValid ? `/outgoing/new?tree=${this.tree.id}` : ''
-      },
-      publishVersionUrl() {
-        return this.isTreeValid ? `/trees/${this.tree.id}/publishversion` : ''
-      },
-      editOrViewTreeJsUrl() {
-        if (this.ui.isEditable) {
-          return this.editTreeRoute({
-            component: 'interaction-designer',
-            mode: 'view',
-          })
-        } else {
-          return this.editTreeRoute({
-            component: 'interaction-designer',
-            mode: 'edit',
-          })
-        }
-      },
-      duplicateTreeLink() {
-        return this.isFeatureTreeDuplicateEnabled
-            ? this.route('trees.duplicateTreeAndContinue', {treeId: this.tree.id})
-            : ''
-      },
-
-      saveButtonText() {
-        if (this.hasChanges) {
-          return this.trans('flow-builder.save')
-        } else {
-          return this.trans('flow-builder.saved')
-        }
-      },
-
-      rootBlockClassesToDisplay() {
-        return flow(
-            pickBy(classDetails => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-            pickBy(classDetails => !this.hasClassDetail(classDetails, 'advancedMenu')),
-            pickBy(classDetails => !this.hasClassDetail(classDetails, 'branchingMenu')),
-        )(this.ui.blockClasses)
-      },
-
-      rootDropdownClassesToDisplay() {
-        return flow(
-            pickBy(classDetails => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-            pickBy(classDetails => this.hasClassDetail(classDetails, 'branchingMenu')),
-        )(this.ui.blockClasses)
-      },
-
-      advancedDropdownClassesToDisplay() {
-        return flow(
-            pickBy(classDetails => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-            pickBy(classDetails => this.hasClassDetail(classDetails, 'advancedMenu')),
-        )(this.ui.blockClasses)
-      },
-      canViewResultsTotals() {
-        return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
-      },
+          mode: 'view',
+        });
+      }
+      return this.editTreeRoute({
+        component: 'interaction-designer',
+        mode: 'edit',
+      });
     },
-    methods: {
-      isEmpty,
-
-      ...mapActions(['attemptSaveTree']),
-      ...mapMutations('flow', ['flow_removeBlock']),
-      ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
-      ...mapActions('builder', ['importFlowsAndResources']),
-      ...mapMutations('builder', ['activateBlock']),
-
-      async handleAddBlockByTypeSelected({type}) {
-        const {uuid: blockId} = await this.flow_addBlankBlockByType({
-          type,
-          platform_metadata: {
-            io_viamo: {
-              uiData: computeBlockPositionsFrom(this.activeBlock)
-            }
-          }
-        }); // todo push out to intx-designer
-        this.activateBlock({blockId})
-      },
-
-      handleRemoveActivatedBlockTriggered() {
-        const {activeBlockId: blockId} = this
-        this.flow_removeBlock({blockId})
-      },
-
-      handleDuplicateActivatedBlockTriggered() {
-        const {activeBlockId: blockId} = this
-        this.flow_duplicateBlock({blockId})
-      },
-
-      toggleImportExport() {
-        this.isImporterVisible = !this.isImporterVisible
-      },
-
-      editTreeRoute({component = null, mode = null} = {}) {
-        const context = this.removeNilValues({
-          treeId: this.tree.id,
-          component,
-          mode,
-        })
-        return this.route('trees.editTree', context)
-      },
-      hasClassDetail(classDetails, attribute) {
-        return !lodash.isNil(classDetails[attribute]) && classDetails[attribute]
-      },
-      translateTreeClassName(className) {
-        return this.trans(`flow-builder.${className}`)
-      },
-      shouldDisplayDividerBefore(blockClasses, className) {
-        const shouldShowDividerBeforeBlock = lodash.pickBy(
-            blockClasses,
-            classDetails => this.hasClassDetail(classDetails, 'dividerBefore'),
-        )[className]
-        return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
-      },
-      handleResourceViewerSelected() {
-        this.$el.scrollIntoView(true)
-      },
-
-      // This could be extracted to a helper mixin of some sort so it can be used in other places
-      removeNilValues(obj) {
-        return lodash.pickBy(obj, lodash.identity)
-      },
+    duplicateTreeLink() {
+      return this.isFeatureTreeDuplicateEnabled
+        ? this.route('trees.duplicateTreeAndContinue', { treeId: this.tree.id })
+        : '';
     },
-  }
+
+    saveButtonText() {
+      if (this.hasChanges) {
+        return this.trans('flow-builder.save');
+      }
+      return this.trans('flow-builder.saved');
+    },
+
+    rootBlockClassesToDisplay() {
+      return flow(
+        pickBy((classDetails) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+        pickBy((classDetails) => !this.hasClassDetail(classDetails, 'advancedMenu')),
+        pickBy((classDetails) => !this.hasClassDetail(classDetails, 'branchingMenu')),
+      )(this.ui.blockClasses);
+    },
+
+    rootDropdownClassesToDisplay() {
+      return flow(
+        pickBy((classDetails) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+        pickBy((classDetails) => this.hasClassDetail(classDetails, 'branchingMenu')),
+      )(this.ui.blockClasses);
+    },
+    advancedDropdownClassesToDisplay() {
+      return flow(
+        pickBy((classDetails) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+        pickBy((classDetails) => this.hasClassDetail(classDetails, 'advancedMenu')),
+      )(this.ui.blockClasses);
+    },
+    canViewResultsTotals() {
+      return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled);
+    },
+  },
+  methods: {
+    isEmpty,
+
+    ...mapActions(['attemptSaveTree']),
+    ...mapMutations('flow', ['flow_removeBlock']),
+    ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
+    ...mapActions('builder', ['importFlowsAndResources']),
+    ...mapMutations('builder', ['activateBlock']),
+    ...mapActions('clipboard', ['setSimulatorActive']),
+
+    async handleAddBlockByTypeSelected({ type }) {
+      const { uuid: blockId } = await this.flow_addBlankBlockByType({
+        type,
+        platform_metadata: {
+          io_viamo: {
+            uiData: computeBlockPositionsFrom(this.activeBlock),
+          },
+        },
+      }); // todo push out to intx-designer
+      this.activateBlock({ blockId });
+    },
+
+    handleRemoveActivatedBlockTriggered() {
+      const { activeBlockId: blockId } = this;
+      this.flow_removeBlock({ blockId });
+    },
+
+    handleDuplicateActivatedBlockTriggered() {
+      const { activeBlockId: blockId } = this;
+      this.flow_duplicateBlock({ blockId });
+    },
+
+    toggleImportExport() {
+      this.isImporterVisible = !this.isImporterVisible;
+    },
+
+    editTreeRoute({ component = null, mode = null } = {}) {
+      const context = this.removeNilValues({
+        treeId: this.tree.id,
+        component,
+        mode,
+      });
+      return this.route('trees.editTree', context);
+    },
+    hasClassDetail(classDetails, attribute) {
+      return !lodash.isNil(classDetails[attribute]) && classDetails[attribute];
+    },
+    translateTreeClassName(className) {
+      return this.trans(`flow-builder.${className}`);
+    },
+    shouldDisplayDividerBefore(blockClasses, className) {
+      const shouldShowDividerBeforeBlock = lodash.pickBy(
+        blockClasses,
+        (classDetails) => this.hasClassDetail(classDetails, 'dividerBefore'),
+      )[className];
+      return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className];
+    },
+    handleResourceViewerSelected() {
+      this.$el.scrollIntoView(true);
+    },
+    // This could be extracted to a helper mixin of some sort so it can be used in other places
+    removeNilValues(obj) {
+      return lodash.pickBy(obj, lodash.identity);
+    },
+    showClipboard() {
+      this.setSimulatorActive(true);
+    },
+  },
+};
 </script>
 
 <style lang="scss">
