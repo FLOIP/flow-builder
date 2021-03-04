@@ -51,6 +51,7 @@ export default {
         enabledFeatures: [
             /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
         ],
+        saveCurrentlyInProgress: 0,
       }
     }
   },
@@ -161,6 +162,9 @@ export default {
   },
 
   mutations: {
+    setTreeSaving(state, isSaving) {
+      state.ui.saveCurrentlyInProgress = isSaving
+    },
 
     configure({ui}, {appConfig, builderConfig}) {
       const {

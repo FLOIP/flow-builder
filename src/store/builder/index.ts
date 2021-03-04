@@ -66,6 +66,9 @@ export const stateFactory = (): IBuilderState => ({
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
+  isFlowSaving: (state) => {
+    return state.flowSaving 
+  },
   activeBlock: ({activeBlockId}, {blocksById}) => activeBlockId ? blocksById[activeBlockId] : null,
 
   blocksById: (state, getters, rootState, rootGetters) => {

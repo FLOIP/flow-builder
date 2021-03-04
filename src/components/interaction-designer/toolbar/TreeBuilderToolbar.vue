@@ -142,13 +142,14 @@
 
           <slot name="extra-buttons"/>
 
+          <!--TODO - do disable if no changes logic-->
           <div class="btn-group pull-right mr-2">
             <button v-if="ui.isEditable && isFeatureTreeSaveEnabled"
                     type="button"
                     class="btn btn-primary tree-save-tree"
                     :title="trans('flow-builder.save-changes-to-the-flow')"
-                    :disabled="isTreeSaving || !hasChanges"
-                    @click="attemptSaveTree">
+                    :disabled="!!isTreeSaving"
+                    @click="handlePersistFlow">
               {{saveButtonText}}
             </button>
             <slot name="right-grouped-buttons"/>
@@ -196,7 +197,7 @@
         ui: ({trees: {ui}}) => ui,
       }),
 
-      ...mapGetters('flow', ['activeFlow']),
+      ...mapGetters('flow', ['activeFlow', 'activeFlowContainer']),
       ...mapState('flow', ['flows', 'resources']),
       ...mapState('builder', ['activeBlockId']),
 
@@ -290,11 +291,8 @@
       },
 
       saveButtonText() {
-        if (this.hasChanges) {
-          return this.trans('flow-builder.save')
-        } else {
-          return this.trans('flow-builder.saved')
-        }
+        //TODO - once we cand detect changes again we will changed this text when saved
+        return this.trans('flow-builder.save')
       },
 
       rootBlockClassesToDisplay() {
@@ -326,8 +324,9 @@
       isEmpty,
 
       ...mapActions(['attemptSaveTree']),
+      ...mapMutations(['setTreeSaving']),
       ...mapMutations('flow', ['flow_removeBlock']),
-      ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
+      ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock', 'flow_persist']),
       ...mapActions('builder', ['importFlowsAndResources']),
 
       handleAddBlockByTypeSelected({type}) {
@@ -336,6 +335,19 @@
               uiData: {xPosition: 150, yPosition: 255}, // todo: selected block + (80,80)
             }}}) // todo push out to intx-designer
         // activateBlock({blockId})
+      },
+      handlePersistFlow() {
+        this.setTreeSaving(1)
+        this.flow_persist({
+          persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
+          flowContainer: this.activeFlowContainer
+        }).then((flowContainer) => {
+          this.setTreeSaving(0)
+          if(!flowContainer) {
+            //TODO - minimal validation of flow - e.g. must have label?
+            //TODO - show error
+          }
+        })
       },
 
       handleRemoveActivatedBlockTriggered() {

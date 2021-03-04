@@ -1,5 +1,5 @@
 <template>
-  <div class="interaction-designer-contents">
+  <div v-if="activeFlow" class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
     <div class="tree-sidebar-container">
