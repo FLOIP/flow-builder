@@ -198,8 +198,11 @@
 
     /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
     mounted() {
+      this.flow_setActiveFlowId({flowId: this.id})
 
+      //if nothing was found for the flow Id
       if(!this.activeFlow) {
+        this.flow_setActiveFlowId({flowId: null})
         this.$router.push(this.route('flows.fetchFlow', {flowId: this.id}))
       }
 
@@ -213,6 +216,7 @@
     methods: {
         ...mapMutations(['deselectBlocks', 'configure']),
         ...mapMutations('builder', ['activateBlock']),
+        ...mapMutations('flow', ['flow_setActiveFlowId']),
 
         ...mapActions([
           'attemptSaveTree',

@@ -3,6 +3,7 @@
     "flow-not-found": "Flow Not Found",
     "fetching-flow": "Fetching Flow",
     "create-flow": "Create Flow",
+    "create-a-new-flow": "Create a New Flow",
     "new-flow":  "New Flow",
     "flow-name":  "Flow name",
     "flow-label": "Flow label",
@@ -1536,7 +1537,8 @@
   },
   "fr.flow-builder": {
     "flow-not-found": "Flux introuvable",
-    "fetching-flow": "Récupération du flux",
+    "fetching-flow": "Récupération du Flux",
+    "create-a-new-flow": "Créer un Nouveau Flux",
     "create-flow": "Créer un Flux",
     "new-flow":  "Nouveau Flux",
     "flow-name":  "Nom du flux",

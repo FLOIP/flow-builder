@@ -1,6 +1,6 @@
 <template>
   <div class="new-contents">
-    <div class="row">
+    <div v-if="activeFlow" class="row">
       <div class="col-sm-8 offset-sm-2">
         <div class="card">
           <div class="card-body">
@@ -29,7 +29,7 @@ import Routes from '@/lib/mixins/Routes'
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import {Mutation, namespace} from 'vuex-class'
-import lodash, {forEach} from 'lodash'
+import { forEach } from 'lodash'
 import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
 import {IFlow, IContext} from '@floip/flow-runner'

@@ -3,7 +3,10 @@
     <div class="d-flex h-100 text-center">
       <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <main class="px-3">
-          <p>{{trans(message)}}</p>
+          <h2>{{trans(message)}}</h2>
+          <router-link v-if="showNewButton" :to="route('flows.newFlow')"
+            title="trans('flow-builder.create-a-new-flow')"
+            class="mt-3 btn btn-outline-secondary mr-2 active">{{trans('flow-builder.new-flow')}}</router-link>
         </main>
       </div>
     </div>
@@ -12,7 +15,7 @@
 
 <script lang="ts">
 
-import lodash, {forEach} from 'lodash'
+import { forEach } from 'lodash'
 import lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import { Component, Prop } from 'vue-property-decorator'
@@ -32,6 +35,7 @@ import {IFlow} from '@floip/flow-runner'
           this.$router.push(this.route('trees.editTree', {treeId: this.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'}))
         } else{
           this.message = 'flow-builder.flow-not-found'
+          this.showNewButton = true
         }
       })
     },
@@ -50,6 +54,7 @@ class FetchFlow extends Vue {
   @Prop({required: true}) readonly id!: string 
 
   message = 'flow-builder.fetching-flow'
+  showNewButton = false
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action flow_fetch!: Promise<IFlow>

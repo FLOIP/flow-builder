@@ -19,9 +19,19 @@ import {IFlowsState} from '.'
 import {IRootState} from '@/store'
 import {defaults, includes, forEach, cloneDeep, get, has} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
+import createFormattedDate from "@floip/flow-runner/dist/domain/DateFormat";
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  activeFlow: state => state.flows.length && getActiveFlowFrom(state as unknown as IContext),
+  //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the firstFlowId doesn't correspond to a flow
+  activeFlow: (state) => {
+    if(state.flows.length) { 
+      try {
+        return getActiveFlowFrom(state as unknown as IContext)
+      } catch(err) {
+        return 0
+      }
+    }
+  },
   activeFlowContainer: state => {
     return {
       specification_version: "TODO",
@@ -38,6 +48,9 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 }
 
 export const mutations: MutationTree<IFlowsState> = {
+  flow_setActiveFlowId(state, {flowId}: {flowId: string}) {
+    state.firstFlowId = flowId
+  },
   flow_addBlock(state, {flowId, block}: {flowId: string, block: IBlock}) {
     if (block == null) {
       throw new ValidationException('Unable to add null block to flow')
@@ -125,6 +138,22 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
+
+  //not yet used - intended as a way to reset the current container - removing all flows and resources
+  async unloadFlows({dispatch, commit, state, rootState}) {
+    const flowContext = require('../builder/blank-flow.json')
+    const flow = flowContext.flows[0]
+    flow.uuid = (new IdGeneratorUuidV4).generate()
+    flow.lastModified = createFormattedDate()
+    // TODO - type checking - remove this and resolve the error
+    //@ts-ignore
+    flow.languages = cloneDeep(rootState.trees.ui.languages)
+
+    flowContext.resources.forEach((resource: any) => commit('resource_add', {resource}, {root: true}))
+    state = Object.assign(state, flowContext);
+
+    await dispatch('flow_add', {flow}, {root: true})
+  },
   flow_persist({ state, getters }, { persistRoute, flowContainer }) {
     return axios.post(persistRoute, flowContainer)
       .then(({data}) => {
@@ -174,9 +203,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async flow_add({state}, {flow}): Promise<IFlow> {
     const length = state.flows.push(flow) // mutating here, because we need to define a root-level scope for this type of action
-    if (length === 1) {
+    //TODO - understand why this was here? Surely we can have an active flow that isn't the first and only one?
+    //if (length === 1) {
       state.firstFlowId = flow.uuid
-    }
+    //}
 
     return flow
   },
