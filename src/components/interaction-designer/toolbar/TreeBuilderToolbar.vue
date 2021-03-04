@@ -30,14 +30,14 @@
             </router-link>
           </div>
 
-          <a v-if="!ui.isEditableLocked"
-             :href="editOrViewTreeJsUrl"
+          <router-link v-if="!ui.isEditableLocked"
+             :to="editOrViewTreeJsUrl"
              :title="trans('flow-builder.click-to-toggle-editing')"
              class="btn btn-outline-secondary mr-2"
              :class="{active: ui.isEditable}"
-             @click="attemptSaveTree">
+             @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
             {{trans('flow-builder.edit-flow')}}
-          </a>
+          </router-link>
 
           <div v-if="ui.isEditable" class="dropdown mr-2">
             <button type="button"
@@ -366,7 +366,7 @@
 
       editTreeRoute({component = null, mode = null} = {}) {
         const context = this.removeNilValues({
-          treeId: this.tree.id,
+          treeId: this.activeFlow.uuid,
           component,
           mode,
         })

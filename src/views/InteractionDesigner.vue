@@ -122,7 +122,11 @@
           'PlayGroupMessageBlock',
         ]}
     },
-
+    watch: {
+      mode: function(val) {
+        this.updateIsEditableFromParams(val) // `this.mode` comes from captured param in js-routes
+      }
+    },
     computed: {
       ...mapGetters([
         'selectedBlock',
