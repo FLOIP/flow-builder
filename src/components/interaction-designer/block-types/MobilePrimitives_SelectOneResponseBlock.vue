@@ -32,12 +32,12 @@
     <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group">
       <hr/>
       <h4>{{`Choice ${choiceKey}`}}</h4>
-      <div v-if="blockExitFromResourceUuid(inflatedChoices[choiceKey].uuid)">
-        <text-editor v-model="blockExitFromResourceUuid(inflatedChoices[choiceKey].uuid).semanticLabel"
+      <div v-if="inflatedChoices[choiceKey].exit">
+        <text-editor v-model="inflatedChoices[choiceKey].exit.semanticLabel"
                      :label="'flow-builder.block-semantic-label' | trans"
                      :placeholder="'flow-builder.enter-block-semantic-label' | trans"/>
       </div>
-      <resource-editor :resource="inflatedChoices[choiceKey]"
+      <resource-editor :resource="inflatedChoices[choiceKey].resources"
                        :block="block"
                        :flow="flow" />
     </div>

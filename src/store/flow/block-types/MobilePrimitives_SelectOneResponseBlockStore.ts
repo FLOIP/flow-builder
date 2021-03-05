@@ -17,18 +17,28 @@ import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import {defaults, find, max, filter, first} from 'lodash'
+import {defaults, find, max, filter, first, get} from 'lodash'
 
 export const BLOCK_TYPE = 'MobilePrimitives\\SelectOneResponse'
 
 import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
 
+interface IInflatedChoicesInterface {
+  exit: IBlockExit,
+  resources: IResourceDefinition
+}
+
 export const getters: GetterTree<IFlowsState, IRootState> = {
   inflatedChoices: (state, getters, rootState, rootGetters): object => {
     const currentBlock = rootGetters['builder/activeBlock']
-    let choices: {[key: string]: IResourceDefinition} = {}
-    return Object.keys(currentBlock.config.choices).reduce((memo, choiceKey): {[key: string]: IResourceDefinition} => {
-      memo[choiceKey] = rootGetters['flow/resourcesByUuid'][currentBlock.config.choices[choiceKey]]
+    let choices: { [key: string]: IInflatedChoicesInterface } = {}
+
+    return Object.keys(currentBlock.config.choices).reduce((memo, choiceKey): {[key: string]: IInflatedChoicesInterface} => {
+      const resourceUuid = currentBlock.config.choices[choiceKey]
+      memo[choiceKey] = {
+        exit: getters.blockExitFromResourceUuid(resourceUuid),
+        resources: rootGetters['flow/resourcesByUuid'][resourceUuid]
+      }
       return memo
     }, choices)
   },
@@ -40,16 +50,19 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       }
     }))
   },
+  isInflatedChoiceBankOnKey: (state, getters) => (key): boolean => {
+    return !someItemsHaveValue(getters.inflatedChoices[key].resources.values, "value") && !get(getters.inflatedChoices[key], 'exit.semanticLabel')
+  },
   allChoicesHaveContent: (state, getters): boolean => {
     return Object.keys(getters.inflatedChoices).every((key: string) => {
-      return someItemsHaveValue(getters.inflatedChoices[key].values, "value")
+      return !getters.isInflatedChoiceBankOnKey(key)
     })
   },
   twoChoicesBlank: (state, getters, rootState, rootGetters): boolean => {
     let blankNumber = 0
     return Object.keys(getters.inflatedChoices).some((key: string) => {
 
-      if (!someItemsHaveValue(getters.inflatedChoices[key].values, "value")) {
+      if (getters.isInflatedChoiceBankOnKey(key)) {
         blankNumber += 1
       }
 
@@ -87,7 +100,7 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async popFirstEmptyChoice({commit, rootGetters, getters}) {
     const choiceToRemove = find(Object.keys(getters.inflatedChoices), (key: string) => {
-      return !someItemsHaveValue(getters.inflatedChoices[key].values, "value")
+      return <boolean>getters.isInflatedChoiceBankOnKey(key)
     })
     if (choiceToRemove) {
       commit('deleteChoiceByKey', {choiceKeyToRemove: choiceToRemove, blockId: rootGetters['builder/activeBlock'].uuid})
