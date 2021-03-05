@@ -104,7 +104,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
   async block_updateBlockExitWith({dispatch, commit, state}, {blockId, exitId, props: {test, tag, semanticLabel}}: {blockId: string, exitId: string, props: Partial<IBlockExit>}) {
     //TODO - handle other props apart from test
-    console.log('check block_updateBlockExitWith', tag, test, semanticLabel)
     commit('block_setExitTag', {blockId, exitId, value: tag})
     commit('block_setExitTest', {blockId, exitId, value: test})
     commit('block_setExitSemanticLabel', {blockId, exitId, value: semanticLabel})

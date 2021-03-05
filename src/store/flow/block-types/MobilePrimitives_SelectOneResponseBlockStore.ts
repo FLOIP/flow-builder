@@ -30,6 +30,7 @@ interface IInflatedChoicesInterface {
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   inflatedChoices: (state, getters, rootState, rootGetters): object => {
+    console.log('refresh inflatedChoices')
     const currentBlock = rootGetters['builder/activeBlock']
     let choices: { [key: string]: IInflatedChoicesInterface } = {}
 
@@ -110,7 +111,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
   async editSelectOneResponseBlockChoice({commit, dispatch, getters, rootGetters}) {
     const activeBlock = rootGetters['builder/activeBlock']
-    if (getters.allChoicesHaveContent) {
+    console.log('allChoicesHaveContent', getters.allChoicesHaveContent)
+    if (getters.allChoicesHaveContent) { // Then add new bank choice & exit
       const newIndex = parseInt(max(Object.keys(activeBlock.config.choices)) || "0")+1
       const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
       //due to a race condition we may have already pushed something
@@ -129,7 +131,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         }, {root: true})
         commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: exit}, {root: true})
       }
-    } else if (getters.twoChoicesBlank) {
+    } else if (getters.twoChoicesBlank) { // then remove the 1st blank exit
       const exitLabel = await dispatch('popFirstEmptyChoice', {blockId: activeBlock.uuid})
       if(exitLabel) {
         commit('flow/block_popExitsByLabel', {blockId: activeBlock.uuid, exitLabel}, {root: true})

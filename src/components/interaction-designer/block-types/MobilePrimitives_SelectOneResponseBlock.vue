@@ -32,11 +32,9 @@
     <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group">
       <hr/>
       <h4>{{`Choice ${choiceKey}`}}</h4>
-      <div v-if="inflatedChoices[choiceKey].exit">
-        <text-editor v-model="inflatedChoices[choiceKey].exit.semanticLabel"
-                     :label="'flow-builder.block-semantic-label' | trans"
-                     :placeholder="'flow-builder.enter-block-semantic-label' | trans"/>
-      </div>
+      <block-exit-semantic-label-editor :exit="inflatedChoices[choiceKey].exit"
+                                        :block="block"/>
+
       <resource-editor :resource="inflatedChoices[choiceKey].resources"
                        :block="block"
                        :flow="flow" />
@@ -52,7 +50,7 @@
 </template>
 
 <script lang="ts">
-  import IBlockExit, {IFlow} from '@floip/flow-runner'
+  import {IBlockExit, IFlow} from '@floip/flow-runner'
   import ISelectOneResponseBlock from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
   import {
     IResourceDefinition,
@@ -64,7 +62,7 @@
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-
+  import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor'
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockId from '../block-editors/BlockId.vue'
@@ -82,6 +80,7 @@
       BlockNameEditor,
       BlockLabelEditor,
       BlockSemanticLabelEditor,
+      BlockExitSemanticLabelEditor,
       FirstBlockEditorButton,
       ResourceEditor,
       BlockId,
