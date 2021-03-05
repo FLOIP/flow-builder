@@ -1,9 +1,9 @@
 <template>
-  <div v-if="exit">
+  <div>
     <text-editor v-model="semanticLabel"
         :is-editable="isEditable"
         :label="'flow-builder.block-exit-semantic-label' | trans"
-        :placeholder="'flow-builder.enter-block-exit--semantic-label' | trans"/>
+        :placeholder="'flow-builder.enter-block-exit-semantic-label' | trans"/>
   </div>
 </template>
 

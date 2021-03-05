@@ -32,7 +32,8 @@
     <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group">
       <hr/>
       <h4>{{`Choice ${choiceKey}`}}</h4>
-      <block-exit-semantic-label-editor :exit="inflatedChoices[choiceKey].exit"
+      <block-exit-semantic-label-editor v-if="inflatedChoices[choiceKey].exit"
+                                        :exit="inflatedChoices[choiceKey].exit"
                                         :block="block"/>
 
       <resource-editor :resource="inflatedChoices[choiceKey].resources"

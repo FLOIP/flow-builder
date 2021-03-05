@@ -125,11 +125,12 @@
   import {isNumber, forEach} from 'lodash'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   import PlainDraggable from '@/components/common/PlainDraggable.vue'
-  import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
+  import {ResourceResolver, SupportedMode, IBlockExit} from '@floip/flow-runner'
   import {OperationKind, generateConnectionLayoutKeyFor} from '@/store/builder'
   import Connection from '@/components/interaction-designer/Connection.vue'
   import lang from '@/lib/filters/lang'
   import {BLOCK_TYPE as BLOCK_TYPE__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
+  import {BLOCK_TYPE as BLOCK_TYPE__SELECT1_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 
   export default {
     props: ['block', 'x', 'y'],
@@ -221,13 +222,15 @@
       },
 
       visibleExitTag(key, exit) {
-        if (!exit.tag) {
+        if (!exit.tag && !exit.semanticLabel) {
           return '—'
         }
 
         const {block} = this
         if (block.type === BLOCK_TYPE__CASE_BLOCK) {
           return `${key + 1}: ${exit.tag}`
+        } else if (block.type === BLOCK_TYPE__SELECT1_BLOCK && exit.semanticLabel) {
+          return exit.semanticLabel
         }
 
         return exit.tag
