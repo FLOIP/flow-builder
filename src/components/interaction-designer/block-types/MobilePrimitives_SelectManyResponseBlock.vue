@@ -58,7 +58,7 @@
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-  import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor'
+  import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor.vue'
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockId from '../block-editors/BlockId.vue'

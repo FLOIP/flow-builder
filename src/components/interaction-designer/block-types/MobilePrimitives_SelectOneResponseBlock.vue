@@ -63,11 +63,10 @@
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-  import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor'
+  import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor.vue'
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockId from '../block-editors/BlockId.vue'
-  import TextEditor from '@/components/common/TextEditor'
 
   import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
   import lang from '@/lib/filters/lang'
@@ -85,7 +84,6 @@
       FirstBlockEditorButton,
       ResourceEditor,
       BlockId,
-      TextEditor,
     },
     mixins: [lang],
   })
