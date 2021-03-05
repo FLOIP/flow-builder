@@ -131,6 +131,7 @@
   import lang from '@/lib/filters/lang'
   import {BLOCK_TYPE as BLOCK_TYPE__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
   import {BLOCK_TYPE as BLOCK_TYPE__SELECT1_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+  import {BLOCK_TYPE as BLOCK_TYPE__SELECT_MANY_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 
   export default {
     props: ['block', 'x', 'y'],
@@ -229,7 +230,7 @@
         const {block} = this
         if (block.type === BLOCK_TYPE__CASE_BLOCK) {
           return `${key + 1}: ${exit.tag}`
-        } else if (block.type === BLOCK_TYPE__SELECT1_BLOCK && exit.semanticLabel) {
+        } else if ((block.type === BLOCK_TYPE__SELECT1_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semanticLabel) {
           return exit.semanticLabel
         }
 

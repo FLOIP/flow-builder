@@ -29,9 +29,14 @@
                        :block="block"
                        :flow="flow" />
     </div>
-    <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group form-inline">
-      <resource-editor :label="`Choice ${choiceKey}`"
-                       :resource="inflatedChoices[choiceKey]"
+    <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group">
+      <hr/>
+      <h4>{{`Choice ${choiceKey}`}}</h4>
+      <block-exit-semantic-label-editor v-if="inflatedChoices[choiceKey].exit"
+                                        :exit="inflatedChoices[choiceKey].exit"
+                                        :block="block"/>
+
+      <resource-editor :resource="inflatedChoices[choiceKey].resources"
                        :block="block"
                        :flow="flow" />
     </div>
@@ -53,7 +58,7 @@
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'
   import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-
+  import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor'
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockId from '../block-editors/BlockId.vue'
@@ -73,6 +78,7 @@
       BlockNameEditor,
       BlockLabelEditor,
       BlockSemanticLabelEditor,
+      BlockExitSemanticLabelEditor,
       FirstBlockEditorButton,
       ResourceEditor,
       BlockId,

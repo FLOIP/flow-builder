@@ -38,6 +38,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       label: 'Error',
     }
 
+    const firstChoice: Partial<IBlockExit> = {
+      uuid: (new IdGeneratorUuidV4()).generate(),
+      test: 'block.value = 0',
+      label: blankResource.uuid,
+      semanticLabel: '',
+      config: {
+        choiceResource: blankResource.uuid
+      }
+    }
+
     return defaults(props, {
       type: BLOCK_TYPE,
       name: '',
@@ -46,6 +56,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits: [
         await dispatch('flow/block_createBlockDefaultExitWith', {props: defaultExitProps}, {root: true}),
         await dispatch('flow/block_createBlockExitWith', {props: errorExitProps}, {root: true}),
+        await dispatch('flow/block_createBlockExitWith', {props: firstChoice}, {root: true}),
       ],
       config: {
         prompt: blankPromptResource.uuid,
