@@ -17,7 +17,7 @@ import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import {defaults, find, max} from 'lodash'
+import {defaults, find, max, filter, first} from 'lodash'
 
 export const BLOCK_TYPE = 'MobilePrimitives\\SelectOneResponse'
 
@@ -31,6 +31,14 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       memo[choiceKey] = rootGetters['flow/resourcesByUuid'][currentBlock.config.choices[choiceKey]]
       return memo
     }, choices)
+  },
+  blockExitFromResourceUuid: (state, getters, rootState, rootGetters) => (resourceUuid: string): IBlockExit => {
+    const currentBlock = rootGetters['builder/activeBlock']
+    return first(filter(currentBlock.exits, {
+      config: {
+        choiceResource: resourceUuid
+      }
+    }))
   },
   allChoicesHaveContent: (state, getters): boolean => {
     return Object.keys(getters.inflatedChoices).every((key: string) => {
@@ -99,7 +107,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
           props: ({
             uuid: (new IdGeneratorUuidV4()).generate(),
             test: 'block.value = '+(newIndex-1),
-            label: blankResource.uuid
+            label: blankResource.uuid,
+            semanticLabel: '',
+            config: {
+              choiceResource: blankResource.uuid
+            }
           }) as IBlockExitTestRequired,
         }, {root: true})
         commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: exit}, {root: true})
@@ -133,6 +145,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       label: 'Error',
     }
 
+    const firstChoice: Partial<IBlockExit> = {
+      uuid: (new IdGeneratorUuidV4()).generate(),
+      test: 'block.value = 0',
+      label: blankResource.uuid,
+      semanticLabel: '',
+      config: {
+        choiceResource: blankResource.uuid
+      }
+    }
+
     return defaults(props, {
       type: BLOCK_TYPE,
       name: '',
@@ -141,6 +163,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits: [
         await dispatch('flow/block_createBlockDefaultExitWith', {props: defaultExitProps}, {root: true}),
         await dispatch('flow/block_createBlockExitWith', {props: errorExitProps}, {root: true}),
+        await dispatch('flow/block_createBlockExitWith', {props: firstChoice}, {root: true}),
       ],
       config: {
         prompt: blankPromptResource.uuid,

@@ -55,6 +55,10 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).test = value
   },
+  block_setExitSemanticLabel(state, {exitId, blockId, value}: {exitId: string, blockId: string, value: string}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    findBlockExitWith(exitId, block).semanticLabel = value
+  },
   block_pushNewExit(state, { blockId, newExit }: {blockId: string, newExit: IBlockExit}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     block.exits.push(newExit)
@@ -98,10 +102,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }),
     }
   },
-  async block_updateBlockExitWith({dispatch, commit, state}, {blockId, exitId, props: {test, tag}}: {blockId: string, exitId: string, props: Partial<IBlockExit>}) {
+  async block_updateBlockExitWith({dispatch, commit, state}, {blockId, exitId, props: {test, tag, semanticLabel}}: {blockId: string, exitId: string, props: Partial<IBlockExit>}) {
     //TODO - handle other props apart from test
+    console.log('check block_updateBlockExitWith', tag, test, semanticLabel)
     commit('block_setExitTag', {blockId, exitId, value: tag})
     commit('block_setExitTest', {blockId, exitId, value: test})
+    commit('block_setExitSemanticLabel', {blockId, exitId, value: semanticLabel})
   },
 
   async block_swapBlockExitDestinationBlockIds(

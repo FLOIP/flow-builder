@@ -29,9 +29,15 @@
                        :block="block"
                        :flow="flow" />
     </div>
-    <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group form-inline">
-      <resource-editor :label="`Choice ${choiceKey}`"
-                       :resource="inflatedChoices[choiceKey]"
+    <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group">
+      <hr/>
+      <h4>{{`Choice ${choiceKey}`}}</h4>
+      <div v-if="blockExitFromResourceUuid(inflatedChoices[choiceKey].uuid)">
+        <text-editor v-model="blockExitFromResourceUuid(inflatedChoices[choiceKey].uuid).semanticLabel"
+                     :label="'flow-builder.block-semantic-label' | trans"
+                     :placeholder="'flow-builder.enter-block-semantic-label' | trans"/>
+      </div>
+      <resource-editor :resource="inflatedChoices[choiceKey]"
                        :block="block"
                        :flow="flow" />
     </div>
@@ -46,7 +52,7 @@
 </template>
 
 <script lang="ts">
-  import {IFlow} from '@floip/flow-runner'
+  import IBlockExit, {IFlow} from '@floip/flow-runner'
   import ISelectOneResponseBlock from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
   import {
     IResourceDefinition,
@@ -62,6 +68,7 @@
   import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockId from '../block-editors/BlockId.vue'
+  import TextEditor from '@/components/common/TextEditor'
 
   import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
   import lang from '@/lib/filters/lang'
@@ -78,6 +85,7 @@
       FirstBlockEditorButton,
       ResourceEditor,
       BlockId,
+      TextEditor,
     },
     mixins: [lang],
   })
@@ -102,6 +110,7 @@
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
     @blockVuexNamespace.Getter inflatedChoices!: {[key: string]: IResourceDefinition}
+    @blockVuexNamespace.Getter blockExitFromResourceUuid: IBlockExit
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
   }
 
