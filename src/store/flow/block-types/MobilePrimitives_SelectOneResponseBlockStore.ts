@@ -17,7 +17,7 @@ import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import {defaults, find, max, filter, first, get} from 'lodash'
+import {defaults, find, max, filter, first, get, clone} from 'lodash'
 
 export const BLOCK_TYPE = 'MobilePrimitives\\SelectOneResponse'
 
@@ -100,12 +100,13 @@ export const mutations: MutationTree<IFlowsState> = {
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async popFirstEmptyChoice({commit, rootGetters, getters}) {
-    const choiceToRemove = find(Object.keys(getters.inflatedChoices), (key: string) => {
+    const choiceKeyToRemove = find(Object.keys(getters.inflatedChoices), (key: string) => {
       return <boolean>getters.isInflatedChoiceBankOnKey(key)
     })
-    if (choiceToRemove) {
-      commit('deleteChoiceByKey', {choiceKeyToRemove: choiceToRemove, blockId: rootGetters['builder/activeBlock'].uuid})
-      return rootGetters['builder/activeBlock'].config.choices[choiceToRemove]
+    if (choiceKeyToRemove) {
+      const choiceToRemove = rootGetters['builder/activeBlock'].config.choices[choiceKeyToRemove]
+      commit('deleteChoiceByKey', {choiceKeyToRemove: choiceKeyToRemove, blockId: rootGetters['builder/activeBlock'].uuid})
+      return choiceToRemove
     }
     return null
   },
@@ -133,6 +134,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }
     } else if (getters.twoChoicesBlank) { // then remove the 1st blank exit
       const exitLabel = await dispatch('popFirstEmptyChoice', {blockId: activeBlock.uuid})
+      console.log('pop exit', exitLabel)
       if(exitLabel) {
         commit('flow/block_popExitsByLabel', {blockId: activeBlock.uuid, exitLabel}, {root: true})
       }
