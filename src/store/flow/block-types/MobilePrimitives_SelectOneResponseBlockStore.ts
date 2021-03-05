@@ -17,7 +17,7 @@ import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import {defaults, find, max, filter, first, get, clone} from 'lodash'
+import {defaults, find, max, filter, first, get} from 'lodash'
 
 export const BLOCK_TYPE = 'MobilePrimitives\\SelectOneResponse'
 
@@ -112,7 +112,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
   async editSelectOneResponseBlockChoice({commit, dispatch, getters, rootGetters}) {
     const activeBlock = rootGetters['builder/activeBlock']
-    console.log('allChoicesHaveContent', getters.allChoicesHaveContent)
     if (getters.allChoicesHaveContent) { // Then add new bank choice & exit
       const newIndex = parseInt(max(Object.keys(activeBlock.config.choices)) || "0")+1
       const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
@@ -134,7 +133,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }
     } else if (getters.twoChoicesBlank) { // then remove the 1st blank exit
       const exitLabel = await dispatch('popFirstEmptyChoice', {blockId: activeBlock.uuid})
-      console.log('pop exit', exitLabel)
       if(exitLabel) {
         commit('flow/block_popExitsByLabel', {blockId: activeBlock.uuid, exitLabel}, {root: true})
       }

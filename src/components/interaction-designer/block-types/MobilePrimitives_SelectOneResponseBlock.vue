@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts">
-  import {IBlockExit, IFlow} from '@floip/flow-runner'
+  import {IFlow} from '@floip/flow-runner'
   import ISelectOneResponseBlock from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
   import {
     IResourceDefinition,
@@ -108,7 +108,6 @@
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
     @blockVuexNamespace.Getter inflatedChoices!: {[key: string]: IResourceDefinition}
-    @blockVuexNamespace.Getter blockExitFromResourceUuid: IBlockExit
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
   }
 
