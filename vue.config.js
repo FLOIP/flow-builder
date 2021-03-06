@@ -19,11 +19,11 @@ module.exports = {
   },
   devServer: {
     before(app) {
+      app.use(cookieParser())
+
       // use bodyParser for axios request
       app.use(bodyParser.urlencoded({ extended: true }))
       app.use(bodyParser.json())
-
-      app.use(cookieParser())
 
       // Mock a route to mimic this upload result format:
       // {"audio_file_id":147,"duration_seconds":"4.803250","description":"xyz.wav","created_at":{"date":"2020-11-24 01:41:58","timezone_type":3,"timezone":"UTC"},"audio_uuid":"5fbc64e0c74e90.82972899"}"
@@ -53,6 +53,7 @@ module.exports = {
           status: 'in_progress',
           status_description: '',
           description: 'Test call-to-record audio',
+          recorder_id: `${req.body.recorder_name.replace(/[\W_]+/g, '')}-${req.body.recorder_phonenumber}`,
         }
         res.cookie(result.uuid, 'in_progress')
         res.writeHead(200, { 'Content-Type': 'application/json' });

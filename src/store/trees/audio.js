@@ -61,11 +61,11 @@ export default {
 
       return axios.post(routeFrom('trees.calltorecordStart', null, rootState.trees.ui.routes),
         {recorder_phonenumber, recorder_name, is_new_recorder, description},
-        {headers: { 'Content-Type': 'multipart/form-data' }}
-          ).then(({data: {uuid, queue_id: queueId, status, status_description, description}}) => {
+       {headers: { 'Content-Type': 'application/json' }}
+          ).then(({data: {uuid, queue_id: queueId, status, status_description, description, recorder_id}}) => {
 
             commit('addRecorder', {
-              id: `${recorder_name.replace(/[\W_]+/g, '')}-${recorder_phonenumber}`,
+              id: recorder_id,
               name: recorder_name,
               phone: recorder_phonenumber,
             })
@@ -111,8 +111,10 @@ export default {
       return axios.post(routeFrom('trees.calltorecordStatus', null, rootState.trees.ui.routes),
         {uuid, queue_id: queueId},
         {headers: { 'Content-Type': 'application/json' }}
-        ).then(({data}) => dispatch('checkAudioRecordingStatusFor', {...data, key, uuid, queueId}))
-        .catch((error) => {
+        ).then(({data}) => {
+          console.debug('Call recording status', data.status)
+          dispatch('checkAudioRecordingStatusFor', {...data, key, uuid, queueId})
+        }).catch((error) => {
           if (error.response) {
             // Request made and server responded
             console.error('Audio', error.response.data)
