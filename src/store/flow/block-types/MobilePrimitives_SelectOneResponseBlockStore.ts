@@ -30,7 +30,6 @@ interface IInflatedChoicesInterface {
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   inflatedChoices: (state, getters, rootState, rootGetters): object => {
-    console.log('refresh inflatedChoices')
     const currentBlock = rootGetters['builder/activeBlock']
     let choices: { [key: string]: IInflatedChoicesInterface } = {}
 

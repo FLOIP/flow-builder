@@ -125,7 +125,7 @@
   import {isNumber, forEach} from 'lodash'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   import PlainDraggable from '@/components/common/PlainDraggable.vue'
-  import {ResourceResolver, SupportedMode, IBlockExit} from '@floip/flow-runner'
+  import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
   import {OperationKind, generateConnectionLayoutKeyFor} from '@/store/builder'
   import Connection from '@/components/interaction-designer/Connection.vue'
   import lang from '@/lib/filters/lang'
