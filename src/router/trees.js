@@ -9,8 +9,8 @@ export const routes = [
     component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/NewFlow.vue'),
   },
   {
-    path: '/flows/:id',
-    props: (route) => ({ id: route.params.id }),
+    path: '/flows/:uuid',
+    props: (route) => ({ uuid: route.params.uuid }),
     component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/FetchFlow.vue'),
   },
   {

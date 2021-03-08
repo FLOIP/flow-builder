@@ -29,10 +29,10 @@
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import { Component } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import {Mutation, namespace} from 'vuex-class'
-import { forEach } from 'lodash'
+import { forEach, isEmpty } from 'lodash'
 import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
 import {IFlow, IContext} from '@floip/flow-runner'
@@ -52,11 +52,15 @@ import {IFlow, IContext} from '@floip/flow-runner'
       forEach(store.modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
 
-      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+      if(!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) {
+        this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+      }
     },
   },
 )
 class NewFlow extends Vue {
+  @Prop({default: () => ({})}) readonly appConfig!: object
+  @Prop({default: () => ({})}) readonly builderConfig!: object
 
   handlePersistFlow(route) {
     this.flowError = null

@@ -18,7 +18,7 @@
 
 <script lang="ts">
 
-import { forEach } from 'lodash'
+import { forEach, isEmpty } from 'lodash'
 import lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import { Component, Prop } from 'vue-property-decorator'
@@ -32,7 +32,7 @@ import {IFlow} from '@floip/flow-runner'
   {
     mixins: [lang, Routes],
     async mounted() {
-      this.flow_fetch({fetchRoute: this.route('flows.fetchFlowServer', {flowId: this.id})}).then((flow) => {
+      this.flow_fetch({fetchRoute: this.route('flows.fetchFlowServer', {flowId: this.uuid})}).then((flow) => {
         if(flow) {
           const nextUrl = this.$route.query.nextUrl
           if(nextUrl) {
@@ -53,13 +53,16 @@ import {IFlow} from '@floip/flow-runner'
       forEach(store.modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
 
-      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+      if(!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) {
+        this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+      }
     },
   },
 )
 class FetchFlow extends Vue {
-  //TODO - this should be uuid (elsewhere also)
-  @Prop({required: true}) readonly id!: string 
+  @Prop({required: true}) readonly uuid!: string
+  @Prop({default: () => ({})}) readonly appConfig!: object
+  @Prop({default: () => ({})}) readonly builderConfig!: object
 
   message = 'flow-builder.fetching-flow'
   showNewButton = false
