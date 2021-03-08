@@ -3,13 +3,13 @@
     <div class="d-flex h-100 text-center">
       <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <main class="px-3">
-          <h2>{{trans(message)}}</h2>
+          <h2>{{message | trans}}</h2>
           <router-link v-if="showNewButton" :to="route('flows.newFlow')"
             title="trans('flow-builder.create-a-new-flow')"
-            class="mt-3 btn btn-outline-secondary mr-2 active">{{trans('flow-builder.new-flow')}}</router-link>
+            class="mt-3 btn btn-outline-secondary mr-2 active">{{'flow-builder.new-flow' | trans}}</router-link>
           <router-link v-if="flowLink" :to="flowLink"
               title="trans('flow-builder.edit-flow')"
-              class="mt-3 btn btn-outline-secondary mr-2 active">{{'flow-builder.go-to-flow'}}</router-link>
+              class="mt-3 btn btn-outline-secondary mr-2 active">{{'flow-builder.go-to-flow' | trans}}</router-link>
         </main>
       </div>
     </div>

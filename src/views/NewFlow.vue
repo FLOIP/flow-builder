@@ -5,7 +5,7 @@
         <div class="card">
           <div class="card-body">
             <div v-if="flowError" class="alert alert-danger" role="alert">
-              {{flowError}}
+              {{flowError | trans}}
             </div>
             <flow-editor :flow="activeFlow" flow-header="flow-builder.create-flow" :sidebar=false />
 
@@ -14,7 +14,7 @@
                 class="btn btn-primary"
                 event=""
                 @click.native.prevent="handlePersistFlow(route('trees.editTree', {treeId: activeFlow.uuid, component: 'interaction-designer', mode: 'edit'}))">
-                {{trans('flow-builder.save-and-continue')}}
+                {{'flow-builder.save-and-continue' | trans}}
               </router-link>
             </div>
           </div>

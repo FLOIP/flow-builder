@@ -1,6 +1,9 @@
 {
   "en.flow-builder": {
+    "go-to-flow": "Go To Flow",
+    "problem-creating-flow": "There was a problem creating the flow. Please review the configuration and try again.",
     "flow-not-found": "Flow Not Found",
+    "flow-found": "Flow Found",
     "fetching-flow": "Fetching Flow",
     "create-flow": "Create Flow",
     "create-a-new-flow": "Create a New Flow",
@@ -1536,7 +1539,10 @@
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
   },
   "fr.flow-builder": {
+    "go-to-flow": "Aller à Flux",
+    "problem-creating-flow": "Un problème est survenu lors de la création du flux. Veuillez revoir la configuration et réessayer.",
     "flow-not-found": "Flux introuvable",
+    "flow-found": "Flux Trouvé",
     "fetching-flow": "Récupération du Flux",
     "create-a-new-flow": "Créer un Nouveau Flux",
     "create-flow": "Créer un Flux",

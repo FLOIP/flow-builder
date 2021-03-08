@@ -35,7 +35,7 @@
 
     set label(value: string) {
       this.flow_setLabel({flowId:this.flow.uuid, value})
-      //Also set the name 
+      //Also set the name
       this.flow_setNameFromLabel({flowId:this.flow.uuid, value})
     }
 
