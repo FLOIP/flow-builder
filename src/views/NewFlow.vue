@@ -31,7 +31,7 @@ import lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import {Mutation, namespace} from 'vuex-class'
+import {Getter, Mutation, namespace} from 'vuex-class'
 import { forEach, isEmpty } from 'lodash'
 import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
@@ -52,7 +52,7 @@ import {IFlow, IContext} from '@floip/flow-runner'
       forEach(store.modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
 
-      if(!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) {
+      if((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
         this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
       }
     },
@@ -84,6 +84,7 @@ class NewFlow extends Vue {
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Getter activeFlowContainer!: IContext
   @Mutation configure 
+  @Getter isConfigured!: boolean
 }
 
 export default NewFlow

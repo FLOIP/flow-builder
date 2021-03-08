@@ -46,7 +46,7 @@
 <script>
   import lang from '@/lib/filters/lang'
   import Routes from '@/lib/mixins/Routes'
-  import lodash, {forEach, invoke} from 'lodash'
+  import lodash, {forEach, invoke, isEmpty} from 'lodash'
   import Vue from 'vue'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   // import {affix as Affix} from 'vue-strap'
@@ -129,6 +129,7 @@
     },
     computed: {
       ...mapGetters([
+        'isConfigured',
         'selectedBlock',
         'isEditable',
         'hasChanges',
@@ -186,7 +187,9 @@
       forEach(store.modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
 
-      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+      if((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+        this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+      }
 
       global.builder = this // initialize global reference for legacy + debugging
 

@@ -28,6 +28,7 @@ export default {
     return {
       tree: null,
       ui: {
+        configured: false,
         audioFiles: null,
         callCenterQueues: null,
         previousTreeJson: null,
@@ -59,6 +60,7 @@ export default {
 
   getters: {
 
+    isConfigured: ({ui}) => ui.isConfigured,
     isFeatureCallCenterQueuesEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'callCenterQueues'),
     isFeatureCallToRecordEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'callToRecord'),
     isFeatureMultimediaUploadEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'multimediaUpload'),
@@ -173,6 +175,7 @@ export default {
         __AUDIO__: audio,
         __TREES_UI__: uiOverrides,
       } = bootstrapLegacyGlobalDependencies(appConfig, builderConfig)
+      ui.configured = true
 
       // todo: audio recording feature is likely to be unavailable for standalone app - How do we want to isolate these?
       set(app, 'audioChoice.audioLibrary', audio.library)

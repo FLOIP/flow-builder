@@ -23,7 +23,7 @@ import lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import {Mutation, namespace} from 'vuex-class'
+import {Getter, Mutation, namespace} from 'vuex-class'
 import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
 import {IFlow} from '@floip/flow-runner'
@@ -53,7 +53,7 @@ import {IFlow} from '@floip/flow-runner'
       forEach(store.modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
 
-      if(!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) {
+      if((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
         this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
       }
     },
@@ -71,6 +71,7 @@ class FetchFlow extends Vue {
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action flow_fetch!: Promise<IFlow>
   @Mutation configure 
+  @Getter isConfigured!: boolean
 }
 
 export default FetchFlow 
