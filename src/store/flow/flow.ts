@@ -125,8 +125,8 @@ export const mutations: MutationTree<IFlowsState> = {
     const block: IBlock = findBlockWith(blockId, flow)  // @throws ValidationException when block absent
     Vue.set(flow, 'firstBlockId', block.uuid)
   },
-  flow_setName(state, {flowId, value}) {
-    findFlowWith(flowId, state as unknown as IContext).name = value
+  flow_setNameFromLabel(state, {flowId, value}) {
+    findFlowWith(flowId, state as unknown as IContext).name = value.replace(/\W+/g, '')
   },
 
   flow_setLabel(state, {flowId, value}) {

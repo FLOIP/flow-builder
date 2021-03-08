@@ -6,7 +6,6 @@
 
     <div class="row">
         <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
-          <flow-name-editor :flow="flow"/>
           <flow-label-editor :flow="flow"/>
           <flow-interaction-timeout-editor :flow="flow"/>
         </div>
@@ -22,7 +21,6 @@
   import Vue from 'vue'
   import {Component, Prop} from 'vue-property-decorator'
   import {IFlow} from '@floip/flow-runner'
-  import FlowNameEditor from './NameEditor.vue'
   import FlowLabelEditor from './LabelEditor.vue'
   import FlowInteractionTimeoutEditor from './InteractionTimeoutEditor.vue'
   import FlowLanguagesEditor from './LanguagesEditor.vue'
@@ -34,7 +32,6 @@
 
   @Component<any>({
       components: {
-        FlowNameEditor,
         FlowLabelEditor,
         FlowInteractionTimeoutEditor,
         FlowLanguagesEditor,
