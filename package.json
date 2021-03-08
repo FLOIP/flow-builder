@@ -3,16 +3,15 @@
   "version": "0.1.6",
   "description": "flow-builder provides an open source frontend for authoring flow interoperability project specification compliant flows.",
   "main": "./dist/flow-builder.common.js",
-  "files": [
-    "dist/*"
-  ],
+  "repository": "git@github.com:FLOIP/flow-builder.git",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "storybook:build": "vue-cli-service storybook:build -c config/storybook",
-    "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook"
+    "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
+    "deploy": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD"
   },
   "dependencies": {
     "@floip/flow-runner": "^0.0.78",

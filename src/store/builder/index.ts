@@ -68,7 +68,6 @@ export const stateFactory = (): IBuilderState => ({
 export const getters: GetterTree<IBuilderState, IRootState> = {
   activeBlock: ({activeBlockId}, {blocksById}) => activeBlockId ? blocksById[activeBlockId] : null,
 
-
   blocksById: (state, getters, rootState, rootGetters) => {
     const {blocks} = rootGetters['flow/activeFlow']
     return keyBy(blocks, 'uuid')
