@@ -51,6 +51,14 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 }
 
 export const mutations: MutationTree<IFlowsState> = {
+  flow_updateFlowContainer(state, flowContainer) {
+    const persistedState = flowContainer 
+    state.flows = persistedState.flows
+    state.resources = persistedState.resources
+    if(state.flows[0]) {
+      state.firstFlowId = state.flows[0].uuid
+    }
+  },
   flow_setActiveFlowId(state, {flowId}: {flowId: string}) {
     state.firstFlowId = flowId
   },
@@ -157,20 +165,18 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     await dispatch('flow_add', {flow}, {root: true})
   },
-  flow_persist({ state, getters }, { persistRoute, flowContainer }) {
+  flow_persist({ state, getters, commit }, { persistRoute, flowContainer }) {
     return axios.post(persistRoute, flowContainer)
       .then(({data}) => {
-        const persistedState = data
-        //set the state to the echoes back state
-        //TODO - mutations for this?
-        state.flows = persistedState.flows
-        state.resources = persistedState.resources
-        if(state.flows[0]) {
-          state.firstFlowId = state.flows[0].uuid
-        }
+        commit('flow_updateFlowContainer', data)
         return getters.activeFlowContainer 
       })
       .catch(() => {
+        if(!persistRoute) {
+          console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store")
+          commit('flow_updateFlowContainer', flowContainer)
+          return getters.activeFlowContainer 
+        }
         //TODO
       })
   },
@@ -180,17 +186,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // Do this if if this fails? always and then overwrite?
     return axios.get(fetchRoute)
       .then(({data}) => {
-        const fetchedState = data
-        //set the state to the echoes back state
-        //TODO - mutations for this?
-        state.flows = fetchedState.flows
-        state.resources = fetchedState.resources
-        if(state.flows[0]) {
-          state.firstFlowId = state.flows[0].uuid
-        }
+        commit('flow_updateFlowContainer', data)
         return getters.activeFlow
       })
       .catch(() => {
+        if(!fetchRoute) {
+          console.info("Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store")
+          return getters.activeFlow
+        }
         //TODO
       })
   },
