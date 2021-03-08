@@ -20,6 +20,7 @@ import {IRootState} from '@/store'
 import {defaults, includes, forEach, cloneDeep, get, has} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import createFormattedDate from "@floip/flow-runner/dist/domain/DateFormat";
+import {computeBlockPositionsFrom} from '@/store/builder'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the firstFlowId doesn't correspond to a flow
@@ -327,14 +328,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     //@ts-ignore
     duplicatedBlock.platform_metadata = {
       io_viamo: {
-        uiData: {
-          xPosition: get(block, 'platform_metadata.io_viamo.uiData.xPosition', 50) + 80,
-          yPosition: get(block, 'platform_metadata.io_viamo.uiData.yPosition', 50) + 80,
-        }
+        uiData: computeBlockPositionsFrom(block)
       }
     }
 
     commit('flow_addBlock', {block: duplicatedBlock})
+    commit('builder/activateBlock', {blockId: duplicatedBlock.uuid}, {root:true})
 
     return duplicatedBlock
   },

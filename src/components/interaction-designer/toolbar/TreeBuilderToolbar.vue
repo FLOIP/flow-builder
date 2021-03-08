@@ -150,7 +150,7 @@
                     class="btn btn-primary tree-save-tree"
                     :title="trans('flow-builder.save-changes-to-the-flow')"
                     :disabled="!!isTreeSaving"
-                    @click="handlePersistFlow">
+                    @click="handlePersistFlow()">
               {{saveButtonText}}
             </button>
             <slot name="right-grouped-buttons"/>
@@ -175,6 +175,7 @@
   // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
   // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
   import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
+  import {computeBlockPositionsFrom} from '@/store/builder'
 
   export default {
     components: {
@@ -199,6 +200,7 @@
       }),
 
       ...mapGetters('flow', ['activeFlow', 'activeFlowContainer']),
+      ...mapGetters('builder', ['activeBlock']),
       ...mapState('flow', ['flows', 'resources']),
       ...mapState('builder', ['activeBlockId']),
 
@@ -208,7 +210,6 @@
         'isBlockAvailableByBlockClass',
         'hasChanges',
         'isTreeValid',
-        'selectedBlock',
         'isFeatureTreeSaveEnabled',
         'isFeatureTreeSendEnabled',
         'isFeatureTreeDuplicateEnabled',
@@ -235,10 +236,6 @@
                 ['platform_metadata', 'io_viamo']
             ))
         }
-      },
-
-      jsKey() { // deprecate
-        return lodash.get(this.selectedBlock, 'jsKey')
       },
       editTreeUrl() {
         return this.editTreeRoute()
@@ -329,13 +326,18 @@
       ...mapMutations('flow', ['flow_removeBlock']),
       ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock', 'flow_persist']),
       ...mapActions('builder', ['importFlowsAndResources']),
+      ...mapMutations('builder', ['activateBlock']),
 
-      handleAddBlockByTypeSelected({type}) {
-        const {uuid: blockId} = this.flow_addBlankBlockByType({type, platform_metadata: {
+      async handleAddBlockByTypeSelected({type}) {
+        const {uuid: blockId} = await this.flow_addBlankBlockByType({
+          type,
+          platform_metadata: {
             io_viamo: {
-              uiData: {xPosition: 150, yPosition: 255}, // todo: selected block + (80,80)
-            }}}) // todo push out to intx-designer
-        // activateBlock({blockId})
+              uiData: computeBlockPositionsFrom(this.activeBlock)
+            }
+          }
+        }); // todo push out to intx-designer
+        this.activateBlock({blockId})
       },
       handlePersistFlow(route) {
         this.setTreeSaving(1)
