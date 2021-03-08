@@ -181,7 +181,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       })
   },
   //In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
-  flow_fetch({ state, getters }, { fetchRoute }) {
+  flow_fetch({ state, getters, commit }, { fetchRoute }) {
     //TODO - try getting from localstorage first? just memory? 
     // Do this if if this fails? always and then overwrite?
     return axios.get(fetchRoute)
