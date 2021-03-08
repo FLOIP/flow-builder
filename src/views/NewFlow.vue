@@ -4,6 +4,9 @@
       <div class="col-sm-8 offset-sm-2">
         <div class="card">
           <div class="card-body">
+            <div v-if="flowError" class="alert alert-danger" role="alert">
+              {{flowError}}
+            </div>
             <flow-editor :flow="activeFlow" flow-header="flow-builder.create-flow" :sidebar=false />
 
             <div class="float-right">
@@ -56,6 +59,7 @@ import {IFlow, IContext} from '@floip/flow-runner'
 class NewFlow extends Vue {
 
   handlePersistFlow(route) {
+    this.flowError = null
     this.flow_persist({
       persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
       flowContainer: this.activeFlowContainer
@@ -63,11 +67,13 @@ class NewFlow extends Vue {
       if(flowContainer) {
         this.$router.push(route)
       } else {
-        //TODO - minimal validation of flow - e.g. must have label?
-        //TODO - show error
+        this.flowError = 'flow-builder.problem-creating-flow'
+        //TODO - hook into validation system when we have it.
       }
     })
   }
+
+  flowError = null;
 
   @flowVuexNamespace.Action flow_addBlankFlow!: Promise<IFlow>
   @flowVuexNamespace.Action flow_persist!: Promise<IContext>

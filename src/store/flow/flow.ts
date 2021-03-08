@@ -171,13 +171,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         commit('flow_updateFlowContainer', data)
         return getters.activeFlowContainer 
       })
-      .catch(() => {
+      .catch((error) => {
         if(!persistRoute) {
           console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store")
           commit('flow_updateFlowContainer', flowContainer)
           return getters.activeFlowContainer 
         }
-        //TODO
+        return null
       })
   },
   //In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
@@ -189,12 +189,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         commit('flow_updateFlowContainer', data)
         return getters.activeFlow
       })
-      .catch(() => {
+      .catch((error) => {
         if(!fetchRoute) {
           console.info("Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store")
           return getters.activeFlow
         }
-        //TODO
+        return null
       })
   },
   // todo: this `flow_` prefix doesn't follow suit
