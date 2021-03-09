@@ -322,7 +322,8 @@ export default {
       return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
     },
     showSimulator() {
-      return this.activeFlow.supportedModes?.includes(SupportedMode.OFFLINE)
+      const showSimulatorEnabled = this.ui.enabledFeatures.includes('showSimulator')
+      return this.activeFlow.supportedModes?.includes(SupportedMode.OFFLINE) && showSimulatorEnabled
     },
   },
   methods: {

@@ -1,13 +1,14 @@
 <template>
   <div class="clipboard-root-view">
     <header class="d-flex justify-content-between">
-      <h3>{{trans('flow-builder.clipboard-simulator')}}</h3>
+      <h3>
+        {{ 'flow-builder.clipboard-simulator' | trans }}
+      </h3>
       <i class="glyphicon glyphicon-remove cursor-pointer align-self-center h4"
          @click="closeSimulator"></i>
     </header>
     <main>
       <div v-for="(blockPrompt, i) in blockPrompts" :key="i" class="mt-2">
-        {{getBlockComponent(blockPrompt.block.type)}}
         <UnsupportedBlock v-if="getBlockComponent(blockPrompt.block.type) == 'Unsupported'" />
         <component v-else :is="getBlockComponent(blockPrompt.block.type)"
                    :prompt="blockPrompt"
@@ -19,7 +20,7 @@
     <footer v-if="isComplete" class="mt-2">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{{trans('flow-builder.completed')}}!</h5>
+          <h5 class="card-title">{{'flow-builder.completed' | trans}}!</h5>
         </div>
       </div>
     </footer>
@@ -27,6 +28,7 @@
 </template>
 
 <script lang="ts">
+import lang from '@/lib/filters/lang'
 import { mapActions, mapGetters } from 'vuex'
 import {
   IContext,
@@ -53,6 +55,7 @@ export default {
     SelectManyResponseBlock,
     UnsupportedBlock,
   },
+  mixins: [lang],
   data() {
     return {
       runner: FlowRunner,

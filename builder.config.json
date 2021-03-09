@@ -247,7 +247,8 @@
     "messageSets": [],
     "treeSets": [],
     "enabledFeatures": [
-      "audioUpload"
+      "audioUpload",
+      "showSimulator"
     ]
   },
   "audio": {
