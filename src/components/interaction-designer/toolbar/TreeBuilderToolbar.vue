@@ -289,7 +289,7 @@
       },
 
       saveButtonText() {
-        //TODO - once we cand detect changes again we will changed this text when saved
+        //TODO - once we can detect changes again we will change this text when saved
         return this.trans('flow-builder.save')
       },
 
@@ -347,8 +347,8 @@
         }).then((flowContainer) => {
           this.setTreeSaving(0)
           if(!flowContainer) {
-            //TODO - minimal validation of flow - e.g. must have label?
-            //TODO - show error
+            //TODO - hook into validation system when we have it.
+            //TODO - hook into showing validation errors design when we have it
           } else if(route) {
             this.$router.push(route)
           }

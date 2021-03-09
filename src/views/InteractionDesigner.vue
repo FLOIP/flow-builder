@@ -179,8 +179,6 @@
     },
 
     created() {
-      //TODO - This view will also need to load in builder + flows stores if they’ve not already been loaded. Since we’ll now be doing this in three places, we could make a reusable module-level function that can be reused between intx-designer, new and fetch views.
-      //Three places - new, edit (this) and fetch
 
       const {$store} = this
 

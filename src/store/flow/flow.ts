@@ -53,6 +53,9 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 }
 
 export const mutations: MutationTree<IFlowsState> = {
+  //TODO - consider if this is correct? This only gets what the current flow needs and removes from the store any other flows
+  //That means the flow list page (which we will build the production version of later) will get cleared of all flows if we continue with the current model - see the temporary page /src/views/Home.vue - unless we fetch the list again
+  //That doesn't make sense if we run the builder standalone - without a fetch of the flows list
   flow_updateFlowContainer(state, flowContainer) {
     const persistedState = flowContainer 
     state.flows = persistedState.flows
@@ -152,21 +155,6 @@ export const mutations: MutationTree<IFlowsState> = {
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
-  //not yet used - intended as a way to reset the current container - removing all flows and resources
-  async unloadFlows({dispatch, commit, state, rootState}) {
-    const flowContext = require('../builder/blank-flow.json')
-    const flow = flowContext.flows[0]
-    flow.uuid = (new IdGeneratorUuidV4).generate()
-    flow.lastModified = createFormattedDate()
-    // TODO - type checking - remove this and resolve the error
-    //@ts-ignore
-    flow.languages = cloneDeep(rootState.trees.ui.languages)
-
-    flowContext.resources.forEach((resource: any) => commit('resource_add', {resource}, {root: true}))
-    state = Object.assign(state, flowContext);
-
-    await dispatch('flow_add', {flow}, {root: true})
-  },
   async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext> {
     return axios.post(persistRoute, flowContainer)
       .then(({data}) => {
@@ -182,10 +170,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         return null
       })
   },
-  //In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
+  //TODO - In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
+  //see comment on flow_updateFlowContainer
   async flow_fetch({ state, getters, commit }, { fetchRoute }): Promise<IFlow> {
-    //TODO - try getting from localstorage first? just memory? 
-    // Do this if if this fails? always and then overwrite?
     return axios.get(fetchRoute)
       .then(({data}) => {
         commit('flow_updateFlowContainer', data)
