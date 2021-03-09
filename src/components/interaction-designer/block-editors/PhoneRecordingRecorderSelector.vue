@@ -30,8 +30,8 @@
                    :id="`call-to-record-caller-${recorder.id}`"
                    :value="recorder">
           </td>
-          <td><label :for="`call-to-record-caller-${recorder.id}`">{{ recorder.name }}</label></td>
-          <td><label :for="`call-to-record-caller-${recorder.id}`">{{ recorder.phone }}</label></td>
+          <td><label :for="`call-to-record-caller-${recorder.id}`" @click="setSelectedRecorder(recorder)">{{ recorder.name }}</label></td>
+          <td><label :for="`call-to-record-caller-${recorder.id}`" @click="setSelectedRecorder(recorder)">{{ recorder.phone }}</label></td>
         </tr>
         </tbody>
       </table>
@@ -115,6 +115,9 @@ export default {
     selectNewRecorder() {
       this.draft.isNew = true
       this.selectedRecorder = this.draft
+    },
+    setSelectedRecorder(recorder) {
+      this.selectedRecorder = recorder
     },
     reset() {
       this.draft = {
