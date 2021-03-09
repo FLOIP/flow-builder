@@ -62,9 +62,10 @@ class NewFlow extends Vue {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 
-  handlePersistFlow(route) {
+  async handlePersistFlow(route) {
     this.flowError = null
     this.flow_persist({
+      //@ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
       persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
       flowContainer: this.activeFlowContainer
     }).then((flowContainer) => {
@@ -79,8 +80,8 @@ class NewFlow extends Vue {
 
   flowError = null;
 
-  @flowVuexNamespace.Action flow_addBlankFlow!: Promise<IFlow>
-  @flowVuexNamespace.Action flow_persist!: Promise<IContext>
+  @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
+  @flowVuexNamespace.Action flow_persist!: ({persistRoute: string, flowContainer: IContext}) => Promise<IContext>
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Getter activeFlowContainer!: IContext
   @Mutation configure 

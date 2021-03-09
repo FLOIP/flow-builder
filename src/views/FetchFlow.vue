@@ -69,7 +69,7 @@ class FetchFlow extends Vue {
   flowLink = null
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Action flow_fetch!: Promise<IFlow>
+  @flowVuexNamespace.Action flow_fetch!: ({fetchRoute: string}) => Promise<IFlow>
   @Mutation configure 
   @Getter isConfigured!: boolean
 }

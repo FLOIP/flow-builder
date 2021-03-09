@@ -339,7 +339,7 @@
         }); // todo push out to intx-designer
         this.activateBlock({blockId})
       },
-      handlePersistFlow(route) {
+      async handlePersistFlow(route) {
         this.setTreeSaving(1)
         this.flow_persist({
           persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),

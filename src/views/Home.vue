@@ -29,6 +29,7 @@ import Vue from 'vue'
 import { forEach } from 'lodash'
 import {store} from '@/store'
 import {Mutation, namespace} from 'vuex-class'
+import {IFlow} from '@floip/flow-runner'
 const flowVuexNamespace = namespace('flow')
 
 @Component<any>(

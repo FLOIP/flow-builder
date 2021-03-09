@@ -33,6 +33,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       }
     }
   },
+  //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: state => {
     return {
       specification_version: "TODO",
@@ -42,7 +43,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       platform_metadata: {},
       flows: state.flows,
       resources: state.resources
-    } as IContext
+    } as unknown as IContext
   },
   flowsList: state => {
     return state.flows
@@ -166,7 +167,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     await dispatch('flow_add', {flow}, {root: true})
   },
-  flow_persist({ state, getters, commit }, { persistRoute, flowContainer }) {
+  async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext> {
     return axios.post(persistRoute, flowContainer)
       .then(({data}) => {
         commit('flow_updateFlowContainer', data)
@@ -182,7 +183,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       })
   },
   //In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
-  flow_fetch({ state, getters, commit }, { fetchRoute }) {
+  async flow_fetch({ state, getters, commit }, { fetchRoute }): Promise<IFlow> {
     //TODO - try getting from localstorage first? just memory? 
     // Do this if if this fails? always and then overwrite?
     return axios.get(fetchRoute)
