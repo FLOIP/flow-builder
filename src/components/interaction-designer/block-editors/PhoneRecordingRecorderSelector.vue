@@ -58,12 +58,14 @@
             <input v-model="draft.name"
                    type="text"
                    :placeholder="'flow-builder.name'|trans"
+                   @click="selectNewRecorder"
                    class="form-control">
           </td>
           <td>
             <input v-model="draft.phone"
                    type="text"
                    :placeholder="'flow-builder.phone-number'|trans"
+                   @click="selectNewRecorder"
                    class="form-control">
           </td>
         </tr>
@@ -110,6 +112,10 @@ export default {
   },
 
   methods: {
+    selectNewRecorder() {
+      this.draft.isNew = true
+      this.selectedRecorder = this.draft
+    },
     reset() {
       this.draft = {
         name: null,
