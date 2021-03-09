@@ -1,40 +1,34 @@
 <template>
-  <div class="card">
+  <div class="card" :class="{'disabled-block': !isFocused}">
     <div class="card-body sm-padding-below font-roboto">
-      <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.name}}</h4>
+      <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
       <p class="card-text">
-        {{prompt.block.label}}
+        {{getContent}}
       </p>
-      <div class="numeric-input">
-        <label class="numeric-input-label">
-          <textarea
-              v-model="enteredValue"
-              rows="4"
-              cols="50"
-              class="form-control"
-              :disabled="!isFocused"
-              @keyup="checkIsValid"/>
-        </label>
-        <small v-if="errorMessage"
-            style="display:block"
-            class="sm-room-below form-text"
-            :class="{'text-muted': errorMessage , 'text-danger': !errorMessage}">
-          <span>{{errorMessage}}</span>
-        </small>
+      <div>
+        <textarea
+            v-model="enteredValue"
+            rows="4"
+            cols="50"
+            class="form-control"
+            :class="{'is-invalid': errorMsg}"
+            :disabled="!isFocused"
+            @keyup="checkIsValid"/>
+        <div v-if="errorMsg" class="invalid-feedback">
+          <small>{{errorMsg}}</small>
+        </div>
       </div>
       <block-action-buttons
         class="mt-3"
-        :is-disabled="false"
+        :is-disabled="errorMsg ? true : false"
         :is-focused="isFocused"
-        :on-next-clicked="submitAnswer"
-        :is-block-interaction="isBlockInteraction"
-        :on-cancel-clicked="onActiveBlockChanged"/>
+        :on-next-clicked="submitAnswer"/>
     </div>
   </div>
 </template>
 <script>
-import { IContext, OpenPrompt } from '@floip/flow-runner'
-import BlockActionButtons from '../BlockActionButtons'
+import { Context, IContext, OpenPrompt } from '@floip/flow-runner'
+import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
   name: 'OpenQuestionBlock',
@@ -45,66 +39,40 @@ export default {
     context: IContext,
     prompt: OpenPrompt,
     goNext: Function,
-
-    isBlockInteraction: Boolean,
-    onActiveBlockChanged: Function,
-    isFocused: Boolean,
+  },
+  computed: {
+    getContent() {
+      const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
+      return result.hasText() ? result.getText() : this.prompt.block.label
+    },
   },
   data() {
     return {
       enteredValue: '',
-      errorMessage: null,
+      errorMsg: null,
+      isFocused: true,
     }
   },
   methods: {
     checkIsValid() {
       try {
-        this.block.validate(this.enteredValue)
-        this.errorMessage = null
+        const validity = this.prompt.validate(this.enteredValue)
+        console.log('validity ', validity)
+        this.errorMsg = ''
       } catch (e) {
-        this.handleErrorOnSubmission(e)
+        console.log(e.message)
+        this.errorMsg = e.message
       }
     },
-
     submitAnswer() {
-      this.prompt.value = this.enteredValue
-      this.prompt.fulfill()
-      this.goNext()
-    },
-
-    handleErrorOnSubmission(e) {
-      if (e.userSafeMessage) {
-        console.error(e.userSafeMessage.devMessage, e)
-        this.errorMessage = e.userSafeMessage.userMessage || 'An error has occurred'
-      } else {
-        console.error(e)
+      this.checkIsValid()
+      if (!this.errorMsg) {
+        this.prompt.value = this.enteredValue
+        this.prompt.fulfill()
+        this.isFocused = false
+        this.goNext()
       }
-    },
-
-    reset() {
     },
   },
 }
 </script>
-<style lang="scss" scoped>
-  .text-small {
-    font-size: 80%;
-  }
-
-  .invalid {
-    margin-top: .25rem;
-    color: #dc3545;
-  }
-
-  .numeric-input {
-    margin-left: 16px;
-    margin-right: 16px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-
-  .numeric-input-label {
-    width:100%;
-    margin-bottom: 0
-  }
-</style>

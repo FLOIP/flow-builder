@@ -4,7 +4,7 @@ import {
   IBlockExit,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import IRunAnotherFlowBlock from '@floip/flow-runner/src/model/block/IRunFlowBlock'
+import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import { defaults, split } from 'lodash'
 import { IFlowsState } from '../index'
 
@@ -46,7 +46,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, { root: true })
     return newDestinationVariables
   },
-  async createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<IRunAnotherFlowBlock>}) {
+  async createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<IRunFlowBlock>}) {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({

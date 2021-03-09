@@ -2,7 +2,7 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import { IBlockExit, SupportedMode, SupportedContentType } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import INumericResponseBlock from '@floip/flow-runner/src/model/block/INumericResponseBlock'
+import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import { defaults } from 'lodash'
 import { IFlowsState } from '../index'
 

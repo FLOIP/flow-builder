@@ -1,32 +1,37 @@
 <template>
-  <div class="card">
+  <div class="card" :class="{'disabled-block': !isFocused}">
     <div class="card-body sm-padding-below font-roboto">
-      <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.name}}</h4>
+      <div class="d-flex justify-content-between">
+        <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
+      </div>
       <p class="card-text">
-        {{prompt.block.label}}
+        {{getContent}}
       </p>
-      <input v-model="enteredValue"
-        class="form-control"
-        type="number"
-        required
-        :disabled="!isFocused"
-        :min="prompt.config.min"
-        :maxlength="maxDigits"
-        :max="prompt.config.max"
-        @keyup="checkIsValid" />
+      <div class="input-group has-validation">
+        <input v-model="enteredValue"
+          class="form-control"
+          :class="{'is-invalid': errorMsg}"
+          type="number"
+          required
+          :disabled="!isFocused"
+          :min="prompt.config.min"
+          :max="prompt.config.max"
+          @keyup="checkIsValid" />
+        <div v-if="errorMsg" class="invalid-feedback">
+          <small>{{errorMsg}}</small>
+        </div>
+      </div>
       <block-action-buttons
         class="mt-3"
-        :is-disabled="false"
+        :is-disabled="isDisabled"
         :is-focused="isFocused"
-        :on-next-clicked="submitAnswer"
-        :is-block-interaction="isBlockInteraction"
-        :on-cancel-clicked="onActiveBlockChanged"/>
+        :on-next-clicked="submitAnswer"/>
     </div>
   </div>
 </template>
 <script>
-import { IContext, NumericPrompt } from '@floip/flow-runner'
-import BlockActionButtons from '../BlockActionButtons.vue'
+import { Context, IContext, NumericPrompt } from '@floip/flow-runner'
+import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
   name: 'NumericQuestionBlock',
@@ -37,43 +42,41 @@ export default {
     context: IContext,
     prompt: NumericPrompt,
     goNext: Function,
-
-    isBlockInteraction: Boolean,
-    onActiveBlockChanged: Function,
-    isFocused: Boolean,
   },
   data() {
     return {
       enteredValue: '',
-      isValid: true,
+      errorMsg: null,
+      isFocused: true,
     }
   },
   computed: {
-    maxDigits() {
-      return this.prompt.block.maxNumericDigits || 1 // TODO need to figure out the default value
+    getContent() {
+      const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
+      return result.hasText() ? result.getText() : this.prompt.block.label
     },
-    maxValue() {
-      return Math.pow(10, 0 + this.maxDigits) - 1
+    isDisabled() {
+      return !!this.errorMsg
     },
   },
   methods: {
     checkIsValid() {
-      // const num = +this.enteredValue
-      // try {
-      //   this.prompt.validate(num)
-      // } catch (e) {
-      //   this.isValid = false
-      // }
+      const num = +this.enteredValue
+      try {
+        const validity = this.prompt.validate(num)
+        this.errorMsg = ''
+      } catch (e) {
+        this.errorMsg = e.message
+      }
     },
     submitAnswer() {
-      // console.log('is valid ', this.isValid)
-      // if (this.isValid) {
-      this.prompt.value = +this.enteredValue
-      this.prompt.fulfill()
-      this.goNext()
-      // }
-    },
-    reset() {
+      this.checkIsValid()
+      if (!this.errorMsg) {
+        this.prompt.value = +this.enteredValue
+        this.prompt.fulfill()
+        this.isFocused = false
+        this.goNext()
+      }
     },
   },
 }

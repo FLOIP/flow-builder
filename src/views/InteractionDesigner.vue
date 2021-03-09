@@ -3,7 +3,11 @@
     <tree-builder-toolbar/>
 
     <div class="tree-sidebar-container">
-      <div v-if="activeBlock" class="tree-sidebar"
+      <div v-if="isSimulatorActive" class="tree-sidebar">
+        <clipboard-root></clipboard-root>
+      </div>
+
+      <div v-else-if="activeBlock" class="tree-sidebar"
            :class="[`category-${blockClasses[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
@@ -27,10 +31,6 @@
 <!--          v-if="sidebarType === 'BlockViewer'"-->
 <!--          :data-for-block-id="jsKey" />-->
 
-      </div>
-
-      <div v-else-if="isSimulatorActive" class="tree-sidebar">
-        <clipboard-root></clipboard-root>
       </div>
 
       <div v-else class="tree-sidebar">
@@ -68,8 +68,9 @@ import { store } from '@/store'
 // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
-import { BuilderCanvas } from '@/components/interaction-designer/BuilderCanvas'
+import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
+import { SupportedMode } from '@floip/flow-runner'
 
 // import '../TreeDiffLogger'
 

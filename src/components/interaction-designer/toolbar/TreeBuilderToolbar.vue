@@ -147,7 +147,7 @@
             <slot name="right-grouped-buttons"/>
           </div>
 
-          <div class="btn-group pull-right mr-2">
+          <div class="btn-group pull-right mr-2" v-if="showSimulator">
             <button
                     type="button"
                     class="btn btn-primary"
@@ -163,20 +163,21 @@
 
 </template>
 <script lang="ts">
-import lang from '@/lib/filters/lang';
-import Permissions from '@/lib/mixins/Permissions';
-import Routes from '@/lib/mixins/Routes';
+import lang from '@/lib/filters/lang'
+import Permissions from '@/lib/mixins/Permissions'
+import Routes from '@/lib/mixins/Routes'
 import {
   mapActions, mapGetters, mapMutations, mapState,
-} from 'vuex';
-import lodash, { isEmpty } from 'lodash';
-import flow from 'lodash/fp/flow';
-import pickBy from 'lodash/fp/pickBy';
+} from 'vuex'
+import lodash, { isEmpty } from 'lodash'
+import flow from 'lodash/fp/flow'
+import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
-import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter';
-import { computeBlockPositionsFrom } from '@/store/builder';
+import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
+import { computeBlockPositionsFrom } from '@/store/builder'
+import { SupportedMode } from '@floip/flow-runner'
 
 export default {
   components: {
@@ -192,7 +193,7 @@ export default {
   data() {
     return {
       isImporterVisible: false,
-    };
+    }
   },
   computed: {
     ...mapState({
@@ -222,14 +223,14 @@ export default {
 
     flow: {
       get() {
-        const { flows, resources } = this;
+        const { flows, resources } = this
         return JSON.stringify(
           convertKeysCase({ flows, resources },
             'SNAKE',
             ['platformMetadata', 'ioViamo']),
           null,
           2,
-        );
+        )
       },
 
       set(value) {
@@ -237,64 +238,64 @@ export default {
           JSON.parse(value),
           'CAMEL',
           ['platform_metadata', 'io_viamo'],
-        ));
+        ))
       },
     },
     editTreeUrl() {
-      return this.editTreeRoute();
+      return this.editTreeRoute()
     },
     treeViewUrl() {
       return this.editTreeRoute({
         component: 'interaction-designer',
-      });
+      })
     },
     resourceViewUrl() {
       return this.editTreeRoute({
         component: 'resource-viewer',
-      });
+      })
     },
     viewResultsUrl() {
-      return this.isFeatureViewResultsEnabled ? this.editTreeRoute({ component: 'results' }) : '';
+      return this.isFeatureViewResultsEnabled ? this.editTreeRoute({ component: 'results' }) : ''
     },
     viewResultsSetUrl() {
       return this.isFeatureViewResultsEnabled
         ? this.route('trees.viewTreeSetResults', { treeSetId: this.tree.treeSetId })
-        : '';
+        : ''
     },
     downloadAudioUrl() {
       return this.editTreeRoute({
         component: 'downloadaudio',
-      });
+      })
     },
     sendOutgoingCallUrl() {
-      return this.isTreeValid ? `/outgoing/new?tree=${this.tree.id}` : '';
+      return this.isTreeValid ? `/outgoing/new?tree=${this.tree.id}` : ''
     },
     publishVersionUrl() {
-      return this.isTreeValid ? `/trees/${this.tree.id}/publishversion` : '';
+      return this.isTreeValid ? `/trees/${this.tree.id}/publishversion` : ''
     },
     editOrViewTreeJsUrl() {
       if (this.ui.isEditable) {
         return this.editTreeRoute({
           component: 'interaction-designer',
           mode: 'view',
-        });
+        })
       }
       return this.editTreeRoute({
         component: 'interaction-designer',
         mode: 'edit',
-      });
+      })
     },
     duplicateTreeLink() {
       return this.isFeatureTreeDuplicateEnabled
         ? this.route('trees.duplicateTreeAndContinue', { treeId: this.tree.id })
-        : '';
+        : ''
     },
 
     saveButtonText() {
       if (this.hasChanges) {
-        return this.trans('flow-builder.save');
+        return this.trans('flow-builder.save')
       }
-      return this.trans('flow-builder.saved');
+      return this.trans('flow-builder.saved')
     },
 
     rootBlockClassesToDisplay() {
@@ -302,23 +303,26 @@ export default {
         pickBy((classDetails) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
         pickBy((classDetails) => !this.hasClassDetail(classDetails, 'advancedMenu')),
         pickBy((classDetails) => !this.hasClassDetail(classDetails, 'branchingMenu')),
-      )(this.ui.blockClasses);
+      )(this.ui.blockClasses)
     },
 
     rootDropdownClassesToDisplay() {
       return flow(
         pickBy((classDetails) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
         pickBy((classDetails) => this.hasClassDetail(classDetails, 'branchingMenu')),
-      )(this.ui.blockClasses);
+      )(this.ui.blockClasses)
     },
     advancedDropdownClassesToDisplay() {
       return flow(
         pickBy((classDetails) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
         pickBy((classDetails) => this.hasClassDetail(classDetails, 'advancedMenu')),
-      )(this.ui.blockClasses);
+      )(this.ui.blockClasses)
     },
     canViewResultsTotals() {
-      return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled);
+      return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
+    },
+    showSimulator() {
+      return this.activeFlow.supportedModes?.includes(SupportedMode.OFFLINE)
     },
   },
   methods: {
@@ -339,22 +343,22 @@ export default {
             uiData: computeBlockPositionsFrom(this.activeBlock),
           },
         },
-      }); // todo push out to intx-designer
-      this.activateBlock({ blockId });
+      }) // todo push out to intx-designer
+      this.activateBlock({ blockId })
     },
 
     handleRemoveActivatedBlockTriggered() {
-      const { activeBlockId: blockId } = this;
-      this.flow_removeBlock({ blockId });
+      const { activeBlockId: blockId } = this
+      this.flow_removeBlock({ blockId })
     },
 
     handleDuplicateActivatedBlockTriggered() {
-      const { activeBlockId: blockId } = this;
-      this.flow_duplicateBlock({ blockId });
+      const { activeBlockId: blockId } = this
+      this.flow_duplicateBlock({ blockId })
     },
 
     toggleImportExport() {
-      this.isImporterVisible = !this.isImporterVisible;
+      this.isImporterVisible = !this.isImporterVisible
     },
 
     editTreeRoute({ component = null, mode = null } = {}) {
@@ -362,34 +366,34 @@ export default {
         treeId: this.tree.id,
         component,
         mode,
-      });
-      return this.route('trees.editTree', context);
+      })
+      return this.route('trees.editTree', context)
     },
     hasClassDetail(classDetails, attribute) {
-      return !lodash.isNil(classDetails[attribute]) && classDetails[attribute];
+      return !lodash.isNil(classDetails[attribute]) && classDetails[attribute]
     },
     translateTreeClassName(className) {
-      return this.trans(`flow-builder.${className}`);
+      return this.trans(`flow-builder.${className}`)
     },
     shouldDisplayDividerBefore(blockClasses, className) {
       const shouldShowDividerBeforeBlock = lodash.pickBy(
         blockClasses,
         (classDetails) => this.hasClassDetail(classDetails, 'dividerBefore'),
-      )[className];
-      return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className];
+      )[className]
+      return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
     },
     handleResourceViewerSelected() {
-      this.$el.scrollIntoView(true);
+      this.$el.scrollIntoView(true)
     },
     // This could be extracted to a helper mixin of some sort so it can be used in other places
     removeNilValues(obj) {
-      return lodash.pickBy(obj, lodash.identity);
+      return lodash.pickBy(obj, lodash.identity)
     },
     showClipboard() {
-      this.setSimulatorActive(true);
+      this.setSimulatorActive(true)
     },
   },
-};
+}
 </script>
 
 <style lang="scss">
