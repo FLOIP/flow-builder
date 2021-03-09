@@ -25,7 +25,7 @@ import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/l
 
 interface IInflatedChoicesInterface {
   exit: IBlockExit,
-  resources: IResourceDefinition
+  resource: IResourceDefinition
 }
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
@@ -37,7 +37,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       const resourceUuid = currentBlock.config.choices[choiceKey]
       memo[choiceKey] = {
         exit: getters.blockExitFromResourceUuid(resourceUuid),
-        resources: rootGetters['flow/resourcesByUuid'][resourceUuid]
+        resource: rootGetters['flow/resourcesByUuid'][resourceUuid]
       }
       return memo
     }, choices)
@@ -45,13 +45,11 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   blockExitFromResourceUuid: (state, getters, rootState, rootGetters) => (resourceUuid: string): IBlockExit => {
     const currentBlock = rootGetters['builder/activeBlock']
     return first(filter(currentBlock.exits, {
-      config: {
-        choiceResource: resourceUuid
-      }
+      label: resourceUuid
     }))
   },
   isInflatedChoiceBankOnKey: (state, getters) => (key): boolean => {
-    return !someItemsHaveValue(getters.inflatedChoices[key].resources.values, "value") && !get(getters.inflatedChoices[key], 'exit.semanticLabel')
+    return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, "value") && !get(getters.inflatedChoices[key], 'exit.semanticLabel')
   },
   allChoicesHaveContent: (state, getters): boolean => {
     return Object.keys(getters.inflatedChoices).every((key: string) => {
@@ -123,9 +121,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
             test: 'block.value = '+(newIndex-1),
             label: blankResource.uuid,
             semanticLabel: '',
-            config: {
-              choiceResource: blankResource.uuid
-            }
           }) as IBlockExitTestRequired,
         }, {root: true})
         commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: exit}, {root: true})
@@ -164,9 +159,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       test: 'block.value = 0',
       label: blankResource.uuid,
       semanticLabel: '',
-      config: {
-        choiceResource: blankResource.uuid
-      }
     }
 
     return defaults(props, {

@@ -43,9 +43,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       test: 'block.value = 0',
       label: blankResource.uuid,
       semanticLabel: '',
-      config: {
-        choiceResource: blankResource.uuid
-      }
     }
 
     return defaults(props, {

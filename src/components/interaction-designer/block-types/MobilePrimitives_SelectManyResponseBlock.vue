@@ -36,7 +36,7 @@
                                         :exit="inflatedChoices[choiceKey].exit"
                                         :block="block"/>
 
-      <resource-editor :resource="inflatedChoices[choiceKey].resources"
+      <resource-editor :resource="inflatedChoices[choiceKey].resource"
                        :block="block"
                        :flow="flow" />
     </div>
