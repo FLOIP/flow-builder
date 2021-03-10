@@ -32,12 +32,15 @@
 
               <ul class="nav nav-tabs">
                 <li class="nav-item">
-                  <a class="nav-link active" @click.prevent="" href="#">{{'flow-builder.library' | trans}}</a>
+                  <a class="nav-link px-2 py-1 active" @click.prevent="" href="#">{{'flow-builder.library' | trans}}</a>
+                </li>
+                <li v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled" class="nav-item">
+                  <a @click.prevent="triggerRecordViaPhoneFor(languageId)" href="#" class="nav-link px-2 py-1">{{'flow-builder.phone-recording' | trans}}</a>
                 </li>
 
                 <li class="nav-item">
                   <a v-if="isFeatureAudioUploadEnabled"
-                     class="nav-link"
+                     class="nav-link px-2 py-1"
                      v-flow-uploader="{
                       target: route('trees.resumeableAudioUpload'),
                       token: `${block.uuid}${languageId}`,
@@ -59,6 +62,9 @@
                 :selectedAudioFile="findOrGenerateStubbedVariantOn(
                    resource,
                    {languageId, contentType, modes: [mode]}).value"/>
+
+            <phone-recorder v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{languageId, contentType, modes: [mode]}).value"
+                            :recordingKey="`${block.uuid}:${languageId}`" />
           </div>
         </template>
       </template>
@@ -94,7 +100,7 @@ import {
   import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
   import UploadMonitor from '../block-editors/UploadMonitor.vue'
 import ValidationException from "@floip/flow-runner/src/domain/exceptions/ValidationException";
-import {cloneDeep} from "lodash";
+import PhoneRecorder from '@/components/interaction-designer/block-editors/PhoneRecorder.vue'
 
   const flowVuexNamespace = namespace('flow')
 
@@ -138,6 +144,7 @@ import {cloneDeep} from "lodash";
       AudioLibrarySelector,
       ResourceVariantTextEditor,
       UploadMonitor,
+      PhoneRecorder,
     },
   })
   export class ResourceEditor extends Vue {
@@ -146,6 +153,10 @@ import {cloneDeep} from "lodash";
     findResourceVariantOverModesOn = findResourceVariantOverModesOn
     SupportedMode = SupportedMode
     SupportedContentType = SupportedContentType
+
+    triggerRecordViaPhoneFor(langId) {
+      this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', { langId, isVisible: true })
+    }
 
     handleFilesSubmittedFor(key, {data}) {
       console.debug(`call handleFilesSubmittedFor`)
