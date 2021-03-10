@@ -73,7 +73,6 @@ export default {
       this.checkIsValid()
       if (!this.errorMsg) {
         this.prompt.value = +this.enteredValue
-        this.prompt.fulfill()
         this.isFocused = false
         this.goNext()
       }

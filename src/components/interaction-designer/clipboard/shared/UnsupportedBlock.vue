@@ -1,7 +1,10 @@
 <template>
-<div>
-   {{blockName}} is unsupported right now.
-</div>
+  <div class="card">
+    <div class="card-body sm-padding-below font-roboto">
+      {{blockName}} This block is unsupported right now.
+      You will not be able to proceed. Please Exit.
+    </div>
+  </div>
 </template>
 
 <script>

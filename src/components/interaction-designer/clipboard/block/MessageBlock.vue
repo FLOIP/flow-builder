@@ -45,7 +45,6 @@ export default {
     submitAnswer() {
       console.log('submit answer in message block ')
       this.prompt.value = null
-      this.prompt.fulfill()
       this.isFocused = false
       this.goNext()
       this.isFocused = false

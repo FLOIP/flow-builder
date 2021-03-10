@@ -9,12 +9,14 @@
     </header>
     <main>
       <div v-for="(blockPrompt, i) in blockPrompts" :key="i" class="mt-2">
-        <UnsupportedBlock v-if="getBlockComponent(blockPrompt.block.type) == 'Unsupported'" />
-        <component v-else :is="getBlockComponent(blockPrompt.block.type)"
+        <component :is="getBlockComponent(blockPrompt.block.type)"
                    :prompt="blockPrompt"
                    :context="context"
                    :go-next="goNext">
         </component>
+      </div>
+      <div v-if="unsupportedBlock" class="mt-2">
+        <UnsupportedBlock  />
       </div>
     </main>
     <footer v-if="isComplete" class="mt-2">
@@ -37,7 +39,6 @@ import {
   IRichCursorInputRequired,
   SupportedMode,
   IContact,
-  isLastBlock,
 } from '@floip/flow-runner'
 import MessageBlock from './block/MessageBlock.vue'
 import NumericQuestionBlock from './block/NumericQuestionBlock.vue'
@@ -62,6 +63,7 @@ export default {
       blockPrompts: [],
       context: {},
       isComplete: false,
+      unsupportedBlock: false,
     }
   },
   created() {
@@ -71,7 +73,7 @@ export default {
     ...mapGetters('flow', ['getFlowState']),
     ...mapActions('clipboard', ['setSimulatorActive']),
 
-    initializeFlowRunner() {
+    async initializeFlowRunner() {
       const flowState = this.getFlowState()
       const contact = { id: '1' } as IContact
       const groups = []
@@ -98,24 +100,23 @@ export default {
       this.runner = new FlowRunner(context)
       console.log('runner = ', this.runner)
 
-      this.goNext()
+      await this.goNext()
     },
 
     async goNext() {
       console.log('------ go next ----------')
-      const currBlock = this.blockPrompts[this.blockPrompts.length - 1]?.block
-      if (this.blockPrompts.length > 0 && isLastBlock(currBlock)) {
-        this.isComplete = true
-      } else {
-        this.isComplete = false
-        try {
-          const cursor: IRichCursorInputRequired = await this.runner.run()
-          console.log('cursor ', cursor)
-          const { prompt }: IRichCursorInputRequired = cursor
-          this.blockPrompts.push(prompt)
-        } catch (e) {
-          console.log(e.message)
+      this.isComplete = false
+      try {
+        const cursor: IRichCursorInputRequired = await this.runner.run()
+        if (!cursor) {
+          this.isComplete = true
+          return
         }
+        const { prompt }: IRichCursorInputRequired = cursor
+        this.blockPrompts.push(prompt)
+      } catch (e) {
+        this.unsupportedBlock = true
+        console.warn(e.message)
       }
     },
 
@@ -127,7 +128,7 @@ export default {
         ['MobilePrimitives\\SelectOneResponse', 'SelectOneResponseBlock'],
         ['MobilePrimitives\\SelectManyResponse', 'SelectManyResponseBlock'],
       ])
-      return blockMap.get(key) || 'Unsupported'
+      return blockMap.get(key)
     },
 
     closeSimulator() {
