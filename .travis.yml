@@ -3,8 +3,9 @@ node_js:
   - "stable"
 cache: yarn
 script:
-  - yarn build
   - yarn test:unit --no-cache
+  - bash scripts/prepare-gh-pages-deployment.sh
+  - yarn build
 deploy:
   provider: pages
   skip_cleanup: true
