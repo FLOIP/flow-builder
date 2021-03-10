@@ -1,4 +1,4 @@
-import {cloneDeep, flatMap, isEqual, keyBy, map, mapValues} from 'lodash'
+import {cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {IRootState} from "@/store"
@@ -311,7 +311,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     //@ts-ignore
     flow.languages = cloneDeep(rootState.trees.ui.languages)
 
-    flowContext.resources.forEach(resource => commit('flow/resource_add', {resource}, {root: true}))
+    flowContext.resources.forEach((resource: any) => commit('flow/resource_add', {resource}, {root: true}))
 
     await dispatch('flow/flow_add', {flow}, {root: true})
 
@@ -342,12 +342,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
-    // TODO - type checking - remove this and resolve the error
-    //@ts-ignore
-    [source.platform_metadata.io_viamo.uiData.xPosition, source.platform_metadata.io_viamo.uiData.yPosition],
-    // TODO - type checking - remove this and resolve the error
-    //@ts-ignore
-    [target.platform_metadata.io_viamo.uiData.xPosition, target.platform_metadata.io_viamo.uiData.yPosition],
+    [get(source, 'platform_metadata.io_viamo.uiData.xPosition'), get(source, 'platform_metadata.io_viamo.uiData.yPosition')],
+    [get(target, 'platform_metadata.io_viamo.uiData.xPosition'), get(target, 'platform_metadata.io_viamo.uiData.yPosition')],
 
     // block titles
     source.label,
@@ -357,4 +353,30 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
     ...map(source.exits, 'tag'),
     ...map(target.exits, 'tag'),
   ]
+}
+
+export function computeBlockPositionsFrom(block: IBlock | null) {
+  const xDelta = 80, yDelta = 80
+
+  let xPosition = get(block, 'platform_metadata.io_viamo.uiData.xPosition')
+  let yPosition = get(block, 'platform_metadata.io_viamo.uiData.yPosition')
+
+  if (!xPosition || !yPosition) {
+    const viewPortCenter = getViewportCenter()
+    xPosition = viewPortCenter.x
+    yPosition = viewPortCenter.y
+  }
+
+  return {xPosition: xPosition + xDelta, yPosition: yPosition + yDelta}
+}
+
+export function getViewportCenter() {
+  let builderCanvasElement = document.getElementsByClassName('builder-canvas')[0]
+  let sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
+  const rect = builderCanvasElement.getBoundingClientRect()
+
+  return {
+    x: Math.round(Math.abs(rect.left) + (window.innerWidth - sideBarElement.clientWidth) / 2),
+    y: Math.round(Math.abs(rect.top) + window.innerHeight / 2)
+  }
 }

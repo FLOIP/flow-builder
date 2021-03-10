@@ -3,7 +3,7 @@
     <template v-if="true || isEditable && hasClipboard">
       <div class="form-group">
         <button type="button"
-            class="btn btn-default btn-sm"
+            class="btn btn-secondary btn-sm"
             :class="{active: isExitBlock}"
             @click="toggleExitBlock">
           <template v-if="isExitBlock">{{'flow-builder.unset-as-exit-block' | trans}}</template>

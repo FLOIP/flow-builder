@@ -218,6 +218,6 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
     }, contentTypeOverrides)
     return contentTypeOverrides
   }, contentTypeOverrides)
-
+  // @ts-ignore
   return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]
 }

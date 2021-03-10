@@ -4,7 +4,7 @@
     <div v-for="language in languages"
         :key="language.id"
         class="checkbox">
-      <label>
+      <label class="font-weight-normal">
         <input
             v-model="flowSelectedLanguages"
             :value="language"

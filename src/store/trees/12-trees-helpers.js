@@ -1,5 +1,7 @@
 
 /*global Backbone */
+import _ from 'lodash';
+
 window.app = window.app || {};
 
 
@@ -522,13 +524,13 @@ window.app = window.app || {};
 
     // remove active class from all
     $("[class*=csv-exports-btn-format-]").click(function () {
-      $("[class*=csv-exports-btn-format-]").removeClass('btn-primary active').addClass('btn-default')
+      $("[class*=csv-exports-btn-format-]").removeClass('btn-primary active').addClass('btn-secondary')
     })
 
     // when human-readable is selected
     $(".csv-exports-btn-format-human").click(function () {
       setToDefault = false
-      $(this).addClass('btn-primary active').removeClass('btn-default')
+      $(this).addClass('btn-primary active').removeClass('btn-secondary')
       $(".csv-exports-option-format-headings option").eq('0').prop('selected', 'selected')
       $(".csv-exports-option-format-cells option").eq('0').prop('selected', 'selected')
       $(".csv-exports-option-values-mcq option").eq('0').prop('selected', 'selected')
@@ -538,7 +540,7 @@ window.app = window.app || {};
     // when machine-readable is selected
     $(".csv-exports-btn-format-machine").click(function () {
       setToDefault = false
-      $(this).addClass('btn-primary active').removeClass('btn-default')
+      $(this).addClass('btn-primary active').removeClass('btn-secondary')
       $(".csv-exports-option-format-headings option").eq('1').prop('selected', 'selected')
       $(".csv-exports-option-format-cells option").eq('1').prop('selected', 'selected')
       $(".csv-exports-option-values-mcq option").eq('1').prop('selected', 'selected')
@@ -548,7 +550,7 @@ window.app = window.app || {};
     // when custom is selected
     $(".csv-exports-btn-format-custom").click(function () {
       setToDefault = false
-      $(this).addClass('btn-primary active').removeClass('btn-default')
+      $(this).addClass('btn-primary active').removeClass('btn-secondary')
     })
 
     // when we are to use default – use human-readable
@@ -569,8 +571,8 @@ window.app = window.app || {};
           $(".csv-exports-btn-format-machine").trigger('click')
         } else {
           setToDefault = false
-          $("[class*=csv-exports-btn-format-]").removeClass('btn-primary active').addClass('btn-default')
-          $(".csv-exports-btn-format-custom").addClass('btn-primary active').removeClass('btn-default')
+          $("[class*=csv-exports-btn-format-]").removeClass('btn-primary active').addClass('btn-secondary')
+          $(".csv-exports-btn-format-custom").addClass('btn-primary active').removeClass('btn-secondary')
         }
       }
     })

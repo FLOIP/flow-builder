@@ -32,7 +32,7 @@
               'has-success': block.customData.reviewed[langId]}">
         <div class="row">
           <div class="block-content-editor-lang col-md-1">
-            <h5>{{languageNames[langId] || 'Unknown language'}}</h5>
+            <h6 class="badge badge-info">{{languageNames[langId] || 'Unknown language'}}</h6>
           </div>
 
           <div v-if="tree.details.hasVoice" class="block-content-editor-audio col-md-4">
@@ -71,7 +71,7 @@
               class="col-md-2" />
 
           <div class="block-content-editor-reviewed col-md-1">
-            <button class="btn btn-default btn-xl"
+            <button class="btn btn-secondary btn-xl"
                     :class="{
                       active: block.customData.reviewed[langId],
                       'btn-success': block.customData.reviewed[langId]}"

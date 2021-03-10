@@ -1,11 +1,11 @@
 <template>
   <div class="audio-library-search-field dropdown">
     <div class="input-group">
-      <span class="input-group-btn">
-        <button :class="{active: isEntireLibraryModeEnabled}" class="btn btn-default"
+      <span class="input-group-prepend">
+        <button :class="{active: isEntireLibraryModeEnabled}"
+                class="btn btn-outline-secondary dropdown-toggle"
                 @click.prevent="toggleAudioLibrary">
           <i class="glyphicon glyphicon-search"></i>
-          <span class="caret"></span>
         </button>
       </span>
 
@@ -19,34 +19,34 @@
              class="form-control">
     </div>
 
-    <ul v-if="query || isAudioLibraryEmpty || isEntireLibraryModeEnabled" class="dropdown-menu">
+    <div v-if="query || isAudioLibraryEmpty || isEntireLibraryModeEnabled" class="dropdown-menu">
       <template v-if="isEntireLibraryModeEnabled">
-        <li class="disabled">
-          <a @click.prevent="" href="#">
-            <button @click="toggleAudioLibrary" class="close">x</button>
+        <a @click.prevent="" href="#" class="disabled dropdown-item">
+          <button @click="toggleAudioLibrary" class="close active">x</button>
 
-            <i class="glyphicon glyphicon-info-sign"></i>
-            {{'flow-builder.showing-entire-audio-library'|trans}}&hellip;
-          </a>
-        </li>
-        <li role="separator" class="divider"></li>
+          <i class="glyphicon glyphicon-info-sign"></i>
+          {{'flow-builder.showing-entire-audio-library'|trans}}&hellip;
+        </a>
+        <div role="separator" class="dropdown-divider"></div>
       </template>
 
       <template v-if="!isAudioLibraryEmpty">
-        <li v-for="audio in search(query).slice(offset * limit, (offset + 1) * limit)">
-          <a @click.prevent="select(audio)" href="#">{{audio.description}}</a>
-        </li>
-        <li v-if="query.length >= 3 && !search(query).length" class="disabled">
-          <a @click.prevent="" href="#">{{'flow-builder.no-audio-files-found-for-X' | trans}} "<em>{{query}}</em>".</a>
-        </li>
-        <li v-if="query && query.length < 3" class="disabled">
-          <a @click.prevent="" href="#">{{'flow-builder.enter-at-least-three-chars' | trans}}</a>
-        </li>
+        <a class="dropdown-item"
+           v-for="audio in search(query).slice(offset * limit, (offset + 1) * limit)"
+           @click.prevent="select(audio)" href="#">
+          {{audio.description}}
+        </a>
+        <a v-if="query.length >= 3 && !search(query).length" class="disabled dropdown-item" @click.prevent="" href="#">
+          {{'flow-builder.no-audio-files-found-for-X' | trans}} "<em>{{query}}</em>".
+        </a>
+        <a v-if="query && query.length < 3" class="disabled dropdown-item" @click.prevent="" href="#">
+          {{'flow-builder.enter-at-least-three-chars' | trans}}
+        </a>
 
         <template v-if="hasPrevious || hasNext">
-          <li role="separator" class="divider"></li>
+          <div role="separator" class="dropdown-divider"></div>
 
-          <li class="pagers">
+          <div class="pagers dropdown-item">
             <a @click.prevent="decrementPage" href="#" :class="{disabled: !hasPrevious}" class="col-md-6">
               <i class="glyphicon glyphicon-chevron-left"></i>
               {{'flow-builder.previous' | trans}}
@@ -56,17 +56,15 @@
               {{'flow-builder.next' | trans}}
               <i class="glyphicon glyphicon-chevron-right"></i>
             </a>
-          </li>
+          </div>
         </template>
       </template>
 
-      <li v-if="isAudioLibraryEmpty" class="disabled">
-        <a @click.prevent="" href="#">
-          <i class="glyphicon glyphicon-warning-sign"></i>
-          {{'flow-builder.audio-lib-empty-for-this-org' | trans}}
-        </a>
-      </li>
-    </ul>
+      <a v-if="isAudioLibraryEmpty" class="disabled dropdown-item" @click.prevent="" href="#">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        {{'flow-builder.audio-lib-empty-for-this-org' | trans}}
+      </a>
+    </div>
   </div>
 </template>
 
@@ -194,5 +192,9 @@
         }
       }
     }
+  }
+
+  .close {
+    pointer-events: auto;
   }
 </style>

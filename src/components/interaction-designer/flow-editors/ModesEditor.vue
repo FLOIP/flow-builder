@@ -4,7 +4,7 @@
     <div v-for="mode in availableModes"
         :key="mode"
         class="checkbox">
-      <label>
+      <label class="font-weight-normal">
         <input
             v-model="flowSelectedModes"
             :value="mode"

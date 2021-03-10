@@ -1,23 +1,31 @@
 <template>
-  <div v-if="block" >
+  <div v-if="block">
     <slot/>
   </div>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+import '@/css/InteractionDesigner.css'
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '@/scss/main.scss'
 
-  import {IBlock} from '@floip/flow-runner'
+import Vue from 'vue'
+import {Component} from 'vue-property-decorator'
 
-  @Component({
-    props: {
-      block: {
-        type: Object as () => IBlock,
-        default: null,
-      },
+import {IBlock} from '@floip/flow-runner'
+
+@Component({
+  props: {
+    block: {
+      type: Object as () => IBlock,
+      default: null,
     },
-  })
-  export class PlainFlowBuilderBlockEditorContainer extends Vue { }
-  export default PlainFlowBuilderBlockEditorContainer
+  },
+})
+export class PlainFlowBuilderBlockEditorContainer extends Vue {
+}
+
+export default PlainFlowBuilderBlockEditorContainer
 </script>

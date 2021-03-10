@@ -16,15 +16,18 @@
 </template>
 
 <script lang="ts">
-  import '@/css/InteractionDesigner.css'
-  import '@/css/voto3.css'
+import '@/css/InteractionDesigner.css'
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '@/scss/main.scss'
 
-  import Vue from 'vue'
-  import {Component, Prop} from 'vue-property-decorator'
+import Vue from 'vue'
+import {Component, Prop} from 'vue-property-decorator'
 
-  @Component({})
-  export class FlowBuilderContainer extends Vue {
-  }
+@Component({})
+export class FlowBuilderContainer extends Vue {
+}
 
-  export default FlowBuilderContainer
+export default FlowBuilderContainer
 </script>

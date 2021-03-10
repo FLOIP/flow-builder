@@ -120,7 +120,7 @@
               @click.prevent="cancel">Cancel
       </button>
 
-      <button class="btn btn-default"
+      <button class="btn btn-secondary"
               :class="{active: expanded}"
               @click.prevent="toggleExpanded">
         <span>{{'flow-builder.tell-me-more' | trans}}&hellip;</span>
