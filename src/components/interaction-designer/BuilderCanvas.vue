@@ -74,6 +74,23 @@
 
     mounted() {
       this.$store.dispatch('builder/loadFlow')
+
+      // Auto scroll, needed to put in mounted()
+      this.$watch('canvasHeight', (newValue) => {
+        window.scrollTo({
+          left: this.canvasWidth,
+          top: newValue,
+          behavior: 'smooth'
+        })
+      }, { immediate: true });
+
+      this.$watch('canvasWidth', (newValue) => {
+        window.scrollTo({
+          left: newValue,
+          top: this.canvasHeight,
+          behavior: 'smooth'
+        })
+      }, { immediate: true });
     },
   })
   export default class BuilderCanvas extends Vue {
