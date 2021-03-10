@@ -78,7 +78,6 @@
       // Auto scroll, needed to put in mounted()
       this.$watch('canvasHeight', (newValue) => {
         window.scrollTo({
-          left: this.canvasWidth,
           top: newValue,
           behavior: 'smooth'
         })
@@ -87,7 +86,6 @@
       this.$watch('canvasWidth', (newValue) => {
         window.scrollTo({
           left: newValue,
-          top: this.canvasHeight,
           behavior: 'smooth'
         })
       }, { immediate: true });
