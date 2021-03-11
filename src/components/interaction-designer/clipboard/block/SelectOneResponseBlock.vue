@@ -87,10 +87,8 @@ export default {
     checkIsValid() {
       try {
         const validity = this.prompt.validate(this.selectedItem)
-        console.log('validity ', validity)
         this.errorMsg = ''
       } catch (e) {
-        console.log(e.message)
         this.errorMsg = e.message
       }
     },
@@ -101,7 +99,6 @@ export default {
         this.prompt.fulfill(this.selectedItem)
         this.isFocused = false
         this.goNext()
-        console.log('finished submitting answer ', this.selectedItem)
       }
     },
   },

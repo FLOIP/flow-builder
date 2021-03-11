@@ -57,10 +57,8 @@ export default {
     checkIsValid() {
       try {
         const validity = this.prompt.validate(this.enteredValue)
-        console.log('validity ', validity)
         this.errorMsg = ''
       } catch (e) {
-        console.log(e.message)
         this.errorMsg = e.message
       }
     },

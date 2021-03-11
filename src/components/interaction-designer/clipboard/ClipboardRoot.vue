@@ -15,8 +15,8 @@
                    :go-next="goNext">
         </component>
       </div>
-      <div v-if="unsupportedBlock" class="mt-2">
-        <UnsupportedBlock  />
+      <div v-if="unsupportedBlockName" class="mt-2">
+        <UnsupportedBlock :block-name="unsupportedBlockName"  />
       </div>
     </main>
     <footer v-if="isComplete" class="mt-2">
@@ -63,7 +63,7 @@ export default {
       blockPrompts: [],
       context: {},
       isComplete: false,
-      unsupportedBlock: false,
+      unsupportedBlockName: '',
     }
   },
   created() {
@@ -94,17 +94,12 @@ export default {
         resources,
       )
 
-      console.log('context = ', (context))
       this.context = context
-
       this.runner = new FlowRunner(context)
-      console.log('runner = ', this.runner)
-
       await this.goNext()
     },
 
     async goNext() {
-      console.log('------ go next ----------')
       this.isComplete = false
       try {
         const cursor: IRichCursorInputRequired = await this.runner.run()
@@ -115,7 +110,9 @@ export default {
         const { prompt }: IRichCursorInputRequired = cursor
         this.blockPrompts.push(prompt)
       } catch (e) {
-        this.unsupportedBlock = true
+        if (e.message.includes('Unable to find factory for block type')) {
+          [, this.unsupportedBlockName] = e.message.split(': ')
+        }
         console.warn(e.message)
       }
     },

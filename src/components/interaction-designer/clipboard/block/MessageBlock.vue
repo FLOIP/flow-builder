@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     submitAnswer() {
-      console.log('submit answer in message block ')
       this.prompt.value = null
       this.isFocused = false
       this.goNext()

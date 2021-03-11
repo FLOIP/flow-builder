@@ -73,7 +73,7 @@ export default {
         try {
           option = Context.prototype.getResource.call(this.context, choice.value).getText()
         } catch (e) {
-          console.log('error fetching resource ')
+          console.warn('error fetching resource ')
         }
         if (option) {
           this.options.push({
@@ -82,15 +82,12 @@ export default {
           })
         }
       }
-      console.log('options are *** ', this.options)
     },
     checkIsValid() {
       try {
         const validity = this.prompt.validate(this.selectedChoices)
-        console.log('validity ', validity)
         this.errorMsg = ''
       } catch (e) {
-        console.log(e.message)
         this.errorMsg = e.message
       }
     },
@@ -101,7 +98,6 @@ export default {
         this.prompt.fulfill(this.selectedChoices)
         this.isFocused = false
         this.goNext()
-        console.log('finished submitting answer ', this.selectedChoices)
       }
     },
   },
