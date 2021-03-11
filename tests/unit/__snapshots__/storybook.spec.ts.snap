@@ -145,12 +145,12 @@ exports[`Storyshots InteractionDesigner/Toolbar Default 1`] = `
                        
                       <div>
                         <a
-                          class="btn btn-outline-secondary mr-2 active"
+                          class="btn btn-outline-secondary mr-2"
                           href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
                           
-            Edit Flow
+            View Flow
           
                         </a>
                       </div>
@@ -517,12 +517,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                        
                       <div>
                         <a
-                          class="btn btn-outline-secondary mr-2 active"
+                          class="btn btn-outline-secondary mr-2"
                           href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
                           
-            Edit Flow
+            View Flow
           
                         </a>
                       </div>
@@ -833,12 +833,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                        
                       <div>
                         <a
-                          class="btn btn-outline-secondary mr-2 active"
+                          class="btn btn-outline-secondary mr-2"
                           href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
                           
-            Edit Flow
+            View Flow
           
                         </a>
                       </div>
@@ -1148,12 +1148,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                        
                       <div>
                         <a
-                          class="btn btn-outline-secondary mr-2 active"
+                          class="btn btn-outline-secondary mr-2"
                           href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
                           
-            Edit Flow
+            View Flow
           
                         </a>
                       </div>
