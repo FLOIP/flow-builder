@@ -1,15 +1,18 @@
-import {StoreOptions} from 'vuex'
-import {IFlowsState, store as flow} from './flow'
-import {IBuilderState, store as builder} from './builder'
-// @ts-ignore
+import { StoreOptions } from 'vuex'
+import { IClipboardState, store as clipboard } from '@/store/clipboard'
 import trees from '@/store/trees/trees.js'
+import { IFlowsState, store as flow } from './flow'
+import { IBuilderState, store as builder } from './builder'
+
+// @ts-ignore
 import audio from './trees/audio'
 
 export interface IRootState {
-  builder: IBuilderState,
-  flow: IFlowsState,
-  trees: any,
-  audio: any,
+  builder: IBuilderState;
+  flow: IFlowsState;
+  trees: any;
+  audio: any;
+  clipboard: IClipboardState;
 }
 
 export const store: StoreOptions<IRootState> = {
@@ -18,6 +21,7 @@ export const store: StoreOptions<IRootState> = {
     flow,
     trees, // trees was originally implemented globally, expecting it's state at root
     audio,
+    clipboard,
   },
 }
 
