@@ -358,7 +358,7 @@
 			},
 
 			isAudioLibraryEmpty() {
-				return !this.$store.state.trees.ui.audioFiles.length
+				return !this.$store.state.audio.library.length
       },
 
 			totalPiecesOfBlockContent() {
