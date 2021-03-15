@@ -1,5 +1,6 @@
 {
   "en.flow-builder": {
+    "contact-property-expression": "Contact property expression",
     "flow-name":  "Flow name",
     "flow-label": "Flow label",
     "flow-importer": "Flow importer",
@@ -23,6 +24,7 @@
     "Core\\Log": "Log",
     "Core\\Output": "Output",
     "Core\\RunFlow": "Run Flow",
+    "Core\\SetContactProperty": "Set Contact Property",
     "CreateSubscriberBlock": "Create Contact",
     "CurrentTimeBranchBlock": "Branch via Current Time",
     "DecisionBranchBlock": "Decision Branch",
@@ -1531,6 +1533,7 @@
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
   },
   "fr.flow-builder": {
+    "contact-property-expression": "Contacter l'expression de la propriété",
     "flow-name":  "Nom du flux",
     "flow-label": "Libélé du flux",
     "flow-importer": "importateur de flux",
@@ -1554,6 +1557,7 @@
     "Core\\Log": "Journal",
     "Core\\Output": "Production",
     "Core\\RunFlow": "Exécuter flux",
+    "Core\\SetContactProperty": "Set Contact Propriété",
     "CreateSubscriberBlock": "Créer un contact",
     "CurrentTimeBranchBlock": "Direction via Heure actuelle",
     "DecisionBranchBlock": "Branchement de décision",
