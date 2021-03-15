@@ -99,7 +99,7 @@ import {
   } from '@/store/flow/resource'
   import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
   import UploadMonitor from '../block-editors/UploadMonitor.vue'
-import ValidationException from "@floip/flow-runner/src/domain/exceptions/ValidationException";
+import { ValidationException } from "@floip/flow-runner/src/domain/exceptions/ValidationException";
 import PhoneRecorder from '@/components/interaction-designer/block-editors/PhoneRecorder.vue'
 
   const flowVuexNamespace = namespace('flow')

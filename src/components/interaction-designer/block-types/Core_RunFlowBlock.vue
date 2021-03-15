@@ -36,7 +36,7 @@
   import {namespace} from 'vuex-class'
   import {Component, Prop} from 'vue-property-decorator'
 
-  import IRunFlowBlock from '@floip/flow-runner/src/model/block/IRunFlowBlock'
+  import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
   import {IFlow} from '@floip/flow-runner'
   import {IFlowsState} from '@/store/flow/index'
   import BlockNameEditor from '../block-editors/NameEditor.vue'

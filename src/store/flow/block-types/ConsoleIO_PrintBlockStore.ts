@@ -5,8 +5,8 @@ import {
   SupportedMode,
   IBlockExit,
 } from '@floip/flow-runner'
-import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import IPrintBlock from '@floip/flow-runner/src/model/block/IPrintBlock'
+import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import { IPrintBlock } from '@floip/flow-runner/src/model/block/IPrintBlock'
 import {defaults} from 'lodash'
 import {IFlowsState} from '../index'
 

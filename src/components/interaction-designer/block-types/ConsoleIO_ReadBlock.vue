@@ -33,7 +33,7 @@
   import {Component, Prop} from 'vue-property-decorator'
 
   import {IFlow} from '@floip/flow-runner'
-  import IReadBlock from '@floip/flow-runner/src/model/block/IReadBlock'
+  import { IReadBlock } from '@floip/flow-runner/src/model/block/IReadBlock'
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'
   import BlockNameEditor from '../block-editors/NameEditor.vue'
   import BlockLabelEditor from '../block-editors/LabelEditor.vue'

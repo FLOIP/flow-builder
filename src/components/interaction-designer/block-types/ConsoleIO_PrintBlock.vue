@@ -27,7 +27,7 @@
   import {Component, Prop} from 'vue-property-decorator'
 
   import {IFlow} from '@floip/flow-runner'
-  import IPrintBlock from '@floip/flow-runner/src/model/block/IPrintBlock'
+  import { IPrintBlock } from '@floip/flow-runner/src/model/block/IPrintBlock'
   import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'

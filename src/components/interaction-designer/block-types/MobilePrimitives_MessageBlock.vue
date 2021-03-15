@@ -27,7 +27,7 @@
   import {Component, Prop} from 'vue-property-decorator'
 
   import {IFlow} from '@floip/flow-runner'
-  import IMessageBlock from '@floip/flow-runner/src/model/block/IMessageBlock'
+  import { IMessageBlock } from '@floip/flow-runner/src/model/block/IMessageBlock'
   import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'

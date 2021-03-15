@@ -26,7 +26,7 @@
   import {namespace} from 'vuex-class'
   import {Component, Prop} from 'vue-property-decorator'
 
-  import IOutputBlock from '@floip/flow-runner/src/model/block/IOutputBlock'
+  import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock'
   import {IFlow} from '@floip/flow-runner'
   import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
   import BlockNameEditor from '../block-editors/NameEditor.vue'

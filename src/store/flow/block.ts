@@ -11,7 +11,7 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '.'
 import {IRootState} from '@/store'
 import {defaults, without} from 'lodash'
-import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {popFirstEmptyItem} from './utils/listBuilder'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {

@@ -32,7 +32,7 @@
   import {Component, Prop} from 'vue-property-decorator'
 
   import {IBlockExit, IFlow} from '@floip/flow-runner'
-  import INumericResponseBlock from '@floip/flow-runner/src/model/block/INumericResponseBlock'
+  import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock'
   import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
   import ResourceEditor from '../resource-editors/ResourceEditor.vue'

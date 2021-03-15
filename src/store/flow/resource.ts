@@ -5,7 +5,7 @@ import {
   SupportedContentType,
   SupportedMode
 } from '@floip/flow-runner'
-import ValidationException from '@floip/flow-runner/src/domain/exceptions/ValidationException'
+import { ValidationException } from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import {cloneDeep, defaults, difference, find, first, findIndex, isEmpty, isEqual, keyBy, map, pick, without} from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '@/store/flow/index'
