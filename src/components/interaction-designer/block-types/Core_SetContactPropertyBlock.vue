@@ -8,6 +8,8 @@
     <block-label-editor :block="block"/>
     <block-semantic-label-editor :block="block"/>
 
+    <contact-property-selector :block="block"/>
+
     <expression-editor :label="'flow-builder.contact-property-expression' | trans"
                        :placeholder="'flow-builder.edit-expression' | trans"
                        :current-expression="propertyValue"
@@ -36,6 +38,7 @@ import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import ContactPropertySelector from "@/components/interaction-designer/block-editors/ContactPropertySelector.vue"
 
 import SetContactPropertyStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import lang from '@/lib/filters/lang'
@@ -53,6 +56,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    ContactPropertySelector,
   },
   mixins: [lang],
 })

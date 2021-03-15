@@ -206,7 +206,23 @@
     "isEditableLocked": 0,
     "orgTimezone": "America/Toronto",
     "subscriberCount": 0,
-    "subscriberPropertyFields": [],
+    "subscriberPropertyFields": [
+      {
+        "id": "123",
+        "name": "name",
+        "displayLabel": "Name"
+      },
+      {
+        "id": "124",
+        "name": "date_of_birth",
+        "displayLabel": "Date of birth"
+      },
+      {
+        "id": "125",
+        "name": "comment",
+        "displayLabel": "Comment"
+      }
+    ],
     "subscriberPropertyFieldDataTypes": [
       "text",
       "location",

@@ -1,6 +1,8 @@
 {
   "en.flow-builder": {
     "contact-property-expression": "Contact property expression",
+    "contact-property-label": "Contact property",
+    "contact-property-selector-placeholder": "Select a property",
     "flow-name":  "Flow name",
     "flow-label": "Flow label",
     "flow-importer": "Flow importer",
@@ -1534,6 +1536,8 @@
   },
   "fr.flow-builder": {
     "contact-property-expression": "Contacter l'expression de la propriété",
+    "contact-property-label": "Contact propriété",
+    "contact-property-selector-placeholder": "Sélectionnez une propriété",
     "flow-name":  "Nom du flux",
     "flow-label": "Libélé du flux",
     "flow-importer": "importateur de flux",
