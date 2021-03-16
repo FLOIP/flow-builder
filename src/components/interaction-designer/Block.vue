@@ -61,6 +61,7 @@
                            }"
                            :id="`exit/${exit.uuid}/pseudo-block-handle`"
                            :key="`exit/${exit.uuid}/pseudo-block-handle`"
+                           v-b-tooltip.hover.bottom="trans('flow-builder.tooltip-new-connection')"
                            @initialized="handleDraggableInitializedFor(exit, $event)"
                            @dragStarted="onCreateExitDragStarted($event, exit)"
                            @dragged="onCreateExitDragged($event)"
@@ -94,6 +95,7 @@
                            }"
                            :id="`exit/${exit.uuid}/handle`"
                            :key="`exit/${exit.uuid}/handle`"
+                           v-b-tooltip.hover.bottom="trans('flow-builder.tooltip-relocate-connection')"
                            @initialized="handleDraggableInitializedFor(exit, $event)"
                            @dragStarted="onMoveExitDragStarted($event, exit)"
                            @dragged="onMoveExitDragged($event)"
@@ -103,6 +105,7 @@
 
           <div class="block-exit-remove btn btn-danger btn-xs"
                title="Click to remove this connection"
+               v-b-tooltip.hover.bottom="trans('flow-builder.tooltip-remove-connection')"
                @click="removeConnectionFrom(exit)">
             <span class="glyphicon glyphicon-remove"></span>
           </div>
@@ -122,6 +125,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import {isNumber, forEach} from 'lodash'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
   import PlainDraggable from '@/components/common/PlainDraggable.vue'
@@ -129,6 +133,9 @@
   import {OperationKind, generateConnectionLayoutKeyFor} from '@/store/builder'
   import Connection from '@/components/interaction-designer/Connection.vue'
   import lang from '@/lib/filters/lang'
+  import {VBTooltipPlugin} from 'bootstrap-vue'
+
+  Vue.use(VBTooltipPlugin)
 
   export default {
     props: ['block', 'x', 'y'],
