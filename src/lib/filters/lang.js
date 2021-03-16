@@ -14,5 +14,11 @@ export default {
     trans(translation) {
       return global.Lang.trans(translation)
     },
+    transIf(condition, translation) {
+      if (condition) {
+        return this.trans(translation)
+      }
+      return ''
+    },
   },
 }
