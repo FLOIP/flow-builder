@@ -33,7 +33,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       semanticLabel: '',
       config: {
         groupKey: '',
-        groupName: ''
+        groupName: '',
+        isMember: null,
       },
       exits,
     })

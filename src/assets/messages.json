@@ -1,5 +1,8 @@
 {
   "en.flow-builder": {
+    "action-label": "Action:",
+    "action-placeholder": "Select an action",
+    "add": "Add",
     "contact-property-expression": "Contact property expression",
     "contact-property-label": "Contact property",
     "contact-property-selector-placeholder": "Select a property",
@@ -1537,6 +1540,9 @@
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
   },
   "fr.flow-builder": {
+    "action-label": "Action:",
+    "action-placeholder": "Sélectionnez une action",
+    "add": "Retirer",
     "contact-property-expression": "Contacter l'expression de la propriété",
     "contact-property-label": "Contact propriété",
     "contact-property-selector-placeholder": "Sélectionnez une propriété",
