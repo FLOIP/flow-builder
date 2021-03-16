@@ -144,7 +144,6 @@ export default {
     treeTitle: ({ tree }) => tree.title || 'Untitled Tree',
 
     languages: ({ ui }) => ui.languages || [],
-    availableAudio: ({ ui }) => ui.audioFiles || [],
 
     validationResults: ({ ui }) => ui.validationResults,
 
