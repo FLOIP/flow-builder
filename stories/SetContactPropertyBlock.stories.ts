@@ -25,7 +25,7 @@ const SetContactPropertyBlockTemplate = `
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-// default log block state
+// default state
 @Component<any>({
   components: {SetContactPropertyBlock, FlowBuilderSidebarEditorContainer},
   template: SetContactPropertyBlockTemplate,

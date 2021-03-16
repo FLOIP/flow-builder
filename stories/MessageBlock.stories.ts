@@ -48,7 +48,7 @@ const MessageBlockTemplate = `
   }
 )
 class DefaultClass extends BaseMountedVueClass {}
-// default log block state
+// default state
 export const Default = () => (DefaultClass)
 
 @Component<any>(
