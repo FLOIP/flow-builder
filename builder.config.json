@@ -13,6 +13,18 @@
           "path": "\/audiofiles\/upload",
           "params": [],
           "methods": ["POST", "HEAD"]
+        },
+        "calltorecordStart": {
+          "name": "calltorecordStart",
+          "path": "\/calltorecord\/start",
+          "params": [],
+          "methods": ["POST", "HEAD"]
+        },
+        "calltorecordStatus": {
+          "name": "calltorecordStatus",
+          "path": "\/calltorecord\/status",
+          "params": [],
+          "methods": ["POST", "HEAD"]
         }
       }
     },
@@ -247,7 +259,8 @@
     "messageSets": [],
     "treeSets": [],
     "enabledFeatures": [
-      "audioUpload"
+      "audioUpload",
+      "callToRecord"
     ]
   },
   "audio": {

@@ -155,19 +155,24 @@ export default {
 
   mutations: {
 
+    // TODO: find a better place to put the configure, putting it inside trees store doesn't make sense
     configure({ ui }, { appConfig, builderConfig }) {
       const {
         app,
         __AUDIO__: audio,
         __TREES_UI__: uiOverrides,
+        __APP__: appContext,
       } = bootstrapLegacyGlobalDependencies(appConfig, builderConfig)
+
+      // update this.state to expose permissions, etc
+      lodash.merge(this.state, appContext)
+      lodash.merge(this.state.audio, audio)
 
       // todo: audio recording feature is likely to be unavailable for standalone app - How do we want to isolate these?
       set(app, 'audioChoice.audioLibrary', audio.library)
       set(app, 'audioChoice.recorderList', audio.recording.recorders)
 
       lodash.merge(ui, lodash.merge(uiOverrides, {
-        audioFiles: audio.library,
         previousTreeJson: JSON.stringify(uiOverrides.originalTreeJson),
         validationResults: uiOverrides.originalValidationResults,
       }))
