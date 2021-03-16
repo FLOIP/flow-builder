@@ -74,7 +74,9 @@ export default {
 
     selectedBlock: ({ tree, ui }, getters, rootState) => lodash.find(get(tree, 'blocks', []), { jsKey: ui.selectedBlock }),
 
-    subscriberPropertyFields: ({ ui }) => lodash.get(ui, 'subscriberPropertyFields'),
+    subscriberPropertyFields: ({ ui }) => lodash.get(ui, 'groups'),
+
+    groups: ({ ui }) => lodash.get(ui, 'subscriberPropertyFields'),
 
     interactiveBlockClasses: ({ ui }, getters, rootState) => lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
 
