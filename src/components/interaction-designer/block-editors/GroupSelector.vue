@@ -3,7 +3,7 @@
     <label>{{'flow-builder.group-label' | trans}}</label>
     <vue-multiselect v-model="selectedGroup"
                      track-by="id"
-                     label="displayLabel"
+                     label="name"
                      :placeholder="'flow-builder.group-selector-placeholder' | trans"
                      :options="groupsList"
                      :allow-empty="false"
