@@ -15,36 +15,36 @@
 </template>
 
 <script>
-  import {mapMutations} from 'vuex'
-  import lang from '@/lib/filters/lang'
+import { mapMutations } from 'vuex'
+import lang from '@/lib/filters/lang'
 
-  export default {
-    mixins: [lang],
-    props: {
-      flow: Object,
-      blockId: String, // toggle for particular block
+export default {
+  mixins: [lang],
+  props: {
+    flow: Object,
+    blockId: String, // toggle for particular block
 
-      isEditable: {
-        type: Boolean,
-        default: true,
-      },
+    isEditable: {
+      type: Boolean,
+      default: true,
     },
+  },
 
-    computed: {
-      isExitBlock() {
-        return this.blockId === this.flow.exitBlockId
-      },
+  computed: {
+    isExitBlock() {
+      return this.blockId === this.flow.exitBlockId
     },
+  },
 
-    methods: {
-      ...mapMutations('flow', ['flow_setExitBlockId']),
+  methods: {
+    ...mapMutations('flow', ['flow_setExitBlockId']),
 
-      toggleExitBlock() {
-        this.flow_setExitBlockId({
-          flowId: this.flow.uuid,
-          blockId: this.isExitBlock ? null : this.blockId,
-        })
-      },
+    toggleExitBlock() {
+      this.flow_setExitBlockId({
+        flowId: this.flow.uuid,
+        blockId: this.isExitBlock ? null : this.blockId,
+      })
     },
-  }
+  },
+}
 </script>

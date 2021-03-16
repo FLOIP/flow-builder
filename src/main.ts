@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 import App from './App.vue'
 import router from './router'
 
-
 /**
  * This import modifies the jquery that should already be on the page globally at global.$
  * e.g. adding $().modal() and other jquery plugins
