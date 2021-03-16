@@ -16,13 +16,10 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async editSetContactPropertyExpression({commit}, {blockId, value}: { blockId: string; value: string }): Promise<string> {
-    const newConfig = {
-      property_value: value
-    }
-    commit('flow/block_updateConfigByKey', {
+    commit('flow/block_updateConfigByPath', {
       blockId: blockId,
-      key: 'set_contact_property',
-      value: newConfig
+      path: 'set_contact_property.property_value',
+      value
     }, {root: true})
 
     return value

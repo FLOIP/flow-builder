@@ -47,12 +47,10 @@ class ContactPropertySelector extends Vue {
   }
 
   set selectedProperty(value) {
-    this.block_updateConfigByKey({
+    this.block_updateConfigByPath({
       blockId: this.block.uuid,
-      key: 'set_contact_property',
-      value: {
-        property_key: value.name
-      }
+      path: 'set_contact_property.property_key',
+      value: value.name
     })
   }
 
@@ -60,7 +58,7 @@ class ContactPropertySelector extends Vue {
     return this.$store.state.trees.ui.subscriberPropertyFields
   }
 
-  @flowVuexNamespace.Mutation block_updateConfigByKey
+  @flowVuexNamespace.Mutation block_updateConfigByPath
 }
 
 export default ContactPropertySelector;

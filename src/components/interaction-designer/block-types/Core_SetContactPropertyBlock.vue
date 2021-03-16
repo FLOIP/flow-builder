@@ -43,6 +43,7 @@ import ContactPropertySelector from "@/components/interaction-designer/block-edi
 import SetContactPropertyStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from "@/store/builder";
+import { get } from 'lodash'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -65,7 +66,7 @@ class Core_SetContactPropertyBlock extends Vue {
   @Prop() readonly flow!: IFlow
 
   get propertyValue(): string {
-    return this.block.config.set_contact_property.property_value || ''
+    return get(this.block, 'config.set_contact_property.property_value', '')
   }
 
   @blockVuexNamespace.Action editSetContactPropertyExpression!: (params: { blockId: string, value: string }) => Promise<string>
