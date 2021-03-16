@@ -6,7 +6,7 @@ module.exports = {
   lintOnSave: false,
   runtimeCompiler: true,
   css: {
-    extract: false
+    extract: false,
   },
   configureWebpack: {
     resolve: {
@@ -40,7 +40,7 @@ module.exports = {
       app.all('/audiofiles/upload', (req, res) => {
         const now = new Date()
           .toISOString()
-          .split('T');
+          .split('T')
 
         const result = {
           audio_file_id: Math.floor(Math.random() * (1000 + 1)),
@@ -56,10 +56,10 @@ module.exports = {
             .substr(2, 16)}.${Math.random()
             .toString(36)
             .substr(2, 10)}`,
-        };
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(result));
-      });
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(result))
+      })
 
       // Mock call to record start, with this format
       // {uuid: ..., queue_id: ..., status: "in_progress", status_description: ..., description: ...}
@@ -73,9 +73,9 @@ module.exports = {
           recorder_id: `${req.body.recorder_name.replace(/[\W_]+/g, '')}-${req.body.recorder_phonenumber}`,
         }
         res.cookie(result.uuid, 'in_progress')
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(result));
-      });
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(result))
+      })
 
       // Mock call to record status, with this format
       // { audio_file_id: "148", status: "new", description: "my descr", status_description: "", uuid: "5ffcdb4d0d8742.58454366", duration_seconds: "4.54", created_at: "2021-01-11 23:12:50", key: "block_1586301986853_15:45", queueId: "5ffcdb4d0d8742.58454366" }
@@ -94,9 +94,9 @@ module.exports = {
         if (req.cookies[req.body.uuid] !== 'new') {
           res.cookie(result.uuid, 'new') // `new` status tells the UI we had successful `recorded` audio
         }
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(result));
-      });
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(result))
+      })
     },
   },
 }

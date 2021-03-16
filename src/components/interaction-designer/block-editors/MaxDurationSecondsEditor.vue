@@ -10,44 +10,44 @@
 </template>
 
 <script>
-  import NumericEditor from '@/components/common/NumericEditor'
-  import {get} from 'lodash'
-  import lang from '@/lib/filters/lang'
+import NumericEditor from '@/components/common/NumericEditor'
+import { get } from 'lodash'
+import lang from '@/lib/filters/lang'
 
-  export default {
-    components: {
-      NumericEditor,
+export default {
+  components: {
+    NumericEditor,
+  },
+  mixins: [lang],
+  props: {
+    isEditable: {
+      default: true,
+      type: Boolean,
     },
-    mixins: [lang],
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
-      },
-      hasIvr: {
-        default: true,
-        type: Boolean,
-      },
-      block: {
-        type: Object,
-        required: true,
-      },
+    hasIvr: {
+      default: true,
+      type: Boolean,
     },
-    data() {
-      return {
-        defaultMaxDuration: 0,
-      }
+    block: {
+      type: Object,
+      required: true,
     },
-
-    computed: {
-      duration: {
-        get() {
-          return get(this.block, 'config.ivr.maxDurationSeconds', '')
-        },
-        set(value) {
-          this.$emit('commitMaxDurationChange', value)
-        }
-      }
+  },
+  data() {
+    return {
+      defaultMaxDuration: 0,
     }
-  }
+  },
+
+  computed: {
+    duration: {
+      get() {
+        return get(this.block, 'config.ivr.maxDurationSeconds', '')
+      },
+      set(value) {
+        this.$emit('commitMaxDurationChange', value)
+      },
+    },
+  },
+}
 </script>

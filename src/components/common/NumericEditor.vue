@@ -22,38 +22,38 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
+import { mapMutations } from 'vuex'
 
-  export default {
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
-      },
-      label: {
-        type: [String, Number],
-        required: true,
-      },
-      placeholder: {
-        type: String,
-        default: '',
-      },
-      value: {
-        type: [String, Number],
-        required: true,
-      },
-      regexNumericFiltering: {
-        type: String,
-        required: false,
-        default: '[0-9\-]',
-      },
+export default {
+  props: {
+    isEditable: {
+      default: true,
+      type: Boolean,
     },
-    methods: {
-      filterNumeric(e) {
-        if (!e.key.match(new RegExp(this.regexNumericFiltering, 'g'))) {
-          e.preventDefault()
-        }
-      },
+    label: {
+      type: [String, Number],
+      required: true,
     },
-  }
+    placeholder: {
+      type: String,
+      default: '',
+    },
+    value: {
+      type: [String, Number],
+      required: true,
+    },
+    regexNumericFiltering: {
+      type: String,
+      required: false,
+      default: '[0-9\-]',
+    },
+  },
+  methods: {
+    filterNumeric(e) {
+      if (!e.key.match(new RegExp(this.regexNumericFiltering, 'g'))) {
+        e.preventDefault()
+      }
+    },
+  },
+}
 </script>

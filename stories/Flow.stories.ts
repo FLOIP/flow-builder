@@ -1,5 +1,4 @@
 import Vuex from 'vuex'
-
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
