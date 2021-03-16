@@ -22,7 +22,7 @@ export default {
 }
 
 const CaseBlockTemplate = `
-  <flow-builder-sidebar-editor-container :block="activeBlock">
+  <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
     <case-block 
       :block="activeBlock" 
       :flow="activeFlow"/>
