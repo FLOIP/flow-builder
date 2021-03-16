@@ -6,6 +6,7 @@
                      label="displayLabel"
                      :placeholder="'flow-builder.contact-property-selector-placeholder' | trans"
                      :options="contactPropertiesList"
+                     :allow-empty="false"
                      :show-labels="false"
                      :searchable="true">
     </vue-multiselect>
@@ -23,6 +24,12 @@ import { get, find } from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 
+interface IContactPropertyOption {
+  id: string
+  name: string
+  displayLabel: string
+}
+
 @Component<any>({
   components: {
     VueMultiselect,
@@ -32,13 +39,13 @@ const flowVuexNamespace = namespace('flow')
 class ContactPropertySelector extends Vue {
   @Prop() readonly block!: IBlock
 
-  get selectedProperty(): object {
+  get selectedProperty() {
     const propertyKey = get(this.block, 'config.set_contact_property.property_key')
     if (!propertyKey) {
       return null
     }
 
-    const propertyOption = find(this.contactPropertiesList, { name: propertyKey })
+    const propertyOption = find(this.contactPropertiesList, { name: propertyKey }) as IContactPropertyOption
     if (!propertyOption) {
       return null
     }
@@ -46,7 +53,7 @@ class ContactPropertySelector extends Vue {
     return propertyOption
   }
 
-  set selectedProperty(value) {
+  set selectedProperty(value: IContactPropertyOption) {
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
       path: 'set_contact_property.property_key',
