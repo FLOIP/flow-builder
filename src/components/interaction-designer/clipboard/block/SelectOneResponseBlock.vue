@@ -1,7 +1,12 @@
 <template>
   <div class="card" :class="{'disabled-block': !isFocused}">
     <div class="card-body sm-padding-below font-roboto">
-      <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
+      <div class="d-flex justify-content-between">
+        <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
+        <i v-if="!isFocused && !isComplete"
+           class="glyphicon glyphicon-pencil cursor-pointer"
+           @click="editBlock"></i>
+      </div>
       <p class="card-text">
         {{getContent}}
         <i class="bi bi-pencil-fill"></i>
@@ -30,7 +35,10 @@
     <block-action-buttons
       :is-disabled="false"
       :is-focused="isFocused"
-      :on-next-clicked="submitAnswer"/>
+      :on-next-clicked="submitAnswer"
+      :is-block-interaction="isBlockInteraction"
+      :on-cancel-clicked="onCancel"
+    />
     </div>
   </div>
 </template>
@@ -38,6 +46,7 @@
 import {
   Context, IContext, SelectOnePrompt,
 } from '@floip/flow-runner'
+import { mapActions, mapGetters } from 'vuex'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
@@ -48,26 +57,34 @@ export default {
   props: {
     context: IContext,
     prompt: SelectOnePrompt,
+    index: Number,
+    isComplete: Boolean,
     goNext: Function,
-  },
-  mounted() {
-    this.setOptions()
-  },
-  computed: {
-    getContent() {
-      const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
-      return result.hasText() ? result.getText() : this.prompt.block.label
-    },
+    onEditStart: Function,
   },
   data() {
     return {
       selectedItem: null,
       options: [],
       errorMsg: null,
-      isFocused: true,
+      isBlockInteraction: false,
     }
   },
+  mounted() {
+    this.setOptions()
+  },
+  computed: {
+    ...mapGetters('clipboard', ['isBlockFocused']),
+    isFocused() {
+      return this.isBlockFocused(this.index)
+    },
+    getContent() {
+      const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
+      return result.hasText() ? result.getText() : ''
+    },
+  },
   methods: {
+    ...mapActions('clipboard', ['setIsFocused']),
     setOptions() {
       for (const choice of this.prompt.config.choices) {
         let option
@@ -86,7 +103,7 @@ export default {
     },
     checkIsValid() {
       try {
-        const validity = this.prompt.validate(this.selectedItem)
+        this.prompt.validate(this.selectedItem)
         this.errorMsg = ''
       } catch (e) {
         this.errorMsg = e.message
@@ -97,9 +114,20 @@ export default {
       if (!this.errorMsg) {
         this.prompt.value = this.selectedItem
         this.prompt.fulfill(this.selectedItem)
-        this.isFocused = false
-        this.goNext()
+        this.setIsFocused({ index: this.index, value: false })
+        this.goNext(this.index)
       }
+    },
+    editBlock() {
+      console.log('edit block')
+      this.setIsFocused({ index: this.index, value: true })
+      this.isBlockInteraction = true
+      this.onEditStart(this.index)
+    },
+    onCancel() {
+      this.setIsFocused({ index: this.index, value: false })
+      this.isBlockInteraction = false
+      console.log('cancel edit ')
     },
   },
 }

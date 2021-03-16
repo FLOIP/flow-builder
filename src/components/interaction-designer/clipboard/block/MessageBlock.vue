@@ -1,8 +1,11 @@
 <template>
   <div class="card" :class="{'disabled-block': !isFocused}">
     <div class="card-body sm-padding-below font-roboto">
-      <div>
+      <div class="d-flex justify-content-between">
         <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
+        <i v-if="!isFocused && !isComplete"
+           class="glyphicon glyphicon-pencil cursor-pointer"
+           @click="editBlock"></i>
       </div>
       <p class="card-text">
         {{getContent}}
@@ -11,13 +14,17 @@
           class="sm-room-above"
           :is-disabled="false"
           :is-focused="isFocused"
-          :on-next-clicked="submitAnswer"/>
+          :on-next-clicked="submitAnswer"
+          :is-block-interaction="isBlockInteraction"
+          :on-cancel-clicked="onCancel"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { Context, IContext, MessagePrompt } from '@floip/flow-runner'
+import { mapActions, mapGetters } from 'vuex'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
@@ -28,25 +35,43 @@ export default {
   props: {
     context: IContext,
     prompt: MessagePrompt,
+    index: Number,
+    isComplete: Boolean,
     goNext: Function,
+    onEditStart: Function,
   },
   data() {
     return {
-      isFocused: true,
+      isBlockInteraction: false,
     }
   },
   computed: {
+    ...mapGetters('clipboard', ['isBlockFocused']),
+    isFocused() {
+      return this.isBlockFocused(this.index)
+    },
     getContent() {
       const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
-      return result.hasText() ? result.getText() : this.prompt.block.label
+      return result.hasText() ? result.getText() : ''
     },
   },
   methods: {
+    ...mapActions('clipboard', ['setIsFocused']),
     submitAnswer() {
       this.prompt.value = null
-      this.isFocused = false
-      this.goNext()
-      this.isFocused = false
+      this.setIsFocused({ index: this.index, value: false })
+      this.goNext(this.index)
+    },
+    editBlock() {
+      console.log('edit block')
+      this.setIsFocused({ index: this.index, value: true })
+      this.isBlockInteraction = true
+      this.onEditStart(this.index)
+    },
+    onCancel() {
+      this.setIsFocused({ index: this.index, value: false })
+      this.isBlockInteraction = false
+      console.log('cancel edit ')
     },
   },
 }

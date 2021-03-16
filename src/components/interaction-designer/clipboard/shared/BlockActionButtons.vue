@@ -4,7 +4,7 @@
       <button
           class="btn btn-secondary btn-block sm-room-below"
           @click.stop="clickCancel">
-        {{trans('flow-builder.Cancel')}}
+        {{'flow-builder.cancel' | trans}}
       </button>
     </div>
     <div v-if="isFocused" :class="{'col-md-6': isBlockInteraction, 'col-md-12': !isBlockInteraction}">
@@ -18,8 +18,11 @@
   </div>
 </template>
 <script>
+import lang from '@/lib/filters/lang'
+
 export default {
   name: 'BlockActionButtons',
+  mixins: [lang],
   props: {
     isFocused: {},
     isDisabled: {},
