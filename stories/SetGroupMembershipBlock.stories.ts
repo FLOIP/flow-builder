@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex, { mapActions, mapGetters, mapMutations } from 'vuex'
+import Vuex from 'vuex'
 
 import SetGroupMembershipBlock from '@/components/interaction-designer/block-types/Core_SetGroupMembershipBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
@@ -31,7 +31,6 @@ const SetGroupMembershipBlockTemplate = `
   template: SetGroupMembershipBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
-    // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, SetGroupMembershipStore)
   },
 

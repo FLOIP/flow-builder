@@ -59,6 +59,11 @@ const flowVuexNamespace = namespace('flow')
 const ADD_KEY = 'add'
 const REMOVE_KEY = 'remove'
 
+interface IGroupOption {
+  id: string;
+  name: string;
+}
+
 //providing this generic is required by tsserver checking but not in the build run by yarn storybook
 //TODO - understand what is going on here and if there is something more correct we should have instead
 @Component<any>({
@@ -77,6 +82,19 @@ class Core_SetGroupMembershipBlock extends Vue {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
 
+  actionsList: IGroupOption[] = [
+    {
+      id: ADD_KEY,
+      // @ts-ignore: TODO: fix TS issue `Property 'trans' does not exist on type 'Core_SetGroupMembershipBlock'`
+      name: this.trans('flow-builder.add'),
+    },
+    {
+      id: REMOVE_KEY,
+      // @ts-ignore: TODO: fix TS issue `Property 'trans' does not exist on type 'Core_SetGroupMembershipBlock'`
+      name: this.trans('flow-builder.remove'),
+    },
+  ]
+
   get propertyValue(): string {
     return get(this.block, 'config.set_contact_property.property_value', '')
   }
@@ -94,25 +112,12 @@ class Core_SetGroupMembershipBlock extends Vue {
     return null
   }
 
-  set selectedAction(value) {
+  set selectedAction(value: IGroupOption) {
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
       path: 'isMember',
-      value: value === null || value === undefined ? null : (value.id === ADD_KEY)
+      value: value === null || value === undefined ? null : (value.id === ADD_KEY),
     })
-  }
-
-  get actionsList(): object[] {
-    return [
-      {
-        id: ADD_KEY,
-        name: this.trans('flow-builder.add')
-      },
-      {
-        id: REMOVE_KEY,
-        name: this.trans('flow-builder.remove')
-      },
-    ]
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath

@@ -88,6 +88,12 @@ exports[`Storyshots Core/Set Contact Property Default 1`] = `
 </div>
 `;
 
+exports[`Storyshots Core/Set Group Membership Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
 exports[`Storyshots Flow/Flow Editor Default 1`] = `
 <div>
   <!---->
