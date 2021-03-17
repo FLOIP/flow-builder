@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="block-name">
     <text-editor v-model="name"
         :is-editable="isEditable"
         :label="'flow-builder.block-name' | trans"

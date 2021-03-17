@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group flow-label">
+  <div class="form-group flow-name">
     <text-editor v-model="name"
         :is-editable="isEditable"
         :label="'flow-builder.flow-name' | trans"

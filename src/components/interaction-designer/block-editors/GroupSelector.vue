@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group">
+  <div class="block-group form-group">
     <label>{{'flow-builder.group-label' | trans}}</label>
     <vue-multiselect v-model="selectedGroup"
                      track-by="id"

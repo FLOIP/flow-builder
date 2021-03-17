@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="block-semantic-label">
     <text-editor v-model="semanticLabel"
         :is-editable="isEditable"
         :label="'flow-builder.block-semantic-label' | trans"
