@@ -19,7 +19,7 @@ export default {
 }
 
 const LogBlockTemplate = `
-  <plain-flow-builder-block-editor-container :block="activeBlock">
+  <plain-flow-builder-block-editor-container v-if="activeFlow" :block="activeBlock">
     <log-block 
       :block="activeBlock" 
       :flow="activeFlow"/>
