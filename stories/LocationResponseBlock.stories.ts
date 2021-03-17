@@ -24,7 +24,7 @@ export default {
 }
 
 const LocationResponseBlockTemplate = `
-  <flow-builder-sidebar-editor-container :block="activeBlock">
+  <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
     <location-response-block 
       :block="activeBlock" 
       :flow="activeFlow"/>

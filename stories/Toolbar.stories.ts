@@ -1,8 +1,9 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import {
-    Action, Mutation
+    Action, Mutation, namespace
 } from 'vuex-class'
+const flowVuexNamespace = namespace('flow')
 import FlowBuilderContainer from "./story-utils/FlowBuilderContainer.vue";
 import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
@@ -25,7 +26,7 @@ export default {
 
 
 const ToolbarTemplate = `
-  <flow-builder-container>
+  <flow-builder-container v-if="activeFlow">
     <tree-builder-toolbar/>
   </flow-builder-container>`
 
@@ -37,6 +38,7 @@ const BaseOptions = {
     this.configure({appConfig: {}, builderConfig: {}});
     // @ts-ignore
     this.initializeTreeModel() // from trees store
+    this.flow_addBlankFlow()
   }
 }
 class BaseMountedClass extends Vue {
@@ -46,6 +48,8 @@ class BaseMountedClass extends Vue {
   @Mutation updateIsEditable: any
   @Mutation addEnabledFeature: any
   @Mutation removeEnabledFeature: any
+  @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
+  @flowVuexNamespace.Getter activeFlow!: IFlow
 }
 
 // Default
@@ -113,7 +117,7 @@ export const WithSaveButton = () => (SaveClass)
 // With Extra right grouped button
 let BaseOptions2 = BaseOptions
 BaseOptions2.template = `
-  <flow-builder-container>
+  <flow-builder-container v-if="activeFlow">
     <tree-builder-toolbar>
       <template slot="right-grouped-buttons">
         <a href="#"
@@ -149,7 +153,7 @@ export const WithGroupedButtonsSlot = () => (GroupButtonsSlotClass)
 // With Extra buttons
 let BaseOptions3 = BaseOptions
 BaseOptions3.template = `
-  <flow-builder-container>
+  <flow-builder-container v-if="activeFlow">
     <tree-builder-toolbar>
       <template slot="extra-buttons">
         <a href="#"

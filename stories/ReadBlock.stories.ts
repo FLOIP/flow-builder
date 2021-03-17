@@ -26,7 +26,7 @@ export default {
 }
 
 const readBlockTemplate = `
-  <flow-builder-sidebar-editor-container :block="activeBlock">
+  <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
     <read-block 
       :block="activeBlock" 
       :flow="activeFlow"/>

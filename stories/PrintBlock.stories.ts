@@ -28,7 +28,7 @@ export default {
 }
 
 const PrintBlockTemplate = `
-  <flow-builder-sidebar-editor-container :block="activeBlock">
+  <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
     <print-block 
       :block="activeBlock" 
       :flow="activeFlow"/>

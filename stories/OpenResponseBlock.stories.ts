@@ -27,7 +27,7 @@ export default {
 }
 
 const OpenResponseBlockTemplate = `
-  <flow-builder-sidebar-editor-container :block="activeBlock">
+  <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
     <open-response-block 
       :block="activeBlock" 
       :flow="activeFlow"/>

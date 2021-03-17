@@ -23,7 +23,7 @@ export default {
 }
 
 const PhotoResponseBlockTemplate = `
-  <flow-builder-sidebar-editor-container :block="activeBlock">
+  <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
     <photo-response-block 
       :block="activeBlock" 
       :flow="activeFlow"/>
