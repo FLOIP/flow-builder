@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { Context, IContext, MessagePrompt } from '@floip/flow-runner'
+import { Context, IContext } from '@floip/flow-runner'
 import { mapActions, mapGetters } from 'vuex'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
@@ -34,11 +34,10 @@ export default {
   },
   props: {
     context: IContext,
-    prompt: MessagePrompt,
     index: Number,
     isComplete: Boolean,
     goNext: Function,
-    onEditStart: Function,
+    onEditComplete: Function,
   },
   data() {
     return {
@@ -46,9 +45,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('clipboard', ['isBlockFocused']),
+    ...mapGetters('clipboard', ['isBlockFocused', 'getBlockPrompt']),
     isFocused() {
       return this.isBlockFocused(this.index)
+    },
+    prompt() {
+      return this.getBlockPrompt(this.index)
     },
     getContent() {
       const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
@@ -56,22 +58,25 @@ export default {
     },
   },
   methods: {
-    ...mapActions('clipboard', ['setIsFocused']),
-    submitAnswer() {
+    ...mapActions('clipboard', ['setIsFocused', 'setLastBlockUnEditable', 'setLastBlockEditable']),
+    async submitAnswer() {
+      if (this.isBlockInteraction) {
+        await this.onEditComplete(this.index)
+        this.isBlockInteraction = false
+      }
       this.prompt.value = null
       this.setIsFocused({ index: this.index, value: false })
       this.goNext(this.index)
     },
     editBlock() {
-      console.log('edit block')
       this.setIsFocused({ index: this.index, value: true })
+      this.setLastBlockUnEditable()
       this.isBlockInteraction = true
-      this.onEditStart(this.index)
     },
     onCancel() {
+      this.setLastBlockEditable()
       this.setIsFocused({ index: this.index, value: false })
       this.isBlockInteraction = false
-      console.log('cancel edit ')
     },
   },
 }
