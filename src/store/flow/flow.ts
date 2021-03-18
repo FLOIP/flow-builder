@@ -17,7 +17,7 @@ import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '.'
 import {IRootState} from '@/store'
-import {defaults, includes, forEach, cloneDeep, get, has} from 'lodash'
+import {defaults, includes, forEach, cloneDeep, get, has, omit} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import createFormattedDate from "@floip/flow-runner/dist/domain/DateFormat";
 import {computeBlockPositionsFrom} from '@/store/builder'
@@ -36,6 +36,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: state => {
     return {
+      created: state.created,
       specification_version: "TODO",
       uuid: "TODO",
       name: "TODO",
@@ -58,11 +59,16 @@ export const mutations: MutationTree<IFlowsState> = {
   //That doesn't make sense if we run the builder standalone - without a fetch of the flows list
   flow_updateFlowContainer(state, flowContainer) {
     const persistedState = flowContainer 
+    state.created = persistedState.created
     state.flows = persistedState.flows
     state.resources = persistedState.resources
     if(state.flows[0]) {
       state.firstFlowId = state.flows[0].uuid
     }
+  },
+  //used to track whether we should put or post when persisting
+  flow_updateCreatedState(state, createdState) {
+    state.created = createdState
   },
   flow_setActiveFlowId(state, {flowId}: {flowId: string}) {
     state.firstFlowId = flowId
@@ -156,12 +162,16 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext> {
-    return axios.post(persistRoute, flowContainer)
+    const restVerb = flowContainer.created ? 'put' : 'post'
+    const oldCreatedState = flowContainer.created
+    return axios[restVerb](persistRoute, omit(flowContainer, ['created']))
       .then(({data}) => {
         commit('flow_updateFlowContainer', data)
+        commit('flow_updateCreatedState', true)
         return getters.activeFlowContainer 
       })
       .catch((error) => {
+        commit('flow_updateCreatedState', oldCreatedState)
         if(!persistRoute) {
           console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store")
           commit('flow_updateFlowContainer', flowContainer)
@@ -176,6 +186,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return axios.get(fetchRoute)
       .then(({data}) => {
         commit('flow_updateFlowContainer', data)
+        commit('flow_updateCreatedState', true)
         return getters.activeFlow
       })
       .catch((error) => {

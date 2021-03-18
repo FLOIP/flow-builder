@@ -57,7 +57,13 @@ module.exports = {
       })
       //In the success case, just echo the flow back
       app.post('/backend/flows/:id', bodyParser.json(), (req, res) => {
-        const flow = req.body 
+        const flow = req.body
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(flow))
+      })
+      //In the success case, just echo the flow back
+      app.put('/backend/flows/:id', bodyParser.json(), (req, res) => {
+        const flow = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(flow))
       })

@@ -18,6 +18,8 @@ import {
 // type IFlowsState = Pick<IContext, 'flows' | 'firstFlowId' | 'resources' | 'nestedFlowBlockInteractionIdStack'>
 
 export interface IFlowsState {
+  //Created is *not* the same as persisted. It does not guarantee the current state is saved to the server. Only that the currently active flow in the container was persisted - the persistFlow route was called with the container and the active flow uuid and the route response did not have an error status code 
+  created: boolean,
   flows: IFlow[],
   resources: IResourceDefinition[],
 
@@ -29,6 +31,7 @@ export interface IFlowsState {
 }
 
 export const stateFactory = (): IFlowsState => ({
+  created: false,
   flows: [],
   resources: [],
 

@@ -6,7 +6,7 @@
           "name": "persistFlow",
           "path": "\/backend\/flows\/{flowId}",
           "params": ["flowId"],
-          "methods": ["POST"]
+          "methods": ["POST", "PUT"]
         },
         "fetchFlowServer": {
           "name": "fetchFlowServer",

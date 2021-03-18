@@ -83,9 +83,9 @@ fetch('/flows/{id}',
 This operation does not require authentication
 </aside>
 
-## Persist Flow
+## Save Flow
 
-<a id="opIdPersist Flow"></a>
+<a id="opIdSave Flow"></a>
 
 > Code samples
 
@@ -122,15 +122,15 @@ fetch('/flows/{id}',
 
 `POST /flows/{id}`
 
-*Create or update a Flow and associated Resources. UUIDs are generated client side and for simplicity we allow creation and updates at a single endpoint. This follows the model where the builder frontend can work as a standalone app without a backend when necessary and not contain logic related to whether a Flow is persisted or not.*
+*Create a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we track whether the flow is created or not on the container with the attribute `created`. This route is used when `created` === false*
 
 > Body parameter
 
-<h3 id="persist-flow-parameters">Parameters</h3>
+<h3 id="save-flow-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|id|path|uuid|true|Creates or updates a flow and it's associated resources by ID|
+|id|path|uuid|true|Creates a flow and it's associated resources|
 |body|body|[FlowContainer](#schemaflowcontainer)|true|none|
 
 > Example responses
@@ -151,14 +151,95 @@ fetch('/flows/{id}',
 }
 ```
 
-<h3 id="persist-flow-responses">Responses</h3>
+<h3 id="save-flow-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources|[FlowContainer](#schemaflowcontainer)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Error in flow creation including validation errors (the builder should prevent these client side before we get to that point though)|None|
 
-<h3 id="persist-flow-responseschema">Response Schema</h3>
+<h3 id="save-flow-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## Update Flow
+
+<a id="opIdUpdate Flow"></a>
+
+> Code samples
+
+```javascript
+const inputBody = '{
+  "specification_version": "string",
+  "uuid": "string",
+  "name": "string",
+  "description": "string",
+  "platform_metadata": {},
+  "flows": [
+    {}
+  ],
+  "resources": {}
+}';
+const headers = {
+  'Content-Type':'*/*',
+  'Accept':'application/json'
+};
+
+fetch('/flows/{id}',
+{
+  method: 'PUT',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+`PUT /flows/{id}`
+
+*Update a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we track whether the flow is created or not on the container with the attribute `created`. This route is used when `created` === true*
+
+> Body parameter
+
+<h3 id="update-flow-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|uuid|true|Updates a flow and it's associated resources by ID|
+|body|body|[FlowContainer](#schemaflowcontainer)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "specification_version": "string",
+  "uuid": "string",
+  "name": "string",
+  "description": "string",
+  "platform_metadata": {},
+  "flows": [
+    {}
+  ],
+  "resources": {}
+}
+```
+
+<h3 id="update-flow-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources|[FlowContainer](#schemaflowcontainer)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Error in flow update including validation errors (the builder should prevent these client side before we get to that point though)|None|
+
+<h3 id="update-flow-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
