@@ -66,7 +66,7 @@ export default {
       }
       this.prompt.value = null
       this.setIsFocused({ index: this.index, value: false })
-      this.goNext(this.index)
+      this.goNext()
     },
     editBlock() {
       this.setIsFocused({ index: this.index, value: true })

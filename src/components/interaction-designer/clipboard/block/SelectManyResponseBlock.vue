@@ -118,7 +118,7 @@ export default {
         this.prompt.value = this.selectedChoices
         this.prompt.fulfill(this.selectedChoices)
         this.setIsFocused({ index: this.index, value: false })
-        this.goNext(this.index)
+        this.goNext()
       }
     },
     editBlock() {

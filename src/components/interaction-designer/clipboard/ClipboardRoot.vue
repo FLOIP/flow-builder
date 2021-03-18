@@ -41,7 +41,7 @@ import {
   FlowRunner,
   IRichCursorInputRequired,
   SupportedMode,
-  IContact, BasicBacktrackingBehaviour,
+  IContact, BasicBacktrackingBehaviour, isLastBlock,
 } from '@floip/flow-runner'
 import MessageBlock from './block/MessageBlock.vue'
 import NumericQuestionBlock from './block/NumericQuestionBlock.vue'
@@ -77,8 +77,18 @@ export default {
     ...mapGetters('clipboard', ['getBlocksData']),
     ...mapActions('clipboard', ['setSimulatorActive', 'setBlocksData', 'setIsFocused']),
 
-    async initializeFlowRunner() {
+    getUpdatedFlowState() {
       const flowState = this.getFlowState()
+      // TODO: Need to remove this after a fix is available on flow runner
+      flowState.flows[0].blocks.map(({ exits }) => exits.map((e) => {
+        e.test = e.test || true
+        return e
+      }))
+      return flowState
+    },
+
+    async initializeFlowRunner() {
+      const flowState = this.getUpdatedFlowState()
       const contact = { id: '1' } as IContact
       const groups = []
       const userId = 'user-1234' // TODO: fix this value when user details are available
@@ -103,13 +113,13 @@ export default {
       await this.goNext(0)
     },
 
-    async goNext(index) {
+    async goNext() {
       this.isComplete = false
       try {
         const cursor: IRichCursorInputRequired = await this.runner.run()
-        if (!cursor) {
+        const lastItem = this.blocksData[this.blocksData.length - 1]
+        if (!cursor || (lastItem && isLastBlock(lastItem.prompt.block))) {
           this.isComplete = true
-          console.log(this.context)
           return
         }
         const { prompt }: IRichCursorInputRequired = cursor

@@ -90,7 +90,7 @@ export default {
         }
         this.prompt.value = this.enteredValue
         this.setIsFocused({ index: this.index, value: false })
-        this.goNext(this.index)
+        this.goNext()
       }
     },
     editBlock() {
