@@ -21,7 +21,6 @@ export const stateFactory = (): IClipboardState => ({
 export const getters: GetterTree<IClipboardState, IRootState> = {
   isSimulatorActive: (state) => state.simulatorActive,
   blocksData: (state) => state.blocksData,
-  getBlockPrompt: (state) => (index) => state.blocksData[index].prompt,
   isBlockFocused: (state) => (index) => state.blocksData[index].isFocused,
 }
 
@@ -44,16 +43,10 @@ export const actions: ActionTree<IClipboardState, IRootState> = {
   setBlocksData({ commit }, data) {
     commit('setBlocksData', data)
   },
-  setIsFocused({ commit }, data) {
+  setIsFocused({ commit, state }, data) {
+    // if (state.blocksData.length > 0) {
     commit('setIsFocused', data)
-  },
-  setLastBlockUnEditable({ commit, state }) {
-    const lastIndex = state.blocksData.length - 1
-    commit('setIsFocused', { index: lastIndex, value: false })
-  },
-  setLastBlockEditable({ commit, state }) {
-    const lastIndex = state.blocksData.length - 1
-    commit('setIsFocused', { index: lastIndex, value: true })
+    // }
   },
 }
 

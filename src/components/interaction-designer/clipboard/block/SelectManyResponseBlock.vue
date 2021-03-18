@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import { Context, IContext } from '@floip/flow-runner'
+import { Context, IContext, SelectManyPrompt } from '@floip/flow-runner'
 import { mapActions, mapGetters } from 'vuex'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
@@ -55,10 +55,11 @@ export default {
   },
   props: {
     context: IContext,
+    prompt: SelectManyPrompt,
     index: Number,
     isComplete: Boolean,
     goNext: Function,
-    onEditComplete: Function,
+    onEditStart: Function,
   },
   data() {
     return {
@@ -72,12 +73,9 @@ export default {
     this.setOptions()
   },
   computed: {
-    ...mapGetters('clipboard', ['isBlockFocused', 'getBlockPrompt']),
+    ...mapGetters('clipboard', ['isBlockFocused']),
     isFocused() {
       return this.isBlockFocused(this.index)
-    },
-    prompt() {
-      return this.getBlockPrompt(this.index)
     },
     getContent() {
       const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
@@ -85,20 +83,22 @@ export default {
     },
   },
   methods: {
-    ...mapActions('clipboard', ['setIsFocused', 'setLastBlockUnEditable', 'setLastBlockEditable']),
+    ...mapActions('clipboard', ['setIsFocused']),
     setOptions() {
-      const { choices } = this.prompt.config
-      choices.forEach((choice) => {
+      for (const choice of this.prompt.config.choices) {
+        let option
         try {
-          const option = Context.prototype.getResource.call(this.context, choice.value).getText()
+          option = Context.prototype.getResource.call(this.context, choice.value).getText()
+        } catch (e) {
+          console.warn('error fetching resource ')
+        }
+        if (option) {
           this.options.push({
             key: choice.key,
             value: option,
           })
-        } catch (e) {
-          console.warn('error fetching resource ')
         }
-      })
+      }
     },
     checkIsValid() {
       try {
@@ -108,13 +108,9 @@ export default {
         this.errorMsg = e.message
       }
     },
-    async submitAnswer() {
+    submitAnswer() {
       this.checkIsValid()
       if (!this.errorMsg) {
-        if (this.isBlockInteraction) {
-          await this.onEditComplete(this.index)
-          this.isBlockInteraction = false
-        }
         this.prompt.value = this.selectedChoices
         this.prompt.fulfill(this.selectedChoices)
         this.setIsFocused({ index: this.index, value: false })
@@ -122,14 +118,15 @@ export default {
       }
     },
     editBlock() {
-      this.setLastBlockUnEditable()
+      console.log('edit block')
       this.setIsFocused({ index: this.index, value: true })
       this.isBlockInteraction = true
+      this.onEditStart(this.index)
     },
     onCancel() {
-      this.setLastBlockEditable()
       this.setIsFocused({ index: this.index, value: false })
       this.isBlockInteraction = false
+      console.log('cancel edit ')
     },
   },
 }

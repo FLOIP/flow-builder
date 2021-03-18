@@ -36,7 +36,7 @@
   </div>
 </template>
 <script>
-import { Context, IContext } from '@floip/flow-runner'
+import { Context, IContext, NumericPrompt } from '@floip/flow-runner'
 import { mapActions, mapGetters } from 'vuex'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
@@ -47,10 +47,11 @@ export default {
   },
   props: {
     context: IContext,
+    prompt: NumericPrompt,
     index: Number,
     isComplete: Boolean,
     goNext: Function,
-    onEditComplete: Function,
+    onEditStart: Function,
   },
   data() {
     return {
@@ -60,12 +61,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('clipboard', ['isBlockFocused', 'getBlockPrompt']),
+    ...mapGetters('clipboard', ['isBlockFocused']),
     isFocused() {
       return this.isBlockFocused(this.index)
-    },
-    prompt() {
-      return this.getBlockPrompt(this.index)
     },
     getContent() {
       const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
@@ -76,7 +74,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('clipboard', ['setIsFocused', 'setLastBlockUnEditable', 'setLastBlockEditable']),
+    ...mapActions('clipboard', ['setIsFocused']),
     checkIsValid() {
       const num = +this.enteredValue
       try {
@@ -86,27 +84,24 @@ export default {
         this.errorMsg = e.message
       }
     },
-    async submitAnswer() {
+    submitAnswer() {
       this.checkIsValid()
       if (!this.errorMsg) {
-        if (this.isBlockInteraction) {
-          await this.onEditComplete(this.index)
-          this.isBlockInteraction = false
-        }
         this.prompt.value = +this.enteredValue
         this.setIsFocused({ index: this.index, value: false })
         this.goNext(this.index)
       }
     },
     editBlock() {
-      this.setLastBlockUnEditable()
+      console.log('edit block')
       this.setIsFocused({ index: this.index, value: true })
       this.isBlockInteraction = true
+      this.onEditStart(this.index)
     },
     onCancel() {
-      this.setLastBlockEditable()
       this.setIsFocused({ index: this.index, value: false })
       this.isBlockInteraction = false
+      console.log('cancel edit ')
     },
   },
 }

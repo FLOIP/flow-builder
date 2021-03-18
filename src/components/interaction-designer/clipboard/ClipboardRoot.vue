@@ -10,11 +10,12 @@
     <main>
       <div v-for="(blockData, i) in blocksData" :key="i" class="mt-2">
         <component :is="getBlockComponent(blockData.prompt.block.type)"
+                   :prompt="blockData.prompt"
                    :context="context"
                    :go-next="goNext"
                    :index="i"
                    :is-complete="isComplete"
-                   :on-edit-complete="onEditComplete"
+                   :on-edit-start="onEditStart"
         >
         </component>
       </div>
@@ -74,14 +75,13 @@ export default {
   },
   methods: {
     ...mapGetters('flow', ['getFlowState']),
-    ...mapGetters('clipboard', ['getBlocksData']),
     ...mapActions('clipboard', ['setSimulatorActive', 'setBlocksData', 'setIsFocused']),
 
     async initializeFlowRunner() {
       const flowState = this.getFlowState()
       const contact = { id: '1' } as IContact
       const groups = []
-      const userId = 'user-1234' // TODO: fix this value when user details are available
+      const userId = 'user-1234'
       const orgId = 'org-1234'
       const { flows } = flowState
       const languageId = '22'
@@ -99,17 +99,22 @@ export default {
       )
 
       this.context = context
+      console.log('context = ', context)
       this.runner = new FlowRunner(context)
-      await this.goNext(0)
+      await this.goNext(0, true)
     },
 
-    async goNext(index) {
+    async goNext(index, firstBlock = false) {
       this.isComplete = false
+      const editMode = index !== this.blocksData.length - 1
+      if (editMode && !firstBlock) {
+        await this.onEditComplete(index)
+        return
+      }
       try {
         const cursor: IRichCursorInputRequired = await this.runner.run()
         if (!cursor) {
           this.isComplete = true
-          console.log(this.context)
           return
         }
         const { prompt }: IRichCursorInputRequired = cursor
@@ -134,15 +139,23 @@ export default {
       return blockMap.get(key)
     },
 
+    async onEditStart(index) {
+      this.setIsFocused({ index: this.blocksData.length - 1, value: false })
+      const backtracking: BasicBacktrackingBehaviour = this.runner.behaviours.basicBacktracking
+      const seekSteps = (this.blocksData.length - 1) - index
+      const cursor = await backtracking.peek(seekSteps, this.context)
+      console.log('peek cursor = ', cursor)
+    },
+
     async onEditComplete(index) {
       this.setIsFocused({ index: this.blocksData.length - 1, value: true })
       const backtracking: BasicBacktrackingBehaviour = this.runner.behaviours.basicBacktracking
       const seekSteps = (this.blocksData.length - 1) - index
       const cursor = await backtracking.seek(seekSteps, this.context)
-
-      this.blocksData.splice(index)
-      this.blocksData.push({ prompt: cursor.prompt, isFocused: true })
-      this.setBlocksData(this.blocksData)
+      console.log('seek cursor = ', cursor)
+      // this.runner = cursor.prompt.runner
+      // this.context = cursor.prompt.runner.context
+      console.log('updated context =  ', this.context)
     },
 
     closeSimulator() {
