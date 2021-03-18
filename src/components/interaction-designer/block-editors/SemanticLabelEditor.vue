@@ -8,39 +8,39 @@
 </template>
 
 <script>
-  import {mapMutations} from 'vuex'
-  import TextEditor from '@/components/common/TextEditor'
-  import lang from '@/lib/filters/lang';
+import { mapMutations } from 'vuex'
+import TextEditor from '@/components/common/TextEditor'
+import lang from '@/lib/filters/lang'
 
-  export default {
-    components: {
-      TextEditor,
+export default {
+  components: {
+    TextEditor,
+  },
+  mixins: [lang],
+  props: {
+    isEditable: {
+      default: true,
+      type: Boolean,
     },
-    mixins: [lang],
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
+    block: {
+      type: Object,
+      required: true,
+    },
+  },
+  mixins: [lang],
+  computed: {
+    semanticLabel: {
+      get() {
+        return this.block.semanticLabel
       },
-      block: {
-        type: Object,
-        required: true,
+      set(value) {
+        this.block_setSemanticLabel({ blockId: this.block.uuid, value })
       },
     },
-    mixins: [lang],
-    computed: {
-      semanticLabel: {
-        get() {
-          return this.block.semanticLabel
-        },
-        set(value) {
-          this.block_setSemanticLabel({blockId: this.block.uuid, value})
-        },
-      },
-    },
-    methods: {
-      ...mapMutations('flow', ['block_setSemanticLabel']),
-    },
-  }
+  },
+  methods: {
+    ...mapMutations('flow', ['block_setSemanticLabel']),
+  },
+}
 
 </script>
