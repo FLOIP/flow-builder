@@ -119,7 +119,7 @@
 
           <button v-if="isEditable"
                   type="button"
-                  v-b-tooltip.hover="transIf(activeBlockId,'flow-builder.tooltip-duplicate-block')"
+                  v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
                   class="btn btn-outline-secondary tree-duplicate-block mr-2"
                   @click.prevent="handleDuplicateActivatedBlockTriggered"
                   :disabled="!activeBlockId">
@@ -395,6 +395,10 @@ export default {
     removeNilValues(obj) {
       return lodash.pickBy(obj, lodash.identity)
     },
+
+    getDeleteToolTip() {
+      return this.trans('flow-builder.tooltip-delete-block')
+    }
   },
 }
 </script>
