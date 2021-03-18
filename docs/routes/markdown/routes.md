@@ -122,7 +122,7 @@ fetch('/flows/{id}',
 
 `POST /flows/{id}`
 
-*Create a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we track whether the flow is created or not on the container with the attribute `created`. This route is used when `created` === false*
+*Create a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we need to track whether the flow is created on the server or not in this builder with an attribute on the container - `created` - rather than with whether or not the flow has a uuid yet. `created` is not sent to the server. This route is used when `created` === false*
 
 > Body parameter
 
@@ -203,7 +203,7 @@ fetch('/flows/{id}',
 
 `PUT /flows/{id}`
 
-*Update a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we track whether the flow is created or not on the container with the attribute `created`. This route is used when `created` === true*
+*Update a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we need to track whether the flow is created on the server or not in this builder with an attribute on the container - `created` - rather than with whether or not the flow has a uuid yet. `created` is not sent to the server. This route is used when `created` === true*
 
 > Body parameter
 
