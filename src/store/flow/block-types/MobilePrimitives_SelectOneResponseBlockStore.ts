@@ -48,18 +48,18 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       label: resourceUuid
     }))
   },
-  isInflatedChoiceBankOnKey: (state, getters) => (key): boolean => {
+  isInflatedChoiceBlankOnKey: (state, getters) => (key): boolean => {
     return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semanticLabel')
   },
   allChoicesHaveContent: (state, getters): boolean => {
     return Object.keys(getters.inflatedChoices).every((key: string) => {
-      return !getters.isInflatedChoiceBankOnKey(key)
+      return !getters.isInflatedChoiceBlankOnKey(key)
     })
   },
   twoChoicesBlank: (state, getters, rootState, rootGetters): boolean => {
     let blankNumber = 0
     return Object.keys(getters.inflatedChoices).some((key: string) => {
-      if (!someItemsHaveValue(getters.inflatedChoices[key].values, "value")) {
+      if (!someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value')) {
         blankNumber += 1
       }
 
@@ -97,7 +97,7 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async popFirstEmptyChoice({commit, rootGetters, getters}) {
     const choiceKeyToRemove = find(Object.keys(getters.inflatedChoices), (key: string) => {
-      return <boolean>getters.isInflatedChoiceBankOnKey(key)
+      return <boolean>getters.isInflatedChoiceBlankOnKey(key)
     })
     if (choiceKeyToRemove) {
       const choiceToRemove = rootGetters['builder/activeBlock'].config.choices[choiceKeyToRemove]
