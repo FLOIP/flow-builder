@@ -68,8 +68,8 @@ export const Default = () => (CurrentClass)
                 SupportedMode.RICH_MESSAGING
             ]
 
-            this.flow_setName({flowId, value: "FlowName"})
             this.flow_setLabel({flowId, value: "A flow label"})
+            this.flow_setNameFromLabel({flowId, value: "A flow label"})
             this.flow_setInteractionTimeout({flowId, value: 20})
             this.flow_setSupportedMode({flowId, value: sampleModes})
             this.flow_setLanguages({flowId, value: sampleLanguages})
@@ -77,7 +77,7 @@ export const Default = () => (CurrentClass)
     }
 )
 class CurrentClass2 extends BaseMountedVueClass {
-    @flowVuexNamespace.Mutation flow_setName:any
+    @flowVuexNamespace.Mutation flow_setNameFromLabel:any
     @flowVuexNamespace.Mutation flow_setLabel:any
     @flowVuexNamespace.Mutation flow_setInteractionTimeout:any
     @flowVuexNamespace.Mutation flow_setSupportedMode:any
