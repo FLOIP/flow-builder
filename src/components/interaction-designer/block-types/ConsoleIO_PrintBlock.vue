@@ -22,25 +22,25 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {namespace} from 'vuex-class'
-  import {Component, Prop} from 'vue-property-decorator'
+import Vue from 'vue'
+import { namespace } from 'vuex-class'
+import { Component, Prop } from 'vue-property-decorator'
 
-  import {IFlow} from '@floip/flow-runner'
-  import IPrintBlock from '@floip/flow-runner/src/model/block/IPrintBlock'
-  import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
+import { IFlow } from '@floip/flow-runner'
+import { IPrintBlock } from '@floip/flow-runner/src/model/block/IPrintBlock'
+import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
 
-  import ResourceEditor from '../resource-editors/ResourceEditor.vue'
-  import BlockNameEditor from '../block-editors/NameEditor.vue'
-  import BlockLabelEditor from '../block-editors/LabelEditor.vue'
-  import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-  import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-  import BlockId from '../block-editors/BlockId.vue'
-  import PrintStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
-  import lang from '@/lib/filters/lang'
-  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
+import PrintStore, { BLOCK_TYPE } from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
+import lang from '@/lib/filters/lang'
+import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
+import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+import BlockNameEditor from '../block-editors/NameEditor.vue'
+import BlockLabelEditor from '../block-editors/LabelEditor.vue'
+import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
+import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
+import BlockId from '../block-editors/BlockId.vue'
 
-  const flowVuexNamespace = namespace('flow')
+const flowVuexNamespace = namespace('flow')
 
   @Component<any>({
     components: {
@@ -53,8 +53,9 @@
     },
     mixins: [lang],
   })
-  class ConsoleIO_PrintBlock extends Vue {
+class ConsoleIO_PrintBlock extends Vue {
     @Prop()readonly block!: IPrintBlock
+
     @Prop()readonly flow!: IFlow
 
     get promptResource(): IResourceDefinition {
@@ -64,6 +65,6 @@
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
   }
 
-  export default ConsoleIO_PrintBlock
-  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, PrintStore)
+export default ConsoleIO_PrintBlock
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, PrintStore)
 </script>
