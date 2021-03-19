@@ -13,6 +13,5 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
   local_dir: dist
-  target_branch: gh-pages-ci
   on:
     branch: master
