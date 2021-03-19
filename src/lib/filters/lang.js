@@ -5,10 +5,13 @@ const createProxy = (name) => function () {
   return proxy(name, arguments)
 }
 
+export const trans = createProxy('trans')
+export const choice = createProxy('choice')
+
 export default {
   filters: {
-    trans: createProxy('trans'),
-    choice: createProxy('choice'),
+    trans,
+    choice,
   },
   methods: {
     trans(translation) {

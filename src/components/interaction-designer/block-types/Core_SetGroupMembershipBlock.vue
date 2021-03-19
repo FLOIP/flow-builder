@@ -49,9 +49,9 @@ import GroupSelector from '@/components/interaction-designer/block-editors/Group
 import VueMultiselect from 'vue-multiselect'
 
 import SetGroupMembershipStore, { BLOCK_TYPE, ADD_KEY, REMOVE_KEY } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
-import lang from '@/lib/filters/lang'
+import lang, { trans } from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
-import { find, get } from 'lodash'
+import { find } from 'lodash'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
@@ -82,13 +82,11 @@ class Core_SetGroupMembershipBlock extends Vue {
   actionsList: IGroupOption[] = [
     {
       id: ADD_KEY,
-      // @ts-ignore: TODO: fix TS issue `Property 'trans' does not exist on type 'Core_SetGroupMembershipBlock'`
-      name: this.trans('flow-builder.add'),
+      name: trans('flow-builder.add'),
     },
     {
       id: REMOVE_KEY,
-      // @ts-ignore: TODO: fix TS issue `Property 'trans' does not exist on type 'Core_SetGroupMembershipBlock'`
-      name: this.trans('flow-builder.remove'),
+      name: trans('flow-builder.remove'),
     },
   ]
 
