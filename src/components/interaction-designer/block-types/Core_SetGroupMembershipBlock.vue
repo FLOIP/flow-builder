@@ -48,16 +48,13 @@ import BlockId from '../block-editors/BlockId.vue'
 import GroupSelector from '@/components/interaction-designer/block-editors/GroupSelector.vue'
 import VueMultiselect from 'vue-multiselect'
 
-import SetGroupMembershipStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
+import SetGroupMembershipStore, { BLOCK_TYPE, ADD_KEY, REMOVE_KEY } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 import lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import { find, get } from 'lodash'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
-
-const ADD_KEY = 'add'
-const REMOVE_KEY = 'remove'
 
 interface IGroupOption {
   id: string;
@@ -96,11 +93,11 @@ class Core_SetGroupMembershipBlock extends Vue {
   ]
 
   get propertyValue(): string {
-    return get(this.block, 'config.set_contact_property.property_value', '')
+    return this.block.config.set_contact_property.property_value
   }
 
   get selectedAction() {
-    const isMember = get(this.block, 'config.isMember')
+    const { isMember } = this.block.config
     if (isMember === false) {
       return find(this.actionsList, { id: REMOVE_KEY }) || null
     }

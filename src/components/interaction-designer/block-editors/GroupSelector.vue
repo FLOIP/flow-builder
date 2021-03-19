@@ -5,7 +5,7 @@
                      track-by="id"
                      label="name"
                      :placeholder="'flow-builder.group-selector-placeholder' | trans"
-                     :options="groupsList"
+                     :options="groups"
                      :allow-empty="false"
                      :show-labels="false"
                      :searchable="true">
@@ -20,13 +20,13 @@ import { IBlock } from '@floip/flow-runner'
 import { Component, Prop } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import lang from '@/lib/filters/lang'
-import { get, find } from 'lodash'
+import { find } from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 
 interface IGroupOption {
-  id: string
-  name: string
+  id: string;
+  name: string;
 }
 
 @Component<any>({
@@ -39,12 +39,12 @@ class GroupSelector extends Vue {
   @Prop() readonly block!: IBlock
 
   get selectedGroup() {
-    const groupKey = get(this.block, 'config.groupKey')
+    const { groupKey } = this.block.config
     if (!groupKey) {
       return null
     }
 
-    const groupOption = find(this.groupsList, { id: groupKey }) as IGroupOption
+    const groupOption = find(this.groups, { id: groupKey }) as IGroupOption
     if (!groupOption) {
       return null
     }
@@ -65,7 +65,7 @@ class GroupSelector extends Vue {
     })
   }
 
-  get groupsList(): object[] {
+  get groups(): object[] {
     return this.$store.state.trees.ui.groups
   }
 
