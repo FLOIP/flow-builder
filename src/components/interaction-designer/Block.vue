@@ -140,9 +140,10 @@ import { ResourceResolver, SupportedMode } from '@floip/flow-runner'
 import { OperationKind, generateConnectionLayoutKeyFor } from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import lang from '@/lib/filters/lang'
-import {VBTooltipPlugin} from 'bootstrap-vue'
 
-Vue.use(VBTooltipPlugin)
+import { BTooltip } from 'bootstrap-vue'
+
+Vue.component('b-tooltip', BTooltip)
 
 export default {
   props: ['block', 'x', 'y'],
