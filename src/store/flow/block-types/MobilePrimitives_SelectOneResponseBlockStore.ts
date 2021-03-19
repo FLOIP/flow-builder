@@ -28,7 +28,16 @@ interface IInflatedChoicesInterface {
   resource: IResourceDefinition
 }
 
-export const getters: GetterTree<IFlowsState, IRootState> = {
+export interface ICustomFlowState extends Partial<IFlowsState> {
+  inflatedEmptyChoice: IInflatedChoicesInterface
+}
+
+export const stateFactory = ():ICustomFlowState => ({
+  // put empty choice in state rather than in block config to avoid it being persisted
+  inflatedEmptyChoice: {} as IInflatedChoicesInterface
+})
+
+export const getters: GetterTree<ICustomFlowState, IRootState> = {
   inflatedChoices: (state, getters, rootState, rootGetters): object => {
     const currentBlock = rootGetters['builder/activeBlock']
     const choices: { [key: string]: IInflatedChoicesInterface } = {}
@@ -46,10 +55,14 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     const currentBlock = rootGetters['builder/activeBlock']
     return first(filter(currentBlock.exits, {
       label: resourceUuid
-    }))
+    })) as IBlockExit
   },
   isInflatedChoiceBlankOnKey: (state, getters) => (key): boolean => {
     return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semanticLabel')
+  },
+  isInflatedEmptyChoiceBlank: (state, getters): boolean => {
+    console.log("state.inflatedEmptyChoice", state.inflatedEmptyChoice)
+    return !someItemsHaveValue(state.inflatedEmptyChoice.resource.values || [], 'value') && !get(state.inflatedEmptyChoice, 'exit.semanticLabel')
   },
   allChoicesHaveContent: (state, getters): boolean => {
     return Object.keys(getters.inflatedChoices).every((key: string) => {
@@ -73,7 +86,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 
 }
 
-export const mutations: MutationTree<IFlowsState> = {
+export const mutations: MutationTree<ICustomFlowState> = {
   deleteChoiceByKey(state, { choiceKeyToRemove, blockId }) {
     // TODO - this shouldn't be necessary
     // @ts-ignore - TS2339: Property 'flow' does not exist on type
@@ -90,11 +103,26 @@ export const mutations: MutationTree<IFlowsState> = {
     // TODO - this shouldn't be necessary
     // @ts-ignore - TS2339: Property 'flow' does not exist on type
     const block: ISelectOneResponseBlock = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext) as ISelectOneResponseBlock
-    block.config.choices[newIndex] = choiceId
+    Vue.set(block.config.choices, newIndex, choiceId)
   },
 }
 
-export const actions: ActionTree<IFlowsState, IRootState> = {
+export const actions: ActionTree<ICustomFlowState, IRootState> = {
+  async createVolatileEmptyChoice({state, dispatch, rootGetters}, { index }) {
+    const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
+    const blankExit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
+      props: ({
+        uuid: (new IdGeneratorUuidV4()).generate(),
+        test: `block.value = ${index}`,
+        label: blankResource.uuid,
+        semanticLabel: '',
+      }) as IBlockExitTestRequired,
+    }, {root: true})
+    state.inflatedEmptyChoice = {
+      exit: blankExit,
+      resource: rootGetters['flow/resourcesByUuid'][blankResource.uuid]
+    }
+  },
   async popFirstEmptyChoice({commit, rootGetters, getters}) {
     const choiceKeyToRemove = find(Object.keys(getters.inflatedChoices), (key: string) => {
       return <boolean>getters.isInflatedChoiceBlankOnKey(key)
@@ -110,23 +138,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     commit, dispatch, getters, rootGetters,
   }) {
     const activeBlock = rootGetters['builder/activeBlock']
-    if (getters.allChoicesHaveContent) { // Then add new bank choice & exit
-      const newIndex = parseInt(max(Object.keys(activeBlock.config.choices)) || '0') + 1
-      const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-      //due to a race condition we may have already pushed something
-      if(!activeBlock.config.choices[newIndex]) {
-        commit('pushNewChoice', {choiceId: blankResource.uuid, blockId: activeBlock.uuid, newIndex})
-        const exit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
-          props: ({
-            uuid: (new IdGeneratorUuidV4()).generate(),
-            test: `block.value = ${newIndex - 1}`,
-            label: blankResource.uuid,
-            semanticLabel: '',
-          }) as IBlockExitTestRequired,
-        }, { root: true })
-        commit('flow/block_pushNewExit', { blockId: activeBlock.uuid, newExit: exit }, { root: true })
-      }
-    } else if (getters.twoChoicesBlank) { // then remove the 1st blank exit
+    if (!getters.allChoicesHaveContent) { // then remove the 1st blank exit
       const exitLabel = await dispatch('popFirstEmptyChoice', { blockId: activeBlock.uuid })
       if (exitLabel) {
         commit('flow/block_popExitsByLabel', { blockId: activeBlock.uuid, exitLabel }, { root: true })
@@ -135,10 +147,24 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return activeBlock.config.choices
   },
 
+  async editEmptyChoice({state, commit, dispatch, getters, rootGetters}, choice: IInflatedChoicesInterface) {
+    if (choice === state.inflatedEmptyChoice && !getters.isInflatedEmptyChoiceBlank) {
+      // push the current value into choices & exits
+      const activeBlock = rootGetters['builder/activeBlock'];
+      const newIndex = Object.keys(activeBlock.config.choices || {}).length + 1
+      const resourceUuid = state.inflatedEmptyChoice.resource.uuid
+      commit('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
+      commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: state.inflatedEmptyChoice.exit}, {root: true})
+
+      // associate new blank resource to the empty choice, this is important to stop endless watching
+      const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
+      await dispatch('createVolatileEmptyChoice', { blankResource, index: newIndex })
+    }
+  },
+
   // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
   //       but, it doesn't seem to mention how this is configured
-  async createWith({ state, commit, dispatch }, { props }: {props: {uuid: string} & Partial<ISelectOneResponseBlock>}) {
-    const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
+  async createWith({ state, commit, dispatch, rootGetters }, { props }: {props: {uuid: string} & Partial<ISelectOneResponseBlock>}) {
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankQuestionPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankChoicesPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
@@ -155,12 +181,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       label: 'Error',
     }
 
-    const firstChoice: Partial<IBlockExit> = {
-      uuid: (new IdGeneratorUuidV4()).generate(),
-      test: 'block.value = 0',
-      label: blankResource.uuid,
-      semanticLabel: '',
-    }
+    await dispatch('createVolatileEmptyChoice', { index: 0 })
 
     return defaults(props, {
       type: BLOCK_TYPE,
@@ -170,22 +191,21 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits: [
         await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true }),
         await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true }),
-        await dispatch('flow/block_createBlockExitWith', { props: firstChoice }, { root: true }),
       ],
       config: {
         prompt: blankPromptResource.uuid,
         questionPrompt: blankQuestionPromptResource.uuid,
         choicesPrompt: blankChoicesPromptResource.uuid,
-        choices: { 1: blankResource.uuid },
+        choices: {},
       },
     })
-  }
-  ,
+  },
 
 }
 
 export default {
   namespaced: true,
+  state: stateFactory,
   getters,
   mutations,
   actions,
