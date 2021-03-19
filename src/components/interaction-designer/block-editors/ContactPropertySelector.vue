@@ -16,7 +16,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import VueMultiselect from 'vue-multiselect';
-import { IBlock } from '@floip/flow-runner';
+import { IBlock, ISetContactPropertyBlockConfig } from '@floip/flow-runner';
 import { Component, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class'
 import lang from '@/lib/filters/lang';
@@ -40,7 +40,12 @@ class ContactPropertySelector extends Vue {
   @Prop() readonly block!: IBlock
 
   get selectedProperty() {
-    const { propertyKey } = this.block.config.set_contact_property
+    const {
+      set_contact_property: {
+        // @ts-ignore // TODO: weird issue, the prop exists but TS is still popping an error > Property 'property_key' does not exist on type 'SetContactProperty | SetContactProperty[]'
+        property_key: propertyKey,
+      },
+    } = this.block.config as ISetContactPropertyBlockConfig
     if (!propertyKey) {
       return null
     }
@@ -57,7 +62,7 @@ class ContactPropertySelector extends Vue {
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
       path: 'set_contact_property.property_key',
-      value: value.name
+      value: value.name,
     })
   }
 
