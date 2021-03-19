@@ -97,9 +97,9 @@ import {
 import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
 import ValidationException from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import { cloneDeep } from 'lodash'
+import PhoneRecorder from '@/components/interaction-designer/block-editors/PhoneRecorder.vue'
 import UploadMonitor from '../block-editors/UploadMonitor.vue'
 import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
-import PhoneRecorder from '@/components/interaction-designer/block-editors/PhoneRecorder.vue'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -168,9 +168,9 @@ export class ResourceEditor extends Vue {
     }
 
     handleFileSuccessFor(key, langId, event) {
-      const {data: {file, json}} = event
-      //@ts-ignore
-      const {uuid: jsKey} = this.block
+      const { data: { file, json } } = event
+      // @ts-ignore
+      const { uuid: jsKey } = this.block
       const {
         audio_file_id: id,
         audio_uuid: filename,
@@ -190,7 +190,7 @@ export class ResourceEditor extends Vue {
       }
 
       this.resource_setOrCreateValueModeSpecific({
-        //@ts-ignore
+        // @ts-ignore
         resourceId: this.resource.uuid,
         filter: { languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
         value: description,

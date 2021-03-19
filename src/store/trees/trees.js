@@ -80,6 +80,8 @@ export default {
 
     interactiveBlocksInTree: ({ tree }, { interactiveBlockClasses }, rootState) => lodash.filter(tree.blocks, (b) => lodash.includes(Object.keys(interactiveBlockClasses), b.type)),
 
+    isEditable: ({ ui }) => !!ui.isEditable,
+
     // todo: trip a debounced version of this (for larger trees)
     // todo: which is faster lodash deep isEqual or JSON.stringify() ?
     hasChanges: ({ tree, ui }) => ui.previousTreeJson !== JSON.stringify(tree),
@@ -298,10 +300,6 @@ export default {
       !value && delete block.audioFiles[langId]
     },
 
-    pushAudioIntoLibrary({ tree, ui }, audio) {
-      ui.audioFiles.push(audio)
-    },
-
     updateReviewedStateFor({ tree, ui }, { langId, jsKey, value }) {
       const { customData: data } = lodash.find(tree.blocks, { jsKey })
       data.reviewed[langId] = value
@@ -324,6 +322,10 @@ export default {
         isPending: status === -1,
         isComplete: status === 1,
       })
+    },
+
+    updateIsEditable({ ui }, { value }) {
+    	ui.isEditable = value
     },
 
     addEnabledFeature({ ui }, { value }) {
@@ -436,9 +438,8 @@ export default {
       console.log('app.ui.change [via vuex.trees.uiChanged]', msg)
     },
 
-    async attemptSaveTree({ dispatch, getters: { hasChanges, isFeatureTreeSaveEnabled }, rootGetters }) {
-      const isEditable = rootGetters['builder/isEditable']
-      if (!isEditable || !hasChanges) {
+    async attemptSaveTree({ dispatch, getters: { hasChanges, isFeatureTreeSaveEnabled }, state: { ui } }) {
+      if (!ui.isEditable || !hasChanges) {
         console.info('trees', 'Decided against unnecessary tree save!')
         return // non-promise response implies no in-flight request -- aka no-op.
       }
