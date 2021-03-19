@@ -20,7 +20,7 @@ import { IBlock } from '@floip/flow-runner';
 import { Component, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class'
 import lang from '@/lib/filters/lang';
-import { get, find } from 'lodash'
+import { find } from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -40,7 +40,7 @@ class ContactPropertySelector extends Vue {
   @Prop() readonly block!: IBlock
 
   get selectedProperty() {
-    const propertyKey = get(this.block, 'config.set_contact_property.property_key')
+    const { propertyKey } = this.block.config.set_contact_property
     if (!propertyKey) {
       return null
     }
