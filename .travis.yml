@@ -1,6 +1,16 @@
 language: node_js
 node_js:
   - "stable"
-cache: yarn
+install: yarn install
 script:
   - yarn test:unit --no-cache
+  - bash scripts/prepare-gh-pages-deployment.sh
+  - yarn build
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: dist
+  target_branch: gh-pages-ci
+  on:
+    branch: master
