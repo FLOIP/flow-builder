@@ -1,3 +1,5 @@
+# conditional builds
+if: (type = push AND branch = master) OR (type = pull_request AND NOT branch = master)
 language: node_js
 node_js:
   - "stable"
