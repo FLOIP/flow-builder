@@ -39,6 +39,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import {
   IFlow,
   IBlock,
+  ISetGroupMembershipBlockConfig,
 } from '@floip/flow-runner'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -90,30 +91,25 @@ class Core_SetGroupMembershipBlock extends Vue {
     },
   ]
 
-  get propertyValue(): string {
-    return this.block.config.set_contact_property.property_value
-  }
-
   get selectedAction() {
-    const { isMember } = this.block.config
-    if (isMember === false) {
+    const { isMember } = this.block.config as ISetGroupMembershipBlockConfig
+    //TODO: we can remove the safe cast JSON.parse(isMember) once ISetGroupMembershipBlockConfig isMember type is changed to boolean
+    if (JSON.parse(isMember) === false) {
       return find(this.actionsList, { id: REMOVE_KEY }) || null
     }
 
-    if (isMember === true) {
+    if (JSON.parse(isMember) === true) {
       return find(this.actionsList, { id: ADD_KEY }) || null
     }
 
     return null
   }
 
-  set selectedAction(value: IGroupOption) {
-    this.block_updateConfigByPath({
-      blockId: this.block.uuid,
-      path: 'isMember',
-      value: value === null || value === undefined ? null : (value.id === ADD_KEY),
-    })
+  set selectedAction(group: IGroupOption) {
+    this.setIsMemberFromGroup(group)
   }
+
+  @blockVuexNamespace.Action setIsMemberFromGroup: (group: IGroupOption) => Promise<any>
 
   @flowVuexNamespace.Mutation block_updateConfigByPath
 }

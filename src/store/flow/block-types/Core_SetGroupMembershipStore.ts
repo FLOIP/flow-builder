@@ -1,8 +1,8 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import {IRootState} from '@/store'
+import { IRootState } from '@/store'
 import {
   IBlockExit,
-  ISetGroupMembershipBlockConfig
+  ISetGroupMembershipBlockConfig,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { defaults } from 'lodash'
@@ -18,7 +18,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {}
 export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
+  async createWith({ dispatch }, { props }: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
@@ -26,7 +26,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
-      }, {root: true}),
+      }, { root: true }),
     ]
 
     return defaults(props, {
@@ -43,14 +43,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  setIsMember({ commit, rootGetters }, { value }) {
+  async setIsMemberFromGroup({ commit, rootGetters }, { value }) {
     const activeBlock = rootGetters['builder/activeBlock']
     commit('flow/block_updateConfigByPath', {
       blockId: activeBlock.uuid,
       path: 'isMember',
       value: value === null || value === undefined ? null : (value.id === ADD_KEY),
-    })
-  }
+    }, { root: true })
+  },
 }
 
 export default {

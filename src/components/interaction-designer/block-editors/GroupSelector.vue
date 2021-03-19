@@ -16,7 +16,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import VueMultiselect from 'vue-multiselect'
-import { IBlock } from '@floip/flow-runner'
+import { IBlock, ISetGroupMembershipBlockConfig } from '@floip/flow-runner'
 import { Component, Prop } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import lang from '@/lib/filters/lang'
@@ -39,7 +39,7 @@ class GroupSelector extends Vue {
   @Prop() readonly block!: IBlock
 
   get selectedGroup() {
-    const { groupKey } = this.block.config
+    const { groupKey } = this.block.config as ISetGroupMembershipBlockConfig
     if (!groupKey) {
       return null
     }
@@ -56,12 +56,12 @@ class GroupSelector extends Vue {
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
       path: 'groupKey',
-      value: value.id
+      value: value.id,
     })
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
       path: 'groupName',
-      value: value.name
+      value: value.name,
     })
   }
 
