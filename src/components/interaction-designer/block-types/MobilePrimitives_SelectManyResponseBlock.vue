@@ -94,12 +94,14 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
     },
     mixins: [lang],
   })
-export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
-    @blockVuexNamespace.Getter inflatedChoices!: {[key: string]: IResourceDefinition}
-    @blockVuexNamespace.State inflatedEmptyChoice: {[key: string]: IResourceDefinition}
+  export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
+    //Important: Even we extends from SelectOneResponseBlock, to avoid conflict we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation
+    @blockVuexNamespace.Getter inflatedChoices!: { [key: string]: IResourceDefinition }
+    @blockVuexNamespace.State inflatedEmptyChoice: { [key: string]: IResourceDefinition }
 
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
-}
+    @blockVuexNamespace.Action editEmptyChoice!: () => Promise<object>
+  }
 
 export default MobilePrimitives_SelectManyResponseBlock
 export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectManyResponseStore)

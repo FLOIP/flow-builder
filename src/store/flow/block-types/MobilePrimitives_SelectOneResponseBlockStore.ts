@@ -61,7 +61,6 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
     return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semanticLabel')
   },
   isInflatedEmptyChoiceBlank: (state, getters): boolean => {
-    console.log("state.inflatedEmptyChoice", state.inflatedEmptyChoice)
     return !someItemsHaveValue(state.inflatedEmptyChoice.resource.values || [], 'value') && !get(state.inflatedEmptyChoice, 'exit.semanticLabel')
   },
   allChoicesHaveContent: (state, getters): boolean => {
