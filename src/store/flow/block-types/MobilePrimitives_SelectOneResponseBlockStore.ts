@@ -146,7 +146,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     return activeBlock.config.choices
   },
 
-  async editEmptyChoice({state, commit, dispatch, getters, rootGetters}, choice: IInflatedChoicesInterface) {
+  async editEmptyChoice({state, commit, dispatch, getters, rootGetters}, { choice }: { choice: IInflatedChoicesInterface }) {
     if (choice === state.inflatedEmptyChoice && !getters.isInflatedEmptyChoiceBlank) {
       // push the current value into choices & exits
       const activeBlock = rootGetters['builder/activeBlock'];

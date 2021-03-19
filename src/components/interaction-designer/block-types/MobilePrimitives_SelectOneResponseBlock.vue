@@ -116,14 +116,14 @@ export class MobilePrimitives_SelectOneResponseBlock extends Vue {
 
     @Watch('inflatedChoices', { deep: true })
     onChoicesChanged(newChoices: object) {
-      console.debug("Watched inflatedChoices")
+      console.debug('Watched inflatedChoices')
       this.editSelectOneResponseBlockChoice()
     }
 
     @Watch('inflatedEmptyChoice', { deep: true })
     onEmptyChoiceChanged(newChoice: object, oldChoice: object) {
-      console.debug("Watched inflatedEmptyChoice", newChoice, oldChoice)
-      this.editEmptyChoice(oldChoice);
+      console.debug('Watched inflatedEmptyChoice', newChoice, oldChoice)
+      this.editEmptyChoice({ choice: oldChoice })
     }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
@@ -132,7 +132,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends Vue {
     @blockVuexNamespace.State inflatedEmptyChoice: {[key: string]: IResourceDefinition}
 
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
-    @blockVuexNamespace.Action editEmptyChoice!: () => Promise<object>
+    @blockVuexNamespace.Action editEmptyChoice!: ({ choice: IInflatedChoicesInterface }) => Promise<object>
 }
 
 export default MobilePrimitives_SelectOneResponseBlock
