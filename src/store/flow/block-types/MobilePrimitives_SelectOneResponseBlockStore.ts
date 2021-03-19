@@ -9,8 +9,8 @@ import {
   findBlockOnActiveFlowWith,
   IResourceDefinitionContentTypeSpecific,
 } from '@floip/flow-runner'
-import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import ISelectOneResponseBlock from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
+import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import { ISelectOneResponseBlock } from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'

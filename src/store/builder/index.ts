@@ -8,8 +8,8 @@ import {
 import { IRootState } from '@/store'
 import { IBlock, SupportedMode, ValidationException } from '@floip/flow-runner'
 import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block'
-import createFormattedDate from '@floip/flow-runner/dist/domain/DateFormat'
-import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import { createFormattedDate } from "@floip/flow-runner/dist/domain/DateFormat"
+import { IdGeneratorUuidV4 } from "@floip/flow-runner/dist/domain/IdGeneratorUuidV4"
 
 export enum OperationKind { // todo migrate these to flight-monitor
   CONNECTION_SOURCE_RELOCATE = 'CONNECTION_SOURCE_RELOCATE',
