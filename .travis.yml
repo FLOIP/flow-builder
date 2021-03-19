@@ -13,4 +13,4 @@ deploy:
   local_dir: dist
   target_branch: gh-pages-ci
   on:
-    branch: VMO-3601-github-pages-auto-rebuild
+    branch: master
