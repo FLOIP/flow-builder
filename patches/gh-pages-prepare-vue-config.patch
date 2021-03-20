@@ -1,5 +1,5 @@
 diff --git a/vue.config.js b/vue.config.js
-index b6ab9b9..ac02931 100644
+index b862636..8c29f20 100644
 --- a/vue.config.js
 +++ b/vue.config.js
 @@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
