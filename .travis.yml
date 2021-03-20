@@ -11,7 +11,7 @@ script:
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  local_dir: dist
+  github_token: $GITHUB_TOKEN #the env. variable is set in travis-ci > https://travis-ci.com/github/FLOIP/flow-builder/settings
+  local_dir: dist #the build output folder
   on:
     branch: master
