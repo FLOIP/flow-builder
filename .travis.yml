@@ -1,5 +1,5 @@
 # conditional builds
-if: (type = push AND branch = master) OR (type = pull_request AND NOT branch = master)
+if: (type = push AND branch = master) OR type = pull_request
 language: node_js
 node_js:
   - "stable"
@@ -13,6 +13,5 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
   local_dir: dist
-  target_branch: gh-pages-ci
   on:
     branch: master
