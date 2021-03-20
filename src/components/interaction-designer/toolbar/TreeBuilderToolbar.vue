@@ -129,7 +129,7 @@
                   type="button"
                   class="btn btn-outline-secondary tree-delete-block mr-2"
                   @click.prevent="handleRemoveActivatedBlockTriggered"
-                  style="background-color: red"
+                  style="background-color: rebeccapurple"
                   :disabled="!activeBlockId">
             {{trans('flow-builder.delete')}}
           </button>
