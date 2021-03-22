@@ -88,11 +88,10 @@ import { parse as floipExpressionParser } from '@floip/expression-parser'
 import { isObject, some } from 'lodash'
 import VueFocus from 'vue-focus'
 import { mapActions } from 'vuex'
-import { BTooltip } from 'bootstrap-vue'
-
+import { VBTooltipPlugin } from 'bootstrap-vue'
 // import BlockContentAutogenButton from './BlockContentAutogenButton'
 
-Vue.component('b-tooltip', BTooltip)
+Vue.use(VBTooltipPlugin)
 
 export default {
   components: {
