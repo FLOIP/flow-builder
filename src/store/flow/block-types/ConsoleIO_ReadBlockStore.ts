@@ -1,12 +1,12 @@
-import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import { IRootState } from '@/store'
+import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {IRootState} from '@/store'
 import {
   IBlockExit,
 } from '@floip/flow-runner'
-import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
-import { defaults, split } from 'lodash'
-import { IFlowsState } from '../index'
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
+import {defaults, split} from 'lodash'
+import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'ConsoleIO\\Read'
 
@@ -21,7 +21,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async setFormatString({ commit, rootGetters }, newFormatString: string) {
+  async setFormatString({commit, rootGetters}, newFormatString: string) {
     const activeBlock = rootGetters['builder/activeBlock']
     const newConfig = {
       format_string: newFormatString,
@@ -30,12 +30,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId: activeBlock.uuid,
       key: 'format_string',
       value: newFormatString,
-    }, { root: true })
+    }, {root: true})
     return newConfig
   },
   async editDestinationVariable({
     commit, dispatch, getters, rootGetters,
-  }, { variableName, keyIndex }: {variableName: string; keyIndex: number}) {
+  }, {variableName, keyIndex}: {variableName: string; keyIndex: number}) {
     const activeBlock = rootGetters['builder/activeBlock']
     const newDestinationVariables = activeBlock.config.destination_variables || []
     newDestinationVariables[keyIndex] = variableName
@@ -43,10 +43,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId: activeBlock.uuid,
       key: 'destination_variables',
       value: newDestinationVariables,
-    }, { root: true })
+    }, {root: true})
     return newDestinationVariables
   },
-  async createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<IRunFlowBlock>}) {
+  async createWith({dispatch}, {props}: {props: {uuid: string} & Partial<IRunFlowBlock>}) {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
@@ -54,7 +54,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
-      }, { root: true }),
+      }, {root: true}),
     ]
     exits.push(
       await dispatch('flow/block_createBlockExitWith', {
@@ -63,7 +63,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
           tag: 'Error',
           label: 'Error',
         }) as IBlockExit,
-      }, { root: true }),
+      }, {root: true}),
     )
 
     return defaults(props, {

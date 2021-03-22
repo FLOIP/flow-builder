@@ -1,7 +1,7 @@
-import { StoreOptions } from 'vuex'
+import {StoreOptions} from 'vuex'
 import trees from '@/store/trees/trees.js'
-import { IFlowsState, store as flow } from './flow'
-import { IBuilderState, store as builder } from './builder'
+import {IFlowsState, store as flow} from './flow'
+import {IBuilderState, store as builder} from './builder'
 // @ts-ignore
 import audio from './trees/audio'
 

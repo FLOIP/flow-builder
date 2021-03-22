@@ -17,9 +17,11 @@ window.app = window.app || {};
   app.ui.change = function (textNotification) {
     console.log('app.ui.change', textNotification)
 
-    const { selectedBlock } = builder.$store.getters
+    const {selectedBlock} = builder.$store.getters
 
-    if (!selectedBlock) { return }
+    if (!selectedBlock) {
+      return
+    }
 
     // Temporary legacy fix for when some customData properties are not reactive by default
     // because they don't yet exist in `15-trees-block-defaults.js`
@@ -60,7 +62,7 @@ window.app = window.app || {};
     app.dataControl._setValidationResultsForUI([])
 
     const requestData = {
-    	data: outputData,
+      data: outputData,
     }
     if (treeUpdatedConflict !== null) {
       console.log('Update not currently possible')
@@ -71,9 +73,9 @@ window.app = window.app || {};
       .done((response) => {
         app.audioChoice.setTopUpdatesBar(Lang.trans('trees.tree-saved'), 1)
         // the person has been logged out
-        if (typeof (response) !== 'object') {
+        if (typeof response !== 'object') {
           // spawn the modal
-          $('#myModal').modal({ show: true, backdrop: 'static' })
+          $('#myModal').modal({show: true, backdrop: 'static'})
         }
 
         app.ui.saveCurrentlyInProgress = 0
@@ -255,7 +257,7 @@ window.app = window.app || {};
   }
 
   app.shareableLinkModal.sendRequest = function (requestType) {
-    $.post(`/ajax/trees/updateshareablelink/${app.ui.treeId}`, { type: requestType })
+    $.post(`/ajax/trees/updateshareablelink/${app.ui.treeId}`, {type: requestType})
       .done((response) => {
         if (response) {
           // New one!
@@ -281,12 +283,16 @@ window.app = window.app || {};
 
   app.shareableLinkSetsModal = {}
   app.shareableLinkSetsModal.initialize = function () {
-    const shareableLinkTemplate = _.template(JST['legacy/templates/shareable-link-sets-template.html'])
+    const shareableLinkTemplate = _.template(
+      JST['legacy/templates/shareable-link-sets-template.html'],
+    )
 
-    $('body').append(shareableLinkTemplate({
-      defaultLocales: builder.$store.state.defaultLocales,
-      orgEnabledLanguages: builder.$store.state.orgEnabledLanguages,
-    }))
+    $('body').append(
+      shareableLinkTemplate({
+        defaultLocales: builder.$store.state.defaultLocales,
+        orgEnabledLanguages: builder.$store.state.orgEnabledLanguages,
+      }),
+    )
 
     // Assign button clicks
     $('.tree-shareable-link-sets-generate-button').on('click', (e) => {
@@ -301,7 +307,7 @@ window.app = window.app || {};
       }
     })
 
-    $('select[name=\'lockDateRange\']').on('change', function () {
+    $("select[name='lockDateRange']").on('change', function () {
       if (this.value === '1') {
         $('.hide-on-lockDateRange').hide()
       } else {
@@ -314,7 +320,9 @@ window.app = window.app || {};
   }
 
   app.shareableLinkSetsModal.initializeLinksList = function () {
-    const shareableLinkListTemplate = _.template(JST['legacy/templates/shareable-link-sets-list-template.html'])
+    const shareableLinkListTemplate = _.template(
+      JST['legacy/templates/shareable-link-sets-list-template.html'],
+    )
     $('.shareable-link-sets-list-container').html(shareableLinkListTemplate)
 
     $('.tree-shareable-link-sets-delete-button').on('click', (e) => {
@@ -385,7 +393,9 @@ window.app = window.app || {};
     $('span.sl-label-channel').text(channelLabel)
     $('span.sl-label-blocks').text(blocksLabel)
 
-    $('span.sl-label-versions').text(`${app.labels.versionsSelected} of ${app.labels.versionsTotal}`)
+    $('span.sl-label-versions').text(
+      `${app.labels.versionsSelected} of ${app.labels.versionsTotal}`,
+    )
   }
 
   app.shareableLinkSetsModal.buildUrl = function (public_hash) {
@@ -412,12 +422,32 @@ window.app = window.app || {};
         hiddenDirectorySelectionFields: app.params.hiddenDirectorySelectionFields,
         lockDateRange: _.parseInt($('.shareable-link-sets-input[name=lockDateRange]').val()),
         resultsLocale: $('.shareable-link-sets-input[name=resultsLocale]').val(),
-        showKeyMetrics: $('.shareable-link-sets-input[name=showKeyMetrics]').is(':checked') ? '1' : '0',
-        showBlockType: $('.shareable-link-sets-input[name=showBlockType]').is(':checked') ? '1' : '0',
-        shouldShowResultsFromIncompleteEngagements: $('.shareable-link-sets-input[name=shouldShowResultsFromIncompleteEngagements]').is(':checked') ? '1' : '0',
-        shouldOnlyShowLatestResultPerSession: $('.shareable-link-sets-input[name=shouldOnlyShowLatestResultPerSession]').is(':checked') ? '1' : '0',
-        shouldUseSimpleDatePicker: $('.shareable-link-sets-input[name=shouldUseSimpleDatePicker]').is(':checked') ? '1' : '0',
-        shouldUseCustomBlockOrdering: $('.shareable-link-sets-input[name=shouldUseCustomBlockOrdering]').is(':checked') ? '1' : '0',
+        showKeyMetrics: $('.shareable-link-sets-input[name=showKeyMetrics]').is(':checked')
+          ? '1'
+          : '0',
+        showBlockType: $('.shareable-link-sets-input[name=showBlockType]').is(':checked')
+          ? '1'
+          : '0',
+        shouldShowResultsFromIncompleteEngagements: $(
+          '.shareable-link-sets-input[name=shouldShowResultsFromIncompleteEngagements]',
+        ).is(':checked')
+          ? '1'
+          : '0',
+        shouldOnlyShowLatestResultPerSession: $(
+          '.shareable-link-sets-input[name=shouldOnlyShowLatestResultPerSession]',
+        ).is(':checked')
+          ? '1'
+          : '0',
+        shouldUseSimpleDatePicker: $(
+          '.shareable-link-sets-input[name=shouldUseSimpleDatePicker]',
+        ).is(':checked')
+          ? '1'
+          : '0',
+        shouldUseCustomBlockOrdering: $(
+          '.shareable-link-sets-input[name=shouldUseCustomBlockOrdering]',
+        ).is(':checked')
+          ? '1'
+          : '0',
         enabledTabs: $('input[name=enabledTabs]:checked')
           .map((i, el) => $(el).val())
           .get(),
@@ -434,12 +464,14 @@ window.app = window.app || {};
       }
 
       if ($('.shareable-link-sets-input[name=shouldUseCustomBlockOrdering]').is(':checked')) {
-        sendRequest.customBlockOrder = _.reduce($('.block-ordinal').toArray(),
+        sendRequest.customBlockOrder = _.reduce(
+          $('.block-ordinal').toArray(),
           (memo, el) => {
             memo[$(el).data('js-key')] = $(el).val()
             return memo
           },
-          {})
+          {},
+        )
       }
 
       if (app.params.noValidDateRange == false) {
@@ -452,13 +484,17 @@ window.app = window.app || {};
       }
     }
 
-    $.post(`/ajax/treeversionsets/updateshareablelink/${app.tree_version_set_id}`, { data: sendRequest })
+    $.post(`/ajax/treeversionsets/updateshareablelink/${app.tree_version_set_id}`, {
+      data: sendRequest,
+    })
       .done((response) => {
         if (requestType == 'delete') {
           if (response == 1) {
             // Remove the entry with that hash from the local JS list
-            app.shareableLinks = _.without(app.shareableLinks,
-              _.findWhere(app.shareableLinks, { public_hash: shareableLinkHash }))
+            app.shareableLinks = _.without(
+              app.shareableLinks,
+              _.findWhere(app.shareableLinks, {public_hash: shareableLinkHash}),
+            )
             // Initialize the second half with the list of existing links:
             app.shareableLinkSetsModal.initializeLinksList()
           }
@@ -499,17 +535,27 @@ window.app = window.app || {};
 
     // get selected options for export from users
     function getUserOptionsRecipe() {
-      const fhd = ($('.csv-exports-option-format-headings').val()) ? $('.csv-exports-option-format-headings').val() : '0'
-      const fcc = ($('.csv-exports-option-format-cells').val()) ? $('.csv-exports-option-format-cells').val() : '0'
-      const vcq = ($('.csv-exports-option-values-mcq').val()) ? $('.csv-exports-option-values-mcq').val() : '0'
-      const vms = ($('.csv-exports-option-values-messages').val()) ? $('.csv-exports-option-values-messages').val() : '0'
+      const fhd = $('.csv-exports-option-format-headings').val()
+        ? $('.csv-exports-option-format-headings').val()
+        : '0'
+      const fcc = $('.csv-exports-option-format-cells').val()
+        ? $('.csv-exports-option-format-cells').val()
+        : '0'
+      const vcq = $('.csv-exports-option-values-mcq').val()
+        ? $('.csv-exports-option-values-mcq').val()
+        : '0'
+      const vms = $('.csv-exports-option-values-messages').val()
+        ? $('.csv-exports-option-values-messages').val()
+        : '0'
 
       return fhd + fcc + vcq + vms
     }
 
     // remove active class from all
     $('[class*=csv-exports-btn-format-]').click(() => {
-      $('[class*=csv-exports-btn-format-]').removeClass('btn-primary active').addClass('btn-secondary')
+      $('[class*=csv-exports-btn-format-]')
+        .removeClass('btn-primary active')
+        .addClass('btn-secondary')
     })
 
     // when human-readable is selected
@@ -556,8 +602,12 @@ window.app = window.app || {};
           $('.csv-exports-btn-format-machine').trigger('click')
         } else {
           setToDefault = false
-          $('[class*=csv-exports-btn-format-]').removeClass('btn-primary active').addClass('btn-secondary')
-          $('.csv-exports-btn-format-custom').addClass('btn-primary active').removeClass('btn-secondary')
+          $('[class*=csv-exports-btn-format-]')
+            .removeClass('btn-primary active')
+            .addClass('btn-secondary')
+          $('.csv-exports-btn-format-custom')
+            .addClass('btn-primary active')
+            .removeClass('btn-secondary')
         }
       }
     })
@@ -568,7 +618,9 @@ window.app = window.app || {};
 
   app.csvExportsModal.initializeLinksList = function () {
     if (typeof app.csvExportsModal.shareableLinkListTemplate === 'undefined') {
-      app.csvExportsModal.shareableLinkListTemplate = _.template(JST['legacy/templates/combined-csv-export-list-template.html'])
+      app.csvExportsModal.shareableLinkListTemplate = _.template(
+        JST['legacy/templates/combined-csv-export-list-template.html'],
+      )
     }
     $('.csv-exports-list-container').html(app.csvExportsModal.shareableLinkListTemplate())
     app.csvExportsModal.queueInProgress()
@@ -607,7 +659,9 @@ window.app = window.app || {};
     $('span.sl-label-channel').text(channelLabel)
     $('span.sl-label-blocks').text(blocksLabel)
 
-    $('span.sl-label-versions').text(`${app.labels.versionsSelected} of ${app.labels.versionsTotal}`)
+    $('span.sl-label-versions').text(
+      `${app.labels.versionsSelected} of ${app.labels.versionsTotal}`,
+    )
   }
 
   app.csvExportsModal.sendStatusRequest = function () {
@@ -649,7 +703,7 @@ window.app = window.app || {};
     const then = moment() // time of export click
     const thenAfter5s = then.clone().add(5, 'seconds') // Re-enable time will be after 5s
     $('.tree-csv-exports-generate-button').prop('disabled', true)
-    $.post(`/ajax/treeversionsets/csvexportstart/${treeVersionSetId}`, { data: sendRequest })
+    $.post(`/ajax/treeversionsets/csvexportstart/${treeVersionSetId}`, {data: sendRequest})
       .done((response) => {
         app.csvExports = response
         app.csvExportsModal.initializeLinksList()
@@ -671,11 +725,14 @@ window.app = window.app || {};
   }
 
   app.csvExportsModal.queueInProgress = function () {
-    const firstExportInProgress = _.find(app.csvExports, { upload_status: 0 })
+    const firstExportInProgress = _.find(app.csvExports, {upload_status: 0})
 
     // If necessary, create a de-bounced version of the Ajax status check function
     if (_.isFunction(app.csvExportsModal.sendStatusRequestDebounced) == false) {
-      app.csvExportsModal.sendStatusRequestDebounced = _.debounce(app.csvExportsModal.sendStatusRequest, 1000)
+      app.csvExportsModal.sendStatusRequestDebounced = _.debounce(
+        app.csvExportsModal.sendStatusRequest,
+        1000,
+      )
     }
 
     if (firstExportInProgress) {
@@ -685,7 +742,9 @@ window.app = window.app || {};
 
   app.blockResultsLoader = {}
   app.blockResultsLoader.load = function () {
-    const nextBlockKeyToLoad = $('.tree-results-block-container[data-is-loaded=0]').first().attr('id')
+    const nextBlockKeyToLoad = $('.tree-results-block-container[data-is-loaded=0]')
+      .first()
+      .attr('id')
 
     $('.tree-results-loading-indicators').show()
 
@@ -697,11 +756,13 @@ window.app = window.app || {};
   }
 
   app.blockResultsLoader.assignButtons = function (parentElement) {
-    $(parentElement).find('.result-view-control-tab').on('click', (e) => {
-      const targetType = $(e.currentTarget).attr('data-tab-option')
-      $(parentElement).find('.tree-results-item-tabs').hide()
-      $(parentElement).find(`.tree-results-item-${targetType}`).show()
-    })
+    $(parentElement)
+      .find('.result-view-control-tab')
+      .on('click', (e) => {
+        const targetType = $(e.currentTarget).attr('data-tab-option')
+        $(parentElement).find('.tree-results-item-tabs').hide()
+        $(parentElement).find(`.tree-results-item-${targetType}`).show()
+      })
     $(parentElement).find('.result-view-control-tab').first().trigger('click')
   }
 
@@ -760,31 +821,47 @@ window.app = window.app || {};
       url = `/ajax/trees/set/${app.tree_version_set_id}/results/keymetrics${window.location.search}`
     }
 
-    $.post(url, { filterSet: _.get(viamo, '$store.state.publicApp.filterSet', []) })
+    $.post(url, {filterSet: _.get(viamo, '$store.state.publicApp.filterSet', [])})
       .done((keymetrics) => {
         if (keymetrics) {
-          app.blockResultsLoaderV2.loadDonutChart('connected',
+          app.blockResultsLoaderV2.loadDonutChart(
+            'connected',
             keymetrics.finishedDeliveryLogCount,
-            keymetrics.deliveryLogCount)
-          $('#print-connected-values').html(`${keymetrics.finishedDeliveryLogCount} Connected of ${keymetrics.deliveryLogCount} Calls`)
+            keymetrics.deliveryLogCount,
+          )
+          $('#print-connected-values').html(
+            `${keymetrics.finishedDeliveryLogCount} Connected of ${keymetrics.deliveryLogCount} Calls`,
+          )
 
-          app.blockResultsLoaderV2.loadDonutChart('completed',
+          app.blockResultsLoaderV2.loadDonutChart(
+            'completed',
             keymetrics.completedDeliveryLogCount,
-            keymetrics.deliveryLogCount)
-          $('#print-completed-values').html(`${keymetrics.completedDeliveryLogCount} Completed of ${keymetrics.deliveryLogCount} Calls`)
+            keymetrics.deliveryLogCount,
+          )
+          $('#print-completed-values').html(
+            `${keymetrics.completedDeliveryLogCount} Completed of ${keymetrics.deliveryLogCount} Calls`,
+          )
 
-          app.blockResultsLoaderV2.loadDonutChart('unique',
+          app.blockResultsLoaderV2.loadDonutChart(
+            'unique',
             keymetrics.uniqueSubscriberCount,
-            keymetrics.deliveryLogCount)
+            keymetrics.deliveryLogCount,
+          )
           $('#print-unique-value').html(`${keymetrics.uniqueSubscriberCount} Unique Subscribers`)
 
-          app.blockResultsLoaderV2.loadDonutChart('firsttime',
+          app.blockResultsLoaderV2.loadDonutChart(
+            'firsttime',
             keymetrics.firstTimeSubscriberCount,
-            keymetrics.uniqueSubscriberCount)
-          $('#print-firsttime-value').html(`${keymetrics.firstTimeSubscriberCount} First Time Subscribers`)
+            keymetrics.uniqueSubscriberCount,
+          )
+          $('#print-firsttime-value').html(
+            `${keymetrics.firstTimeSubscriberCount} First Time Subscribers`,
+          )
 
           app.blockResultsLoaderV2.loadDonutChart('answered', keymetrics.completedQuestionCount, 0)
-          $('#print-answered-value').html(`${keymetrics.completedQuestionCount} Question Responses`)
+          $('#print-answered-value').html(
+            `${keymetrics.completedQuestionCount} Question Responses`,
+          )
 
           if ($('#tree-results-keymetrics-durations').length > 0) {
             app.blockResultsLoaderV2.loadAvgCallDurations(keymetrics)
@@ -793,55 +870,52 @@ window.app = window.app || {};
       })
       .fail((response) => {
         console.error(response)
-        $('.doughnut-charts-row').html(`<h4 class="text-danger text-center">${JSON.parse(response.responseText)}</h4>`)
+        $('.doughnut-charts-row').html(
+          `<h4 class="text-danger text-center">${JSON.parse(response.responseText)}</h4>`,
+        )
       })
   }
 
   app.blockResultsLoaderV2.loadDonutChart = function (keymetricName, chartNumerator, chartTotal) {
-    const chartDenominator = (chartTotal === 0) ? 0 : chartTotal - chartNumerator
+    const chartDenominator = chartTotal === 0 ? 0 : chartTotal - chartNumerator
 
     const chartDataSets = {
-      labels: [
-        '',
-        '',
-      ],
+      labels: ['', ''],
       datasets: [
         {
-          data: [
-            chartNumerator,
-            chartDenominator,
-          ],
-          backgroundColor: [
-            '#333',
-            '#999',
-          ],
-          hoverBackgroundColor: [
-            '#333',
-            '#999',
-          ],
-          borderColor: [
-            '#333',
-            '#999',
-          ],
+          data: [chartNumerator, chartDenominator],
+          backgroundColor: ['#333', '#999'],
+          hoverBackgroundColor: ['#333', '#999'],
+          borderColor: ['#333', '#999'],
         },
       ],
     }
 
     $(`#tree-results-loading-indicator-doughnut-${keymetricName}`).hide()
 
-    app.chartJsHelper.updateTreeDoughnutChart(`v-chart-tree-doughnut-${keymetricName}`, chartDataSets)
+    app.chartJsHelper.updateTreeDoughnutChart(
+      `v-chart-tree-doughnut-${keymetricName}`,
+      chartDataSets,
+    )
 
     // Set Chart's dynamic label as visible and set its span html with the value
     if (chartTotal >= 0) {
-      $(`#tree-doughnut-total-${keymetricName}`).html(formatLargeNumber(chartTotal)).parent().removeClass('hidden')
+      $(`#tree-doughnut-total-${keymetricName}`)
+        .html(formatLargeNumber(chartTotal))
+        .parent()
+        .removeClass('hidden')
     }
   }
 
   app.blockResultsLoaderV2.loadAvgCallDurations = function (durations) {
     if (durations) {
       // TODO what iv durationAvg or completedDurationAvg = 0 or don't exist?
-      $('#tree-results-duration-all').html(`${(durations.durationAvg / 60).toPrecision(2)} minutes`)
-      $('#tree-results-duration-completed').html(`${(durations.completedDurationAvg / 60).toPrecision(2)} minutes`)
+      $('#tree-results-duration-all').html(
+        `${(durations.durationAvg / 60).toPrecision(2)} minutes`,
+      )
+      $('#tree-results-duration-completed').html(
+        `${(durations.completedDurationAvg / 60).toPrecision(2)} minutes`,
+      )
       $('#tree-results-keymetrics-duration').show()
     }
 
@@ -863,8 +937,12 @@ window.app = window.app || {};
     var totalInteractionsOrderedBarchartData = []
 
     _.each(app.resultsData, (blockResult, key) => {
-      let truncatedBlockTitle; let resultIndex; let colorIndex; let totalInteractions; let completedInteractions; let
-        colorValue
+      let truncatedBlockTitle
+      let resultIndex
+      let colorIndex
+      let totalInteractions
+      let completedInteractions
+      let colorValue
       const blockTitle = _.get(blockResult, 'details.title') || _.get(blockResult, 'classDetails.name') || ''
 
       truncatedBlockTitle = blockTitle.length < 9 ? blockTitle : `${blockTitle.substring(0, 9)}...`
@@ -873,7 +951,10 @@ window.app = window.app || {};
       totalInteractions = blockResult.totalInteractions
 
       // outputKeys is either an empty array, or has one or more objects.
-      completedInteractions = blockResult.outputKeys.reduce((acc, val) => acc + val.outputKeyTotals, 0)
+      completedInteractions = blockResult.outputKeys.reduce(
+        (acc, val) => acc + val.outputKeyTotals,
+        0,
+      )
 
       // Listing-ordered arrays
       barchartLabels.push(blockTitle)
@@ -883,7 +964,11 @@ window.app = window.app || {};
       completedInteractionsBarchartData.push(completedInteractions)
 
       // Popularity-ordered arrays. Callback fn applies descending order.
-      resultIndex = _.sortedIndex(orderedCompletedInteractionsBarchartData, completedInteractions, (i) => -i)
+      resultIndex = _.sortedIndex(
+        orderedCompletedInteractionsBarchartData,
+        completedInteractions,
+        (i) => -i,
+      )
       orderedBarchartLabels.splice(resultIndex, 0, blockTitle)
       orderedBarchartLabelsTruncated.splice(resultIndex, 0, truncatedBlockTitle)
       orderedColorIndexes.splice(resultIndex, 0, colorValue)
@@ -935,95 +1020,106 @@ window.app = window.app || {};
   }
 
   app.blockResultsLoaderV2.assignButtons = function (parentElement) {
-    $(parentElement).find('.tree-interactions-barcharts-toggle-button').on('click', (e) => {
-      const $buttonClicked = $(e.currentTarget)
-      const barchartTarget = $buttonClicked.attr('data-section-option')
+    $(parentElement)
+      .find('.tree-interactions-barcharts-toggle-button')
+      .on('click', (e) => {
+        const $buttonClicked = $(e.currentTarget)
+        const barchartTarget = $buttonClicked.attr('data-section-option')
 
-      if ($buttonClicked.hasClass('active')) {
-        return
-      }
+        if ($buttonClicked.hasClass('active')) {
+          return
+        }
 
-      $buttonClicked.siblings().removeClass('active')
-      $buttonClicked.addClass('active')
+        $buttonClicked.siblings().removeClass('active')
+        $buttonClicked.addClass('active')
 
-      // Hide and show the relevant Bar Chart
-      $('canvas[id^=\'v-chart-tree-blocks-\']').hide()
-      $(`#v-chart-tree-blocks-${barchartTarget}`).show()
+        // Hide and show the relevant Bar Chart
+        $("canvas[id^='v-chart-tree-blocks-']").hide()
+        $(`#v-chart-tree-blocks-${barchartTarget}`).show()
 
-      $('#order-by-active-label-print').html(`Order By: ${$buttonClicked.attr('aria-label')}`)
+        $('#order-by-active-label-print').html(`Order By: ${$buttonClicked.attr('aria-label')}`)
 
-      // Render any charts that haven't been rendered yet. Checks if data-generated==0 attribute.
-      app.chartJsHelper.createCharts()
-      $('#v-chart-tree-blocks-listing').removeClass('hidden')
-    })
+        // Render any charts that haven't been rendered yet. Checks if data-generated==0 attribute.
+        app.chartJsHelper.createCharts()
+        $('#v-chart-tree-blocks-listing').removeClass('hidden')
+      })
 
-    $(parentElement).find('input[name="barchart-dataset-toggle"]').on('click', (e) => {
-      const barchartDatasetTarget = $(e.currentTarget).attr('value')
+    $(parentElement)
+      .find('input[name="barchart-dataset-toggle"]')
+      .on('click', (e) => {
+        const barchartDatasetTarget = $(e.currentTarget).attr('value')
 
-      // Note that the barchart-dataset-toggle Buttons are not specific to one Chart
-      const listingChart = app.chartJsHelper.chartObjects['v-chart-tree-blocks-listing']
-      const popularityChart = app.chartJsHelper.chartObjects['v-chart-tree-blocks-popularity']
+        // Note that the barchart-dataset-toggle Buttons are not specific to one Chart
+        const listingChart = app.chartJsHelper.chartObjects['v-chart-tree-blocks-listing']
+        const popularityChart = app.chartJsHelper.chartObjects['v-chart-tree-blocks-popularity']
 
-      const listingDatasets = listingChart.config.data.datasets
-      const popularityDatasets = popularityChart.config.data.datasets
-      const isEnteredSelected = barchartDatasetTarget == 'entered'
-      const isCompletedSelected = barchartDatasetTarget == 'completed'
+        const listingDatasets = listingChart.config.data.datasets
+        const popularityDatasets = popularityChart.config.data.datasets
+        const isEnteredSelected = barchartDatasetTarget == 'entered'
+        const isCompletedSelected = barchartDatasetTarget == 'completed'
 
-      if (isCompletedSelected) {
-        $('#tree-summary-barchart-title').html('Completed Interactions per Block')
-      } else {
-        $('#tree-summary-barchart-title').html('Entered Interactions per Block')
-      }
+        if (isCompletedSelected) {
+          $('#tree-summary-barchart-title').html('Completed Interactions per Block')
+        } else {
+          $('#tree-summary-barchart-title').html('Entered Interactions per Block')
+        }
 
-      listingDatasets[0].hidden = isEnteredSelected
-      listingDatasets[1].hidden = isCompletedSelected
-      popularityDatasets[0].hidden = isEnteredSelected
-      popularityDatasets[1].hidden = isCompletedSelected
+        listingDatasets[0].hidden = isEnteredSelected
+        listingDatasets[1].hidden = isCompletedSelected
+        popularityDatasets[0].hidden = isEnteredSelected
+        popularityDatasets[1].hidden = isCompletedSelected
 
-      listingChart.update()
-      popularityChart.update()
-    })
-    $(parentElement).find('.result-view-section-button').on('click', (e) => {
-      const tabTarget = $(e.currentTarget).attr('data-section-option')
-      const tabLabel = $(e.currentTarget).text()
+        listingChart.update()
+        popularityChart.update()
+      })
+    $(parentElement)
+      .find('.result-view-section-button')
+      .on('click', (e) => {
+        const tabTarget = $(e.currentTarget).attr('data-section-option')
+        const tabLabel = $(e.currentTarget).text()
 
-      $(e.currentTarget).closest('.result-view-section-control-container').find('.sub-report-type-title').html(tabLabel == '╳'
-        ? 'Timeline: Total Interactions'
-        : `Timeline: ${tabLabel}`)
+        $(e.currentTarget)
+          .closest('.result-view-section-control-container')
+          .find('.sub-report-type-title')
+          .html(tabLabel == '╳' ? 'Timeline: Total Interactions' : `Timeline: ${tabLabel}`)
 
-      if ($(e.currentTarget).hasClass('active')) {
-        console.log(`Already on the ${tabLabel} section`)
-        return
-      }
-      $(e.currentTarget).siblings().removeClass('active')
-      $(e.currentTarget).addClass('active')
+        if ($(e.currentTarget).hasClass('active')) {
+          console.log(`Already on the ${tabLabel} section`)
+          return
+        }
+        $(e.currentTarget).siblings().removeClass('active')
+        $(e.currentTarget).addClass('active')
 
-      // Hide and show the relevant section
-      $(parentElement).find('.tree-results-item-tab-section').hide()
-      $(parentElement).find(`.tree-results-item-tab-section[data-section-id=${tabTarget}]`).show()
+        // Hide and show the relevant section
+        $(parentElement).find('.tree-results-item-tab-section').hide()
+        $(parentElement)
+          .find(`.tree-results-item-tab-section[data-section-id=${tabTarget}]`)
+          .show()
 
-      // Render any charts that haven't been rendered yet
-      app.chartJsHelper.createCharts()
-    })
+        // Render any charts that haven't been rendered yet
+        app.chartJsHelper.createCharts()
+      })
 
-    $(parentElement).find('.result-normalize-cb').on('click', (e) => {
-      const chartTarget = $(e.currentTarget).attr('data-chart-type')
-      let doNormalize = 0
-      let targetElement
+    $(parentElement)
+      .find('.result-normalize-cb')
+      .on('click', (e) => {
+        const chartTarget = $(e.currentTarget).attr('data-chart-type')
+        let doNormalize = 0
+        let targetElement
 
-      if ($(e.currentTarget).is(':checked')) {
-        doNormalize = 1
-      }
+        if ($(e.currentTarget).is(':checked')) {
+          doNormalize = 1
+        }
 
-      // Hide and show the relevant section
-      targetElement = $(parentElement).find(`canvas[data-chart-type=${chartTarget}]`)
+        // Hide and show the relevant section
+        targetElement = $(parentElement).find(`canvas[data-chart-type=${chartTarget}]`)
 
-      // Set normalize to the new value, and set is-generated to 0, to queue up a re-rendering of the chart:
-      $(targetElement).attr('data-normalize', doNormalize).attr('data-generated', 0)
+        // Set normalize to the new value, and set is-generated to 0, to queue up a re-rendering of the chart:
+        $(targetElement).attr('data-normalize', doNormalize).attr('data-generated', 0)
 
-      // Render any charts that haven't been rendered yet
-      app.chartJsHelper.createCharts()
-    })
+        // Render any charts that haven't been rendered yet
+        app.chartJsHelper.createCharts()
+      })
   }
 
   app.combinedVersions = {}
@@ -1033,8 +1129,12 @@ window.app = window.app || {};
       // This is a bit awkward, since we're right aligned and not in
       // a position:absolute setting, so we'll actually add in the
       // width of the (variable) daterangepicker to a fixed value:
-      const rightPosition = _.parseInt($('#reportrange').width() + $('.tree-results-gear-menu').width() - $('.tree-results-versions-select-button').width() / 2) - 4
-      $('.tree-results-versions-selector').css({ right: rightPosition })
+      const rightPosition = _.parseInt(
+          $('#reportrange').width()
+            + $('.tree-results-gear-menu').width()
+            - $('.tree-results-versions-select-button').width() / 2,
+        ) - 4
+      $('.tree-results-versions-selector').css({right: rightPosition})
 
       $('.tree-results-versions-selector').toggle()
 
@@ -1050,11 +1150,15 @@ window.app = window.app || {};
 
     $('.tree-results-versions-select-all-link').on('click', (e) => {
       // $('.tree-results-versions-selector').toggle();
-      $('.tree-results-versions-selector input[type=checkbox]').prop('checked', true).trigger('change')
+      $('.tree-results-versions-selector input[type=checkbox]')
+        .prop('checked', true)
+        .trigger('change')
     })
     $('.tree-results-versions-select-none-link').on('click', (e) => {
       // $('.tree-results-versions-selector').toggle();
-      $('.tree-results-versions-selector input[type=checkbox]').prop('checked', false).trigger('change')
+      $('.tree-results-versions-selector input[type=checkbox]')
+        .prop('checked', false)
+        .trigger('change')
     })
 
     $('.tree-results-versions-selector input[type=checkbox]').on('change', (e) => {
@@ -1089,5 +1193,5 @@ window.app = window.app || {};
     $('.tree-results-versions-selector').hide()
   }
 
- 	app.combinedVersions = _.assign({}, app.combinedVersions, window.combinedVersions)
+  app.combinedVersions = _.assign({}, app.combinedVersions, window.combinedVersions)
 }(window.jQuery))

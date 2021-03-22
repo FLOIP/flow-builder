@@ -1,4 +1,4 @@
-import { get, find, without } from 'lodash'
+import {get, find, without} from 'lodash'
 
 export const allItemsHaveValue = function (list: object[], key: string): boolean {
   return list.every((item: object) => !!get(item, key))

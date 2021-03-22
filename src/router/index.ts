@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
+import VueRouter, {RouteConfig} from 'vue-router'
 // @ts-ignore
 import Home from '../views/Home.vue'
-import { routes as treesRoutes } from './trees'
+import {routes as treesRoutes} from './trees'
 
 Vue.use(VueRouter)
 

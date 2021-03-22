@@ -1,5 +1,5 @@
-import { get, isEmpty } from 'lodash'
-import { mapState } from 'vuex'
+import {get, isEmpty} from 'lodash'
+import {mapState} from 'vuex'
 
 const PATH_PARAM_DISCOVERER = /(\/){(.*?)(\?)?}/g
 
@@ -22,7 +22,9 @@ export function routeFrom(routeKey, context, routes) {
   return interpolateRouteWith(context, get(routes, routeKey))
 }
 
-const raiseFor = (p) => { throw new Error(`InvalidContextError - Missing param: ${p}`) }
+const raiseFor = (p) => {
+  throw new Error(`InvalidContextError - Missing param: ${p}`)
+}
 
 export function interpolateRouteWith(context, route) {
   if (!route) {
@@ -31,9 +33,7 @@ export function interpolateRouteWith(context, route) {
 
   context = context || {}
 
-  const {
-    id, path, params, methods,
-  } = route
+  const {id, path, params, methods} = route
   const isPathComplete = isEmpty(params)
 
   if (isPathComplete) {

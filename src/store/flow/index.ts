@@ -1,18 +1,12 @@
-import { IFlow, IResourceDefinition } from '@floip/flow-runner'
-import {
-  ActionTree, GetterTree, Module, MutationTree,
-} from 'vuex'
-import { IRootState } from '..' // todo: create factory with generics so that IRootState is DI'd
+import {IFlow, IResourceDefinition} from '@floip/flow-runner'
+import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
+import {IRootState} from '..' // todo: create factory with generics so that IRootState is DI'd
 import {
   getters as blockGetters,
   mutations as blockMutations,
   actions as blockActions,
 } from './block'
-import {
-  actions as flowActions,
-  getters as flowGetters,
-  mutations as flowMutations,
-} from './flow'
+import {actions as flowActions, getters as flowGetters, mutations as flowMutations} from './flow'
 import {
   actions as resourceActions,
   getters as resourceGetters,
