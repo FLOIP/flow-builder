@@ -64,6 +64,7 @@
                              :id="`exit/${exit.uuid}/pseudo-block-handle`"
                              :key="`exit/${exit.uuid}/pseudo-block-handle`"
                              :is-editable="isEditable"
+                             v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
                              @initialized="handleDraggableInitializedFor(exit, $event)"
                              @dragStarted="onCreateExitDragStarted($event, exit)"
                              @dragged="onCreateExitDragged($event)"
@@ -98,6 +99,7 @@
                              :id="`exit/${exit.uuid}/handle`"
                              :key="`exit/${exit.uuid}/handle`"
                              :is-editable="isEditable"
+                             v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-relocate-connection')"
                              @initialized="handleDraggableInitializedFor(exit, $event)"
                              @dragStarted="onMoveExitDragStarted($event, exit)"
                              @dragged="onMoveExitDragged($event)"
@@ -107,6 +109,7 @@
 
             <div class="block-exit-remove btn btn-danger btn-xs" v-if="isEditable"
                  title="Click to remove this connection"
+                 v-b-tooltip.hover.top="trans('flow-builder.tooltip-remove-connection')"
                  @click="removeConnectionFrom(exit)">
               <span class="glyphicon glyphicon-remove"></span>
             </div>
@@ -127,6 +130,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { isNumber, forEach } from 'lodash'
 import {
   mapActions, mapGetters, mapMutations, mapState,
@@ -136,6 +140,10 @@ import { ResourceResolver, SupportedMode } from '@floip/flow-runner'
 import { OperationKind, generateConnectionLayoutKeyFor } from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import lang from '@/lib/filters/lang'
+
+import { BTooltip } from 'bootstrap-vue'
+
+Vue.component('b-tooltip', BTooltip)
 
 export default {
   props: ['block', 'x', 'y'],

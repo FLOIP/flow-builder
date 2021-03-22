@@ -119,6 +119,7 @@
 
           <button v-if="isEditable"
                   type="button"
+                  v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
                   class="btn btn-outline-secondary tree-duplicate-block mr-2"
                   @click.prevent="handleDuplicateActivatedBlockTriggered"
                   :disabled="!activeBlockId">
@@ -127,6 +128,7 @@
 
           <button v-if="isEditable"
                   type="button"
+                  v-b-tooltip.hover="transIf(activeBlockId, 'flow-builder.tooltip-delete-block')"
                   class="btn btn-outline-secondary tree-delete-block mr-2"
                   @click.prevent="handleRemoveActivatedBlockTriggered"
                   :disabled="!activeBlockId">
@@ -154,6 +156,7 @@
 
 </template>
 <script lang="ts">
+import Vue from 'vue'
 import lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
@@ -168,6 +171,9 @@ import pickBy from 'lodash/fp/pickBy'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
 import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
 import { computeBlockPositionsFrom } from '@/store/builder'
+import { VBTooltipPlugin } from 'bootstrap-vue'
+
+Vue.use(VBTooltipPlugin)
 
 export default {
   components: {
@@ -389,6 +395,10 @@ export default {
     removeNilValues(obj) {
       return lodash.pickBy(obj, lodash.identity)
     },
+
+    getDeleteToolTip() {
+      return this.trans('flow-builder.tooltip-delete-block')
+    }
   },
 }
 </script>
