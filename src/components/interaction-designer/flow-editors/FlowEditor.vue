@@ -4,11 +4,17 @@
       {{'flow-builder.edit-flow' | trans}}
     </h3>
 
-    <flow-name-editor :flow="flow"/>
-    <flow-label-editor :flow="flow"/>
-    <flow-interaction-timeout-editor :flow="flow"/>
-    <flow-languages-editor :flow="flow" @commitFlowLanguagesChange="updateFlowLanguages"/>
-    <flow-modes-editor :flow="flow" @commitFlowModesChange="updateFlowModes"/>
+    <fieldset :disabled="!isEditable">
+      <flow-name-editor :flow="flow" />
+      <flow-label-editor :flow="flow" />
+      <flow-interaction-timeout-editor :flow="flow" />
+      <flow-languages-editor
+        :flow="flow"
+        @commitFlowLanguagesChange="updateFlowLanguages"/>
+      <flow-modes-editor
+        :flow="flow"
+        @commitFlowModesChange="updateFlowModes"/>
+    </fieldset>
   </div>
 </template>
 
@@ -25,17 +31,18 @@ import FlowLanguagesEditor from './LanguagesEditor.vue'
 import FlowModesEditor from './ModesEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      FlowNameEditor,
-      FlowLabelEditor,
-      FlowInteractionTimeoutEditor,
-      FlowLanguagesEditor,
-      FlowModesEditor,
-    },
-    mixins: [lang],
-  })
+@Component<any>({
+  components: {
+    FlowNameEditor,
+    FlowLabelEditor,
+    FlowInteractionTimeoutEditor,
+    FlowLanguagesEditor,
+    FlowModesEditor,
+  },
+  mixins: [lang],
+})
 class FlowEditor extends Vue {
     @Prop() readonly flow!: IFlow
 
@@ -50,7 +57,9 @@ class FlowEditor extends Vue {
     @flowVuexNamespace.Mutation flow_setLanguages
 
     @flowVuexNamespace.Mutation flow_setSupportedMode
-  }
+
+    @builderVuexNamespace.Getter isEditable
+}
 
 export default FlowEditor
 </script>
