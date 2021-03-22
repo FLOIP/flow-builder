@@ -41,7 +41,7 @@ import {
   FlowRunner,
   IRichCursorInputRequired,
   SupportedMode,
-  IContact, BasicBacktrackingBehaviour, isLastBlock,
+  IContact, BasicBacktrackingBehaviour,
 } from '@floip/flow-runner'
 import MessageBlock from './block/MessageBlock.vue'
 import NumericQuestionBlock from './block/NumericQuestionBlock.vue'
@@ -81,7 +81,7 @@ export default {
       const flowState = this.getFlowState()
       // TODO: Need to remove this after a fix is available on flow runner
       flowState.flows[0].blocks.map(({ exits }) => exits.map((e) => {
-        e.test = e.test || true
+        e.test = e.test || 'true'
         return e
       }))
       return flowState
@@ -117,8 +117,7 @@ export default {
       this.isComplete = false
       try {
         const cursor: IRichCursorInputRequired = await this.runner.run()
-        const lastItem = this.blocksData[this.blocksData.length - 1]
-        if (!cursor || (lastItem && isLastBlock(lastItem.prompt.block))) {
+        if (!cursor) {
           this.isComplete = true
           return
         }

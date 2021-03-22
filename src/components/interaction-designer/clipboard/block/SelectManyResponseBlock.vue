@@ -116,7 +116,6 @@ export default {
           this.isBlockInteraction = false
         }
         this.prompt.value = this.selectedChoices
-        this.prompt.fulfill(this.selectedChoices)
         this.setIsFocused({ index: this.index, value: false })
         this.goNext()
       }
