@@ -82,14 +82,14 @@ export default {
 
     connectionContext() {
       return {
-        source: this.source?.uuid,
-        target: this.target?.uuid,
-        exit: this.exit?.uuid,
+        sourceId: this.source?.uuid,
+        targetId: this.target?.uuid,
+        exitId: this.exit?.uuid,
       }
     },
 
-    sourceId: ({ exit }) => `exit/${exit.uuid}/handle`,
-    targetId: ({ exit }) => (exit.destinationBlock
+    sourceElementId: ({ exit }) => `exit/${exit.uuid}/handle`,
+    targetElementId: ({ exit }) => (exit.destinationBlock
       ? `block/${exit.destinationBlock}/handle`
       : `exit/${exit.uuid}/pseudo-block-handle`),
 
@@ -130,8 +130,8 @@ export default {
       const position = this.line.position()
 
       console.debug('connection', 'repositioning', {
-        source: this.source?.uuid,
-        target: this.target?.uuid,
+        sourceId: this.source?.uuid,
+        targetId: this.target?.uuid,
         position,
         x: this.line.top,
         y: this.line.left,
@@ -181,10 +181,10 @@ export default {
     //     LeaderLine.pointAnchor(document.body, targetPosition), options)
 
     const blockPaddingOffset = { x: 34, y: -7 }
-    const start = document.getElementById(this.sourceId)
+    const start = document.getElementById(this.sourceElementId)
     const end = this.position
-      ? document.getElementById(this.targetId)
-      : LeaderLine.pointAnchor(document.getElementById(this.targetId), blockPaddingOffset)
+      ? document.getElementById(this.targetElementId)
+      : LeaderLine.pointAnchor(document.getElementById(this.targetElementId), blockPaddingOffset)
 
     this.line = new LeaderLine(start, end, this.options)
 

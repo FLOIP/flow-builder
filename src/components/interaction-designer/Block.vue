@@ -178,7 +178,7 @@ export default {
     },
 
     isAssociatedWithActiveConnection({ block, activeConnectionsContext }) {
-      return !!filter(activeConnectionsContext, (context) => context.source === block.uuid || context.target === block.uuid).length
+      return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid || context.targetId === block.uuid).length
     },
 
     // todo: does this component know too much, what out of the above mapped state can be mapped?
@@ -194,7 +194,7 @@ export default {
       }
 
       const { data } = operations[OperationKind.CONNECTION_CREATE]
-      return data && data.target === block.uuid
+      return data && data.targetId === block.uuid
     },
   },
 

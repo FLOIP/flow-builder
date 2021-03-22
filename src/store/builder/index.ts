@@ -33,14 +33,14 @@ export interface IConnectionCreateOperation {
   data: null | {
     source: IDeepBlockExitIdWithinFlow;
     position: IPosition; // todo: rename to startingPosition
-    target: IBlock['uuid'] | null;
+    targetId: IBlock['uuid'] | null;
   };
 }
 
 export interface IConnectionContext {
-  source: IBlock['uuid'];
-  target: IBlock['uuid'];
-  exit: IBlockExit['uuid'];
+  sourceId: IBlock['uuid'];
+  targetId: IBlock['uuid'];
+  exitId: IBlockExit['uuid'];
 }
 
 export type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation
@@ -224,7 +224,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
 
     const operation: IConnectionCreateOperation = {
       kind: OperationKind.CONNECTION_CREATE,
-      data: { source: { blockId, exitId }, position, target: null },
+      data: { source: { blockId, exitId }, position, targetId: null },
     }
 
     commit('setOperation', { operation }) // this would be a flight-monitor create(key)
@@ -239,7 +239,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     const { source, position } = data
     const operation: IConnectionCreateOperation = {
       kind: OperationKind.CONNECTION_CREATE,
-      data: { source, position, target: block.uuid },
+      data: { source, position, targetId: block.uuid },
     }
 
     commit('setOperation', { operation })
@@ -251,14 +251,14 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
       throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
     }
 
-    const { source, target, position } = data
-    if (!isEqual(target, block.uuid)) {
+    const { source, targetId, position } = data
+    if (!isEqual(targetId, block.uuid)) {
       throw new ValidationException('Unable to nullify exit relocation from different exit.')
     }
 
     const operation: IConnectionCreateOperation = {
       kind: OperationKind.CONNECTION_CREATE,
-      data: { source, position, target: null },
+      data: { source, position, targetId: null },
     }
 
     commit('setOperation', { operation })
@@ -272,7 +272,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
 
     const {
       source: { blockId, exitId },
-      target: destinationBlockId,
+      targetId: destinationBlockId,
     } = data
 
     commit('flow/block_setBlockExitDestinationBlockId', { blockId, exitId, destinationBlockId }, { root: true })
