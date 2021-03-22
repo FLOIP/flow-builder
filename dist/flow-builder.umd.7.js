@@ -11,7 +11,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.d(__webpack_exports__, "MobilePrimitives_SelectManyResponseBlock", function() { return /* reexport */ MobilePrimitives_SelectManyResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectManyResponseBlock; });
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"8467f54a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue?vue&type=template&id=69e348ab&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue?vue&type=template&id=69e348ab&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('div',{staticClass:"prompt-resource"},[(_vm.promptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.prompt'),"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_c('div',{staticClass:"question-prompt-resource"},[(_vm.questionPromptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.question-prompt'),"resource":_vm.questionPromptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_c('div',{staticClass:"choices-prompt-resource"},[(_vm.choicesPromptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.choices-prompt'),"resource":_vm.choicesPromptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_vm._l((Object.keys(_vm.inflatedChoices)),function(choiceKey){return _c('div',{staticClass:"form-group form-inline"},[_c('resource-editor',{attrs:{"label":("Choice " + choiceKey),"resource":_vm.inflatedChoices[choiceKey],"block":_vm.block,"flow":_vm.flow}})],1)}),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}}),_c('block-id',{attrs:{"block":_vm.block}})],2)}
 var staticRenderFns = []
 
@@ -24,7 +24,7 @@ var classCallCheck = __webpack_require__("d4ec");
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/inherits.js
 var inherits = __webpack_require__("262e");
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createSuper.js + 3 modules
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createSuper.js + 2 modules
 var createSuper = __webpack_require__("2caf");
 
 // EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
@@ -245,7 +245,7 @@ MobilePrimitives_SelectManyResponseBlockvue_type_script_lang_ts_MobilePrimitives
 })], MobilePrimitives_SelectManyResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectManyResponseBlock);
 
 /* harmony default export */ var MobilePrimitives_SelectManyResponseBlockvue_type_script_lang_ts_ = (MobilePrimitives_SelectManyResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectManyResponseBlock);
-var install = Object(builder["b" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, MobilePrimitives_SelectManyResponseBlockStore);
+var install = Object(builder["c" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, MobilePrimitives_SelectManyResponseBlockStore);
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue?vue&type=script&lang=ts&
  /* harmony default export */ var block_types_MobilePrimitives_SelectManyResponseBlockvue_type_script_lang_ts_ = (MobilePrimitives_SelectManyResponseBlockvue_type_script_lang_ts_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
@@ -285,7 +285,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.d(__webpack_exports__, "MobilePrimitives_SelectOneResponseBlock", function() { return /* reexport */ MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock; });
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"8467f54a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=8ef63946&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=8ef63946&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('div',{staticClass:"prompt-resource"},[(_vm.promptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.prompt'),"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_c('div',{staticClass:"question-prompt-resource"},[(_vm.questionPromptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.question-prompt'),"resource":_vm.questionPromptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_c('div',{staticClass:"choices-prompt-resource"},[(_vm.choicesPromptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.choices-prompt'),"resource":_vm.choicesPromptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_vm._l((Object.keys(_vm.inflatedChoices)),function(choiceKey){return _c('div',{staticClass:"form-group form-inline"},[_c('resource-editor',{attrs:{"label":("Choice " + choiceKey),"resource":_vm.inflatedChoices[choiceKey],"block":_vm.block,"flow":_vm.flow}})],1)}),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}}),_c('block-id',{attrs:{"block":_vm.block}})],2)}
 var staticRenderFns = []
 
@@ -301,7 +301,7 @@ var createClass = __webpack_require__("bee2");
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/inherits.js
 var inherits = __webpack_require__("262e");
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createSuper.js + 3 modules
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createSuper.js + 2 modules
 var createSuper = __webpack_require__("2caf");
 
 // EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
@@ -377,11 +377,6 @@ var MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimiti
   }
 
   Object(createClass["a" /* default */])(MobilePrimitives_SelectOneResponseBlock, [{
-    key: "onChoicesChanged",
-    value: function onChoicesChanged(newChoices) {
-      this.editSelectOneResponseBlockChoice();
-    }
-  }, {
     key: "promptResource",
     get: function get() {
       return this.resourcesByUuid[this.block.config.prompt];
@@ -395,6 +390,11 @@ var MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimiti
     key: "choicesPromptResource",
     get: function get() {
       return this.resourcesByUuid[this.block.config.choicesPrompt || ""];
+    }
+  }, {
+    key: "onChoicesChanged",
+    value: function onChoicesChanged(newChoices) {
+      this.editSelectOneResponseBlockChoice();
     }
   }]);
 
@@ -428,7 +428,7 @@ MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_
 })], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock);
 
 /* harmony default export */ var MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_ = (MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock);
-var install = Object(builder["b" /* createDefaultBlockTypeInstallerFor */])(MobilePrimitives_SelectOneResponseBlockStore["a" /* BLOCK_TYPE */], MobilePrimitives_SelectOneResponseBlockStore["c" /* default */]);
+var install = Object(builder["c" /* createDefaultBlockTypeInstallerFor */])(MobilePrimitives_SelectOneResponseBlockStore["a" /* BLOCK_TYPE */], MobilePrimitives_SelectOneResponseBlockStore["c" /* default */]);
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=script&lang=ts&
  /* harmony default export */ var block_types_MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_ = (MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
@@ -481,7 +481,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 /* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("96cf");
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _Users_rs_Documents_Voto_votocnShared_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("1da1");
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("1da1");
 /* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("9300");
 /* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("31aa");
@@ -559,7 +559,7 @@ var mutations = {
 };
 var actions = {
   popFirstEmptyChoice: function popFirstEmptyChoice(_ref3) {
-    return Object(_Users_rs_Documents_Voto_votocnShared_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var commit, rootGetters, getters, choiceToRemove;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -593,7 +593,7 @@ var actions = {
     }))();
   },
   editSelectOneResponseBlockChoice: function editSelectOneResponseBlockChoice(_ref4) {
-    return Object(_Users_rs_Documents_Voto_votocnShared_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
       var commit, dispatch, getters, rootGetters, activeBlock, newIndex, blankResource, exit, exitLabel;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
@@ -687,7 +687,7 @@ var actions = {
   // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
   //       but, it doesn't seem to mention how this is configured
   createWith: function createWith(_ref5, _ref6) {
-    return Object(_Users_rs_Documents_Voto_votocnShared_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+    return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
       var state, commit, dispatch, props, blankResource, blankPromptResource, blankQuestionPromptResource, blankChoicesPromptResource, defaultExitProps, errorExitProps;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
