@@ -6,10 +6,12 @@ import {
   ActionTree, GetterTree, Module, MutationTree,
 } from 'vuex'
 import { IRootState } from '@/store'
-import { IBlockExit, IBlock, SupportedMode, ValidationException } from '@floip/flow-runner'
+import {
+  IBlockExit, IBlock, SupportedMode, ValidationException,
+} from '@floip/flow-runner'
 import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block'
-import { createFormattedDate } from "@floip/flow-runner/dist/domain/DateFormat"
-import { IdGeneratorUuidV4 } from "@floip/flow-runner/dist/domain/IdGeneratorUuidV4"
+import { createFormattedDate } from '@floip/flow-runner/dist/domain/DateFormat'
+import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 export enum OperationKind { // todo migrate these to flight-monitor
   CONNECTION_SOURCE_RELOCATE = 'CONNECTION_SOURCE_RELOCATE',
@@ -36,9 +38,9 @@ export interface IConnectionCreateOperation {
 }
 
 export interface IConnectionContext {
-  source: IBlock['uuid'],
-  target: IBlock['uuid'],
-  exit: IBlockExit['uuid'],
+  source: IBlock['uuid'];
+  target: IBlock['uuid'];
+  exit: IBlockExit['uuid'];
 }
 
 export type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation
@@ -104,9 +106,7 @@ export const mutations: MutationTree<IBuilderState> = {
   },
 
   deactivateConnection(state, { connectionContext }) {
-    state.activeConnectionsContext = filter(state.activeConnectionsContext, function(context) {
-      return context !== connectionContext
-    })
+    state.activeConnectionsContext = filter(state.activeConnectionsContext, (context) => context !== connectionContext)
   },
 
   setOperation({ operations }, { operation }: {operation: SupportedOperation}) {

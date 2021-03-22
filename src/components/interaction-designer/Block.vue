@@ -177,19 +177,19 @@ export default {
       return isNumber(this.x) && isNumber(this.y)
     },
 
-      isAssociatedWithActiveConnection({block, activeConnectionsContext}) {
-        return !!filter(activeConnectionsContext, function(context) {
-          return context.source === block.uuid || context.target === block.uuid
-        }).length
-      },
+    isAssociatedWithActiveConnection({ block, activeConnectionsContext }) {
+      return !!filter(activeConnectionsContext, (context) => context.source === block.uuid || context.target === block.uuid).length
+    },
 
-      // todo: does this component know too much, what out of the above mapped state can be mapped?
-      // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
+    // todo: does this component know too much, what out of the above mapped state can be mapped?
+    // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
 
     isConnectionSourceRelocateActive: ({ operations }) => !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
     isConnectionCreateActive: ({ operations }) => !!operations[OperationKind.CONNECTION_CREATE].data,
-    isBlockActivated: ({ activeBlockId, isAssociatedWithActiveConnection, block, operations }) => {
-      if (activeBlockId && activeBlockId === block.uuid || isAssociatedWithActiveConnection) {
+    isBlockActivated: ({
+      activeBlockId, isAssociatedWithActiveConnection, block, operations,
+    }) => {
+      if ((activeBlockId && activeBlockId === block.uuid) || isAssociatedWithActiveConnection) {
         return true
       }
 

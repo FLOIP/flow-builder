@@ -5,9 +5,10 @@
 
 <script>
 // import LeaderLine from 'leader-line'
-const { LeaderLine } = window
 import { set } from 'lodash'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
+
+const { LeaderLine } = window
 
 const categoryColorMappings = {
   'category-0-faint': '#fbfdfb',
@@ -20,8 +21,6 @@ const categoryColorMappings = {
   'category-2-light': '#C69557',
   'category-2-dark': '#6e4e25',
 }
-
-const { LeaderLine } = window
 
 export default {
   props: {
@@ -91,8 +90,8 @@ export default {
 
     sourceId: ({ exit }) => `exit/${exit.uuid}/handle`,
     targetId: ({ exit }) => (exit.destinationBlock
-        ? `block/${exit.destinationBlock}/handle`
-        : `exit/${exit.uuid}/pseudo-block-handle`),
+      ? `block/${exit.destinationBlock}/handle`
+      : `exit/${exit.uuid}/pseudo-block-handle`),
 
     // todo: externalize as `positionCacheKey` + deprecate `position` prop
     //       but rather include that in `positionCacheKey`'s domain definition
@@ -140,24 +139,24 @@ export default {
     },
     mouseOverHandler() {
       this.line.setOptions(this.prominentOptions)
-      this.activateConnection({connectionContext: this.connectionContext})
+      this.activateConnection({ connectionContext: this.connectionContext })
     },
     mouseOutHandler() {
       if (!this.isPermanentlyActive) {
         this.line.setOptions(this.options)
-        this.deactivateConnection({connectionContext: this.connectionContext})
+        this.deactivateConnection({ connectionContext: this.connectionContext })
       }
     },
     clickHandler() {
       this.isPermanentlyActive = true
       this.line.setOptions(this.prominentOptions)
-      this.activateConnection({connectionContext: this.connectionContext})
-      this.activateBlock({blockId: null})
+      this.activateConnection({ connectionContext: this.connectionContext })
+      this.activateBlock({ blockId: null })
     },
     clickAwayHandler() {
       this.isPermanentlyActive = false
       this.line.setOptions(this.options)
-      this.deactivateConnection({connectionContext: this.connectionContext})
+      this.deactivateConnection({ connectionContext: this.connectionContext })
     },
   },
 
@@ -192,29 +191,29 @@ export default {
     // Add event listeners
     const self = this
     const connectionElement = document.querySelector('body>.leader-line:last-of-type') // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
-    connectionElement.addEventListener('click', function() {
+    connectionElement.addEventListener('click', () => {
       self.clickHandler()
     }, false)
 
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', (event) => {
       try { // Do not listen if the connection was not fully set
         const checkExistingEnd = self.line.end
       } catch (e) {
-        return;
+        return
       }
 
-      var isClickInside = connectionElement.contains(event.target);
+      const isClickInside = connectionElement.contains(event.target)
 
       if (!isClickInside) {
         self.clickAwayHandler()
       }
     }, false)
 
-    connectionElement.addEventListener('mouseover', function() {
+    connectionElement.addEventListener('mouseover', () => {
       self.mouseOverHandler()
     }, false)
 
-    connectionElement.addEventListener('mouseout', function() {
+    connectionElement.addEventListener('mouseout', () => {
       self.mouseOutHandler()
     }, false)
 
