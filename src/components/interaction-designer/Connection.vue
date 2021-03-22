@@ -153,10 +153,22 @@ export default {
       this.activateConnection({ connectionContext: this.connectionContext })
       this.activateBlock({ blockId: null })
     },
-    clickAwayHandler() {
-      this.isPermanentlyActive = false
-      this.line.setOptions(this.options)
-      this.deactivateConnection({ connectionContext: this.connectionContext })
+    clickAwayHandler(connectionElement) {
+      document.addEventListener('click', (event) => {
+        try { // Do not listen if the connection was not fully set
+          const checkExistingEnd = this.line.end
+        } catch (e) {
+          return
+        }
+
+        const isClickInside = connectionElement.contains(event.target)
+
+        if (!isClickInside) {
+          this.isPermanentlyActive = false
+          this.line.setOptions(this.options)
+          this.deactivateConnection({ connectionContext: this.connectionContext })
+        }
+      }, false)
     },
   },
 
@@ -191,31 +203,14 @@ export default {
     // Add event listeners
     const self = this
     const connectionElement = document.querySelector('body>.leader-line:last-of-type') // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
-    connectionElement.addEventListener('click', () => {
-      self.clickHandler()
-    }, false)
 
-    document.addEventListener('click', (event) => {
-      try { // Do not listen if the connection was not fully set
-        const checkExistingEnd = self.line.end
-      } catch (e) {
-        return
-      }
+    connectionElement.addEventListener('click', self.clickHandler, false)
 
-      const isClickInside = connectionElement.contains(event.target)
+    connectionElement.addEventListener('click', self.clickAwayHandler(connectionElement), false)
 
-      if (!isClickInside) {
-        self.clickAwayHandler()
-      }
-    }, false)
+    connectionElement.addEventListener('mouseover', self.mouseOverHandler, false)
 
-    connectionElement.addEventListener('mouseover', () => {
-      self.mouseOverHandler()
-    }, false)
-
-    connectionElement.addEventListener('mouseout', () => {
-      self.mouseOutHandler()
-    }, false)
+    connectionElement.addEventListener('mouseout', self.mouseOutHandler, false)
 
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false
