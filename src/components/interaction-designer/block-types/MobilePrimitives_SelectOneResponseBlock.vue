@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { IFlow } from '@floip/flow-runner'
-import ISelectOneResponseBlock from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
+import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'

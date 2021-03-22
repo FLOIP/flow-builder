@@ -31,7 +31,7 @@ import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
-import ICaseBlock from '@floip/flow-runner/src/model/block/ICaseBlock'
+import { ICaseBlock } from '@floip/flow-runner/src/model/block/ICaseBlock'
 import { IBlockExitTestRequired, IFlow, IBlockExit } from '@floip/flow-runner'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 

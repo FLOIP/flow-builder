@@ -5,7 +5,7 @@ import {
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
-import ValidationException from '@floip/flow-runner/src/domain/exceptions/ValidationException'
+import { ValidationException } from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import {
   cloneDeep, defaults, difference, find, first, findIndex, isEmpty, isEqual, keyBy, map, pick, without,
 } from 'lodash'
@@ -211,7 +211,7 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
   if (!resource || !resource.values.length) {
     return defaultModeMappings[mode]
   }
-  let contentTypeOverrides: {[key in SupportedMode]?: string[]} = {}
+  let contentTypeOverrides: {[key in SupportedMode]?: SupportedContentType[]} = {}
   // TODO - think harder about this - what happens when a mode has a non standard content type - e.g. ivr on a log block
   // What happens in a future localised resource world on things like LogBlock? Do we need a log resource value for every language?
   contentTypeOverrides = resource.values.reduce((contentTypeOverrides, value) => {

@@ -27,7 +27,7 @@ import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
-import IOutputBlock from '@floip/flow-runner/src/model/block/IOutputBlock'
+import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock'
 import { IFlow } from '@floip/flow-runner'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 import OutputStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_OutputBlockStore'

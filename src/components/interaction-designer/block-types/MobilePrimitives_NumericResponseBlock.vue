@@ -34,7 +34,7 @@ import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
 import { IBlockExit, IFlow } from '@floip/flow-runner'
-import INumericResponseBlock from '@floip/flow-runner/src/model/block/INumericResponseBlock'
+import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import NumericStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'

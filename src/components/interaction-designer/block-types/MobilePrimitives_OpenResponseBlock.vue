@@ -32,7 +32,7 @@ import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
 import { IBlockExit, IFlow } from '@floip/flow-runner'
-import IOpenResponseBlock from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
+import { IOpenResponseBlock } from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
 import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'

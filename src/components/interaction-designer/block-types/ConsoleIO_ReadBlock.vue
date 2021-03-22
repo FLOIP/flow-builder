@@ -36,7 +36,7 @@ import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
 import { IFlow } from '@floip/flow-runner'
-import IReadBlock from '@floip/flow-runner/src/model/block/IReadBlock'
+import { IReadBlock } from '@floip/flow-runner/src/model/block/IReadBlock'
 import TextEditor from '@/components/common/TextEditor.vue'
 import ReadStore, { BLOCK_TYPE } from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
 import lang from '@/lib/filters/lang'
