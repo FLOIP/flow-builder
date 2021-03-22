@@ -62,6 +62,7 @@ export default {
   data() {
     return {
       selectedItem: null,
+      backUpValue: '',
       options: [],
       errorMsg: null,
       isBlockInteraction: false,
@@ -123,11 +124,14 @@ export default {
       this.setLastBlockUnEditable()
       this.setIsFocused({ index: this.index, value: true })
       this.isBlockInteraction = true
+      this.backUpValue = this.prompt.value
     },
     onCancel() {
       this.setLastBlockEditable()
       this.setIsFocused({ index: this.index, value: false })
       this.isBlockInteraction = false
+      this.selectedItem = this.backUpValue
+      this.errorMsg = ''
     },
   },
 }
