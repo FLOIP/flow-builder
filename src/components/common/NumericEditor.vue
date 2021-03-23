@@ -1,7 +1,7 @@
 <template>
   <div class="number-editor">
     <label>{{label}}</label>
-    <div v-if="isEditable">
+    <div>
       <input
           type="number"
           min="0"
@@ -13,10 +13,6 @@
           @input="$emit('input', $event.target.value)"
       />
     </div>
-
-    <p v-else>
-      {{value}}
-    </p>
     <slot/>
   </div>
 </template>
@@ -26,10 +22,6 @@ import { mapMutations } from 'vuex'
 
 export default {
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean,
-    },
     label: {
       type: [String, Number],
       required: true,

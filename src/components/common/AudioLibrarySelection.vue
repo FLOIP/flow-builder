@@ -5,8 +5,7 @@
            'tree-audio-control-text-container-selectable': selectable,
            'tree-audio-control-text-container-selected': !selectable}">
 
-    <button @click.prevent="clear"
-            class="audio-library-selection-clear-selection btn-ghost pull-right">
+    <button @click.prevent="clear" class="audio-library-selection-clear-selection btn-ghost pull-right">
       <i class="glyphicon glyphicon-remove"></i>
     </button>
 

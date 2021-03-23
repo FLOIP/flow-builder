@@ -1,6 +1,6 @@
 <template>
   <div class="flow-editor exit-block-editor-toggle">
-    <template v-if="true || isEditable && hasClipboard">
+    <template v-if="isEditable && hasClipboard">
       <div class="form-group">
         <button type="button"
             class="btn btn-secondary btn-sm"

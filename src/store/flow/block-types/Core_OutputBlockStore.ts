@@ -3,8 +3,8 @@ import { IRootState } from '@/store'
 import {
   IBlockExit,
 } from '@floip/flow-runner'
-import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import IOutputBlock from '@floip/flow-runner/src/model/block/IOutputBlock'
+import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock'
 import { defaults } from 'lodash'
 import { IFlowsState } from '../index'
 
