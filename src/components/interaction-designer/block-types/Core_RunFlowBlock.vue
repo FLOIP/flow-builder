@@ -79,7 +79,7 @@ class Core_RunAnotherFlowBlock extends Vue {
       { blockId, newDestinationFlowId }: {blockId: string; newDestinationFlowId: string}
     ) => Promise<string>
 
-    @blockVuexNamespace.Getter otherFlows!: IFlowsState[]
+    @blockVuexNamespace.Getter otherFlows!: IFlow[]
 
     @builderVuexNamespace.Getter isEditable !: boolean
   }
