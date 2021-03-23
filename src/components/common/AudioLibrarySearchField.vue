@@ -69,102 +69,102 @@
 </template>
 
 <script>
-	import fuse from 'fuse.js'
-	import lodash from 'lodash'
-	import VueFocus from 'vue-focus'
-  import lang from '@/lib/filters/lang'
+import fuse from 'fuse.js'
+import lodash from 'lodash'
+import VueFocus from 'vue-focus'
+import lang from '@/lib/filters/lang'
 
-	export default {
-		props: ['langId', 'audioFiles'],
-		mixins: [VueFocus.mixin, lang],
+export default {
+  props: ['langId', 'audioFiles'],
+  mixins: [VueFocus.mixin, lang],
 
-		data() {
-			return {
-				isActive: false,
+  data() {
+    return {
+      isActive: false,
 
-        // querying
-				rawQuery: '',
-				cache: {},
-        isEntireLibraryModeEnabled: false,
+      // querying
+      rawQuery: '',
+      cache: {},
+      isEntireLibraryModeEnabled: false,
 
-        // pagination
-        offset: 0,
-        limit: 10,
-			}
-		},
+      // pagination
+      offset: 0,
+      limit: 10,
+    }
+  },
 
-		computed: {
-      query() {
-				return lodash.trim(this.rawQuery)
-      },
+  computed: {
+    query() {
+      return lodash.trim(this.rawQuery)
+    },
 
-      isAudioLibraryEmpty() {
-				return this.isActive && !this.audioFiles.length
-      },
+    isAudioLibraryEmpty() {
+      return this.isActive && !this.audioFiles.length
+    },
 
-      hasNext() {
-        return (this.search(this.query).length / (this.offset + 1)) > this.limit
-      },
+    hasNext() {
+      return (this.search(this.query).length / (this.offset + 1)) > this.limit
+    },
 
-      hasPrevious() {
-        return this.offset > 0
-      },
-		},
+    hasPrevious() {
+      return this.offset > 0
+    },
+  },
 
-		methods: {
-			search(query) {
+  methods: {
+    search(query) {
 			  if (this.isEntireLibraryModeEnabled) {
 			    return this.audioFiles
-        }
-
-				if (query.length < 3) {
-					return []
-        }
-
-				console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'searching', query)
-
-				if (query in this.cache) {
-					console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache hit', query)
-					return this.cache[query]
-				}
-
-				console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
-
-				const keys = ['filename', 'description']
-				return this.cache[query] = new fuse(this.audioFiles, {keys}).search(query)
-			},
-
-      // todo: push pagination into isolated component
-      incrementPage() {
-        this.hasNext && (this.offset += 1)
-      },
-
-      decrementPage() {
-        this.hasPrevious && (this.offset -= 1)
-      },
-
-      resetPagination() {
-			  this.offset = 0
-      },
-
-      toggleAudioLibrary() {
-        this.isEntireLibraryModeEnabled = !this.isEntireLibraryModeEnabled
-        this.resetPagination()
-      },
-
-			select(audio) {
-				this.$emit('select', {value: audio, langId: this.langId})
-			},
-
-      activate() {
-				this.isActive = true
-      },
-
-      deactivate() {
-				this.isActive = false
       }
-		}
-	}
+
+      if (query.length < 3) {
+        return []
+      }
+
+      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'searching', query)
+
+      if (query in this.cache) {
+        console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache hit', query)
+        return this.cache[query]
+      }
+
+      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
+
+      const keys = ['filename', 'description']
+      return this.cache[query] = new fuse(this.audioFiles, { keys }).search(query)
+    },
+
+    // todo: push pagination into isolated component
+    incrementPage() {
+      this.hasNext && (this.offset += 1)
+    },
+
+    decrementPage() {
+      this.hasPrevious && (this.offset -= 1)
+    },
+
+    resetPagination() {
+			  this.offset = 0
+    },
+
+    toggleAudioLibrary() {
+      this.isEntireLibraryModeEnabled = !this.isEntireLibraryModeEnabled
+      this.resetPagination()
+    },
+
+    select(audio) {
+      this.$emit('select', { value: audio, langId: this.langId })
+    },
+
+    activate() {
+      this.isActive = true
+    },
+
+    deactivate() {
+      this.isActive = false
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
