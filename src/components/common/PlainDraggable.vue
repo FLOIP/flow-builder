@@ -21,36 +21,36 @@ export default {
 
   methods: {
     handleInitialized() {
-      const { draggable } = this
+      const {draggable} = this
       // `draggable` reference to reposition if changed externally like:
       // https://www.npmjs.com/package/plain-draggable#position
-      this.$emit('initialized', { draggable })
+      this.$emit('initialized', {draggable})
     },
 
     handleDragged(position) {
       // eslint-disable-next-line no-debugger
       // debugger
 
-      const { draggable } = this
-      this.$emit('dragged', { draggable, position })
+      const {draggable} = this
+      this.$emit('dragged', {draggable, position})
     },
 
     handleDragStarted(position) {
-      const { draggable } = this
-      this.$emit('dragStarted', { draggable, position })
+      const {draggable} = this
+      this.$emit('dragStarted', {draggable, position})
     },
 
     handleDragEnded(position) {
-      const { draggable } = this
-      this.$emit('dragEnded', { draggable, position })
+      const {draggable} = this
+      this.$emit('dragEnded', {draggable, position})
     },
 
     handleMoved(position) {
       // eslint-disable-next-line no-debugger
       // debugger
 
-      const { draggable } = this
-      this.$emit('moved', { draggable, position })
+      const {draggable} = this
+      this.$emit('moved', {draggable, position})
     },
   },
 

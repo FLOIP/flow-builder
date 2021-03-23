@@ -160,14 +160,14 @@ import Routes from '@/lib/mixins/Routes'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
-import lodash, { isEmpty } from 'lodash'
+import lodash, {isEmpty} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
 import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
-import { computeBlockPositionsFrom } from '@/store/builder'
+import {computeBlockPositionsFrom} from '@/store/builder'
 
 export default {
   components: {
@@ -187,8 +187,8 @@ export default {
   },
   computed: {
     ...mapState({
-      tree: ({ trees: { tree } }) => tree,
-      ui: ({ trees: { ui } }) => ui,
+      tree: ({trees: {tree}}) => tree,
+      ui: ({trees: {ui}}) => ui,
     }),
 
     ...mapGetters('flow', ['activeFlow']),
@@ -212,9 +212,9 @@ export default {
 
     flow: {
       get() {
-        const { flows, resources } = this
+        const {flows, resources} = this
         return JSON.stringify(
-          convertKeysCase({ flows, resources },
+          convertKeysCase({flows, resources},
             'SNAKE',
             ['platformMetadata', 'ioViamo']),
           null,
@@ -244,11 +244,11 @@ export default {
       })
     },
     viewResultsUrl() {
-      return this.isFeatureViewResultsEnabled ? this.editTreeRoute({ component: 'results' }) : ''
+      return this.isFeatureViewResultsEnabled ? this.editTreeRoute({component: 'results'}) : ''
     },
     viewResultsSetUrl() {
       return this.isFeatureViewResultsEnabled
-        ? this.route('trees.viewTreeSetResults', { treeSetId: this.tree.treeSetId })
+        ? this.route('trees.viewTreeSetResults', {treeSetId: this.tree.treeSetId})
         : ''
     },
     downloadAudioUrl() {
@@ -276,7 +276,7 @@ export default {
     },
     duplicateTreeLink() {
       return this.isFeatureTreeDuplicateEnabled
-        ? this.route('trees.duplicateTreeAndContinue', { treeId: this.tree.id })
+        ? this.route('trees.duplicateTreeAndContinue', {treeId: this.tree.id})
         : ''
     },
 
@@ -321,8 +321,8 @@ export default {
     ...mapActions('builder', ['importFlowsAndResources']),
     ...mapMutations('builder', ['activateBlock']),
 
-    async handleAddBlockByTypeSelected({ type }) {
-      const { uuid: blockId } = await this.flow_addBlankBlockByType({
+    async handleAddBlockByTypeSelected({type}) {
+      const {uuid: blockId} = await this.flow_addBlankBlockByType({
         type,
         platform_metadata: {
           io_viamo: {
@@ -330,24 +330,24 @@ export default {
           },
         },
       }) // todo push out to intx-designer
-      this.activateBlock({ blockId })
+      this.activateBlock({blockId})
     },
 
     handleRemoveActivatedBlockTriggered() {
-      const { activeBlockId: blockId } = this
-      this.flow_removeBlock({ blockId })
+      const {activeBlockId: blockId} = this
+      this.flow_removeBlock({blockId})
     },
 
     handleDuplicateActivatedBlockTriggered() {
-      const { activeBlockId: blockId } = this
-      this.flow_duplicateBlock({ blockId })
+      const {activeBlockId: blockId} = this
+      this.flow_duplicateBlock({blockId})
     },
 
     toggleImportExport() {
       this.isImporterVisible = !this.isImporterVisible
     },
 
-    editTreeRoute({ component = null, mode = null } = {}) {
+    editTreeRoute({component = null, mode = null} = {}) {
       const context = this.removeNilValues({
         treeId: this.tree.id,
         component,

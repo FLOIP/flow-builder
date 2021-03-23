@@ -19,10 +19,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { IFlow } from '@floip/flow-runner'
+import {Component, Prop} from 'vue-property-decorator'
+import {IFlow} from '@floip/flow-runner'
 import NumericEditor from '@/components/common/NumericEditor.vue'
-import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage'
+import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import lang from '@/lib/filters/lang'
 
   @Component<any>({
@@ -32,7 +32,7 @@ import lang from '@/lib/filters/lang'
     mixins: [lang],
   })
 class LanguagesEditor extends Vue {
-    @Prop({ default: true }) readonly isEditable!: boolean
+    @Prop({default: true}) readonly isEditable!: boolean
 
     @Prop() readonly flow!: IFlow
 

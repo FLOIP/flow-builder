@@ -18,8 +18,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { IFlow, SupportedMode } from '@floip/flow-runner'
+import {Component, Prop} from 'vue-property-decorator'
+import {IFlow, SupportedMode} from '@floip/flow-runner'
 import NumericEditor from '@/components/common/NumericEditor.vue'
 
 import lang from '@/lib/filters/lang'
@@ -31,7 +31,7 @@ import lang from '@/lib/filters/lang'
     mixins: [lang],
   })
 class ModeEditor extends Vue {
-    @Prop({ default: true }) readonly isEditable!: boolean
+    @Prop({default: true}) readonly isEditable!: boolean
 
     @Prop() readonly flow!: IFlow
 

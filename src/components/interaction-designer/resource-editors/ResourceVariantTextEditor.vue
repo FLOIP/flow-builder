@@ -84,11 +84,11 @@
 <script>
 import Vue from 'vue'
 import lang from '@/lib/filters/lang'
-import { parse as floipExpressionParser } from '@floip/expression-parser'
-import { isObject, some } from 'lodash'
+import {parse as floipExpressionParser} from '@floip/expression-parser'
+import {isObject, some} from 'lodash'
 import VueFocus from 'vue-focus'
-import { mapActions } from 'vuex'
-import { VBTooltipPlugin } from 'bootstrap-vue'
+import {mapActions} from 'vuex'
+import {VBTooltipPlugin} from 'bootstrap-vue'
 // import BlockContentAutogenButton from './BlockContentAutogenButton'
 
 Vue.use(VBTooltipPlugin)
@@ -125,7 +125,7 @@ export default {
     // pathToTextContent: String,
   },
 
-  data: () => ({ isSelected: false }),
+  data: () => ({isSelected: false}),
 
   computed: {
     content: {
@@ -134,12 +134,12 @@ export default {
       },
 
       set(value) {
-        const { resourceId, mode } = this
-        const { languageId, contentType } = this.resourceVariant
+        const {resourceId, mode} = this
+        const {languageId, contentType} = this.resourceVariant
 
         this.resource_setOrCreateValueModeSpecific({
           resourceId,
-          filter: { languageId, contentType, modes: [mode] },
+          filter: {languageId, contentType, modes: [mode]},
           value,
         })
       },
@@ -175,7 +175,7 @@ export default {
         hasUnicode = !/^[\x00-\x7F]*$/.test(this.content)
       const count = this.content.length
 
-      console.debug('BlockTextContentEditorForLangAndType', 'characterCounter', { hasUnicode, count })
+      console.debug('BlockTextContentEditorForLangAndType', 'characterCounter', {hasUnicode, count})
 
       return {
         hasUnicode,

@@ -19,18 +19,18 @@
 
 <script>
 import lang from '@/lib/filters/lang'
-import lodash, { forEach } from 'lodash'
+import lodash, {forEach} from 'lodash'
 
-import { mapState } from 'vuex'
-import { BProgress } from 'bootstrap-vue'
-import multimediaUpload, { Statuses as UploadStatuses } from '@/store/trees/multimediaUpload'
+import {mapState} from 'vuex'
+import {BProgress} from 'bootstrap-vue'
+import multimediaUpload, {Statuses as UploadStatuses} from '@/store/trees/multimediaUpload'
 
 export default {
   props: ['uploadKey'],
 
   mixins: [lang],
 
-  components: { BProgress },
+  components: {BProgress},
 
   computed: {
     ...mapState('multimediaUpload', ['uploadsById', 'uploadIdsByKey']),
@@ -55,7 +55,7 @@ export default {
   },
 
   created() {
-    const { $store } = this
+    const {$store} = this
     const modules = {
       multimediaUpload,
     }

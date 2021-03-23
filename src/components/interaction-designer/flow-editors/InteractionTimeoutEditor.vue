@@ -11,10 +11,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { IFlow } from '@floip/flow-runner'
+import {Component, Prop} from 'vue-property-decorator'
+import {IFlow} from '@floip/flow-runner'
 import NumericEditor from '@/components/common/NumericEditor.vue'
-import { namespace } from 'vuex-class'
+import {namespace} from 'vuex-class'
 import lang from '@/lib/filters/lang'
 
 const flowVuexNamespace = namespace('flow')
@@ -26,7 +26,7 @@ const flowVuexNamespace = namespace('flow')
     mixins: [lang],
   })
 class InteractionTimeoutEditor extends Vue {
-    @Prop({ default: true }) readonly isEditable!: boolean
+    @Prop({default: true}) readonly isEditable!: boolean
 
     @Prop() readonly flow!: IFlow
 
@@ -36,7 +36,7 @@ class InteractionTimeoutEditor extends Vue {
     }
 
     set interactionTimeout(value: number) {
-      this.flow_setInteractionTimeout({ flowId: this.flow.uuid, value })
+      this.flow_setInteractionTimeout({flowId: this.flow.uuid, value})
     }
 
     @flowVuexNamespace.Mutation flow_setInteractionTimeout

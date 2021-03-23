@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import {mapMutations} from 'vuex'
 import lang from '@/lib/filters/lang'
 
 export default {

@@ -43,16 +43,16 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { namespace } from 'vuex-class'
-import { Component, Prop } from 'vue-property-decorator'
+import {namespace} from 'vuex-class'
+import {Component, Prop} from 'vue-property-decorator'
 
-import { IFlow } from '@floip/flow-runner'
-import { ILogBlock } from '@floip/flow-runner/src/model/block/ILogBlock'
-import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
+import {IFlow} from '@floip/flow-runner'
+import {ILogBlock} from '@floip/flow-runner/src/model/block/ILogBlock'
+import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
-import { findOrGenerateStubbedVariantOn } from '@/store/flow/resource'
-import LogStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_LogBlockStore'
-import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
+import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
+import LogStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
+import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import lang from '@/lib/filters/lang'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue'

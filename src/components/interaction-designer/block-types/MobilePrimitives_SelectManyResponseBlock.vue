@@ -46,14 +46,14 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator'
+import {Component} from 'vue-property-decorator'
 import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
-import SelectManyResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
-import { namespace } from 'vuex-class'
+import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
+import {namespace} from 'vuex-class'
 import lang from '@/lib/filters/lang'
-import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
+import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'

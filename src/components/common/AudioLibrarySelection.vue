@@ -1,5 +1,5 @@
 <template>
-  <div  class="well well-sm audio-library-selection"
+  <div class="well well-sm audio-library-selection"
        :data-audio-file-container-language="langId"
        :class="{
            'tree-audio-control-text-container-selectable': selectable,

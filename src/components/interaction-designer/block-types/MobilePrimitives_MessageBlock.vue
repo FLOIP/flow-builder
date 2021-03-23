@@ -23,16 +23,16 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { namespace } from 'vuex-class'
-import { Component, Prop } from 'vue-property-decorator'
+import {namespace} from 'vuex-class'
+import {Component, Prop} from 'vue-property-decorator'
 
-import { IFlow } from '@floip/flow-runner'
-import { IMessageBlock } from '@floip/flow-runner/src/model/block/IMessageBlock'
-import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
+import {IFlow} from '@floip/flow-runner'
+import {IMessageBlock} from '@floip/flow-runner/src/model/block/IMessageBlock'
+import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
-import MessageStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
+import MessageStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
 import lang from '@/lib/filters/lang'
-import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
+import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'

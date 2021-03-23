@@ -89,7 +89,7 @@
 <script>
 import lang from '@/lib/filters/lang'
 import lodash from 'lodash'
-import { mapGetters, mapState } from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
 import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType'
 
@@ -112,7 +112,7 @@ export default {
   computed: {
     ...mapGetters(['isEditable']),
     ...mapState({
-      audioFiles: ({ trees: { ui: { audioFiles } } }) => audioFiles,
+      audioFiles: ({trees: {ui: {audioFiles}}}) => audioFiles,
     }),
   },
 
@@ -121,16 +121,16 @@ export default {
       this.$store.dispatch('attemptSaveTree')
     }, 500),
 
-    selectAudioFileFor({ langId, value }) {
-      const { jsKey } = this.block
-      this.$store.commit('updateAudioFileFor', { jsKey, langId, value })
-      this.$store.commit('updateReviewedStateFor', { jsKey, langId, value: false })
+    selectAudioFileFor({langId, value}) {
+      const {jsKey} = this.block
+      this.$store.commit('updateAudioFileFor', {jsKey, langId, value})
+      this.$store.commit('updateReviewedStateFor', {jsKey, langId, value: false})
       this.debouncedSaveTree()
     },
 
     toggleReviewedStateFor(langId) {
       const previousVal = !!lodash.get(this.block.customData.reviewed, langId, false)
-      this.$store.commit('updateReviewedStateFor', { jsKey: this.block.jsKey, langId, value: !previousVal })
+      this.$store.commit('updateReviewedStateFor', {jsKey: this.block.jsKey, langId, value: !previousVal})
       this.debouncedSaveTree()
     },
   },

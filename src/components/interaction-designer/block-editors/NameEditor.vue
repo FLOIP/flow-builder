@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import {mapMutations} from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
 import lang from '@/lib/filters/lang'
 
@@ -38,7 +38,7 @@ export default {
         return this.block.name
       },
       set(value) {
-        this.block_setName({ blockId: this.block.uuid, value })
+        this.block_setName({blockId: this.block.uuid, value})
       },
     },
 

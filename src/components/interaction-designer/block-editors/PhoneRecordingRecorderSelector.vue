@@ -79,8 +79,8 @@
 <script>
 import lang from '@/lib/filters/lang'
 import lodash from 'lodash'
-import { mapState } from 'vuex'
-import { BModal } from 'bootstrap-vue'
+import {mapState} from 'vuex'
+import {BModal} from 'bootstrap-vue'
 
 export default {
   components: {
@@ -107,7 +107,7 @@ export default {
 
   computed: {
     ...mapState({
-      recorders: ({ audio: { recording: { recorders } } }) => recorders,
+      recorders: ({audio: {recording: {recorders}}}) => recorders,
     }),
   },
 
@@ -131,7 +131,7 @@ export default {
 
     handleModalClosed() {
       const
-        { description } = this
+        {description} = this
       const value = lodash.clone(this.selectedRecorder)
 
       this.reset()
@@ -146,7 +146,7 @@ export default {
       this.reset()
 
       const
-        { description } = this
+        {description} = this
       const value = lodash.clone(this.selectedRecorder)
 
       this.$emit('input', {

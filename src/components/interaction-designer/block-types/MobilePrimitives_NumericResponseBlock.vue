@@ -28,16 +28,16 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { namespace } from 'vuex-class'
-import { Component, Prop } from 'vue-property-decorator'
+import {namespace} from 'vuex-class'
+import {Component, Prop} from 'vue-property-decorator'
 
-import { IBlockExit, IFlow } from '@floip/flow-runner'
-import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock'
-import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
+import {IBlockExit, IFlow} from '@floip/flow-runner'
+import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
+import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
-import NumericStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
+import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
 import lang from '@/lib/filters/lang'
-import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
+import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -75,26 +75,26 @@ class MobilePrimitives_NumericResponseBlock extends Vue {
     }
 
     updateValidationMin(value) {
-      this.setValidationMinimum({ blockId: this.block.uuid, value })
+      this.setValidationMinimum({blockId: this.block.uuid, value})
     }
 
     updateValidationMax(value) {
-      this.setValidationMaximum({ blockId: this.block.uuid, value })
+      this.setValidationMaximum({blockId: this.block.uuid, value})
     }
 
     updateMaxDigits(value) {
-      this.setMaxDigits({ blockId: this.block.uuid, value })
+      this.setMaxDigits({blockId: this.block.uuid, value})
     }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
 
     @flowVuexNamespace.Getter hasVoiceMode
 
-    @blockVuexNamespace.Action setValidationMinimum!: ({ blockId: string, value: number }) => Promise<string>
+    @blockVuexNamespace.Action setValidationMinimum!: ({blockId: string, value: number}) => Promise<string>
 
-    @blockVuexNamespace.Action setValidationMaximum!: ({ blockId: string, value: number }) => Promise<string>
+    @blockVuexNamespace.Action setValidationMaximum!: ({blockId: string, value: number}) => Promise<string>
 
-    @blockVuexNamespace.Action setMaxDigits!: ({ blockId: string, value: number }) => Promise<string>
+    @blockVuexNamespace.Action setMaxDigits!: ({blockId: string, value: number}) => Promise<string>
   }
 
 export default MobilePrimitives_NumericResponseBlock

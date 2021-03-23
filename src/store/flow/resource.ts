@@ -61,10 +61,7 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async resource_createWith({dispatch}, {props}: {props: {uuid: string} & Partial<IResourceDefinition>}): Promise<IResourceDefinition> {
     return {
-      ...defaults(
-        props,
-        {values: []},
-      ),
+      ...defaults(props, {values: []}),
     }
   },
 

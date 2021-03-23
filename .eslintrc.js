@@ -1,14 +1,14 @@
 module.exports = {
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    "extraFileExtensions": [".vue"],
-    project: './tsconfig.json',
+  'parser': 'vue-eslint-parser',
+  'parserOptions': {
+    'parser': '@typescript-eslint/parser',
+    'project': './tsconfig.json',
   },
-
   extends: [
+    'plugin:vue/essential',
+    '@vue/airbnb',
+    '@vue/typescript/recommended',
+
     'plugin:jest/recommended',
     'plugin:lodash/recommended',
     'eslint:recommended',
@@ -16,10 +16,6 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
-
-    'plugin:vue/essential',
-    '@vue/airbnb',
-    '@vue/typescript/recommended',
 
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',

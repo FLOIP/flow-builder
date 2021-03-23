@@ -21,10 +21,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { IFlow } from '@floip/flow-runner'
+import {Component, Prop} from 'vue-property-decorator'
+import {IFlow} from '@floip/flow-runner'
 import lang from '@/lib/filters/lang'
-import { namespace } from 'vuex-class'
+import {namespace} from 'vuex-class'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -32,7 +32,7 @@ const flowVuexNamespace = namespace('flow')
     mixins: [lang],
   })
 class FirstBlockEditorButton extends Vue {
-    @Prop({ default: true }) readonly isEditable!: boolean
+    @Prop({default: true}) readonly isEditable!: boolean
 
     @Prop()readonly blockId!: string
 
@@ -43,11 +43,11 @@ class FirstBlockEditorButton extends Vue {
     }
 
     setStartBlock(event) {
-      const { flow: { uuid: flowId }, blockId } = this
-      this.flow_setFirstBlockId({ flowId, blockId })
+      const {flow: {uuid: flowId}, blockId} = this
+      this.flow_setFirstBlockId({flowId, blockId})
     }
 
-    @flowVuexNamespace.Mutation flow_setFirstBlockId!: ({ flowId, blockId }: {flowId: string; blockId: string}) => void
+    @flowVuexNamespace.Mutation flow_setFirstBlockId!: ({flowId, blockId}: {flowId: string; blockId: string}) => void
   }
 export default FirstBlockEditorButton
 </script>

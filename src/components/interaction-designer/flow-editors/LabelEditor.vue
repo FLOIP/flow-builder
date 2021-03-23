@@ -11,9 +11,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import TextEditor from '@/components/common/TextEditor.vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { IFlow } from '@floip/flow-runner'
-import { namespace } from 'vuex-class'
+import {Component, Prop} from 'vue-property-decorator'
+import {IFlow} from '@floip/flow-runner'
+import {namespace} from 'vuex-class'
 import lang from '@/lib/filters/lang'
 
 const flowVuexNamespace = namespace('flow')
@@ -26,7 +26,7 @@ const flowVuexNamespace = namespace('flow')
     },
   )
 class FlowLabelEditor extends Vue {
-    @Prop({ default: true }) readonly isEditable!: boolean
+    @Prop({default: true}) readonly isEditable!: boolean
 
     @Prop() readonly flow!: IFlow
 
@@ -35,7 +35,7 @@ class FlowLabelEditor extends Vue {
     }
 
     set label(value: string) {
-      this.flow_setLabel({ flowId: this.flow.uuid, value })
+      this.flow_setLabel({flowId: this.flow.uuid, value})
     }
 
     @flowVuexNamespace.Mutation flow_setLabel

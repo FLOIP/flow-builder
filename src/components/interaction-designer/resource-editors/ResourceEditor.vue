@@ -109,7 +109,7 @@
 </template>
 
 <script lang="ts">
-import { Getter, Mutation, namespace } from 'vuex-class'
+import {Getter, Mutation, namespace} from 'vuex-class'
 import {
   IBlock,
   IFlow,
@@ -121,7 +121,7 @@ import lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
-import { Component } from 'vue-property-decorator'
+import {Component} from 'vue-property-decorator'
 import Vue from 'vue'
 import {
   discoverContentTypesFor,
@@ -129,7 +129,7 @@ import {
   findResourceVariantOverModesOn,
 } from '@/store/flow/resource'
 import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
-import { ValidationException } from '@floip/flow-runner/src/domain/exceptions/ValidationException'
+import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import PhoneRecorder from '@/components/interaction-designer/block-editors/PhoneRecorder.vue'
 import UploadMonitor from '../block-editors/UploadMonitor.vue'
 import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
@@ -192,21 +192,21 @@ export class ResourceEditor extends Vue {
     })
   }
 
-  handleFilesSubmittedFor(key, { data }) {
+  handleFilesSubmittedFor(key, {data}) {
     console.debug('call handleFilesSubmittedFor')
-    this.$store.dispatch('multimediaUpload/uploadFiles', { ...data, key })
+    this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
   }
 
   handleFileSuccessFor(key, langId, event) {
     const {
-      data: { file, json },
+      data: {file, json},
     } = event
     // @ts-ignore
-    const { uuid: jsKey } = this.block
+    const {uuid: jsKey} = this.block
     const {
       audio_file_id: id,
       audio_uuid: filename,
-      created_at: { date: created_at },
+      created_at: {date: created_at},
       description,
       duration_seconds,
     } = JSON.parse(json)

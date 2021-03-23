@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { IBlock } from '@floip/flow-runner'
-import { Component, Prop } from 'vue-property-decorator'
+import {IBlock} from '@floip/flow-runner'
+import {Component, Prop} from 'vue-property-decorator'
 import lang from '@/lib/filters/lang'
 
   @Component<any>({

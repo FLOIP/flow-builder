@@ -26,18 +26,18 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { namespace } from 'vuex-class'
-import { Component, Prop } from 'vue-property-decorator'
+import {namespace} from 'vuex-class'
+import {Component, Prop} from 'vue-property-decorator'
 
-import { IBlockExit, IFlow } from '@floip/flow-runner'
-import { IOpenResponseBlock } from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
+import {IBlockExit, IFlow} from '@floip/flow-runner'
+import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
 import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 
-import OpenResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
+import OpenResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
 import lang from '@/lib/filters/lang'
-import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
+import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'

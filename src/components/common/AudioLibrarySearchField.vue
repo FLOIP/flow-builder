@@ -9,14 +9,16 @@
         </button>
       </span>
 
-      <input v-model="rawQuery"
-             @focus="activate"
-             @blur="deactivate"
-             @input="resetPagination"
-             type="text"
-             :placeholder="'flow-builder.search-audio-library' | trans"
-             :disabled="isEntireLibraryModeEnabled"
-             class="form-control">
+      <label>
+        <input v-model="rawQuery"
+               @focus="activate"
+               @blur="deactivate"
+               @input="resetPagination"
+               type="text"
+               :placeholder="'flow-builder.search-audio-library' | trans"
+               :disabled="isEntireLibraryModeEnabled"
+               class="form-control">
+      </label>
     </div>
 
     <div v-if="query || isAudioLibraryEmpty || isEntireLibraryModeEnabled" class="dropdown-menu">
@@ -131,7 +133,7 @@ export default {
       console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
 
       const keys = ['filename', 'description']
-      return this.cache[query] = new fuse(this.audioFiles, { keys }).search(query)
+      return this.cache[query] = new fuse(this.audioFiles, {keys}).search(query)
     },
 
     // todo: push pagination into isolated component
@@ -153,7 +155,7 @@ export default {
     },
 
     select(audio) {
-      this.$emit('select', { value: audio, langId: this.langId })
+      this.$emit('select', {value: audio, langId: this.langId})
     },
 
     activate() {

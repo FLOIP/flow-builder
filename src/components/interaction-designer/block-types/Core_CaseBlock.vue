@@ -26,16 +26,16 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { namespace } from 'vuex-class'
-import { Component, Prop } from 'vue-property-decorator'
+import {namespace} from 'vuex-class'
+import {Component, Prop} from 'vue-property-decorator'
 
-import { ICaseBlock } from '@floip/flow-runner/src/model/block/ICaseBlock'
-import { IBlockExitTestRequired, IFlow, IBlockExit } from '@floip/flow-runner'
+import {ICaseBlock} from '@floip/flow-runner/src/model/block/ICaseBlock'
+import {IBlockExitTestRequired, IFlow, IBlockExit} from '@floip/flow-runner'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 
-import CaseStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_CaseBlockStore'
+import CaseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import lang from '@/lib/filters/lang'
-import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
+import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -66,7 +66,7 @@ class Core_CaseBlock extends Vue {
       return this.block.exits
     }
 
-    @blockVuexNamespace.Action editCaseBlockExit!: ({ exitId, value }: {exitId: string; value: string}) => Promise<IBlockExit>
+    @blockVuexNamespace.Action editCaseBlockExit!: ({exitId, value}: {exitId: string; value: string}) => Promise<IBlockExit>
   }
 
 export default Core_CaseBlock

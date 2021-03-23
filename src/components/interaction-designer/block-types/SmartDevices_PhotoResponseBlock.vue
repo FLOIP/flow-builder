@@ -18,18 +18,18 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { namespace } from 'vuex-class'
-import { Component, Prop } from 'vue-property-decorator'
+import {namespace} from 'vuex-class'
+import {Component, Prop} from 'vue-property-decorator'
 
-import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner'
+import {IBlock, IBlockExit, IFlow} from '@floip/flow-runner'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
 import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 
-import PhotoStore, { BLOCK_TYPE } from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
+import PhotoStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import lang from '@/lib/filters/lang'
-import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
+import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'

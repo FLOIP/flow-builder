@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import {mapState, mapGetters} from 'vuex'
 import PhoneRecordingRecorderSelector from './PhoneRecordingRecorderSelector'
 
 export default {
@@ -29,7 +29,7 @@ export default {
   computed: {
     ...mapState({
       // todo: deprecate (this + setAudioRecordingConfigVisibilityForSelectedBlock) in favor of modal + local state
-      isRecorderSelectorVisible: ({ audio: { recording: { isRecorderSelectorVisible } } }) => isRecorderSelectorVisible,
+      isRecorderSelectorVisible: ({audio: {recording: {isRecorderSelectorVisible}}}) => isRecorderSelectorVisible,
     }),
 
     ...mapGetters(['isFeatureCallToRecordEnabled']),
@@ -37,7 +37,7 @@ export default {
 
   methods: {
     handleRecorderSelectionChanged() {
-      this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', { isVisible: false })
+      this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', {isVisible: false})
 
       if (!this.callConfig.recorder) {
         return

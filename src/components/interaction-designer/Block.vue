@@ -122,13 +122,13 @@
 </template>
 
 <script>
-import { isNumber, forEach } from 'lodash'
+import {isNumber, forEach} from 'lodash'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
 import PlainDraggable from '@/components/common/PlainDraggable.vue'
-import { ResourceResolver, SupportedMode } from '@floip/flow-runner'
-import { OperationKind, generateConnectionLayoutKeyFor } from '@/store/builder'
+import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
+import {OperationKind, generateConnectionLayoutKeyFor} from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import lang from '@/lib/filters/lang'
 
@@ -155,7 +155,7 @@ export default {
     ...mapState('flow', ['resources']),
     ...mapState('builder', ['activeBlockId', 'operations']),
     ...mapState({
-      blockClasses: ({ trees: { ui } }) => ui.blockClasses,
+      blockClasses: ({trees: {ui}}) => ui.blockClasses,
     }),
 
     ...mapGetters('builder', ['blocksById']),
@@ -167,14 +167,14 @@ export default {
     // todo: does this component know too much, what out of the above mapped state can be mapped?
     // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
 
-    isConnectionSourceRelocateActive: ({ operations }) => !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
-    isConnectionCreateActive: ({ operations }) => !!operations[OperationKind.CONNECTION_CREATE].data,
-    isBlockActivated: ({ activeBlockId, block, operations }) => {
+    isConnectionSourceRelocateActive: ({operations}) => !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
+    isConnectionCreateActive: ({operations}) => !!operations[OperationKind.CONNECTION_CREATE].data,
+    isBlockActivated: ({activeBlockId, block, operations}) => {
       if (activeBlockId && activeBlockId === block.uuid) {
         return true
       }
 
-      const { data } = operations[OperationKind.CONNECTION_CREATE]
+      const {data} = operations[OperationKind.CONNECTION_CREATE]
       return data && data.target === block.uuid
     },
   },
@@ -208,7 +208,7 @@ export default {
     ...mapMutations('builder', ['activateBlock']),
 
     resolveTextResource(uuid) {
-      const { resources } = this
+      const {resources} = this
       const context = {
         resources,
         languageId: '22',
@@ -224,47 +224,47 @@ export default {
 
     // todo: push NodeExit into it's own vue component
     isExitActivatedForRelocate(exit) {
-      const { data } = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
+      const {data} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
       return data
             && data.to
             && data.to.exitId === exit.uuid
     },
 
     isExitActivatedForCreate(exit) {
-      const { data } = this.operations[OperationKind.CONNECTION_CREATE]
+      const {data} = this.operations[OperationKind.CONNECTION_CREATE]
       return data
             && data.source
             && data.source.exitId === exit.uuid
     },
 
     activateExitAsDropZone(e, exit) {
-      const { block } = this
-      this.setConnectionSourceRelocateValue({ block, exit })
+      const {block} = this
+      this.setConnectionSourceRelocateValue({block, exit})
     },
 
     deactivateExitAsDropZone(e, exit) {
-      const { block } = this
-      this.setConnectionSourceRelocateValueToNullFrom({ block, exit })
+      const {block} = this
+      this.setConnectionSourceRelocateValueToNullFrom({block, exit})
     },
 
     // eslint-disable-next-line no-unused-vars
     activateBlockAsDropZone(e) {
-      const { block } = this
-      this.setConnectionCreateTargetBlock({ block })
+      const {block} = this
+      this.setConnectionCreateTargetBlock({block})
     },
 
     // eslint-disable-next-line no-unused-vars
     deactivateBlockAsDropZone(e) {
-      const { block } = this
-      this.setConnectionCreateTargetBlockToNullFrom({ block })
+      const {block} = this
+      this.setConnectionCreateTargetBlockToNullFrom({block})
     },
 
-    onMoved({ position: { left: x, top: y } }) {
+    onMoved({position: {left: x, top: y}}) {
       // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
 
-      const { block } = this
+      const {block} = this
       this.$nextTick(() => {
-        this.setBlockPositionTo({ position: { x, y }, block })
+        this.setBlockPositionTo({position: {x, y}, block})
 
         forEach(this.draggablesByExitId, (draggable) => draggable.position())
 
@@ -273,27 +273,27 @@ export default {
     },
 
     removeConnectionFrom(exit) {
-      const { block } = this
-      this._removeConnectionFrom({ block, exit })
+      const {block} = this
+      this._removeConnectionFrom({block, exit})
     },
 
-    handleDraggableInitializedFor({ uuid }, { draggable }) {
+    handleDraggableInitializedFor({uuid}, {draggable}) {
       this.draggablesByExitId[uuid] = draggable
 
-      const { left, top } = draggable
-      const { uuid: blockId } = this.block
+      const {left, top} = draggable
+      const {uuid: blockId} = this.block
 
-      console.debug('Block', 'handleDraggableInitializedFor', { blockId, exitId: uuid, coords: { left, top } })
+      console.debug('Block', 'handleDraggableInitializedFor', {blockId, exitId: uuid, coords: {left, top}})
     },
 
-    onCreateExitDragStarted({ draggable }, exit) {
-      const { block } = this
-      const { left: x, top: y } = draggable
+    onCreateExitDragStarted({draggable}, exit) {
+      const {block} = this
+      const {left: x, top: y} = draggable
 
       this.initializeConnectionCreateWith({
         block,
         exit,
-        position: { x, y },
+        position: {x, y},
       })
 
       // since mouseenter + mouseleave will not occur when draggable is below cursor
@@ -302,31 +302,31 @@ export default {
       draggable.top += 25
     },
 
-    onCreateExitDragged({ position: { left: x, top: y } }) {
-      this.livePosition = { x, y }
+    onCreateExitDragged({position: {left: x, top: y}}) {
+      this.livePosition = {x, y}
     },
 
-    onCreateExitDragEnded({ draggable }) {
-      const { x: left, y: top } = this.operations[OperationKind.CONNECTION_CREATE].data.position
+    onCreateExitDragEnded({draggable}) {
+      const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE].data.position
 
-      console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', { left, top })
-      console.debug('Block', 'onCreateExitDragEnded', 'reset', { left: draggable.left, top: draggable.top })
+      console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
+      console.debug('Block', 'onCreateExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
 
-      Object.assign(draggable, { left, top })
+      Object.assign(draggable, {left, top})
 
       this.applyConnectionCreate()
 
       this.livePosition = null
     },
 
-    onMoveExitDragStarted({ draggable }, exit) {
-      const { block } = this
-      const { left: x, top: y } = draggable
+    onMoveExitDragStarted({draggable}, exit) {
+      const {block} = this
+      const {left: x, top: y} = draggable
 
       this.initializeConnectionSourceRelocateWith({
         block,
         exit,
-        position: { x, y },
+        position: {x, y},
       })
 
       // since mouseenter + mouseleave will not occur when draggable is below cursor
@@ -335,28 +335,28 @@ export default {
       draggable.top += 25
     },
 
-    onMoveExitDragged({ position: { left: x, top: y } }) {
-      this.livePosition = { x, y }
+    onMoveExitDragged({position: {left: x, top: y}}) {
+      this.livePosition = {x, y}
     },
 
     // todo: store the leaderlines in vuex and manip there --- aka the leaderline itself would simply _produce_ the
     //       domain object which we thenceforth manip in vuex ?
 
-    onMoveExitDragEnded({ draggable }) {
-      const { x: left, y: top } = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data.position
+    onMoveExitDragEnded({draggable}) {
+      const {x: left, y: top} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data.position
 
-      console.debug('Block', 'onMoveExitDragEnded', 'operation.data.position', { left, top })
-      console.debug('Block', 'onMoveExitDragEnded', 'reset', { left: draggable.left, top: draggable.top })
+      console.debug('Block', 'onMoveExitDragEnded', 'operation.data.position', {left, top})
+      console.debug('Block', 'onMoveExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
 
-      Object.assign(draggable, { left, top })
+      Object.assign(draggable, {left, top})
 
       this.applyConnectionSourceRelocate()
       this.livePosition = null
     },
 
     selectBlock() {
-      const { block: { uuid: blockId } } = this
-      this.activateBlock({ blockId })
+      const {block: {uuid: blockId}} = this
+      this.activateBlock({blockId})
     },
   },
 }

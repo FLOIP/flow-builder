@@ -25,7 +25,7 @@
 
 <script>
 import lodash from 'lodash'
-import { mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import {
   SupportedContentType,
   SupportedMode,
@@ -60,14 +60,14 @@ export default {
     clearSelection() {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
-        filter: { languageId: this.langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
+        filter: {languageId: this.langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
         value: '',
       })
     },
-    selectAudioFile({ value, langId }) {
+    selectAudioFile({value, langId}) {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
-        filter: { languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
+        filter: {languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
         value: value.description,
       })
     },

@@ -5,10 +5,10 @@
 
 <script>
 // import LeaderLine from 'leader-line'
-import { set } from 'lodash'
-import { mapGetters } from 'vuex'
+import {set} from 'lodash'
+import {mapGetters} from 'vuex'
 
-const { LeaderLine } = window
+const {LeaderLine} = window
 
 export default {
   props: {
@@ -31,8 +31,8 @@ export default {
   computed: {
     ...mapGetters('builder', ['blocksById']),
 
-    sourceId: ({ exit }) => `exit/${exit.uuid}/handle`,
-    targetId: ({ exit }) => (exit.destinationBlock
+    sourceId: ({exit}) => `exit/${exit.uuid}/handle`,
+    targetId: ({exit}) => (exit.destinationBlock
       ? `block/${exit.destinationBlock}/handle`
       : `exit/${exit.uuid}/pseudo-block-handle`),
 
@@ -141,7 +141,7 @@ export default {
     //     LeaderLine.pointAnchor(document.body, sourcePosition),
     //     LeaderLine.pointAnchor(document.body, targetPosition), options)
 
-    const blockPaddingOffset = { x: 34, y: -7 }
+    const blockPaddingOffset = {x: 34, y: -7}
     const start = document.getElementById(this.sourceId)
     const end = this.position
       ? document.getElementById(this.targetId)
