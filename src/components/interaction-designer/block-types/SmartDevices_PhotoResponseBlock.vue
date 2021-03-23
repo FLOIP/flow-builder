@@ -3,14 +3,15 @@
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <block-name-editor :block="block" />
-    <block-label-editor :block="block" />
-    <block-semantic-label-editor :block="block" />
-
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>
@@ -37,6 +38,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 
 const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 
   @Component<any>({
     components: {
@@ -55,6 +57,8 @@ class SmartDevices_PhotoResponseBlock extends Vue {
     @Prop()readonly flow!: IFlow
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+
+    @builderVuexNamespace.Getter isEditable !: boolean
   }
 
 export default SmartDevices_PhotoResponseBlock

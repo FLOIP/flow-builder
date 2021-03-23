@@ -1,7 +1,6 @@
 <template>
   <div class="form-group flow-interaction-timeout">
     <numeric-editor v-model.number="interactionTimeout"
-        :is-editable="isEditable"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.Interaction-timeout' | trans"
         :placeholder="'flow-builder.enter-value' | trans">
@@ -26,8 +25,6 @@ const flowVuexNamespace = namespace('flow')
     mixins: [lang],
   })
 class InteractionTimeoutEditor extends Vue {
-    @Prop({default: true}) readonly isEditable!: boolean
-
     @Prop() readonly flow!: IFlow
 
     get interactionTimeout(): number {

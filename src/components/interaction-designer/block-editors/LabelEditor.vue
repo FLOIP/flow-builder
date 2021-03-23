@@ -1,7 +1,6 @@
 <template>
   <div>
     <text-editor v-model="label"
-        :is-editable="isEditable"
         :label="'flow-builder.block-label' | trans"
         :placeholder="'flow-builder.enter-block-label' | trans"/>
   </div>
@@ -18,16 +17,11 @@ export default {
   },
   mixins: [lang],
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean,
-    },
     block: {
       type: Object,
       required: true,
     },
   },
-  mixins: [lang],
   computed: {
     label: {
       get() {

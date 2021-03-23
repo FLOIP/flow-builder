@@ -1,6 +1,6 @@
 <template>
   <div class="resource-variant-text-editor">
-    <div v-if="isEditable" class="content-editor" :class="{'content-editor-selected': !!content}">
+    <div class="content-editor" :class="{'content-editor-selected': !!content}">
       <textarea v-model="content"
               v-focus="isSelected"
               @focus="select"
@@ -72,12 +72,12 @@
       </div>
     </div>
 
-    <template v-if="!isEditable">
-      <p v-if="content">{{content}}</p>
-      <p v-else>
-        <em class="text-muted">{{'flow-builder.no-sms-content-yet' | trans}}</em>
-      </p>
-    </template>
+<!--    <template v-if="!isEditable">-->
+<!--      <p v-if="content">{{content}}</p>-->
+<!--      <p>-->
+<!--        <em class="text-muted">{{'flow-builder.no-sms-content-yet' | trans}}</em>-->
+<!--      </p>-->
+<!--    </template>-->
   </div>
 </template>
 
@@ -88,10 +88,11 @@ import {parse as floipExpressionParser} from '@floip/expression-parser'
 import {isObject, some} from 'lodash'
 import VueFocus from 'vue-focus'
 import {mapActions} from 'vuex'
-import {VBTooltipPlugin} from 'bootstrap-vue'
+import {BTooltip} from 'bootstrap-vue'
+
 // import BlockContentAutogenButton from './BlockContentAutogenButton'
 
-Vue.use(VBTooltipPlugin)
+Vue.component('b-tooltip', BTooltip)
 
 export default {
   components: {

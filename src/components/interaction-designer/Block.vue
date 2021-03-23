@@ -1,127 +1,136 @@
 <template>
-  <plain-draggable
-      v-if="hasLayout"
-      class="block"
-      :class="{
-        active: isBlockActivated,
-        [`category-${blockClasses[block.type].category}`]: true,
-      }"
-      :startX="x"
-      :startY="y"
-      @dragged="onMoved"
-      @dragStarted="selectBlock">
-
-    <header
-        :id="`block/${block.uuid}/handle`"
-        class="block-target draggable-handle"
+  <div @click="selectBlock">
+    <plain-draggable
+        v-if="hasLayout"
+        class="block"
         :class="{
-             'initial': false,
-             'pending': isConnectionCreateActive,
-             'fulfilled': false,
-             'rejected': false,
-             'activated': isBlockActivated,
-           }"
-        @mouseenter="isConnectionCreateActive && activateBlockAsDropZone($event)"
-        @mouseleave="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
+          active: isBlockActivated,
+          [`category-${blockClasses[block.type].category}`]: true,
+        }"
+        :startX="x"
+        :startY="y"
+        :is-editable="isEditable"
+        @dragged="onMoved"
+        @dragStarted="selectBlock">
 
-      <p class="block-type text-muted">
-        {{trans(`flow-builder.${block.type}`)}}
-      </p>
+      <header
+          :id="`block/${block.uuid}/handle`"
+          class="block-target draggable-handle"
+          :class="{
+               'initial': false,
+               'pending': isConnectionCreateActive,
+               'fulfilled': false,
+               'rejected': false,
+               'activated': isBlockActivated,
+             }"
+          @mouseenter="isConnectionCreateActive && activateBlockAsDropZone($event)"
+          @mouseleave="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
 
-      <h3 class="block-label"
-          :class="{'empty': !block.label}">
-        {{block.label || 'Untitled block'}}
-      </h3>
-    </header>
+        <p class="block-type text-muted">
+          {{trans(`flow-builder.${block.type}`)}}
+        </p>
 
-    <div class="block-exits">
-      <div v-for="exit in block.exits"
-           :key="exit.uuid"
-           class="block-exit"
-           :class="{
-             'initial': false,
-             'pending': isConnectionSourceRelocateActive,
-             'fulfilled': false,
-             'rejected': false,
-             'activated': isExitActivatedForRelocate(exit),
-           }"
-           @mouseenter="isConnectionSourceRelocateActive && activateExitAsDropZone($event, exit)"
-           @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)">
+        <h3 class="block-label"
+            :class="{'empty': !block.label}">
+          {{block.label || 'Untitled block'}}
+        </h3>
+      </header>
 
-        <div class="total-label-container">
-          <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
-        </div>
+      <div class="block-exits">
+        <div v-for="exit in block.exits"
+             :key="exit.uuid"
+             class="block-exit"
+             :class="{
+               'initial': false,
+               'pending': isConnectionSourceRelocateActive,
+               'fulfilled': false,
+               'rejected': false,
+               'activated': isExitActivatedForRelocate(exit),
+             }"
+             @mouseenter="isConnectionSourceRelocateActive && activateExitAsDropZone($event, exit)"
+             @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)">
 
-        <h3 class="block-exit-tag badge badge-warning">{{exit.tag || '—'}}</h3>
+          <div class="total-label-container">
+            <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
+          </div>
 
-        <template v-if="exit.destinationBlock == null">
-          <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
-                           :class="{
-                               'btn-info': exit.destinationBlock != null,
-                           }"
-                           :id="`exit/${exit.uuid}/pseudo-block-handle`"
-                           :key="`exit/${exit.uuid}/pseudo-block-handle`"
-                           @initialized="handleDraggableInitializedFor(exit, $event)"
-                           @dragStarted="onCreateExitDragStarted($event, exit)"
-                           @dragged="onCreateExitDragged($event)"
-                           @dragEnded="onCreateExitDragEnded($event, exit)">
-            <i class="glyphicon glyphicon-move"></i>
-          </plain-draggable>
+          <h3 class="block-exit-tag badge badge-warning">{{exit.tag || '—'}}</h3>
 
-          <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
-            <div class="handle-move-link btn btn-secondary btn-xs"
-                 :class="{
-                               'btn-info': exit.destinationBlock != null,
-                           }"
-                 :id="`exit/${exit.uuid}/handle`">
+          <template v-if="exit.destinationBlock == null">
+            <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
+                             :class="{
+                                 'btn-info': exit.destinationBlock != null,
+                             }"
+                             :id="`exit/${exit.uuid}/pseudo-block-handle`"
+                             :key="`exit/${exit.uuid}/pseudo-block-handle`"
+                             :is-editable="isEditable"
+                             v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
+                             @initialized="handleDraggableInitializedFor(exit, $event)"
+                             @dragStarted="onCreateExitDragStarted($event, exit)"
+                             @dragged="onCreateExitDragged($event)"
+                             @dragEnded="onCreateExitDragEnded($event, exit)">
               <i class="glyphicon glyphicon-move"></i>
+            </plain-draggable>
+
+            <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
+              <div class="handle-move-link btn btn-secondary btn-xs"
+                   :class="{
+                                 'btn-info': exit.destinationBlock != null,
+                             }"
+                   :id="`exit/${exit.uuid}/handle`">
+                <i class="glyphicon glyphicon-move"></i>
+              </div>
+
+              <connection :key="`exit/${exit.uuid}/line-for-draft`"
+                          :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
+                          :source="block"
+                          :target="blocksById[exit.destinationBlock]"
+                          :exit="exit"
+                          :position="livePosition"
+                          :color-category="blockClasses[block.type].category" />
+            </template>
+          </template>
+
+          <template v-if="exit.destinationBlock != null">
+            <plain-draggable class="block-exit-move-handle handle-move-link btn btn-outline-secondary btn-xs btn-flat"
+                             :class="{
+                                 // 'btn-secondary': exit.destinationBlock != null,
+                             }"
+                             :id="`exit/${exit.uuid}/handle`"
+                             :key="`exit/${exit.uuid}/handle`"
+                             :is-editable="isEditable"
+                             v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-relocate-connection')"
+                             @initialized="handleDraggableInitializedFor(exit, $event)"
+                             @dragStarted="onMoveExitDragStarted($event, exit)"
+                             @dragged="onMoveExitDragged($event)"
+                             @dragEnded="onMoveExitDragEnded($event, exit)">
+              <i class="glyphicon glyphicon-move"></i>
+            </plain-draggable>
+
+            <div class="block-exit-remove btn btn-danger btn-xs" v-if="isEditable"
+                 title="Click to remove this connection"
+                 v-b-tooltip.hover.top="trans('flow-builder.tooltip-remove-connection')"
+                 @click="removeConnectionFrom(exit)">
+              <span class="glyphicon glyphicon-remove"></span>
             </div>
 
-            <connection :key="`exit/${exit.uuid}/line-for-draft`"
+            <connection :key="`exit/${exit.uuid}/line`"
                         :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
-                        :source="block"
+                        :source="livePosition ? null : block"
                         :target="blocksById[exit.destinationBlock]"
                         :exit="exit"
                         :position="livePosition"
                         :color-category="blockClasses[block.type].category" />
           </template>
-        </template>
 
-        <template v-if="exit.destinationBlock != null">
-          <plain-draggable class="block-exit-move-handle handle-move-link btn btn-outline-secondary btn-xs btn-flat"
-                           :class="{
-                               // 'btn-secondary': exit.destinationBlock != null,
-                           }"
-                           :id="`exit/${exit.uuid}/handle`"
-                           :key="`exit/${exit.uuid}/handle`"
-                           @initialized="handleDraggableInitializedFor(exit, $event)"
-                           @dragStarted="onMoveExitDragStarted($event, exit)"
-                           @dragged="onMoveExitDragged($event)"
-                           @dragEnded="onMoveExitDragEnded($event, exit)">
-            <i class="glyphicon glyphicon-move"></i>
-          </plain-draggable>
-
-          <div class="block-exit-remove btn btn-danger btn-xs"
-               title="Click to remove this connection"
-               @click="removeConnectionFrom(exit)">
-            <span class="glyphicon glyphicon-remove"></span>
-          </div>
-
-          <connection :key="`exit/${exit.uuid}/line`"
-                      :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
-                      :source="livePosition ? null : block"
-                      :target="blocksById[exit.destinationBlock]"
-                      :exit="exit"
-                      :position="livePosition"
-                      :color-category="blockClasses[block.type].category" />
-        </template>
-
+        </div>
       </div>
-    </div>
-  </plain-draggable>
+    </plain-draggable>
+  </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import {isNumber, forEach} from 'lodash'
 import {
   mapActions, mapGetters, mapMutations, mapState,
@@ -131,6 +140,10 @@ import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
 import {OperationKind, generateConnectionLayoutKeyFor} from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import lang from '@/lib/filters/lang'
+
+import {BTooltip} from 'bootstrap-vue'
+
+Vue.component('b-tooltip', BTooltip)
 
 export default {
   props: ['block', 'x', 'y'],
@@ -158,7 +171,7 @@ export default {
       blockClasses: ({trees: {ui}}) => ui.blockClasses,
     }),
 
-    ...mapGetters('builder', ['blocksById']),
+    ...mapGetters('builder', ['blocksById', 'isEditable']),
 
     hasLayout() {
       return isNumber(this.x) && isNumber(this.y)

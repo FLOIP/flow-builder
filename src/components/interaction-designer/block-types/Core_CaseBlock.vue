@@ -4,21 +4,23 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :block="block" />
-    <block-label-editor :block="block" />
-    <block-semantic-label-editor :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <div v-for="(exit,i) in exits" class="form-group form-inline">
-      <expression-editor :label="i+1"
-          :placeholder="'flow-builder.edit-expression' | trans"
-          :current-expression="exit.test"
-          :expression-identifier="exit.uuid"
-          @commitExpressionChange="editCaseBlockExit"/>
-    </div>
+      <div v-for="(exit,i) in exits" class="form-group form-inline">
+        <expression-editor :label="i+1"
+            :placeholder="'flow-builder.edit-expression' | trans"
+            :current-expression="exit.test"
+            :expression-identifier="exit.uuid"
+            @commitExpressionChange="editCaseBlockExit"/>
+      </div>
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>
@@ -43,6 +45,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const builderVuexNamespace = namespace('builder')
 
   // providing this generic is required by tsserver checking but not in the build run by yarn storybook
   // TODO - understand what is going on here and if there is something more correct we should have instead
@@ -67,6 +70,8 @@ class Core_CaseBlock extends Vue {
     }
 
     @blockVuexNamespace.Action editCaseBlockExit!: ({exitId, value}: {exitId: string; value: string}) => Promise<IBlockExit>
+
+    @builderVuexNamespace.Getter isEditable !: boolean
   }
 
 export default Core_CaseBlock

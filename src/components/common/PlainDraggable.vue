@@ -15,6 +15,13 @@ export default {
     startX: Number,
     startY: Number,
     handleDomId: String,
+    isEditable: Boolean,
+  },
+
+  watch: {
+    isEditable(value) {
+      this.draggable.disabled = !value
+    },
   },
 
   // todo: also set `handle` from props onPropsChanged()
@@ -28,9 +35,6 @@ export default {
     },
 
     handleDragged(position) {
-      // eslint-disable-next-line no-debugger
-      // debugger
-
       const {draggable} = this
       this.$emit('dragged', {draggable, position})
     },
@@ -46,9 +50,6 @@ export default {
     },
 
     handleMoved(position) {
-      // eslint-disable-next-line no-debugger
-      // debugger
-
       const {draggable} = this
       this.$emit('moved', {draggable, position})
     },
@@ -68,7 +69,7 @@ export default {
       // prevent css translate() animations for move
       // they don't seem to be throttled enough for leaderline to follow tightly
       leftTop: false,
-
+      disabled: true,
       onDrag: this.handleDragged,
       onDragStart: this.handleDragStarted,
       onDragEnd: this.handleDragEnded,
@@ -79,7 +80,6 @@ export default {
 
       handle,
     })
-
     // draggable.rect.{left,top,x,y,...}
 
     // this.draggable.snap = {x: 50, y: 50, width: 50, height: 50} // todo: why this doesn't work?

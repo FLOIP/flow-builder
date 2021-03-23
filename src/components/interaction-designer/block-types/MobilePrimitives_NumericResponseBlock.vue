@@ -4,23 +4,25 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :block="block" />
-    <block-label-editor :block="block" />
-    <block-semantic-label-editor :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <block-minimum-numeric-editor :block="block" @commitValidationMinimumChange="updateValidationMin"/>
-    <block-maximum-numeric-editor :block="block" @commitValidationMaximumChange="updateValidationMax"/>
+      <block-minimum-numeric-editor :block="block" @commitValidationMinimumChange="updateValidationMin"/>
+      <block-maximum-numeric-editor :block="block" @commitValidationMaximumChange="updateValidationMax"/>
 
-    <block-max-digit-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDigitsChange="updateMaxDigits"/>
+      <block-max-digit-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDigitsChange="updateMaxDigits"/>
 
-    <resource-editor v-if="promptResource"
-                     :resource="promptResource"
-                     :block="block"
-                     :flow="flow" />
+      <resource-editor v-if="promptResource"
+                       :resource="promptResource"
+                       :block="block"
+                       :flow="flow" />
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>
@@ -50,6 +52,7 @@ import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const builderVuexNamespace = namespace('builder')
 
   @Component<any>({
     components: {
@@ -95,6 +98,8 @@ class MobilePrimitives_NumericResponseBlock extends Vue {
     @blockVuexNamespace.Action setValidationMaximum!: ({blockId: string, value: number}) => Promise<string>
 
     @blockVuexNamespace.Action setMaxDigits!: ({blockId: string, value: number}) => Promise<string>
+
+    @builderVuexNamespace.Getter isEditable !: boolean
   }
 
 export default MobilePrimitives_NumericResponseBlock

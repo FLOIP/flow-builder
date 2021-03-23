@@ -1,7 +1,7 @@
 <template>
   <div class="float-editor">
     <label>{{label}}</label>
-    <div v-if="isEditable">
+    <div>
       <input
           type="number"
           :min="min"
@@ -15,9 +15,9 @@
       />
     </div>
 
-    <p v-else>
-      {{value}}
-    </p>
+<!--    <p v-else>-->
+<!--      {{value}}-->
+<!--    </p>-->
     <slot/>
   </div>
 </template>
@@ -25,10 +25,6 @@
 <script>
 export default {
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean,
-    },
     label: {
       type: [String, Number],
       required: true,

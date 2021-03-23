@@ -1,7 +1,6 @@
 <template>
   <div class="form-group block-threshold">
     <float-editor v-model.number="threshold"
-        :is-editable="isEditable"
         :min="0"
         :regex-float-filtering="'[0-9.,]'"
         :label="'flow-builder.accuracy-threshold-in-meters' | trans"
@@ -21,10 +20,6 @@ export default {
   },
   mixins: [lang],
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean,
-    },
     block: {
       type: Object,
       required: true,

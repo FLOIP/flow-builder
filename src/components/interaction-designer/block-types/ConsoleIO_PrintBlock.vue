@@ -4,18 +4,20 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :block="block" />
-    <block-label-editor :block="block" />
-    <block-semantic-label-editor :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <resource-editor v-if="promptResource"
-                     :resource="promptResource"
-                     :block="block"
-                     :flow="flow" />
+      <resource-editor v-if="promptResource"
+                       :resource="promptResource"
+                       :block="block"
+                       :flow="flow" />
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>
@@ -41,6 +43,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 
 const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 
   @Component<any>({
     components: {
@@ -63,6 +66,8 @@ class ConsoleIO_PrintBlock extends Vue {
     }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+
+    @builderVuexNamespace.Getter isEditable !: boolean
   }
 
 export default ConsoleIO_PrintBlock

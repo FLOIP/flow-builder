@@ -1,7 +1,6 @@
 <template>
   <div class="form-group flow-label">
     <text-editor v-model="name"
-        :is-editable="isEditable"
         :label="'flow-builder.flow-name' | trans"
         :placeholder="'flow-builder.enter-flow-name' | trans">
     </text-editor>
@@ -27,8 +26,6 @@ const flowVuexNamespace = namespace('flow')
     },
   )
 class FlowNameEditor extends Vue {
-    @Prop({default: true}) readonly isEditable!: boolean
-
     @Prop()readonly flow!: IFlow
 
     get name(): string {
