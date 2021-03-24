@@ -157,7 +157,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import lang from '@/lib/filters/lang'
+import lang, { trans } from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import {
@@ -298,9 +298,9 @@ export default {
 
     saveButtonText() {
       if (this.hasChanges) {
-        return this.trans('flow-builder.save')
+        return trans('flow-builder.save')
       }
-      return this.trans('flow-builder.saved')
+      return trans('flow-builder.saved')
     },
 
     rootBlockClassesToDisplay() {
@@ -375,13 +375,13 @@ export default {
       })
       return this.route('trees.editTree', context)
     },
-    hasClassDetail(classDetails, attribute) {
+    hasClassDetail(classDetails: { [key: string]: any }, attribute: string) {
       return !lodash.isNil(classDetails[attribute]) && classDetails[attribute]
     },
-    translateTreeClassName(className) {
-      return this.trans(`flow-builder.${className}`)
+    translateTreeClassName(className: string) {
+      return trans(`flow-builder.${className}`)
     },
-    shouldDisplayDividerBefore(blockClasses, className) {
+    shouldDisplayDividerBefore(blockClasses: { [key: string]: any }, className: string) {
       const shouldShowDividerBeforeBlock = lodash.pickBy(
         blockClasses,
         (classDetails) => this.hasClassDetail(classDetails, 'dividerBefore'),
@@ -393,12 +393,12 @@ export default {
     },
 
     // This could be extracted to a helper mixin of some sort so it can be used in other places
-    removeNilValues(obj) {
+    removeNilValues(obj: any) {
       return lodash.pickBy(obj, lodash.identity)
     },
 
     getDeleteToolTip() {
-      return this.trans('flow-builder.tooltip-delete-block')
+      return trans('flow-builder.tooltip-delete-block')
     }
   },
 }
