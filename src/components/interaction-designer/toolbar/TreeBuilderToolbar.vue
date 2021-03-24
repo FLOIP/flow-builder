@@ -194,6 +194,10 @@ export default class TreeBuilderToolbar extends Vue {
   isImporterVisible = false
 
   // Computed ####################
+  isEmpty(value?: any): boolean {
+    return isEmpty(value)
+  }
+
   get flow() {
     const {
       flows,
@@ -224,7 +228,7 @@ export default class TreeBuilderToolbar extends Vue {
   }
 
   get editTreeUrl() {
-    return this.editTreeRoute()
+    return this.editTreeRoute({})
   }
 
   get treeViewUrl() {
@@ -291,23 +295,23 @@ export default class TreeBuilderToolbar extends Vue {
 
   get rootBlockClassesToDisplay() {
     return flow(
-      pickBy((classDetails) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-      pickBy((classDetails) => !this.hasClassDetail(classDetails, 'advancedMenu')),
-      pickBy((classDetails) => !this.hasClassDetail(classDetails, 'branchingMenu')),
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'advancedMenu')),
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'branchingMenu')),
     )(this.ui.blockClasses)
   }
 
   get rootDropdownClassesToDisplay() {
     return flow(
-      pickBy((classDetails) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-      pickBy((classDetails) => this.hasClassDetail(classDetails, 'branchingMenu')),
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+      pickBy((classDetails: { [key: string]: any }) => this.hasClassDetail(classDetails, 'branchingMenu')),
     )(this.ui.blockClasses)
   }
 
   get advancedDropdownClassesToDisplay() {
     return flow(
-      pickBy((classDetails) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-      pickBy((classDetails) => this.hasClassDetail(classDetails, 'advancedMenu')),
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+      pickBy((classDetails: { [key: string]: any }) => this.hasClassDetail(classDetails, 'advancedMenu')),
     )(this.ui.blockClasses)
   }
 
@@ -316,11 +320,7 @@ export default class TreeBuilderToolbar extends Vue {
   }
 
   // Methods #####################
-  isEmpty(value) {
-    return isEmpty(value)
-  }
-
-  async handleAddBlockByTypeSelected({ type }) {
+  async handleAddBlockByTypeSelected({ type }: { type: string }) {
     const { uuid: blockId } = await this.flow_addBlankBlockByType({
       type,
       platform_metadata: {
@@ -347,10 +347,7 @@ export default class TreeBuilderToolbar extends Vue {
     this.isImporterVisible = !this.isImporterVisible
   }
 
-  editTreeRoute({
-    component = null,
-    mode = null,
-  } = {}) {
+  editTreeRoute({ component = null, mode = null }: { component?: any; mode?: string | null }) {
     const context = this.removeNilValues({
       treeId: this.tree.id,
       component,
@@ -433,7 +430,7 @@ export default class TreeBuilderToolbar extends Vue {
 
   @builderVuexNamespace.Getter activeBlock?: IBlock
 
-  @builderVuexNamespace.Action importFlowsAndResources?: void
+  @builderVuexNamespace.Action importFlowsAndResources!: ({ flows, resources }: { flows: IFlow[]; resources: IResourceDefinition[]}) => Promise<void>
 
   @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
 }
