@@ -1232,6 +1232,12 @@ var es_array_splice = __webpack_require__("a434");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.values.js
 var es_object_values = __webpack_require__("07ac");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
+var es_regexp_exec = __webpack_require__("ac1f");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.replace.js
+var es_string_replace = __webpack_require__("5319");
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.for-each.js
 var web_dom_collections_for_each = __webpack_require__("159b");
 
@@ -1284,6 +1290,10 @@ function _objectWithoutProperties(source, excluded) {
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
+// EXTERNAL MODULE: ./node_modules/axios/index.js
+var axios = __webpack_require__("bc3a");
+var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
+
 // EXTERNAL MODULE: ./node_modules/moment/moment.js
 var moment = __webpack_require__("c1df");
 var moment_default = /*#__PURE__*/__webpack_require__.n(moment);
@@ -1315,9 +1325,35 @@ var builder = __webpack_require__("af98");
 
 
 
+
+
+
 var flow_getters = {
+  //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the firstFlowId doesn't correspond to a flow
   activeFlow: function activeFlow(state) {
-    return state.flows.length && Object(dist["getActiveFlowFrom"])(state);
+    if (state.flows.length) {
+      try {
+        return Object(dist["getActiveFlowFrom"])(state);
+      } catch (err) {
+        return 0;
+      }
+    }
+  },
+  //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
+  activeFlowContainer: function activeFlowContainer(state) {
+    return {
+      created: state.created,
+      specification_version: "TODO",
+      uuid: "TODO",
+      name: "TODO",
+      description: "TODO",
+      platform_metadata: {},
+      flows: state.flows,
+      resources: state.resources
+    };
+  },
+  flowsList: function flowsList(state) {
+    return state.flows;
   },
   hasTextMode: function hasTextMode(state, getters) {
     return [dist["SupportedMode"].USSD, dist["SupportedMode"].SMS].some(function (mode) {
@@ -1329,9 +1365,30 @@ var flow_getters = {
   }
 };
 var flow_mutations = {
-  flow_addBlock: function flow_addBlock(state, _ref) {
-    var flowId = _ref.flowId,
-        block = _ref.block;
+  //TODO - consider if this is correct? This only gets what the current flow needs and removes from the store any other flows
+  //That means the flow list page (which we will build the production version of later) will get cleared of all flows if we continue with the current model - see the temporary page /src/views/Home.vue - unless we fetch the list again
+  //That doesn't make sense if we run the builder standalone - without a fetch of the flows list
+  flow_updateFlowContainer: function flow_updateFlowContainer(state, flowContainer) {
+    var persistedState = flowContainer;
+    state.created = persistedState.created;
+    state.flows = persistedState.flows;
+    state.resources = persistedState.resources;
+
+    if (state.flows[0]) {
+      state.firstFlowId = state.flows[0].uuid;
+    }
+  },
+  //used to track whether we should put or post when persisting
+  flow_updateCreatedState: function flow_updateCreatedState(state, createdState) {
+    state.created = createdState;
+  },
+  flow_setActiveFlowId: function flow_setActiveFlowId(state, _ref) {
+    var flowId = _ref.flowId;
+    state.firstFlowId = flowId;
+  },
+  flow_addBlock: function flow_addBlock(state, _ref2) {
+    var flowId = _ref2.flowId,
+        block = _ref2.block;
 
     if (block == null) {
       throw new dist["ValidationException"]('Unable to add null block to flow');
@@ -1344,9 +1401,9 @@ var flow_mutations = {
       flow.firstBlockId = block.uuid;
     }
   },
-  flow_removeBlock: function flow_removeBlock(state, _ref2) {
-    var flowId = _ref2.flowId,
-        blockId = _ref2.blockId;
+  flow_removeBlock: function flow_removeBlock(state, _ref3) {
+    var flowId = _ref3.flowId,
+        blockId = _ref3.blockId;
     var flow = Object(dist["findFlowWith"])(flowId || state.firstFlowId || '', state);
     var block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
 
@@ -1371,8 +1428,8 @@ var flow_mutations = {
       flow.exitBlockId = undefined;
     }
 
-    Object(lodash["forEach"])(blocks, function (_ref3) {
-      var exits = _ref3.exits;
+    Object(lodash["forEach"])(blocks, function (_ref4) {
+      var exits = _ref4.exits;
       var exitsTowardUs = exits.filter(function (e) {
         return e.destinationBlock === blockId;
       });
@@ -1383,80 +1440,80 @@ var flow_mutations = {
 
     this.state.builder.activeBlockId = null;
   },
-  flow_setExitBlockId: function flow_setExitBlockId(state, _ref4) {
-    var flowId = _ref4.flowId,
-        blockId = _ref4.blockId;
-    var flow = Object(dist["findFlowWith"])(flowId, state);
-    var block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
-
-    flow.exitBlockId = block.uuid;
-  },
-  flow_setFirstBlockId: function flow_setFirstBlockId(state, _ref5) {
+  flow_setExitBlockId: function flow_setExitBlockId(state, _ref5) {
     var flowId = _ref5.flowId,
         blockId = _ref5.blockId;
     var flow = Object(dist["findFlowWith"])(flowId, state);
     var block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
 
+    flow.exitBlockId = block.uuid;
+  },
+  flow_setFirstBlockId: function flow_setFirstBlockId(state, _ref6) {
+    var flowId = _ref6.flowId,
+        blockId = _ref6.blockId;
+    var flow = Object(dist["findFlowWith"])(flowId, state);
+    var block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
+
     external_commonjs_vue_commonjs2_vue_root_Vue_default.a.set(flow, 'firstBlockId', block.uuid);
   },
-  flow_setName: function flow_setName(state, _ref6) {
-    var flowId = _ref6.flowId,
-        value = _ref6.value;
-    Object(dist["findFlowWith"])(flowId, state).name = value;
-  },
-  flow_setLabel: function flow_setLabel(state, _ref7) {
+  flow_setNameFromLabel: function flow_setNameFromLabel(state, _ref7) {
     var flowId = _ref7.flowId,
         value = _ref7.value;
-    Object(dist["findFlowWith"])(flowId, state).label = value;
+    Object(dist["findFlowWith"])(flowId, state).name = value.replace(/\W+/g, '');
   },
-  flow_setInteractionTimeout: function flow_setInteractionTimeout(state, _ref8) {
+  flow_setLabel: function flow_setLabel(state, _ref8) {
     var flowId = _ref8.flowId,
         value = _ref8.value;
-    Object(dist["findFlowWith"])(flowId, state).interactionTimeout = value;
+    Object(dist["findFlowWith"])(flowId, state).label = value;
   },
-  flow_setSupportedMode: function flow_setSupportedMode(state, _ref9) {
+  flow_setInteractionTimeout: function flow_setInteractionTimeout(state, _ref9) {
     var flowId = _ref9.flowId,
         value = _ref9.value;
+    Object(dist["findFlowWith"])(flowId, state).interactionTimeout = value;
+  },
+  flow_setSupportedMode: function flow_setSupportedMode(state, _ref10) {
+    var flowId = _ref10.flowId,
+        value = _ref10.value;
     var flow = Object(dist["findFlowWith"])(flowId, state);
     flow.supportedModes = Array.isArray(value) ? value : [value];
   },
-  flow_setLanguages: function flow_setLanguages(state, _ref10) {
-    var flowId = _ref10.flowId,
-        value = _ref10.value;
+  flow_setLanguages: function flow_setLanguages(state, _ref11) {
+    var flowId = _ref11.flowId,
+        value = _ref11.value;
     var flow = Object(dist["findFlowWith"])(flowId, state);
     flow.languages = Array.isArray(value) ? value : [value];
   }
 };
 var flow_actions = {
-  // todo: this `flow_` prefix doesn't follow suit
-  //       because it's actually a method on the root state // IContext-ish type
-  //       (same as mutation: `flow_activateBlock` and `flow_add`
-  flow_addBlankFlow: function flow_addBlankFlow(_ref11) {
+  flow_persist: function flow_persist(_ref12, _ref13) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var dispatch, commit, state, flow;
+      var state, getters, commit, persistRoute, flowContainer, restVerb, oldCreatedState;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              dispatch = _ref11.dispatch, commit = _ref11.commit, state = _ref11.state;
-              _context.next = 3;
-              return dispatch('flow_createWith', {
-                props: {
-                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate()
+              state = _ref12.state, getters = _ref12.getters, commit = _ref12.commit;
+              persistRoute = _ref13.persistRoute, flowContainer = _ref13.flowContainer;
+              restVerb = flowContainer.created ? 'put' : 'post';
+              oldCreatedState = flowContainer.created;
+              return _context.abrupt("return", axios_default.a[restVerb](persistRoute, Object(lodash["omit"])(flowContainer, ['created'])).then(function (_ref14) {
+                var data = _ref14.data;
+                commit('flow_updateFlowContainer', data);
+                commit('flow_updateCreatedState', true);
+                return getters.activeFlowContainer;
+              }).catch(function (error) {
+                commit('flow_updateCreatedState', oldCreatedState);
+
+                if (!persistRoute) {
+                  console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store");
+                  commit('flow_updateFlowContainer', flowContainer);
+                  return getters.activeFlowContainer;
                 }
-              });
 
-            case 3:
-              flow = _context.sent;
-              _context.next = 6;
-              return dispatch('flow_add', {
-                flow: flow
-              });
+                return null;
+              }));
 
-            case 6:
-              return _context.abrupt("return", _context.sent);
-
-            case 7:
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -1464,24 +1521,32 @@ var flow_actions = {
       }, _callee);
     }))();
   },
-  flow_add: function flow_add(_ref12, _ref13) {
+  //TODO - In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
+  //see comment on flow_updateFlowContainer
+  flow_fetch: function flow_fetch(_ref15, _ref16) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var state, flow, length;
+      var state, getters, commit, fetchRoute;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              state = _ref12.state;
-              flow = _ref13.flow;
-              length = state.flows.push(flow); // mutating here, because we need to define a root-level scope for this type of action
+              state = _ref15.state, getters = _ref15.getters, commit = _ref15.commit;
+              fetchRoute = _ref16.fetchRoute;
+              return _context2.abrupt("return", axios_default.a.get(fetchRoute).then(function (_ref17) {
+                var data = _ref17.data;
+                commit('flow_updateFlowContainer', data);
+                commit('flow_updateCreatedState', true);
+                return getters.activeFlow;
+              }).catch(function (error) {
+                if (!fetchRoute) {
+                  console.info("Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store");
+                  return getters.activeFlow;
+                }
 
-              if (length === 1) {
-                state.firstFlowId = flow.uuid;
-              }
+                return null;
+              }));
 
-              return _context2.abrupt("return", flow);
-
-            case 5:
+            case 3:
             case "end":
               return _context2.stop();
           }
@@ -1489,16 +1554,77 @@ var flow_actions = {
       }, _callee2);
     }))();
   },
-  flow_addBlankBlockByType: function flow_addBlankBlockByType(_ref14, _ref15) {
+  // todo: this `flow_` prefix doesn't follow suit
+  //       because it's actually a method on the root state // IContext-ish type
+  //       (same as mutation: `flow_activateBlock` and `flow_add`
+  flow_addBlankFlow: function flow_addBlankFlow(_ref18) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-      var commit, dispatch, state, type, props, block;
+      var dispatch, commit, state, flow;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref14.commit, dispatch = _ref14.dispatch, state = _ref14.state;
-              type = _ref15.type, props = _objectWithoutProperties(_ref15, ["type"]);
-              _context3.next = 4;
+              dispatch = _ref18.dispatch, commit = _ref18.commit, state = _ref18.state;
+              _context3.next = 3;
+              return dispatch('flow_createWith', {
+                props: {
+                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate()
+                }
+              });
+
+            case 3:
+              flow = _context3.sent;
+              _context3.next = 6;
+              return dispatch('flow_add', {
+                flow: flow
+              });
+
+            case 6:
+              return _context3.abrupt("return", _context3.sent);
+
+            case 7:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
+  },
+  flow_add: function flow_add(_ref19, _ref20) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+      var state, flow, length;
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              state = _ref19.state;
+              flow = _ref20.flow;
+              length = state.flows.push(flow); // mutating here, because we need to define a root-level scope for this type of action
+              //TODO - understand why this was here? Surely we can have an active flow that isn't the first and only one?
+              //if (length === 1) {
+
+              state.firstFlowId = flow.uuid; //}
+
+              return _context4.abrupt("return", flow);
+
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }))();
+  },
+  flow_addBlankBlockByType: function flow_addBlankBlockByType(_ref21, _ref22) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+      var commit, dispatch, state, type, props, block;
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              commit = _ref21.commit, dispatch = _ref21.dispatch, state = _ref21.state;
+              type = _ref22.type, props = _objectWithoutProperties(_ref22, ["type"]);
+              _context5.next = 4;
               return dispatch("flow/".concat(type, "/createWith"), {
                 props: Object(objectSpread2["a" /* default */])({
                   uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate()
@@ -1508,7 +1634,7 @@ var flow_actions = {
               });
 
             case 4:
-              block = _context3.sent;
+              block = _context5.sent;
               Object(lodash["defaults"])(block, {
                 label: undefined,
                 semanticLabel: undefined
@@ -1516,25 +1642,25 @@ var flow_actions = {
               commit('flow_addBlock', {
                 block: block
               });
-              return _context3.abrupt("return", block);
+              return _context5.abrupt("return", block);
 
             case 8:
             case "end":
-              return _context3.stop();
+              return _context5.stop();
           }
         }
-      }, _callee3);
+      }, _callee5);
     }))();
   },
-  flow_addBlankResource: function flow_addBlankResource(_ref16) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+  flow_addBlankResource: function flow_addBlankResource(_ref23) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
       var dispatch, commit, resource;
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      return regeneratorRuntime.wrap(function _callee6$(_context6) {
         while (1) {
-          switch (_context4.prev = _context4.next) {
+          switch (_context6.prev = _context6.next) {
             case 0:
-              dispatch = _ref16.dispatch, commit = _ref16.commit;
-              _context4.next = 3;
+              dispatch = _ref23.dispatch, commit = _ref23.commit;
+              _context6.next = 3;
               return dispatch('resource_createWith', {
                 props: {
                   uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate()
@@ -1542,28 +1668,28 @@ var flow_actions = {
               });
 
             case 3:
-              resource = _context4.sent;
+              resource = _context6.sent;
               commit('resource_add', {
                 resource: resource
               });
-              return _context4.abrupt("return", resource);
+              return _context6.abrupt("return", resource);
 
             case 6:
             case "end":
-              return _context4.stop();
+              return _context6.stop();
           }
         }
-      }, _callee4);
+      }, _callee6);
     }))();
   },
-  flow_addBlankResourceForEnabledModesAndLangs: function flow_addBlankResourceForEnabledModesAndLangs(_ref17) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+  flow_addBlankResourceForEnabledModesAndLangs: function flow_addBlankResourceForEnabledModesAndLangs(_ref24) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
       var getters, dispatch, commit, values, blankResource;
-      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      return regeneratorRuntime.wrap(function _callee7$(_context7) {
         while (1) {
-          switch (_context5.prev = _context5.next) {
+          switch (_context7.prev = _context7.next) {
             case 0:
-              getters = _ref17.getters, dispatch = _ref17.dispatch, commit = _ref17.commit;
+              getters = _ref24.getters, dispatch = _ref24.dispatch, commit = _ref24.commit;
               //TODO - figure out of there should only be one value here at first? How would the resource editor change this?
               //TODO - is this right for setup of languages?
               //TODO - How will we add more blank values as supported languages are changed in the flow? We should probably also do this for modes rather than doing all possible modes here.
@@ -1579,7 +1705,7 @@ var flow_actions = {
                 });
                 return memo;
               }, []);
-              _context5.next = 4;
+              _context7.next = 4;
               return dispatch('resource_createWith', {
                 props: {
                   uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate(),
@@ -1588,30 +1714,30 @@ var flow_actions = {
               });
 
             case 4:
-              blankResource = _context5.sent;
+              blankResource = _context7.sent;
               commit('resource_add', {
                 resource: blankResource
               });
-              return _context5.abrupt("return", blankResource);
+              return _context7.abrupt("return", blankResource);
 
             case 7:
             case "end":
-              return _context5.stop();
+              return _context7.stop();
           }
         }
-      }, _callee5);
+      }, _callee7);
     }))();
   },
-  flow_createWith: function flow_createWith(_ref18, _ref19) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+  flow_createWith: function flow_createWith(_ref25, _ref26) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
       var dispatch, commit, state, props;
-      return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      return regeneratorRuntime.wrap(function _callee8$(_context8) {
         while (1) {
-          switch (_context6.prev = _context6.next) {
+          switch (_context8.prev = _context8.next) {
             case 0:
-              dispatch = _ref18.dispatch, commit = _ref18.commit, state = _ref18.state;
-              props = _ref19.props;
-              return _context6.abrupt("return", Object(objectSpread2["a" /* default */])({}, Object(lodash["defaults"])(props, {
+              dispatch = _ref25.dispatch, commit = _ref25.commit, state = _ref25.state;
+              props = _ref26.props;
+              return _context8.abrupt("return", Object(objectSpread2["a" /* default */])({}, Object(lodash["defaults"])(props, {
                 orgId: '',
                 name: '',
                 label: '',
@@ -1626,21 +1752,21 @@ var flow_actions = {
 
             case 3:
             case "end":
-              return _context6.stop();
+              return _context8.stop();
           }
         }
-      }, _callee6);
+      }, _callee8);
     }))();
   },
-  flow_duplicateBlock: function flow_duplicateBlock(_ref20, _ref21) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
+  flow_duplicateBlock: function flow_duplicateBlock(_ref27, _ref28) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
       var dispatch, commit, state, flowId, blockId, flow, block, duplicatedBlock;
-      return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      return regeneratorRuntime.wrap(function _callee9$(_context9) {
         while (1) {
-          switch (_context7.prev = _context7.next) {
+          switch (_context9.prev = _context9.next) {
             case 0:
-              dispatch = _ref20.dispatch, commit = _ref20.commit, state = _ref20.state;
-              flowId = _ref21.flowId, blockId = _ref21.blockId;
+              dispatch = _ref27.dispatch, commit = _ref27.commit, state = _ref27.state;
+              flowId = _ref28.flowId, blockId = _ref28.blockId;
               flow = Object(dist["findFlowWith"])(flowId || state.firstFlowId || '', state);
               block = Object(dist["findBlockWith"])(blockId, flow); // @throws ValidationException when block absent
               // Deep clone
@@ -1674,14 +1800,14 @@ var flow_actions = {
               }, {
                 root: true
               });
-              return _context7.abrupt("return", duplicatedBlock);
+              return _context9.abrupt("return", duplicatedBlock);
 
             case 12:
             case "end":
-              return _context7.stop();
+              return _context9.stop();
           }
         }
-      }, _callee7);
+      }, _callee9);
     }))();
   }
 };
@@ -1693,6 +1819,7 @@ var DEFAULT_MODES = [dist["SupportedMode"].SMS, dist["SupportedMode"].USSD, dist
 
 var stateFactory = function stateFactory() {
   return {
+    created: false,
     flows: [],
     resources: [],
     firstFlowId: null,
@@ -19023,6 +19150,17 @@ module.exports = function (options, source) {
 
 /***/ }),
 
+/***/ "240b":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BuilderCanvas_vue_vue_type_style_index_0_id_605b71ca_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("284c");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BuilderCanvas_vue_vue_type_style_index_0_id_605b71ca_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BuilderCanvas_vue_vue_type_style_index_0_id_605b71ca_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BuilderCanvas_vue_vue_type_style_index_0_id_605b71ca_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
 /***/ "241c":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20147,6 +20285,21 @@ module.exports = baseHasIn;
 
 })));
 
+
+/***/ }),
+
+/***/ "284c":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("373c");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__("499e").default
+var update = add("5c4036b3", content, true, {"sourceMap":false,"shadowMode":false});
 
 /***/ }),
 
@@ -22423,12 +22576,12 @@ module.exports = function createError(message, config, code, request, response) 
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/FlowEditor.vue?vue&type=template&id=427f7bb2&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-flow'))+" ")]),_c('flow-name-editor',{attrs:{"flow":_vm.flow}}),_c('flow-label-editor',{attrs:{"flow":_vm.flow}}),_c('flow-interaction-timeout-editor',{attrs:{"flow":_vm.flow}}),_c('flow-languages-editor',{attrs:{"flow":_vm.flow},on:{"commitFlowLanguagesChange":_vm.updateFlowLanguages}}),_c('flow-modes-editor',{attrs:{"flow":_vm.flow},on:{"commitFlowModesChange":_vm.updateFlowModes}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/FlowEditor.vue?vue&type=template&id=528ead00&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")(_vm.flowHeader))+" ")]),_c('div',{staticClass:"row"},[_c('div',{class:{'col-12': _vm.sidebar, 'col-6': !_vm.sidebar}},[_c('flow-label-editor',{attrs:{"flow":_vm.flow}}),_c('flow-interaction-timeout-editor',{attrs:{"flow":_vm.flow}})],1),_c('div',{class:{'col-12': _vm.sidebar, 'col-6': !_vm.sidebar}},[_c('flow-languages-editor',{attrs:{"flow":_vm.flow},on:{"commitFlowLanguagesChange":_vm.updateFlowLanguages}}),_c('flow-modes-editor',{attrs:{"flow":_vm.flow},on:{"commitFlowModesChange":_vm.updateFlowModes}})],1)])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/FlowEditor.vue?vue&type=template&id=427f7bb2&
+// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/FlowEditor.vue?vue&type=template&id=528ead00&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("d4ec");
@@ -22452,15 +22605,12 @@ var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpac
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/vue-property-decorator.js
 var vue_property_decorator = __webpack_require__("60a3");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/NameEditor.vue?vue&type=template&id=a9aa38fa&
-var NameEditorvue_type_template_id_a9aa38fa_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-label"},[_c('text-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.flow-name'),"placeholder":_vm._f("trans")('flow-builder.enter-flow-name')},model:{value:(_vm.name),callback:function ($$v) {_vm.name=$$v},expression:"name"}})],1)}
-var NameEditorvue_type_template_id_a9aa38fa_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/LabelEditor.vue?vue&type=template&id=331c4eab&
+var LabelEditorvue_type_template_id_331c4eab_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-name"},[_c('text-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.flow-label'),"placeholder":_vm._f("trans")('flow-builder.enter-flow-label')},model:{value:(_vm.label),callback:function ($$v) {_vm.label=$$v},expression:"label"}})],1)}
+var LabelEditorvue_type_template_id_331c4eab_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/NameEditor.vue?vue&type=template&id=a9aa38fa&
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
-var es_function_name = __webpack_require__("b0c0");
+// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/LabelEditor.vue?vue&type=template&id=331c4eab&
 
 // EXTERNAL MODULE: ./src/components/common/TextEditor.vue + 4 modules
 var TextEditor = __webpack_require__("d883");
@@ -22470,94 +22620,6 @@ var lib = __webpack_require__("4bb5");
 
 // EXTERNAL MODULE: ./src/lib/filters/lang.js
 var lang = __webpack_require__("3a37");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/NameEditor.vue?vue&type=script&lang=ts&
-
-
-
-
-
-
-
-
-
-
-
-var flowVuexNamespace = Object(lib["c" /* namespace */])('flow');
-
-var NameEditorvue_type_script_lang_ts_FlowNameEditor = /*#__PURE__*/function (_Vue) {
-  Object(inherits["a" /* default */])(FlowNameEditor, _Vue);
-
-  var _super = Object(createSuper["a" /* default */])(FlowNameEditor);
-
-  function FlowNameEditor() {
-    Object(classCallCheck["a" /* default */])(this, FlowNameEditor);
-
-    return _super.apply(this, arguments);
-  }
-
-  Object(createClass["a" /* default */])(FlowNameEditor, [{
-    key: "name",
-    get: function get() {
-      return this.flow.name || "";
-    },
-    set: function set(value) {
-      this.flow_setName({
-        flowId: this.flow.uuid,
-        value: value
-      });
-    }
-  }]);
-
-  return FlowNameEditor;
-}(external_commonjs_vue_commonjs2_vue_root_Vue_default.a);
-
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])({
-  default: true
-})], NameEditorvue_type_script_lang_ts_FlowNameEditor.prototype, "isEditable", void 0);
-
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], NameEditorvue_type_script_lang_ts_FlowNameEditor.prototype, "flow", void 0);
-
-Object(tslib_es6["__decorate"])([flowVuexNamespace.Mutation], NameEditorvue_type_script_lang_ts_FlowNameEditor.prototype, "flow_setName", void 0);
-
-NameEditorvue_type_script_lang_ts_FlowNameEditor = Object(tslib_es6["__decorate"])([Object(vue_property_decorator["a" /* Component */])({
-  components: {
-    TextEditor: TextEditor["a" /* default */]
-  },
-  mixins: [lang["a" /* default */]]
-})], NameEditorvue_type_script_lang_ts_FlowNameEditor);
-/* harmony default export */ var NameEditorvue_type_script_lang_ts_ = (NameEditorvue_type_script_lang_ts_FlowNameEditor);
-// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/NameEditor.vue?vue&type=script&lang=ts&
- /* harmony default export */ var flow_editors_NameEditorvue_type_script_lang_ts_ = (NameEditorvue_type_script_lang_ts_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__("2877");
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/NameEditor.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  flow_editors_NameEditorvue_type_script_lang_ts_,
-  NameEditorvue_type_template_id_a9aa38fa_render,
-  NameEditorvue_type_template_id_a9aa38fa_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var NameEditor = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/LabelEditor.vue?vue&type=template&id=63d28d50&
-var LabelEditorvue_type_template_id_63d28d50_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-name"},[_c('text-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.flow-label'),"placeholder":_vm._f("trans")('flow-builder.enter-flow-label')},model:{value:(_vm.label),callback:function ($$v) {_vm.label=$$v},expression:"label"}})],1)}
-var LabelEditorvue_type_template_id_63d28d50_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/LabelEditor.vue?vue&type=template&id=63d28d50&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/LabelEditor.vue?vue&type=script&lang=ts&
 
@@ -22570,7 +22632,7 @@ var LabelEditorvue_type_template_id_63d28d50_staticRenderFns = []
 
 
 
-var LabelEditorvue_type_script_lang_ts_flowVuexNamespace = Object(lib["c" /* namespace */])('flow');
+var flowVuexNamespace = Object(lib["c" /* namespace */])('flow');
 
 var LabelEditorvue_type_script_lang_ts_FlowLabelEditor = /*#__PURE__*/function (_Vue) {
   Object(inherits["a" /* default */])(FlowLabelEditor, _Vue);
@@ -22592,6 +22654,11 @@ var LabelEditorvue_type_script_lang_ts_FlowLabelEditor = /*#__PURE__*/function (
       this.flow_setLabel({
         flowId: this.flow.uuid,
         value: value
+      }); //Also set the name
+
+      this.flow_setNameFromLabel({
+        flowId: this.flow.uuid,
+        value: value
       });
     }
   }]);
@@ -22605,7 +22672,9 @@ Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])(
 
 Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], LabelEditorvue_type_script_lang_ts_FlowLabelEditor.prototype, "flow", void 0);
 
-Object(tslib_es6["__decorate"])([LabelEditorvue_type_script_lang_ts_flowVuexNamespace.Mutation], LabelEditorvue_type_script_lang_ts_FlowLabelEditor.prototype, "flow_setLabel", void 0);
+Object(tslib_es6["__decorate"])([flowVuexNamespace.Mutation], LabelEditorvue_type_script_lang_ts_FlowLabelEditor.prototype, "flow_setLabel", void 0);
+
+Object(tslib_es6["__decorate"])([flowVuexNamespace.Mutation], LabelEditorvue_type_script_lang_ts_FlowLabelEditor.prototype, "flow_setNameFromLabel", void 0);
 
 LabelEditorvue_type_script_lang_ts_FlowLabelEditor = Object(tslib_es6["__decorate"])([Object(vue_property_decorator["a" /* Component */])({
   components: {
@@ -22616,6 +22685,9 @@ LabelEditorvue_type_script_lang_ts_FlowLabelEditor = Object(tslib_es6["__decorat
 /* harmony default export */ var LabelEditorvue_type_script_lang_ts_ = (LabelEditorvue_type_script_lang_ts_FlowLabelEditor);
 // CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/LabelEditor.vue?vue&type=script&lang=ts&
  /* harmony default export */ var flow_editors_LabelEditorvue_type_script_lang_ts_ = (LabelEditorvue_type_script_lang_ts_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2877");
+
 // CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/LabelEditor.vue
 
 
@@ -22624,10 +22696,10 @@ LabelEditorvue_type_script_lang_ts_FlowLabelEditor = Object(tslib_es6["__decorat
 
 /* normalize component */
 
-var LabelEditor_component = Object(componentNormalizer["a" /* default */])(
+var component = Object(componentNormalizer["a" /* default */])(
   flow_editors_LabelEditorvue_type_script_lang_ts_,
-  LabelEditorvue_type_template_id_63d28d50_render,
-  LabelEditorvue_type_template_id_63d28d50_staticRenderFns,
+  LabelEditorvue_type_template_id_331c4eab_render,
+  LabelEditorvue_type_template_id_331c4eab_staticRenderFns,
   false,
   null,
   null,
@@ -22635,8 +22707,8 @@ var LabelEditor_component = Object(componentNormalizer["a" /* default */])(
   
 )
 
-/* harmony default export */ var LabelEditor = (LabelEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue?vue&type=template&id=377db45f&
+/* harmony default export */ var LabelEditor = (component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue?vue&type=template&id=377db45f&
 var InteractionTimeoutEditorvue_type_template_id_377db45f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-interaction-timeout"},[_c('numeric-editor',{attrs:{"is-editable":_vm.isEditable,"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.Interaction-timeout'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.interactionTimeout),callback:function ($$v) {_vm.interactionTimeout=_vm._n($$v)},expression:"interactionTimeout"}})],1)}
 var InteractionTimeoutEditorvue_type_template_id_377db45f_staticRenderFns = []
 
@@ -22724,7 +22796,7 @@ var InteractionTimeoutEditor_component = Object(componentNormalizer["a" /* defau
 )
 
 /* harmony default export */ var flow_editors_InteractionTimeoutEditor = (InteractionTimeoutEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/LanguagesEditor.vue?vue&type=template&id=17ebebe5&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/LanguagesEditor.vue?vue&type=template&id=17ebebe5&
 var LanguagesEditorvue_type_template_id_17ebebe5_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-languages"},[_c('label',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.languages')))]),_vm._l((_vm.languages),function(language){return _c('div',{key:language.id,staticClass:"checkbox"},[_c('label',{staticClass:"font-weight-normal"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.flowSelectedLanguages),expression:"flowSelectedLanguages"}],staticClass:"flow-language-toggle-checkbox",attrs:{"type":"checkbox"},domProps:{"value":language,"checked":Array.isArray(_vm.flowSelectedLanguages)?_vm._i(_vm.flowSelectedLanguages,language)>-1:(_vm.flowSelectedLanguages)},on:{"change":function($event){var $$a=_vm.flowSelectedLanguages,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=language,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.flowSelectedLanguages=$$a.concat([$$v]))}else{$$i>-1&&(_vm.flowSelectedLanguages=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.flowSelectedLanguages=$$c}}}}),_vm._v(" "+_vm._s(language.name)+" ")])])})],2)}
 var LanguagesEditorvue_type_template_id_17ebebe5_staticRenderFns = []
 
@@ -22806,7 +22878,7 @@ var LanguagesEditor_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var flow_editors_LanguagesEditor = (LanguagesEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/ModesEditor.vue?vue&type=template&id=1f5b64f7&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/ModesEditor.vue?vue&type=template&id=1f5b64f7&
 var ModesEditorvue_type_template_id_1f5b64f7_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group flow-modes"},[_c('label',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.modes')))]),_vm._l((_vm.availableModes),function(mode){return _c('div',{key:mode,staticClass:"checkbox"},[_c('label',{staticClass:"font-weight-normal"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.flowSelectedModes),expression:"flowSelectedModes"}],staticClass:"flow-mode-toggle-checkbox",attrs:{"type":"checkbox"},domProps:{"value":mode,"checked":Array.isArray(_vm.flowSelectedModes)?_vm._i(_vm.flowSelectedModes,mode)>-1:(_vm.flowSelectedModes)},on:{"change":function($event){var $$a=_vm.flowSelectedModes,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=mode,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.flowSelectedModes=$$a.concat([$$v]))}else{$$i>-1&&(_vm.flowSelectedModes=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.flowSelectedModes=$$c}}}}),_vm._v(" "+_vm._s(mode)+" ")])])})],2)}
 var ModesEditorvue_type_template_id_1f5b64f7_staticRenderFns = []
 
@@ -22909,7 +22981,6 @@ var ModesEditor_component = Object(componentNormalizer["a" /* default */])(
 
 
 
-
 var FlowEditorvue_type_script_lang_ts_flowVuexNamespace = Object(lib["c" /* namespace */])('flow');
 
 var FlowEditorvue_type_script_lang_ts_FlowEditor = /*#__PURE__*/function (_Vue) {
@@ -22946,13 +23017,20 @@ var FlowEditorvue_type_script_lang_ts_FlowEditor = /*#__PURE__*/function (_Vue) 
 
 Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], FlowEditorvue_type_script_lang_ts_FlowEditor.prototype, "flow", void 0);
 
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])({
+  default: 'flow-builder.edit-flow'
+})], FlowEditorvue_type_script_lang_ts_FlowEditor.prototype, "flowHeader", void 0);
+
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])({
+  default: true
+})], FlowEditorvue_type_script_lang_ts_FlowEditor.prototype, "sidebar", void 0);
+
 Object(tslib_es6["__decorate"])([FlowEditorvue_type_script_lang_ts_flowVuexNamespace.Mutation], FlowEditorvue_type_script_lang_ts_FlowEditor.prototype, "flow_setLanguages", void 0);
 
 Object(tslib_es6["__decorate"])([FlowEditorvue_type_script_lang_ts_flowVuexNamespace.Mutation], FlowEditorvue_type_script_lang_ts_FlowEditor.prototype, "flow_setSupportedMode", void 0);
 
 FlowEditorvue_type_script_lang_ts_FlowEditor = Object(tslib_es6["__decorate"])([Object(vue_property_decorator["a" /* Component */])({
   components: {
-    FlowNameEditor: NameEditor,
     FlowLabelEditor: LabelEditor,
     FlowInteractionTimeoutEditor: flow_editors_InteractionTimeoutEditor,
     FlowLanguagesEditor: flow_editors_LanguagesEditor,
@@ -40732,7 +40810,7 @@ exports.convertComplexFindOperationToMongoFormat = convertComplexFindOperationTo
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/NumericEditor.vue?vue&type=template&id=058cdf05&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/NumericEditor.vue?vue&type=template&id=058cdf05&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"number-editor"},[_c('label',[_vm._v(_vm._s(_vm.label))]),(_vm.isEditable)?_c('div',[_c('input',{staticClass:"form-control",attrs:{"type":"number","min":"0","placeholder":_vm.placeholder},domProps:{"value":_vm.value},on:{"keypress":_vm.filterNumeric,"keydown":function($event){return _vm.$emit('keydown', $event)},"input":function($event){return _vm.$emit('input', $event.target.value)}}})]):_c('p',[_vm._v(" "+_vm._s(_vm.value)+" ")]),_vm._t("default")],2)}
 var staticRenderFns = []
 
@@ -42923,6 +43001,20 @@ function baseGetTag(value) {
 }
 
 module.exports = baseGetTag;
+
+
+/***/ }),
+
+/***/ "373c":
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, ".noselect *[data-v-605b71ca]{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.builder-canvas[data-v-605b71ca]{width:9999px;height:9999px}", ""]);
+// Exports
+module.exports = exports;
 
 
 /***/ }),
@@ -55035,17 +55127,6 @@ module.exports = baseCreate;
 
 /***/ }),
 
-/***/ "756e":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BuilderCanvas_vue_vue_type_style_index_0_id_4cc35a95_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("7adf");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BuilderCanvas_vue_vue_type_style_index_0_id_4cc35a95_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BuilderCanvas_vue_vue_type_style_index_0_id_4cc35a95_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BuilderCanvas_vue_vue_type_style_index_0_id_4cc35a95_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
 /***/ "76dd":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -55146,34 +55227,37 @@ module.exports = [
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var core_js_modules_es_array_includes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("caad");
-/* harmony import */ var core_js_modules_es_array_includes__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_includes__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("d3b7");
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("e6cf");
-/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var core_js_modules_es_regexp_exec__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("ac1f");
-/* harmony import */ var core_js_modules_es_regexp_exec__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var core_js_modules_es_string_ends_with__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("8a79");
-/* harmony import */ var core_js_modules_es_string_ends_with__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_ends_with__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("2532");
-/* harmony import */ var core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("5319");
-/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("96cf");
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("1da1");
-/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("5530");
-/* harmony import */ var _lib_filters_lang__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("3a37");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("2ef0");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("8bbf");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__("2f62");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__("0613");
-/* harmony import */ var _components_interaction_designer_toolbar_TreeBuilderToolbar_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__("f857");
-/* harmony import */ var _components_interaction_designer_flow_editors_FlowEditor_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__("2d9e");
-/* harmony import */ var _components_interaction_designer_BuilderCanvas__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__("c42d");
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("99af");
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_array_includes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("caad");
+/* harmony import */ var core_js_modules_es_array_includes__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_includes__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("d3b7");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("e6cf");
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_es_regexp_exec__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("ac1f");
+/* harmony import */ var core_js_modules_es_regexp_exec__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_es_string_ends_with__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("8a79");
+/* harmony import */ var core_js_modules_es_string_ends_with__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_ends_with__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("2532");
+/* harmony import */ var core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_includes__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("5319");
+/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("96cf");
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("1da1");
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("5530");
+/* harmony import */ var _lib_filters_lang__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("3a37");
+/* harmony import */ var _lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("e5fd");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__("2ef0");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__("8bbf");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__("2f62");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__("0613");
+/* harmony import */ var _components_interaction_designer_toolbar_TreeBuilderToolbar_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__("f857");
+/* harmony import */ var _components_interaction_designer_flow_editors_FlowEditor_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__("2d9e");
+/* harmony import */ var _components_interaction_designer_BuilderCanvas__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__("c42d");
 
 
 
@@ -55184,6 +55268,7 @@ module.exports = [
 
 
 
+
 //
 //
 //
@@ -55229,6 +55314,7 @@ module.exports = [
 //
 //
 //
+
 
 
 
@@ -55267,16 +55353,16 @@ module.exports = [
       }
     }
   },
-  mixins: [_lib_filters_lang__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"]],
+  mixins: [_lib_filters_lang__WEBPACK_IMPORTED_MODULE_11__[/* default */ "a"], _lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_12__[/* default */ "a"]],
   components: {
     // ...BlockTypes,
     // Affix,
     // JsPlumbBlock,
     // TreeEditor,
     // TreeViewer,
-    TreeBuilderToolbar: _components_interaction_designer_toolbar_TreeBuilderToolbar_vue__WEBPACK_IMPORTED_MODULE_15__[/* default */ "a"],
-    BuilderCanvas: _components_interaction_designer_BuilderCanvas__WEBPACK_IMPORTED_MODULE_17__[/* BuilderCanvas */ "a"],
-    FlowEditor: _components_interaction_designer_flow_editors_FlowEditor_vue__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"] // TreeUpdateConflictModal,
+    TreeBuilderToolbar: _components_interaction_designer_toolbar_TreeBuilderToolbar_vue__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"],
+    BuilderCanvas: _components_interaction_designer_BuilderCanvas__WEBPACK_IMPORTED_MODULE_19__[/* BuilderCanvas */ "a"],
+    FlowEditor: _components_interaction_designer_flow_editors_FlowEditor_vue__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"] // TreeUpdateConflictModal,
 
   },
   data: function data() {
@@ -55285,7 +55371,12 @@ module.exports = [
       'CallBackWithCallCenterBlock', 'CollaborativeFilteringQuestionBlock', 'CollaborativeFilteringRatingBlock', 'CollaborativeFilteringRatioBranchBlock', 'CreateSubscriberBlock', 'CurrentTimeBranchBlock', 'DirectorySelectionBlock', 'EntitySelectionBlock', 'GenerateCodeBlock', 'GroupPropertyBlock', 'SubscriberPropertiesSnapshotBlock', 'SubscriberPropertyBlock', 'SummaryBlock', 'ValidateCodeBlock', 'WebhookBlock', 'WebhookContentBlock', 'RecordGroupMessageBlock', 'PlayGroupMessageBlock']
     };
   },
-  computed: Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])({}, Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapGetters */ "b"])(['selectedBlock', 'isEditable', 'hasChanges', 'hasIssues', 'isTreeSaving', 'isTreeValid', 'jsonValidationResults', 'validationResults'])), Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapState */ "d"])({
+  watch: {
+    mode: function mode(val) {
+      this.updateIsEditableFromParams(val); // `this.mode` comes from captured param in js-routes
+    }
+  },
+  computed: Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"])({}, Object(vuex__WEBPACK_IMPORTED_MODULE_15__[/* mapGetters */ "b"])(['isConfigured', 'selectedBlock', 'isEditable', 'hasChanges', 'hasIssues', 'isTreeSaving', 'isTreeValid', 'jsonValidationResults', 'validationResults'])), Object(vuex__WEBPACK_IMPORTED_MODULE_15__[/* mapState */ "d"])({
     // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
     designerWorkspaceHeight: function designerWorkspaceHeight(_ref) {
       var _ref$trees = _ref.trees,
@@ -55329,29 +55420,33 @@ module.exports = [
       var ui = _ref9.trees.ui;
       return ui.blockClasses;
     }
-  })), Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapGetters */ "b"])('flow', ['activeFlow'])), Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapGetters */ "b"])('builder', ['activeBlock'])), {}, {
+  })), Object(vuex__WEBPACK_IMPORTED_MODULE_15__[/* mapGetters */ "b"])('flow', ['activeFlow'])), Object(vuex__WEBPACK_IMPORTED_MODULE_15__[/* mapGetters */ "b"])('builder', ['activeBlock'])), {}, {
     jsKey: function jsKey() {
-      return lodash__WEBPACK_IMPORTED_MODULE_11___default.a.get(this.selectedBlock, 'jsKey');
+      return lodash__WEBPACK_IMPORTED_MODULE_13___default.a.get(this.selectedBlock, 'jsKey');
     },
     isPureVueBlock: function isPureVueBlock() {
       // pure vuejs block types handle readonly mode on their own
-      return _.includes(this.pureVuejsBlocks, lodash__WEBPACK_IMPORTED_MODULE_11___default.a.get(this.selectedBlock, 'type'));
+      return _.includes(this.pureVuejsBlocks, lodash__WEBPACK_IMPORTED_MODULE_13___default.a.get(this.selectedBlock, 'type'));
     },
     sidebarType: function sidebarType() {
-      var blockType = lodash__WEBPACK_IMPORTED_MODULE_11___default.a.get(this.selectedBlock, 'type'),
+      var blockType = lodash__WEBPACK_IMPORTED_MODULE_13___default.a.get(this.selectedBlock, 'type'),
           blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer');
       return this.isEditable ? blockType || 'TreeEditor' : blockViewerType || 'TreeViewer';
     }
   }),
   created: function created() {
     var $store = this.$store;
-    Object(lodash__WEBPACK_IMPORTED_MODULE_11__["forEach"])(_store__WEBPACK_IMPORTED_MODULE_14__[/* store */ "a"].modules, function (v, k) {
+    Object(lodash__WEBPACK_IMPORTED_MODULE_13__["forEach"])(_store__WEBPACK_IMPORTED_MODULE_16__[/* store */ "a"].modules, function (v, k) {
       return !$store.hasModule(k) && $store.registerModule(k, v);
     });
-    this.configure({
-      appConfig: this.appConfig,
-      builderConfig: this.builderConfig
-    });
+
+    if (!Object(lodash__WEBPACK_IMPORTED_MODULE_13__["isEmpty"])(this.appConfig) && !Object(lodash__WEBPACK_IMPORTED_MODULE_13__["isEmpty"])(this.builderConfig) || !this.isConfigured) {
+      this.configure({
+        appConfig: this.appConfig,
+        builderConfig: this.builderConfig
+      });
+    }
+
     global.builder = this; // initialize global reference for legacy + debugging
 
     this.registerBlockTypes();
@@ -55364,6 +55459,19 @@ module.exports = [
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   mounted: function mounted() {
+    this.flow_setActiveFlowId({
+      flowId: this.id
+    }); //if nothing was found for the flow Id
+
+    if (!this.activeFlow) {
+      this.flow_setActiveFlowId({
+        flowId: null
+      });
+      this.$router.replace("".concat(this.route('flows.fetchFlow', {
+        flowId: this.id
+      }), "?nextUrl=").concat(this.$route.path));
+    }
+
     this.hoistResourceViewerToPushState.bind(this, this.$route.hash);
     this.deselectBlocks();
     this.discoverTallestBlockForDesignerWorkspaceHeight({
@@ -55371,19 +55479,19 @@ module.exports = [
     });
     console.debug('Vuej tree interaction designer mounted!');
   },
-  methods: Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])({}, Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapMutations */ "c"])(['deselectBlocks', 'configure'])), Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapMutations */ "c"])('builder', ['activateBlock'])), Object(vuex__WEBPACK_IMPORTED_MODULE_13__[/* mapActions */ "a"])(['attemptSaveTree', 'discoverTallestBlockForDesignerWorkspaceHeight', 'initializeTreeModel'])), {}, {
+  methods: Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"])({}, Object(vuex__WEBPACK_IMPORTED_MODULE_15__[/* mapMutations */ "c"])(['deselectBlocks', 'configure'])), Object(vuex__WEBPACK_IMPORTED_MODULE_15__[/* mapMutations */ "c"])('builder', ['activateBlock'])), Object(vuex__WEBPACK_IMPORTED_MODULE_15__[/* mapMutations */ "c"])('flow', ['flow_setActiveFlowId'])), Object(vuex__WEBPACK_IMPORTED_MODULE_15__[/* mapActions */ "a"])(['attemptSaveTree', 'discoverTallestBlockForDesignerWorkspaceHeight', 'initializeTreeModel'])), {}, {
     registerBlockTypes: function registerBlockTypes() {
       var _this = this;
 
-      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
         var blockClasses;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 blockClasses = _this.blockClasses;
-                Object(lodash__WEBPACK_IMPORTED_MODULE_11__["forEach"])(blockClasses, /*#__PURE__*/function () {
-                  var _ref11 = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref10) {
+                Object(lodash__WEBPACK_IMPORTED_MODULE_13__["forEach"])(blockClasses, /*#__PURE__*/function () {
+                  var _ref11 = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref10) {
                     var type, normalizedType, typeWithoutSeparators, exported;
                     return regeneratorRuntime.wrap(function _callee$(_context) {
                       while (1) {
@@ -55397,8 +55505,8 @@ module.exports = [
 
                           case 5:
                             exported = _context.sent;
-                            Object(lodash__WEBPACK_IMPORTED_MODULE_11__["invoke"])(exported, 'install', _this);
-                            vue__WEBPACK_IMPORTED_MODULE_12___default.a.component("Flow".concat(typeWithoutSeparators), exported.default);
+                            Object(lodash__WEBPACK_IMPORTED_MODULE_13__["invoke"])(exported, 'install', _this);
+                            vue__WEBPACK_IMPORTED_MODULE_14___default.a.component("Flow".concat(typeWithoutSeparators), exported.default);
 
                           case 8:
                           case "end":
@@ -55454,7 +55562,7 @@ module.exports = [
         return false;
       }
 
-      return !isEditableLocked && mode === 'edit' || !mode && lodash__WEBPACK_IMPORTED_MODULE_11___default.a.endsWith(hash, '/edit');
+      return !isEditableLocked && mode === 'edit' || !mode && lodash__WEBPACK_IMPORTED_MODULE_13___default.a.endsWith(hash, '/edit');
     },
     hoistResourceViewerToPushState: function hoistResourceViewerToPushState(hash) {
       if (!_.endsWith(hash, '/resource-viewer')) {
@@ -55629,21 +55737,6 @@ module.exports = (
 
 /***/ }),
 
-/***/ "7adf":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("7b53");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var add = __webpack_require__("499e").default
-var update = add("125fcafb", content, true, {"sourceMap":false,"shadowMode":false});
-
-/***/ }),
-
 /***/ "7b0b":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -55654,20 +55747,6 @@ var requireObjectCoercible = __webpack_require__("1d80");
 module.exports = function (argument) {
   return Object(requireObjectCoercible(argument));
 };
-
-
-/***/ }),
-
-/***/ "7b53":
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
-exports = ___CSS_LOADER_API_IMPORT___(false);
-// Module
-exports.push([module.i, ".noselect *[data-v-4cc35a95]{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.builder-canvas[data-v-4cc35a95]{width:9999px;height:9999px}", ""]);
-// Exports
-module.exports = exports;
 
 
 /***/ }),
@@ -58324,13 +58403,6 @@ exports.skipRearg = {
 
 /***/ }),
 
-/***/ "8865":
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"flows\":[{\"uuid\":\"5b8c87d6-de90-4bc4-8668-4f040000006e\",\"name\":\"\",\"label\":\"\",\"lastModified\":\"2019-10-10 23:46:30.000000+00:00\",\"interactionTimeout\":172800,\"supportedModes\":[\"sms\",\"ivr\",\"ussd\"],\"languages\":[],\"platform_metadata\":{},\"blocks\":[],\"firstBlockId\":\"\"}],\"resources\":[]}");
-
-/***/ }),
-
 /***/ "8875":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -58807,6 +58879,7 @@ var ValidationError = /*#__PURE__*/function (_Error) {
     return {
       tree: null,
       ui: {
+        configured: false,
         audioFiles: null,
         callCenterQueues: null,
         previousTreeJson: null,
@@ -58831,139 +58904,145 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         treeUpdateConflict: null,
         enabledFeatures: [
           /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
-        ]
+        ],
+        saveCurrentlyInProgress: 0,
+        isEditable: true
       }
     };
   },
   getters: {
-    isFeatureCallCenterQueuesEnabled: function isFeatureCallCenterQueuesEnabled(_ref) {
+    isConfigured: function isConfigured(_ref) {
       var ui = _ref.ui;
+      return ui.isConfigured;
+    },
+    isFeatureCallCenterQueuesEnabled: function isFeatureCallCenterQueuesEnabled(_ref2) {
+      var ui = _ref2.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'callCenterQueues';
       });
     },
-    isFeatureCallToRecordEnabled: function isFeatureCallToRecordEnabled(_ref2) {
-      var ui = _ref2.ui;
+    isFeatureCallToRecordEnabled: function isFeatureCallToRecordEnabled(_ref3) {
+      var ui = _ref3.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'callToRecord';
       });
     },
-    isFeatureMultimediaUploadEnabled: function isFeatureMultimediaUploadEnabled(_ref3) {
-      var ui = _ref3.ui;
+    isFeatureMultimediaUploadEnabled: function isFeatureMultimediaUploadEnabled(_ref4) {
+      var ui = _ref4.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'multimediaUpload';
       });
     },
-    isFeatureTreesBatchLinkAudioEnabled: function isFeatureTreesBatchLinkAudioEnabled(_ref4) {
-      var ui = _ref4.ui;
+    isFeatureTreesBatchLinkAudioEnabled: function isFeatureTreesBatchLinkAudioEnabled(_ref5) {
+      var ui = _ref5.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treesBatchLinkAudio';
       });
     },
-    isFeatureAddSubscriberPropertyFieldEnabled: function isFeatureAddSubscriberPropertyFieldEnabled(_ref5) {
-      var ui = _ref5.ui;
+    isFeatureAddSubscriberPropertyFieldEnabled: function isFeatureAddSubscriberPropertyFieldEnabled(_ref6) {
+      var ui = _ref6.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'addSubscriberPropertyField';
       });
     },
-    isFeatureFloipPushEnabled: function isFeatureFloipPushEnabled(_ref6) {
-      var ui = _ref6.ui;
+    isFeatureFloipPushEnabled: function isFeatureFloipPushEnabled(_ref7) {
+      var ui = _ref7.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'floipPush';
       });
     },
-    isFeatureTreeSaveEnabled: function isFeatureTreeSaveEnabled(_ref7) {
-      var ui = _ref7.ui;
+    isFeatureTreeSaveEnabled: function isFeatureTreeSaveEnabled(_ref8) {
+      var ui = _ref8.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treeSave';
       });
     },
-    isFeatureTreeSendEnabled: function isFeatureTreeSendEnabled(_ref8) {
-      var ui = _ref8.ui;
+    isFeatureTreeSendEnabled: function isFeatureTreeSendEnabled(_ref9) {
+      var ui = _ref9.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treeSend';
       });
     },
-    isFeatureTreeDuplicateEnabled: function isFeatureTreeDuplicateEnabled(_ref9) {
-      var ui = _ref9.ui;
+    isFeatureTreeDuplicateEnabled: function isFeatureTreeDuplicateEnabled(_ref10) {
+      var ui = _ref10.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treeDuplicate';
       });
     },
-    isFeatureTreeViewVersionsEnabled: function isFeatureTreeViewVersionsEnabled(_ref10) {
-      var ui = _ref10.ui;
+    isFeatureTreeViewVersionsEnabled: function isFeatureTreeViewVersionsEnabled(_ref11) {
+      var ui = _ref11.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treeViewVersions';
       });
     },
-    isFeatureTreeDuplicateOfEnabled: function isFeatureTreeDuplicateOfEnabled(_ref11) {
-      var ui = _ref11.ui;
+    isFeatureTreeDuplicateOfEnabled: function isFeatureTreeDuplicateOfEnabled(_ref12) {
+      var ui = _ref12.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'treeDuplicateOf';
       });
     },
-    isResourceEditorEnabled: function isResourceEditorEnabled(_ref12) {
-      var ui = _ref12.ui;
+    isResourceEditorEnabled: function isResourceEditorEnabled(_ref13) {
+      var ui = _ref13.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'resourceEditor';
       });
     },
-    isFeatureUpdateInteractionTotalsEnabled: function isFeatureUpdateInteractionTotalsEnabled(_ref13) {
-      var ui = _ref13.ui;
+    isFeatureUpdateInteractionTotalsEnabled: function isFeatureUpdateInteractionTotalsEnabled(_ref14) {
+      var ui = _ref14.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'updateInteractionTotals';
       });
     },
-    isFeatureAudioUploadEnabled: function isFeatureAudioUploadEnabled(_ref14) {
-      var ui = _ref14.ui;
+    isFeatureAudioUploadEnabled: function isFeatureAudioUploadEnabled(_ref15) {
+      var ui = _ref15.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'audioUpload';
       });
     },
-    isFeatureViewResultsEnabled: function isFeatureViewResultsEnabled(_ref15) {
-      var ui = _ref15.ui;
+    isFeatureViewResultsEnabled: function isFeatureViewResultsEnabled(_ref16) {
+      var ui = _ref16.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(ui.enabledFeatures, function (feature) {
         return feature === 'viewResults';
       });
     },
-    selectedBlock: function selectedBlock(_ref16, getters, rootState) {
-      var tree = _ref16.tree,
-          ui = _ref16.ui;
+    selectedBlock: function selectedBlock(_ref17, getters, rootState) {
+      var tree = _ref17.tree,
+          ui = _ref17.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(Object(lodash__WEBPACK_IMPORTED_MODULE_24__["get"])(tree, 'blocks', []), {
         jsKey: ui.selectedBlock
       });
     },
-    subscriberPropertyFields: function subscriberPropertyFields(_ref17) {
-      var ui = _ref17.ui;
+    subscriberPropertyFields: function subscriberPropertyFields(_ref18) {
+      var ui = _ref18.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(ui, "subscriberPropertyFields");
     },
-    interactiveBlockClasses: function interactiveBlockClasses(_ref18, getters, rootState) {
-      var ui = _ref18.ui;
+    interactiveBlockClasses: function interactiveBlockClasses(_ref19, getters, rootState) {
+      var ui = _ref19.ui;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.pickBy(ui.blockClasses, function (value, key) {
         return value.is_interactive;
       });
     },
-    interactiveBlocksInTree: function interactiveBlocksInTree(_ref19, _ref20, rootState) {
-      var tree = _ref19.tree;
-      var interactiveBlockClasses = _ref20.interactiveBlockClasses;
+    interactiveBlocksInTree: function interactiveBlocksInTree(_ref20, _ref21, rootState) {
+      var tree = _ref20.tree;
+      var interactiveBlockClasses = _ref21.interactiveBlockClasses;
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.filter(tree.blocks, function (b) {
         return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.includes(Object.keys(interactiveBlockClasses), b.type);
       });
     },
-    isEditable: function isEditable(_ref21) {
-      var ui = _ref21.ui;
+    isEditable: function isEditable(_ref22) {
+      var ui = _ref22.ui;
       return !!ui.isEditable;
     },
     // todo: trip a debounced version of this (for larger trees)
     // todo: which is faster lodash deep isEqual or JSON.stringify() ?
-    hasChanges: function hasChanges(_ref22) {
-      var tree = _ref22.tree,
-          ui = _ref22.ui;
-      return ui.previousTreeJson !== JSON.stringify(tree);
-    },
-    hasIssues: function hasIssues(_ref23) {
+    hasChanges: function hasChanges(_ref23) {
       var tree = _ref23.tree,
           ui = _ref23.ui;
+      return ui.previousTreeJson !== JSON.stringify(tree);
+    },
+    hasIssues: function hasIssues(_ref24) {
+      var tree = _ref24.tree,
+          ui = _ref24.ui;
       var validationResults = ui.validationResults,
           validationResultsFromPageLoad = ui.originalValidationResults,
           hasSavedSinceLoad = ui.validationResults;
@@ -58972,12 +59051,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
     isTreeSaving: function isTreeSaving(state) {
       return state.ui.saveCurrentlyInProgress;
     },
-    hasClipboard: function hasClipboard(_ref24) {
-      var tree = _ref24.tree;
+    hasClipboard: function hasClipboard(_ref25) {
+      var tree = _ref25.tree;
       return tree.details.hasClipboard;
     },
-    isSelectedBlockSupportedForSummary: function isSelectedBlockSupportedForSummary(_ref25, getters) {
-      var ui = _ref25.ui;
+    isSelectedBlockSupportedForSummary: function isSelectedBlockSupportedForSummary(_ref26, getters) {
+      var ui = _ref26.ui;
 
       if (!getters.selectedBlock) {
         return false;
@@ -58985,8 +59064,8 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(ui.blockClasses[getters.selectedBlock.type], 'isSummarizable', false);
     },
-    canSelectedBlockSetSubscriberProperty: function canSelectedBlockSetSubscriberProperty(_ref26, getters) {
-      var ui = _ref26.ui;
+    canSelectedBlockSetSubscriberProperty: function canSelectedBlockSetSubscriberProperty(_ref27, getters) {
+      var ui = _ref27.ui;
 
       if (!getters.selectedBlock) {
         return false;
@@ -58994,8 +59073,8 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
       return lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(ui.blockClasses[getters.selectedBlock.type], 'canSetSubscriberProperty', false);
     },
-    languageSelectors: function languageSelectors(_ref27) {
-      var ui = _ref27.ui;
+    languageSelectors: function languageSelectors(_ref28) {
+      var ui = _ref28.ui;
       return ui.languageSelectors;
     },
     isBlockAvailableByBlockClass: function isBlockAvailableByBlockClass(state) {
@@ -59016,46 +59095,50 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       return state.ui.originalTreeJsonValidationResults;
     },
     // Duplicating \Voto\Core\Trees\Tree::getTitle
-    treeTitle: function treeTitle(_ref28) {
-      var tree = _ref28.tree;
+    treeTitle: function treeTitle(_ref29) {
+      var tree = _ref29.tree;
       return tree.title || 'Untitled Tree';
     },
-    languages: function languages(_ref29) {
-      var ui = _ref29.ui;
+    languages: function languages(_ref30) {
+      var ui = _ref30.ui;
       return ui.languages || [];
     },
-    availableAudio: function availableAudio(_ref30) {
-      var ui = _ref30.ui;
+    availableAudio: function availableAudio(_ref31) {
+      var ui = _ref31.ui;
       return ui.audioFiles || [];
     },
-    validationResults: function validationResults(_ref31) {
-      var ui = _ref31.ui;
+    validationResults: function validationResults(_ref32) {
+      var ui = _ref32.ui;
       return ui.validationResults;
     },
-    treeCreatedAt: function treeCreatedAt(_ref32) {
-      var tree = _ref32.tree;
+    treeCreatedAt: function treeCreatedAt(_ref33) {
+      var tree = _ref33.tree;
       return tree.createdAt.date;
     },
-    treeEditedAt: function treeEditedAt(_ref33) {
-      var tree = _ref33.tree;
+    treeEditedAt: function treeEditedAt(_ref34) {
+      var tree = _ref34.tree;
       return tree.editedAt.date;
     },
-    treeUpdatedAt: function treeUpdatedAt(_ref34) {
-      var tree = _ref34.tree;
+    treeUpdatedAt: function treeUpdatedAt(_ref35) {
+      var tree = _ref35.tree;
       return tree.updatedAt.date;
     }
   },
   mutations: {
-    configure: function configure(_ref35, _ref36) {
-      var ui = _ref35.ui;
-      var appConfig = _ref36.appConfig,
-          builderConfig = _ref36.builderConfig;
+    setTreeSaving: function setTreeSaving(state, isSaving) {
+      state.ui.saveCurrentlyInProgress = isSaving;
+    },
+    configure: function configure(_ref36, _ref37) {
+      var ui = _ref36.ui;
+      var appConfig = _ref37.appConfig,
+          builderConfig = _ref37.builderConfig;
 
       var _bootstrapLegacyGloba = Object(_bootstrap_legacy_global_dependencies__WEBPACK_IMPORTED_MODULE_31__[/* bootstrapLegacyGlobalDependencies */ "a"])(appConfig, builderConfig),
           app = _bootstrapLegacyGloba.app,
           audio = _bootstrapLegacyGloba.__AUDIO__,
-          uiOverrides = _bootstrapLegacyGloba.__TREES_UI__; // todo: audio recording feature is likely to be unavailable for standalone app - How do we want to isolate these?
+          uiOverrides = _bootstrapLegacyGloba.__TREES_UI__;
 
+      ui.configured = true; // todo: audio recording feature is likely to be unavailable for standalone app - How do we want to isolate these?
 
       Object(lodash__WEBPACK_IMPORTED_MODULE_24__["set"])(app, 'audioChoice.audioLibrary', audio.library);
       Object(lodash__WEBPACK_IMPORTED_MODULE_24__["set"])(app, 'audioChoice.recorderList', audio.recording.recorders);
@@ -59065,8 +59148,8 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         validationResults: uiOverrides.originalValidationResults
       }));
     },
-    setWorkingTree: function setWorkingTree(state, _ref37) {
-      var treeData = _ref37.tree;
+    setWorkingTree: function setWorkingTree(state, _ref38) {
+      var treeData = _ref38.tree;
       var tree = new app.Tree(treeData);
       /** @property app.tree
        *  @deprecated We'll only need this until we've eradicated references in legacy. */
@@ -59074,47 +59157,47 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       app.tree = tree;
       state.tree = tree.attributes;
     },
-    setDesignerWorkspaceHeight: function setDesignerWorkspaceHeight(_ref38, _ref39) {
-      var tree = _ref38.tree,
-          ui = _ref38.ui;
-      var height = _ref39.height;
+    setDesignerWorkspaceHeight: function setDesignerWorkspaceHeight(_ref39, _ref40) {
+      var tree = _ref39.tree,
+          ui = _ref39.ui;
+      var height = _ref40.height;
       ui.designerWorkspaceHeight = height;
     },
-    setSelectedBlock: function setSelectedBlock(_ref40, _ref41) {
-      var tree = _ref40.tree,
-          ui = _ref40.ui;
-      var jsKey = _ref41.jsKey;
+    setSelectedBlock: function setSelectedBlock(_ref41, _ref42) {
+      var tree = _ref41.tree,
+          ui = _ref41.ui;
+      var jsKey = _ref42.jsKey;
       ui.selectedBlock = jsKey || '';
     },
-    deselectBlocks: function deselectBlocks(_ref42) {
-      var tree = _ref42.tree,
-          ui = _ref42.ui;
-      ui.selectedBlock = '';
-    },
-    updateTreeDetailsWith: function updateTreeDetailsWith(_ref43, _ref44) {
+    deselectBlocks: function deselectBlocks(_ref43) {
       var tree = _ref43.tree,
           ui = _ref43.ui;
-      var key = _ref44.key,
-          value = _ref44.value;
+      ui.selectedBlock = '';
+    },
+    updateTreeDetailsWith: function updateTreeDetailsWith(_ref44, _ref45) {
+      var tree = _ref44.tree,
+          ui = _ref44.ui;
+      var key = _ref45.key,
+          value = _ref45.value;
       tree.details[key] = value;
     },
-    updateBlockCustomDataFor: function updateBlockCustomDataFor(_ref45, _ref46) {
-      var tree = _ref45.tree,
-          ui = _ref45.ui;
-      var jsKey = _ref46.jsKey,
-          key = _ref46.key,
-          value = _ref46.value;
+    updateBlockCustomDataFor: function updateBlockCustomDataFor(_ref46, _ref47) {
+      var tree = _ref46.tree,
+          ui = _ref46.ui;
+      var jsKey = _ref47.jsKey,
+          key = _ref47.key,
+          value = _ref47.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block.customData, key, value);
     },
-    updateBlockCustomDataWithNestedKeyFor: function updateBlockCustomDataWithNestedKeyFor(_ref47, _ref48) {
-      var tree = _ref47.tree,
-          ui = _ref47.ui;
-      var jsKey = _ref48.jsKey,
-          nestedKey = _ref48.nestedKey,
-          value = _ref48.value;
+    updateBlockCustomDataWithNestedKeyFor: function updateBlockCustomDataWithNestedKeyFor(_ref48, _ref49) {
+      var tree = _ref48.tree,
+          ui = _ref48.ui;
+      var jsKey = _ref49.jsKey,
+          nestedKey = _ref49.nestedKey,
+          value = _ref49.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -59122,33 +59205,33 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       lodash__WEBPACK_IMPORTED_MODULE_24___default.a.set(customData, nestedKey, value);
       block.customData = customData;
     },
-    updateBlockUiDataFor: function updateBlockUiDataFor(_ref49, _ref50) {
-      var tree = _ref49.tree,
-          ui = _ref49.ui;
-      var jsKey = _ref50.jsKey,
-          key = _ref50.key,
-          value = _ref50.value;
+    updateBlockUiDataFor: function updateBlockUiDataFor(_ref50, _ref51) {
+      var tree = _ref50.tree,
+          ui = _ref50.ui;
+      var jsKey = _ref51.jsKey,
+          key = _ref51.key,
+          value = _ref51.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block.uiData, key, value);
     },
-    updateMaxNumericDigits: function updateMaxNumericDigits(_ref51, _ref52) {
-      var tree = _ref51.tree,
-          ui = _ref51.ui;
-      var value = _ref52.value;
+    updateMaxNumericDigits: function updateMaxNumericDigits(_ref52, _ref53) {
+      var tree = _ref52.tree,
+          ui = _ref52.ui;
+      var value = _ref53.value;
       var selectedBlock = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: ui.selectedBlock
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(selectedBlock, 'customData.maxNumericDigits', value);
     },
-    updateBlockContentFor: function updateBlockContentFor(_ref53, _ref54) {
-      var tree = _ref53.tree,
-          ui = _ref53.ui;
-      var type = _ref54.type,
-          langId = _ref54.langId,
-          jsKey = _ref54.jsKey,
-          value = _ref54.value;
+    updateBlockContentFor: function updateBlockContentFor(_ref54, _ref55) {
+      var tree = _ref54.tree,
+          ui = _ref54.ui;
+      var type = _ref55.type,
+          langId = _ref55.langId,
+          jsKey = _ref55.jsKey,
+          value = _ref55.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -59164,16 +59247,16 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         block["".concat(type, "Content")] = Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])(Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])({}, block["".concat(type, "Content")]), Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"])({}, langId, value));
       }
     },
-    updateBlockFileContentFor: function updateBlockFileContentFor(_ref55, _ref56) {
-      var tree = _ref55.tree,
-          ui = _ref55.ui;
-      var langId = _ref56.langId,
-          jsKey = _ref56.jsKey,
-          fileUrl = _ref56.fileUrl,
-          fileId = _ref56.fileId,
-          fileType = _ref56.fileType,
-          mimeType = _ref56.mimeType,
-          contentType = _ref56.contentType;
+    updateBlockFileContentFor: function updateBlockFileContentFor(_ref56, _ref57) {
+      var tree = _ref56.tree,
+          ui = _ref56.ui;
+      var langId = _ref57.langId,
+          jsKey = _ref57.jsKey,
+          fileUrl = _ref57.fileUrl,
+          fileId = _ref57.fileId,
+          fileType = _ref57.fileType,
+          mimeType = _ref57.mimeType,
+          contentType = _ref57.contentType;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -59188,15 +59271,15 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content[langId], 'fileType', fileType);
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content[langId], 'mimeType', mimeType);
     },
-    updateBlockFileContentForAllLanguages: function updateBlockFileContentForAllLanguages(_ref57, _ref58) {
-      var tree = _ref57.tree,
-          ui = _ref57.ui;
-      var jsKey = _ref58.jsKey,
-          fileUrl = _ref58.fileUrl,
-          fileId = _ref58.fileId,
-          fileType = _ref58.fileType,
-          mimeType = _ref58.mimeType,
-          contentType = _ref58.contentType;
+    updateBlockFileContentForAllLanguages: function updateBlockFileContentForAllLanguages(_ref58, _ref59) {
+      var tree = _ref58.tree,
+          ui = _ref58.ui;
+      var jsKey = _ref59.jsKey,
+          fileUrl = _ref59.fileUrl,
+          fileId = _ref59.fileId,
+          fileType = _ref59.fileType,
+          mimeType = _ref59.mimeType,
+          contentType = _ref59.contentType;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -59206,23 +59289,23 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content, 'allLanguagesFileType', fileType);
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(content, 'allLanguagesMimeType', mimeType);
     },
-    initBlockAutoGenStateFor: function initBlockAutoGenStateFor(_ref59, _ref60) {
-      var tree = _ref59.tree,
-          ui = _ref59.ui;
-      var type = _ref60.type,
-          jsKey = _ref60.jsKey;
+    initBlockAutoGenStateFor: function initBlockAutoGenStateFor(_ref60, _ref61) {
+      var tree = _ref60.tree,
+          ui = _ref60.ui;
+      var type = _ref61.type,
+          jsKey = _ref61.jsKey;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(block, "".concat(type, "AutogenLangs"), []);
     },
-    updateBlockAutoGenStateFor: function updateBlockAutoGenStateFor(_ref61, _ref62) {
-      var tree = _ref61.tree,
-          ui = _ref61.ui;
-      var type = _ref62.type,
-          langId = _ref62.langId,
-          jsKey = _ref62.jsKey,
-          enable = _ref62.value;
+    updateBlockAutoGenStateFor: function updateBlockAutoGenStateFor(_ref62, _ref63) {
+      var tree = _ref62.tree,
+          ui = _ref62.ui;
+      var type = _ref63.type,
+          langId = _ref63.langId,
+          jsKey = _ref63.jsKey,
+          enable = _ref63.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       }),
@@ -59235,12 +59318,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         !absent && block["".concat(type, "AutogenLangs")].splice(i, 1);
       }
     },
-    updateAudioFileFor: function updateAudioFileFor(_ref63, _ref64) {
-      var tree = _ref63.tree,
-          ui = _ref63.ui;
-      var langId = _ref64.langId,
-          jsKey = _ref64.jsKey,
-          value = _ref64.value;
+    updateAudioFileFor: function updateAudioFileFor(_ref64, _ref65) {
+      var tree = _ref64.tree,
+          ui = _ref64.ui;
+      var langId = _ref65.langId,
+          jsKey = _ref65.jsKey,
+          value = _ref65.value;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -59248,17 +59331,17 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
       !value && delete block.audioFiles[langId];
     },
-    pushAudioIntoLibrary: function pushAudioIntoLibrary(_ref65, audio) {
-      var tree = _ref65.tree,
-          ui = _ref65.ui;
-      ui.audioFiles.push(audio);
-    },
-    updateReviewedStateFor: function updateReviewedStateFor(_ref66, _ref67) {
+    pushAudioIntoLibrary: function pushAudioIntoLibrary(_ref66, audio) {
       var tree = _ref66.tree,
           ui = _ref66.ui;
-      var langId = _ref67.langId,
-          jsKey = _ref67.jsKey,
-          value = _ref67.value;
+      ui.audioFiles.push(audio);
+    },
+    updateReviewedStateFor: function updateReviewedStateFor(_ref67, _ref68) {
+      var tree = _ref67.tree,
+          ui = _ref67.ui;
+      var langId = _ref68.langId,
+          jsKey = _ref68.jsKey,
+          value = _ref68.value;
 
       var _lodash$find = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
@@ -59267,12 +59350,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
       data.reviewed[langId] = value;
     },
-    setBatchMatchAudioResultsTo: function setBatchMatchAudioResultsTo(_ref68, _ref69) {
-      var tree = _ref68.tree,
-          ui = _ref68.ui;
-      var value = _ref69.value,
-          status = _ref69.status,
-          message = _ref69.message;
+    setBatchMatchAudioResultsTo: function setBatchMatchAudioResultsTo(_ref69, _ref70) {
+      var tree = _ref69.tree,
+          ui = _ref69.ui;
+      var value = _ref70.value,
+          status = _ref70.status,
+          message = _ref70.message;
       // ui.batchMatchAudioStatus = value
       lodash__WEBPACK_IMPORTED_MODULE_24___default.a.extend(ui.batchMatchAudio, {
         results: value,
@@ -59287,22 +59370,22 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         isComplete: status === 1
       });
     },
-    updateIsEditable: function updateIsEditable(_ref70, _ref71) {
-      var ui = _ref70.ui;
-      var value = _ref71.value;
+    updateIsEditable: function updateIsEditable(_ref71, _ref72) {
+      var ui = _ref71.ui;
+      var value = _ref72.value;
       ui.isEditable = value;
     },
-    addEnabledFeature: function addEnabledFeature(_ref72, _ref73) {
-      var ui = _ref72.ui;
-      var value = _ref73.value;
+    addEnabledFeature: function addEnabledFeature(_ref73, _ref74) {
+      var ui = _ref73.ui;
+      var value = _ref74.value;
 
       if (ui.enabledFeatures.indexOf(value) < 0) {
         ui.enabledFeatures.push(value);
       }
     },
-    removeEnabledFeature: function removeEnabledFeature(_ref74, _ref75) {
-      var ui = _ref74.ui;
-      var value = _ref75.value;
+    removeEnabledFeature: function removeEnabledFeature(_ref75, _ref76) {
+      var ui = _ref75.ui;
+      var value = _ref76.value;
 
       if (ui.enabledFeatures.indexOf(value) > -1) {
         ui.enabledFeatures = ui.enabledFeatures.filter(function (item) {
@@ -59310,30 +59393,30 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         });
       }
     },
-    setContentTypeEnabled: function setContentTypeEnabled(_ref76, _ref77) {
-      var tree = _ref76.tree;
-      var contentType = _ref77.contentType,
-          isEnabled = _ref77.isEnabled;
+    setContentTypeEnabled: function setContentTypeEnabled(_ref77, _ref78) {
+      var tree = _ref77.tree;
+      var contentType = _ref78.contentType,
+          isEnabled = _ref78.isEnabled;
       tree["has".concat(lodash__WEBPACK_IMPORTED_MODULE_24___default.a.upperFirst(contentType))] = +isEnabled;
     },
-    addSubscriberPropertyField: function addSubscriberPropertyField(_ref78, _ref79) {
-      var ui = _ref78.ui;
-      var property = _ref79.property;
+    addSubscriberPropertyField: function addSubscriberPropertyField(_ref79, _ref80) {
+      var ui = _ref79.ui;
+      var property = _ref80.property;
       ui.subscriberPropertyFields.push(property);
     },
-    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(state, _ref80) {
-      var treeUpdateConflict = _ref80.treeUpdateConflict;
+    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(state, _ref81) {
+      var treeUpdateConflict = _ref81.treeUpdateConflict;
       state.ui.treeUpdateConflict = treeUpdateConflict;
     },
-    setInteractionTotals: function setInteractionTotals(state, _ref81) {
-      var interactionTotals = _ref81.interactionTotals;
+    setInteractionTotals: function setInteractionTotals(state, _ref82) {
+      var interactionTotals = _ref82.interactionTotals;
       vue__WEBPACK_IMPORTED_MODULE_25___default.a.set(state.ui, 'interactionTotals', interactionTotals);
     }
   },
   actions: {
-    initializeTreeModel: function initializeTreeModel(_ref82) {
-      var dispatch = _ref82.dispatch,
-          isTreeImport = _ref82.state.ui.isTreeImport;
+    initializeTreeModel: function initializeTreeModel(_ref83) {
+      var dispatch = _ref83.dispatch,
+          isTreeImport = _ref83.state.ui.isTreeImport;
 
       __webpack_require__("2d35"); // todo: this is also included via `../public/dist/js/legacy/trees` on tree-builder
       //       but we don't include that beast in storybook b/c of global dependency hierarchy
@@ -59347,19 +59430,19 @@ var ValidationError = /*#__PURE__*/function (_Error) {
       isTreeImport ? dispatch('initializeTreeModelFromImport') : dispatch('initializeTreeModelFromOriginalTreeJson');
     },
     // @note - these are the only actions that are outside the realm of an existing tree.
-    initializeTreeModelFromOriginalTreeJson: function initializeTreeModelFromOriginalTreeJson(_ref83) {
-      var commit = _ref83.commit,
-          dispatch = _ref83.dispatch,
-          ui = _ref83.state.ui;
+    initializeTreeModelFromOriginalTreeJson: function initializeTreeModelFromOriginalTreeJson(_ref84) {
+      var commit = _ref84.commit,
+          dispatch = _ref84.dispatch,
+          ui = _ref84.state.ui;
       commit('setWorkingTree', {
         tree: ui.originalTreeJson
       });
       dispatch('upgradeTreeModel'); // => this kinda sucks, because now we're dispatching vuex notifications for all these upgrades
     },
-    initializeTreeModelFromImport: function initializeTreeModelFromImport(_ref84) {
-      var commit = _ref84.commit,
-          dispatch = _ref84.dispatch,
-          ui = _ref84.state.ui;
+    initializeTreeModelFromImport: function initializeTreeModelFromImport(_ref85) {
+      var commit = _ref85.commit,
+          dispatch = _ref85.dispatch,
+          ui = _ref85.state.ui;
 
       var schema = app.Tree.createJsonSchemaFor(_.pluck(ui.languages, 'id'), _.keys(ui.blockClasses)),
           tree = app.Tree._mergeAndSanitizeImportedInto(ui.originalTreeJson, ui.importTreeJson);
@@ -59380,15 +59463,15 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         dispatch('initializeTreeModelFromOriginalTreeJson');
       }
     },
-    attemptImportPersistence: function attemptImportPersistence(_ref85) {
+    attemptImportPersistence: function attemptImportPersistence(_ref86) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var commit, dispatch, _ref85$state, tree, ui, _ref85$state$ui, isTreeImport, originalTreeJsonValidationResults, hasImportValidationErrors, validationResults;
+        var commit, dispatch, _ref86$state, tree, ui, _ref86$state$ui, isTreeImport, originalTreeJsonValidationResults, hasImportValidationErrors, validationResults;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                commit = _ref85.commit, dispatch = _ref85.dispatch, _ref85$state = _ref85.state, tree = _ref85$state.tree, ui = _ref85$state.ui, _ref85$state$ui = _ref85$state.ui, isTreeImport = _ref85$state$ui.isTreeImport, originalTreeJsonValidationResults = _ref85$state$ui.originalTreeJsonValidationResults;
+                commit = _ref86.commit, dispatch = _ref86.dispatch, _ref86$state = _ref86.state, tree = _ref86$state.tree, ui = _ref86$state.ui, _ref86$state$ui = _ref86$state.ui, isTreeImport = _ref86$state$ui.isTreeImport, originalTreeJsonValidationResults = _ref86$state$ui.originalTreeJsonValidationResults;
                 hasImportValidationErrors = !!originalTreeJsonValidationResults;
 
                 if (!(!isTreeImport || hasImportValidationErrors)) {
@@ -59420,13 +59503,13 @@ var ValidationError = /*#__PURE__*/function (_Error) {
     upgradeTreeModel: function upgradeTreeModel() {
       app.tree.upgrade();
     },
-    discoverTallestBlockForDesignerWorkspaceHeight: function discoverTallestBlockForDesignerWorkspaceHeight(_ref86, _ref87) {
-      var commit = _ref86.commit,
-          dispatch = _ref86.dispatch,
-          state = _ref86.state;
-      var _ref87$buffer = _ref87.buffer,
-          buffer = _ref87$buffer === void 0 ? 350 : _ref87$buffer,
-          aboveTallest = _ref87.aboveTallest;
+    discoverTallestBlockForDesignerWorkspaceHeight: function discoverTallestBlockForDesignerWorkspaceHeight(_ref87, _ref88) {
+      var commit = _ref87.commit,
+          dispatch = _ref87.dispatch,
+          state = _ref87.state;
+      var _ref88$buffer = _ref88.buffer,
+          buffer = _ref88$buffer === void 0 ? 350 : _ref88$buffer,
+          aboveTallest = _ref88.aboveTallest;
       var initialHeight = aboveTallest ? app.tree.getTallestBlockPosition() : 0,
           minHeight = 1000,
           height = Math.max(buffer + initialHeight, minHeight);
@@ -59434,19 +59517,19 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         height: height
       });
     },
-    uiChanged: function uiChanged(context, _ref88) {
-      var msg = _ref88.msg;
+    uiChanged: function uiChanged(context, _ref89) {
+      var msg = _ref89.msg;
       console.log('app.ui.change [via vuex.trees.uiChanged]', msg);
     },
-    attemptSaveTree: function attemptSaveTree(_ref89) {
+    attemptSaveTree: function attemptSaveTree(_ref90) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var dispatch, _ref89$getters, hasChanges, isFeatureTreeSaveEnabled, ui, _global, app;
+        var dispatch, _ref90$getters, hasChanges, isFeatureTreeSaveEnabled, ui, _global, app;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                dispatch = _ref89.dispatch, _ref89$getters = _ref89.getters, hasChanges = _ref89$getters.hasChanges, isFeatureTreeSaveEnabled = _ref89$getters.isFeatureTreeSaveEnabled, ui = _ref89.state.ui;
+                dispatch = _ref90.dispatch, _ref90$getters = _ref90.getters, hasChanges = _ref90$getters.hasChanges, isFeatureTreeSaveEnabled = _ref90$getters.isFeatureTreeSaveEnabled, ui = _ref90.state.ui;
 
                 if (!(!ui.isEditable || !hasChanges)) {
                   _context2.next = 4;
@@ -59538,14 +59621,14 @@ var ValidationError = /*#__PURE__*/function (_Error) {
      *            ValidationResults
      * @returns {Promise<array>} a Promise that will return an array of the validation results.
      */
-    validateTree: function validateTree(_ref90) {
+    validateTree: function validateTree(_ref91) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
         var dispatch, tree, validate;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                dispatch = _ref90.dispatch, tree = _ref90.state.tree;
+                dispatch = _ref91.dispatch, tree = _ref91.state.tree;
                 validate = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.get(global.__TREE_FEATURES__, 'validation.validate');
 
                 if (!validate) {
@@ -59600,12 +59683,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         }, _callee5);
       }))();
     },
-    setDefaultBlockRepeatValues: function setDefaultBlockRepeatValues(_ref91, _ref92) {
-      var commit = _ref91.commit,
-          dispatch = _ref91.dispatch,
-          tree = _ref91.state.tree;
-      var jsKey = _ref92.jsKey,
-          defaults = _ref92.values;
+    setDefaultBlockRepeatValues: function setDefaultBlockRepeatValues(_ref92, _ref93) {
+      var commit = _ref92.commit,
+          dispatch = _ref92.dispatch,
+          tree = _ref92.state.tree;
+      var jsKey = _ref93.jsKey,
+          defaults = _ref93.values;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -59618,13 +59701,13 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         });
       }
     },
-    updateTextContent: function updateTextContent(_ref93, _ref94) {
-      var commit = _ref93.commit;
-      var type = _ref94.type,
-          jsKey = _ref94.jsKey,
-          langId = _ref94.langId,
-          value = _ref94.value,
-          disableAutoGen = _ref94.disableAutoGen;
+    updateTextContent: function updateTextContent(_ref94, _ref95) {
+      var commit = _ref94.commit;
+      var type = _ref95.type,
+          jsKey = _ref95.jsKey,
+          langId = _ref95.langId,
+          value = _ref95.value,
+          disableAutoGen = _ref95.disableAutoGen;
       commit('updateBlockContentFor', {
         type: type,
         jsKey: jsKey,
@@ -59643,11 +59726,11 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         value: false
       });
     },
-    setContentFromQuestionText: function setContentFromQuestionText(_ref95, _ref96) {
-      var commit = _ref95.commit,
-          dispatch = _ref95.dispatch,
-          tree = _ref95.state.tree;
-      var jsKey = _ref96.jsKey;
+    setContentFromQuestionText: function setContentFromQuestionText(_ref96, _ref97) {
+      var commit = _ref96.commit,
+          dispatch = _ref96.dispatch,
+          tree = _ref96.state.tree;
+      var jsKey = _ref97.jsKey;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -59728,12 +59811,12 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         });
       }
     },
-    setBlockNumConnections: function setBlockNumConnections(_ref97, _ref98) {
-      var commit = _ref97.commit,
-          dispatch = _ref97.dispatch,
-          state = _ref97.state;
-      var newNumConnections = _ref98.value,
-          jsKey = _ref98.jsKey;
+    setBlockNumConnections: function setBlockNumConnections(_ref98, _ref99) {
+      var commit = _ref98.commit,
+          dispatch = _ref98.dispatch,
+          state = _ref98.state;
+      var newNumConnections = _ref99.value,
+          jsKey = _ref99.jsKey;
       console.debug('vuex.trees', 'setBlockNumConnections', newNumConnections, jsKey); // Remove any connection elements connected to the block
       // Remove the block from the UI
       // Change the data number of connections
@@ -59785,11 +59868,11 @@ var ValidationError = /*#__PURE__*/function (_Error) {
 
       app.ui.change('Changed number of block connections.');
     },
-    setMcqOutputNames: function setMcqOutputNames(_ref99, _ref100) {
-      var commit = _ref99.commit,
-          dispatch = _ref99.dispatch,
-          tree = _ref99.state.tree;
-      var jsKey = _ref100.jsKey;
+    setMcqOutputNames: function setMcqOutputNames(_ref100, _ref101) {
+      var commit = _ref100.commit,
+          dispatch = _ref100.dispatch,
+          tree = _ref100.state.tree;
+      var jsKey = _ref101.jsKey;
       console.debug('vuex.trees', 'setMcqOutputNames', jsKey);
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
@@ -59830,11 +59913,11 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         value: outputNames.length
       });
     },
-    setMcqSidebarFieldLabels: function setMcqSidebarFieldLabels(_ref101, _ref102) {
-      var commit = _ref101.commit,
-          dispatch = _ref101.dispatch,
-          tree = _ref101.state.tree;
-      var jsKey = _ref102.jsKey;
+    setMcqSidebarFieldLabels: function setMcqSidebarFieldLabels(_ref102, _ref103) {
+      var commit = _ref102.commit,
+          dispatch = _ref102.dispatch,
+          tree = _ref102.state.tree;
+      var jsKey = _ref103.jsKey;
       var block = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(tree.blocks, {
         jsKey: jsKey
       });
@@ -59863,13 +59946,13 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         value: fieldLabels
       });
     },
-    batchMatchAudioTriggered: function batchMatchAudioTriggered(_ref103, _ref104) {
-      var commit = _ref103.commit,
-          dispatch = _ref103.dispatch,
-          state = _ref103.state;
-      var treeId = _ref104.treeId,
-          pattern = _ref104.pattern,
-          replaceExisting = _ref104.replaceExisting;
+    batchMatchAudioTriggered: function batchMatchAudioTriggered(_ref104, _ref105) {
+      var commit = _ref104.commit,
+          dispatch = _ref104.dispatch,
+          state = _ref104.state;
+      var treeId = _ref105.treeId,
+          pattern = _ref105.pattern,
+          replaceExisting = _ref105.replaceExisting;
       commit('setBatchMatchAudioResultsTo', {
         status: -1
       });
@@ -59877,8 +59960,8 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         treeId: treeId
       }, state.ui.routes), {
         pattern: pattern
-      }).then(function (_ref105) {
-        var value = _ref105.data.matches;
+      }).then(function (_ref106) {
+        var value = _ref106.data.matches;
         commit('setBatchMatchAudioResultsTo', {
           status: 1,
           value: value
@@ -59886,21 +59969,21 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         dispatch('commitAllBatchMatchAudioFiles', {
           replaceExisting: replaceExisting
         });
-      }).catch(function (_ref106) {
-        var message = _ref106.response.data.status_description;
+      }).catch(function (_ref107) {
+        var message = _ref107.response.data.status_description;
         return commit('setBatchMatchAudioResultsTo', {
           status: 0,
           message: message
         });
       });
     },
-    commitAllBatchMatchAudioFiles: function commitAllBatchMatchAudioFiles(_ref107, _ref108) {
-      var commit = _ref107.commit,
-          dispatch = _ref107.dispatch,
-          _ref107$state$ui$batc = _ref107.state.ui.batchMatchAudio,
-          isEmpty = _ref107$state$ui$batc.isEmpty,
-          results = _ref107$state$ui$batc.results;
-      var replaceExisting = _ref108.replaceExisting;
+    commitAllBatchMatchAudioFiles: function commitAllBatchMatchAudioFiles(_ref108, _ref109) {
+      var commit = _ref108.commit,
+          dispatch = _ref108.dispatch,
+          _ref108$state$ui$batc = _ref108.state.ui.batchMatchAudio,
+          isEmpty = _ref108$state$ui$batc.isEmpty,
+          results = _ref108$state$ui$batc.results;
+      var replaceExisting = _ref109.replaceExisting;
 
       if (isEmpty) {
         return;
@@ -59927,14 +60010,14 @@ var ValidationError = /*#__PURE__*/function (_Error) {
      | single + replace    | 1             | 1            | 0         |
      | multi  + replace    | 0             | 0            | 0         |
      ---------------------------------------------------------------- */
-    commitBatchMatchAudioFile: function commitBatchMatchAudioFile(_ref109, _ref110) {
-      var commit = _ref109.commit,
-          dispatch = _ref109.dispatch,
-          blocks = _ref109.state.tree.blocks;
-      var jsKey = _ref110.jsKey,
-          langId = _ref110.langId,
-          matches = _ref110.matches,
-          replaceExisting = _ref110.replaceExisting;
+    commitBatchMatchAudioFile: function commitBatchMatchAudioFile(_ref110, _ref111) {
+      var commit = _ref110.commit,
+          dispatch = _ref110.dispatch,
+          blocks = _ref110.state.tree.blocks;
+      var jsKey = _ref111.jsKey,
+          langId = _ref111.langId,
+          matches = _ref111.matches,
+          replaceExisting = _ref111.replaceExisting;
 
       var _lodash$find2 = lodash__WEBPACK_IMPORTED_MODULE_24___default.a.find(blocks, {
         jsKey: jsKey
@@ -59960,13 +60043,13 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         value: false
       });
     },
-    addSubscriberPropertyField: function addSubscriberPropertyField(_ref111, _ref112) {
-      var commit = _ref111.commit,
-          dispatch = _ref111.dispatch,
-          state = _ref111.state;
-      var displayLabel = _ref112.displayLabel,
-          dataType = _ref112.dataType,
-          choices = _ref112.choices;
+    addSubscriberPropertyField: function addSubscriberPropertyField(_ref112, _ref113) {
+      var commit = _ref112.commit,
+          dispatch = _ref112.dispatch,
+          state = _ref112.state;
+      var displayLabel = _ref113.displayLabel,
+          dataType = _ref113.dataType,
+          choices = _ref113.choices;
       return axios__WEBPACK_IMPORTED_MODULE_23___default.a.post(Object(_lib_mixins_Routes__WEBPACK_IMPORTED_MODULE_26__[/* routeFrom */ "b"])('trees.addSubscriberPropertyField', null, state.ui.routes), {
         displayLabel: displayLabel,
         dataType: dataType,
@@ -59981,19 +60064,19 @@ var ValidationError = /*#__PURE__*/function (_Error) {
         return response;
       });
     },
-    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(_ref113, payload) {
-      var commit = _ref113.commit;
+    setTreeUpdateConflictStatus: function setTreeUpdateConflictStatus(_ref114, payload) {
+      var commit = _ref114.commit;
       commit('setTreeUpdateConflictStatus', payload);
     },
-    fetchInteractionTotals: function fetchInteractionTotals(_ref114, _ref115) {
+    fetchInteractionTotals: function fetchInteractionTotals(_ref115, _ref116) {
       return Object(_home_jacob_voto_flow_builder_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
         var state, commit, dispatch, getters, startDate, endDate, key, url, params, response;
         return regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                state = _ref114.state, commit = _ref114.commit, dispatch = _ref114.dispatch, getters = _ref114.getters;
-                startDate = _ref115.startDate, endDate = _ref115.endDate;
+                state = _ref115.state, commit = _ref115.commit, dispatch = _ref115.dispatch, getters = _ref115.getters;
+                startDate = _ref116.startDate, endDate = _ref116.endDate;
 
                 if (getters.isFeatureUpdateInteractionTotalsEnabled) {
                   _context6.next = 5;
@@ -67840,9 +67923,6 @@ __webpack_require__.d(__webpack_exports__, "b", function() { return /* binding *
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.for-each.js
-var es_array_for_each = __webpack_require__("4160");
-
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.splice.js
 var es_array_splice = __webpack_require__("a434");
 
@@ -67851,9 +67931,6 @@ var es_number_constructor = __webpack_require__("a9e3");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.max-safe-integer.js
 var es_number_max_safe_integer = __webpack_require__("aff5");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.for-each.js
-var web_dom_collections_for_each = __webpack_require__("159b");
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js
 function _arrayLikeToArray(arr, len) {
@@ -67958,19 +68035,7 @@ var lodash = __webpack_require__("2ef0");
 // EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/index.js
 var dist = __webpack_require__("9300");
 
-// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/DateFormat.js
-var DateFormat = __webpack_require__("4fd8");
-var DateFormat_default = /*#__PURE__*/__webpack_require__.n(DateFormat);
-
-// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
-var IdGeneratorUuidV4 = __webpack_require__("31aa");
-var IdGeneratorUuidV4_default = /*#__PURE__*/__webpack_require__.n(IdGeneratorUuidV4);
-
 // CONCATENATED MODULE: ./src/store/builder/index.ts
-
-
-
-
 
 
 
@@ -68360,48 +68425,6 @@ var actions = {
           }
         }
       }, _callee);
-    }))();
-  },
-  loadFlow: function loadFlow(_ref27) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var dispatch, commit, state, rootState, flowContext, flow;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              dispatch = _ref27.dispatch, commit = _ref27.commit, state = _ref27.state, rootState = _ref27.rootState;
-              console.debug('builder', 'loading flow...'); // todo: we need something like: set context
-
-              flowContext = __webpack_require__("8865");
-              flow = flowContext.flows[0];
-              flow.uuid = new IdGeneratorUuidV4_default.a().generate();
-              flow.lastModified = DateFormat_default()(); // TODO - type checking - remove this and resolve the error
-              //@ts-ignore
-
-              flow.languages = Object(lodash["cloneDeep"])(rootState.trees.ui.languages);
-              flowContext.resources.forEach(function (resource) {
-                return commit('flow/resource_add', {
-                  resource: resource
-                }, {
-                  root: true
-                });
-              });
-              _context2.next = 10;
-              return dispatch('flow/flow_add', {
-                flow: flow
-              }, {
-                root: true
-              });
-
-            case 10:
-              console.debug('builder', 'flow loaded.');
-
-            case 11:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
     }))();
   }
 };
@@ -77369,12 +77392,12 @@ module.exports = function transformData(data, headers, fns) {
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ BuilderCanvasvue_type_script_lang_ts_BuilderCanvas; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/BuilderCanvas.vue?vue&type=template&id=4cc35a95&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/BuilderCanvas.vue?vue&type=template&id=605b71ca&scoped=true&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.flows.length)?_c('div',{staticClass:"builder-canvas no-select"},_vm._l((_vm.flows[0].blocks),function(block){return _c('block',{key:block.uuid,attrs:{"id":("block/" + (block.uuid)),"block":block,"x":block.platform_metadata.io_viamo.uiData.xPosition,"y":block.platform_metadata.io_viamo.uiData.yPosition}})}),1):_vm._e()}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/BuilderCanvas.vue?vue&type=template&id=4cc35a95&scoped=true&
+// CONCATENATED MODULE: ./src/components/interaction-designer/BuilderCanvas.vue?vue&type=template&id=605b71ca&scoped=true&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
 var objectSpread2 = __webpack_require__("5530");
@@ -77397,7 +77420,7 @@ var vuex_esm = __webpack_require__("2f62");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/vue-property-decorator.js
 var vue_property_decorator = __webpack_require__("60a3");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/Block.vue?vue&type=template&id=767a1f9a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/Block.vue?vue&type=template&id=767a1f9a&
 var Blockvue_type_template_id_767a1f9a_render = function () {
 var _obj;
 var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.hasLayout)?_c('plain-draggable',{staticClass:"block",class:( _obj = {
@@ -77432,7 +77455,7 @@ var es_object_assign = __webpack_require__("cca6");
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __webpack_require__("2ef0");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/PlainDraggable.vue?vue&type=template&id=3b61d02a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/PlainDraggable.vue?vue&type=template&id=3b61d02a&
 var PlainDraggablevue_type_template_id_3b61d02a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._t("default")],2)}
 var PlainDraggablevue_type_template_id_3b61d02a_staticRenderFns = []
 
@@ -80503,7 +80526,7 @@ var dist = __webpack_require__("9300");
 // EXTERNAL MODULE: ./src/store/builder/index.ts + 6 modules
 var builder = __webpack_require__("af98");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/Connection.vue?vue&type=template&id=a2fa48ca&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/Connection.vue?vue&type=template&id=a2fa48ca&
 var Connectionvue_type_template_id_a2fa48ca_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"connection",attrs:{"reposition-hook":_vm.repositionHook}})}
 var Connectionvue_type_template_id_a2fa48ca_staticRenderFns = []
 
@@ -81111,17 +81134,14 @@ BuilderCanvasvue_type_script_lang_ts_BuilderCanvas = Object(tslib_es6["__decorat
   components: {
     Block: Block
   },
-  computed: Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["d" /* mapState */])('flow', ['flows'])),
-  mounted: function mounted() {
-    this.$store.dispatch('builder/loadFlow');
-  }
+  computed: Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["d" /* mapState */])('flow', ['flows']))
 })], BuilderCanvasvue_type_script_lang_ts_BuilderCanvas);
 /* harmony default export */ var BuilderCanvasvue_type_script_lang_ts_ = (BuilderCanvasvue_type_script_lang_ts_BuilderCanvas);
 
 // CONCATENATED MODULE: ./src/components/interaction-designer/BuilderCanvas.vue?vue&type=script&lang=ts&
  /* harmony default export */ var interaction_designer_BuilderCanvasvue_type_script_lang_ts_ = (BuilderCanvasvue_type_script_lang_ts_); 
-// EXTERNAL MODULE: ./src/components/interaction-designer/BuilderCanvas.vue?vue&type=style&index=0&id=4cc35a95&scoped=true&lang=css&
-var BuilderCanvasvue_type_style_index_0_id_4cc35a95_scoped_true_lang_css_ = __webpack_require__("756e");
+// EXTERNAL MODULE: ./src/components/interaction-designer/BuilderCanvas.vue?vue&type=style&index=0&id=605b71ca&scoped=true&lang=css&
+var BuilderCanvasvue_type_style_index_0_id_605b71ca_scoped_true_lang_css_ = __webpack_require__("240b");
 
 // CONCATENATED MODULE: ./src/components/interaction-designer/BuilderCanvas.vue
 
@@ -81138,7 +81158,7 @@ var BuilderCanvas_component = Object(componentNormalizer["a" /* default */])(
   staticRenderFns,
   false,
   null,
-  "4cc35a95",
+  "605b71ca",
   null
   
 )
@@ -81763,7 +81783,7 @@ module.exports = cacheHas;
 /***/ "c5aa":
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"ui\":{\"routes\":{\"trees\":{\"editTree\":{\"name\":\"editTree\",\"path\":\"/trees/{treeId}/{component?}/{mode?}\",\"params\":[\"treeId\",\"component\",\"mode\"],\"methods\":[\"GET\",\"HEAD\"]},\"resumeableAudioUpload\":{\"name\":\"resumeableAudioUpload\",\"path\":\"/audiofiles/upload\",\"params\":[],\"methods\":[\"POST\",\"HEAD\"]}}},\"languages\":[{\"id\":\"22\",\"name\":\"English\",\"abbreviation\":\"EN\",\"orgId\":\"1008107874829627392\",\"rightToLeft\":false,\"code\":null,\"deletedAt\":null},{\"id\":\"23\",\"name\":\"Spanish\",\"abbreviation\":\"ES\",\"orgId\":\"1008107874829627392\",\"rightToLeft\":false,\"code\":null,\"deletedAt\":null}],\"blockClasses\":{\"ConsoleIO\\\\Print\":{\"name\":\"ConsoleIO\\\\Print\",\"type\":\"ConsoleIO\\\\Print\",\"is_interactive\":false,\"is_branching\":false,\"category\":0},\"ConsoleIO\\\\Read\":{\"name\":\"ConsoleIO\\\\Read\",\"type\":\"ConsoleIO\\\\Read\",\"is_interactive\":true,\"is_branching\":false,\"category\":1},\"Core\\\\Case\":{\"name\":\"Core\\\\Case\",\"type\":\"Core\\\\Case\",\"is_interactive\":false,\"is_branching\":true,\"category\":2},\"Core\\\\Log\":{\"name\":\"Core\\\\Log\",\"type\":\"Core\\\\Log\",\"is_interactive\":false,\"is_branching\":false,\"category\":0},\"Core\\\\Output\":{\"name\":\"Core\\\\Output\",\"type\":\"Core\\\\Output\",\"is_interactive\":false,\"is_branching\":false,\"category\":0},\"Core\\\\RunFlow\":{\"name\":\"Core\\\\RunFlow\",\"type\":\"Core\\\\RunFlow\",\"is_interactive\":false,\"is_branching\":false,\"category\":0},\"MobilePrimitives\\\\Message\":{\"name\":\"MobilePrimitives\\\\Message\",\"type\":\"MobilePrimitives\\\\Message\",\"is_interactive\":true,\"is_branching\":false,\"category\":1},\"MobilePrimitives\\\\NumericResponse\":{\"name\":\"MobilePrimitives\\\\NumericResponse\",\"type\":\"MobilePrimitives\\\\NumericResponse\",\"is_interactive\":true,\"is_branching\":false,\"category\":1},\"MobilePrimitives\\\\OpenResponse\":{\"name\":\"MobilePrimitives\\\\OpenResponse\",\"type\":\"MobilePrimitives\\\\OpenResponse\",\"is_interactive\":true,\"is_branching\":false,\"category\":1},\"MobilePrimitives\\\\SelectOneResponse\":{\"name\":\"MobilePrimitives\\\\SelectOneResponse\",\"type\":\"MobilePrimitives\\\\SelectOneResponse\",\"is_interactive\":true,\"is_branching\":true,\"category\":2},\"MobilePrimitives\\\\SelectManyResponse\":{\"name\":\"MobilePrimitives\\\\SelectManyResponse\",\"type\":\"MobilePrimitives\\\\SelectManyResponse\",\"is_interactive\":true,\"is_branching\":true,\"category\":2},\"SmartDevices\\\\LocationResponse\":{\"name\":\"SmartDevices\\\\LocationResponse\",\"type\":\"SmartDevices\\\\LocationResponse\",\"is_interactive\":true,\"is_branching\":false,\"category\":1},\"SmartDevices\\\\PhotoResponse\":{\"name\":\"SmartDevices\\\\PhotoResponse\",\"type\":\"SmartDevices\\\\PhotoResponse\",\"is_interactive\":true,\"is_branching\":false,\"category\":1}},\"blockTags\":[],\"contentBlockTypes\":[\"MessageBlock\",\"MultipleChoiceQuestionBlock\",\"NumericQuestionBlock\",\"OpenQuestionBlock\",\"WebhookContentBlock\",\"RandomOrderMultipleChoiceQuestionBlock\",\"DirectorySelectionBlock\",\"MultipleSelectMultipleChoiceQuestionBlock\",\"WeatherAlertsBlock\",\"LocationBlock\",\"CollaborativeFilteringQuestionBlock\",\"CollaborativeFilteringRatingBlock\"],\"callCenterQueues\":[],\"originalTreeJson\":{\"id\":\"1\",\"details\":{\"title\":\"My first Flow\",\"description\":\"\",\"enabledLanguages\":[\"1\"],\"hasVoice\":1,\"hasUssd\":1,\"hasSms\":1,\"hasSocial\":0,\"hasClipboard\":0,\"syncedLanguage\":\"\",\"startingBlockKey\":\"\",\"savedByUserOrganisationId\":null},\"treeSetId\":\"1\",\"createdAt\":{\"date\":\"2020-07-10T12:54:10-06:00\"},\"editedAt\":\"2020-07-10T12:54:10-06:00\",\"updatedAt\":{\"date\":\"2020-07-10T12:54:10-06:00\"},\"otherVersionsCount\":0,\"isDuplicateOf\":null,\"duplicateTree\":null,\"floipSyncedAt\":null,\"orgId\":null,\"blocks\":[],\"connections\":[],\"hasVoice\":1,\"hasSms\":1,\"hasUssd\":1,\"hasSocial\":0,\"hasClipboard\":0},\"originalValidationResults\":[],\"isTreeImport\":0,\"importTreeJson\":null,\"isEditable\":0,\"isEditableLocked\":0,\"orgTimezone\":\"America/Toronto\",\"subscriberCount\":0,\"subscriberPropertyFields\":[],\"subscriberPropertyFieldDataTypes\":[\"text\",\"location\",\"number\",\"map_coordinates\",\"boolean\",\"phone\",\"multiple_choice\",\"date\"],\"treeTitles\":{},\"treeSetTitles\":{},\"groupNames\":{},\"groups\":[],\"languageNames\":{\"1\":\"English\",\"2\":\"Spanish\"},\"languageSelectors\":[],\"apiKey\":null,\"publicId\":null,\"operatorContacts\":[],\"interactionTotals\":[],\"org\":{\"id\":null,\"org_name\":\"Sample Org\"},\"outgoingCallGroups\":[],\"scheduleTypes\":[{\"id\":\"1\",\"type\":\"now\",\"description\":\"Now\"},{\"id\":\"2\",\"type\":\"fixed\",\"description\":\"Fixed Date\"},{\"id\":\"3\",\"type\":\"routine\",\"description\":\"Routine\"},{\"id\":\"4\",\"type\":\"repeating\",\"description\":\"Repeating\"},{\"id\":\"5\",\"type\":\"continuous\",\"description\":\"Continuous\"}],\"currentDate\":\"2020-07-10T12:54:10-06:00\",\"currentTime\":\"00:00\",\"surveysEnabled\":true,\"surveySets\":[],\"messageSets\":[],\"treeSets\":[],\"enabledFeatures\":[\"audioUpload\"]},\"audio\":{\"library\":[{\"id\":\"586533\",\"filename\":\"https://www.viamo.io/audiofiles/play/5cae2f49b605a6.45924131/mp3\",\"description\":\"02_flowers_for_albert.mp3\",\"language_id\":null,\"duration_seconds\":\"357.712\",\"original_extension\":\"mp3\",\"created_at\":\"2019-04-10 18:00:52\"},{\"id\":\"309466\",\"filename\":\"https://www.viamo.io/audiofiles/play/598283afde6f31.04148017/ogg\",\"description\":\"59727a6e9aa807.99829966.ogg\",\"language_id\":\"206062\",\"duration_seconds\":\"4.69462\",\"original_extension\":\"ogg\",\"created_at\":\"2017-08-03 02:00:16\"}],\"recording\":{\"recorders\":[],\"isCalling\":{},\"isRecorderSelectorVisible\":false}}}");
+module.exports = JSON.parse("{\"ui\":{\"routes\":{\"flows\":{\"persistFlow\":{\"name\":\"persistFlow\",\"path\":\"/backend/flows/{flowId}\",\"params\":[\"flowId\"],\"methods\":[\"POST\",\"PUT\"]},\"fetchFlowServer\":{\"name\":\"fetchFlowServer\",\"path\":\"/backend/flows/{flowId}\",\"params\":[\"flowId\"],\"methods\":[\"GET\"]},\"newFlow\":{\"name\":\"newFlow\",\"path\":\"/flows/new\",\"methods\":[\"GET\"]},\"fetchFlow\":{\"name\":\"fetchFlow\",\"path\":\"/flows/{flowId}\",\"params\":[\"flowId\"],\"methods\":[\"GET\"]},\"home\":{\"name\":\"home\",\"path\":\"/\",\"methods\":[\"GET\"]}},\"trees\":{\"editTree\":{\"name\":\"editTree\",\"path\":\"/trees/{treeId}/{component?}/{mode?}\",\"params\":[\"treeId\",\"component\",\"mode\"],\"methods\":[\"GET\",\"HEAD\"]},\"resumeableAudioUpload\":{\"name\":\"resumeableAudioUpload\",\"path\":\"/audiofiles/upload\",\"params\":[],\"methods\":[\"POST\",\"HEAD\"]}}},\"languages\":[{\"id\":\"22\",\"name\":\"English\",\"abbreviation\":\"EN\",\"orgId\":\"1008107874829627392\",\"rightToLeft\":false,\"code\":null,\"deletedAt\":null},{\"id\":\"23\",\"name\":\"Spanish\",\"abbreviation\":\"ES\",\"orgId\":\"1008107874829627392\",\"rightToLeft\":false,\"code\":null,\"deletedAt\":null}],\"blockClasses\":{\"ConsoleIO\\\\Print\":{\"name\":\"ConsoleIO\\\\Print\",\"type\":\"ConsoleIO\\\\Print\",\"is_interactive\":false,\"is_branching\":false,\"category\":0},\"ConsoleIO\\\\Read\":{\"name\":\"ConsoleIO\\\\Read\",\"type\":\"ConsoleIO\\\\Read\",\"is_interactive\":true,\"is_branching\":false,\"category\":1},\"Core\\\\Case\":{\"name\":\"Core\\\\Case\",\"type\":\"Core\\\\Case\",\"is_interactive\":false,\"is_branching\":true,\"category\":2},\"Core\\\\Log\":{\"name\":\"Core\\\\Log\",\"type\":\"Core\\\\Log\",\"is_interactive\":false,\"is_branching\":false,\"category\":0},\"Core\\\\Output\":{\"name\":\"Core\\\\Output\",\"type\":\"Core\\\\Output\",\"is_interactive\":false,\"is_branching\":false,\"category\":0},\"Core\\\\RunFlow\":{\"name\":\"Core\\\\RunFlow\",\"type\":\"Core\\\\RunFlow\",\"is_interactive\":false,\"is_branching\":false,\"category\":0},\"MobilePrimitives\\\\Message\":{\"name\":\"MobilePrimitives\\\\Message\",\"type\":\"MobilePrimitives\\\\Message\",\"is_interactive\":true,\"is_branching\":false,\"category\":1},\"MobilePrimitives\\\\NumericResponse\":{\"name\":\"MobilePrimitives\\\\NumericResponse\",\"type\":\"MobilePrimitives\\\\NumericResponse\",\"is_interactive\":true,\"is_branching\":false,\"category\":1},\"MobilePrimitives\\\\OpenResponse\":{\"name\":\"MobilePrimitives\\\\OpenResponse\",\"type\":\"MobilePrimitives\\\\OpenResponse\",\"is_interactive\":true,\"is_branching\":false,\"category\":1},\"MobilePrimitives\\\\SelectOneResponse\":{\"name\":\"MobilePrimitives\\\\SelectOneResponse\",\"type\":\"MobilePrimitives\\\\SelectOneResponse\",\"is_interactive\":true,\"is_branching\":true,\"category\":2},\"MobilePrimitives\\\\SelectManyResponse\":{\"name\":\"MobilePrimitives\\\\SelectManyResponse\",\"type\":\"MobilePrimitives\\\\SelectManyResponse\",\"is_interactive\":true,\"is_branching\":true,\"category\":2},\"SmartDevices\\\\LocationResponse\":{\"name\":\"SmartDevices\\\\LocationResponse\",\"type\":\"SmartDevices\\\\LocationResponse\",\"is_interactive\":true,\"is_branching\":false,\"category\":1},\"SmartDevices\\\\PhotoResponse\":{\"name\":\"SmartDevices\\\\PhotoResponse\",\"type\":\"SmartDevices\\\\PhotoResponse\",\"is_interactive\":true,\"is_branching\":false,\"category\":1}},\"blockTags\":[],\"contentBlockTypes\":[\"MessageBlock\",\"MultipleChoiceQuestionBlock\",\"NumericQuestionBlock\",\"OpenQuestionBlock\",\"WebhookContentBlock\",\"RandomOrderMultipleChoiceQuestionBlock\",\"DirectorySelectionBlock\",\"MultipleSelectMultipleChoiceQuestionBlock\",\"WeatherAlertsBlock\",\"LocationBlock\",\"CollaborativeFilteringQuestionBlock\",\"CollaborativeFilteringRatingBlock\"],\"callCenterQueues\":[],\"originalTreeJson\":{\"id\":\"1\",\"details\":{\"title\":\"My first Flow\",\"description\":\"\",\"enabledLanguages\":[\"1\"],\"hasVoice\":1,\"hasUssd\":1,\"hasSms\":1,\"hasSocial\":0,\"hasClipboard\":0,\"syncedLanguage\":\"\",\"startingBlockKey\":\"\",\"savedByUserOrganisationId\":null},\"treeSetId\":\"1\",\"createdAt\":{\"date\":\"2020-07-10T12:54:10-06:00\"},\"editedAt\":\"2020-07-10T12:54:10-06:00\",\"updatedAt\":{\"date\":\"2020-07-10T12:54:10-06:00\"},\"otherVersionsCount\":0,\"isDuplicateOf\":null,\"duplicateTree\":null,\"floipSyncedAt\":null,\"orgId\":null,\"blocks\":[],\"connections\":[],\"hasVoice\":1,\"hasSms\":1,\"hasUssd\":1,\"hasSocial\":0,\"hasClipboard\":0},\"originalValidationResults\":[],\"isTreeImport\":0,\"importTreeJson\":null,\"isEditable\":0,\"isEditableLocked\":0,\"orgTimezone\":\"America/Toronto\",\"subscriberCount\":0,\"subscriberPropertyFields\":[],\"subscriberPropertyFieldDataTypes\":[\"text\",\"location\",\"number\",\"map_coordinates\",\"boolean\",\"phone\",\"multiple_choice\",\"date\"],\"treeTitles\":{},\"treeSetTitles\":{},\"groupNames\":{},\"groups\":[],\"languageNames\":{\"1\":\"English\",\"2\":\"Spanish\"},\"languageSelectors\":[],\"apiKey\":null,\"publicId\":null,\"operatorContacts\":[],\"interactionTotals\":[],\"org\":{\"id\":null,\"org_name\":\"Sample Org\"},\"outgoingCallGroups\":[],\"scheduleTypes\":[{\"id\":\"1\",\"type\":\"now\",\"description\":\"Now\"},{\"id\":\"2\",\"type\":\"fixed\",\"description\":\"Fixed Date\"},{\"id\":\"3\",\"type\":\"routine\",\"description\":\"Routine\"},{\"id\":\"4\",\"type\":\"repeating\",\"description\":\"Repeating\"},{\"id\":\"5\",\"type\":\"continuous\",\"description\":\"Continuous\"}],\"currentDate\":\"2020-07-10T12:54:10-06:00\",\"currentTime\":\"00:00\",\"surveysEnabled\":true,\"surveySets\":[],\"messageSets\":[],\"treeSets\":[],\"enabledFeatures\":[\"audioUpload\",\"treeSave\"]},\"audio\":{\"library\":[{\"id\":\"586533\",\"filename\":\"https://www.viamo.io/audiofiles/play/5cae2f49b605a6.45924131/mp3\",\"description\":\"02_flowers_for_albert.mp3\",\"language_id\":null,\"duration_seconds\":\"357.712\",\"original_extension\":\"mp3\",\"created_at\":\"2019-04-10 18:00:52\"},{\"id\":\"309466\",\"filename\":\"https://www.viamo.io/audiofiles/play/598283afde6f31.04148017/ogg\",\"description\":\"59727a6e9aa807.99829966.ogg\",\"language_id\":\"206062\",\"duration_seconds\":\"4.69462\",\"original_extension\":\"ogg\",\"created_at\":\"2017-08-03 02:00:16\"}],\"recording\":{\"recorders\":[],\"isCalling\":{},\"isRecorderSelectorVisible\":false}}}");
 
 /***/ }),
 
@@ -85715,7 +85735,7 @@ $({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGT
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/TextEditor.vue?vue&type=template&id=4ab294e6&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/TextEditor.vue?vue&type=template&id=4ab294e6&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group"},[_c('label',[_vm._v(_vm._s(_vm.label))]),(_vm.isEditable)?_c('textarea',{staticClass:"form-control",attrs:{"placeholder":_vm.placeholder},domProps:{"value":_vm.value},on:{"keydown":function($event){return _vm.$emit('keydown', $event)},"input":function($event){return _vm.$emit('input', $event.target.value)}}}):_c('p',[_vm._v(" "+_vm._s(_vm.value)+" ")]),_vm._t("default")],2)}
 var staticRenderFns = []
 
@@ -88358,7 +88378,7 @@ module.exports = !fails(function () {
 /***/ "e1e0":
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"en.flow-builder\":{\"flow-name\":\"Flow name\",\"flow-label\":\"Flow label\",\"flow-importer\":\"Flow importer\",\"Interaction-timeout\":\"Interaction timeout\",\"modes\":\"Modes\",\"enter-flow-name\":\"Enter flow name\",\"enter-flow-label\":\"Enter flow label\",\"maximum-digits\":\"Maximum digits\",\"AirtimeTransferBlock\":\"Transfer Airtime\",\"BillSubscriberBlock\":\"Bill Contact\",\"CallBackWithCallCenterBlock\":\"Call Back With Call Center Block\",\"CallHistoryBranchBlock\":\"Branch via Call History\",\"CollaborativeFilteringQuestionBlock\":\"Collaborative Filtering Question\",\"CollaborativeFilteringRatingBlock\":\"Collaborative Filtering Rating\",\"CollaborativeFilteringRatioBranchBlock\":\"Branch via Collaborative Filtering Ratio\",\"ConnectToOperatorBlock\":\"Connect to Operator\",\"ConsoleIO\\\\Print\":\"Print\",\"ConsoleIO\\\\Read\":\"Read\",\"ContentTypeBranchBlock\":\"Branch via Content Type\",\"Core\\\\Case\":\"Case\",\"Core\\\\Log\":\"Log\",\"Core\\\\Output\":\"Output\",\"Core\\\\RunFlow\":\"Run Flow\",\"CreateSubscriberBlock\":\"Create Contact\",\"CurrentTimeBranchBlock\":\"Branch via Current Time\",\"DecisionBranchBlock\":\"Decision Branch\",\"DirectorySelectionBlock\":\"Directory Selection\",\"EntitySelectionBlock\":\"Referral Entity Selection\",\"ExpressionBranchBlock\":\"Expression Branch \",\"GenerateCodeBlock\":\"Generate Unique Code\",\"GroupBranchBlock\":\"Branch via Group Membership\",\"GroupPropertyBlock\":\"Edit Group Membership\",\"GroupSizeBranchBlock\":\"Branch via Group Size\",\"IdValidationBlock\":\"Branch via Valid Code\",\"LanguageSelectorBlock\":\"Language Selection Prompt\",\"LocationBlock\":\"Location Selector\",\"MarkCallCompleteBlock\":\"Mark Call as Complete\",\"MessageBlock\":\"Message\",\"MobilePrimitives\\\\Message\":\"Message\",\"MobilePrimitives\\\\NumericResponse\":\"Numeric Response\",\"MobilePrimitives\\\\OpenResponse\":\"Open Response\",\"MobilePrimitives\\\\SelectOneResponse\":\"Select One Response\",\"MobilePrimitives\\\\SelectManyResponse\":\"Select Many Responses\",\"MultipleChoiceQuestionBlock\":\"Multiple Choice Question\",\"MultipleSelectMultipleChoiceQuestionBlock\":\"Multiple Select Multiple Choice Question\",\"NumericBranchBlock\":\"Numeric Branch\",\"NumericQuestionBlock\":\"Numeric Question\",\"OpenQuestionBlock\":\"Open-ended Question\",\"PlayGroupMessageBlock\":\"Play Group Message Block\",\"RandomBranchBlock\":\"Random Branch\",\"RandomOrderMultipleChoiceQuestionBlock\":\"Random Order Multiple-Choice Question\",\"RecordGroupMessageBlock\":\"Record Group Message Block\",\"RunTreeBlock\":\"Run Another Tree\",\"SmartDevices\\\\LocationResponse\":\"Location Response\",\"SmartDevices\\\\PhotoResponse\":\"Photo Response\",\"SubscriberBranchBlock\":\"Branch via Contact Data\",\"SubscriberPropertiesSnapshotBlock\":\"Snapshot of Contact Properties\",\"SubscriberPropertyBlock\":\"Edit Contact Property\",\"SummaryBlock\":\"Summary\",\"TriggerOutgoingCallBlock\":\"Trigger Outgoing Call\",\"ValidateCodeBlock\":\"Validate Unique Code\",\"WeatherAlertsBlock\":\"Create Weather Alerts\",\"WeatherForecastBlock\":\"Weather Forecast\",\"WebhookBlock\":\"Webhook\",\"WebhookContentBlock\":\"Webhook Content\",\"X-abbreviations-set-when-creating-tree\":\":lang abbreviations set when creating tree\",\"X-are-required-placeholder-components-for-rule-but-additional-designation-optional\":\":placeholders are required placeholder components for the rule but an additional designation is optional.\",\"X-assigned-to-a-block\":\":label assigned to a block\",\"X-of-resources-populated\":\":count of resources populated\",\"X-seconds-long\":\":duration_seconds long\",\"X-subscribers-selected\":\"contacts selected\",\"X-will-match-with-Y\":\":pattern will match with :name\",\"X-wont-match-with-Y\":\":pattern won't match with :name\",\"absolute-date\":\"Absolute Date\",\"accessed\":\"Accessed\",\"action\":\"Action\",\"action-allows-custom-subscriber-data-when-block-reached\":\"This action allows you to set custom contact data, when this block in the tree is reached.\",\"action-changes-preferred-content-types-to-receive-in-future\":\"This action changes preferred content types (Voice or SMS) that the contact will receive in future calls.\",\"action-immediately-changes-preferred-language-of-subscriber\":\"This action immediately changes the preferred language of the contact. Later blocks in the tree will use the new language.\",\"actions\":\"Actions\",\"active\":\"active\",\"adapted-from\":\"Adapted from:\",\"add-a-description-to-this-recording\":\"Add A Description To This Recording\",\"add-a-new-recorder\":\"Add A New Recorder\",\"add-block\":\"Add Block\",\"add-condition\":\"Add Condition\",\"add-data\":\"Add data\",\"add-label-tags\":\"Add label / tags\",\"add-map-coordinates-field\":\"Add a Map Coordinates field\",\"add-question\":\"Add question\",\"add-to\":\"Add to\",\"add-to-group\":\"Add to Group\",\"added\":\"added\",\"additional-designation-created-in-the-rule\":\"An additional designation created in the rule\",\"adds-subscribers-to-the\":\"Adds contacts to the\",\"admin-csv-file\":\"Master CSV File\",\"advanced\":\"Advanced\",\"after\":\"After\",\"after-completing-all-output-branches\":\"After completing all output branches:\",\"airtime-credit-transfer\":\"Airtime Credit Transfer\",\"alert-message-title\":\"Alert Message Title\",\"all-block-types\":\"All block types\",\"all-blocks\":\"All blocks\",\"all-channels\":\"All Channels\",\"all-content-across-this-organisation\":\"All content across this organisation\",\"all-languages\":\"All Languages\",\"all-message-blocks\":\"All message blocks\",\"all-other-possible-values\":\"All other possible values\",\"all-question-blocks\":\"All question blocks\",\"all-subscribers\":\"All Contacts\",\"all-transcriptions-saved\":\"All Transcriptions Saved\",\"allow-visitors-to-modify-the-date-range\":\"Allow visitors to modify the date range\",\"allow-visitors-to-translate-the-page-in-their-language\":\"Allow visitors to translate the page into their language\",\"already-published\":\"Already Published!\",\"already-used\":\"Already used\",\"and\":\"and\",\"any-key\":\"Any key\",\"anytime\":\"Anytime\",\"api-key\":\"API Key\",\"api-success\":\"Successfully connected to API.\",\"append-or-replace-on-upload\":\"Append or replace on upload?\",\"applies-to-calls-sent-to-all-subscribers-or-groups-containing-subscriber\":\"This applies to calls sent to All Contacts, or sent to Groups containing this contact. They can still receive outgoing calls addressed specifically to them.\",\"apply\":\"Apply\",\"apply-all-filters\":\"Apply All Filters\",\"april-month\":\"April\",\"are-you-sure-you-want-to-delete-this-shareable-link\":\"Are you sure you want to delete this shareable link? Users with the existing link will no longer be able to access this results.\",\"as-at\":\"as at\",\"at\":\"at\",\"at-character\":\"at character\",\"at-least\":\"At least\",\"at-least-one-language-must-be-checked\":\"At least one language must be checked.\",\"at-minimum-we-need-two-placeholders\":\"At a minimum, we need two placeholders:\",\"at-this-time\":\"At this time\",\"attach-multimedia\":\"Attach multimedia\",\"audio-export-started-for\":\"Audio export started for\",\"audio-file-naming-pattern\":\"Audio file naming pattern\",\"audio-files\":\"Audio Files\",\"audio-files-per-task\":\"Audio files per task\",\"audio-lib-empty-for-this-org\":\"Audio library is empty for this organization.\",\"audio-library\":\"Audio Library\",\"audio-listened\":\"Audio Listened\",\"august-month\":\"August\",\"auto\":\"Auto\",\"auto-gen-content-from-block-details\":\"Click to Auto-generated Content from Block Details\",\"auto-link-audio-files\":\"Auto-Link Audio Files\",\"automatic-routing-description\":\"With automatic routing, contacts are routed to a call center queue based on their 'target_operator' property. When set to automatic routing, you can control the queue by setting this property before a contact enters this block.\",\"automatic-routing-label\":\"Automatic Routing\",\"automatically-enable-statements\":\"Automatically enable statements\",\"automatically-enable-statements-help\":\"With this option on, new Statements will be 'Enabled'. If this option is off new Statements will be 'Unreviewed' \",\"average-audio-length\":\"Average Audio Length\",\"avg-duration-for-all-calls\":\"Average Duration for All Calls:\",\"avg-duration-for-completed-calls\":\"Avg. Duration for Completed Calls:\",\"back\":\"Back\",\"back-to-choices-list\":\"Back to Choices List\",\"back-to-trees-list\":\"Back to Trees List\",\"base-url\":\"Base URL\",\"base-url-placeholder\":\"example: https://example.org/api\",\"bill-subscriber\":\"Bill Contact\",\"block\":\"Block(s)\",\"block-allows-connect-to-operator-chosen-at-random-from-pre-specified-operator-contact-list\":\"This block allows you to connect a caller to an operator, chosen at random from a pre-specified operator contact list. This lets you quickly set up help lines or other in-person connections.\",\"block-choice-filter-description\":\"Blocks can be used as filters on the shared link. Select which blocks should be used as filters.\",\"block-code\":\"Block code\",\"block-details\":\"Block Details\",\"block-id\":\"Block Id\",\"block-label\":\"Block label\",\"block-name\":\"Block name\",\"block-ordering\":\"Block ordering\",\"block-ordering-help-text\":\"Override the default block sorting by entering a weight for each block. Blocks with a smaller value will be at the top of the list.\",\"block-responses-to-send-payload\":\"Block Responses To Send As Payload\",\"block-semantic-label\":\"Block semantic label\",\"block-title\":\"Block Title\",\"block-type-unsupported-in-resource-view\":\"Block Type Not Supported in Resource View\",\"blocks\":\"Blocks\",\"blocks-responses\":\"Block Responses\",\"blocks-to-display\":\"Blocks to display\",\"branch-if-subscriber-property\":\"Branch if Contact Property\",\"branch-to-true-if-the-subscriber-is-a-member-of-the\":\"Branch to True if the contact is a member of the\",\"branch-via-call-history\":\"Branch via Call History\",\"branch-via-call-history-desc1\":\"This block directs callers towards one of two options, based on the total number of calls in the specified date range for either just this tree or all trees in the entire organisation',\",\"branch-via-call-history-desc2\":\"If the number of calls in the specified date range is larger than the 'Calls Quota Threshold' value, then callers will go to the Quota Met output. If not, callers will go to the Not Met output.',\",\"branch-via-content-type\":\"Branch via Content Type\",\"branch-via-expression\":\"Expression Branch \",\"branch-via-group-membership\":\"Branch via Group Membership\",\"branch-via-group-size\":\"Branch via Group Size\",\"branch-via-subscriber-data\":\"Branch via Contact Data\",\"branch-via-valid-code\":\"Branch via Valid Code\",\"branching\":\"Branching\",\"breakdown-by\":\"Breakdown By\",\"btn-add-exit\":\"Add Exit\",\"call-back-block-desc\":\"Notifies the Call Center to call the contact by adding the contact to the organization's dialing list.\",\"call-back-block-dialing-list-desc\":\"Enter the name of the dialing list that the call request should be added to. If the dialing list does not already exist, it will be created with this name.\",\"call-back-block-dialing-list-heading\":\"Dialing List Name\",\"call-back-block-enable-routing-by-queue\":\"Enable routing by queue\",\"call-back-block-enable-routing-by-queue-desc\":\"If this option is selected, call requests will only go to operators signed in to a specific queue.\",\"call-back-block-enter-api-key\":\"Enter API key\",\"call-back-block-enter-dialing-list-name\":\"Enter dialing list name\",\"call-back-block-notify-different-org\":\"Notify a different organization's Call Center\",\"call-back-block-notify-this-org\":\"Notify this organization's Call Center\",\"call-back-block-org-api-key\":\"Organization's API Key\",\"call-back-block-queue-name\":\"Queue Name\",\"call-back-block-select-queue\":\"Select queue\",\"call-finished\":\"Call Finished\",\"call-started\":\"Call Started\",\"call-this-phone-number\":\"Call This Phone Number\",\"call-to-record\":\"Call to record\",\"caller\":\"Caller\",\"calls-after\":\"Calls after\",\"calls-before\":\"Calls before\",\"calls-quota-threshold\":\"Calls Quota Threshold\",\"campaigns\":\"Campaigns\",\"cancel\":\"Cancel\",\"candidate-question\":\"Candidate Question\",\"cannot-delete-that-tree\":\"Cannot delete that tree\",\"cannot-restore-that-tree\":\"Cannot restore that tree.\",\"cannot-restore-that-tree.\":\"Cannot restore that tree.\",\"case-of-duplicates-instruction\":\"In the case of duplicates and existing contacts with the same phone number\",\"categorization\":\"Categorization\",\"category\":\"Category\",\"category-name\":\"Category name\",\"cell-contents\":\"Cell Contents\",\"cell-contents-format\":\"Cell Contents Format\",\"cf-ratio-description\":\"Configure the ideal number of ratings that each statement should receive before another statement should be gathered.\",\"chance-of-rain\":\"Chance of Rain\",\"change-subscriber-language\":\"Change contact language\",\"change-subscriber-start-date\":\"Change contact start date\",\"channel\":\"Channel\",\"channels\":\"Channels\",\"characters\":\"character|characters\",\"check-url-api\":\"Check your URL and API key and try again.\",\"choice\":\"Choice\",\"choice-filter-tags\":\"Choice filter tags\",\"choice-id-choice-text\":\"Choice ID & Choice Text\",\"choice-id-only\":\"Choice ID Only\",\"choice-keypress-options\":\"Choice Key Press Options\",\"choice-options\":\"Choice Option\",\"choice-options-fixed\":\"Choice Options\",\"choices\":\"Choices\",\"choices-choice-attributes\":\"Choices\",\"choices-prompt\":\"Choices Prompt\",\"choose-a-language-selector\":\"(Choose a Language Selector)\",\"choose-a-language-selector-label\":\"Choose a language selector:\",\"choose-audio\":\"Choose Audio\",\"choose-csv-file\":\"Choose CSV file\",\"choose-date\":\"Choose Date\",\"choose-file\":\"Choose file\",\"choose-how-many-seconds-to-wait\":\"Please choose how many seconds to wait until the contact presses a key to repeat this message.\",\"choose-how-many-times-can-repeat\":\"Please choose how many times the contact can repeat this message.\",\"choose-subscribers\":\"Choose contacts\",\"choose-which-numbered-key\":\"Please choose which numbered key the contact will press to repeat this message.\",\"clear-floip-config\":\"Clear Configuration\",\"click-and-drag-to-create-a-new-connection\":\"Click-and-drag to create a new connection\",\"click-and-drag-to-move-this-block\":\"Click-and-drag to move this block\",\"click-here-to-download-the-file\":\"Click here to download the file\",\"click-to-lock-this-choice-in-place\":\"Click to lock this choice in place\",\"click-to-remove-this-connection\":\"Click to remove this connection\",\"click-to-select-this-block\":\"Click to select this block\",\"click-to-toggle-editing\":\"Click to toggle editing\",\"click-to-unlock\":\"Click to unlock\",\"clipboard\":\"Clipboard\",\"clipboard-content\":\"Clipboard Content\",\"clipboard-simulator\":\"Clipboard Simulator\",\"clipboard-subscribers-that-reached-this-block\":\"Clipboard contacts that reached this block\",\"clipboard-subtitle\":\"Provide additional text that will be displayed to operators\",\"close\":\"Close\",\"cloudy\":\"Cloudy\",\"code-length\":\"Character Length\",\"code-validation\":\"Code validation\",\"codes\":\"Codes:\",\"collaborative-filtering-question\":\"Collaborative Filtering Question\",\"collaborative-filtering-rating\":\"Collaborative Filtering Rating\",\"combined-block-results\":\"Combined Block Results\",\"combined-tree-results\":\"Combined Tree Results\",\"compact-filter-display\":\"Compact filter display\",\"compact-filter-display-help-text\":\"Enter the maximum number of filter choices that should be displayed using the expanded filter. (e.g. '0' if all filters should be compact)\",\"completed\":\"Completed\",\"completed-interactions-per-block\":\"Completed Interactions per Block\",\"completed-of\":\"Completed of\",\"completed-transcriptions\":\"Completed Transcriptions\",\"completed-via\":\"Completed via\",\"components-can-be-separated-by-symbols-but-not-required\":\"Components can be separated by symbols but is not required.\",\"configure-floip-header\":\"Configure Flow Interoperability results streaming\",\"configure-referral-entity-prompt-eg\":\"Configure the prompt to select a Referral Entity. e.g.:\",\"confirm\":\"Confirm\",\"confirm-delete\":\"Confirm Delete\",\"confirm-upload\":\"Confirm Upload\",\"conflict-external-changes\":\"To see external changes please click the Reload button.\",\"conflict-new-version\":\"To save your work as a new version, please click the New version button.\",\"connect-to\":\"Connect To\",\"connect-to-an-operator\":\"Connect to an Operator\",\"connect-to-the-following-operator-list\":\"Connect to the following operator list\",\"connected-of\":\"Connected of\",\"contact\":\"Contact\",\"contact-properties\":\"Contact Properties\",\"contact-updated\":\"Existing contact updated\",\"content\":\"Content\",\"content-type\":\"Content type\",\"content-type-1\":\"Voice\",\"content-type-2\":\"SMS\",\"content-type-3\":\"Data\",\"content-type-4\":\"USSD\",\"content-type-5\":\"One-way SMS\",\"content-type-is-not-selected\":\"Content type is not Selected\",\"continue-through-exit\":\"Continue through Exit\",\"continuous\":\"Continuous\",\"corresponding-audio-file-components-examples\":\"Corresponding audio file components examples\",\"could-not-add-property\":\"Could not add property\",\"could-not-download-audio-for-that-tree\":\"Could not download audio for that tree.\",\"could-not-export-open-ended-audio\":\"Could not export open-ended audio.\",\"create-a-new-group\":\"create a new group\",\"create-a-new-list\":\"Create a new list\",\"create-a-new-one\":\"Create a new one\",\"create-a-new-survey\":\"create a new survey\",\"create-a-new-tree\":\"create a new tree\",\"create-a-tag-prompt\":\"Create tag\",\"create-and-upload-a-new-message\":\"create and upload a new message\",\"create-at-least-one-language-selector\":\"Before using this block, create at least one Language Selector.\",\"create-contact-absolute-date\":\"The Contact's property will be set to the date provided\",\"create-contact-description\":\"This block allows you to create Contacts with input gathered from previous blocks of this tree.\",\"create-contact-instructions\":\"Configure which data the Contact should be created with.\",\"create-contact-relative-block\":\"The Contact's property will be set relative to the time of the call using the offset provided. The answer the the configured block will determine how much to offset the value by.\",\"create-contact-relative-date\":\"The Contact's property will be set relative to the time of the call using the offset provided. \",\"create-new-link\":\"Create New Link\",\"create-new-version\":\"Create New Version\",\"create-task\":\"Create Task\",\"create-tasks\":\"Create Tasks\",\"create-transcription-tasks\":\"Create Transcription Tasks\",\"create-tree\":\"Create Tree\",\"create-weather-alerts\":\"Create Weather Alerts\",\"create-weather-forecast\":\"Create Weather Forecast\",\"created\":\"Created\",\"created-a-new-version-of\":\"You've created a new version of\",\"created-new-version-of\":\"Created new version of\",\"created-with\":\"Created with\",\"csv-format\":\"Format\",\"currency-to-use\":\"Currency to Use\",\"current-time-after\":\"After\",\"current-time-and\":\"and\",\"current-time-before\":\"Before\",\"current-time-between\":\"Between\",\"current-time-day\":\"day\",\"current-time-day-of-month\":\"Day of month\",\"current-time-day-of-week\":\"Day of week\",\"current-time-exclusive\":\"Exclusive\",\"current-time-go-to-true-when\":\"Go to 'True' when:\",\"current-time-inclusive\":\"Inclusive\",\"current-time-is\":\"is\",\"current-time-month\":\"Month\",\"current-time-select-comparison\":\"Select comparison\",\"current-time-select-day-of-week\":\"Select day of week\",\"current-time-select-month\":\"Select month\",\"current-time-time-of-day\":\"Time of day\",\"current-time-time-to-compare\":\"Select type of time to compare\",\"current-time-timezone\":\"Timezone\",\"currently-set-as-exit-block\":\"Currently set as exit block\",\"currently-set-as-starting-block\":\"Currently set as starting block\",\"custom-data-category-name\":\"Custom data category name\",\"custom-data-value\":\"Custom data value\",\"custom-ordering\":\"Use custom block ordering\",\"custom-settings\":\"Custom Settings\",\"daily\":\"Daily\",\"data\":\"Data\",\"data-residency-mode-is-enabled-for-this-account-responses-to-this-block-will-be-retained-on-the-in-country-server-only-and-de-identified-before-being-transmitted-outside-the-country\":\"Data Residency Mode is enabled for this account. Responses to this block will be retained on the in-country server only, and de-identified before being transmitted outside the country.\",\"data-type-boolean\":\"Boolean\",\"data-type-date\":\"Date\",\"data-type-location\":\"Location\",\"data-type-map_coordinates\":\"Map Coordinates\",\"data-type-multiple_choice\":\"Multiple Choice\",\"data-type-number\":\"Number\",\"data-type-phone\":\"Phone\",\"data-type-text\":\"Text\",\"data-validation-invalid-choice\":\"Value ':dataChoice' from ':dataValue' is not valid\",\"data-validation-invalid-value\":\"Value ':dataValue' is not valid\",\"data-validation-max_length\":\"Value ':dataValue' exceeds the max length :maxOpenLength\",\"data-validation-max_numeric_digits\":\"Value ':dataValue' exceeds the max numeric digit :maxNumericDigits\",\"date-created\":\"Date Created\",\"date-range\":\"Date Range\",\"date-range-locked\":\"Date Range Locked\",\"date-updated\":\"Date Updated\",\"day\":\"day\",\"day-of-week\":\"Day of Week\",\"days\":\"day|days\",\"days-after\":\"Days After\",\"days-after-adding\":\"Days after adding\",\"days-before\":\"Days Before\",\"december-month\":\"December\",\"decision-branch\":\"Decision Branch\",\"default-repeat-key\":\"Default Repeat Key\",\"default-sender-for-x-otherwise-systems\":\"The default Sender ID for :orgName will be used when defined, otherwise the system's default Sender ID will be used.\",\"delay-to-enter-repeat-key\":\"Delay To Enter Repeat Key\",\"delete\":\"Delete\",\"delete-issue-tracker\":\"Delete Issue Tracker?\",\"delete-task\":\"Delete Task\",\"delete-this-shareable-link\":\"Delete this shareable link\",\"delete-tracker\":\"Delete Tracker\",\"delete-transcription-task-question\":\"Delete Transcription Task?\",\"delete-tree\":\"Delete Tree\",\"delete-tree-question\":\"Delete Tree?\",\"delete-tree-version\":\"Delete Tree Version?\",\"delete-version\":\"Delete Version\",\"deleted-subscriber\":\"Deleted contact\",\"deleted-title-version\":\"Deleted\",\"description\":\"Description\",\"destination-flow\":\"Destination flow\",\"destination-tree\":\"Destination Tree\",\"destination-tree-not-found\":\"Destination Tree Not Found\",\"destination-url\":\"Destination URL\",\"directory-selection-block-invalid-details\":\"One or more of Directory Selection bocks have invalid details. To allow you import results: \\n1- make sure every Directory Selection blocks have uploaded choices (csv),\\n2- make sure the tree has no more issues. \\n3- resave the tree\",\"directory-selection-description\":\"The Directory Selection block allows contacts to select items in a directory of choices. The block can optionally send the contact back information related to their selection. The contact's selection can be used later in a Decision Branch block. \",\"directory-selection-filter-description\":\"Directory Selection Block fields can be used as filters on the shared link. Select which fields should be used as filters.\",\"directory-selection-filters\":\"Directory Selection Filters\",\"disable\":\"Disable\",\"disable-voice-sms\":\"Disable Voice & SMS\",\"disabled\":\"Disabled\",\"disaggregate-data-by-the-audio-listened-percentage\":\"Disaggregate Data By The Audio Listened Percentage\",\"disaggregate-data-by-the-communication-channels\":\"Disaggregate Data By The Communication Channels\",\"disaggregate-data-by-the-question-choices\":\"Disaggregate Data By The Question Choices\",\"display-headings-without-spaces\":\"Display headings without spaces\",\"display-latest-interaction-only\":\"Display the latest interaction only\",\"display-regular-table-headings\":\"Display regular table headings\",\"do-not-merge-any-calls\":\"Do not merge any calls\",\"do-not-prompt\":\"Do not prompt\",\"do-you-want-to-proceed\":\"Do you want to proceed?\",\"dont-receive\":\"Don't Receive\",\"download\":\"Download\",\"download-X-format\":\":kind format\",\"download-admin-file\":\"Download master CSV file\",\"download-audio-file\":\"Download audio file\",\"download-csv\":\"Download CSV\",\"download-csv-file-to-your-computer\":\"Download CSV file to your computer\",\"download-response-audio\":\"Download Response Audio\",\"download-template\":\"Download template\",\"download-template-admin-file\":\"Download template\",\"download-the-audio-files-from-open-ended-responses\":\"Download the audio files from open-ended responses\",\"download-x-template-file\":\"Download :Language template\",\"draft\":\"Draft\",\"drag-and-drop-instruction\":\"Drag and drop CSV file or\",\"dry\":\"Dry\",\"duplicate\":\"Duplicate\",\"duplicate-as-new-tree\":\"Duplicate as New Tree\",\"duplicate-entire-flow\":\"Duplicate entire flow\",\"duplicate-tree\":\"Duplicate Tree\",\"duplicate-tree-has-been-created\":\"Duplicate tree has been created.\",\"duplicates-warning\":\"Based on limit and characters, recommended minimum length is\",\"duration\":\"Duration\",\"earth-networks\":\"Earth Networks\",\"edit\":\"Edit\",\"edit-alert-message\":\"Edit Alert Message\",\"edit-block-type\":\"Edit :block_type block\",\"edit-case-block\":\"Edit Case Block\",\"edit-collaborative-filtering-question\":\"Edit Collaborative Filtering Question\",\"edit-collaborative-filtering-rating\":\"Edit Collaborative Filtering Rating\",\"edit-content\":\"Edit Content\",\"edit-expression\":\"Edit expression\",\"edit-flow\":\"Edit Flow\",\"edit-generate-code-block\":\"Edit generate code\",\"edit-group-membership\":\"Edit Group Membership\",\"edit-location\":\"Edit Location\",\"edit-log-block\":\"Edit Log Block\",\"edit-message\":\"Edit message\",\"edit-multiple-choice-question\":\"Edit Multiple-Choice Question\",\"edit-multiple-select-multiple-choice-question\":\"Edit Multiple Select Multiple-Choice Question\",\"edit-new-version\":\"Edit new version\",\"edit-numeric-question\":\"Edit numeric question\",\"edit-open-ended-question\":\"Edit Open-Ended Question\",\"edit-operator-contact-lists\":\"Edit Operator Contact Lists\",\"edit-outgoing-call\":\"Edit Outgoing Call\",\"edit-output-block\":\"Edit Output Block\",\"edit-random-order-multiple-choice-question\":\"Edit Random Order Multiple-Choice Question\",\"edit-run-flow-block\":\"Edit Run Flow Block\",\"edit-settings\":\"Edit Settings\",\"edit-subscriber-property\":\"Edit Contact Property\",\"edit-this-block\":\"Edit this block\",\"edit-tree-before-sending\":\"Edit tree before sending\",\"edit-validate-block\":\"Edit Validate Code Block\",\"edit-voice-content\":\"Edit Voice Content\",\"empty\":\"Empty\",\"empty-audio-library\":\"Empty audio library!\",\"empty-responses\":\"empty responses\",\"enable\":\"Enable\",\"enable-disable-subscriber\":\"Enable/disable contact\",\"enable-display-of-block-type\":\"Enable display of block type (e.g. Multiple Choice Question)\",\"enable-display-of-key-metrics\":\"Enable display of key metrics\",\"enable-sms\":\"Enable SMS\",\"enable-voice\":\"Enable Voice\",\"enable-voice-sms\":\"Enable Voice & SMS\",\"enabled\":\"Enabled\",\"enabled-languages\":\"Enabled Languages\",\"enabled-result-tabs\":\"Enabled result tabs\",\"end-at\":\"End At\",\"end-date\":\"End Date\",\"end-recording-by-pressing\":\"End Recording by Pressing\",\"end-the-call-session\":\"End the call/session\",\"ends\":\"Ends\",\"enter-a-value\":\"Enter a value\",\"enter-accepted-responses\":\"Replace this with a list of responses that we will use to match the respondant's answer to this choice. Enter each option on a new line. (You may leave this field blank if the tree will be used for voice content only)\",\"enter-at-least-three-chars\":\"Enter at least three characers...\",\"enter-at-least-three-chars-to-search\":\"Enter at least three characters to begin searching...\",\"enter-audio-content\":\"Enter Audio content\",\"enter-block-label\":\"Enter a block label\",\"enter-block-name\":\"Enter a block name\",\"enter-block-semantic-label\":\"Enter a block semantic label\",\"enter-clipboard-content\":\"Enter clipboard content...\",\"enter-confirmation-audio\":\"If using voice content, replace this with the filename of an audio file that you have uploaded to your audio library. This audio will be played back to the respondant after they have selected the choice. (You may leave this blank if the tree does not have voice content or if you wish to not play anything back to the contact)\",\"enter-date\":\"Enter date\",\"enter-duration\":\"Enter duration\",\"enter-each-on-new-line\":\"Enter each on a new line\",\"enter-exit-label\":\"Enter Exit Label\",\"enter-exit-test-expression\":\"Enter Exit Test Expression\",\"enter-image-content\":\"Enter Image content\",\"enter-ivr-number\":\"If using voice content, replace this with the numeric code that the respondant should enter to select this choice. (You may leave this blank if the tree does not have voice content)\",\"enter-num-ratings\":\"Enter the number of ratings\",\"enter-number\":\"Enter Number\",\"enter-number-of-days\":\"Enter number of days\",\"enter-operator-queue-name\":\"Enter Operator Queue Name here\",\"enter-primary-and-synonyms\":\"Enter the primary option and synonyms for each choice. Enter each synonym on a new line.\",\"enter-primary-attribute\":\"Your first choice goes on this row. Replace this with the primary information for this choice here. (See example of a completed choice below) \",\"enter-primary-attribute-title\":\"Replace this with the description of the primary information for the choices (e.g. 'Clinic Name')\",\"enter-program-id\":\"Enter the program identifier\",\"enter-property-name\":\"Enter property name\",\"enter-secondary-attribute\":\"Replace this with the secondary information for this choice\",\"enter-secondary-attribute-title\":\"Replace this with the description of the secondary information for the choices (e.g. 'Country')\",\"enter-secondary-attribute-title-2\":\"Replace this with the description of the secondary information for the choices (e.g. 'Operating hours'). You may add up to 10 peices of secondary information by adding columns to the right.\",\"enter-sms-content\":\"Enter SMS content…\",\"enter-sms-text-here\":\"Enter SMS text here\",\"enter-social-content\":\"Enter social content\",\"enter-social-messaging-text-here\":\"Enter social messaging content here\",\"enter-text-content\":\"Enter Text content\",\"enter-ussd-content\":\"Enter USSD content…\",\"enter-ussd-text-here\":\"Enter USSD text here\",\"enter-value\":\"Enter value\",\"enter-video-content\":\"Enter Video content\",\"entered\":\"Entered\",\"entity\":\"Entity\",\"entity-selection-block-instructions\":\"Contacts will exit through the 'Success' output when they select an Entity. If they are not allowed to refer to any Entities, or if they fail to select an Entity they are taken through the 'Failure' exit.\",\"equal-to\":\"Equal to\",\"error\":\"Error\",\"error-creating-transcription-task\":\"Error creating transcription task.\",\"error-found\":\"error found\",\"error-importing-json\":\"Error Importing JSON!\",\"error-report\":\"Error Report\",\"error-updating-transcription-task\":\"Error updating transcription task.\",\"error-uploading-file-try-again\":\"There was an error uploading the file, please try uploading again.\",\"error-while-attempting-to-publish-specified-tree\":\"Error while attempting to publish specified tree.\",\"error-while-downloading-template\":\"An error has occured while downloading the template file.\",\"error-while-saving-transcriptions\":\"Error while saving transcriptions.\",\"error-while-saving-tree\":\"Error while saving tree...\",\"establish-connection\":\"Establish Connection\",\"example-tree\":\"Example Tree\",\"examples\":\"Examples\",\"exceeds\":\"exceeds\",\"excel-supported-format\":\"Excel-supported CSV\",\"exit\":\"Exit\",\"exit-block-tree-begins-here\":\"Tree execution will continue here when the session is unexpectely terminated.\",\"exit-default\":\"Default\",\"exit-otherwise-through-default\":\"Otherwise, exit through Default\",\"exit-through\":\"Exit Through\",\"exit-to-another-output\":\"Exit to another output\",\"exit-when\":\"When\",\"expires-after\":\"Expires after\",\"expires-on\":\"Expires on\",\"export-date-time-format\":\"Export Date/Time Format\",\"export-results-to-csv\":\"Export Results to CSV\",\"export-transcriptions\":\"Export Transcriptions\",\"export-tree-json\":\"Export Tree JSON\",\"export-using-current-time-zone\":\"Export using current time zone\",\"export-using-utc\":\"Export using UTC\",\"export-using-utc-with-subscriber-phone-number\":\"Export using UTC with Contact Phone Number\",\"expression-branch-description\":\"This block will check the expression (“When”) for each exit in order to determine which exit to use.\",\"failed\":\"Failed\",\"failed-finding-matches\":\"Failed finding matches!\",\"failure\":\"Failure\",\"false\":\"False\",\"february-month\":\"February\",\"feedback-message\":\"Feedback Message\",\"field\":\"Field\",\"field-deleted-since-configuring-this-block\":\"The Contact Property has been deleted since configuring this Block. Please remove this configuration.\",\"file-details\":\"File Details\",\"filesize\":\"Filesize\",\"fill-out-template-instruction\":\"Fill out the template with your tree results\",\"fill-out-template-instruction-1\":\"Populate rows with data to correspond with the column headers of the template. Each row is a single tree result\",\"fill-out-template-instruction-2\":\"You cannot add new columns to your file to create new blocks. Edit the tree to make these changes\",\"fill-out-template-instruction-3\":\"The format for Call Date should be YYYY-MM-DD\",\"fill-out-template-instruction-4\":\"The format for Call Start Time should be HH:MM:SS\",\"fill-out-template-instruction-5\":\"For the 'Multiple Select Multiple Choice Question Block' you should separate options chosen with ';'\",\"filter-block-content\":\"Filter block content…\",\"filter-by-block\":\"Filter by Blocks\",\"filter-by-date\":\"Filter by date\",\"filter-by-directory-selection\":\"Filter by Directory Selection Blocks\",\"filter-by-tag\":\"Filter by Tags\",\"filter-enabled\":\"Filter Enabled\",\"filter-instructions\":\"Select which peices of information should be used as filters when viewing results.\",\"filter-validation\":\"Filter Validation\",\"filters\":\"Filters\",\"filters-saved\":\"Filters configurations saved\",\"find-matches\":\"Find Matches\",\"first-time-subscribers\":\"First-time Contacts\",\"fix-validation-errors-before-publishing\":\"Fix validation errors before publishing\",\"fixed-date\":\"Fixed date\",\"flag-this-recording-as-either\":\"Flag this recording as either inaudible or empty\",\"flagged-as-flagtype\":\"Flagged as :flag_type - click the button above to undo.\",\"flagged-as-inaudible-or-empty\":\"Flagged as inaudible or empty - use the buttons above to undo\",\"floip-cleared\":\"Configuration cleared.\",\"floip-expressions-escape-with-double-at-symbol\":\"If you intend to insert a literal <code>@</code> symbol, using <code>@@</code> will result in a single character in output.\",\"floip-instructions-1\":\"Viamo is a member of the Flow Interoperability Initiative, enabling seamless data exchange across participating ICT4D software systems.\",\"floip-instructions-2\":\"To enable secure streaming of results for this tree to a Flow Results data aggregator, enter the base URL and authentication token of the aggregator.\",\"floip-sync-success\":\"Your Viamo tree is enabled to stream responses to the Flow Results aggregator.\",\"floip-sync-warning\":\"Your Viamo tree is not enabled to stream responses to the Flow Results aggregator. Establish a connection to the aggregator to enable streaming.\",\"flow-view\":\"Flow view\",\"for-a-given-subscriber-custom-data-category\":\"For a given contact, if the following property or custom data category has the value below, go to 'True'. Otherwise, go to 'False'.\",\"for-a-given-subscriber-go-to-true-false\":\"For a given contact, if the following property or custom data category has the value below, go to True. Otherwise, go to False.\",\"for-assistance\":\"for assistance\",\"for-example-to-assign-the-first-hundred-audio-responses-to-a-transcriber\":\"For example, to assign the first hundred audio responses to a transcriber, set the 'Start At' value to 1 and the 'End At' value to 100. For the next transcriber, you could then start at 101 and end at 200, and so on.\",\"for-the-best-user-experience\":\"For the best user experience, please provide an audio prompt that says,\",\"for-this-block\":\"for this block.\",\"fri\":\"Fri\",\"friday-day\":\"Friday\",\"from-block-input\":\"From block input\",\"from-import\":\"from Import\",\"generate-code-title\":\"Generate code title\",\"generate-csv-file\":\"Generate CSV file\",\"generate-shareable-link\":\"Generate shareable link\",\"generating-data-from-past-calls\":\"Generating data from past calls\",\"get-shareable-link\":\"Get Shareable Link\",\"go-to-lang-selector-interface\":\"Go to Language Selectors interface\",\"go-to-true-or-false\":\"... go to True. Otherwise, go to False.\",\"go-to-true-otherwise-go-to-false\":\"...go to 'True'. Otherwise, go to 'False'.\",\"go-to-true-output-if-contact-language-is\":\"Go to the 'True' output if the Contact's langauge is\",\"greater-than\":\"Greater than\",\"group\":\"group\",\"group-is-larger-than\":\"group is larger than\",\"group-label\":\"Group:\",\"group-not-set\":\"Group not set\",\"groups\":\"Groups\",\"has-already-been-published\":\"has already been published\",\"has-been-successfully-published\":\"has been successfully published\",\"has-value\":\"has value\",\"header-validation\":\"Value ':dataValue' is not a valid :dataHeader\",\"header-validation-missing\":\"The ':columnName' column is missing\",\"heading-exit\":\"Exit\",\"headings\":\"Headings\",\"headings-format\":\"Headings Format\",\"heres-what-we-know\":\"Here's what we know:\",\"hide-instruction\":\"Hide Instructions\",\"hide-phone-numbers\":\"Hide phone numbers\",\"hide-question-titles\":\"Hide Question Titles\",\"hide-subscriber-id\":\"Hide Contact ID\",\"high-winds\":\"High Winds\",\"histogram-of-percentage-listened\":\"Histogram of % listened\",\"home\":\"Home\",\"how-to-import-tree-results\":\"How to Import Tree Results\",\"human-readable\":\"Human-readable\",\"hung-up\":\"Hung up\",\"i-have-translated-my-choices\":\"I have translated my choices\",\"if\":\"If\",\"if-a-respondent-has-already-started-this-tree-but-not-finished\":\"If a respondent has already started this tree but not finished, resume where they left off.\",\"if-all-following-true\":\"If all of the following are true\",\"if-all-of-the-following-are-true\":\"If all of the following are true\",\"if-any-following-true\":\"If any of the following are true\",\"if-any-of-the-following-are-true\":\"If any of the following are true\",\"if-at-least\":\"If at least\",\"if-at-least-this-many-following-true\":\"If at least this many of the following are true\",\"if-at-least-this-many-of-the-following-are-true\":\"If at least this many of the following are true...\",\"if-b-all-b-of-the-following-are-true-go-to-true\":\"If <b>all</b> of the following are true, go to True.\",\"if-cfq-block-has-x-ratings\":\"If statements from ':blockTitle' have :targetRatio ratings...\",\"if-in\":\"If in\",\"if-not-in\":\"If not in\",\"if-subscriber-custom-data\":\"If Contact Custom Data,\",\"if-subscriber-language-is\":\"If Contact Language is\",\"if-subscriber-language-is-unknown\":\"If Contact Language is '[Unknown]'\",\"if-subscriber-start-date-is\":\"If Contact Start Date is\",\"if-symbols-are-used-then-reflect-in-filename\":\"If symbols are used then this must be reflected in the file name.\",\"if-the-number-of-subscribers-in-the\":\"If the number of contacts in the\",\"if-the-subscriber-is\":\"If the contact is\",\"if-the-value-is\":\"If the value is\",\"if-youd-like-to-repeat-msg-press-2\":\"If you'd like to repeat this message, please press 2 now.\",\"import-done\":\"Import done\",\"import-export\":\"Import / Export\",\"import-failed\":\"Import failed for\",\"import-file\":\"Import the file\",\"import-file-instruction\":\"Drag the file or click on the Upload CSV file button and select the saved template\",\"import-in-progress\":\"Import in progress\",\"import-new-results\":\"Import New Results\",\"import-results\":\"Import Tree Results\",\"import-status\":\"Import Status\",\"import-tree\":\"Import Tree\",\"import-tree-json\":\"Import Tree JSON (*.json File)\",\"importing\":\"Importing\",\"importing-file\":\"Importing file\",\"in-progress\":\"In Progress\",\"in-the-following-group\":\"In the following group\",\"inactive-do-not-receive-outgoing-calls\":\"Inactive(Do not receive Outgoing Calls)\",\"inaudible\":\"Inaudible\",\"include-calls-from\":\"Include calls from\",\"include-in-summary\":\"Include in summary\",\"infinite-loops-detected-please-edit-before-sending\":\"Infinite loops detected. Please edit before sending\",\"infinite-loops-exist\":\"Infinite loops exist\",\"input\":\"Input\",\"input-help\":\"This block checks that a Code is valid by using the response from a previous question. Select which question should be used.  \",\"input-required\":\"Input Required\",\"instructional-text-optional\":\"Instructional text (optional)\",\"interactions\":\"Interactions\",\"internal-notes\":\"Internal Notes\",\"internal-notes-optional\":\"Internal notes (optional)\",\"invalid\":\"Invalid\",\"invalid-content-type\":\"Invalid Content Type : File is not recognized as .csv\",\"invalid-csv\":\"Invalid CSV: The file could not be processed as a valid .csv file\",\"invalid-entry\":\"Invalid entry.\",\"invalid-pattern\":\"Invalid pattern!\",\"invalid_startingblock_key\":\"Please set a starting block for your tree\",\"is\":\"is\",\"is-complete\":\"is complete\",\"is-private-not-reversible\":\"This setting cannot be changed after a Tree is published with this option enabled\",\"issue-trackers\":\"Issue Trackers\",\"ivr-content\":\"IVR Content\",\"january-month\":\"January\",\"july-month\":\"July\",\"june-month\":\"June\",\"key-metrics\":\"Key Metrics\",\"key-press\":\"Key Press\",\"label\":\"Label\",\"label-is-already-in-use\":\"Label is already in use\",\"language\":\"Language\",\"language-options\":\"Language Options\",\"language-selection-prompt\":\"Language Selection Prompt\",\"language-selector\":\"Language Selector\",\"language-selector-for-this-call\":\"Language Selector for this call\",\"language-selector-not-found\":\"Language Selector Not Found\",\"language-x-csv-file\":\":Language CSV File\",\"languages\":\"Languages\",\"languages-have-not-been-enabled\":\"Languages have not been enabled\",\"last-edited\":\"Last edited\",\"last-edited-on-this-date\":\"Last edited on this date\",\"last-saved-at\":\"Last saved at\",\"lat\":\"Lat:\",\"latest-message-for-user-groups\":\"Latest Message for all Contact Groups\",\"latin-languages\":\"Latin Languages\",\"learn-more-about-viamo-by-visiting\":\"Learn more about Viamo by visiting :viamo_link, or :sign_in_link\",\"less-than\":\"Less than\",\"let-users-repeat\":\"Let users repeat this message\",\"letters-only\":\"Letters Only\",\"library\":\"Library\",\"load-more-subscribers\":\"Load More Contacts\",\"loading\":\"Loading...\",\"loading-average-call-durations\":\"Loading Average Call Durations...\",\"local-currency\":\"Local Currency\",\"local-time-is-utc\":\"Local time is UTC\",\"location\":\"Location\",\"location-selector\":\"Location Selector\",\"lock\":\"Lock\",\"lock-the-date-range-to-the-dates-above\":\"Lock the date range to the dates above\",\"locked\":\"Locked\",\"logic\":\"Logic\",\"lon\":\"Lon:\",\"machine-readable\":\"Machine-readable\",\"machine-readable-format\":\"Machine-Readable Format\",\"make-new-subscriber\":\"Make a new contact with same phone number\",\"manage-queues\":\"Manage Queues...\",\"manage-responses\":\"Manage Responses\",\"manage-statements\":\"Manage Statements\",\"manage-transcriptions\":\"Manage Transcriptions\",\"march-month\":\"March\",\"mark-call-as-complete\":\"Mark Call As Complete\",\"max-amount\":\"Maximum Amount\",\"max-code-issue\":\"Limit number of codes\",\"max-days\":\"Max Days\",\"max-duration-in-seconds\":\"Maximum Duration (seconds)\",\"max-response-characters\":\"Maximum Response Characters\",\"max-length\":\"Maximum Length\",\"max-number-of-repeats\":\"Max Number of Repeats\",\"maximum-number-of-response-digits\":\"Maximum Number of Response Digits\",\"maximum-record-duration\":\"Maximum Record Duration\",\"maximum-value\":\"Maximum Value\",\"maximum-value-(inclusive)\":\"Maximum value (inclusive)\",\"may-month\":\"May\",\"mcq-response-format\":\"MCQ Response Format\",\"merge-all-calls-from-same-subscriber\":\"Merge all calls from same contact\",\"merge-incomplete-calls-from-the-same-subscriber\":\"Merge incomplete calls from the same contact\",\"merge-only-resumed-calls\":\"Merge only resumed calls\",\"merge-options\":\"Merge Options\",\"message\":\"Message\",\"message-block-values\":\"Message Block Values\",\"message-blocks-only\":\"Message Blocks only\",\"message-details\":\"Message details\",\"message-title\":\"Message title\",\"method\":\"Method\",\"min-amount\":\"Minimum Amount\",\"min-length\":\"Minimum Length\",\"minimum-value\":\"Minimum Value\",\"minimum-value-(inclusive)\":\"Minimum value (inclusive)\",\"minutes\":\"minutes\",\"modified\":\"(Modified)\",\"modify-subscriber\":\"Modify contact\",\"modify-subscriber-active-status-to\":\"Modify Contact active status to\",\"modify-subscriber-preferred-content-type-for\":\"Modify Contact preferred content type for\",\"modify-subscriber-start-date-to\":\"Modify Contact start date to\",\"modify-subscribers-start-date-to-absolute-date-here\":\"Modify Contacts start date to Absolute date here\",\"mon\":\"Mon\",\"monday-day\":\"Monday\",\"month\":\"month\",\"monthly\":\"Monthly\",\"months-after\":\"Months After\",\"months-before\":\"Months Before\",\"more\":\"More\",\"more-options\":\"More Options\",\"more-than\":\"More than\",\"most-active-blocks\":\"Most Active Blocks\",\"most-recent-published-version\":\"Most recent published version\",\"most-recent-version\":\"Most recent version\",\"most-recent-version-of\":\"Most recent version of\",\"mostly\":\"Mostly\",\"msmcq-description-p1\":\"For Text-based channels like SMS, USSD and Social Messaging: set a single letter (A-Z) as synonym for each choice using the choice options menu.\",\"msmcq-description-p2\":\"Contacts can for example reply: 'abc' to select 3 choices configured with synonym 'a', 'b' and 'c'. Synonym must be set and must be unique per choice. The same synonym can be used for same choice across the different languages enabled.\",\"msmcq-description-p3\":\"For Voice, set the voice key press for each choice in the choice options menu. Contacts can for example press '123' to select 3 choices.\",\"multiple-choice-question\":\"Multiple Choice Question\",\"multiple-select-multiple-choice-question\":\"Multiple Select Multiple Choice Question\",\"name\":\"Name\",\"never\":\"Never\",\"new-contact-created\":\"New contact created\",\"new-edits-click-save\":\"New edits – click 'Save' again before continuing.\",\"new-exclamation\":\"New!\",\"new-issue-tracker\":\"New Issue Tracker\",\"new-property\":\"New property\",\"new-subscriber-value\":\"New contact value\",\"new-transcription-task\":\"New Transcription Task\",\"new-transcription-task-created\":\"New transcription task created!\",\"new-transcription-tasks-generated\":\"New transcription tasks generated!\",\"new-tree\":\"New Tree\",\"new-tree-created\":\"New tree created!\",\"new-version\":\"New version\",\"new-version-created\":\"New version created!\",\"newest\":\"Newest\",\"newest-to-oldest\":\"Newest to Oldest\",\"next\":\"Next\",\"no\":\"No\",\"no-action-selected\":\"(No action selected)\",\"no-admin-file-yet-filters\":\"Upload the master CSV file to set filters\",\"no-admin-file-yet-selection-confirmation\":\"Upload the master CSV file to set selection confirmation\",\"no-audio-files-found-for-X\":\"No audio files found for\",\"no-audio-files-found-in-organisation\":\"No Audio files found in Organisation\",\"no-audio-yet\":\"No audio yet\",\"no-blocks-for-content\":\"There are no blocks to populate content onto.\",\"no-blocks-found-for-tree-with-identifier\":\"No blocks found for Tree with identifier\",\"no-change\":\"No change\",\"no-choice-selected\":\"No choice selected\",\"no-choices-added\":\"No choices added.\",\"no-choices-yet-please-specify\":\"No choices yet -- please specify your choices first in the sidebar\",\"no-choices-yet-please-specify-your-choices-first-in-the-sidebar\":\"No choices yet. Please specify your\",\"no-clipboard-content-yet\":\"No Clipboard content yet\",\"no-content-blocks\":\"No content blocks!\",\"no-content-blocks-to-populate-content-onto\":\"There are no content blocks to populate content onto.\",\"no-content-types-enabled\":\"No content types enabled.\",\"no-credit\":\"No Credit\",\"no-csv-exports-for-these-results-have-been-created-yet\":\"No CSV exports for these results have been created\",\"no-data\":\"No data\",\"no-directory-selection-blocks\":\"This tree has no Directory Selection blocks\",\"no-groups-created-yet\":\"No groups created yet or your groups have no contacts.\",\"no-labels-or-tags\":\"No labels or tags\",\"no-languages-enabled\":\"No languages are enabled yet for this tree.\",\"no-languages-enabled-on-the-tree\":\"No Languages enabled on the Tree\",\"no-matches-found\":\"No matches found!\",\"no-messages-created-yet\":\"No messages created yet.\",\"no-number-of-audio-files-per-task-supplied\":\"No number of audio files per task supplied.\",\"no-operator-contact-lists-made-yet\":\"No operator contact lists have been made yet.\",\"no-preferred-channel-selected\":\"You didn't select a preferred channel. Please select one\",\"no-preferred-language\":\"No preferred language\",\"no-question-selected\":\"No question selected\",\"no-question-text-provided\":\"No Question Text Provided\",\"no-result-for-the-selected-filters\":\"No results for the selected filters.\",\"no-results-for-this-block-yet\":\"No results for this block yet.\",\"no-results-not-sent-yet\":\"(No results - not sent yet)\",\"no-results-yet\":\"Sorry, there are no results yet.\",\"no-shareable-links-have-been-created-yet\":\"No shareable links have been created yet.\",\"no-sms-content-yet\":\"No SMS content yet\",\"no-social-content-yet\":\"No social content yet\",\"no-subscriber-field-type-map-coordinates\":\"You do not have a contact field of type 'Map Coordinates'. This contact field is required to store the location of the contact.\",\"no-surveys-created\":\"No surveys created yet.\",\"no-tag-found\":\"No tag found\",\"no-tagged-blocks\":\"This tree has no tagged blocks\",\"no-tree-found-with-identifier\":\"No Tree found with identifier\",\"no-trees-created-yet\":\"No trees created yet.\",\"no-trees-have-been-created-yet\":\"No trees have been created yet\",\"no-ussd-content-yet\":\"No USSD content yet\",\"no-validation\":\"No Validation\",\"no-value\":\"No value\",\"none-selected\":\"(None selected)\",\"normalize\":\"Normalize\",\"normalize-chart-results\":\"Normalize chart results\",\"not\":\"not\",\"not-available\":\"Not Available\",\"not-created-any-language-selectors-yet\":\"You have not created any language selectors yet.\",\"not-equal-to\":\"Not equal to\",\"not-found\":\"Not Found\",\"not-in-the-following-group\":\"Not in the following group\",\"not-launched-yet\":\"Not launched yet\",\"not-set\":\"not-set\",\"november-month\":\"November\",\"now\":\"Now\",\"num-ratings-per-statement\":\"Number Of Ratings Per Statement\",\"num-ratings-that-each-statement-should-receive\":\"The number of ratings that each statement should receive.\",\"number\":\"Number\",\"number-of-calls-in-date-range\":\"Number of calls in date range\",\"number-of-calls-in-the-last\":\"Number of calls in the last\",\"number-of-choices\":\"Number of choices\",\"number-of-exits\":\"Number of Exits\",\"number-of-outputs\":\"Number of outputs:\",\"number-of-people-who-ended-at-this-block\":\"Number of people who ended at this block\",\"numbers-alphabet\":\"Alphanumeric\",\"numbers-only\":\"Numbers Only\",\"numeric-average\":\"Numeric Average\",\"numeric-block-title\":\"Numeric Block Title\",\"numeric-branch\":\"Numeric Branch\",\"numeric-quesion-block\":\"Numeric Quesion Block\",\"numeric-question\":\"Numeric Question\",\"occurrences\":\"occurrences\",\"october-month\":\"October\",\"of\":\"of\",\"of-following-true\":\"...of the following are true\",\"of-the-following-are-true\":\"of the following are true\",\"of-the-following-are-true-go-to-true\":\"of the following are true, go to True.\",\"offline\":\"Offline\",\"offline-content\":\"Offline Content\",\"oldest-to-newest\":\"Oldest to Newest\",\"on\":\"On\",\"on-line\":\"on line\",\"one-output-for-all-choices\":\"One output for all choices\",\"only-accepts-word-characters\":\"Only accepts word characters\",\"only-display-latest-interaction-if-multiple-interactions-exist-for-the-same-session-and-block\":\"Only display the latest interaction if multiple interactions exist in the same session for the same block. Leave unchecked if all results should be displayed.\",\"only-question-blocks\":\"Only question blocks\",\"open-block-with-voice-set-sub-prop-warning\":\"Open-ended Voice responses are unable to set contact properties at this time.\",\"open-ended-audio-export-ready\":\"Open-ended audio export ready\",\"open-ended-question\":\"Open-ended Question\",\"open-ended-responses\":\"Open-ended responses\",\"open-external-link\":\"Open External Link\",\"open-in-new-window\":\"Open in new window\",\"open-link\":\"Open Link\",\"open-link-in-new-window\":\"Open link in new window\",\"operator-contact-list\":\"Operator contact list\",\"operator-queue-name\":\"Operator Queue Name\",\"operators\":\"operators\",\"optional-description\":\"Optional description\",\"optionally-you-can-create-loop-back\":\"Optionally, you can create connections to 'loop back' to this random branch block, if you want contacts to reach all of the blocks connected below in random order. After every option has been reached, the block can either continue at random, or, it can 'exit' to a distinct output.\",\"options\":\"Options\",\"or\":\"or\",\"order\":\"Order\",\"order-by\":\"Order By:\",\"order-of-components-dont-matter-but-must-be-adjacent-one-another\":\"The order of these components do not matter but they must be adjacent to one another.\",\"order-of-results\":\"Order of Results\",\"organization-not-found-with-api-key\":\"Could not find organization with that API key.\",\"original-file\":\"Original file\",\"original-quality\":\"Original quality\",\"originally\":\"Originally\",\"outgoing-calls\":\"Outgoing Calls\",\"output\":\"Output\",\"output-branching\":\"Output Branching\",\"output-clipboard\":\"Clipboard\",\"output-connected\":\"Connected\",\"output-error\":\"Error\",\"output-exit\":\"Exit\",\"output-expression\":\"Output expression\",\"output-failed\":\"Failed\",\"output-false\":\"False\",\"output-not-met\":\"Not Met\",\"output-quota-met\":\"Quota met\",\"output-sms\":\"SMS\",\"output-true\":\"True\",\"output-ussd\":\"USSD\",\"output-voice\":\"Voice\",\"outputs\":\"Outputs\",\"partly\":\"Partly\",\"password\":\"Password\",\"pattern-not-provided-for-tree\":\"Pattern not provided for tree\",\"pause\":\"Pause\",\"percent-of-audio-listened\":\"Percent of Audio Listened\",\"percent-of-the-content-provided\":\":count % of the content provided.\",\"phone\":\"Phone\",\"phone-number\":\"Phone Number\",\"phone-quality\":\"Phone quality\",\"phone-recording\":\"Phone recording\",\"pick-a-date-range-to-display-block-interaction-totals\":\"Pick a date range to display block interaction totals\",\"plain-input\":\"Plain input\",\"play\":\"Play\",\"play-audio\":\"Play audio\",\"please-fix-the-validation-errors-in-this-tree-before-publishing\":\"Please fix the validation errors in this tree before\",\"please-provide-numeric-codes\":\"Please provide numeric codes.\",\"please-provide-valid-start-and-end-numbers\":\"Please provide valid start and end numbers.\",\"please-resolve-the-set-of-infinite-loops-before-sending-this-tree\":\"Please resolve the set of infinite loops\",\"please-select-a-numeric-question-block\":\"Please select a numeric question block.\",\"please-select-channel\":\"Please make sure you select a preferred channel\",\"please-translate-choices\":\"Please translate your choices.\",\"please-try-again-or-contact\":\"Please try again or contact\",\"precipitation-level\":\"Precipitation Level\",\"press\":\"Press\",\"preview-file\":\"Preview file\",\"previous\":\"Previous\",\"previous-exports\":\"Previous Exports\",\"previous-imports\":\"Previous Imports\",\"primary-information-heading\":\"Primary information heading\",\"pro-tip\":\"Pro Tip\",\"problem-connecting-api\":\"Problem connecting to the API.\",\"processing\":\"Processing...\",\"product-code\":\"Product Code\",\"program\":\"Program\",\"program-help-generate-code-block\":\"Make sure to set the same program in the Validate Code block\",\"program-help-validate-code-block\":\"Use the same program as the Generate Code block\",\"prompt\":\"Prompt\",\"prompt-for-statement\":\"Prompt for statement\",\"prompts\":\"Prompts\",\"property\":\"Property\",\"property-configuration\":\"Property Configuration\",\"property-not-supported\":\"Type not supported\",\"protocol\":\"Protocol\",\"provide-a-language-selector-menu\":\"Provide a language selector menu for contacts to choose their language\",\"provide-key\":\"Provide an API key\",\"provide-url\":\"Provide a URL\",\"publish\":\"Publish\",\"publish-new-version\":\"Publish New Version\",\"publish-the-newest-version-of-this-tree\":\"Publish the newest version of this tree\",\"publish-this-version-of-the-flow\":\"Publish this version of the flow\",\"published\":\"Published!\",\"published-header\":\"Published\",\"question\":\"Question\",\"question-and-message-blocks\":\"Question and Message Blocks\",\"question-blocks-only\":\"Question Blocks only\",\"question-prompt\":\"Question Prompt\",\"question-responses\":\"Question Responses\",\"question-title\":\"Question Title\",\"quota-threshold\":\"Quota Threshold\",\"rain\":\"Rain\",\"random-branch\":\"Random Branch\",\"random-code\":\"Generate Random Codes\",\"ready-to-send\":\"Ready to Send\",\"receive\":\"Receive\",\"receive-outgoing-calls\":\"Receive Outgoing Calls\",\"received\":\"Received\",\"recipient-group\":\"Recipient Group\",\"recommended\":\"Recommended\",\"recommended-export-format-settings\":\"Recommended Export Format Settings\",\"record-group-message\":\"Record Group Message\",\"record-group-message-title\":\"Record group message title\",\"reject\":\"Reject\",\"relative-to-numeric-input\":\"Relative to numeric input\",\"relative-to-the-call-date\":\"Relative to the call date\",\"reload\":\"Reload\",\"remove\":\"Remove\",\"remove-condition\":\"Remove condition\",\"remove-file\":\"Remove file\",\"remove-filter-tags\":\"Remove all tags\",\"remove-from\":\"Remove from\",\"remove-from-group\":\"Remove from Group\",\"remove-question\":\"Remove question\",\"removes-subscribers-from-the\":\"Removes contacts from the\",\"repeat\":\"Repeat\",\"repeat-every\":\"Repeat every\",\"repeat-questions\":\"Repeat Questions\",\"repeating\":\"Repeating\",\"repeats\":\"Repeats\",\"replace\":\"Replace\",\"replace-existing-audio-files-on-blocks\":\"Replace existing audio files on blocks\",\"reset\":\"reset\",\"reset-all-filter\":\"Reset all filters\",\"reset-all-filters\":\"Reset all filters\",\"reset-breakdown-and-show-interactions\":\"Reset Breakdown and Show Interactions\",\"reset-breakdown-and-show-total-interactions\":\"Reset Breakdown and Show Total Interactions\",\"reset-filters\":\"Reset Filters\",\"resolve-warnings-and-save-simulate-clipboard\":\"Resolve warnings and save the tree to use the Clipboard simulator\",\"resource-view\":\"Resources view\",\"response\":\"Response\",\"response-timeout\":\"Response Timeout\",\"responses\":\"Responses\",\"responses-in-this-task\":\"Responses in this task\",\"responses-to-this-block-might-contain-personal-identifying-information\":\"Responses to this block might contain personal identifying information\",\"responses-to-this-block-will-be-hidden-from-users-without-permission-to-view-personal-information\":\"Responses to this block will be hidden from users without permission to view personal information.\",\"restored-title-version\":\"Restored\",\"restored-tree\":\"Restored tree\",\"result-import\":\"Results import\",\"results\":\"Results\",\"results-listed-on-page\":\"Results Listed on Page\",\"resume-tree-for-partial-respondents\":\"Resume tree for partial respondents?\",\"retain-only-most-recent-call-from-same-subscriber\":\"Retain only most recent call from same contact\",\"rich_messaging-content\":\"Rich Messaging Content\",\"rows\":\"Rows\",\"rows-processed\":\"rows processed\",\"rule-components\":\"Rule components\",\"run-another-tree\":\"Run Another Tree\",\"runs-the-latest-version-of\":\"Runs the latest version of\",\"runs-the-latest-version-of \":\"Runs the latest version of\",\"sat\":\"Sat\",\"saturday-day\":\"Saturday\",\"save\":\"Save\",\"save-and-continue\":\"Save and continue\",\"save-and-go-to-next-page\":\"Save and go to next page\",\"save-changes-to-the-flow\":\"Save changes to the flow\",\"save-selection\":\"Save Selection\",\"save-template-instruction\":\"Save the template on your computer as a CSV file\",\"save-transcriptions\":\"Save Transcriptions\",\"saved\":\"Saved\",\"saving\":\"Saving...\",\"saving-and-checking-for-errors\":\"Saving and checking for Errors\",\"saving-transcriptions\":\"Saving transcriptions...\",\"saving-tree\":\"Saving Tree...\",\"schedule-and-send-an-outgoing-call\":\"Schedule and send an outgoing call\",\"schedule-type\":\"Schedule type\",\"search-audio-library\":\"Search audio library…\",\"search-subscribers\":\"Search contacts\",\"secondary-information-headings\":\"Secondary information headings\",\"seconds\":\"seconds\",\"seconds-ago\":\"seconds ago\",\"seconds-for-a-response\":\"seconds for a response\",\"seconds-for-response\":\"seconds for response\",\"see-error-report-instruction\":\"See details from Error Report below, correct the error in your CSV file and upload again.\",\"see-more-versions\":\"See more versions\",\"see-your-notifications-inbox-for-the-download-link\":\"See your Notifications Inbox for the download link.\",\"select-a\":\"Select a\",\"select-a-caller-from-the-list-below\":\"Select A Caller From The List Below\",\"select-a-candidate-block\":\"Select a candidate block\",\"select-a-channel\":\"Select a channel\",\"select-a-field\":\"Select a field\",\"select-a-property\":\"Select a property\",\"select-a-question\":\"Select a question\",\"select-a-tag\":\"Select a tag (or enter in a new one)\",\"select-a-tag-placeholder\":\"Select or add a tag\",\"select-a-value\":\"Select a value\",\"select-all\":\"Select all\",\"select-audio\":\"Select audio\",\"select-block\":\"Select a block\",\"select-data\":\"Select data\",\"select-from-audio-library\":\"Select from audio library\",\"select-group-message-to-play\":\"Select Group Message to Play\",\"select-groups\":\"Select Groups\",\"select-input-block\":\"Select input block\",\"select-input-source\":\"Select input source\",\"select-languages-to-be-enabled-for-content-for-this-tree\":\"Select languages to be enabled for content for\",\"select-none\":\"Select none\",\"select-property-type\":\"Select property type\",\"select-provider\":\"Select Provider\",\"select-queue\":\"Select Queue\",\"select-source\":\"Select a source\",\"select-source-content\":\"Select Source Content\",\"select-subscribers\":\"Select Contacts\",\"select-the-content-type-to-be-enabled-for-this-tree\":\"Select the content type to be enabled for this tree\",\"select_at_least_1_property\":\"Select at least 1 property to set in the 'Contact Properties' section\",\"select_property_to_set\":\"Select the property to set in the 'Contact Properties' section\",\"selected\":\"selected\",\"selected-groups\":\"Selected Groups\",\"selected-subscribers\":\"Selected contacts\",\"selection-confirmation\":\"Selection Confirmation\",\"selection-confirmation-instructions\":\"For Voice content, the audio file specified in the CSV file will be played back to the contact after they make a selection. For all other content types, select the peices of information that should be sent back to the contact or deselect all fields to send nothing back.\",\"selection-response-instructions\":\"For Voice content, the audio file specified in the CSV file will be played back to the contact after they make a selection. For all other content types, select the peices of information that should be sent back to the contact or deselect all fields to send nothing back.\",\"send\":\"Send\",\"send-on-date\":\"Send on date\",\"send-request-to-call-center\":\"Send request to Call Center\",\"send-request-to-different-call-center\":\"Send request to a different org's Call Center\",\"send-this-call-to\":\"Send this call to...\",\"send-tree\":\"Send Tree\",\"send-tree-ellipsis\":\"Send Tree...\",\"sends-call-as-random-dial-campaign\":\"Launch a random-dial campaign that runs continuously until you stop it, or a certain criteria is reached.\",\"sends-call-at-specified-time\":\"Sends this call to contacts starting at the specified date and time.\",\"sends-call-immediately\":\"Sends the call to contacts immediately.\",\"sends-call-repeating-based-on-options\":\"Sends this call on a repeating basis, according to the options on the right.\",\"sensitive-data\":\"Sensitive Data\",\"separate-output-for-each-choice\":\"Separate output for each choice\",\"september-month\":\"September\",\"sessions\":\"Sessions\",\"set-as-a-starting-block\":\"Set as a starting block\",\"set-as-exit-block\":\"Set as exit block\",\"set-as-starting-block\":\"Set as starting block\",\"set-channel-type\":\"Set Channel Type\",\"set-choice-options\":\"Set choice options\",\"set-custom-subscriber-data\":\"Set custom contact data\",\"set-preferred-channel-type\":\"Set Preferred Channel Type\",\"set-preferred-content-type\":\"Set preferred content type\",\"set-sub-prop-w-response\":\"Set a contact property with the contact's response\",\"share-results\":\"Share Results\",\"shareable-link-to-results-for-this-tree\":\"Shareable link to results for this Tree\",\"shareable-links\":\"Shareable Links\",\"shortened-title-for-summary\":\"Shortened Title For Summary\",\"shortened-title-for-summary-description\":\"Enter a title that should be used when reviewing the summary of interactions with this block. If left empty, the full block title will be used.\",\"should-ignore-offline-submissions\":\"Ignore Offline Submissions\",\"should-redeem-code\":\"Mark code as used\",\"show\":\"Show\",\"show-all\":\"Show all\",\"show-all-results\":\"Show all results\",\"show-between-the-following-dates\":\"Show between the following dates\",\"show-clipboard-simulator\":\"Simulate Clipboard\",\"show-empty-only\":\"Show empty\",\"show-interactions\":\"Show interactions\",\"show-key-metrics\":\"Show Key Metrics\",\"show-key-metrics-lower\":\"Show key metrics\",\"show-keymetrics-ajax-error\":\"Key Metrics Error: Please ensure this Tree still exists or try reloading this page.\",\"show-less-options\":\"Show less options\",\"show-message-text\":\"Show message text\",\"show-more-options\":\"Show more options\",\"show-percentage-listened\":\"Show percentage listened\",\"show-results-from-incomplete-engagements\":\"Show results from incomplete engagements\",\"show-stars\":\"Show stars\",\"show-subscriber-id\":\"Show Contact ID\",\"show-summary-metrics\":\"Hide Metrics\",\"showing-block-content-filtered-by-X\":\"Showing block content filtered by :filter\",\"showing-entire-audio-library\":\"Showing entire audio library\",\"shuffle-randomly-again\":\"Shuffle randomly again\",\"sign-into-your-account\":\"sign into your account\",\"sms\":\"SMS\",\"sms-content\":\"SMS Content\",\"sms-content-not-set\":\"SMS content not set\",\"sms-disabled\":\"SMS Disabled\",\"sms-enabled\":\"SMS Enabled\",\"sms-prompt\":\"SMS Prompt\",\"sms-responses\":\"SMS Responses\",\"sms-status\":\"SMS status\",\"sms-subscribers-that-reached-this-block\":\"SMS contacts that reached this block\",\"sms-to\":\"SMS to\",\"social\":\"Social\",\"social-messaging\":\"Social messaging\",\"social-messaging-content\":\"Social Messaging Content\",\"social-subscribers-that-reached-this-block\":\"Social contacts that reached this block\",\"sorry\":\"Sorry!\",\"sorry-cannot-locate-the-selected-tree\":\"Sorry, cannot locate the selected tree.\",\"sorry-there-are-no-results-for-this-date-range\":\"Sorry, there are no results for this date range.\",\"sorry-there-was-an-issue-trying-to-export-audio-for-tree\":\"Sorry, there was an issue trying to export audio for Tree\",\"sorry-we-cant-find-any-results-with-that-address\":\"Sorry, we can't find any results with that address.\",\"sorry-you-don-t-have-permission-to-delete-this-tree\":\"Sorry, you don't have permission to delete this tree.\",\"sorry-you-dont-have-permission-to-delete-this-tree\":\"Sorry, you don't have permission to delete this tree.\",\"sort-by-date\":\"Sort by Date\",\"sort-by-name\":\"Sort by Name\",\"source\":\"Source\",\"specific-language-used-this-call\":\"Specific language used this call\",\"specific-time\":\"Specific time\",\"specify-what-should-happen-if-a-subscribers-language-is-unknown\":\"Specify what should happen if a contact's language is unknown at the time of a call or SMS conversation:\",\"start-at\":\"Start At\",\"start-date\":\"Start Date\",\"start-date-equal-to\":\"Start Date equal to\",\"start-date-greater-than\":\"Start Date greater than\",\"start-date-less-than\":\"Start Date less than\",\"started-at\":\"Started at\",\"starting-block-tree-begins-here\":\"Starting Block – Tree Begins Here\",\"starts\":\"starts\",\"status\":\"Status\",\"stock-code\":\"Stock Code\",\"subscriber\":\"contact\",\"subscriber-custom-data\":\"Contact Custom Data\",\"subscriber-language\":\"Contact Language\",\"subscriber-prop-to-send-payload\":\"Subscriber properties To Send As Payload\",\"subscriber-properties\":\"Contact Properties\",\"subscriber-properties-to-snapshot\":\"Contact Properties to Snapshot\",\"subscriber-property\":\"Contact Property:\",\"subscriber-property-to-branch-via\":\"Contact Property to Branch via\",\"subscriber-start-date\":\"Contact Start Date\",\"subscriber-starting-date-reference\":\"Contact Starting Date Reference\",\"subscribers\":\"contacts\",\"subscribers-that-reached-this-block\":\"Contacts that reached this block\",\"success\":\"Success\",\"successfully-imported-result\":\"Successfully imported results\",\"summary-block-description\":\"This block is used to review answers to questions that are included in the summary. Clipboard users are able to Confirm or Reject responses.\",\"sun\":\"Sun\",\"sun-level\":\"Sun Level\",\"sunday-day\":\"Sunday\",\"sunny\":\"Sunny\",\"survey\":\"Survey\",\"survey-details\":\"Survey details\",\"switch-to-tree-view-to-add-blocks\":\"Switch to Tree View to Add Blocks\",\"system-generated\":\"System generated\",\"tag-filter-description\":\"Multiple Choice Question blocks that have been tagged can be used as filters on the shared link. The choices for the blocks with a tag are used as the options for the filter. Select which tags should be used as filters.\",\"tag-filters\":\"Tag Filters\",\"tags\":\"Tags\",\"task-was-successfully-deleted\":\"Task was successfully deleted!\",\"tell-me-more\":\"Tell me more\",\"test-call\":\"Test Call\",\"test-call-queued-at\":\"Test call queued at\",\"test-call-request-sent\":\"Test call request sent...\",\"text-responses\":\"Text responses\",\"text-responses-sms-ussd\":\"Text Responses (SMS / USSD)\",\"that-block-was-not-found-please-save-and-try-again\":\"The block was not found please save the tree and try again\",\"that-collaborative-filtering-page-was-not-found-please-try-again\":\"That Collaborative Filtering page was not found. Please try again.\",\"that-tree-json-was-not-found-please-try-again\":\"That Tree JSON was not found. Please try again.\",\"that-tree-set-was-not-found-please-try-again\":\"That tree set was not found. Please try again.\",\"that-tree-was-not-found-please-try-again\":\"That tree was not found. Please try again.\",\"the-contacts-x-property-will-be-set-using-block-input\":\"The Contact's :propertyName property will be set using the input to the selected block.\",\"the-json-code-that-has-been-imported-is-invalid-or-can-not-be-parsed\":\"The JSON code that has been imported is invalid or can not be parsed. <br> Please review the code used in the import for completeness and validity.\",\"the-property-will-be-set-to-x\":\"The Contact's property will be set to ':value'\",\"the-property-will-be-set-using-block-input\":\"The Contact's property will be set using the input to the block.\",\"the-remaining-tasks-are-visible-below\":\"The remaining tasks are visible below.\",\"the-response-from-the\":\"the response from the\",\"the-specified-tree-version\":\"The specified tree version\",\"the-transcription-set-was-not-found\":\"The transcription set was not found. Please try again.\",\"the-tree-version\":\"The tree version\",\"the-tree-version-x-was-deleted\":\"The Tree :treeName from version :treeVersion was deleted.\",\"the-tree-x-was-deleted\":\"The Tree :treeName was deleted.\",\"the-tree-x-was-restored\":\"The tree :treeName was restored.\",\"then-callers-will-go-to-the-quota-met-output-if-not-callers-will-go-to-the-not-met-output\":\"then callers\",\"there-are-no-results-yet-please-check-back-later\":\"There are no results yet. Please check back later.\",\"this-block-branches-based-on-type-of-the-recipient\":\"This block branches based on the content type of the recipient. The outputs are determined based on the content type of the tree when the block is added.\",\"this-block-directs-callers-based-on-the-total-number-of-calls-1\":\"This block directs callers towards one of two options, based on the total number of calls in the specified date range for either just this tree or all trees in the entire organisation\",\"this-block-directs-callers-based-on-the-total-number-of-calls-2\":\"If the number of calls in the specified date range is larger than the 'Calls Quota Threshold' value, then callers will go to the Quota Met output. If not, callers will go to the Not Met output.\",\"this-block-directs-callers-based-on-the-total-number-of-subs-1\":\"This block directs callers towards one of two options, based on the total number of contacts in the specified group.\",\"this-block-directs-callers-based-on-the-total-number-of-subs-2\":\"If the number of contacts in the group is larger than the 'Quota Threshold' value, then callers will go to the Quota Met output. If not, callers will go to the Not Met output.\",\"this-block-directs-callers-based-on-their-answers\":\"This block directs callers towards one of a series of options, based on their answers to previous numeric questions. The outputs below are considered first-to-last, and the first one to be true is used.\",\"this-block-directs-callers-on-previous-answers\":\"This block directs callers towards one of two options, depending on previous answers to multiple choice questions.\",\"this-block-directs-callers-random\":\"This block directs callers towards an output chosen at random.\",\"this-block-generates-the-weather-forecast-1\":\"This block generates the weather forecast message.\",\"this-block-generates-the-weather-forecast-2\":\"If a prompt is not enabled, it will not appear in the weather forecast message.\",\"this-block-is-configured-by-the-referrals-app\":\"This block is configured by the Referrals app.\",\"this-block-runs-the-destination-tree-1\":\"This block runs the destination tree specified above, allowing you to build nested trees that can then be reached when sending this tree to callers.\",\"this-block-runs-the-destination-tree-2\":\"After the destination tree has been completed, the caller will return to this tree and continue to any blocks connected below this one.\",\"this-block-runs-the-destination-tree-3\":\"By choosing the 'Most Recent Version' option, you can then publish new versions of the destination tree without needing to edit this tree.\",\"this-tree\":\"This tree\",\"this-tree-set\":\"This tree\",\"three-components-used-to-create-assignment-rules-and-name-audio-files\":\"There are three components which can be used to create assignment rules and name audio files.\",\"thunderstorms\":\"Thunderstorms\",\"thurs\":\"Thurs\",\"thursday-day\":\"Thursday\",\"timeline\":\"Timeline\",\"timeline-total-interactions\":\"Timeline: Total Interactions\",\"times\":\"times\",\"times-for-incorrect-responses\":\"times for incorrect responses\",\"times-in-utc\":\"Times in UTC\",\"times-in-your-account-time-zone\":\"Times in your account time zone\",\"timespan\":\"Timespan\",\"timezone\":\"Timezone\",\"title\":\"Title\",\"to\":\"to\",\"to-attach-a-message-to-a-call\":\"To attach a message to a call,\",\"to-attach-a-survey-to-a-call\":\"To attach a survey to a call,\",\"to-attach-a-tree-to-a-call\":\"To attach a tree to a call,\",\"to-be-matched-to-tree\":\"to be matched to Tree\",\"to-send-call-to-only-some-subscribers\":\"To send a call to only some contacts\",\"toggle-to-auto-gen-content-from-block\":\"Toggle to Auto-generate Content from Block Details\",\"toggle-to-overwrite-auto-genned-content\":\"Toggle to Overwrite the Auto-generated Content\",\"toggles-subscriber-receiving-outgoing-calls\":\"This action enables or disables the contact from receiving Outgoing Calls.\",\"too_many_languages_for_collaborative_filtering\":\"Too Many Languages\",\"too_many_languages_for_collaborative_filtering_description\":\"Collaborative Filtering is only valid on trees that have one language enabled. Please enable a single language for the tree.\",\"total\":\"Total\",\"total-audio-length\":\"Total Audio Length\",\"total-interactions\":\"Total Interactions\",\"total-open-ended-responses\":\"Total open-ended responses\",\"total-responses\":\"Total Responses\",\"total-results\":\"Total results\",\"total-sms-responses\":\"Total SMS Responses\",\"total-versions\":\"Total versions\",\"total-voice-responses\":\"Total Voice Responses\",\"totals\":\"Totals\",\"transcription-task-successfully-updated\":\"Transcription task successfully updated!\",\"transcription-tasks-can-be-sent-out-to-external-transcribers-to-easily-transcribe-open-ended-audio-responses\":\"Transcription tasks can be sent out to external transcribers, to easily transcribe open-ended audio responses from this tree. You can automatically generate several transcription tasks using the form below, or, use the 'New Transcription Task' button above to create individual tasks\",\"transcriptions\":\"Transcriptions\",\"transcriptions-saved\":\"Transcriptions saved \",\"transcriptions-saved-continuing-to-next-page\":\"Transcriptions saved! Continuing to next page...\",\"transfer-amount\":\"Amount to Transfer\",\"transfer-amount-currency\":\"Currency to Use\",\"transferto-cross-border-mobile-payments\":\"TransferTo Cross-Border Mobile Payments\",\"tree\":\"Tree\",\"tree-could-not-be-published\":\"Tree could not be published\",\"tree-deleted\":\"Tree Deleted!\",\"tree-details\":\"Tree Details\",\"tree-does-not-have-any-blocks-yet\":\"Tree does not have any blocks yet.\",\"tree-duplicated\":\"Tree Duplicated!\",\"tree-identifier-not-provided\":\"Tree identifier not provided\",\"tree-is-empty\":\"Tree is empty!\",\"tree-is-empty-please-use-the-add-block-button-on-the-top-left-to-add-some-blocks-to-get-started\":\"Tree is empty. Please use the Add Block button on the top left to add some blocks to get started.\",\"tree-restored\":\"Tree Restored!\",\"tree-result-import-heading-validation-error\":\"The column headings in your import are invalid. Please refer to the import template for the correct headings\",\"tree-result-import-in-progress\":\"Tree result import in progress\",\"tree-saved\":\"Tree Saved!\",\"tree-update-conflict\":\"Tree update conflict detected\",\"tree-used-elsewhere-by-x-at-x\":\"This tree has been saved elsewhere by :name at :time\",\"tree-versions\":\"Tree Versions\",\"trees\":\"Trees\",\"trigger-outgoing-call\":\"Trigger Outgoing Call\",\"trimmed-to\":\"trimmed to\",\"true\":\"True\",\"tues\":\"Tues\",\"tuesday-day\":\"Tuesday\",\"two-or-more-choices-required\":\"Two or More Choices Required:\",\"unable-to-delete-the-requested-transcription-task\":\"Unable to delete the requested transcription task.\",\"unable-to-find-block-locally-from-server-results-with-key\":\"Unable to find block locally from serverResults\",\"undo\":\"Undo\",\"unexpected-error\":\"An unexpected error occurred\",\"unique-subscribers\":\"Unique Contacts\",\"unknown\":\"Unknown\",\"unknown-error-occurred\":\"An unknown error occurred\",\"unknown-language\":\"Unknown language\",\"unknown-subscriber-branch-criteria\":\"Unknown Contact Branch Criteria\",\"unlimited-if-not-defined-or-set-as-zero\":\"Unlimited if not defined or set as zero\",\"unlock\":\"Unlock\",\"unset-as-exit-block\":\"Unset as exit block\",\"untitled-block\":\"Untitled Block\",\"untitled-collab-filtering-rating\":\"Untitled Collaborative Filtering Rating\",\"untitled-collaborative-filtering-question\":\"Untitled Collaborative Filtering Question\",\"untitled-generate-code\":\"Untitled Generate Code\",\"untitled-message\":\"Untitled message\",\"untitled-multiple-choice-question\":\"Untitled multiple-choice question\",\"untitled-numeric-question\":\"Untitled Numeric Question\",\"untitled-open-ended-question\":\"Untitled Open-Ended Question\",\"untitled-question\":\"Untitled Question\",\"untitled-record-group-message\":\"Untitled Record Group Message\",\"untitled-tree\":\"Untitled Tree\",\"untitled-validate-code\":\"Untitled Validate Code\",\"update-existing-subscriber\":\"Update existing contact\",\"update-task\":\"Update Task\",\"update-transcription-task\":\"Update Transcription Task\",\"updated\":\"Updated\",\"upload\":\"Upload\",\"upload-a-csv-with-column-codes\":\"Upload a CSV with column 'codes'\",\"upload-audio-files-to-X\":\"Upload audio files to :dest\",\"upload-codes\":\"Upload codes\",\"upload-csv-file\":\"Upload CSV File\",\"upload-csv-file-instruction\":\"Upload a CSV file (.csv) with your tree results. \",\"upload-error\":\"Upload error\",\"upload-file\":\"Upload File\",\"uploading\":\"Uploading\",\"url-destination\":\"URL Destination\",\"url-for-this-csv-export-via-api-key\":\"URL for this CSV export via API key\",\"usd-at-current-exchange\":\"USD at Current Exchange Rate\",\"usd-exchange-warning-message\":\"The amounts specified above will be applied in USD.\",\"use-a-specific-language-for-this-call\":\"Use a specific language for this call\",\"use-custom-block-ordering\":\"Use custom block ordering\",\"use-different-multimedia-files-each-language\":\"Use different files for each language\",\"use-full-text-descriptions\":\"Use full-text descriptions\",\"use-hybrid-format\":\"Use hybrid format\",\"use-machine-readable-format\":\"Use machine-readable format\",\"use-machine-readable-numbers\":\"Use machine-readable numbers\",\"use-master-for-language\":\"Use the master CSV file for this language\",\"use-simple-date-range-picker\":\"Use simple date range picker\",\"use-tags-in-your-location-message-for-references-in-alert\":\"Use the tag [expiry_time] in your message to reference the expiration time and the tag [location] to reference the location of the alert.\",\"use-text-descriptions\":\"Use text descriptions\",\"use-the-button-above-to-generate-a-new-csv-export-for-this-tree\":\"Use the button above to generate a new CSV export for this tree. It will appear in the list on the right when completed.\",\"use-the-button-above-to-generate-a-shareable-results-page-for-this-tree\":\"Use the button above to generate a shareable results page for this tree. This page will be updated automatically as new results are received for this tree.\",\"use-the-button-below-to-generate-a-shareable-results-page-for-this-tree\":\"Use the button below to generate a shareable results page for this tree. This page will be updated automatically as new results are received for this tree.\",\"use-the-form-below-to-create-a-new-transcription-task\":\"Use the form below to create a new transcription task that can be sent out to external transcribers. The transcriber will be assigned open-ended responses to transcribe based on the language and start/end numbers specified below.\",\"use-the-shareable-link-below-to-share-the-results-of-this-tree\":\"Use the shareable link below to share the results of this tree. <b> Anyone you share this with will have access to these results. </b> This page will be updated automatically as new results are received for this tree.\",\"use-the-tag-expiry-time\":\"Use the tag [expiry_time] in your message to reference the expiration time and the tag [location] to reference the location of the alert.\",\"use-tree-view-to-add-blocks\":\"Please use the Tree View to add some blocks before attempting to populate and review content.\",\"user-guide\":\"For IVR, codes cannot be read using voice, so the system will text the block to the contact. It is recommended that the audio for this block will notify the contact that they will receive a text message with their code.\",\"username\":\"Username\",\"using-automatic-routing\":\"Using Automatic Routing\",\"ussd\":\"USSD\",\"ussd-content\":\"USSD Content\",\"ussd-prompt\":\"USSD Prompt\",\"ussd-subscribers-that-reached-this-block\":\"USSD contacts that reached this block\",\"valid\":\"Valid\",\"validate-code-block\":\"Validate Code Block\",\"validate-code-block-ignore-offline-submissions-help\":\"Disables validating codes when Android Clipboard is offline.\",\"validate-code-title\":\"Validate code title\",\"value\":\"Value\",\"version\":\"version\",\"version-capitalized\":\"Version\",\"versions\":\"Versions\",\"versions-capitalized\":\"Versions\",\"view\":\"View\",\"view-all-responses\":\"View All Responses\",\"view-and-manage-collaborative-submissions\":\"View and manage collaborative submissions\",\"view-and-manage-collaborative-submissions-a-for-this-block\":\"View and manage collaborative submissions</a>\",\"view-and-manage-statements\":\"View and manage statements\",\"view-generate-code-block\":\"View generate code block\",\"view-instruction\":\"View Instructions\",\"view-issues\":\"View Issues\",\"view-results\":\"View Results\",\"view-tracker-configuration\":\"View Tracker Configuration\",\"view-trackers\":\"& Issue Trackers\",\"view-tree\":\"View Tree\",\"view-tree-details\":\"View tree details\",\"view-tree-structure\":\"View Tree Structure\",\"view-tree-versions\":\"View tree versions\",\"view-validate-code-block\":\"View validate code block\",\"view-versions-issue-trackers\":\"View Versions & Issue Trackers\",\"view-x-other-versions\":\"View :count other versions of this tree\",\"voice\":\"Voice\",\"voice-content\":\"Voice Content\",\"voice-disabled\":\"Voice Disabled\",\"voice-enabled\":\"Voice Enabled\",\"voice-key-press\":\"Voice Key Press\",\"voice-prompt\":\"Voice Prompt\",\"voice-status\":\"Voice status\",\"voice-subscribers-that-reached-this-block\":\"Voice contacts that reached this block\",\"voice-to\":\"Voice to\",\"wait\":\"Wait\",\"waiting-for-results\":\"Waiting for Results\",\"we-are-upgrading-how-we-handle\":\"We are upgrading how we handle choice translations in the Multiple Choice Question Block. Please ensure that the following is correct. If you do not make changes right now, your tree will continue to accept the same text responses as before. \",\"we-didnt-find-any-matches-revisit-pattern\":\"We didn't find any matches, try revising your pattern.\",\"we-need-audio-files-previously-uploaded-to-audio-lib-to-match-to-blocks\":\"We need audio files to have previously been uploaded to your organization's audio library in order to auto-link them to blocks.\",\"weather-forecast\":\"Weather Forecast\",\"webhook-block-empty-payload-info\":\"No blocks are selected. The block payload of this webhook event will be empty.\",\"webhook-block-payload-help-text\":\"Select the interactive blocks that should be sent when this webhook is triggered. The responses for the selected blocks will be sent.\",\"webhook-http-warning\":\"When sending sensitive data, we recommend using an HTTPS endpoint as the webhook destination for privacy and security.\",\"webhook-method\":\"Method\",\"webhook-secret\":\"Secret\",\"webhook-secret-desc\":\"We'll send this text with the webhook submission so that your server can authenticate it came from Viamo.\",\"webhook-subscriber-empty-payload-info\":\"No subscriber properties are selected. The subscriber payload of this webhook event will be empty.\",\"webhook-subscriber-payload-help-text\":\"Select the subscriber properties that should be sent when this webhook is triggered. The value of the selected property will be sent.\",\"webhook-untitled-block\":\"Untitled block\",\"wed\":\"Wed\",\"wednesday-day\":\"Wednesday\",\"week\":\"week\",\"weekly\":\"Weekly\",\"weeks-after\":\"Weeks After\",\"weeks-before\":\"Weeks Before\",\"welcome\":\"Welcome!\",\"when-block-reached-caller-exits-and-connects-to-operator\":\"When this block is reached, the caller exits the tree and is connected to the operator. As a result, no further blocks can be connected below this one.\",\"when-block-reached-subscriber-start-date-set-to-date-based-upon-previous-numeric-input\":\"When this block is reached, contacts will have their date set using the input they provide to a previous numeric question. Their date will be set to the number of days, weeks, or months (set above) that the contact provides, relative to the date of the call.\",\"when-block-reached-subscriber-start-date-set-to-date-relative-to-call-and-timespan-specified\":\"When this block is reached, contacts will have their date set to the number of days, weeks, or months specified above, relative to the date on which they receive the call.\",\"when-block-reached-subscriber-start-date-set-to-specified\":\"When this block is reached, contacts will have their date set to the date specified above.\",\"when-finished-returns-to-this-tree-and-continues-to-any-blocks-connected-below\":\"When finished, returns to\",\"when-no-preferred-language-subscriber-receives-lang-selector\":\"If this option is set to 'No preferred language', then at the start of the contact's next call, they will receive a language selector menu (if a language selector prompt is provided).\",\"when-no-valid-response-is-received\":\"When no valid response is received\",\"when-randomizing\":\"when randomizing\",\"wind-level\":\"Wind Level\",\"windy\":\"Windy\",\"with-subscriber-phone-number\":\"with Contact Phone Number\",\"words\":\"Words\",\"working-loading\":\"Working...\",\"x-of-y\":\"of\",\"x-text-responses\":\":language Text Responses\",\"year\":\"year\",\"yearly\":\"Yearly\",\"yes\":\"Yes\",\"you-are-about-to-delete-a-transcription-task\":\"You are about to delete a transcription task.\",\"you-are-about-to-delete-a-tree\":\"You are about to delete a tree.\",\"you-are-about-to-delete-a-tree-version\":\"You are about to delete a tree version.\",\"you-are-about-to-delete-this-issue-tracker\":\"You are about to delete this issue tracker.\",\"you-can-edit-your-tree-with-the-interface-below\":\"You can edit your tree with the interface below.\",\"you-can-send-out-the-external-link-from-the-table-below\":\"You can send out the external link from the table below.\",\"you-can-send-out-the-external-links-from-the-table-below\":\"You can send out the external links from the table below.\",\"you-have-x-unsaved-transcriptions\":\"You have :transcription_count unsaved transcriptions. Are you sure you want to leave this page?\",\"you-need-permission-to-export-content\":\"You need permission to export content.\",\"your-browser-does-not-support-the-audio-element\":\"Your browser does not support the audio element.\",\"your-combined-tree-results-are-being-exported\":\"Your combined tree results are being exported.\",\"your-file-file-name-is-currently-being-processed\":\"Your file, :fileName is currently being processed.\",\"your-open-ended-audio-download-for\":\"Your open-ended audio download for\",\"your-orgs-audio-library\":\"your organization's audio library\",\"your-prompt\":\"<your prompt>\",\"youre-using-floip-expressions\":\"It looks like you're using FLOIP expressions, nice!\"},\"fr.flow-builder\":{\"flow-name\":\"Nom du flux\",\"flow-label\":\"Libélé du flux\",\"flow-importer\":\"importateur de flux\",\"Interaction-timeout\":\"délai d'interaction\",\"modes\":\"Modes\",\"enter-flow-name\":\"Entrez le nom de flux\",\"enter-flow-label\":\"Entrez l'étiquette de flux\",\"maximum-digits\":\"Nombre maximum\",\"AirtimeTransferBlock\":\"temps d'antenne de transfert\",\"BillSubscriberBlock\":\"Bill Contactez\",\"CallBackWithCallCenterBlock\":\"Téléphonique avec le centre d'appels Bloc\",\"CallHistoryBranchBlock\":\"Branchement suivant l'historique des appels\",\"CollaborativeFilteringQuestionBlock\":\"Question de filtrage collaboratif\",\"CollaborativeFilteringRatingBlock\":\"Note de filtrage collaboratif\",\"CollaborativeFilteringRatioBranchBlock\":\"Direction par rapport de filtrage collaboratif\",\"ConnectToOperatorBlock\":\"Connecter à un opérateur\",\"ConsoleIO\\\\Print\":\"Impression\",\"ConsoleIO\\\\Read\":\"Lis\",\"ContentTypeBranchBlock\":\"Branchement selon le type de contenu\",\"Core\\\\Case\":\"Cas\",\"Core\\\\Log\":\"Journal\",\"Core\\\\Output\":\"Production\",\"Core\\\\RunFlow\":\"Exécuter flux\",\"CreateSubscriberBlock\":\"Créer un contact\",\"CurrentTimeBranchBlock\":\"Direction via Heure actuelle\",\"DecisionBranchBlock\":\"Branchement de décision\",\"DirectorySelectionBlock\":\"sélection du répertoire\",\"EntitySelectionBlock\":\"Renvoi Entité de sélection\",\"ExpressionBranchBlock\":\"Direction d'expression\",\"GenerateCodeBlock\":\"Générer le code unique\",\"GroupBranchBlock\":\"Branchement selon l'appartenance au groupe\",\"GroupPropertyBlock\":\"Modifier l'appartenance au groupe\",\"GroupSizeBranchBlock\":\"Branchement selon la taille du groupe\",\"IdValidationBlock\":\"Branchement selon un code valide\",\"LanguageSelectorBlock\":\"Sélection de langue\",\"LocationBlock\":\"Selection d'une localité\",\"MarkCallCompleteBlock\":\"Marquer l'appel comme étant effectué\",\"MessageBlock\":\"Message\",\"MobilePrimitives\\\\Message\":\"Message\",\"MobilePrimitives\\\\NumericResponse\":\"Réponse numérique\",\"MobilePrimitives\\\\OpenResponse\":\"Réponse ouverte\",\"MobilePrimitives\\\\SelectOneResponse\":\"Sélectionnez une réponse\",\"MobilePrimitives\\\\SelectManyResponse\":\"Sélectionnez De nombreuses réponses\",\"MultipleChoiceQuestionBlock\":\"Question à Choix Multiples\",\"MultipleSelectMultipleChoiceQuestionBlock\":\"Sélection multiple Question à choix multiples\",\"NumericBranchBlock\":\"Branchement Numérique\",\"NumericQuestionBlock\":\"Question Numérique\",\"OpenQuestionBlock\":\"Question Ouverte\",\"PlayGroupMessageBlock\":\"Play Group Message Block\",\"RandomBranchBlock\":\"Branchement aléatoire\",\"RandomOrderMultipleChoiceQuestionBlock\":\"Question à choix multiple avec ordre au hasard\",\"RecordGroupMessageBlock\":\"Record Group Message Block\",\"RunTreeBlock\":\"Exécutez un autre arbre\",\"SmartDevices\\\\LocationResponse\":\"Réponse Localisation\",\"SmartDevices\\\\PhotoResponse\":\"photo Réponse\",\"SubscriberBranchBlock\":\"Branchement selon les caractéristiques du Contact\",\"SubscriberPropertiesSnapshotBlock\":\"Instantané des propriétés Contactez\",\"SubscriberPropertyBlock\":\"Modifier le contact de la propriété\",\"SummaryBlock\":\"Résumé\",\"TriggerOutgoingCallBlock\":\"Déclencher un appel sortant\",\"ValidateCodeBlock\":\"Valider le code unique\",\"WeatherAlertsBlock\":\"Créer des alertes météo\",\"WeatherForecastBlock\":\"Prévisions météorologiques\",\"WebhookBlock\":\"Webhook\",\"WebhookContentBlock\":\"Contenu Webhook\",\"X-abbreviations-set-when-creating-tree\":\":lang abréviations lang définies lors de la création de l'arbre\",\"X-are-required-placeholder-components-for-rule-but-additional-designation-optional\":\":placeholders sont des composants d'espace réservé requis pour la règle, mais une désignation supplémentaire est facultative.\",\"X-assigned-to-a-block\":\":label attribué à un bloc\",\"X-of-resources-populated\":\":count de ressources peuplé\",\"X-seconds-long\":\":duration_seconds longue\",\"X-subscribers-selected\":\"contacts sélectionnés\",\"X-will-match-with-Y\":\":pattern correspondra avec :name\",\"X-wont-match-with-Y\":\":pattern ne correspond pas avec :name\",\"absolute-date\":\"date absolue\",\"accessed\":\"Accédé\",\"action\":\"action\",\"action-allows-custom-subscriber-data-when-block-reached\":\"Cette action vous permet de définir des données de contact personnalisé, lorsque ce bloc dans l'arbre est atteint.\",\"action-changes-preferred-content-types-to-receive-in-future\":\"Cette action modifie les types de contenu préféré (voix ou SMS) que le contact recevra dans les appels futurs.\",\"action-immediately-changes-preferred-language-of-subscriber\":\"Cette action change immédiatement la langue préférée du contact. blocs plus tard dans l'arbre utiliseront la nouvelle langue.\",\"actions\":\"Actes\",\"active\":\"actif\",\"adapted-from\":\"Adapté à partir de:\",\"add-a-description-to-this-recording\":\"Ajouter une description à cet enregistrement\",\"add-a-new-recorder\":\"Ajouter un nouvel enregistreur\",\"add-block\":\"Ajouter un bloc\",\"add-condition\":\"Ajouter une condition\",\"add-data\":\"Ajouter des données\",\"add-label-tags\":\"Ajouter étiquette/identification\",\"add-map-coordinates-field\":\"Ajouter un champ Coordonnées Carte\",\"add-question\":\"Supprimer la question\",\"add-to\":\"Ajouter à\",\"add-to-group\":\"Ajouter au groupe\",\"added\":\"ajoutée\",\"additional-designation-created-in-the-rule\":\"Une désignation supplémentaire créée dans la règle\",\"adds-subscribers-to-the\":\"Ajoute des contacts à la\",\"admin-csv-file\":\"Master File CSV\",\"advanced\":\"Avancé\",\"after\":\"Après\",\"after-completing-all-output-branches\":\"Après avoir fini les sorties des branchements :\",\"airtime-credit-transfer\":\"Transfert de crédit de temps d'antenne\",\"alert-message-title\":\"Titre d'alerte de message\",\"all-block-types\":\"Tous les types de blocs\",\"all-blocks\":\"tous les blocs\",\"all-channels\":\"Tous les canaux\",\"all-content-across-this-organisation\":\"Tout le contenu à travers cette organisation\",\"all-languages\":\"Toutes les langues\",\"all-message-blocks\":\"Tous les blocs de message\",\"all-other-possible-values\":\"Toutes les autres valeurs possibles\",\"all-question-blocks\":\"Tous les blocs question\",\"all-subscribers\":\"Tous les contacts\",\"all-transcriptions-saved\":\"Tous transcriptions enregistrés\",\"allow-visitors-to-modify-the-date-range\":\"Permettre aux visiteurs de modifier la plage de dates\",\"allow-visitors-to-translate-the-page-in-their-language\":\"Permettre aux visiteurs de traduire la page dans leur langue\",\"already-published\":\"Déjà publié!\",\"already-used\":\"Déjà utilisé\",\"and\":\"et\",\"any-key\":\"N'importe quelle touche\",\"anytime\":\"À tout moment\",\"api-key\":\"clé API\",\"api-success\":\"Connecté avec succès à l'API.\",\"append-or-replace-on-upload\":\"Joindre ou remplacer le téléchargement ?\",\"applies-to-calls-sent-to-all-subscribers-or-groups-containing-subscriber\":\"Cela s'applique aux appels envoyés à tous les contacts, ou envoyés à des groupes contenant ce contact. Ils peuvent toujours recevoir des appels sortants adressés spécifiquement à eux.\",\"apply\":\"Appliquer\",\"apply-all-filters\":\"Appliquer tous les filtres\",\"april-month\":\"avril\",\"are-you-sure-you-want-to-delete-this-shareable-link\":\"Etes-vous sûr de vouloir supprimer ce lien partageable? Les utilisateurs avec le lien existant ne seront plus en mesure d'accéder à ces résultats.\",\"as-at\":\"comme à\",\"at\":\"à\",\"at-character\":\"à caractère\",\"at-least\":\"Au moins\",\"at-least-one-language-must-be-checked\":\"Au moins une langue doit être vérifiée.\",\"at-minimum-we-need-two-placeholders\":\"Au minimum, nous avons besoin de deux espaces:\",\"at-this-time\":\"En ce moment\",\"attach-multimedia\":\"joindre multimédia\",\"audio-export-started-for\":\"l'exportation audio a commencé pour\",\"audio-file-naming-pattern\":\"modèle de nomination de fichier audio\",\"audio-files\":\"Fichiers Audio\",\"audio-files-per-task\":\"Les fichiers audio par tâche\",\"audio-lib-empty-for-this-org\":\"La bibliothèque audio est vide pour cette organisation.\",\"audio-library\":\"Bibliothèque audio\",\"audio-listened\":\"Audio écouté\",\"august-month\":\"août\",\"auto\":\"Auto\",\"auto-gen-content-from-block-details\":\"Cliquez sur Contenu généré automatiquement des détails du bloc\",\"auto-link-audio-files\":\"Auto-Link fichiers audio\",\"automatic-routing-description\":\"Avec le routage automatique, les contacts sont acheminés vers une file d'attente du centre d'appels en fonction de leur propriété « target_operator ». Lorsqu'il est réglé sur le routage automatique, vous pouvez contrôler la file d'attente en définissant cette propriété avant un contact entre ce bloc.\",\"automatic-routing-label\":\"routage automatique\",\"automatically-enable-statements\":\"Activer automatiquement les déclarations\",\"automatically-enable-statements-help\":\"Avec cette option, les nouveaux états seront « Validé ». Si cette option est désactivée de nouvelles déclarations seront « non vérifiées »\",\"average-audio-length\":\"Longueur moyenne Audio\",\"avg-duration-for-all-calls\":\"Durée moyenne pour tous les appels\",\"avg-duration-for-completed-calls\":\"Durée moyenne pour les appels terminés\",\"back\":\"Retour\",\"back-to-choices-list\":\"Retour à la liste des choix\",\"back-to-trees-list\":\"Retourner à la liste des arbres\",\"base-url\":\"URL de base\",\"base-url-placeholder\":\"exemple: https://example.org/api\",\"bill-subscriber\":\"Bill Contactez\",\"block\":\"Bloc (s)\",\"block-allows-connect-to-operator-chosen-at-random-from-pre-specified-operator-contact-list\":\"Ce bloc vous permet de connecter un appelant à un opérateur, choisi au hasard à partir d'un opérateur spécifié pré-liste de contacts. Cela vous permet de configurer rapidement des lignes d'aide ou d'autres connexions en personne.\",\"block-choice-filter-description\":\"blocs peuvent être utilisés comme filtres sur le lien partagé. sélectionner les blocs doivent être utilisés comme filtres.\",\"block-code\":\"bloc de code\",\"block-details\":\"Détails du bloc\",\"block-id\":\"L'identifiant du bloc\",\"block-label\":\"étiquette bloc\",\"block-name\":\"nom du bloc\",\"block-ordering\":\"commande bloc\",\"block-ordering-help-text\":\"Remplacer la séquence par défaut de tri en entrant un poids pour chaque bloc. Les blocs avec une valeur plus petite sera en haut de la liste.\",\"block-responses-to-send-payload\":\"Réponses bloc pour Envoyer Comme Payload\",\"block-semantic-label\":\"Bloc étiquette sémantique\",\"block-title\":\"Titre du bloc\",\"block-type-unsupported-in-resource-view\":\"Type de bloc non pris en charge dans l'Affichage des ressources\",\"blocks\":\"blocs\",\"blocks-responses\":\"Réponses bloc\",\"blocks-to-display\":\"Blocs à afficher\",\"branch-if-subscriber-property\":\"Direction si le contact de la propriété\",\"branch-to-true-if-the-subscriber-is-a-member-of-the\":\"Branche True si le contact est un membre du\",\"branch-via-call-history\":\"Branchement selon l'historique des appels\",\"branch-via-call-history-desc1\":\"Ce bloc dirige les appels vers l'une des deux options, en fonction du nombre total d'appels dans la plage de dates spécifiée pour soit juste cet arbre ou tous les arbres dans l'ensemble de l'organisation »,\",\"branch-via-call-history-desc2\":\"Si le nombre d'appels dans la plage de dates spécifiée est supérieure à la valeur « Appels de seuil de quota », puis les appelants vont Quota Met Sortie. Sinon, les appelants vont Non Met sortie. ',\",\"branch-via-content-type\":\"Branchement selon le type de contenu\",\"branch-via-expression\":\"Direction d'expression\",\"branch-via-group-membership\":\"Branchement selon l'appartenance au groupe\",\"branch-via-group-size\":\"Branchement selon la taille du groupe\",\"branch-via-subscriber-data\":\"Branchement selon les caractéristiques du Contact.\",\"branch-via-valid-code\":\"Branchement selon un code valide\",\"branching\":\"Branchement\",\"breakdown-by\":\"répartition par\",\"btn-add-exit\":\"Ajouter la sortie\",\"call-back-block-desc\":\"Avertit le centre d'appel pour appeler le contact en ajoutant le contact à la liste des numéros de l'organisation.\",\"call-back-block-dialing-list-desc\":\"Entrez le nom de la liste des numéros qui devrait être ajouté à la demande d'appel. Si la liste des numéros n'existe pas, il sera créé avec ce nom.\",\"call-back-block-dialing-list-heading\":\"Composition Nom de la liste\",\"call-back-block-enable-routing-by-queue\":\"Activer le routage par la file d'attente\",\"call-back-block-enable-routing-by-queue-desc\":\"Si cette option est sélectionnée, les demandes d'appel ne seront envoyées qu'aux opérateurs connectés à une file d'attente spécifique.\",\"call-back-block-enter-api-key\":\"Entrez la clé API\",\"call-back-block-enter-dialing-list-name\":\"Entrez le nom de liste de numérotation\",\"call-back-block-notify-different-org\":\"Notifier Call Center d'une autre organisation\",\"call-back-block-notify-this-org\":\"Notifier Call Center de cette organisation\",\"call-back-block-org-api-key\":\"API Organisation clé\",\"call-back-block-queue-name\":\"Nom de la file d'attente\",\"call-back-block-select-queue\":\"Sélectionnez la file d'attente\",\"call-finished\":\"Fin appel\",\"call-started\":\"Début appel\",\"call-this-phone-number\":\"Appelez ce numéro de téléphone\",\"call-to-record\":\"Appel à l'enregistrement\",\"caller\":\"Appelant\",\"calls-after\":\"appels après\",\"calls-before\":\"appels avant\",\"calls-quota-threshold\":\"Appels du Seuil\",\"campaigns\":\"Campagnes\",\"cancel\":\"Annuler\",\"candidate-question\":\"Question intérogatoire\",\"cannot-delete-that-tree\":\"Impossible de supprimer cet arbre\",\"cannot-restore-that-tree\":\"Impossible de restaurer cet arbre.\",\"cannot-restore-that-tree.\":\"Impossible de restaurer cet arbre.\",\"case-of-duplicates-instruction\":\"Dans le cas des doublons et des contacts existants avec le même numéro de téléphone\",\"categorization\":\"Catégorisation\",\"category\":\"Catégorie\",\"category-name\":\"Nom de catégorie\",\"cell-contents\":\"Contenu des cellules\",\"cell-contents-format\":\"Format Contenu Cellule\",\"cf-ratio-description\":\"Configurez le numéro idéal des évaluations que chaque déclaration doit recevoir avant une autre déclaration doit être recueillie.\",\"chance-of-rain\":\"Possibilité de pluie\",\"change-subscriber-language\":\"Changer de langue de contact\",\"change-subscriber-start-date\":\"Changer la date de début de contact\",\"channel\":\"Canal\",\"channels\":\"Canaux\",\"characters\":\"caractère|caractères\",\"check-url-api\":\"Vérifiez votre URL et la clé API et essayez à nouveau.\",\"choice\":\"Choix\",\"choice-filter-tags\":\"étiquettes de filtrage Choix\",\"choice-id-choice-text\":\"Choix ID et Choix texte\",\"choice-id-only\":\"Choix ID seulement\",\"choice-keypress-options\":\"Option de choix de bouton\",\"choice-options\":\"Option Choix\",\"choice-options-fixed\":\"Options de choix\",\"choices\":\"Les choix\",\"choices-choice-attributes\":\"Les choix\",\"choices-prompt\":\"choix Prompt\",\"choose-a-language-selector\":\"(Choisissez un sélecteur de langue)\",\"choose-a-language-selector-label\":\"Choisissez un sélecteur de langue:\",\"choose-audio\":\"Choisissez Audio\",\"choose-csv-file\":\"Choisissez un fichier CSV\",\"choose-date\":\"Choisissez une date\",\"choose-file\":\"Choisir le fichier\",\"choose-how-many-seconds-to-wait\":\"S'il vous plaît choisir le nombre de secondes à attendre jusqu'à ce que le contact appuie sur une touche pour répéter ce message.\",\"choose-how-many-times-can-repeat\":\"S'il vous plaît choisir combien de fois le contact peut répéter ce message.\",\"choose-subscribers\":\"choisir les contacts\",\"choose-which-numbered-key\":\"S'il vous plaît choisir quelle touche dénombra le contact sur pour répéter ce message.\",\"clear-floip-config\":\"Configuration Effacer\",\"click-and-drag-to-create-a-new-connection\":\"Cliquez et faites glisser pour créer une nouvelle connexion\",\"click-and-drag-to-move-this-block\":\"Cliquez et faites glisser pour déplacer ce bloc\",\"click-here-to-download-the-file\":\"Cliquez ici pour télécharger le fichier\",\"click-to-lock-this-choice-in-place\":\"Cliquez sur pour vérrouiller ce choix en place\",\"click-to-remove-this-connection\":\"Cliquez pour supprimer ce lien\",\"click-to-select-this-block\":\"Cliquez pour sélectionner ce bloc\",\"click-to-toggle-editing\":\"Cliquez pour l'édition bascule\",\"click-to-unlock\":\"Cliquez pour déverrouiller\",\"clipboard\":\"Clipboard\",\"clipboard-content\":\"Contenu Clipboard\",\"clipboard-simulator\":\"Simulateur de Clipboard\",\"clipboard-subscribers-that-reached-this-block\":\"contacts presse-papiers qui ont atteint ce bloc\",\"clipboard-subtitle\":\"Fournir un texte supplémentaire qui sera affiché aux opérateurs\",\"close\":\"Fermer\",\"cloudy\":\"Nuageux\",\"code-length\":\"Longueur de caractères\",\"code-validation\":\"validation du code\",\"codes\":\"Codes:\",\"collaborative-filtering-question\":\"Question de filtrage collaboratif\",\"collaborative-filtering-rating\":\"Note de filtrage collaboratif\",\"combined-block-results\":\"Résultats combinés du bloc\",\"combined-tree-results\":\"Résultats combinés de l'arbre\",\"compact-filter-display\":\"Affichage du filtre compact\",\"compact-filter-display-help-text\":\"Entrez le nombre maximum de choix de filtres qui doivent être affichées à l'aide du filtre élargi. (Par exemple « 0 » si tous les filtres doivent être compacts)\",\"completed\":\"Terminé\",\"completed-interactions-per-block\":\"Interactions complètes par block\",\"completed-of\":\"Achevé pour\",\"completed-transcriptions\":\"Transcriptions terminées\",\"completed-via\":\"Achevé par\",\"components-can-be-separated-by-symbols-but-not-required\":\"Les composants peuvent être séparés par des symboles, mais ne sont pas nécessaires.\",\"configure-floip-header\":\"Configurer le flux d'interopérabilité résulte en streaming\",\"configure-referral-entity-prompt-eg\":\"Configurez l'invite pour sélectionner une entité d'orientation. par exemple.:\",\"confirm\":\"Confirmer\",\"confirm-delete\":\"Confirmation de la suppression\",\"confirm-upload\":\"Confirmer le transfert\",\"conflict-external-changes\":\"Pour voir les changements externes s'il vous plaît cliquer sur le bouton Recharger.\",\"conflict-new-version\":\"Pour enregistrer votre travail en tant que nouvelle version, s'il vous plaît cliquez sur le bouton Nouvelle version.\",\"connect-to\":\"Se connecter à\",\"connect-to-an-operator\":\"Connectez-vous à un opérateur\",\"connect-to-the-following-operator-list\":\"Connectez-vous à la liste des opérateurs suivants\",\"connected-of\":\"Connecté à\",\"contact\":\"Contact\",\"contact-properties\":\"Propriétés de contact\",\"contact-updated\":\"contact existant mis à jour\",\"content\":\"Contenu\",\"content-type\":\"Type de contenu\",\"content-type-1\":\"Voix\",\"content-type-2\":\"SMS\",\"content-type-3\":\"Les données\",\"content-type-4\":\"USSD\",\"content-type-5\":\"Sens unique SMS\",\"content-type-is-not-selected\":\"Le type de contenu n'est pas sélectionné\",\"continue-through-exit\":\"Continuer jusqu'à la sortie\",\"continuous\":\"Continu\",\"corresponding-audio-file-components-examples\":\"exemples correspondants composants de fichiers audio\",\"could-not-add-property\":\"Impossible d'ajouter la propriété\",\"could-not-download-audio-for-that-tree\":\"Impossible de télécharger le fichier audio pour cet arbre.\",\"could-not-export-open-ended-audio\":\"Ne peut pas exporter l'audio pour la question ouverte\",\"create-a-new-group\":\"créer un nouveau groupe\",\"create-a-new-list\":\"Créer une nouvelle liste\",\"create-a-new-one\":\"Créer un nouveau\",\"create-a-new-survey\":\"créer une nouvelle enquête\",\"create-a-new-tree\":\"créer un nouvel arbre\",\"create-a-tag-prompt\":\"Créer une balise\",\"create-and-upload-a-new-message\":\"créez et téléchargez un nouveau message\",\"create-at-least-one-language-selector\":\"Avant d'utiliser ce bloc, créez au moins un Sélecteur de langue.\",\"create-contact-absolute-date\":\"La propriété du contact sera mis à la date prévue\",\"create-contact-description\":\"Ce bloc vous permet de créer des contacts avec des blocs d'entrée recueillies précédentes de cet arbre.\",\"create-contact-instructions\":\"Configurez les données du contact doit être créé.\",\"create-contact-relative-block\":\"sera mis en propriété du contact par rapport au moment de l'appel à l'aide du décalage fourni. La réponse du bloc configuré déterminera la quantité pour compenser la valeur par.\",\"create-contact-relative-date\":\"sera mis en propriété du contact par rapport au moment de l'appel à l'aide du décalage fourni.\",\"create-new-link\":\"Créer un nouveau lien\",\"create-new-version\":\"Créer une nouvelle version\",\"create-task\":\"Créer une tâche\",\"create-tasks\":\"Créer des tâches\",\"create-transcription-tasks\":\"Créer transcription Tâches\",\"create-tree\":\"Créer un arbre\",\"create-weather-alerts\":\"Créer des alertes météo\",\"create-weather-forecast\":\"Créer les prévisions météorologiques\",\"created\":\"Établi\",\"created-a-new-version-of\":\"Vous avez créé une nouvelle version de\",\"created-new-version-of\":\"nouvelle version créée de\",\"created-with\":\"Créé avec\",\"csv-format\":\"Format\",\"currency-to-use\":\"Devise à utiliser\",\"current-time-after\":\"Après\",\"current-time-and\":\"et\",\"current-time-before\":\"Avant\",\"current-time-between\":\"Entre\",\"current-time-day\":\"le jour\",\"current-time-day-of-month\":\"Jour du mois\",\"current-time-day-of-week\":\"Jour de la semaine\",\"current-time-exclusive\":\"Exclusive\",\"current-time-go-to-true-when\":\"Allez à « Vrai » lorsque:\",\"current-time-inclusive\":\"Compris\",\"current-time-is\":\"est\",\"current-time-month\":\"Mois\",\"current-time-select-comparison\":\"Sélectionnez comparaison\",\"current-time-select-day-of-week\":\"Choisir un jour de la semaine\",\"current-time-select-month\":\"Sélectionnez un mois\",\"current-time-time-of-day\":\"Moment de la journée\",\"current-time-time-to-compare\":\"Sélectionnez le type de temps pour comparer\",\"current-time-timezone\":\"Fuseau horaire\",\"currently-set-as-exit-block\":\"Actuellement défini comme bloc de sortie\",\"currently-set-as-starting-block\":\"Actuellement défini comme bloc de départ\",\"custom-data-category-name\":\"nom de la catégorie des données personnalisées\",\"custom-data-value\":\"Valeur des données personnalisées\",\"custom-ordering\":\"Utilisez la commande de bloc personnalisé\",\"custom-settings\":\"Paramètres personnalisés\",\"daily\":\"Journalier\",\"data\":\"Les données\",\"data-residency-mode-is-enabled-for-this-account-responses-to-this-block-will-be-retained-on-the-in-country-server-only-and-de-identified-before-being-transmitted-outside-the-country\":\"Mode de résidence de données est activé pour ce compte. Les réponses à ce bloc seront conservés sur le seul serveur dans le pays, et anonymisées avant d'être transmis à l'extérieur du pays.\",\"data-type-boolean\":\"Boolean\",\"data-type-date\":\"Date\",\"data-type-location\":\"Localité\",\"data-type-map_coordinates\":\"Carte avec des coordonnées\",\"data-type-multiple_choice\":\"Choix multiple\",\"data-type-number\":\"Chiffre\",\"data-type-phone\":\"Téléphone\",\"data-type-text\":\"Texte\",\"data-validation-invalid-choice\":\"La valeur ':dataChoice' dans ':dataValue' est invalide\",\"data-validation-invalid-value\":\"La valeur ':dataValue' est invalide\",\"data-validation-max_length\":\"La valeur ‘:dataValue’ dépasse la longueur max :maxOpenLength\",\"data-validation-max_numeric_digits\":\"La valeur ‘:dataValue’ dépasse le chiffre numérique max :maxNumericDigits\",\"date-created\":\"date créée\",\"date-range\":\"Intervalle de dates\",\"date-range-locked\":\"Champ date vérouillé\",\"date-updated\":\"Date de mise à jour\",\"day\":\"jour\",\"day-of-week\":\"Jour de la semaine\",\"days\":\"jour|jours\",\"days-after\":\"Des jours après\",\"days-after-adding\":\"Quelques jours après l'ajout\",\"days-before\":\"Jours avant\",\"december-month\":\"décembre\",\"decision-branch\":\"Branchement de décision\",\"default-repeat-key\":\"Touche de répétition par défaut\",\"default-sender-for-x-otherwise-systems\":\"La valeur par défaut Sender ID pour <em>:orgName</em> sera utilisé lorsque défini, sinon par défaut ID de l'expéditeur du système sera utilisé.\",\"delay-to-enter-repeat-key\":\"Dlai pour taper la touche de répétition par défaut\",\"delete\":\"Supprimer\",\"delete-issue-tracker\":\"Supprimer Tracker problème?\",\"delete-task\":\"Supprimer la tâche\",\"delete-this-shareable-link\":\"Supprimer le lien partageable\",\"delete-tracker\":\"Tracker Supprimer\",\"delete-transcription-task-question\":\"Supprimer Transcription des tâches?\",\"delete-tree\":\"Supprimer l'arbre\",\"delete-tree-question\":\"Supprimer l'arbre?\",\"delete-tree-version\":\"Supprimer la version Tree?\",\"delete-version\":\"Supprimer version\",\"deleted-subscriber\":\"supprimé le contact\",\"deleted-title-version\":\"Supprimé\",\"description\":\"La description\",\"destination-flow\":\"flux de destination\",\"destination-tree\":\"Arbre de destination\",\"destination-tree-not-found\":\"Arbre de destination introuvable\",\"destination-url\":\"URL de destination\",\"directory-selection-block-invalid-details\":\"Un ou plusieurs Sélection de répertoire ont des détails invalides. Pour pouvoir importer des résultats:\\n1- assurer que tous les Sélection de répertoire ont des choix provenant du modèle .csv\\n2- assurer que l'arbre n'a pas d'erreurs\\n3- re-sauvegarder l'arbre\\n\",\"directory-selection-description\":\"Le bloc de sélection Directory permet des contacts à sélectionner des éléments dans un répertoire de choix. Le bloc peut éventuellement envoyer les informations de retour de contact en rapport avec leur sélection. La sélection du contact peut être utilisé plus tard dans un bloc de branche décision.\",\"directory-selection-filter-description\":\"répertoire champs de blocs de sélection peuvent être utilisés comme filtres sur le lien partagé. sélectionner les champs doivent être utilisés comme filtres.\",\"directory-selection-filters\":\"filtres de sélection de répertoire\",\"disable\":\"Désactiver\",\"disable-voice-sms\":\"Désactiver la voix et SMS\",\"disabled\":\"désactivé\",\"disaggregate-data-by-the-audio-listened-percentage\":\"Données désagrégées par pourcentage des audios écoutés\",\"disaggregate-data-by-the-communication-channels\":\"Données désagrégées par Canaux de communication\",\"disaggregate-data-by-the-question-choices\":\"Données désagrégées par Questions à choix multiples\",\"display-headings-without-spaces\":\"rubriques d'affichage sans espaces\",\"display-latest-interaction-only\":\"Afficher la dernière interaction seulement\",\"display-regular-table-headings\":\"Afficher les titres des tableaux réguliers\",\"do-not-merge-any-calls\":\"Ne pas fusionner tous les appels\",\"do-not-prompt\":\"Ne pas demander\",\"do-you-want-to-proceed\":\"Voulez-vous poursuivre?\",\"dont-receive\":\"Ne pas recevoir\",\"download\":\"Télécharger\",\"download-X-format\":\"format :kind\",\"download-admin-file\":\"Télécharger le fichier CSV maître\",\"download-audio-file\":\"Télécharger le fichier audio\",\"download-csv\":\"Télécharger CSV\",\"download-csv-file-to-your-computer\":\"Télécharger le fichier CSV sur votre ordinateur\",\"download-response-audio\":\"Télécharger Réponse audio\",\"download-template\":\"Télécharger le modèle\",\"download-template-admin-file\":\"Télécharger le kit graphique\",\"download-the-audio-files-from-open-ended-responses\":\"Télécharger les fichiers audio à partir des réponses ouvertes\",\"download-x-template-file\":\"Télécharger le modèle :language\",\"draft\":\"Brouillon\",\"drag-and-drop-instruction\":\"Glisser-déposer le fichier CSV ou\",\"dry\":\"Sec\",\"duplicate\":\"Dupliquer\",\"duplicate-as-new-tree\":\"Reproduire comme nouvel arbre\",\"duplicate-entire-flow\":\"débit total en double\",\"duplicate-tree\":\"Arbre dupliqué\",\"duplicate-tree-has-been-created\":\"La copie de l'arbre a été créée.\",\"duplicates-warning\":\"Selon les limites et les caractères, la longueur minimale recommandée est\",\"duration\":\"Durée\",\"earth-networks\":\"Earth Networks\",\"edit\":\"Modifier\",\"edit-alert-message\":\"Modifier le message d'alerte\",\"edit-block-type\":\"Modifier le block :block_type\",\"edit-case-block\":\"Modifier Bloquer Case\",\"edit-collaborative-filtering-question\":\"Modifier la question de filtrage collaboratif\",\"edit-collaborative-filtering-rating\":\"Modifier la note de filtrage collaboratif\",\"edit-content\":\"Modifier le contenu\",\"edit-expression\":\"expression Edition\",\"edit-flow\":\"Modifier l'arbre\",\"edit-generate-code-block\":\"Modifier générer le code\",\"edit-group-membership\":\"Modifier l'appartenance au groupe\",\"edit-location\":\"Modifier l'emplacement\",\"edit-log-block\":\"Modifier Connexion Bloquer\",\"edit-message\":\"Modifier message\",\"edit-multiple-choice-question\":\"Modifier une question à choix multiples\",\"edit-multiple-select-multiple-choice-question\":\"Modifier Sélection multiple Question à choix multiples\",\"edit-new-version\":\"Modifier une nouvelle version\",\"edit-numeric-question\":\"Modifier la question numérique\",\"edit-open-ended-question\":\"Modifier une question ouverte\",\"edit-operator-contact-lists\":\"Modifier l'opérateur des listes de contacts\",\"edit-outgoing-call\":\"Modifier des appels sortants\",\"edit-output-block\":\"Modifier la sortie Bloquer\",\"edit-random-order-multiple-choice-question\":\"Modifier l'ordre aléatoire de la question à choix multiple \",\"edit-run-flow-block\":\"Modifier Exécuter flux bloc\",\"edit-settings\":\"Modifier les paramètres\",\"edit-subscriber-property\":\"Modifier le contact de la propriété\",\"edit-this-block\":\"Modifier ce bloc\",\"edit-tree-before-sending\":\"Modifier l'arbre avant d'envoyer\",\"edit-validate-block\":\"Modifier Valider le bloc de code\",\"edit-voice-content\":\"Modifier le contenu vocal\",\"empty\":\"Vide\",\"empty-audio-library\":\"Bibliothèque audio vide!\",\"empty-responses\":\"réponses vides\",\"enable\":\"Activer\",\"enable-disable-subscriber\":\"Activer / désactiver le contact\",\"enable-display-of-block-type\":\"Activer l'affichage du type de bloc (par exemple Question à choix multiples)\",\"enable-display-of-key-metrics\":\"Activer l'affichage des paramètres clés\",\"enable-sms\":\"activer SMS\",\"enable-voice\":\"activer la voix\",\"enable-voice-sms\":\"Activer la voix et SMS\",\"enabled\":\"Activée\",\"enabled-languages\":\"Langues activées\",\"enabled-result-tabs\":\"Activé onglets résultat\",\"end-at\":\"Fin à\",\"end-date\":\"Date de fin\",\"end-recording-by-pressing\":\"Arrêter l'enregistrement en appuyant sur\",\"end-the-call-session\":\"Fin de l'appel/session\",\"ends\":\"fins\",\"enter-a-value\":\"Entrez une valeur\",\"enter-accepted-responses\":\"Remplacer par une liste de réponses que nous allons utiliser pour correspondre à la réponse du respondant à ce choix. Entrez chaque option sur une nouvelle ligne. (Vous pouvez laisser ce champ vide si l'arbre sera utilisé pour le contenu vocal uniquement)\",\"enter-at-least-three-chars\":\"Entrez au moins trois caractères ...\",\"enter-at-least-three-chars-to-search\":\"Entrez au moins trois caractères pour commencer la recherche ...\",\"enter-audio-content\":\"Entrer le contenu audio\",\"enter-block-label\":\"Entrez une étiquette de bloc\",\"enter-block-name\":\"Entrez un nom de bloc\",\"enter-block-semantic-label\":\"Entrez une étiquette sémantique bloc\",\"enter-clipboard-content\":\"Entrez le contenu Clipboard...\",\"enter-confirmation-audio\":\"Si vous utilisez le contenu vocal, le remplacer par le nom d'un fichier audio que vous avez téléchargé à votre bibliothèque audio. Ce audio sera lu au respondant après avoir sélectionné le choix. (Vous pouvez laisser ce champ vide si l'arbre n'a pas le contenu de la voix ou si vous souhaitez ne pas jouer quoi que ce soit de retour au contact)\",\"enter-date\":\"entrer la date\",\"enter-duration\":\"Entrez la durée\",\"enter-each-on-new-line\":\"Entrez chaque sur une nouvelle ligne\",\"enter-exit-label\":\"Entrez sortie Étiquette\",\"enter-exit-test-expression\":\"Entrer Quitter Expression test\",\"enter-image-content\":\"Entrez le contenu de l'image\",\"enter-ivr-number\":\"Si vous utilisez le contenu vocal, le remplacer par le code numérique que le respondant doit entrer pour sélectionner ce choix. (Vous pouvez laisser ce champ vide si l'arbre n'a pas de contenu vocal)\",\"enter-num-ratings\":\"Entrez le nombre de notes\",\"enter-number\":\"Entrez un nombre\",\"enter-number-of-days\":\"Entrez le nombre de jours\",\"enter-operator-queue-name\":\"Entrez le nom de l'opérateur de la file d'attente ici\",\"enter-primary-and-synonyms\":\"Entrez l'option principale et synonymes de chaque choix. Entrez chaque synonyme sur une nouvelle ligne.\",\"enter-primary-attribute\":\"Votre premier choix va sur cette ligne. Remplacer par les principales informations de ce choix ici. (Voir l'exemple d'un choix complété ci-dessous)\",\"enter-primary-attribute-title\":\"Remplacer par la description de l'information primaire pour les choix (par exemple « Nom de la clinique »)\",\"enter-program-id\":\"Entrez l'identifiant de programme\",\"enter-property-name\":\"Entrez le nom de la propriété\",\"enter-secondary-attribute\":\"Remplacer par les informations secondaires pour ce choix\",\"enter-secondary-attribute-title\":\"Remplacer par la description de l'information secondaire pour les choix (par exemple « Pays »)\",\"enter-secondary-attribute-title-2\":\"Remplacer par la description de l'information secondaire pour les choix (par exemple « heures de service »). Vous pouvez ajouter jusqu'à 10 peices d'informations secondaires en ajoutant des colonnes à droite.\",\"enter-sms-content\":\"Entrez le contenu de SMS ...\",\"enter-sms-text-here\":\"Entrez le texte SMS ici\",\"enter-social-content\":\"Entrez le contenu social\",\"enter-social-messaging-text-here\":\"Entrez le contenu de messagerie sociale ici\",\"enter-text-content\":\"Entrez le contenu du texte\",\"enter-ussd-content\":\"Entrez le contenu USSD ...\",\"enter-ussd-text-here\":\"Entrez le texte USSD ici\",\"enter-value\":\"entrer la valeur\",\"enter-video-content\":\"Entrer le contenu vidéo\",\"entered\":\"Entré\",\"entity\":\"Entité\",\"entity-selection-block-instructions\":\"Les contacts se sortir par la sortie « Succès » quand ils choisissent une entité. Si elles ne sont pas autorisés à se référer à des entités, ou si elles ne parviennent pas à sélectionner une entité ils sont pris par la sortie « d'échec ».\",\"equal-to\":\"Égal à\",\"error\":\"Erreur\",\"error-creating-transcription-task\":\"Erreur de création tâche de transcription.\",\"error-found\":\"erreur n'a été détectée\",\"error-importing-json\":\"Erreur Importation JSON!\",\"error-report\":\"Rapport d'erreur\",\"error-updating-transcription-task\":\"Erreur tâche de transcription mise à jour.\",\"error-uploading-file-try-again\":\"Il y avait une erreur de télécharger le fichier, s'il vous plaît essayer à nouveau ajout.\",\"error-while-attempting-to-publish-specified-tree\":\"Erreur lors de la tentative de publier l'arbre spécifié.\",\"error-while-downloading-template\":\"Une erreur s'est produite lors du téléchargement du fichier de modèle.\",\"error-while-saving-transcriptions\":\"Erreur lors de la sauvegarde des transcriptions.\",\"error-while-saving-tree\":\"Erreur lors de la sauvegarde arbre ...\",\"establish-connection\":\"établir une connexion\",\"example-tree\":\"exemple d'arbre\",\"examples\":\"Exemples\",\"exceeds\":\"dépasse\",\"excel-supported-format\":\"CSV supporté par Excel\",\"exit\":\"Sortie\",\"exit-block-tree-begins-here\":\"exécution arbre continuera ici lorsque la session est terminée unexpectely.\",\"exit-default\":\"Défaut\",\"exit-otherwise-through-default\":\"Dans le cas contraire, la sortie par défaut\",\"exit-through\":\"Sortez par\",\"exit-to-another-output\":\"Sortir vers une autre sortie\",\"exit-when\":\"Quand\",\"expires-after\":\"Expire après\",\"expires-on\":\"Expire le\",\"export-date-time-format\":\"Exporter au format Date / Heure\",\"export-results-to-csv\":\"Exporter les résultats au format CSV\",\"export-transcriptions\":\"Export transcriptions\",\"export-tree-json\":\"Arbre Export JSON\",\"export-using-current-time-zone\":\"Exporter en utilisant fuseau horaire\",\"export-using-utc\":\"Exporter à l'aide UTC\",\"export-using-utc-with-subscriber-phone-number\":\"Exporter à l'aide UTC avec contact Numéro de téléphone\",\"expression-branch-description\":\"Ce bloc vérifie l'expression ( « Quand ») pour chaque sortie afin de déterminer quelle sortie utiliser.\",\"failed\":\"Echec\",\"failed-finding-matches\":\"Échec pour trouver des correspondances!\",\"failure\":\"Échec\",\"false\":\"Faux\",\"february-month\":\"février\",\"feedback-message\":\"Message Commentaire\",\"field\":\"Champ\",\"field-deleted-since-configuring-this-block\":\"Le contact de la propriété a été supprimé depuis la configuration de ce bloc. S'il vous plaît supprimer cette configuration.\",\"file-details\":\"Détails du fichier\",\"filesize\":\"Taille du fichier\",\"fill-out-template-instruction\":\"Remplissez le modèle avec vos résultats d'arbres\",\"fill-out-template-instruction-1\":\"remplir avec des rangées de données en correspondance avec les têtes de colonnes de la matrice. Chaque ligne est un résultat unique arbre\",\"fill-out-template-instruction-2\":\"Vous ne pouvez pas ajouter de nouvelles colonnes dans votre fichier pour créer de nouveaux blocs. Modifier l'arbre pour faire ces changements\",\"fill-out-template-instruction-3\":\"Le format de la date d'appel doit être AAAA-MM-JJ\",\"fill-out-template-instruction-4\":\"Le format de l'appel Heure de départ devrait être HH: MM: SS\",\"fill-out-template-instruction-5\":\"Pour la « Sélection multiple Question à choix multiples Bloc » vous devez séparer les options choisies par « ; »\",\"filter-block-content\":\"contenu du bloc de filtre ...\",\"filter-by-block\":\"Filtrer par blocs\",\"filter-by-date\":\"Filtrer par date\",\"filter-by-directory-selection\":\"Filtrer par blocs Répertoire de sélection\",\"filter-by-tag\":\"Filtrer par tags:\",\"filter-enabled\":\"filtre activé\",\"filter-instructions\":\"Sélectionnez les peices d'information doivent être utilisés comme filtres lors de l'affichage des résultats.\",\"filter-validation\":\"Validation Filtre\",\"filters\":\"filtres\",\"filters-saved\":\"configurations de filtres enregistrés\",\"find-matches\":\"Trouver les correspondances\",\"first-time-subscribers\":\"Contacts pour la première fois\",\"fix-validation-errors-before-publishing\":\"Correction des erreurs de validation avant publication\",\"fixed-date\":\"Date fixe\",\"flag-this-recording-as-either\":\"Signaler ce enregistrement inaudibles ou vide\",\"flagged-as-flagtype\":\"Signalé comme :flag_type - cliquez sur le bouton ci-dessus pour annuler.\",\"flagged-as-inaudible-or-empty\":\"Signalé comme inaudible ou vide - utilisez les boutons ci-dessus pour undo\",\"floip-cleared\":\"Configuration effacée.\",\"floip-expressions-escape-with-double-at-symbol\":\"Si vous avez l'intention d'insérer un littéral <code> @ </ code> symbole, en utilisant <code> @@ </ code> se traduira par un seul caractère en sortie.\",\"floip-instructions-1\":\"Viamo est membre de l'Initiative d'interopérabilité de flux, ce qui permet l'échange de données homogène à travers la participation des systèmes logiciels de ICT4D.\",\"floip-instructions-2\":\"Pour activer la diffusion sécurisée des résultats de cet arbre à un flux de données de résultats Aggregator, entrez l'URL de base et l'authentification par jeton de l'agrégateur.\",\"floip-sync-success\":\"Votre arbre Viamo est permis de diffuser des réponses au flux Résultats aggrégateur.\",\"floip-sync-warning\":\"Votre arbre Viamo n'est pas permis de diffuser des réponses au flux Résultats aggrégateur. Établir une connexion à l'agrégateur pour permettre le streaming.\",\"flow-view\":\"Arborescence\",\"for-a-given-subscriber-custom-data-category\":\"Pour un contact donné, si la propriété ou d'une catégorie de données personnalisée suivante a la valeur ci-dessous, allez dans « True ». Sinon, passez à « Faux ».\",\"for-a-given-subscriber-go-to-true-false\":\"Pour un contact donné, si la propriété suivante ou catégorie de données personnalisée a la valeur ci-dessous, allez sur True. Sinon, passez à False.\",\"for-assistance\":\"pour obtenir de l'aide\",\"for-example-to-assign-the-first-hundred-audio-responses-to-a-transcriber\":\"Par exemple, pour attribuer les cent premières réponses audio à un transcripteur, réglez le « Start A » valeur 1 et la valeur « End A » à 100. Pour la prochaine transcripteur, vous pouvez alors commencer à 101 et se termine à 200, et bientôt.\",\"for-the-best-user-experience\":\"Pour une meilleure expérience utilisateur, fournissez une invite audio qui dit,\",\"for-this-block\":\"pour ce bloc.\",\"fri\":\"Ven.\",\"friday-day\":\"Vendredi\",\"from-block-input\":\"A partir de l'entrée du bloc\",\"from-import\":\"de l'importation\",\"generate-code-title\":\"Générer titre de code\",\"generate-csv-file\":\"Générer un fichier CSV\",\"generate-shareable-link\":\"Générer un lien partageable\",\"generating-data-from-past-calls\":\"Génération de données à partir des appels passés\",\"get-shareable-link\":\"Obtenir un lien partageable\",\"go-to-lang-selector-interface\":\"Aller à l'interface Sélecteur de Langue\",\"go-to-true-or-false\":\"... aller à Vrai. Sinon, aller à Faux\",\"go-to-true-otherwise-go-to-false\":\"... allez à 'True'. Sinon, passez à « Faux ».\",\"go-to-true-output-if-contact-language-is\":\"Aller à la sortie « Vrai » si le langauge du contact est\",\"greater-than\":\"Plus grand que\",\"group\":\"groupe\",\"group-is-larger-than\":\"groupe est plus grand que\",\"group-label\":\"Groupe:\",\"group-not-set\":\"Groupe non établi\",\"groups\":\"Groupes\",\"has-already-been-published\":\"a déjà été publié\",\"has-been-successfully-published\":\"a été publié avec succès\",\"has-value\":\"a une valeur\",\"header-validation\":\"La valeur ':dataValue' n'est pas un :dataHeader valide\",\"header-validation-missing\":\"La colonne ':columnName' est manquante\",\"heading-exit\":\"Sortie\",\"headings\":\"rubriques\",\"headings-format\":\"Format rubriques\",\"heres-what-we-know\":\"Voici ce que nous savons:\",\"hide-instruction\":\"Cacher les instructions\",\"hide-phone-numbers\":\"Cacher les numéros de téléphone\",\"hide-question-titles\":\"Cacher titres Question\",\"hide-subscriber-id\":\"Masquer Contact ID\",\"high-winds\":\"Vents forts\",\"histogram-of-percentage-listened\":\"Histogramme de % écouté\",\"home\":\"Accueil\",\"how-to-import-tree-results\":\"Comment les résultats d'importation arbres\",\"human-readable\":\"Lisible par l'homme\",\"hung-up\":\"Raccroché\",\"i-have-translated-my-choices\":\"J'ai traduit mes choix\",\"if\":\"Si\",\"if-a-respondent-has-already-started-this-tree-but-not-finished\":\"Si un répondant a déjà commencé cet arbre mais ne l'a pas fini, reprenez là où il s'était arrêté.\",\"if-all-following-true\":\"Si toutes les conditions suivantes sont remplies\",\"if-all-of-the-following-are-true\":\"Si toutes les conditions suivantes sont remplies\",\"if-any-following-true\":\"Si l'une des conditions suivantes est vraie\",\"if-any-of-the-following-are-true\":\"Si l'une des conditions suivantes sont remplies\",\"if-at-least\":\"Si au moins\",\"if-at-least-this-many-following-true\":\"Si au moins les éléments suivants sont vraies\",\"if-at-least-this-many-of-the-following-are-true\":\"Si au moins les éléments suivants sont vraies ...\",\"if-b-all-b-of-the-following-are-true-go-to-true\":\"Si <b> tous </b> des éléments suivants sont vrais, allez sur True.\",\"if-cfq-block-has-x-ratings\":\"Si les déclarations de « :blockTitle » ont :targetRatio évaluations ...\",\"if-in\":\"Si dans\",\"if-not-in\":\"En cas de non\",\"if-subscriber-custom-data\":\"En cas de contact de données personnalisées,\",\"if-subscriber-language-is\":\"Si le contact est Langue\",\"if-subscriber-language-is-unknown\":\"Si l'abonné est la langue « [Inconnu] »\",\"if-subscriber-start-date-is\":\"En cas de contact Date de début est\",\"if-symbols-are-used-then-reflect-in-filename\":\"Si les symboles sont utilisés, cela doit se refléter dans le nom du fichier.\",\"if-the-number-of-subscribers-in-the\":\"Si le nombre de contacts dans le\",\"if-the-subscriber-is\":\"Si le contact est\",\"if-the-value-is\":\"Si la valeur est\",\"if-youd-like-to-repeat-msg-press-2\":\"Si vous souhaitez répéter ce message, appuyez maintenant sur 2.\",\"import-done\":\"Importation effectuée\",\"import-export\":\"Importer / Exporter\",\"import-failed\":\"Échec de l'importation pour\",\"import-file\":\"Importer le fichier\",\"import-file-instruction\":\"Faites glisser le fichier ou cliquez sur le bouton Fichier Importer un fichier CSV et sélectionnez le modèle enregistré\",\"import-in-progress\":\"Importation en cours\",\"import-new-results\":\"Résultats d'importation Nouveaux\",\"import-results\":\"Résultats d'importation arbres\",\"import-status\":\"Etat de l'importation\",\"import-tree\":\"Importer l'arbre\",\"import-tree-json\":\"Importer un fichier JSON pour l'arbre (*.json)\",\"importing\":\"importation\",\"importing-file\":\"importation du fichier\",\"in-progress\":\"En cours\",\"in-the-following-group\":\"Dans le groupe suivant\",\"inactive-do-not-receive-outgoing-calls\":\"Inactif (Ne pas recevoir les appels sortants)\",\"inaudible\":\"Inaudible\",\"include-calls-from\":\"Inclure les appels provenant de \",\"include-in-summary\":\"En récapitulant\",\"infinite-loops-detected-please-edit-before-sending\":\"Détectées boucles infinies. S'il vous plaît modifier avant d'envoyer\",\"infinite-loops-exist\":\"Boucles infinies existent\",\"input\":\"Contribution\",\"input-help\":\"Ce bloc vérifie que le code est valide en utilisant la réponse d'une question précédente. Sélectionnez quelle question à utiliser.\",\"input-required\":\"Entrée Requise\",\"instructional-text-optional\":\"Texte pédagogique (facultatif)\",\"interactions\":\"interactions\",\"internal-notes\":\"Notes internes\",\"internal-notes-optional\":\"Notes internes (facultatif)\",\"invalid\":\"Invalide\",\"invalid-content-type\":\"Type de contenu non valide: Le fichier est pas reconnu comme .csv\",\"invalid-csv\":\"CSV non valide: Le fichier n'a pas pu étre traité comme un fichier .csv valide\",\"invalid-entry\":\"Entrée invalide.\",\"invalid-pattern\":\"motif non valide!\",\"invalid_startingblock_key\":\"S'il vous plaît définir un bloc de départ pour votre arbre\",\"is\":\"est\",\"is-complete\":\"est complet\",\"is-private-not-reversible\":\"Ce paramètre ne peut être modifiée après un arbre est publié avec cette option activée\",\"issue-trackers\":\"Suivi de problèmes\",\"ivr-content\":\"Contenu de messagerie Rich\",\"january-month\":\"janvier\",\"july-month\":\"juillet\",\"june-month\":\"juin\",\"key-metrics\":\"Indicateurs clés\",\"key-press\":\"Appuyez sur la touche\",\"label\":\"Étiquette\",\"label-is-already-in-use\":\"L'étiquette est déjà utilisé\",\"language\":\"Langue\",\"language-options\":\"options de langue\",\"language-selection-prompt\":\"Invite à une sélection de langue\",\"language-selector\":\"Sélecteur de langue\",\"language-selector-for-this-call\":\"Sélecteur de langue pour cet appel\",\"language-selector-not-found\":\"Sélecteur de langue non trouvé\",\"language-x-csv-file\":\"Fichier CSV :language\",\"languages\":\"Langues\",\"languages-have-not-been-enabled\":\"Les langues ne sont pas permises\",\"last-edited\":\"Dernière modification\",\"last-edited-on-this-date\":\"Dernière modification à cette date\",\"last-saved-at\":\"Dernier enregistrement à\",\"lat\":\"Lat:\",\"latest-message-for-user-groups\":\"Dernier message pour tous les groupes de contact\",\"latin-languages\":\"Langues latines\",\"learn-more-about-viamo-by-visiting\":\"En savoir plus sur Viamo en visitant :viamo_link, ou :sign_in_link\",\"less-than\":\"Moins de\",\"let-users-repeat\":\"Laisser les utilisateurs répéter le message\",\"letters-only\":\"Lettres seulement\",\"library\":\"Bibliothèque\",\"load-more-subscribers\":\"Afficher plus de contacts\",\"loading\":\"Chargement...\",\"loading-average-call-durations\":\"Chargement durée moyenne des appels\",\"local-currency\":\"Monnaie locale\",\"local-time-is-utc\":\"L'heure locale est UTC\",\"location\":\"Localité\",\"location-selector\":\"Sélecteur de Localisation\",\"lock\":\"Vérouiller\",\"lock-the-date-range-to-the-dates-above\":\"Verrouillez la plage de dates aux dates ci-dessus\",\"locked\":\"Vérouillé\",\"logic\":\"Logique\",\"lon\":\"Lon:\",\"machine-readable\":\"Lisible par machine\",\"machine-readable-format\":\"Format lisible par machine\",\"make-new-subscriber\":\"Faire un nouveau contact avec le même numéro de téléphone\",\"manage-queues\":\"Gérer Queues ...\",\"manage-responses\":\"Gérer les réponses\",\"manage-statements\":\"gérer déclarations\",\"manage-transcriptions\":\"Gérer Transcriptions\",\"march-month\":\"Mars\",\"mark-call-as-complete\":\"Marquer l'appel comme étant Effectué\",\"max-amount\":\"Quantité maximale\",\"max-code-issue\":\"Limiter le nombre de codes\",\"max-days\":\"maximum de jours\",\"max-duration-in-seconds\":\"Durée maximale (secondes)\",\"max-response-characters\":\"Caractères de réponse maximum\",\"max-length\":\"Longueur maximale\",\"max-number-of-repeats\":\"Nombre maximum de Répétitions\",\"maximum-number-of-response-digits\":\"Nombre maximal de chiffres pour la réponse\",\"maximum-record-duration\":\"Durée enregistrement maximum\",\"maximum-value\":\"Valeur maximale\",\"maximum-value-(inclusive)\":\"Valeur maximale (inclus)\",\"may-month\":\"Mai\",\"mcq-response-format\":\"Format Réponse MCQ \",\"merge-all-calls-from-same-subscriber\":\"Fusionner tous les appels de même contact\",\"merge-incomplete-calls-from-the-same-subscriber\":\"Fusionner les appels incomplets du même contact\",\"merge-only-resumed-calls\":\"Fusionner seulement les appels repris\",\"merge-options\":\"Options de fusion\",\"message\":\"Message\",\"message-block-values\":\"Valeur du message bloc\",\"message-blocks-only\":\"Blocs de message uniquement\",\"message-details\":\"Détails du message\",\"message-title\":\"Titre du message\",\"method\":\"Méthode\",\"min-amount\":\"Montant minimal\",\"min-length\":\"Longueur minimale\",\"minimum-value\":\"Valeur minimale\",\"minimum-value-(inclusive)\":\"Valeur minimale (y compris)\",\"minutes\":\"minutes\",\"modified\":\"(Modifié)\",\"modify-subscriber\":\"Modifier le contact\",\"modify-subscriber-active-status-to\":\"Modifier contact Statut actif\",\"modify-subscriber-preferred-content-type-for\":\"Modifier le type de contenu préféré contacter pour\",\"modify-subscriber-start-date-to\":\"Modifier la date de début de contact\",\"modify-subscribers-start-date-to-absolute-date-here\":\"Modifier les contacts date de début à ce jour absolu ici\",\"mon\":\"Lun.\",\"monday-day\":\"Lundi\",\"month\":\"mois\",\"monthly\":\"Mensuel\",\"months-after\":\"mois après\",\"months-before\":\"mois avant\",\"more\":\"Plus\",\"more-options\":\"Plus d'options\",\"more-than\":\"Plus que\",\"most-active-blocks\":\"La plupart des blocs actifs\",\"most-recent-published-version\":\"La version la plus récente publiée\",\"most-recent-version\":\"La version la plus récente\",\"most-recent-version-of\":\"La version la plus récente de\",\"mostly\":\"La plupart\",\"msmcq-description-p1\":\"Pour les canaux en mode texte comme SMS, USSD et messagerie sociale: définir une seule lettre (A-Z) comme synonyme de chaque choix en utilisant le choix menu d'options.\",\"msmcq-description-p2\":\"Les contacts peuvent par exemple répondre: « abc » pour sélectionner 3 choix configurés avec synonyme « a », « b » et « c ». Synonyme doit être réglé et doit être unique par choix. La même synonyme peut être utilisé pour même choix dans les différentes langues activées.\",\"msmcq-description-p3\":\"Pour la voix, réglez la presse touche vocale pour chaque choix dans le choix menu d'options. Les contacts peuvent par exemple appuyer sur « 123 » pour sélectionner 3 choix.\",\"multiple-choice-question\":\"Question à Choix Multiples\",\"multiple-select-multiple-choice-question\":\"Sélection multiple Question à choix multiples\",\"name\":\"Nom\",\"never\":\"Jamais\",\"new-contact-created\":\"Nouveau contact créé\",\"new-edits-click-save\":\"De nouvelles modifications - cliquez sur « Enregistrer » à nouveau avant de continuer.\",\"new-exclamation\":\"Nouveau!\",\"new-issue-tracker\":\"Nouveau Suivi de problèmes\",\"new-property\":\"nouvelle propriété\",\"new-subscriber-value\":\"Nouvelle valeur de contact\",\"new-transcription-task\":\"Nouvelle transcription Tâche\",\"new-transcription-task-created\":\"Nouvelle tâche de transcription créé!\",\"new-transcription-tasks-generated\":\"Les nouvelles tâches de transcription générés!\",\"new-tree\":\"Nouvel arbre\",\"new-tree-created\":\"Nouvel arbre créé!\",\"new-version\":\"Nouvelle version\",\"new-version-created\":\"Nouvelle version créée!\",\"newest\":\"Plus Récent\",\"newest-to-oldest\":\"Récent au plus ancien\",\"next\":\"Prochain\",\"no\":\"Non\",\"no-action-selected\":\"(Aucune action sélectionnée)\",\"no-admin-file-yet-filters\":\"Téléchargez le fichier CSV maître à définir des filtres\",\"no-admin-file-yet-selection-confirmation\":\"Téléchargez le fichier CSV master pour régler la confirmation de sélection\",\"no-audio-files-found-for-X\":\"Aucun audio trouvé pour\",\"no-audio-files-found-in-organisation\":\"Aucun fichier audio trouvé dans l'organisation\",\"no-audio-yet\":\"Pas encore d'audio\",\"no-blocks-for-content\":\"Il n'y a pas de blocs pour remplir le contenu sur.\",\"no-blocks-found-for-tree-with-identifier\":\"Aucun bloc n'a été trouvée pour l'arbre avec identifiant\",\"no-change\":\"Pas de changement\",\"no-choice-selected\":\"Pas de choix sélectionné\",\"no-choices-added\":\"Aucun choix ajouté.\",\"no-choices-yet-please-specify\":\"Pas encore de choix - Veuillez d'abord indiquer vos choix  dans la barre latérale\",\"no-choices-yet-please-specify-your-choices-first-in-the-sidebar\":\"Pas de choix pour le moment. Précisez votre\",\"no-clipboard-content-yet\":\"Aucun Clipboard encore\",\"no-content-blocks\":\"Aucun contenu de bloc!\",\"no-content-blocks-to-populate-content-onto\":\"Il n'y a pas de blocs pour remplir le contenu sur.\",\"no-content-types-enabled\":\"Aucun type de contenu activé.\",\"no-credit\":\"Pas de crédit\",\"no-csv-exports-for-these-results-have-been-created-yet\":\"Aucune exportation CSV pour ces résultats n'ont été créée\",\"no-data\":\"Pas de données\",\"no-directory-selection-blocks\":\"cet arbre n'a pas de blocs de sélection de répertoire\",\"no-groups-created-yet\":\"Aucun groupe créé pour l'instant ou vos groupes ont aucun contact.\",\"no-labels-or-tags\":\"Aucune étiquette ou des étiquettes\",\"no-languages-enabled\":\"Aucune langue n'est encore activée pour cet arbre.\",\"no-languages-enabled-on-the-tree\":\"Pas de langues activées pour l'arbre\",\"no-matches-found\":\"Aucun résultat!\",\"no-messages-created-yet\":\"Aucun message créé.\",\"no-number-of-audio-files-per-task-supplied\":\"Pas nombre de fichiers audio par tâche fourni.\",\"no-operator-contact-lists-made-yet\":\"Aucune liste de contacts de l'opérateur n'a encore été faite.\",\"no-preferred-channel-selected\":\"Vous ne l'avez pas sélectionné un canal préféré. S'il vous plait sélectionner en un\",\"no-preferred-language\":\"Aucune langue préférée\",\"no-question-selected\":\"Aucune question sélectionnée\",\"no-question-text-provided\":\"Non Question Texte fourni\",\"no-result-for-the-selected-filters\":\"Aucun résultat pour les filtres sélectionnés.\",\"no-results-for-this-block-yet\":\"Pas encore de résultat pour ce bloc.\",\"no-results-not-sent-yet\":\"(Aucun résultat - non encore envoyé)\",\"no-results-yet\":\"Désolé, il n'y a pas encore des résultats.\",\"no-shareable-links-have-been-created-yet\":\"Aucun lien partageable n'a pas encore été créé.\",\"no-sms-content-yet\":\"Pas de contenu SMS encore\",\"no-social-content-yet\":\"Aucun sociale encore\",\"no-subscriber-field-type-map-coordinates\":\"Vous ne disposez pas d'un champ de contact de type « Carte Coordonnées ». Ce champ de contact est nécessaire pour stocker l'emplacement du contact.\",\"no-surveys-created\":\"Aucune enquête créée pour l'instant.\",\"no-tag-found\":\"Aucune identification trouvée\",\"no-tagged-blocks\":\"cet arbre n'a pas de blocs marqués\",\"no-tree-found-with-identifier\":\"Aucun arbre trouvé avec identifiant\",\"no-trees-created-yet\":\"Aucun arbre créé.\",\"no-trees-have-been-created-yet\":\"Aucun arbre n'a encore été créé\",\"no-ussd-content-yet\":\"Pas de contenu USSD encore\",\"no-validation\":\"aucune validation\",\"no-value\":\"Aucune valeur\",\"none-selected\":\"(Aucune sélection)\",\"normalize\":\"Normaliser\",\"normalize-chart-results\":\"Normaliser les graphiques des résultats\",\"not\":\"ne pas\",\"not-available\":\"Indisponible\",\"not-created-any-language-selectors-yet\":\"Vous n'avez pas encore créé de sélecteurs de langue.\",\"not-equal-to\":\"Pas égal à\",\"not-found\":\"Pas trouvé\",\"not-in-the-following-group\":\"N'est pas dans le groupe suivant\",\"not-launched-yet\":\"Pas encore lancé\",\"not-set\":\"pas encore défini\",\"november-month\":\"novembre\",\"now\":\"Maintenant\",\"num-ratings-per-statement\":\"Nombre d'évaluations par relevé\",\"num-ratings-that-each-statement-should-receive\":\"Le nombre de notes que chaque déclaration doit recevoir.\",\"number\":\"Nombre\",\"number-of-calls-in-date-range\":\"Nombre d'appels dans l'intervalle de dates\",\"number-of-calls-in-the-last\":\"Nombre d'appels lors des derniers\",\"number-of-choices\":\"Nombre de choix\",\"number-of-exits\":\"Nombre de sorties\",\"number-of-outputs\":\"Nombre de sorties:\",\"number-of-people-who-ended-at-this-block\":\"Nombre de personnes qui ont fini à ce bloc\",\"numbers-alphabet\":\"Alphanumeric\",\"numbers-only\":\"Chiffres uniquement\",\"numeric-average\":\"Moyenne numérique\",\"numeric-block-title\":\"Titre du bloc numérique\",\"numeric-branch\":\"Branchement Numérique\",\"numeric-quesion-block\":\"question bloc numérique\",\"numeric-question\":\"question numérique\",\"occurrences\":\"occurrences\",\"october-month\":\"octobre\",\"of\":\"de\",\"of-following-true\":\"... des conditions suivantes sont remplies\",\"of-the-following-are-true\":\"des affirmations suivantes sont vraies\",\"of-the-following-are-true-go-to-true\":\"des conditions suivantes sont remplies, allez sur True.\",\"offline\":\"Hors ligne\",\"offline-content\":\"Lecture audio\",\"oldest-to-newest\":\"Le plus ancien au plus récent\",\"on\":\"Sur\",\"on-line\":\"en ligne\",\"one-output-for-all-choices\":\"Une sortie pour tous les choix\",\"only-accepts-word-characters\":\"accepte uniquement des caractères de mot\",\"only-display-latest-interaction-if-multiple-interactions-exist-for-the-same-session-and-block\":\"afficher uniquement la dernière interaction si plusieurs interactions existent dans la même session pour le même bloc. Ne cochez pas si tous les résultats doivent être affichés.\",\"only-question-blocks\":\"Seuls les blocs question\",\"open-block-with-voice-set-sub-prop-warning\":\"À composition non limitée des réponses vocales ne sont pas en mesure de propriétés de contact ensemble en ce moment.\",\"open-ended-audio-export-ready\":\"L'exportation audio ouverte prêt\",\"open-ended-question\":\"Question Ouverte\",\"open-ended-responses\":\"Les réponses ouvertes\",\"open-external-link\":\"Ouvrir un lien externe\",\"open-in-new-window\":\"Ouvrir dans une nouvelle fenêtre\",\"open-link\":\"Ouvrir le lien\",\"open-link-in-new-window\":\"Ouvre le lien dans une nouvelle fenêtre\",\"operator-contact-list\":\"liste de contacts opérateur\",\"operator-queue-name\":\"Opérateur File d'attente\",\"operators\":\"les opérateurs\",\"optional-description\":\"Description facultative\",\"optionally-you-can-create-loop-back\":\"En option, vous pouvez créer des connexions à « boucle de retour » à ce bloc de branche aléatoire, si vous voulez des contacts pour atteindre tous les blocs connectés ci-dessous dans un ordre aléatoire. Après chaque option a été atteint, le bloc peut soit poursuivre au hasard, ou, il peut « sortie » à une sortie distincte.\",\"options\":\"Options\",\"or\":\"ou\",\"order\":\"Ordre\",\"order-by\":\"Commandé par:\",\"order-of-components-dont-matter-but-must-be-adjacent-one-another\":\"L'ordre de ces composants n'importe, mais ils doivent être adjacents les uns aux autres.\",\"order-of-results\":\"Ordre des résultats\",\"organization-not-found-with-api-key\":\"Impossible de trouver l'organisation avec cette clé API.\",\"original-file\":\"fichier original\",\"original-quality\":\"Qualité originale\",\"originally\":\"Initialement\",\"outgoing-calls\":\"Les appels sortants\",\"output\":\"Production\",\"output-branching\":\"Branchement de sortie\",\"output-clipboard\":\"Clipboard\",\"output-connected\":\"Lié\",\"output-error\":\"Erreur\",\"output-exit\":\"Sortie\",\"output-expression\":\"expression de sortie\",\"output-failed\":\"Échoué\",\"output-false\":\"Faux\",\"output-not-met\":\"Pas rencontré\",\"output-quota-met\":\"Quota rencontré\",\"output-sms\":\"SMS\",\"output-true\":\"Vrai\",\"output-ussd\":\"USSD\",\"output-voice\":\"Voix\",\"outputs\":\"Les sorties\",\"partly\":\"Partiellement\",\"password\":\"Mot de passe\",\"pattern-not-provided-for-tree\":\"Motif non prévu pour l'arbre\",\"pause\":\"Pause\",\"percent-of-audio-listened\":\"Pourcentage de l'audio écouté\",\"percent-of-the-content-provided\":\":count % du contenu fourni\",\"phone\":\"Téléphone\",\"phone-number\":\"Numéro de téléphone\",\"phone-quality\":\"Qualité téléphone\",\"phone-recording\":\"enregistrement téléphonique\",\"pick-a-date-range-to-display-block-interaction-totals\":\"Choisissez une plage de dates pour afficher les totaux d'interaction bloc\",\"plain-input\":\"entrée simple\",\"play\":\"Jouer\",\"play-audio\":\"Lecture audio\",\"please-fix-the-validation-errors-in-this-tree-before-publishing\":\"Corrigez les erreurs de validation dans cet arbre avant\",\"please-provide-numeric-codes\":\"Veuillez fournir des codes numériques\",\"please-provide-valid-start-and-end-numbers\":\"S'il vous plaît fournir début valides et les numéros de fin.\",\"please-resolve-the-set-of-infinite-loops-before-sending-this-tree\":\"Reglez l'ensemble des boucles infinies\",\"please-select-a-numeric-question-block\":\"Veuillez sélectionner un bloc de questions numériques\",\"please-select-channel\":\"assurez s'il vous plaît que vous sélectionnez un canal préféré\",\"please-translate-choices\":\"S'il vous plaît traduire vos choix.\",\"please-try-again-or-contact\":\"Essayez encore une fois ou contactez\",\"precipitation-level\":\"précipitations Niveau\",\"press\":\"Pressez\",\"preview-file\":\"prévisualisation du fichier\",\"previous\":\"Précédent\",\"previous-exports\":\"exportations précédentes\",\"previous-imports\":\"Importations Précédentes\",\"primary-information-heading\":\"titre d'information primaire\",\"pro-tip\":\"Astuce Pro\",\"problem-connecting-api\":\"Problème de connexion à l'API.\",\"processing\":\"En cours de traitement...\",\"product-code\":\"Code produit\",\"program\":\"Programme\",\"program-help-generate-code-block\":\"Assurez-vous de définir le même programme dans le bloc de code Valider\",\"program-help-validate-code-block\":\"Utilisez le même programme que le bloc de code Générez\",\"prompt\":\"Rapide\",\"prompt-for-statement\":\"Demander déclaration\",\"prompts\":\"Instructions\",\"property\":\"Propriété\",\"property-configuration\":\"Configuration des propriétés\",\"property-not-supported\":\"Type non pris en charge\",\"protocol\":\"Protocole\",\"provide-a-language-selector-menu\":\"Fournir un menu de sélection de la langue pour les contacts de choisir leur langue\",\"provide-key\":\"Fournir une clé API\",\"provide-url\":\"Fournir une URL\",\"publish\":\"Publier\",\"publish-new-version\":\"Publier une nouvelle version\",\"publish-the-newest-version-of-this-tree\":\"Publier la nouvelle version de cet arbre\",\"publish-this-version-of-the-flow\":\"Publier cette version du flux\",\"published\":\"Publié!\",\"published-header\":\"Publié\",\"question\":\"Question\",\"question-and-message-blocks\":\"Questions et blocs message\",\"question-blocks-only\":\"Question blocs seulement\",\"question-prompt\":\"Invite de question\",\"question-responses\":\"Question Réponses\",\"question-title\":\"Titre de question\",\"quota-threshold\":\"Seuil\",\"rain\":\"Pluie\",\"random-branch\":\"Branchement aléatoire\",\"random-code\":\"Générer des codes aléatoires\",\"ready-to-send\":\"Prêt à envoyer\",\"receive\":\"Recevoir\",\"receive-outgoing-calls\":\"Recevoir des appels sortants\",\"received\":\"Reçu\",\"recipient-group\":\"Groupe bénéficiaire\",\"recommended\":\"conseillé\",\"recommended-export-format-settings\":\"Paramètres du format d'exportation recommandé\",\"record-group-message\":\"Record Group message\",\"record-group-message-title\":\"titre du message de groupe d'archives\",\"reject\":\"Rejeter\",\"relative-to-numeric-input\":\"Par rapport à l'entrée numérique\",\"relative-to-the-call-date\":\"Par rapport à la date d'appel\",\"reload\":\"Recharger\",\"remove\":\"Retirer\",\"remove-condition\":\"Supprimer la condition\",\"remove-file\":\"Effacer le fichier\",\"remove-filter-tags\":\"Retirer tous les tags\",\"remove-from\":\"Retirer\",\"remove-from-group\":\"Supprimer du groupe\",\"remove-question\":\"Supprimer la question\",\"removes-subscribers-from-the\":\"Supprime les contacts de la\",\"repeat\":\"Répéter\",\"repeat-every\":\"Répétez chaque\",\"repeat-questions\":\"questions répétées\",\"repeating\":\"Répétitif\",\"repeats\":\"répétitions\",\"replace\":\"Remplacer\",\"replace-existing-audio-files-on-blocks\":\"Remplacer les fichiers audio existants sur des blocs\",\"reset\":\"réinitialiser\",\"reset-all-filter\":\"Réinitialiser tous les filtres\",\"reset-all-filters\":\"Réinitialiser tous les filtres\",\"reset-breakdown-and-show-interactions\":\"Réinitialiser la répartition et montrer les interactions\",\"reset-breakdown-and-show-total-interactions\":\"Réinitialiser la répartition et montrer les totaux des interactions\",\"reset-filters\":\"Réinitialiser les filtres\",\"resolve-warnings-and-save-simulate-clipboard\":\"Résoudre les avertissements et sauver l'arbre à utiliser le simulateur Clipboard\",\"resource-view\":\"Visualisation des Ressources\",\"response\":\"Réponse\",\"response-timeout\":\"Délai de réponse\",\"responses\":\"Réponses\",\"responses-in-this-task\":\"Les réponses dans cette tâche\",\"responses-to-this-block-might-contain-personal-identifying-information\":\"Les réponses à ce bloc peuvent contenir des informations d'identification personnelle\",\"responses-to-this-block-will-be-hidden-from-users-without-permission-to-view-personal-information\":\"Les réponses à ce bloc seront cachés des utilisateurs sans l'autorisation d'afficher des informations personnelles.\",\"restored-title-version\":\"Restauré\",\"restored-tree\":\"Arbre restauré\",\"result-import\":\"Importation de résultats\",\"results\":\"Résultats\",\"results-listed-on-page\":\"Résultats listés sur la page\",\"resume-tree-for-partial-respondents\":\"Reprendre l'arbre pour une partie des répondants ?\",\"retain-only-most-recent-call-from-same-subscriber\":\"Ne conserver que les plus récent appel de même contact\",\"rich_messaging-content\":\"contenu hors-ligne\",\"rows\":\"Lignes\",\"rows-processed\":\"lignes traitées\",\"rule-components\":\"Règle de composants\",\"run-another-tree\":\"Exécutez un autre arbre\",\"runs-the-latest-version-of\":\"Exécuter la dernière version de\",\"runs-the-latest-version-of \":\"S'exécute la dernière version de\",\"sat\":\"Sam.\",\"saturday-day\":\"samedi\",\"save\":\"Sauvegarder\",\"save-and-continue\":\"Sauvegarder et continuer\",\"save-and-go-to-next-page\":\"Enregistrer et aller à la page suivante\",\"save-changes-to-the-flow\":\"Enregistrer les modifications au flux\",\"save-selection\":\"Enregistrer la sélection\",\"save-template-instruction\":\"Enregistrez le modèle sur votre ordinateur en tant que fichier CSV\",\"save-transcriptions\":\"Enregistrer transcriptions\",\"saved\":\"Enregistré\",\"saving\":\"Sauvegarde en cours ...\",\"saving-and-checking-for-errors\":\"Enregistrement et vérification des erreurs\",\"saving-transcriptions\":\"Transcriptions Sauvegarde en cours ...\",\"saving-tree\":\"Saving arbre ...\",\"schedule-and-send-an-outgoing-call\":\"Planifier et envoyer un appel sortant\",\"schedule-type\":\"Type de planification\",\"search-audio-library\":\"Recherche bibliothèque audio ...\",\"search-subscribers\":\"Rechercher des contacts\",\"secondary-information-headings\":\"rubriques d'information secondaires\",\"seconds\":\"secondes\",\"seconds-ago\":\"il y a quelques instants\",\"seconds-for-a-response\":\"Sécondes pour répondre\",\"seconds-for-response\":\"secondes pour la réponse\",\"see-error-report-instruction\":\"Voir les détails Report de Error ci-dessous, corriger l'erreur dans votre fichier CSV et télécharger à nouveau.\",\"see-more-versions\":\"Voir plus de versions\",\"see-your-notifications-inbox-for-the-download-link\":\"Consultez votre boite de notifications pour le lien de téléchargement.\",\"select-a\":\"Sélectionner un\",\"select-a-caller-from-the-list-below\":\"Sélectionnez un appelant de la liste ci-dessous\",\"select-a-candidate-block\":\"Sélectionnez un bloc candidat\",\"select-a-channel\":\"Sélectionnez un canal\",\"select-a-field\":\"Sélectionnez un champ\",\"select-a-property\":\"Sélectionnez une propriété\",\"select-a-question\":\"Sélectionnez une question\",\"select-a-tag\":\"Sélectionnez une identification (ou insérez dans une nouvelle identification) \",\"select-a-tag-placeholder\":\"Sélectionnez ou ajoutez une balise\",\"select-a-value\":\"Sélectionner une valeur\",\"select-all\":\"Sélectionner tout\",\"select-audio\":\"Sélectionnez audio\",\"select-block\":\"Sélectionnez un bloc\",\"select-data\":\"Sélectionnez les données\",\"select-from-audio-library\":\"Sélectionner à partir d'une bibliothèque audio\",\"select-group-message-to-play\":\"Sélectionnez Groupe message à la lecture\",\"select-groups\":\"Sélectionnez Groupes\",\"select-input-block\":\"bloc d'entrée Sélectionnez\",\"select-input-source\":\"Sélectionnez la source d'entrée\",\"select-languages-to-be-enabled-for-content-for-this-tree\":\"Sélectionnez les langues à activer pour le contenu des\",\"select-none\":\"Sélectionner aucun\",\"select-property-type\":\"Sélectionner le type de propriété\",\"select-provider\":\"Sélectionner un fournisseur\",\"select-queue\":\"Sélectionnez la file d'attente\",\"select-source\":\"Sélectionnez une source\",\"select-source-content\":\"Sélectionnez une source de contenu\",\"select-subscribers\":\"Sélectionnez les abonnés\",\"select-the-content-type-to-be-enabled-for-this-tree\":\"Sélectionnez le type de contenu à activer pour cet arbre\",\"select_at_least_1_property\":\"\",\"select_property_to_set\":\"\",\"selected\":\"choisi\",\"selected-groups\":\"Groupes sélectionnés\",\"selected-subscribers\":\"Les contacts sélectionnés\",\"selection-confirmation\":\"Confirmation de sélection\",\"selection-confirmation-instructions\":\"Pour le contenu vocal, le fichier audio spécifié dans le fichier CSV sera lu au contact après une sélection. Pour tous les autres types de contenu, sélectionnez les peices des informations qui doivent être renvoyés au contact ou désélectionner tous les champs pour renvoyer rien.\",\"selection-response-instructions\":\"\",\"send\":\"Envoyer\",\"send-on-date\":\"Envoyer à la date\",\"send-request-to-call-center\":\"Envoyer une demande à Call Center\",\"send-request-to-different-call-center\":\"Envoyer une demande à un centre d'appels d'org différents\",\"send-this-call-to\":\"Envoyer cet appel à ...\",\"send-tree\":\"Envoyer Arbre\",\"send-tree-ellipsis\":\"Envoyer arbre...\",\"sends-call-as-random-dial-campaign\":\"Lancer une campagne de numérotation aléatoire qui fonctionne sans arrêt jusqu'à ce que vous arrêtiez, ou un certain nombre de critères est atteint.\",\"sends-call-at-specified-time\":\"Envoie cet appel à des contacts à partir de la date et l'heure.\",\"sends-call-immediately\":\"Envoie l'appel à des contacts immédiatement.\",\"sends-call-repeating-based-on-options\":\"Envoie cet appel sur une base répéter, selon les options à droite.\",\"sensitive-data\":\"Données sensibles\",\"separate-output-for-each-choice\":\"Sortie séparée pour chaque choix\",\"september-month\":\"septembre\",\"sessions\":\"Sessions\",\"set-as-a-starting-block\":\"Définir comme un bloc de départ\",\"set-as-exit-block\":\"Définir comme bloc de sortie\",\"set-as-starting-block\":\"Définir comme bloc de départ\",\"set-channel-type\":\"Définir le type de canal\",\"set-choice-options\":\"Définir les options de choix\",\"set-custom-subscriber-data\":\"Ensemble de données de contact personnalisé\",\"set-preferred-channel-type\":\"Set canal préféré type\",\"set-preferred-content-type\":\"Définir le type de contenu préféré\",\"set-sub-prop-w-response\":\"Définir une propriété de contact avec la réponse du contact\",\"share-results\":\"Partager les résultats\",\"shareable-link-to-results-for-this-tree\":\"lien partageable aux résultats pour cet arbre\",\"shareable-links\":\"Liens partageables\",\"shortened-title-for-summary\":\"Titre Résumé Pour raccourcies\",\"shortened-title-for-summary-description\":\"Entrez un titre qui devrait être utilisé lors de l'examen du résumé des interactions avec ce bloc. Si laissé vide, le titre complet du bloc sera utilisé.\",\"should-ignore-offline-submissions\":\"Ignorer Soumissions Hors ligne\",\"should-redeem-code\":\"Code Mark utilisé\",\"show\":\"Spectacle\",\"show-all\":\"Afficher tout\",\"show-all-results\":\"Afficher tous les résultats\",\"show-between-the-following-dates\":\"Afficher entre les dates suivantes\",\"show-clipboard-simulator\":\"Clipboard simuler\",\"show-empty-only\":\"Afficher vide\",\"show-interactions\":\"#VALUE!\",\"show-key-metrics\":\"Montrer les indicateurs clés\",\"show-key-metrics-lower\":\"Afficher les indicateurs clés\",\"show-keymetrics-ajax-error\":\"Erreur indicateurs clés: S'il vous plaît assurer cet arbre existe encore ou essayez de recharger cette page.\",\"show-less-options\":\"Afficher moins d'options\",\"show-message-text\":\"Afficher un message texte\",\"show-more-options\":\"Afficher plus d'options\",\"show-percentage-listened\":\"pourcentage de l'écoute affiché\",\"show-results-from-incomplete-engagements\":\"Afficher les résultats de missions incomplètes\",\"show-stars\":\"Voir les étoiles\",\"show-subscriber-id\":\"Afficher le ID\",\"show-summary-metrics\":\"Metrics Masquer\",\"showing-block-content-filtered-by-X\":\"Affichage du contenu du bloc filtré par: filtre\",\"showing-entire-audio-library\":\"Afficher toute la bibliothèque audio\",\"shuffle-randomly-again\":\"Mélanger encore une fois aléatoirement\",\"sign-into-your-account\":\"connectez-vous à votre compte\",\"sms\":\"SMS\",\"sms-content\":\"Contenu SMS\",\"sms-content-not-set\":\"Contenu SMS non défini\",\"sms-disabled\":\"SMS désactivé\",\"sms-enabled\":\"SMS acftivé\",\"sms-prompt\":\"SMS rapide\",\"sms-responses\":\"Réponses SMS\",\"sms-status\":\"Statut SMS\",\"sms-subscribers-that-reached-this-block\":\"contacts SMS qui ont atteint ce bloc\",\"sms-to\":\"SMS à\",\"social\":\"Social\",\"social-messaging\":\"messagerie sociale\",\"social-messaging-content\":\"Contenu Messagerie sociale\",\"social-subscribers-that-reached-this-block\":\"Les contacts sociaux qui ont atteint ce bloc\",\"sorry\":\"Désolé!\",\"sorry-cannot-locate-the-selected-tree\":\"Désolé, ne peut pas localiser l'arbre sélectionné.\",\"sorry-there-are-no-results-for-this-date-range\":\"Désolé, il n'y a pas de résultats pour cette plage de dates.\",\"sorry-there-was-an-issue-trying-to-export-audio-for-tree\":\"Désolé, il y avait eu un problème en essayant d'exporter l'audio pour l'arbre\",\"sorry-we-cant-find-any-results-with-that-address\":\"Désolé, nous ne pouvons trouver aucun résultat avec cette adresse.\",\"sorry-you-don-t-have-permission-to-delete-this-tree\":\"Désolé, vous n'avez pas la permission de supprimer cet arbre.\",\"sorry-you-dont-have-permission-to-delete-this-tree\":\"Désolé, vous n'êtes pas autorisé à supprimer cet arbre.\",\"sort-by-date\":\"Trier par date\",\"sort-by-name\":\"Trier par nom\",\"source\":\"La source\",\"specific-language-used-this-call\":\"Une langue spécifique a utilisé cet appel\",\"specific-time\":\"Temps spécifique\",\"specify-what-should-happen-if-a-subscribers-language-is-unknown\":\"Indiquez ce qui doit se produire si est inconnu au moment d'une conversation téléphonique ou SMS langue d'un contact:\",\"start-at\":\"Commencer à\",\"start-date\":\"Date de début\",\"start-date-equal-to\":\"Date de début égale à\",\"start-date-greater-than\":\"Date de début supérieure\",\"start-date-less-than\":\"Date de début moins\",\"started-at\":\"Commencé à\",\"starting-block-tree-begins-here\":\"Bloc de départ - L'arbre commence ici\",\"starts\":\"débuts\",\"status\":\"Statut\",\"stock-code\":\"Code de stock\",\"subscriber\":\"contact\",\"subscriber-custom-data\":\"Données personnalisées de l'abonné\",\"subscriber-language\":\"Langue de l'abonné\",\"subscriber-prop-to-send-payload\":\"propriétés Abonné à envoyer en tant Payload\",\"subscriber-properties\":\"Propriétés de contact\",\"subscriber-properties-to-snapshot\":\"Propriétés de contact à Snapshot\",\"subscriber-property\":\"Caractéristique de l'abonné\",\"subscriber-property-to-branch-via\":\"Caractéristique de l'abonné\",\"subscriber-start-date\":\"Date de début de l'abonné\",\"subscriber-starting-date-reference\":\"Contacter Date de début Référence\",\"subscribers\":\"Contacts\",\"subscribers-that-reached-this-block\":\"Les contacts qui ont atteint ce bloc\",\"success\":\"Succès\",\"successfully-imported-result\":\"Importation de résultats avec succès\",\"summary-block-description\":\"Ce bloc est utilisé pour répondre aux questions d'examen qui sont inclus dans le résumé. Les utilisateurs du Presse-papiers sont en mesure de confirmer ou d'infirmer les réponses.\",\"sun\":\"Dim.\",\"sun-level\":\"Niveau du soleil\",\"sunday-day\":\"dimanche\",\"sunny\":\"Ensoleillé\",\"survey\":\"Sondage\",\"survey-details\":\"Détails de l'enquête\",\"switch-to-tree-view-to-add-blocks\":\"Passer à Arborescence pour ajouter des blocs\",\"system-generated\":\"système généré\",\"tag-filter-description\":\"plusieurs blocs question de choix qui ont été marqués peuvent être utilisés comme filtres sur le lien partagé. les choix pour les blocs avec une étiquette sont utilisés comme les options du filtre. sélectionner les balises doivent être utilisés comme filtres.\",\"tag-filters\":\"filtres tag\",\"tags\":\"Identification\",\"task-was-successfully-deleted\":\"La tâche a été supprimé avec succès!\",\"tell-me-more\":\"Nous dire un peu plus\",\"test-call\":\"test Call\",\"test-call-queued-at\":\"Appel d'essai mis en attente au\",\"test-call-request-sent\":\"demande d'appel de test envoyé ...\",\"text-responses\":\"Réponses textes\",\"text-responses-sms-ussd\":\"Réponses en texte (SMS / USSD)\",\"that-block-was-not-found-please-save-and-try-again\":\"Le bloc n'a pas été trouvé s'il vous plaît sauver l'arbre et essayez à nouveau\",\"that-collaborative-filtering-page-was-not-found-please-try-again\":\"Cette page filtrage collaboratif n'a pas été trouvé. Veuillez réessayer.\",\"that-tree-json-was-not-found-please-try-again\":\"Le fichier JSON de cet arbre n'a pas été trouvé. Veuillez réessayer\",\"that-tree-set-was-not-found-please-try-again\":\"Cet ensemble d'arbre n'a pas été trouvé. Veuillez réessayer.\",\"that-tree-was-not-found-please-try-again\":\"Cet arbre n'a pas été trouvé. Veuillez réessayer.\",\"the-contacts-x-property-will-be-set-using-block-input\":\"La propriété de :propertyName de contact sera réglée à l'aide de l'entrée au bloc sélectionné\",\"the-json-code-that-has-been-imported-is-invalid-or-can-not-be-parsed\":\"Le code JSON qui a été importé est invalide ou ne peut pas être analysé. <br> Examinez le code utilisé dans l'importation pour l'exhaustivité et la validité.\",\"the-property-will-be-set-to-x\":\"La propriété du contact sera réglé sur « :value »\",\"the-property-will-be-set-using-block-input\":\"La propriété du contact sera réglée à l'aide de l'entrée au bloc.\",\"the-remaining-tasks-are-visible-below\":\"Les tâches restantes sont visibles ci-dessous.\",\"the-response-from-the\":\"la réponse de la\",\"the-specified-tree-version\":\"La version d'arbre spécifiée\",\"the-transcription-set-was-not-found\":\"L'ensemble de la transcription n'a pas été trouvé. Veuillez réessayer.\",\"the-tree-version\":\"La version de l'arbre\",\"the-tree-version-x-was-deleted\":\"L'arbre :treeName de la version :treeVersion a été supprimé\",\"the-tree-x-was-deleted\":\"L'arbre :treeName a été supprimé.\",\"the-tree-x-was-restored\":\"L'arbre :nom de l'arbre a été restauré.\",\"then-callers-will-go-to-the-quota-met-output-if-not-callers-will-go-to-the-not-met-output\":\"puis les appelants\",\"there-are-no-results-yet-please-check-back-later\":\"Il n'y a pas encore aucun résultat. S'il vous plaît revenir plus tard.\",\"this-block-branches-based-on-type-of-the-recipient\":\"Ce bloc branche en fonction du type de contenu du destinataire. Les sorties sont déterminées en fonction du type de contenu de l'arbre lorsque le bloc est ajouté.\",\"this-block-directs-callers-based-on-the-total-number-of-calls-1\":\"Ce bloc dirige les appelants vers l'une des deux options, en fonction du nombre total d'appels dans la plage de dates spécifiée, soit uniquement pour cet arbre, soit pour tous les arbres de l'organisation entière.\",\"this-block-directs-callers-based-on-the-total-number-of-calls-2\":\"Si le nombre d'appels dans la plage de dates spécifiée est supérieur à la valeur 'Seuil de quota d'appels', les appelants accèdent à la sortie Quota Atteint. Sinon, les appelants iront à la sortie Non Atteint.\",\"this-block-directs-callers-based-on-the-total-number-of-subs-1\":\"Ce bloc dirige les appels vers l'une des deux options, en fonction du nombre total de contacts dans le groupe spécifié.\",\"this-block-directs-callers-based-on-the-total-number-of-subs-2\":\"Si le nombre de contacts du groupe est supérieure à la valeur « seuil de quota », puis les appelants vont au quota sortie Met. Sinon, les appelants vont à la sortie non atteint.\",\"this-block-directs-callers-based-on-their-answers\":\"Ce bloc dirige les appelants vers l'une des séries d'options, en fonction de leurs réponses aux questions numériques précédentes. Les résultats ci-dessous sont pris en considération du premier au dernier, et le premier à être vrai est utilisé.\",\"this-block-directs-callers-on-previous-answers\":\"Ce bloc dirige les appels vers l'une des deux options, selon les réponses précédentes aux questions à choix multiples.\",\"this-block-directs-callers-random\":\"Ce bloc dirige les appelants vers une sortie choisie au hasard.\",\"this-block-generates-the-weather-forecast-1\":\"Ce bloc génère le message de prévision météo.\",\"this-block-generates-the-weather-forecast-2\":\"Si une invite n'est pas activée, elle n'apparaîtra pas dans le message des prévisions météorologiques\",\"this-block-is-configured-by-the-referrals-app\":\"Ce bloc est configuré par l'application d'aiguillage.\",\"this-block-runs-the-destination-tree-1\":\"Ce bloc exécute l'arborescence de destination spécifiée ci-dessus, ce qui vous permet de créer des arbres imbriqués qui peuvent ensuite être joints lors de l'envoi de cette arborescence aux appelants.\",\"this-block-runs-the-destination-tree-2\":\"Une fois l'arborescence de destination terminée, l'appelant revient dans cet arbre et continue vers les blocs connectés en dessous de celui-ci.\",\"this-block-runs-the-destination-tree-3\":\"En choisissant l'option 'Version la plus récente', vous pouvez ensuite publier de nouvelles versions de l'arborescence de destination sans avoir à modifié cette arborescence.\",\"this-tree\":\"cet arbre\",\"this-tree-set\":\"Cet arbre\",\"three-components-used-to-create-assignment-rules-and-name-audio-files\":\"Il y a trois éléments qui peuvent être utilisés pour créer des règles d'affectation et nommer des fichiers audio.\",\"thunderstorms\":\"Des orages\",\"thurs\":\"Jeu.\",\"thursday-day\":\"Jeudi\",\"timeline\":\"Chronologie\",\"timeline-total-interactions\":\"Chronologie : Total des interactions\",\"times\":\"fois\",\"times-for-incorrect-responses\":\"temps pour les réponses incorrectes\",\"times-in-utc\":\"Les temps en UTC\",\"times-in-your-account-time-zone\":\"Les temps dans votre compte fuseau horaire\",\"timespan\":\"Période\",\"timezone\":\"Fuseau horaire\",\"title\":\"Titre\",\"to\":\"à\",\"to-attach-a-message-to-a-call\":\"Pour joindre un message à un appel,\",\"to-attach-a-survey-to-a-call\":\"Pour attacher une enquête à un appel,\",\"to-attach-a-tree-to-a-call\":\"Pour attacher un arbre à un appel,\",\"to-be-matched-to-tree\":\"être adapté à l'arbre\",\"to-send-call-to-only-some-subscribers\":\"Pour envoyer un appel à seulement quelques contacts\",\"toggle-to-auto-gen-content-from-block\":\"Bascule pour générer automatiquement le contenu du bloc Détails\",\"toggle-to-overwrite-auto-genned-content\":\"Bascule pour écraser le contenu généré automatiquement\",\"toggles-subscriber-receiving-outgoing-calls\":\"Cette action permet d'activer ou de désactiver le contact de recevoir des appels sortants.\",\"too_many_languages_for_collaborative_filtering\":\"Langues Too Many\",\"too_many_languages_for_collaborative_filtering_description\":\"Le filtrage collaboratif est valable uniquement sur les arbres qui ont une langue activée. S'il vous plaît activer une langue unique pour l'arbre.\",\"total\":\"Total\",\"total-audio-length\":\"Longueur totale Audio\",\"total-interactions\":\"total des interactions\",\"total-open-ended-responses\":\"Total des réponses ouvertes\",\"total-responses\":\"Réponses totales\",\"total-results\":\"Total des résultats\",\"total-sms-responses\":\"Réponses totales des SMS\",\"total-versions\":\"Total des versions\",\"total-voice-responses\":\"Réponses totales voix\",\"totals\":\"Totaux\",\"transcription-task-successfully-updated\":\"Tâche de transcription à jour avec succès!\",\"transcription-tasks-can-be-sent-out-to-external-transcribers-to-easily-transcribe-open-ended-audio-responses\":\"Tâches de transcription peuvent être envoyés à transcripteurs externes, de retranscrire facilement les réponses audio ouvertes de cet arbre. Vous pouvez générer automatiquement plusieurs tâches de transcription en utilisant le formulaire ci-dessous, ou, utilisez le bouton « Nouvelle transcription des tâches » ci-dessus pour créer des tâches individuelles\",\"transcriptions\":\"Transcriptions\",\"transcriptions-saved\":\"Transcriptions sauvé\",\"transcriptions-saved-continuing-to-next-page\":\"Transcriptions sauvé! Continuer à la page suivante ...\",\"transfer-amount\":\"Montant au transfert\",\"transfer-amount-currency\":\"Devise à utiliser\",\"transferto-cross-border-mobile-payments\":\"TransferTo Transfrontaliers des paiements mobiles\",\"tree\":\"Arbre\",\"tree-could-not-be-published\":\"Arbre ne peut pas être publié\",\"tree-deleted\":\"Arbre Effacé!\",\"tree-details\":\"Détails sur l'arbre\",\"tree-does-not-have-any-blocks-yet\":\"Arbre n'a pas encore de blocs.\",\"tree-duplicated\":\"Arbre dupliqué !\",\"tree-identifier-not-provided\":\"Identifiant arbre non fourni\",\"tree-is-empty\":\"L'arbre est vide!\",\"tree-is-empty-please-use-the-add-block-button-on-the-top-left-to-add-some-blocks-to-get-started\":\"L'arbre est vide. S'il vous plaît utilisez le bouton Ajouter un bloc en haut à gauche pour ajouter quelques blocs pour commencer.\",\"tree-restored\":\"Arbre Restauré!\",\"tree-result-import-heading-validation-error\":\"Les têtes de colonne dans votre importation ne sont pas valides. S'il vous plaît se référer au modèle d'importation pour les rubriques correctes\",\"tree-result-import-in-progress\":\"Arbre résultat importation en cours\",\"tree-saved\":\"Arbre sauvé!\",\"tree-update-conflict\":\"conflit de mise à jour arbre détecté\",\"tree-used-elsewhere-by-x-at-x\":\"Cet arbre a été enregistré ailleurs par :name à :time\",\"tree-versions\":\"Versions de l'arbre\",\"trees\":\"Arbres\",\"trigger-outgoing-call\":\"Déclenchement des appels sortants\",\"trimmed-to\":\"coupé à\",\"true\":\"Vrai\",\"tues\":\"Mar.\",\"tuesday-day\":\"Mardi\",\"two-or-more-choices-required\":\"Deux ou plusieurs choix requis:\",\"unable-to-delete-the-requested-transcription-task\":\"Impossible de supprimer la tâche de transcription demandée.\",\"unable-to-find-block-locally-from-server-results-with-key\":\"Impossible de trouver le bloc localement à partir serverResults\",\"undo\":\"Annuler\",\"unexpected-error\":\"une erreur inattendue est apparue\",\"unique-subscribers\":\"Contacts uniques\",\"unknown\":\"Inconnue\",\"unknown-error-occurred\":\"Une erreur inconnue est survenue\",\"unknown-language\":\"langue inconnue\",\"unknown-subscriber-branch-criteria\":\"#VALUE!\",\"unlimited-if-not-defined-or-set-as-zero\":\"Illimité si non défini ou mis à zéro\",\"unlock\":\"Dévérouillé\",\"unset-as-exit-block\":\"Non défini comme bloc de sortie\",\"untitled-block\":\"Bloc sans titre\",\"untitled-collab-filtering-rating\":\"Note de filtrage collaboratif sans titre\",\"untitled-collaborative-filtering-question\":\"Question de filtrage collaboratif sans titre\",\"untitled-generate-code\":\"Sans titre Générer le code\",\"untitled-message\":\"Message sans titre\",\"untitled-multiple-choice-question\":\"Question à choix multiples sans titre\",\"untitled-numeric-question\":\"Question numérique sans titre\",\"untitled-open-ended-question\":\"Question ouverte sans titre\",\"untitled-question\":\"question sans titre\",\"untitled-record-group-message\":\"Untitled Group Enregistrer un message\",\"untitled-tree\":\"Arbre sans titre\",\"untitled-validate-code\":\"Sans titre Valider le code\",\"update-existing-subscriber\":\"Mise à jour contact existant\",\"update-task\":\"Mise à jour des tâches\",\"update-transcription-task\":\"Mise à jour de transcription Tâche\",\"updated\":\"Actualisé\",\"upload\":\"Télécharger\",\"upload-a-csv-with-column-codes\":\"Télécharger un fichier CSV avec les 'codes' des colonnes\",\"upload-audio-files-to-X\":\"Télécharger des fichiers audio à: dest\",\"upload-codes\":\"Télécharger des codes\",\"upload-csv-file\":\"Fichier Importer un fichier CSV\",\"upload-csv-file-instruction\":\"Télécharger un fichier CSV (.csv) avec vos résultats d'arbres.\",\"upload-error\":\"Erreur de téléversement\",\"upload-file\":\"Télécharger un fichier\",\"uploading\":\"Téléchargement\",\"url-destination\":\"URL de destination\",\"url-for-this-csv-export-via-api-key\":\"URL pour cette exportation en CSV via le API\",\"usd-at-current-exchange\":\"USD à taux de change courants\",\"usd-exchange-warning-message\":\"Les montants indiqués ci-dessus seront appliqués en USD.\",\"use-a-specific-language-for-this-call\":\"Utilisez un langage spécifique pour cet appel\",\"use-custom-block-ordering\":\"Utilisez la commande de bloc personnalisé\",\"use-different-multimedia-files-each-language\":\"Utilisez des fichiers différents pour chaque langue\",\"use-full-text-descriptions\":\"Utilisez des descriptions de texte intégral\",\"use-hybrid-format\":\"Utilisez le format hybride\",\"use-machine-readable-format\":\"Utilisez le format lisible par une machine\",\"use-machine-readable-numbers\":\"Utilisez des chiffres lisibles à la machine\",\"use-master-for-language\":\"Utilisez le fichier CSV maître pour cette langue\",\"use-simple-date-range-picker\":\"Utilisez sélecteur de plage de dates simples\",\"use-tags-in-your-location-message-for-references-in-alert\":\"Utilisez la balise [EXPIRY_TIME] dans votre message pour faire référence à la date d'expiration et la balise [lieu] pour faire référence à l'emplacement de l'alerte.\",\"use-text-descriptions\":\"Utilisez les textes de description\",\"use-the-button-above-to-generate-a-new-csv-export-for-this-tree\":\"Utilisez le bouton ci-dessus pour générer une nouvelle exportation CSV pour cet arbre. Il apparaîtra dans la liste à droite une fois remplie.\",\"use-the-button-above-to-generate-a-shareable-results-page-for-this-tree\":\"Utilisez le bouton ci-dessus pour générer une page de résultats partageable pour cet arbre. Cette page sera mise à jour automatiquement comme les nouveaux résultats qui sont reçus pour cet arbre.\",\"use-the-button-below-to-generate-a-shareable-results-page-for-this-tree\":\"Utilisez le bouton ci-dessus pour générer une page de résultats partageable pour cet arbre. Cette page sera mise à jour automatiquement comme les nouveaux résultats qui sont reçus pour cet arbre.\",\"use-the-form-below-to-create-a-new-transcription-task\":\"Utilisez le formulaire ci-dessous pour créer une nouvelle tâche de transcription qui peut être envoyé à transcripteurs externes. Le transcripteur sera attribué des réponses ouvertes à retranscrire en fonction de la langue et de démarrage / numéros de fin indiqués ci-dessous.\",\"use-the-shareable-link-below-to-share-the-results-of-this-tree\":\"Utilisez le lien ci-dessous pour partager les résultats de cet arbre. <b> A toute personne que vous partagez cela avec aura accès à ces résultats. </b> Cette page sera mise à jour automatiquement comme les nouveaux résultats qui sont reçus pour cet arbre.\",\"use-the-tag-expiry-time\":\"Utilisez l'étiquette [durée d'expiration] dans votre message pour référencer la date d'expiration et l'étiquette [emplacement] pour référencer l'emplacement de l'alerte.\",\"use-tree-view-to-add-blocks\":\"Utilisez la vue arborescente pour ajouter quelques blocs avant de tenter de remplir et revoir le contenu.\",\"user-guide\":\"Pour IVR, les codes ne peuvent être lus en utilisant la voix, de sorte que le système texte du bloc au contact. Il est recommandé que l'audio pour ce bloc informera le contact qu'ils recevront un message texte avec leur code.\",\"username\":\"Nom d'utilisateur\",\"using-automatic-routing\":\"L'utilisation de routage automatique\",\"ussd\":\"USSD\",\"ussd-content\":\"contenu USSD\",\"ussd-prompt\":\"USSD rapide\",\"ussd-subscribers-that-reached-this-block\":\"contacts USSD qui ont atteint ce bloc\",\"valid\":\"Valide\",\"validate-code-block\":\"Valider le bloc de code\",\"validate-code-block-ignore-offline-submissions-help\":\"Valident les codes lorsque Désactive Clipboard Android est déconnecté.\",\"validate-code-title\":\"Valider le titre de code\",\"value\":\"Valeur\",\"version\":\"version\",\"version-capitalized\":\"Version\",\"versions\":\"versions\",\"versions-capitalized\":\"Versions\",\"view\":\"Vue\",\"view-all-responses\":\"Voir toutes les réponses\",\"view-and-manage-collaborative-submissions\":\"Voir et gérer les soumissions collaboratives\",\"view-and-manage-collaborative-submissions-a-for-this-block\":\"Afficher et gérer les soumissions de collaboration </a>\",\"view-and-manage-statements\":\"Afficher et gérer les états\",\"view-generate-code-block\":\"Voir générer bloc de code\",\"view-instruction\":\"Instructions Voir\",\"view-issues\":\"Voir les problèmes\",\"view-results\":\"Voir les résultats\",\"view-tracker-configuration\":\"Voir Configuration Tracker\",\"view-trackers\":\"et traqueurs de problèmes\",\"view-tree\":\"Voir arbre\",\"view-tree-details\":\"Voir les détails de l'arbre\",\"view-tree-structure\":\"Voir la structure arborescente\",\"view-tree-versions\":\"Voir versions d'arbres\",\"view-validate-code-block\":\"Voir le bloc de code validate\",\"view-versions-issue-trackers\":\"Voir les versions et les suivis de problèmes\",\"view-x-other-versions\":\"Voir :count autres versions de cet arbre\",\"voice\":\"Voix\",\"voice-content\":\"Contenu Voix\",\"voice-disabled\":\"Voix désactivée\",\"voice-enabled\":\"Voix activée\",\"voice-key-press\":\"Touche pour la voix\",\"voice-prompt\":\"Invite Voix\",\"voice-status\":\"état de la voix\",\"voice-subscribers-that-reached-this-block\":\"contacts vocaux qui ont atteint ce bloc\",\"voice-to\":\"voix à\",\"wait\":\"Attendre\",\"waiting-for-results\":\"L'attente des résultats\",\"we-are-upgrading-how-we-handle\":\"Nous améliorons comment nous traitons les traductions choix dans le bloc Question à choix multiples. S'il vous plaît assurer que les éléments suivants est correct. Si vous ne faites pas de changements en ce moment, votre arbre continuera d'accepter les réponses mêmes textes que précédemment.\",\"we-didnt-find-any-matches-revisit-pattern\":\"Nous n'avons trouvé aucune correspondance, essayez de réviser votre modèle.\",\"we-need-audio-files-previously-uploaded-to-audio-lib-to-match-to-blocks\":\"Nous avons besoin de fichiers audio qui ont déjà été téléchargés à la bibliothèque audio de votre organisation afin de les lier aux blocs.\",\"weather-forecast\":\"Prévisions météorologiques\",\"webhook-block-empty-payload-info\":\"Aucun bloc sont sélectionnés. La charge utile du bloc de cet événement webhook sera vide.\",\"webhook-block-payload-help-text\":\"Sélectionnez les blocs interactifs qui doivent être envoyés lorsque cette webhook est déclenchée. Les réponses des blocs sélectionnés seront envoyés.\",\"webhook-http-warning\":\"Lors de l'envoi des données sensibles, nous vous recommandons d'utiliser un point de terminaison HTTPS comme destination de webhook de la vie privée et la sécurité.\",\"webhook-method\":\"Méthode\",\"webhook-secret\":\"Secret\",\"webhook-secret-desc\":\"Nous vous ferons parvenir ce texte avec la soumission de webhook afin que votre serveur peut authentifier est venu de Viamo.\",\"webhook-subscriber-empty-payload-info\":\"Aucun propriétés d'abonnés sont sélectionnés. La charge utile d'abonné de cet événement webhook sera vide.\",\"webhook-subscriber-payload-help-text\":\"Sélectionnez les propriétés d'abonnés qui doivent être envoyés lorsque cette webhook est déclenchée. La valeur de la propriété sélectionnée sera envoyée.\",\"webhook-untitled-block\":\"bloc sans titre\",\"wed\":\"Mer.\",\"wednesday-day\":\"Mercredi\",\"week\":\"semaine\",\"weekly\":\"Hebdomadaire\",\"weeks-after\":\"Des semaines après\",\"weeks-before\":\"Des semaines avant\",\"welcome\":\"Bienvenue!\",\"when-block-reached-caller-exits-and-connects-to-operator\":\"Lorsque ce bloc est atteint, l'appelant quitte l'arbre et est connecté à l'opérateur. En conséquence, aucun autre des blocs peuvent être connectés en dessous de celui-ci.\",\"when-block-reached-subscriber-start-date-set-to-date-based-upon-previous-numeric-input\":\"Lorsque ce bloc est atteinte, les contacts auront leur date définie à l'aide de la contribution qu'ils apportent à une précédente question numérique. Leur date est définie sur le nombre de jours, semaines ou mois (fixé ci-dessus) que le contact fournit, par rapport à la date de l'appel.\",\"when-block-reached-subscriber-start-date-set-to-date-relative-to-call-and-timespan-specified\":\"Lorsque ce bloc est atteinte, les contacts auront leur date fixée au nombre de jours, semaines ou mois indiqués ci-dessus, par rapport à la date à laquelle ils reçoivent l'appel.\",\"when-block-reached-subscriber-start-date-set-to-specified\":\"Lorsque ce bloc est atteinte, les contacts auront leur date fixée à la date indiquée ci-dessus.\",\"when-finished-returns-to-this-tree-and-continues-to-any-blocks-connected-below\":\"Lorsque vous avez terminé, retourne\",\"when-no-preferred-language-subscriber-receives-lang-selector\":\"Si cette option est réglée sur « Aucune langue préférée », puis au début de l'appel suivant du contact, ils recevront un menu de sélection de langue (s'il est prévu une invite de sélection de la langue).\",\"when-no-valid-response-is-received\":\"Quand aucune réponse valide n'est reçue\",\"when-randomizing\":\"quand aléatoirement\",\"wind-level\":\"Niveau vent\",\"windy\":\"Venteux\",\"with-subscriber-phone-number\":\"avec contact Numéro de téléphone\",\"words\":\"Mots\",\"working-loading\":\"Travail...\",\"x-of-y\":\"sur\",\"x-text-responses\":\"Réponses en texte :language\",\"year\":\"an\",\"yearly\":\"Annuel\",\"yes\":\"Oui\",\"you-are-about-to-delete-a-transcription-task\":\"Vous êtes sur le point de supprimer une tâche de transcription.\",\"you-are-about-to-delete-a-tree\":\"Vous êtes sur le point de supprimer un arbre.\",\"you-are-about-to-delete-a-tree-version\":\"Vous êtes sur le point de supprimer une version d'arbre.\",\"you-are-about-to-delete-this-issue-tracker\":\"Vous êtes sur le point de supprimer ce tracker problème.\",\"you-can-edit-your-tree-with-the-interface-below\":\"Vous pouvez modifier votre arbre avec l'interface ci-dessous.\",\"you-can-send-out-the-external-link-from-the-table-below\":\"Vous pouvez envoyer le lien externe de la table ci-dessous.\",\"you-can-send-out-the-external-links-from-the-table-below\":\"Vous pouvez envoyer les liens externes dans le tableau ci-dessous.\",\"you-have-x-unsaved-transcriptions\":\"Vous avez :transcription_count transcriptions non enregistrées. Etes-vous sûr de vouloir quitter cette page?\",\"you-need-permission-to-export-content\":\"Vous avez besoin de la permission pour exporter le contenu\",\"your-browser-does-not-support-the-audio-element\":\"Votre navigateur ne supporte pas l'élément audio.\",\"your-combined-tree-results-are-being-exported\":\"Vos résultats d'arbres combinés sont exportés.\",\"your-file-file-name-is-currently-being-processed\":\"Votre fichier :fileName est actuellement en cours de traitement.\",\"your-open-ended-audio-download-for\":\"Votre téléchargement audio pour la question ouverte\",\"your-orgs-audio-library\":\"bibliothèque audio de votre organisation\",\"your-prompt\":\"<votre message>\",\"youre-using-floip-expressions\":\"On dirait que vous utilisez des expressions FLOIP, nice!\"}}");
+module.exports = JSON.parse("{\"en.flow-builder\":{\"go-to-flow\":\"Go To Flow\",\"problem-creating-flow\":\"There was a problem creating the flow. Please review the configuration and try again.\",\"flow-not-found\":\"Flow Not Found\",\"flow-found\":\"Flow Found\",\"fetching-flow\":\"Fetching Flow\",\"create-flow\":\"Create Flow\",\"create-a-new-flow\":\"Create a New Flow\",\"new-flow\":\"New Flow\",\"flow-name\":\"Flow name\",\"flow-label\":\"Flow label\",\"flow-importer\":\"Flow importer\",\"Interaction-timeout\":\"Interaction timeout\",\"modes\":\"Modes\",\"enter-flow-name\":\"Enter flow name\",\"enter-flow-label\":\"Enter flow label\",\"maximum-digits\":\"Maximum digits\",\"AirtimeTransferBlock\":\"Transfer Airtime\",\"BillSubscriberBlock\":\"Bill Contact\",\"CallBackWithCallCenterBlock\":\"Call Back With Call Center Block\",\"CallHistoryBranchBlock\":\"Branch via Call History\",\"CollaborativeFilteringQuestionBlock\":\"Collaborative Filtering Question\",\"CollaborativeFilteringRatingBlock\":\"Collaborative Filtering Rating\",\"CollaborativeFilteringRatioBranchBlock\":\"Branch via Collaborative Filtering Ratio\",\"ConnectToOperatorBlock\":\"Connect to Operator\",\"ConsoleIO\\\\Print\":\"Print\",\"ConsoleIO\\\\Read\":\"Read\",\"ContentTypeBranchBlock\":\"Branch via Content Type\",\"Core\\\\Case\":\"Case\",\"Core\\\\Log\":\"Log\",\"Core\\\\Output\":\"Output\",\"Core\\\\RunFlow\":\"Run Flow\",\"CreateSubscriberBlock\":\"Create Contact\",\"CurrentTimeBranchBlock\":\"Branch via Current Time\",\"DecisionBranchBlock\":\"Decision Branch\",\"DirectorySelectionBlock\":\"Directory Selection\",\"EntitySelectionBlock\":\"Referral Entity Selection\",\"ExpressionBranchBlock\":\"Expression Branch \",\"GenerateCodeBlock\":\"Generate Unique Code\",\"GroupBranchBlock\":\"Branch via Group Membership\",\"GroupPropertyBlock\":\"Edit Group Membership\",\"GroupSizeBranchBlock\":\"Branch via Group Size\",\"IdValidationBlock\":\"Branch via Valid Code\",\"LanguageSelectorBlock\":\"Language Selection Prompt\",\"LocationBlock\":\"Location Selector\",\"MarkCallCompleteBlock\":\"Mark Call as Complete\",\"MessageBlock\":\"Message\",\"MobilePrimitives\\\\Message\":\"Message\",\"MobilePrimitives\\\\NumericResponse\":\"Numeric Response\",\"MobilePrimitives\\\\OpenResponse\":\"Open Response\",\"MobilePrimitives\\\\SelectOneResponse\":\"Select One Response\",\"MobilePrimitives\\\\SelectManyResponse\":\"Select Many Responses\",\"MultipleChoiceQuestionBlock\":\"Multiple Choice Question\",\"MultipleSelectMultipleChoiceQuestionBlock\":\"Multiple Select Multiple Choice Question\",\"NumericBranchBlock\":\"Numeric Branch\",\"NumericQuestionBlock\":\"Numeric Question\",\"OpenQuestionBlock\":\"Open-ended Question\",\"PlayGroupMessageBlock\":\"Play Group Message Block\",\"RandomBranchBlock\":\"Random Branch\",\"RandomOrderMultipleChoiceQuestionBlock\":\"Random Order Multiple-Choice Question\",\"RecordGroupMessageBlock\":\"Record Group Message Block\",\"RunTreeBlock\":\"Run Another Tree\",\"SmartDevices\\\\LocationResponse\":\"Location Response\",\"SmartDevices\\\\PhotoResponse\":\"Photo Response\",\"SubscriberBranchBlock\":\"Branch via Contact Data\",\"SubscriberPropertiesSnapshotBlock\":\"Snapshot of Contact Properties\",\"SubscriberPropertyBlock\":\"Edit Contact Property\",\"SummaryBlock\":\"Summary\",\"TriggerOutgoingCallBlock\":\"Trigger Outgoing Call\",\"ValidateCodeBlock\":\"Validate Unique Code\",\"WeatherAlertsBlock\":\"Create Weather Alerts\",\"WeatherForecastBlock\":\"Weather Forecast\",\"WebhookBlock\":\"Webhook\",\"WebhookContentBlock\":\"Webhook Content\",\"X-abbreviations-set-when-creating-tree\":\":lang abbreviations set when creating tree\",\"X-are-required-placeholder-components-for-rule-but-additional-designation-optional\":\":placeholders are required placeholder components for the rule but an additional designation is optional.\",\"X-assigned-to-a-block\":\":label assigned to a block\",\"X-of-resources-populated\":\":count of resources populated\",\"X-seconds-long\":\":duration_seconds long\",\"X-subscribers-selected\":\"contacts selected\",\"X-will-match-with-Y\":\":pattern will match with :name\",\"X-wont-match-with-Y\":\":pattern won't match with :name\",\"absolute-date\":\"Absolute Date\",\"accessed\":\"Accessed\",\"action\":\"Action\",\"action-allows-custom-subscriber-data-when-block-reached\":\"This action allows you to set custom contact data, when this block in the tree is reached.\",\"action-changes-preferred-content-types-to-receive-in-future\":\"This action changes preferred content types (Voice or SMS) that the contact will receive in future calls.\",\"action-immediately-changes-preferred-language-of-subscriber\":\"This action immediately changes the preferred language of the contact. Later blocks in the tree will use the new language.\",\"actions\":\"Actions\",\"active\":\"active\",\"adapted-from\":\"Adapted from:\",\"add-a-description-to-this-recording\":\"Add A Description To This Recording\",\"add-a-new-recorder\":\"Add A New Recorder\",\"add-block\":\"Add Block\",\"add-condition\":\"Add Condition\",\"add-data\":\"Add data\",\"add-label-tags\":\"Add label / tags\",\"add-map-coordinates-field\":\"Add a Map Coordinates field\",\"add-question\":\"Add question\",\"add-to\":\"Add to\",\"add-to-group\":\"Add to Group\",\"added\":\"added\",\"additional-designation-created-in-the-rule\":\"An additional designation created in the rule\",\"adds-subscribers-to-the\":\"Adds contacts to the\",\"admin-csv-file\":\"Master CSV File\",\"advanced\":\"Advanced\",\"after\":\"After\",\"after-completing-all-output-branches\":\"After completing all output branches:\",\"airtime-credit-transfer\":\"Airtime Credit Transfer\",\"alert-message-title\":\"Alert Message Title\",\"all-block-types\":\"All block types\",\"all-blocks\":\"All blocks\",\"all-channels\":\"All Channels\",\"all-content-across-this-organisation\":\"All content across this organisation\",\"all-languages\":\"All Languages\",\"all-message-blocks\":\"All message blocks\",\"all-other-possible-values\":\"All other possible values\",\"all-question-blocks\":\"All question blocks\",\"all-subscribers\":\"All Contacts\",\"all-transcriptions-saved\":\"All Transcriptions Saved\",\"allow-visitors-to-modify-the-date-range\":\"Allow visitors to modify the date range\",\"allow-visitors-to-translate-the-page-in-their-language\":\"Allow visitors to translate the page into their language\",\"already-published\":\"Already Published!\",\"already-used\":\"Already used\",\"and\":\"and\",\"any-key\":\"Any key\",\"anytime\":\"Anytime\",\"api-key\":\"API Key\",\"api-success\":\"Successfully connected to API.\",\"append-or-replace-on-upload\":\"Append or replace on upload?\",\"applies-to-calls-sent-to-all-subscribers-or-groups-containing-subscriber\":\"This applies to calls sent to All Contacts, or sent to Groups containing this contact. They can still receive outgoing calls addressed specifically to them.\",\"apply\":\"Apply\",\"apply-all-filters\":\"Apply All Filters\",\"april-month\":\"April\",\"are-you-sure-you-want-to-delete-this-shareable-link\":\"Are you sure you want to delete this shareable link? Users with the existing link will no longer be able to access this results.\",\"as-at\":\"as at\",\"at\":\"at\",\"at-character\":\"at character\",\"at-least\":\"At least\",\"at-least-one-language-must-be-checked\":\"At least one language must be checked.\",\"at-minimum-we-need-two-placeholders\":\"At a minimum, we need two placeholders:\",\"at-this-time\":\"At this time\",\"attach-multimedia\":\"Attach multimedia\",\"audio-export-started-for\":\"Audio export started for\",\"audio-file-naming-pattern\":\"Audio file naming pattern\",\"audio-files\":\"Audio Files\",\"audio-files-per-task\":\"Audio files per task\",\"audio-lib-empty-for-this-org\":\"Audio library is empty for this organization.\",\"audio-library\":\"Audio Library\",\"audio-listened\":\"Audio Listened\",\"august-month\":\"August\",\"auto\":\"Auto\",\"auto-gen-content-from-block-details\":\"Click to Auto-generated Content from Block Details\",\"auto-link-audio-files\":\"Auto-Link Audio Files\",\"automatic-routing-description\":\"With automatic routing, contacts are routed to a call center queue based on their 'target_operator' property. When set to automatic routing, you can control the queue by setting this property before a contact enters this block.\",\"automatic-routing-label\":\"Automatic Routing\",\"automatically-enable-statements\":\"Automatically enable statements\",\"automatically-enable-statements-help\":\"With this option on, new Statements will be 'Enabled'. If this option is off new Statements will be 'Unreviewed' \",\"average-audio-length\":\"Average Audio Length\",\"avg-duration-for-all-calls\":\"Average Duration for All Calls:\",\"avg-duration-for-completed-calls\":\"Avg. Duration for Completed Calls:\",\"back\":\"Back\",\"back-to-choices-list\":\"Back to Choices List\",\"back-to-trees-list\":\"Back to Trees List\",\"base-url\":\"Base URL\",\"base-url-placeholder\":\"example: https://example.org/api\",\"bill-subscriber\":\"Bill Contact\",\"block\":\"Block(s)\",\"block-allows-connect-to-operator-chosen-at-random-from-pre-specified-operator-contact-list\":\"This block allows you to connect a caller to an operator, chosen at random from a pre-specified operator contact list. This lets you quickly set up help lines or other in-person connections.\",\"block-choice-filter-description\":\"Blocks can be used as filters on the shared link. Select which blocks should be used as filters.\",\"block-code\":\"Block code\",\"block-details\":\"Block Details\",\"block-id\":\"Block Id\",\"block-label\":\"Block label\",\"block-name\":\"Block name\",\"block-ordering\":\"Block ordering\",\"block-ordering-help-text\":\"Override the default block sorting by entering a weight for each block. Blocks with a smaller value will be at the top of the list.\",\"block-responses-to-send-payload\":\"Block Responses To Send As Payload\",\"block-semantic-label\":\"Block semantic label\",\"block-title\":\"Block Title\",\"block-type-unsupported-in-resource-view\":\"Block Type Not Supported in Resource View\",\"blocks\":\"Blocks\",\"blocks-responses\":\"Block Responses\",\"blocks-to-display\":\"Blocks to display\",\"branch-if-subscriber-property\":\"Branch if Contact Property\",\"branch-to-true-if-the-subscriber-is-a-member-of-the\":\"Branch to True if the contact is a member of the\",\"branch-via-call-history\":\"Branch via Call History\",\"branch-via-call-history-desc1\":\"This block directs callers towards one of two options, based on the total number of calls in the specified date range for either just this tree or all trees in the entire organisation',\",\"branch-via-call-history-desc2\":\"If the number of calls in the specified date range is larger than the 'Calls Quota Threshold' value, then callers will go to the Quota Met output. If not, callers will go to the Not Met output.',\",\"branch-via-content-type\":\"Branch via Content Type\",\"branch-via-expression\":\"Expression Branch \",\"branch-via-group-membership\":\"Branch via Group Membership\",\"branch-via-group-size\":\"Branch via Group Size\",\"branch-via-subscriber-data\":\"Branch via Contact Data\",\"branch-via-valid-code\":\"Branch via Valid Code\",\"branching\":\"Branching\",\"breakdown-by\":\"Breakdown By\",\"btn-add-exit\":\"Add Exit\",\"call-back-block-desc\":\"Notifies the Call Center to call the contact by adding the contact to the organization's dialing list.\",\"call-back-block-dialing-list-desc\":\"Enter the name of the dialing list that the call request should be added to. If the dialing list does not already exist, it will be created with this name.\",\"call-back-block-dialing-list-heading\":\"Dialing List Name\",\"call-back-block-enable-routing-by-queue\":\"Enable routing by queue\",\"call-back-block-enable-routing-by-queue-desc\":\"If this option is selected, call requests will only go to operators signed in to a specific queue.\",\"call-back-block-enter-api-key\":\"Enter API key\",\"call-back-block-enter-dialing-list-name\":\"Enter dialing list name\",\"call-back-block-notify-different-org\":\"Notify a different organization's Call Center\",\"call-back-block-notify-this-org\":\"Notify this organization's Call Center\",\"call-back-block-org-api-key\":\"Organization's API Key\",\"call-back-block-queue-name\":\"Queue Name\",\"call-back-block-select-queue\":\"Select queue\",\"call-finished\":\"Call Finished\",\"call-started\":\"Call Started\",\"call-this-phone-number\":\"Call This Phone Number\",\"call-to-record\":\"Call to record\",\"caller\":\"Caller\",\"calls-after\":\"Calls after\",\"calls-before\":\"Calls before\",\"calls-quota-threshold\":\"Calls Quota Threshold\",\"campaigns\":\"Campaigns\",\"cancel\":\"Cancel\",\"candidate-question\":\"Candidate Question\",\"cannot-delete-that-tree\":\"Cannot delete that tree\",\"cannot-restore-that-tree\":\"Cannot restore that tree.\",\"cannot-restore-that-tree.\":\"Cannot restore that tree.\",\"case-of-duplicates-instruction\":\"In the case of duplicates and existing contacts with the same phone number\",\"categorization\":\"Categorization\",\"category\":\"Category\",\"category-name\":\"Category name\",\"cell-contents\":\"Cell Contents\",\"cell-contents-format\":\"Cell Contents Format\",\"cf-ratio-description\":\"Configure the ideal number of ratings that each statement should receive before another statement should be gathered.\",\"chance-of-rain\":\"Chance of Rain\",\"change-subscriber-language\":\"Change contact language\",\"change-subscriber-start-date\":\"Change contact start date\",\"channel\":\"Channel\",\"channels\":\"Channels\",\"characters\":\"character|characters\",\"check-url-api\":\"Check your URL and API key and try again.\",\"choice\":\"Choice\",\"choice-filter-tags\":\"Choice filter tags\",\"choice-id-choice-text\":\"Choice ID & Choice Text\",\"choice-id-only\":\"Choice ID Only\",\"choice-keypress-options\":\"Choice Key Press Options\",\"choice-options\":\"Choice Option\",\"choice-options-fixed\":\"Choice Options\",\"choices\":\"Choices\",\"choices-choice-attributes\":\"Choices\",\"choices-prompt\":\"Choices Prompt\",\"choose-a-language-selector\":\"(Choose a Language Selector)\",\"choose-a-language-selector-label\":\"Choose a language selector:\",\"choose-audio\":\"Choose Audio\",\"choose-csv-file\":\"Choose CSV file\",\"choose-date\":\"Choose Date\",\"choose-file\":\"Choose file\",\"choose-how-many-seconds-to-wait\":\"Please choose how many seconds to wait until the contact presses a key to repeat this message.\",\"choose-how-many-times-can-repeat\":\"Please choose how many times the contact can repeat this message.\",\"choose-subscribers\":\"Choose contacts\",\"choose-which-numbered-key\":\"Please choose which numbered key the contact will press to repeat this message.\",\"clear-floip-config\":\"Clear Configuration\",\"click-and-drag-to-create-a-new-connection\":\"Click-and-drag to create a new connection\",\"click-and-drag-to-move-this-block\":\"Click-and-drag to move this block\",\"click-here-to-download-the-file\":\"Click here to download the file\",\"click-to-lock-this-choice-in-place\":\"Click to lock this choice in place\",\"click-to-remove-this-connection\":\"Click to remove this connection\",\"click-to-select-this-block\":\"Click to select this block\",\"click-to-toggle-editing\":\"Click to toggle editing\",\"click-to-unlock\":\"Click to unlock\",\"clipboard\":\"Clipboard\",\"clipboard-content\":\"Clipboard Content\",\"clipboard-simulator\":\"Clipboard Simulator\",\"clipboard-subscribers-that-reached-this-block\":\"Clipboard contacts that reached this block\",\"clipboard-subtitle\":\"Provide additional text that will be displayed to operators\",\"close\":\"Close\",\"cloudy\":\"Cloudy\",\"code-length\":\"Character Length\",\"code-validation\":\"Code validation\",\"codes\":\"Codes:\",\"collaborative-filtering-question\":\"Collaborative Filtering Question\",\"collaborative-filtering-rating\":\"Collaborative Filtering Rating\",\"combined-block-results\":\"Combined Block Results\",\"combined-tree-results\":\"Combined Tree Results\",\"compact-filter-display\":\"Compact filter display\",\"compact-filter-display-help-text\":\"Enter the maximum number of filter choices that should be displayed using the expanded filter. (e.g. '0' if all filters should be compact)\",\"completed\":\"Completed\",\"completed-interactions-per-block\":\"Completed Interactions per Block\",\"completed-of\":\"Completed of\",\"completed-transcriptions\":\"Completed Transcriptions\",\"completed-via\":\"Completed via\",\"components-can-be-separated-by-symbols-but-not-required\":\"Components can be separated by symbols but is not required.\",\"configure-floip-header\":\"Configure Flow Interoperability results streaming\",\"configure-referral-entity-prompt-eg\":\"Configure the prompt to select a Referral Entity. e.g.:\",\"confirm\":\"Confirm\",\"confirm-delete\":\"Confirm Delete\",\"confirm-upload\":\"Confirm Upload\",\"conflict-external-changes\":\"To see external changes please click the Reload button.\",\"conflict-new-version\":\"To save your work as a new version, please click the New version button.\",\"connect-to\":\"Connect To\",\"connect-to-an-operator\":\"Connect to an Operator\",\"connect-to-the-following-operator-list\":\"Connect to the following operator list\",\"connected-of\":\"Connected of\",\"contact\":\"Contact\",\"contact-properties\":\"Contact Properties\",\"contact-updated\":\"Existing contact updated\",\"content\":\"Content\",\"content-type\":\"Content type\",\"content-type-1\":\"Voice\",\"content-type-2\":\"SMS\",\"content-type-3\":\"Data\",\"content-type-4\":\"USSD\",\"content-type-5\":\"One-way SMS\",\"content-type-is-not-selected\":\"Content type is not Selected\",\"continue-through-exit\":\"Continue through Exit\",\"continuous\":\"Continuous\",\"corresponding-audio-file-components-examples\":\"Corresponding audio file components examples\",\"could-not-add-property\":\"Could not add property\",\"could-not-download-audio-for-that-tree\":\"Could not download audio for that tree.\",\"could-not-export-open-ended-audio\":\"Could not export open-ended audio.\",\"create-a-new-group\":\"create a new group\",\"create-a-new-list\":\"Create a new list\",\"create-a-new-one\":\"Create a new one\",\"create-a-new-survey\":\"create a new survey\",\"create-a-new-tree\":\"create a new tree\",\"create-a-tag-prompt\":\"Create tag\",\"create-and-upload-a-new-message\":\"create and upload a new message\",\"create-at-least-one-language-selector\":\"Before using this block, create at least one Language Selector.\",\"create-contact-absolute-date\":\"The Contact's property will be set to the date provided\",\"create-contact-description\":\"This block allows you to create Contacts with input gathered from previous blocks of this tree.\",\"create-contact-instructions\":\"Configure which data the Contact should be created with.\",\"create-contact-relative-block\":\"The Contact's property will be set relative to the time of the call using the offset provided. The answer the the configured block will determine how much to offset the value by.\",\"create-contact-relative-date\":\"The Contact's property will be set relative to the time of the call using the offset provided. \",\"create-new-link\":\"Create New Link\",\"create-new-version\":\"Create New Version\",\"create-task\":\"Create Task\",\"create-tasks\":\"Create Tasks\",\"create-transcription-tasks\":\"Create Transcription Tasks\",\"create-tree\":\"Create Tree\",\"create-weather-alerts\":\"Create Weather Alerts\",\"create-weather-forecast\":\"Create Weather Forecast\",\"created\":\"Created\",\"created-a-new-version-of\":\"You've created a new version of\",\"created-new-version-of\":\"Created new version of\",\"created-with\":\"Created with\",\"csv-format\":\"Format\",\"currency-to-use\":\"Currency to Use\",\"current-time-after\":\"After\",\"current-time-and\":\"and\",\"current-time-before\":\"Before\",\"current-time-between\":\"Between\",\"current-time-day\":\"day\",\"current-time-day-of-month\":\"Day of month\",\"current-time-day-of-week\":\"Day of week\",\"current-time-exclusive\":\"Exclusive\",\"current-time-go-to-true-when\":\"Go to 'True' when:\",\"current-time-inclusive\":\"Inclusive\",\"current-time-is\":\"is\",\"current-time-month\":\"Month\",\"current-time-select-comparison\":\"Select comparison\",\"current-time-select-day-of-week\":\"Select day of week\",\"current-time-select-month\":\"Select month\",\"current-time-time-of-day\":\"Time of day\",\"current-time-time-to-compare\":\"Select type of time to compare\",\"current-time-timezone\":\"Timezone\",\"currently-set-as-exit-block\":\"Currently set as exit block\",\"currently-set-as-starting-block\":\"Currently set as starting block\",\"custom-data-category-name\":\"Custom data category name\",\"custom-data-value\":\"Custom data value\",\"custom-ordering\":\"Use custom block ordering\",\"custom-settings\":\"Custom Settings\",\"daily\":\"Daily\",\"data\":\"Data\",\"data-residency-mode-is-enabled-for-this-account-responses-to-this-block-will-be-retained-on-the-in-country-server-only-and-de-identified-before-being-transmitted-outside-the-country\":\"Data Residency Mode is enabled for this account. Responses to this block will be retained on the in-country server only, and de-identified before being transmitted outside the country.\",\"data-type-boolean\":\"Boolean\",\"data-type-date\":\"Date\",\"data-type-location\":\"Location\",\"data-type-map_coordinates\":\"Map Coordinates\",\"data-type-multiple_choice\":\"Multiple Choice\",\"data-type-number\":\"Number\",\"data-type-phone\":\"Phone\",\"data-type-text\":\"Text\",\"data-validation-invalid-choice\":\"Value ':dataChoice' from ':dataValue' is not valid\",\"data-validation-invalid-value\":\"Value ':dataValue' is not valid\",\"data-validation-max_length\":\"Value ':dataValue' exceeds the max length :maxOpenLength\",\"data-validation-max_numeric_digits\":\"Value ':dataValue' exceeds the max numeric digit :maxNumericDigits\",\"date-created\":\"Date Created\",\"date-range\":\"Date Range\",\"date-range-locked\":\"Date Range Locked\",\"date-updated\":\"Date Updated\",\"day\":\"day\",\"day-of-week\":\"Day of Week\",\"days\":\"day|days\",\"days-after\":\"Days After\",\"days-after-adding\":\"Days after adding\",\"days-before\":\"Days Before\",\"december-month\":\"December\",\"decision-branch\":\"Decision Branch\",\"default-repeat-key\":\"Default Repeat Key\",\"default-sender-for-x-otherwise-systems\":\"The default Sender ID for :orgName will be used when defined, otherwise the system's default Sender ID will be used.\",\"delay-to-enter-repeat-key\":\"Delay To Enter Repeat Key\",\"delete\":\"Delete\",\"delete-issue-tracker\":\"Delete Issue Tracker?\",\"delete-task\":\"Delete Task\",\"delete-this-shareable-link\":\"Delete this shareable link\",\"delete-tracker\":\"Delete Tracker\",\"delete-transcription-task-question\":\"Delete Transcription Task?\",\"delete-tree\":\"Delete Tree\",\"delete-tree-question\":\"Delete Tree?\",\"delete-tree-version\":\"Delete Tree Version?\",\"delete-version\":\"Delete Version\",\"deleted-subscriber\":\"Deleted contact\",\"deleted-title-version\":\"Deleted\",\"description\":\"Description\",\"destination-flow\":\"Destination flow\",\"destination-tree\":\"Destination Tree\",\"destination-tree-not-found\":\"Destination Tree Not Found\",\"destination-url\":\"Destination URL\",\"directory-selection-block-invalid-details\":\"One or more of Directory Selection bocks have invalid details. To allow you import results: \\n1- make sure every Directory Selection blocks have uploaded choices (csv),\\n2- make sure the tree has no more issues. \\n3- resave the tree\",\"directory-selection-description\":\"The Directory Selection block allows contacts to select items in a directory of choices. The block can optionally send the contact back information related to their selection. The contact's selection can be used later in a Decision Branch block. \",\"directory-selection-filter-description\":\"Directory Selection Block fields can be used as filters on the shared link. Select which fields should be used as filters.\",\"directory-selection-filters\":\"Directory Selection Filters\",\"disable\":\"Disable\",\"disable-voice-sms\":\"Disable Voice & SMS\",\"disabled\":\"Disabled\",\"disaggregate-data-by-the-audio-listened-percentage\":\"Disaggregate Data By The Audio Listened Percentage\",\"disaggregate-data-by-the-communication-channels\":\"Disaggregate Data By The Communication Channels\",\"disaggregate-data-by-the-question-choices\":\"Disaggregate Data By The Question Choices\",\"display-headings-without-spaces\":\"Display headings without spaces\",\"display-latest-interaction-only\":\"Display the latest interaction only\",\"display-regular-table-headings\":\"Display regular table headings\",\"do-not-merge-any-calls\":\"Do not merge any calls\",\"do-not-prompt\":\"Do not prompt\",\"do-you-want-to-proceed\":\"Do you want to proceed?\",\"dont-receive\":\"Don't Receive\",\"download\":\"Download\",\"download-X-format\":\":kind format\",\"download-admin-file\":\"Download master CSV file\",\"download-audio-file\":\"Download audio file\",\"download-csv\":\"Download CSV\",\"download-csv-file-to-your-computer\":\"Download CSV file to your computer\",\"download-response-audio\":\"Download Response Audio\",\"download-template\":\"Download template\",\"download-template-admin-file\":\"Download template\",\"download-the-audio-files-from-open-ended-responses\":\"Download the audio files from open-ended responses\",\"download-x-template-file\":\"Download :Language template\",\"draft\":\"Draft\",\"drag-and-drop-instruction\":\"Drag and drop CSV file or\",\"dry\":\"Dry\",\"duplicate\":\"Duplicate\",\"duplicate-as-new-tree\":\"Duplicate as New Tree\",\"duplicate-entire-flow\":\"Duplicate entire flow\",\"duplicate-tree\":\"Duplicate Tree\",\"duplicate-tree-has-been-created\":\"Duplicate tree has been created.\",\"duplicates-warning\":\"Based on limit and characters, recommended minimum length is\",\"duration\":\"Duration\",\"earth-networks\":\"Earth Networks\",\"edit\":\"Edit\",\"edit-alert-message\":\"Edit Alert Message\",\"edit-block-type\":\"Edit :block_type block\",\"edit-case-block\":\"Edit Case Block\",\"edit-collaborative-filtering-question\":\"Edit Collaborative Filtering Question\",\"edit-collaborative-filtering-rating\":\"Edit Collaborative Filtering Rating\",\"edit-content\":\"Edit Content\",\"edit-expression\":\"Edit expression\",\"edit-flow\":\"Edit Flow\",\"edit-generate-code-block\":\"Edit generate code\",\"edit-group-membership\":\"Edit Group Membership\",\"edit-location\":\"Edit Location\",\"edit-log-block\":\"Edit Log Block\",\"edit-message\":\"Edit message\",\"edit-multiple-choice-question\":\"Edit Multiple-Choice Question\",\"edit-multiple-select-multiple-choice-question\":\"Edit Multiple Select Multiple-Choice Question\",\"edit-new-version\":\"Edit new version\",\"edit-numeric-question\":\"Edit numeric question\",\"edit-open-ended-question\":\"Edit Open-Ended Question\",\"edit-operator-contact-lists\":\"Edit Operator Contact Lists\",\"edit-outgoing-call\":\"Edit Outgoing Call\",\"edit-output-block\":\"Edit Output Block\",\"edit-random-order-multiple-choice-question\":\"Edit Random Order Multiple-Choice Question\",\"edit-run-flow-block\":\"Edit Run Flow Block\",\"edit-settings\":\"Edit Settings\",\"edit-subscriber-property\":\"Edit Contact Property\",\"edit-this-block\":\"Edit this block\",\"edit-tree-before-sending\":\"Edit tree before sending\",\"edit-validate-block\":\"Edit Validate Code Block\",\"edit-voice-content\":\"Edit Voice Content\",\"empty\":\"Empty\",\"empty-audio-library\":\"Empty audio library!\",\"empty-responses\":\"empty responses\",\"enable\":\"Enable\",\"enable-disable-subscriber\":\"Enable/disable contact\",\"enable-display-of-block-type\":\"Enable display of block type (e.g. Multiple Choice Question)\",\"enable-display-of-key-metrics\":\"Enable display of key metrics\",\"enable-sms\":\"Enable SMS\",\"enable-voice\":\"Enable Voice\",\"enable-voice-sms\":\"Enable Voice & SMS\",\"enabled\":\"Enabled\",\"enabled-languages\":\"Enabled Languages\",\"enabled-result-tabs\":\"Enabled result tabs\",\"end-at\":\"End At\",\"end-date\":\"End Date\",\"end-recording-by-pressing\":\"End Recording by Pressing\",\"end-the-call-session\":\"End the call/session\",\"ends\":\"Ends\",\"enter-a-value\":\"Enter a value\",\"enter-accepted-responses\":\"Replace this with a list of responses that we will use to match the respondant's answer to this choice. Enter each option on a new line. (You may leave this field blank if the tree will be used for voice content only)\",\"enter-at-least-three-chars\":\"Enter at least three characers...\",\"enter-at-least-three-chars-to-search\":\"Enter at least three characters to begin searching...\",\"enter-audio-content\":\"Enter Audio content\",\"enter-block-label\":\"Enter a block label\",\"enter-block-name\":\"Enter a block name\",\"enter-block-semantic-label\":\"Enter a block semantic label\",\"enter-clipboard-content\":\"Enter clipboard content...\",\"enter-confirmation-audio\":\"If using voice content, replace this with the filename of an audio file that you have uploaded to your audio library. This audio will be played back to the respondant after they have selected the choice. (You may leave this blank if the tree does not have voice content or if you wish to not play anything back to the contact)\",\"enter-date\":\"Enter date\",\"enter-duration\":\"Enter duration\",\"enter-each-on-new-line\":\"Enter each on a new line\",\"enter-exit-label\":\"Enter Exit Label\",\"enter-exit-test-expression\":\"Enter Exit Test Expression\",\"enter-image-content\":\"Enter Image content\",\"enter-ivr-number\":\"If using voice content, replace this with the numeric code that the respondant should enter to select this choice. (You may leave this blank if the tree does not have voice content)\",\"enter-num-ratings\":\"Enter the number of ratings\",\"enter-number\":\"Enter Number\",\"enter-number-of-days\":\"Enter number of days\",\"enter-operator-queue-name\":\"Enter Operator Queue Name here\",\"enter-primary-and-synonyms\":\"Enter the primary option and synonyms for each choice. Enter each synonym on a new line.\",\"enter-primary-attribute\":\"Your first choice goes on this row. Replace this with the primary information for this choice here. (See example of a completed choice below) \",\"enter-primary-attribute-title\":\"Replace this with the description of the primary information for the choices (e.g. 'Clinic Name')\",\"enter-program-id\":\"Enter the program identifier\",\"enter-property-name\":\"Enter property name\",\"enter-secondary-attribute\":\"Replace this with the secondary information for this choice\",\"enter-secondary-attribute-title\":\"Replace this with the description of the secondary information for the choices (e.g. 'Country')\",\"enter-secondary-attribute-title-2\":\"Replace this with the description of the secondary information for the choices (e.g. 'Operating hours'). You may add up to 10 peices of secondary information by adding columns to the right.\",\"enter-sms-content\":\"Enter SMS content…\",\"enter-sms-text-here\":\"Enter SMS text here\",\"enter-social-content\":\"Enter social content\",\"enter-social-messaging-text-here\":\"Enter social messaging content here\",\"enter-text-content\":\"Enter Text content\",\"enter-ussd-content\":\"Enter USSD content…\",\"enter-ussd-text-here\":\"Enter USSD text here\",\"enter-value\":\"Enter value\",\"enter-video-content\":\"Enter Video content\",\"entered\":\"Entered\",\"entity\":\"Entity\",\"entity-selection-block-instructions\":\"Contacts will exit through the 'Success' output when they select an Entity. If they are not allowed to refer to any Entities, or if they fail to select an Entity they are taken through the 'Failure' exit.\",\"equal-to\":\"Equal to\",\"error\":\"Error\",\"error-creating-transcription-task\":\"Error creating transcription task.\",\"error-found\":\"error found\",\"error-importing-json\":\"Error Importing JSON!\",\"error-report\":\"Error Report\",\"error-updating-transcription-task\":\"Error updating transcription task.\",\"error-uploading-file-try-again\":\"There was an error uploading the file, please try uploading again.\",\"error-while-attempting-to-publish-specified-tree\":\"Error while attempting to publish specified tree.\",\"error-while-downloading-template\":\"An error has occured while downloading the template file.\",\"error-while-saving-transcriptions\":\"Error while saving transcriptions.\",\"error-while-saving-tree\":\"Error while saving tree...\",\"establish-connection\":\"Establish Connection\",\"example-tree\":\"Example Tree\",\"examples\":\"Examples\",\"exceeds\":\"exceeds\",\"excel-supported-format\":\"Excel-supported CSV\",\"exit\":\"Exit\",\"exit-block-tree-begins-here\":\"Tree execution will continue here when the session is unexpectely terminated.\",\"exit-default\":\"Default\",\"exit-otherwise-through-default\":\"Otherwise, exit through Default\",\"exit-through\":\"Exit Through\",\"exit-to-another-output\":\"Exit to another output\",\"exit-when\":\"When\",\"expires-after\":\"Expires after\",\"expires-on\":\"Expires on\",\"export-date-time-format\":\"Export Date/Time Format\",\"export-results-to-csv\":\"Export Results to CSV\",\"export-transcriptions\":\"Export Transcriptions\",\"export-tree-json\":\"Export Tree JSON\",\"export-using-current-time-zone\":\"Export using current time zone\",\"export-using-utc\":\"Export using UTC\",\"export-using-utc-with-subscriber-phone-number\":\"Export using UTC with Contact Phone Number\",\"expression-branch-description\":\"This block will check the expression (“When”) for each exit in order to determine which exit to use.\",\"failed\":\"Failed\",\"failed-finding-matches\":\"Failed finding matches!\",\"failure\":\"Failure\",\"false\":\"False\",\"february-month\":\"February\",\"feedback-message\":\"Feedback Message\",\"field\":\"Field\",\"field-deleted-since-configuring-this-block\":\"The Contact Property has been deleted since configuring this Block. Please remove this configuration.\",\"file-details\":\"File Details\",\"filesize\":\"Filesize\",\"fill-out-template-instruction\":\"Fill out the template with your tree results\",\"fill-out-template-instruction-1\":\"Populate rows with data to correspond with the column headers of the template. Each row is a single tree result\",\"fill-out-template-instruction-2\":\"You cannot add new columns to your file to create new blocks. Edit the tree to make these changes\",\"fill-out-template-instruction-3\":\"The format for Call Date should be YYYY-MM-DD\",\"fill-out-template-instruction-4\":\"The format for Call Start Time should be HH:MM:SS\",\"fill-out-template-instruction-5\":\"For the 'Multiple Select Multiple Choice Question Block' you should separate options chosen with ';'\",\"filter-block-content\":\"Filter block content…\",\"filter-by-block\":\"Filter by Blocks\",\"filter-by-date\":\"Filter by date\",\"filter-by-directory-selection\":\"Filter by Directory Selection Blocks\",\"filter-by-tag\":\"Filter by Tags\",\"filter-enabled\":\"Filter Enabled\",\"filter-instructions\":\"Select which peices of information should be used as filters when viewing results.\",\"filter-validation\":\"Filter Validation\",\"filters\":\"Filters\",\"filters-saved\":\"Filters configurations saved\",\"find-matches\":\"Find Matches\",\"first-time-subscribers\":\"First-time Contacts\",\"fix-validation-errors-before-publishing\":\"Fix validation errors before publishing\",\"fixed-date\":\"Fixed date\",\"flag-this-recording-as-either\":\"Flag this recording as either inaudible or empty\",\"flagged-as-flagtype\":\"Flagged as :flag_type - click the button above to undo.\",\"flagged-as-inaudible-or-empty\":\"Flagged as inaudible or empty - use the buttons above to undo\",\"floip-cleared\":\"Configuration cleared.\",\"floip-expressions-escape-with-double-at-symbol\":\"If you intend to insert a literal <code>@</code> symbol, using <code>@@</code> will result in a single character in output.\",\"floip-instructions-1\":\"Viamo is a member of the Flow Interoperability Initiative, enabling seamless data exchange across participating ICT4D software systems.\",\"floip-instructions-2\":\"To enable secure streaming of results for this tree to a Flow Results data aggregator, enter the base URL and authentication token of the aggregator.\",\"floip-sync-success\":\"Your Viamo tree is enabled to stream responses to the Flow Results aggregator.\",\"floip-sync-warning\":\"Your Viamo tree is not enabled to stream responses to the Flow Results aggregator. Establish a connection to the aggregator to enable streaming.\",\"flow-view\":\"Flow view\",\"for-a-given-subscriber-custom-data-category\":\"For a given contact, if the following property or custom data category has the value below, go to 'True'. Otherwise, go to 'False'.\",\"for-a-given-subscriber-go-to-true-false\":\"For a given contact, if the following property or custom data category has the value below, go to True. Otherwise, go to False.\",\"for-assistance\":\"for assistance\",\"for-example-to-assign-the-first-hundred-audio-responses-to-a-transcriber\":\"For example, to assign the first hundred audio responses to a transcriber, set the 'Start At' value to 1 and the 'End At' value to 100. For the next transcriber, you could then start at 101 and end at 200, and so on.\",\"for-the-best-user-experience\":\"For the best user experience, please provide an audio prompt that says,\",\"for-this-block\":\"for this block.\",\"fri\":\"Fri\",\"friday-day\":\"Friday\",\"from-block-input\":\"From block input\",\"from-import\":\"from Import\",\"generate-code-title\":\"Generate code title\",\"generate-csv-file\":\"Generate CSV file\",\"generate-shareable-link\":\"Generate shareable link\",\"generating-data-from-past-calls\":\"Generating data from past calls\",\"get-shareable-link\":\"Get Shareable Link\",\"go-to-lang-selector-interface\":\"Go to Language Selectors interface\",\"go-to-true-or-false\":\"... go to True. Otherwise, go to False.\",\"go-to-true-otherwise-go-to-false\":\"...go to 'True'. Otherwise, go to 'False'.\",\"go-to-true-output-if-contact-language-is\":\"Go to the 'True' output if the Contact's langauge is\",\"greater-than\":\"Greater than\",\"group\":\"group\",\"group-is-larger-than\":\"group is larger than\",\"group-label\":\"Group:\",\"group-not-set\":\"Group not set\",\"groups\":\"Groups\",\"has-already-been-published\":\"has already been published\",\"has-been-successfully-published\":\"has been successfully published\",\"has-value\":\"has value\",\"header-validation\":\"Value ':dataValue' is not a valid :dataHeader\",\"header-validation-missing\":\"The ':columnName' column is missing\",\"heading-exit\":\"Exit\",\"headings\":\"Headings\",\"headings-format\":\"Headings Format\",\"heres-what-we-know\":\"Here's what we know:\",\"hide-instruction\":\"Hide Instructions\",\"hide-phone-numbers\":\"Hide phone numbers\",\"hide-question-titles\":\"Hide Question Titles\",\"hide-subscriber-id\":\"Hide Contact ID\",\"high-winds\":\"High Winds\",\"histogram-of-percentage-listened\":\"Histogram of % listened\",\"home\":\"Home\",\"how-to-import-tree-results\":\"How to Import Tree Results\",\"human-readable\":\"Human-readable\",\"hung-up\":\"Hung up\",\"i-have-translated-my-choices\":\"I have translated my choices\",\"if\":\"If\",\"if-a-respondent-has-already-started-this-tree-but-not-finished\":\"If a respondent has already started this tree but not finished, resume where they left off.\",\"if-all-following-true\":\"If all of the following are true\",\"if-all-of-the-following-are-true\":\"If all of the following are true\",\"if-any-following-true\":\"If any of the following are true\",\"if-any-of-the-following-are-true\":\"If any of the following are true\",\"if-at-least\":\"If at least\",\"if-at-least-this-many-following-true\":\"If at least this many of the following are true\",\"if-at-least-this-many-of-the-following-are-true\":\"If at least this many of the following are true...\",\"if-b-all-b-of-the-following-are-true-go-to-true\":\"If <b>all</b> of the following are true, go to True.\",\"if-cfq-block-has-x-ratings\":\"If statements from ':blockTitle' have :targetRatio ratings...\",\"if-in\":\"If in\",\"if-not-in\":\"If not in\",\"if-subscriber-custom-data\":\"If Contact Custom Data,\",\"if-subscriber-language-is\":\"If Contact Language is\",\"if-subscriber-language-is-unknown\":\"If Contact Language is '[Unknown]'\",\"if-subscriber-start-date-is\":\"If Contact Start Date is\",\"if-symbols-are-used-then-reflect-in-filename\":\"If symbols are used then this must be reflected in the file name.\",\"if-the-number-of-subscribers-in-the\":\"If the number of contacts in the\",\"if-the-subscriber-is\":\"If the contact is\",\"if-the-value-is\":\"If the value is\",\"if-youd-like-to-repeat-msg-press-2\":\"If you'd like to repeat this message, please press 2 now.\",\"import-done\":\"Import done\",\"import-export\":\"Import / Export\",\"import-failed\":\"Import failed for\",\"import-file\":\"Import the file\",\"import-file-instruction\":\"Drag the file or click on the Upload CSV file button and select the saved template\",\"import-in-progress\":\"Import in progress\",\"import-new-results\":\"Import New Results\",\"import-results\":\"Import Tree Results\",\"import-status\":\"Import Status\",\"import-tree\":\"Import Tree\",\"import-tree-json\":\"Import Tree JSON (*.json File)\",\"importing\":\"Importing\",\"importing-file\":\"Importing file\",\"in-progress\":\"In Progress\",\"in-the-following-group\":\"In the following group\",\"inactive-do-not-receive-outgoing-calls\":\"Inactive(Do not receive Outgoing Calls)\",\"inaudible\":\"Inaudible\",\"include-calls-from\":\"Include calls from\",\"include-in-summary\":\"Include in summary\",\"infinite-loops-detected-please-edit-before-sending\":\"Infinite loops detected. Please edit before sending\",\"infinite-loops-exist\":\"Infinite loops exist\",\"input\":\"Input\",\"input-help\":\"This block checks that a Code is valid by using the response from a previous question. Select which question should be used.  \",\"input-required\":\"Input Required\",\"instructional-text-optional\":\"Instructional text (optional)\",\"interactions\":\"Interactions\",\"internal-notes\":\"Internal Notes\",\"internal-notes-optional\":\"Internal notes (optional)\",\"invalid\":\"Invalid\",\"invalid-content-type\":\"Invalid Content Type : File is not recognized as .csv\",\"invalid-csv\":\"Invalid CSV: The file could not be processed as a valid .csv file\",\"invalid-entry\":\"Invalid entry.\",\"invalid-pattern\":\"Invalid pattern!\",\"invalid_startingblock_key\":\"Please set a starting block for your tree\",\"is\":\"is\",\"is-complete\":\"is complete\",\"is-private-not-reversible\":\"This setting cannot be changed after a Tree is published with this option enabled\",\"issue-trackers\":\"Issue Trackers\",\"ivr-content\":\"IVR Content\",\"january-month\":\"January\",\"july-month\":\"July\",\"june-month\":\"June\",\"key-metrics\":\"Key Metrics\",\"key-press\":\"Key Press\",\"label\":\"Label\",\"label-is-already-in-use\":\"Label is already in use\",\"language\":\"Language\",\"language-options\":\"Language Options\",\"language-selection-prompt\":\"Language Selection Prompt\",\"language-selector\":\"Language Selector\",\"language-selector-for-this-call\":\"Language Selector for this call\",\"language-selector-not-found\":\"Language Selector Not Found\",\"language-x-csv-file\":\":Language CSV File\",\"languages\":\"Languages\",\"languages-have-not-been-enabled\":\"Languages have not been enabled\",\"last-edited\":\"Last edited\",\"last-edited-on-this-date\":\"Last edited on this date\",\"last-saved-at\":\"Last saved at\",\"lat\":\"Lat:\",\"latest-message-for-user-groups\":\"Latest Message for all Contact Groups\",\"latin-languages\":\"Latin Languages\",\"learn-more-about-viamo-by-visiting\":\"Learn more about Viamo by visiting :viamo_link, or :sign_in_link\",\"less-than\":\"Less than\",\"let-users-repeat\":\"Let users repeat this message\",\"letters-only\":\"Letters Only\",\"library\":\"Library\",\"load-more-subscribers\":\"Load More Contacts\",\"loading\":\"Loading...\",\"loading-average-call-durations\":\"Loading Average Call Durations...\",\"local-currency\":\"Local Currency\",\"local-time-is-utc\":\"Local time is UTC\",\"location\":\"Location\",\"location-selector\":\"Location Selector\",\"lock\":\"Lock\",\"lock-the-date-range-to-the-dates-above\":\"Lock the date range to the dates above\",\"locked\":\"Locked\",\"logic\":\"Logic\",\"lon\":\"Lon:\",\"machine-readable\":\"Machine-readable\",\"machine-readable-format\":\"Machine-Readable Format\",\"make-new-subscriber\":\"Make a new contact with same phone number\",\"manage-queues\":\"Manage Queues...\",\"manage-responses\":\"Manage Responses\",\"manage-statements\":\"Manage Statements\",\"manage-transcriptions\":\"Manage Transcriptions\",\"march-month\":\"March\",\"mark-call-as-complete\":\"Mark Call As Complete\",\"max-amount\":\"Maximum Amount\",\"max-code-issue\":\"Limit number of codes\",\"max-days\":\"Max Days\",\"max-duration-in-seconds\":\"Maximum Duration (seconds)\",\"max-response-characters\":\"Maximum Response Characters\",\"max-length\":\"Maximum Length\",\"max-number-of-repeats\":\"Max Number of Repeats\",\"maximum-number-of-response-digits\":\"Maximum Number of Response Digits\",\"maximum-record-duration\":\"Maximum Record Duration\",\"maximum-value\":\"Maximum Value\",\"maximum-value-(inclusive)\":\"Maximum value (inclusive)\",\"may-month\":\"May\",\"mcq-response-format\":\"MCQ Response Format\",\"merge-all-calls-from-same-subscriber\":\"Merge all calls from same contact\",\"merge-incomplete-calls-from-the-same-subscriber\":\"Merge incomplete calls from the same contact\",\"merge-only-resumed-calls\":\"Merge only resumed calls\",\"merge-options\":\"Merge Options\",\"message\":\"Message\",\"message-block-values\":\"Message Block Values\",\"message-blocks-only\":\"Message Blocks only\",\"message-details\":\"Message details\",\"message-title\":\"Message title\",\"method\":\"Method\",\"min-amount\":\"Minimum Amount\",\"min-length\":\"Minimum Length\",\"minimum-value\":\"Minimum Value\",\"minimum-value-(inclusive)\":\"Minimum value (inclusive)\",\"minutes\":\"minutes\",\"modified\":\"(Modified)\",\"modify-subscriber\":\"Modify contact\",\"modify-subscriber-active-status-to\":\"Modify Contact active status to\",\"modify-subscriber-preferred-content-type-for\":\"Modify Contact preferred content type for\",\"modify-subscriber-start-date-to\":\"Modify Contact start date to\",\"modify-subscribers-start-date-to-absolute-date-here\":\"Modify Contacts start date to Absolute date here\",\"mon\":\"Mon\",\"monday-day\":\"Monday\",\"month\":\"month\",\"monthly\":\"Monthly\",\"months-after\":\"Months After\",\"months-before\":\"Months Before\",\"more\":\"More\",\"more-options\":\"More Options\",\"more-than\":\"More than\",\"most-active-blocks\":\"Most Active Blocks\",\"most-recent-published-version\":\"Most recent published version\",\"most-recent-version\":\"Most recent version\",\"most-recent-version-of\":\"Most recent version of\",\"mostly\":\"Mostly\",\"msmcq-description-p1\":\"For Text-based channels like SMS, USSD and Social Messaging: set a single letter (A-Z) as synonym for each choice using the choice options menu.\",\"msmcq-description-p2\":\"Contacts can for example reply: 'abc' to select 3 choices configured with synonym 'a', 'b' and 'c'. Synonym must be set and must be unique per choice. The same synonym can be used for same choice across the different languages enabled.\",\"msmcq-description-p3\":\"For Voice, set the voice key press for each choice in the choice options menu. Contacts can for example press '123' to select 3 choices.\",\"multiple-choice-question\":\"Multiple Choice Question\",\"multiple-select-multiple-choice-question\":\"Multiple Select Multiple Choice Question\",\"name\":\"Name\",\"never\":\"Never\",\"new-contact-created\":\"New contact created\",\"new-edits-click-save\":\"New edits – click 'Save' again before continuing.\",\"new-exclamation\":\"New!\",\"new-issue-tracker\":\"New Issue Tracker\",\"new-property\":\"New property\",\"new-subscriber-value\":\"New contact value\",\"new-transcription-task\":\"New Transcription Task\",\"new-transcription-task-created\":\"New transcription task created!\",\"new-transcription-tasks-generated\":\"New transcription tasks generated!\",\"new-tree\":\"New Tree\",\"new-tree-created\":\"New tree created!\",\"new-version\":\"New version\",\"new-version-created\":\"New version created!\",\"newest\":\"Newest\",\"newest-to-oldest\":\"Newest to Oldest\",\"next\":\"Next\",\"no\":\"No\",\"no-action-selected\":\"(No action selected)\",\"no-admin-file-yet-filters\":\"Upload the master CSV file to set filters\",\"no-admin-file-yet-selection-confirmation\":\"Upload the master CSV file to set selection confirmation\",\"no-audio-files-found-for-X\":\"No audio files found for\",\"no-audio-files-found-in-organisation\":\"No Audio files found in Organisation\",\"no-audio-yet\":\"No audio yet\",\"no-blocks-for-content\":\"There are no blocks to populate content onto.\",\"no-blocks-found-for-tree-with-identifier\":\"No blocks found for Tree with identifier\",\"no-change\":\"No change\",\"no-choice-selected\":\"No choice selected\",\"no-choices-added\":\"No choices added.\",\"no-choices-yet-please-specify\":\"No choices yet -- please specify your choices first in the sidebar\",\"no-choices-yet-please-specify-your-choices-first-in-the-sidebar\":\"No choices yet. Please specify your\",\"no-clipboard-content-yet\":\"No Clipboard content yet\",\"no-content-blocks\":\"No content blocks!\",\"no-content-blocks-to-populate-content-onto\":\"There are no content blocks to populate content onto.\",\"no-content-types-enabled\":\"No content types enabled.\",\"no-credit\":\"No Credit\",\"no-csv-exports-for-these-results-have-been-created-yet\":\"No CSV exports for these results have been created\",\"no-data\":\"No data\",\"no-directory-selection-blocks\":\"This tree has no Directory Selection blocks\",\"no-groups-created-yet\":\"No groups created yet or your groups have no contacts.\",\"no-labels-or-tags\":\"No labels or tags\",\"no-languages-enabled\":\"No languages are enabled yet for this tree.\",\"no-languages-enabled-on-the-tree\":\"No Languages enabled on the Tree\",\"no-matches-found\":\"No matches found!\",\"no-messages-created-yet\":\"No messages created yet.\",\"no-number-of-audio-files-per-task-supplied\":\"No number of audio files per task supplied.\",\"no-operator-contact-lists-made-yet\":\"No operator contact lists have been made yet.\",\"no-preferred-channel-selected\":\"You didn't select a preferred channel. Please select one\",\"no-preferred-language\":\"No preferred language\",\"no-question-selected\":\"No question selected\",\"no-question-text-provided\":\"No Question Text Provided\",\"no-result-for-the-selected-filters\":\"No results for the selected filters.\",\"no-results-for-this-block-yet\":\"No results for this block yet.\",\"no-results-not-sent-yet\":\"(No results - not sent yet)\",\"no-results-yet\":\"Sorry, there are no results yet.\",\"no-shareable-links-have-been-created-yet\":\"No shareable links have been created yet.\",\"no-sms-content-yet\":\"No SMS content yet\",\"no-social-content-yet\":\"No social content yet\",\"no-subscriber-field-type-map-coordinates\":\"You do not have a contact field of type 'Map Coordinates'. This contact field is required to store the location of the contact.\",\"no-surveys-created\":\"No surveys created yet.\",\"no-tag-found\":\"No tag found\",\"no-tagged-blocks\":\"This tree has no tagged blocks\",\"no-tree-found-with-identifier\":\"No Tree found with identifier\",\"no-trees-created-yet\":\"No trees created yet.\",\"no-trees-have-been-created-yet\":\"No trees have been created yet\",\"no-ussd-content-yet\":\"No USSD content yet\",\"no-validation\":\"No Validation\",\"no-value\":\"No value\",\"none-selected\":\"(None selected)\",\"normalize\":\"Normalize\",\"normalize-chart-results\":\"Normalize chart results\",\"not\":\"not\",\"not-available\":\"Not Available\",\"not-created-any-language-selectors-yet\":\"You have not created any language selectors yet.\",\"not-equal-to\":\"Not equal to\",\"not-found\":\"Not Found\",\"not-in-the-following-group\":\"Not in the following group\",\"not-launched-yet\":\"Not launched yet\",\"not-set\":\"not-set\",\"november-month\":\"November\",\"now\":\"Now\",\"num-ratings-per-statement\":\"Number Of Ratings Per Statement\",\"num-ratings-that-each-statement-should-receive\":\"The number of ratings that each statement should receive.\",\"number\":\"Number\",\"number-of-calls-in-date-range\":\"Number of calls in date range\",\"number-of-calls-in-the-last\":\"Number of calls in the last\",\"number-of-choices\":\"Number of choices\",\"number-of-exits\":\"Number of Exits\",\"number-of-outputs\":\"Number of outputs:\",\"number-of-people-who-ended-at-this-block\":\"Number of people who ended at this block\",\"numbers-alphabet\":\"Alphanumeric\",\"numbers-only\":\"Numbers Only\",\"numeric-average\":\"Numeric Average\",\"numeric-block-title\":\"Numeric Block Title\",\"numeric-branch\":\"Numeric Branch\",\"numeric-quesion-block\":\"Numeric Quesion Block\",\"numeric-question\":\"Numeric Question\",\"occurrences\":\"occurrences\",\"october-month\":\"October\",\"of\":\"of\",\"of-following-true\":\"...of the following are true\",\"of-the-following-are-true\":\"of the following are true\",\"of-the-following-are-true-go-to-true\":\"of the following are true, go to True.\",\"offline\":\"Offline\",\"offline-content\":\"Offline Content\",\"oldest-to-newest\":\"Oldest to Newest\",\"on\":\"On\",\"on-line\":\"on line\",\"one-output-for-all-choices\":\"One output for all choices\",\"only-accepts-word-characters\":\"Only accepts word characters\",\"only-display-latest-interaction-if-multiple-interactions-exist-for-the-same-session-and-block\":\"Only display the latest interaction if multiple interactions exist in the same session for the same block. Leave unchecked if all results should be displayed.\",\"only-question-blocks\":\"Only question blocks\",\"open-block-with-voice-set-sub-prop-warning\":\"Open-ended Voice responses are unable to set contact properties at this time.\",\"open-ended-audio-export-ready\":\"Open-ended audio export ready\",\"open-ended-question\":\"Open-ended Question\",\"open-ended-responses\":\"Open-ended responses\",\"open-external-link\":\"Open External Link\",\"open-in-new-window\":\"Open in new window\",\"open-link\":\"Open Link\",\"open-link-in-new-window\":\"Open link in new window\",\"operator-contact-list\":\"Operator contact list\",\"operator-queue-name\":\"Operator Queue Name\",\"operators\":\"operators\",\"optional-description\":\"Optional description\",\"optionally-you-can-create-loop-back\":\"Optionally, you can create connections to 'loop back' to this random branch block, if you want contacts to reach all of the blocks connected below in random order. After every option has been reached, the block can either continue at random, or, it can 'exit' to a distinct output.\",\"options\":\"Options\",\"or\":\"or\",\"order\":\"Order\",\"order-by\":\"Order By:\",\"order-of-components-dont-matter-but-must-be-adjacent-one-another\":\"The order of these components do not matter but they must be adjacent to one another.\",\"order-of-results\":\"Order of Results\",\"organization-not-found-with-api-key\":\"Could not find organization with that API key.\",\"original-file\":\"Original file\",\"original-quality\":\"Original quality\",\"originally\":\"Originally\",\"outgoing-calls\":\"Outgoing Calls\",\"output\":\"Output\",\"output-branching\":\"Output Branching\",\"output-clipboard\":\"Clipboard\",\"output-connected\":\"Connected\",\"output-error\":\"Error\",\"output-exit\":\"Exit\",\"output-expression\":\"Output expression\",\"output-failed\":\"Failed\",\"output-false\":\"False\",\"output-not-met\":\"Not Met\",\"output-quota-met\":\"Quota met\",\"output-sms\":\"SMS\",\"output-true\":\"True\",\"output-ussd\":\"USSD\",\"output-voice\":\"Voice\",\"outputs\":\"Outputs\",\"partly\":\"Partly\",\"password\":\"Password\",\"pattern-not-provided-for-tree\":\"Pattern not provided for tree\",\"pause\":\"Pause\",\"percent-of-audio-listened\":\"Percent of Audio Listened\",\"percent-of-the-content-provided\":\":count % of the content provided.\",\"phone\":\"Phone\",\"phone-number\":\"Phone Number\",\"phone-quality\":\"Phone quality\",\"phone-recording\":\"Phone recording\",\"pick-a-date-range-to-display-block-interaction-totals\":\"Pick a date range to display block interaction totals\",\"plain-input\":\"Plain input\",\"play\":\"Play\",\"play-audio\":\"Play audio\",\"please-fix-the-validation-errors-in-this-tree-before-publishing\":\"Please fix the validation errors in this tree before\",\"please-provide-numeric-codes\":\"Please provide numeric codes.\",\"please-provide-valid-start-and-end-numbers\":\"Please provide valid start and end numbers.\",\"please-resolve-the-set-of-infinite-loops-before-sending-this-tree\":\"Please resolve the set of infinite loops\",\"please-select-a-numeric-question-block\":\"Please select a numeric question block.\",\"please-select-channel\":\"Please make sure you select a preferred channel\",\"please-translate-choices\":\"Please translate your choices.\",\"please-try-again-or-contact\":\"Please try again or contact\",\"precipitation-level\":\"Precipitation Level\",\"press\":\"Press\",\"preview-file\":\"Preview file\",\"previous\":\"Previous\",\"previous-exports\":\"Previous Exports\",\"previous-imports\":\"Previous Imports\",\"primary-information-heading\":\"Primary information heading\",\"pro-tip\":\"Pro Tip\",\"problem-connecting-api\":\"Problem connecting to the API.\",\"processing\":\"Processing...\",\"product-code\":\"Product Code\",\"program\":\"Program\",\"program-help-generate-code-block\":\"Make sure to set the same program in the Validate Code block\",\"program-help-validate-code-block\":\"Use the same program as the Generate Code block\",\"prompt\":\"Prompt\",\"prompt-for-statement\":\"Prompt for statement\",\"prompts\":\"Prompts\",\"property\":\"Property\",\"property-configuration\":\"Property Configuration\",\"property-not-supported\":\"Type not supported\",\"protocol\":\"Protocol\",\"provide-a-language-selector-menu\":\"Provide a language selector menu for contacts to choose their language\",\"provide-key\":\"Provide an API key\",\"provide-url\":\"Provide a URL\",\"publish\":\"Publish\",\"publish-new-version\":\"Publish New Version\",\"publish-the-newest-version-of-this-tree\":\"Publish the newest version of this tree\",\"publish-this-version-of-the-flow\":\"Publish this version of the flow\",\"published\":\"Published!\",\"published-header\":\"Published\",\"question\":\"Question\",\"question-and-message-blocks\":\"Question and Message Blocks\",\"question-blocks-only\":\"Question Blocks only\",\"question-prompt\":\"Question Prompt\",\"question-responses\":\"Question Responses\",\"question-title\":\"Question Title\",\"quota-threshold\":\"Quota Threshold\",\"rain\":\"Rain\",\"random-branch\":\"Random Branch\",\"random-code\":\"Generate Random Codes\",\"ready-to-send\":\"Ready to Send\",\"receive\":\"Receive\",\"receive-outgoing-calls\":\"Receive Outgoing Calls\",\"received\":\"Received\",\"recipient-group\":\"Recipient Group\",\"recommended\":\"Recommended\",\"recommended-export-format-settings\":\"Recommended Export Format Settings\",\"record-group-message\":\"Record Group Message\",\"record-group-message-title\":\"Record group message title\",\"reject\":\"Reject\",\"relative-to-numeric-input\":\"Relative to numeric input\",\"relative-to-the-call-date\":\"Relative to the call date\",\"reload\":\"Reload\",\"remove\":\"Remove\",\"remove-condition\":\"Remove condition\",\"remove-file\":\"Remove file\",\"remove-filter-tags\":\"Remove all tags\",\"remove-from\":\"Remove from\",\"remove-from-group\":\"Remove from Group\",\"remove-question\":\"Remove question\",\"removes-subscribers-from-the\":\"Removes contacts from the\",\"repeat\":\"Repeat\",\"repeat-every\":\"Repeat every\",\"repeat-questions\":\"Repeat Questions\",\"repeating\":\"Repeating\",\"repeats\":\"Repeats\",\"replace\":\"Replace\",\"replace-existing-audio-files-on-blocks\":\"Replace existing audio files on blocks\",\"reset\":\"reset\",\"reset-all-filter\":\"Reset all filters\",\"reset-all-filters\":\"Reset all filters\",\"reset-breakdown-and-show-interactions\":\"Reset Breakdown and Show Interactions\",\"reset-breakdown-and-show-total-interactions\":\"Reset Breakdown and Show Total Interactions\",\"reset-filters\":\"Reset Filters\",\"resolve-warnings-and-save-simulate-clipboard\":\"Resolve warnings and save the tree to use the Clipboard simulator\",\"resource-view\":\"Resources view\",\"response\":\"Response\",\"response-timeout\":\"Response Timeout\",\"responses\":\"Responses\",\"responses-in-this-task\":\"Responses in this task\",\"responses-to-this-block-might-contain-personal-identifying-information\":\"Responses to this block might contain personal identifying information\",\"responses-to-this-block-will-be-hidden-from-users-without-permission-to-view-personal-information\":\"Responses to this block will be hidden from users without permission to view personal information.\",\"restored-title-version\":\"Restored\",\"restored-tree\":\"Restored tree\",\"result-import\":\"Results import\",\"results\":\"Results\",\"results-listed-on-page\":\"Results Listed on Page\",\"resume-tree-for-partial-respondents\":\"Resume tree for partial respondents?\",\"retain-only-most-recent-call-from-same-subscriber\":\"Retain only most recent call from same contact\",\"rich_messaging-content\":\"Rich Messaging Content\",\"rows\":\"Rows\",\"rows-processed\":\"rows processed\",\"rule-components\":\"Rule components\",\"run-another-tree\":\"Run Another Tree\",\"runs-the-latest-version-of\":\"Runs the latest version of\",\"runs-the-latest-version-of \":\"Runs the latest version of\",\"sat\":\"Sat\",\"saturday-day\":\"Saturday\",\"save\":\"Save\",\"save-and-continue\":\"Save and continue\",\"save-and-go-to-next-page\":\"Save and go to next page\",\"save-changes-to-the-flow\":\"Save changes to the flow\",\"save-selection\":\"Save Selection\",\"save-template-instruction\":\"Save the template on your computer as a CSV file\",\"save-transcriptions\":\"Save Transcriptions\",\"saved\":\"Saved\",\"saving\":\"Saving...\",\"saving-and-checking-for-errors\":\"Saving and checking for Errors\",\"saving-transcriptions\":\"Saving transcriptions...\",\"saving-tree\":\"Saving Tree...\",\"schedule-and-send-an-outgoing-call\":\"Schedule and send an outgoing call\",\"schedule-type\":\"Schedule type\",\"search-audio-library\":\"Search audio library…\",\"search-subscribers\":\"Search contacts\",\"secondary-information-headings\":\"Secondary information headings\",\"seconds\":\"seconds\",\"seconds-ago\":\"seconds ago\",\"seconds-for-a-response\":\"seconds for a response\",\"seconds-for-response\":\"seconds for response\",\"see-error-report-instruction\":\"See details from Error Report below, correct the error in your CSV file and upload again.\",\"see-more-versions\":\"See more versions\",\"see-your-notifications-inbox-for-the-download-link\":\"See your Notifications Inbox for the download link.\",\"select-a\":\"Select a\",\"select-a-caller-from-the-list-below\":\"Select A Caller From The List Below\",\"select-a-candidate-block\":\"Select a candidate block\",\"select-a-channel\":\"Select a channel\",\"select-a-field\":\"Select a field\",\"select-a-property\":\"Select a property\",\"select-a-question\":\"Select a question\",\"select-a-tag\":\"Select a tag (or enter in a new one)\",\"select-a-tag-placeholder\":\"Select or add a tag\",\"select-a-value\":\"Select a value\",\"select-all\":\"Select all\",\"select-audio\":\"Select audio\",\"select-block\":\"Select a block\",\"select-data\":\"Select data\",\"select-from-audio-library\":\"Select from audio library\",\"select-group-message-to-play\":\"Select Group Message to Play\",\"select-groups\":\"Select Groups\",\"select-input-block\":\"Select input block\",\"select-input-source\":\"Select input source\",\"select-languages-to-be-enabled-for-content-for-this-tree\":\"Select languages to be enabled for content for\",\"select-none\":\"Select none\",\"select-property-type\":\"Select property type\",\"select-provider\":\"Select Provider\",\"select-queue\":\"Select Queue\",\"select-source\":\"Select a source\",\"select-source-content\":\"Select Source Content\",\"select-subscribers\":\"Select Contacts\",\"select-the-content-type-to-be-enabled-for-this-tree\":\"Select the content type to be enabled for this tree\",\"select_at_least_1_property\":\"Select at least 1 property to set in the 'Contact Properties' section\",\"select_property_to_set\":\"Select the property to set in the 'Contact Properties' section\",\"selected\":\"selected\",\"selected-groups\":\"Selected Groups\",\"selected-subscribers\":\"Selected contacts\",\"selection-confirmation\":\"Selection Confirmation\",\"selection-confirmation-instructions\":\"For Voice content, the audio file specified in the CSV file will be played back to the contact after they make a selection. For all other content types, select the peices of information that should be sent back to the contact or deselect all fields to send nothing back.\",\"selection-response-instructions\":\"For Voice content, the audio file specified in the CSV file will be played back to the contact after they make a selection. For all other content types, select the peices of information that should be sent back to the contact or deselect all fields to send nothing back.\",\"send\":\"Send\",\"send-on-date\":\"Send on date\",\"send-request-to-call-center\":\"Send request to Call Center\",\"send-request-to-different-call-center\":\"Send request to a different org's Call Center\",\"send-this-call-to\":\"Send this call to...\",\"send-tree\":\"Send Tree\",\"send-tree-ellipsis\":\"Send Tree...\",\"sends-call-as-random-dial-campaign\":\"Launch a random-dial campaign that runs continuously until you stop it, or a certain criteria is reached.\",\"sends-call-at-specified-time\":\"Sends this call to contacts starting at the specified date and time.\",\"sends-call-immediately\":\"Sends the call to contacts immediately.\",\"sends-call-repeating-based-on-options\":\"Sends this call on a repeating basis, according to the options on the right.\",\"sensitive-data\":\"Sensitive Data\",\"separate-output-for-each-choice\":\"Separate output for each choice\",\"september-month\":\"September\",\"sessions\":\"Sessions\",\"set-as-a-starting-block\":\"Set as a starting block\",\"set-as-exit-block\":\"Set as exit block\",\"set-as-starting-block\":\"Set as starting block\",\"set-channel-type\":\"Set Channel Type\",\"set-choice-options\":\"Set choice options\",\"set-custom-subscriber-data\":\"Set custom contact data\",\"set-preferred-channel-type\":\"Set Preferred Channel Type\",\"set-preferred-content-type\":\"Set preferred content type\",\"set-sub-prop-w-response\":\"Set a contact property with the contact's response\",\"share-results\":\"Share Results\",\"shareable-link-to-results-for-this-tree\":\"Shareable link to results for this Tree\",\"shareable-links\":\"Shareable Links\",\"shortened-title-for-summary\":\"Shortened Title For Summary\",\"shortened-title-for-summary-description\":\"Enter a title that should be used when reviewing the summary of interactions with this block. If left empty, the full block title will be used.\",\"should-ignore-offline-submissions\":\"Ignore Offline Submissions\",\"should-redeem-code\":\"Mark code as used\",\"show\":\"Show\",\"show-all\":\"Show all\",\"show-all-results\":\"Show all results\",\"show-between-the-following-dates\":\"Show between the following dates\",\"show-clipboard-simulator\":\"Simulate Clipboard\",\"show-empty-only\":\"Show empty\",\"show-interactions\":\"Show interactions\",\"show-key-metrics\":\"Show Key Metrics\",\"show-key-metrics-lower\":\"Show key metrics\",\"show-keymetrics-ajax-error\":\"Key Metrics Error: Please ensure this Tree still exists or try reloading this page.\",\"show-less-options\":\"Show less options\",\"show-message-text\":\"Show message text\",\"show-more-options\":\"Show more options\",\"show-percentage-listened\":\"Show percentage listened\",\"show-results-from-incomplete-engagements\":\"Show results from incomplete engagements\",\"show-stars\":\"Show stars\",\"show-subscriber-id\":\"Show Contact ID\",\"show-summary-metrics\":\"Hide Metrics\",\"showing-block-content-filtered-by-X\":\"Showing block content filtered by :filter\",\"showing-entire-audio-library\":\"Showing entire audio library\",\"shuffle-randomly-again\":\"Shuffle randomly again\",\"sign-into-your-account\":\"sign into your account\",\"sms\":\"SMS\",\"sms-content\":\"SMS Content\",\"sms-content-not-set\":\"SMS content not set\",\"sms-disabled\":\"SMS Disabled\",\"sms-enabled\":\"SMS Enabled\",\"sms-prompt\":\"SMS Prompt\",\"sms-responses\":\"SMS Responses\",\"sms-status\":\"SMS status\",\"sms-subscribers-that-reached-this-block\":\"SMS contacts that reached this block\",\"sms-to\":\"SMS to\",\"social\":\"Social\",\"social-messaging\":\"Social messaging\",\"social-messaging-content\":\"Social Messaging Content\",\"social-subscribers-that-reached-this-block\":\"Social contacts that reached this block\",\"sorry\":\"Sorry!\",\"sorry-cannot-locate-the-selected-tree\":\"Sorry, cannot locate the selected tree.\",\"sorry-there-are-no-results-for-this-date-range\":\"Sorry, there are no results for this date range.\",\"sorry-there-was-an-issue-trying-to-export-audio-for-tree\":\"Sorry, there was an issue trying to export audio for Tree\",\"sorry-we-cant-find-any-results-with-that-address\":\"Sorry, we can't find any results with that address.\",\"sorry-you-don-t-have-permission-to-delete-this-tree\":\"Sorry, you don't have permission to delete this tree.\",\"sorry-you-dont-have-permission-to-delete-this-tree\":\"Sorry, you don't have permission to delete this tree.\",\"sort-by-date\":\"Sort by Date\",\"sort-by-name\":\"Sort by Name\",\"source\":\"Source\",\"specific-language-used-this-call\":\"Specific language used this call\",\"specific-time\":\"Specific time\",\"specify-what-should-happen-if-a-subscribers-language-is-unknown\":\"Specify what should happen if a contact's language is unknown at the time of a call or SMS conversation:\",\"start-at\":\"Start At\",\"start-date\":\"Start Date\",\"start-date-equal-to\":\"Start Date equal to\",\"start-date-greater-than\":\"Start Date greater than\",\"start-date-less-than\":\"Start Date less than\",\"started-at\":\"Started at\",\"starting-block-tree-begins-here\":\"Starting Block – Tree Begins Here\",\"starts\":\"starts\",\"status\":\"Status\",\"stock-code\":\"Stock Code\",\"subscriber\":\"contact\",\"subscriber-custom-data\":\"Contact Custom Data\",\"subscriber-language\":\"Contact Language\",\"subscriber-prop-to-send-payload\":\"Subscriber properties To Send As Payload\",\"subscriber-properties\":\"Contact Properties\",\"subscriber-properties-to-snapshot\":\"Contact Properties to Snapshot\",\"subscriber-property\":\"Contact Property:\",\"subscriber-property-to-branch-via\":\"Contact Property to Branch via\",\"subscriber-start-date\":\"Contact Start Date\",\"subscriber-starting-date-reference\":\"Contact Starting Date Reference\",\"subscribers\":\"contacts\",\"subscribers-that-reached-this-block\":\"Contacts that reached this block\",\"success\":\"Success\",\"successfully-imported-result\":\"Successfully imported results\",\"summary-block-description\":\"This block is used to review answers to questions that are included in the summary. Clipboard users are able to Confirm or Reject responses.\",\"sun\":\"Sun\",\"sun-level\":\"Sun Level\",\"sunday-day\":\"Sunday\",\"sunny\":\"Sunny\",\"survey\":\"Survey\",\"survey-details\":\"Survey details\",\"switch-to-tree-view-to-add-blocks\":\"Switch to Tree View to Add Blocks\",\"system-generated\":\"System generated\",\"tag-filter-description\":\"Multiple Choice Question blocks that have been tagged can be used as filters on the shared link. The choices for the blocks with a tag are used as the options for the filter. Select which tags should be used as filters.\",\"tag-filters\":\"Tag Filters\",\"tags\":\"Tags\",\"task-was-successfully-deleted\":\"Task was successfully deleted!\",\"tell-me-more\":\"Tell me more\",\"test-call\":\"Test Call\",\"test-call-queued-at\":\"Test call queued at\",\"test-call-request-sent\":\"Test call request sent...\",\"text-responses\":\"Text responses\",\"text-responses-sms-ussd\":\"Text Responses (SMS / USSD)\",\"that-block-was-not-found-please-save-and-try-again\":\"The block was not found please save the tree and try again\",\"that-collaborative-filtering-page-was-not-found-please-try-again\":\"That Collaborative Filtering page was not found. Please try again.\",\"that-tree-json-was-not-found-please-try-again\":\"That Tree JSON was not found. Please try again.\",\"that-tree-set-was-not-found-please-try-again\":\"That tree set was not found. Please try again.\",\"that-tree-was-not-found-please-try-again\":\"That tree was not found. Please try again.\",\"the-contacts-x-property-will-be-set-using-block-input\":\"The Contact's :propertyName property will be set using the input to the selected block.\",\"the-json-code-that-has-been-imported-is-invalid-or-can-not-be-parsed\":\"The JSON code that has been imported is invalid or can not be parsed. <br> Please review the code used in the import for completeness and validity.\",\"the-property-will-be-set-to-x\":\"The Contact's property will be set to ':value'\",\"the-property-will-be-set-using-block-input\":\"The Contact's property will be set using the input to the block.\",\"the-remaining-tasks-are-visible-below\":\"The remaining tasks are visible below.\",\"the-response-from-the\":\"the response from the\",\"the-specified-tree-version\":\"The specified tree version\",\"the-transcription-set-was-not-found\":\"The transcription set was not found. Please try again.\",\"the-tree-version\":\"The tree version\",\"the-tree-version-x-was-deleted\":\"The Tree :treeName from version :treeVersion was deleted.\",\"the-tree-x-was-deleted\":\"The Tree :treeName was deleted.\",\"the-tree-x-was-restored\":\"The tree :treeName was restored.\",\"then-callers-will-go-to-the-quota-met-output-if-not-callers-will-go-to-the-not-met-output\":\"then callers\",\"there-are-no-results-yet-please-check-back-later\":\"There are no results yet. Please check back later.\",\"this-block-branches-based-on-type-of-the-recipient\":\"This block branches based on the content type of the recipient. The outputs are determined based on the content type of the tree when the block is added.\",\"this-block-directs-callers-based-on-the-total-number-of-calls-1\":\"This block directs callers towards one of two options, based on the total number of calls in the specified date range for either just this tree or all trees in the entire organisation\",\"this-block-directs-callers-based-on-the-total-number-of-calls-2\":\"If the number of calls in the specified date range is larger than the 'Calls Quota Threshold' value, then callers will go to the Quota Met output. If not, callers will go to the Not Met output.\",\"this-block-directs-callers-based-on-the-total-number-of-subs-1\":\"This block directs callers towards one of two options, based on the total number of contacts in the specified group.\",\"this-block-directs-callers-based-on-the-total-number-of-subs-2\":\"If the number of contacts in the group is larger than the 'Quota Threshold' value, then callers will go to the Quota Met output. If not, callers will go to the Not Met output.\",\"this-block-directs-callers-based-on-their-answers\":\"This block directs callers towards one of a series of options, based on their answers to previous numeric questions. The outputs below are considered first-to-last, and the first one to be true is used.\",\"this-block-directs-callers-on-previous-answers\":\"This block directs callers towards one of two options, depending on previous answers to multiple choice questions.\",\"this-block-directs-callers-random\":\"This block directs callers towards an output chosen at random.\",\"this-block-generates-the-weather-forecast-1\":\"This block generates the weather forecast message.\",\"this-block-generates-the-weather-forecast-2\":\"If a prompt is not enabled, it will not appear in the weather forecast message.\",\"this-block-is-configured-by-the-referrals-app\":\"This block is configured by the Referrals app.\",\"this-block-runs-the-destination-tree-1\":\"This block runs the destination tree specified above, allowing you to build nested trees that can then be reached when sending this tree to callers.\",\"this-block-runs-the-destination-tree-2\":\"After the destination tree has been completed, the caller will return to this tree and continue to any blocks connected below this one.\",\"this-block-runs-the-destination-tree-3\":\"By choosing the 'Most Recent Version' option, you can then publish new versions of the destination tree without needing to edit this tree.\",\"this-tree\":\"This tree\",\"this-tree-set\":\"This tree\",\"three-components-used-to-create-assignment-rules-and-name-audio-files\":\"There are three components which can be used to create assignment rules and name audio files.\",\"thunderstorms\":\"Thunderstorms\",\"thurs\":\"Thurs\",\"thursday-day\":\"Thursday\",\"timeline\":\"Timeline\",\"timeline-total-interactions\":\"Timeline: Total Interactions\",\"times\":\"times\",\"times-for-incorrect-responses\":\"times for incorrect responses\",\"times-in-utc\":\"Times in UTC\",\"times-in-your-account-time-zone\":\"Times in your account time zone\",\"timespan\":\"Timespan\",\"timezone\":\"Timezone\",\"title\":\"Title\",\"to\":\"to\",\"to-attach-a-message-to-a-call\":\"To attach a message to a call,\",\"to-attach-a-survey-to-a-call\":\"To attach a survey to a call,\",\"to-attach-a-tree-to-a-call\":\"To attach a tree to a call,\",\"to-be-matched-to-tree\":\"to be matched to Tree\",\"to-send-call-to-only-some-subscribers\":\"To send a call to only some contacts\",\"toggle-to-auto-gen-content-from-block\":\"Toggle to Auto-generate Content from Block Details\",\"toggle-to-overwrite-auto-genned-content\":\"Toggle to Overwrite the Auto-generated Content\",\"toggles-subscriber-receiving-outgoing-calls\":\"This action enables or disables the contact from receiving Outgoing Calls.\",\"too_many_languages_for_collaborative_filtering\":\"Too Many Languages\",\"too_many_languages_for_collaborative_filtering_description\":\"Collaborative Filtering is only valid on trees that have one language enabled. Please enable a single language for the tree.\",\"total\":\"Total\",\"total-audio-length\":\"Total Audio Length\",\"total-interactions\":\"Total Interactions\",\"total-open-ended-responses\":\"Total open-ended responses\",\"total-responses\":\"Total Responses\",\"total-results\":\"Total results\",\"total-sms-responses\":\"Total SMS Responses\",\"total-versions\":\"Total versions\",\"total-voice-responses\":\"Total Voice Responses\",\"totals\":\"Totals\",\"transcription-task-successfully-updated\":\"Transcription task successfully updated!\",\"transcription-tasks-can-be-sent-out-to-external-transcribers-to-easily-transcribe-open-ended-audio-responses\":\"Transcription tasks can be sent out to external transcribers, to easily transcribe open-ended audio responses from this tree. You can automatically generate several transcription tasks using the form below, or, use the 'New Transcription Task' button above to create individual tasks\",\"transcriptions\":\"Transcriptions\",\"transcriptions-saved\":\"Transcriptions saved \",\"transcriptions-saved-continuing-to-next-page\":\"Transcriptions saved! Continuing to next page...\",\"transfer-amount\":\"Amount to Transfer\",\"transfer-amount-currency\":\"Currency to Use\",\"transferto-cross-border-mobile-payments\":\"TransferTo Cross-Border Mobile Payments\",\"tree\":\"Tree\",\"tree-could-not-be-published\":\"Tree could not be published\",\"tree-deleted\":\"Tree Deleted!\",\"tree-details\":\"Tree Details\",\"tree-does-not-have-any-blocks-yet\":\"Tree does not have any blocks yet.\",\"tree-duplicated\":\"Tree Duplicated!\",\"tree-identifier-not-provided\":\"Tree identifier not provided\",\"tree-is-empty\":\"Tree is empty!\",\"tree-is-empty-please-use-the-add-block-button-on-the-top-left-to-add-some-blocks-to-get-started\":\"Tree is empty. Please use the Add Block button on the top left to add some blocks to get started.\",\"tree-restored\":\"Tree Restored!\",\"tree-result-import-heading-validation-error\":\"The column headings in your import are invalid. Please refer to the import template for the correct headings\",\"tree-result-import-in-progress\":\"Tree result import in progress\",\"tree-saved\":\"Tree Saved!\",\"tree-update-conflict\":\"Tree update conflict detected\",\"tree-used-elsewhere-by-x-at-x\":\"This tree has been saved elsewhere by :name at :time\",\"tree-versions\":\"Tree Versions\",\"trees\":\"Trees\",\"trigger-outgoing-call\":\"Trigger Outgoing Call\",\"trimmed-to\":\"trimmed to\",\"true\":\"True\",\"tues\":\"Tues\",\"tuesday-day\":\"Tuesday\",\"two-or-more-choices-required\":\"Two or More Choices Required:\",\"unable-to-delete-the-requested-transcription-task\":\"Unable to delete the requested transcription task.\",\"unable-to-find-block-locally-from-server-results-with-key\":\"Unable to find block locally from serverResults\",\"undo\":\"Undo\",\"unexpected-error\":\"An unexpected error occurred\",\"unique-subscribers\":\"Unique Contacts\",\"unknown\":\"Unknown\",\"unknown-error-occurred\":\"An unknown error occurred\",\"unknown-language\":\"Unknown language\",\"unknown-subscriber-branch-criteria\":\"Unknown Contact Branch Criteria\",\"unlimited-if-not-defined-or-set-as-zero\":\"Unlimited if not defined or set as zero\",\"unlock\":\"Unlock\",\"unset-as-exit-block\":\"Unset as exit block\",\"untitled-block\":\"Untitled Block\",\"untitled-collab-filtering-rating\":\"Untitled Collaborative Filtering Rating\",\"untitled-collaborative-filtering-question\":\"Untitled Collaborative Filtering Question\",\"untitled-generate-code\":\"Untitled Generate Code\",\"untitled-message\":\"Untitled message\",\"untitled-multiple-choice-question\":\"Untitled multiple-choice question\",\"untitled-numeric-question\":\"Untitled Numeric Question\",\"untitled-open-ended-question\":\"Untitled Open-Ended Question\",\"untitled-question\":\"Untitled Question\",\"untitled-record-group-message\":\"Untitled Record Group Message\",\"untitled-tree\":\"Untitled Tree\",\"untitled-validate-code\":\"Untitled Validate Code\",\"update-existing-subscriber\":\"Update existing contact\",\"update-task\":\"Update Task\",\"update-transcription-task\":\"Update Transcription Task\",\"updated\":\"Updated\",\"upload\":\"Upload\",\"upload-a-csv-with-column-codes\":\"Upload a CSV with column 'codes'\",\"upload-audio-files-to-X\":\"Upload audio files to :dest\",\"upload-codes\":\"Upload codes\",\"upload-csv-file\":\"Upload CSV File\",\"upload-csv-file-instruction\":\"Upload a CSV file (.csv) with your tree results. \",\"upload-error\":\"Upload error\",\"upload-file\":\"Upload File\",\"uploading\":\"Uploading\",\"url-destination\":\"URL Destination\",\"url-for-this-csv-export-via-api-key\":\"URL for this CSV export via API key\",\"usd-at-current-exchange\":\"USD at Current Exchange Rate\",\"usd-exchange-warning-message\":\"The amounts specified above will be applied in USD.\",\"use-a-specific-language-for-this-call\":\"Use a specific language for this call\",\"use-custom-block-ordering\":\"Use custom block ordering\",\"use-different-multimedia-files-each-language\":\"Use different files for each language\",\"use-full-text-descriptions\":\"Use full-text descriptions\",\"use-hybrid-format\":\"Use hybrid format\",\"use-machine-readable-format\":\"Use machine-readable format\",\"use-machine-readable-numbers\":\"Use machine-readable numbers\",\"use-master-for-language\":\"Use the master CSV file for this language\",\"use-simple-date-range-picker\":\"Use simple date range picker\",\"use-tags-in-your-location-message-for-references-in-alert\":\"Use the tag [expiry_time] in your message to reference the expiration time and the tag [location] to reference the location of the alert.\",\"use-text-descriptions\":\"Use text descriptions\",\"use-the-button-above-to-generate-a-new-csv-export-for-this-tree\":\"Use the button above to generate a new CSV export for this tree. It will appear in the list on the right when completed.\",\"use-the-button-above-to-generate-a-shareable-results-page-for-this-tree\":\"Use the button above to generate a shareable results page for this tree. This page will be updated automatically as new results are received for this tree.\",\"use-the-button-below-to-generate-a-shareable-results-page-for-this-tree\":\"Use the button below to generate a shareable results page for this tree. This page will be updated automatically as new results are received for this tree.\",\"use-the-form-below-to-create-a-new-transcription-task\":\"Use the form below to create a new transcription task that can be sent out to external transcribers. The transcriber will be assigned open-ended responses to transcribe based on the language and start/end numbers specified below.\",\"use-the-shareable-link-below-to-share-the-results-of-this-tree\":\"Use the shareable link below to share the results of this tree. <b> Anyone you share this with will have access to these results. </b> This page will be updated automatically as new results are received for this tree.\",\"use-the-tag-expiry-time\":\"Use the tag [expiry_time] in your message to reference the expiration time and the tag [location] to reference the location of the alert.\",\"use-tree-view-to-add-blocks\":\"Please use the Tree View to add some blocks before attempting to populate and review content.\",\"user-guide\":\"For IVR, codes cannot be read using voice, so the system will text the block to the contact. It is recommended that the audio for this block will notify the contact that they will receive a text message with their code.\",\"username\":\"Username\",\"using-automatic-routing\":\"Using Automatic Routing\",\"ussd\":\"USSD\",\"ussd-content\":\"USSD Content\",\"ussd-prompt\":\"USSD Prompt\",\"ussd-subscribers-that-reached-this-block\":\"USSD contacts that reached this block\",\"valid\":\"Valid\",\"validate-code-block\":\"Validate Code Block\",\"validate-code-block-ignore-offline-submissions-help\":\"Disables validating codes when Android Clipboard is offline.\",\"validate-code-title\":\"Validate code title\",\"value\":\"Value\",\"version\":\"version\",\"version-capitalized\":\"Version\",\"versions\":\"Versions\",\"versions-capitalized\":\"Versions\",\"view\":\"View\",\"view-all-responses\":\"View All Responses\",\"view-and-manage-collaborative-submissions\":\"View and manage collaborative submissions\",\"view-and-manage-collaborative-submissions-a-for-this-block\":\"View and manage collaborative submissions</a>\",\"view-and-manage-statements\":\"View and manage statements\",\"view-generate-code-block\":\"View generate code block\",\"view-instruction\":\"View Instructions\",\"view-issues\":\"View Issues\",\"view-results\":\"View Results\",\"view-tracker-configuration\":\"View Tracker Configuration\",\"view-trackers\":\"& Issue Trackers\",\"view-tree\":\"View Tree\",\"view-tree-details\":\"View tree details\",\"view-tree-structure\":\"View Tree Structure\",\"view-tree-versions\":\"View tree versions\",\"view-validate-code-block\":\"View validate code block\",\"view-versions-issue-trackers\":\"View Versions & Issue Trackers\",\"view-x-other-versions\":\"View :count other versions of this tree\",\"voice\":\"Voice\",\"voice-content\":\"Voice Content\",\"voice-disabled\":\"Voice Disabled\",\"voice-enabled\":\"Voice Enabled\",\"voice-key-press\":\"Voice Key Press\",\"voice-prompt\":\"Voice Prompt\",\"voice-status\":\"Voice status\",\"voice-subscribers-that-reached-this-block\":\"Voice contacts that reached this block\",\"voice-to\":\"Voice to\",\"wait\":\"Wait\",\"waiting-for-results\":\"Waiting for Results\",\"we-are-upgrading-how-we-handle\":\"We are upgrading how we handle choice translations in the Multiple Choice Question Block. Please ensure that the following is correct. If you do not make changes right now, your tree will continue to accept the same text responses as before. \",\"we-didnt-find-any-matches-revisit-pattern\":\"We didn't find any matches, try revising your pattern.\",\"we-need-audio-files-previously-uploaded-to-audio-lib-to-match-to-blocks\":\"We need audio files to have previously been uploaded to your organization's audio library in order to auto-link them to blocks.\",\"weather-forecast\":\"Weather Forecast\",\"webhook-block-empty-payload-info\":\"No blocks are selected. The block payload of this webhook event will be empty.\",\"webhook-block-payload-help-text\":\"Select the interactive blocks that should be sent when this webhook is triggered. The responses for the selected blocks will be sent.\",\"webhook-http-warning\":\"When sending sensitive data, we recommend using an HTTPS endpoint as the webhook destination for privacy and security.\",\"webhook-method\":\"Method\",\"webhook-secret\":\"Secret\",\"webhook-secret-desc\":\"We'll send this text with the webhook submission so that your server can authenticate it came from Viamo.\",\"webhook-subscriber-empty-payload-info\":\"No subscriber properties are selected. The subscriber payload of this webhook event will be empty.\",\"webhook-subscriber-payload-help-text\":\"Select the subscriber properties that should be sent when this webhook is triggered. The value of the selected property will be sent.\",\"webhook-untitled-block\":\"Untitled block\",\"wed\":\"Wed\",\"wednesday-day\":\"Wednesday\",\"week\":\"week\",\"weekly\":\"Weekly\",\"weeks-after\":\"Weeks After\",\"weeks-before\":\"Weeks Before\",\"welcome\":\"Welcome!\",\"when-block-reached-caller-exits-and-connects-to-operator\":\"When this block is reached, the caller exits the tree and is connected to the operator. As a result, no further blocks can be connected below this one.\",\"when-block-reached-subscriber-start-date-set-to-date-based-upon-previous-numeric-input\":\"When this block is reached, contacts will have their date set using the input they provide to a previous numeric question. Their date will be set to the number of days, weeks, or months (set above) that the contact provides, relative to the date of the call.\",\"when-block-reached-subscriber-start-date-set-to-date-relative-to-call-and-timespan-specified\":\"When this block is reached, contacts will have their date set to the number of days, weeks, or months specified above, relative to the date on which they receive the call.\",\"when-block-reached-subscriber-start-date-set-to-specified\":\"When this block is reached, contacts will have their date set to the date specified above.\",\"when-finished-returns-to-this-tree-and-continues-to-any-blocks-connected-below\":\"When finished, returns to\",\"when-no-preferred-language-subscriber-receives-lang-selector\":\"If this option is set to 'No preferred language', then at the start of the contact's next call, they will receive a language selector menu (if a language selector prompt is provided).\",\"when-no-valid-response-is-received\":\"When no valid response is received\",\"when-randomizing\":\"when randomizing\",\"wind-level\":\"Wind Level\",\"windy\":\"Windy\",\"with-subscriber-phone-number\":\"with Contact Phone Number\",\"words\":\"Words\",\"working-loading\":\"Working...\",\"x-of-y\":\"of\",\"x-text-responses\":\":language Text Responses\",\"year\":\"year\",\"yearly\":\"Yearly\",\"yes\":\"Yes\",\"you-are-about-to-delete-a-transcription-task\":\"You are about to delete a transcription task.\",\"you-are-about-to-delete-a-tree\":\"You are about to delete a tree.\",\"you-are-about-to-delete-a-tree-version\":\"You are about to delete a tree version.\",\"you-are-about-to-delete-this-issue-tracker\":\"You are about to delete this issue tracker.\",\"you-can-edit-your-tree-with-the-interface-below\":\"You can edit your tree with the interface below.\",\"you-can-send-out-the-external-link-from-the-table-below\":\"You can send out the external link from the table below.\",\"you-can-send-out-the-external-links-from-the-table-below\":\"You can send out the external links from the table below.\",\"you-have-x-unsaved-transcriptions\":\"You have :transcription_count unsaved transcriptions. Are you sure you want to leave this page?\",\"you-need-permission-to-export-content\":\"You need permission to export content.\",\"your-browser-does-not-support-the-audio-element\":\"Your browser does not support the audio element.\",\"your-combined-tree-results-are-being-exported\":\"Your combined tree results are being exported.\",\"your-file-file-name-is-currently-being-processed\":\"Your file, :fileName is currently being processed.\",\"your-open-ended-audio-download-for\":\"Your open-ended audio download for\",\"your-orgs-audio-library\":\"your organization's audio library\",\"your-prompt\":\"<your prompt>\",\"youre-using-floip-expressions\":\"It looks like you're using FLOIP expressions, nice!\"},\"fr.flow-builder\":{\"go-to-flow\":\"Aller à Flux\",\"problem-creating-flow\":\"Un problème est survenu lors de la création du flux. Veuillez revoir la configuration et réessayer.\",\"flow-not-found\":\"Flux introuvable\",\"flow-found\":\"Flux Trouvé\",\"fetching-flow\":\"Récupération du Flux\",\"create-a-new-flow\":\"Créer un Nouveau Flux\",\"create-flow\":\"Créer un Flux\",\"new-flow\":\"Nouveau Flux\",\"flow-name\":\"Nom du flux\",\"flow-label\":\"Libélé du flux\",\"flow-importer\":\"importateur de flux\",\"Interaction-timeout\":\"délai d'interaction\",\"modes\":\"Modes\",\"enter-flow-name\":\"Entrez le nom de flux\",\"enter-flow-label\":\"Entrez l'étiquette de flux\",\"maximum-digits\":\"Nombre maximum\",\"AirtimeTransferBlock\":\"temps d'antenne de transfert\",\"BillSubscriberBlock\":\"Bill Contactez\",\"CallBackWithCallCenterBlock\":\"Téléphonique avec le centre d'appels Bloc\",\"CallHistoryBranchBlock\":\"Branchement suivant l'historique des appels\",\"CollaborativeFilteringQuestionBlock\":\"Question de filtrage collaboratif\",\"CollaborativeFilteringRatingBlock\":\"Note de filtrage collaboratif\",\"CollaborativeFilteringRatioBranchBlock\":\"Direction par rapport de filtrage collaboratif\",\"ConnectToOperatorBlock\":\"Connecter à un opérateur\",\"ConsoleIO\\\\Print\":\"Impression\",\"ConsoleIO\\\\Read\":\"Lis\",\"ContentTypeBranchBlock\":\"Branchement selon le type de contenu\",\"Core\\\\Case\":\"Cas\",\"Core\\\\Log\":\"Journal\",\"Core\\\\Output\":\"Production\",\"Core\\\\RunFlow\":\"Exécuter flux\",\"CreateSubscriberBlock\":\"Créer un contact\",\"CurrentTimeBranchBlock\":\"Direction via Heure actuelle\",\"DecisionBranchBlock\":\"Branchement de décision\",\"DirectorySelectionBlock\":\"sélection du répertoire\",\"EntitySelectionBlock\":\"Renvoi Entité de sélection\",\"ExpressionBranchBlock\":\"Direction d'expression\",\"GenerateCodeBlock\":\"Générer le code unique\",\"GroupBranchBlock\":\"Branchement selon l'appartenance au groupe\",\"GroupPropertyBlock\":\"Modifier l'appartenance au groupe\",\"GroupSizeBranchBlock\":\"Branchement selon la taille du groupe\",\"IdValidationBlock\":\"Branchement selon un code valide\",\"LanguageSelectorBlock\":\"Sélection de langue\",\"LocationBlock\":\"Selection d'une localité\",\"MarkCallCompleteBlock\":\"Marquer l'appel comme étant effectué\",\"MessageBlock\":\"Message\",\"MobilePrimitives\\\\Message\":\"Message\",\"MobilePrimitives\\\\NumericResponse\":\"Réponse numérique\",\"MobilePrimitives\\\\OpenResponse\":\"Réponse ouverte\",\"MobilePrimitives\\\\SelectOneResponse\":\"Sélectionnez une réponse\",\"MobilePrimitives\\\\SelectManyResponse\":\"Sélectionnez De nombreuses réponses\",\"MultipleChoiceQuestionBlock\":\"Question à Choix Multiples\",\"MultipleSelectMultipleChoiceQuestionBlock\":\"Sélection multiple Question à choix multiples\",\"NumericBranchBlock\":\"Branchement Numérique\",\"NumericQuestionBlock\":\"Question Numérique\",\"OpenQuestionBlock\":\"Question Ouverte\",\"PlayGroupMessageBlock\":\"Play Group Message Block\",\"RandomBranchBlock\":\"Branchement aléatoire\",\"RandomOrderMultipleChoiceQuestionBlock\":\"Question à choix multiple avec ordre au hasard\",\"RecordGroupMessageBlock\":\"Record Group Message Block\",\"RunTreeBlock\":\"Exécutez un autre arbre\",\"SmartDevices\\\\LocationResponse\":\"Réponse Localisation\",\"SmartDevices\\\\PhotoResponse\":\"photo Réponse\",\"SubscriberBranchBlock\":\"Branchement selon les caractéristiques du Contact\",\"SubscriberPropertiesSnapshotBlock\":\"Instantané des propriétés Contactez\",\"SubscriberPropertyBlock\":\"Modifier le contact de la propriété\",\"SummaryBlock\":\"Résumé\",\"TriggerOutgoingCallBlock\":\"Déclencher un appel sortant\",\"ValidateCodeBlock\":\"Valider le code unique\",\"WeatherAlertsBlock\":\"Créer des alertes météo\",\"WeatherForecastBlock\":\"Prévisions météorologiques\",\"WebhookBlock\":\"Webhook\",\"WebhookContentBlock\":\"Contenu Webhook\",\"X-abbreviations-set-when-creating-tree\":\":lang abréviations lang définies lors de la création de l'arbre\",\"X-are-required-placeholder-components-for-rule-but-additional-designation-optional\":\":placeholders sont des composants d'espace réservé requis pour la règle, mais une désignation supplémentaire est facultative.\",\"X-assigned-to-a-block\":\":label attribué à un bloc\",\"X-of-resources-populated\":\":count de ressources peuplé\",\"X-seconds-long\":\":duration_seconds longue\",\"X-subscribers-selected\":\"contacts sélectionnés\",\"X-will-match-with-Y\":\":pattern correspondra avec :name\",\"X-wont-match-with-Y\":\":pattern ne correspond pas avec :name\",\"absolute-date\":\"date absolue\",\"accessed\":\"Accédé\",\"action\":\"action\",\"action-allows-custom-subscriber-data-when-block-reached\":\"Cette action vous permet de définir des données de contact personnalisé, lorsque ce bloc dans l'arbre est atteint.\",\"action-changes-preferred-content-types-to-receive-in-future\":\"Cette action modifie les types de contenu préféré (voix ou SMS) que le contact recevra dans les appels futurs.\",\"action-immediately-changes-preferred-language-of-subscriber\":\"Cette action change immédiatement la langue préférée du contact. blocs plus tard dans l'arbre utiliseront la nouvelle langue.\",\"actions\":\"Actes\",\"active\":\"actif\",\"adapted-from\":\"Adapté à partir de:\",\"add-a-description-to-this-recording\":\"Ajouter une description à cet enregistrement\",\"add-a-new-recorder\":\"Ajouter un nouvel enregistreur\",\"add-block\":\"Ajouter un bloc\",\"add-condition\":\"Ajouter une condition\",\"add-data\":\"Ajouter des données\",\"add-label-tags\":\"Ajouter étiquette/identification\",\"add-map-coordinates-field\":\"Ajouter un champ Coordonnées Carte\",\"add-question\":\"Supprimer la question\",\"add-to\":\"Ajouter à\",\"add-to-group\":\"Ajouter au groupe\",\"added\":\"ajoutée\",\"additional-designation-created-in-the-rule\":\"Une désignation supplémentaire créée dans la règle\",\"adds-subscribers-to-the\":\"Ajoute des contacts à la\",\"admin-csv-file\":\"Master File CSV\",\"advanced\":\"Avancé\",\"after\":\"Après\",\"after-completing-all-output-branches\":\"Après avoir fini les sorties des branchements :\",\"airtime-credit-transfer\":\"Transfert de crédit de temps d'antenne\",\"alert-message-title\":\"Titre d'alerte de message\",\"all-block-types\":\"Tous les types de blocs\",\"all-blocks\":\"tous les blocs\",\"all-channels\":\"Tous les canaux\",\"all-content-across-this-organisation\":\"Tout le contenu à travers cette organisation\",\"all-languages\":\"Toutes les langues\",\"all-message-blocks\":\"Tous les blocs de message\",\"all-other-possible-values\":\"Toutes les autres valeurs possibles\",\"all-question-blocks\":\"Tous les blocs question\",\"all-subscribers\":\"Tous les contacts\",\"all-transcriptions-saved\":\"Tous transcriptions enregistrés\",\"allow-visitors-to-modify-the-date-range\":\"Permettre aux visiteurs de modifier la plage de dates\",\"allow-visitors-to-translate-the-page-in-their-language\":\"Permettre aux visiteurs de traduire la page dans leur langue\",\"already-published\":\"Déjà publié!\",\"already-used\":\"Déjà utilisé\",\"and\":\"et\",\"any-key\":\"N'importe quelle touche\",\"anytime\":\"À tout moment\",\"api-key\":\"clé API\",\"api-success\":\"Connecté avec succès à l'API.\",\"append-or-replace-on-upload\":\"Joindre ou remplacer le téléchargement ?\",\"applies-to-calls-sent-to-all-subscribers-or-groups-containing-subscriber\":\"Cela s'applique aux appels envoyés à tous les contacts, ou envoyés à des groupes contenant ce contact. Ils peuvent toujours recevoir des appels sortants adressés spécifiquement à eux.\",\"apply\":\"Appliquer\",\"apply-all-filters\":\"Appliquer tous les filtres\",\"april-month\":\"avril\",\"are-you-sure-you-want-to-delete-this-shareable-link\":\"Etes-vous sûr de vouloir supprimer ce lien partageable? Les utilisateurs avec le lien existant ne seront plus en mesure d'accéder à ces résultats.\",\"as-at\":\"comme à\",\"at\":\"à\",\"at-character\":\"à caractère\",\"at-least\":\"Au moins\",\"at-least-one-language-must-be-checked\":\"Au moins une langue doit être vérifiée.\",\"at-minimum-we-need-two-placeholders\":\"Au minimum, nous avons besoin de deux espaces:\",\"at-this-time\":\"En ce moment\",\"attach-multimedia\":\"joindre multimédia\",\"audio-export-started-for\":\"l'exportation audio a commencé pour\",\"audio-file-naming-pattern\":\"modèle de nomination de fichier audio\",\"audio-files\":\"Fichiers Audio\",\"audio-files-per-task\":\"Les fichiers audio par tâche\",\"audio-lib-empty-for-this-org\":\"La bibliothèque audio est vide pour cette organisation.\",\"audio-library\":\"Bibliothèque audio\",\"audio-listened\":\"Audio écouté\",\"august-month\":\"août\",\"auto\":\"Auto\",\"auto-gen-content-from-block-details\":\"Cliquez sur Contenu généré automatiquement des détails du bloc\",\"auto-link-audio-files\":\"Auto-Link fichiers audio\",\"automatic-routing-description\":\"Avec le routage automatique, les contacts sont acheminés vers une file d'attente du centre d'appels en fonction de leur propriété « target_operator ». Lorsqu'il est réglé sur le routage automatique, vous pouvez contrôler la file d'attente en définissant cette propriété avant un contact entre ce bloc.\",\"automatic-routing-label\":\"routage automatique\",\"automatically-enable-statements\":\"Activer automatiquement les déclarations\",\"automatically-enable-statements-help\":\"Avec cette option, les nouveaux états seront « Validé ». Si cette option est désactivée de nouvelles déclarations seront « non vérifiées »\",\"average-audio-length\":\"Longueur moyenne Audio\",\"avg-duration-for-all-calls\":\"Durée moyenne pour tous les appels\",\"avg-duration-for-completed-calls\":\"Durée moyenne pour les appels terminés\",\"back\":\"Retour\",\"back-to-choices-list\":\"Retour à la liste des choix\",\"back-to-trees-list\":\"Retourner à la liste des arbres\",\"base-url\":\"URL de base\",\"base-url-placeholder\":\"exemple: https://example.org/api\",\"bill-subscriber\":\"Bill Contactez\",\"block\":\"Bloc (s)\",\"block-allows-connect-to-operator-chosen-at-random-from-pre-specified-operator-contact-list\":\"Ce bloc vous permet de connecter un appelant à un opérateur, choisi au hasard à partir d'un opérateur spécifié pré-liste de contacts. Cela vous permet de configurer rapidement des lignes d'aide ou d'autres connexions en personne.\",\"block-choice-filter-description\":\"blocs peuvent être utilisés comme filtres sur le lien partagé. sélectionner les blocs doivent être utilisés comme filtres.\",\"block-code\":\"bloc de code\",\"block-details\":\"Détails du bloc\",\"block-id\":\"L'identifiant du bloc\",\"block-label\":\"étiquette bloc\",\"block-name\":\"nom du bloc\",\"block-ordering\":\"commande bloc\",\"block-ordering-help-text\":\"Remplacer la séquence par défaut de tri en entrant un poids pour chaque bloc. Les blocs avec une valeur plus petite sera en haut de la liste.\",\"block-responses-to-send-payload\":\"Réponses bloc pour Envoyer Comme Payload\",\"block-semantic-label\":\"Bloc étiquette sémantique\",\"block-title\":\"Titre du bloc\",\"block-type-unsupported-in-resource-view\":\"Type de bloc non pris en charge dans l'Affichage des ressources\",\"blocks\":\"blocs\",\"blocks-responses\":\"Réponses bloc\",\"blocks-to-display\":\"Blocs à afficher\",\"branch-if-subscriber-property\":\"Direction si le contact de la propriété\",\"branch-to-true-if-the-subscriber-is-a-member-of-the\":\"Branche True si le contact est un membre du\",\"branch-via-call-history\":\"Branchement selon l'historique des appels\",\"branch-via-call-history-desc1\":\"Ce bloc dirige les appels vers l'une des deux options, en fonction du nombre total d'appels dans la plage de dates spécifiée pour soit juste cet arbre ou tous les arbres dans l'ensemble de l'organisation »,\",\"branch-via-call-history-desc2\":\"Si le nombre d'appels dans la plage de dates spécifiée est supérieure à la valeur « Appels de seuil de quota », puis les appelants vont Quota Met Sortie. Sinon, les appelants vont Non Met sortie. ',\",\"branch-via-content-type\":\"Branchement selon le type de contenu\",\"branch-via-expression\":\"Direction d'expression\",\"branch-via-group-membership\":\"Branchement selon l'appartenance au groupe\",\"branch-via-group-size\":\"Branchement selon la taille du groupe\",\"branch-via-subscriber-data\":\"Branchement selon les caractéristiques du Contact.\",\"branch-via-valid-code\":\"Branchement selon un code valide\",\"branching\":\"Branchement\",\"breakdown-by\":\"répartition par\",\"btn-add-exit\":\"Ajouter la sortie\",\"call-back-block-desc\":\"Avertit le centre d'appel pour appeler le contact en ajoutant le contact à la liste des numéros de l'organisation.\",\"call-back-block-dialing-list-desc\":\"Entrez le nom de la liste des numéros qui devrait être ajouté à la demande d'appel. Si la liste des numéros n'existe pas, il sera créé avec ce nom.\",\"call-back-block-dialing-list-heading\":\"Composition Nom de la liste\",\"call-back-block-enable-routing-by-queue\":\"Activer le routage par la file d'attente\",\"call-back-block-enable-routing-by-queue-desc\":\"Si cette option est sélectionnée, les demandes d'appel ne seront envoyées qu'aux opérateurs connectés à une file d'attente spécifique.\",\"call-back-block-enter-api-key\":\"Entrez la clé API\",\"call-back-block-enter-dialing-list-name\":\"Entrez le nom de liste de numérotation\",\"call-back-block-notify-different-org\":\"Notifier Call Center d'une autre organisation\",\"call-back-block-notify-this-org\":\"Notifier Call Center de cette organisation\",\"call-back-block-org-api-key\":\"API Organisation clé\",\"call-back-block-queue-name\":\"Nom de la file d'attente\",\"call-back-block-select-queue\":\"Sélectionnez la file d'attente\",\"call-finished\":\"Fin appel\",\"call-started\":\"Début appel\",\"call-this-phone-number\":\"Appelez ce numéro de téléphone\",\"call-to-record\":\"Appel à l'enregistrement\",\"caller\":\"Appelant\",\"calls-after\":\"appels après\",\"calls-before\":\"appels avant\",\"calls-quota-threshold\":\"Appels du Seuil\",\"campaigns\":\"Campagnes\",\"cancel\":\"Annuler\",\"candidate-question\":\"Question intérogatoire\",\"cannot-delete-that-tree\":\"Impossible de supprimer cet arbre\",\"cannot-restore-that-tree\":\"Impossible de restaurer cet arbre.\",\"cannot-restore-that-tree.\":\"Impossible de restaurer cet arbre.\",\"case-of-duplicates-instruction\":\"Dans le cas des doublons et des contacts existants avec le même numéro de téléphone\",\"categorization\":\"Catégorisation\",\"category\":\"Catégorie\",\"category-name\":\"Nom de catégorie\",\"cell-contents\":\"Contenu des cellules\",\"cell-contents-format\":\"Format Contenu Cellule\",\"cf-ratio-description\":\"Configurez le numéro idéal des évaluations que chaque déclaration doit recevoir avant une autre déclaration doit être recueillie.\",\"chance-of-rain\":\"Possibilité de pluie\",\"change-subscriber-language\":\"Changer de langue de contact\",\"change-subscriber-start-date\":\"Changer la date de début de contact\",\"channel\":\"Canal\",\"channels\":\"Canaux\",\"characters\":\"caractère|caractères\",\"check-url-api\":\"Vérifiez votre URL et la clé API et essayez à nouveau.\",\"choice\":\"Choix\",\"choice-filter-tags\":\"étiquettes de filtrage Choix\",\"choice-id-choice-text\":\"Choix ID et Choix texte\",\"choice-id-only\":\"Choix ID seulement\",\"choice-keypress-options\":\"Option de choix de bouton\",\"choice-options\":\"Option Choix\",\"choice-options-fixed\":\"Options de choix\",\"choices\":\"Les choix\",\"choices-choice-attributes\":\"Les choix\",\"choices-prompt\":\"choix Prompt\",\"choose-a-language-selector\":\"(Choisissez un sélecteur de langue)\",\"choose-a-language-selector-label\":\"Choisissez un sélecteur de langue:\",\"choose-audio\":\"Choisissez Audio\",\"choose-csv-file\":\"Choisissez un fichier CSV\",\"choose-date\":\"Choisissez une date\",\"choose-file\":\"Choisir le fichier\",\"choose-how-many-seconds-to-wait\":\"S'il vous plaît choisir le nombre de secondes à attendre jusqu'à ce que le contact appuie sur une touche pour répéter ce message.\",\"choose-how-many-times-can-repeat\":\"S'il vous plaît choisir combien de fois le contact peut répéter ce message.\",\"choose-subscribers\":\"choisir les contacts\",\"choose-which-numbered-key\":\"S'il vous plaît choisir quelle touche dénombra le contact sur pour répéter ce message.\",\"clear-floip-config\":\"Configuration Effacer\",\"click-and-drag-to-create-a-new-connection\":\"Cliquez et faites glisser pour créer une nouvelle connexion\",\"click-and-drag-to-move-this-block\":\"Cliquez et faites glisser pour déplacer ce bloc\",\"click-here-to-download-the-file\":\"Cliquez ici pour télécharger le fichier\",\"click-to-lock-this-choice-in-place\":\"Cliquez sur pour vérrouiller ce choix en place\",\"click-to-remove-this-connection\":\"Cliquez pour supprimer ce lien\",\"click-to-select-this-block\":\"Cliquez pour sélectionner ce bloc\",\"click-to-toggle-editing\":\"Cliquez pour l'édition bascule\",\"click-to-unlock\":\"Cliquez pour déverrouiller\",\"clipboard\":\"Clipboard\",\"clipboard-content\":\"Contenu Clipboard\",\"clipboard-simulator\":\"Simulateur de Clipboard\",\"clipboard-subscribers-that-reached-this-block\":\"contacts presse-papiers qui ont atteint ce bloc\",\"clipboard-subtitle\":\"Fournir un texte supplémentaire qui sera affiché aux opérateurs\",\"close\":\"Fermer\",\"cloudy\":\"Nuageux\",\"code-length\":\"Longueur de caractères\",\"code-validation\":\"validation du code\",\"codes\":\"Codes:\",\"collaborative-filtering-question\":\"Question de filtrage collaboratif\",\"collaborative-filtering-rating\":\"Note de filtrage collaboratif\",\"combined-block-results\":\"Résultats combinés du bloc\",\"combined-tree-results\":\"Résultats combinés de l'arbre\",\"compact-filter-display\":\"Affichage du filtre compact\",\"compact-filter-display-help-text\":\"Entrez le nombre maximum de choix de filtres qui doivent être affichées à l'aide du filtre élargi. (Par exemple « 0 » si tous les filtres doivent être compacts)\",\"completed\":\"Terminé\",\"completed-interactions-per-block\":\"Interactions complètes par block\",\"completed-of\":\"Achevé pour\",\"completed-transcriptions\":\"Transcriptions terminées\",\"completed-via\":\"Achevé par\",\"components-can-be-separated-by-symbols-but-not-required\":\"Les composants peuvent être séparés par des symboles, mais ne sont pas nécessaires.\",\"configure-floip-header\":\"Configurer le flux d'interopérabilité résulte en streaming\",\"configure-referral-entity-prompt-eg\":\"Configurez l'invite pour sélectionner une entité d'orientation. par exemple.:\",\"confirm\":\"Confirmer\",\"confirm-delete\":\"Confirmation de la suppression\",\"confirm-upload\":\"Confirmer le transfert\",\"conflict-external-changes\":\"Pour voir les changements externes s'il vous plaît cliquer sur le bouton Recharger.\",\"conflict-new-version\":\"Pour enregistrer votre travail en tant que nouvelle version, s'il vous plaît cliquez sur le bouton Nouvelle version.\",\"connect-to\":\"Se connecter à\",\"connect-to-an-operator\":\"Connectez-vous à un opérateur\",\"connect-to-the-following-operator-list\":\"Connectez-vous à la liste des opérateurs suivants\",\"connected-of\":\"Connecté à\",\"contact\":\"Contact\",\"contact-properties\":\"Propriétés de contact\",\"contact-updated\":\"contact existant mis à jour\",\"content\":\"Contenu\",\"content-type\":\"Type de contenu\",\"content-type-1\":\"Voix\",\"content-type-2\":\"SMS\",\"content-type-3\":\"Les données\",\"content-type-4\":\"USSD\",\"content-type-5\":\"Sens unique SMS\",\"content-type-is-not-selected\":\"Le type de contenu n'est pas sélectionné\",\"continue-through-exit\":\"Continuer jusqu'à la sortie\",\"continuous\":\"Continu\",\"corresponding-audio-file-components-examples\":\"exemples correspondants composants de fichiers audio\",\"could-not-add-property\":\"Impossible d'ajouter la propriété\",\"could-not-download-audio-for-that-tree\":\"Impossible de télécharger le fichier audio pour cet arbre.\",\"could-not-export-open-ended-audio\":\"Ne peut pas exporter l'audio pour la question ouverte\",\"create-a-new-group\":\"créer un nouveau groupe\",\"create-a-new-list\":\"Créer une nouvelle liste\",\"create-a-new-one\":\"Créer un nouveau\",\"create-a-new-survey\":\"créer une nouvelle enquête\",\"create-a-new-tree\":\"créer un nouvel arbre\",\"create-a-tag-prompt\":\"Créer une balise\",\"create-and-upload-a-new-message\":\"créez et téléchargez un nouveau message\",\"create-at-least-one-language-selector\":\"Avant d'utiliser ce bloc, créez au moins un Sélecteur de langue.\",\"create-contact-absolute-date\":\"La propriété du contact sera mis à la date prévue\",\"create-contact-description\":\"Ce bloc vous permet de créer des contacts avec des blocs d'entrée recueillies précédentes de cet arbre.\",\"create-contact-instructions\":\"Configurez les données du contact doit être créé.\",\"create-contact-relative-block\":\"sera mis en propriété du contact par rapport au moment de l'appel à l'aide du décalage fourni. La réponse du bloc configuré déterminera la quantité pour compenser la valeur par.\",\"create-contact-relative-date\":\"sera mis en propriété du contact par rapport au moment de l'appel à l'aide du décalage fourni.\",\"create-new-link\":\"Créer un nouveau lien\",\"create-new-version\":\"Créer une nouvelle version\",\"create-task\":\"Créer une tâche\",\"create-tasks\":\"Créer des tâches\",\"create-transcription-tasks\":\"Créer transcription Tâches\",\"create-tree\":\"Créer un arbre\",\"create-weather-alerts\":\"Créer des alertes météo\",\"create-weather-forecast\":\"Créer les prévisions météorologiques\",\"created\":\"Établi\",\"created-a-new-version-of\":\"Vous avez créé une nouvelle version de\",\"created-new-version-of\":\"nouvelle version créée de\",\"created-with\":\"Créé avec\",\"csv-format\":\"Format\",\"currency-to-use\":\"Devise à utiliser\",\"current-time-after\":\"Après\",\"current-time-and\":\"et\",\"current-time-before\":\"Avant\",\"current-time-between\":\"Entre\",\"current-time-day\":\"le jour\",\"current-time-day-of-month\":\"Jour du mois\",\"current-time-day-of-week\":\"Jour de la semaine\",\"current-time-exclusive\":\"Exclusive\",\"current-time-go-to-true-when\":\"Allez à « Vrai » lorsque:\",\"current-time-inclusive\":\"Compris\",\"current-time-is\":\"est\",\"current-time-month\":\"Mois\",\"current-time-select-comparison\":\"Sélectionnez comparaison\",\"current-time-select-day-of-week\":\"Choisir un jour de la semaine\",\"current-time-select-month\":\"Sélectionnez un mois\",\"current-time-time-of-day\":\"Moment de la journée\",\"current-time-time-to-compare\":\"Sélectionnez le type de temps pour comparer\",\"current-time-timezone\":\"Fuseau horaire\",\"currently-set-as-exit-block\":\"Actuellement défini comme bloc de sortie\",\"currently-set-as-starting-block\":\"Actuellement défini comme bloc de départ\",\"custom-data-category-name\":\"nom de la catégorie des données personnalisées\",\"custom-data-value\":\"Valeur des données personnalisées\",\"custom-ordering\":\"Utilisez la commande de bloc personnalisé\",\"custom-settings\":\"Paramètres personnalisés\",\"daily\":\"Journalier\",\"data\":\"Les données\",\"data-residency-mode-is-enabled-for-this-account-responses-to-this-block-will-be-retained-on-the-in-country-server-only-and-de-identified-before-being-transmitted-outside-the-country\":\"Mode de résidence de données est activé pour ce compte. Les réponses à ce bloc seront conservés sur le seul serveur dans le pays, et anonymisées avant d'être transmis à l'extérieur du pays.\",\"data-type-boolean\":\"Boolean\",\"data-type-date\":\"Date\",\"data-type-location\":\"Localité\",\"data-type-map_coordinates\":\"Carte avec des coordonnées\",\"data-type-multiple_choice\":\"Choix multiple\",\"data-type-number\":\"Chiffre\",\"data-type-phone\":\"Téléphone\",\"data-type-text\":\"Texte\",\"data-validation-invalid-choice\":\"La valeur ':dataChoice' dans ':dataValue' est invalide\",\"data-validation-invalid-value\":\"La valeur ':dataValue' est invalide\",\"data-validation-max_length\":\"La valeur ‘:dataValue’ dépasse la longueur max :maxOpenLength\",\"data-validation-max_numeric_digits\":\"La valeur ‘:dataValue’ dépasse le chiffre numérique max :maxNumericDigits\",\"date-created\":\"date créée\",\"date-range\":\"Intervalle de dates\",\"date-range-locked\":\"Champ date vérouillé\",\"date-updated\":\"Date de mise à jour\",\"day\":\"jour\",\"day-of-week\":\"Jour de la semaine\",\"days\":\"jour|jours\",\"days-after\":\"Des jours après\",\"days-after-adding\":\"Quelques jours après l'ajout\",\"days-before\":\"Jours avant\",\"december-month\":\"décembre\",\"decision-branch\":\"Branchement de décision\",\"default-repeat-key\":\"Touche de répétition par défaut\",\"default-sender-for-x-otherwise-systems\":\"La valeur par défaut Sender ID pour <em>:orgName</em> sera utilisé lorsque défini, sinon par défaut ID de l'expéditeur du système sera utilisé.\",\"delay-to-enter-repeat-key\":\"Dlai pour taper la touche de répétition par défaut\",\"delete\":\"Supprimer\",\"delete-issue-tracker\":\"Supprimer Tracker problème?\",\"delete-task\":\"Supprimer la tâche\",\"delete-this-shareable-link\":\"Supprimer le lien partageable\",\"delete-tracker\":\"Tracker Supprimer\",\"delete-transcription-task-question\":\"Supprimer Transcription des tâches?\",\"delete-tree\":\"Supprimer l'arbre\",\"delete-tree-question\":\"Supprimer l'arbre?\",\"delete-tree-version\":\"Supprimer la version Tree?\",\"delete-version\":\"Supprimer version\",\"deleted-subscriber\":\"supprimé le contact\",\"deleted-title-version\":\"Supprimé\",\"description\":\"La description\",\"destination-flow\":\"flux de destination\",\"destination-tree\":\"Arbre de destination\",\"destination-tree-not-found\":\"Arbre de destination introuvable\",\"destination-url\":\"URL de destination\",\"directory-selection-block-invalid-details\":\"Un ou plusieurs Sélection de répertoire ont des détails invalides. Pour pouvoir importer des résultats:\\n1- assurer que tous les Sélection de répertoire ont des choix provenant du modèle .csv\\n2- assurer que l'arbre n'a pas d'erreurs\\n3- re-sauvegarder l'arbre\\n\",\"directory-selection-description\":\"Le bloc de sélection Directory permet des contacts à sélectionner des éléments dans un répertoire de choix. Le bloc peut éventuellement envoyer les informations de retour de contact en rapport avec leur sélection. La sélection du contact peut être utilisé plus tard dans un bloc de branche décision.\",\"directory-selection-filter-description\":\"répertoire champs de blocs de sélection peuvent être utilisés comme filtres sur le lien partagé. sélectionner les champs doivent être utilisés comme filtres.\",\"directory-selection-filters\":\"filtres de sélection de répertoire\",\"disable\":\"Désactiver\",\"disable-voice-sms\":\"Désactiver la voix et SMS\",\"disabled\":\"désactivé\",\"disaggregate-data-by-the-audio-listened-percentage\":\"Données désagrégées par pourcentage des audios écoutés\",\"disaggregate-data-by-the-communication-channels\":\"Données désagrégées par Canaux de communication\",\"disaggregate-data-by-the-question-choices\":\"Données désagrégées par Questions à choix multiples\",\"display-headings-without-spaces\":\"rubriques d'affichage sans espaces\",\"display-latest-interaction-only\":\"Afficher la dernière interaction seulement\",\"display-regular-table-headings\":\"Afficher les titres des tableaux réguliers\",\"do-not-merge-any-calls\":\"Ne pas fusionner tous les appels\",\"do-not-prompt\":\"Ne pas demander\",\"do-you-want-to-proceed\":\"Voulez-vous poursuivre?\",\"dont-receive\":\"Ne pas recevoir\",\"download\":\"Télécharger\",\"download-X-format\":\"format :kind\",\"download-admin-file\":\"Télécharger le fichier CSV maître\",\"download-audio-file\":\"Télécharger le fichier audio\",\"download-csv\":\"Télécharger CSV\",\"download-csv-file-to-your-computer\":\"Télécharger le fichier CSV sur votre ordinateur\",\"download-response-audio\":\"Télécharger Réponse audio\",\"download-template\":\"Télécharger le modèle\",\"download-template-admin-file\":\"Télécharger le kit graphique\",\"download-the-audio-files-from-open-ended-responses\":\"Télécharger les fichiers audio à partir des réponses ouvertes\",\"download-x-template-file\":\"Télécharger le modèle :language\",\"draft\":\"Brouillon\",\"drag-and-drop-instruction\":\"Glisser-déposer le fichier CSV ou\",\"dry\":\"Sec\",\"duplicate\":\"Dupliquer\",\"duplicate-as-new-tree\":\"Reproduire comme nouvel arbre\",\"duplicate-entire-flow\":\"débit total en double\",\"duplicate-tree\":\"Arbre dupliqué\",\"duplicate-tree-has-been-created\":\"La copie de l'arbre a été créée.\",\"duplicates-warning\":\"Selon les limites et les caractères, la longueur minimale recommandée est\",\"duration\":\"Durée\",\"earth-networks\":\"Earth Networks\",\"edit\":\"Modifier\",\"edit-alert-message\":\"Modifier le message d'alerte\",\"edit-block-type\":\"Modifier le block :block_type\",\"edit-case-block\":\"Modifier Bloquer Case\",\"edit-collaborative-filtering-question\":\"Modifier la question de filtrage collaboratif\",\"edit-collaborative-filtering-rating\":\"Modifier la note de filtrage collaboratif\",\"edit-content\":\"Modifier le contenu\",\"edit-expression\":\"expression Edition\",\"edit-flow\":\"Modifier l'arbre\",\"edit-generate-code-block\":\"Modifier générer le code\",\"edit-group-membership\":\"Modifier l'appartenance au groupe\",\"edit-location\":\"Modifier l'emplacement\",\"edit-log-block\":\"Modifier Connexion Bloquer\",\"edit-message\":\"Modifier message\",\"edit-multiple-choice-question\":\"Modifier une question à choix multiples\",\"edit-multiple-select-multiple-choice-question\":\"Modifier Sélection multiple Question à choix multiples\",\"edit-new-version\":\"Modifier une nouvelle version\",\"edit-numeric-question\":\"Modifier la question numérique\",\"edit-open-ended-question\":\"Modifier une question ouverte\",\"edit-operator-contact-lists\":\"Modifier l'opérateur des listes de contacts\",\"edit-outgoing-call\":\"Modifier des appels sortants\",\"edit-output-block\":\"Modifier la sortie Bloquer\",\"edit-random-order-multiple-choice-question\":\"Modifier l'ordre aléatoire de la question à choix multiple \",\"edit-run-flow-block\":\"Modifier Exécuter flux bloc\",\"edit-settings\":\"Modifier les paramètres\",\"edit-subscriber-property\":\"Modifier le contact de la propriété\",\"edit-this-block\":\"Modifier ce bloc\",\"edit-tree-before-sending\":\"Modifier l'arbre avant d'envoyer\",\"edit-validate-block\":\"Modifier Valider le bloc de code\",\"edit-voice-content\":\"Modifier le contenu vocal\",\"empty\":\"Vide\",\"empty-audio-library\":\"Bibliothèque audio vide!\",\"empty-responses\":\"réponses vides\",\"enable\":\"Activer\",\"enable-disable-subscriber\":\"Activer / désactiver le contact\",\"enable-display-of-block-type\":\"Activer l'affichage du type de bloc (par exemple Question à choix multiples)\",\"enable-display-of-key-metrics\":\"Activer l'affichage des paramètres clés\",\"enable-sms\":\"activer SMS\",\"enable-voice\":\"activer la voix\",\"enable-voice-sms\":\"Activer la voix et SMS\",\"enabled\":\"Activée\",\"enabled-languages\":\"Langues activées\",\"enabled-result-tabs\":\"Activé onglets résultat\",\"end-at\":\"Fin à\",\"end-date\":\"Date de fin\",\"end-recording-by-pressing\":\"Arrêter l'enregistrement en appuyant sur\",\"end-the-call-session\":\"Fin de l'appel/session\",\"ends\":\"fins\",\"enter-a-value\":\"Entrez une valeur\",\"enter-accepted-responses\":\"Remplacer par une liste de réponses que nous allons utiliser pour correspondre à la réponse du respondant à ce choix. Entrez chaque option sur une nouvelle ligne. (Vous pouvez laisser ce champ vide si l'arbre sera utilisé pour le contenu vocal uniquement)\",\"enter-at-least-three-chars\":\"Entrez au moins trois caractères ...\",\"enter-at-least-three-chars-to-search\":\"Entrez au moins trois caractères pour commencer la recherche ...\",\"enter-audio-content\":\"Entrer le contenu audio\",\"enter-block-label\":\"Entrez une étiquette de bloc\",\"enter-block-name\":\"Entrez un nom de bloc\",\"enter-block-semantic-label\":\"Entrez une étiquette sémantique bloc\",\"enter-clipboard-content\":\"Entrez le contenu Clipboard...\",\"enter-confirmation-audio\":\"Si vous utilisez le contenu vocal, le remplacer par le nom d'un fichier audio que vous avez téléchargé à votre bibliothèque audio. Ce audio sera lu au respondant après avoir sélectionné le choix. (Vous pouvez laisser ce champ vide si l'arbre n'a pas le contenu de la voix ou si vous souhaitez ne pas jouer quoi que ce soit de retour au contact)\",\"enter-date\":\"entrer la date\",\"enter-duration\":\"Entrez la durée\",\"enter-each-on-new-line\":\"Entrez chaque sur une nouvelle ligne\",\"enter-exit-label\":\"Entrez sortie Étiquette\",\"enter-exit-test-expression\":\"Entrer Quitter Expression test\",\"enter-image-content\":\"Entrez le contenu de l'image\",\"enter-ivr-number\":\"Si vous utilisez le contenu vocal, le remplacer par le code numérique que le respondant doit entrer pour sélectionner ce choix. (Vous pouvez laisser ce champ vide si l'arbre n'a pas de contenu vocal)\",\"enter-num-ratings\":\"Entrez le nombre de notes\",\"enter-number\":\"Entrez un nombre\",\"enter-number-of-days\":\"Entrez le nombre de jours\",\"enter-operator-queue-name\":\"Entrez le nom de l'opérateur de la file d'attente ici\",\"enter-primary-and-synonyms\":\"Entrez l'option principale et synonymes de chaque choix. Entrez chaque synonyme sur une nouvelle ligne.\",\"enter-primary-attribute\":\"Votre premier choix va sur cette ligne. Remplacer par les principales informations de ce choix ici. (Voir l'exemple d'un choix complété ci-dessous)\",\"enter-primary-attribute-title\":\"Remplacer par la description de l'information primaire pour les choix (par exemple « Nom de la clinique »)\",\"enter-program-id\":\"Entrez l'identifiant de programme\",\"enter-property-name\":\"Entrez le nom de la propriété\",\"enter-secondary-attribute\":\"Remplacer par les informations secondaires pour ce choix\",\"enter-secondary-attribute-title\":\"Remplacer par la description de l'information secondaire pour les choix (par exemple « Pays »)\",\"enter-secondary-attribute-title-2\":\"Remplacer par la description de l'information secondaire pour les choix (par exemple « heures de service »). Vous pouvez ajouter jusqu'à 10 peices d'informations secondaires en ajoutant des colonnes à droite.\",\"enter-sms-content\":\"Entrez le contenu de SMS ...\",\"enter-sms-text-here\":\"Entrez le texte SMS ici\",\"enter-social-content\":\"Entrez le contenu social\",\"enter-social-messaging-text-here\":\"Entrez le contenu de messagerie sociale ici\",\"enter-text-content\":\"Entrez le contenu du texte\",\"enter-ussd-content\":\"Entrez le contenu USSD ...\",\"enter-ussd-text-here\":\"Entrez le texte USSD ici\",\"enter-value\":\"entrer la valeur\",\"enter-video-content\":\"Entrer le contenu vidéo\",\"entered\":\"Entré\",\"entity\":\"Entité\",\"entity-selection-block-instructions\":\"Les contacts se sortir par la sortie « Succès » quand ils choisissent une entité. Si elles ne sont pas autorisés à se référer à des entités, ou si elles ne parviennent pas à sélectionner une entité ils sont pris par la sortie « d'échec ».\",\"equal-to\":\"Égal à\",\"error\":\"Erreur\",\"error-creating-transcription-task\":\"Erreur de création tâche de transcription.\",\"error-found\":\"erreur n'a été détectée\",\"error-importing-json\":\"Erreur Importation JSON!\",\"error-report\":\"Rapport d'erreur\",\"error-updating-transcription-task\":\"Erreur tâche de transcription mise à jour.\",\"error-uploading-file-try-again\":\"Il y avait une erreur de télécharger le fichier, s'il vous plaît essayer à nouveau ajout.\",\"error-while-attempting-to-publish-specified-tree\":\"Erreur lors de la tentative de publier l'arbre spécifié.\",\"error-while-downloading-template\":\"Une erreur s'est produite lors du téléchargement du fichier de modèle.\",\"error-while-saving-transcriptions\":\"Erreur lors de la sauvegarde des transcriptions.\",\"error-while-saving-tree\":\"Erreur lors de la sauvegarde arbre ...\",\"establish-connection\":\"établir une connexion\",\"example-tree\":\"exemple d'arbre\",\"examples\":\"Exemples\",\"exceeds\":\"dépasse\",\"excel-supported-format\":\"CSV supporté par Excel\",\"exit\":\"Sortie\",\"exit-block-tree-begins-here\":\"exécution arbre continuera ici lorsque la session est terminée unexpectely.\",\"exit-default\":\"Défaut\",\"exit-otherwise-through-default\":\"Dans le cas contraire, la sortie par défaut\",\"exit-through\":\"Sortez par\",\"exit-to-another-output\":\"Sortir vers une autre sortie\",\"exit-when\":\"Quand\",\"expires-after\":\"Expire après\",\"expires-on\":\"Expire le\",\"export-date-time-format\":\"Exporter au format Date / Heure\",\"export-results-to-csv\":\"Exporter les résultats au format CSV\",\"export-transcriptions\":\"Export transcriptions\",\"export-tree-json\":\"Arbre Export JSON\",\"export-using-current-time-zone\":\"Exporter en utilisant fuseau horaire\",\"export-using-utc\":\"Exporter à l'aide UTC\",\"export-using-utc-with-subscriber-phone-number\":\"Exporter à l'aide UTC avec contact Numéro de téléphone\",\"expression-branch-description\":\"Ce bloc vérifie l'expression ( « Quand ») pour chaque sortie afin de déterminer quelle sortie utiliser.\",\"failed\":\"Echec\",\"failed-finding-matches\":\"Échec pour trouver des correspondances!\",\"failure\":\"Échec\",\"false\":\"Faux\",\"february-month\":\"février\",\"feedback-message\":\"Message Commentaire\",\"field\":\"Champ\",\"field-deleted-since-configuring-this-block\":\"Le contact de la propriété a été supprimé depuis la configuration de ce bloc. S'il vous plaît supprimer cette configuration.\",\"file-details\":\"Détails du fichier\",\"filesize\":\"Taille du fichier\",\"fill-out-template-instruction\":\"Remplissez le modèle avec vos résultats d'arbres\",\"fill-out-template-instruction-1\":\"remplir avec des rangées de données en correspondance avec les têtes de colonnes de la matrice. Chaque ligne est un résultat unique arbre\",\"fill-out-template-instruction-2\":\"Vous ne pouvez pas ajouter de nouvelles colonnes dans votre fichier pour créer de nouveaux blocs. Modifier l'arbre pour faire ces changements\",\"fill-out-template-instruction-3\":\"Le format de la date d'appel doit être AAAA-MM-JJ\",\"fill-out-template-instruction-4\":\"Le format de l'appel Heure de départ devrait être HH: MM: SS\",\"fill-out-template-instruction-5\":\"Pour la « Sélection multiple Question à choix multiples Bloc » vous devez séparer les options choisies par « ; »\",\"filter-block-content\":\"contenu du bloc de filtre ...\",\"filter-by-block\":\"Filtrer par blocs\",\"filter-by-date\":\"Filtrer par date\",\"filter-by-directory-selection\":\"Filtrer par blocs Répertoire de sélection\",\"filter-by-tag\":\"Filtrer par tags:\",\"filter-enabled\":\"filtre activé\",\"filter-instructions\":\"Sélectionnez les peices d'information doivent être utilisés comme filtres lors de l'affichage des résultats.\",\"filter-validation\":\"Validation Filtre\",\"filters\":\"filtres\",\"filters-saved\":\"configurations de filtres enregistrés\",\"find-matches\":\"Trouver les correspondances\",\"first-time-subscribers\":\"Contacts pour la première fois\",\"fix-validation-errors-before-publishing\":\"Correction des erreurs de validation avant publication\",\"fixed-date\":\"Date fixe\",\"flag-this-recording-as-either\":\"Signaler ce enregistrement inaudibles ou vide\",\"flagged-as-flagtype\":\"Signalé comme :flag_type - cliquez sur le bouton ci-dessus pour annuler.\",\"flagged-as-inaudible-or-empty\":\"Signalé comme inaudible ou vide - utilisez les boutons ci-dessus pour undo\",\"floip-cleared\":\"Configuration effacée.\",\"floip-expressions-escape-with-double-at-symbol\":\"Si vous avez l'intention d'insérer un littéral <code> @ </ code> symbole, en utilisant <code> @@ </ code> se traduira par un seul caractère en sortie.\",\"floip-instructions-1\":\"Viamo est membre de l'Initiative d'interopérabilité de flux, ce qui permet l'échange de données homogène à travers la participation des systèmes logiciels de ICT4D.\",\"floip-instructions-2\":\"Pour activer la diffusion sécurisée des résultats de cet arbre à un flux de données de résultats Aggregator, entrez l'URL de base et l'authentification par jeton de l'agrégateur.\",\"floip-sync-success\":\"Votre arbre Viamo est permis de diffuser des réponses au flux Résultats aggrégateur.\",\"floip-sync-warning\":\"Votre arbre Viamo n'est pas permis de diffuser des réponses au flux Résultats aggrégateur. Établir une connexion à l'agrégateur pour permettre le streaming.\",\"flow-view\":\"Arborescence\",\"for-a-given-subscriber-custom-data-category\":\"Pour un contact donné, si la propriété ou d'une catégorie de données personnalisée suivante a la valeur ci-dessous, allez dans « True ». Sinon, passez à « Faux ».\",\"for-a-given-subscriber-go-to-true-false\":\"Pour un contact donné, si la propriété suivante ou catégorie de données personnalisée a la valeur ci-dessous, allez sur True. Sinon, passez à False.\",\"for-assistance\":\"pour obtenir de l'aide\",\"for-example-to-assign-the-first-hundred-audio-responses-to-a-transcriber\":\"Par exemple, pour attribuer les cent premières réponses audio à un transcripteur, réglez le « Start A » valeur 1 et la valeur « End A » à 100. Pour la prochaine transcripteur, vous pouvez alors commencer à 101 et se termine à 200, et bientôt.\",\"for-the-best-user-experience\":\"Pour une meilleure expérience utilisateur, fournissez une invite audio qui dit,\",\"for-this-block\":\"pour ce bloc.\",\"fri\":\"Ven.\",\"friday-day\":\"Vendredi\",\"from-block-input\":\"A partir de l'entrée du bloc\",\"from-import\":\"de l'importation\",\"generate-code-title\":\"Générer titre de code\",\"generate-csv-file\":\"Générer un fichier CSV\",\"generate-shareable-link\":\"Générer un lien partageable\",\"generating-data-from-past-calls\":\"Génération de données à partir des appels passés\",\"get-shareable-link\":\"Obtenir un lien partageable\",\"go-to-lang-selector-interface\":\"Aller à l'interface Sélecteur de Langue\",\"go-to-true-or-false\":\"... aller à Vrai. Sinon, aller à Faux\",\"go-to-true-otherwise-go-to-false\":\"... allez à 'True'. Sinon, passez à « Faux ».\",\"go-to-true-output-if-contact-language-is\":\"Aller à la sortie « Vrai » si le langauge du contact est\",\"greater-than\":\"Plus grand que\",\"group\":\"groupe\",\"group-is-larger-than\":\"groupe est plus grand que\",\"group-label\":\"Groupe:\",\"group-not-set\":\"Groupe non établi\",\"groups\":\"Groupes\",\"has-already-been-published\":\"a déjà été publié\",\"has-been-successfully-published\":\"a été publié avec succès\",\"has-value\":\"a une valeur\",\"header-validation\":\"La valeur ':dataValue' n'est pas un :dataHeader valide\",\"header-validation-missing\":\"La colonne ':columnName' est manquante\",\"heading-exit\":\"Sortie\",\"headings\":\"rubriques\",\"headings-format\":\"Format rubriques\",\"heres-what-we-know\":\"Voici ce que nous savons:\",\"hide-instruction\":\"Cacher les instructions\",\"hide-phone-numbers\":\"Cacher les numéros de téléphone\",\"hide-question-titles\":\"Cacher titres Question\",\"hide-subscriber-id\":\"Masquer Contact ID\",\"high-winds\":\"Vents forts\",\"histogram-of-percentage-listened\":\"Histogramme de % écouté\",\"home\":\"Accueil\",\"how-to-import-tree-results\":\"Comment les résultats d'importation arbres\",\"human-readable\":\"Lisible par l'homme\",\"hung-up\":\"Raccroché\",\"i-have-translated-my-choices\":\"J'ai traduit mes choix\",\"if\":\"Si\",\"if-a-respondent-has-already-started-this-tree-but-not-finished\":\"Si un répondant a déjà commencé cet arbre mais ne l'a pas fini, reprenez là où il s'était arrêté.\",\"if-all-following-true\":\"Si toutes les conditions suivantes sont remplies\",\"if-all-of-the-following-are-true\":\"Si toutes les conditions suivantes sont remplies\",\"if-any-following-true\":\"Si l'une des conditions suivantes est vraie\",\"if-any-of-the-following-are-true\":\"Si l'une des conditions suivantes sont remplies\",\"if-at-least\":\"Si au moins\",\"if-at-least-this-many-following-true\":\"Si au moins les éléments suivants sont vraies\",\"if-at-least-this-many-of-the-following-are-true\":\"Si au moins les éléments suivants sont vraies ...\",\"if-b-all-b-of-the-following-are-true-go-to-true\":\"Si <b> tous </b> des éléments suivants sont vrais, allez sur True.\",\"if-cfq-block-has-x-ratings\":\"Si les déclarations de « :blockTitle » ont :targetRatio évaluations ...\",\"if-in\":\"Si dans\",\"if-not-in\":\"En cas de non\",\"if-subscriber-custom-data\":\"En cas de contact de données personnalisées,\",\"if-subscriber-language-is\":\"Si le contact est Langue\",\"if-subscriber-language-is-unknown\":\"Si l'abonné est la langue « [Inconnu] »\",\"if-subscriber-start-date-is\":\"En cas de contact Date de début est\",\"if-symbols-are-used-then-reflect-in-filename\":\"Si les symboles sont utilisés, cela doit se refléter dans le nom du fichier.\",\"if-the-number-of-subscribers-in-the\":\"Si le nombre de contacts dans le\",\"if-the-subscriber-is\":\"Si le contact est\",\"if-the-value-is\":\"Si la valeur est\",\"if-youd-like-to-repeat-msg-press-2\":\"Si vous souhaitez répéter ce message, appuyez maintenant sur 2.\",\"import-done\":\"Importation effectuée\",\"import-export\":\"Importer / Exporter\",\"import-failed\":\"Échec de l'importation pour\",\"import-file\":\"Importer le fichier\",\"import-file-instruction\":\"Faites glisser le fichier ou cliquez sur le bouton Fichier Importer un fichier CSV et sélectionnez le modèle enregistré\",\"import-in-progress\":\"Importation en cours\",\"import-new-results\":\"Résultats d'importation Nouveaux\",\"import-results\":\"Résultats d'importation arbres\",\"import-status\":\"Etat de l'importation\",\"import-tree\":\"Importer l'arbre\",\"import-tree-json\":\"Importer un fichier JSON pour l'arbre (*.json)\",\"importing\":\"importation\",\"importing-file\":\"importation du fichier\",\"in-progress\":\"En cours\",\"in-the-following-group\":\"Dans le groupe suivant\",\"inactive-do-not-receive-outgoing-calls\":\"Inactif (Ne pas recevoir les appels sortants)\",\"inaudible\":\"Inaudible\",\"include-calls-from\":\"Inclure les appels provenant de \",\"include-in-summary\":\"En récapitulant\",\"infinite-loops-detected-please-edit-before-sending\":\"Détectées boucles infinies. S'il vous plaît modifier avant d'envoyer\",\"infinite-loops-exist\":\"Boucles infinies existent\",\"input\":\"Contribution\",\"input-help\":\"Ce bloc vérifie que le code est valide en utilisant la réponse d'une question précédente. Sélectionnez quelle question à utiliser.\",\"input-required\":\"Entrée Requise\",\"instructional-text-optional\":\"Texte pédagogique (facultatif)\",\"interactions\":\"interactions\",\"internal-notes\":\"Notes internes\",\"internal-notes-optional\":\"Notes internes (facultatif)\",\"invalid\":\"Invalide\",\"invalid-content-type\":\"Type de contenu non valide: Le fichier est pas reconnu comme .csv\",\"invalid-csv\":\"CSV non valide: Le fichier n'a pas pu étre traité comme un fichier .csv valide\",\"invalid-entry\":\"Entrée invalide.\",\"invalid-pattern\":\"motif non valide!\",\"invalid_startingblock_key\":\"S'il vous plaît définir un bloc de départ pour votre arbre\",\"is\":\"est\",\"is-complete\":\"est complet\",\"is-private-not-reversible\":\"Ce paramètre ne peut être modifiée après un arbre est publié avec cette option activée\",\"issue-trackers\":\"Suivi de problèmes\",\"ivr-content\":\"Contenu de messagerie Rich\",\"january-month\":\"janvier\",\"july-month\":\"juillet\",\"june-month\":\"juin\",\"key-metrics\":\"Indicateurs clés\",\"key-press\":\"Appuyez sur la touche\",\"label\":\"Étiquette\",\"label-is-already-in-use\":\"L'étiquette est déjà utilisé\",\"language\":\"Langue\",\"language-options\":\"options de langue\",\"language-selection-prompt\":\"Invite à une sélection de langue\",\"language-selector\":\"Sélecteur de langue\",\"language-selector-for-this-call\":\"Sélecteur de langue pour cet appel\",\"language-selector-not-found\":\"Sélecteur de langue non trouvé\",\"language-x-csv-file\":\"Fichier CSV :language\",\"languages\":\"Langues\",\"languages-have-not-been-enabled\":\"Les langues ne sont pas permises\",\"last-edited\":\"Dernière modification\",\"last-edited-on-this-date\":\"Dernière modification à cette date\",\"last-saved-at\":\"Dernier enregistrement à\",\"lat\":\"Lat:\",\"latest-message-for-user-groups\":\"Dernier message pour tous les groupes de contact\",\"latin-languages\":\"Langues latines\",\"learn-more-about-viamo-by-visiting\":\"En savoir plus sur Viamo en visitant :viamo_link, ou :sign_in_link\",\"less-than\":\"Moins de\",\"let-users-repeat\":\"Laisser les utilisateurs répéter le message\",\"letters-only\":\"Lettres seulement\",\"library\":\"Bibliothèque\",\"load-more-subscribers\":\"Afficher plus de contacts\",\"loading\":\"Chargement...\",\"loading-average-call-durations\":\"Chargement durée moyenne des appels\",\"local-currency\":\"Monnaie locale\",\"local-time-is-utc\":\"L'heure locale est UTC\",\"location\":\"Localité\",\"location-selector\":\"Sélecteur de Localisation\",\"lock\":\"Vérouiller\",\"lock-the-date-range-to-the-dates-above\":\"Verrouillez la plage de dates aux dates ci-dessus\",\"locked\":\"Vérouillé\",\"logic\":\"Logique\",\"lon\":\"Lon:\",\"machine-readable\":\"Lisible par machine\",\"machine-readable-format\":\"Format lisible par machine\",\"make-new-subscriber\":\"Faire un nouveau contact avec le même numéro de téléphone\",\"manage-queues\":\"Gérer Queues ...\",\"manage-responses\":\"Gérer les réponses\",\"manage-statements\":\"gérer déclarations\",\"manage-transcriptions\":\"Gérer Transcriptions\",\"march-month\":\"Mars\",\"mark-call-as-complete\":\"Marquer l'appel comme étant Effectué\",\"max-amount\":\"Quantité maximale\",\"max-code-issue\":\"Limiter le nombre de codes\",\"max-days\":\"maximum de jours\",\"max-duration-in-seconds\":\"Durée maximale (secondes)\",\"max-response-characters\":\"Caractères de réponse maximum\",\"max-length\":\"Longueur maximale\",\"max-number-of-repeats\":\"Nombre maximum de Répétitions\",\"maximum-number-of-response-digits\":\"Nombre maximal de chiffres pour la réponse\",\"maximum-record-duration\":\"Durée enregistrement maximum\",\"maximum-value\":\"Valeur maximale\",\"maximum-value-(inclusive)\":\"Valeur maximale (inclus)\",\"may-month\":\"Mai\",\"mcq-response-format\":\"Format Réponse MCQ \",\"merge-all-calls-from-same-subscriber\":\"Fusionner tous les appels de même contact\",\"merge-incomplete-calls-from-the-same-subscriber\":\"Fusionner les appels incomplets du même contact\",\"merge-only-resumed-calls\":\"Fusionner seulement les appels repris\",\"merge-options\":\"Options de fusion\",\"message\":\"Message\",\"message-block-values\":\"Valeur du message bloc\",\"message-blocks-only\":\"Blocs de message uniquement\",\"message-details\":\"Détails du message\",\"message-title\":\"Titre du message\",\"method\":\"Méthode\",\"min-amount\":\"Montant minimal\",\"min-length\":\"Longueur minimale\",\"minimum-value\":\"Valeur minimale\",\"minimum-value-(inclusive)\":\"Valeur minimale (y compris)\",\"minutes\":\"minutes\",\"modified\":\"(Modifié)\",\"modify-subscriber\":\"Modifier le contact\",\"modify-subscriber-active-status-to\":\"Modifier contact Statut actif\",\"modify-subscriber-preferred-content-type-for\":\"Modifier le type de contenu préféré contacter pour\",\"modify-subscriber-start-date-to\":\"Modifier la date de début de contact\",\"modify-subscribers-start-date-to-absolute-date-here\":\"Modifier les contacts date de début à ce jour absolu ici\",\"mon\":\"Lun.\",\"monday-day\":\"Lundi\",\"month\":\"mois\",\"monthly\":\"Mensuel\",\"months-after\":\"mois après\",\"months-before\":\"mois avant\",\"more\":\"Plus\",\"more-options\":\"Plus d'options\",\"more-than\":\"Plus que\",\"most-active-blocks\":\"La plupart des blocs actifs\",\"most-recent-published-version\":\"La version la plus récente publiée\",\"most-recent-version\":\"La version la plus récente\",\"most-recent-version-of\":\"La version la plus récente de\",\"mostly\":\"La plupart\",\"msmcq-description-p1\":\"Pour les canaux en mode texte comme SMS, USSD et messagerie sociale: définir une seule lettre (A-Z) comme synonyme de chaque choix en utilisant le choix menu d'options.\",\"msmcq-description-p2\":\"Les contacts peuvent par exemple répondre: « abc » pour sélectionner 3 choix configurés avec synonyme « a », « b » et « c ». Synonyme doit être réglé et doit être unique par choix. La même synonyme peut être utilisé pour même choix dans les différentes langues activées.\",\"msmcq-description-p3\":\"Pour la voix, réglez la presse touche vocale pour chaque choix dans le choix menu d'options. Les contacts peuvent par exemple appuyer sur « 123 » pour sélectionner 3 choix.\",\"multiple-choice-question\":\"Question à Choix Multiples\",\"multiple-select-multiple-choice-question\":\"Sélection multiple Question à choix multiples\",\"name\":\"Nom\",\"never\":\"Jamais\",\"new-contact-created\":\"Nouveau contact créé\",\"new-edits-click-save\":\"De nouvelles modifications - cliquez sur « Enregistrer » à nouveau avant de continuer.\",\"new-exclamation\":\"Nouveau!\",\"new-issue-tracker\":\"Nouveau Suivi de problèmes\",\"new-property\":\"nouvelle propriété\",\"new-subscriber-value\":\"Nouvelle valeur de contact\",\"new-transcription-task\":\"Nouvelle transcription Tâche\",\"new-transcription-task-created\":\"Nouvelle tâche de transcription créé!\",\"new-transcription-tasks-generated\":\"Les nouvelles tâches de transcription générés!\",\"new-tree\":\"Nouvel arbre\",\"new-tree-created\":\"Nouvel arbre créé!\",\"new-version\":\"Nouvelle version\",\"new-version-created\":\"Nouvelle version créée!\",\"newest\":\"Plus Récent\",\"newest-to-oldest\":\"Récent au plus ancien\",\"next\":\"Prochain\",\"no\":\"Non\",\"no-action-selected\":\"(Aucune action sélectionnée)\",\"no-admin-file-yet-filters\":\"Téléchargez le fichier CSV maître à définir des filtres\",\"no-admin-file-yet-selection-confirmation\":\"Téléchargez le fichier CSV master pour régler la confirmation de sélection\",\"no-audio-files-found-for-X\":\"Aucun audio trouvé pour\",\"no-audio-files-found-in-organisation\":\"Aucun fichier audio trouvé dans l'organisation\",\"no-audio-yet\":\"Pas encore d'audio\",\"no-blocks-for-content\":\"Il n'y a pas de blocs pour remplir le contenu sur.\",\"no-blocks-found-for-tree-with-identifier\":\"Aucun bloc n'a été trouvée pour l'arbre avec identifiant\",\"no-change\":\"Pas de changement\",\"no-choice-selected\":\"Pas de choix sélectionné\",\"no-choices-added\":\"Aucun choix ajouté.\",\"no-choices-yet-please-specify\":\"Pas encore de choix - Veuillez d'abord indiquer vos choix  dans la barre latérale\",\"no-choices-yet-please-specify-your-choices-first-in-the-sidebar\":\"Pas de choix pour le moment. Précisez votre\",\"no-clipboard-content-yet\":\"Aucun Clipboard encore\",\"no-content-blocks\":\"Aucun contenu de bloc!\",\"no-content-blocks-to-populate-content-onto\":\"Il n'y a pas de blocs pour remplir le contenu sur.\",\"no-content-types-enabled\":\"Aucun type de contenu activé.\",\"no-credit\":\"Pas de crédit\",\"no-csv-exports-for-these-results-have-been-created-yet\":\"Aucune exportation CSV pour ces résultats n'ont été créée\",\"no-data\":\"Pas de données\",\"no-directory-selection-blocks\":\"cet arbre n'a pas de blocs de sélection de répertoire\",\"no-groups-created-yet\":\"Aucun groupe créé pour l'instant ou vos groupes ont aucun contact.\",\"no-labels-or-tags\":\"Aucune étiquette ou des étiquettes\",\"no-languages-enabled\":\"Aucune langue n'est encore activée pour cet arbre.\",\"no-languages-enabled-on-the-tree\":\"Pas de langues activées pour l'arbre\",\"no-matches-found\":\"Aucun résultat!\",\"no-messages-created-yet\":\"Aucun message créé.\",\"no-number-of-audio-files-per-task-supplied\":\"Pas nombre de fichiers audio par tâche fourni.\",\"no-operator-contact-lists-made-yet\":\"Aucune liste de contacts de l'opérateur n'a encore été faite.\",\"no-preferred-channel-selected\":\"Vous ne l'avez pas sélectionné un canal préféré. S'il vous plait sélectionner en un\",\"no-preferred-language\":\"Aucune langue préférée\",\"no-question-selected\":\"Aucune question sélectionnée\",\"no-question-text-provided\":\"Non Question Texte fourni\",\"no-result-for-the-selected-filters\":\"Aucun résultat pour les filtres sélectionnés.\",\"no-results-for-this-block-yet\":\"Pas encore de résultat pour ce bloc.\",\"no-results-not-sent-yet\":\"(Aucun résultat - non encore envoyé)\",\"no-results-yet\":\"Désolé, il n'y a pas encore des résultats.\",\"no-shareable-links-have-been-created-yet\":\"Aucun lien partageable n'a pas encore été créé.\",\"no-sms-content-yet\":\"Pas de contenu SMS encore\",\"no-social-content-yet\":\"Aucun sociale encore\",\"no-subscriber-field-type-map-coordinates\":\"Vous ne disposez pas d'un champ de contact de type « Carte Coordonnées ». Ce champ de contact est nécessaire pour stocker l'emplacement du contact.\",\"no-surveys-created\":\"Aucune enquête créée pour l'instant.\",\"no-tag-found\":\"Aucune identification trouvée\",\"no-tagged-blocks\":\"cet arbre n'a pas de blocs marqués\",\"no-tree-found-with-identifier\":\"Aucun arbre trouvé avec identifiant\",\"no-trees-created-yet\":\"Aucun arbre créé.\",\"no-trees-have-been-created-yet\":\"Aucun arbre n'a encore été créé\",\"no-ussd-content-yet\":\"Pas de contenu USSD encore\",\"no-validation\":\"aucune validation\",\"no-value\":\"Aucune valeur\",\"none-selected\":\"(Aucune sélection)\",\"normalize\":\"Normaliser\",\"normalize-chart-results\":\"Normaliser les graphiques des résultats\",\"not\":\"ne pas\",\"not-available\":\"Indisponible\",\"not-created-any-language-selectors-yet\":\"Vous n'avez pas encore créé de sélecteurs de langue.\",\"not-equal-to\":\"Pas égal à\",\"not-found\":\"Pas trouvé\",\"not-in-the-following-group\":\"N'est pas dans le groupe suivant\",\"not-launched-yet\":\"Pas encore lancé\",\"not-set\":\"pas encore défini\",\"november-month\":\"novembre\",\"now\":\"Maintenant\",\"num-ratings-per-statement\":\"Nombre d'évaluations par relevé\",\"num-ratings-that-each-statement-should-receive\":\"Le nombre de notes que chaque déclaration doit recevoir.\",\"number\":\"Nombre\",\"number-of-calls-in-date-range\":\"Nombre d'appels dans l'intervalle de dates\",\"number-of-calls-in-the-last\":\"Nombre d'appels lors des derniers\",\"number-of-choices\":\"Nombre de choix\",\"number-of-exits\":\"Nombre de sorties\",\"number-of-outputs\":\"Nombre de sorties:\",\"number-of-people-who-ended-at-this-block\":\"Nombre de personnes qui ont fini à ce bloc\",\"numbers-alphabet\":\"Alphanumeric\",\"numbers-only\":\"Chiffres uniquement\",\"numeric-average\":\"Moyenne numérique\",\"numeric-block-title\":\"Titre du bloc numérique\",\"numeric-branch\":\"Branchement Numérique\",\"numeric-quesion-block\":\"question bloc numérique\",\"numeric-question\":\"question numérique\",\"occurrences\":\"occurrences\",\"october-month\":\"octobre\",\"of\":\"de\",\"of-following-true\":\"... des conditions suivantes sont remplies\",\"of-the-following-are-true\":\"des affirmations suivantes sont vraies\",\"of-the-following-are-true-go-to-true\":\"des conditions suivantes sont remplies, allez sur True.\",\"offline\":\"Hors ligne\",\"offline-content\":\"Lecture audio\",\"oldest-to-newest\":\"Le plus ancien au plus récent\",\"on\":\"Sur\",\"on-line\":\"en ligne\",\"one-output-for-all-choices\":\"Une sortie pour tous les choix\",\"only-accepts-word-characters\":\"accepte uniquement des caractères de mot\",\"only-display-latest-interaction-if-multiple-interactions-exist-for-the-same-session-and-block\":\"afficher uniquement la dernière interaction si plusieurs interactions existent dans la même session pour le même bloc. Ne cochez pas si tous les résultats doivent être affichés.\",\"only-question-blocks\":\"Seuls les blocs question\",\"open-block-with-voice-set-sub-prop-warning\":\"À composition non limitée des réponses vocales ne sont pas en mesure de propriétés de contact ensemble en ce moment.\",\"open-ended-audio-export-ready\":\"L'exportation audio ouverte prêt\",\"open-ended-question\":\"Question Ouverte\",\"open-ended-responses\":\"Les réponses ouvertes\",\"open-external-link\":\"Ouvrir un lien externe\",\"open-in-new-window\":\"Ouvrir dans une nouvelle fenêtre\",\"open-link\":\"Ouvrir le lien\",\"open-link-in-new-window\":\"Ouvre le lien dans une nouvelle fenêtre\",\"operator-contact-list\":\"liste de contacts opérateur\",\"operator-queue-name\":\"Opérateur File d'attente\",\"operators\":\"les opérateurs\",\"optional-description\":\"Description facultative\",\"optionally-you-can-create-loop-back\":\"En option, vous pouvez créer des connexions à « boucle de retour » à ce bloc de branche aléatoire, si vous voulez des contacts pour atteindre tous les blocs connectés ci-dessous dans un ordre aléatoire. Après chaque option a été atteint, le bloc peut soit poursuivre au hasard, ou, il peut « sortie » à une sortie distincte.\",\"options\":\"Options\",\"or\":\"ou\",\"order\":\"Ordre\",\"order-by\":\"Commandé par:\",\"order-of-components-dont-matter-but-must-be-adjacent-one-another\":\"L'ordre de ces composants n'importe, mais ils doivent être adjacents les uns aux autres.\",\"order-of-results\":\"Ordre des résultats\",\"organization-not-found-with-api-key\":\"Impossible de trouver l'organisation avec cette clé API.\",\"original-file\":\"fichier original\",\"original-quality\":\"Qualité originale\",\"originally\":\"Initialement\",\"outgoing-calls\":\"Les appels sortants\",\"output\":\"Production\",\"output-branching\":\"Branchement de sortie\",\"output-clipboard\":\"Clipboard\",\"output-connected\":\"Lié\",\"output-error\":\"Erreur\",\"output-exit\":\"Sortie\",\"output-expression\":\"expression de sortie\",\"output-failed\":\"Échoué\",\"output-false\":\"Faux\",\"output-not-met\":\"Pas rencontré\",\"output-quota-met\":\"Quota rencontré\",\"output-sms\":\"SMS\",\"output-true\":\"Vrai\",\"output-ussd\":\"USSD\",\"output-voice\":\"Voix\",\"outputs\":\"Les sorties\",\"partly\":\"Partiellement\",\"password\":\"Mot de passe\",\"pattern-not-provided-for-tree\":\"Motif non prévu pour l'arbre\",\"pause\":\"Pause\",\"percent-of-audio-listened\":\"Pourcentage de l'audio écouté\",\"percent-of-the-content-provided\":\":count % du contenu fourni\",\"phone\":\"Téléphone\",\"phone-number\":\"Numéro de téléphone\",\"phone-quality\":\"Qualité téléphone\",\"phone-recording\":\"enregistrement téléphonique\",\"pick-a-date-range-to-display-block-interaction-totals\":\"Choisissez une plage de dates pour afficher les totaux d'interaction bloc\",\"plain-input\":\"entrée simple\",\"play\":\"Jouer\",\"play-audio\":\"Lecture audio\",\"please-fix-the-validation-errors-in-this-tree-before-publishing\":\"Corrigez les erreurs de validation dans cet arbre avant\",\"please-provide-numeric-codes\":\"Veuillez fournir des codes numériques\",\"please-provide-valid-start-and-end-numbers\":\"S'il vous plaît fournir début valides et les numéros de fin.\",\"please-resolve-the-set-of-infinite-loops-before-sending-this-tree\":\"Reglez l'ensemble des boucles infinies\",\"please-select-a-numeric-question-block\":\"Veuillez sélectionner un bloc de questions numériques\",\"please-select-channel\":\"assurez s'il vous plaît que vous sélectionnez un canal préféré\",\"please-translate-choices\":\"S'il vous plaît traduire vos choix.\",\"please-try-again-or-contact\":\"Essayez encore une fois ou contactez\",\"precipitation-level\":\"précipitations Niveau\",\"press\":\"Pressez\",\"preview-file\":\"prévisualisation du fichier\",\"previous\":\"Précédent\",\"previous-exports\":\"exportations précédentes\",\"previous-imports\":\"Importations Précédentes\",\"primary-information-heading\":\"titre d'information primaire\",\"pro-tip\":\"Astuce Pro\",\"problem-connecting-api\":\"Problème de connexion à l'API.\",\"processing\":\"En cours de traitement...\",\"product-code\":\"Code produit\",\"program\":\"Programme\",\"program-help-generate-code-block\":\"Assurez-vous de définir le même programme dans le bloc de code Valider\",\"program-help-validate-code-block\":\"Utilisez le même programme que le bloc de code Générez\",\"prompt\":\"Rapide\",\"prompt-for-statement\":\"Demander déclaration\",\"prompts\":\"Instructions\",\"property\":\"Propriété\",\"property-configuration\":\"Configuration des propriétés\",\"property-not-supported\":\"Type non pris en charge\",\"protocol\":\"Protocole\",\"provide-a-language-selector-menu\":\"Fournir un menu de sélection de la langue pour les contacts de choisir leur langue\",\"provide-key\":\"Fournir une clé API\",\"provide-url\":\"Fournir une URL\",\"publish\":\"Publier\",\"publish-new-version\":\"Publier une nouvelle version\",\"publish-the-newest-version-of-this-tree\":\"Publier la nouvelle version de cet arbre\",\"publish-this-version-of-the-flow\":\"Publier cette version du flux\",\"published\":\"Publié!\",\"published-header\":\"Publié\",\"question\":\"Question\",\"question-and-message-blocks\":\"Questions et blocs message\",\"question-blocks-only\":\"Question blocs seulement\",\"question-prompt\":\"Invite de question\",\"question-responses\":\"Question Réponses\",\"question-title\":\"Titre de question\",\"quota-threshold\":\"Seuil\",\"rain\":\"Pluie\",\"random-branch\":\"Branchement aléatoire\",\"random-code\":\"Générer des codes aléatoires\",\"ready-to-send\":\"Prêt à envoyer\",\"receive\":\"Recevoir\",\"receive-outgoing-calls\":\"Recevoir des appels sortants\",\"received\":\"Reçu\",\"recipient-group\":\"Groupe bénéficiaire\",\"recommended\":\"conseillé\",\"recommended-export-format-settings\":\"Paramètres du format d'exportation recommandé\",\"record-group-message\":\"Record Group message\",\"record-group-message-title\":\"titre du message de groupe d'archives\",\"reject\":\"Rejeter\",\"relative-to-numeric-input\":\"Par rapport à l'entrée numérique\",\"relative-to-the-call-date\":\"Par rapport à la date d'appel\",\"reload\":\"Recharger\",\"remove\":\"Retirer\",\"remove-condition\":\"Supprimer la condition\",\"remove-file\":\"Effacer le fichier\",\"remove-filter-tags\":\"Retirer tous les tags\",\"remove-from\":\"Retirer\",\"remove-from-group\":\"Supprimer du groupe\",\"remove-question\":\"Supprimer la question\",\"removes-subscribers-from-the\":\"Supprime les contacts de la\",\"repeat\":\"Répéter\",\"repeat-every\":\"Répétez chaque\",\"repeat-questions\":\"questions répétées\",\"repeating\":\"Répétitif\",\"repeats\":\"répétitions\",\"replace\":\"Remplacer\",\"replace-existing-audio-files-on-blocks\":\"Remplacer les fichiers audio existants sur des blocs\",\"reset\":\"réinitialiser\",\"reset-all-filter\":\"Réinitialiser tous les filtres\",\"reset-all-filters\":\"Réinitialiser tous les filtres\",\"reset-breakdown-and-show-interactions\":\"Réinitialiser la répartition et montrer les interactions\",\"reset-breakdown-and-show-total-interactions\":\"Réinitialiser la répartition et montrer les totaux des interactions\",\"reset-filters\":\"Réinitialiser les filtres\",\"resolve-warnings-and-save-simulate-clipboard\":\"Résoudre les avertissements et sauver l'arbre à utiliser le simulateur Clipboard\",\"resource-view\":\"Visualisation des Ressources\",\"response\":\"Réponse\",\"response-timeout\":\"Délai de réponse\",\"responses\":\"Réponses\",\"responses-in-this-task\":\"Les réponses dans cette tâche\",\"responses-to-this-block-might-contain-personal-identifying-information\":\"Les réponses à ce bloc peuvent contenir des informations d'identification personnelle\",\"responses-to-this-block-will-be-hidden-from-users-without-permission-to-view-personal-information\":\"Les réponses à ce bloc seront cachés des utilisateurs sans l'autorisation d'afficher des informations personnelles.\",\"restored-title-version\":\"Restauré\",\"restored-tree\":\"Arbre restauré\",\"result-import\":\"Importation de résultats\",\"results\":\"Résultats\",\"results-listed-on-page\":\"Résultats listés sur la page\",\"resume-tree-for-partial-respondents\":\"Reprendre l'arbre pour une partie des répondants ?\",\"retain-only-most-recent-call-from-same-subscriber\":\"Ne conserver que les plus récent appel de même contact\",\"rich_messaging-content\":\"contenu hors-ligne\",\"rows\":\"Lignes\",\"rows-processed\":\"lignes traitées\",\"rule-components\":\"Règle de composants\",\"run-another-tree\":\"Exécutez un autre arbre\",\"runs-the-latest-version-of\":\"Exécuter la dernière version de\",\"runs-the-latest-version-of \":\"S'exécute la dernière version de\",\"sat\":\"Sam.\",\"saturday-day\":\"samedi\",\"save\":\"Sauvegarder\",\"save-and-continue\":\"Sauvegarder et continuer\",\"save-and-go-to-next-page\":\"Enregistrer et aller à la page suivante\",\"save-changes-to-the-flow\":\"Enregistrer les modifications au flux\",\"save-selection\":\"Enregistrer la sélection\",\"save-template-instruction\":\"Enregistrez le modèle sur votre ordinateur en tant que fichier CSV\",\"save-transcriptions\":\"Enregistrer transcriptions\",\"saved\":\"Enregistré\",\"saving\":\"Sauvegarde en cours ...\",\"saving-and-checking-for-errors\":\"Enregistrement et vérification des erreurs\",\"saving-transcriptions\":\"Transcriptions Sauvegarde en cours ...\",\"saving-tree\":\"Saving arbre ...\",\"schedule-and-send-an-outgoing-call\":\"Planifier et envoyer un appel sortant\",\"schedule-type\":\"Type de planification\",\"search-audio-library\":\"Recherche bibliothèque audio ...\",\"search-subscribers\":\"Rechercher des contacts\",\"secondary-information-headings\":\"rubriques d'information secondaires\",\"seconds\":\"secondes\",\"seconds-ago\":\"il y a quelques instants\",\"seconds-for-a-response\":\"Sécondes pour répondre\",\"seconds-for-response\":\"secondes pour la réponse\",\"see-error-report-instruction\":\"Voir les détails Report de Error ci-dessous, corriger l'erreur dans votre fichier CSV et télécharger à nouveau.\",\"see-more-versions\":\"Voir plus de versions\",\"see-your-notifications-inbox-for-the-download-link\":\"Consultez votre boite de notifications pour le lien de téléchargement.\",\"select-a\":\"Sélectionner un\",\"select-a-caller-from-the-list-below\":\"Sélectionnez un appelant de la liste ci-dessous\",\"select-a-candidate-block\":\"Sélectionnez un bloc candidat\",\"select-a-channel\":\"Sélectionnez un canal\",\"select-a-field\":\"Sélectionnez un champ\",\"select-a-property\":\"Sélectionnez une propriété\",\"select-a-question\":\"Sélectionnez une question\",\"select-a-tag\":\"Sélectionnez une identification (ou insérez dans une nouvelle identification) \",\"select-a-tag-placeholder\":\"Sélectionnez ou ajoutez une balise\",\"select-a-value\":\"Sélectionner une valeur\",\"select-all\":\"Sélectionner tout\",\"select-audio\":\"Sélectionnez audio\",\"select-block\":\"Sélectionnez un bloc\",\"select-data\":\"Sélectionnez les données\",\"select-from-audio-library\":\"Sélectionner à partir d'une bibliothèque audio\",\"select-group-message-to-play\":\"Sélectionnez Groupe message à la lecture\",\"select-groups\":\"Sélectionnez Groupes\",\"select-input-block\":\"bloc d'entrée Sélectionnez\",\"select-input-source\":\"Sélectionnez la source d'entrée\",\"select-languages-to-be-enabled-for-content-for-this-tree\":\"Sélectionnez les langues à activer pour le contenu des\",\"select-none\":\"Sélectionner aucun\",\"select-property-type\":\"Sélectionner le type de propriété\",\"select-provider\":\"Sélectionner un fournisseur\",\"select-queue\":\"Sélectionnez la file d'attente\",\"select-source\":\"Sélectionnez une source\",\"select-source-content\":\"Sélectionnez une source de contenu\",\"select-subscribers\":\"Sélectionnez les abonnés\",\"select-the-content-type-to-be-enabled-for-this-tree\":\"Sélectionnez le type de contenu à activer pour cet arbre\",\"select_at_least_1_property\":\"\",\"select_property_to_set\":\"\",\"selected\":\"choisi\",\"selected-groups\":\"Groupes sélectionnés\",\"selected-subscribers\":\"Les contacts sélectionnés\",\"selection-confirmation\":\"Confirmation de sélection\",\"selection-confirmation-instructions\":\"Pour le contenu vocal, le fichier audio spécifié dans le fichier CSV sera lu au contact après une sélection. Pour tous les autres types de contenu, sélectionnez les peices des informations qui doivent être renvoyés au contact ou désélectionner tous les champs pour renvoyer rien.\",\"selection-response-instructions\":\"\",\"send\":\"Envoyer\",\"send-on-date\":\"Envoyer à la date\",\"send-request-to-call-center\":\"Envoyer une demande à Call Center\",\"send-request-to-different-call-center\":\"Envoyer une demande à un centre d'appels d'org différents\",\"send-this-call-to\":\"Envoyer cet appel à ...\",\"send-tree\":\"Envoyer Arbre\",\"send-tree-ellipsis\":\"Envoyer arbre...\",\"sends-call-as-random-dial-campaign\":\"Lancer une campagne de numérotation aléatoire qui fonctionne sans arrêt jusqu'à ce que vous arrêtiez, ou un certain nombre de critères est atteint.\",\"sends-call-at-specified-time\":\"Envoie cet appel à des contacts à partir de la date et l'heure.\",\"sends-call-immediately\":\"Envoie l'appel à des contacts immédiatement.\",\"sends-call-repeating-based-on-options\":\"Envoie cet appel sur une base répéter, selon les options à droite.\",\"sensitive-data\":\"Données sensibles\",\"separate-output-for-each-choice\":\"Sortie séparée pour chaque choix\",\"september-month\":\"septembre\",\"sessions\":\"Sessions\",\"set-as-a-starting-block\":\"Définir comme un bloc de départ\",\"set-as-exit-block\":\"Définir comme bloc de sortie\",\"set-as-starting-block\":\"Définir comme bloc de départ\",\"set-channel-type\":\"Définir le type de canal\",\"set-choice-options\":\"Définir les options de choix\",\"set-custom-subscriber-data\":\"Ensemble de données de contact personnalisé\",\"set-preferred-channel-type\":\"Set canal préféré type\",\"set-preferred-content-type\":\"Définir le type de contenu préféré\",\"set-sub-prop-w-response\":\"Définir une propriété de contact avec la réponse du contact\",\"share-results\":\"Partager les résultats\",\"shareable-link-to-results-for-this-tree\":\"lien partageable aux résultats pour cet arbre\",\"shareable-links\":\"Liens partageables\",\"shortened-title-for-summary\":\"Titre Résumé Pour raccourcies\",\"shortened-title-for-summary-description\":\"Entrez un titre qui devrait être utilisé lors de l'examen du résumé des interactions avec ce bloc. Si laissé vide, le titre complet du bloc sera utilisé.\",\"should-ignore-offline-submissions\":\"Ignorer Soumissions Hors ligne\",\"should-redeem-code\":\"Code Mark utilisé\",\"show\":\"Spectacle\",\"show-all\":\"Afficher tout\",\"show-all-results\":\"Afficher tous les résultats\",\"show-between-the-following-dates\":\"Afficher entre les dates suivantes\",\"show-clipboard-simulator\":\"Clipboard simuler\",\"show-empty-only\":\"Afficher vide\",\"show-interactions\":\"#VALUE!\",\"show-key-metrics\":\"Montrer les indicateurs clés\",\"show-key-metrics-lower\":\"Afficher les indicateurs clés\",\"show-keymetrics-ajax-error\":\"Erreur indicateurs clés: S'il vous plaît assurer cet arbre existe encore ou essayez de recharger cette page.\",\"show-less-options\":\"Afficher moins d'options\",\"show-message-text\":\"Afficher un message texte\",\"show-more-options\":\"Afficher plus d'options\",\"show-percentage-listened\":\"pourcentage de l'écoute affiché\",\"show-results-from-incomplete-engagements\":\"Afficher les résultats de missions incomplètes\",\"show-stars\":\"Voir les étoiles\",\"show-subscriber-id\":\"Afficher le ID\",\"show-summary-metrics\":\"Metrics Masquer\",\"showing-block-content-filtered-by-X\":\"Affichage du contenu du bloc filtré par: filtre\",\"showing-entire-audio-library\":\"Afficher toute la bibliothèque audio\",\"shuffle-randomly-again\":\"Mélanger encore une fois aléatoirement\",\"sign-into-your-account\":\"connectez-vous à votre compte\",\"sms\":\"SMS\",\"sms-content\":\"Contenu SMS\",\"sms-content-not-set\":\"Contenu SMS non défini\",\"sms-disabled\":\"SMS désactivé\",\"sms-enabled\":\"SMS acftivé\",\"sms-prompt\":\"SMS rapide\",\"sms-responses\":\"Réponses SMS\",\"sms-status\":\"Statut SMS\",\"sms-subscribers-that-reached-this-block\":\"contacts SMS qui ont atteint ce bloc\",\"sms-to\":\"SMS à\",\"social\":\"Social\",\"social-messaging\":\"messagerie sociale\",\"social-messaging-content\":\"Contenu Messagerie sociale\",\"social-subscribers-that-reached-this-block\":\"Les contacts sociaux qui ont atteint ce bloc\",\"sorry\":\"Désolé!\",\"sorry-cannot-locate-the-selected-tree\":\"Désolé, ne peut pas localiser l'arbre sélectionné.\",\"sorry-there-are-no-results-for-this-date-range\":\"Désolé, il n'y a pas de résultats pour cette plage de dates.\",\"sorry-there-was-an-issue-trying-to-export-audio-for-tree\":\"Désolé, il y avait eu un problème en essayant d'exporter l'audio pour l'arbre\",\"sorry-we-cant-find-any-results-with-that-address\":\"Désolé, nous ne pouvons trouver aucun résultat avec cette adresse.\",\"sorry-you-don-t-have-permission-to-delete-this-tree\":\"Désolé, vous n'avez pas la permission de supprimer cet arbre.\",\"sorry-you-dont-have-permission-to-delete-this-tree\":\"Désolé, vous n'êtes pas autorisé à supprimer cet arbre.\",\"sort-by-date\":\"Trier par date\",\"sort-by-name\":\"Trier par nom\",\"source\":\"La source\",\"specific-language-used-this-call\":\"Une langue spécifique a utilisé cet appel\",\"specific-time\":\"Temps spécifique\",\"specify-what-should-happen-if-a-subscribers-language-is-unknown\":\"Indiquez ce qui doit se produire si est inconnu au moment d'une conversation téléphonique ou SMS langue d'un contact:\",\"start-at\":\"Commencer à\",\"start-date\":\"Date de début\",\"start-date-equal-to\":\"Date de début égale à\",\"start-date-greater-than\":\"Date de début supérieure\",\"start-date-less-than\":\"Date de début moins\",\"started-at\":\"Commencé à\",\"starting-block-tree-begins-here\":\"Bloc de départ - L'arbre commence ici\",\"starts\":\"débuts\",\"status\":\"Statut\",\"stock-code\":\"Code de stock\",\"subscriber\":\"contact\",\"subscriber-custom-data\":\"Données personnalisées de l'abonné\",\"subscriber-language\":\"Langue de l'abonné\",\"subscriber-prop-to-send-payload\":\"propriétés Abonné à envoyer en tant Payload\",\"subscriber-properties\":\"Propriétés de contact\",\"subscriber-properties-to-snapshot\":\"Propriétés de contact à Snapshot\",\"subscriber-property\":\"Caractéristique de l'abonné\",\"subscriber-property-to-branch-via\":\"Caractéristique de l'abonné\",\"subscriber-start-date\":\"Date de début de l'abonné\",\"subscriber-starting-date-reference\":\"Contacter Date de début Référence\",\"subscribers\":\"Contacts\",\"subscribers-that-reached-this-block\":\"Les contacts qui ont atteint ce bloc\",\"success\":\"Succès\",\"successfully-imported-result\":\"Importation de résultats avec succès\",\"summary-block-description\":\"Ce bloc est utilisé pour répondre aux questions d'examen qui sont inclus dans le résumé. Les utilisateurs du Presse-papiers sont en mesure de confirmer ou d'infirmer les réponses.\",\"sun\":\"Dim.\",\"sun-level\":\"Niveau du soleil\",\"sunday-day\":\"dimanche\",\"sunny\":\"Ensoleillé\",\"survey\":\"Sondage\",\"survey-details\":\"Détails de l'enquête\",\"switch-to-tree-view-to-add-blocks\":\"Passer à Arborescence pour ajouter des blocs\",\"system-generated\":\"système généré\",\"tag-filter-description\":\"plusieurs blocs question de choix qui ont été marqués peuvent être utilisés comme filtres sur le lien partagé. les choix pour les blocs avec une étiquette sont utilisés comme les options du filtre. sélectionner les balises doivent être utilisés comme filtres.\",\"tag-filters\":\"filtres tag\",\"tags\":\"Identification\",\"task-was-successfully-deleted\":\"La tâche a été supprimé avec succès!\",\"tell-me-more\":\"Nous dire un peu plus\",\"test-call\":\"test Call\",\"test-call-queued-at\":\"Appel d'essai mis en attente au\",\"test-call-request-sent\":\"demande d'appel de test envoyé ...\",\"text-responses\":\"Réponses textes\",\"text-responses-sms-ussd\":\"Réponses en texte (SMS / USSD)\",\"that-block-was-not-found-please-save-and-try-again\":\"Le bloc n'a pas été trouvé s'il vous plaît sauver l'arbre et essayez à nouveau\",\"that-collaborative-filtering-page-was-not-found-please-try-again\":\"Cette page filtrage collaboratif n'a pas été trouvé. Veuillez réessayer.\",\"that-tree-json-was-not-found-please-try-again\":\"Le fichier JSON de cet arbre n'a pas été trouvé. Veuillez réessayer\",\"that-tree-set-was-not-found-please-try-again\":\"Cet ensemble d'arbre n'a pas été trouvé. Veuillez réessayer.\",\"that-tree-was-not-found-please-try-again\":\"Cet arbre n'a pas été trouvé. Veuillez réessayer.\",\"the-contacts-x-property-will-be-set-using-block-input\":\"La propriété de :propertyName de contact sera réglée à l'aide de l'entrée au bloc sélectionné\",\"the-json-code-that-has-been-imported-is-invalid-or-can-not-be-parsed\":\"Le code JSON qui a été importé est invalide ou ne peut pas être analysé. <br> Examinez le code utilisé dans l'importation pour l'exhaustivité et la validité.\",\"the-property-will-be-set-to-x\":\"La propriété du contact sera réglé sur « :value »\",\"the-property-will-be-set-using-block-input\":\"La propriété du contact sera réglée à l'aide de l'entrée au bloc.\",\"the-remaining-tasks-are-visible-below\":\"Les tâches restantes sont visibles ci-dessous.\",\"the-response-from-the\":\"la réponse de la\",\"the-specified-tree-version\":\"La version d'arbre spécifiée\",\"the-transcription-set-was-not-found\":\"L'ensemble de la transcription n'a pas été trouvé. Veuillez réessayer.\",\"the-tree-version\":\"La version de l'arbre\",\"the-tree-version-x-was-deleted\":\"L'arbre :treeName de la version :treeVersion a été supprimé\",\"the-tree-x-was-deleted\":\"L'arbre :treeName a été supprimé.\",\"the-tree-x-was-restored\":\"L'arbre :nom de l'arbre a été restauré.\",\"then-callers-will-go-to-the-quota-met-output-if-not-callers-will-go-to-the-not-met-output\":\"puis les appelants\",\"there-are-no-results-yet-please-check-back-later\":\"Il n'y a pas encore aucun résultat. S'il vous plaît revenir plus tard.\",\"this-block-branches-based-on-type-of-the-recipient\":\"Ce bloc branche en fonction du type de contenu du destinataire. Les sorties sont déterminées en fonction du type de contenu de l'arbre lorsque le bloc est ajouté.\",\"this-block-directs-callers-based-on-the-total-number-of-calls-1\":\"Ce bloc dirige les appelants vers l'une des deux options, en fonction du nombre total d'appels dans la plage de dates spécifiée, soit uniquement pour cet arbre, soit pour tous les arbres de l'organisation entière.\",\"this-block-directs-callers-based-on-the-total-number-of-calls-2\":\"Si le nombre d'appels dans la plage de dates spécifiée est supérieur à la valeur 'Seuil de quota d'appels', les appelants accèdent à la sortie Quota Atteint. Sinon, les appelants iront à la sortie Non Atteint.\",\"this-block-directs-callers-based-on-the-total-number-of-subs-1\":\"Ce bloc dirige les appels vers l'une des deux options, en fonction du nombre total de contacts dans le groupe spécifié.\",\"this-block-directs-callers-based-on-the-total-number-of-subs-2\":\"Si le nombre de contacts du groupe est supérieure à la valeur « seuil de quota », puis les appelants vont au quota sortie Met. Sinon, les appelants vont à la sortie non atteint.\",\"this-block-directs-callers-based-on-their-answers\":\"Ce bloc dirige les appelants vers l'une des séries d'options, en fonction de leurs réponses aux questions numériques précédentes. Les résultats ci-dessous sont pris en considération du premier au dernier, et le premier à être vrai est utilisé.\",\"this-block-directs-callers-on-previous-answers\":\"Ce bloc dirige les appels vers l'une des deux options, selon les réponses précédentes aux questions à choix multiples.\",\"this-block-directs-callers-random\":\"Ce bloc dirige les appelants vers une sortie choisie au hasard.\",\"this-block-generates-the-weather-forecast-1\":\"Ce bloc génère le message de prévision météo.\",\"this-block-generates-the-weather-forecast-2\":\"Si une invite n'est pas activée, elle n'apparaîtra pas dans le message des prévisions météorologiques\",\"this-block-is-configured-by-the-referrals-app\":\"Ce bloc est configuré par l'application d'aiguillage.\",\"this-block-runs-the-destination-tree-1\":\"Ce bloc exécute l'arborescence de destination spécifiée ci-dessus, ce qui vous permet de créer des arbres imbriqués qui peuvent ensuite être joints lors de l'envoi de cette arborescence aux appelants.\",\"this-block-runs-the-destination-tree-2\":\"Une fois l'arborescence de destination terminée, l'appelant revient dans cet arbre et continue vers les blocs connectés en dessous de celui-ci.\",\"this-block-runs-the-destination-tree-3\":\"En choisissant l'option 'Version la plus récente', vous pouvez ensuite publier de nouvelles versions de l'arborescence de destination sans avoir à modifié cette arborescence.\",\"this-tree\":\"cet arbre\",\"this-tree-set\":\"Cet arbre\",\"three-components-used-to-create-assignment-rules-and-name-audio-files\":\"Il y a trois éléments qui peuvent être utilisés pour créer des règles d'affectation et nommer des fichiers audio.\",\"thunderstorms\":\"Des orages\",\"thurs\":\"Jeu.\",\"thursday-day\":\"Jeudi\",\"timeline\":\"Chronologie\",\"timeline-total-interactions\":\"Chronologie : Total des interactions\",\"times\":\"fois\",\"times-for-incorrect-responses\":\"temps pour les réponses incorrectes\",\"times-in-utc\":\"Les temps en UTC\",\"times-in-your-account-time-zone\":\"Les temps dans votre compte fuseau horaire\",\"timespan\":\"Période\",\"timezone\":\"Fuseau horaire\",\"title\":\"Titre\",\"to\":\"à\",\"to-attach-a-message-to-a-call\":\"Pour joindre un message à un appel,\",\"to-attach-a-survey-to-a-call\":\"Pour attacher une enquête à un appel,\",\"to-attach-a-tree-to-a-call\":\"Pour attacher un arbre à un appel,\",\"to-be-matched-to-tree\":\"être adapté à l'arbre\",\"to-send-call-to-only-some-subscribers\":\"Pour envoyer un appel à seulement quelques contacts\",\"toggle-to-auto-gen-content-from-block\":\"Bascule pour générer automatiquement le contenu du bloc Détails\",\"toggle-to-overwrite-auto-genned-content\":\"Bascule pour écraser le contenu généré automatiquement\",\"toggles-subscriber-receiving-outgoing-calls\":\"Cette action permet d'activer ou de désactiver le contact de recevoir des appels sortants.\",\"too_many_languages_for_collaborative_filtering\":\"Langues Too Many\",\"too_many_languages_for_collaborative_filtering_description\":\"Le filtrage collaboratif est valable uniquement sur les arbres qui ont une langue activée. S'il vous plaît activer une langue unique pour l'arbre.\",\"total\":\"Total\",\"total-audio-length\":\"Longueur totale Audio\",\"total-interactions\":\"total des interactions\",\"total-open-ended-responses\":\"Total des réponses ouvertes\",\"total-responses\":\"Réponses totales\",\"total-results\":\"Total des résultats\",\"total-sms-responses\":\"Réponses totales des SMS\",\"total-versions\":\"Total des versions\",\"total-voice-responses\":\"Réponses totales voix\",\"totals\":\"Totaux\",\"transcription-task-successfully-updated\":\"Tâche de transcription à jour avec succès!\",\"transcription-tasks-can-be-sent-out-to-external-transcribers-to-easily-transcribe-open-ended-audio-responses\":\"Tâches de transcription peuvent être envoyés à transcripteurs externes, de retranscrire facilement les réponses audio ouvertes de cet arbre. Vous pouvez générer automatiquement plusieurs tâches de transcription en utilisant le formulaire ci-dessous, ou, utilisez le bouton « Nouvelle transcription des tâches » ci-dessus pour créer des tâches individuelles\",\"transcriptions\":\"Transcriptions\",\"transcriptions-saved\":\"Transcriptions sauvé\",\"transcriptions-saved-continuing-to-next-page\":\"Transcriptions sauvé! Continuer à la page suivante ...\",\"transfer-amount\":\"Montant au transfert\",\"transfer-amount-currency\":\"Devise à utiliser\",\"transferto-cross-border-mobile-payments\":\"TransferTo Transfrontaliers des paiements mobiles\",\"tree\":\"Arbre\",\"tree-could-not-be-published\":\"Arbre ne peut pas être publié\",\"tree-deleted\":\"Arbre Effacé!\",\"tree-details\":\"Détails sur l'arbre\",\"tree-does-not-have-any-blocks-yet\":\"Arbre n'a pas encore de blocs.\",\"tree-duplicated\":\"Arbre dupliqué !\",\"tree-identifier-not-provided\":\"Identifiant arbre non fourni\",\"tree-is-empty\":\"L'arbre est vide!\",\"tree-is-empty-please-use-the-add-block-button-on-the-top-left-to-add-some-blocks-to-get-started\":\"L'arbre est vide. S'il vous plaît utilisez le bouton Ajouter un bloc en haut à gauche pour ajouter quelques blocs pour commencer.\",\"tree-restored\":\"Arbre Restauré!\",\"tree-result-import-heading-validation-error\":\"Les têtes de colonne dans votre importation ne sont pas valides. S'il vous plaît se référer au modèle d'importation pour les rubriques correctes\",\"tree-result-import-in-progress\":\"Arbre résultat importation en cours\",\"tree-saved\":\"Arbre sauvé!\",\"tree-update-conflict\":\"conflit de mise à jour arbre détecté\",\"tree-used-elsewhere-by-x-at-x\":\"Cet arbre a été enregistré ailleurs par :name à :time\",\"tree-versions\":\"Versions de l'arbre\",\"trees\":\"Arbres\",\"trigger-outgoing-call\":\"Déclenchement des appels sortants\",\"trimmed-to\":\"coupé à\",\"true\":\"Vrai\",\"tues\":\"Mar.\",\"tuesday-day\":\"Mardi\",\"two-or-more-choices-required\":\"Deux ou plusieurs choix requis:\",\"unable-to-delete-the-requested-transcription-task\":\"Impossible de supprimer la tâche de transcription demandée.\",\"unable-to-find-block-locally-from-server-results-with-key\":\"Impossible de trouver le bloc localement à partir serverResults\",\"undo\":\"Annuler\",\"unexpected-error\":\"une erreur inattendue est apparue\",\"unique-subscribers\":\"Contacts uniques\",\"unknown\":\"Inconnue\",\"unknown-error-occurred\":\"Une erreur inconnue est survenue\",\"unknown-language\":\"langue inconnue\",\"unknown-subscriber-branch-criteria\":\"#VALUE!\",\"unlimited-if-not-defined-or-set-as-zero\":\"Illimité si non défini ou mis à zéro\",\"unlock\":\"Dévérouillé\",\"unset-as-exit-block\":\"Non défini comme bloc de sortie\",\"untitled-block\":\"Bloc sans titre\",\"untitled-collab-filtering-rating\":\"Note de filtrage collaboratif sans titre\",\"untitled-collaborative-filtering-question\":\"Question de filtrage collaboratif sans titre\",\"untitled-generate-code\":\"Sans titre Générer le code\",\"untitled-message\":\"Message sans titre\",\"untitled-multiple-choice-question\":\"Question à choix multiples sans titre\",\"untitled-numeric-question\":\"Question numérique sans titre\",\"untitled-open-ended-question\":\"Question ouverte sans titre\",\"untitled-question\":\"question sans titre\",\"untitled-record-group-message\":\"Untitled Group Enregistrer un message\",\"untitled-tree\":\"Arbre sans titre\",\"untitled-validate-code\":\"Sans titre Valider le code\",\"update-existing-subscriber\":\"Mise à jour contact existant\",\"update-task\":\"Mise à jour des tâches\",\"update-transcription-task\":\"Mise à jour de transcription Tâche\",\"updated\":\"Actualisé\",\"upload\":\"Télécharger\",\"upload-a-csv-with-column-codes\":\"Télécharger un fichier CSV avec les 'codes' des colonnes\",\"upload-audio-files-to-X\":\"Télécharger des fichiers audio à: dest\",\"upload-codes\":\"Télécharger des codes\",\"upload-csv-file\":\"Fichier Importer un fichier CSV\",\"upload-csv-file-instruction\":\"Télécharger un fichier CSV (.csv) avec vos résultats d'arbres.\",\"upload-error\":\"Erreur de téléversement\",\"upload-file\":\"Télécharger un fichier\",\"uploading\":\"Téléchargement\",\"url-destination\":\"URL de destination\",\"url-for-this-csv-export-via-api-key\":\"URL pour cette exportation en CSV via le API\",\"usd-at-current-exchange\":\"USD à taux de change courants\",\"usd-exchange-warning-message\":\"Les montants indiqués ci-dessus seront appliqués en USD.\",\"use-a-specific-language-for-this-call\":\"Utilisez un langage spécifique pour cet appel\",\"use-custom-block-ordering\":\"Utilisez la commande de bloc personnalisé\",\"use-different-multimedia-files-each-language\":\"Utilisez des fichiers différents pour chaque langue\",\"use-full-text-descriptions\":\"Utilisez des descriptions de texte intégral\",\"use-hybrid-format\":\"Utilisez le format hybride\",\"use-machine-readable-format\":\"Utilisez le format lisible par une machine\",\"use-machine-readable-numbers\":\"Utilisez des chiffres lisibles à la machine\",\"use-master-for-language\":\"Utilisez le fichier CSV maître pour cette langue\",\"use-simple-date-range-picker\":\"Utilisez sélecteur de plage de dates simples\",\"use-tags-in-your-location-message-for-references-in-alert\":\"Utilisez la balise [EXPIRY_TIME] dans votre message pour faire référence à la date d'expiration et la balise [lieu] pour faire référence à l'emplacement de l'alerte.\",\"use-text-descriptions\":\"Utilisez les textes de description\",\"use-the-button-above-to-generate-a-new-csv-export-for-this-tree\":\"Utilisez le bouton ci-dessus pour générer une nouvelle exportation CSV pour cet arbre. Il apparaîtra dans la liste à droite une fois remplie.\",\"use-the-button-above-to-generate-a-shareable-results-page-for-this-tree\":\"Utilisez le bouton ci-dessus pour générer une page de résultats partageable pour cet arbre. Cette page sera mise à jour automatiquement comme les nouveaux résultats qui sont reçus pour cet arbre.\",\"use-the-button-below-to-generate-a-shareable-results-page-for-this-tree\":\"Utilisez le bouton ci-dessus pour générer une page de résultats partageable pour cet arbre. Cette page sera mise à jour automatiquement comme les nouveaux résultats qui sont reçus pour cet arbre.\",\"use-the-form-below-to-create-a-new-transcription-task\":\"Utilisez le formulaire ci-dessous pour créer une nouvelle tâche de transcription qui peut être envoyé à transcripteurs externes. Le transcripteur sera attribué des réponses ouvertes à retranscrire en fonction de la langue et de démarrage / numéros de fin indiqués ci-dessous.\",\"use-the-shareable-link-below-to-share-the-results-of-this-tree\":\"Utilisez le lien ci-dessous pour partager les résultats de cet arbre. <b> A toute personne que vous partagez cela avec aura accès à ces résultats. </b> Cette page sera mise à jour automatiquement comme les nouveaux résultats qui sont reçus pour cet arbre.\",\"use-the-tag-expiry-time\":\"Utilisez l'étiquette [durée d'expiration] dans votre message pour référencer la date d'expiration et l'étiquette [emplacement] pour référencer l'emplacement de l'alerte.\",\"use-tree-view-to-add-blocks\":\"Utilisez la vue arborescente pour ajouter quelques blocs avant de tenter de remplir et revoir le contenu.\",\"user-guide\":\"Pour IVR, les codes ne peuvent être lus en utilisant la voix, de sorte que le système texte du bloc au contact. Il est recommandé que l'audio pour ce bloc informera le contact qu'ils recevront un message texte avec leur code.\",\"username\":\"Nom d'utilisateur\",\"using-automatic-routing\":\"L'utilisation de routage automatique\",\"ussd\":\"USSD\",\"ussd-content\":\"contenu USSD\",\"ussd-prompt\":\"USSD rapide\",\"ussd-subscribers-that-reached-this-block\":\"contacts USSD qui ont atteint ce bloc\",\"valid\":\"Valide\",\"validate-code-block\":\"Valider le bloc de code\",\"validate-code-block-ignore-offline-submissions-help\":\"Valident les codes lorsque Désactive Clipboard Android est déconnecté.\",\"validate-code-title\":\"Valider le titre de code\",\"value\":\"Valeur\",\"version\":\"version\",\"version-capitalized\":\"Version\",\"versions\":\"versions\",\"versions-capitalized\":\"Versions\",\"view\":\"Vue\",\"view-all-responses\":\"Voir toutes les réponses\",\"view-and-manage-collaborative-submissions\":\"Voir et gérer les soumissions collaboratives\",\"view-and-manage-collaborative-submissions-a-for-this-block\":\"Afficher et gérer les soumissions de collaboration </a>\",\"view-and-manage-statements\":\"Afficher et gérer les états\",\"view-generate-code-block\":\"Voir générer bloc de code\",\"view-instruction\":\"Instructions Voir\",\"view-issues\":\"Voir les problèmes\",\"view-results\":\"Voir les résultats\",\"view-tracker-configuration\":\"Voir Configuration Tracker\",\"view-trackers\":\"et traqueurs de problèmes\",\"view-tree\":\"Voir arbre\",\"view-tree-details\":\"Voir les détails de l'arbre\",\"view-tree-structure\":\"Voir la structure arborescente\",\"view-tree-versions\":\"Voir versions d'arbres\",\"view-validate-code-block\":\"Voir le bloc de code validate\",\"view-versions-issue-trackers\":\"Voir les versions et les suivis de problèmes\",\"view-x-other-versions\":\"Voir :count autres versions de cet arbre\",\"voice\":\"Voix\",\"voice-content\":\"Contenu Voix\",\"voice-disabled\":\"Voix désactivée\",\"voice-enabled\":\"Voix activée\",\"voice-key-press\":\"Touche pour la voix\",\"voice-prompt\":\"Invite Voix\",\"voice-status\":\"état de la voix\",\"voice-subscribers-that-reached-this-block\":\"contacts vocaux qui ont atteint ce bloc\",\"voice-to\":\"voix à\",\"wait\":\"Attendre\",\"waiting-for-results\":\"L'attente des résultats\",\"we-are-upgrading-how-we-handle\":\"Nous améliorons comment nous traitons les traductions choix dans le bloc Question à choix multiples. S'il vous plaît assurer que les éléments suivants est correct. Si vous ne faites pas de changements en ce moment, votre arbre continuera d'accepter les réponses mêmes textes que précédemment.\",\"we-didnt-find-any-matches-revisit-pattern\":\"Nous n'avons trouvé aucune correspondance, essayez de réviser votre modèle.\",\"we-need-audio-files-previously-uploaded-to-audio-lib-to-match-to-blocks\":\"Nous avons besoin de fichiers audio qui ont déjà été téléchargés à la bibliothèque audio de votre organisation afin de les lier aux blocs.\",\"weather-forecast\":\"Prévisions météorologiques\",\"webhook-block-empty-payload-info\":\"Aucun bloc sont sélectionnés. La charge utile du bloc de cet événement webhook sera vide.\",\"webhook-block-payload-help-text\":\"Sélectionnez les blocs interactifs qui doivent être envoyés lorsque cette webhook est déclenchée. Les réponses des blocs sélectionnés seront envoyés.\",\"webhook-http-warning\":\"Lors de l'envoi des données sensibles, nous vous recommandons d'utiliser un point de terminaison HTTPS comme destination de webhook de la vie privée et la sécurité.\",\"webhook-method\":\"Méthode\",\"webhook-secret\":\"Secret\",\"webhook-secret-desc\":\"Nous vous ferons parvenir ce texte avec la soumission de webhook afin que votre serveur peut authentifier est venu de Viamo.\",\"webhook-subscriber-empty-payload-info\":\"Aucun propriétés d'abonnés sont sélectionnés. La charge utile d'abonné de cet événement webhook sera vide.\",\"webhook-subscriber-payload-help-text\":\"Sélectionnez les propriétés d'abonnés qui doivent être envoyés lorsque cette webhook est déclenchée. La valeur de la propriété sélectionnée sera envoyée.\",\"webhook-untitled-block\":\"bloc sans titre\",\"wed\":\"Mer.\",\"wednesday-day\":\"Mercredi\",\"week\":\"semaine\",\"weekly\":\"Hebdomadaire\",\"weeks-after\":\"Des semaines après\",\"weeks-before\":\"Des semaines avant\",\"welcome\":\"Bienvenue!\",\"when-block-reached-caller-exits-and-connects-to-operator\":\"Lorsque ce bloc est atteint, l'appelant quitte l'arbre et est connecté à l'opérateur. En conséquence, aucun autre des blocs peuvent être connectés en dessous de celui-ci.\",\"when-block-reached-subscriber-start-date-set-to-date-based-upon-previous-numeric-input\":\"Lorsque ce bloc est atteinte, les contacts auront leur date définie à l'aide de la contribution qu'ils apportent à une précédente question numérique. Leur date est définie sur le nombre de jours, semaines ou mois (fixé ci-dessus) que le contact fournit, par rapport à la date de l'appel.\",\"when-block-reached-subscriber-start-date-set-to-date-relative-to-call-and-timespan-specified\":\"Lorsque ce bloc est atteinte, les contacts auront leur date fixée au nombre de jours, semaines ou mois indiqués ci-dessus, par rapport à la date à laquelle ils reçoivent l'appel.\",\"when-block-reached-subscriber-start-date-set-to-specified\":\"Lorsque ce bloc est atteinte, les contacts auront leur date fixée à la date indiquée ci-dessus.\",\"when-finished-returns-to-this-tree-and-continues-to-any-blocks-connected-below\":\"Lorsque vous avez terminé, retourne\",\"when-no-preferred-language-subscriber-receives-lang-selector\":\"Si cette option est réglée sur « Aucune langue préférée », puis au début de l'appel suivant du contact, ils recevront un menu de sélection de langue (s'il est prévu une invite de sélection de la langue).\",\"when-no-valid-response-is-received\":\"Quand aucune réponse valide n'est reçue\",\"when-randomizing\":\"quand aléatoirement\",\"wind-level\":\"Niveau vent\",\"windy\":\"Venteux\",\"with-subscriber-phone-number\":\"avec contact Numéro de téléphone\",\"words\":\"Mots\",\"working-loading\":\"Travail...\",\"x-of-y\":\"sur\",\"x-text-responses\":\"Réponses en texte :language\",\"year\":\"an\",\"yearly\":\"Annuel\",\"yes\":\"Oui\",\"you-are-about-to-delete-a-transcription-task\":\"Vous êtes sur le point de supprimer une tâche de transcription.\",\"you-are-about-to-delete-a-tree\":\"Vous êtes sur le point de supprimer un arbre.\",\"you-are-about-to-delete-a-tree-version\":\"Vous êtes sur le point de supprimer une version d'arbre.\",\"you-are-about-to-delete-this-issue-tracker\":\"Vous êtes sur le point de supprimer ce tracker problème.\",\"you-can-edit-your-tree-with-the-interface-below\":\"Vous pouvez modifier votre arbre avec l'interface ci-dessous.\",\"you-can-send-out-the-external-link-from-the-table-below\":\"Vous pouvez envoyer le lien externe de la table ci-dessous.\",\"you-can-send-out-the-external-links-from-the-table-below\":\"Vous pouvez envoyer les liens externes dans le tableau ci-dessous.\",\"you-have-x-unsaved-transcriptions\":\"Vous avez :transcription_count transcriptions non enregistrées. Etes-vous sûr de vouloir quitter cette page?\",\"you-need-permission-to-export-content\":\"Vous avez besoin de la permission pour exporter le contenu\",\"your-browser-does-not-support-the-audio-element\":\"Votre navigateur ne supporte pas l'élément audio.\",\"your-combined-tree-results-are-being-exported\":\"Vos résultats d'arbres combinés sont exportés.\",\"your-file-file-name-is-currently-being-processed\":\"Votre fichier :fileName est actuellement en cours de traitement.\",\"your-open-ended-audio-download-for\":\"Votre téléchargement audio pour la question ouverte\",\"your-orgs-audio-library\":\"bibliothèque audio de votre organisation\",\"your-prompt\":\"<votre message>\",\"youre-using-floip-expressions\":\"On dirait que vous utilisez des expressions FLOIP, nice!\"}}");
 
 /***/ }),
 
@@ -91140,12 +91160,12 @@ module.exports = setData;
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=dac80200&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tree-builder-toolbar"},[(_vm.isImporterVisible)?_c('div',{staticClass:"flows-importer alert alert-info"},[_c('h3',[_vm._v(_vm._s(_vm.trans('flow-builder.flow-importer')))]),_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.flow),expression:"flow"}],staticClass:"flow-importer",attrs:{"rows":"15"},domProps:{"value":(_vm.flow)},on:{"input":function($event){if($event.target.composing){ return; }_vm.flow=$event.target.value}}})]):_vm._e(),_c('div',{staticClass:"tree-workspace-panel-heading panel-heading"},[_c('div',{staticClass:"tree-workspace-panel-heading-contents"},[_c('div',{staticClass:"btn-toolbar"},[_c('button',{staticClass:"btn btn-outline-secondary mr-2",class:{active: _vm.isImporterVisible},on:{"click":_vm.toggleImportExport}},[_c('i',{staticClass:"glyphicon glyphicon-chevron-up"}),_vm._v(" "+_vm._s(_vm.trans('flow-builder.import-export'))+" ")]),(_vm.isResourceEditorEnabled)?_c('div',{staticClass:"btn-group mr-2"},[_c('router-link',{staticClass:"btn btn-outline-secondary active",attrs:{"to":_vm.treeViewUrl}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.flow-view'))+" ")]),_c('router-link',{staticClass:"btn btn-secondary",attrs:{"to":_vm.resourceViewUrl},nativeOn:{"click":function($event){return _vm.handleResourceViewerSelected($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.resource-view'))+" ")])],1):_vm._e(),(!_vm.ui.isEditableLocked)?_c('a',{staticClass:"btn btn-outline-secondary mr-2",class:{active: _vm.ui.isEditable},attrs:{"href":_vm.editOrViewTreeJsUrl,"title":_vm.trans('flow-builder.click-to-toggle-editing')},on:{"click":_vm.attemptSaveTree}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.edit-flow'))+" ")]):_vm._e(),(_vm.ui.isEditable)?_c('div',{staticClass:"dropdown mr-2"},[_c('button',{staticClass:"btn btn-outline-secondary dropdown-toggle",attrs:{"type":"button","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.add-block'))+" ")]),_c('div',{staticClass:"dropdown-menu"},[_vm._l((_vm.rootBlockClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootBlockClassesToDisplay, className))?_c('a',{key:className + 'divider',staticClass:"dropdown-divider"}):_vm._e(),(_vm.isBlockAvailableByBlockClass[className])?_c('a',{key:className + 'item',staticClass:"dropdown-item tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']},on:{"click":function($event){$event.preventDefault();return _vm.handleAddBlockByTypeSelected(classDetails)}}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()]}),(!_vm.isEmpty(_vm.rootDropdownClassesToDisplay))?[_c('a',{staticClass:"dropdown-divider"}),_c('a',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.branching'))+" ")]),_c('div',{staticClass:"dropdown-menu"},[_vm._l((_vm.rootDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootDropdownClassesToDisplay, className))?_c('a',{key:className + 'divider',staticClass:"dropdown-divider"}):_vm._e(),(_vm.isBlockAvailableByBlockClass[className])?_c('a',{key:className + 'item',staticClass:"dropdown-item tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()]})],2)])]:_vm._e(),(!_vm.isEmpty(_vm.advancedDropdownClassesToDisplay))?[_c('a',{staticClass:"dropdown-divider"}),_c('a',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.advanced'))+" ")]),_c('div',{staticClass:"dropdown-menu"},[_vm._l((_vm.advancedDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.advancedDropdownClassesToDisplay, className))?_c('a',{key:className + 'divider',staticClass:"dropdown-divider"}):_vm._e(),(_vm.isBlockAvailableByBlockClass[className])?_c('a',{key:className + 'item',staticClass:"dropdown-item tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()]})],2)])]:_vm._e()],2)]):_vm._e(),(_vm.ui.isEditable)?_c('button',{staticClass:"btn btn-outline-secondary tree-duplicate-block mr-2",attrs:{"type":"button","disabled":!_vm.activeBlockId},on:{"click":function($event){$event.preventDefault();return _vm.handleDuplicateActivatedBlockTriggered($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.duplicate'))+" ")]):_vm._e(),(_vm.ui.isEditable)?_c('button',{staticClass:"btn btn-outline-secondary tree-delete-block mr-2",attrs:{"type":"button","disabled":!_vm.activeBlockId},on:{"click":function($event){$event.preventDefault();return _vm.handleRemoveActivatedBlockTriggered($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.delete'))+" ")]):_vm._e(),_vm._t("extra-buttons"),_c('div',{staticClass:"btn-group pull-right mr-2"},[(_vm.ui.isEditable && _vm.isFeatureTreeSaveEnabled)?_c('button',{staticClass:"btn btn-primary tree-save-tree",attrs:{"type":"button","title":_vm.trans('flow-builder.save-changes-to-the-flow'),"disabled":_vm.isTreeSaving || !_vm.hasChanges},on:{"click":_vm.attemptSaveTree}},[_vm._v(" "+_vm._s(_vm.saveButtonText)+" ")]):_vm._e(),_vm._t("right-grouped-buttons")],2)],2)])])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=97169534&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tree-builder-toolbar"},[(_vm.isImporterVisible)?_c('div',{staticClass:"flows-importer alert alert-info"},[_c('h3',[_vm._v(_vm._s(_vm.trans('flow-builder.flow-importer')))]),_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.flow),expression:"flow"}],staticClass:"flow-importer",attrs:{"rows":"15"},domProps:{"value":(_vm.flow)},on:{"input":function($event){if($event.target.composing){ return; }_vm.flow=$event.target.value}}})]):_vm._e(),_c('div',{staticClass:"tree-workspace-panel-heading panel-heading"},[_c('div',{staticClass:"tree-workspace-panel-heading-contents"},[_c('div',{staticClass:"btn-toolbar"},[_c('button',{staticClass:"btn btn-outline-secondary mr-2",class:{active: _vm.isImporterVisible},on:{"click":_vm.toggleImportExport}},[_c('i',{staticClass:"glyphicon glyphicon-chevron-up"}),_vm._v(" "+_vm._s(_vm.trans('flow-builder.import-export'))+" ")]),(_vm.isResourceEditorEnabled)?_c('div',{staticClass:"btn-group mr-2"},[_c('router-link',{staticClass:"btn btn-outline-secondary active",attrs:{"to":_vm.treeViewUrl}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.flow-view'))+" ")]),_c('router-link',{staticClass:"btn btn-secondary",attrs:{"to":_vm.resourceViewUrl},nativeOn:{"click":function($event){return _vm.handleResourceViewerSelected($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.resource-view'))+" ")])],1):_vm._e(),(!_vm.ui.isEditableLocked)?_c('router-link',{staticClass:"btn btn-outline-secondary mr-2",class:{active: _vm.ui.isEditable},attrs:{"to":_vm.editOrViewTreeJsUrl,"event":"","title":_vm.trans('flow-builder.click-to-toggle-editing')},nativeOn:{"click":function($event){$event.preventDefault();return _vm.handlePersistFlow(_vm.editOrViewTreeJsUrl)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.edit-flow'))+" ")]):_vm._e(),(_vm.ui.isEditable)?_c('div',{staticClass:"dropdown mr-2"},[_c('button',{staticClass:"btn btn-outline-secondary dropdown-toggle",attrs:{"type":"button","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.add-block'))+" ")]),_c('div',{staticClass:"dropdown-menu"},[_vm._l((_vm.rootBlockClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootBlockClassesToDisplay, className))?_c('a',{key:className + 'divider',staticClass:"dropdown-divider"}):_vm._e(),(_vm.isBlockAvailableByBlockClass[className])?_c('a',{key:className + 'item',staticClass:"dropdown-item tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']},on:{"click":function($event){$event.preventDefault();return _vm.handleAddBlockByTypeSelected(classDetails)}}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()]}),(!_vm.isEmpty(_vm.rootDropdownClassesToDisplay))?[_c('a',{staticClass:"dropdown-divider"}),_c('a',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.branching'))+" ")]),_c('div',{staticClass:"dropdown-menu"},[_vm._l((_vm.rootDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.rootDropdownClassesToDisplay, className))?_c('a',{key:className + 'divider',staticClass:"dropdown-divider"}):_vm._e(),(_vm.isBlockAvailableByBlockClass[className])?_c('a',{key:className + 'item',staticClass:"dropdown-item tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()]})],2)])]:_vm._e(),(!_vm.isEmpty(_vm.advancedDropdownClassesToDisplay))?[_c('a',{staticClass:"dropdown-divider"}),_c('a',{staticClass:"menu-item dropdown dropdown-submenu"},[_c('a',{staticClass:"dropdown-toggle",attrs:{"href":"#","data-toggle":"dropdown"}},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.advanced'))+" ")]),_c('div',{staticClass:"dropdown-menu"},[_vm._l((_vm.advancedDropdownClassesToDisplay),function(classDetails,className){return [(_vm.shouldDisplayDividerBefore(_vm.advancedDropdownClassesToDisplay, className))?_c('a',{key:className + 'divider',staticClass:"dropdown-divider"}):_vm._e(),(_vm.isBlockAvailableByBlockClass[className])?_c('a',{key:className + 'item',staticClass:"dropdown-item tree-add-block",attrs:{"href":"#","data-block-type":className,"data-default-num-connections":classDetails['defaultConnections']}},[_vm._v(" "+_vm._s(_vm.translateTreeClassName(className))+" ")]):_vm._e()]})],2)])]:_vm._e()],2)]):_vm._e(),(_vm.ui.isEditable)?_c('button',{staticClass:"btn btn-outline-secondary tree-duplicate-block mr-2",attrs:{"type":"button","disabled":!_vm.activeBlockId},on:{"click":function($event){$event.preventDefault();return _vm.handleDuplicateActivatedBlockTriggered($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.duplicate'))+" ")]):_vm._e(),(_vm.ui.isEditable)?_c('button',{staticClass:"btn btn-outline-secondary tree-delete-block mr-2",attrs:{"type":"button","disabled":!_vm.activeBlockId},on:{"click":function($event){$event.preventDefault();return _vm.handleRemoveActivatedBlockTriggered($event)}}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.delete'))+" ")]):_vm._e(),_c('router-link',{staticClass:"btn btn-outline-secondary mr-2",attrs:{"to":_vm.route('flows.newFlow')}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.new-flow'))+" ")]),_c('router-link',{staticClass:"btn btn-outline-secondary mr-2",attrs:{"to":_vm.route('flows.home')}},[_vm._v(" "+_vm._s(_vm.trans('flow-builder.home'))+" ")]),_vm._t("extra-buttons"),_c('div',{staticClass:"btn-group pull-right mr-2"},[(_vm.ui.isEditable && _vm.isFeatureTreeSaveEnabled)?_c('button',{staticClass:"btn btn-primary tree-save-tree",attrs:{"type":"button","title":_vm.trans('flow-builder.save-changes-to-the-flow'),"disabled":!!_vm.isTreeSaving},on:{"click":function($event){return _vm.handlePersistFlow()}}},[_vm._v(" "+_vm._s(_vm.saveButtonText)+" ")]):_vm._e(),_vm._t("right-grouped-buttons")],2)],2)])])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=dac80200&
+// CONCATENATED MODULE: ./src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue?vue&type=template&id=97169534&
 
 // EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
 var runtime = __webpack_require__("96cf");
@@ -91249,7 +91269,7 @@ var builder = __webpack_require__("af98");
       var _ui = _ref2.trees.ui;
       return _ui;
     }
-  })), Object(vuex_esm["b" /* mapGetters */])('flow', ['activeFlow'])), Object(vuex_esm["b" /* mapGetters */])('builder', ['activeBlock'])), Object(vuex_esm["d" /* mapState */])('flow', ['flows', 'resources'])), Object(vuex_esm["d" /* mapState */])('builder', ['activeBlockId'])), Object(vuex_esm["b" /* mapGetters */])(['isEditable', 'isTreeSaving', 'isBlockAvailableByBlockClass', 'hasChanges', 'isTreeValid', 'isFeatureTreeSaveEnabled', 'isFeatureTreeSendEnabled', 'isFeatureTreeDuplicateEnabled', 'isFeatureViewResultsEnabled', 'isFeatureUpdateInteractionTotalsEnabled', 'isResourceEditorEnabled'])), {}, {
+  })), Object(vuex_esm["b" /* mapGetters */])('flow', ['activeFlow', 'activeFlowContainer'])), Object(vuex_esm["b" /* mapGetters */])('builder', ['activeBlock'])), Object(vuex_esm["d" /* mapState */])('flow', ['flows', 'resources'])), Object(vuex_esm["d" /* mapState */])('builder', ['activeBlockId'])), Object(vuex_esm["b" /* mapGetters */])(['isEditable', 'isTreeSaving', 'isBlockAvailableByBlockClass', 'hasChanges', 'isTreeValid', 'isFeatureTreeSaveEnabled', 'isFeatureTreeSendEnabled', 'isFeatureTreeDuplicateEnabled', 'isFeatureViewResultsEnabled', 'isFeatureUpdateInteractionTotalsEnabled', 'isResourceEditorEnabled'])), {}, {
     flow: {
       get: function get() {
         var flows = this.flows,
@@ -91316,11 +91336,8 @@ var builder = __webpack_require__("af98");
       }) : '';
     },
     saveButtonText: function saveButtonText() {
-      if (this.hasChanges) {
-        return this.trans('flow-builder.save');
-      } else {
-        return this.trans('flow-builder.saved');
-      }
+      //TODO - once we can detect changes again we will change this text when saved
+      return this.trans('flow-builder.save');
     },
     rootBlockClassesToDisplay: function rootBlockClassesToDisplay() {
       var _this = this;
@@ -91355,9 +91372,9 @@ var builder = __webpack_require__("af98");
       return this.can('view-result-totals') && this.isFeatureViewResultsEnabled;
     }
   }),
-  methods: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({
+  methods: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({
     isEmpty: lodash["isEmpty"]
-  }, Object(vuex_esm["a" /* mapActions */])(['attemptSaveTree'])), Object(vuex_esm["c" /* mapMutations */])('flow', ['flow_removeBlock'])), Object(vuex_esm["a" /* mapActions */])('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock'])), Object(vuex_esm["a" /* mapActions */])('builder', ['importFlowsAndResources'])), Object(vuex_esm["c" /* mapMutations */])('builder', ['activateBlock'])), {}, {
+  }, Object(vuex_esm["a" /* mapActions */])(['attemptSaveTree'])), Object(vuex_esm["c" /* mapMutations */])(['setTreeSaving'])), Object(vuex_esm["c" /* mapMutations */])('flow', ['flow_removeBlock'])), Object(vuex_esm["a" /* mapActions */])('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock', 'flow_persist'])), Object(vuex_esm["a" /* mapActions */])('builder', ['importFlowsAndResources'])), Object(vuex_esm["c" /* mapMutations */])('builder', ['activateBlock'])), {}, {
     handleAddBlockByTypeSelected: function handleAddBlockByTypeSelected(_ref3) {
       var _this4 = this;
 
@@ -91396,6 +91413,39 @@ var builder = __webpack_require__("af98");
         }, _callee);
       }))();
     },
+    handlePersistFlow: function handlePersistFlow(route) {
+      var _this5 = this;
+
+      return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _this5.setTreeSaving(1);
+
+                _this5.flow_persist({
+                  persistRoute: _this5.route('flows.persistFlow', {
+                    flowId: _this5.activeFlow.uuid
+                  }),
+                  flowContainer: _this5.activeFlowContainer
+                }).then(function (flowContainer) {
+                  _this5.setTreeSaving(0);
+
+                  if (!flowContainer) {//TODO - hook into validation system when we have it.
+                    //TODO - hook into showing validation errors design when we have it
+                  } else if (route) {
+                    _this5.$router.push(route);
+                  }
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
     handleRemoveActivatedBlockTriggered: function handleRemoveActivatedBlockTriggered() {
       var blockId = this.activeBlockId;
       this.flow_removeBlock({
@@ -91419,7 +91469,7 @@ var builder = __webpack_require__("af98");
           mode = _ref4$mode === void 0 ? null : _ref4$mode;
 
       var context = this.removeNilValues({
-        treeId: this.tree.id,
+        treeId: this.activeFlow.uuid,
         component: component,
         mode: mode
       });
@@ -91432,10 +91482,10 @@ var builder = __webpack_require__("af98");
       return this.trans("flow-builder.".concat(className));
     },
     shouldDisplayDividerBefore: function shouldDisplayDividerBefore(blockClasses, className) {
-      var _this5 = this;
+      var _this6 = this;
 
       var shouldShowDividerBeforeBlock = lodash_default.a.pickBy(blockClasses, function (classDetails) {
-        return _this5.hasClassDetail(classDetails, 'dividerBefore');
+        return _this6.hasClassDetail(classDetails, 'dividerBefore');
       })[className];
       return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className];
     },
@@ -91767,6 +91817,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.d(__webpack_exports__, "appConfig", function() { return /* reexport */ appConfig; });
 __webpack_require__.d(__webpack_exports__, "builderConfig", function() { return /* reexport */ builderConfig; });
 __webpack_require__.d(__webpack_exports__, "InteractionDesigner", function() { return /* reexport */ lib_InteractionDesigner; });
+__webpack_require__.d(__webpack_exports__, "FetchFlow", function() { return /* reexport */ lib_FetchFlow; });
+__webpack_require__.d(__webpack_exports__, "NewFlow", function() { return /* reexport */ lib_NewFlow; });
+__webpack_require__.d(__webpack_exports__, "Home", function() { return /* reexport */ lib_Home; });
 
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 // This file is imported into lib/wc client bundles.
@@ -91805,12 +91858,12 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=template&id=ca0d2cec&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"interaction-designer-contents"},[_c('tree-builder-toolbar'),_c('div',{staticClass:"tree-sidebar-container"},[(_vm.activeBlock)?_c('div',{staticClass:"tree-sidebar",class:[("category-" + (_vm.blockClasses[_vm.activeBlock.type].category))]},[_c('div',{staticClass:"tree-sidebar-edit-block",attrs:{"data-block-type":_vm.activeBlock && _vm.activeBlock.type,"data-for-block-id":_vm.activeBlock && _vm.activeBlock.uuid}},[(_vm.activeBlock)?_c(("Flow" + (_vm.activeBlock.type.replace(/\\/g, ''))),{tag:"div",attrs:{"block":_vm.activeBlock,"flow":_vm.activeFlow}}):_vm._e()],1)]):_c('div',{staticClass:"tree-sidebar"},[_c('div',{staticClass:"tree-sidebar-edit-block"},[_c('flow-editor',{attrs:{"flow":_vm.activeFlow}})],1)])]),_c('div',{staticClass:"tree-contents",attrs:{"x-style":{'min-height': (_vm.designerWorkspaceHeight + "px")}}},[_c('builder-canvas',{nativeOn:{"click":function($event){return _vm.handleCanvasSelected($event)}}})],1)],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=template&id=9d265e26&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.activeFlow)?_c('div',{staticClass:"interaction-designer-contents"},[_c('tree-builder-toolbar'),_c('div',{staticClass:"tree-sidebar-container"},[(_vm.activeBlock)?_c('div',{staticClass:"tree-sidebar",class:[("category-" + (_vm.blockClasses[_vm.activeBlock.type].category))]},[_c('div',{staticClass:"tree-sidebar-edit-block",attrs:{"data-block-type":_vm.activeBlock && _vm.activeBlock.type,"data-for-block-id":_vm.activeBlock && _vm.activeBlock.uuid}},[(_vm.activeBlock)?_c(("Flow" + (_vm.activeBlock.type.replace(/\\/g, ''))),{tag:"div",attrs:{"block":_vm.activeBlock,"flow":_vm.activeFlow}}):_vm._e()],1)]):_c('div',{staticClass:"tree-sidebar"},[_c('div',{staticClass:"tree-sidebar-edit-block"},[_c('flow-editor',{attrs:{"flow":_vm.activeFlow}})],1)])]),_c('div',{staticClass:"tree-contents",attrs:{"x-style":{'min-height': (_vm.designerWorkspaceHeight + "px")}}},[_c('builder-canvas',{nativeOn:{"click":function($event){return _vm.handleCanvasSelected($event)}}})],1)],1):_vm._e()}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/InteractionDesigner.vue?vue&type=template&id=ca0d2cec&
+// CONCATENATED MODULE: ./src/views/InteractionDesigner.vue?vue&type=template&id=9d265e26&
 
 // EXTERNAL MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/InteractionDesigner.vue?vue&type=script&lang=js&
 var InteractionDesignervue_type_script_lang_js_ = __webpack_require__("7865");
@@ -91844,7 +91897,498 @@ var component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var InteractionDesigner = (component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/FetchFlow.vue?vue&type=template&id=37fe41b2&
+var FetchFlowvue_type_template_id_37fe41b2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"fetch-contents"},[_c('div',{staticClass:"d-flex h-100 text-center"},[_c('div',{staticClass:"cover-container d-flex w-100 h-100 p-3 mx-auto flex-column"},[_c('main',{staticClass:"px-3"},[_c('h2',[_vm._v(_vm._s(_vm._f("trans")(_vm.message)))]),(_vm.showNewButton)?_c('router-link',{staticClass:"mt-3 btn btn-outline-secondary mr-2 active",attrs:{"to":_vm.route('flows.newFlow'),"title":"trans('flow-builder.create-a-new-flow')"}},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.new-flow')))]):_vm._e(),(_vm.flowLink)?_c('router-link',{staticClass:"mt-3 btn btn-outline-secondary mr-2 active",attrs:{"to":_vm.flowLink,"title":"trans('flow-builder.edit-flow')"}},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.go-to-flow')))]):_vm._e()],1)])])])}
+var FetchFlowvue_type_template_id_37fe41b2_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/views/FetchFlow.vue?vue&type=template&id=37fe41b2&
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
+var es_regexp_exec = __webpack_require__("ac1f");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.replace.js
+var es_string_replace = __webpack_require__("5319");
+
+// EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
+var runtime = __webpack_require__("96cf");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
+var asyncToGenerator = __webpack_require__("1da1");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
+var classCallCheck = __webpack_require__("d4ec");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/inherits.js
+var inherits = __webpack_require__("262e");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createSuper.js + 2 modules
+var createSuper = __webpack_require__("2caf");
+
+// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
+var tslib_es6 = __webpack_require__("9ab4");
+
+// EXTERNAL MODULE: ./node_modules/lodash/lodash.js
+var lodash = __webpack_require__("2ef0");
+
+// EXTERNAL MODULE: ./src/lib/filters/lang.js
+var lang = __webpack_require__("3a37");
+
+// EXTERNAL MODULE: ./src/lib/mixins/Routes.js
+var Routes = __webpack_require__("e5fd");
+
+// EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/vue-property-decorator.js
+var vue_property_decorator = __webpack_require__("60a3");
+
+// EXTERNAL MODULE: ./node_modules/vuex-class/lib/index.js + 1 modules
+var lib = __webpack_require__("4bb5");
+
+// EXTERNAL MODULE: ./src/store/index.ts + 5 modules
+var store = __webpack_require__("0613");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/FetchFlow.vue?vue&type=script&lang=ts&
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var flowVuexNamespace = Object(lib["c" /* namespace */])('flow');
+
+var FetchFlowvue_type_script_lang_ts_FetchFlow = /*#__PURE__*/function (_Vue) {
+  Object(inherits["a" /* default */])(FetchFlow, _Vue);
+
+  var _super = Object(createSuper["a" /* default */])(FetchFlow);
+
+  function FetchFlow() {
+    var _this;
+
+    Object(classCallCheck["a" /* default */])(this, FetchFlow);
+
+    _this = _super.apply(this, arguments);
+    _this.message = 'flow-builder.fetching-flow';
+    _this.showNewButton = false;
+    _this.flowLink = null;
+    return _this;
+  }
+
+  return FetchFlow;
+}(external_commonjs_vue_commonjs2_vue_root_Vue_default.a);
+
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])({
+  required: true
+})], FetchFlowvue_type_script_lang_ts_FetchFlow.prototype, "uuid", void 0);
+
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])({
+  default: function _default() {
+    return {};
+  }
+})], FetchFlowvue_type_script_lang_ts_FetchFlow.prototype, "appConfig", void 0);
+
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])({
+  default: function _default() {
+    return {};
+  }
+})], FetchFlowvue_type_script_lang_ts_FetchFlow.prototype, "builderConfig", void 0);
+
+Object(tslib_es6["__decorate"])([flowVuexNamespace.Getter], FetchFlowvue_type_script_lang_ts_FetchFlow.prototype, "activeFlow", void 0);
+
+Object(tslib_es6["__decorate"])([flowVuexNamespace.Action], FetchFlowvue_type_script_lang_ts_FetchFlow.prototype, "flow_fetch", void 0);
+
+Object(tslib_es6["__decorate"])([lib["b" /* Mutation */]], FetchFlowvue_type_script_lang_ts_FetchFlow.prototype, "configure", void 0);
+
+Object(tslib_es6["__decorate"])([lib["a" /* Getter */]], FetchFlowvue_type_script_lang_ts_FetchFlow.prototype, "isConfigured", void 0);
+
+FetchFlowvue_type_script_lang_ts_FetchFlow = Object(tslib_es6["__decorate"])([Object(vue_property_decorator["a" /* Component */])({
+  mixins: [lang["a" /* default */], Routes["a" /* default */]],
+  mounted: function mounted() {
+    var _this2 = this;
+
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _this2.flow_fetch({
+                fetchRoute: _this2.route('flows.fetchFlowServer', {
+                  flowId: _this2.uuid
+                })
+              }).then(function (flow) {
+                if (flow) {
+                  var nextUrl = _this2.$route.query.nextUrl;
+
+                  if (nextUrl) {
+                    _this2.$router.replace(nextUrl);
+                  } else {
+                    _this2.message = 'flow-builder.flow-found';
+                    _this2.flowLink = _this2.route('trees.editTree', {
+                      treeId: _this2.activeFlow.uuid,
+                      component: 'interaction-designer',
+                      mode: 'edit'
+                    });
+                  }
+                } else {
+                  _this2.message = 'flow-builder.flow-not-found';
+                  _this2.showNewButton = true;
+                }
+              });
+
+            case 1:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  created: function created() {
+    var _this3 = this;
+
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var $store;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              $store = _this3.$store;
+              Object(lodash["forEach"])(store["a" /* store */].modules, function (v, k) {
+                return !$store.hasModule(k) && $store.registerModule(k, v);
+              });
+
+              if (!Object(lodash["isEmpty"])(_this3.appConfig) && !Object(lodash["isEmpty"])(_this3.builderConfig) || !_this3.isConfigured) {
+                _this3.configure({
+                  appConfig: _this3.appConfig,
+                  builderConfig: _this3.builderConfig
+                });
+              }
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  }
+})], FetchFlowvue_type_script_lang_ts_FetchFlow);
+/* harmony default export */ var FetchFlowvue_type_script_lang_ts_ = (FetchFlowvue_type_script_lang_ts_FetchFlow);
+// CONCATENATED MODULE: ./src/views/FetchFlow.vue?vue&type=script&lang=ts&
+ /* harmony default export */ var views_FetchFlowvue_type_script_lang_ts_ = (FetchFlowvue_type_script_lang_ts_); 
+// CONCATENATED MODULE: ./src/views/FetchFlow.vue
+
+
+
+
+
+/* normalize component */
+
+var FetchFlow_component = Object(componentNormalizer["a" /* default */])(
+  views_FetchFlowvue_type_script_lang_ts_,
+  FetchFlowvue_type_template_id_37fe41b2_render,
+  FetchFlowvue_type_template_id_37fe41b2_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var views_FetchFlow = (FetchFlow_component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/NewFlow.vue?vue&type=template&id=5f6cbe4e&
+var NewFlowvue_type_template_id_5f6cbe4e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"new-contents"},[(_vm.activeFlow)?_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-sm-8 offset-sm-2"},[_c('div',{staticClass:"card"},[_c('div',{staticClass:"card-body"},[(_vm.flowError)?_c('div',{staticClass:"alert alert-danger",attrs:{"role":"alert"}},[_vm._v(" "+_vm._s(_vm._f("trans")(_vm.flowError))+" ")]):_vm._e(),_c('flow-editor',{attrs:{"flow":_vm.activeFlow,"flow-header":"flow-builder.create-flow","sidebar":false}}),_c('div',{staticClass:"float-right"},[_c('router-link',{staticClass:"btn btn-primary",attrs:{"to":_vm.route('trees.editTree', {treeId: _vm.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'}),"event":""},nativeOn:{"click":function($event){$event.preventDefault();_vm.handlePersistFlow(_vm.route('trees.editTree', {treeId: _vm.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'}))}}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.save-and-continue'))+" ")])],1)],1)])])]):_vm._e()])}
+var NewFlowvue_type_template_id_5f6cbe4e_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/views/NewFlow.vue?vue&type=template&id=5f6cbe4e&
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createClass.js
+var createClass = __webpack_require__("bee2");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FlowEditor.vue + 24 modules
+var FlowEditor = __webpack_require__("2d9e");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/NewFlow.vue?vue&type=script&lang=ts&
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var NewFlowvue_type_script_lang_ts_flowVuexNamespace = Object(lib["c" /* namespace */])('flow');
+
+var NewFlowvue_type_script_lang_ts_NewFlow = /*#__PURE__*/function (_Vue) {
+  Object(inherits["a" /* default */])(NewFlow, _Vue);
+
+  var _super = Object(createSuper["a" /* default */])(NewFlow);
+
+  function NewFlow() {
+    var _this;
+
+    Object(classCallCheck["a" /* default */])(this, NewFlow);
+
+    _this = _super.apply(this, arguments);
+    _this.flowError = null;
+    return _this;
+  }
+
+  Object(createClass["a" /* default */])(NewFlow, [{
+    key: "handlePersistFlow",
+    value: function () {
+      var _handlePersistFlow = Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee(route) {
+        var _this2 = this;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.flowError = null;
+                this.flow_persist({
+                  //@ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
+                  persistRoute: this.route('flows.persistFlow', {
+                    flowId: this.activeFlow.uuid
+                  }),
+                  flowContainer: this.activeFlowContainer
+                }).then(function (flowContainer) {
+                  if (flowContainer) {
+                    _this2.$router.push(route);
+                  } else {
+                    _this2.flowError = 'flow-builder.problem-creating-flow'; //TODO - hook into validation system when we have it.
+                  }
+                });
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function handlePersistFlow(_x) {
+        return _handlePersistFlow.apply(this, arguments);
+      }
+
+      return handlePersistFlow;
+    }()
+  }]);
+
+  return NewFlow;
+}(external_commonjs_vue_commonjs2_vue_root_Vue_default.a);
+
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])({
+  default: function _default() {
+    return {};
+  }
+})], NewFlowvue_type_script_lang_ts_NewFlow.prototype, "appConfig", void 0);
+
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])({
+  default: function _default() {
+    return {};
+  }
+})], NewFlowvue_type_script_lang_ts_NewFlow.prototype, "builderConfig", void 0);
+
+Object(tslib_es6["__decorate"])([NewFlowvue_type_script_lang_ts_flowVuexNamespace.Action], NewFlowvue_type_script_lang_ts_NewFlow.prototype, "flow_addBlankFlow", void 0);
+
+Object(tslib_es6["__decorate"])([NewFlowvue_type_script_lang_ts_flowVuexNamespace.Action], NewFlowvue_type_script_lang_ts_NewFlow.prototype, "flow_persist", void 0);
+
+Object(tslib_es6["__decorate"])([NewFlowvue_type_script_lang_ts_flowVuexNamespace.Getter], NewFlowvue_type_script_lang_ts_NewFlow.prototype, "activeFlow", void 0);
+
+Object(tslib_es6["__decorate"])([NewFlowvue_type_script_lang_ts_flowVuexNamespace.Getter], NewFlowvue_type_script_lang_ts_NewFlow.prototype, "activeFlowContainer", void 0);
+
+Object(tslib_es6["__decorate"])([lib["b" /* Mutation */]], NewFlowvue_type_script_lang_ts_NewFlow.prototype, "configure", void 0);
+
+Object(tslib_es6["__decorate"])([lib["a" /* Getter */]], NewFlowvue_type_script_lang_ts_NewFlow.prototype, "isConfigured", void 0);
+
+NewFlowvue_type_script_lang_ts_NewFlow = Object(tslib_es6["__decorate"])([Object(vue_property_decorator["a" /* Component */])({
+  components: {
+    FlowEditor: FlowEditor["a" /* default */]
+  },
+  mixins: [lang["a" /* default */], Routes["a" /* default */]],
+  mounted: function mounted() {
+    var _this3 = this;
+
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return _this3.flow_addBlankFlow();
+
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  },
+  created: function created() {
+    var _this4 = this;
+
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      var $store;
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              $store = _this4.$store;
+              Object(lodash["forEach"])(store["a" /* store */].modules, function (v, k) {
+                return !$store.hasModule(k) && $store.registerModule(k, v);
+              });
+
+              if (!Object(lodash["isEmpty"])(_this4.appConfig) && !Object(lodash["isEmpty"])(_this4.builderConfig) || !_this4.isConfigured) {
+                _this4.configure({
+                  appConfig: _this4.appConfig,
+                  builderConfig: _this4.builderConfig
+                });
+              }
+
+            case 3:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
+  }
+})], NewFlowvue_type_script_lang_ts_NewFlow);
+/* harmony default export */ var NewFlowvue_type_script_lang_ts_ = (NewFlowvue_type_script_lang_ts_NewFlow);
+// CONCATENATED MODULE: ./src/views/NewFlow.vue?vue&type=script&lang=ts&
+ /* harmony default export */ var views_NewFlowvue_type_script_lang_ts_ = (NewFlowvue_type_script_lang_ts_); 
+// CONCATENATED MODULE: ./src/views/NewFlow.vue
+
+
+
+
+
+/* normalize component */
+
+var NewFlow_component = Object(componentNormalizer["a" /* default */])(
+  views_NewFlowvue_type_script_lang_ts_,
+  NewFlowvue_type_template_id_5f6cbe4e_render,
+  NewFlowvue_type_template_id_5f6cbe4e_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var views_NewFlow = (NewFlow_component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9ced8388-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/Home.vue?vue&type=template&id=0ca1e09a&
+var Homevue_type_template_id_0ca1e09a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"home-contents"},[_c('div',{staticClass:"d-flex h-100 text-center"},[_c('div',{staticClass:"cover-container d-flex w-100 h-100 p-3 mx-auto flex-column"},[_c('main',{staticClass:"px-3"},[_c('h1',[_vm._v("Create a new Flow")]),_c('router-link',{staticClass:"mt-3 btn btn-outline-secondary mr-2 active",attrs:{"to":_vm.route('flows.newFlow'),"title":"trans('flow-builder.create-a-new-flow')"}},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.new-flow')))]),_c('div',{staticClass:"mt-4"},[_c('h2',[_vm._v("Existing Flows")]),_vm._l((_vm.flowsList),function(flow){return _c('div',[_c('router-link',{staticClass:"mt-3 btn btn-outline-secondary mr-2 active",attrs:{"to":_vm.route('trees.editTree', {treeId: flow.uuid, component: 'interaction-designer', mode: 'edit'}),"title":"trans('flow-builder.edit-flow')"}},[_vm._v(_vm._s(flow.label || flow.uuid))])],1)})],2)],1)])])])}
+var Homevue_type_template_id_0ca1e09a_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/views/Home.vue?vue&type=template&id=0ca1e09a&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/Home.vue?vue&type=script&lang=ts&
+
+
+
+
+
+
+
+
+
+
+
+
+
+var Homevue_type_script_lang_ts_flowVuexNamespace = Object(lib["c" /* namespace */])('flow');
+
+var Homevue_type_script_lang_ts_Home = /*#__PURE__*/function (_Vue) {
+  Object(inherits["a" /* default */])(Home, _Vue);
+
+  var _super = Object(createSuper["a" /* default */])(Home);
+
+  function Home() {
+    Object(classCallCheck["a" /* default */])(this, Home);
+
+    return _super.apply(this, arguments);
+  }
+
+  return Home;
+}(external_commonjs_vue_commonjs2_vue_root_Vue_default.a);
+
+Object(tslib_es6["__decorate"])([Homevue_type_script_lang_ts_flowVuexNamespace.Getter], Homevue_type_script_lang_ts_Home.prototype, "flowsList", void 0);
+
+Object(tslib_es6["__decorate"])([lib["b" /* Mutation */]], Homevue_type_script_lang_ts_Home.prototype, "configure", void 0);
+
+Homevue_type_script_lang_ts_Home = Object(tslib_es6["__decorate"])([Object(vue_property_decorator["a" /* Component */])({
+  mixins: [lang["a" /* default */], Routes["a" /* default */]],
+  created: function created() {
+    var _this = this;
+
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var $store;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              $store = _this.$store;
+              Object(lodash["forEach"])(store["a" /* store */].modules, function (v, k) {
+                return !$store.hasModule(k) && $store.registerModule(k, v);
+              });
+
+              _this.configure({});
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  }
+})], Homevue_type_script_lang_ts_Home);
+/* harmony default export */ var Homevue_type_script_lang_ts_ = (Homevue_type_script_lang_ts_Home);
+// CONCATENATED MODULE: ./src/views/Home.vue?vue&type=script&lang=ts&
+ /* harmony default export */ var views_Homevue_type_script_lang_ts_ = (Homevue_type_script_lang_ts_); 
+// CONCATENATED MODULE: ./src/views/Home.vue
+
+
+
+
+
+/* normalize component */
+
+var Home_component = Object(componentNormalizer["a" /* default */])(
+  views_Homevue_type_script_lang_ts_,
+  Homevue_type_template_id_0ca1e09a_render,
+  Homevue_type_template_id_0ca1e09a_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var views_Home = (Home_component.exports);
 // CONCATENATED MODULE: ./src/lib.ts
+
+
+
 
 
 
@@ -91853,17 +92397,23 @@ var component = Object(componentNormalizer["a" /* default */])(
 var appConfig = __webpack_require__("8c90");
 var builderConfig = __webpack_require__("c5aa");
 var lib_InteractionDesigner = InteractionDesigner;
+var lib_FetchFlow = views_FetchFlow;
+var lib_NewFlow = views_NewFlow;
+var lib_Home = views_Home;
 var Components = {
-  InteractionDesignerComponent: InteractionDesigner
+  InteractionDesignerComponent: InteractionDesigner,
+  FetchFlowComponent: views_FetchFlow,
+  NewFlowComponent: views_NewFlow,
+  HomeComponent: views_Home
 };
 Object.keys(Components).forEach(function (name) {
   external_commonjs_vue_commonjs2_vue_root_Vue_default.a.component(name, Components[name]);
 });
-/* harmony default export */ var lib = (Components);
+/* harmony default export */ var src_lib = (Components);
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
 
 
-/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (lib);
+/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (src_lib);
 
 
 
