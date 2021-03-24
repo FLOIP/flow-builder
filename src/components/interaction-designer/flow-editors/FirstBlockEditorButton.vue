@@ -22,7 +22,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
-import { IFlow } from '@floip/flow-runner'
+import { IBlock, IFlow } from '@floip/flow-runner'
 import lang from '@/lib/filters/lang'
 import { namespace } from 'vuex-class'
 
@@ -42,12 +42,12 @@ class FirstBlockEditorButton extends Vue {
       return this.blockId === this.flow.firstBlockId
     }
 
-    setStartBlock(event) {
+    setStartBlock(event: any) {
       const { flow: { uuid: flowId }, blockId } = this
       this.flow_setFirstBlockId({ flowId, blockId })
     }
 
-    @flowVuexNamespace.Mutation flow_setFirstBlockId!: ({ flowId, blockId }: {flowId: string; blockId: string}) => void
+    @flowVuexNamespace.Mutation flow_setFirstBlockId!: ({ flowId, blockId }: {flowId: IFlow['uuid']; blockId: IBlock['uuid']}) => void
   }
 export default FirstBlockEditorButton
 </script>

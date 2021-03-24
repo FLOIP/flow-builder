@@ -29,6 +29,7 @@ import FlowLabelEditor from './LabelEditor.vue'
 import FlowInteractionTimeoutEditor from './InteractionTimeoutEditor.vue'
 import FlowLanguagesEditor from './LanguagesEditor.vue'
 import FlowModesEditor from './ModesEditor.vue'
+import { ILanguage, SupportedMode } from "@floip/flow-runner/src/index";
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -46,19 +47,19 @@ const builderVuexNamespace = namespace('builder')
 class FlowEditor extends Vue {
     @Prop() readonly flow!: IFlow
 
-    updateFlowLanguages(value) {
+    updateFlowLanguages(value: ILanguage[] | ILanguage) {
       this.flow_setLanguages({ flowId: this.flow.uuid, value })
     }
 
-    updateFlowModes(value) {
+    updateFlowModes(value: SupportedMode[] | SupportedMode) {
       this.flow_setSupportedMode({ flowId: this.flow.uuid, value })
     }
 
-    @flowVuexNamespace.Mutation flow_setLanguages
+  @flowVuexNamespace.Mutation flow_setLanguages: any
 
-    @flowVuexNamespace.Mutation flow_setSupportedMode
+  @flowVuexNamespace.Mutation flow_setSupportedMode!: any
 
-    @builderVuexNamespace.Getter isEditable
+  @builderVuexNamespace.Getter isEditable!: boolean
 }
 
 export default FlowEditor
