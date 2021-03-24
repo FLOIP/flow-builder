@@ -22,7 +22,7 @@ module.exports = {
       app.use(cookieParser())
 
       // use bodyParser for axios request
-      app.use(bodyParser.urlencoded({ extended: true }))
+      app.use(bodyParser.urlencoded({extended: true}))
       app.use(bodyParser.json())
 
       // Mock a route to mimic this upload result format:
@@ -57,7 +57,7 @@ module.exports = {
             .toString(36)
             .substr(2, 10)}`,
         }
-        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.writeHead(200, {'Content-Type': 'application/json'})
         res.end(JSON.stringify(result))
       })
 
@@ -73,7 +73,7 @@ module.exports = {
           recorder_id: `${req.body.recorder_name.replace(/[\W_]+/g, '')}-${req.body.recorder_phonenumber}`,
         }
         res.cookie(result.uuid, 'in_progress')
-        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.writeHead(200, {'Content-Type': 'application/json'})
         res.end(JSON.stringify(result))
       })
 
@@ -94,7 +94,7 @@ module.exports = {
         if (req.cookies[req.body.uuid] !== 'new') {
           res.cookie(result.uuid, 'new') // `new` status tells the UI we had successful `recorded` audio
         }
-        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.writeHead(200, {'Content-Type': 'application/json'})
         res.end(JSON.stringify(result))
       })
     },

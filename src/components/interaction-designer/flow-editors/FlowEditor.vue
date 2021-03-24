@@ -1,19 +1,15 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.edit-flow' | trans}}
+      {{ "flow-builder.edit-flow" | trans }}
     </h3>
 
     <fieldset :disabled="!isEditable">
       <flow-name-editor :flow="flow" />
       <flow-label-editor :flow="flow" />
       <flow-interaction-timeout-editor :flow="flow" />
-      <flow-languages-editor
-        :flow="flow"
-        @commitFlowLanguagesChange="updateFlowLanguages"/>
-      <flow-modes-editor
-        :flow="flow"
-        @commitFlowModesChange="updateFlowModes"/>
+      <flow-languages-editor :flow="flow" @commitFlowLanguagesChange="updateFlowLanguages" />
+      <flow-modes-editor :flow="flow" @commitFlowModesChange="updateFlowModes" />
     </fieldset>
   </div>
 </template>
@@ -44,21 +40,21 @@ const builderVuexNamespace = namespace('builder')
   mixins: [lang],
 })
 class FlowEditor extends Vue {
-    @Prop() readonly flow!: IFlow
+  @Prop() readonly flow!: IFlow;
 
-    updateFlowLanguages(value) {
-      this.flow_setLanguages({flowId: this.flow.uuid, value})
-    }
+  updateFlowLanguages(value) {
+    this.flow_setLanguages({flowId: this.flow.uuid, value})
+  }
 
-    updateFlowModes(value) {
-      this.flow_setSupportedMode({flowId: this.flow.uuid, value})
-    }
+  updateFlowModes(value) {
+    this.flow_setSupportedMode({flowId: this.flow.uuid, value})
+  }
 
-    @flowVuexNamespace.Mutation flow_setLanguages
+  @flowVuexNamespace.Mutation flow_setLanguages;
 
-    @flowVuexNamespace.Mutation flow_setSupportedMode
+  @flowVuexNamespace.Mutation flow_setSupportedMode;
 
-    @builderVuexNamespace.Getter isEditable
+  @builderVuexNamespace.Getter isEditable;
 }
 
 export default FlowEditor

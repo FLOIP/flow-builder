@@ -1,10 +1,6 @@
-import {
-  cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get,
-} from 'lodash'
+import {cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get} from 'lodash'
 import Vue from 'vue'
-import {
-  ActionTree, GetterTree, Module, MutationTree,
-} from 'vuex'
+import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, SupportedMode, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
@@ -35,7 +31,7 @@ export interface IConnectionCreateOperation {
   };
 }
 
-export type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation
+export type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation;
 
 interface IPosition {
   x: number;
@@ -69,29 +65,32 @@ export const stateFactory = (): IBuilderState => ({
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
-  activeBlock: ({activeBlockId}, {blocksById}) => (activeBlockId ? blocksById[activeBlockId] : null),
+  activeBlock: ({activeBlockId}, {blocksById}) =>
+    (activeBlockId ? blocksById[activeBlockId] : null),
 
   blocksById: (state, getters, rootState, rootGetters) => {
     const {blocks} = rootGetters['flow/activeFlow']
     return keyBy(blocks, 'uuid')
   },
 
-  nodeLabelsById: (state, getters, {flow: {flows}}, rootGetters) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
+  nodeLabelsById: (state, getters, {flow: {flows}}, rootGetters) =>
+    mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
 
-  exitLabelsById: (state, getters, {flow: {flows}}, rootGetters) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
+  exitLabelsById: (state, getters, {flow: {flows}}, rootGetters) =>
+    mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
 }
 
 export const mutations: MutationTree<IBuilderState> = {
-  activateBlock(state, {blockId}: {blockId: IBlock['uuid']}) {
+  activateBlock(state, {blockId}: { blockId: IBlock['uuid'] }) {
     state.activeBlockId = blockId
 
     // simulate engaging with specified block
     // FlowRunner.prototype.navigateTo(block, state as unknown as IContext)
   },
 
-  setOperation({operations}, {operation}: {operation: SupportedOperation}) {
+  setOperation({operations}, {operation}: { operation: SupportedOperation }) {
     // TODO - type checking - remove this ignore and fix these errors - they seem to be quite serious but I'm not sure how to resolve them
     // @ts-ignore
     operations[operation.kind] = operation
@@ -115,11 +114,15 @@ export const mutations: MutationTree<IBuilderState> = {
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
   removeConnectionFrom({commit}, {block: {uuid: blockId}, exit: {uuid: exitId}}) {
-    commit('flow/block_setBlockExitDestinationBlockId', {
-      blockId,
-      exitId,
-      destinationBlockId: undefined,
-    }, {root: true})
+    commit(
+      'flow/block_setBlockExitDestinationBlockId',
+      {
+        blockId,
+        exitId,
+        destinationBlockId: undefined,
+      },
+      {root: true},
+    )
   },
 
   // @note: multiple connections can lead to same node, so it doesn't make sense to do a swap here; we'll be "appending"
@@ -130,11 +133,10 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
   // todo: do operations warrant their own store? Maybe a generic store that handles a common behaviour
 
-  initializeConnectionSourceRelocateWith({commit}, {
-    block: {uuid: blockId},
-    exit: {uuid: exitId},
-    position,
-  }) {
+  initializeConnectionSourceRelocateWith(
+    {commit},
+    {block: {uuid: blockId}, exit: {uuid: exitId}, position},
+  ) {
     // this would be a flight-monitor create(key)
     const operation: IConnectionSourceRelocateOperation = {
       kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
@@ -143,10 +145,15 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     commit('setOperation', {operation})
   },
 
-  setConnectionSourceRelocateValue({commit, state}, {block: {uuid: blockId}, exit: {uuid: exitId}}) {
+  setConnectionSourceRelocateValue(
+    {commit, state},
+    {block: {uuid: blockId}, exit: {uuid: exitId}},
+  ) {
     const {data} = state.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
     if (!data) {
-      throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
+      throw new ValidationException(
+        `Unable to modify uninitialized operation: ${JSON.stringify(data)}`,
+      )
     }
 
     const {from, position} = data
@@ -157,10 +164,15 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     commit('setOperation', {operation})
   },
 
-  setConnectionSourceRelocateValueToNullFrom({commit, state}, {block: {uuid: blockId}, exit: {uuid: exitId}}) {
+  setConnectionSourceRelocateValueToNullFrom(
+    {commit, state},
+    {block: {uuid: blockId}, exit: {uuid: exitId}},
+  ) {
     const {data} = state.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
     if (!data) {
-      throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
+      throw new ValidationException(
+        `Unable to modify uninitialized operation: ${JSON.stringify(data)}`,
+      )
     }
 
     const {from, to, position} = data
@@ -178,7 +190,9 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   applyConnectionSourceRelocate({dispatch, commit, state: {operations}}) {
     const {data} = operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
     if (!data) {
-      throw new ValidationException(`Unable to complete uninitialized operation: ${JSON.stringify(data)}`)
+      throw new ValidationException(
+        `Unable to complete uninitialized operation: ${JSON.stringify(data)}`,
+      )
     }
 
     const {from: first, to: second} = data
@@ -195,13 +209,14 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   // [OperationKind.CONNECTION_CREATE] //////////////////////////////////////////////////////////////
   /// ////////////////////////////////////////////////////////////////////////////////////////////////
 
-  initializeConnectionCreateWith({commit}, {
-    block: {uuid: blockId},
-    exit: {uuid: exitId},
-    position,
-  }) {
+  initializeConnectionCreateWith(
+    {commit},
+    {block: {uuid: blockId}, exit: {uuid: exitId}, position},
+  ) {
     if (!blockId || !exitId) {
-      throw new ValidationException(`Unable to create connection without source: ${JSON.stringify({blockId, exitId})}`)
+      throw new ValidationException(
+        `Unable to create connection without source: ${JSON.stringify({blockId, exitId})}`,
+      )
     }
 
     const operation: IConnectionCreateOperation = {
@@ -215,7 +230,9 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   setConnectionCreateTargetBlock({commit, state}, {block}) {
     const {data} = state.operations[OperationKind.CONNECTION_CREATE]
     if (!data) {
-      throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
+      throw new ValidationException(
+        `Unable to modify uninitialized operation: ${JSON.stringify(data)}`,
+      )
     }
 
     const {source, position} = data
@@ -230,7 +247,9 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   setConnectionCreateTargetBlockToNullFrom({commit, state}, {block}) {
     const {data} = state.operations[OperationKind.CONNECTION_CREATE]
     if (!data) {
-      throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
+      throw new ValidationException(
+        `Unable to modify uninitialized operation: ${JSON.stringify(data)}`,
+      )
     }
 
     const {source, target, position} = data
@@ -249,7 +268,9 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   applyConnectionCreate({dispatch, commit, state: {operations}}) {
     const {data} = operations[OperationKind.CONNECTION_CREATE]
     if (!data) {
-      throw new ValidationException(`Unable to complete uninitialized operation: ${JSON.stringify(data)}`)
+      throw new ValidationException(
+        `Unable to complete uninitialized operation: ${JSON.stringify(data)}`,
+      )
     }
 
     const {
@@ -257,9 +278,16 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
       target: destinationBlockId,
     } = data
 
-    commit('flow/block_setBlockExitDestinationBlockId', {blockId, exitId, destinationBlockId}, {root: true})
+    commit(
+      'flow/block_setBlockExitDestinationBlockId',
+      {blockId, exitId, destinationBlockId},
+      {root: true},
+    )
 
-    const operation: IConnectionCreateOperation = {kind: OperationKind.CONNECTION_CREATE, data: null}
+    const operation: IConnectionCreateOperation = {
+      kind: OperationKind.CONNECTION_CREATE,
+      data: null,
+    }
     commit('setOperation', {operation})
   },
 
@@ -285,17 +313,11 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    * @param rootState
    * @param flows
    */
-  async importFlowsAndResources({
-    dispatch, commit, state, rootState,
-  }, {flows, resources}) {
+  async importFlowsAndResources({dispatch, commit, state, rootState}, {flows, resources}) {
     console.debug('importing flows & resources ...')
     console.log({flows, resources})
     const {flow: flowState} = rootState
-    const defaultSupportedMode = [
-      SupportedMode.IVR,
-      SupportedMode.SMS,
-      SupportedMode.USSD,
-    ]
+    const defaultSupportedMode = [SupportedMode.IVR, SupportedMode.SMS, SupportedMode.USSD]
 
     // add default activated modes if not set yet
     for (const key in flows) {
@@ -315,21 +337,20 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     rootState.trees.ui.languages = flows[0].languages
   },
 
-  async loadFlow({
-    dispatch, commit, state, rootState,
-  }) {
+  async loadFlow({dispatch, commit, state, rootState}) {
     console.debug('builder', 'loading flow...')
 
     // todo: we need something like: set context
     const flowContext = require('./blank-flow.json')
     const flow = flowContext.flows[0]
-    flow.uuid = (new IdGeneratorUuidV4()).generate()
+    flow.uuid = new IdGeneratorUuidV4().generate()
     flow.lastModified = createFormattedDate()
     // TODO - type checking - remove this and resolve the error
     // @ts-ignore
     flow.languages = cloneDeep(rootState.trees.ui.languages)
 
-    flowContext.resources.forEach((resource: any) => commit('flow/resource_add', {resource}, {root: true}))
+    flowContext.resources.forEach((resource: any) =>
+      commit('flow/resource_add', {resource}, {root: true}))
 
     await dispatch('flow/flow_add', {flow}, {root: true})
 
@@ -356,7 +377,8 @@ export function createDefaultBlockTypeInstallerFor(
   blockType: IBlock['type'],
   storeForBlockType: Module<any, IRootState>,
 ) {
-  return (builder: Vue) => builder.$store.hasModule(['flow', blockType])
+  return (builder: Vue) =>
+    builder.$store.hasModule(['flow', blockType])
     || builder.$store.registerModule(['flow', blockType], storeForBlockType)
 }
 
@@ -364,8 +386,14 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
-    [get(source, 'platform_metadata.io_viamo.uiData.xPosition'), get(source, 'platform_metadata.io_viamo.uiData.yPosition')],
-    [get(target, 'platform_metadata.io_viamo.uiData.xPosition'), get(target, 'platform_metadata.io_viamo.uiData.yPosition')],
+    [
+      get(source, 'platform_metadata.io_viamo.uiData.xPosition'),
+      get(source, 'platform_metadata.io_viamo.uiData.yPosition'),
+    ],
+    [
+      get(target, 'platform_metadata.io_viamo.uiData.xPosition'),
+      get(target, 'platform_metadata.io_viamo.uiData.yPosition'),
+    ],
 
     // block titles
     source.label,
@@ -378,8 +406,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
 }
 
 export function computeBlockPositionsFrom(block: IBlock | null) {
-  const xDelta = 80; const
-    yDelta = 80
+  const xDelta = 80
+  const yDelta = 80
 
   let xPosition = get(block, 'platform_metadata.io_viamo.uiData.xPosition')
   let yPosition = get(block, 'platform_metadata.io_viamo.uiData.yPosition')

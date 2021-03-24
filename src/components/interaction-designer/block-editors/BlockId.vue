@@ -1,6 +1,8 @@
 <template>
   <div class="text-right">
-    <small class="text-muted">{{'flow-builder.block-id' | trans}}: <em>{{blockId}}</em></small>
+    <small class="text-muted"
+      >{{ "flow-builder.block-id" | trans }}: <em>{{ blockId }}</em></small
+    >
   </div>
 </template>
 
@@ -10,16 +12,16 @@ import {IBlock} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
 import lang from '@/lib/filters/lang'
 
-  @Component<any>({
-    mixins: [lang],
-  })
+@Component<any>({
+  mixins: [lang],
+})
 class BlockId extends Vue {
-    @Prop()readonly block!: IBlock
+  @Prop() readonly block!: IBlock;
 
-    get blockId(): string {
-      return this.block.uuid || ''
-    }
+  get blockId(): string {
+    return this.block.uuid || ''
   }
+}
 
 export default BlockId
 </script>

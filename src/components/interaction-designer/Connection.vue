@@ -1,6 +1,5 @@
 <template>
-  <span class="connection"
-        :reposition-hook="repositionHook" />
+  <span class="connection" :reposition-hook="repositionHook" />
 </template>
 
 <script>
@@ -32,9 +31,10 @@ export default {
     ...mapGetters('builder', ['blocksById']),
 
     sourceId: ({exit}) => `exit/${exit.uuid}/handle`,
-    targetId: ({exit}) => (exit.destinationBlock
-      ? `block/${exit.destinationBlock}/handle`
-      : `exit/${exit.uuid}/pseudo-block-handle`),
+    targetId: ({exit}) =>
+      (exit.destinationBlock
+        ? `block/${exit.destinationBlock}/handle`
+        : `exit/${exit.uuid}/pseudo-block-handle`),
 
     // todo: externalize as `positionCacheKey` + deprecate `position` prop
     //       but rather include that in `positionCacheKey`'s domain definition
@@ -58,8 +58,7 @@ export default {
         ...set({}, 'platform_metadata.io_viamo.uiData.yPosition', this.position.y),
       }
 
-      return this.repaintCacheKeyGenerator(source, target)
-        .join('\n')
+      return this.repaintCacheKeyGenerator(source, target).join('\n')
     },
   },
 
@@ -133,7 +132,6 @@ export default {
         fontSize: 12,
         // lineOffset: 65,
       }),
-
     }
 
     // const {sourcePosition, targetPosition} = this

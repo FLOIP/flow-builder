@@ -1,8 +1,10 @@
 <template>
   <div>
-    <text-editor v-model="semanticLabel"
-        :label="'flow-builder.block-semantic-label' | trans"
-        :placeholder="'flow-builder.enter-block-semantic-label' | trans"/>
+    <text-editor
+      v-model="semanticLabel"
+      :label="'flow-builder.block-semantic-label' | trans"
+      :placeholder="'flow-builder.enter-block-semantic-label' | trans"
+    />
   </div>
 </template>
 
@@ -37,5 +39,4 @@ export default {
     ...mapMutations('flow', ['block_setSemanticLabel']),
   },
 }
-
 </script>

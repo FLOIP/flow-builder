@@ -1,9 +1,10 @@
 <template>
   <div v-if="isFeatureCallToRecordEnabled" class="phone-recorder">
     <phone-recording-recorder-selector
-        v-model="callConfig"
-        @input="handleRecorderSelectionChanged"
-        :isModalVisible="isRecorderSelectorVisible"/>
+      v-model="callConfig"
+      @input="handleRecorderSelectionChanged"
+      :isModalVisible="isRecorderSelectorVisible"
+    />
   </div>
 </template>
 
@@ -29,7 +30,11 @@ export default {
   computed: {
     ...mapState({
       // todo: deprecate (this + setAudioRecordingConfigVisibilityForSelectedBlock) in favor of modal + local state
-      isRecorderSelectorVisible: ({audio: {recording: {isRecorderSelectorVisible}}}) => isRecorderSelectorVisible,
+      isRecorderSelectorVisible: ({
+        audio: {
+          recording: {isRecorderSelectorVisible},
+        },
+      }) => isRecorderSelectorVisible,
     }),
 
     ...mapGetters(['isFeatureCallToRecordEnabled']),

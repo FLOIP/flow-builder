@@ -2,12 +2,14 @@
   <div class="flow-editor exit-block-editor-toggle">
     <template v-if="isEditable && hasClipboard">
       <div class="form-group">
-        <button type="button"
-            class="btn btn-secondary btn-sm"
-            :class="{active: isExitBlock}"
-            @click="toggleExitBlock">
-          <template v-if="isExitBlock">{{'flow-builder.unset-as-exit-block' | trans}}</template>
-          <template v-else>{{'flow-builder.set-as-exit-block' | trans}}</template>
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm"
+          :class="{ active: isExitBlock }"
+          @click="toggleExitBlock"
+        >
+          <template v-if="isExitBlock">{{ "flow-builder.unset-as-exit-block" | trans }}</template>
+          <template v-else>{{ "flow-builder.set-as-exit-block" | trans }}</template>
         </button>
       </div>
     </template>

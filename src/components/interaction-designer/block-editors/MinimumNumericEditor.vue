@@ -1,9 +1,11 @@
 <template>
   <div class="form-group block-validation-min">
-    <numeric-editor v-model.number="minValue"
-        :regex-numeric-filtering="'[0-9]'"
-        :label="'flow-builder.minimum-value-(inclusive)' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+    <numeric-editor
+      v-model.number="minValue"
+      :regex-numeric-filtering="'[0-9]'"
+      :label="'flow-builder.minimum-value-(inclusive)' | trans"
+      :placeholder="'flow-builder.enter-value' | trans"
+    >
     </numeric-editor>
   </div>
 </template>

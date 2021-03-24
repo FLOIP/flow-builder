@@ -1,9 +1,11 @@
 <template>
   <div v-if="hasIvr" class="form-group block-max-duration-seconds">
-    <numeric-editor v-model.number="duration"
-        :regex-numeric-filtering="'[0-9]'"
-        :label="'flow-builder.max-duration-in-seconds' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+    <numeric-editor
+      v-model.number="duration"
+      :regex-numeric-filtering="'[0-9]'"
+      :label="'flow-builder.max-duration-in-seconds' | trans"
+      :placeholder="'flow-builder.enter-value' | trans"
+    >
     </numeric-editor>
   </div>
 </template>

@@ -1,24 +1,24 @@
 <template>
   <div class="float-editor">
-    <label>{{label}}</label>
+    <label>{{ label }}</label>
     <div>
       <input
-          type="number"
-          :min="min"
-          class="form-control"
-          :placeholder="placeholder"
-          :value="value"
-          :step="step"
-          @keypress="filterFloat"
-          @keydown="$emit('keydown', $event)"
-          @input="$emit('input', $event.target.value)"
+        type="number"
+        :min="min"
+        class="form-control"
+        :placeholder="placeholder"
+        :value="value"
+        :step="step"
+        @keypress="filterFloat"
+        @keydown="$emit('keydown', $event)"
+        @input="$emit('input', $event.target.value)"
       />
     </div>
 
-<!--    <p v-else>-->
-<!--      {{value}}-->
-<!--    </p>-->
-    <slot/>
+    <!--    <p v-else>-->
+    <!--      {{value}}-->
+    <!--    </p>-->
+    <slot />
   </div>
 </template>
 

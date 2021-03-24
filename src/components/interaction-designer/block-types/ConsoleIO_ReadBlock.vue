@@ -1,7 +1,9 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
+      {{
+        "flow-builder.edit-block-type" | trans({ block_type: trans(`flow-builder.${block.type}`) })
+      }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -10,20 +12,22 @@
       <block-semantic-label-editor :block="block" />
 
       <!--Specific config-->
-      <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString"/>
+      <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString" />
 
-      <div v-for="(variableStringFormat,i) in destinationVariablesFields"
-           class="form-group form-inline">
-        <text-editor :label="i+1"
-            :placeholder="'flow-builder.edit-variable' | trans"
-            value=""
-            @keydown="filterVariableName"
-            @input="updatedestinationVariables($event, i)"/>
+      <div
+        v-for="(variableStringFormat, i) in destinationVariablesFields"
+        class="form-group form-inline"
+      >
+        <text-editor
+          :label="i + 1"
+          :placeholder="'flow-builder.edit-variable' | trans"
+          value=""
+          @keydown="filterVariableName"
+          @input="updatedestinationVariables($event, i)"
+        />
       </div>
 
-      <first-block-editor-button
-          :flow="flow"
-          :block-id="block.uuid" />
+      <first-block-editor-button :flow="flow" :block-id="block.uuid" />
     </fieldset>
 
     <block-id :block="block" />
@@ -52,45 +56,45 @@ import BlockId from '../block-editors/BlockId.vue'
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      BlockFormatStringEditor,
-      FirstBlockEditorButton,
-      TextEditor,
-      BlockId,
-    },
-    mixins: [lang],
-  })
+@Component<any>({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    BlockFormatStringEditor,
+    FirstBlockEditorButton,
+    TextEditor,
+    BlockId,
+  },
+  mixins: [lang],
+})
 class ConsoleIO_ReadBlock extends Vue {
-    @Prop()readonly block!: IReadBlock
+  @Prop() readonly block!: IReadBlock;
 
-    @Prop()readonly flow!: IFlow
+  @Prop() readonly flow!: IFlow;
 
-    filterVariableName(e) {
-      if (e.key.match(/\W+|Enter/g)) {
-        e.preventDefault()
-      }
+  filterVariableName(e) {
+    if (e.key.match(/\W+|Enter/g)) {
+      e.preventDefault()
     }
-
-    updatedestinationVariables(value, i) {
-      this.editDestinationVariable({variableName: value, keyIndex: i})
-    }
-
-    @blockVuexNamespace.Action setFormatString!: (newFormatString: string) => Promise<string>
-
-    @blockVuexNamespace.Action editDestinationVariable!: ({
-      variableName: string,
-      keyIndex: number,
-    }) => Promise<string>
-
-    @blockVuexNamespace.Getter destinationVariablesFields!: () => Promise<string[]>
-
-    @builderVuexNamespace.Getter isEditable !: boolean
   }
+
+  updatedestinationVariables(value, i) {
+    this.editDestinationVariable({variableName: value, keyIndex: i})
+  }
+
+  @blockVuexNamespace.Action setFormatString!: (newFormatString: string) => Promise<string>;
+
+  @blockVuexNamespace.Action editDestinationVariable!: ({
+    variableName: string,
+    keyIndex: number,
+  }) => Promise<string>;
+
+  @blockVuexNamespace.Getter destinationVariablesFields!: () => Promise<string[]>;
+
+  @builderVuexNamespace.Getter isEditable!: boolean;
+}
 
 export default ConsoleIO_ReadBlock
 export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, ReadStore)

@@ -1,13 +1,14 @@
 <template>
   <div class="form-group">
-    <label>{{label}}</label>
+    <label>{{ label }}</label>
     <textarea
-        class="form-control"
-        :placeholder="placeholder"
-        :value="value"
-        @keydown="$emit('keydown', $event)"
-        @input="$emit('input', $event.target.value)"/>
-    <slot/>
+      class="form-control"
+      :placeholder="placeholder"
+      :value="value"
+      @keydown="$emit('keydown', $event)"
+      @input="$emit('input', $event.target.value)"
+    />
+    <slot />
   </div>
 </template>
 

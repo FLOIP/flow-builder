@@ -1,8 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {
-  IBlockExit,
-} from '@floip/flow-runner'
+import {IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
 import {defaults} from 'lodash'
@@ -17,13 +15,17 @@ export const mutations: MutationTree<IFlowsState> = {}
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async setMaxDurationSeconds({commit, rootGetters}, newDuration: number) {
     const activeBlock = rootGetters['builder/activeBlock']
-    commit('flow/block_updateConfigByKey', {
-      blockId: activeBlock.uuid,
-      key: 'ivr',
-      value: {
-        maxDurationSeconds: newDuration,
+    commit(
+      'flow/block_updateConfigByKey',
+      {
+        blockId: activeBlock.uuid,
+        key: 'ivr',
+        value: {
+          maxDurationSeconds: newDuration,
+        },
       },
-    }, {root: true})
+      {root: true},
+    )
     return newDuration
   },
   async setMaxResponseCharacters({commit, rootGetters}, newLength: number) {
@@ -31,32 +33,51 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const value = {
       maxResponseCharacters: newLength,
     }
-    commit('flow/block_updateConfigByKey', {
-      blockId: activeBlock.uuid,
-      key: 'text',
-      value,
-    }, {root: true})
+    commit(
+      'flow/block_updateConfigByKey',
+      {
+        blockId: activeBlock.uuid,
+        key: 'text',
+        value,
+      },
+      {root: true},
+    )
     return value
   },
-  async createWith({rootGetters, dispatch, commit}, {props}: {props: {uuid: string} & Partial<IOpenResponseBlock>}) {
+  async createWith(
+    {rootGetters, dispatch, commit},
+    {props}: { props: { uuid: string } & Partial<IOpenResponseBlock> },
+  ) {
     const exits: IBlockExit[] = [
-      await dispatch('flow/block_createBlockDefaultExitWith', {
-        props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
-          tag: 'Default',
-          label: 'Default',
-        }) as IBlockExit,
-      }, {root: true}),
-      await dispatch('flow/block_createBlockExitWith', {
-        props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
-          tag: 'Error',
-          label: 'Error',
-        }) as IBlockExit,
-      }, {root: true}),
+      await dispatch(
+        'flow/block_createBlockDefaultExitWith',
+        {
+          props: {
+            uuid: new IdGeneratorUuidV4().generate(),
+            tag: 'Default',
+            label: 'Default',
+          } as IBlockExit,
+        },
+        {root: true},
+      ),
+      await dispatch(
+        'flow/block_createBlockExitWith',
+        {
+          props: {
+            uuid: new IdGeneratorUuidV4().generate(),
+            tag: 'Error',
+            label: 'Error',
+          } as IBlockExit,
+        },
+        {root: true},
+      ),
     ]
 
-    const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
+    const blankResource = await dispatch(
+      'flow/flow_addBlankResourceForEnabledModesAndLangs',
+      null,
+      {root: true},
+    )
     commit('flow/resource_add', {resource: blankResource}, {root: true})
 
     return defaults(props, {

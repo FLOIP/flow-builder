@@ -389,7 +389,12 @@ export default {
   },
 
   actions: {
-    initializeTreeModel({dispatch, state: {ui: {isTreeImport}}}) {
+    initializeTreeModel({
+      dispatch,
+      state: {
+        ui: {isTreeImport},
+      },
+    }) {
       require('./10-trees-model')
       // todo: this is also included via `../public/dist/js/legacy/trees` on tree-builder
       //       but we don't include that beast in storybook b/c of global dependency hierarchy
@@ -472,7 +477,11 @@ export default {
       console.log('app.ui.change [via vuex.trees.uiChanged]', msg)
     },
 
-    async attemptSaveTree({dispatch, getters: {hasChanges, isFeatureTreeSaveEnabled}, state: {ui}}) {
+    async attemptSaveTree({
+      dispatch,
+      getters: {hasChanges, isFeatureTreeSaveEnabled},
+      state: {ui},
+    }) {
       if (!ui.isEditable || !hasChanges) {
         console.info('trees', 'Decided against unnecessary tree save!')
         return // non-promise response implies no in-flight request -- aka no-op.
@@ -727,7 +736,9 @@ export default {
       app.ui.lockConnections = 0
 
       // once in vuejs, can we'll be able to just do a [dis]connect via connections diff
-      const handleDragStop = dispatch.bind(null, 'discoverTallestBlockForDesignerWorkspaceHeight', {aboveTallest: true})
+      const handleDragStop = dispatch.bind(null, 'discoverTallestBlockForDesignerWorkspaceHeight', {
+        aboveTallest: true,
+      })
       // app.jsPlumb.resetBindings(app.tree.get('connections'), true, selectedBlockKey, handleDragStop)
 
       app.ui.change('Changed number of block connections.')
@@ -852,10 +863,18 @@ export default {
 		 | multi  + replace    | 0             | 0            | 0         |
 		 ---------------------------------------------------------------- */
     commitBatchMatchAudioFile(
-      {commit, dispatch, state: {tree: {blocks}}},
+      {
+        commit,
+        dispatch,
+        state: {
+          tree: {blocks},
+        },
+      },
       {jsKey, langId, matches, replaceExisting},
     ) {
-      const {audioFiles: {[langId]: audioFile}} = lodash.find(blocks, {jsKey})
+      const {
+        audioFiles: {[langId]: audioFile},
+      } = lodash.find(blocks, {jsKey})
       const hasSelection = !!audioFile
       const isMulti = lodash.get(matches, 'length', 0) > 1
       const match = lodash.get(matches, 0, null)

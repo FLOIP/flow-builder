@@ -12,13 +12,13 @@ export default {
 
   mounted() {
     const
-      { $el: el } = this
+      {$el: el} = this
     const methods = lodash.pick(this, Object.keys(this.$options.methods))
     const events = {
       ...this.legacyBlockEvents,
       ...this.events,
     }
-    const BBEventProxy = Backbone.View.extend({ el, events, ...methods })
+    const BBEventProxy = Backbone.View.extend({el, events, ...methods})
 
     this.legacyDomEventProxy = new BBEventProxy()
   },

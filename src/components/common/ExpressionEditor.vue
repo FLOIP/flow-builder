@@ -1,7 +1,5 @@
 <template>
-  <text-editor v-model="expression"
-      :label="label"
-      :placeholder="placeholder"/>
+  <text-editor v-model="expression" :label="label" :placeholder="placeholder" />
 </template>
 
 <script>

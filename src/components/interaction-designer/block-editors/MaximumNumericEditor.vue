@@ -1,9 +1,11 @@
 <template>
   <div class="form-group block-validation-max">
-    <numeric-editor v-model.number="maxValue"
-        :regex-numeric-filtering="'[0-9]'"
-        :label="'flow-builder.maximum-value-(inclusive)' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+    <numeric-editor
+      v-model.number="maxValue"
+      :regex-numeric-filtering="'[0-9]'"
+      :label="'flow-builder.maximum-value-(inclusive)' | trans"
+      :placeholder="'flow-builder.enter-value' | trans"
+    >
     </numeric-editor>
   </div>
 </template>

@@ -1,7 +1,9 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
+      {{
+        "flow-builder.edit-block-type" | trans({ block_type: trans(`flow-builder.${block.type}`) })
+      }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -9,17 +11,25 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <block-max-duration-seconds-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
-      <block-max-response-characters-editor :block="block" :hasText="hasTextMode" @commitMaxResponseCharactersChange="setMaxResponseCharacters"/>
+      <block-max-duration-seconds-editor
+        :block="block"
+        :hasIvr="hasVoiceMode"
+        @commitMaxDurationChange="setMaxDurationSeconds"
+      />
+      <block-max-response-characters-editor
+        :block="block"
+        :hasText="hasTextMode"
+        @commitMaxResponseCharactersChange="setMaxResponseCharacters"
+      />
 
-      <resource-editor v-if="promptResource"
-                       :resource="promptResource"
-                       :block="block"
-                       :flow="flow" />
+      <resource-editor
+        v-if="promptResource"
+        :resource="promptResource"
+        :block="block"
+        :flow="flow"
+      />
 
-      <first-block-editor-button
-          :flow="flow"
-          :block-id="block.uuid" />
+      <first-block-editor-button :flow="flow" :block-id="block.uuid" />
     </fieldset>
 
     <block-id :block="block" />
@@ -33,11 +43,11 @@ import {Component, Prop} from 'vue-property-decorator'
 
 import {IBlockExit, IFlow} from '@floip/flow-runner'
 import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
-import {
-  IResourceDefinition,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
+import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 
-import OpenResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
+import OpenResponseStore, {
+  BLOCK_TYPE,
+} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
 import lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
@@ -53,40 +63,40 @@ const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-      BlockMaxDurationSecondsEditor,
-      BlockMaxResponseCharactersEditor,
-    },
-    mixins: [lang],
-  })
+@Component<any>({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+    BlockMaxDurationSecondsEditor,
+    BlockMaxResponseCharactersEditor,
+  },
+  mixins: [lang],
+})
 class MobilePrimitives_OpenResponseBlock extends Vue {
-    @Prop()readonly block!: IOpenResponseBlock
+  @Prop() readonly block!: IOpenResponseBlock;
 
-    @Prop()readonly flow!: IFlow
+  @Prop() readonly flow!: IFlow;
 
-    get promptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.prompt]
-    }
-
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
-
-    @flowVuexNamespace.Getter hasTextMode
-
-    @flowVuexNamespace.Getter hasVoiceMode
-
-    @blockVuexNamespace.Action setMaxDurationSeconds!: (newDuration: number) => Promise<string>
-
-    @blockVuexNamespace.Action setMaxResponseCharacters!: (newLength: number) => Promise<string>
-
-    @builderVuexNamespace.Getter isEditable !: boolean
+  get promptResource(): IResourceDefinition {
+    return this.resourcesByUuid[this.block.config.prompt]
   }
+
+  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResourceDefinition };
+
+  @flowVuexNamespace.Getter hasTextMode;
+
+  @flowVuexNamespace.Getter hasVoiceMode;
+
+  @blockVuexNamespace.Action setMaxDurationSeconds!: (newDuration: number) => Promise<string>;
+
+  @blockVuexNamespace.Action setMaxResponseCharacters!: (newLength: number) => Promise<string>;
+
+  @builderVuexNamespace.Getter isEditable!: boolean;
+}
 
 export default MobilePrimitives_OpenResponseBlock
 export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, OpenResponseStore)

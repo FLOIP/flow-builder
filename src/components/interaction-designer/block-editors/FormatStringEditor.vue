@@ -1,8 +1,10 @@
 <template>
   <div>
-    <text-editor v-model="formatString"
-        :label="'flow-builder.format-string' | trans"
-        :placeholder="'flow-builder.enter-format-string' | trans"/>
+    <text-editor
+      v-model="formatString"
+      :label="'flow-builder.format-string' | trans"
+      :placeholder="'flow-builder.enter-format-string' | trans"
+    />
   </div>
 </template>
 

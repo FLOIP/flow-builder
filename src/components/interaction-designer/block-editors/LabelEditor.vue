@@ -1,8 +1,10 @@
 <template>
   <div>
-    <text-editor v-model="label"
-        :label="'flow-builder.block-label' | trans"
-        :placeholder="'flow-builder.enter-block-label' | trans"/>
+    <text-editor
+      v-model="label"
+      :label="'flow-builder.block-label' | trans"
+      :placeholder="'flow-builder.enter-block-label' | trans"
+    />
   </div>
 </template>
 

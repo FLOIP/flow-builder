@@ -1,7 +1,9 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
+      {{
+        "flow-builder.edit-block-type" | trans({ block_type: trans(`flow-builder.${block.type}`) })
+      }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -9,14 +11,14 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <resource-editor v-if="promptResource"
-                       :resource="promptResource"
-                       :block="block"
-                       :flow="flow" />
+      <resource-editor
+        v-if="promptResource"
+        :resource="promptResource"
+        :block="block"
+        :flow="flow"
+      />
 
-      <first-block-editor-button
-          :flow="flow"
-          :block-id="block.uuid" />
+      <first-block-editor-button :flow="flow" :block-id="block.uuid" />
     </fieldset>
 
     <block-id :block="block" />
@@ -45,30 +47,30 @@ import BlockId from '../block-editors/BlockId.vue'
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-    },
-    mixins: [lang],
-  })
+@Component<any>({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+  },
+  mixins: [lang],
+})
 class ConsoleIO_PrintBlock extends Vue {
-    @Prop()readonly block!: IPrintBlock
+  @Prop() readonly block!: IPrintBlock;
 
-    @Prop()readonly flow!: IFlow
+  @Prop() readonly flow!: IFlow;
 
-    get promptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.message]
-    }
-
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
-
-    @builderVuexNamespace.Getter isEditable !: boolean
+  get promptResource(): IResourceDefinition {
+    return this.resourcesByUuid[this.block.config.message]
   }
+
+  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResourceDefinition };
+
+  @builderVuexNamespace.Getter isEditable!: boolean;
+}
 
 export default ConsoleIO_PrintBlock
 export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, PrintStore)

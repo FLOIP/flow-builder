@@ -1,10 +1,12 @@
 <template>
   <div class="form-group block-threshold">
-    <float-editor v-model.number="threshold"
-        :min="0"
-        :regex-float-filtering="'[0-9.,]'"
-        :label="'flow-builder.accuracy-threshold-in-meters' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+    <float-editor
+      v-model.number="threshold"
+      :min="0"
+      :regex-float-filtering="'[0-9.,]'"
+      :label="'flow-builder.accuracy-threshold-in-meters' | trans"
+      :placeholder="'flow-builder.enter-value' | trans"
+    >
     </float-editor>
   </div>
 </template>

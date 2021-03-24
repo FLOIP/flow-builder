@@ -45,7 +45,7 @@
 
 <script>
 import lang from '@/lib/filters/lang'
-import lodash, { forEach, invoke } from 'lodash'
+import lodash, {forEach, invoke} from 'lodash'
 import Vue from 'vue'
 import {
   mapActions, mapGetters, mapMutations, mapState,
@@ -56,7 +56,7 @@ import {
 // import * as BlockTypes from './block-types'
 // import JsPlumbBlock from './JsPlumbBlock'
 
-import { store } from '@/store'
+import {store} from '@/store'
 
 // import TreeEditor from './TreeEditor'
 // import TreeViewer from './TreeViewer'
@@ -64,14 +64,14 @@ import { store } from '@/store'
 // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
-import { BuilderCanvas } from '@/components/interaction-designer/BuilderCanvas'
+import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
 
 // import '../TreeDiffLogger'
 
 export default {
   props: {
-    id: { type: String },
-    mode: { type: String },
+    id: {type: String},
+    mode: {type: String},
     appConfig: {
       type: Object,
       default() {
@@ -138,16 +138,16 @@ export default {
     ...mapState({
 
       // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
-      designerWorkspaceHeight: ({ trees: { tree, ui } }) => ui.designerWorkspaceHeight,
+      designerWorkspaceHeight: ({trees: {tree, ui}}) => ui.designerWorkspaceHeight,
 
-      tree: ({ trees: { tree, ui } }) => tree,
-      validationResultsEmptyTree: ({ trees: { tree, ui } }) => !tree.blocks.length,
-      hasVoice: ({ trees: { tree } }) => tree.details.hasVoice,
-      hasSms: ({ trees: { tree } }) => tree.details.hasSms,
-      hasUssd: ({ trees: { tree } }) => tree.details.hasUssd,
-      hasSocial: ({ trees: { tree } }) => tree.details.hasSocial,
-      hasClipboard: ({ trees: { tree } }) => tree.details.hasClipboard,
-      blockClasses: ({ trees: { ui } }) => ui.blockClasses,
+      tree: ({trees: {tree, ui}}) => tree,
+      validationResultsEmptyTree: ({trees: {tree, ui}}) => !tree.blocks.length,
+      hasVoice: ({trees: {tree}}) => tree.details.hasVoice,
+      hasSms: ({trees: {tree}}) => tree.details.hasSms,
+      hasUssd: ({trees: {tree}}) => tree.details.hasUssd,
+      hasSocial: ({trees: {tree}}) => tree.details.hasSocial,
+      hasClipboard: ({trees: {tree}}) => tree.details.hasClipboard,
+      blockClasses: ({trees: {ui}}) => ui.blockClasses,
     }),
 
     ...mapGetters('flow', ['activeFlow']),
@@ -173,11 +173,11 @@ export default {
   },
 
   created() {
-    const { $store } = this
+    const {$store} = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
-    this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+    this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
 
     global.builder = this // initialize global reference for legacy + debugging
 
@@ -195,7 +195,7 @@ export default {
   mounted() {
     this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
     this.deselectBlocks()
-    this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
+    this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
 
     console.debug('Vuej tree interaction designer mounted!')
   },
@@ -216,9 +216,9 @@ export default {
       'initializeTreeModel']),
 
     async registerBlockTypes() {
-      const { blockClasses } = this
+      const {blockClasses} = this
 
-      forEach(blockClasses, async ({ type }) => {
+      forEach(blockClasses, async ({type}) => {
         const normalizedType = type.replace('\\', '_')
         const typeWithoutSeparators = type.replace(/\\/g, '')
         const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
@@ -228,13 +228,13 @@ export default {
       })
     },
 
-    handleCanvasSelected({ target }) {
+    handleCanvasSelected({target}) {
       if (!target.classList.contains('builder-canvas')) {
         console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
         return
       }
 
-      this.activateBlock({ blockId: null })
+      this.activateBlock({blockId: null})
     },
 
     updateIsEditableFromParams(mode) {

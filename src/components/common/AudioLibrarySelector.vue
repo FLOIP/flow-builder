@@ -1,9 +1,11 @@
 <template>
   <div class="audio-library-selector">
-    <audio-library-selection v-if="selectedAudioFile"
-                             :audioFile="selectedAudioFile"
-                             :langId="langId"
-                             @clear="clearSelection" />
+    <audio-library-selection
+      v-if="selectedAudioFile"
+      :audioFile="selectedAudioFile"
+      :langId="langId"
+      @clear="clearSelection"
+    />
 
     <template v-else>
       <!-- todo: refactor audio-library-selection to use v-model's @input + :value -->
@@ -16,9 +18,10 @@
 
       <!-- todo: refactor audio-library-search-field to use v-model's @input + :value -->
       <audio-library-search-field
-          :langId="langId"
-          :audioFiles="audioFiles"
-          @select="selectAudioFile" />
+        :langId="langId"
+        :audioFiles="audioFiles"
+        @select="selectAudioFile"
+      />
     </template>
   </div>
 </template>
@@ -26,10 +29,7 @@
 <script>
 import lodash from 'lodash'
 import {mapActions} from 'vuex'
-import {
-  SupportedContentType,
-  SupportedMode,
-} from '@floip/flow-runner'
+import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import AudioLibrarySearchField from './AudioLibrarySearchField'
 import AudioLibrarySelection from './AudioLibrarySelection'
 
@@ -60,14 +60,22 @@ export default {
     clearSelection() {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
-        filter: {languageId: this.langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
+        filter: {
+          languageId: this.langId,
+          contentType: SupportedContentType.AUDIO,
+          modes: [SupportedMode.IVR],
+        },
         value: '',
       })
     },
     selectAudioFile({value, langId}) {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
-        filter: {languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
+        filter: {
+          languageId: langId,
+          contentType: SupportedContentType.AUDIO,
+          modes: [SupportedMode.IVR],
+        },
         value: value.description,
       })
     },

@@ -1,19 +1,19 @@
 <template>
   <div class="number-editor">
-    <label>{{label}}</label>
+    <label>{{ label }}</label>
     <div>
       <input
-          type="number"
-          min="0"
-          class="form-control"
-          :placeholder="placeholder"
-          :value="value"
-          @keypress="filterNumeric"
-          @keydown="$emit('keydown', $event)"
-          @input="$emit('input', $event.target.value)"
+        type="number"
+        min="0"
+        class="form-control"
+        :placeholder="placeholder"
+        :value="value"
+        @keypress="filterNumeric"
+        @keydown="$emit('keydown', $event)"
+        @input="$emit('input', $event.target.value)"
       />
     </div>
-    <slot/>
+    <slot />
   </div>
 </template>
 

@@ -1,8 +1,10 @@
 <template>
   <div class="form-group flow-label">
-    <text-editor v-model="name"
-        :label="'flow-builder.flow-name' | trans"
-        :placeholder="'flow-builder.enter-flow-name' | trans">
+    <text-editor
+      v-model="name"
+      :label="'flow-builder.flow-name' | trans"
+      :placeholder="'flow-builder.enter-flow-name' | trans"
+    >
     </text-editor>
   </div>
 </template>
@@ -17,27 +19,31 @@ import lang from '@/lib/filters/lang'
 
 const flowVuexNamespace = namespace('flow')
 
-  @Component<any>(
-    {
-      components: {
-        TextEditor,
-      },
-      mixins: [lang],
-    },
-  )
+@Component<any>({
+  components: {
+    TextEditor,
+  },
+  mixins: [lang],
+})
 class FlowNameEditor extends Vue {
-    @Prop()readonly flow!: IFlow
+  @Prop() readonly flow!: IFlow;
 
-    get name(): string {
-      return this.flow.name || ''
-    }
-
-    set name(value: string) {
-      this.flow_setName({flowId: this.flow.uuid, value})
-    }
-
-    @flowVuexNamespace.Mutation flow_setName!: ({flowId, value}: {flowId: string; value: string}) => void
+  get name(): string {
+    return this.flow.name || ''
   }
+
+  set name(value: string) {
+    this.flow_setName({flowId: this.flow.uuid, value})
+  }
+
+  @flowVuexNamespace.Mutation flow_setName!: ({
+    flowId,
+    value,
+  }: {
+    flowId: string;
+    value: string;
+  }) => void;
+}
 
 export default FlowNameEditor
 </script>

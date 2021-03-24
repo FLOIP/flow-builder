@@ -13,51 +13,87 @@ export const getters: GetterTree<IFlowsState, IRootState> = {}
 export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async setValidationMinimum({commit, rootGetters}, {blockId, value}: {blockId: string; value: number}) {
-    commit('flow/block_updateConfigByKey', {
-      blockId,
-      key: 'validationMinimum',
-      value,
-    }, {root: true})
-    return value
-  },
-  async setValidationMaximum({commit, rootGetters}, {blockId, value}: {blockId: string; value: number}) {
-    commit('flow/block_updateConfigByKey', {
-      blockId,
-      key: 'validationMaximum',
-      value,
-    }, {root: true})
-    return value
-  },
-  async setMaxDigits({commit, rootGetters}, {blockId, value}: {blockId: string; value: number}) {
-    commit('flow/block_updateConfigByKey', {
-      blockId,
-      key: 'ivr',
-      value: {
-        maxDigits: value,
+  async setValidationMinimum(
+    {commit, rootGetters},
+    {blockId, value}: { blockId: string; value: number },
+  ) {
+    commit(
+      'flow/block_updateConfigByKey',
+      {
+        blockId,
+        key: 'validationMinimum',
+        value,
       },
-    }, {root: true})
+      {root: true},
+    )
     return value
   },
-  async createWith({rootGetters, dispatch, commit}, {props}: {props: {uuid: string} & Partial<INumericResponseBlock>}) {
+  async setValidationMaximum(
+    {commit, rootGetters},
+    {blockId, value}: { blockId: string; value: number },
+  ) {
+    commit(
+      'flow/block_updateConfigByKey',
+      {
+        blockId,
+        key: 'validationMaximum',
+        value,
+      },
+      {root: true},
+    )
+    return value
+  },
+  async setMaxDigits(
+    {commit, rootGetters},
+    {blockId, value}: { blockId: string; value: number },
+  ) {
+    commit(
+      'flow/block_updateConfigByKey',
+      {
+        blockId,
+        key: 'ivr',
+        value: {
+          maxDigits: value,
+        },
+      },
+      {root: true},
+    )
+    return value
+  },
+  async createWith(
+    {rootGetters, dispatch, commit},
+    {props}: { props: { uuid: string } & Partial<INumericResponseBlock> },
+  ) {
     const exits: IBlockExit[] = [
-      await dispatch('flow/block_createBlockDefaultExitWith', {
-        props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
-          tag: 'Default',
-          label: 'Default',
-        }) as IBlockExit,
-      }, {root: true}),
-      await dispatch('flow/block_createBlockExitWith', {
-        props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
-          tag: 'Error',
-          label: 'Error',
-        }) as IBlockExit,
-      }, {root: true}),
+      await dispatch(
+        'flow/block_createBlockDefaultExitWith',
+        {
+          props: {
+            uuid: new IdGeneratorUuidV4().generate(),
+            tag: 'Default',
+            label: 'Default',
+          } as IBlockExit,
+        },
+        {root: true},
+      ),
+      await dispatch(
+        'flow/block_createBlockExitWith',
+        {
+          props: {
+            uuid: new IdGeneratorUuidV4().generate(),
+            tag: 'Error',
+            label: 'Error',
+          } as IBlockExit,
+        },
+        {root: true},
+      ),
     ]
 
-    const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
+    const blankResource = await dispatch(
+      'flow/flow_addBlankResourceForEnabledModesAndLangs',
+      null,
+      {root: true},
+    )
     commit('flow/resource_add', {resource: blankResource}, {root: true})
 
     return defaults(props, {

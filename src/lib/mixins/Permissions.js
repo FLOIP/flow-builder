@@ -1,4 +1,4 @@
-import { mapState } from 'vuex'
+import {mapState} from 'vuex'
 import lodash from 'lodash'
 
 export function can(userPermissions, permissionOrPermissions, requireAll = false) {

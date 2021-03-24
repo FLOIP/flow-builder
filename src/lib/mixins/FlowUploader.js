@@ -17,7 +17,7 @@ export default {
           target,
           singleFile: true,
           chunkSize: 1024 * 512, // kbytes, chunked?  ¯\_(ツ)_/¯
-          query: { upload_token },
+          query: {upload_token},
         })
 
         if (!uploader.support) {
@@ -25,7 +25,7 @@ export default {
           return
         }
 
-        lodash.extend(el.style, { overflow: 'hidden' })
+        lodash.extend(el.style, {overflow: 'hidden'})
         uploader.assignBrowse(el)
 
         lodash.chain(el.children)
@@ -33,7 +33,7 @@ export default {
             tagName: 'INPUT',
             type: 'file',
           })
-          .assign({ accept })
+          .assign({accept})
           .value()
 
         // todo: migrate to proxied catch-all handler (voto5 legacy todo)
@@ -71,5 +71,5 @@ const dispatch = (el, name, data) => {
   el.dispatchEvent(lodash.extend(new Event(name, {
     bubbles: true,
     cancelable: true,
-  }), { data }))
+  }), {data}))
 }

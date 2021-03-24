@@ -802,11 +802,11 @@ window.app = window.app || {};
             && _.keys(block.smsContent).length < tree.enabledLanguages.length
           ) {
             if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') {
- missingLanguageIdsSmsContent = _.difference(
+              missingLanguageIdsSmsContent = _.difference(
                 tree.enabledLanguages,
                 _.keys(block.smsContent),
               )
-}
+            }
           }
 
           if (
@@ -814,11 +814,11 @@ window.app = window.app || {};
             && _.keys(block.ussdContent).length < tree.enabledLanguages.length
           ) {
             if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') {
- missingLanguageIdsUssdContent = _.difference(
+              missingLanguageIdsUssdContent = _.difference(
                 tree.enabledLanguages,
                 _.keys(block.ussdContent),
               )
-}
+            }
           }
 
           if (
@@ -826,11 +826,11 @@ window.app = window.app || {};
             && _.keys(block.socialContent).length < tree.enabledLanguages.length
           ) {
             if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') {
- missingLanguageIdsSocialContent = _.difference(
+              missingLanguageIdsSocialContent = _.difference(
                 tree.enabledLanguages,
                 _.keys(block.socialContent),
               )
-}
+            }
           }
 
           if (
@@ -838,11 +838,11 @@ window.app = window.app || {};
             && _.keys(block.clipboardContent).length < tree.enabledLanguages.length
           ) {
             if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') {
- missingLanguageIdsClipboardContent = _.difference(
+              missingLanguageIdsClipboardContent = _.difference(
                 tree.enabledLanguages,
                 _.keys(block.clipboardContent),
               )
-}
+            }
           }
 
           if (

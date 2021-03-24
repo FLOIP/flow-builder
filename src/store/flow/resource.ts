@@ -7,7 +7,18 @@ import {
 } from '@floip/flow-runner'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import {
-  cloneDeep, defaults, difference, find, first, findIndex, isEmpty, isEqual, keyBy, map, pick, without,
+  cloneDeep,
+  defaults,
+  difference,
+  find,
+  first,
+  findIndex,
+  isEmpty,
+  isEqual,
+  keyBy,
+  map,
+  pick,
+  without,
 } from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '@/store/flow/index'
@@ -18,48 +29,70 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 }
 
 export const mutations: MutationTree<IFlowsState> = {
-  resource_add({resources}, {resource}: {resource: IResourceDefinition}) {
+  resource_add({resources}, {resource}: { resource: IResourceDefinition }) {
     resources.push(resource)
   },
 
   // currently unused - see todo
-  resource_delete({resources}, {resourceId}: {resourceId: string}) {
+  resource_delete({resources}, {resourceId}: { resourceId: string }) {
     // TODO - we need an action that can clean resources and then call this to actuall remove. We need logic to truly check resources are unused
     const resourceIndex = findIndex(resources, (resource) => resource.uuid === resourceId)
     resources.splice(resourceIndex, 1)
   },
 
-  resource_createVariant(state, {resourceId, variant}: {resourceId: string; variant: IResourceDefinitionVariantOverModes}) {
+  resource_createVariant(
+    state,
+    {resourceId, variant}: { resourceId: string; variant: IResourceDefinitionVariantOverModes },
+  ) {
     // append to resource
-    findResourceWith(resourceId, state as unknown as IContext)
-      .values
-      .push(cloneDeep(variant))
+    findResourceWith(resourceId, (state as unknown) as IContext).values.push(cloneDeep(variant))
   },
 
-  resource_setValue(state, {resourceId, filter, value}: {resourceId: string; filter: IResourceDefinitionVariantOverModesFilter; value: string}) {
-    findResourceVariantOverModesWith(resourceId, filter, state as unknown as IContext)
-      .value = value || ''
+  resource_setValue(
+    state,
+    {
+      resourceId,
+      filter,
+      value,
+    }: { resourceId: string; filter: IResourceDefinitionVariantOverModesFilter; value: string },
+  ) {
+    findResourceVariantOverModesWith(resourceId, filter, (state as unknown) as IContext).value = value || ''
   },
 
   // @note -- modes in this case does not tighten filter, but rather exists solely for update operation
-  resource_setModes(state,
-    {resourceId, filter, modes}:
-                         {resourceId: string; filter: IResourceDefinitionVariantOverModesFilter} & {modes: SupportedMode[]}) {
+  resource_setModes(
+    state,
+    {
+      resourceId,
+      filter,
+      modes,
+    }: { resourceId: string; filter: IResourceDefinitionVariantOverModesFilter } & {
+      modes: SupportedMode[];
+    },
+  ) {
     if (isEmpty(modes)) {
       // todo: create type that requires both resourceId & modes with (N>1) entries
-      throw new ValidationException('`mode` is required to assign mode on `IResourceDefinitionVariantOverModes`.')
+      throw new ValidationException(
+        '`mode` is required to assign mode on `IResourceDefinitionVariantOverModes`.',
+      )
     }
 
     // todo: this should likely validate whether or not we're intersecting with other variants with this operation
     //       eg. variants: [{modes: [a, b]}, {modes: [c]}] => variants[0].modes = [c]
 
-    findResourceVariantOverModesWith(resourceId, filter, state as unknown as IContext)
-      .modes = modes
+    findResourceVariantOverModesWith(
+      resourceId,
+      filter,
+      (state as unknown) as IContext,
+    ).modes = modes
   },
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async resource_createWith({dispatch}, {props}: {props: {uuid: string} & Partial<IResourceDefinition>}): Promise<IResourceDefinition> {
+  async resource_createWith(
+    {dispatch},
+    {props}: { props: { uuid: string } & Partial<IResourceDefinition> },
+  ): Promise<IResourceDefinition> {
     return {
       ...defaults(props, {values: []}),
     }
@@ -67,31 +100,49 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   resource_setOrCreateValueModeSpecific(
     {commit, dispatch, state},
-    {resourceId, filter, value}: {resourceId: string; filter: IResourceDefinitionVariantOverModes; value: string},
+    {
+      resourceId,
+      filter,
+      value,
+    }: { resourceId: string; filter: IResourceDefinitionVariantOverModes; value: string },
   ) {
     try {
       // @note - `find()` raises when absent; this verifies its presence
-      findResourceVariantOverModesWith(resourceId, filter, state as unknown as IContext)
+      findResourceVariantOverModesWith(resourceId, filter, (state as unknown) as IContext)
       dispatch('resource_setValueModeSpecific', {resourceId, filter, value})
     } catch (e) {
       if (!(e instanceof ValidationException)) {
         throw e
       }
 
-      commit('resource_createVariant', {resourceId, variant: Object.assign(cloneDeep(filter), {value})})
+      commit('resource_createVariant', {
+        resourceId,
+        variant: Object.assign(cloneDeep(filter), {value}),
+      })
     }
   },
 
   resource_setValueModeSpecific(
     {commit, dispatch, state},
-    {resourceId, filter, value}: {resourceId: string; filter: IResourceDefinitionVariantOverModes} & {value: string; mode: SupportedMode},
+    {
+      resourceId,
+      filter,
+      value,
+    }: { resourceId: string; filter: IResourceDefinitionVariantOverModes } & {
+      value: string;
+      mode: SupportedMode;
+    },
   ) {
     // find resource variant over modes
-    const
-      mode = first(filter.modes)
-    const variant = findResourceVariantOverModesWith(resourceId, filter, state as unknown as IContext)
+    const mode = first(filter.modes)
+    const variant = findResourceVariantOverModesWith(
+      resourceId,
+      filter,
+      (state as unknown) as IContext,
+    )
 
-    if (variant.modes.length > 1) { // need to disambiguate b/c value is spread over multiple modes
+    if (variant.modes.length > 1) {
+      // need to disambiguate b/c value is spread over multiple modes
       // remove mode from existing variant
       commit('resource_setModes', {
         resourceId,
@@ -102,10 +153,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       // // generate new variant-over-modes with single targeted mode
       commit('resource_createVariant', {
         resourceId,
-        variant: Object.assign(
-          cloneDeep(variant),
-          {modes: [mode], value},
-        ),
+        variant: Object.assign(cloneDeep(variant), {modes: [mode], value}),
       })
 
       return // specialized case, we're done here
@@ -115,16 +163,22 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 }
 
-export type IResourceDefinitionVariantOverModesFilter = Partial<IResourceDefinitionVariantOverModes>
-export type IResourceDefinitionVariantOverModesFilterAsKey = Omit<IResourceDefinitionVariantOverModes, 'value'>
+export type IResourceDefinitionVariantOverModesFilter = Partial<IResourceDefinitionVariantOverModes>;
+export type IResourceDefinitionVariantOverModesFilterAsKey = Omit<
+  IResourceDefinitionVariantOverModes,
+  'value'
+>;
 
-export type IResourceDefinitionVariantOverModesFilterWithResourceId =
-    Partial<IResourceDefinitionVariantOverModes> & {resourceId: string}
+export type IResourceDefinitionVariantOverModesFilterWithResourceId = Partial<IResourceDefinitionVariantOverModes> & {
+  resourceId: string;
+};
 
 export function findResourceWith(uuid: string, {resources}: IContext): IResourceDefinition {
   const resource = find(resources, {uuid})
   if (resource == null) {
-    throw new ValidationException(`Unable to find resource on context: ${uuid} in ${map(resources, 'uuid')}`)
+    throw new ValidationException(
+      `Unable to find resource on context: ${uuid} in ${map(resources, 'uuid')}`,
+    )
   }
 
   return resource
@@ -135,23 +189,20 @@ export function findResourceVariantOverModesWith(
   filter: IResourceDefinitionVariantOverModesFilter,
   {resources}: IContext,
 ): IResourceDefinitionVariantOverModes {
-  return findResourceVariantOverModesOn(
-    findResourceWith(uuid, {resources} as IContext),
-    filter,
-  )
+  return findResourceVariantOverModesOn(findResourceWith(uuid, {resources} as IContext), filter)
 }
 
 export function findResourceVariantOverModesOn(
   resource: IResourceDefinition,
   filter: IResourceDefinitionVariantOverModesFilter,
 ) {
-  const
-    keysForComparison = without(Object.keys(filter), 'modes') // b/c we do explicit partial matching on modes
+  const keysForComparison = without(Object.keys(filter), 'modes') // b/c we do explicit partial matching on modes
   const filterWithComparatorKeys = pick(filter, keysForComparison)
   const variant = find<IResourceDefinitionVariantOverModes>(
     resource.values,
-    (v) => isEqual(filterWithComparatorKeys, pick(v, keysForComparison))
-              && difference(filter.modes, v.modes).length === 0,
+    (v) =>
+      isEqual(filterWithComparatorKeys, pick(v, keysForComparison))
+      && difference(filter.modes, v.modes).length === 0,
   )
 
   if (variant == null) {
@@ -170,7 +221,7 @@ export function findOrGenerateStubbedVariantFor(
   {resources}: IContext,
 ): IResourceDefinitionVariantOverModes {
   return findOrGenerateStubbedVariantOn(
-    findResourceWith(resourceId, {resources} as unknown as IContext),
+    findResourceWith(resourceId, ({resources} as unknown) as IContext),
     filter,
   )
 }
@@ -190,14 +241,17 @@ export function findOrGenerateStubbedVariantOn(
   }
 }
 
-export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourceDefinition): SupportedContentType[] {
-  const
-    {TEXT} = SupportedContentType
+export function discoverContentTypesFor(
+  mode: SupportedMode,
+  resource?: IResourceDefinition,
+): SupportedContentType[] {
+  const {TEXT} = SupportedContentType
   const {AUDIO} = SupportedContentType
   const {IMAGE} = SupportedContentType
   const {VIDEO} = SupportedContentType
 
-  const defaultModeMappings = { // @note -- contentType order inadvertently determines render order on UI.
+  const defaultModeMappings = {
+    // @note -- contentType order inadvertently determines render order on UI.
     [SupportedMode.IVR]: [AUDIO], // voice
     [SupportedMode.SMS]: [TEXT],
     [SupportedMode.USSD]: [TEXT],
@@ -208,7 +262,7 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
   if (!resource || !resource.values.length) {
     return defaultModeMappings[mode]
   }
-  let contentTypeOverrides: {[key in SupportedMode]?: SupportedContentType[]} = {}
+  let contentTypeOverrides: { [key in SupportedMode]?: SupportedContentType[] } = {}
   // TODO - think harder about this - what happens when a mode has a non standard content type - e.g. ivr on a log block
   // What happens in a future localised resource world on things like LogBlock? Do we need a log resource value for every language?
   contentTypeOverrides = resource.values.reduce((contentTypeOverrides, value) => {

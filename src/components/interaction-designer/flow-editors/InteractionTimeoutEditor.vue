@@ -1,9 +1,11 @@
 <template>
   <div class="form-group flow-interaction-timeout">
-    <numeric-editor v-model.number="interactionTimeout"
-        :regex-numeric-filtering="'[0-9]'"
-        :label="'flow-builder.Interaction-timeout' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+    <numeric-editor
+      v-model.number="interactionTimeout"
+      :regex-numeric-filtering="'[0-9]'"
+      :label="'flow-builder.Interaction-timeout' | trans"
+      :placeholder="'flow-builder.enter-value' | trans"
+    >
     </numeric-editor>
   </div>
 </template>
@@ -18,26 +20,26 @@ import lang from '@/lib/filters/lang'
 
 const flowVuexNamespace = namespace('flow')
 
-  @Component<any>({
-    components: {
-      NumericEditor,
-    },
-    mixins: [lang],
-  })
+@Component<any>({
+  components: {
+    NumericEditor,
+  },
+  mixins: [lang],
+})
 class InteractionTimeoutEditor extends Vue {
-    @Prop() readonly flow!: IFlow
+  @Prop() readonly flow!: IFlow;
 
-    get interactionTimeout(): number {
-      // 30 comes from src/store/flow/flow.ts
-      return this.flow.interactionTimeout || 30
-    }
-
-    set interactionTimeout(value: number) {
-      this.flow_setInteractionTimeout({flowId: this.flow.uuid, value})
-    }
-
-    @flowVuexNamespace.Mutation flow_setInteractionTimeout
+  get interactionTimeout(): number {
+    // 30 comes from src/store/flow/flow.ts
+    return this.flow.interactionTimeout || 30
   }
+
+  set interactionTimeout(value: number) {
+    this.flow_setInteractionTimeout({flowId: this.flow.uuid, value})
+  }
+
+  @flowVuexNamespace.Mutation flow_setInteractionTimeout;
+}
 
 export default InteractionTimeoutEditor
 </script>

@@ -1,7 +1,9 @@
 <template>
   <div>
     <h3 class="no-room-above">
-      {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
+      {{
+        "flow-builder.edit-block-type" | trans({ block_type: trans(`flow-builder.${block.type}`) })
+      }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -10,54 +12,59 @@
       <block-semantic-label-editor :block="block" />
 
       <div class="prompt-resource">
-        <resource-editor v-if="promptResource"
-                         :label="'flow-builder.prompt' | trans"
-                         :resource="promptResource"
-                         :block="block"
-                         :flow="flow" />
+        <resource-editor
+          v-if="promptResource"
+          :label="'flow-builder.prompt' | trans"
+          :resource="promptResource"
+          :block="block"
+          :flow="flow"
+        />
       </div>
       <div class="question-prompt-resource">
-        <resource-editor v-if="questionPromptResource"
-                         :label="'flow-builder.question-prompt' | trans"
-                         :resource="questionPromptResource"
-                         :block="block"
-                         :flow="flow" />
+        <resource-editor
+          v-if="questionPromptResource"
+          :label="'flow-builder.question-prompt' | trans"
+          :resource="questionPromptResource"
+          :block="block"
+          :flow="flow"
+        />
       </div>
       <div class="choices-prompt-resource">
-        <resource-editor v-if="choicesPromptResource"
-                         :label="'flow-builder.choices-prompt' | trans"
-                         :resource="choicesPromptResource"
-                         :block="block"
-                         :flow="flow" />
+        <resource-editor
+          v-if="choicesPromptResource"
+          :label="'flow-builder.choices-prompt' | trans"
+          :resource="choicesPromptResource"
+          :block="block"
+          :flow="flow"
+        />
       </div>
-      <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group form-inline">
-        <resource-editor :label="`Choice ${choiceKey}`"
-                         :resource="inflatedChoices[choiceKey]"
-                         :block="block"
-                         :flow="flow" />
+      <div v-for="choiceKey in Object.keys(inflatedChoices)" class="form-group form-inline">
+        <resource-editor
+          :label="`Choice ${choiceKey}`"
+          :resource="inflatedChoices[choiceKey]"
+          :block="block"
+          :flow="flow"
+        />
       </div>
 
-      <first-block-editor-button
-          :flow="flow"
-          :block-id="block.uuid" />
+      <first-block-editor-button :flow="flow" :block-id="block.uuid" />
     </fieldset>
 
     <block-id :block="block" />
-
   </div>
 </template>
 
 <script lang="ts">
 import {IFlow} from '@floip/flow-runner'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
-import {
-  IResourceDefinition,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
+import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
 import {namespace} from 'vuex-class'
 import {Component, Prop, Watch} from 'vue-property-decorator'
 
-import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import SelectOneStore, {
+  BLOCK_TYPE,
+} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -72,46 +79,46 @@ const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      ResourceEditor,
-      BlockId,
-    },
-    mixins: [lang],
-  })
+@Component<any>({
+  components: {
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    ResourceEditor,
+    BlockId,
+  },
+  mixins: [lang],
+})
 export class MobilePrimitives_SelectOneResponseBlock extends Vue {
-    @Prop()readonly block!: ISelectOneResponseBlock
+  @Prop() readonly block!: ISelectOneResponseBlock;
 
-    @Prop()readonly flow!: IFlow
+  @Prop() readonly flow!: IFlow;
 
-    get promptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.prompt]
-    }
+  get promptResource(): IResourceDefinition {
+    return this.resourcesByUuid[this.block.config.prompt]
+  }
 
-    get questionPromptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.questionPrompt || '']
-    }
+  get questionPromptResource(): IResourceDefinition {
+    return this.resourcesByUuid[this.block.config.questionPrompt || '']
+  }
 
-    get choicesPromptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.choicesPrompt || '']
-    }
+  get choicesPromptResource(): IResourceDefinition {
+    return this.resourcesByUuid[this.block.config.choicesPrompt || '']
+  }
 
-    @Watch('inflatedChoices', {deep: true})
-    onChoicesChanged(newChoices: object) {
-      this.editSelectOneResponseBlockChoice()
-    }
+  @Watch('inflatedChoices', {deep: true})
+  onChoicesChanged(newChoices: object) {
+    this.editSelectOneResponseBlockChoice()
+  }
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResourceDefinition };
 
-    @blockVuexNamespace.Getter inflatedChoices!: {[key: string]: IResourceDefinition}
+  @blockVuexNamespace.Getter inflatedChoices!: { [key: string]: IResourceDefinition };
 
-    @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
+  @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>;
 
-    @builderVuexNamespace.Getter isEditable !: boolean
+  @builderVuexNamespace.Getter isEditable!: boolean;
 }
 
 export default MobilePrimitives_SelectOneResponseBlock

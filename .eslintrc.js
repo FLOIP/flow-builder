@@ -1,8 +1,9 @@
 module.exports = {
-  'parser': 'vue-eslint-parser',
-  'parserOptions': {
-    'parser': '@typescript-eslint/parser',
-    'project': './tsconfig.json',
+  parser: 'vue-eslint-parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+    project: './tsconfig.json',
+    sourceType: 'module',
   },
   extends: [
     'plugin:vue/essential',
@@ -22,11 +23,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
 
-  plugins: [
-    'jest',
-    'lodash',
-    '@typescript-eslint',
-  ],
+  plugins: ['vue', 'jest', 'lodash', '@typescript-eslint'],
 
   env: {
     'jest/globals': true,
@@ -34,16 +31,13 @@ module.exports = {
 
   overrides: [
     {
-      files: [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)',
-      ],
+      files: ['**/__tests__/*.{j,t}s?(x)', '**/tests/unit/**/*.spec.{j,t}s?(x)'],
       env: {
         jest: true,
       },
     },
   ],
-
+  ignorePatterns: ['.eslintrc.js'],
   rules: {
     /********************
      * Typescript rules *
@@ -128,30 +122,22 @@ module.exports = {
       },
     ],
     'lines-between-class-members': ['off'],
-    'prefer-destructuring': [
-      'error',
-      {object: false, array: false},
-    ],
+    'prefer-destructuring': ['error', {object: false, array: false}],
     'space-before-function-paren': [
-      'error', {
+      'error',
+      {
         anonymous: 'always',
         named: 'never',
         asyncArrow: 'always',
-      }],
+      },
+    ],
     'no-console': [
       'warn',
       {
-        allow: [
-          'warn',
-          'error',
-          'info',
-        ],
+        allow: ['warn', 'error', 'info'],
       },
     ],
-    'object-curly-spacing': [
-      'error',
-      'never',
-    ],
+    'object-curly-spacing': ['error', 'never'],
 
     'object-curly-newline': [
       'error',
@@ -175,7 +161,7 @@ module.exports = {
       },
     ],
 
-    'indent': [
+    indent: [
       'off',
       2,
       {
@@ -183,23 +169,14 @@ module.exports = {
         MemberExpression: 1,
         ArrayExpression: 2,
         ObjectExpression: 'off',
-        CallExpression: {'arguments': 2},
-        FunctionDeclaration: {'parameters': 2},
-        FunctionExpression: {'parameters': 2},
+        CallExpression: {arguments: 2},
+        FunctionDeclaration: {parameters: 2},
+        FunctionExpression: {parameters: 2},
       },
     ],
-    'no-trailing-spaces': [
-      'error',
-      {skipBlankLines: true},
-    ],
-    'max-len': [
-      'warn',
-      {code: 140},
-    ],
-    'eol-last': [
-      'warn',
-      'always',
-    ],
+    'no-trailing-spaces': ['error', {skipBlankLines: true}],
+    'max-len': ['warn', {code: 140}],
+    'eol-last': ['warn', 'always'],
     semi: [2, 'never'],
     'no-param-reassign': 'off',
     'import/no-unresolved': ['off'],
@@ -208,15 +185,12 @@ module.exports = {
     // Argument for this best presented here: https://youtu.be/eEBOvqMfPoI?t=1665
     'no-else-return': ['off'],
     'spaced-comment': 'off',
-    'line-comment-position': ['warn', {'position': 'above'}],
+    'line-comment-position': ['warn', {position: 'above'}],
 
     /**********
      * Lodash *
      **********/
-    'lodash/import-scope': [
-      'error',
-      'member',
-    ],
+    'lodash/import-scope': ['error', 'member'],
     'lodash/matches-prop-shorthand': 'off',
 
     // Disable all lodash prefer checks for things that already exist natively

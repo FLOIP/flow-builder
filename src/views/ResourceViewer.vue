@@ -255,7 +255,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import fuse from 'fuse.js'
 import lang from '@/lib/filters/lang'
 import lodash from 'lodash'
@@ -350,7 +350,7 @@ export default {
     },
 
     blocksWithContent() {
-      return lodash.filter(this.blocks, ({ type }) => this.hasContent(type))
+      return lodash.filter(this.blocks, ({type}) => this.hasContent(type))
     },
 
     batchMatchAudioData() {
@@ -431,12 +431,12 @@ export default {
       this.showEmptyBlocksOnly = !this.showEmptyBlocksOnly
     },
 
-    dispatchBatchMatchAudio({ value: pattern, replaceExisting }) {
-      const { id: treeId } = this.tree
+    dispatchBatchMatchAudio({value: pattern, replaceExisting}) {
+      const {id: treeId} = this.tree
 
-      this.$store.dispatch('batchMatchAudioTriggered', { treeId, pattern, replaceExisting })
+      this.$store.dispatch('batchMatchAudioTriggered', {treeId, pattern, replaceExisting})
         .then(() => { // todo: this should be somewhere else
-          const { isEmpty, isFailure } = this.batchMatchAudioData
+          const {isEmpty, isFailure} = this.batchMatchAudioData
           if (isEmpty || isFailure) {
             return
           }
@@ -456,7 +456,7 @@ export default {
 
     search(query) {
       const
-        { enabledLanguages: languages } = this.$store.state.trees.tree.details
+        {enabledLanguages: languages} = this.$store.state.trees.tree.details
       const keys = [
         // todo: how can we get tags in here?
         'customData.title',
@@ -466,7 +466,7 @@ export default {
         ...languages.map((langId) => `ussdContent.${langId}`),
         ...languages.map((langId) => `smsContent.${langId}`)]
 
-      return new fuse(this.blocks, { keys }).search(query)
+      return new fuse(this.blocks, {keys}).search(query)
     },
 
     clearSearch() {

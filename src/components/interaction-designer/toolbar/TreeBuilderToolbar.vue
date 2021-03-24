@@ -1,88 +1,98 @@
 <template>
   <div class="tree-builder-toolbar">
-    <div v-if="isImporterVisible"
-         class="flows-importer alert alert-info">
-      <h3>{{trans('flow-builder.flow-importer')}}</h3>
-      <textarea v-model="flow"
-                class="flow-importer"
-                rows="15"></textarea>
+    <div v-if="isImporterVisible" class="flows-importer alert alert-info">
+      <h3>{{ trans("flow-builder.flow-importer") }}</h3>
+      <textarea v-model="flow" class="flow-importer" rows="15"></textarea>
     </div>
 
     <div class="tree-workspace-panel-heading panel-heading">
       <!--    <tree-update-conflict-modal/>-->
       <div class="tree-workspace-panel-heading-contents">
         <div class="btn-toolbar">
-          <button class="btn btn-outline-secondary mr-2"
-                  :class="{active: isImporterVisible}"
-                  @click="toggleImportExport">
+          <button
+            class="btn btn-outline-secondary mr-2"
+            :class="{ active: isImporterVisible }"
+            @click="toggleImportExport"
+          >
             <i class="glyphicon glyphicon-chevron-up"></i>
-            {{trans('flow-builder.import-export')}}
+            {{ trans("flow-builder.import-export") }}
           </button>
 
           <div v-if="isResourceEditorEnabled" class="btn-group mr-2">
             <router-link :to="treeViewUrl" class="btn btn-outline-secondary active">
-              {{trans('flow-builder.flow-view')}}
+              {{ trans("flow-builder.flow-view") }}
             </router-link>
-            <router-link :to="resourceViewUrl"
-                         class="btn btn-secondary"
-                         @click.native="handleResourceViewerSelected">
-              {{trans('flow-builder.resource-view')}}
+            <router-link
+              :to="resourceViewUrl"
+              class="btn btn-secondary"
+              @click.native="handleResourceViewerSelected"
+            >
+              {{ trans("flow-builder.resource-view") }}
             </router-link>
           </div>
 
           <div v-if="!ui.isEditableLocked" @click="attemptSaveTree">
-            <router-link :to="editOrViewTreeJsUrl"
-                         class="btn btn-outline-secondary mr-2"
-                         :title="trans('flow-builder.click-to-toggle-editing')"
+            <router-link
+              :to="editOrViewTreeJsUrl"
+              class="btn btn-outline-secondary mr-2"
+              :title="trans('flow-builder.click-to-toggle-editing')"
             >
-              {{isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow')}}
+              {{ isEditable ? trans("flow-builder.view-flow") : trans("flow-builder.edit-flow") }}
             </router-link>
           </div>
 
           <div v-if="isEditable" class="dropdown mr-2">
-            <button type="button"
-                    class="btn btn-outline-secondary dropdown-toggle"
-                    data-toggle="dropdown">
-              {{trans('flow-builder.add-block')}}
+            <button
+              type="button"
+              class="btn btn-outline-secondary dropdown-toggle"
+              data-toggle="dropdown"
+            >
+              {{ trans("flow-builder.add-block") }}
             </button>
 
             <div class="dropdown-menu">
               <template v-for="(classDetails, className) in rootBlockClassesToDisplay">
-                <a v-if="shouldDisplayDividerBefore(rootBlockClassesToDisplay, className)"
-                    :key="className + 'divider'"
-                    class="dropdown-divider"/>
-                <a v-if="isBlockAvailableByBlockClass[className]"
-                   href="#"
-                   :key="className + 'item'"
-                   @click.prevent="handleAddBlockByTypeSelected(classDetails)"
-                   class="dropdown-item tree-add-block"
-                   :data-block-type="className"
-                   :data-default-num-connections="classDetails['defaultConnections']">
-                  {{translateTreeClassName(className)}}
+                <a
+                  v-if="shouldDisplayDividerBefore(rootBlockClassesToDisplay, className)"
+                  :key="className + 'divider'"
+                  class="dropdown-divider"
+                />
+                <a
+                  v-if="isBlockAvailableByBlockClass[className]"
+                  href="#"
+                  :key="className + 'item'"
+                  @click.prevent="handleAddBlockByTypeSelected(classDetails)"
+                  class="dropdown-item tree-add-block"
+                  :data-block-type="className"
+                  :data-default-num-connections="classDetails['defaultConnections']"
+                >
+                  {{ translateTreeClassName(className) }}
                 </a>
               </template>
 
               <template v-if="!isEmpty(rootDropdownClassesToDisplay)">
-                <a class="dropdown-divider"/>
+                <a class="dropdown-divider" />
 
                 <a class="menu-item dropdown dropdown-submenu">
-                  <a href="#"
-                     class="dropdown-toggle"
-                     data-toggle="dropdown">
-                    {{trans('flow-builder.branching')}}
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    {{ trans("flow-builder.branching") }}
                   </a>
                   <div class="dropdown-menu">
                     <template v-for="(classDetails, className) in rootDropdownClassesToDisplay">
-                      <a v-if="shouldDisplayDividerBefore(rootDropdownClassesToDisplay, className)"
-                          :key="className + 'divider'"
-                          class="dropdown-divider"/>
-                      <a v-if="isBlockAvailableByBlockClass[className]"
-                         href="#"
-                         :key="className + 'item'"
-                         class="dropdown-item tree-add-block"
-                         :data-block-type="className"
-                         :data-default-num-connections="classDetails['defaultConnections']">
-                        {{translateTreeClassName(className)}}
+                      <a
+                        v-if="shouldDisplayDividerBefore(rootDropdownClassesToDisplay, className)"
+                        :key="className + 'divider'"
+                        class="dropdown-divider"
+                      />
+                      <a
+                        v-if="isBlockAvailableByBlockClass[className]"
+                        href="#"
+                        :key="className + 'item'"
+                        class="dropdown-item tree-add-block"
+                        :data-block-type="className"
+                        :data-default-num-connections="classDetails['defaultConnections']"
+                      >
+                        {{ translateTreeClassName(className) }}
                       </a>
                     </template>
                   </div>
@@ -90,25 +100,30 @@
               </template>
 
               <template v-if="!isEmpty(advancedDropdownClassesToDisplay)">
-                <a class="dropdown-divider"/>
+                <a class="dropdown-divider" />
 
                 <a class="menu-item dropdown dropdown-submenu">
-                  <a href="#"
-                     class="dropdown-toggle"
-                     data-toggle="dropdown">{{'flow-builder.advanced' | trans}}
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                    >{{ "flow-builder.advanced" | trans }}
                   </a>
                   <div class="dropdown-menu">
                     <template v-for="(classDetails, className) in advancedDropdownClassesToDisplay">
-                      <a v-if="shouldDisplayDividerBefore(advancedDropdownClassesToDisplay, className)"
-                          :key="className + 'divider'"
-                          class="dropdown-divider"/>
-                      <a v-if="isBlockAvailableByBlockClass[className]"
-                         href="#"
-                         :key="className + 'item'"
-                         class="dropdown-item tree-add-block"
-                         :data-block-type="className"
-                         :data-default-num-connections="classDetails['defaultConnections']">
-                        {{translateTreeClassName(className)}}
+                      <a
+                        v-if="
+                          shouldDisplayDividerBefore(advancedDropdownClassesToDisplay, className)
+                        "
+                        :key="className + 'divider'"
+                        class="dropdown-divider"
+                      />
+                      <a
+                        v-if="isBlockAvailableByBlockClass[className]"
+                        href="#"
+                        :key="className + 'item'"
+                        class="dropdown-item tree-add-block"
+                        :data-block-type="className"
+                        :data-default-num-connections="classDetails['defaultConnections']"
+                      >
+                        {{ translateTreeClassName(className) }}
                       </a>
                     </template>
                   </div>
@@ -117,52 +132,54 @@
             </div>
           </div>
 
-          <button v-if="isEditable"
-                  type="button"
-                  v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-                  class="btn btn-outline-secondary tree-duplicate-block mr-2"
-                  @click.prevent="handleDuplicateActivatedBlockTriggered"
-                  :disabled="!activeBlockId">
-            {{trans('flow-builder.duplicate')}}
+          <button
+            v-if="isEditable"
+            type="button"
+            v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
+            class="btn btn-outline-secondary tree-duplicate-block mr-2"
+            @click.prevent="handleDuplicateActivatedBlockTriggered"
+            :disabled="!activeBlockId"
+          >
+            {{ trans("flow-builder.duplicate") }}
           </button>
 
-          <button v-if="isEditable"
-                  type="button"
-                  v-b-tooltip.hover="transIf(activeBlockId, 'flow-builder.tooltip-delete-block')"
-                  class="btn btn-outline-secondary tree-delete-block mr-2"
-                  @click.prevent="handleRemoveActivatedBlockTriggered"
-                  :disabled="!activeBlockId">
-            {{trans('flow-builder.delete')}}
+          <button
+            v-if="isEditable"
+            type="button"
+            v-b-tooltip.hover="transIf(activeBlockId, 'flow-builder.tooltip-delete-block')"
+            class="btn btn-outline-secondary tree-delete-block mr-2"
+            @click.prevent="handleRemoveActivatedBlockTriggered"
+            :disabled="!activeBlockId"
+          >
+            {{ trans("flow-builder.delete") }}
           </button>
 
-          <slot name="extra-buttons"/>
+          <slot name="extra-buttons" />
 
           <div class="btn-group pull-right mr-2">
-            <button v-if="isEditable && isFeatureTreeSaveEnabled"
-                    type="button"
-                    class="btn btn-primary tree-save-tree"
-                    :title="trans('flow-builder.save-changes-to-the-flow')"
-                    :disabled="isTreeSaving || !hasChanges"
-                    @click="attemptSaveTree">
-              {{saveButtonText}}
+            <button
+              v-if="isEditable && isFeatureTreeSaveEnabled"
+              type="button"
+              class="btn btn-primary tree-save-tree"
+              :title="trans('flow-builder.save-changes-to-the-flow')"
+              :disabled="isTreeSaving || !hasChanges"
+              @click="attemptSaveTree"
+            >
+              {{ saveButtonText }}
             </button>
-            <slot name="right-grouped-buttons"/>
+            <slot name="right-grouped-buttons" />
           </div>
         </div>
       </div>
     </div>
-
   </div>
-
 </template>
 <script lang="ts">
 import Vue from 'vue'
 import lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
-import {
-  mapActions, mapGetters, mapMutations, mapState,
-} from 'vuex'
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 import lodash, {isEmpty} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
@@ -181,11 +198,7 @@ export default {
     // TreeUpdateConflictModal,
     // InteractionTotalsDateRangeConfiguration
   },
-  mixins: [
-    lang,
-    Permissions,
-    Routes,
-  ],
+  mixins: [lang, Permissions, Routes],
   data() {
     return {
       isImporterVisible: false,
@@ -218,32 +231,30 @@ export default {
 
     flow: {
       get() {
-        const {
-          flows,
-          resources,
-        } = this
+        const {flows, resources} = this
         return JSON.stringify(
-          convertKeysCase({
-            flows,
-            resources,
-          },
-          'SNAKE',
-          ['platformMetadata', 'ioViamo']),
+          convertKeysCase(
+            {
+              flows,
+              resources,
+            },
+            'SNAKE',
+            ['platformMetadata', 'ioViamo'],
+          ),
           null,
           2,
         )
       },
 
       set(value) {
-        this.importFlowsAndResources(convertKeysCase(
-          JSON.parse(value),
-          'CAMEL',
-          ['platform_metadata', 'io_viamo'],
-        ))
+        this.importFlowsAndResources(
+          convertKeysCase(JSON.parse(value), 'CAMEL', ['platform_metadata', 'io_viamo']),
+        )
       },
     },
 
-    jsKey() { // deprecate
+    jsKey() {
+      // deprecate
       return lodash.get(this.selectedBlock, 'jsKey')
     },
     editTreeUrl() {
@@ -325,7 +336,7 @@ export default {
       )(this.ui.blockClasses)
     },
     canViewResultsTotals() {
-      return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
+      return this.can('view-result-totals') && this.isFeatureViewResultsEnabled
     },
   },
   methods: {
@@ -363,10 +374,7 @@ export default {
       this.isImporterVisible = !this.isImporterVisible
     },
 
-    editTreeRoute({
-      component = null,
-      mode = null,
-    } = {}) {
+    editTreeRoute({component = null, mode = null} = {}) {
       const context = this.removeNilValues({
         treeId: this.tree.id,
         component,
@@ -381,10 +389,8 @@ export default {
       return this.trans(`flow-builder.${className}`)
     },
     shouldDisplayDividerBefore(blockClasses, className) {
-      const shouldShowDividerBeforeBlock = lodash.pickBy(
-        blockClasses,
-        (classDetails) => this.hasClassDetail(classDetails, 'dividerBefore'),
-      )[className]
+      const shouldShowDividerBeforeBlock = lodash.pickBy(blockClasses, (classDetails) =>
+        this.hasClassDetail(classDetails, 'dividerBefore'))[className]
       return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
     },
     handleResourceViewerSelected() {
@@ -404,10 +410,10 @@ export default {
 </script>
 
 <style lang="scss">
-  .tree-builder-toolbar {
-    .flows-importer textarea {
-      display: block;
-      width: 100%;
-    }
+.tree-builder-toolbar {
+  .flows-importer textarea {
+    display: block;
+    width: 100%;
   }
+}
 </style>

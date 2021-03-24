@@ -50,7 +50,7 @@ export default {
     },
 
     bindBlockDeleteOnKeydown() {
-      const { window, $, app } = global
+      const {window, $, app} = global
 
       $(window).keydown((e) => {
         if (!app.ui.isEditable) {
@@ -73,7 +73,7 @@ export default {
     },
 
     bindUndoBlockDeleteOnKeydown() {
-      const { window, $, app } = global
+      const {window, $, app} = global
 
       $(window).keydown((e) => {
         if (!app.ui.isEditable) {
@@ -169,7 +169,7 @@ export default {
       app.tree.addBlock(blockData)
       // this.resetJsPlumbBindings(false)
 
-      this.$store.dispatch('discoverTallestBlockForDesignerWorkspaceHeight', { aboveTallest: true })
+      this.$store.dispatch('discoverTallestBlockForDesignerWorkspaceHeight', {aboveTallest: true})
 
       app.ui.change('New block added.')
     },
@@ -298,7 +298,7 @@ export default {
       // Save copy of block and connections before deleting.
       this.saveCopyOfBlockBeforeDelete(selectedBlockKey)
 
-      const { numConnections } = selectedBlock.uiData
+      const {numConnections} = selectedBlock.uiData
 
       // Remove the connections from each of the nodes at the bottom of the block
       _.each(_.range(1, numConnections + 1), (index) => {
@@ -382,7 +382,7 @@ export default {
     },
 
     makeEditable() {
-      this.$store.commit('updateIsEditable', { value: 1 })
+      this.$store.commit('updateIsEditable', {value: 1})
       // this.deselectBlocks()
       this.initializeAll(1)
     },
@@ -391,7 +391,7 @@ export default {
       // By default, save before un-editing.
       this.saveTree()
 
-      this.$store.commit('updateIsEditable', { value: 0 })
+      this.$store.commit('updateIsEditable', {value: 0})
       // this.deselectBlocks()
       this.initializeAll(1)
     },
