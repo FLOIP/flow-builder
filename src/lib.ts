@@ -6,7 +6,7 @@ export const builderConfig = require('../builder.config')
 
 export const InteractionDesigner = InteractionDesignerComponent
 
-const Components = {
+const Components: {[key: string]: any} = {
   InteractionDesignerComponent,
 }
 
