@@ -36,7 +36,7 @@ class InteractionTimeoutEditor extends Vue {
       this.flow_setInteractionTimeout({ flowId: this.flow.uuid, value })
     }
 
-    @flowVuexNamespace.Mutation flow_setInteractionTimeout
+    @flowVuexNamespace.Mutation flow_setInteractionTimeout!: ({ flowId, value }: { flowId: IFlow['uuid']; value: IFlow['interactionTimeout']}) => void
   }
 
 export default InteractionTimeoutEditor

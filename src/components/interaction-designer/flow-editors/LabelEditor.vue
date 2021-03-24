@@ -35,7 +35,7 @@ class FlowLabelEditor extends Vue {
       this.flow_setLabel({ flowId: this.flow.uuid, value })
     }
 
-    @flowVuexNamespace.Mutation flow_setLabel
+    @flowVuexNamespace.Mutation flow_setLabel!: ({ flowId, value }: { flowId: IFlow['uuid']; value: IFlow['label']}) => void
   }
 
 export default FlowLabelEditor
