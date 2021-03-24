@@ -70,22 +70,19 @@ class ConsoleIO_ReadBlock extends Vue {
 
     @Prop()readonly flow!: IFlow
 
-    filterVariableName(e) {
+    filterVariableName(e: any) {
       if (e.key.match(/\W+|Enter/g)) {
         e.preventDefault()
       }
     }
 
-    updatedestinationVariables(value, i) {
+    updatedestinationVariables(value: string, i: number) {
       this.editDestinationVariable({ variableName: value, keyIndex: i })
     }
 
     @blockVuexNamespace.Action setFormatString!: (newFormatString: string) => Promise<string>
 
-    @blockVuexNamespace.Action editDestinationVariable!: ({
-      variableName: string,
-      keyIndex: number,
-    }) => Promise<string>
+    @blockVuexNamespace.Action editDestinationVariable!: ({ variableName, keyIndex }: { variableName: string; keyIndex: number}) => Promise<string[]>
 
     @blockVuexNamespace.Getter destinationVariablesFields!: () => Promise<string[]>
 

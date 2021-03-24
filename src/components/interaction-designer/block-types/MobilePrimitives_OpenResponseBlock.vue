@@ -77,9 +77,9 @@ class MobilePrimitives_OpenResponseBlock extends Vue {
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
 
-    @flowVuexNamespace.Getter hasTextMode
+    @flowVuexNamespace.Getter hasTextMode!: boolean
 
-    @flowVuexNamespace.Getter hasVoiceMode
+    @flowVuexNamespace.Getter hasVoiceMode!: boolean
 
     @blockVuexNamespace.Action setMaxDurationSeconds!: (newDuration: number) => Promise<string>
 

@@ -33,7 +33,7 @@ import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
-import { IBlockExit, IFlow } from '@floip/flow-runner'
+import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner'
 import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
 
@@ -77,27 +77,27 @@ class MobilePrimitives_NumericResponseBlock extends Vue {
       return this.resourcesByUuid[this.block.config.prompt]
     }
 
-    updateValidationMin(value) {
+    updateValidationMin(value: number | string) {
       this.setValidationMinimum({ blockId: this.block.uuid, value })
     }
 
-    updateValidationMax(value) {
+    updateValidationMax(value: number | string) {
       this.setValidationMaximum({ blockId: this.block.uuid, value })
     }
 
-    updateMaxDigits(value) {
+    updateMaxDigits(value: number | string) {
       this.setMaxDigits({ blockId: this.block.uuid, value })
     }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
 
-    @flowVuexNamespace.Getter hasVoiceMode
+    @flowVuexNamespace.Getter hasVoiceMode!: boolean
 
-    @blockVuexNamespace.Action setValidationMinimum!: ({ blockId: string, value: number }) => Promise<string>
+    @blockVuexNamespace.Action setValidationMinimum!: ({ blockId, value }: { blockId: IBlock['uuid']; value: number | string }) => Promise<string>
 
-    @blockVuexNamespace.Action setValidationMaximum!: ({ blockId: string, value: number }) => Promise<string>
+    @blockVuexNamespace.Action setValidationMaximum!: ({ blockId, value }: { blockId: IBlock['uuid']; value: number | string }) => Promise<string>
 
-    @blockVuexNamespace.Action setMaxDigits!: ({ blockId: string, value: number }) => Promise<string>
+    @blockVuexNamespace.Action setMaxDigits!: ({ blockId, value }: { blockId: IBlock['uuid']; value: number | string }) => Promise<string>
 
     @builderVuexNamespace.Getter isEditable !: boolean
   }
