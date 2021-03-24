@@ -83,12 +83,11 @@ import {
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
-import lang from '@/lib/filters/lang'
+import { Lang } from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
 import { Component, Prop } from 'vue-property-decorator'
-import Vue from 'vue'
 import {
   discoverContentTypesFor,
   findOrGenerateStubbedVariantOn,
@@ -101,6 +100,7 @@ import UploadMonitor from '../block-editors/UploadMonitor.vue'
 import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
 import { IResourceDefinitionContentTypeSpecific as IResourceDefinitionVariantOverModes } from "@floip/flow-runner/dist/domain/IResourceResolver";
 import { ILanguage } from "@floip/flow-runner/dist/flow-spec/ILanguage";
+import { mixins } from "vue-class-component";
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -120,13 +120,6 @@ const builderVuexNamespace = namespace('builder')
   }
 
   @Component({
-    mixins: [
-      lang,
-      FlowUploader,
-      Permissions,
-      Routes,
-    ],
-
     components: {
       AudioLibrarySelector,
       ResourceVariantTextEditor,
@@ -134,7 +127,7 @@ const builderVuexNamespace = namespace('builder')
       PhoneRecorder,
     },
   })
-export class ResourceEditor extends Vue {
+export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({ required: true }) block: IBlock
 
   @Prop({ required: true }) flow: IFlow
