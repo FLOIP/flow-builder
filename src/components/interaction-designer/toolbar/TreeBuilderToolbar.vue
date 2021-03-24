@@ -157,7 +157,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import lang, { trans } from '@/lib/filters/lang'
+import { Lang } from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import lodash, { isEmpty } from 'lodash'
@@ -169,7 +169,7 @@ import pickBy from 'lodash/fp/pickBy'
 import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
 import { computeBlockPositionsFrom } from '@/store/builder'
 import { VBTooltipPlugin } from 'bootstrap-vue'
-import Component from 'vue-class-component'
+import Component, { mixins } from 'vue-class-component'
 import { Action, Getter, namespace, State } from 'vuex-class'
 import { IBlock, IFlow, IResourceDefinition } from '@floip/flow-runner'
 
@@ -184,13 +184,8 @@ const builderVuexNamespace = namespace('builder')
     // TreeUpdateConflictModal,
     // InteractionTotalsDateRangeConfiguration
   },
-  mixins: [
-    lang,
-    Permissions,
-    Routes,
-  ],
 })
-export default class TreeBuilderToolbar extends Vue {
+export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isImporterVisible = false
 
   // Computed ####################
@@ -288,9 +283,9 @@ export default class TreeBuilderToolbar extends Vue {
 
   get saveButtonText() {
     if (this.hasChanges) {
-      return trans('flow-builder.save')
+      return this.trans('flow-builder.save')
     }
-    return trans('flow-builder.saved')
+    return this.trans('flow-builder.saved')
   }
 
   get rootBlockClassesToDisplay() {
@@ -361,7 +356,7 @@ export default class TreeBuilderToolbar extends Vue {
   }
 
   translateTreeClassName(className: string) {
-    return trans(`flow-builder.${className}`)
+    return this.trans(`flow-builder.${className}`)
   }
 
   shouldDisplayDividerBefore(blockClasses: { [key: string]: any }, className: string) {
