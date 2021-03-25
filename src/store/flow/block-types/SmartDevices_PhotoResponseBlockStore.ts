@@ -1,6 +1,8 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, SupportedMode, SupportedContentType} from '@floip/flow-runner'
+import {
+  IBlock, IBlockExit, SupportedMode, SupportedContentType,
+} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to create at flow-runner
 import {defaults} from 'lodash'

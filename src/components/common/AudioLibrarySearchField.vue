@@ -39,7 +39,8 @@
       <template v-if="!isAudioLibraryEmpty">
         <a
           class="dropdown-item"
-          v-for="audio in search(query).slice(offset * limit, (offset + 1) * limit)"
+          v-for="(audio, i) in search(query).slice(offset * limit, (offset + 1) * limit)"
+          :key="i"
           @click.prevent="select(audio)"
           href="#"
         >
@@ -100,7 +101,7 @@
 
 <script>
 import fuse from 'fuse.js'
-import lodash from 'lodash'
+import {trim} from 'lodash'
 import VueFocus from 'vue-focus'
 import lang from '@/lib/filters/lang'
 
@@ -125,7 +126,7 @@ export default {
 
   computed: {
     query() {
-      return lodash.trim(this.rawQuery)
+      return trim(this.rawQuery)
     },
 
     isAudioLibraryEmpty() {
@@ -133,7 +134,7 @@ export default {
     },
 
     hasNext() {
-      return this.search(this.query).length / (this.offset + 1) > this.limit
+      return this.search(this.query).length / (Number(this.offset) + 1) > this.limit
     },
 
     hasPrevious() {

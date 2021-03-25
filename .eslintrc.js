@@ -1,9 +1,12 @@
 module.exports = {
   parser: 'vue-eslint-parser',
   parserOptions: {
-    parser: '@typescript-eslint/parser',
-    project: './tsconfig.json',
-    sourceType: 'module',
+    ecmaVersion: 2020,
+  },
+  root: true,
+  env: {
+    node: true,
+    'jest/globals': true,
   },
   extends: [
     'plugin:vue/essential',
@@ -16,97 +19,13 @@ module.exports = {
 
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:import/typescript',
-
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
-
-  plugins: ['vue', 'jest', 'lodash', '@typescript-eslint'],
-
-  env: {
-    'jest/globals': true,
-  },
-
-  overrides: [
-    {
-      files: ['**/__tests__/*.{j,t}s?(x)', '**/tests/unit/**/*.spec.{j,t}s?(x)'],
-      env: {
-        jest: true,
-      },
-    },
-  ],
-  ignorePatterns: ['.eslintrc.js'],
+  plugins: ['vue', 'jest', 'lodash'],
   rules: {
-    /********************
-     * Typescript rules *
-     ********************/
-    '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
-    '@typescript-eslint/strict-boolean-expressions': [
-      'error',
-      {
-        allowNullableBoolean: true,
-      },
-    ],
-    // Disabled until we can take the time to fix uses of object
-    '@typescript-eslint/ban-types': 'off',
-
-    // Disabled until we can take the time to fix uses
-    '@typescript-eslint/restrict-template-expressions': 'off',
-
-    '@typescript-eslint/no-unsafe-call': 'off',
-    '@typescript-eslint/no-unsafe-return': 'off',
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    '@typescript-eslint/semi': 'off',
-    '@typescript-eslint/no-use-before-define': 'off',
-    '@typescript-eslint/no-empty-interface': 'off',
-    '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-member-accessibility': 'off',
-    '@typescript-eslint/no-object-literal-type-assertion': 'off',
-    '@typescript-eslint/require-await': 'off',
-    '@typescript-eslint/no-floating-promises': 'off',
-    // Might be able to get rid of this after TS 4.0
-    '@typescript-eslint/no-unsafe-member-access': 'off',
-    '@typescript-eslint/explicit-function-return-type': [
-      'warn',
-      {
-        allowExpressions: true,
-        allowTypedFunctionExpressions: true,
-        allowHigherOrderFunctions: true,
-      },
-    ],
-    '@typescript-eslint/member-delimiter-style': [
-      'off',
-      {
-        multiline: {
-          delimiter: 'comma',
-          requireLast: true,
-        },
-        singleline: {
-          delimiter: 'comma',
-          requireLast: false,
-        },
-      },
-    ],
-
     /*************************
      * Modified ESLint rules *
      *************************/
     'one-var': ['error', 'never'],
-
-    // Note, this part may take longer to evaluate than others in this file
-    'import/named': 'off',
-    'import/namespace': 'off',
-    'import/default': 'off',
-    'import/no-named-as-default-member': 'off',
-    'import/no-named-as-default': 'off',
-    'import/no-cycle': 'off',
-    'import/no-unused-modules': 'off',
-    'import/no-deprecated': 'off',
-
-    'import/no-absolute-path': 'off',
     'no-useless-constructor': 'off',
     'class-methods-use-this': 'off',
     'no-empty-function': 'off',
@@ -188,6 +107,20 @@ module.exports = {
     'line-comment-position': ['warn', {position: 'above'}],
 
     /**********
+     * Import *
+     **********/
+    'import/named': 'off',
+    'import/namespace': 'off',
+    'import/default': 'off',
+    'import/no-named-as-default-member': 'off',
+    'import/no-named-as-default': 'off',
+    'import/no-cycle': 'off',
+    'import/no-unused-modules': 'off',
+    'import/no-deprecated': 'off',
+
+    'import/no-absolute-path': 'off',
+
+    /**********
      * Lodash *
      **********/
     'lodash/import-scope': ['error', 'member'],
@@ -221,4 +154,15 @@ module.exports = {
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
   },
+  overrides: [
+    {
+      files: [
+        '**/__tests__/*.{j,t}s?(x)',
+        '**/tests/unit/**/*.spec.{j,t}s?(x)',
+      ],
+      env: {
+        jest: true,
+      },
+    },
+  ],
 }

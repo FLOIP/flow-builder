@@ -10,8 +10,7 @@ export const routes = [
   {
     path: '/trees/:id/interaction-designer/:mode',
     props: (route) => ({id: route.params.id, mode: route.params.mode}),
-    component: () =>
-      import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue'),
+    component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue'),
   },
   {
     path: '/trees/:id',
@@ -32,8 +31,7 @@ export const routes = [
   {
     path: '/trees/:id',
     alias: '/trees/:id/interaction-designer/edit',
-    component: () =>
-      import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue'),
+    component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue'),
   },
 ]
 

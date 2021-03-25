@@ -16,7 +16,9 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, includes, forEach, cloneDeep, get, has} from 'lodash'
+import {
+  defaults, includes, forEach, cloneDeep, get, has,
+} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockPositionsFrom} from '@/store/builder'
 import {IFlowsState} from '.'
@@ -24,11 +26,8 @@ import {IFlowsState} from '.'
 export const getters: GetterTree<IFlowsState, IRootState> = {
   activeFlow: (state) => state.flows.length && getActiveFlowFrom((state as unknown) as IContext),
 
-  hasTextMode: (state, getters) =>
-    [SupportedMode.USSD, SupportedMode.SMS].some((mode) =>
-      includes(getters.activeFlow.supportedModes || [], mode)),
-  hasVoiceMode: (state, getters) =>
-    includes(getters.activeFlow.supportedModes || [], SupportedMode.IVR),
+  hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supportedModes || [], mode)),
+  hasVoiceMode: (state, getters) => includes(getters.activeFlow.supportedModes || [], SupportedMode.IVR),
 }
 
 export const mutations: MutationTree<IFlowsState> = {

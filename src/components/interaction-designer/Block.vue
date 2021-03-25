@@ -150,7 +150,9 @@
 <script>
 import Vue from 'vue'
 import {isNumber, forEach} from 'lodash'
-import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
+import {
+  mapActions, mapGetters, mapMutations, mapState,
+} from 'vuex'
 import PlainDraggable from '@/components/common/PlainDraggable.vue'
 import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
 import {OperationKind, generateConnectionLayoutKeyFor} from '@/store/builder'
@@ -196,10 +198,8 @@ export default {
     // todo: does this component know too much, what out of the above mapped state can be mapped?
     // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
 
-    isConnectionSourceRelocateActive: ({operations}) =>
-      !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
-    isConnectionCreateActive: ({operations}) =>
-      !!operations[OperationKind.CONNECTION_CREATE].data,
+    isConnectionSourceRelocateActive: ({operations}) => !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
+    isConnectionCreateActive: ({operations}) => !!operations[OperationKind.CONNECTION_CREATE].data,
     isBlockActivated: ({activeBlockId, block, operations}) => {
       if (activeBlockId && activeBlockId === block.uuid) {
         return true

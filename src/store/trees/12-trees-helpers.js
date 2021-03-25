@@ -1130,10 +1130,10 @@ window.app = window.app || {};
       // a position:absolute setting, so we'll actually add in the
       // width of the (variable) daterangepicker to a fixed value:
       const rightPosition = _.parseInt(
-          $('#reportrange').width()
+        $('#reportrange').width()
             + $('.tree-results-gear-menu').width()
             - $('.tree-results-versions-select-button').width() / 2,
-        ) - 4
+      ) - 4
       $('.tree-results-versions-selector').css({right: rightPosition})
 
       $('.tree-results-versions-selector').toggle()

@@ -1,6 +1,10 @@
-import {cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get} from 'lodash'
+import {
+  cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get,
+} from 'lodash'
 import Vue from 'vue'
-import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
+import {
+  ActionTree, GetterTree, Module, MutationTree,
+} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, SupportedMode, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
@@ -65,19 +69,16 @@ export const stateFactory = (): IBuilderState => ({
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
-  activeBlock: ({activeBlockId}, {blocksById}) =>
-    (activeBlockId ? blocksById[activeBlockId] : null),
+  activeBlock: ({activeBlockId}, {blocksById}) => (activeBlockId ? blocksById[activeBlockId] : null),
 
   blocksById: (state, getters, rootState, rootGetters) => {
     const {blocks} = rootGetters['flow/activeFlow']
     return keyBy(blocks, 'uuid')
   },
 
-  nodeLabelsById: (state, getters, {flow: {flows}}, rootGetters) =>
-    mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
+  nodeLabelsById: (state, getters, {flow: {flows}}, rootGetters) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
 
-  exitLabelsById: (state, getters, {flow: {flows}}, rootGetters) =>
-    mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
+  exitLabelsById: (state, getters, {flow: {flows}}, rootGetters) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
 }
@@ -313,7 +314,9 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    * @param rootState
    * @param flows
    */
-  async importFlowsAndResources({dispatch, commit, state, rootState}, {flows, resources}) {
+  async importFlowsAndResources({
+    dispatch, commit, state, rootState,
+  }, {flows, resources}) {
     console.debug('importing flows & resources ...')
     console.log({flows, resources})
     const {flow: flowState} = rootState
@@ -337,7 +340,9 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     rootState.trees.ui.languages = flows[0].languages
   },
 
-  async loadFlow({dispatch, commit, state, rootState}) {
+  async loadFlow({
+    dispatch, commit, state, rootState,
+  }) {
     console.debug('builder', 'loading flow...')
 
     // todo: we need something like: set context
@@ -349,8 +354,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     // @ts-ignore
     flow.languages = cloneDeep(rootState.trees.ui.languages)
 
-    flowContext.resources.forEach((resource: any) =>
-      commit('flow/resource_add', {resource}, {root: true}))
+    flowContext.resources.forEach((resource: any) => commit('flow/resource_add', {resource}, {root: true}))
 
     await dispatch('flow/flow_add', {flow}, {root: true})
 
@@ -377,8 +381,7 @@ export function createDefaultBlockTypeInstallerFor(
   blockType: IBlock['type'],
   storeForBlockType: Module<any, IRootState>,
 ) {
-  return (builder: Vue) =>
-    builder.$store.hasModule(['flow', blockType])
+  return (builder: Vue) => builder.$store.hasModule(['flow', blockType])
     || builder.$store.registerModule(['flow', blockType], storeForBlockType)
 }
 

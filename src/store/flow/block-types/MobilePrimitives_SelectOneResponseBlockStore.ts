@@ -32,9 +32,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       return memo
     }, choices)
   },
-  allChoicesHaveContent: (state, getters): boolean =>
-    Object.keys(getters.inflatedChoices).every((key: string) =>
-      someItemsHaveValue(getters.inflatedChoices[key].values, 'value')),
+  allChoicesHaveContent: (state, getters): boolean => Object.keys(getters.inflatedChoices).every((key: string) => someItemsHaveValue(getters.inflatedChoices[key].values, 'value')),
   twoChoicesBlank: (state, getters, rootState, rootGetters): boolean => {
     let blankNumber = 0
     return Object.keys(getters.inflatedChoices).some((key: string) => {
@@ -95,7 +93,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
     return null
   },
-  async editSelectOneResponseBlockChoice({commit, dispatch, getters, rootGetters}) {
+  async editSelectOneResponseBlockChoice({
+    commit, dispatch, getters, rootGetters,
+  }) {
     const activeBlock = rootGetters['builder/activeBlock']
     if (getters.allChoicesHaveContent) {
       const newIndex = parseInt(max(Object.keys(activeBlock.config.choices)) || '0') + 1

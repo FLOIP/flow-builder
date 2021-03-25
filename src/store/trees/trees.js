@@ -55,48 +55,29 @@ export default {
   },
 
   getters: {
-    isFeatureCallCenterQueuesEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'callCenterQueues'),
-    isFeatureCallToRecordEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'callToRecord'),
-    isFeatureMultimediaUploadEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'multimediaUpload'),
-    isFeatureTreesBatchLinkAudioEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'treesBatchLinkAudio'),
-    isFeatureAddSubscriberPropertyFieldEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'addSubscriberPropertyField'),
-    isFeatureFloipPushEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'floipPush'),
-    isFeatureTreeSaveEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSave'),
-    isFeatureTreeSendEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSend'),
-    isFeatureTreeDuplicateEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'treeDuplicate'),
-    isFeatureTreeViewVersionsEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'treeViewVersions'),
-    isFeatureTreeDuplicateOfEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'treeDuplicateOf'),
-    isResourceEditorEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'resourceEditor'),
-    isFeatureUpdateInteractionTotalsEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'updateInteractionTotals'),
-    isFeatureAudioUploadEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'audioUpload'),
-    isFeatureViewResultsEnabled: ({ui}) =>
-      lodash.find(ui.enabledFeatures, (feature) => feature === 'viewResults'),
+    isFeatureCallCenterQueuesEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'callCenterQueues'),
+    isFeatureCallToRecordEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'callToRecord'),
+    isFeatureMultimediaUploadEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'multimediaUpload'),
+    isFeatureTreesBatchLinkAudioEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treesBatchLinkAudio'),
+    isFeatureAddSubscriberPropertyFieldEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'addSubscriberPropertyField'),
+    isFeatureFloipPushEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'floipPush'),
+    isFeatureTreeSaveEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSave'),
+    isFeatureTreeSendEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSend'),
+    isFeatureTreeDuplicateEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeDuplicate'),
+    isFeatureTreeViewVersionsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeViewVersions'),
+    isFeatureTreeDuplicateOfEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeDuplicateOf'),
+    isResourceEditorEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'resourceEditor'),
+    isFeatureUpdateInteractionTotalsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'updateInteractionTotals'),
+    isFeatureAudioUploadEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'audioUpload'),
+    isFeatureViewResultsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'viewResults'),
 
-    selectedBlock: ({tree, ui}, getters, rootState) =>
-      lodash.find(get(tree, 'blocks', []), {jsKey: ui.selectedBlock}),
+    selectedBlock: ({tree, ui}, getters, rootState) => lodash.find(get(tree, 'blocks', []), {jsKey: ui.selectedBlock}),
 
     subscriberPropertyFields: ({ui}) => lodash.get(ui, 'subscriberPropertyFields'),
 
-    interactiveBlockClasses: ({ui}, getters, rootState) =>
-      lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
+    interactiveBlockClasses: ({ui}, getters, rootState) => lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
 
-    interactiveBlocksInTree: ({tree}, {interactiveBlockClasses}, rootState) =>
-      lodash.filter(tree.blocks, (b) =>
-        lodash.includes(Object.keys(interactiveBlockClasses), b.type)),
+    interactiveBlocksInTree: ({tree}, {interactiveBlockClasses}, rootState) => lodash.filter(tree.blocks, (b) => lodash.includes(Object.keys(interactiveBlockClasses), b.type)),
 
     isEditable: ({ui}) => !!ui.isEditable,
 
@@ -254,7 +235,9 @@ export default {
       Vue.set(selectedBlock, 'customData.maxNumericDigits', value)
     },
 
-    updateBlockContentFor({tree, ui}, {type, langId, jsKey, value}) {
+    updateBlockContentFor({tree, ui}, {
+      type, langId, jsKey, value,
+    }) {
       const block = lodash.find(tree.blocks, {jsKey})
       if (type === 'social') {
         // social has nested text content
@@ -272,7 +255,9 @@ export default {
 
     updateBlockFileContentFor(
       {tree, ui},
-      {langId, jsKey, fileUrl, fileId, fileType, mimeType, contentType},
+      {
+        langId, jsKey, fileUrl, fileId, fileType, mimeType, contentType,
+      },
     ) {
       const block = lodash.find(tree.blocks, {jsKey})
 
@@ -288,7 +273,9 @@ export default {
 
     updateBlockFileContentForAllLanguages(
       {tree, ui},
-      {jsKey, fileUrl, fileId, fileType, mimeType, contentType},
+      {
+        jsKey, fileUrl, fileId, fileType, mimeType, contentType,
+      },
     ) {
       const block = lodash.find(tree.blocks, {jsKey})
 
@@ -305,7 +292,9 @@ export default {
       Vue.set(block, `${type}AutogenLangs`, [])
     },
 
-    updateBlockAutoGenStateFor({tree, ui}, {type, langId, jsKey, value: enable}) {
+    updateBlockAutoGenStateFor({tree, ui}, {
+      type, langId, jsKey, value: enable,
+    }) {
       const block = lodash.find(tree.blocks, {jsKey})
       const i = block[`${type}AutogenLangs`].indexOf(+langId)
       const absent = i === -1
@@ -564,7 +553,9 @@ export default {
       }
     },
 
-    updateTextContent({commit}, {type, jsKey, langId, value, disableAutoGen}) {
+    updateTextContent({commit}, {
+      type, jsKey, langId, value, disableAutoGen,
+    }) {
       commit('updateBlockContentFor', {
         type,
         jsKey,
@@ -817,11 +808,10 @@ export default {
           commit('setBatchMatchAudioResultsTo', {status: 1, value})
           dispatch('commitAllBatchMatchAudioFiles', {replaceExisting})
         })
-        .catch(({response: {data: {status_description: message}}}) =>
-          commit('setBatchMatchAudioResultsTo', {
-            status: 0,
-            message,
-          }))
+        .catch(({response: {data: {status_description: message}}}) => commit('setBatchMatchAudioResultsTo', {
+          status: 0,
+          message,
+        }))
     },
 
     commitAllBatchMatchAudioFiles(
@@ -870,7 +860,9 @@ export default {
           tree: {blocks},
         },
       },
-      {jsKey, langId, matches, replaceExisting},
+      {
+        jsKey, langId, matches, replaceExisting,
+      },
     ) {
       const {
         audioFiles: {[langId]: audioFile},
@@ -906,7 +898,9 @@ export default {
       commit('setTreeUpdateConflictStatus', payload)
     },
 
-    async fetchInteractionTotals({state, commit, dispatch, getters}, {startDate, endDate}) {
+    async fetchInteractionTotals({
+      state, commit, dispatch, getters,
+    }, {startDate, endDate}) {
       if (!getters.isFeatureUpdateInteractionTotalsEnabled) {
         console.info('Feature `updateInteractionTotals` is disabled')
         return
@@ -932,7 +926,6 @@ const getChoiceKeyPressesFor = (block) => {
   return lodash.range(1, block.customData.numChoices + 1).map((i) => keypresses[i] || i)
 }
 
-const isMCQBlock = (block) =>
-  block.type === 'MultipleChoiceQuestionBlock'
+const isMCQBlock = (block) => block.type === 'MultipleChoiceQuestionBlock'
   || block.type === 'CollaborativeFilteringRatingBlock'
   || block.type === 'RandomOrderMultipleChoiceQuestionBlock'

@@ -1,5 +1,7 @@
 import {IFlow, IResourceDefinition} from '@floip/flow-runner'
-import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
+import {
+  ActionTree, GetterTree, Module, MutationTree,
+} from 'vuex'
 import {IRootState} from '..' // todo: create factory with generics so that IRootState is DI'd
 import {
   getters as blockGetters,

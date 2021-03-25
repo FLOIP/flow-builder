@@ -11,17 +11,17 @@ import {allItemsHaveValue, twoItemsBlank} from '../utils/listBuilder'
 export const BLOCK_TYPE = 'Core\\Case'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  allExitsHaveTests: (state, getters, rootState, rootGetters): boolean =>
-    allItemsHaveValue(rootGetters['builder/activeBlock'].exits, 'test'),
-  twoExitsBlank: (state, getters, rootState, rootGetters): boolean =>
-    twoItemsBlank(rootGetters['builder/activeBlock'].exits, 'test'),
+  allExitsHaveTests: (state, getters, rootState, rootGetters): boolean => allItemsHaveValue(rootGetters['builder/activeBlock'].exits, 'test'),
+  twoExitsBlank: (state, getters, rootState, rootGetters): boolean => twoItemsBlank(rootGetters['builder/activeBlock'].exits, 'test'),
 }
 
 export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async editCaseBlockExit(
-    {commit, dispatch, getters, rootGetters},
+    {
+      commit, dispatch, getters, rootGetters,
+    },
     {identifier, value}: { identifier: string; value: string },
   ) {
     const activeBlock = rootGetters['builder/activeBlock']

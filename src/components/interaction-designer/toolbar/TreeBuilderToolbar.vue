@@ -179,7 +179,9 @@ import Vue from 'vue'
 import lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
-import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
+import {
+  mapActions, mapGetters, mapMutations, mapState,
+} from 'vuex'
 import lodash, {isEmpty} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
@@ -389,8 +391,7 @@ export default {
       return this.trans(`flow-builder.${className}`)
     },
     shouldDisplayDividerBefore(blockClasses, className) {
-      const shouldShowDividerBeforeBlock = lodash.pickBy(blockClasses, (classDetails) =>
-        this.hasClassDetail(classDetails, 'dividerBefore'))[className]
+      const shouldShowDividerBeforeBlock = lodash.pickBy(blockClasses, (classDetails) => this.hasClassDetail(classDetails, 'dividerBefore'))[className]
       return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
     },
     handleResourceViewerSelected() {

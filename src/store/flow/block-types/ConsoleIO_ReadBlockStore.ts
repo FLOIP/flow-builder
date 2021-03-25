@@ -36,7 +36,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return newConfig
   },
   async editDestinationVariable(
-    {commit, dispatch, getters, rootGetters},
+    {
+      commit, dispatch, getters, rootGetters,
+    },
     {variableName, keyIndex}: { variableName: string; keyIndex: number },
   ) {
     const activeBlock = rootGetters['builder/activeBlock']

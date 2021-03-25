@@ -33,7 +33,9 @@ export function interpolateRouteWith(context, route) {
 
   context = context || {}
 
-  const {id, path, params, methods} = route
+  const {
+    id, path, params, methods,
+  } = route
   const isPathComplete = isEmpty(params)
 
   if (isPathComplete) {

@@ -200,8 +200,7 @@ export function findResourceVariantOverModesOn(
   const filterWithComparatorKeys = pick(filter, keysForComparison)
   const variant = find<IResourceDefinitionVariantOverModes>(
     resource.values,
-    (v) =>
-      isEqual(filterWithComparatorKeys, pick(v, keysForComparison))
+    (v) => isEqual(filterWithComparatorKeys, pick(v, keysForComparison))
       && difference(filter.modes, v.modes).length === 0,
   )
 

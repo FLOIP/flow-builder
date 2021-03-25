@@ -46,8 +46,12 @@ export default {
 
   actions: {
     startAudioRecordingFor(
-      {commit, dispatch, state, rootState},
-      {key, description, name: recorder_name, phone: recorder_phonenumber, isNew: is_new_recorder},
+      {
+        commit, dispatch, state, rootState,
+      },
+      {
+        key, description, name: recorder_name, phone: recorder_phonenumber, isNew: is_new_recorder,
+      },
     ) {
       commit('setAudioRecordingConfigVisibilityFor', {key, isVisible: false})
       // TODO: enable showAppMessageFor once available
@@ -66,7 +70,9 @@ export default {
         )
         .then(
           ({
-            data: {uuid, queue_id: queueId, status, status_description, description, recorder_id},
+            data: {
+              uuid, queue_id: queueId, status, status_description, description, recorder_id,
+            },
           }) => {
             commit('addRecorder', {
               id: recorder_id,
@@ -124,7 +130,9 @@ export default {
      * @param queueId
      * @returns {Promise<AxiosResponse<any>>}
      */
-    fetchAudioRecordingStatusFor({commit, dispatch, state, rootState}, {key, uuid, queueId}) {
+    fetchAudioRecordingStatusFor({
+      commit, dispatch, state, rootState,
+    }, {key, uuid, queueId}) {
       return axios
         .post(
           routeFrom('trees.calltorecordStatus', null, rootState.trees.ui.routes),

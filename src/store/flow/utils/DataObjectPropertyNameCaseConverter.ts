@@ -1,7 +1,9 @@
 // TODO:
 //  move this file into @floip to replace the convertKeysToCamelCase under '@floip/flow-runner/src/flow-spec/DataObjectPopertyNameCamelCaseConverter'
 //  and update convertKeysToCamelCase usage in @floip (tests, etc) to convertKeysCase
-import {camelCase, snakeCase, includes, isArray, isObject, reduce} from 'lodash'
+import {
+  camelCase, snakeCase, includes, isArray, isObject, reduce,
+} from 'lodash'
 
 export const EXCLUDED_DATA_HIERARCHIES_BY_KEY = [
   'choices',
