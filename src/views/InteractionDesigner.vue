@@ -12,10 +12,10 @@
           <div v-if="activeBlock"
                :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
                :block="activeBlock"
-               :flow="activeFlow" />
+               :flow="activeFlow"
+          />
 
         </div>
-
 
 <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
 <!--                     :jsonValidationResults="jsonValidationResults"-->
@@ -44,45 +44,46 @@
 </template>
 
 <script>
-  import lang from '@/lib/filters/lang'
-  import Routes from '@/lib/mixins/Routes'
-  import lodash, {forEach, invoke, isEmpty} from 'lodash'
-  import Vue from 'vue'
-  import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-  // import {affix as Affix} from 'vue-strap'
-  // import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
+import lang from '@/lib/filters/lang'
+import Routes from '@/lib/mixins/Routes'
+import lodash, { forEach, invoke, isEmpty } from 'lodash'
+import Vue from 'vue'
+import {
+  mapActions, mapGetters, mapMutations, mapState,
+} from 'vuex'
+// import {affix as Affix} from 'vue-strap'
+// import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
 
-  // import * as BlockTypes from './block-types'
-  // import JsPlumbBlock from './JsPlumbBlock'
+// import * as BlockTypes from './block-types'
+// import JsPlumbBlock from './JsPlumbBlock'
 
-  import {store} from '@/store'
+import { store } from '@/store'
 
-  // import TreeEditor from './TreeEditor'
-  // import TreeViewer from './TreeViewer'
-  // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
-  // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
-  import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
-  import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
-  import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
+// import TreeEditor from './TreeEditor'
+// import TreeViewer from './TreeViewer'
+// import LegacyInteractionDesigner from './InteractionDesigner.legacy'
+// import TreeUpdateConflictModal from './TreeUpdateConflictModal';
+import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
+import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
+import { BuilderCanvas } from '@/components/interaction-designer/BuilderCanvas'
 
-  // import '../TreeDiffLogger'
+// import '../TreeDiffLogger'
 
-  export default {
-    props: { 
-      id: {type: String}, 
-      mode: {type: String}, 
-      appConfig: {
-        type: Object,
-        default: function() {
-          return {}
-        }
+export default {
+  props: {
+    id: { type: String },
+    mode: { type: String },
+    appConfig: {
+      type: Object,
+      default() {
+        return {}
       },
-      builderConfig: {
-        type: Object,
-        default: function() {
-          return {}
-        }
-      }
+    },
+    builderConfig: {
+      type: Object,
+      default() {
+        return {}
+      },
     },
 
     mixins: [lang, Routes],
@@ -98,165 +99,164 @@
       FlowEditor,
       // TreeUpdateConflictModal,
     },
+  },
 
-    data() {
-      return {
-        pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
-          'CallBackWithCallCenterBlock',
-          'CollaborativeFilteringQuestionBlock',
-          'CollaborativeFilteringRatingBlock',
-          'CollaborativeFilteringRatioBranchBlock',
-          'CreateSubscriberBlock',
-          'CurrentTimeBranchBlock',
-          'DirectorySelectionBlock',
-          'EntitySelectionBlock',
-          'GenerateCodeBlock',
-          'GroupPropertyBlock',
-          'SubscriberPropertiesSnapshotBlock',
-          'SubscriberPropertyBlock',
-          'SummaryBlock',
-          'ValidateCodeBlock',
-          'WebhookBlock',
-          'WebhookContentBlock',
-          'RecordGroupMessageBlock',
-          'PlayGroupMessageBlock',
-        ]}
-    },
+  data() {
+    return {
+      pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
+        'CallBackWithCallCenterBlock',
+        'CollaborativeFilteringQuestionBlock',
+        'CollaborativeFilteringRatingBlock',
+        'CollaborativeFilteringRatioBranchBlock',
+        'CreateSubscriberBlock',
+        'CurrentTimeBranchBlock',
+        'DirectorySelectionBlock',
+        'EntitySelectionBlock',
+        'GenerateCodeBlock',
+        'GroupPropertyBlock',
+        'SubscriberPropertiesSnapshotBlock',
+        'SubscriberPropertyBlock',
+        'SummaryBlock',
+        'ValidateCodeBlock',
+        'WebhookBlock',
+        'WebhookContentBlock',
+        'RecordGroupMessageBlock',
+        'PlayGroupMessageBlock',
+      ],
+    }
+  },
+
+  computed: {
     watch: {
       mode: function(val) {
         this.updateIsEditableFromParams(val) // `this.mode` comes from captured param in js-routes
       }
     },
-    computed: {
-      ...mapGetters([
-        'isConfigured',
-        'selectedBlock',
-        'isEditable',
-        'hasChanges',
-        'hasIssues',
-        'isTreeSaving',
-        'isTreeValid',
-        'jsonValidationResults',
-        'validationResults',
-      ]),
-      ...mapState({
+    ...mapGetters([
+      'isConfigured',
+      'selectedBlock',
+      'hasChanges',
+      'hasIssues',
+      'isTreeSaving',
+      'isTreeValid',
+      'jsonValidationResults',
+      'validationResults',
+    ]),
+    ...mapState({
 
-        // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
-        designerWorkspaceHeight: ({trees: {tree, ui}}) => ui.designerWorkspaceHeight,
+      // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
+      designerWorkspaceHeight: ({ trees: { tree, ui } }) => ui.designerWorkspaceHeight,
 
+      tree: ({ trees: { tree, ui } }) => tree,
+      validationResultsEmptyTree: ({ trees: { tree, ui } }) => !tree.blocks.length,
+      hasVoice: ({ trees: { tree } }) => tree.details.hasVoice,
+      hasSms: ({ trees: { tree } }) => tree.details.hasSms,
+      hasUssd: ({ trees: { tree } }) => tree.details.hasUssd,
+      hasSocial: ({ trees: { tree } }) => tree.details.hasSocial,
+      hasClipboard: ({ trees: { tree } }) => tree.details.hasClipboard,
+      blockClasses: ({ trees: { ui } }) => ui.blockClasses,
+    }),
 
+    ...mapGetters('flow', ['activeFlow']),
+    ...mapGetters('builder', ['activeBlock', 'isEditable']),
 
-        tree: ({trees: {tree, ui}}) => tree,
-        validationResultsEmptyTree: ({trees: {tree, ui}}) => !tree.blocks.length,
-        hasVoice: ({trees: {tree}}) => tree.details.hasVoice,
-        hasSms: ({trees: {tree}}) => tree.details.hasSms,
-        hasUssd: ({trees: {tree}}) => tree.details.hasUssd,
-        hasSocial: ({trees: {tree}}) => tree.details.hasSocial,
-        hasClipboard: ({trees: {tree}}) => tree.details.hasClipboard,
-        blockClasses:  ({trees: {ui}}) => ui.blockClasses,
-      }),
-
-      ...mapGetters('flow', ['activeFlow']),
-      ...mapGetters('builder', ['activeBlock']),
-
-      jsKey() {
-        return lodash.get(this.selectedBlock, 'jsKey')
-      },
-
-      isPureVueBlock() { // pure vuejs block types handle readonly mode on their own
-        return _.includes(this.pureVuejsBlocks, lodash.get(this.selectedBlock, 'type'))
-      },
-
-      sidebarType() {
-        const
-            blockType = lodash.get(this.selectedBlock, 'type'),
-            blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
-
-        return this.isEditable
-            ? blockType || 'TreeEditor'
-            : blockViewerType || 'TreeViewer'
-      },
+    jsKey() {
+      return lodash.get(this.selectedBlock, 'jsKey')
     },
 
-    created() {
+    isPureVueBlock() { // pure vuejs block types handle readonly mode on their own
+      return _.includes(this.pureVuejsBlocks, lodash.get(this.selectedBlock, 'type'))
+    },
 
-      const {$store} = this
+    sidebarType() {
+      const
+        blockType = lodash.get(this.selectedBlock, 'type')
+      const blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
 
-      forEach(store.modules, (v, k) =>
-        !$store.hasModule(k) && $store.registerModule(k, v))
+      return this.isEditable
+        ? blockType || 'TreeEditor'
+        : blockViewerType || 'TreeViewer'
+    },
+  },
 
-      if((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-        this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+  created() {
+
+    const {$store} = this
+
+    forEach(store.modules, (v, k) =>
+      !$store.hasModule(k) && $store.registerModule(k, v))
+
+    if((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+    }
+
+    global.builder = this // initialize global reference for legacy + debugging
+
+    this.registerBlockTypes()
+    this.initializeTreeModel()
+    this.updateIsEditableFromParams(this.mode) // `this.mode` comes from captured param in js-routes
+  },
+  activated() {
+    this.deselectBlocks() // todo: remove once we have jsKey in our js-route
+  },
+  /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
+  mounted() {
+    this.flow_setActiveFlowId({flowId: this.id})
+    //if nothing was found for the flow Id
+    if(!this.activeFlow) {
+      this.flow_setActiveFlowId({flowId: null})
+      this.$router.replace(`${this.route('flows.fetchFlow', {flowId: this.id})}?nextUrl=${this.$route.path}`)
+    }
+    this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
+    this.deselectBlocks()
+    this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
+
+    console.debug('Vuej tree interaction designer mounted!')
+  },
+
+  watch: {
+    mode(newMode) {
+      this.updateIsEditableFromParams(newMode)
+    },
+  },
+  methods: {
+    ...mapMutations(['deselectBlocks', 'configure']),
+    ...mapMutations('builder', ['activateBlock']),
+    ...mapActions('builder', ['setIsEditable']),
+    ...mapMutations('flow', ['flow_setActiveFlowId']),
+    ...mapActions([
+      'attemptSaveTree',
+      'discoverTallestBlockForDesignerWorkspaceHeight',
+      'initializeTreeModel']),
+
+    async registerBlockTypes() {
+      const { blockClasses } = this
+
+      forEach(blockClasses, async ({ type }) => {
+        const normalizedType = type.replace('\\', '_')
+        const typeWithoutSeparators = type.replace(/\\/g, '')
+        const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
+
+        invoke(exported, 'install', this)
+        Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
+      })
+    },
+
+    handleCanvasSelected({ target }) {
+      if (!target.classList.contains('builder-canvas')) {
+        console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
+        return
       }
 
-      global.builder = this // initialize global reference for legacy + debugging
-
-      this.registerBlockTypes()
-
-      this.initializeTreeModel()
-      this.updateIsEditableFromParams(this.mode) // `this.mode` comes from captured param in js-routes
+      this.activateBlock({ blockId: null })
     },
 
-    activated() {
-      this.deselectBlocks() // todo: remove once we have jsKey in our js-route
+    updateIsEditableFromParams(mode) {
+      const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!app.ui.isEditableLocked)
+      this.setIsEditable(isEditable)
     },
 
-    /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
-    mounted() {
-      this.flow_setActiveFlowId({flowId: this.id})
-
-      //if nothing was found for the flow Id
-      if(!this.activeFlow) {
-        this.flow_setActiveFlowId({flowId: null})
-        this.$router.replace(`${this.route('flows.fetchFlow', {flowId: this.id})}?nextUrl=${this.$route.path}`)
-      }
-
-      this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
-      this.deselectBlocks()
-      this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
-
-      console.debug('Vuej tree interaction designer mounted!')
-		},
-
-    methods: {
-        ...mapMutations(['deselectBlocks', 'configure']),
-        ...mapMutations('builder', ['activateBlock']),
-        ...mapMutations('flow', ['flow_setActiveFlowId']),
-
-        ...mapActions([
-          'attemptSaveTree',
-          'discoverTallestBlockForDesignerWorkspaceHeight',
-          'initializeTreeModel']),
-
-      async registerBlockTypes() {
-        const {blockClasses} = this
-
-        forEach(blockClasses, async ({type}) => {
-          const normalizedType = type.replace('\\', '_')
-          const typeWithoutSeparators = type.replace(/\\/g, '')
-          const exported = await import(
-            `../components/interaction-designer/block-types/${normalizedType}Block.vue`)
-
-          invoke(exported, 'install', this)
-          Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
-        })
-      },
-
-      handleCanvasSelected({target}) {
-        if (!target.classList.contains('builder-canvas')) {
-          console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
-          return
-        }
-
-        this.activateBlock({blockId: null})
-      },
-
-      updateIsEditableFromParams(mode) {
-        const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!app.ui.isEditableLocked)
-        this.$store.commit('updateIsEditable', {value: isEditable})
-      },
-
-      /** --------------------------------| has-editable-locked | not-editable-locked |
+    /** --------------------------------| has-editable-locked | not-editable-locked |
        | mode-is-absent+view-url-suffix   |        0            |     0               |
        | mode-is-absent+edit-url-suffix   |        0 (r=>view)  |     1               |
        | mode-is-absent+absent-url-suffix |        0 (r=>view)  |     0 (r=>view)     | <- Equivalent to /view
@@ -265,23 +265,23 @@
        | mode-is-edit                     |        0 (r=>view)  |     1               |
        | mode-is-edit+view-url-suffix     |        0 (r=>view)  |     1               |
        ------------------------------------------------------------------------------ */
-      discoverIsEditableFrom(mode, hash, isEditableLocked) {
-        if (isEditableLocked) {
-          return false
-        }
+    discoverIsEditableFrom(mode, hash, isEditableLocked) {
+      if (isEditableLocked) {
+        return false
+      }
 
-        return !isEditableLocked && mode === 'edit'|| !mode && lodash.endsWith(hash, '/edit')
-      },
+      return !isEditableLocked && mode === 'edit' || !mode && lodash.endsWith(hash, '/edit')
+    },
 
 		  hoistResourceViewerToPushState(hash) {
-        if (!_.endsWith(hash, '/resource-viewer')) {
-          return
-        }
+      if (!_.endsWith(hash, '/resource-viewer')) {
+        return
+      }
 
-        this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
-      },
+      this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
     },
-	}
+  },
+}
 </script>
 
 <!--<style src="../css/voto3.css"></style>-->
@@ -348,7 +348,6 @@
 
     box-shadow: 0 3px 6px #CACACA;
   }
-
 
   // color categorizations
   $category-0-faint: #fbfdfb;

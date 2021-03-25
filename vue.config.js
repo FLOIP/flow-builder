@@ -1,11 +1,13 @@
 const path = require('path')
 const fs = require('fs')
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 
 module.exports = {
   lintOnSave: false,
   runtimeCompiler: true,
   css: {
-    extract: false
+    extract: false,
   },
   configureWebpack: {
     resolve: {
@@ -22,22 +24,43 @@ module.exports = {
       //webpack dev server doesn't accept posts by default but we want stub routes for testing
       //https://stackoverflow.com/questions/47442543/how-do-i-get-webpack-dev-server-to-accept-post-requests
       const bodyParser = require('body-parser')
+      app.use(cookieParser())
+
+      // use bodyParser for axios request
+      app.use(bodyParser.urlencoded({ extended: true }))
       app.use(bodyParser.json())
 
       // Mock a route to mimic this upload result format:
-      // {"audio_file_id":147,"duration_seconds":"4.803250","description":"xyz.wav","created_at":{"date":"2020-11-24 01:41:58","timezone_type":3,"timezone":"UTC"},"audio_uuid":"5fbc64e0c74e90.82972899"}"
+      // {
+      //   'audio_file_id': 147,
+      //   'duration_seconds': '4.803250',
+      //   'description': 'xyz.wav',
+      //   'created_at': {
+      //     'date': '2020-11-24 01:41:58',
+      //     'timezone_type': 3,
+      //     'timezone': 'UTC'
+      //   },
+      //   'audio_uuid': '5fbc64e0c74e90.82972899'
+      // }
       app.all('/audiofiles/upload', (req, res) => {
-        const now = new Date().toISOString().split('T')
+        const now = new Date()
+          .toISOString()
+          .split('T')
+
         const result = {
           audio_file_id: Math.floor(Math.random() * (1000 + 1)),
           duration_seconds: Math.random() * 10,
           description: req.query.flowFilename,
           created_at: {
             date: `${now[0]} ${now[1].split('.')[0]}`,
-            timezone_type:3,
-            timezone: "UTC"
+            timezone_type: 3,
+            timezone: 'UTC',
           },
-          audio_uuid: `${Math.random().toString(36).substr(2, 16)}.${Math.random().toString(36).substr(2, 10)}`
+          audio_uuid: `${Math.random()
+            .toString(36)
+            .substr(2, 16)}.${Math.random()
+            .toString(36)
+            .substr(2, 10)}`,
         }
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(result))
@@ -66,6 +89,43 @@ module.exports = {
         const flow = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(flow))
+      })
+
+      // Mock call to record start, with this format
+      // {uuid: ..., queue_id: ..., status: "in_progress", status_description: ..., description: ...}
+      app.all('/calltorecord/start', (req, res) => {
+        const result = {
+          uuid: `${Math.random().toString(36).substr(2, 16)}.${Math.random().toString(36).substr(2, 10)}`,
+          queue_id: Math.floor(Math.random() * (1000 + 1)),
+          status: 'in_progress',
+          status_description: '',
+          description: 'Test call-to-record audio',
+          recorder_id: `${req.body.recorder_name.replace(/[\W_]+/g, '')}-${req.body.recorder_phonenumber}`,
+        }
+        res.cookie(result.uuid, 'in_progress')
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(result))
+      })
+
+      // Mock call to record status, with this format
+      // { audio_file_id: "148", status: "new", description: "my descr", status_description: "", uuid: "5ffcdb4d0d8742.58454366", duration_seconds: "4.54", created_at: "2021-01-11 23:12:50", key: "block_1586301986853_15:45", queueId: "5ffcdb4d0d8742.58454366" }
+      app.all('/calltorecord/status', (req, res) => {
+        const now = new Date().toISOString().split('T')
+        const result = {
+          audio_file_id: Math.floor(Math.random() * (1000 + 1)),
+          duration_seconds: Math.random() * 10,
+          status: req.cookies[req.body.uuid],
+          description: 'Test call-to-record audio',
+          uuid: req.body.uuid,
+          key: req.body.key,
+          queueId: req.body.queueId,
+          created_at: `${now[0]} ${now[1].split('.')[0]}`,
+        }
+        if (req.cookies[req.body.uuid] !== 'new') {
+          res.cookie(result.uuid, 'new') // `new` status tells the UI we had successful `recorded` audio
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(result))
       })
     },
   },
