@@ -52,7 +52,6 @@ import {
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import SelectManyResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import { namespace } from 'vuex-class'
-import lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -76,7 +75,6 @@ const builderVuexNamespace = namespace('builder')
     ResourceEditor,
     BlockId,
   },
-  mixins: [lang],
 })
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
     @blockVuexNamespace.Getter inflatedChoices!: {[key: string]: IResourceDefinition}

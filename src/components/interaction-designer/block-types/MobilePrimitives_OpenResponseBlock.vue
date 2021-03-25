@@ -27,7 +27,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -38,7 +37,7 @@ import {
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import OpenResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
-import lang from '@/lib/filters/lang'
+import { Lang } from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -48,6 +47,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import BlockMaxDurationSecondsEditor from '../block-editors/MaxDurationSecondsEditor.vue'
 import BlockMaxResponseCharactersEditor from '../block-editors/MaxResponseCharactersEditor.vue'
+import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -64,9 +64,8 @@ const builderVuexNamespace = namespace('builder')
     BlockMaxDurationSecondsEditor,
     BlockMaxResponseCharactersEditor,
   },
-  mixins: [lang],
 })
-class MobilePrimitives_OpenResponseBlock extends Vue {
+class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
     @Prop()readonly block!: IOpenResponseBlock
 
     @Prop()readonly flow!: IFlow

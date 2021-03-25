@@ -41,7 +41,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -52,7 +51,7 @@ import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceReso
 import { findOrGenerateStubbedVariantOn } from '@/store/flow/resource'
 import LogStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_LogBlockStore'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
-import lang from '@/lib/filters/lang'
+import { Lang } from '@/lib/filters/lang'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -60,6 +59,7 @@ import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -74,9 +74,8 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
   },
-  mixins: [lang],
 })
-class Core_LogBlock extends Vue {
+class Core_LogBlock extends mixins(Lang) {
     @Prop()readonly block!: ILogBlock
 
     @Prop()readonly flow!: IFlow

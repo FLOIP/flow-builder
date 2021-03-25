@@ -29,7 +29,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -38,7 +37,7 @@ import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumer
 import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import NumericStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
-import lang from '@/lib/filters/lang'
+import { Lang } from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -49,6 +48,7 @@ import BlockId from '../block-editors/BlockId.vue'
 import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue'
 import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
 import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
+import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -66,9 +66,8 @@ const builderVuexNamespace = namespace('builder')
     BlockMaximumNumericEditor,
     BlockMaxDigitEditor,
   },
-  mixins: [lang],
 })
-class MobilePrimitives_NumericResponseBlock extends Vue {
+class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
     @Prop()readonly block!: INumericResponseBlock
 
     @Prop()readonly flow!: IFlow

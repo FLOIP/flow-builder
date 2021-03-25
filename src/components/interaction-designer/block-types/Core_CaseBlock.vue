@@ -36,13 +36,14 @@ import { IBlockExitTestRequired, IFlow, IBlockExit } from '@floip/flow-runner'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 
 import CaseStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_CaseBlockStore'
-import lang from '@/lib/filters/lang'
+import { Lang } from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import { mixins } from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -56,9 +57,8 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
   },
-  mixins: [lang],
 })
-class Core_CaseBlock extends Vue {
+class Core_CaseBlock extends mixins(Lang) {
     @Prop()readonly block!: ICaseBlock
 
     @Prop()readonly flow!: IFlow

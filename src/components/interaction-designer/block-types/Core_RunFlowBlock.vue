@@ -32,21 +32,20 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
 import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import { IFlow } from '@floip/flow-runner'
-import { IFlowsState } from '@/store/flow/index'
 import RunAnotherFlowStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_RunFlowBlockStore'
-import lang from '@/lib/filters/lang'
+import { Lang } from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import { mixins } from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -59,9 +58,8 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
   },
-  mixins: [lang],
 })
-class Core_RunAnotherFlowBlock extends Vue {
+class Core_RunAnotherFlowBlock extends mixins(Lang) {
     @Prop()readonly block!: IRunFlowBlock
 
     @Prop()readonly flow!: IFlow
