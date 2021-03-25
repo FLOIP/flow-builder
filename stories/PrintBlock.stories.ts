@@ -1,5 +1,3 @@
-//TODO - storyshots currently don't seem to be working
-
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -16,10 +14,6 @@ import {
   BaseMountedVueClassWithResourceAndMode,
   safeRegisterBlockModule
 } from './story-utils/storeSetup'
-import {IFlow, SupportedContentType, SupportedMode} from '@floip/flow-runner'
-import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
-import {get} from 'lodash'
-import {namespace} from 'vuex-class'
 import {Component} from 'vue-property-decorator'
 
 Vue.use(Vuex)
@@ -63,37 +57,10 @@ export const Default = () => {
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
 
       this.setDescription(blockId)
-
-      // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
-      const {
-        languages: {
-          0: {id: languageId}
-        },
-      }: IFlow = this.activeFlow
-      const resourceId = get(this.activeBlock, `config.message`, '')
-
-      const variantSms: IResourceDefinitionVariantOverModesFilter = {
-        languageId,
-        modes: [SupportedMode.SMS],
-        // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-        contentType: [SupportedContentType.TEXT],
-      }
-      const variantUssd: IResourceDefinitionVariantOverModesFilter = {
-        languageId,
-        modes: [SupportedMode.USSD],
-        // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-        contentType: [SupportedContentType.TEXT],
-      }
-      const variantIvr: IResourceDefinitionVariantOverModesFilter = {
-        languageId,
-        modes: [SupportedMode.IVR],
-        // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-        contentType: [SupportedContentType.AUDIO],
-      }
-      // we're assuming this pseudo-variants exist
-      this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
-      this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-      this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/IVR audio.mp3"})
+      this.setResourceData({
+        shouldSetChoices: false,
+        configPath: 'config.message'
+      })
     },
   }
 )

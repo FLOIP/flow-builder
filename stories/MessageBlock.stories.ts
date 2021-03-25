@@ -1,5 +1,3 @@
-//TODO - storyshots currently don't seem to be working
-
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -66,37 +64,10 @@ export const Default = () => (DefaultClass)
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, messageBlockStore)
 
       this.setDescription(blockId)
-
-      // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
-      const {
-        languages: {
-          0: {id: languageId}
-        },
-      }: IFlow = this.activeFlow
-      const resourceId = get(this.activeBlock, `config.prompt`, '')
-
-      const variantSms: IResourceDefinitionVariantOverModesFilter = {
-        languageId,
-        modes: [SupportedMode.SMS],
-        // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-        contentType: [SupportedContentType.TEXT],
-      }
-      const variantUssd: IResourceDefinitionVariantOverModesFilter = {
-        languageId,
-        modes: [SupportedMode.USSD],
-        // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-        contentType: [SupportedContentType.TEXT],
-      }
-      const variantIvr: IResourceDefinitionVariantOverModesFilter = {
-        languageId,
-        modes: [SupportedMode.IVR],
-        // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-        contentType: [SupportedContentType.AUDIO],
-      }
-      // we're assuming this pseudo-variants exist
-      this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
-      this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-      this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
+      this.setResourceData({
+        shouldSetChoices: false,
+        configPath: 'config.prompt'
+      })
     },
   }
 )

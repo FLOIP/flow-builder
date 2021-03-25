@@ -64,53 +64,17 @@ export const Default = () => (CurrentClass1)
   async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
-    const {
-      languages: {
-        0: {id: languageId}
-      },
-    }: IFlow = this.activeFlow
-    const resourceId = get(this.activeBlock, `config.prompt`, '')
 
     this.setDescription(blockId)
-    this.setResourceData(languageId, resourceId)
+    this.setResourceData({
+      shouldSetChoices: false,
+      configPath: 'config.prompt'
+    })
     this.setMaxDurationSeconds(3*60)
     this.setMaxResponseCharacters(160)
   },
 })
 class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
-
-  setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
-    this.block_setName({blockId: blockId, value: "A Name"})
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-  }
-
-  setResourceData(languageId: string, resourceId: string) {
-    // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
-    const variantSms: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.SMS],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.TEXT],
-    }
-    const variantUssd: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.USSD],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.TEXT],
-    }
-    const variantIvr: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.IVR],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.AUDIO],
-    }
-    // we're assuming this pseudo-variants exist
-    this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
-    this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
-  }
-
   @blockVuexNamespace.Action setMaxDurationSeconds:any
   @blockVuexNamespace.Action setMaxResponseCharacters:any
 }
@@ -123,52 +87,17 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
   async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
-    const {
-      languages: {
-        0: {id: languageId}
-      },
-    }: IFlow = this.activeFlow
-    const resourceId = get(this.activeBlock, `config.prompt`, '')
 
     this.flow_setSupportedMode({flowId, value: SupportedMode.IVR})
     this.setMaxDurationSeconds(3*60)
     this.setDescription(blockId)
-    this.setResourceData(languageId, resourceId)
+    this.setResourceData({
+      shouldSetChoices: false,
+      configPath: 'config.prompt'
+    })
   },
 })
 class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
-  setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
-    this.block_setName({blockId: blockId, value: "A Name"})
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-  }
-
-  setResourceData(languageId: string, resourceId: string) {
-    // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
-    const variantSms: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.SMS],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.TEXT],
-    }
-    const variantUssd: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.USSD],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.TEXT],
-    }
-    const variantIvr: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.IVR],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.AUDIO],
-    }
-    // we're assuming this pseudo-variants exist
-    this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
-    this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
-  }
-
   @blockVuexNamespace.Action setMaxDurationSeconds:any
 }
 export const ExistingDataForIvrOnly = () => (CurrentClass3)
@@ -180,52 +109,17 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
   async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
-    const {
-      languages: {
-        0: {id: languageId}
-      },
-    }: IFlow = this.activeFlow
-    const resourceId = get(this.activeBlock, `config.prompt`, '')
 
     this.flow_setSupportedMode({flowId, value: [SupportedMode.SMS, SupportedMode.USSD]})
     this.setMaxResponseCharacters(160)
     this.setDescription(blockId)
-    this.setResourceData(languageId, resourceId)
+    this.setResourceData({
+      shouldSetChoices: false,
+      configPath: 'config.prompt'
+    })
   },
 })
 class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
-  setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
-    this.block_setName({blockId: blockId, value: "A Name"})
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-  }
-
-  setResourceData(languageId: string, resourceId: string) {
-    // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
-    const variantSms: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.SMS],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.TEXT],
-    }
-    const variantUssd: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.USSD],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.TEXT],
-    }
-    const variantIvr: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.IVR],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.AUDIO],
-    }
-    // we're assuming this pseudo-variants exist
-    this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
-    this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
-  }
-
   @blockVuexNamespace.Action setMaxResponseCharacters:any
 }
 export const ExistingDataForTextOnly = () => (CurrentClass4)

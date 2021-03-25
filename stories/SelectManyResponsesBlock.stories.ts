@@ -10,14 +10,10 @@ import selectManyResponseBlock from '@/components/interaction-designer/block-typ
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {IRootState, store} from '@/store'
 import selectManyStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
-import {get} from 'lodash'
 
 import {
   SupportedMode,
-  SupportedContentType,
-  IFlow,
 } from '@floip/flow-runner'
-import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
 
 export default {
   component: selectManyResponseBlock,
@@ -111,42 +107,10 @@ export const MoreLanguages = () => {
     // @ts-ignore
     const {block: {uuid: blockId}, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
     this.setDescription(blockId)
-
-    // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
-    const {
-      languages: {
-        0: {id: languageId}
-      },
-    }: IFlow = this.activeFlow
-    const resourceId = get(this.activeBlock, `config.prompt`, '')
-    const choiceResourceId = get(this.activeBlock, `config.choices.1`, '')
-
-    const variantSms: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.SMS],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.TEXT],
-    }
-    const variantUssd: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.USSD],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.TEXT],
-    }
-    const variantIvr: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.IVR],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.AUDIO],
-    }
-    // we're assuming this pseudo-variants exist
-    this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
-    this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
-
-    this.resource_setValue({resourceId: choiceResourceId, filter: variantSms, value: "text for SMS"})
-    this.resource_setValue({resourceId: choiceResourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId: choiceResourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
+    this.setResourceData({
+      shouldSetChoices: true,
+      configPath: 'config.prompt'
+    })
   },
 
 })

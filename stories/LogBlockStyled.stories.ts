@@ -1,7 +1,5 @@
-//TODO - storyshots currently don't seem to be working
-
 import Vue from 'vue'
-import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
+import Vuex from 'vuex'
 
 import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'

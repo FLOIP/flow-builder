@@ -1,5 +1,3 @@
-//TODO - storyshots currently don't seem to be working
-
 import Vue from 'vue'
 import Vuex from 'vuex'
 

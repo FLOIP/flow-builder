@@ -3,8 +3,10 @@ import Vue from 'vue'
 import {namespace} from 'vuex-class'
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
-import {findFlowWith, IBlock, IContext, IFlow} from '@floip/flow-runner'
+import { findFlowWith, IBlock, IContext, IFlow, SupportedContentType, SupportedMode } from '@floip/flow-runner'
 import {get, isEmpty, cloneDeep} from 'lodash'
+import { IResourceDefinitionVariantOverModesFilter } from "../../src/store/flow/resource";
+import Component from "vue-class-component";
 
 let storyInitState: any = {}
 
@@ -47,13 +49,8 @@ export const baseMounted = async function (this: any, BLOCK_TYPE: string, blockT
 /**
  * Vue class used to gather required Getter, Mutation, Action for the BaseMounted binding
  */
+@Component({})
 export class BaseMountedVueClass extends Vue {
-  setDescription(blockId: string) {
-    this.block_setName({blockId: blockId, value: "A Name"})
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-  }
-
   @builderVuexNamespace.Getter activeBlock!: IBlock
   @flowVuexNamespace.Getter activeFlow!: IFlow
 
@@ -68,9 +65,56 @@ export class BaseMountedVueClass extends Vue {
   @flowVuexNamespace.Mutation block_setLabel: any
   @flowVuexNamespace.Mutation block_setSemanticLabel: any
   @flowVuexNamespace.Mutation flow_setFirstBlockId: any
+
+  setDescription(blockId: string) {
+    this.block_setName({blockId: blockId, value: "A Name"})
+    this.block_setLabel({blockId: blockId, value: "A Label"})
+    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+  }
 }
 
+@Component({})
 export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass {
   @flowVuexNamespace.Mutation resource_setValue: any
-  @flowVuexNamespace.Mutation flow_setSupportedMode:any
+  @flowVuexNamespace.Mutation flow_setSupportedMode: any
+
+  setResourceData({ shouldSetChoices, configPath }: { shouldSetChoices: boolean, configPath: string }) {
+    const {
+      languages: {
+        0: {id: languageId}
+      },
+    }: IFlow = this.activeFlow
+    const resourceId = get(this.activeBlock, configPath, '')
+
+    // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
+    const variantSms: IResourceDefinitionVariantOverModesFilter = {
+      languageId,
+      modes: [SupportedMode.SMS],
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.TEXT],
+    }
+    const variantUssd: IResourceDefinitionVariantOverModesFilter = {
+      languageId,
+      modes: [SupportedMode.USSD],
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.TEXT],
+    }
+    const variantIvr: IResourceDefinitionVariantOverModesFilter = {
+      languageId,
+      modes: [SupportedMode.IVR],
+      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
+      contentType: [SupportedContentType.AUDIO],
+    }
+    // we're assuming this pseudo-variants exist
+    this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
+    this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
+    this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
+
+    if (shouldSetChoices) {
+      const choiceResourceId = get(this.activeBlock, `config.choices.1`, '')
+      this.resource_setValue({resourceId: choiceResourceId, filter: variantSms, value: "text for SMS"})
+      this.resource_setValue({resourceId: choiceResourceId, filter: variantUssd, value: "text for USSD"})
+      this.resource_setValue({resourceId: choiceResourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
+    }
+  }
 }
