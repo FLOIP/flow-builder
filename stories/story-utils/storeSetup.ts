@@ -1,12 +1,9 @@
-import {IRootState} from '@/store'
 import Vue from 'vue'
 import {namespace} from 'vuex-class'
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 import {
-  findFlowWith,
   IBlock,
-  IContext,
   IFlow,
   ILanguage,
   SupportedContentType,
@@ -64,7 +61,6 @@ export class BaseMountedVueClass extends Vue {
       this.$store.unregisterModule(['flow', BLOCK_TYPE])
     }
     // todo: this will end up in `flow_addBlankBlockByType` once we get async import builds working
-    // @ts-ignore - TS2769: No overload matches this call.
     this.$store.registerModule(['flow', BLOCK_TYPE], blockTypeStore)
   }
 
@@ -105,23 +101,21 @@ export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass 
     }: IFlow = this.activeFlow
     const resourceId = get(this.activeBlock, configPath, '')
 
-    // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
+    // Set values on resource editor
+    // TODO: find better way to do this once the resource editor is fully implemented, the goal is to set resources' value correctly. The implementation below is just an
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: [SupportedMode.SMS],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.TEXT],
     }
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: [SupportedMode.USSD],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.TEXT],
     }
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       languageId,
       modes: [SupportedMode.IVR],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
       contentType: [SupportedContentType.AUDIO],
     }
     // we're assuming this pseudo-variants exist
