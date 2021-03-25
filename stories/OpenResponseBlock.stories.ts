@@ -49,7 +49,7 @@ const BaseOptions = {
       store: new Vuex.Store<IRootState>(store),
       async mounted() {
         // @ts-ignore
-        await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
+        await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
       },
     }
 )
@@ -62,7 +62,7 @@ export const Default = () => (CurrentClass1)
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
     this.setDescription(blockId)
     this.setResourceData({
@@ -85,7 +85,7 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: SupportedMode.IVR})
     this.setMaxDurationSeconds(3*60)
@@ -107,7 +107,7 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: [SupportedMode.SMS, SupportedMode.USSD]})
     this.setMaxResponseCharacters(160)
@@ -130,13 +130,13 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
       store: new Vuex.Store<IRootState>(store),
       async mounted() {
         // @ts-ignore
-        const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
+        const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
         this.setDescription(blockId)
 
         // Fake a 1st block to make sure the current block won't be selected
         // @ts-ignore
-        await this.safeRegisterBlockModule.bind(this)(CASE_BLOCK_TYPE, caseBlockStore)
+        await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore)
         const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
         const {uuid: caseBlockId} = caseBlock
 

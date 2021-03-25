@@ -41,7 +41,7 @@ const SelectOneResponseBlockTemplate = `
 
   async mounted() {
     // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, selectOneStore)
+    await this.baseMounted(BLOCK_TYPE, selectOneStore)
   },
 })
 class InFlowBuilderClass extends BaseMountedVueClass {}
@@ -62,7 +62,7 @@ export const InFlowBuilder = () => {
 
   async mounted() {
     // @ts-ignore
-    const {block, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectOneStore)
+    const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
     flow.supportedModes = [SupportedMode.IVR]
   },
 
@@ -84,7 +84,7 @@ export const IvrOnly = () => {
 
   async mounted() {
     // @ts-ignore
-    const {block, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectOneStore)
+    const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
     flow.languages = [{id: '1', name: 'English'}, {id: '2', name: 'French'}] // mutation
   },
 
@@ -106,7 +106,7 @@ export const MoreLanguages = () => {
 
   async mounted() {
     // @ts-ignore
-    const {block: {uuid: blockId}, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectOneStore)
+    const {block: {uuid: blockId}, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
     this.setDescription(blockId)
     this.setResourceData({
       shouldSetChoices: true,

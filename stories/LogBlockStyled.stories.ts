@@ -8,7 +8,7 @@ import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 
-import {baseMounted, BaseMountedVueClass} from './story-utils/storeSetup'
+import { BaseMountedVueClass} from './story-utils/storeSetup'
 import {Component} from "vue-property-decorator";
 
 Vue.use(Vuex)
@@ -34,7 +34,7 @@ const LogBlockTemplate = `
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
+    await this.baseMounted(BLOCK_TYPE, logBlockStore)
   },
 })
 class DefaultClass extends BaseMountedVueClass {}
@@ -46,7 +46,7 @@ export const Default = () => (DefaultClass)
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
     this.block_setName({blockId: blockId, value: "A Name"})
     this.block_setLabel({blockId: blockId, value: "A Label"})
@@ -62,13 +62,13 @@ export const ExistingDataBlock = () => (CurrentClass2)
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
     this.setDescription(blockId)
 
     // Fake a 1st block to make sure the current block won't be selected
     // @ts-ignore
-    await this.safeRegisterBlockModule.bind(this)(CASE_BLOCK_TYPE, caseBlockStore)
+    await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore)
 
     const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
     const {uuid: caseBlockId} = caseBlock

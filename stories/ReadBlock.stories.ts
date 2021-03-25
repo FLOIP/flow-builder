@@ -8,7 +8,7 @@ import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import readBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
 
-import {baseMounted, BaseMountedVueClass} from './story-utils/storeSetup'
+import { BaseMountedVueClass} from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 
@@ -38,7 +38,7 @@ const readBlockTemplate = `
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
       // @ts-ignore
-      await baseMounted.bind(this)(BLOCK_TYPE, readBlockStore)
+      await this.baseMounted(BLOCK_TYPE, readBlockStore)
     },
   }
 )
@@ -52,7 +52,7 @@ export const Default = () => (DefaultClass)
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
       // @ts-ignore
-      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, readBlockStore)
+      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
 
       this.setDescription(blockId)
       this.setFormatString("%s lorem ipsum %d [...]")
@@ -71,7 +71,7 @@ export const ExistingDataBlock = () => (ExistingDataClass)
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
       // @ts-ignore
-      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, readBlockStore)
+      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
 
       this.setDescription(blockId)
       this.setFormatString("%s lorem ipsum %d [...]")

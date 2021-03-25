@@ -33,7 +33,7 @@ const LogBlockTemplate = `
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
+    await this.baseMounted(BLOCK_TYPE, logBlockStore)
   },
 
 })
@@ -46,7 +46,7 @@ export const Default = () => (DefaultClass)
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
     this.setDescription(blockId)
   },

@@ -39,7 +39,7 @@ const PrintBlockTemplate = `
 
   async mounted() {
     // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
+    await this.baseMounted(BLOCK_TYPE, printBlockStore)
   },
 })
 class DefaultClass extends BaseMountedVueClass {}
@@ -53,7 +53,7 @@ export const Default = () => {
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
       // @ts-ignore
-      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
+      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
 
       this.setDescription(blockId)
       this.setResourceData({
@@ -73,13 +73,13 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
       // @ts-ignore
-      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
+      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
 
       this.setDescription(blockId)
 
       // Fake a 1st block to make sure the current block won't be selected
       // @ts-ignore
-      await this.safeRegisterBlockModule.bind(this)(CASE_BLOCK_TYPE, caseBlockStore)
+      await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore)
       const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
       const {uuid: caseBlockId} = caseBlock
 

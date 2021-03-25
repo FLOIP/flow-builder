@@ -3,47 +3,20 @@ import Vue from 'vue'
 import {namespace} from 'vuex-class'
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
-import { findFlowWith, IBlock, IContext, IFlow, SupportedContentType, SupportedMode } from '@floip/flow-runner'
+import {
+  findFlowWith,
+  IBlock,
+  IContext,
+  IFlow,
+  ILanguage,
+  SupportedContentType,
+  SupportedMode
+} from '@floip/flow-runner'
 import {get, isEmpty, cloneDeep} from 'lodash'
 import { IResourceDefinitionVariantOverModesFilter } from "../../src/store/flow/resource";
-import Component from "vue-class-component";
-import caseBlockStore, { BLOCK_TYPE as CASE_BLOCK_TYPE } from "../../src/store/flow/block-types/Core_CaseBlockStore";
+import Component from 'vue-class-component'
 
 let storyInitState: any = {}
-
-/**
- * Safe register block module
- * Because some weird race condition is leading to modules not getting unregistered when clicking between stories before the next story re-registers
- */
-export const safeRegisterBlockModule = async function(BLOCK_TYPE: string, blockTypeStore: IRootState) {
-  if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
-    this.$store.unregisterModule(['flow', BLOCK_TYPE])
-  }
-  // todo: this will end up in `flow_addBlankBlockByType` once we get async import builds working
-  // @ts-ignore - TS2551: Property '$store' does not exist on type
-  this.$store.registerModule(['flow', BLOCK_TYPE], blockTypeStore)
-}
-
-export const baseMounted = async function (this: any, BLOCK_TYPE: string, blockTypeStore: IRootState): Promise<any> {
-  if (isEmpty(storyInitState)) {
-    storyInitState = cloneDeep(this.$store.state)
-  } else {
-    // Make sure we have cleared state in store for each new mounted story, as we're using one flow to put blocks
-    Object.assign(this.$store.state, cloneDeep(storyInitState))
-  }
-
-  await safeRegisterBlockModule.bind(this)(BLOCK_TYPE, blockTypeStore);
-
-  let flow = await this.flow_addBlankFlow();
-  flow.languages = [{id: '1', name: 'English'}] // mutation
-
-  const block =  await this.flow_addBlankBlockByType({type: BLOCK_TYPE})
-  const {uuid: blockId} = block 
-
-  this.activateBlock({blockId})
-
-  return { block, flow }
-}
 
 /**
  * Vue class used to gather required Getter, Mutation, Action for the BaseMounted binding
@@ -53,12 +26,12 @@ export class BaseMountedVueClass extends Vue {
   @builderVuexNamespace.Getter activeBlock!: IBlock
   @flowVuexNamespace.Getter activeFlow!: IFlow
 
-  @builderVuexNamespace.Mutation activateBlock!: void
+  @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
 
-  @flowVuexNamespace.Action flow_addBlankFlow!: Promise<IFlow>
-  @flowVuexNamespace.Action flow_addBlankBlockByType!: Promise<IBlock>
-  @flowVuexNamespace.Action flow_add!: Promise<IFlow>
-  @flowVuexNamespace.Action flow_createWith!: Promise<IFlow>
+  @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
+  @flowVuexNamespace.Action flow_addBlankBlockByType!: ({ type, ...props }: Partial<IBlock>) => Promise<IBlock>
+  @flowVuexNamespace.Action flow_add!: () => Promise<IFlow>
+  @flowVuexNamespace.Action flow_createWith!: () => Promise<IFlow>
 
   @flowVuexNamespace.Mutation block_setName: any
   @flowVuexNamespace.Mutation block_setLabel: any
@@ -83,13 +56,36 @@ export class BaseMountedVueClass extends Vue {
    * Safe register block module
    * Because some weird race condition is leading to modules not getting unregistered when clicking between stories before the next story re-registers
    */
-  async safeRegisterBlockModule(BLOCK_TYPE: string, blockTypeStore: IRootState) {
+  async safeRegisterBlockModule(BLOCK_TYPE: string, blockTypeStore: IRootState): Promise<any> {
     if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
       this.$store.unregisterModule(['flow', BLOCK_TYPE])
     }
     // todo: this will end up in `flow_addBlankBlockByType` once we get async import builds working
     // @ts-ignore - TS2769: No overload matches this call.
     this.$store.registerModule(['flow', BLOCK_TYPE], blockTypeStore)
+  }
+
+  async baseMounted(BLOCK_TYPE: string, blockTypeStore: IRootState): Promise<any> {
+    if (isEmpty(storyInitState)) {
+      storyInitState = cloneDeep(this.$store.state)
+    } else {
+      // Make sure we have cleared state in store for each new mounted story, as we're using one flow to put blocks
+      Object.assign(this.$store.state, cloneDeep(storyInitState))
+    }
+
+    await this.safeRegisterBlockModule(BLOCK_TYPE, blockTypeStore);
+
+    let flow = await this.flow_addBlankFlow();
+    flow.languages = [
+      { id: '1', name: 'English' } as ILanguage
+      ] // mutation
+
+    const block =  await this.flow_addBlankBlockByType({type: BLOCK_TYPE})
+    const {uuid: blockId} = block
+
+    this.activateBlock({blockId})
+
+    return { block, flow }
   }
 }
 

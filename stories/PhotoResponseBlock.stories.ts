@@ -8,7 +8,7 @@ import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import photoResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 
-import {baseMounted, BaseMountedVueClass} from './story-utils/storeSetup'
+import { BaseMountedVueClass} from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 
@@ -40,7 +40,7 @@ const BaseOptions = {
         store: new Vuex.Store<IRootState>(store),
         async mounted() {
           // @ts-ignore
-            await baseMounted.bind(this)(BLOCK_TYPE, photoResponseBlockStore)
+            await this.baseMounted(BLOCK_TYPE, photoResponseBlockStore)
         },
     }
 )
@@ -53,7 +53,7 @@ export const Default = () => (CurrentClass1)
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
       // @ts-ignore
-        const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, photoResponseBlockStore)
+        const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, photoResponseBlockStore)
 
         this.setDescription(blockId)
     },
@@ -68,7 +68,7 @@ export const ExistingDataPreFilled = () => (CurrentClass2)
         store: new Vuex.Store<IRootState>(store),
         async mounted() {
           // @ts-ignore
-            const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, photoResponseBlockStore)
+            const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, photoResponseBlockStore)
 
             this.block_setName({blockId: blockId, value: "A Name"})
             this.block_setLabel({blockId: blockId, value: "A Label"})
@@ -76,7 +76,7 @@ export const ExistingDataPreFilled = () => (CurrentClass2)
 
             // Fake a 1st block to make sure the current block won't be selected
             // @ts-ignore
-            await this.safeRegisterBlockModule.bind(this)(CASE_BLOCK_TYPE, caseBlockStore)
+            await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore)
             const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
             const {uuid: caseBlockId} = caseBlock
 

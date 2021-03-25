@@ -4,7 +4,7 @@ import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
 import OutputBlock from '@/components/interaction-designer/block-types/Core_OutputBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
-import {baseMounted, BaseMountedVueClass} from './story-utils/storeSetup'
+import { BaseMountedVueClass} from './story-utils/storeSetup'
 
 import {IRootState, store} from '@/store'
 import outputBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
@@ -32,7 +32,7 @@ const OutputBlockTemplate = `
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, outputBlockStore)
+    await this.baseMounted(BLOCK_TYPE, outputBlockStore)
   },
 
 })

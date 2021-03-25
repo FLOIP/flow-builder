@@ -8,7 +8,7 @@ import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarE
 import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 
-import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
+import { BaseMountedVueClass } from './story-utils/storeSetup'
 import {namespace} from "vuex-class";
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -39,7 +39,7 @@ const BaseOptions = {
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, caseBlockStore)
+    await this.baseMounted(BLOCK_TYPE, caseBlockStore)
   },
 })
 class DefaultClass extends BaseMountedVueClass {}
@@ -51,7 +51,7 @@ export const Default = () => (DefaultClass)
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
-    const { block } = await baseMounted.bind(this)(BLOCK_TYPE, caseBlockStore)
+    const { block } = await this.baseMounted(BLOCK_TYPE, caseBlockStore)
     const blockId = block.uuid
 
     this.setDescription(blockId)
