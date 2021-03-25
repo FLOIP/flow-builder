@@ -111,9 +111,7 @@ export const MoreLanguages = () => {
   async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectOneStore)
-    this.block_setName({blockId: blockId, value: "A Name"})
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+    this.setDescription(blockId)
     // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
     const {
       languages: {

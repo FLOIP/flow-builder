@@ -10,7 +10,6 @@ import caseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBloc
 
 import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
 import {namespace} from "vuex-class";
-const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 Vue.use(Vuex)
@@ -55,9 +54,7 @@ export const Default = () => (DefaultClass)
     const { block } = await baseMounted.bind(this)(BLOCK_TYPE, caseBlockStore)
     const blockId = block.uuid
 
-    this.block_setName({blockId: blockId, value: "A Name"})
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+    this.setDescription(blockId)
     this.editCaseBlockExit({identifier: block.exits[0].uuid, value: "A expression"})
   }
 })

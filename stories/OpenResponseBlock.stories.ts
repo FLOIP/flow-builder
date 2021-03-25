@@ -239,9 +239,7 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
         // @ts-ignore
         const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, openResponseBlockStore)
 
-        this.block_setName({blockId: blockId, value: "A Name"})
-        this.block_setLabel({blockId: blockId, value: "A Label"})
-        this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+        this.setDescription(blockId)
 
         // Fake a 1st block to make sure the current block won't be selected
         // @ts-ignore

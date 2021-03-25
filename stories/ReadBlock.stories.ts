@@ -56,9 +56,7 @@ export const Default = () => (DefaultClass)
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, readBlockStore)
 
-      this.block_setName({blockId: blockId, value: "A Name"})
-      this.block_setLabel({blockId: blockId, value: "A Label"})
-      this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+      this.setDescription(blockId)
       this.setFormatString("%s lorem ipsum %d [...]")
     },
   }
@@ -77,10 +75,7 @@ export const ExistingDataBlock = () => (ExistingDataClass)
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, readBlockStore)
 
-      this.block_setName({blockId: blockId, value: "A Name"})
-      this.block_setLabel({blockId: blockId, value: "A Label"})
-      this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-      
+      this.setDescription(blockId)
       this.setFormatString("%s lorem ipsum %d [...]")
 
       // Fake a 1st block to make sure the current block won't be selected

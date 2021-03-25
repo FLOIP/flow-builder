@@ -62,10 +62,7 @@ export const Default = () => {
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
 
-      //TODO - support sending props to baseMounted?
-      this.block_setName({blockId: blockId, value: "A Name"})
-      this.block_setLabel({blockId: blockId, value: "A Label"})
-      this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+      this.setDescription(blockId)
 
       // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
       const {
@@ -112,9 +109,7 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
 
-      this.block_setName({blockId: blockId, value: "A Name"})
-      this.block_setLabel({blockId: blockId, value: "A Label"})
-      this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+      this.setDescription(blockId)
 
       // Fake a 1st block to make sure the current block won't be selected
       // @ts-ignore

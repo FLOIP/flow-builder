@@ -48,6 +48,12 @@ export const baseMounted = async function (this: any, BLOCK_TYPE: string, blockT
  * Vue class used to gather required Getter, Mutation, Action for the BaseMounted binding
  */
 export class BaseMountedVueClass extends Vue {
+  setDescription(blockId: string) {
+    this.block_setName({blockId: blockId, value: "A Name"})
+    this.block_setLabel({blockId: blockId, value: "A Label"})
+    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+  }
+
   @builderVuexNamespace.Getter activeBlock!: IBlock
   @flowVuexNamespace.Getter activeFlow!: IFlow
 

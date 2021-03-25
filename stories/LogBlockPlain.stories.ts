@@ -48,9 +48,7 @@ export const Default = () => (DefaultClass)
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
 
-    this.block_setName({blockId: blockId, value: "A Name"})
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+    this.setDescription(blockId)
   },
 })
 class CurrentClass2 extends BaseMountedVueClass {}
