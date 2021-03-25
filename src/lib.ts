@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import InteractionDesignerComponent from "./views/InteractionDesigner.vue"
-import FetchFlowComponent from "./views/FetchFlow.vue"
-import NewFlowComponent from "./views/NewFlow.vue"
-import HomeComponent from "./views/Home.vue"
+import InteractionDesignerComponent from './views/InteractionDesigner.vue'
+import FetchFlowComponent from './views/FetchFlow.vue'
+import NewFlowComponent from './views/NewFlow.vue'
+import HomeComponent from './views/Home.vue'
 
 export const appConfig = require('../app.config')
 export const builderConfig = require('../builder.config')
@@ -17,10 +17,10 @@ const Components = {
   FetchFlowComponent,
   NewFlowComponent,
   HomeComponent,
-};
+}
 
-Object.keys(Components).forEach(name => {
+Object.keys(Components).forEach((name) => {
   Vue.component(name, Components[name])
-});
+})
 
 export default Components

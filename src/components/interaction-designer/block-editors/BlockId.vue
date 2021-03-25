@@ -5,15 +5,15 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {IBlock} from '@floip/flow-runner'
-  import {Component, Prop} from 'vue-property-decorator'
-  import lang from '@/lib/filters/lang'
+import Vue from 'vue'
+import { IBlock } from '@floip/flow-runner'
+import { Component, Prop } from 'vue-property-decorator'
+import lang from '@/lib/filters/lang'
 
   @Component<any>({
     mixins: [lang],
   })
-  class BlockId extends Vue {
+class BlockId extends Vue {
     @Prop()readonly block!: IBlock
 
     get blockId(): string {
@@ -21,5 +21,5 @@
     }
   }
 
-  export default BlockId
+export default BlockId
 </script>

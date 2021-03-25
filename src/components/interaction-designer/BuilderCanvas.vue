@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts">
-  import {mapGetters} from 'vuex'
-  import {Component, Vue} from 'vue-property-decorator'
-  import Block from "@/components/interaction-designer/Block.vue"
+import {mapGetters} from 'vuex'
+import { Component, Vue } from 'vue-property-decorator'
+import Block from '@/components/interaction-designer/Block.vue'
 
   @Component({
     components: {
@@ -26,10 +26,10 @@
     },
 
   })
-  export default class BuilderCanvas extends Vue {
-  }
+export default class BuilderCanvas extends Vue {
+}
 
-  export {BuilderCanvas}
+export { BuilderCanvas }
 </script>
 
 <style scoped>

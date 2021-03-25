@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import {
-    Action, Mutation, namespace
+  Action, Mutation, namespace
 } from 'vuex-class'
 const flowVuexNamespace = namespace('flow')
 import FlowBuilderContainer from "./story-utils/FlowBuilderContainer.vue";
@@ -17,13 +17,14 @@ decorators.push(StoryRouter({}, {
   routes
 }))
 
+const builderVuexNamespace = namespace('builder')
+
 export default {
   title: 'InteractionDesigner/Toolbar',
   // Our exports that end in "Data" are not stories.
   excludeStories: /.*Data$/,
   decorators
 }
-
 
 const ToolbarTemplate = `
   <flow-builder-container v-if="activeFlow">
@@ -45,11 +46,11 @@ class BaseMountedClass extends Vue {
   @Action initializeTreeModel: any
 
   @Mutation configure
-  @Mutation updateIsEditable: any
   @Mutation addEnabledFeature: any
   @Mutation removeEnabledFeature: any
   @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @builderVuexNamespace.Action setIsEditable: void
 }
 
 // Default
@@ -57,7 +58,7 @@ class BaseMountedClass extends Vue {
     {
         ...BaseOptions,
       async mounted() {
-        this.updateIsEditable({value: 0})
+        this.setIsEditable(false)
         this.addEnabledFeature({value: 'resourceEditor'})
       }
     }
@@ -72,7 +73,7 @@ export const Default = () => (DefaultClass)
   {
     ...BaseOptions,
     async mounted() {
-      this.updateIsEditable({value: 0})
+      this.setIsEditable(false)
       this.removeEnabledFeature({value: 'resourceEditor'})
     }
   }
@@ -87,7 +88,7 @@ export const WithoutResourceEditorToggle = () => (ResourceEditorClass)
   {
     ...BaseOptions,
     async mounted() {
-      this.updateIsEditable({value: 1})
+      this.setIsEditable(true)
       this.addEnabledFeature({value: 'resourceEditor'})
       this.removeEnabledFeature({value: 'treeSave'})
     }
@@ -103,7 +104,7 @@ export const EditFlow = () => (EditFlowClass)
   {
     ...BaseOptions,
     async mounted() {
-      this.updateIsEditable({value: 1})
+      this.setIsEditable(true)
       this.addEnabledFeature({value: 'resourceEditor'})
       this.addEnabledFeature({value: 'treeSave'})
     }
@@ -139,7 +140,7 @@ BaseOptions2.template = `
   {
     ...BaseOptions,
     async mounted() {
-      this.updateIsEditable({value: 1})
+      this.setIsEditable(true)
       this.addEnabledFeature({value: 'resourceEditor'})
       this.addEnabledFeature({value: 'treeSave'})
     }
@@ -175,13 +176,13 @@ BaseOptions3.template = `
   {
     ...BaseOptions,
     async mounted() {
-      this.updateIsEditable({value: 1})
+      this.setIsEditable(true)
       this.addEnabledFeature({value: 'resourceEditor'})
       this.addEnabledFeature({value: 'treeSave'})
     }
   }
 )
 class ExtraButtonsSlotClass extends BaseMountedClass {
-  
+
 }
 export const WithExtraButtonsSlot = () => (ExtraButtonsSlotClass)

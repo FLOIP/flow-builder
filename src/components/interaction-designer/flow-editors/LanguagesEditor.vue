@@ -18,12 +18,12 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component, Prop} from 'vue-property-decorator'
-  import {IFlow} from '@floip/flow-runner'
-  import NumericEditor from '@/components/common/NumericEditor.vue'
-  import ILanguage from '@floip/flow-runner/dist/flow-spec/ILanguage'
-  import lang from '@/lib/filters/lang'
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
+import { IFlow } from '@floip/flow-runner'
+import NumericEditor from '@/components/common/NumericEditor.vue'
+import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage'
+import lang from '@/lib/filters/lang'
 
   @Component<any>({
     components: {
@@ -31,8 +31,7 @@
     },
     mixins: [lang],
   })
-  class LanguagesEditor extends Vue {
-    @Prop({default: true}) readonly isEditable!: boolean
+class LanguagesEditor extends Vue {
     @Prop() readonly flow!: IFlow
 
     get languages(): ILanguage[] {
@@ -48,5 +47,5 @@
     }
   }
 
-  export default LanguagesEditor
+export default LanguagesEditor
 </script>
