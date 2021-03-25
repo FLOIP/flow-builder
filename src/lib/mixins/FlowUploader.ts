@@ -37,12 +37,11 @@ const dispatch = (el: any, name: string, data: any) => {
         lodash.extend(el.style, { overflow: 'hidden' })
         uploader.assignBrowse(el)
 
-        // @ts-ignore TS2769: No overload matches this call
         lodash.chain(el.children)
           .find({
             tagName: 'INPUT',
             type: 'file',
-          })
+          } as any)
           .assign({ accept })
           .value()
 
