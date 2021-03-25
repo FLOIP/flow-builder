@@ -42,19 +42,17 @@ import BlockId from '../block-editors/BlockId.vue'
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  // providing this generic is required by tsserver checking but not in the build run by yarn storybook
-  // TODO - understand what is going on here and if there is something more correct we should have instead
-  @Component<any>({
-    components: {
-      ExpressionEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-    },
-    mixins: [lang],
-  })
+@Component({
+  components: {
+    ExpressionEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+  },
+  mixins: [lang],
+})
 class Core_OutputBlock extends Vue {
     @Prop()readonly block!: IOutputBlock
 

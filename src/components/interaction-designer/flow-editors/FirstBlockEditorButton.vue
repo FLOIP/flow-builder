@@ -28,9 +28,9 @@ import { namespace } from 'vuex-class'
 
 const flowVuexNamespace = namespace('flow')
 
-  @Component<any>({
-    mixins: [lang],
-  })
+@Component({
+  mixins: [lang],
+})
 class FirstBlockEditorButton extends Vue {
     @Prop({ default: true }) readonly isEditable!: boolean
 

@@ -53,19 +53,19 @@ const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-      BlockMaxDurationSecondsEditor,
-      BlockMaxResponseCharactersEditor,
-    },
-    mixins: [lang],
-  })
+@Component({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+    BlockMaxDurationSecondsEditor,
+    BlockMaxResponseCharactersEditor,
+  },
+  mixins: [lang],
+})
 class MobilePrimitives_OpenResponseBlock extends Vue {
     @Prop()readonly block!: IOpenResponseBlock
 

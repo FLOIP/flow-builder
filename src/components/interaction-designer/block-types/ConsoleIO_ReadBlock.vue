@@ -52,19 +52,19 @@ import BlockId from '../block-editors/BlockId.vue'
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      BlockFormatStringEditor,
-      FirstBlockEditorButton,
-      TextEditor,
-      BlockId,
-    },
-    mixins: [lang],
-  })
+@Component({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    BlockFormatStringEditor,
+    FirstBlockEditorButton,
+    TextEditor,
+    BlockId,
+  },
+  mixins: [lang],
+})
 class ConsoleIO_ReadBlock extends Vue {
     @Prop()readonly block!: IReadBlock
 

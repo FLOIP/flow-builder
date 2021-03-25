@@ -18,12 +18,12 @@ import lang from '@/lib/filters/lang'
 
 const flowVuexNamespace = namespace('flow')
 
-  @Component<any>({
-    components: {
-      NumericEditor,
-    },
-    mixins: [lang],
-  })
+@Component({
+  components: {
+    NumericEditor,
+  },
+  mixins: [lang],
+})
 class InteractionTimeoutEditor extends Vue {
     @Prop() readonly flow!: IFlow
 

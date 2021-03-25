@@ -24,12 +24,12 @@ import NumericEditor from '@/components/common/NumericEditor.vue'
 
 import lang from '@/lib/filters/lang'
 
-  @Component<any>({
-    components: {
-      NumericEditor,
-    },
-    mixins: [lang],
-  })
+@Component({
+  components: {
+    NumericEditor,
+  },
+  mixins: [lang],
+})
 class ModeEditor extends Vue {
     @Prop() readonly flow!: IFlow
 

@@ -67,17 +67,17 @@ import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vu
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      ResourceEditor,
-      BlockId,
-    },
-    mixins: [lang],
-  })
+@Component({
+  components: {
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    ResourceEditor,
+    BlockId,
+  },
+  mixins: [lang],
+})
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
     @blockVuexNamespace.Getter inflatedChoices!: {[key: string]: IResourceDefinition}
 

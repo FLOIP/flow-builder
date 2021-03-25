@@ -48,19 +48,19 @@ const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-      BlockThresholdEditor,
-      BlockTimeoutEditor,
-    },
-    mixins: [lang],
-  })
+@Component({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+    BlockThresholdEditor,
+    BlockTimeoutEditor,
+  },
+  mixins: [lang],
+})
 class SmartDevices_LocationResponseBlock extends Vue {
     @Prop()readonly block!: IBlock
 

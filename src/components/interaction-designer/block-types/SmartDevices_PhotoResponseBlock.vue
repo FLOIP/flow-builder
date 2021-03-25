@@ -40,16 +40,16 @@ import BlockId from '../block-editors/BlockId.vue'
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-    },
-    mixins: [lang],
-  })
+@Component({
+  components: {
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+  },
+  mixins: [lang],
+})
 class SmartDevices_PhotoResponseBlock extends Vue {
     // @Prop()readonly block!: IPhotoResponseBlock
     @Prop()readonly block!: IBlock

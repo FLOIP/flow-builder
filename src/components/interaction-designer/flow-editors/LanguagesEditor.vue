@@ -25,12 +25,12 @@ import NumericEditor from '@/components/common/NumericEditor.vue'
 import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import lang from '@/lib/filters/lang'
 
-  @Component<any>({
-    components: {
-      NumericEditor,
-    },
-    mixins: [lang],
-  })
+@Component({
+  components: {
+    NumericEditor,
+  },
+  mixins: [lang],
+})
 class LanguagesEditor extends Vue {
     @Prop() readonly flow!: IFlow
 

@@ -43,17 +43,17 @@ import BlockId from '../block-editors/BlockId.vue'
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-    },
-    mixins: [lang],
-  })
+@Component({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+  },
+  mixins: [lang],
+})
 class MobilePrimitives_MessageBlock extends Vue {
     @Prop()readonly block!: IMessageBlock
 
