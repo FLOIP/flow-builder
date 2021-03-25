@@ -29,7 +29,7 @@ const SelectManyTemplate = `
     </flow-builder-sidebar-editor-container>
   `
 
-@Component<any>({
+@Component({
   template: SelectManyTemplate,
   
   components: {
@@ -50,7 +50,7 @@ export const InFlowBuilder = () => {
   return InFlowBuilderClass
 }
 
-@Component<any>({
+@Component({
   template: SelectManyTemplate,
   components: {
     FlowBuilderSidebarEditorContainer,
@@ -71,7 +71,7 @@ class IvrOnlyClass extends BaseMountedVueClass {}
 export const IvrOnly = () => {
   return IvrOnlyClass
 }
-@Component<any>({
+@Component({
   template: SelectManyTemplate,
   
   components: {
@@ -93,7 +93,7 @@ class MoreLanguagesClass extends BaseMountedVueClass {}
 export const MoreLanguages = () => {
   return MoreLanguagesClass
 }
-@Component<any>({
+@Component({
   template: SelectManyTemplate,
   
   components: {

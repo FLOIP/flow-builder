@@ -33,7 +33,7 @@ const PrintBlockTemplate = `
 `
 
 // default log block state
-@Component<any>({
+@Component({
   components: {PrintBlock, FlowBuilderSidebarEditorContainer},
   template: PrintBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
@@ -48,7 +48,7 @@ export const Default = () => {
   return DefaultClass
 }
 
-@Component<any>({
+@Component({
     components: {PrintBlock, FlowBuilderSidebarEditorContainer},
     template: PrintBlockTemplate,
     store: new Vuex.Store<IRootState>(store),
@@ -67,7 +67,7 @@ export const Default = () => {
 class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {}
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
 
-@Component<any>(
+@Component(
   {
     components: {PrintBlock, FlowBuilderSidebarEditorContainer},
     template: PrintBlockTemplate,

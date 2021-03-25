@@ -34,7 +34,7 @@ const BaseOptions = {
 }
 
 // default photo-response block state
-@Component<any>(
+@Component(
     {
         ...BaseOptions,
         store: new Vuex.Store<IRootState>(store),
@@ -48,7 +48,7 @@ class CurrentClass1 extends BaseMountedVueClass {}
 export const Default = () => (CurrentClass1)
 
 //ExistingDataPreFilled
-@Component<any>({
+@Component({
     ...BaseOptions,
     store: new Vuex.Store<IRootState>(store),
     async mounted() {
@@ -62,7 +62,7 @@ class CurrentClass2 extends BaseMountedVueClass {}
 export const ExistingDataPreFilled = () => (CurrentClass2)
 
 //NonStartingBlock
-@Component<any>(
+@Component(
     {
         ...BaseOptions,
         store: new Vuex.Store<IRootState>(store),

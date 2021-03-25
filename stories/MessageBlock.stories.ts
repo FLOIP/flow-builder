@@ -39,7 +39,7 @@ const MessageBlockTemplate = `
   </flow-builder-sidebar-editor-container>
 `
 
-@Component<any>(
+@Component(
   {
     components: {MessageBlock, FlowBuilderSidebarEditorContainer},
     template: MessageBlockTemplate,
@@ -54,7 +54,7 @@ class DefaultClass extends BaseMountedVueClass {}
 // default log block state
 export const Default = () => (DefaultClass)
 
-@Component<any>(
+@Component(
   {
     components: {MessageBlock, FlowBuilderSidebarEditorContainer},
     template: MessageBlockTemplate,
@@ -74,7 +74,7 @@ export const Default = () => (DefaultClass)
 class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {}
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
 
-@Component<any>(
+@Component(
   {
     components: {MessageBlock, FlowBuilderSidebarEditorContainer},
     template: MessageBlockTemplate,

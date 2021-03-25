@@ -51,7 +51,7 @@ class BaseMountedClass extends Vue {
 }
 
 // Default
-@Component<any>(
+@Component(
     {
         ...BaseOptions,
       async mounted() {
@@ -66,7 +66,7 @@ class DefaultClass extends BaseMountedClass {
 export const Default = () => (DefaultClass)
 
 // Without Resource Editor toggle
-@Component<any>(
+@Component(
   {
     ...BaseOptions,
     async mounted() {
@@ -81,7 +81,7 @@ class ResourceEditorClass extends BaseMountedClass {
 export const WithoutResourceEditorToggle = () => (ResourceEditorClass)
 
 // Edit flow
-@Component<any>(
+@Component(
   {
     ...BaseOptions,
     async mounted() {
@@ -97,7 +97,7 @@ class EditFlowClass extends BaseMountedClass {
 export const EditFlow = () => (EditFlowClass)
 
 // With Save button
-@Component<any>(
+@Component(
   {
     ...BaseOptions,
     async mounted() {
@@ -133,7 +133,7 @@ BaseOptions2.template = `
       </template>
     </tree-builder-toolbar>
   </flow-builder-container>`
-@Component<any>(
+@Component(
   {
     ...BaseOptions,
     async mounted() {
@@ -169,7 +169,7 @@ BaseOptions3.template = `
       </template>
     </tree-builder-toolbar>
   </flow-builder-container>`
-@Component<any>(
+@Component(
   {
     ...BaseOptions,
     async mounted() {

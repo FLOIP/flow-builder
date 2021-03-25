@@ -30,7 +30,7 @@ const BaseOptions = {
 }
 
 // Stories
-@Component<any>(
+@Component(
     {
         ...BaseOptions,
         store: new Vuex.Store<IRootState>(store),
@@ -46,7 +46,7 @@ class CurrentClass extends BaseMountedVueClass {
 export const Default = () => (CurrentClass)
 
 //ExistingDataPreFilled
-@Component<any>(
+@Component(
     {
         ...BaseOptions,
         store: new Vuex.Store<IRootState>(store),

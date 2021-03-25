@@ -31,7 +31,7 @@ const readBlockTemplate = `
 `
 
 // default log block state
-@Component<any>(
+@Component(
   {
     components: {ReadBlock, FlowBuilderSidebarEditorContainer},
     template: readBlockTemplate,
@@ -45,7 +45,7 @@ const readBlockTemplate = `
 class DefaultClass extends BaseMountedVueClass {}
 export const Default = () => (DefaultClass)
 
-@Component<any>(
+@Component(
   {
     components: {ReadBlock, FlowBuilderSidebarEditorContainer},
     template: readBlockTemplate,
@@ -64,7 +64,7 @@ class ExistingDataClass extends BaseMountedVueClass {
 }
 export const ExistingDataBlock = () => (ExistingDataClass)
 
-@Component<any>(
+@Component(
   {
     components: {ReadBlock, FlowBuilderSidebarEditorContainer},
     template: readBlockTemplate,

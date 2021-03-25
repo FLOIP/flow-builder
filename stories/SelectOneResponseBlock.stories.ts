@@ -30,7 +30,7 @@ const SelectOneResponseBlockTemplate = `
     </flow-builder-sidebar-editor-container>
   `
 
-@Component<any>({
+@Component({
   template: SelectOneResponseBlockTemplate,
   components: {
     FlowBuilderSidebarEditorContainer,
@@ -50,7 +50,7 @@ export const InFlowBuilder = () => {
   return InFlowBuilderClass
 }
 
-@Component<any>({
+@Component({
   template: SelectOneResponseBlockTemplate,
   
   components: {
@@ -72,7 +72,7 @@ class IvrOnlyClass extends BaseMountedVueClass {}
 export const IvrOnly = () => {
   return IvrOnlyClass
 }
-@Component<any>({
+@Component({
   template: SelectOneResponseBlockTemplate,
   
   components: {
@@ -94,7 +94,7 @@ class MoreLanguagesClass extends BaseMountedVueClass {}
 export const MoreLanguages = () => {
   return MoreLanguagesClass
 }
-@Component<any>({
+@Component({
   template: SelectOneResponseBlockTemplate,
   
   components: {

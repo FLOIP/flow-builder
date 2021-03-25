@@ -26,7 +26,7 @@ const OutputBlockTemplate = `
   </flow-builder-sidebar-editor-container>
 `
 // default log block state
-@Component<any>({
+@Component({
   components: {OutputBlock, FlowBuilderSidebarEditorContainer},
   template: OutputBlockTemplate,
   store: new Vuex.Store<IRootState>(store),

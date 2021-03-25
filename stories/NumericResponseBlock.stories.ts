@@ -44,7 +44,7 @@ const BaseOptions = {
 }
 
 // default numeric-response block state
-@Component<any>(
+@Component(
     {
       ...BaseOptions,
       store: new Vuex.Store<IRootState>(store),
@@ -58,7 +58,7 @@ class CurrentClass1 extends BaseMountedVueClass {}
 export const Default = () => (CurrentClass1)
 
 // ExistingDataForAllModes
-@Component<any>({
+@Component({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
@@ -83,7 +83,7 @@ class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
 export const ExistingDataForAllModes = () => (CurrentClass2)
 
 // ExistingDataForIvrOnly
-@Component<any>({
+@Component({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
@@ -109,7 +109,7 @@ class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
 export const ExistingDataForIvrOnly = () => (CurrentClass3)
 
 //ExistingDataForTextOnly
-@Component<any>({
+@Component({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
@@ -133,7 +133,7 @@ class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
 export const ExistingDataForTextOnly = () => (CurrentClass4)
 
 //NonStartingBlock
-@Component<any>(
+@Component(
     {
       ...BaseOptions,
       store: new Vuex.Store<IRootState>(store),

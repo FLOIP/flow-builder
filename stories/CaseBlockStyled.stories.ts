@@ -34,7 +34,7 @@ const BaseOptions = {
 }
 
 // default case block state
-@Component<any>({
+@Component({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {
@@ -46,7 +46,7 @@ class DefaultClass extends BaseMountedVueClass {}
 export const Default = () => (DefaultClass)
 
 //ExistingDataBlock
-@Component<any>({
+@Component({
   ...BaseOptions,
   store: new Vuex.Store<IRootState>(store),
   async mounted() {

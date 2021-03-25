@@ -29,7 +29,7 @@ const RunAnotherFlowBlockTemplate = `
 `
 
 // default log block state
-@Component<any>({
+@Component({
   components: {RunAnotherFlowBlock, FlowBuilderSidebarEditorContainer},
   template: RunAnotherFlowBlockTemplate,
   store: new Vuex.Store<IRootState>(store),

@@ -27,7 +27,7 @@ const LogBlockTemplate = `
 `
 
 // default log block state
-@Component<any>({
+@Component({
   components: {LogBlock, PlainFlowBuilderBlockEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
@@ -40,7 +40,7 @@ const LogBlockTemplate = `
 class DefaultClass extends BaseMountedVueClass {}
 export const Default = () => (DefaultClass)
 
-@Component<any>({
+@Component({
   components: {LogBlock, PlainFlowBuilderBlockEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),

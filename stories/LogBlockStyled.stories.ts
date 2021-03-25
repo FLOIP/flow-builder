@@ -28,7 +28,7 @@ const LogBlockTemplate = `
 `
 
 // default case block state
-@Component<any>({
+@Component({
   components: {LogBlock, FlowBuilderSidebarEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
@@ -40,7 +40,7 @@ const LogBlockTemplate = `
 class DefaultClass extends BaseMountedVueClass {}
 export const Default = () => (DefaultClass)
 
-@Component<any>({
+@Component({
   components: {LogBlock, FlowBuilderSidebarEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
@@ -56,7 +56,7 @@ export const Default = () => (DefaultClass)
 class CurrentClass2 extends BaseMountedVueClass {}
 export const ExistingDataBlock = () => (CurrentClass2)
 
-@Component<any>({
+@Component({
   components: {LogBlock, FlowBuilderSidebarEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
