@@ -4,7 +4,7 @@
       {{flowHeader | trans}}
     </h3>
 
-    <fieldset :disabled="!isEditable">
+    <fieldset :disabled="!isEditable && sidebar">
       <div class="row">
           <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
             <flow-label-editor :flow="flow" />
