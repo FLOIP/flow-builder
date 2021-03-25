@@ -34,7 +34,6 @@ const BaseOptions = {
     {
         ...BaseOptions,
         async mounted() {
-          // @ts-ignore
             await this.baseMounted(BLOCK_TYPE, photoResponseBlockStore)
         },
     }
@@ -46,7 +45,6 @@ export const Default = () => (CurrentClass1)
 @Component<any>({
     ...BaseOptions,
     async mounted() {
-      // @ts-ignore
         const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, photoResponseBlockStore)
 
         this.setDescription(blockId)
@@ -60,7 +58,6 @@ export const ExistingDataPreFilled = () => (CurrentClass2)
     {
         ...BaseOptions,
         async mounted() {
-          // @ts-ignore
           const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, photoResponseBlockStore)
 
           this.setDescription(blockId)

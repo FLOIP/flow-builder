@@ -33,7 +33,6 @@ const BaseOptions = {
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, logBlockStore)
   },
 
@@ -44,7 +43,6 @@ export const Default = () => (DefaultClass)
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
     this.setDescription(blockId)

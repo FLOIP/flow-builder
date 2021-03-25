@@ -32,7 +32,6 @@ const BaseOptions = {
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, logBlockStore)
   },
 })
@@ -42,12 +41,9 @@ export const Default = () => (DefaultClass)
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
-    this.block_setName({blockId: blockId, value: "A Name"})
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+    this.setDescription(blockId)
   },
 })
 class CurrentClass2 extends BaseMountedVueClass {}
@@ -56,7 +52,6 @@ export const ExistingDataBlock = () => (CurrentClass2)
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
     this.setDescription(blockId)

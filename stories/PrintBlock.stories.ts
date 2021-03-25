@@ -36,7 +36,6 @@ const BaseOptions = {
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, printBlockStore)
   },
 })
@@ -48,7 +47,6 @@ export const Default = () => {
 @Component<any>({
   ...BaseOptions,
     async mounted() {
-      // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
 
       this.setDescription(blockId)
@@ -66,7 +64,6 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
   {
     ...BaseOptions,
     async mounted() {
-      // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
 
       this.setDescription(blockId)

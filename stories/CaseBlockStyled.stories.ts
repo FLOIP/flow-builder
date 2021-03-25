@@ -41,7 +41,6 @@ const BaseOptions = {
 })
 class DefaultClass extends BaseMountedVueClass {
   async mounted() {
-    // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, caseBlockStore)
   }
 }
@@ -51,7 +50,6 @@ export const Default = () => (DefaultClass)
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     const { block } = await this.baseMounted(BLOCK_TYPE, caseBlockStore)
     const blockId = block.uuid
 

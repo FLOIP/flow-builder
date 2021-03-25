@@ -35,7 +35,6 @@ const BaseOptions = {
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, messageBlockStore)
   },
 })
@@ -47,7 +46,6 @@ export const Default = () => (DefaultClass)
   {
     ...BaseOptions,
     async mounted() {
-      // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, messageBlockStore)
 
       this.setDescription(blockId)
@@ -65,7 +63,6 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
   {
     ...BaseOptions,
     async mounted() {
-      // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, messageBlockStore)
       await this.fakeCaseBlockAsFirstBlock(flowId)
     },

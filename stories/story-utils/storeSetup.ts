@@ -49,7 +49,6 @@ export class BaseMountedVueClass extends Vue {
    * Fake a 1st block to make sure the current block won't be selected
    */
   async fakeCaseBlockAsFirstBlock(flowId: string) {
-    // @ts-ignore
     await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore)
     const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
     const {uuid: caseBlockId} = caseBlock
@@ -60,7 +59,7 @@ export class BaseMountedVueClass extends Vue {
    * Safe register block module
    * Because some weird race condition is leading to modules not getting unregistered when clicking between stories before the next story re-registers
    */
-  async safeRegisterBlockModule(BLOCK_TYPE: string, blockTypeStore: IRootState): Promise<any> {
+  async safeRegisterBlockModule(BLOCK_TYPE: string, blockTypeStore: any): Promise<any> {
     if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
       this.$store.unregisterModule(['flow', BLOCK_TYPE])
     }
@@ -69,7 +68,7 @@ export class BaseMountedVueClass extends Vue {
     this.$store.registerModule(['flow', BLOCK_TYPE], blockTypeStore)
   }
 
-  async baseMounted(BLOCK_TYPE: string, blockTypeStore: IRootState): Promise<any> {
+  async baseMounted(BLOCK_TYPE: string, blockTypeStore: any): Promise<any> {
     if (isEmpty(storyInitState)) {
       storyInitState = cloneDeep(this.$store.state)
     } else {

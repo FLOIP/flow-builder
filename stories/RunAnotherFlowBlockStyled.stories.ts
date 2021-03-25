@@ -35,7 +35,6 @@ const BaseOptions = {
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, runAnotherFlowBlockStore)
     const flowOne = await this.flow_createWith({
       props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My other flow'}

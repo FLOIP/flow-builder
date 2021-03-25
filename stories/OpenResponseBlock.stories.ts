@@ -42,7 +42,6 @@ const BaseOptions = {
     {
       ...BaseOptions,
       async mounted() {
-        // @ts-ignore
         await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
       },
     }
@@ -54,7 +53,6 @@ export const Default = () => (CurrentClass1)
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
     this.setDescription(blockId)
@@ -76,7 +74,6 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: SupportedMode.IVR})
@@ -97,7 +94,6 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: [SupportedMode.SMS, SupportedMode.USSD]})
@@ -119,7 +115,6 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
     {
       ...BaseOptions,
       async mounted() {
-        // @ts-ignore
         const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
         this.setDescription(blockId)

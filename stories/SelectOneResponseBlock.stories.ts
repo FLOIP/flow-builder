@@ -42,7 +42,6 @@ const BaseOptions = {
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, selectOneStore)
   },
 })
@@ -55,7 +54,6 @@ export const InFlowBuilder = () => {
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
     flow.supportedModes = [SupportedMode.IVR]
   },
@@ -69,7 +67,6 @@ export const IvrOnly = () => {
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
     flow.languages = [{id: '1', name: 'English'}, {id: '2', name: 'French'}] // mutation
   },
@@ -83,7 +80,6 @@ export const MoreLanguages = () => {
 @Component<any>({
   ...BaseOptions,
   async mounted() {
-    // @ts-ignore
     const {block: {uuid: blockId}, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
     this.setDescription(blockId)
     this.setResourceData({
