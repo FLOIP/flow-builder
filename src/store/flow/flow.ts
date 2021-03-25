@@ -237,8 +237,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
 
     // Set UI positions
-    // TODO - type checking - remove this and resolve the error
-    // @ts-ignore
+    // @ts-ignore TODO: remove this once IBlock has platform_metadata key
     duplicatedBlock.platform_metadata = {
       io_viamo: {
         uiData: computeBlockPositionsFrom(block),
