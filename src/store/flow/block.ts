@@ -9,7 +9,7 @@ import {
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { defaults, without } from 'lodash'
+import { defaults, set } from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
@@ -22,15 +22,11 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 
 export const mutations: MutationTree<IFlowsState> = {
   block_popFirstExitWithoutTest(state, { blockId }: {blockId: string}) {
-    // TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    const block = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext)
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     block.exits = popFirstEmptyItem(block.exits, 'test')
   },
   block_popExitsByLabel(state, { blockId, exitLabel }: {blockId: string; exitLabel: string}) {
-    // TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    const block = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext)
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     block.exits = block.exits.filter((item: IBlockExit) => item.label !== exitLabel)
   },
   block_setName(state, { blockId, value }) {
@@ -65,6 +61,9 @@ export const mutations: MutationTree<IFlowsState> = {
     const currentConfig: {[key: string]: any} = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = { ...currentConfig }
+  },
+  block_updateConfigByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object }) {
+    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config, path, value);
   },
   block_setBlockExitDestinationBlockId(state, { blockId, exitId, destinationBlockId }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)

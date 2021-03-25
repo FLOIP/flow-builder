@@ -51,31 +51,37 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 }
 
 export const mutations: MutationTree<IFlowsState> = {
-  deleteChoiceByKey(state, { choiceKeyToRemove, blockId }) {
-    // TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    const block: ISelectOneResponseBlock = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext) as ISelectOneResponseBlock
-    delete block.config.choices[choiceKeyToRemove]
-    const choices: {[key: string]: string} = {}
-    // rekey
-    block.config.choices = Object.keys(block.config.choices).sort().reduce((choices, choiceKey: string, index: number) => {
-      choices[index + 1] = block.config.choices[choiceKey]
-      return choices
-    }, choices)
-  },
-  pushNewChoice(state, { choiceId, blockId, newIndex }) {
-    // TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    const block: ISelectOneResponseBlock = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext) as ISelectOneResponseBlock
-    block.config.choices[newIndex] = choiceId
-  },
+
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async popFirstEmptyChoice({ commit, rootGetters, getters }) {
+  deleteChoiceByKey({ state, rootState, rootGetters, commit }, { choiceKeyToRemove }) {
+    const activeBlock = rootGetters['builder/activeBlock']
+    delete activeBlock.config.choices[choiceKeyToRemove]
+
+    // Rekey
+    const choices: {[key: string]: string} = {}
+    commit('flow/block_updateConfigByKey', {
+      blockId: activeBlock.uuid,
+      key: 'choices',
+      value: Object.keys(activeBlock.config.choices).sort().reduce((choices, choiceKey: string, index: number) => {
+        choices[index + 1] = activeBlock.config.choices[choiceKey]
+        return choices
+      }, choices),
+    }, { root: true })
+  },
+  pushNewChoice({ state, rootState, rootGetters, commit }, { choiceId, newIndex }) {
+    const activeBlock = rootGetters['builder/activeBlock']
+    commit('flow/block_updateConfigByPath', {
+      blockId: activeBlock.uuid,
+      path: `choices.${newIndex}`,
+      value: choiceId,
+    }, { root: true })
+  },
+  async popFirstEmptyChoice({ dispatch, rootGetters, getters }) {
     const choiceToRemove = find(Object.keys(getters.inflatedChoices), (key: string) => !someItemsHaveValue(getters.inflatedChoices[key].values, 'value'))
     if (choiceToRemove) {
-      commit('deleteChoiceByKey', { choiceKeyToRemove: choiceToRemove, blockId: rootGetters['builder/activeBlock'].uuid })
+      dispatch('deleteChoiceByKey', { choiceKeyToRemove: choiceToRemove })
       return rootGetters['builder/activeBlock'].config.choices[choiceToRemove]
     }
     return null
@@ -89,7 +95,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
       // due to a race condition we may have already pushed something
       if (!activeBlock.config.choices[newIndex]) {
-        commit('pushNewChoice', { choiceId: blankResource.uuid, blockId: activeBlock.uuid, newIndex })
+        dispatch('pushNewChoice', { choiceId: blankResource.uuid, newIndex })
         const exit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
           props: ({
             uuid: (new IdGeneratorUuidV4()).generate(),
