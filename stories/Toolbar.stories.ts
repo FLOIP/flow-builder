@@ -3,11 +3,11 @@ import Vue from 'vue'
 import {
   Action, Mutation, namespace
 } from 'vuex-class';
-import FlowBuilderContainer from "./story-utils/FlowBuilderContainer.vue";
+import FlowBuilderContainer from './story-utils/FlowBuilderContainer.vue'
 import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
-import TreeBuilderToolbar from "@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue";
-import StoryRouter from 'storybook-vue-router';
+import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
+import StoryRouter from 'storybook-vue-router'
 import {routes} from '@/router'
 
 // Allow story to load components which use <router-link>

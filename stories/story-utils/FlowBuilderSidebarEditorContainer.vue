@@ -44,7 +44,7 @@
       this.configure({appConfig: {}, builderConfig: {}});
 
     }
-    @Mutation configure
+    @Mutation configure: any
   }
 
   export default FlowBuilderSidebarEditorContainer
