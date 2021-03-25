@@ -34,7 +34,7 @@ import { ILanguage, SupportedMode } from "@floip/flow-runner/src/index";
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
+@Component({
   components: {
     FlowNameEditor,
     FlowLabelEditor,

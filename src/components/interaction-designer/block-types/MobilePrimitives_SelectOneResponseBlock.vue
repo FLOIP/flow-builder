@@ -53,12 +53,11 @@ import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISel
 import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
 import SelectOneStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
-import lang from '@/lib/filters/lang'
+import { Lang } from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -67,23 +66,23 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      ResourceEditor,
-      BlockId,
-    },
-    mixins: [lang],
-  })
-export class MobilePrimitives_SelectOneResponseBlock extends Vue {
+@Component({
+  components: {
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    ResourceEditor,
+    BlockId,
+  },
+})
+export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     @Prop()readonly block!: ISelectOneResponseBlock
 
     @Prop()readonly flow!: IFlow

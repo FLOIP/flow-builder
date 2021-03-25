@@ -17,14 +17,14 @@ import lang from '@/lib/filters/lang'
 
 const flowVuexNamespace = namespace('flow')
 
-  @Component<any>(
-    {
-      components: {
-        TextEditor,
-      },
-      mixins: [lang],
+@Component(
+  {
+    components: {
+      TextEditor,
     },
-  )
+    mixins: [lang],
+  },
+)
 class FlowNameEditor extends Vue {
     @Prop()readonly flow!: IFlow
 

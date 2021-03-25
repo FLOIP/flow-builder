@@ -22,18 +22,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
-
 import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner'
 // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
 import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
-
 import LocationStore, { BLOCK_TYPE } from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
-import lang from '@/lib/filters/lang'
+import { Lang } from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -43,25 +40,25 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import BlockThresholdEditor from '../block-editors/ThresholdEditor.vue'
 import BlockTimeoutEditor from '../block-editors/TimeoutEditor.vue'
+import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-      BlockThresholdEditor,
-      BlockTimeoutEditor,
-    },
-    mixins: [lang],
-  })
-class SmartDevices_LocationResponseBlock extends Vue {
+@Component({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+    BlockThresholdEditor,
+    BlockTimeoutEditor,
+  },
+})
+class SmartDevices_LocationResponseBlock extends mixins(Lang) {
     @Prop()readonly block!: IBlock
 
     // @Prop()readonly block!: ILocationResponseBlock
