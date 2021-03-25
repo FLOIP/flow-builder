@@ -45,7 +45,8 @@
 
 <script>
 import lang from '@/lib/filters/lang'
-import lodash, { forEach, invoke } from 'lodash'
+import Routes from '@/lib/mixins/Routes'
+import lodash, {forEach, invoke, isEmpty} from 'lodash'
 import Vue from 'vue'
 import {
   mapActions, mapGetters, mapMutations, mapState,
@@ -86,7 +87,7 @@ export default {
     },
   },
 
-  mixins: [lang],
+  mixins: [lang, Routes],
 
   components: {
     // ...BlockTypes,
@@ -124,9 +125,9 @@ export default {
       ],
     }
   },
-
   computed: {
     ...mapGetters([
+      'isConfigured',
       'selectedBlock',
       'hasChanges',
       'hasIssues',
@@ -139,7 +140,6 @@ export default {
 
       // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
       designerWorkspaceHeight: ({ trees: { tree, ui } }) => ui.designerWorkspaceHeight,
-
       tree: ({ trees: { tree, ui } }) => tree,
       validationResultsEmptyTree: ({ trees: { tree, ui } }) => !tree.blocks.length,
       hasVoice: ({ trees: { tree } }) => tree.details.hasVoice,
@@ -177,7 +177,9 @@ export default {
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
-    this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+    if((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+    }
 
     global.builder = this // initialize global reference for legacy + debugging
 
@@ -193,23 +195,31 @@ export default {
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   mounted() {
+      this.flow_setActiveFlowId({flowId: this.id})
+
+      //if nothing was found for the flow Id
+      if(!this.activeFlow) {
+        this.flow_setActiveFlowId({flowId: null})
+        this.$router.replace(`${this.route('flows.fetchFlow', {flowId: this.id})}?nextUrl=${this.$route.path}`)
+      }
+
     this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
     this.deselectBlocks()
     this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
 
     console.debug('Vuej tree interaction designer mounted!')
   },
-
   watch: {
     mode(newMode) {
-      this.updateIsEditableFromParams(newMode)
-    },
+      this.updateIsEditableFromParams(newMode) // `this.mode` comes from captured param in js-routes
+    }
   },
-
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
     ...mapMutations('builder', ['activateBlock']),
     ...mapActions('builder', ['setIsEditable']),
+    ...mapMutations('flow', ['flow_setActiveFlowId']),
+
     ...mapActions([
       'attemptSaveTree',
       'discoverTallestBlockForDesignerWorkspaceHeight',
