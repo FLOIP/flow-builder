@@ -45,15 +45,16 @@ export class BaseMountedVueClass extends Vue {
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
   }
 
-  // /**
-  //  * Fake a 1st block to make sure the current block won't be selected
-  //  */
-  // async fakeCaseBlockAsFirstBlock(flowId: string) {
-  //   await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore as IRootState)
-  //   const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
-  //   const {uuid: caseBlockId} = caseBlock
-  //   this.flow_setFirstBlockId({blockId: caseBlockId, flowId: flowId})
-  // }
+  /**
+   * Fake a 1st block to make sure the current block won't be selected
+   */
+  async fakeCaseBlockAsFirstBlock(flowId: string) {
+    // @ts-ignore
+    await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore)
+    const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
+    const {uuid: caseBlockId} = caseBlock
+    this.flow_setFirstBlockId({blockId: caseBlockId, flowId: flowId})
+  }
 
   /**
    * Safe register block module

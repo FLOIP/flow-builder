@@ -42,7 +42,6 @@ const BaseOptions = {
 class BaseMountedClass extends Vue {
   created() {
     this.configure({appConfig: {}, builderConfig: {}});
-    // @ts-ignore
     this.initializeTreeModel() // from trees store
   }
 

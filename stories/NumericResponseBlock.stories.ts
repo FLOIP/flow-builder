@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 import NumericResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {IRootState, store} from '@/store'
-import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import numericResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
 import {SupportedMode} from '@floip/flow-runner'
 import {
@@ -131,14 +130,7 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
         const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
 
         this.setDescription(blockId)
-
-        // Fake a 1st block to make sure the current block won't be selected
-        // @ts-ignore
-        await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore)
-        const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
-        const {uuid: caseBlockId} = caseBlock
-
-        this.flow_setFirstBlockId({blockId: caseBlockId, flowId: flowId})
+        await this.fakeCaseBlockAsFirstBlock(flowId)
       },
     }
 )
