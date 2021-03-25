@@ -10,14 +10,18 @@ import numericResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Mo
 import {SupportedMode, IFlow, SupportedContentType} from '@floip/flow-runner'
 import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
 
-import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from './story-utils/storeSetup'
+import {
+  baseMounted,
+  BaseMountedVueClass,
+  BaseMountedVueClassWithResourceAndMode,
+  safeRegisterBlockModule
+} from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import {get} from 'lodash'
 
 Vue.use(Vuex)
 
-const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 export default {
@@ -74,7 +78,7 @@ export const Default = () => (CurrentClass1)
     this.setMaxDigits({blockId, value:2})
   },
 })
-class CurrentClass2 extends BaseMountedVueClass {
+class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
 
   setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
     this.block_setName({blockId: blockId, value: "A Name"})
@@ -111,11 +115,6 @@ class CurrentClass2 extends BaseMountedVueClass {
   @blockVuexNamespace.Action setValidationMinimum:any
   @blockVuexNamespace.Action setValidationMaximum:any
   @blockVuexNamespace.Action setMaxDigits:any
-
-  @flowVuexNamespace.Mutation block_setName:any
-  @flowVuexNamespace.Mutation block_setLabel:any
-  @flowVuexNamespace.Mutation block_setSemanticLabel:any
-  @flowVuexNamespace.Mutation resource_setValue:any
 }
 export const ExistingDataForAllModes = () => (CurrentClass2)
 
@@ -141,7 +140,7 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
     this.setResourceData(languageId, resourceId)
   },
 })
-class CurrentClass3 extends BaseMountedVueClass {
+class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
   setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
     this.block_setName({blockId: blockId, value: "A Name"})
     this.block_setLabel({blockId: blockId, value: "A Label"})
@@ -177,12 +176,6 @@ class CurrentClass3 extends BaseMountedVueClass {
   @blockVuexNamespace.Action setValidationMinimum:any
   @blockVuexNamespace.Action setValidationMaximum:any
   @blockVuexNamespace.Action setMaxDigits:any
-
-  @flowVuexNamespace.Mutation block_setName:any
-  @flowVuexNamespace.Mutation block_setLabel:any
-  @flowVuexNamespace.Mutation block_setSemanticLabel:any
-  @flowVuexNamespace.Mutation resource_setValue:any
-  @flowVuexNamespace.Mutation flow_setSupportedMode:any
 }
 export const ExistingDataForIvrOnly = () => (CurrentClass3)
 
@@ -207,7 +200,7 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
     this.setResourceData(languageId, resourceId)
   },
 })
-class CurrentClass4 extends BaseMountedVueClass {
+class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
   setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
     this.block_setName({blockId: blockId, value: "A Name"})
     this.block_setLabel({blockId: blockId, value: "A Label"})
@@ -242,12 +235,6 @@ class CurrentClass4 extends BaseMountedVueClass {
 
   @blockVuexNamespace.Action setValidationMinimum:any
   @blockVuexNamespace.Action setValidationMaximum:any
-
-  @flowVuexNamespace.Mutation block_setName:any
-  @flowVuexNamespace.Mutation block_setLabel:any
-  @flowVuexNamespace.Mutation block_setSemanticLabel:any
-  @flowVuexNamespace.Mutation resource_setValue:any
-  @flowVuexNamespace.Mutation flow_setSupportedMode:any
 }
 export const ExistingDataForTextOnly = () => (CurrentClass4)
 
@@ -274,10 +261,5 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
       },
     }
 )
-class CurrentClass5 extends BaseMountedVueClass {
-  @flowVuexNamespace.Mutation block_setName:any
-  @flowVuexNamespace.Mutation block_setLabel:any
-  @flowVuexNamespace.Mutation block_setSemanticLabel:any
-  @flowVuexNamespace.Mutation flow_setFirstBlockId:any
-}
+class CurrentClass5 extends BaseMountedVueClass {}
 export const NonStartingBlock = () => (CurrentClass5)

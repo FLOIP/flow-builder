@@ -55,21 +55,13 @@ export const Default = () => (DefaultClass)
     const { block } = await baseMounted.bind(this)(BLOCK_TYPE, caseBlockStore)
     const blockId = block.uuid
 
-    // @ts-ignore - TS2339: Property 'block_setName' does not exist on type
     this.block_setName({blockId: blockId, value: "A Name"})
-    // @ts-ignore - TS2339: Property 'block_setLabel' does not exist on type
     this.block_setLabel({blockId: blockId, value: "A Label"})
-    // @ts-ignore - TS2339: Property 'block_setSemanticLabel' does not exist on type
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-    // @ts-ignore - TS2339: Property 'editCaseBlockExit' does not exist on type
     this.editCaseBlockExit({identifier: block.exits[0].uuid, value: "A expression"})
   }
 })
 class CurrentClass2 extends BaseMountedVueClass {
   @blockVuexNamespace.Action editCaseBlockExit:any
-
-  @flowVuexNamespace.Mutation block_setName:any
-  @flowVuexNamespace.Mutation block_setLabel:any
-  @flowVuexNamespace.Mutation block_setSemanticLabel:any
 }
 export const ExistingDataBlock = () => (CurrentClass2)

@@ -42,7 +42,7 @@ const LogBlockTemplate = `
 class DefaultClass extends BaseMountedVueClass {}
 export const Default = () => (DefaultClass)
 
-export const ExistingDataBlock = () => ({
+@Component<any>({
   components: {LogBlock, FlowBuilderSidebarEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
@@ -50,39 +50,15 @@ export const ExistingDataBlock = () => ({
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
 
-    //TODO - support sending props to baseMounted?
-    // @ts-ignore - TS2339: Property 'block_setName' does not exist on type
     this.block_setName({blockId: blockId, value: "A Name"})
-    // @ts-ignore - TS2339: Property 'block_setLabel' does not exist on type
     this.block_setLabel({blockId: blockId, value: "A Label"})
-    // @ts-ignore - TS2339: Property 'block_setSemanticLabel' does not exist on type
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
   },
-  computed: {
-    ...mapGetters('flow', [
-      'activeFlow',
-    ]),
-    ...mapGetters('builder', [
-      'activeBlock',
-    ]),
-  },
-
-  methods: {
-    ...mapMutations('flow', [
-      'block_setName',
-      'block_setLabel',
-      'block_setSemanticLabel'
-    ]),
-    ...mapMutations('builder', [
-      'activateBlock',
-    ]),
-    ...mapActions('flow', [
-      'flow_addBlankFlow',
-      'flow_addBlankBlockByType']),
-  }
 })
+class CurrentClass2 extends BaseMountedVueClass {}
+export const ExistingDataBlock = () => (CurrentClass2)
 
-export const ExistingDataNonStartingBlock = () => ({
+@Component<any>({
   components: {LogBlock, FlowBuilderSidebarEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
@@ -90,45 +66,19 @@ export const ExistingDataNonStartingBlock = () => ({
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
 
-    // @ts-ignore - TS2339: Property 'block_setName' does not exist on type
     this.block_setName({blockId: blockId, value: "A Name"})
-    // @ts-ignore - TS2339: Property 'block_setLabel' does not exist on type
     this.block_setLabel({blockId: blockId, value: "A Label"})
-    // @ts-ignore - TS2339: Property 'block_setSemanticLabel' does not exist on type
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
 
     // Fake a 1st block to make sure the current block won't be selected
     // @ts-ignore
     await safeRegisterBlockModule.bind(this)(CASE_BLOCK_TYPE, caseBlockStore)
-    // @ts-ignore - TS2339: Property 'flow_addBlankBlockByType' does not exist on type
+
     const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
-    const {uuid: caseBlockId} = caseBlock 
-    
-    // @ts-ignore - TS2339: Property 'block_setFirstBlockId' does not exist on type
+    const {uuid: caseBlockId} = caseBlock
+
     this.flow_setFirstBlockId({blockId: caseBlockId, flowId: flowId})
   },
-
-  computed: {
-    ...mapGetters('flow', [
-      'activeFlow',
-    ]),
-    ...mapGetters('builder', [
-      'activeBlock',
-    ]),
-  },
-
-  methods: {
-    ...mapMutations('flow', [
-      'block_setName',
-      'block_setLabel',
-      'block_setSemanticLabel',
-      'flow_setFirstBlockId'
-    ]),
-    ...mapMutations('builder', [
-      'activateBlock',
-    ]),
-    ...mapActions('flow', [
-      'flow_addBlankFlow',
-      'flow_addBlankBlockByType']),
-  }
 })
+class CurrentClass3 extends BaseMountedVueClass {}
+export const ExistingDataNonStartingBlock = () => (CurrentClass3)

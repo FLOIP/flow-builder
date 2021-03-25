@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
+import Vuex from 'vuex'
 import {Component} from 'vue-property-decorator'
 
-import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
+import { baseMounted, BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from './story-utils/storeSetup'
 
 Vue.use(Vuex)
 
@@ -11,10 +11,7 @@ import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarE
 import {IRootState, store} from '@/store'
 import selectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 
-import {namespace} from 'vuex-class'
 import {get} from 'lodash'
-
-const flowVuexNamespace = namespace('flow')
 
 import {
   SupportedMode,
@@ -155,12 +152,7 @@ export const MoreLanguages = () => {
   },
 
 })
-class ExistingDataClass extends BaseMountedVueClass {
-  @flowVuexNamespace.Mutation block_setName!: void
-  @flowVuexNamespace.Mutation block_setLabel!: void
-  @flowVuexNamespace.Mutation block_setSemanticLabel!: void
-  @flowVuexNamespace.Mutation resource_setValue!: void
-}
+class ExistingDataClass extends BaseMountedVueClassWithResourceAndMode {}
 
 export const ExistingData = () => {
   return ExistingDataClass 

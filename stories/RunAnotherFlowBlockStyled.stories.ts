@@ -9,7 +9,6 @@ import runAnotherFlowBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Cor
 import {Component} from "vue-property-decorator";
 import {IFlow} from "@floip/flow-runner";
 import {namespace} from 'vuex-class'
-const flowVuexNamespace = namespace('flow')
 
 Vue.use(Vuex)
 
@@ -37,22 +36,15 @@ const RunAnotherFlowBlockTemplate = `
   async mounted() {
     // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, runAnotherFlowBlockStore)
-    // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
     const flowOne = await this.flow_createWith({
       props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My other flow'}
     })
-    // @ts-ignore - TS2339: Property 'flow_add' does not exist on type
     await this.flow_add({flow:flowOne})
-    // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
     const flowTwo = await this.flow_createWith({
       props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My third flow'}
     })
-    // // @ts-ignore - TS2339: Property 'flow_add' does not exist on type
     await this.flow_add({flow:flowTwo})
   },
 })
-class DefaultClass extends BaseMountedVueClass {
-  @flowVuexNamespace.Action flow_add!: Promise<IFlow>
-  @flowVuexNamespace.Action flow_createWith!: Promise<IFlow>
-}
+class DefaultClass extends BaseMountedVueClass {}
 export const Default = () => (DefaultClass)

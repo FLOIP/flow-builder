@@ -10,7 +10,12 @@ import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import printBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
 
-import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from './story-utils/storeSetup'
+import {
+  baseMounted,
+  BaseMountedVueClass,
+  BaseMountedVueClassWithResourceAndMode,
+  safeRegisterBlockModule
+} from './story-utils/storeSetup'
 import {IFlow, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
 import {get} from 'lodash'
@@ -18,8 +23,6 @@ import {namespace} from 'vuex-class'
 import {Component} from 'vue-property-decorator'
 
 Vue.use(Vuex)
-
-const flowVuexNamespace = namespace('flow')
 
 export default {
   title: 'ConsoleIo/Print Block',
@@ -97,12 +100,7 @@ export const Default = () => {
     },
   }
 )
-class ExistingDataBlockClass extends BaseMountedVueClass {
-  @flowVuexNamespace.Mutation block_setName!: void
-  @flowVuexNamespace.Mutation block_setLabel!: void
-  @flowVuexNamespace.Mutation block_setSemanticLabel!: void
-  @flowVuexNamespace.Mutation resource_setValue!: void
-}
+class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {}
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
 
 @Component<any>(
@@ -128,10 +126,5 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
     },
   }
 )
-class NonStartingBlockClass extends BaseMountedVueClass {
-  @flowVuexNamespace.Mutation block_setName!: void
-  @flowVuexNamespace.Mutation block_setLabel!: void
-  @flowVuexNamespace.Mutation block_setSemanticLabel!: void
-  @flowVuexNamespace.Mutation flow_setFirstBlockId!: void
-}
+class NonStartingBlockClass extends BaseMountedVueClass {}
 export const NonStartingBlock = () => (NonStartingBlockClass)

@@ -14,8 +14,6 @@ import {namespace} from 'vuex-class'
 
 Vue.use(Vuex)
 
-const flowVuexNamespace = namespace('flow')
-
 export default {
   title: 'SmartDevices/Photo Response Block',
   // Our exports that end in "Data" are not stories.
@@ -66,10 +64,6 @@ class CurrentClass2 extends BaseMountedVueClass {
         this.block_setLabel({blockId: blockId, value: "A Label"})
         this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
     }
-
-    @flowVuexNamespace.Mutation block_setName:any
-    @flowVuexNamespace.Mutation block_setLabel:any
-    @flowVuexNamespace.Mutation block_setSemanticLabel:any
 }
 export const ExistingDataPreFilled = () => (CurrentClass2)
 
@@ -96,10 +90,5 @@ export const ExistingDataPreFilled = () => (CurrentClass2)
         },
     }
 )
-class CurrentClass3 extends BaseMountedVueClass {
-    @flowVuexNamespace.Mutation block_setName:any
-    @flowVuexNamespace.Mutation block_setLabel:any
-    @flowVuexNamespace.Mutation block_setSemanticLabel:any
-    @flowVuexNamespace.Mutation flow_setFirstBlockId:any
-}
+class CurrentClass3 extends BaseMountedVueClass {}
 export const NonStartingBlock = () => (CurrentClass3)

@@ -16,7 +16,6 @@ import {namespace} from 'vuex-class'
 
 Vue.use(Vuex)
 
-const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 export default {
@@ -57,7 +56,6 @@ export const Default = () => (DefaultClass)
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, readBlockStore)
 
-      //TODO - support sending props to baseMounted?
       this.block_setName({blockId: blockId, value: "A Name"})
       this.block_setLabel({blockId: blockId, value: "A Label"})
       this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
@@ -67,10 +65,6 @@ export const Default = () => (DefaultClass)
 )
 class ExistingDataClass extends BaseMountedVueClass {
   @blockVuexNamespace.Action setFormatString!: void
-
-  @flowVuexNamespace.Mutation block_setName!: void
-  @flowVuexNamespace.Mutation block_setLabel!: void
-  @flowVuexNamespace.Mutation block_setSemanticLabel!: void
 }
 export const ExistingDataBlock = () => (ExistingDataClass)
 
@@ -101,10 +95,5 @@ export const ExistingDataBlock = () => (ExistingDataClass)
 )
 class ExistingDataNonStartingClass extends BaseMountedVueClass {
   @blockVuexNamespace.Action setFormatString!: void
-  
-  @flowVuexNamespace.Mutation block_setName!: void
-  @flowVuexNamespace.Mutation block_setLabel!: void
-  @flowVuexNamespace.Mutation block_setSemanticLabel!: void
-  @flowVuexNamespace.Mutation flow_setFirstBlockId!: void
 }
 export const ExistingDataNonStartingBlock = () => (ExistingDataNonStartingClass)

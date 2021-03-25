@@ -33,15 +33,12 @@ export const baseMounted = async function (this: any, BLOCK_TYPE: string, blockT
 
   await safeRegisterBlockModule.bind(this)(BLOCK_TYPE, blockTypeStore);
 
-  // @ts-ignore - TS2339: Property 'flow_addBlankFlow' does not exist on type
   let flow = await this.flow_addBlankFlow();
   flow.languages = [{id: '1', name: 'English'}] // mutation
 
-  // @ts-ignore - TS2339: Property 'flow_addBlankBlockByType' does not exist on type
   const block =  await this.flow_addBlankBlockByType({type: BLOCK_TYPE})
   const {uuid: blockId} = block 
-  
-  // @ts-ignore - TS2339: Property 'flow_'activateBlock' does not exist on type
+
   this.activateBlock({blockId})
 
   return { block, flow }
@@ -58,4 +55,16 @@ export class BaseMountedVueClass extends Vue {
 
   @flowVuexNamespace.Action flow_addBlankFlow!: Promise<IFlow>
   @flowVuexNamespace.Action flow_addBlankBlockByType!: Promise<IBlock>
+  @flowVuexNamespace.Action flow_add!: Promise<IFlow>
+  @flowVuexNamespace.Action flow_createWith!: Promise<IFlow>
+
+  @flowVuexNamespace.Mutation block_setName: any
+  @flowVuexNamespace.Mutation block_setLabel: any
+  @flowVuexNamespace.Mutation block_setSemanticLabel: any
+  @flowVuexNamespace.Mutation flow_setFirstBlockId: any
+}
+
+export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass {
+  @flowVuexNamespace.Mutation resource_setValue: any
+  @flowVuexNamespace.Mutation flow_setSupportedMode:any
 }
