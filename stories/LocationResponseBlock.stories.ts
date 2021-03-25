@@ -1,13 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
 import LocationResponseBlock from '@/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
 import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import locationResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
-
 import { BaseMountedVueClass} from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
@@ -33,13 +30,13 @@ const LocationResponseBlockTemplate = `
 const BaseOptions = {
   components: {LocationResponseBlock, FlowBuilderSidebarEditorContainer},
   template: LocationResponseBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default location-response block state
-@Component(
+@Component<any>(
     {
         ...BaseOptions,
-        store: new Vuex.Store<IRootState>(store),
         async mounted() {
           // @ts-ignore
             await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)
@@ -50,9 +47,8 @@ class CurrentClass1 extends BaseMountedVueClass {}
 export const Default = () => (CurrentClass1)
 
 //ExistingDataPreFilled
-@Component({
+@Component<any>({
     ...BaseOptions,
-    store: new Vuex.Store<IRootState>(store),
     async mounted() {
       // @ts-ignore
         const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)
@@ -69,10 +65,9 @@ class CurrentClass2 extends BaseMountedVueClass {
 export const ExistingDataPreFilled = () => (CurrentClass2)
 
 //NonStartingBlock
-@Component(
+@Component<any>(
     {
         ...BaseOptions,
-        store: new Vuex.Store<IRootState>(store),
         async mounted() {
           // @ts-ignore
             const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)

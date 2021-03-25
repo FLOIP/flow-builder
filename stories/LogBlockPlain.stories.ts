@@ -1,14 +1,11 @@
 import Vue from 'vue'
-import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
+import Vuex from 'vuex'
 import {Component} from 'vue-property-decorator'
-
 import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock.vue'
 import PlainFlowBuilderBlockEditorContainer from './story-utils/PlainFlowBuilderBlockEditorContainer.vue'
-
 import {IRootState, store} from '@/store'
 import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
-
-import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
+import { BaseMountedVueClass } from './story-utils/storeSetup'
 
 Vue.use(Vuex)
 
@@ -26,11 +23,15 @@ const LogBlockTemplate = `
   </plain-flow-builder-block-editor-container>
 `
 
-// default log block state
-@Component({
+const BaseOptions = {
   components: {LogBlock, PlainFlowBuilderBlockEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
+}
+
+// default log block state
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, logBlockStore)
@@ -40,10 +41,8 @@ const LogBlockTemplate = `
 class DefaultClass extends BaseMountedVueClass {}
 export const Default = () => (DefaultClass)
 
-@Component({
-  components: {LogBlock, PlainFlowBuilderBlockEditorContainer},
-  template: LogBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)

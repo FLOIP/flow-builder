@@ -9,7 +9,6 @@ import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-
 import printBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
 
 import {
-  baseMounted,
   BaseMountedVueClass,
   BaseMountedVueClassWithResourceAndMode,
 } from './story-utils/storeSetup'
@@ -31,12 +30,15 @@ const PrintBlockTemplate = `
   </flow-builder-sidebar-editor-container>
 `
 
-// default log block state
-@Component({
+const BaseOptions = {
   components: {PrintBlock, FlowBuilderSidebarEditorContainer},
   template: PrintBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
+}
 
+// default log block state
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, printBlockStore)
@@ -47,10 +49,8 @@ export const Default = () => {
   return DefaultClass
 }
 
-@Component({
-    components: {PrintBlock, FlowBuilderSidebarEditorContainer},
-    template: PrintBlockTemplate,
-    store: new Vuex.Store<IRootState>(store),
+@Component<any>({
+  ...BaseOptions,
     async mounted() {
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
@@ -66,11 +66,9 @@ export const Default = () => {
 class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {}
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
 
-@Component(
+@Component<any>(
   {
-    components: {PrintBlock, FlowBuilderSidebarEditorContainer},
-    template: PrintBlockTemplate,
-    store: new Vuex.Store<IRootState>(store),
+    ...BaseOptions,
     async mounted() {
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)

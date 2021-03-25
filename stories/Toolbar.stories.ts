@@ -34,16 +34,21 @@ const BaseOptions = {
   components: {FlowBuilderContainer, TreeBuilderToolbar},
   template: ToolbarTemplate,
   store: new Vuex.Store<IRootState>(store),
+}
+
+@Component<any>({
+  ...BaseOptions,
+})
+class BaseMountedClass extends Vue {
   created() {
     this.configure({appConfig: {}, builderConfig: {}});
     // @ts-ignore
     this.initializeTreeModel() // from trees store
   }
-}
-class BaseMountedClass extends Vue {
+
   @Action initializeTreeModel: any
 
-  @Mutation configure
+  @Mutation configure: any
   @Mutation addEnabledFeature: any
   @Mutation removeEnabledFeature: any
 
@@ -51,7 +56,7 @@ class BaseMountedClass extends Vue {
 }
 
 // Default
-@Component(
+@Component<any>(
     {
         ...BaseOptions,
       async mounted() {
@@ -66,7 +71,7 @@ class DefaultClass extends BaseMountedClass {
 export const Default = () => (DefaultClass)
 
 // Without Resource Editor toggle
-@Component(
+@Component<any>(
   {
     ...BaseOptions,
     async mounted() {
@@ -81,7 +86,7 @@ class ResourceEditorClass extends BaseMountedClass {
 export const WithoutResourceEditorToggle = () => (ResourceEditorClass)
 
 // Edit flow
-@Component(
+@Component<any>(
   {
     ...BaseOptions,
     async mounted() {
@@ -97,7 +102,7 @@ class EditFlowClass extends BaseMountedClass {
 export const EditFlow = () => (EditFlowClass)
 
 // With Save button
-@Component(
+@Component<any>(
   {
     ...BaseOptions,
     async mounted() {
@@ -133,7 +138,7 @@ BaseOptions2.template = `
       </template>
     </tree-builder-toolbar>
   </flow-builder-container>`
-@Component(
+@Component<any>(
   {
     ...BaseOptions,
     async mounted() {
@@ -169,7 +174,7 @@ BaseOptions3.template = `
       </template>
     </tree-builder-toolbar>
   </flow-builder-container>`
-@Component(
+@Component<any>(
   {
     ...BaseOptions,
     async mounted() {

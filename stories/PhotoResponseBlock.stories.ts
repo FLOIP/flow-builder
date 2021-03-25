@@ -10,7 +10,6 @@ import photoResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Smar
 
 import { BaseMountedVueClass} from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
-import {namespace} from 'vuex-class'
 
 Vue.use(Vuex)
 
@@ -31,13 +30,13 @@ const PhotoResponseBlockTemplate = `
 const BaseOptions = {
   components: {PhotoResponseBlock, FlowBuilderSidebarEditorContainer},
   template: PhotoResponseBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default photo-response block state
-@Component(
+@Component<any>(
     {
         ...BaseOptions,
-        store: new Vuex.Store<IRootState>(store),
         async mounted() {
           // @ts-ignore
             await this.baseMounted(BLOCK_TYPE, photoResponseBlockStore)
@@ -48,9 +47,8 @@ class CurrentClass1 extends BaseMountedVueClass {}
 export const Default = () => (CurrentClass1)
 
 //ExistingDataPreFilled
-@Component({
+@Component<any>({
     ...BaseOptions,
-    store: new Vuex.Store<IRootState>(store),
     async mounted() {
       // @ts-ignore
         const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, photoResponseBlockStore)
@@ -62,10 +60,9 @@ class CurrentClass2 extends BaseMountedVueClass {}
 export const ExistingDataPreFilled = () => (CurrentClass2)
 
 //NonStartingBlock
-@Component(
+@Component<any>(
     {
         ...BaseOptions,
-        store: new Vuex.Store<IRootState>(store),
         async mounted() {
           // @ts-ignore
             const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, photoResponseBlockStore)

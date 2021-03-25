@@ -25,11 +25,16 @@ const OutputBlockTemplate = `
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-// default log block state
-@Component({
+
+const BaseOptions = {
   components: {OutputBlock, FlowBuilderSidebarEditorContainer},
   template: OutputBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
+}
+
+// default log block state
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, outputBlockStore)

@@ -26,12 +26,15 @@ const LogBlockTemplate = `
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-
-// default case block state
-@Component({
+const BaseOptions = {
   components: {LogBlock, FlowBuilderSidebarEditorContainer},
   template: LogBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
+}
+
+// default case block state
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, logBlockStore)
@@ -40,10 +43,8 @@ const LogBlockTemplate = `
 class DefaultClass extends BaseMountedVueClass {}
 export const Default = () => (DefaultClass)
 
-@Component({
-  components: {LogBlock, FlowBuilderSidebarEditorContainer},
-  template: LogBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
@@ -56,10 +57,8 @@ export const Default = () => (DefaultClass)
 class CurrentClass2 extends BaseMountedVueClass {}
 export const ExistingDataBlock = () => (CurrentClass2)
 
-@Component({
-  components: {LogBlock, FlowBuilderSidebarEditorContainer},
-  template: LogBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)

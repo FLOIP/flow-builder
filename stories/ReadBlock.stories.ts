@@ -30,12 +30,16 @@ const readBlockTemplate = `
   </flow-builder-sidebar-editor-container>
 `
 
+const BaseOptions = {
+  components: {ReadBlock, FlowBuilderSidebarEditorContainer},
+  template: readBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
+}
+
 // default log block state
-@Component(
+@Component<any>(
   {
-    components: {ReadBlock, FlowBuilderSidebarEditorContainer},
-    template: readBlockTemplate,
-    store: new Vuex.Store<IRootState>(store),
+    ...BaseOptions,
     async mounted() {
       // @ts-ignore
       await this.baseMounted(BLOCK_TYPE, readBlockStore)
@@ -45,11 +49,9 @@ const readBlockTemplate = `
 class DefaultClass extends BaseMountedVueClass {}
 export const Default = () => (DefaultClass)
 
-@Component(
+@Component<any>(
   {
-    components: {ReadBlock, FlowBuilderSidebarEditorContainer},
-    template: readBlockTemplate,
-    store: new Vuex.Store<IRootState>(store),
+    ...BaseOptions,
     async mounted() {
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
@@ -64,11 +66,9 @@ class ExistingDataClass extends BaseMountedVueClass {
 }
 export const ExistingDataBlock = () => (ExistingDataClass)
 
-@Component(
+@Component<any>(
   {
-    components: {ReadBlock, FlowBuilderSidebarEditorContainer},
-    template: readBlockTemplate,
-    store: new Vuex.Store<IRootState>(store),
+    ...BaseOptions,
     async mounted() {
       // @ts-ignore
       const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)

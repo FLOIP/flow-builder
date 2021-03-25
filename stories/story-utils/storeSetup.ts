@@ -15,13 +15,14 @@ import {
 import {get, isEmpty, cloneDeep} from 'lodash'
 import { IResourceDefinitionVariantOverModesFilter } from "../../src/store/flow/resource";
 import Component from 'vue-class-component'
+import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 
 let storyInitState: any = {}
 
 /**
  * Vue class used to gather required Getter, Mutation, Action for the BaseMounted binding
  */
-@Component({})
+@Component<any>({})
 export class BaseMountedVueClass extends Vue {
   @builderVuexNamespace.Getter activeBlock!: IBlock
   @flowVuexNamespace.Getter activeFlow!: IFlow
@@ -44,9 +45,11 @@ export class BaseMountedVueClass extends Vue {
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
   }
 
-  // async fakeAFirstBlock(BLOCK_TYPE: string, blockTypeStore: IRootState, flowId: string) {
-  //   // Fake a 1st block to make sure the current block won't be selected
-  //   await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore)
+  // /**
+  //  * Fake a 1st block to make sure the current block won't be selected
+  //  */
+  // async fakeCaseBlockAsFirstBlock(flowId: string) {
+  //   await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore as IRootState)
   //   const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
   //   const {uuid: caseBlockId} = caseBlock
   //   this.flow_setFirstBlockId({blockId: caseBlockId, flowId: flowId})
@@ -89,7 +92,7 @@ export class BaseMountedVueClass extends Vue {
   }
 }
 
-@Component({})
+@Component<any>({})
 export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass {
   @flowVuexNamespace.Mutation resource_setValue: any
   @flowVuexNamespace.Mutation flow_setSupportedMode: any

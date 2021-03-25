@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {Component} from 'vue-property-decorator'
+// import {Component, Vue} from 'vue-property-decorator'
+import Component from 'vue-class-component'
 
 import CaseBlock from '@/components/interaction-designer/block-types/Core_CaseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
@@ -31,24 +32,24 @@ const CaseBlockTemplate = `
 const BaseOptions = {
   components: {CaseBlock, FlowBuilderSidebarEditorContainer},
   template: CaseBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default case block state
-@Component({
+@Component<any>({
   ...BaseOptions,
-  store: new Vuex.Store<IRootState>(store),
+})
+class DefaultClass extends BaseMountedVueClass {
   async mounted() {
     // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, caseBlockStore)
-  },
-})
-class DefaultClass extends BaseMountedVueClass {}
+  }
+}
 export const Default = () => (DefaultClass)
 
 //ExistingDataBlock
-@Component({
+@Component<any>({
   ...BaseOptions,
-  store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
     const { block } = await this.baseMounted(BLOCK_TYPE, caseBlockStore)

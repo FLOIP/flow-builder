@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {Component} from 'vue-property-decorator'
 
-import { baseMounted, BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from './story-utils/storeSetup'
+import { BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from './story-utils/storeSetup'
 
 Vue.use(Vuex)
 
@@ -30,15 +30,17 @@ const SelectOneResponseBlockTemplate = `
     </flow-builder-sidebar-editor-container>
   `
 
-@Component({
+const BaseOptions = {
   template: SelectOneResponseBlockTemplate,
   components: {
     FlowBuilderSidebarEditorContainer,
     SelectOneResponseBlock,
   },
-
   store: new Vuex.Store<IRootState>(store),
+}
 
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, selectOneStore)
@@ -50,16 +52,8 @@ export const InFlowBuilder = () => {
   return InFlowBuilderClass
 }
 
-@Component({
-  template: SelectOneResponseBlockTemplate,
-  
-  components: {
-    FlowBuilderSidebarEditorContainer,
-    SelectOneResponseBlock,
-  },
-
-  store: new Vuex.Store<IRootState>(store),
-
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
@@ -72,16 +66,8 @@ class IvrOnlyClass extends BaseMountedVueClass {}
 export const IvrOnly = () => {
   return IvrOnlyClass
 }
-@Component({
-  template: SelectOneResponseBlockTemplate,
-  
-  components: {
-    FlowBuilderSidebarEditorContainer,
-    SelectOneResponseBlock,
-  },
-
-  store: new Vuex.Store<IRootState>(store),
-
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
@@ -94,16 +80,8 @@ class MoreLanguagesClass extends BaseMountedVueClass {}
 export const MoreLanguages = () => {
   return MoreLanguagesClass
 }
-@Component({
-  template: SelectOneResponseBlockTemplate,
-  
-  components: {
-    FlowBuilderSidebarEditorContainer,
-    SelectOneResponseBlock,
-  },
-
-  store: new Vuex.Store<IRootState>(store),
-
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)

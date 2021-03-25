@@ -1,23 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
 import OpenResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_OpenResponseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
 import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import openResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
-import {SupportedMode, IFlow, SupportedContentType} from '@floip/flow-runner'
-import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
+import {SupportedMode} from '@floip/flow-runner'
 
 import {
-  baseMounted,
   BaseMountedVueClass,
   BaseMountedVueClassWithResourceAndMode,
 } from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
-import {get} from 'lodash'
 
 Vue.use(Vuex)
 
@@ -40,13 +35,13 @@ const OpenResponseBlockTemplate = `
 const BaseOptions = {
   components: {OpenResponseBlock, FlowBuilderSidebarEditorContainer},
   template: OpenResponseBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default open-response block state
-@Component(
+@Component<any>(
     {
       ...BaseOptions,
-      store: new Vuex.Store<IRootState>(store),
       async mounted() {
         // @ts-ignore
         await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
@@ -57,9 +52,8 @@ class CurrentClass1 extends BaseMountedVueClass {}
 export const Default = () => (CurrentClass1)
 
 //ExistingDataForAllModes
-@Component({
+@Component<any>({
   ...BaseOptions,
-  store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
@@ -80,9 +74,8 @@ class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
 export const ExistingDataForAllModes = () => (CurrentClass2)
 
 //ExistingDataForIvrOnly
-@Component({
+@Component<any>({
   ...BaseOptions,
-  store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
@@ -102,9 +95,8 @@ class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
 export const ExistingDataForIvrOnly = () => (CurrentClass3)
 
 //ExistingDataForTextOnly
-@Component({
+@Component<any>({
   ...BaseOptions,
-  store: new Vuex.Store<IRootState>(store),
   async mounted() {
     // @ts-ignore
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
@@ -124,10 +116,9 @@ class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
 export const ExistingDataForTextOnly = () => (CurrentClass4)
 
 //NonStartingBlock
-@Component(
+@Component<any>(
     {
       ...BaseOptions,
-      store: new Vuex.Store<IRootState>(store),
       async mounted() {
         // @ts-ignore
         const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)

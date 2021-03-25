@@ -5,8 +5,7 @@ import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import {namespace} from 'vuex-class'
-import ILanguage from '@floip/flow-runner/dist/flow-spec/ILanguage'
-import {SupportedMode} from '@floip/flow-runner'
+import { ILanguage, SupportedMode } from '@floip/flow-runner'
 import {BaseMountedVueClass} from "./story-utils/storeSetup";
 
 const flowVuexNamespace = namespace('flow')
@@ -27,13 +26,13 @@ const FlowEditorTemplate = `
 const BaseOptions = {
   components: {FlowBuilderSidebarEditorContainer, FlowEditor},
   template: FlowEditorTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // Stories
-@Component(
+@Component<any>(
     {
         ...BaseOptions,
-        store: new Vuex.Store<IRootState>(store),
         async mounted() {
             const {uuid: flowId} = await this.flow_addBlankFlow()
             this.flow_setSupportedMode({flowId, value: []})
@@ -46,10 +45,9 @@ class CurrentClass extends BaseMountedVueClass {
 export const Default = () => (CurrentClass)
 
 //ExistingDataPreFilled
-@Component(
+@Component<any>(
     {
         ...BaseOptions,
-        store: new Vuex.Store<IRootState>(store),
         async mounted() {
             const {uuid: flowId} = await this.flow_addBlankFlow()
             const sampleLanguages: ILanguage[] = [

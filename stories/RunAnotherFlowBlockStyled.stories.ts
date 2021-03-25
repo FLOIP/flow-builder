@@ -7,8 +7,6 @@ import { BaseMountedVueClass} from './story-utils/storeSetup'
 import {IRootState, store} from '@/store'
 import runAnotherFlowBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
 import {Component} from "vue-property-decorator";
-import {IFlow} from "@floip/flow-runner";
-import {namespace} from 'vuex-class'
 
 Vue.use(Vuex)
 
@@ -27,12 +25,15 @@ const RunAnotherFlowBlockTemplate = `
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-
-// default log block state
-@Component({
+const BaseOptions = {
   components: {RunAnotherFlowBlock, FlowBuilderSidebarEditorContainer},
   template: RunAnotherFlowBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
+}
+
+// default log block state
+@Component<any>({
+  ...BaseOptions,
   async mounted() {
     // @ts-ignore
     await this.baseMounted(BLOCK_TYPE, runAnotherFlowBlockStore)

@@ -16,7 +16,7 @@ import {Component} from 'vue-property-decorator'
 
 import {IBlock} from '@floip/flow-runner'
 
-@Component({
+@Component<any>({
   props: {
     block: {
       type: Object as () => IBlock,
