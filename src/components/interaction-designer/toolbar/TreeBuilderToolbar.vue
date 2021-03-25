@@ -30,15 +30,14 @@
             </router-link>
           </div>
 
-          <router-link v-if="!ui.isEditableLocked"
-             :to="editOrViewTreeJsUrl"
-             class="btn btn-outline-secondary mr-2"
-             :class="{active: isEditable}"
-             :title="trans('flow-builder.click-to-toggle-editing')"
-             event=""
-             @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
-            {{trans('flow-builder.edit-flow')}}
-          </router-link>
+          <div v-if="!ui.isEditableLocked" @click="attemptSaveTree">
+            <router-link :to="editOrViewTreeJsUrl"
+                         class="btn btn-outline-secondary mr-2"
+                         :title="trans('flow-builder.click-to-toggle-editing')"
+            >
+              {{isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow')}}
+            </router-link>
+          </div>
 
           <div v-if="isEditable" class="dropdown mr-2">
             <button type="button"
@@ -136,23 +135,15 @@
             {{trans('flow-builder.delete')}}
           </button>
 
-          <router-link :to="route('flows.newFlow')" class="btn btn-outline-secondary mr-2">
-            {{trans('flow-builder.new-flow')}}
-          </router-link>
-          <router-link :to="route('flows.home')" class="btn btn-outline-secondary mr-2">
-            {{trans('flow-builder.home')}}
-          </router-link>
-
           <slot name="extra-buttons"/>
 
-          <!--TODO - do disable if no changes logic-->
           <div class="btn-group pull-right mr-2">
             <button v-if="isEditable && isFeatureTreeSaveEnabled"
                     type="button"
                     class="btn btn-primary tree-save-tree"
                     :title="trans('flow-builder.save-changes-to-the-flow')"
-                    :disabled="!!isTreeSaving"
-                    @click="handlePersistFlow()">
+                    :disabled="isTreeSaving || !hasChanges"
+                    @click="attemptSaveTree">
               {{saveButtonText}}
             </button>
             <slot name="right-grouped-buttons"/>
@@ -172,15 +163,16 @@ import Routes from '@/lib/mixins/Routes'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
-import lodash, {isEmpty} from 'lodash'
+import lodash, { isEmpty } from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
 import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
-import {computeBlockPositionsFrom} from '@/store/builder'
+import { computeBlockPositionsFrom } from '@/store/builder'
 import { VBTooltipPlugin } from 'bootstrap-vue'
+
 Vue.use(VBTooltipPlugin)
 
 export default {
@@ -201,15 +193,14 @@ export default {
   },
   computed: {
     ...mapState({
-      tree: ({trees: {tree}}) => tree,
-      ui: ({trees: {ui}}) => ui,
+      tree: ({ trees: { tree } }) => tree,
+      ui: ({ trees: { ui } }) => ui,
     }),
 
-    ...mapGetters('flow', ['activeFlow', 'activeFlowContainer']),
+    ...mapGetters('flow', ['activeFlow']),
     ...mapState('flow', ['flows', 'resources']),
-    ...mapGetters('builder', ['activeBlock']),
-    ...mapState('builder', ['activeBlockId']),
     ...mapGetters('builder', ['isEditable']),
+    ...mapState('builder', ['activeBlockId']),
 
     ...mapGetters([
       'isTreeSaving',
@@ -306,8 +297,10 @@ export default {
     },
 
     saveButtonText() {
-      //TODO - once we can detect changes again we will change this text when saved
-      return this.trans('flow-builder.save')
+      if (this.hasChanges) {
+        return this.trans('flow-builder.save')
+      }
+      return this.trans('flow-builder.saved')
     },
 
     rootBlockClassesToDisplay() {
@@ -339,9 +332,8 @@ export default {
     isEmpty,
 
     ...mapActions(['attemptSaveTree']),
-    ...mapMutations(['setTreeSaving']),
     ...mapMutations('flow', ['flow_removeBlock']),
-    ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock', 'flow_persist']),
+    ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
     ...mapActions('builder', ['importFlowsAndResources']),
     ...mapMutations('builder', ['activateBlock']),
 
@@ -355,21 +347,6 @@ export default {
         },
       }) // todo push out to intx-designer
       this.activateBlock({ blockId })
-    },
-    async handlePersistFlow(route) {
-      this.setTreeSaving(1)
-      this.flow_persist({
-        persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
-        flowContainer: this.activeFlowContainer
-      }).then((flowContainer) => {
-        this.setTreeSaving(0)
-        if(!flowContainer) {
-          //TODO - hook into validation system when we have it.
-          //TODO - hook into showing validation errors design when we have it
-        } else if(route) {
-          this.$router.push(route)
-        }
-      })
     },
 
     handleRemoveActivatedBlockTriggered() {
@@ -391,7 +368,7 @@ export default {
       mode = null,
     } = {}) {
       const context = this.removeNilValues({
-        treeId: this.activeFlow.uuid,
+        treeId: this.tree.id,
         component,
         mode,
       })

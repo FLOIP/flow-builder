@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeFlow" class="interaction-designer-contents">
+  <div class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
     <div class="tree-sidebar-container">
@@ -45,8 +45,7 @@
 
 <script>
 import lang from '@/lib/filters/lang'
-import Routes from '@/lib/mixins/Routes'
-import lodash, { forEach, invoke, isEmpty } from 'lodash'
+import lodash, { forEach, invoke } from 'lodash'
 import Vue from 'vue'
 import {
   mapActions, mapGetters, mapMutations, mapState,
@@ -85,20 +84,20 @@ export default {
         return {}
       },
     },
+  },
 
-    mixins: [lang, Routes],
+  mixins: [lang],
 
-    components: {
-      // ...BlockTypes,
-      // Affix,
-      // JsPlumbBlock,
-      // TreeEditor,
-      // TreeViewer,
-      TreeBuilderToolbar,
-      BuilderCanvas,
-      FlowEditor,
-      // TreeUpdateConflictModal,
-    },
+  components: {
+    // ...BlockTypes,
+    // Affix,
+    // JsPlumbBlock,
+    // TreeEditor,
+    // TreeViewer,
+    TreeBuilderToolbar,
+    BuilderCanvas,
+    FlowEditor,
+    // TreeUpdateConflictModal,
   },
 
   data() {
@@ -127,13 +126,7 @@ export default {
   },
 
   computed: {
-    watch: {
-      mode: function(val) {
-        this.updateIsEditableFromParams(val) // `this.mode` comes from captured param in js-routes
-      }
-    },
     ...mapGetters([
-      'isConfigured',
       'selectedBlock',
       'hasChanges',
       'hasIssues',
@@ -180,33 +173,26 @@ export default {
   },
 
   created() {
+    const { $store } = this
 
-    const {$store} = this
+    forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
-    forEach(store.modules, (v, k) =>
-      !$store.hasModule(k) && $store.registerModule(k, v))
-
-    if((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
-    }
+    this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
 
     global.builder = this // initialize global reference for legacy + debugging
 
     this.registerBlockTypes()
+
     this.initializeTreeModel()
     this.updateIsEditableFromParams(this.mode) // `this.mode` comes from captured param in js-routes
   },
+
   activated() {
     this.deselectBlocks() // todo: remove once we have jsKey in our js-route
   },
+
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   mounted() {
-    this.flow_setActiveFlowId({flowId: this.id})
-    //if nothing was found for the flow Id
-    if(!this.activeFlow) {
-      this.flow_setActiveFlowId({flowId: null})
-      this.$router.replace(`${this.route('flows.fetchFlow', {flowId: this.id})}?nextUrl=${this.$route.path}`)
-    }
     this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
     this.deselectBlocks()
     this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
@@ -219,11 +205,11 @@ export default {
       this.updateIsEditableFromParams(newMode)
     },
   },
+
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
     ...mapMutations('builder', ['activateBlock']),
     ...mapActions('builder', ['setIsEditable']),
-    ...mapMutations('flow', ['flow_setActiveFlowId']),
     ...mapActions([
       'attemptSaveTree',
       'discoverTallestBlockForDesignerWorkspaceHeight',
