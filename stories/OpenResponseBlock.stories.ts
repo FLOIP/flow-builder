@@ -14,7 +14,6 @@ import {
   baseMounted,
   BaseMountedVueClass,
   BaseMountedVueClassWithResourceAndMode,
-  safeRegisterBlockModule
 } from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
@@ -137,7 +136,7 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
 
         // Fake a 1st block to make sure the current block won't be selected
         // @ts-ignore
-        await safeRegisterBlockModule.bind(this)(CASE_BLOCK_TYPE, caseBlockStore)
+        await this.safeRegisterBlockModule.bind(this)(CASE_BLOCK_TYPE, caseBlockStore)
         const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
         const {uuid: caseBlockId} = caseBlock
 

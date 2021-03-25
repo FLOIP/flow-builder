@@ -7,6 +7,7 @@ import { findFlowWith, IBlock, IContext, IFlow, SupportedContentType, SupportedM
 import {get, isEmpty, cloneDeep} from 'lodash'
 import { IResourceDefinitionVariantOverModesFilter } from "../../src/store/flow/resource";
 import Component from "vue-class-component";
+import caseBlockStore, { BLOCK_TYPE as CASE_BLOCK_TYPE } from "../../src/store/flow/block-types/Core_CaseBlockStore";
 
 let storyInitState: any = {}
 
@@ -15,9 +16,7 @@ let storyInitState: any = {}
  * Because some weird race condition is leading to modules not getting unregistered when clicking between stories before the next story re-registers
  */
 export const safeRegisterBlockModule = async function(BLOCK_TYPE: string, blockTypeStore: IRootState) {
-  // @ts-ignore - TS2551: Property '$store' does not exist on type
   if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
-    // @ts-ignore - TS2551: Property '$store' does not exist on type
     this.$store.unregisterModule(['flow', BLOCK_TYPE])
   }
   // todo: this will end up in `flow_addBlankBlockByType` once we get async import builds working
@@ -70,6 +69,27 @@ export class BaseMountedVueClass extends Vue {
     this.block_setName({blockId: blockId, value: "A Name"})
     this.block_setLabel({blockId: blockId, value: "A Label"})
     this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+  }
+
+  // async fakeAFirstBlock(BLOCK_TYPE: string, blockTypeStore: IRootState, flowId: string) {
+  //   // Fake a 1st block to make sure the current block won't be selected
+  //   await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore)
+  //   const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
+  //   const {uuid: caseBlockId} = caseBlock
+  //   this.flow_setFirstBlockId({blockId: caseBlockId, flowId: flowId})
+  // }
+
+  /**
+   * Safe register block module
+   * Because some weird race condition is leading to modules not getting unregistered when clicking between stories before the next story re-registers
+   */
+  async safeRegisterBlockModule(BLOCK_TYPE: string, blockTypeStore: IRootState) {
+    if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
+      this.$store.unregisterModule(['flow', BLOCK_TYPE])
+    }
+    // todo: this will end up in `flow_addBlankBlockByType` once we get async import builds working
+    // @ts-ignore - TS2769: No overload matches this call.
+    this.$store.registerModule(['flow', BLOCK_TYPE], blockTypeStore)
   }
 }
 
