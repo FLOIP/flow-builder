@@ -166,7 +166,6 @@ import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
-import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
 import { computeBlockPositionsFrom } from '@/store/builder'
 import { VBTooltipPlugin } from 'bootstrap-vue'
 import Component, { mixins } from 'vue-class-component'
@@ -197,25 +196,15 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     const {
       flows,
       resources,
-    } = this
-    return JSON.stringify(
-      convertKeysCase({
-        flows,
-        resources,
-      },
-      'SNAKE',
-      ['vendorMetadata', 'ioViamo']),
-      null,
-      2,
-    )
+    } = this as { flows: IFlow[]; resources: IResourceDefinition[] }
+    return {
+      flows,
+      resources,
+    }
   }
 
-  set flow(value) {
-    this.importFlowsAndResources(convertKeysCase(
-      JSON.parse(value),
-      'CAMEL',
-      ['vendor_metadata', 'io_viamo'],
-    ))
+  set flow({ flows, resources }: { flows: IFlow[]; resources: IResourceDefinition[]}) {
+    this.importFlowsAndResources({ flows, resources })
   }
 
   get jsKey() { // deprecate
