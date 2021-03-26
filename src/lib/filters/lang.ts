@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-// @ts-ignore TODO: resolve > Property 'Lang' does not exist on type 'Global & typeof globalThis'
-const proxy = (name: string, args: any) => (global.Lang ? global.Lang[name].apply(global.Lang, args) : args[0])
+type globalType = typeof global & {
+  Lang: any;
+}
+const thisGlobal: globalType = global as globalType
+
+const proxy = (name: string, args: any) => (thisGlobal.Lang ? thisGlobal.Lang[name].apply(thisGlobal.Lang, args) : args[0])
 const createProxy = (name: string) => function () {
   return proxy(name, arguments)
 }
@@ -19,8 +23,7 @@ export const choice = createProxy('choice')
 })
 export class Lang extends Vue {
   trans(translation: string) {
-    // @ts-ignore TODO: resolve > Property 'Lang' does not exist on type 'Global & typeof globalThis'
-    return global.Lang.trans(translation)
+    return thisGlobal.Lang.trans(translation)
   }
 
   /**
