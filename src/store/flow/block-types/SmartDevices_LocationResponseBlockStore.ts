@@ -8,7 +8,7 @@ import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUui
 import { defaults } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'SmartDevices\\LocationResponse'
+export const BLOCK_TYPE = 'SmartDevices.LocationResponse'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 

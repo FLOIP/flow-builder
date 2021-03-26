@@ -7,7 +7,7 @@ import { IFlowsState } from '@/store/flow'
 import { IRootState } from '@/store'
 import { getters as selectOneGetters, mutations as selectOneMutations, actions as selectOneActions } from './MobilePrimitives_SelectOneResponseBlockStore'
 
-export const BLOCK_TYPE = 'MobilePrimitives\\SelectManyResponse'
+export const BLOCK_TYPE = 'MobilePrimitives.SelectManyResponse'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   ...selectOneGetters,

@@ -6,7 +6,7 @@ import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumer
 import { defaults } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'MobilePrimitives\\NumericResponse'
+export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 

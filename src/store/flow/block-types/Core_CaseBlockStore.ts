@@ -12,7 +12,7 @@ import { IFlowsState } from '../index'
 
 import { allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
 
-export const BLOCK_TYPE = 'Core\\Case'
+export const BLOCK_TYPE = 'Core.Case'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   allExitsHaveTests: (state, getters, rootState, rootGetters): boolean => allItemsHaveValue(rootGetters['builder/activeBlock'].exits, 'test'),

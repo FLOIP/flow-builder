@@ -136,7 +136,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // if (!state[type]) {
     // todo: for some reason {snakeCase} from 'lodash' doesn't work?
     // todo: for some reason dynamic imports aren't working w/ storybook build
-    // const modulePath = `./block-types/${type.replace('\\', '_')}BlockStore.ts`
+    // const modulePath = `./block-types/${type.replace('.', '_')}BlockStore.ts`
     // const store = await import(modulePath)
 
     // this.registerModule(['flow', BLOCK_TYPE], store)

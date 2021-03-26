@@ -10,7 +10,7 @@ import { IPrintBlock } from '@floip/flow-runner/src/model/block/IPrintBlock'
 import { defaults } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'ConsoleIO\\Print'
+export const BLOCK_TYPE = 'ConsoleIO.Print'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 

@@ -21,7 +21,7 @@ import { IFlowsState } from '../index'
 
 import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
 
-export const BLOCK_TYPE = 'MobilePrimitives\\SelectOneResponse'
+export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   inflatedChoices: (state, getters, rootState, rootGetters): object => {

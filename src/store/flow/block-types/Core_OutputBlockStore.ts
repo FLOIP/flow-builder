@@ -8,7 +8,7 @@ import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock'
 import { defaults } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'Core\\Output'
+export const BLOCK_TYPE = 'Core.Output'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
 }

@@ -10,7 +10,7 @@ import { IMessageBlock } from '@floip/flow-runner/src/model/block/IMessageBlock'
 import { defaults } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'MobilePrimitives\\Message'
+export const BLOCK_TYPE = 'MobilePrimitives.Message'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 

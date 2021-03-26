@@ -9,7 +9,7 @@ import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import { defaults } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'Core\\RunFlow'
+export const BLOCK_TYPE = 'Core.RunFlow'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   otherFlows: (state, getters, rootState, rootGetters): IFlow[] => {

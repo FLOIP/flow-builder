@@ -8,7 +8,7 @@ import { IOpenResponseBlock } from '@floip/flow-runner/src/model/block/IOpenResp
 import { defaults } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'MobilePrimitives\\OpenResponse'
+export const BLOCK_TYPE = 'MobilePrimitives.OpenResponse'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 

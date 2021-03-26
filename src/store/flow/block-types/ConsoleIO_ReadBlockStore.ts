@@ -8,7 +8,7 @@ import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import { defaults, split } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'ConsoleIO\\Read'
+export const BLOCK_TYPE = 'ConsoleIO.Read'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   destinationVariablesFields: (state, getters, rootState, rootGetters): string[] => {
