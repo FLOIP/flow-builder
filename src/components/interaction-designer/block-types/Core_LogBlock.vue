@@ -12,7 +12,7 @@
         <hr />
 
         <h4>Log Message</h4>
-        <template v-for="{id: languageId, name: language} in flow.languages">
+        <template v-for="{id: languageId, label: language} in flow.languages">
           <div class="block-content-editor-lang">
             <h5 class="badge badge-info">
               {{language || 'flow-builder.unknown-language' | trans}}
