@@ -7,9 +7,9 @@
       "last_modified": "2019-10-10 23:46:30.000000+00:00",
       "interaction_timeout": 172800,
       "supported_modes": [
-        "sms",
-        "ivr",
-        "ussd"
+        "SMS",
+        "IVR",
+        "USSD"
       ],
       "languages": [],
       "vendor_metadata": {},
