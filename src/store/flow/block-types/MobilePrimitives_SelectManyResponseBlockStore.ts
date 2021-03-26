@@ -27,13 +27,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const blankChoicesPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
 
     const defaultExitProps: Partial<IBlockExit> = {
-      uuid: (new IdGeneratorUuidV4()).generate(),
+      uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Default',
       label: 'Default',
     }
 
     const errorExitProps: Partial<IBlockExit> = {
-      uuid: (new IdGeneratorUuidV4()).generate(),
+      uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Error',
       label: 'Error',
     }

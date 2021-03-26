@@ -118,7 +118,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   //       because it's actually a method on the root state // IContext-ish type
   //       (same as mutation: `flow_activateBlock` and `flow_add`
   async flow_addBlankFlow({ dispatch, commit, state }): Promise<IFlow> {
-    const flow = await dispatch('flow_createWith', { props: { uuid: (new IdGeneratorUuidV4()).generate() } })
+    const flow = await dispatch('flow_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
 
     return await dispatch('flow_add', { flow })
   },
@@ -144,7 +144,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     const block = await dispatch(`flow/${type}/createWith`, { // todo: standardize this for each block type
       props: {
-        uuid: (new IdGeneratorUuidV4()).generate(),
+        uuid: await (new IdGeneratorUuidV4()).generate(),
         ...props,
       },
     }, { root: true })
@@ -160,7 +160,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_addBlankResource({ dispatch, commit }): Promise<IResourceDefinition> {
-    const resource = await dispatch('resource_createWith', { props: { uuid: (new IdGeneratorUuidV4()).generate() } })
+    const resource = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
 
     commit('resource_add', { resource })
 
@@ -188,7 +188,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     const blankResource = await dispatch('resource_createWith', {
       props: {
-        uuid: (new IdGeneratorUuidV4()).generate(),
+        uuid: await (new IdGeneratorUuidV4()).generate(),
         values,
       },
     })
@@ -225,10 +225,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const duplicatedBlock = cloneDeep(block)
 
     // Set UUIDs, and remove non relevant props
-    duplicatedBlock.uuid = (new IdGeneratorUuidV4()).generate()
+    duplicatedBlock.uuid = await (new IdGeneratorUuidV4()).generate()
 
-    duplicatedBlock.exits.forEach((item, index, arr) => {
-      item.uuid = (new IdGeneratorUuidV4()).generate()
+    duplicatedBlock.exits.forEach(async (item, index, arr) => {
+      item.uuid = await (new IdGeneratorUuidV4()).generate()
       delete item.destination_block
     })
 

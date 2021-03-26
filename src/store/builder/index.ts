@@ -319,7 +319,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     // todo: we need something like: set context
     const flowContext = require('./blank-flow.json')
     const flow = flowContext.flows[0]
-    flow.uuid = (new IdGeneratorUuidV4()).generate()
+    flow.uuid = await (new IdGeneratorUuidV4()).generate()
     flow.lastModified = createFormattedDate()
     flow.languages = cloneDeep(rootState.trees.ui.languages)
 

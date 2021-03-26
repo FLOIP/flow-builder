@@ -40,7 +40,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     if (getters.allExitsHaveTests) {
       const exit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: '',
           test: '',
         }) as IBlockExitTestRequired,
@@ -54,7 +54,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const exits: IBlockExitTestRequired[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: '',
           test: '',
         }) as IBlockExitTestRequired,

@@ -98,7 +98,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         dispatch('pushNewChoice', { choiceId: blankResource.uuid, newIndex })
         const exit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
           props: ({
-            uuid: (new IdGeneratorUuidV4()).generate(),
+            uuid: await (new IdGeneratorUuidV4()).generate(),
             test: `block.value = ${newIndex - 1}`,
             label: blankResource.uuid,
           }) as IBlockExitTestRequired,
@@ -123,13 +123,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const blankChoicesPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
 
     const defaultExitProps: Partial<IBlockExit> = {
-      uuid: (new IdGeneratorUuidV4()).generate(),
+      uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Default',
       label: 'Default',
     }
 
     const errorExitProps: Partial<IBlockExit> = {
-      uuid: (new IdGeneratorUuidV4()).generate(),
+      uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Error',
       label: 'Error',
     }
