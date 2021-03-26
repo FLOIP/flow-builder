@@ -16,7 +16,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMinimum({ commit, rootGetters }, { blockId, value }: { blockId: IBlock['uuid']; value: number | string }) {
     commit('flow/block_updateConfigByKey', {
       blockId,
-      key: 'validationMinimum',
+      key: 'validation_minimum',
       value,
     }, { root: true })
     return value
@@ -24,7 +24,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMaximum({ commit, rootGetters }, { blockId, value }: { blockId: IBlock['uuid']; value: number | string }) {
     commit('flow/block_updateConfigByKey', {
       blockId,
-      key: 'validationMaximum',
+      key: 'validation_minimum',
       value,
     }, { root: true })
     return value
@@ -68,8 +68,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits,
       config: {
         prompt: blankResource.uuid,
-        validationMinimum: '',
-        validationMaximum: '',
+        validation_minimum: '',
+        validation_maximum: '',
       },
     })
   },

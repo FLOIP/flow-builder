@@ -18,7 +18,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async setAccuracyThreshold({ commit, rootGetters }, { blockId, value }: {blockId: string; value: number}) {
     commit('flow/block_updateConfigByKey', {
       blockId,
-      key: 'accuracyThresholdMeters',
+      key: 'accuracy_threshold_meters',
       value,
     }, { root: true })
     return value
@@ -26,7 +26,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async setAccuracyTimeout({ commit, rootGetters }, { blockId, value }: {blockId: string; value: number}) {
     commit('flow/block_updateConfigByKey', {
       blockId,
-      key: 'accuracyTimeoutSeconds',
+      key: 'accuracy_timeout_seconds',
       value,
     }, { root: true })
     return value
@@ -56,8 +56,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       semantic_label: '',
       exits,
       config: {
-        accuracyThresholdMeters: 5.0,
-        accuracyTimeoutSeconds: 120,
+        accuracy_threshold_meters: 5.0,
+        accuracy_timeout_seconds: 120,
       },
     })
   },

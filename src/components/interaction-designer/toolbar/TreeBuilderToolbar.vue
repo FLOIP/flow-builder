@@ -204,7 +204,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
         resources,
       },
       'SNAKE',
-      ['platformMetadata', 'ioViamo']),
+      ['vendorMetadata', 'ioViamo']),
       null,
       2,
     )

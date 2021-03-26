@@ -320,7 +320,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     const flowContext = require('./blank-flow.json')
     const flow = flowContext.flows[0]
     flow.uuid = await (new IdGeneratorUuidV4()).generate()
-    flow.lastModified = createFormattedDate()
+    flow.last_modified = createFormattedDate()
     flow.languages = cloneDeep(rootState.trees.ui.languages)
 
     flowContext.resources.forEach((resource: any) => commit('flow/resource_add', { resource }, { root: true }))

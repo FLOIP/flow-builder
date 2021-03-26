@@ -33,7 +33,7 @@ export default {
   computed: {
     minValue: {
       get() {
-        return get(this.block, 'config.validationMinimum', this.defaultValue)
+        return get(this.block, 'config.validation_minimum', this.defaultValue)
       },
       set(value) {
         this.$emit('commitValidationMinimumChange', value)

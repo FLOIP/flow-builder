@@ -37,7 +37,7 @@ export default {
   computed: {
     duration: {
       get() {
-        return get(this.block, 'config.ivr.maxDurationSeconds', '')
+        return get(this.block, 'config.ivr.max_duration_seconds', '')
       },
       set(value) {
         this.$emit('commitMaxDurationChange', value)
