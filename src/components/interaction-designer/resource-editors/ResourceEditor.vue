@@ -10,7 +10,7 @@
       </div>
 
       <template v-for="mode in flow.supported_modes">
-        <h6>{{`flow-builder.${mode}-content` | trans}}</h6>
+        <h6>{{`flow-builder.${mode.toLowerCase()}-content` | trans}}</h6>
 
         <template v-for="contentType in discoverContentTypesFor(mode)">
           <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->

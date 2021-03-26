@@ -20,7 +20,7 @@
           </div>
 
           <template v-for="mode in flow.supported_modes">
-            <h6>{{`flow-builder.${mode}-content` | trans}}</h6>
+            <h6>{{`flow-builder.${mode.toLowerCase()}-content` | trans}}</h6>
             <resource-variant-text-editor :resource-id="messageResource.uuid"
                                           :resource-variant="findOrGenerateStubbedVariantOn(
                                             messageResource,
