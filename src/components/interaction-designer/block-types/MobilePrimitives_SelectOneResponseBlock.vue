@@ -92,11 +92,11 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     }
 
     get questionPromptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.questionPrompt || '']
+      return this.resourcesByUuid[this.block.config.question_prompt || '']
     }
 
     get choicesPromptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.choicesPrompt || '']
+      return this.resourcesByUuid[this.block.config.choices_prompt || '']
     }
 
     @Watch('inflatedChoices', { deep: true })

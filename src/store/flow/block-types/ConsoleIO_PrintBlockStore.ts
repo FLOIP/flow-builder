@@ -35,7 +35,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits,
       config: {
         message: blankPrintResource.uuid,

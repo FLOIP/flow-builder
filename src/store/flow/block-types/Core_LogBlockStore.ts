@@ -1,8 +1,6 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import {
-  SupportedContentType,
-  SupportedMode,
   IBlockExit,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
@@ -39,7 +37,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits,
       config: {
         message: blankLogResource.uuid,

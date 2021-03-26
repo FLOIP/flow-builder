@@ -56,10 +56,10 @@
 
           <h3 class="block-exit-tag badge badge-warning">{{exit.tag || '—'}}</h3>
 
-          <template v-if="exit.destinationBlock == null">
+          <template v-if="exit.destination_block == null">
             <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
                              :class="{
-                                 'btn-info': exit.destinationBlock != null,
+                                 'btn-info': exit.destination_block != null,
                              }"
                              :id="`exit/${exit.uuid}/pseudo-block-handle`"
                              :key="`exit/${exit.uuid}/pseudo-block-handle`"
@@ -75,7 +75,7 @@
             <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
               <div class="handle-move-link btn btn-secondary btn-xs"
                    :class="{
-                                 'btn-info': exit.destinationBlock != null,
+                                 'btn-info': exit.destination_block != null,
                              }"
                    :id="`exit/${exit.uuid}/handle`">
                 <i class="glyphicon glyphicon-move"></i>
@@ -84,17 +84,17 @@
               <connection :key="`exit/${exit.uuid}/line-for-draft`"
                           :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
                           :source="block"
-                          :target="blocksById[exit.destinationBlock]"
+                          :target="blocksById[exit.destination_block]"
                           :exit="exit"
                           :position="livePosition"
                           :color-category="blockClasses[block.type].category" />
             </template>
           </template>
 
-          <template v-if="exit.destinationBlock != null">
+          <template v-if="exit.destination_block != null">
             <plain-draggable class="block-exit-move-handle handle-move-link btn btn-outline-secondary btn-xs btn-flat"
                              :class="{
-                                 // 'btn-secondary': exit.destinationBlock != null,
+                                 // 'btn-secondary': exit.destination_block != null,
                              }"
                              :id="`exit/${exit.uuid}/handle`"
                              :key="`exit/${exit.uuid}/handle`"
@@ -117,7 +117,7 @@
             <connection :key="`exit/${exit.uuid}/line`"
                         :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
                         :source="livePosition ? null : block"
-                        :target="blocksById[exit.destinationBlock]"
+                        :target="blocksById[exit.destination_block]"
                         :exit="exit"
                         :position="livePosition"
                         :color-category="blockClasses[block.type].category" />

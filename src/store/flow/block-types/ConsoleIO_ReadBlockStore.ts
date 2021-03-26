@@ -70,7 +70,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       config: {
         format_string: '',
         destination_variables: [],

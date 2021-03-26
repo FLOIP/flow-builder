@@ -25,8 +25,8 @@ import { IFlowsState } from '.'
 export const getters: GetterTree<IFlowsState, IRootState> = {
   activeFlow: (state) => state.flows.length && getActiveFlowFrom(state as unknown as IContext),
 
-  hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supportedModes || [], mode)),
-  hasVoiceMode: (state, getters) => includes(getters.activeFlow.supportedModes || [], SupportedMode.IVR),
+  hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supported_modes || [], mode)),
+  hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -39,7 +39,7 @@ export const mutations: MutationTree<IFlowsState> = {
     const length = flow.blocks.push(block)
 
     if (length === 1) {
-      flow.firstBlockId = block.uuid
+      flow.first_block_id = block.uuid
     }
   },
 
@@ -58,31 +58,31 @@ export const mutations: MutationTree<IFlowsState> = {
     )
 
     // clean up stale references
-    // 1. flow.firstBlockId
-    // 2. flow.exitBlockId
-    // 3. flow.blocks.*.exits.*.destinationBlock
+    // 1. flow.first_block_id
+    // 2. flow.exit_block_id
+    // 3. flow.blocks.*.exits.*.destination_block
     // 4. activeBlockId (we should likely trail a ghost of previous selection and select that one next)
 
     // todo: convert this whole operation to an ActionTree member
     // todo: use mutations for these:
-    if (flow.firstBlockId === blockId) {
-      flow.firstBlockId = '' // todo: make this optional for builder
+    if (flow.first_block_id === blockId) {
+      flow.first_block_id = '' // todo: make this optional for builder
     }
 
-    if (flow.exitBlockId === blockId) {
-      flow.exitBlockId = undefined
+    if (flow.exit_block_id === blockId) {
+      flow.exit_block_id = undefined
     }
 
     forEach(blocks, ({ exits }) => {
-      const exitsTowardUs = exits.filter((e) => e.destinationBlock === blockId)
-      forEach(exitsTowardUs, (e) => e.destinationBlock = undefined)
+      const exitsTowardUs = exits.filter((e) => e.destination_block === blockId)
+      forEach(exitsTowardUs, (e) => e.destination_block = undefined)
     })
   },
 
   flow_setExitBlockId(state, { flowId, blockId }) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
-    flow.exitBlockId = block.uuid
+    flow.exit_block_id = block.uuid
   },
 
   flow_setFirstBlockId(state, { flowId, blockId }) {
@@ -99,12 +99,12 @@ export const mutations: MutationTree<IFlowsState> = {
   },
 
   flow_setInteractionTimeout(state, { flowId, value }) {
-    findFlowWith(flowId, state as unknown as IContext).interactionTimeout = value
+    findFlowWith(flowId, state as unknown as IContext).interaction_timeout = value
   },
 
   flow_setSupportedMode(state, { flowId, value }) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    flow.supportedModes = Array.isArray(value) ? value : [value]
+    flow.supported_modes = Array.isArray(value) ? value : [value]
   },
 
   flow_setLanguages(state, { flowId, value }) {
@@ -151,7 +151,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     defaults(block, { // a key is prerequisite for reactivity, even optional params
       label: undefined,
-      semanticLabel: undefined,
+      semantic_label: undefined,
     })
 
     commit('flow_addBlock', { block })
@@ -201,18 +201,18 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async flow_createWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IFlow>}): Promise<IFlow> {
     return {
       ...defaults(props, {
-        orgId: '', // awful default value, but we've typed it to string
+        org_id: '', // awful default value, but we've typed it to string
         name: '',
         label: '', // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
-        lastModified: moment().format('c'),
-        interactionTimeout: 30,
-        platformMetadata: {},
+        last_modified: moment().format('c'),
+        interaction_timeout: 30,
+        vendor_metadata: {},
 
-        supportedModes: DEFAULT_MODES,
+        supported_modes: DEFAULT_MODES,
         languages: [],
         blocks: [],
 
-        firstBlockId: '',
+        first_block_id: '',
       }),
     }
   },
@@ -229,7 +229,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     duplicatedBlock.exits.forEach((item, index, arr) => {
       item.uuid = (new IdGeneratorUuidV4()).generate()
-      delete item.destinationBlock
+      delete item.destination_block
     })
 
     if (has(duplicatedBlock.config, 'prompt')) {

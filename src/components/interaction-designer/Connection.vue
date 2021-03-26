@@ -32,8 +32,8 @@ export default {
     ...mapGetters('builder', ['blocksById']),
 
     sourceId: ({ exit }) => `exit/${exit.uuid}/handle`,
-    targetId: ({ exit }) => (exit.destinationBlock
-      ? `block/${exit.destinationBlock}/handle`
+    targetId: ({ exit }) => (exit.destination_block
+      ? `block/${exit.destination_block}/handle`
       : `exit/${exit.uuid}/pseudo-block-handle`),
 
     // todo: externalize as `positionCacheKey` + deprecate `position` prop

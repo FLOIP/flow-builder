@@ -9,7 +9,7 @@
         <h5 class="badge badge-info">{{language || 'flow-builder.unknown-language' | trans}}</h5>
       </div>
 
-      <template v-for="mode in flow.supportedModes">
+      <template v-for="mode in flow.supported_modes">
         <h6>{{`flow-builder.${mode}-content` | trans}}</h6>
 
         <template v-for="contentType in discoverContentTypesFor(mode)">

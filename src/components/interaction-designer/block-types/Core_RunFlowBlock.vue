@@ -66,7 +66,7 @@ class Core_RunAnotherFlowBlock extends mixins(Lang) {
 
     get destinationFlowId(): string {
       // TODO - fix IRunFlowBlockConfig - it should have flow_id according to spec - not flowId
-      return this.block.config.flowId || ''
+      return this.block.config.flow_id || ''
     }
 
     set destinationFlowId(newDestinationFlowId: string) {

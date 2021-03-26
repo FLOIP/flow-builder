@@ -138,7 +138,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits: [
         await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true }),
         await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true }),

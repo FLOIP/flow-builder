@@ -24,9 +24,9 @@ export default {
   },
   mixins: [lang],
   computed: {
-    semanticLabel: {
+    semantic_label: {
       get() {
-        return this.block.semanticLabel
+        return this.block.semantic_label
       },
       set(value) {
         this.block_setSemanticLabel({ blockId: this.block.uuid, value })

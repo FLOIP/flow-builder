@@ -29,14 +29,14 @@ class InteractionTimeoutEditor extends Vue {
 
     get interactionTimeout(): number {
       // 30 comes from src/store/flow/flow.ts
-      return this.flow.interactionTimeout || 30
+      return this.flow.interaction_timeout || 30
     }
 
     set interactionTimeout(value: number) {
       this.flow_setInteractionTimeout({ flowId: this.flow.uuid, value })
     }
 
-    @flowVuexNamespace.Mutation flow_setInteractionTimeout!: ({ flowId, value }: { flowId: IFlow['uuid']; value: IFlow['interactionTimeout']}) => void
+    @flowVuexNamespace.Mutation flow_setInteractionTimeout!: ({ flowId, value }: { flowId: IFlow['uuid']; value: IFlow['interaction_timeout']}) => void
   }
 
 export default InteractionTimeoutEditor

@@ -39,7 +39,7 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   block_setSemanticLabel(state, { blockId, value }) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-      .semanticLabel = value
+      .semantic_label = value
   },
   block_setExitTag(state, { exitId, blockId, value }: {exitId: string; blockId: string; value: string}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -68,7 +68,7 @@ export const mutations: MutationTree<IFlowsState> = {
   block_setBlockExitDestinationBlockId(state, { blockId, exitId, destinationBlockId }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block)
-      .destinationBlock = destinationBlockId
+      .destination_block = destinationBlockId
   },
 }
 
@@ -92,7 +92,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         label: resource.uuid,
         tag: '',
         config: {},
-        destinationBlock: undefined, // prerequisite for reactivity, even optional params
+        destination_block: undefined, // prerequisite for reactivity, even optional params
       }),
     }
   },
@@ -113,8 +113,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const firstBlock = findBlockOnActiveFlowWith(first.blockId, state as unknown as IContext)
     const secondBlock = findBlockOnActiveFlowWith(second.blockId, state as unknown as IContext)
 
-    const { destinationBlock: firstDestinationBlockId } = findBlockExitWith(first.exitId, firstBlock)
-    const { destinationBlock: secondDestinationBlockId } = findBlockExitWith(second.exitId, secondBlock)
+    const { destination_block: firstDestinationBlockId } = findBlockExitWith(first.exitId, firstBlock)
+    const { destination_block: secondDestinationBlockId } = findBlockExitWith(second.exitId, secondBlock)
 
     // todo: this works only when the exit we're targetting is empty
     // todo: blah --- a repaint from HMR redraws it correctly -- why?!
