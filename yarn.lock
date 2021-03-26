@@ -1334,10 +1334,10 @@
   resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.10.0.tgz#386cb9fbfb2afc951daae40e03845a87bacf3509"
   integrity sha512-pLR8p2z6q87O9c1XkP4DYfuEX+cKMn14a4jYkZ/t4ky1k+MEvp69zj662xJTzCkbH3ABsrwaxx7fP1FWASlEZw==
 
-"@floip/flow-runner@^0.0.95":
-  version "0.0.95"
-  resolved "https://registry.yarnpkg.com/@floip/flow-runner/-/flow-runner-0.0.95.tgz#ec9de168948926cb80ccbae1b167473cab63b7c6"
-  integrity sha512-YrcTAzQglNAPTgSH+3PknC4l9blnNebRpswD+ESj1c5kvxm/9N0+lhqs/88+Ozftg9dQoL1mkwTtImZ1DrTJqg==
+"@floip/flow-runner@^1.0.1":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@floip/flow-runner/-/flow-runner-1.0.5.tgz#d8d926a2633849f359f961e79c5d878c99c95b50"
+  integrity sha512-qnk8otqGZtpBYXDDbg7spdAEOSZUN+aEI4s6weQWd9DEJKLCKkkwoe9AVuWPMWKXy3+Zkqg9BMLWrtwi0Ib4fw==
   dependencies:
     "@floip/expression-evaluator" "^1.3.0"
     class-transformer "^0.3.1"
