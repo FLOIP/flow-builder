@@ -91,7 +91,7 @@ export const IvrOnly = () => {
   async mounted() {
     // @ts-ignore
     const {block, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
-    flow.languages = [{id: '1', name: 'English'}, {id: '2', name: 'French'}] // mutation
+    flow.languages = [{id: '1', label: 'English'}, {id: '2', label: 'French'}] // mutation
   },
 
 })

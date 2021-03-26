@@ -35,7 +35,7 @@ export const baseMounted = async function (this: any, BLOCK_TYPE: string, blockT
 
   // @ts-ignore - TS2339: Property 'flow_addBlankFlow' does not exist on type
   let flow = await this.flow_addBlankFlow();
-  flow.languages = [{id: '1', name: 'English'}] // mutation
+  flow.languages = [{id: '1', label: 'English'}] // mutation
 
   // @ts-ignore - TS2339: Property 'flow_addBlankBlockByType' does not exist on type
   const block =  await this.flow_addBlankBlockByType({type: BLOCK_TYPE})
