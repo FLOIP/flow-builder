@@ -1,5 +1,9 @@
 {
   "en.flow-builder": {
+    "accuracy-threshold-in-meters": "Accuracy threshold in meters",
+    "accuracy-timeout-in-seconds":"Accuracy timout in seconds",
+    "format-string": "Format String",
+    "edit-variable": "Edit Variable",
     "flow-name":  "Flow name",
     "flow-label": "Flow label",
     "flow-importer": "Flow importer",
@@ -1537,6 +1541,10 @@
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
   },
   "fr.flow-builder": {
+    "accuracy-threshold-in-meters": "Seuil de précision en mètres",
+    "accuracy-timeout-in-seconds":"Précision timout en quelques secondes",
+    "format-string": "Format Chaîne",
+    "edit-variable": "Variable Modifier",
     "flow-name":  "Nom du flux",
     "flow-label": "Libélé du flux",
     "flow-importer": "importateur de flux",

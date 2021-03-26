@@ -2,7 +2,7 @@
   <div class="form-group block-timeout">
     <numeric-editor v-model.number="timeout"
         :regex-numeric-filtering="'[0-9]'"
-        :label="'flow-builder.Accuracy-timeout-in-seconds' | trans"
+        :label="'flow-builder.accuracy-timeout-in-seconds' | trans"
         :placeholder="'flow-builder.enter-value' | trans">
     </numeric-editor>
   </div>
