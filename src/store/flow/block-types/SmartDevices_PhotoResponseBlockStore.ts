@@ -1,8 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {
-  IBlock, IBlockExit, SupportedMode, SupportedContentType,
-} from '@floip/flow-runner'
+import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to create at flow-runner
 import {defaults} from 'lodash'
@@ -16,7 +14,7 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async createWith(
-    {rootGetters, dispatch, commit},
+    {dispatch},
     {props}: { props: { uuid: string } & Partial<IBlock> },
   ) {
     const exits: IBlockExit[] = [

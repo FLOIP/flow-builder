@@ -13,7 +13,8 @@
         <h6>{{ `flow-builder.${mode}-content` | trans }}</h6>
 
         <template v-for="contentType in discoverContentTypesFor(mode)">
-          <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
+          <!-- todo: it's odd that we pass around a ContentType variant rather than a
+          ContentTypeLangMode variant (aka, mode as external arg) -->
 
           <resource-variant-text-editor
             :resource-id="resource.uuid"
@@ -231,7 +232,8 @@ export class ResourceEditor extends Vue {
       },
       value: description,
     })
-    event.target.blur() // remove the focus from the `upload` Tab
+    // remove the focus from the `upload` Tab
+    event.target.blur()
     this.pushAudioIntoLibrary(uploadedAudio)
   }
 

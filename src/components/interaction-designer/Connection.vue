@@ -43,7 +43,8 @@ export default {
       }
 
       // @note - intentional side-effect; todo: move this into vuex responding to data changes
-      this.$nextTick(this.reposition) // todo: we only want this called if something changes.
+      // todo: we only want this called if something changes.
+      this.$nextTick(this.reposition)
 
       // generate drafts while 'between exits' or 'source/destination unknown'
       // todo: push these out into ?block?

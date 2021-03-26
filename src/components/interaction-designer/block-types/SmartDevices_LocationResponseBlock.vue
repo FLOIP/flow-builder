@@ -29,7 +29,7 @@ import Vue from 'vue'
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IBlock, IBlockExit, IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow} from '@floip/flow-runner'
 // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
 import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 

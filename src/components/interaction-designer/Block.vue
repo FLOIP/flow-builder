@@ -172,7 +172,8 @@ export default {
   },
 
   created() {
-    this.draggablesByExitId = {} // todo: these need to be (better) lifecycle-managed (eg. mcq add/remove exit).
+    // todo: these need to be (better) lifecycle-managed (eg. mcq add/remove exit).
+    this.draggablesByExitId = {}
   },
 
   data() {
@@ -245,7 +246,8 @@ export default {
         languageId: '22',
         mode: SupportedMode.SMS,
       }
-      const resource = new ResourceResolver(context) // as IContext) // this isn't ts
+      // context as IContext) // this isn't ts
+      const resource = new ResourceResolver(context)
         .resolve(uuid)
 
       return resource.hasText() ? resource.getText() : uuid
@@ -273,13 +275,13 @@ export default {
     },
 
     // eslint-disable-next-line no-unused-vars
-    activateBlockAsDropZone(e) {
+    activateBlockAsDropZone() {
       const {block} = this
       this.setConnectionCreateTargetBlock({block})
     },
 
     // eslint-disable-next-line no-unused-vars
-    deactivateBlockAsDropZone(e) {
+    deactivateBlockAsDropZone() {
       const {block} = this
       this.setConnectionCreateTargetBlockToNullFrom({block})
     },

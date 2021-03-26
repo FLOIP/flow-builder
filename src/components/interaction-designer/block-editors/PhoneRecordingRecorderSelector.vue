@@ -22,7 +22,7 @@
           </tr>
         </thead>
         <tbody id="call-to-record-modal-list">
-          <tr v-for="recorder in recorders" class="call-to-record-item">
+          <tr v-for="(recorder, i) in recorders" :key="i" class="call-to-record-item">
             <td class="recorder-selector-field">
               <input
                 v-model="selectedRecorder"
@@ -99,7 +99,7 @@
 
 <script>
 import lang from '@/lib/filters/lang'
-import lodash from 'lodash'
+import {clone} from 'lodash'
 import {mapState} from 'vuex'
 import {BModal} from 'bootstrap-vue'
 
@@ -156,7 +156,7 @@ export default {
 
     handleModalClosed() {
       const {description} = this
-      const value = lodash.clone(this.selectedRecorder)
+      const value = clone(this.selectedRecorder)
 
       this.reset()
       this.$emit('input', {
@@ -170,7 +170,7 @@ export default {
       this.reset()
 
       const {description} = this
-      const value = lodash.clone(this.selectedRecorder)
+      const value = clone(this.selectedRecorder)
 
       this.$emit('input', {
         value,

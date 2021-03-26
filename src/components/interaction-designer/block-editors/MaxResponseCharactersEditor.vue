@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import NumericEditor from '@/components/common/NumericEditor'
+import NumericEditor from '@/components/common/NumericEditor.vue'
 import {get} from 'lodash'
 import lang from '@/lib/filters/lang'
 

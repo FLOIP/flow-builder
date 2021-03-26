@@ -44,7 +44,7 @@ class FirstBlockEditorButton extends Vue {
     return this.blockId === this.flow.firstBlockId
   }
 
-  setStartBlock(event) {
+  setStartBlock() {
     const {
       flow: {uuid: flowId},
       blockId,

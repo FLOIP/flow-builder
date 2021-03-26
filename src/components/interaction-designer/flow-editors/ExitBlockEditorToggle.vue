@@ -24,7 +24,8 @@ export default {
   mixins: [lang],
   props: {
     flow: Object,
-    blockId: String, // toggle for particular block
+    // toggle for particular block
+    blockId: String,
 
     isEditable: {
       type: Boolean,

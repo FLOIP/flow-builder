@@ -21,7 +21,7 @@
             </h5>
           </div>
 
-          <template v-for="mode in flow.supportedModes">
+          <template v-for="(mode) in flow.supportedModes">
             <h6>{{ `flow-builder.${mode}-content` | trans }}</h6>
             <resource-variant-text-editor
               :resource-id="messageResource.uuid"

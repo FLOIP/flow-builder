@@ -34,8 +34,11 @@ export const mutations: MutationTree<IFlowsState> = {
   },
 
   // currently unused - see todo
-  resource_delete({resources}, {resourceId}: { resourceId: string }) {
-    // TODO - we need an action that can clean resources and then call this to actuall remove. We need logic to truly check resources are unused
+  resource_delete(
+    {resources}, {resourceId}: { resourceId: string },
+  ) {
+    // TODO - we need an action that can clean resources and then call this to actuall remove.
+    //  We need logic to truly check resources are unused
     const resourceIndex = findIndex(resources, (resource) => resource.uuid === resourceId)
     resources.splice(resourceIndex, 1)
   },
@@ -184,19 +187,12 @@ export function findResourceWith(uuid: string, {resources}: IContext): IResource
   return resource
 }
 
-export function findResourceVariantOverModesWith(
-  uuid: string,
-  filter: IResourceDefinitionVariantOverModesFilter,
-  {resources}: IContext,
-): IResourceDefinitionVariantOverModes {
-  return findResourceVariantOverModesOn(findResourceWith(uuid, {resources} as IContext), filter)
-}
-
 export function findResourceVariantOverModesOn(
   resource: IResourceDefinition,
   filter: IResourceDefinitionVariantOverModesFilter,
 ) {
-  const keysForComparison = without(Object.keys(filter), 'modes') // b/c we do explicit partial matching on modes
+  // b/c we do explicit partial matching on modes
+  const keysForComparison = without(Object.keys(filter), 'modes')
   const filterWithComparatorKeys = pick(filter, keysForComparison)
   const variant = find<IResourceDefinitionVariantOverModes>(
     resource.values,
@@ -214,15 +210,12 @@ export function findResourceVariantOverModesOn(
   return variant
 }
 
-export function findOrGenerateStubbedVariantFor(
-  resourceId: string,
-  filter: IResourceDefinitionVariantOverModesFilterAsKey,
+export function findResourceVariantOverModesWith(
+  uuid: string,
+  filter: IResourceDefinitionVariantOverModesFilter,
   {resources}: IContext,
 ): IResourceDefinitionVariantOverModes {
-  return findOrGenerateStubbedVariantOn(
-    findResourceWith(resourceId, ({resources} as unknown) as IContext),
-    filter,
-  )
+  return findResourceVariantOverModesOn(findResourceWith(uuid, {resources} as IContext), filter)
 }
 
 export function findOrGenerateStubbedVariantOn(
@@ -238,6 +231,17 @@ export function findOrGenerateStubbedVariantOn(
 
     return Object.assign(cloneDeep(filter), {value: ''})
   }
+}
+
+export function findOrGenerateStubbedVariantFor(
+  resourceId: string,
+  filter: IResourceDefinitionVariantOverModesFilterAsKey,
+  {resources}: IContext,
+): IResourceDefinitionVariantOverModes {
+  return findOrGenerateStubbedVariantOn(
+    findResourceWith(resourceId, ({resources} as unknown) as IContext),
+    filter,
+  )
 }
 
 export function discoverContentTypesFor(

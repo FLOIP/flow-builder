@@ -38,7 +38,7 @@
           :flow="flow"
         />
       </div>
-      <div v-for="choiceKey in Object.keys(inflatedChoices)" class="form-group form-inline">
+      <div v-for="(choiceKey, i) in Object.keys(inflatedChoices)" :key="i" class="form-group form-inline">
         <resource-editor
           :label="`Choice ${choiceKey}`"
           :resource="inflatedChoices[choiceKey]"
@@ -108,7 +108,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends Vue {
   }
 
   @Watch('inflatedChoices', {deep: true})
-  onChoicesChanged(newChoices: object) {
+  onChoicesChanged() {
     this.editSelectOneResponseBlockChoice()
   }
 

@@ -11,17 +11,20 @@ import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 import {createFormattedDate} from '@floip/flow-runner/dist/domain/DateFormat'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
-export enum OperationKind { // todo migrate these to flight-monitor
+// TODO: migrate these to flight-monitor
+export enum OperationKind {
   CONNECTION_SOURCE_RELOCATE = 'CONNECTION_SOURCE_RELOCATE',
   CONNECTION_CREATE = 'CONNECTION_CREATE',
-  BLOCK_RELOCATE = 'BLOCK_RELOCATE', // todo: we can now skip updating vuex on-the-fly and rather await a drop
+  // TODO: we can now skip updating vuex on-the-fly and rather await a drop
+  BLOCK_RELOCATE = 'BLOCK_RELOCATE',
 }
 
 export interface IConnectionSourceRelocateOperation {
   kind: OperationKind.CONNECTION_SOURCE_RELOCATE;
   data: null | {
     from: IDeepBlockExitIdWithinFlow;
-    position: IPosition; // todo: rename to startingPosition
+    // todo: rename position to startingPosition
+    position: IPosition;
     to: IDeepBlockExitIdWithinFlow | null;
   };
 }
@@ -30,7 +33,8 @@ export interface IConnectionCreateOperation {
   kind: OperationKind.CONNECTION_CREATE;
   data: null | {
     source: IDeepBlockExitIdWithinFlow;
-    position: IPosition; // todo: rename to startingPosition
+    // todo: rename position to startingPosition
+    position: IPosition;
     target: IBlock['uuid'] | null;
   };
 }
@@ -71,14 +75,14 @@ export const stateFactory = (): IBuilderState => ({
 export const getters: GetterTree<IBuilderState, IRootState> = {
   activeBlock: ({activeBlockId}, {blocksById}) => (activeBlockId ? blocksById[activeBlockId] : null),
 
-  blocksById: (state, getters, rootState, rootGetters) => {
+  blocksById: (state, _, rootState, rootGetters) => {
     const {blocks} = rootGetters['flow/activeFlow']
     return keyBy(blocks, 'uuid')
   },
 
-  nodeLabelsById: (state, getters, {flow: {flows}}, rootGetters) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
+  nodeLabelsById: (state, _, {flow: {flows}}) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
 
-  exitLabelsById: (state, getters, {flow: {flows}}, rootGetters) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
+  exitLabelsById: (state, _, {flow: {flows}}) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
 }
@@ -266,7 +270,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     commit('setOperation', {operation})
   },
 
-  applyConnectionCreate({dispatch, commit, state: {operations}}) {
+  applyConnectionCreate({commit, state: {operations}}) {
     const {data} = operations[OperationKind.CONNECTION_CREATE]
     if (!data) {
       throw new ValidationException(
@@ -314,9 +318,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    * @param rootState
    * @param flows
    */
-  async importFlowsAndResources({
-    dispatch, commit, state, rootState,
-  }, {flows, resources}) {
+  async importFlowsAndResources({rootState}, {flows, resources}) {
     console.debug('importing flows & resources ...')
     console.log({flows, resources})
     const {flow: flowState} = rootState
@@ -341,7 +343,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   },
 
   async loadFlow({
-    dispatch, commit, state, rootState,
+    dispatch, commit, rootState,
   }) {
     console.debug('builder', 'loading flow...')
 
@@ -408,6 +410,17 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   ]
 }
 
+export function getViewportCenter() {
+  const builderCanvasElement = document.getElementsByClassName('builder-canvas')[0]
+  const sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
+  const rect = builderCanvasElement.getBoundingClientRect()
+
+  return {
+    x: Math.round(Math.abs(rect.left) + (window.innerWidth - sideBarElement.clientWidth) / 2),
+    y: Math.round(Math.abs(rect.top) + window.innerHeight / 2),
+  }
+}
+
 export function computeBlockPositionsFrom(block: IBlock | null) {
   const xDelta = 80
   const yDelta = 80
@@ -422,15 +435,4 @@ export function computeBlockPositionsFrom(block: IBlock | null) {
   }
 
   return {xPosition: xPosition + xDelta, yPosition: yPosition + yDelta}
-}
-
-export function getViewportCenter() {
-  const builderCanvasElement = document.getElementsByClassName('builder-canvas')[0]
-  const sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
-  const rect = builderCanvasElement.getBoundingClientRect()
-
-  return {
-    x: Math.round(Math.abs(rect.left) + (window.innerWidth - sideBarElement.clientWidth) / 2),
-    y: Math.round(Math.abs(rect.top) + window.innerHeight / 2),
-  }
 }

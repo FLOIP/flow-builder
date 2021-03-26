@@ -15,7 +15,8 @@ export default {
 
     formatDuration(duration, unit = 'seconds', withSuffix) {
       const currentLocale = moment.locale()
-      moment.locale('en') // this function only gets used in english.
+      // this function only gets used in english.
+      moment.locale('en')
       const result = moment.duration(duration, unit).humanize(withSuffix)
       moment.locale(currentLocale)
       return result

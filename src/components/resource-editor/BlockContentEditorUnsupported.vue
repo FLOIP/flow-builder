@@ -11,7 +11,7 @@
 <template>
   <div class="block-content-editor block-content-editor-unsupported">
     <ul class="list-inline pull-right h4">
-      <li v-for="tag in block.customData.tags">
+      <li v-for="(tag, i) in block.customData.tags" :key="i">
         <span class="badge badge-default">{{ tag }}</span>
       </li>
       <li>

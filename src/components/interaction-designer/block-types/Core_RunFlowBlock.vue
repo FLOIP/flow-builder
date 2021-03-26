@@ -17,7 +17,7 @@
           <option value="">
             {{ "flow-builder.none-selected" | trans }}
           </option>
-          <option v-for="(flow, i) in otherFlows" :value="flow.uuid">
+          <option v-for="(flow, i) in otherFlows" :key="i" :value="flow.uuid">
             {{ flow.name }}
           </option>
         </select>

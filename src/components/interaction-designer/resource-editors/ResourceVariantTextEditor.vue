@@ -126,7 +126,8 @@ export default {
       default: null,
     },
     resourceVariant: {
-      type: Object, // as () => IResourceDefinitionContentTypeSpecific
+      // as () => IResourceDefinitionContentTypeSpecific
+      type: Object,
       default: null,
     },
     mode: {

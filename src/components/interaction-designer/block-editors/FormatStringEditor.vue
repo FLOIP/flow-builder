@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import TextEditor from '@/components/common/TextEditor'
+import TextEditor from '@/components/common/TextEditor.vue'
 import lang from '@/lib/filters/lang'
 
 export default {

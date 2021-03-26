@@ -45,7 +45,7 @@ import Vue from 'vue'
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IBlockExit, IFlow} from '@floip/flow-runner'
+import {IFlow} from '@floip/flow-runner'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
 

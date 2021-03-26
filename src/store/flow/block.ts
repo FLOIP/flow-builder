@@ -9,7 +9,7 @@ import {
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, without} from 'lodash'
+import {defaults} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {popFirstEmptyItem} from './utils/listBuilder'
@@ -84,10 +84,8 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async block_createBlockDefaultExitWith(
-    {dispatch, commit, state},
-    {props}: { props: { uuid: string } & Partial<IBlockExit> },
-  ): Promise<IBlockExit> {
+  async block_createBlockDefaultExitWith({dispatch},
+    {props}: { props: { uuid: string } & Partial<IBlockExit> }): Promise<IBlockExit> {
     return await dispatch('block_createBlockExitWith', {
       props: {
         ...props,
@@ -97,7 +95,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async block_createBlockExitWith(
-    {dispatch, commit, state},
+    {dispatch, commit},
     {props}: { props: { uuid: string } & Partial<IBlockExit> },
   ): Promise<IBlockExit> {
     const resource: IResourceDefinition = await dispatch('resource_createWith', {
@@ -111,12 +109,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         label: resource.uuid,
         tag: '',
         config: {},
-        destinationBlock: undefined, // prerequisite for reactivity, even optional params
+        // prerequisite for reactivity, even optional params
+        destinationBlock: undefined,
       }),
     }
   },
   async block_updateBlockExitWith(
-    {dispatch, commit, state},
+    {commit},
     {
       blockId,
       exitId,

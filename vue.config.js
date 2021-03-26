@@ -78,7 +78,8 @@ module.exports = {
       })
 
       // Mock call to record status, with this format
-      // { audio_file_id: "148", status: "new", description: "my descr", status_description: "", uuid: "5ffcdb4d0d8742.58454366", duration_seconds: "4.54", created_at: "2021-01-11 23:12:50", key: "block_1586301986853_15:45", queueId: "5ffcdb4d0d8742.58454366" }
+      /* { audio_file_id: "148", status: "new", description: "my descr", status_description: "", uuid: "5ffcdb4d0d8742.58454366",
+      duration_seconds: "4.54", created_at: "2021-01-11 23:12:50", key: "block_1586301986853_15:45", queueId: "5ffcdb4d0d8742.58454366" } */
       app.all('/calltorecord/status', (req, res) => {
         const now = new Date().toISOString().split('T')
         const result = {
@@ -92,7 +93,8 @@ module.exports = {
           created_at: `${now[0]} ${now[1].split('.')[0]}`,
         }
         if (req.cookies[req.body.uuid] !== 'new') {
-          res.cookie(result.uuid, 'new') // `new` status tells the UI we had successful `recorded` audio
+          // `new` status tells the UI we had successful `recorded` audio
+          res.cookie(result.uuid, 'new')
         }
         res.writeHead(200, {'Content-Type': 'application/json'})
         res.end(JSON.stringify(result))

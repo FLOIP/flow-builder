@@ -2,7 +2,8 @@ import {IFlow, IResourceDefinition} from '@floip/flow-runner'
 import {
   ActionTree, GetterTree, Module, MutationTree,
 } from 'vuex'
-import {IRootState} from '..' // todo: create factory with generics so that IRootState is DI'd
+// todo: create factory with generics so that IRootState is DI'd
+import {IRootState} from '..'
 import {
   getters as blockGetters,
   mutations as blockMutations,
@@ -33,7 +34,8 @@ export const stateFactory = (): IFlowsState => ({
   resources: [],
 
   firstFlowId: null,
-  nestedFlowBlockInteractionIdStack: [], // todo: not quite right -- pulled from IContext
+  // todo: not quite right -- pulled from IContext
+  nestedFlowBlockInteractionIdStack: [],
 
   // activeBlock: null,
 })

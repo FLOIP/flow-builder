@@ -16,6 +16,7 @@
 
       <div
         v-for="(variableStringFormat, i) in destinationVariablesFields"
+        :key="i"
         class="form-group form-inline"
       >
         <text-editor

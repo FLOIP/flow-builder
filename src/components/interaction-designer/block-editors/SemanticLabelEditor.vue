@@ -10,7 +10,7 @@
 
 <script>
 import {mapMutations} from 'vuex'
-import TextEditor from '@/components/common/TextEditor'
+import TextEditor from '@/components/common/TextEditor.vue'
 import lang from '@/lib/filters/lang'
 
 export default {
@@ -24,7 +24,6 @@ export default {
       required: true,
     },
   },
-  mixins: [lang],
   computed: {
     semanticLabel: {
       get() {

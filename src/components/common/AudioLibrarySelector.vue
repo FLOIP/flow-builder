@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import lodash from 'lodash'
+import {isEmpty} from 'lodash'
 import {mapActions} from 'vuex'
 import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
-import AudioLibrarySearchField from './AudioLibrarySearchField'
-import AudioLibrarySelection from './AudioLibrarySelection'
+import AudioLibrarySearchField from './AudioLibrarySearchField.vue'
+import AudioLibrarySelection from './AudioLibrarySelection.vue'
 
 export default {
   props: [
@@ -51,7 +51,7 @@ export default {
 
   computed: {
     selectable() {
-      return !lodash.isEmpty(this.alternateSelections)
+      return !isEmpty(this.alternateSelections)
     },
   },
 

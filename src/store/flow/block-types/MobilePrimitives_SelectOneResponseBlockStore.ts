@@ -3,26 +3,21 @@ import {IRootState} from '@/store'
 import {
   IBlockExitTestRequired,
   IBlockExit,
-  IFlow,
   IContext,
-  SupportedContentType,
   findBlockOnActiveFlowWith,
-  IResourceDefinitionContentTypeSpecific,
 } from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import {IResourceDefinition} from '@floip/flow-runner/src/domain/IResourceResolver'
-import Vue from 'vue'
 import {defaults, find, max} from 'lodash'
-import {IResourceDefinitionVariantOverModesFilter} from '../resource'
 import {IFlowsState} from '../index'
 
-import {someItemsHaveValue, allItemsHaveValue, twoItemsBlank} from '../utils/listBuilder'
+import {someItemsHaveValue} from '../utils/listBuilder'
 
 export const BLOCK_TYPE = 'MobilePrimitives\\SelectOneResponse'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  inflatedChoices: (state, getters, rootState, rootGetters): object => {
+  inflatedChoices: (state, _, rootState, rootGetters): object => {
     const currentBlock = rootGetters['builder/activeBlock']
     const choices: { [key: string]: IResourceDefinition } = {}
     return Object.keys(currentBlock.config.choices).reduce((memo, choiceKey): {
@@ -33,7 +28,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     }, choices)
   },
   allChoicesHaveContent: (state, getters): boolean => Object.keys(getters.inflatedChoices).every((key: string) => someItemsHaveValue(getters.inflatedChoices[key].values, 'value')),
-  twoChoicesBlank: (state, getters, rootState, rootGetters): boolean => {
+  twoChoicesBlank: (state, getters): boolean => {
     let blankNumber = 0
     return Object.keys(getters.inflatedChoices).some((key: string) => {
       if (!someItemsHaveValue(getters.inflatedChoices[key].values, 'value')) {
@@ -98,7 +93,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   }) {
     const activeBlock = rootGetters['builder/activeBlock']
     if (getters.allChoicesHaveContent) {
-      const newIndex = parseInt(max(Object.keys(activeBlock.config.choices)) || '0') + 1
+      const newIndex = parseInt(max(Object.keys(activeBlock.config.choices)) || '0', 10) + 1
       const blankResource = await dispatch(
         'flow/flow_addBlankResourceForEnabledModesAndLangs',
         null,
@@ -144,7 +139,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
   //       but, it doesn't seem to mention how this is configured
   async createWith(
-    {state, commit, dispatch},
+    {dispatch},
     {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> },
   ) {
     const blankResource = await dispatch(

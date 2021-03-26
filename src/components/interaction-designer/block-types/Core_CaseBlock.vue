@@ -11,7 +11,7 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <div v-for="(exit, i) in exits" class="form-group form-inline">
+      <div v-for="(exit, i) in exits" :key="i" class="form-group form-inline">
         <expression-editor
           :label="i + 1"
           :placeholder="'flow-builder.edit-expression' | trans"

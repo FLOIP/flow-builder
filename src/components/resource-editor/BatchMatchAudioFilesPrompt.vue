@@ -181,7 +181,7 @@
 
 <script>
 import lang from '@/lib/filters/lang'
-import lodash from 'lodash'
+import {includes} from 'lodash'
 import VueFocus from 'vue-focus'
 
 export default {
@@ -203,7 +203,7 @@ export default {
 
     isValid() {
       return (
-        lodash.includes(this.pattern, '[label]') && lodash.includes(this.pattern, '[language]')
+        includes(this.pattern, '[label]') && includes(this.pattern, '[language]')
       )
     },
   },

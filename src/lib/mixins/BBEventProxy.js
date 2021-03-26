@@ -1,19 +1,21 @@
 import Backbone from 'backbone'
-import lodash from 'lodash'
+import {pick} from 'lodash'
 // todo: add backbone as a dependency here, skip it from global js bundle
 
 export default {
   data() {
     return {
-      legacyDomEventProxy: null, // these are [optionally] provided by LegacyBlockHelpers, because I don't know how to deep-merge events :|
-      events: null, // these are [optionally] be provided by consuming vue-component definition
+      // these are [optionally] provided by LegacyBlockHelpers, because I don't know how to deep-merge events :|
+      legacyDomEventProxy: null,
+      // these are [optionally] be provided by consuming vue-component definition
+      events: null,
     }
   },
 
   mounted() {
     const
       {$el: el} = this
-    const methods = lodash.pick(this, Object.keys(this.$options.methods))
+    const methods = pick(this, Object.keys(this.$options.methods))
     const events = {
       ...this.legacyBlockEvents,
       ...this.events,

@@ -25,7 +25,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   ...selectOneActions,
 
   async createWith(
-    {state, commit, dispatch},
+    {dispatch},
     {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> },
   ) {
     const blankResource = await dispatch(

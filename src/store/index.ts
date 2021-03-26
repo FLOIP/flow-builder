@@ -1,5 +1,5 @@
 import {StoreOptions} from 'vuex'
-import trees from '@/store/trees/trees.js'
+import trees from '@/store/trees/trees'
 import {IFlowsState, store as flow} from './flow'
 import {IBuilderState, store as builder} from './builder'
 // @ts-ignore
@@ -16,7 +16,8 @@ export const store: StoreOptions<IRootState> = {
   modules: {
     builder,
     flow,
-    trees, // trees was originally implemented globally, expecting it's state at root
+    // trees was originally implemented globally, expecting it's state at root
+    trees,
     audio,
   },
 }

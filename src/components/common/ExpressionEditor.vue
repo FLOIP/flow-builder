@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import TextEditor from '@/components/common/TextEditor'
+import TextEditor from '@/components/common/TextEditor.vue'
 
 export default {
   components: {

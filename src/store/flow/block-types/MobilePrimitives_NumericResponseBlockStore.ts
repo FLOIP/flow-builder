@@ -1,6 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExit, SupportedMode, SupportedContentType} from '@floip/flow-runner'
+import {IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import {defaults} from 'lodash'
@@ -14,7 +14,7 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMinimum(
-    {commit, rootGetters},
+    {commit},
     {blockId, value}: { blockId: string; value: number },
   ) {
     commit(
@@ -29,7 +29,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return value
   },
   async setValidationMaximum(
-    {commit, rootGetters},
+    {commit},
     {blockId, value}: { blockId: string; value: number },
   ) {
     commit(
@@ -44,7 +44,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return value
   },
   async setMaxDigits(
-    {commit, rootGetters},
+    {commit},
     {blockId, value}: { blockId: string; value: number },
   ) {
     commit(
@@ -61,7 +61,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return value
   },
   async createWith(
-    {rootGetters, dispatch, commit},
+    {dispatch, commit},
     {props}: { props: { uuid: string } & Partial<INumericResponseBlock> },
   ) {
     const exits: IBlockExit[] = [

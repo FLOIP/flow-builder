@@ -1,12 +1,12 @@
 import {mapState} from 'vuex'
-import lodash from 'lodash'
+import {isArray, every, find} from 'lodash'
 
 export function can(userPermissions, permissionOrPermissions, requireAll = false) {
-  if (lodash.isArray(permissionOrPermissions)) {
+  if (isArray(permissionOrPermissions)) {
     if (requireAll) {
-      return lodash.every(permissionOrPermissions, (requestedPermission) => userPermissions[requestedPermission])
+      return every(permissionOrPermissions, (requestedPermission) => userPermissions[requestedPermission])
     }
-    return lodash.find(permissionOrPermissions, (requestedPermission) => userPermissions[requestedPermission])
+    return find(permissionOrPermissions, (requestedPermission) => userPermissions[requestedPermission])
   }
   return userPermissions[permissionOrPermissions]
 }

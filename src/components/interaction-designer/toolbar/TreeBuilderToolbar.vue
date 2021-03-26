@@ -182,7 +182,7 @@ import Routes from '@/lib/mixins/Routes'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
-import lodash, {isEmpty} from 'lodash'
+import lodash, {isEmpty, get, isNil, identity} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
@@ -257,7 +257,7 @@ export default {
 
     jsKey() {
       // deprecate
-      return lodash.get(this.selectedBlock, 'jsKey')
+      return get(this.selectedBlock, 'jsKey')
     },
     editTreeUrl() {
       return this.editTreeRoute()
@@ -351,6 +351,7 @@ export default {
     ...mapMutations('builder', ['activateBlock']),
 
     async handleAddBlockByTypeSelected({type}) {
+      // todo push out to intx-designer
       const {uuid: blockId} = await this.flow_addBlankBlockByType({
         type,
         platform_metadata: {
@@ -358,7 +359,7 @@ export default {
             uiData: computeBlockPositionsFrom(this.activeBlock),
           },
         },
-      }) // todo push out to intx-designer
+      })
       this.activateBlock({blockId})
     },
 
@@ -385,13 +386,14 @@ export default {
       return this.route('trees.editTree', context)
     },
     hasClassDetail(classDetails, attribute) {
-      return !lodash.isNil(classDetails[attribute]) && classDetails[attribute]
+      return !isNil(classDetails[attribute]) && classDetails[attribute]
     },
     translateTreeClassName(className) {
       return this.trans(`flow-builder.${className}`)
     },
     shouldDisplayDividerBefore(blockClasses, className) {
-      const shouldShowDividerBeforeBlock = lodash.pickBy(blockClasses, (classDetails) => this.hasClassDetail(classDetails, 'dividerBefore'))[className]
+      const shouldShowDividerBeforeBlock = lodash.pickBy(blockClasses, (classDetails) =>
+        this.hasClassDetail(classDetails, 'dividerBefore'))[className]
       return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
     },
     handleResourceViewerSelected() {
@@ -400,7 +402,7 @@ export default {
 
     // This could be extracted to a helper mixin of some sort so it can be used in other places
     removeNilValues(obj) {
-      return lodash.pickBy(obj, lodash.identity)
+      return lodash.pickBy(obj, identity)
     },
 
     getDeleteToolTip() {

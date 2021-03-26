@@ -44,7 +44,8 @@ export default {
     min: {
       type: [String, Number],
       required: false,
-      default: '', // Meaning it's accepting negative by default
+      // Meaning it's accepting negative by default
+      default: '',
     },
     regexFloatFiltering: {
       type: String,

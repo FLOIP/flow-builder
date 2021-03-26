@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import FloatEditor from '@/components/common/FloatEditor'
+import FloatEditor from '@/components/common/FloatEditor.vue'
 import {get} from 'lodash'
 import lang from '@/lib/filters/lang'
 

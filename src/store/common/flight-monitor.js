@@ -1,5 +1,5 @@
 import axios, {CancelToken} from 'axios'
-import lodash from 'lodash'
+import {invoke, uniqueId} from 'lodash'
 import qs from 'qs'
 import Vue from 'vue'
 
@@ -37,12 +37,12 @@ export default {
     },
 
     cancel({flights}, {key}) {
-      lodash.invoke(flights, `${key}.cancel`)
+      invoke(flights, `${key}.cancel`)
     },
   },
 
   actions: {
-    async create({commit, dispatch, state: {flights}}, {key, promise, cancellation}) {
+    async create({commit, state: {flights}}, {key, promise, cancellation}) {
       // todo: figure out queuing + streaming
       // todo: convert to .push() + flights.invoke('cancel')
 
@@ -53,13 +53,13 @@ export default {
 
       commit('create', {key, promise, cancellation})
       const flight = flights[key]
-      flight.id = `flight-${lodash.uniqueId()}`
+      flight.id = `flight-${uniqueId()}`
 
       try {
         const response = await promise
         Object.assign(flight, {status: Statuses.SUCCESS, progress: 100})
-
-        return response // surface response to next promises
+        // surface response to next promises
+        return response
       } catch (e) {
         // failed request
         flight.error = e
@@ -68,13 +68,14 @@ export default {
       }
     },
 
-    createCancellableXhr({commit, dispatch, state}, config) {
+    createCancellableXhr({dispatch}, config) {
       const {key} = config
       const {token, cancel: cancellation} = CancelToken.source()
       const promise = axios.request({
         paramsSerializer: (p) => qs.stringify(p, {arrayFormat: 'bracket'}),
         cancelToken: token,
-        onUploadProgress: null, // todo: migrate file upload to use this flights api
+        // todo: migrate file upload to use this flights api
+        onUploadProgress: null,
         onDownloadProgress: null,
         headers: {'X-Requested-With': 'XMLHttpRequest'},
         ...config,
@@ -83,7 +84,7 @@ export default {
       return dispatch('create', {key, promise, cancellation})
     },
 
-    resetStatus({commit, dispatch, state: {flights}}, {key}) {
+    resetStatus({commit, state: {flights}}, {key}) {
       if (!flights[key]) {
         return
       }
@@ -94,7 +95,7 @@ export default {
       // eg. (value, error, progress, status, cancel-token), the whole shebang!
     },
 
-    cancelAll({commit, dispatch, state: {flights}}) {
+    cancelAll({commit, state: {flights}}) {
       for (const key of Object.keys(flights)) {
         commit('cancel', {key})
       }

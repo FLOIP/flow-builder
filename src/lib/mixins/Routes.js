@@ -3,27 +3,8 @@ import {mapState} from 'vuex'
 
 const PATH_PARAM_DISCOVERER = /(\/){(.*?)(\?)?}/g
 
-// todo: we'll want route() to also be importable/accessible anywhere!
-export default {
-  computed: {
-    ...mapState({
-      routes: (s) => s.trees.ui.routes,
-    }),
-  },
-
-  methods: {
-    route(routeKey, context) {
-      return routeFrom(routeKey, context, this.routes)
-    },
-  },
-}
-
 export function routeFrom(routeKey, context, routes) {
   return interpolateRouteWith(context, get(routes, routeKey))
-}
-
-const raiseFor = (p) => {
-  throw new Error(`InvalidContextError - Missing param: ${p}`)
 }
 
 export function interpolateRouteWith(context, route) {
@@ -56,4 +37,23 @@ export function interpolateRouteWith(context, route) {
 
     return `${prefix}${context[param]}`
   })
+}
+
+// todo: we'll want route() to also be importable/accessible anywhere!
+export default {
+  computed: {
+    ...mapState({
+      routes: (s) => s.trees.ui.routes,
+    }),
+  },
+
+  methods: {
+    route(routeKey, context) {
+      return routeFrom(routeKey, context, this.routes)
+    },
+  },
+}
+
+const raiseFor = (p) => {
+  throw new Error(`InvalidContextError - Missing param: ${p}`)
 }

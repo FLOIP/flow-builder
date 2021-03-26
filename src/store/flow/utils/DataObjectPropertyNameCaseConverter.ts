@@ -1,5 +1,5 @@
-// TODO:
-//  move this file into @floip to replace the convertKeysToCamelCase under '@floip/flow-runner/src/flow-spec/DataObjectPopertyNameCamelCaseConverter'
+// TODO: move this file into @floip to replace the convertKeysToCamelCase under
+// '@floip/flow-runner/src/flow-spec/DataObjectPopertyNameCamelCaseConverter'
 //  and update convertKeysToCamelCase usage in @floip (tests, etc) to convertKeysCase
 import {
   camelCase, snakeCase, includes, isArray, isObject, reduce,

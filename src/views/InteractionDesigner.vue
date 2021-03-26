@@ -45,7 +45,7 @@
 
 <script>
 import lang from '@/lib/filters/lang'
-import lodash, {forEach, invoke} from 'lodash'
+import {forEach, invoke, get, endsWith} from 'lodash'
 import Vue from 'vue'
 import {
   mapActions, mapGetters, mapMutations, mapState,
@@ -64,7 +64,7 @@ import {store} from '@/store'
 // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
-import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
+import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas.vue'
 
 // import '../TreeDiffLogger'
 
@@ -102,7 +102,8 @@ export default {
 
   data() {
     return {
-      pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
+      // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
+      pureVuejsBlocks: [
         'CallBackWithCallCenterBlock',
         'CollaborativeFilteringQuestionBlock',
         'CollaborativeFilteringRatingBlock',
@@ -138,10 +139,10 @@ export default {
     ...mapState({
 
       // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
-      designerWorkspaceHeight: ({trees: {tree, ui}}) => ui.designerWorkspaceHeight,
+      designerWorkspaceHeight: ({trees: {ui}}) => ui.designerWorkspaceHeight,
 
-      tree: ({trees: {tree, ui}}) => tree,
-      validationResultsEmptyTree: ({trees: {tree, ui}}) => !tree.blocks.length,
+      tree: ({trees: {tree}}) => tree,
+      validationResultsEmptyTree: ({trees: {tree}}) => !tree.blocks.length,
       hasVoice: ({trees: {tree}}) => tree.details.hasVoice,
       hasSms: ({trees: {tree}}) => tree.details.hasSms,
       hasUssd: ({trees: {tree}}) => tree.details.hasUssd,
@@ -154,16 +155,17 @@ export default {
     ...mapGetters('builder', ['activeBlock', 'isEditable']),
 
     jsKey() {
-      return lodash.get(this.selectedBlock, 'jsKey')
+      return get(this.selectedBlock, 'jsKey')
     },
 
-    isPureVueBlock() { // pure vuejs block types handle readonly mode on their own
-      return _.includes(this.pureVuejsBlocks, lodash.get(this.selectedBlock, 'type'))
+    // pure vuejs block types handle readonly mode on their own
+    isPureVueBlock() {
+      return _.includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
     },
 
     sidebarType() {
       const
-        blockType = lodash.get(this.selectedBlock, 'type')
+        blockType = get(this.selectedBlock, 'type')
       const blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
 
       return this.isEditable
@@ -179,16 +181,19 @@ export default {
 
     this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
 
-    global.builder = this // initialize global reference for legacy + debugging
+    // initialize global reference for legacy + debugging
+    global.builder = this
 
     this.registerBlockTypes()
 
     this.initializeTreeModel()
-    this.updateIsEditableFromParams(this.mode) // `this.mode` comes from captured param in js-routes
+    // `this.mode` comes from captured param in js-routes
+    this.updateIsEditableFromParams(this.mode)
   },
 
   activated() {
-    this.deselectBlocks() // todo: remove once we have jsKey in our js-route
+    // todo: remove once we have jsKey in our js-route
+    this.deselectBlocks()
   },
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
@@ -256,10 +261,10 @@ export default {
         return false
       }
 
-      return !isEditableLocked && mode === 'edit' || !mode && lodash.endsWith(hash, '/edit')
+      return (!isEditableLocked && mode === 'edit') || (!mode && endsWith(hash, '/edit'))
     },
 
-		  hoistResourceViewerToPushState(hash) {
+    hoistResourceViewerToPushState(hash) {
       if (!_.endsWith(hash, '/resource-viewer')) {
         return
       }

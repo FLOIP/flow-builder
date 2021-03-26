@@ -164,7 +164,8 @@
             <button class="close"
                     @click="clearSearch">&times;
             </button>
-            <strong>{{'trees.filter-enabled' | trans}}</strong> &mdash; {{'trees.showing-block-content-filtered-by-X' | trans}} "<em>{{query}}</em>".
+            <strong>{{'trees.filter-enabled' | trans}}</strong>
+            &mdash; {{'trees.showing-block-content-filtered-by-X' | trans}} "<em>{{query}}</em>".
           </p>
         </div>
       </div>
@@ -222,7 +223,7 @@
           <template v-for="block in (query.length >= 3 ? search(query) : blocks)">
             <template v-if="hasContent(block.type)">
               <ul class="list-inline pull-right h4">
-                <li v-for="tag in block.customData.tags">
+                <li v-for="(tag, i) in block.customData.tags" :key="i">
                   <span class="badge badge-default">{{tag}}</span>
                 </li>
               </ul>
@@ -239,7 +240,8 @@
                                                :block="block"
                                                :enabledLanguages="enabledLanguages"
                                                :blockTypes="blockTypes"
-                                               :alternateAudioFileSelections="batchMatchAudioData.results && batchMatchAudioData.results[block.jsKey]"
+                                               :alternateAudioFileSelections="batchMatchAudioData.results
+                                               && batchMatchAudioData.results[block.jsKey]"
                                                :languageNames="languageNames"></horizontal-block-content-editor>
             </template>
 
@@ -258,11 +260,11 @@
 import {mapActions, mapGetters} from 'vuex'
 import fuse from 'fuse.js'
 import lang from '@/lib/filters/lang'
-import lodash from 'lodash'
+import {forEach, filter, isEmpty, pickBy, identity, size, reduce, get, includes} from 'lodash'
 
-import HorizontalBlockContentEditor from '@/components/resource-editor/HorizontalBlockContentEditor'
-import BatchMatchAudioFilesPrompt from '@/components/resource-editor/BatchMatchAudioFilesPrompt'
-import BlockContentEditorUnsupported from '@/components/resource-editor/BlockContentEditorUnsupported'
+import HorizontalBlockContentEditor from '@/components/resource-editor/HorizontalBlockContentEditor.vue'
+import BatchMatchAudioFilesPrompt from '@/components/resource-editor/BatchMatchAudioFilesPrompt.vue'
+import BlockContentEditorUnsupported from '@/components/resource-editor/BlockContentEditorUnsupported.vue'
 import stores from '../stores'
 
 export default {
@@ -286,7 +288,7 @@ export default {
 
   created() {
     if (!this.$store.state.trees) {
-      lodash.forEach(stores.modules, (v, k) => this.$store.registerModule(k, v))
+      forEach(stores.modules, (v, k) => this.$store.registerModule(k, v))
       this.initializeTreeModel()
     }
   },
@@ -333,16 +335,22 @@ export default {
       if (this.showEmptyBlocksOnly) {
         // filter only empty content:
         // Empty content could be like: {} or {smsContent:{44:''}
-        // Generally, if a block is missing any of the content for all of the content types that are enabled for the tree, the block should be considered “empty” and show up using this filter.
-        return lodash.filter(this.$store.state.trees.tree.blocks, (item) => {
+        // Generally, if a block is missing any of the content for all of the content types that are enabled for the tree,
+        // the block should be considered “empty” and show up using this filter.
+        return filter(this.$store.state.trees.tree.blocks, (item) => {
           if (!this.hasContent(item.type)) {
             return false
           }
-          const isEmptyVoice = this.$store.state.trees.tree.hasVoice && (lodash.isEmpty(item.audioFiles) || lodash.isEmpty(lodash.pickBy(item.audioFiles, lodash.identity)))
-          const isEmptySMS = this.$store.state.trees.tree.hasSms && (lodash.isEmpty(item.smsContent) || lodash.isEmpty(lodash.pickBy(item.smsContent, lodash.identity)))
-          const isEmptyUssd = this.$store.state.trees.tree.hasUssd && (lodash.isEmpty(item.ussdContent) || lodash.isEmpty(lodash.pickBy(item.ussdContent, lodash.identity)))
-          const isEmptyClipboard = this.$store.state.trees.tree.hasClipboard && (lodash.isEmpty(item.clipboardContent) || lodash.isEmpty(lodash.pickBy(item.clipboardContent, lodash.identity)))
-          const isEmptySocial = this.$store.state.trees.tree.hasSocial && (lodash.isEmpty(item.socialContent) || lodash.isEmpty(lodash.pickBy(item.socialContent, lodash.identity)))
+          const isEmptyVoice = this.$store.state.trees.tree.hasVoice && (isEmpty(item.audioFiles)
+            || isEmpty(pickBy(item.audioFiles, identity)))
+          const isEmptySMS = this.$store.state.trees.tree.hasSms && (isEmpty(item.smsContent)
+            || isEmpty(pickBy(item.smsContent, identity)))
+          const isEmptyUssd = this.$store.state.trees.tree.hasUssd && (isEmpty(item.ussdContent)
+            || isEmpty(pickBy(item.ussdContent, identity)))
+          const isEmptyClipboard = this.$store.state.trees.tree.hasClipboard && (isEmpty(item.clipboardContent)
+            || isEmpty(pickBy(item.clipboardContent, identity)))
+          const isEmptySocial = this.$store.state.trees.tree.hasSocial && (isEmpty(item.socialContent)
+            || isEmpty(pickBy(item.socialContent, identity)))
           return isEmptyVoice || isEmptySMS || isEmptyUssd || isEmptyClipboard || isEmptySocial
         })
       }
@@ -350,7 +358,7 @@ export default {
     },
 
     blocksWithContent() {
-      return lodash.filter(this.blocks, ({type}) => this.hasContent(type))
+      return filter(this.blocks, ({type}) => this.hasContent(type))
     },
 
     batchMatchAudioData() {
@@ -362,7 +370,7 @@ export default {
     },
 
     totalPiecesOfBlockContent() {
-      return this.blocks.length * lodash.size(this.enabledLanguages)
+      return this.blocks.length * size(this.enabledLanguages)
     },
 
     percentagePiecesWithContent() {
@@ -372,13 +380,14 @@ export default {
 
       const
         channels = this.tree.details.hasVoice
-								+ this.tree.details.hasSms
-								+ this.tree.details.hasUssd
-								+ 1 // + 1 = reviewed
+          + this.tree.details.hasSms
+          + this.tree.details.hasUssd
+          // + 1 = reviewed
+          + 1
       const completed = this.totalPiecesOfBlockContentWithVoice
-								+ this.totalPiecesOfBlockContenWithSms
-								+ this.totalPiecesOfBlockContenWithUssd
-								+ this.totalPiecesOfBlockContentReviewed
+        + this.totalPiecesOfBlockContenWithSms
+        + this.totalPiecesOfBlockContenWithUssd
+        + this.totalPiecesOfBlockContentReviewed
       const total = (this.totalPiecesOfBlockContent * channels)
 
       return ((completed / total) * 100).toFixed(0)
@@ -389,7 +398,7 @@ export default {
         return 0
       }
 
-      return lodash.reduce(this.enabledLanguages, (sum, langId) => lodash.reduce(this.blocks, (sum, block) => sum + +!!block.audioFiles[langId], sum), 0)
+      return reduce(this.enabledLanguages, (sum, langId) => reduce(this.blocks, (sum, block) => sum + +!!block.audioFiles[langId], sum), 0)
     },
 
     totalPiecesOfBlockContenWithSms() {
@@ -397,7 +406,7 @@ export default {
         return 0
       }
 
-      return lodash.reduce(this.enabledLanguages, (sum, langId) => lodash.reduce(this.blocks, (sum, block) => sum + +!!block.smsContent[langId], sum), 0)
+      return reduce(this.enabledLanguages, (sum, langId) => reduce(this.blocks, (sum, block) => sum + +!!block.smsContent[langId], sum), 0)
     },
 
     totalPiecesOfBlockContenWithUssd() {
@@ -405,13 +414,13 @@ export default {
         return 0
       }
 
-      return lodash.reduce(this.enabledLanguages, (sum, langId) => lodash.reduce(this.blocks, (sum, block) => sum + +!!block.ussdContent[langId], sum), 0)
+      return reduce(this.enabledLanguages, (sum, langId) => reduce(this.blocks, (sum, block) => sum + +!!block.ussdContent[langId], sum), 0)
     },
 
     totalPiecesOfBlockContentReviewed() {
-      return lodash.reduce(this.enabledLanguages, (sum, langId) =>
+      return reduce(this.enabledLanguages, (sum, langId) =>
       // using lodash to fetch this one because reviewed hash may be absent
-					 lodash.reduce(this.blocks, (sum, block) => sum + +!!lodash.get(block, `customData.reviewed.${langId}`), sum),
+					 reduce(this.blocks, (sum, block) => sum + +!!get(block, `customData.reviewed.${langId}`), sum),
 				 0)
     },
   },
@@ -451,7 +460,7 @@ export default {
         return false
       }
 
-      return lodash.includes(this.contentBlockTypes, blockType)
+      return includes(this.contentBlockTypes, blockType)
     },
 
     search(query) {

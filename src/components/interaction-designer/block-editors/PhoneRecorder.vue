@@ -10,7 +10,7 @@
 
 <script>
 import {mapState, mapGetters} from 'vuex'
-import PhoneRecordingRecorderSelector from './PhoneRecordingRecorderSelector'
+import PhoneRecordingRecorderSelector from './PhoneRecordingRecorderSelector.vue'
 
 export default {
   components: {
