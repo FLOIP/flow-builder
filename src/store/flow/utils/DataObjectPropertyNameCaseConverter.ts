@@ -5,7 +5,7 @@ import {
   camelCase, snakeCase, includes, isArray, isObject, reduce,
 } from 'lodash'
 
-export const EXCLUDED_DATA_HIERARCHIES_BY_KEY = ['choices', 'platformMetadata', 'platform_metadata']
+export const EXCLUDED_DATA_HIERARCHIES_BY_KEY = ['choices', 'vendor_metadata']
 
 export default function convertKeysCase(x: any, caseType = 'CAMEL', exclusions = EXCLUDED_DATA_HIERARCHIES_BY_KEY): any {
   if (isArray(x)) {

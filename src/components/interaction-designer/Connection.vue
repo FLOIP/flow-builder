@@ -49,13 +49,13 @@ export default {
       // generate drafts while 'between exits' or 'source/destination unknown'
       // todo: push these out into ?block?
       const source = this.source || {
-        ...set({}, 'platform_metadata.io_viamo.uiData.xPosition', this.position.x),
-        ...set({}, 'platform_metadata.io_viamo.uiData.yPosition', this.position.y),
+        ...set({}, 'vendor_metadata.io_viamo.uiData.xPosition', this.position.x),
+        ...set({}, 'vendor_metadata.io_viamo.uiData.yPosition', this.position.y),
       }
 
       const target = this.target || {
-        ...set({}, 'platform_metadata.io_viamo.uiData.xPosition', this.position.x),
-        ...set({}, 'platform_metadata.io_viamo.uiData.yPosition', this.position.y),
+        ...set({}, 'vendor_metadata.io_viamo.uiData.xPosition', this.position.x),
+        ...set({}, 'vendor_metadata.io_viamo.uiData.yPosition', this.position.y),
       }
 
       return this.repaintCacheKeyGenerator(source, target)

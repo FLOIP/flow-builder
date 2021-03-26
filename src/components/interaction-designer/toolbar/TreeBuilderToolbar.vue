@@ -214,7 +214,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     this.importFlowsAndResources(convertKeysCase(
       JSON.parse(value),
       'CAMEL',
-      ['platform_metadata', 'io_viamo'],
+      ['vendor_metadata', 'io_viamo'],
     ))
   }
 
@@ -318,8 +318,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   async handleAddBlockByTypeSelected({ type }: { type: string }) {
     const { uuid: blockId } = await this.flow_addBlankBlockByType({
       type,
-      // @ts-ignore TODO: remove this once IBlock has platform_metadata key
-      platform_metadata: {
+      // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
+      vendor_metadata: {
         io_viamo: {
           uiData: computeBlockPositionsFrom(this.activeBlock),
         },

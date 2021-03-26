@@ -237,8 +237,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
 
     // Set UI positions
-    // @ts-ignore TODO: remove this once IBlock has platform_metadata key
-    duplicatedBlock.platform_metadata = {
+    // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
+    duplicatedBlock.vendor_metadata = {
       io_viamo: {
         uiData: computeBlockPositionsFrom(block),
       },

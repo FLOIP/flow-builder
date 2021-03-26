@@ -96,14 +96,14 @@ export const mutations: MutationTree<IBuilderState> = {
   },
 
   setBlockPositionTo(state, { position: { x, y }, block }) {
-    // todo: ensure our platform_metadata.io_viamo is always instantiated with builder // uiData props
-    // if (!block.platform_metadata.io_viamo.uiData) {
-    //   defaultsDeep(block, {platform_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
-    //   Vue.observable(block.platform_metadata.io_viamo.uiData)
+    // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder // uiData props
+    // if (!block.vendor_metadata.io_viamo.uiData) {
+    //   defaultsDeep(block, {vendor_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
+    //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
     // }
 
-    block.platform_metadata.io_viamo.uiData.xPosition = x
-    block.platform_metadata.io_viamo.uiData.yPosition = y
+    block.vendor_metadata.io_viamo.uiData.xPosition = x
+    block.vendor_metadata.io_viamo.uiData.yPosition = y
   },
 
   setIsEditable(state, value) {
@@ -358,8 +358,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
-    [get(source, 'platform_metadata.io_viamo.uiData.xPosition'), get(source, 'platform_metadata.io_viamo.uiData.yPosition')],
-    [get(target, 'platform_metadata.io_viamo.uiData.xPosition'), get(target, 'platform_metadata.io_viamo.uiData.yPosition')],
+    [get(source, 'vendor_metadata.io_viamo.uiData.xPosition'), get(source, 'vendor_metadata.io_viamo.uiData.yPosition')],
+    [get(target, 'vendor_metadata.io_viamo.uiData.xPosition'), get(target, 'vendor_metadata.io_viamo.uiData.yPosition')],
 
     // block titles
     source.label,
@@ -375,8 +375,8 @@ export function computeBlockPositionsFrom(block?: IBlock | null) {
   const xDelta = 80; const
     yDelta = 80
 
-  let xPosition = get(block, 'platform_metadata.io_viamo.uiData.xPosition')
-  let yPosition = get(block, 'platform_metadata.io_viamo.uiData.yPosition')
+  let xPosition = get(block, 'vendor_metadata.io_viamo.uiData.xPosition')
+  let yPosition = get(block, 'vendor_metadata.io_viamo.uiData.yPosition')
 
   if (!xPosition || !yPosition) {
     const viewPortCenter = getViewportCenter()

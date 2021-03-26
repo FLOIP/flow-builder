@@ -22,7 +22,7 @@
           "deletedAt": null
         }
       ],
-      "platform_metadata": {
+      "vendor_metadata": {
         "io_viamo": {
           "orgId": "1008107874829627392",
           "treeId": "116"
@@ -43,7 +43,7 @@
             "questionPrompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
             "choicesPrompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "MultipleChoiceQuestionBlock",
               "customData": {
@@ -122,7 +122,7 @@
             },
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb92536d34"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "NumericQuestionBlock",
               "customData": {
@@ -177,7 +177,7 @@
           "label": "",
           "semanticLabel": "",
           "config": [],
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "NumericBranchBlock",
               "customData": {
@@ -245,7 +245,7 @@
           "config": {
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb92b0431d"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "MessageBlock",
               "customData": {
@@ -301,7 +301,7 @@
             "questionPrompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
             "choicesPrompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "MultipleChoiceQuestionBlock",
               "customData": {
@@ -380,7 +380,7 @@
             },
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb933994fe"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "NumericQuestionBlock",
               "customData": {
@@ -440,7 +440,7 @@
             },
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb935c202f"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "OpenQuestionBlock",
               "customData": {
@@ -497,7 +497,7 @@
           "config": {
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb93718673"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "MessageBlock",
               "customData": {
