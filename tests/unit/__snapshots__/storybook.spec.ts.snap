@@ -367,7 +367,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Print"
+                            data-block-type="ConsoleIO.Print"
                             href="#"
                           >
                             
@@ -378,7 +378,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Read"
+                            data-block-type="ConsoleIO.Read"
                             href="#"
                           >
                             
@@ -389,7 +389,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Case"
+                            data-block-type="Core.Case"
                             href="#"
                           >
                             
@@ -400,7 +400,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Log"
+                            data-block-type="Core.Log"
                             href="#"
                           >
                             
@@ -411,7 +411,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Output"
+                            data-block-type="Core.Output"
                             href="#"
                           >
                             
@@ -422,7 +422,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\RunFlow"
+                            data-block-type="Core.RunFlow"
                             href="#"
                           >
                             
@@ -433,7 +433,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\Message"
+                            data-block-type="MobilePrimitives.Message"
                             href="#"
                           >
                             
@@ -444,7 +444,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            data-block-type="MobilePrimitives.NumericResponse"
                             href="#"
                           >
                             
@@ -455,7 +455,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            data-block-type="MobilePrimitives.OpenResponse"
                             href="#"
                           >
                             
@@ -466,7 +466,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            data-block-type="MobilePrimitives.SelectOneResponse"
                             href="#"
                           >
                             
@@ -477,7 +477,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            data-block-type="MobilePrimitives.SelectManyResponse"
                             href="#"
                           >
                             
@@ -488,7 +488,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\LocationResponse"
+                            data-block-type="SmartDevices.LocationResponse"
                             href="#"
                           >
                             
@@ -499,7 +499,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            data-block-type="SmartDevices.PhotoResponse"
                             href="#"
                           >
                             
@@ -683,7 +683,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Print"
+                            data-block-type="ConsoleIO.Print"
                             href="#"
                           >
                             
@@ -694,7 +694,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Read"
+                            data-block-type="ConsoleIO.Read"
                             href="#"
                           >
                             
@@ -705,7 +705,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Case"
+                            data-block-type="Core.Case"
                             href="#"
                           >
                             
@@ -716,7 +716,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Log"
+                            data-block-type="Core.Log"
                             href="#"
                           >
                             
@@ -727,7 +727,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Output"
+                            data-block-type="Core.Output"
                             href="#"
                           >
                             
@@ -738,7 +738,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\RunFlow"
+                            data-block-type="Core.RunFlow"
                             href="#"
                           >
                             
@@ -749,7 +749,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\Message"
+                            data-block-type="MobilePrimitives.Message"
                             href="#"
                           >
                             
@@ -760,7 +760,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            data-block-type="MobilePrimitives.NumericResponse"
                             href="#"
                           >
                             
@@ -771,7 +771,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            data-block-type="MobilePrimitives.OpenResponse"
                             href="#"
                           >
                             
@@ -782,7 +782,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            data-block-type="MobilePrimitives.SelectOneResponse"
                             href="#"
                           >
                             
@@ -793,7 +793,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            data-block-type="MobilePrimitives.SelectManyResponse"
                             href="#"
                           >
                             
@@ -804,7 +804,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\LocationResponse"
+                            data-block-type="SmartDevices.LocationResponse"
                             href="#"
                           >
                             
@@ -815,7 +815,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            data-block-type="SmartDevices.PhotoResponse"
                             href="#"
                           >
                             
@@ -998,7 +998,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Print"
+                            data-block-type="ConsoleIO.Print"
                             href="#"
                           >
                             
@@ -1009,7 +1009,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Read"
+                            data-block-type="ConsoleIO.Read"
                             href="#"
                           >
                             
@@ -1020,7 +1020,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Case"
+                            data-block-type="Core.Case"
                             href="#"
                           >
                             
@@ -1031,7 +1031,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Log"
+                            data-block-type="Core.Log"
                             href="#"
                           >
                             
@@ -1042,7 +1042,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Output"
+                            data-block-type="Core.Output"
                             href="#"
                           >
                             
@@ -1053,7 +1053,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\RunFlow"
+                            data-block-type="Core.RunFlow"
                             href="#"
                           >
                             
@@ -1064,7 +1064,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\Message"
+                            data-block-type="MobilePrimitives.Message"
                             href="#"
                           >
                             
@@ -1075,7 +1075,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            data-block-type="MobilePrimitives.NumericResponse"
                             href="#"
                           >
                             
@@ -1086,7 +1086,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            data-block-type="MobilePrimitives.OpenResponse"
                             href="#"
                           >
                             
@@ -1097,7 +1097,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            data-block-type="MobilePrimitives.SelectOneResponse"
                             href="#"
                           >
                             
@@ -1108,7 +1108,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            data-block-type="MobilePrimitives.SelectManyResponse"
                             href="#"
                           >
                             
@@ -1119,7 +1119,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\LocationResponse"
+                            data-block-type="SmartDevices.LocationResponse"
                             href="#"
                           >
                             
@@ -1130,7 +1130,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            data-block-type="SmartDevices.PhotoResponse"
                             href="#"
                           >
                             
