@@ -304,7 +304,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
 
     // Update flow state
     flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flows)
-    flowState.firstFlowId = flows[0].uuid
+    flowState.first_flow_id = flows[0].uuid
     flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resources)
 
     // make sure we use the same languages ids on both UI & Flows

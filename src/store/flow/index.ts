@@ -19,27 +19,23 @@ import {
   mutations as resourceMutations,
 } from './resource'
 
-// type IFlowsState = Pick<IContext, 'flows' | 'firstFlowId' | 'resources' | 'nestedFlowBlockInteractionIdStack'>
+// type IFlowsState = Pick<IContext, 'flows' | 'first_flow_id' | 'resources' | 'nested_flow_block_interaction_id_stack'>
 
 export interface IFlowsState {
   flows: IFlow[];
   resources: IResourceDefinition[];
 
-  firstFlowId: string | null;
+  first_flow_id: string | null;
   // @note - for exciting future
-  nestedFlowBlockInteractionIdStack: string[];
-
-  // activeBlock: string | null, // this is actually a getter over IContext
+  nested_flow_block_interaction_id_stack: string[];
 }
 
 export const stateFactory = (): IFlowsState => ({
   flows: [],
   resources: [],
 
-  firstFlowId: null,
-  nestedFlowBlockInteractionIdStack: [], // todo: not quite right -- pulled from IContext
-
-  // activeBlock: null,
+  first_flow_id: null,
+  nested_flow_block_interaction_id_stack: [], // todo: not quite right -- pulled from IContext
 })
 
 export const getters: GetterTree<IFlowsState, IRootState> = {

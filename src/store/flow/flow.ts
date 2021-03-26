@@ -35,7 +35,7 @@ export const mutations: MutationTree<IFlowsState> = {
       throw new ValidationException('Unable to add null block to flow')
     }
 
-    const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
+    const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     const length = flow.blocks.push(block)
 
     if (length === 1) {
@@ -44,7 +44,7 @@ export const mutations: MutationTree<IFlowsState> = {
   },
 
   flow_removeBlock(state, { flowId, blockId }: {flowId: string; blockId: IBlock['uuid']}) {
-    const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
+    const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
 
     if (block == null) {
@@ -126,7 +126,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async flow_add({ state }, { flow }): Promise<IFlow> {
     const length = state.flows.push(flow) // mutating here, because we need to define a root-level scope for this type of action
     if (length === 1) {
-      state.firstFlowId = flow.uuid
+      state.first_flow_id = flow.uuid
     }
 
     return flow
@@ -218,7 +218,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_duplicateBlock({ dispatch, commit, state }, { flowId, blockId }: {flowId: string; blockId: IBlock['uuid']}): Promise<IBlock> {
-    const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
+    const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
 
     // Deep clone
