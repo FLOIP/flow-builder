@@ -24,7 +24,7 @@ export default {
   },
   mixins: [lang],
   computed: {
-    semantic_label: {
+    semanticLabel: {
       get() {
         return this.block.semantic_label
       },
