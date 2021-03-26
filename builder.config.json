@@ -31,21 +31,13 @@
     "languages": [
       {
         "id": "22",
-        "name": "English",
-        "abbreviation": "EN",
-        "orgId": "1008107874829627392",
-        "rightToLeft": false,
-        "code": null,
-        "deletedAt": null
+        "label": "English",
+        "iso_639_3": "EN"
       },
       {
         "id": "23",
-        "name": "Spanish",
-        "abbreviation": "ES",
-        "orgId": "1008107874829627392",
-        "rightToLeft": false,
-        "code": null,
-        "deletedAt": null
+        "label": "Spanish",
+        "iso_639_3": "ES"
       }
     ],
     "blockClasses": {
