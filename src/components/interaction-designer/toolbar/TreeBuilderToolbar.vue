@@ -33,7 +33,7 @@
           <router-link v-if="!ui.isEditableLocked"
              :to="editOrViewTreeJsUrl"
              event=""
-                         :title="trans('flow-builder.click-to-toggle-editing')"
+             :title="trans('flow-builder.click-to-toggle-editing')"
              class="btn btn-outline-secondary mr-2"
              :class="{active: isEditable}"
              @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
@@ -250,7 +250,7 @@ export default {
           'CAMEL',
           ['platform_metadata', 'io_viamo'],
         ))
-        }
+      }
     },
     editTreeUrl() {
       return this.editTreeRoute()
@@ -388,7 +388,7 @@ export default {
       mode = null,
     } = {}) {
       const context = this.removeNilValues({
-          treeId: this.activeFlow.uuid,
+        treeId: this.activeFlow.uuid,
         component,
         mode,
       })

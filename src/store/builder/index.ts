@@ -314,6 +314,10 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     // @ts-ignore
     rootState.trees.ui.languages = flows[0].languages
   },
+  setIsEditable({ commit }, value) {
+    const boolVal = Boolean(value)
+    commit('setIsEditable', boolVal)
+  },
 }
 
 export const store: Module<IBuilderState, IRootState> = {

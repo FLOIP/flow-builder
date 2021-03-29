@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 import { Component, Vue } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
 

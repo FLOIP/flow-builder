@@ -39,15 +39,14 @@ const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
 @Component<any>({
-    components: {
-      FlowLabelEditor,
-      FlowInteractionTimeoutEditor,
-      FlowLanguagesEditor,
-      FlowModesEditor
-    },
-    mixins: [lang],
-  }
-)
+  components: {
+    FlowLabelEditor,
+    FlowInteractionTimeoutEditor,
+    FlowLanguagesEditor,
+    FlowModesEditor
+  },
+  mixins: [lang],
+})
 class FlowEditor extends Vue {
     @Prop() readonly flow!: IFlow
     @Prop({default: 'flow-builder.edit-flow'}) readonly flowHeader!: string
