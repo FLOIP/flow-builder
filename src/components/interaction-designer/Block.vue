@@ -131,7 +131,7 @@
 
 <script>
 import Vue from 'vue'
-import { isNumber, forEach } from 'lodash'
+import { isNumber, forEach, filter } from 'lodash'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
@@ -166,7 +166,7 @@ export default {
 
   computed: {
     ...mapState('flow', ['resources']),
-    ...mapState('builder', ['activeBlockId', 'operations']),
+    ...mapState('builder', ['activeBlockId', 'operations', 'activeConnectionsContext']),
     ...mapState({
       blockClasses: ({ trees: { ui } }) => ui.blockClasses,
     }),
@@ -177,18 +177,24 @@ export default {
       return isNumber(this.x) && isNumber(this.y)
     },
 
+    isAssociatedWithActiveConnection({ block, activeConnectionsContext }) {
+      return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid || context.targetId === block.uuid).length
+    },
+
     // todo: does this component know too much, what out of the above mapped state can be mapped?
     // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
 
     isConnectionSourceRelocateActive: ({ operations }) => !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
     isConnectionCreateActive: ({ operations }) => !!operations[OperationKind.CONNECTION_CREATE].data,
-    isBlockActivated: ({ activeBlockId, block, operations }) => {
-      if (activeBlockId && activeBlockId === block.uuid) {
+    isBlockActivated: ({
+      activeBlockId, isAssociatedWithActiveConnection, block, operations,
+    }) => {
+      if ((activeBlockId && activeBlockId === block.uuid) || isAssociatedWithActiveConnection) {
         return true
       }
 
       const { data } = operations[OperationKind.CONNECTION_CREATE]
-      return data && data.target === block.uuid
+      return data && data.targetId === block.uuid
     },
   },
 
