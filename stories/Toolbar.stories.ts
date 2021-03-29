@@ -9,7 +9,11 @@ import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
 import TreeBuilderToolbar from "@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue";
 import StoryRouter from 'storybook-vue-router';
-import {routes} from '@/router'
+import {routes} from './story-utils/router'
+import {
+  findFlowWith,
+  IContext,
+} from '@floip/flow-runner'
 
 // Allow story to load components which use <router-link>
 const decorators = [() => ({ template: '<div><story/></div>' })];
@@ -31,6 +35,12 @@ const ToolbarTemplate = `
     <tree-builder-toolbar/>
   </flow-builder-container>`
 
+store.modules.flow.mutations.flow_setActiveFlowUUID = function flow_setActiveFlowUUID(state, { flowId, newUUID }) {
+  const flow = findFlowWith(flowId, state as unknown as IContext)
+  flow.uuid = newUUID
+  state.firstFlowId = newUUID
+}
+
 const BaseOptions = {
   components: {FlowBuilderContainer, TreeBuilderToolbar},
   template: ToolbarTemplate,
@@ -39,7 +49,10 @@ const BaseOptions = {
     this.configure({appConfig: {}, builderConfig: {}});
     // @ts-ignore
     this.initializeTreeModel() // from trees store
-    this.flow_addBlankFlow()
+    this.flow_addBlankFlow().then(() => {
+      //Force all the links to have a static flow id
+      this.flow_setActiveFlowUUID({ flowId: this.activeFlow.uuid, newUUID: "1" })
+    })
   }
 }
 class BaseMountedClass extends Vue {
@@ -50,6 +63,7 @@ class BaseMountedClass extends Vue {
   @Mutation removeEnabledFeature: any
   @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Mutation flow_setActiveFlowUUID: any
   @builderVuexNamespace.Action setIsEditable: void
 }
 
