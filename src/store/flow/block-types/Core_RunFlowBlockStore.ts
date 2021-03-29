@@ -13,8 +13,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     // TODO - this should actually be container.flows?
     // TODO - why does this error in typescript? - flow does exist on IRootState etc...
     // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    rootState.flow?.flows.filter(
-      (flow: IFlowsState) =>
+    rootState.flow?.flows.filter((flow: IFlowsState) =>
         // @ts-ignore - TS2339: Property 'flow' does not exist on type
         flow.uuid !== rootGetters['flow/activeFlow'].uuid,
     ),

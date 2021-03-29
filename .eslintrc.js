@@ -23,8 +23,16 @@ module.exports = {
   plugins: ['vue', 'jest', 'lodash'],
   rules: {
     /*************************
+     * Typescript *
+     *************************/
+    '@typescript-eslint/camelcase': 'off',
+    '@typescript-eslint/class-name-casing': 'off',
+    '@typescript-eslint/interface-name-prefix': 'off',
+
+    /*************************
      * Modified ESLint rules *
      *************************/
+    camelcase: 'off',
     'one-var': ['error', 'never'],
     'no-useless-constructor': 'off',
     'class-methods-use-this': 'off',
@@ -153,6 +161,8 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
+
+
   },
   overrides: [
     {
