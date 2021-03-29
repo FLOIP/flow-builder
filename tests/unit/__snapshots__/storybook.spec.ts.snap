@@ -1,86 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots ConsoleIo/Print Block Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots ConsoleIo/Print Block Default 1`] = `<!---->`;
 
-exports[`Storyshots ConsoleIo/Print Block Existing Data Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots ConsoleIo/Print Block Existing Data Block 1`] = `<!---->`;
 
-exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `<!---->`;
 
-exports[`Storyshots ConsoleIo/Read Block Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots ConsoleIo/Read Block Default 1`] = `<!---->`;
 
-exports[`Storyshots ConsoleIo/Read Block Existing Data Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots ConsoleIo/Read Block Existing Data Block 1`] = `<!---->`;
 
-exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = `<!---->`;
 
-exports[`Storyshots Core/Case Block Styled Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots Core/Case Block Styled Default 1`] = `<!---->`;
 
-exports[`Storyshots Core/Case Block Styled Existing Data Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots Core/Case Block Styled Existing Data Block 1`] = `<!---->`;
 
 exports[`Storyshots Core/Log Block Plain Default 1`] = `<!---->`;
 
 exports[`Storyshots Core/Log Block Plain Existing Data Block 1`] = `<!---->`;
 
-exports[`Storyshots Core/Log Block Styled Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots Core/Log Block Styled Default 1`] = `<!---->`;
 
-exports[`Storyshots Core/Log Block Styled Existing Data Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots Core/Log Block Styled Existing Data Block 1`] = `<!---->`;
 
-exports[`Storyshots Core/Log Block Styled Existing Data Non Starting Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots Core/Log Block Styled Existing Data Non Starting Block 1`] = `<!---->`;
 
-exports[`Storyshots Core/Output Block Styled Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots Core/Output Block Styled Default 1`] = `<!---->`;
 
-exports[`Storyshots Core/Run Another Flow Block Styled Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots Core/Run Another Flow Block Styled Default 1`] = `<!---->`;
 
 exports[`Storyshots Flow/Flow Editor Default 1`] = `
 <div>
@@ -96,87 +44,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
 
 exports[`Storyshots InteractionDesigner/Toolbar Default 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="tree-builder-toolbar"
-              >
-                <!---->
-                 
-                <div
-                  class="tree-workspace-panel-heading panel-heading"
-                >
-                  <div
-                    class="tree-workspace-panel-heading-contents"
-                  >
-                    <div
-                      class="btn-toolbar"
-                    >
-                      <button
-                        class="btn btn-outline-secondary mr-2"
-                      >
-                        <i
-                          class="glyphicon glyphicon-chevron-up"
-                        />
-                        
-          Import / Export
-        
-                      </button>
-                       
-                      <!---->
-                       
-                      <div>
-                        <a
-                          class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
-                          title="Click to toggle editing"
-                        >
-                          
-            Edit Flow
-          
-                        </a>
-                      </div>
-                       
-                      <!---->
-                       
-                      <!---->
-                       
-                      <!---->
-                        
-                      <div
-                        class="btn-group pull-right mr-2"
-                      >
-                        <!---->
-                         
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 
@@ -229,23 +97,40 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                        
                       <!---->
                        
-                      <div>
-                        <a
-                          class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
-                          title="Click to toggle editing"
-                        >
-                          
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/trees/f85b8152-dc60-48bb-8ede-aef881e247b1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+                        
             Edit Flow
           
-                        </a>
-                      </div>
+                      </a>
                        
                       <!---->
                        
                       <!---->
                        
                       <!---->
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+                        
+          New Flow
+        
+                      </a>
+                       
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+                        
+          Home
+        
+                      </a>
                         
                       <div
                         class="btn-group pull-right mr-2"
@@ -318,7 +203,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       >
                         <a
                           class="btn btn-outline-secondary active"
-                          href="#/trees/1/interaction-designer"
+                          href="#/trees/a7dd1128-7139-43a8-986e-d7df87ae0fda/interaction-designer"
                         >
                           
             Flow view
@@ -327,7 +212,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                          
                         <a
                           class="btn btn-secondary"
-                          href="#/trees/1/resource-viewer"
+                          href="#/trees/a7dd1128-7139-43a8-986e-d7df87ae0fda/resource-viewer"
                         >
                           
             Resources view
@@ -335,17 +220,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         </a>
                       </div>
                        
-                      <div>
-                        <a
-                          class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
+                      <a
+                        class="btn btn-outline-secondary mr-2 active"
+                        href="#/trees/a7dd1128-7139-43a8-986e-d7df87ae0fda/interaction-designer/view"
+                        title="Click to toggle editing"
+                      >
+                        
             View Flow
           
-                        </a>
-                      </div>
+                      </a>
                        
                       <div
                         class="dropdown mr-2"
@@ -534,6 +417,25 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </button>
                        
                       <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+                        
+          New Flow
+        
+                      </a>
+                       
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+                        
+          Home
+        
+                      </a>
+                       
+                      <a
                         class="btn btn-success"
                         disabled="disabled"
                         href="#"
@@ -559,12 +461,11 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       >
                         <button
                           class="btn btn-primary tree-save-tree"
-                          disabled="disabled"
                           title="Save changes to the flow"
                           type="button"
                         >
                           
-            Saved
+            Save
           
                         </button>
                          
@@ -634,7 +535,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       >
                         <a
                           class="btn btn-outline-secondary active"
-                          href="#/trees/1/interaction-designer"
+                          href="#/trees/4acdab52-43eb-4df3-9390-e07faac42d38/interaction-designer"
                         >
                           
             Flow view
@@ -643,7 +544,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                          
                         <a
                           class="btn btn-secondary"
-                          href="#/trees/1/resource-viewer"
+                          href="#/trees/4acdab52-43eb-4df3-9390-e07faac42d38/resource-viewer"
                         >
                           
             Resources view
@@ -651,17 +552,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                         </a>
                       </div>
                        
-                      <div>
-                        <a
-                          class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
+                      <a
+                        class="btn btn-outline-secondary mr-2 active"
+                        href="#/trees/4acdab52-43eb-4df3-9390-e07faac42d38/interaction-designer/view"
+                        title="Click to toggle editing"
+                      >
+                        
             View Flow
           
-                        </a>
-                      </div>
+                      </a>
                        
                       <div
                         class="dropdown mr-2"
@@ -848,18 +747,36 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
           Delete
         
                       </button>
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+                        
+          New Flow
+        
+                      </a>
+                       
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+                        
+          Home
+        
+                      </a>
                         
                       <div
                         class="btn-group pull-right mr-2"
                       >
                         <button
                           class="btn btn-primary tree-save-tree"
-                          disabled="disabled"
                           title="Save changes to the flow"
                           type="button"
                         >
                           
-            Saved
+            Save
           
                         </button>
                          
@@ -949,7 +866,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       >
                         <a
                           class="btn btn-outline-secondary active"
-                          href="#/trees/1/interaction-designer"
+                          href="#/trees/f8a9c688-3694-4dea-a5d5-3b96299e8c31/interaction-designer"
                         >
                           
             Flow view
@@ -958,7 +875,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                          
                         <a
                           class="btn btn-secondary"
-                          href="#/trees/1/resource-viewer"
+                          href="#/trees/f8a9c688-3694-4dea-a5d5-3b96299e8c31/resource-viewer"
                         >
                           
             Resources view
@@ -966,17 +883,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         </a>
                       </div>
                        
-                      <div>
-                        <a
-                          class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
+                      <a
+                        class="btn btn-outline-secondary mr-2 active"
+                        href="#/trees/f8a9c688-3694-4dea-a5d5-3b96299e8c31/interaction-designer/view"
+                        title="Click to toggle editing"
+                      >
+                        
             View Flow
           
-                        </a>
-                      </div>
+                      </a>
                        
                       <div
                         class="dropdown mr-2"
@@ -1163,6 +1078,25 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
           Delete
         
                       </button>
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+                        
+          New Flow
+        
+                      </a>
+                       
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+                        
+          Home
+        
+                      </a>
                         
                       <div
                         class="btn-group pull-right mr-2"
@@ -1235,7 +1169,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       >
                         <a
                           class="btn btn-outline-secondary active"
-                          href="#/trees/1/interaction-designer"
+                          href="#/trees/7820a7bf-e7d3-4229-92b9-99b7857e98c1/interaction-designer"
                         >
                           
             Flow view
@@ -1244,7 +1178,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                          
                         <a
                           class="btn btn-secondary"
-                          href="#/trees/1/resource-viewer"
+                          href="#/trees/7820a7bf-e7d3-4229-92b9-99b7857e98c1/resource-viewer"
                         >
                           
             Resources view
@@ -1252,23 +1186,40 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                         </a>
                       </div>
                        
-                      <div>
-                        <a
-                          class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
-                          title="Click to toggle editing"
-                        >
-                          
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/trees/7820a7bf-e7d3-4229-92b9-99b7857e98c1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+                        
             Edit Flow
           
-                        </a>
-                      </div>
+                      </a>
                        
                       <!---->
                        
                       <!---->
                        
                       <!---->
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+                        
+          New Flow
+        
+                      </a>
+                       
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+                        
+          Home
+        
+                      </a>
                         
                       <div
                         class="btn-group pull-right mr-2"
@@ -1289,164 +1240,56 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
 </div>
 `;
 
-exports[`Storyshots MobilePrimitives/Message Block Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Message Block Default 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Message Block Existing Data Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Message Block Existing Data Block 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Numeric Response Block Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Numeric Response Block Default 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For All Modes 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For All Modes 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Ivr Only 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Ivr Only 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Text Only 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Text Only 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Open Response Block Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Open Response Block Default 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For All Modes 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For All Modes 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Ivr Only 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Ivr Only 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text Only 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text Only 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/SelectOneResponseBlock Existing Data 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock Existing Data 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/SelectOneResponseBlock In Flow Builder 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock In Flow Builder 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/SelectOneResponseBlock Ivr Only 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock Ivr Only 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/SelectOneResponseBlock More Languages 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock More Languages 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/selectManyResponseBlock Existing Data 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock Existing Data 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/selectManyResponseBlock In Flow Builder 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock In Flow Builder 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/selectManyResponseBlock Ivr Only 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock Ivr Only 1`] = `<!---->`;
 
-exports[`Storyshots MobilePrimitives/selectManyResponseBlock More Languages 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock More Languages 1`] = `<!---->`;
 
-exports[`Storyshots SmartDevices/Location Response Block Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots SmartDevices/Location Response Block Default 1`] = `<!---->`;
 
-exports[`Storyshots SmartDevices/Location Response Block Existing Data Pre Filled 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots SmartDevices/Location Response Block Existing Data Pre Filled 1`] = `<!---->`;
 
-exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] = `<!---->`;
 
-exports[`Storyshots SmartDevices/Photo Response Block Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots SmartDevices/Photo Response Block Default 1`] = `<!---->`;
 
-exports[`Storyshots SmartDevices/Photo Response Block Existing Data Pre Filled 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots SmartDevices/Photo Response Block Existing Data Pre Filled 1`] = `<!---->`;
 
-exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
+exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `<!---->`;
