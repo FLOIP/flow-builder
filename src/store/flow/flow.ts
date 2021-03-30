@@ -171,7 +171,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext> {
     const restVerb = flowContainer.created ? 'put' : 'post'
     const oldCreatedState = flowContainer.created
-    return axios[restVerb](persistRoute, omit(flowContainer, ['created']))
+
+    const flowContainerCleanedResources = cloneDeep(flowContainer)
+    flowContainerCleanedResources.resources = []
+    flowContainer.resources.forEach((resource, i) => {
+      if(JSON.stringify(flowContainer.flows).includes(resource.uuid)) {
+        flowContainerCleanedResources.resources.push(resource)
+      }
+    })
+    return axios[restVerb](persistRoute, omit(flowContainerCleanedResources, ['created']))
       .then(({data}) => {
         commit('flow_updateFlowContainer', data)
         commit('flow_updateCreatedState', true)
@@ -181,7 +189,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         commit('flow_updateCreatedState', oldCreatedState)
         if(!persistRoute) {
           console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store")
-          commit('flow_updateFlowContainer', flowContainer)
+          commit('flow_updateFlowContainer', flowContainerCleanedResources)
           return getters.activeFlowContainer 
         }
         return null
