@@ -4,7 +4,7 @@
 
     <div class="tree-sidebar-container">
       <div v-if="isSimulatorActive" class="tree-sidebar">
-        <clipboard-root></clipboard-root>
+        <clipboard-root />
       </div>
 
       <div v-else-if="activeBlock" class="tree-sidebar"

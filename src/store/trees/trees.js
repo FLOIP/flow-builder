@@ -70,6 +70,7 @@ export default {
     isResourceEditorEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'resourceEditor'),
     isFeatureUpdateInteractionTotalsEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'updateInteractionTotals'),
     isFeatureAudioUploadEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'audioUpload'),
+    isFeatureSimulatorEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'simulator'),
     isFeatureViewResultsEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'viewResults'),
 
     selectedBlock: ({ tree, ui }, getters, rootState) => lodash.find(get(tree, 'blocks', []), { jsKey: ui.selectedBlock }),

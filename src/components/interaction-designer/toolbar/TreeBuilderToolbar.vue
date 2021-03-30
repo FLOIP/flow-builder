@@ -149,11 +149,11 @@
             <slot name="right-grouped-buttons"/>
           </div>
 
-          <div class="btn-group pull-right mr-2" v-if="showSimulator">
+          <div class="btn-group pull-right mr-2" v-if="hasSimulator">
             <button
                     type="button"
                     class="btn btn-primary"
-                    @click="showClipboard">
+                    @click="setSimulatorActive(true)">
               {{trans('flow-builder.show-clipboard-simulator')}}
             </button>
           </div>
@@ -207,7 +207,7 @@ export default {
       ui: ({ trees: { ui } }) => ui,
     }),
 
-    ...mapGetters('flow', ['activeFlow']),
+    ...mapGetters('flow', ['activeFlow', 'hasOfflineMode']),
     ...mapState('flow', ['flows', 'resources']),
     ...mapState('builder', ['activeBlockId']),
     ...mapGetters('clipboard', ['isSimulatorActive']),
@@ -223,6 +223,7 @@ export default {
       'isFeatureTreeDuplicateEnabled',
       'isFeatureViewResultsEnabled',
       'isFeatureUpdateInteractionTotalsEnabled',
+      'isFeatureSimulatorEnabled',
       'isResourceEditorEnabled',
     ]),
 
@@ -334,9 +335,8 @@ export default {
     canViewResultsTotals() {
       return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
     },
-    showSimulator() {
-      const showSimulatorEnabled = this.ui.enabledFeatures.includes('showSimulator')
-      return this.activeFlow.supportedModes?.includes(SupportedMode.OFFLINE) && showSimulatorEnabled
+    hasSimulator() {
+      return this.hasOfflineMode && this.isFeatureSimulatorEnabled
     },
   },
   methods: {
@@ -414,10 +414,6 @@ export default {
 
     getDeleteToolTip() {
       return this.trans('flow-builder.tooltip-delete-block')
-    },
-
-    showClipboard() {
-      this.setSimulatorActive(true)
     },
   },
 }

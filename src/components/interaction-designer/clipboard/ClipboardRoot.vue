@@ -16,7 +16,7 @@
         </component>
       </div>
       <div v-if="unsupportedBlockName" class="mt-2">
-        <UnsupportedBlock :block-name="unsupportedBlockName"  />
+        <unsupported-block :block-name="unsupportedBlockName"  />
       </div>
     </main>
     <footer v-if="isComplete" class="mt-2">
@@ -70,11 +70,11 @@ export default {
     this.initializeFlowRunner()
   },
   methods: {
-    ...mapGetters('flow', ['getFlowState']),
+    ...mapGetters('flow', ['getFlowsState']),
     ...mapActions('clipboard', ['setSimulatorActive']),
 
     async initializeFlowRunner() {
-      const flowState = this.getFlowState()
+      const flowState = this.getFlowsState()
       const contact = { id: '1' } as IContact
       const groups = []
       const userId = 'user-1234'

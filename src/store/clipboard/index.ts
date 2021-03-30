@@ -4,20 +4,20 @@ import {
 import { IRootState } from '@/store'
 
 export interface IClipboardState {
-  simulatorActive: boolean;
+  isSimulatorActive: boolean;
 }
 
 export const stateFactory = (): IClipboardState => ({
-  simulatorActive: false,
+  isSimulatorActive: false,
 })
 
 export const getters: GetterTree<IClipboardState, IRootState> = {
-  isSimulatorActive: (state) => state.simulatorActive,
+  isSimulatorActive: (state) => state.isSimulatorActive,
 }
 
 export const mutations: MutationTree<IClipboardState> = {
   setSimulatorActive(state, value) {
-    state.simulatorActive = value
+    state.isSimulatorActive = value
   },
 }
 

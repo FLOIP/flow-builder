@@ -21,7 +21,6 @@ import { Context, IContext, MessagePrompt } from '@floip/flow-runner'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
-  name: 'MessageBlock',
   components: {
     BlockActionButtons,
   },
@@ -46,7 +45,6 @@ export default {
       this.prompt.value = null
       this.isFocused = false
       this.goNext()
-      this.isFocused = false
     },
   },
 }

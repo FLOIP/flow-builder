@@ -31,7 +31,6 @@ import { Context, IContext, OpenPrompt } from '@floip/flow-runner'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
-  name: 'OpenQuestionBlock',
   components: {
     BlockActionButtons,
   },

@@ -21,7 +21,7 @@
           />
           <label class="form-check-label" :for="index">{{option.value}}</label>
         </div>
-        <div v-if="errorMsg" style="color: #dc3545">
+        <div v-if="errorMsg" class="text-danger">
           <small>{{errorMsg}}</small>
         </div>
       </div>
@@ -40,7 +40,6 @@ import { Context, IContext, SelectManyPrompt } from '@floip/flow-runner'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
-  name: 'SelectManyResponseBlock',
   components: {
     BlockActionButtons,
   },

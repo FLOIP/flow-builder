@@ -27,7 +27,8 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 
   hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supportedModes || [], mode)),
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supportedModes || [], SupportedMode.IVR),
-  getFlowState: (state) => state,
+  hasOfflineMode: (state, getters) => includes(getters.activeFlow.supportedModes || [], SupportedMode.OFFLINE),
+  getFlowsState: (state) => state,
 }
 
 export const mutations: MutationTree<IFlowsState> = {

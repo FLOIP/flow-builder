@@ -34,7 +34,6 @@ import { Context, IContext, NumericPrompt } from '@floip/flow-runner'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
-  name: 'NumericQuestionBlock',
   components: {
     BlockActionButtons,
   },
