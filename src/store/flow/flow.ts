@@ -36,7 +36,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       try {
         return getActiveFlowFrom(state as unknown as IContext)
       } catch(err) {
-        return 0
+        return null
       }
     }
   },
