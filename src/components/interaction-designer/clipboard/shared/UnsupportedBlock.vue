@@ -1,16 +1,18 @@
 <template>
   <div class="card">
     <div class="card-body sm-padding-below font-roboto">
-      {{blockName}} block is not supported right now.
-      You will not be able to proceed. Please Exit.
+      {{blockName}} {{'flow-builder.simulator-unsupported-block' | trans}}
     </div>
   </div>
 </template>
 
 <script>
+import lang from '@/lib/filters/lang'
+
 export default {
   props: {
     blockName: String,
   },
+  mixins: [lang],
 }
 </script>

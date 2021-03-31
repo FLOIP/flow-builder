@@ -1,9 +1,9 @@
 <template>
-  <div class="card" :class="{'disabled-block': !isFocused}">
+  <div class="card" :class="{'gray-background': !isFocused}">
     <div class="card-body sm-padding-below font-roboto">
       <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
       <p class="card-text">
-        {{getContent}}
+        {{content}}
         <i class="bi bi-pencil-fill"></i>
       </p>
 
@@ -53,7 +53,7 @@ export default {
     this.setOptions()
   },
   computed: {
-    getContent() {
+    content() {
       const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
       return result.hasText() ? result.getText() : this.prompt.block.label
     },

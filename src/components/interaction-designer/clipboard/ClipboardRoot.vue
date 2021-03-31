@@ -9,7 +9,7 @@
     </header>
     <main>
       <div v-for="(blockPrompt, i) in blockPrompts" :key="i" class="mt-2">
-        <component :is="getBlockComponent(blockPrompt.block.type)"
+        <component :is="blockPrompt.config.kind"
                    :prompt="blockPrompt"
                    :context="context"
                    :go-next="goNext">
@@ -40,20 +40,20 @@ import {
   SupportedMode,
   IContact,
 } from '@floip/flow-runner'
-import MessageBlock from './block/MessageBlock.vue'
-import NumericQuestionBlock from './block/NumericQuestionBlock.vue'
-import OpenQuestionBlock from './block/OpenQuestionBlock.vue'
-import SelectOneResponseBlock from './block/SelectOneResponseBlock.vue'
-import SelectManyResponseBlock from './block/SelectManyResponseBlock.vue'
+import Message from './prompt-kinds/Message.vue'
+import Numeric from './prompt-kinds/Numeric.vue'
+import Open from './prompt-kinds/Open.vue'
+import SelectOne from './prompt-kinds/SelectOne.vue'
+import SelectMany from './prompt-kinds/SelectMany.vue'
 import UnsupportedBlock from './shared/UnsupportedBlock.vue'
 
 export default {
   components: {
-    MessageBlock,
-    NumericQuestionBlock,
-    OpenQuestionBlock,
-    SelectOneResponseBlock,
-    SelectManyResponseBlock,
+    Message,
+    Numeric,
+    Open,
+    SelectOne,
+    SelectMany,
     UnsupportedBlock,
   },
   mixins: [lang],
@@ -75,6 +75,7 @@ export default {
 
     async initializeFlowRunner() {
       const flowState = this.getFlowsState()
+      console.log(flowState)
       const contact = { id: '1' } as IContact
       const groups = []
       const userId = 'user-1234'
@@ -117,17 +118,6 @@ export default {
       }
     },
 
-    getBlockComponent(key) {
-      const blockMap = new Map([
-        ['MobilePrimitives\\Message', 'MessageBlock'],
-        ['MobilePrimitives\\NumericResponse', 'NumericQuestionBlock'],
-        ['MobilePrimitives\\OpenResponse', 'OpenQuestionBlock'],
-        ['MobilePrimitives\\SelectOneResponse', 'SelectOneResponseBlock'],
-        ['MobilePrimitives\\SelectManyResponse', 'SelectManyResponseBlock'],
-      ])
-      return blockMap.get(key)
-    },
-
     closeSimulator() {
       this.setSimulatorActive(false)
     },
@@ -148,7 +138,7 @@ export default {
   font-family: Roboto, sans-serif;
 }
 
-.disabled-block {
+.gray-background {
   background-color: #F5F5F5;
 }
 </style>
