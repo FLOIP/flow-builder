@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{'disabled-block': !isFocused}">
+  <div class="card" :class="{'gray-background': !isFocused}">
     <div class="card-body sm-padding-below font-roboto">
       <div class="d-flex justify-content-between">
         <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
@@ -8,30 +8,37 @@
            @click="editBlock"></i>
       </div>
       <p class="card-text">
-        {{getContent}}
+        {{content}}
+        <i class="bi bi-pencil-fill"></i>
       </p>
-      <div class="input-group has-validation">
-        <input v-model="enteredValue"
-          class="form-control"
+
+    <div class="form-group">
+      <div v-for="(option, index) in options" :key="index" class="form-check">
+        <input
+          type="radio"
+          name="select-one"
+          class="form-check-input"
           :class="{'is-invalid': errorMsg}"
-          type="number"
-          required
+          :value="option.key"
           :disabled="!isFocused"
-          :min="prompt.config.min"
-          :max="prompt.config.max"
-          @keyup="checkIsValid" />
-        <div v-if="errorMsg" class="invalid-feedback">
-          <small>{{errorMsg}}</small>
-        </div>
+          :id="index"
+          v-model="selectedItem"
+          @change="checkIsValid"
+        />
+        <label class="form-check-label" :for="index">{{option.value}}</label>
       </div>
-      <block-action-buttons
-        class="mt-3"
-        :is-disabled="isDisabled"
-        :is-focused="isFocused"
-        :on-next-clicked="submitAnswer"
-        :is-block-interaction="isBlockInteraction"
-        :on-cancel-clicked="onCancel"
-      />
+      <div v-if="errorMsg" class="text-danger">
+        <small>{{errorMsg}}</small>
+      </div>
+    </div>
+
+    <block-action-buttons
+      :is-disabled="false"
+      :is-focused="isFocused"
+      :on-next-clicked="submitAnswer"
+      :is-block-interaction="isBlockInteraction"
+      :on-cancel-clicked="onCancel"
+    />
     </div>
   </div>
 </template>
@@ -41,7 +48,6 @@ import { mapActions, mapGetters } from 'vuex'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
-  name: 'NumericQuestionBlock',
   components: {
     BlockActionButtons,
   },
@@ -54,11 +60,15 @@ export default {
   },
   data() {
     return {
-      enteredValue: '',
+      selectedItem: null,
       backUpValue: '',
+      options: [],
       errorMsg: null,
       isBlockInteraction: false,
     }
+  },
+  mounted() {
+    this.setOptions()
   },
   computed: {
     ...mapGetters('clipboard', ['isBlockFocused', 'getBlockPrompt']),
@@ -68,20 +78,30 @@ export default {
     prompt() {
       return this.getBlockPrompt(this.index)
     },
-    getContent() {
+    content() {
       const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
       return result.hasText() ? result.getText() : ''
-    },
-    isDisabled() {
-      return !!this.errorMsg
     },
   },
   methods: {
     ...mapActions('clipboard', ['setIsFocused', 'setLastBlockUnEditable', 'setLastBlockEditable']),
+    setOptions() {
+      const { choices } = this.prompt.config
+      choices.forEach((choice) => {
+        try {
+          const option = Context.prototype.getResource.call(this.context, choice.value).getText()
+          this.options.push({
+            key: choice.key,
+            value: option,
+          })
+        } catch (e) {
+          console.warn('error fetching resource ')
+        }
+      })
+    },
     checkIsValid() {
-      const num = +this.enteredValue
       try {
-        this.prompt.validate(num)
+        this.prompt.validate(this.selectedItem)
         this.errorMsg = ''
       } catch (e) {
         this.errorMsg = e.message
@@ -94,7 +114,7 @@ export default {
           await this.onEditComplete(this.index)
           this.isBlockInteraction = false
         }
-        this.prompt.value = +this.enteredValue
+        this.prompt.value = this.selectedItem
         this.setIsFocused({ index: this.index, value: false })
         this.goNext()
       }
@@ -109,7 +129,7 @@ export default {
       this.setLastBlockEditable()
       this.setIsFocused({ index: this.index, value: false })
       this.isBlockInteraction = false
-      this.enteredValue = this.backUpValue
+      this.selectedItem = this.backUpValue
       this.errorMsg = ''
     },
   },

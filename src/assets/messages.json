@@ -454,6 +454,7 @@
     "edit-content": "Edit Content",
     "edit-expression": "Edit expression",
     "edit-flow": "Edit Flow",
+    "view-flow": "View Flow",
     "edit-generate-code-block": "Edit generate code",
     "edit-group-membership": "Edit Group Membership",
     "edit-location": "Edit Location",
@@ -1328,6 +1329,11 @@
     "toggle-to-auto-gen-content-from-block": "Toggle to Auto-generate Content from Block Details",
     "toggle-to-overwrite-auto-genned-content": "Toggle to Overwrite the Auto-generated Content",
     "toggles-subscriber-receiving-outgoing-calls": "This action enables or disables the contact from receiving Outgoing Calls.",
+    "tooltip-new-connection": "Drag to another block to create a new connection",
+    "tooltip-relocate-connection": "Drag to another block to relocate the connection",
+    "tooltip-remove-connection": "Click to remove the connection",
+    "tooltip-delete-block": "Delete current active block",
+    "tooltip-duplicate-block": "Duplicate current active block",
     "too_many_languages_for_collaborative_filtering": "Too Many Languages",
     "too_many_languages_for_collaborative_filtering_description": "Collaborative Filtering is only valid on trees that have one language enabled. Please enable a single language for the tree.",
     "total": "Total",
@@ -1528,7 +1534,8 @@
     "your-open-ended-audio-download-for": "Your open-ended audio download for",
     "your-orgs-audio-library": "your organization's audio library",
     "your-prompt": "<your prompt>",
-    "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
+    "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!",
+    "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit."
   },
   "fr.flow-builder": {
     "flow-name":  "Nom du flux",
@@ -2859,6 +2866,11 @@
     "toggle-to-auto-gen-content-from-block": "Bascule pour générer automatiquement le contenu du bloc Détails",
     "toggle-to-overwrite-auto-genned-content": "Bascule pour écraser le contenu généré automatiquement",
     "toggles-subscriber-receiving-outgoing-calls": "Cette action permet d'activer ou de désactiver le contact de recevoir des appels sortants.",
+    "tooltip-new-connection": "Faites glisser à un autre bloc pour créer une nouvelle connexion",
+    "tooltip-relocate-connection": "Drag à un autre bloc pour déplacer la connexion",
+    "tooltip-remove-connection": "Cliquez pour supprimer la connexion",
+    "tooltip-delete-block": "Supprimer courant bloc actif",
+    "tooltip-duplicate-block": "Courant en double bloc actif",
     "too_many_languages_for_collaborative_filtering": "Langues Too Many",
     "too_many_languages_for_collaborative_filtering_description": "Le filtrage collaboratif est valable uniquement sur les arbres qui ont une langue activée. S'il vous plaît activer une langue unique pour l'arbre.",
     "total": "Total",
@@ -3059,7 +3071,8 @@
     "your-open-ended-audio-download-for": "Votre téléchargement audio pour la question ouverte",
     "your-orgs-audio-library": "bibliothèque audio de votre organisation",
     "your-prompt": "<votre message>",
-    "youre-using-floip-expressions": "On dirait que vous utilisez des expressions FLOIP, nice!"
+    "youre-using-floip-expressions": "On dirait que vous utilisez des expressions FLOIP, nice!",
+    "simulator-unsupported-block": "bloc est pas pris en charge en ce moment. Vous ne serez pas en mesure de procéder. S'il vous plaît quitter."
   }
 }
 

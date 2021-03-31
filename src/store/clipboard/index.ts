@@ -9,17 +9,17 @@ export interface BlocksData {
 }
 
 export interface IClipboardState {
-  simulatorActive: boolean;
+  isSimulatorActive: boolean;
   blocksData: BlocksData[];
 }
 
 export const stateFactory = (): IClipboardState => ({
-  simulatorActive: false,
+  isSimulatorActive: false,
   blocksData: [],
 })
 
 export const getters: GetterTree<IClipboardState, IRootState> = {
-  isSimulatorActive: (state) => state.simulatorActive,
+  isSimulatorActive: (state) => state.isSimulatorActive,
   blocksData: (state) => state.blocksData,
   getBlockPrompt: (state) => (index) => state.blocksData[index].prompt,
   isBlockFocused: (state) => (index) => state.blocksData[index].isFocused,
@@ -27,7 +27,7 @@ export const getters: GetterTree<IClipboardState, IRootState> = {
 
 export const mutations: MutationTree<IClipboardState> = {
   setSimulatorActive(state, value) {
-    state.simulatorActive = value
+    state.isSimulatorActive = value
   },
   setBlocksData(state, data) {
     state.blocksData = data

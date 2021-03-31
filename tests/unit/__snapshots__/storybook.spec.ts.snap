@@ -143,15 +143,17 @@ exports[`Storyshots InteractionDesigner/Toolbar Default 1`] = `
                        
                       <!---->
                        
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="/trees/1/interaction-designer/edit"
-                        title="Click to toggle editing"
-                      >
-                        
-          Edit Flow
-        
-                      </a>
+                      <div>
+                        <a
+                          class="btn btn-outline-secondary mr-2"
+                          href="#/trees/1/interaction-designer/edit"
+                          title="Click to toggle editing"
+                        >
+                          
+            Edit Flow
+          
+                        </a>
+                      </div>
                        
                       <!---->
                        
@@ -165,6 +167,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Default 1`] = `
                         <!---->
                          
                       </div>
+                       
+                      <!---->
                     </div>
                   </div>
                 </div>
@@ -227,15 +231,17 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                        
                       <!---->
                        
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="/trees/1/interaction-designer/edit"
-                        title="Click to toggle editing"
-                      >
-                        
-          Edit Flow
-        
-                      </a>
+                      <div>
+                        <a
+                          class="btn btn-outline-secondary mr-2"
+                          href="#/trees/1/interaction-designer/edit"
+                          title="Click to toggle editing"
+                        >
+                          
+            Edit Flow
+          
+                        </a>
+                      </div>
                        
                       <!---->
                        
@@ -249,6 +255,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                         <!---->
                          
                       </div>
+                       
+                      <!---->
                     </div>
                   </div>
                 </div>
@@ -331,21 +339,203 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         </a>
                       </div>
                        
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="/trees/1/interaction-designer/edit"
-                        title="Click to toggle editing"
+                      <div>
+                        <a
+                          class="btn btn-outline-secondary mr-2"
+                          href="#/trees/1/interaction-designer/view"
+                          title="Click to toggle editing"
+                        >
+                          
+            View Flow
+          
+                        </a>
+                      </div>
+                       
+                      <div
+                        class="dropdown mr-2"
+                      >
+                        <button
+                          class="btn btn-outline-secondary dropdown-toggle"
+                          data-toggle="dropdown"
+                          type="button"
+                        >
+                          
+            Add Block
+          
+                        </button>
+                         
+                        <div
+                          class="dropdown-menu"
+                        >
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Print"
+                            href="#"
+                          >
+                            
+                Print
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Read"
+                            href="#"
+                          >
+                            
+                Read
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Case"
+                            href="#"
+                          >
+                            
+                Case
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Log"
+                            href="#"
+                          >
+                            
+                Log
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Output"
+                            href="#"
+                          >
+                            
+                Output
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\RunFlow"
+                            href="#"
+                          >
+                            
+                Run Flow
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\Message"
+                            href="#"
+                          >
+                            
+                Message
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            href="#"
+                          >
+                            
+                Numeric Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            href="#"
+                          >
+                            
+                Open Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            href="#"
+                          >
+                            
+                Select One Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            href="#"
+                          >
+                            
+                Select Many Responses
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\LocationResponse"
+                            href="#"
+                          >
+                            
+                Location Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            href="#"
+                          >
+                            
+                Photo Response
+              
+                          </a>
+                           
+                          <!---->
+                           
+                          <!---->
+                        </div>
+                      </div>
+                       
+                      <button
+                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        disabled="disabled"
+                        type="button"
                       >
                         
-          Edit Flow
+          Duplicate
         
-                      </a>
+                      </button>
                        
-                      <!---->
-                       
-                      <!---->
-                       
-                      <!---->
+                      <button
+                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        disabled="disabled"
+                        type="button"
+                      >
+                        
+          Delete
+        
+                      </button>
                        
                       <a
                         class="btn btn-success"
@@ -371,9 +561,20 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       <div
                         class="btn-group pull-right mr-2"
                       >
-                        <!---->
+                        <button
+                          class="btn btn-primary tree-save-tree"
+                          disabled="disabled"
+                          title="Save changes to the flow"
+                          type="button"
+                        >
+                          
+            Saved
+          
+                        </button>
                          
                       </div>
+                       
+                      <!---->
                     </div>
                   </div>
                 </div>
@@ -456,26 +657,217 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                         </a>
                       </div>
                        
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="/trees/1/interaction-designer/edit"
-                        title="Click to toggle editing"
+                      <div>
+                        <a
+                          class="btn btn-outline-secondary mr-2"
+                          href="#/trees/1/interaction-designer/view"
+                          title="Click to toggle editing"
+                        >
+                          
+            View Flow
+          
+                        </a>
+                      </div>
+                       
+                      <div
+                        class="dropdown mr-2"
+                      >
+                        <button
+                          class="btn btn-outline-secondary dropdown-toggle"
+                          data-toggle="dropdown"
+                          type="button"
+                        >
+                          
+            Add Block
+          
+                        </button>
+                         
+                        <div
+                          class="dropdown-menu"
+                        >
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Print"
+                            href="#"
+                          >
+                            
+                Print
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Read"
+                            href="#"
+                          >
+                            
+                Read
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Case"
+                            href="#"
+                          >
+                            
+                Case
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Log"
+                            href="#"
+                          >
+                            
+                Log
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Output"
+                            href="#"
+                          >
+                            
+                Output
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\RunFlow"
+                            href="#"
+                          >
+                            
+                Run Flow
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\Message"
+                            href="#"
+                          >
+                            
+                Message
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            href="#"
+                          >
+                            
+                Numeric Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            href="#"
+                          >
+                            
+                Open Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            href="#"
+                          >
+                            
+                Select One Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            href="#"
+                          >
+                            
+                Select Many Responses
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\LocationResponse"
+                            href="#"
+                          >
+                            
+                Location Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            href="#"
+                          >
+                            
+                Photo Response
+              
+                          </a>
+                           
+                          <!---->
+                           
+                          <!---->
+                        </div>
+                      </div>
+                       
+                      <button
+                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        disabled="disabled"
+                        type="button"
                       >
                         
-          Edit Flow
+          Duplicate
         
-                      </a>
+                      </button>
                        
-                      <!---->
-                       
-                      <!---->
-                       
-                      <!---->
+                      <button
+                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        disabled="disabled"
+                        type="button"
+                      >
+                        
+          Delete
+        
+                      </button>
                         
                       <div
                         class="btn-group pull-right mr-2"
                       >
-                        <!---->
+                        <button
+                          class="btn btn-primary tree-save-tree"
+                          disabled="disabled"
+                          title="Save changes to the flow"
+                          type="button"
+                        >
+                          
+            Saved
+          
+                        </button>
                          
                         <a
                           class="btn btn-success"
@@ -498,6 +890,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
         
                         </a>
                       </div>
+                       
+                      <!---->
                     </div>
                   </div>
                 </div>
@@ -580,21 +974,203 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         </a>
                       </div>
                        
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="/trees/1/interaction-designer/edit"
-                        title="Click to toggle editing"
+                      <div>
+                        <a
+                          class="btn btn-outline-secondary mr-2"
+                          href="#/trees/1/interaction-designer/view"
+                          title="Click to toggle editing"
+                        >
+                          
+            View Flow
+          
+                        </a>
+                      </div>
+                       
+                      <div
+                        class="dropdown mr-2"
+                      >
+                        <button
+                          class="btn btn-outline-secondary dropdown-toggle"
+                          data-toggle="dropdown"
+                          type="button"
+                        >
+                          
+            Add Block
+          
+                        </button>
+                         
+                        <div
+                          class="dropdown-menu"
+                        >
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Print"
+                            href="#"
+                          >
+                            
+                Print
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Read"
+                            href="#"
+                          >
+                            
+                Read
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Case"
+                            href="#"
+                          >
+                            
+                Case
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Log"
+                            href="#"
+                          >
+                            
+                Log
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Output"
+                            href="#"
+                          >
+                            
+                Output
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\RunFlow"
+                            href="#"
+                          >
+                            
+                Run Flow
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\Message"
+                            href="#"
+                          >
+                            
+                Message
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            href="#"
+                          >
+                            
+                Numeric Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            href="#"
+                          >
+                            
+                Open Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            href="#"
+                          >
+                            
+                Select One Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            href="#"
+                          >
+                            
+                Select Many Responses
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\LocationResponse"
+                            href="#"
+                          >
+                            
+                Location Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            href="#"
+                          >
+                            
+                Photo Response
+              
+                          </a>
+                           
+                          <!---->
+                           
+                          <!---->
+                        </div>
+                      </div>
+                       
+                      <button
+                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        disabled="disabled"
+                        type="button"
                       >
                         
-          Edit Flow
+          Duplicate
         
-                      </a>
+                      </button>
                        
-                      <!---->
-                       
-                      <!---->
-                       
-                      <!---->
+                      <button
+                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        disabled="disabled"
+                        type="button"
+                      >
+                        
+          Delete
+        
+                      </button>
                         
                       <div
                         class="btn-group pull-right mr-2"
@@ -602,6 +1178,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         <!---->
                          
                       </div>
+                       
+                      <!---->
                     </div>
                   </div>
                 </div>
@@ -684,15 +1262,17 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                         </a>
                       </div>
                        
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="/trees/1/interaction-designer/edit"
-                        title="Click to toggle editing"
-                      >
-                        
-          Edit Flow
-        
-                      </a>
+                      <div>
+                        <a
+                          class="btn btn-outline-secondary mr-2"
+                          href="#/trees/1/interaction-designer/edit"
+                          title="Click to toggle editing"
+                        >
+                          
+            Edit Flow
+          
+                        </a>
+                      </div>
                        
                       <!---->
                        
@@ -706,6 +1286,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                         <!---->
                          
                       </div>
+                       
+                      <!---->
                     </div>
                   </div>
                 </div>

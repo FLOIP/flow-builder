@@ -21,8 +21,6 @@
                                                 {languageId, contentType, modes: [mode]})"
 
                                         :mode="mode"
-
-                                        :is-editable="true || isEditable"
                                         v-if="contentType === SupportedContentType.TEXT"
                                         :enable-autogen-button="true || enableAutogenButton" />
 
@@ -38,7 +36,7 @@
                   <a @click.prevent="triggerRecordViaPhoneFor(languageId)" href="#" class="nav-link px-2 py-1">{{'flow-builder.phone-recording' | trans}}</a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item" v-if="isEditable">
                   <a v-if="isFeatureAudioUploadEnabled"
                      class="nav-link px-2 py-1"
                      v-flow-uploader="{
@@ -103,6 +101,7 @@ import UploadMonitor from '../block-editors/UploadMonitor.vue'
 import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 
   interface IAudioFile {
     id: string;
@@ -218,6 +217,8 @@ export class ResourceEditor extends Vue {
     @Mutation pushAudioIntoLibrary
 
     @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific
+
+    @builderVuexNamespace.Getter isEditable !: boolean
 }
 
 export default ResourceEditor

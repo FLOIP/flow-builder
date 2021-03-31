@@ -9,7 +9,7 @@
     </header>
     <main>
       <div v-for="(blockData, i) in blocksData" :key="i" class="mt-2">
-        <component :is="getBlockComponent(blockData.prompt.block.type)"
+        <component :is="blockData.prompt.config.kind"
                    :context="context"
                    :go-next="goNext"
                    :index="i"
@@ -19,7 +19,7 @@
         </component>
       </div>
       <div v-if="unsupportedBlockName" class="mt-2">
-        <UnsupportedBlock :block-name="unsupportedBlockName"  />
+        <unsupported-block :block-name="unsupportedBlockName"  />
       </div>
     </main>
     <footer v-if="isComplete" class="mt-2">
@@ -43,20 +43,20 @@ import {
   SupportedMode,
   IContact, BasicBacktrackingBehaviour,
 } from '@floip/flow-runner'
-import MessageBlock from './block/MessageBlock.vue'
-import NumericQuestionBlock from './block/NumericQuestionBlock.vue'
-import OpenQuestionBlock from './block/OpenQuestionBlock.vue'
-import SelectOneResponseBlock from './block/SelectOneResponseBlock.vue'
-import SelectManyResponseBlock from './block/SelectManyResponseBlock.vue'
+import Message from './prompt-kinds/Message.vue'
+import Numeric from './prompt-kinds/Numeric.vue'
+import Open from './prompt-kinds/Open.vue'
+import SelectOne from './prompt-kinds/SelectOne.vue'
+import SelectMany from './prompt-kinds/SelectMany.vue'
 import UnsupportedBlock from './shared/UnsupportedBlock.vue'
 
 export default {
   components: {
-    MessageBlock,
-    NumericQuestionBlock,
-    OpenQuestionBlock,
-    SelectOneResponseBlock,
-    SelectManyResponseBlock,
+    Message,
+    Numeric,
+    Open,
+    SelectOne,
+    SelectMany,
     UnsupportedBlock,
   },
   mixins: [lang],
@@ -73,12 +73,12 @@ export default {
     this.initializeFlowRunner()
   },
   methods: {
-    ...mapGetters('flow', ['getFlowState']),
+    ...mapGetters('flow', ['getFlowsState']),
     ...mapGetters('clipboard', ['getBlocksData']),
     ...mapActions('clipboard', ['setSimulatorActive', 'setBlocksData', 'setIsFocused']),
 
     getUpdatedFlowState() {
-      const flowState = this.getFlowState()
+      const flowState = this.getFlowsState()
       // TODO: Need to remove this after a fix is available on flow runner
       flowState.flows[0].blocks.map(({ exits }) => exits.map((e) => {
         e.test = e.test || 'true'
@@ -132,17 +132,6 @@ export default {
       }
     },
 
-    getBlockComponent(key) {
-      const blockMap = new Map([
-        ['MobilePrimitives\\Message', 'MessageBlock'],
-        ['MobilePrimitives\\NumericResponse', 'NumericQuestionBlock'],
-        ['MobilePrimitives\\OpenResponse', 'OpenQuestionBlock'],
-        ['MobilePrimitives\\SelectOneResponse', 'SelectOneResponseBlock'],
-        ['MobilePrimitives\\SelectManyResponse', 'SelectManyResponseBlock'],
-      ])
-      return blockMap.get(key)
-    },
-
     async onEditComplete(index) {
       this.setIsFocused({ index: this.blocksData.length - 1, value: true })
       const backtracking: BasicBacktrackingBehaviour = this.runner.behaviours.basicBacktracking
@@ -174,7 +163,7 @@ export default {
   font-family: Roboto, sans-serif;
 }
 
-.disabled-block {
+.gray-background {
   background-color: #F5F5F5;
 }
 </style>

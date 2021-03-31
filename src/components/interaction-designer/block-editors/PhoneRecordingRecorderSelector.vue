@@ -84,11 +84,11 @@ import { BModal } from 'bootstrap-vue'
 
 export default {
   components: {
-    BModal
+    BModal,
   },
 
   props: {
-    isModalVisible: Boolean
+    isModalVisible: Boolean,
   },
 
   mixins: [lang],
@@ -97,7 +97,7 @@ export default {
     return {
       selectedRecorder: null,
       description: null,
-      draft: null
+      draft: null,
     }
   },
 
@@ -107,7 +107,7 @@ export default {
 
   computed: {
     ...mapState({
-      recorders: ({ audio: { recording: { recorders } } }) => recorders
+      recorders: ({ audio: { recording: { recorders } } }) => recorders,
     }),
   },
 
@@ -123,7 +123,7 @@ export default {
       this.draft = {
         name: null,
         phone: null,
-        isNew: true
+        isNew: true,
       }
       this.description = null
       this.selectedRecorder = null
@@ -131,14 +131,14 @@ export default {
 
     handleModalClosed() {
       const
-          description = this.description,
-          value = lodash.clone(this.selectedRecorder)
+        { description } = this
+      const value = lodash.clone(this.selectedRecorder)
 
       this.reset()
       this.$emit('input', {
         value,
         recorder: value,
-        description
+        description,
       })
     },
 
@@ -146,13 +146,13 @@ export default {
       this.reset()
 
       const
-          description = this.description,
-          value = lodash.clone(this.selectedRecorder)
+        { description } = this
+      const value = lodash.clone(this.selectedRecorder)
 
       this.$emit('input', {
         value,
         recorder: value,
-        description
+        description,
       })
     },
   },

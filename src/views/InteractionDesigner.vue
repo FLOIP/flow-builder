@@ -4,7 +4,7 @@
 
     <div class="tree-sidebar-container">
       <div v-if="isSimulatorActive" class="tree-sidebar">
-        <clipboard-root></clipboard-root>
+        <clipboard-root />
       </div>
 
       <div v-else-if="activeBlock" class="tree-sidebar"
@@ -16,7 +16,8 @@
           <div v-if="activeBlock"
                :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
                :block="activeBlock"
-               :flow="activeFlow" />
+               :flow="activeFlow"
+          />
 
         </div>
 
@@ -136,7 +137,6 @@ export default {
   computed: {
     ...mapGetters([
       'selectedBlock',
-      'isEditable',
       'hasChanges',
       'hasIssues',
       'isTreeSaving',
@@ -160,7 +160,7 @@ export default {
     }),
 
     ...mapGetters('flow', ['activeFlow']),
-    ...mapGetters('builder', ['activeBlock']),
+    ...mapGetters('builder', ['activeBlock', 'isEditable']),
     ...mapGetters('clipboard', ['isSimulatorActive']),
 
     jsKey() {
@@ -210,10 +210,16 @@ export default {
     console.debug('Vuej tree interaction designer mounted!')
   },
 
+  watch: {
+    mode(newMode) {
+      this.updateIsEditableFromParams(newMode)
+    },
+  },
+
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
     ...mapMutations('builder', ['activateBlock']),
-
+    ...mapActions('builder', ['setIsEditable']),
     ...mapActions([
       'attemptSaveTree',
       'discoverTallestBlockForDesignerWorkspaceHeight',
@@ -226,7 +232,6 @@ export default {
         const normalizedType = type.replace('\\', '_')
         const typeWithoutSeparators = type.replace(/\\/g, '')
         const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
-
         invoke(exported, 'install', this)
         Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
       })
@@ -243,7 +248,7 @@ export default {
 
     updateIsEditableFromParams(mode) {
       const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!app.ui.isEditableLocked)
-      this.$store.commit('updateIsEditable', { value: isEditable })
+      this.setIsEditable(isEditable)
     },
 
     /** --------------------------------| has-editable-locked | not-editable-locked |

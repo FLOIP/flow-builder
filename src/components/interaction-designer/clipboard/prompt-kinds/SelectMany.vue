@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{'disabled-block': !isFocused}">
+  <div class="card" :class="{'gray-background': !isFocused}">
     <div class="card-body sm-padding-below font-roboto">
       <div class="d-flex justify-content-between">
         <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
@@ -8,29 +8,38 @@
            @click="editBlock"></i>
       </div>
       <p class="card-text">
-        {{getContent}}
+        {{content}}
       </p>
-      <div>
-        <textarea
-            v-model="enteredValue"
-            rows="4"
-            cols="50"
-            class="form-control"
+
+      <div class="form-group">
+        <div v-for="(option, index) in options" :key="index" class="form-check">
+          <input
+            type="checkbox"
+            name="select-many"
+            class="form-check-input"
             :class="{'is-invalid': errorMsg}"
+            :id="index"
+            :value="option.key"
             :disabled="!isFocused"
-            @keyup="checkIsValid"/>
-        <div v-if="errorMsg" class="invalid-feedback">
+            v-model="selectedChoices"
+            @change="checkIsValid"
+          />
+          <label class="form-check-label" :for="index">{{option.value}}</label>
+        </div>
+        <div v-if="errorMsg" class="text-danger">
           <small>{{errorMsg}}</small>
         </div>
       </div>
+
       <block-action-buttons
-        class="mt-3"
-        :is-disabled="errorMsg ? true : false"
+        class="sm-room-above"
+        :is-disabled="false"
         :is-focused="isFocused"
         :on-next-clicked="submitAnswer"
         :is-block-interaction="isBlockInteraction"
         :on-cancel-clicked="onCancel"
       />
+
     </div>
   </div>
 </template>
@@ -40,7 +49,6 @@ import { mapActions, mapGetters } from 'vuex'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
-  name: 'OpenQuestionBlock',
   components: {
     BlockActionButtons,
   },
@@ -53,11 +61,15 @@ export default {
   },
   data() {
     return {
-      enteredValue: '',
-      backUpValue: '',
+      selectedChoices: [],
+      backUpValue: [],
+      options: [],
       errorMsg: null,
       isBlockInteraction: false,
     }
+  },
+  mounted() {
+    this.setOptions()
   },
   computed: {
     ...mapGetters('clipboard', ['isBlockFocused', 'getBlockPrompt']),
@@ -67,16 +79,30 @@ export default {
     prompt() {
       return this.getBlockPrompt(this.index)
     },
-    getContent() {
+    content() {
       const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
       return result.hasText() ? result.getText() : ''
     },
   },
   methods: {
     ...mapActions('clipboard', ['setIsFocused', 'setLastBlockUnEditable', 'setLastBlockEditable']),
+    setOptions() {
+      const { choices } = this.prompt.config
+      choices.forEach((choice) => {
+        try {
+          const option = Context.prototype.getResource.call(this.context, choice.value).getText()
+          this.options.push({
+            key: choice.key,
+            value: option,
+          })
+        } catch (e) {
+          console.warn('error fetching resource ')
+        }
+      })
+    },
     checkIsValid() {
       try {
-        this.prompt.validate(this.enteredValue)
+        this.prompt.validate(this.selectedChoices)
         this.errorMsg = ''
       } catch (e) {
         this.errorMsg = e.message
@@ -89,7 +115,7 @@ export default {
           await this.onEditComplete(this.index)
           this.isBlockInteraction = false
         }
-        this.prompt.value = this.enteredValue
+        this.prompt.value = this.selectedChoices
         this.setIsFocused({ index: this.index, value: false })
         this.goNext()
       }
@@ -104,7 +130,7 @@ export default {
       this.setLastBlockEditable()
       this.setIsFocused({ index: this.index, value: false })
       this.isBlockInteraction = false
-      this.enteredValue = this.backUpValue
+      this.selectedChoices = this.backUpValue
       this.errorMsg = ''
     },
   },

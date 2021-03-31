@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{'disabled-block': !isFocused}">
+  <div class="card" :class="{'gray-background': !isFocused}">
     <div class="card-body sm-padding-below font-roboto">
       <div class="d-flex justify-content-between">
         <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
@@ -8,38 +8,30 @@
            @click="editBlock"></i>
       </div>
       <p class="card-text">
-        {{getContent}}
+        {{content}}
       </p>
-
-      <div class="form-group">
-        <div v-for="(option, index) in options" :key="index" class="form-check">
-          <input
-            type="checkbox"
-            name="select-many"
-            class="form-check-input"
-            :class="{'is-invalid': errorMsg}"
-            :id="index"
-            :value="option.key"
-            :disabled="!isFocused"
-            v-model="selectedChoices"
-            @change="checkIsValid"
-          />
-          <label class="form-check-label" :for="index">{{option.value}}</label>
-        </div>
-        <div v-if="errorMsg" style="color: #dc3545">
+      <div class="input-group has-validation">
+        <input v-model="enteredValue"
+          class="form-control"
+          :class="{'is-invalid': errorMsg}"
+          type="number"
+          required
+          :disabled="!isFocused"
+          :min="prompt.config.min"
+          :max="prompt.config.max"
+          @keyup="checkIsValid" />
+        <div v-if="errorMsg" class="invalid-feedback">
           <small>{{errorMsg}}</small>
         </div>
       </div>
-
       <block-action-buttons
-        class="sm-room-above"
-        :is-disabled="false"
+        class="mt-3"
+        :is-disabled="isDisabled"
         :is-focused="isFocused"
         :on-next-clicked="submitAnswer"
         :is-block-interaction="isBlockInteraction"
         :on-cancel-clicked="onCancel"
       />
-
     </div>
   </div>
 </template>
@@ -49,7 +41,6 @@ import { mapActions, mapGetters } from 'vuex'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
-  name: 'SelectManyResponseBlock',
   components: {
     BlockActionButtons,
   },
@@ -62,15 +53,11 @@ export default {
   },
   data() {
     return {
-      selectedChoices: [],
-      backUpValue: [],
-      options: [],
+      enteredValue: '',
+      backUpValue: '',
       errorMsg: null,
       isBlockInteraction: false,
     }
-  },
-  mounted() {
-    this.setOptions()
   },
   computed: {
     ...mapGetters('clipboard', ['isBlockFocused', 'getBlockPrompt']),
@@ -80,30 +67,20 @@ export default {
     prompt() {
       return this.getBlockPrompt(this.index)
     },
-    getContent() {
+    content() {
       const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
       return result.hasText() ? result.getText() : ''
+    },
+    isDisabled() {
+      return !!this.errorMsg
     },
   },
   methods: {
     ...mapActions('clipboard', ['setIsFocused', 'setLastBlockUnEditable', 'setLastBlockEditable']),
-    setOptions() {
-      const { choices } = this.prompt.config
-      choices.forEach((choice) => {
-        try {
-          const option = Context.prototype.getResource.call(this.context, choice.value).getText()
-          this.options.push({
-            key: choice.key,
-            value: option,
-          })
-        } catch (e) {
-          console.warn('error fetching resource ')
-        }
-      })
-    },
     checkIsValid() {
+      const num = +this.enteredValue
       try {
-        this.prompt.validate(this.selectedChoices)
+        this.prompt.validate(num)
         this.errorMsg = ''
       } catch (e) {
         this.errorMsg = e.message
@@ -116,7 +93,7 @@ export default {
           await this.onEditComplete(this.index)
           this.isBlockInteraction = false
         }
-        this.prompt.value = this.selectedChoices
+        this.prompt.value = +this.enteredValue
         this.setIsFocused({ index: this.index, value: false })
         this.goNext()
       }
@@ -131,7 +108,7 @@ export default {
       this.setLastBlockEditable()
       this.setIsFocused({ index: this.index, value: false })
       this.isBlockInteraction = false
-      this.selectedChoices = this.backUpValue
+      this.enteredValue = this.backUpValue
       this.errorMsg = ''
     },
   },

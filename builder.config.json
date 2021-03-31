@@ -260,7 +260,7 @@
     "treeSets": [],
     "enabledFeatures": [
       "audioUpload",
-      "showSimulator",
+      "simulator",
       "callToRecord"
     ]
   },
