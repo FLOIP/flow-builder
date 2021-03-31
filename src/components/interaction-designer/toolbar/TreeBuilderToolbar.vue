@@ -354,12 +354,12 @@ export default {
       this.activateBlock({ blockId })
     },
     async handlePersistFlow(route) {
-      this.setTreeSaving(1)
+      this.setTreeSaving(true)
       const flowContainer = await this.flow_persist({
         persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
         flowContainer: this.activeFlowContainer
       })
-      this.setTreeSaving(0)
+      this.setTreeSaving(false)
       if(!flowContainer) {
         //TODO - hook into validation system when we have it.
         //TODO - hook into showing validation errors design when we have it

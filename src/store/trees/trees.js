@@ -51,7 +51,7 @@ export default {
         enabledFeatures: [
           /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
         ],
-        saveCurrentlyInProgress: 0,
+        saveCurrentlyInProgress: false,
         isEditable: true
       },
     }
