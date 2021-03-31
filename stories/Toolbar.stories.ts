@@ -45,14 +45,13 @@ const BaseOptions = {
   components: {FlowBuilderContainer, TreeBuilderToolbar},
   template: ToolbarTemplate,
   store: new Vuex.Store<IRootState>(store),
-  created() {
+  async created() {
     this.configure({appConfig: {}, builderConfig: {}});
     // @ts-ignore
     this.initializeTreeModel() // from trees store
-    this.flow_addBlankFlow().then(() => {
-      //Force all the links to have a static flow id
-      this.flow_setActiveFlowUUID({ flowId: this.activeFlow.uuid, newUUID: "1" })
-    })
+    await this.flow_addBlankFlow()
+    //Force all the links to have a static flow id
+    this.flow_setActiveFlowUUID({ flowId: this.activeFlow.uuid, newUUID: "1" })
   }
 }
 class BaseMountedClass extends Vue {

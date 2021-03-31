@@ -64,18 +64,17 @@ class NewFlow extends Vue {
 
   async handlePersistFlow(route) {
     this.flowError = null
-    this.flow_persist({
+    const flowContainer = await this.flow_persist({
       //@ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
       persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
       flowContainer: this.activeFlowContainer
-    }).then((flowContainer) => {
-      if(flowContainer) {
-        this.$router.push(route)
-      } else {
-        this.flowError = 'flow-builder.problem-creating-flow'
-        //TODO - hook into validation system when we have it.
-      }
     })
+    if(flowContainer) {
+      this.$router.push(route)
+    } else {
+      this.flowError = 'flow-builder.problem-creating-flow'
+      //TODO - hook into validation system when we have it.
+      }
   }
 
   flowError = null;

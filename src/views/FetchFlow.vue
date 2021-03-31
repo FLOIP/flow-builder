@@ -32,20 +32,19 @@ import {IFlow} from '@floip/flow-runner'
   {
     mixins: [lang, Routes],
     async mounted() {
-      this.flow_fetch({fetchRoute: this.route('flows.fetchFlowServer', {flowId: this.uuid})}).then((flow) => {
-        if(flow) {
-          const nextUrl = this.$route.query.nextUrl
-          if(nextUrl) {
-            this.$router.replace(nextUrl)
-          } else {
-            this.message = 'flow-builder.flow-found'
-            this.flowLink = this.route('trees.editTree', {treeId: this.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})
-          }
-        } else{
-          this.message = 'flow-builder.flow-not-found'
-          this.showNewButton = true
+      const flow = await this.flow_fetch({fetchRoute: this.route('flows.fetchFlowServer', {flowId: this.uuid})})
+      if(flow) {
+        const nextUrl = this.$route.query.nextUrl
+        if(nextUrl) {
+          this.$router.replace(nextUrl)
+        } else {
+          this.message = 'flow-builder.flow-found'
+          this.flowLink = this.route('trees.editTree', {treeId: this.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})
         }
-      })
+      } else{
+        this.message = 'flow-builder.flow-not-found'
+        this.showNewButton = true
+      }
     },
     async created() {
       const {$store} = this

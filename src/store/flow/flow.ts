@@ -64,7 +64,7 @@ export const mutations: MutationTree<IFlowsState> = {
   //TODO - consider if this is correct? This only gets what the current flow needs and removes from the store any other flows
   //That means the flow list page (which we will build the production version of later) will get cleared of all flows if we continue with the current model - see the temporary page /src/views/Home.vue - unless we fetch the list again
   //That doesn't make sense if we run the builder standalone - without a fetch of the flows list
-  flow_updateFlowContainer(state, flowContainer) {
+  flow_setFlowContainer(state, flowContainer) {
     const persistedState = flowContainer 
     state.created = persistedState.created
     state.flows = persistedState.flows
@@ -171,38 +171,36 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext> {
     const restVerb = flowContainer.created ? 'put' : 'post'
     const oldCreatedState = flowContainer.created
-    return axios[restVerb](persistRoute, omit(flowContainer, ['created']))
-      .then(({data}) => {
-        commit('flow_updateFlowContainer', data)
-        commit('flow_updateCreatedState', true)
+    try {
+      const { data } = await axios[restVerb](persistRoute, omit(flowContainer, ['created']))
+      commit('flow_setFlowContainer', data)
+      commit('flow_updateCreatedState', true)
+      return getters.activeFlowContainer 
+    } catch(error) {
+      commit('flow_updateCreatedState', oldCreatedState)
+      if(!persistRoute) {
+        console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store")
+        commit('flow_setFlowContainer', flowContainer)
         return getters.activeFlowContainer 
-      })
-      .catch((error) => {
-        commit('flow_updateCreatedState', oldCreatedState)
-        if(!persistRoute) {
-          console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store")
-          commit('flow_updateFlowContainer', flowContainer)
-          return getters.activeFlowContainer 
-        }
-        return null
-      })
+      }
+      return null
+    }
   },
   //TODO - In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
-  //see comment on flow_updateFlowContainer
+  //see comment on flow_setFlowContainer
   async flow_fetch({ state, getters, commit }, { fetchRoute }): Promise<IFlow> {
-    return axios.get(fetchRoute)
-      .then(({data}) => {
-        commit('flow_updateFlowContainer', data)
-        commit('flow_updateCreatedState', true)
-        return getters.activeFlow
-      })
-      .catch((error) => {
-        if(!fetchRoute) {
-          console.info("Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store")
-          return getters.activeFlow
-        }
-        return null
-      })
+    if(!fetchRoute) {
+      console.info("Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store")
+      return getters.activeFlow
+    }
+    try {
+      const { data } = await axios.get(fetchRoute)
+      commit('flow_setFlowContainer', data)
+      commit('flow_updateCreatedState', true)
+      return getters.activeFlow
+    } catch(error) {
+      return null
+    }
   },
   // todo: this `flow_` prefix doesn't follow suit
   //       because it's actually a method on the root state // IContext-ish type

@@ -355,18 +355,17 @@ export default {
     },
     async handlePersistFlow(route) {
       this.setTreeSaving(1)
-      this.flow_persist({
+      const flowContainer = await this.flow_persist({
         persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
         flowContainer: this.activeFlowContainer
-      }).then((flowContainer) => {
-        this.setTreeSaving(0)
-        if(!flowContainer) {
-          //TODO - hook into validation system when we have it.
-          //TODO - hook into showing validation errors design when we have it
-        } else if(route) {
-          this.$router.push(route)
-        }
       })
+      this.setTreeSaving(0)
+      if(!flowContainer) {
+        //TODO - hook into validation system when we have it.
+        //TODO - hook into showing validation errors design when we have it
+      } else if(route) {
+        this.$router.push(route)
+      }
     },
 
     handleRemoveActivatedBlockTriggered() {
