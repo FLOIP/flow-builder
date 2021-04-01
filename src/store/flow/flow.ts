@@ -66,9 +66,6 @@ export const mutations: MutationTree<IFlowsState> = {
     state.isCreated = persistedState.isCreated
     state.flows = persistedState.flows
     state.resources = persistedState.resources
-    if(state.flows[0]) {
-      state.firstFlowId = state.flows[0].uuid
-    }
   },
   //used to track whether we should put or post when persisting
   flow_updateCreatedState(state, createdState) {
@@ -166,6 +163,8 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext> {
+    console.log(flowContainer)
+    console.log(flowContainer.firstFlowId)
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
     if(!persistRoute) {
