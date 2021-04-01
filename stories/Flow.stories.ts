@@ -68,8 +68,8 @@ export const Default = () => (CurrentClass)
                 SupportedMode.RICH_MESSAGING
             ]
 
-            this.flow_setLabel({flowId, value: "A flow label"})
-            this.flow_setNameFromLabel({flowId, value: "A flow label"})
+            this.flow_setLabel({flowId, label: "A flow label"})
+            this.flow_setNameFromLabel({flowId, label: "A flow label"})
             this.flow_setInteractionTimeout({flowId, value: 20})
             this.flow_setSupportedMode({flowId, value: sampleModes})
             this.flow_setLanguages({flowId, value: sampleLanguages})
