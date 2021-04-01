@@ -14166,6 +14166,11 @@ saxes@^5.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
+scanf@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/scanf/-/scanf-1.1.2.tgz#1a11912f50f6773e0c9e1e26145b9895fdd69c07"
+  integrity sha512-AjyDCF9jrLcGl+wbH2OO0vfpMUNmv6skJuuLL/vgDUmG/0YXCT6SVBTOvZXOPAD5raJLtDtUU7v0yF79JDuAqA==
+
 scheduler@^0.19.1:
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"

@@ -9,7 +9,6 @@
   "scripts": {
     "build": "vue-cli-service build",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
     "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
@@ -44,6 +43,7 @@
     "plain-draggable": "^2.5.12",
     "pointer-event": "^1.0.0",
     "popper.js": "^1.16.1",
+    "scanf": "^1.1.2",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-focus": "^2.1.0",
