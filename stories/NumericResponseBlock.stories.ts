@@ -27,7 +27,7 @@ export default {
 }
 
 const NumericResponseBlockTemplate = `
-  <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
+  <flow-builder-sidebar-editor-container :block="activeBlock">
     <numeric-response-block 
       :block="activeBlock" 
       :flow="activeFlow"/>

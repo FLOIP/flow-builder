@@ -22,7 +22,7 @@ export default {
 }
 
 const LogBlockTemplate = `
-  <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
+  <flow-builder-sidebar-editor-container :block="activeBlock">
     <log-block 
       :block="activeBlock" 
       :flow="activeFlow"/>

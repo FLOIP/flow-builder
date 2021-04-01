@@ -22,7 +22,7 @@ export default {
 }
 
 const RunAnotherFlowBlockTemplate = `
-  <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
+  <flow-builder-sidebar-editor-container :block="activeBlock">
     <run-another-flow-block 
       :block="activeBlock" 
       :flow="activeFlow"/>

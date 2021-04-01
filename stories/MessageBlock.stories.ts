@@ -29,7 +29,7 @@ export default {
 }
 
 const MessageBlockTemplate = `
-  <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
+  <flow-builder-sidebar-editor-container :block="activeBlock">
     <message-block 
       :block="activeBlock" 
       :flow="activeFlow"/>

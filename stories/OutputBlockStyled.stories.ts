@@ -19,7 +19,7 @@ export default {
 }
 
 const OutputBlockTemplate = `
-  <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
+  <flow-builder-sidebar-editor-container :block="activeBlock">
     <output-block 
       :block="activeBlock" 
       :flow="activeFlow"/>

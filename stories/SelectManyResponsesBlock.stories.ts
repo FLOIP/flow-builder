@@ -29,7 +29,7 @@ export default {
 }
 
 const SelectManyTemplate = `
-    <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
+    <flow-builder-sidebar-editor-container :block="activeBlock">
       <select-many-response-block
           :block="activeBlock"
           :flow="activeFlow"/>

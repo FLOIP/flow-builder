@@ -30,7 +30,7 @@ export default {
 }
 
 const SelectOneResponseBlockTemplate = `
-    <flow-builder-sidebar-editor-container v-if="activeFlow" :block="activeBlock">
+    <flow-builder-sidebar-editor-container :block="activeBlock">
       <select-one-response-block
           :block="activeBlock"
           :flow="activeFlow"/>
