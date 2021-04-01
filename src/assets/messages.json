@@ -1,5 +1,7 @@
 {
   "en.flow-builder": {
+    "format-string": "Format String",
+    "enter-format-string": "Enter Format String",
     "go-to-flow": "Go To Flow",
     "problem-creating-flow": "There was a problem creating the flow. Please review the configuration and try again.",
     "flow-not-found": "Flow Not Found",
@@ -1545,6 +1547,8 @@
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
   },
   "fr.flow-builder": {
+    "format-string": "Chaîne de format",
+    "enter-format-string": "Entrez la chaîne de format",
     "go-to-flow": "Aller à Flux",
     "problem-creating-flow": "Un problème est survenu lors de la création du flux. Veuillez revoir la configuration et réessayer.",
     "flow-not-found": "Flux introuvable",
