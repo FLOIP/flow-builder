@@ -168,6 +168,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext> {
     const restVerb = flowContainer.created ? 'put' : 'post'
     const oldCreatedState = flowContainer.created
+    if(!persistRoute) {
+      console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store")
+      commit('flow_setFlowContainer', flowContainer)
+      return getters.activeFlowContainer
+    }
     try {
       const { data } = await axios[restVerb](persistRoute, omit(flowContainer, ['created']))
       commit('flow_setFlowContainer', data)
@@ -175,11 +180,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return getters.activeFlowContainer 
     } catch(error) {
       commit('flow_updateCreatedState', oldCreatedState)
-      if(!persistRoute) {
-        console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store")
-        commit('flow_setFlowContainer', flowContainer)
-        return getters.activeFlowContainer 
-      }
+      console.info(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
     }
   },
@@ -196,6 +197,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       commit('flow_updateCreatedState', true)
       return getters.activeFlow
     } catch(error) {
+      console.info(`Server error fetching flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
     }
   },
