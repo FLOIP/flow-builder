@@ -1,34 +1,86 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots ConsoleIo/Print Block Default 1`] = `<!---->`;
+exports[`Storyshots ConsoleIo/Print Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots ConsoleIo/Print Block Existing Data Block 1`] = `<!---->`;
+exports[`Storyshots ConsoleIo/Print Block Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `<!---->`;
+exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots ConsoleIo/Read Block Default 1`] = `<!---->`;
+exports[`Storyshots ConsoleIo/Read Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots ConsoleIo/Read Block Existing Data Block 1`] = `<!---->`;
+exports[`Storyshots ConsoleIo/Read Block Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = `<!---->`;
+exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots Core/Case Block Styled Default 1`] = `<!---->`;
+exports[`Storyshots Core/Case Block Styled Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots Core/Case Block Styled Existing Data Block 1`] = `<!---->`;
+exports[`Storyshots Core/Case Block Styled Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
 exports[`Storyshots Core/Log Block Plain Default 1`] = `<!---->`;
 
 exports[`Storyshots Core/Log Block Plain Existing Data Block 1`] = `<!---->`;
 
-exports[`Storyshots Core/Log Block Styled Default 1`] = `<!---->`;
+exports[`Storyshots Core/Log Block Styled Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots Core/Log Block Styled Existing Data Block 1`] = `<!---->`;
+exports[`Storyshots Core/Log Block Styled Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots Core/Log Block Styled Existing Data Non Starting Block 1`] = `<!---->`;
+exports[`Storyshots Core/Log Block Styled Existing Data Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots Core/Output Block Styled Default 1`] = `<!---->`;
+exports[`Storyshots Core/Output Block Styled Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots Core/Run Another Flow Block Styled Default 1`] = `<!---->`;
+exports[`Storyshots Core/Run Another Flow Block Styled Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
 exports[`Storyshots Flow/Flow Editor Default 1`] = `
 <div>
@@ -1240,56 +1292,164 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
 </div>
 `;
 
-exports[`Storyshots MobilePrimitives/Message Block Default 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Message Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Message Block Existing Data Block 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Message Block Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Numeric Response Block Default 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Numeric Response Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For All Modes 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For All Modes 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Ivr Only 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Ivr Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Text Only 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Text Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Open Response Block Default 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Open Response Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For All Modes 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For All Modes 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Ivr Only 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Ivr Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text Only 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/SelectOneResponseBlock Existing Data 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock Existing Data 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/SelectOneResponseBlock In Flow Builder 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock In Flow Builder 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/SelectOneResponseBlock Ivr Only 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock Ivr Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/SelectOneResponseBlock More Languages 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/SelectOneResponseBlock More Languages 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/selectManyResponseBlock Existing Data 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock Existing Data 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/selectManyResponseBlock In Flow Builder 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock In Flow Builder 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/selectManyResponseBlock Ivr Only 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock Ivr Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots MobilePrimitives/selectManyResponseBlock More Languages 1`] = `<!---->`;
+exports[`Storyshots MobilePrimitives/selectManyResponseBlock More Languages 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots SmartDevices/Location Response Block Default 1`] = `<!---->`;
+exports[`Storyshots SmartDevices/Location Response Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots SmartDevices/Location Response Block Existing Data Pre Filled 1`] = `<!---->`;
+exports[`Storyshots SmartDevices/Location Response Block Existing Data Pre Filled 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] = `<!---->`;
+exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots SmartDevices/Photo Response Block Default 1`] = `<!---->`;
+exports[`Storyshots SmartDevices/Photo Response Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots SmartDevices/Photo Response Block Existing Data Pre Filled 1`] = `<!---->`;
+exports[`Storyshots SmartDevices/Photo Response Block Existing Data Pre Filled 1`] = `
+<div>
+  <!---->
+</div>
+`;
 
-exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `<!---->`;
+exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
