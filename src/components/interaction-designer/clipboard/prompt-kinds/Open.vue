@@ -1,15 +1,11 @@
 <template>
-  <div class="card" :class="{'gray-background': !isFocused}">
-    <div class="card-body sm-padding-below font-roboto">
+    <div>
       <div class="d-flex justify-content-between">
-        <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
-        <i v-if="!isFocused && !isComplete"
-           class="glyphicon glyphicon-pencil cursor-pointer"
-           @click="editBlock"></i>
+        <slot name="title"></slot>
+        <i v-if="!isFocused && !isComplete" @click="editBlock"
+           class="glyphicon glyphicon-pencil cursor-pointer"></i>
       </div>
-      <p class="card-text">
-        {{content}}
-      </p>
+      <slot name="content"></slot>
       <div>
         <textarea
             v-model="enteredValue"
@@ -32,10 +28,9 @@
         :on-cancel-clicked="onCancel"
       />
     </div>
-  </div>
 </template>
 <script>
-import { Context, IContext } from '@floip/flow-runner'
+import { IContext } from '@floip/flow-runner'
 import { mapActions, mapGetters } from 'vuex'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
@@ -64,10 +59,6 @@ export default {
     },
     prompt() {
       return this.getBlockPrompt(this.index)
-    },
-    content() {
-      const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
-      return result.hasText() ? result.getText() : ''
     },
   },
   methods: {

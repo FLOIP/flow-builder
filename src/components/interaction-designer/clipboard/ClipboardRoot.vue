@@ -9,17 +9,31 @@
     </header>
     <main>
       <div v-for="(blockData, i) in blocksData" :key="i" class="mt-2">
-        <component :is="blockData.prompt.config.kind"
-                   :context="context"
-                   :go-next="goNext"
-                   :index="i"
-                   :is-complete="isComplete"
-                   :on-edit-complete="onEditComplete"
-        >
-        </component>
+        <div class="card" :class="{'gray-background': !isFocused(i)}">
+          <div class="card-body sm-padding-below font-roboto">
+            <component :is="blockData.prompt.config.kind"
+                       :context="context"
+                       :go-next="goNext"
+                       :index="i"
+                       :is-complete="isComplete"
+                       :on-edit-complete="onEditComplete"
+            >
+              <template #title>
+                <h4 class="card-title font-weight-regular pl-0 text-color-title">
+                  {{blockData.prompt.block.label}}
+                </h4>
+              </template>
+              <template #content>
+                <p class="card-text">
+                  {{content(blockData.prompt.config.prompt)}}
+                </p>
+              </template>
+            </component>
+          </div>
+        </div>
       </div>
       <div v-if="unsupportedBlockName" class="mt-2">
-        <unsupported-block :block-name="unsupportedBlockName"  />
+        <unsupported-block :block-name="unsupportedBlockName" />
       </div>
     </main>
     <footer v-if="isComplete" class="mt-2">
@@ -41,7 +55,7 @@ import {
   FlowRunner,
   IRichCursorInputRequired,
   SupportedMode,
-  IContact, BasicBacktrackingBehaviour,
+  IContact, BasicBacktrackingBehaviour, Context,
 } from '@floip/flow-runner'
 import Message from './prompt-kinds/Message.vue'
 import Numeric from './prompt-kinds/Numeric.vue'
@@ -72,10 +86,21 @@ export default {
   created() {
     this.initializeFlowRunner()
   },
+  computed: {
+    isFocused(index) {
+      return this.isBlockFocused(index)
+    },
+  },
   methods: {
     ...mapGetters('flow', ['getFlowsState']),
-    ...mapGetters('clipboard', ['getBlocksData']),
+    ...mapGetters('clipboard', ['getBlocksData', 'isBlockFocused', 'getBlockPrompt']),
     ...mapActions('clipboard', ['setSimulatorActive', 'setBlocksData', 'setIsFocused']),
+
+    content(promptId) {
+      console.log('content for prompt ', promptId)
+      const result = Context.prototype.getResource.call(this.context, promptId)
+      return result.hasText() ? result.getText() : ''
+    },
 
     getUpdatedFlowState() {
       const flowState = this.getFlowsState()

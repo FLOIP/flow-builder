@@ -1,16 +1,11 @@
 <template>
-  <div class="card" :class="{'gray-background': !isFocused}">
-    <div class="card-body sm-padding-below font-roboto">
+    <div>
       <div class="d-flex justify-content-between">
-        <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
-        <i v-if="!isFocused && !isComplete"
-           class="glyphicon glyphicon-pencil cursor-pointer"
-           @click="editBlock"></i>
+        <slot name="title"></slot>
+        <i v-if="!isFocused && !isComplete" @click="editBlock"
+           class="glyphicon glyphicon-pencil cursor-pointer"></i>
       </div>
-      <p class="card-text">
-        {{content}}
-        <i class="bi bi-pencil-fill"></i>
-      </p>
+      <slot name="content"></slot>
 
     <div class="form-group">
       <div v-for="(option, index) in options" :key="index" class="form-check">
@@ -40,7 +35,6 @@
       :on-cancel-clicked="onCancel"
     />
     </div>
-  </div>
 </template>
 <script>
 import { Context, IContext } from '@floip/flow-runner'
@@ -77,10 +71,6 @@ export default {
     },
     prompt() {
       return this.getBlockPrompt(this.index)
-    },
-    content() {
-      const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
-      return result.hasText() ? result.getText() : ''
     },
   },
   methods: {
