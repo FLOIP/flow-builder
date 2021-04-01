@@ -9,7 +9,7 @@
             class="mt-3 btn btn-outline-secondary mr-2 active">{{'flow-builder.new-flow' | trans}}</router-link>
           <div class="mt-4">
             <h2>Existing Flows</h2>
-            <div v-for="flow in flowsList">
+            <div v-for="flow in flows">
               <router-link :to="route('trees.editTree', {treeId: flow.uuid, component: 'interaction-designer', mode: 'edit'})"
                   title="trans('flow-builder.edit-flow')"
                   class="mt-3 btn btn-outline-secondary mr-2 active">{{flow.label || flow.uuid}}</router-link>
@@ -46,7 +46,7 @@ const flowVuexNamespace = namespace('flow')
   },
 )
 class Home extends Vue {
-  @flowVuexNamespace.Getter flowsList!: IFlow
+  @flowVuexNamespace.State flows!: IFlow[]
   @Mutation configure
 }
 

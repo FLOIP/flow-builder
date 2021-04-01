@@ -74,7 +74,7 @@ class NewFlow extends Vue {
     } else {
       this.flowError = 'flow-builder.problem-creating-flow'
       //TODO - hook into validation system when we have it.
-      }
+    }
   }
 
   flowError = null;
