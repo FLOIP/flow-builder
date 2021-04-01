@@ -5,7 +5,7 @@
                      track-by="id"
                      label="displayLabel"
                      :placeholder="'flow-builder.contact-property-selector-placeholder' | trans"
-                     :options="contactPropertiesList"
+                     :options="subscriberPropertyFields"
                      :allow-empty="false"
                      :show-labels="false"
                      :searchable="true">
@@ -50,7 +50,7 @@ class ContactPropertySelector extends Vue {
       return null
     }
 
-    const propertyOption = find(this.contactPropertiesList, { name: propertyKey }) as IContactPropertyOption
+    const propertyOption = find(this.subscriberPropertyFields, { name: propertyKey }) as IContactPropertyOption
     if (!propertyOption) {
       return null
     }
@@ -66,11 +66,8 @@ class ContactPropertySelector extends Vue {
     })
   }
 
-  get contactPropertiesList(): object[] {
-    return this.$store.state.trees.ui.subscriberPropertyFields
-  }
-
   @flowVuexNamespace.Mutation block_updateConfigByPath
+  @flowVuexNamespace.Getter subscriberPropertyFields: object[]
 }
 
 export default ContactPropertySelector;
