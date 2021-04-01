@@ -5,7 +5,7 @@
                      track-by="id"
                      label="displayLabel"
                      :placeholder="'flow-builder.contact-property-selector-placeholder' | trans"
-                     :options="subscriberPropertyFields"
+                     :options="subscriberPropertyFields || []"
                      :allow-empty="false"
                      :show-labels="false"
                      :searchable="true">
@@ -18,7 +18,7 @@ import Vue from 'vue';
 import VueMultiselect from 'vue-multiselect';
 import { IBlock, ISetContactPropertyBlockConfig } from '@floip/flow-runner';
 import { Component, Prop } from 'vue-property-decorator';
-import { namespace } from 'vuex-class'
+import {Getter, namespace} from 'vuex-class'
 import lang from '@/lib/filters/lang';
 import { find } from 'lodash'
 
@@ -67,7 +67,7 @@ class ContactPropertySelector extends Vue {
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath
-  @flowVuexNamespace.Getter subscriberPropertyFields: object[]
+  @Getter subscriberPropertyFields: object[]
 }
 
 export default ContactPropertySelector;
