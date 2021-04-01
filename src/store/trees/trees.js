@@ -51,7 +51,7 @@ export default {
         enabledFeatures: [
           /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
         ],
-        saveCurrentlyInProgress: false,
+        isSaveCurrentlyInProgress: false,
         isEditable: true
       },
     }
@@ -102,7 +102,7 @@ export default {
     },
 
     isTreeSaving(state) {
-      return state.ui.saveCurrentlyInProgress
+      return state.ui.isSaveCurrentlyInProgress
     },
 
     hasClipboard: ({ tree }) => tree.details.hasClipboard,
@@ -159,7 +159,7 @@ export default {
 
   mutations: {
     setTreeSaving(state, isSaving) {
-      state.ui.saveCurrentlyInProgress = isSaving
+      state.ui.isSaveCurrentlyInProgress = isSaving
     },
 
     // TODO: find a better place to put the configure, putting it inside trees store doesn't make sense

@@ -63,7 +63,7 @@ export const mutations: MutationTree<IFlowsState> = {
   //That doesn't make sense if we run the builder standalone - without a fetch of the flows list
   flow_setFlowContainer(state, flowContainer) {
     const persistedState = flowContainer 
-    state.created = persistedState.created
+    state.isCreated = persistedState.isCreated
     state.flows = persistedState.flows
     state.resources = persistedState.resources
     if(state.flows[0]) {
@@ -72,7 +72,7 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   //used to track whether we should put or post when persisting
   flow_updateCreatedState(state, createdState) {
-    state.created = createdState
+    state.isCreated = createdState
   },
   flow_setActiveFlowId(state, {flowId}: {flowId: string}) {
     state.firstFlowId = flowId
@@ -166,15 +166,15 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext> {
-    const restVerb = flowContainer.created ? 'put' : 'post'
-    const oldCreatedState = flowContainer.created
+    const restVerb = flowContainer.isCreated ? 'put' : 'post'
+    const oldCreatedState = flowContainer.isCreated
     if(!persistRoute) {
       console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store")
       commit('flow_setFlowContainer', flowContainer)
       return getters.activeFlowContainer
     }
     try {
-      const { data } = await axios[restVerb](persistRoute, omit(flowContainer, ['created']))
+      const { data } = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
       return getters.activeFlowContainer 
