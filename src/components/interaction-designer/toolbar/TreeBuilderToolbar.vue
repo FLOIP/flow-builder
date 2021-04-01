@@ -354,16 +354,22 @@ export default {
       this.activateBlock({ blockId })
     },
     async handlePersistFlow(route) {
-      this.setTreeSaving(true)
-      const flowContainer = await this.flow_persist({
-        persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
-        flowContainer: this.activeFlowContainer
-      })
-      this.setTreeSaving(false)
-      if(!flowContainer) {
-        //TODO - hook into validation system when we have it.
-        //TODO - hook into showing validation errors design when we have it
-      } else if(route) {
+      //TODO - hook into validation system when we have it - block the logic here if invalid.
+
+      //If we aren't in edit mode there should be nothing to persist
+      if(this.isEditable) {
+        this.setTreeSaving(true)
+        const flowContainer = await this.flow_persist({
+          persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
+          flowContainer: this.activeFlowContainer
+        })
+        this.setTreeSaving(false)
+        if(!flowContainer) {
+          //TODO - hook into showing validation errors design when we have it
+          //This won't show normal validation errors as the frontend should have caught them. We'll use this to show server errors.
+        }
+      }
+      if(route) {
         this.$router.push(route)
       }
     },
