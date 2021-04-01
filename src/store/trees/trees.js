@@ -27,7 +27,7 @@ export default {
     return {
       tree: null,
       ui: {
-        configured: false,
+        isConfigured: false,
         audioFiles: null,
         callCenterQueues: null,
         previousTreeJson: null,
@@ -170,7 +170,7 @@ export default {
         __TREES_UI__: uiOverrides,
         __APP__: appContext,
       } = bootstrapLegacyGlobalDependencies(appConfig, builderConfig)
-      ui.configured = true
+      ui.isConfigured = true
 
       // update this.state to expose permissions, etc
       lodash.merge(this.state, appContext)
