@@ -31,7 +31,7 @@
   import FlowBuilderContainer from "./FlowBuilderContainer.vue";
   import {IFlow, IBlock} from '@floip/flow-runner'
 
-  @Component<any>({
+  @Component({
     components: {
       FlowBuilderContainer
     }

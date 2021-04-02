@@ -25,7 +25,7 @@ import '@/scss/main.scss'
 import Vue from 'vue'
 import {Component, Prop} from 'vue-property-decorator'
 
-@Component<any>({})
+@Component({})
 export class FlowBuilderContainer extends Vue {
 }
 

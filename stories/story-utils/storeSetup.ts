@@ -19,7 +19,7 @@ let storyInitState: any = {}
 /**
  * Vue class used to gather required Getter, Mutation, Action for the BaseMounted binding
  */
-@Component<any>({})
+@Component({})
 export class BaseMountedVueClass extends Vue {
   @builderVuexNamespace.Getter activeBlock!: IBlock
   @flowVuexNamespace.Getter activeFlow!: IFlow
@@ -88,7 +88,7 @@ export class BaseMountedVueClass extends Vue {
   }
 }
 
-@Component<any>({})
+@Component({})
 export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass {
   @flowVuexNamespace.Mutation resource_setValue: any
   @flowVuexNamespace.Mutation flow_setSupportedMode: any
