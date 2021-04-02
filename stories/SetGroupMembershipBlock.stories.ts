@@ -9,6 +9,8 @@ import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
 import { IRootState, store } from '@/store'
 import SetGroupMembershipStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 import { Component } from "vue-property-decorator";
+import SetContactPropertyStore from "../src/store/flow/block-types/Core_SetContactPropertyStore";
+import {Mutation} from "vuex-class";
 
 Vue.use(Vuex)
 
@@ -20,16 +22,20 @@ export default {
 
 const SetGroupMembershipBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <set-group-membership-block 
-      :block="activeBlock" 
+    <set-group-membership-block
+      :block="activeBlock"
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-// default state
-@Component<any>({
+let baseOptions = {
   components: {SetGroupMembershipBlock, FlowBuilderSidebarEditorContainer},
   template: SetGroupMembershipBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
+}
+
+// default state
+@Component<any>({
+  ...baseOptions,
   async mounted() {
     await baseMounted.bind(this)(BLOCK_TYPE, SetGroupMembershipStore)
   },
@@ -37,3 +43,29 @@ const SetGroupMembershipBlockTemplate = `
 })
 class DefaultClass extends BaseMountedVueClass {}
 export const Default = () => (DefaultClass)
+
+@Component<any>({
+  ...baseOptions,
+  async mounted() {
+    // Add sample data
+    this.addContactGroup({
+      group: {
+        id: 987,
+        name: "Group 1"
+      },
+    })
+    this.addContactGroup({
+      group: {
+        id: 988,
+        name: "Group 2"
+      }
+    })
+
+    // @ts-ignore
+    await baseMounted.bind(this)(BLOCK_TYPE, SetGroupMembershipStore)
+  },
+})
+class ExistingDataBlockClass extends BaseMountedVueClass {
+  @Mutation addContactGroup!: ({ group }) => void
+}
+export const ExistingDataBlock = () => (ExistingDataBlockClass)

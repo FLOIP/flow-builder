@@ -227,16 +227,7 @@
     "treeTitles": {},
     "treeSetTitles": {},
     "groupNames": {},
-    "groups": [
-      {
-        "id": 987,
-        "name": "Group 1"
-      },
-      {
-        "id": 988,
-        "name": "Group 2"
-      }
-    ],
+    "groups": [],
     "languageNames": {"1": "English", "2": "Spanish"},
     "languageSelectors": [],
     "apiKey": null,

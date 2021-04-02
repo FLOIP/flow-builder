@@ -18,7 +18,7 @@ import Vue from 'vue'
 import VueMultiselect from 'vue-multiselect'
 import { IBlock, ISetGroupMembershipBlockConfig } from '@floip/flow-runner'
 import { Component, Prop } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
+import { namespace, Getter } from 'vuex-class'
 import lang from '@/lib/filters/lang'
 import { find } from 'lodash'
 
@@ -65,11 +65,8 @@ class GroupSelector extends Vue {
     })
   }
 
-  get groups(): object[] {
-    return this.$store.state.trees.ui.groups
-  }
-
   @flowVuexNamespace.Mutation block_updateConfigByPath
+  @Getter groups: object[]
 }
 
 export default GroupSelector

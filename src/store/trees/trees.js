@@ -76,7 +76,7 @@ export default {
 
     subscriberPropertyFields: ({ ui }) => lodash.get(ui, 'subscriberPropertyFields', []),
 
-    groups: ({ ui }) => lodash.get(ui, 'groups'),
+    groups: ({ ui }) => lodash.get(ui, 'groups', []),
 
     interactiveBlockClasses: ({ ui }, getters, rootState) => lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
 
@@ -348,6 +348,10 @@ export default {
 
     addSubscriberPropertyField({ ui }, { property }) {
       ui.subscriberPropertyFields.push(property)
+    },
+
+    addContactGroup({ ui }, { group }) {
+      ui.groups.push(group)
     },
 
     setTreeUpdateConflictStatus(state, { treeUpdateConflict }) {
