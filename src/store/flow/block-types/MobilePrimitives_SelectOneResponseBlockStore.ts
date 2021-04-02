@@ -23,7 +23,7 @@ import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/l
 
 export const BLOCK_TYPE = 'MobilePrimitives\\SelectOneResponse'
 
-interface IInflatedChoicesInterface {
+export interface IInflatedChoicesInterface {
   exit: IBlockExit,
   resource: IResourceDefinition
 }
@@ -57,7 +57,7 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
       label: resourceUuid
     })) as IBlockExit
   },
-  isInflatedChoiceBlankOnKey: (state, getters) => (key): boolean => {
+  isInflatedChoiceBlankOnKey: (state, getters) => (key: any): boolean => {
     return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semanticLabel')
   },
   isInflatedEmptyChoiceBlank: (state, getters): boolean => {
@@ -85,11 +85,11 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
 
 }
 
-export const mutations: MutationTree<IFlowsState> = {
+export const mutations: MutationTree<ICustomFlowState> = {
 
 }
 
-export const actions: ActionTree<IFlowsState, IRootState> = {
+export const actions: ActionTree<ICustomFlowState, IRootState> = {
   deleteChoiceByKey({ state, rootState, rootGetters, commit }, { choiceKeyToRemove }) {
     const activeBlock = rootGetters['builder/activeBlock']
     delete activeBlock.config.choices[choiceKeyToRemove]

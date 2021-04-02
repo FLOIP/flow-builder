@@ -72,7 +72,10 @@ import {
 import { namespace } from 'vuex-class'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
-import SelectOneStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import SelectOneStore, {
+  BLOCK_TYPE,
+  IInflatedChoicesInterface
+} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import { Lang } from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -125,7 +128,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     @Watch('inflatedEmptyChoice', { deep: true })
     onEmptyChoiceChanged(newChoice: object, oldChoice: object) {
       console.debug('Watched inflatedEmptyChoice', newChoice, oldChoice)
-      this.editEmptyChoice({ choice: oldChoice })
+      this.editEmptyChoice( { choice: oldChoice as IInflatedChoicesInterface })
     }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
@@ -134,7 +137,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     @blockVuexNamespace.State inflatedEmptyChoice: {[key: string]: IResourceDefinition}
 
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
-    @blockVuexNamespace.Action editEmptyChoice!: ({ choice: IInflatedChoicesInterface }) => Promise<object>
+    @blockVuexNamespace.Action editEmptyChoice!: ({ choice }: { choice: IInflatedChoicesInterface }) => Promise<object>
 
     @builderVuexNamespace.Getter isEditable !: boolean
 }
