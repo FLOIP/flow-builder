@@ -1,6 +1,6 @@
 <template>
   <div class="resource-editor">
-    <hr />
+    <hr v-if="label"/>
 
     <h4 v-if="label">{{label}}</h4>
 
