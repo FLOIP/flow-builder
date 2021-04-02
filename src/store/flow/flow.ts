@@ -43,42 +43,6 @@ export const mutations: MutationTree<IFlowsState> = {
     }
   },
 
-  flow_removeBlock(state, { flowId, blockId }: {flowId: string; blockId: IBlock['uuid']}) {
-    const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
-    const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
-
-    if (block == null) {
-      throw new ValidationException('Unable to delete block absent from flow')
-    }
-
-    const { blocks } = flow
-    blocks.splice(
-      blocks.indexOf(block),
-      1,
-    )
-
-    // clean up stale references
-    // 1. flow.firstBlockId
-    // 2. flow.exitBlockId
-    // 3. flow.blocks.*.exits.*.destinationBlock
-    // 4. activeBlockId (we should likely trail a ghost of previous selection and select that one next)
-
-    // todo: convert this whole operation to an ActionTree member
-    // todo: use mutations for these:
-    if (flow.firstBlockId === blockId) {
-      flow.firstBlockId = '' // todo: make this optional for builder
-    }
-
-    if (flow.exitBlockId === blockId) {
-      flow.exitBlockId = undefined
-    }
-
-    forEach(blocks, ({ exits }) => {
-      const exitsTowardUs = exits.filter((e) => e.destinationBlock === blockId)
-      forEach(exitsTowardUs, (e) => e.destinationBlock = undefined)
-    })
-  },
-
   flow_setExitBlockId(state, { flowId, blockId }) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
@@ -130,6 +94,44 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
 
     return flow
+  },
+
+  flow_removeBlock({ state, commit }, { flowId, blockId }: {flowId: string; blockId: IBlock['uuid']}) {
+    const flow = findFlowWith(flowId || state.firstFlowId || '', state as unknown as IContext)
+    const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
+
+    if (block == null) {
+      throw new ValidationException('Unable to delete block absent from flow')
+    }
+
+    const { blocks } = flow
+    blocks.splice(
+      blocks.indexOf(block),
+      1,
+    )
+
+    // clean up stale references
+    // 1. flow.firstBlockId
+    // 2. flow.exitBlockId
+    // 3. flow.blocks.*.exits.*.destinationBlock
+    // 4. activeBlockId (we should likely trail a ghost of previous selection and select that one next)
+
+    // todo: convert this whole operation to an ActionTree member
+    // todo: use mutations for these:
+    if (flow.firstBlockId === blockId) {
+      flow.firstBlockId = '' // todo: make this optional for builder
+    }
+
+    if (flow.exitBlockId === blockId) {
+      flow.exitBlockId = undefined
+    }
+
+    forEach(blocks, ({ exits }) => {
+      const exitsTowardUs = exits.filter((e) => e.destinationBlock === blockId)
+      forEach(exitsTowardUs, (e) => e.destinationBlock = undefined)
+    })
+
+    commit('builder/activateBlock', { blockId: null }, { root: true })
   },
 
   async flow_addBlankBlockByType({ commit, dispatch, state }, { type, ...props }: Partial<IBlock>): Promise<IBlock> {

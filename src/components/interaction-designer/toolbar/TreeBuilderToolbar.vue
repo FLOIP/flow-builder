@@ -331,7 +331,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   handleRemoveActivatedBlockTriggered() {
     const { activeBlockId: blockId } = this
     this.flow_removeBlock({ blockId })
-    this.activateBlock({ blockId: null })
   }
 
   handleDuplicateActivatedBlockTriggered() {
@@ -413,7 +412,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   @flowVuexNamespace.State resources?: IResourceDefinition[]
 
-  @flowVuexNamespace.Mutation flow_removeBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => void
+  @flowVuexNamespace.Action flow_removeBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => void
 
   @flowVuexNamespace.Action flow_addBlankBlockByType!: ({ type, ...props }: Partial<IBlock>) => Promise<IBlock>
 
