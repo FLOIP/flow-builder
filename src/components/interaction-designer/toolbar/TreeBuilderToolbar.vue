@@ -30,16 +30,16 @@
             </router-link>
           </div>
 
-          <a v-if="!ui.isEditableLocked"
-             :href="editOrViewTreeJsUrl"
-             :title="trans('flow-builder.click-to-toggle-editing')"
-             class="btn btn-outline-secondary mr-2"
-             :class="{active: ui.isEditable}"
-             @click="attemptSaveTree">
-            {{trans('flow-builder.edit-flow')}}
-          </a>
+          <div v-if="!ui.isEditableLocked" @click="attemptSaveTree">
+            <router-link :to="editOrViewTreeJsUrl"
+                         class="btn btn-outline-secondary mr-2"
+                         :title="trans('flow-builder.click-to-toggle-editing')"
+            >
+              {{isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow')}}
+            </router-link>
+          </div>
 
-          <div v-if="ui.isEditable" class="dropdown mr-2">
+          <div v-if="isEditable" class="dropdown mr-2">
             <button type="button"
                     class="btn btn-outline-secondary dropdown-toggle"
                     data-toggle="dropdown">
@@ -117,16 +117,18 @@
             </div>
           </div>
 
-          <button v-if="ui.isEditable"
+          <button v-if="isEditable"
                   type="button"
+                  v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
                   class="btn btn-outline-secondary tree-duplicate-block mr-2"
                   @click.prevent="handleDuplicateActivatedBlockTriggered"
                   :disabled="!activeBlockId">
             {{trans('flow-builder.duplicate')}}
           </button>
 
-          <button v-if="ui.isEditable"
+          <button v-if="isEditable"
                   type="button"
+                  v-b-tooltip.hover="transIf(activeBlockId, 'flow-builder.tooltip-delete-block')"
                   class="btn btn-outline-secondary tree-delete-block mr-2"
                   @click.prevent="handleRemoveActivatedBlockTriggered"
                   :disabled="!activeBlockId">
@@ -136,7 +138,7 @@
           <slot name="extra-buttons"/>
 
           <div class="btn-group pull-right mr-2">
-            <button v-if="ui.isEditable && isFeatureTreeSaveEnabled"
+            <button v-if="isEditable && isFeatureTreeSaveEnabled"
                     type="button"
                     class="btn btn-primary tree-save-tree"
                     :title="trans('flow-builder.save-changes-to-the-flow')"
@@ -154,6 +156,7 @@
 
 </template>
 <script lang="ts">
+import Vue from 'vue'
 import lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
@@ -168,6 +171,9 @@ import pickBy from 'lodash/fp/pickBy'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
 import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
 import { computeBlockPositionsFrom } from '@/store/builder'
+import { VBTooltipPlugin } from 'bootstrap-vue'
+
+Vue.use(VBTooltipPlugin)
 
 export default {
   components: {
@@ -192,16 +198,16 @@ export default {
     }),
 
     ...mapGetters('flow', ['activeFlow']),
-    ...mapGetters('builder', ['activeBlock']),
     ...mapState('flow', ['flows', 'resources']),
+    ...mapGetters('builder', ['isEditable', 'activeBlock']),
     ...mapState('builder', ['activeBlockId']),
 
     ...mapGetters([
-      'isEditable',
       'isTreeSaving',
       'isBlockAvailableByBlockClass',
       'hasChanges',
       'isTreeValid',
+      'selectedBlock',
       'isFeatureTreeSaveEnabled',
       'isFeatureTreeSendEnabled',
       'isFeatureTreeDuplicateEnabled',
@@ -212,11 +218,17 @@ export default {
 
     flow: {
       get() {
-        const { flows, resources } = this
+        const {
+          flows,
+          resources,
+        } = this
         return JSON.stringify(
-          convertKeysCase({ flows, resources },
-            'SNAKE',
-            ['platformMetadata', 'ioViamo']),
+          convertKeysCase({
+            flows,
+            resources,
+          },
+          'SNAKE',
+          ['platformMetadata', 'ioViamo']),
           null,
           2,
         )
@@ -229,6 +241,10 @@ export default {
           ['platform_metadata', 'io_viamo'],
         ))
       },
+    },
+
+    jsKey() { // deprecate
+      return lodash.get(this.selectedBlock, 'jsKey')
     },
     editTreeUrl() {
       return this.editTreeRoute()
@@ -263,7 +279,7 @@ export default {
       return this.isTreeValid ? `/trees/${this.tree.id}/publishversion` : ''
     },
     editOrViewTreeJsUrl() {
-      if (this.ui.isEditable) {
+      if (this.isEditable) {
         return this.editTreeRoute({
           component: 'interaction-designer',
           mode: 'view',
@@ -347,7 +363,10 @@ export default {
       this.isImporterVisible = !this.isImporterVisible
     },
 
-    editTreeRoute({ component = null, mode = null } = {}) {
+    editTreeRoute({
+      component = null,
+      mode = null,
+    } = {}) {
       const context = this.removeNilValues({
         treeId: this.tree.id,
         component,
@@ -376,6 +395,10 @@ export default {
     removeNilValues(obj) {
       return lodash.pickBy(obj, lodash.identity)
     },
+
+    getDeleteToolTip() {
+      return this.trans('flow-builder.tooltip-delete-block')
+    }
   },
 }
 </script>

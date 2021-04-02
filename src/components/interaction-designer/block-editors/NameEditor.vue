@@ -1,7 +1,6 @@
 <template>
   <div class="block-name">
     <text-editor v-model="name"
-        :is-editable="isEditable"
         :label="'flow-builder.block-name' | trans"
         :placeholder="'flow-builder.enter-block-name' | trans"
         @keydown="filterName">
@@ -23,10 +22,6 @@ export default {
   },
   mixins: [lang],
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean,
-    },
     block: {
       type: Object,
       required: true,

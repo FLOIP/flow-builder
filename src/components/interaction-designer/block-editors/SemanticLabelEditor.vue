@@ -1,7 +1,6 @@
 <template>
   <div class="block-semantic-label">
     <text-editor v-model="semanticLabel"
-        :is-editable="isEditable"
         :label="'flow-builder.block-semantic-label' | trans"
         :placeholder="'flow-builder.enter-block-semantic-label' | trans"/>
   </div>
@@ -18,10 +17,6 @@ export default {
   },
   mixins: [lang],
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean,
-    },
     block: {
       type: Object,
       required: true,

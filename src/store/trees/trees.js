@@ -74,7 +74,7 @@ export default {
 
     selectedBlock: ({ tree, ui }, getters, rootState) => lodash.find(get(tree, 'blocks', []), { jsKey: ui.selectedBlock }),
 
-    subscriberPropertyFields: ({ ui }) => lodash.get(ui, 'subscriberPropertyFields'),
+    subscriberPropertyFields: ({ ui }) => lodash.get(ui, 'subscriberPropertyFields', []),
 
     groups: ({ ui }) => lodash.get(ui, 'groups'),
 

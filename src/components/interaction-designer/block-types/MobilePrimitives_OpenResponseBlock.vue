@@ -4,21 +4,23 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :block="block" />
-    <block-label-editor :block="block" />
-    <block-semantic-label-editor :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <block-max-duration-seconds-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
-    <block-max-response-characters-editor :block="block" :hasText="hasTextMode" @commitMaxResponseCharactersChange="setMaxResponseCharacters"/>
+      <block-max-duration-seconds-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
+      <block-max-response-characters-editor :block="block" :hasText="hasTextMode" @commitMaxResponseCharactersChange="setMaxResponseCharacters"/>
 
-    <resource-editor v-if="promptResource"
-                     :resource="promptResource"
-                     :block="block"
-                     :flow="flow" />
+      <resource-editor v-if="promptResource"
+                       :resource="promptResource"
+                       :block="block"
+                       :flow="flow" />
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>
@@ -49,6 +51,7 @@ import BlockMaxResponseCharactersEditor from '../block-editors/MaxResponseCharac
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const builderVuexNamespace = namespace('builder')
 
   @Component<any>({
     components: {
@@ -81,6 +84,8 @@ class MobilePrimitives_OpenResponseBlock extends Vue {
     @blockVuexNamespace.Action setMaxDurationSeconds!: (newDuration: number) => Promise<string>
 
     @blockVuexNamespace.Action setMaxResponseCharacters!: (newLength: number) => Promise<string>
+
+    @builderVuexNamespace.Getter isEditable !: boolean
   }
 
 export default MobilePrimitives_OpenResponseBlock
