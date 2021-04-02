@@ -1,7 +1,6 @@
 <template>
   <div class="form-group block-timeout">
     <numeric-editor v-model.number="timeout"
-        :is-editable="isEditable"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.Accuracy-timeout-in-seconds' | trans"
         :placeholder="'flow-builder.enter-value' | trans">
@@ -20,10 +19,6 @@ export default {
   },
   mixins: [lang],
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean,
-    },
     block: {
       type: Object,
       required: true,

@@ -1,8 +1,9 @@
 <template>
   <div>
     <text-editor v-model="semanticLabel"
-        :label="'flow-builder.block-semantic-label' | trans"
-        :placeholder="'flow-builder.enter-block-semantic-label' | trans"/>
+                 :is-editable="isEditable"
+                 :label="'flow-builder.block-exit-semantic-label' | trans"
+                 :placeholder="'flow-builder.enter-block-exit-semantic-label' | trans"/>
   </div>
 </template>
 
@@ -17,24 +18,28 @@ export default {
   },
   mixins: [lang],
   props: {
-    block: {
+    isEditable: {
+      default: true,
+      type: Boolean,
+    },
+    exit: {
       type: Object,
       required: true,
     },
   },
-  mixins: [lang],
   computed: {
     semanticLabel: {
       get() {
-        return this.block.semanticLabel
+        return this.exit.semanticLabel
       },
       set(value) {
-        this.block_setSemanticLabel({ blockId: this.block.uuid, value })
+        this.exit.semanticLabel = value
+        this.$emit('commitSemanticLabel', value)
       },
     },
   },
   methods: {
-    ...mapMutations('flow', ['block_setSemanticLabel']),
+    ...mapMutations('flow', ['block_setExitSemanticLabel']),
   },
 }
 

@@ -1,7 +1,6 @@
 <template>
   <text-editor v-model="expression"
       :label="label"
-      :is-editable="isEditable"
       :placeholder="placeholder"/>
 </template>
 
@@ -13,10 +12,6 @@ export default {
     TextEditor,
   },
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean,
-    },
     label: {
       type: [String, Number],
       required: true,

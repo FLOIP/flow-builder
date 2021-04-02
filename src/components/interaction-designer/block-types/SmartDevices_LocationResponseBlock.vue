@@ -4,16 +4,18 @@
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :block="block" />
-    <block-label-editor :block="block" />
-    <block-semantic-label-editor :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor  :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold"/>
-    <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout"/>
+      <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold"/>
+      <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout"/>
 
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>
@@ -44,6 +46,7 @@ import BlockTimeoutEditor from '../block-editors/TimeoutEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const builderVuexNamespace = namespace('builder')
 
   @Component<any>({
     components: {
@@ -77,6 +80,8 @@ class SmartDevices_LocationResponseBlock extends Vue {
     @blockVuexNamespace.Action setAccuracyThreshold!: ({ blockId, value }: {blockId: string; value: number}) => Promise<string>
 
     @blockVuexNamespace.Action setAccuracyTimeout!: ({ blockId, value }: {blockId: string; value: number}) => Promise<string>
+
+    @builderVuexNamespace.Getter isEditable !: boolean
   }
 
 export default SmartDevices_LocationResponseBlock

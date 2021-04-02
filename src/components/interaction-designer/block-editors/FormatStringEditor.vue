@@ -1,7 +1,6 @@
 <template>
   <div>
     <text-editor v-model="formatString"
-        :is-editable="isEditable"
         :label="'flow-builder.format-string' | trans"
         :placeholder="'flow-builder.enter-format-string' | trans"/>
   </div>
@@ -17,10 +16,6 @@ export default {
   },
   mixins: [lang],
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean,
-    },
     block: {
       type: Object,
       required: true,

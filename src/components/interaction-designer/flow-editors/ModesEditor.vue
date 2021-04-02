@@ -31,8 +31,6 @@ import lang from '@/lib/filters/lang'
     mixins: [lang],
   })
 class ModeEditor extends Vue {
-    @Prop({ default: true }) readonly isEditable!: boolean
-
     @Prop() readonly flow!: IFlow
 
     private availableModes = Object.values(SupportedMode)
