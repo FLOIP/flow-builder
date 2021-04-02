@@ -1,14 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import {Component, Vue} from 'vue-property-decorator'
 import Component from 'vue-class-component'
-
 import CaseBlock from '@/components/interaction-designer/block-types/Core_CaseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
 import {IRootState, store} from '@/store'
 import caseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
-
 import { BaseMountedVueClass } from './story-utils/storeSetup'
 import {namespace} from "vuex-class";
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -23,8 +19,8 @@ export default {
 
 const CaseBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <case-block 
-      :block="activeBlock" 
+    <case-block
+      :block="activeBlock"
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
