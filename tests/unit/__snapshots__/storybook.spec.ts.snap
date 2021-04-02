@@ -47,7 +47,7 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="ConsoleIO\\\\Print"
-                      data-for-block-id="6f67fcec-c5ba-4451-ae76-51a29b6b30fd"
+                      data-for-block-id="fake-uuid-181"
                     >
                       <div>
                         <h3
@@ -149,7 +149,7 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                           >
                             Block Id: 
                             <em>
-                              6f67fcec-c5ba-4451-ae76-51a29b6b30fd
+                              fake-uuid-181
                             </em>
                           </small>
                         </div>
@@ -214,7 +214,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="ConsoleIO\\\\Read"
-                      data-for-block-id="ff636756-f4f8-4c25-a121-98c32385a9d8"
+                      data-for-block-id="fake-uuid-199"
                     >
                       <div>
                         <h3
@@ -330,7 +330,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             Block Id: 
                             <em>
-                              ff636756-f4f8-4c25-a121-98c32385a9d8
+                              fake-uuid-199
                             </em>
                           </small>
                         </div>
@@ -411,7 +411,7 @@ exports[`Storyshots Core/Log Block Styled Existing Data Non Starting Block 1`] =
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="Core\\\\Log"
-                      data-for-block-id="4b353c2b-87d5-460c-a02c-ca64b367c08e"
+                      data-for-block-id="fake-uuid-44"
                     >
                       <!---->
                     </div>
@@ -479,7 +479,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                   >
                     <div
                       class="tree-sidebar-edit-flow"
-                      data-for-flow-id="19697f4a-0421-486f-a849-1461647234fd"
+                      data-for-flow-id="fake-uuid-10"
                     >
                       <div>
                         <h3
@@ -1939,7 +1939,7 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="MobilePrimitives\\\\Message"
-                      data-for-block-id="0d745701-2c6b-479b-a64f-971759973826"
+                      data-for-block-id="fake-uuid-62"
                     >
                       <div>
                         <h3
@@ -2041,7 +2041,7 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                           >
                             Block Id: 
                             <em>
-                              0d745701-2c6b-479b-a64f-971759973826
+                              fake-uuid-62
                             </em>
                           </small>
                         </div>
@@ -2214,7 +2214,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="SmartDevices\\\\LocationResponse"
-                      data-for-block-id="3c8a42c9-d36d-43c7-ac81-37a78efa6e72"
+                      data-for-block-id="fake-uuid-13"
                     >
                       <div>
                         <h3
@@ -2359,7 +2359,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                           >
                             Block Id: 
                             <em>
-                              3c8a42c9-d36d-43c7-ac81-37a78efa6e72
+                              fake-uuid-13
                             </em>
                           </small>
                         </div>
@@ -2424,7 +2424,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="SmartDevices\\\\PhotoResponse"
-                      data-for-block-id="33719b15-4e80-446d-b79e-7df99c5ec696"
+                      data-for-block-id="fake-uuid-160"
                     >
                       <div>
                         <h3
@@ -2524,7 +2524,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                           >
                             Block Id: 
                             <em>
-                              33719b15-4e80-446d-b79e-7df99c5ec696
+                              fake-uuid-160
                             </em>
                           </small>
                         </div>
