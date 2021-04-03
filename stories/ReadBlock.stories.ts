@@ -1,14 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 import ReadBlock from '@/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import {IRootState, store} from '@/store'
 import readBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
-import { BaseMountedVueClass} from './story-utils/storeSetup'
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
-
-Vue.use(Vuex)
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -20,59 +15,61 @@ export default {
 
 const readBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <read-block 
-      :block="activeBlock" 
+    <read-block
+      :block="activeBlock"
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
 
-const BaseOptions = {
+const BaseOptions: IBaseOptions = {
   components: {ReadBlock, FlowBuilderSidebarEditorContainer},
   template: readBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default log block state
-@Component<any>(
+@Component(
   {
     ...BaseOptions,
-    async mounted() {
-      await this.baseMounted(BLOCK_TYPE, readBlockStore)
-    },
   }
 )
-class DefaultClass extends BaseMountedVueClass {}
+class DefaultClass extends BaseMountedVueClass {
+  async mounted() {
+    await this.baseMounted(BLOCK_TYPE, readBlockStore)
+  }
+}
 export const Default = () => (DefaultClass)
 
-@Component<any>(
+@Component(
   {
     ...BaseOptions,
-    async mounted() {
-      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
-
-      this.setDescription(blockId)
-      this.setFormatString("%s lorem ipsum %d [...]")
-    },
   }
 )
 class ExistingDataClass extends BaseMountedVueClass {
-  @blockVuexNamespace.Action setFormatString!: void
+  async mounted() {
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
+
+    this.setDescription(blockId)
+    this.setFormatString("%s lorem ipsum %d [...]")
+  }
+
+  @blockVuexNamespace.Action setFormatString!: (newFormatString: string) => void
 }
 export const ExistingDataBlock = () => (ExistingDataClass)
 
-@Component<any>(
+@Component(
   {
     ...BaseOptions,
-    async mounted() {
-      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
-
-      this.setDescription(blockId)
-      this.setFormatString("%s lorem ipsum %d [...]")
-      await this.fakeCaseBlockAsFirstBlock(flowId)
-    },
   }
 )
 class ExistingDataNonStartingClass extends BaseMountedVueClass {
-  @blockVuexNamespace.Action setFormatString!: void
+  async mounted() {
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
+
+    this.setDescription(blockId)
+    this.setFormatString("%s lorem ipsum %d [...]")
+    await this.fakeCaseBlockAsFirstBlock(flowId)
+  }
+
+  @blockVuexNamespace.Action setFormatString!: (newFormatString: string) => void
 }
 export const ExistingDataNonStartingBlock = () => (ExistingDataNonStartingClass)

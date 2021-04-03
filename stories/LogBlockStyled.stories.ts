@@ -1,13 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import {IRootState, store} from '@/store'
 import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
-import { BaseMountedVueClass} from './story-utils/storeSetup'
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import {Component} from "vue-property-decorator";
-
-Vue.use(Vuex)
 
 export default {
   title: 'Core/Log Block Styled',
@@ -17,46 +12,48 @@ export default {
 
 const LogBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <log-block 
-      :block="activeBlock" 
+    <log-block
+      :block="activeBlock"
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-const BaseOptions = {
+const BaseOptions: IBaseOptions = {
   components: {LogBlock, FlowBuilderSidebarEditorContainer},
   template: LogBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default case block state
-@Component<any>({
+@Component({
   ...BaseOptions,
+})
+class DefaultClass extends BaseMountedVueClass {
   async mounted() {
     await this.baseMounted(BLOCK_TYPE, logBlockStore)
-  },
-})
-class DefaultClass extends BaseMountedVueClass {}
+  }
+}
 export const Default = () => (DefaultClass)
 
-@Component<any>({
+@Component({
   ...BaseOptions,
+})
+class CurrentClass2 extends BaseMountedVueClass {
   async mounted() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
     this.setDescription(blockId)
-  },
-})
-class CurrentClass2 extends BaseMountedVueClass {}
+  }
+}
 export const ExistingDataBlock = () => (CurrentClass2)
 
-@Component<any>({
+@Component({
   ...BaseOptions,
+})
+class CurrentClass3 extends BaseMountedVueClass {
   async mounted() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
     this.setDescription(blockId)
     await this.fakeCaseBlockAsFirstBlock(flowId)
-  },
-})
-class CurrentClass3 extends BaseMountedVueClass {}
+  }
+}
 export const ExistingDataNonStartingBlock = () => (CurrentClass3)

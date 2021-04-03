@@ -13,13 +13,24 @@ import {get, isEmpty, cloneDeep} from 'lodash'
 import { IResourceDefinitionVariantOverModesFilter } from "../../src/store/flow/resource";
 import Component from 'vue-class-component'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
 
 let storyInitState: any = {}
+
+Vue.use(Vuex)
+
+export interface IBaseOptions {
+  components: any;
+  template: string;
+}
 
 /**
  * Vue class used to gather required Getter, Mutation, Action for the BaseMounted binding
  */
-@Component({})
+@Component({
+  store: new Vuex.Store<IRootState>(store),
+})
 export class BaseMountedVueClass extends Vue {
   @builderVuexNamespace.Getter activeBlock!: IBlock
   @flowVuexNamespace.Getter activeFlow!: IFlow
@@ -28,8 +39,8 @@ export class BaseMountedVueClass extends Vue {
 
   @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
   @flowVuexNamespace.Action flow_addBlankBlockByType!: ({ type, ...props }: Partial<IBlock>) => Promise<IBlock>
-  @flowVuexNamespace.Action flow_add!: () => Promise<IFlow>
-  @flowVuexNamespace.Action flow_createWith!: () => Promise<IFlow>
+  @flowVuexNamespace.Action flow_add!: ({ flow } : { flow: IFlow}) => Promise<IFlow>
+  @flowVuexNamespace.Action flow_createWith!: ({ props }: {props: {uuid: string} & Partial<IFlow>}) => Promise<IFlow>
 
   @flowVuexNamespace.Mutation block_setName: any
   @flowVuexNamespace.Mutation block_setLabel: any

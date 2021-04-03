@@ -1,19 +1,14 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 import OpenResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_OpenResponseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import {IRootState, store} from '@/store'
 import openResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
 import {SupportedMode} from '@floip/flow-runner'
 
 import {
   BaseMountedVueClass,
-  BaseMountedVueClassWithResourceAndMode,
+  BaseMountedVueClassWithResourceAndMode, IBaseOptions,
 } from './story-utils/storeSetup'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
-
-Vue.use(Vuex)
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -25,33 +20,35 @@ export default {
 
 const OpenResponseBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <open-response-block 
-      :block="activeBlock" 
+    <open-response-block
+      :block="activeBlock"
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
 
-const BaseOptions = {
+const BaseOptions: IBaseOptions = {
   components: {OpenResponseBlock, FlowBuilderSidebarEditorContainer},
   template: OpenResponseBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default open-response block state
-@Component<any>(
+@Component(
     {
       ...BaseOptions,
-      async mounted() {
-        await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
-      },
     }
 )
-class CurrentClass1 extends BaseMountedVueClass {}
+class CurrentClass1 extends BaseMountedVueClass {
+  async mounted() {
+    await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
+  }
+}
 export const Default = () => (CurrentClass1)
 
 //ExistingDataForAllModes
-@Component<any>({
+@Component({
   ...BaseOptions,
+})
+class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
@@ -62,17 +59,18 @@ export const Default = () => (CurrentClass1)
     })
     this.setMaxDurationSeconds(3*60)
     this.setMaxResponseCharacters(160)
-  },
-})
-class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
+  }
+
   @blockVuexNamespace.Action setMaxDurationSeconds:any
   @blockVuexNamespace.Action setMaxResponseCharacters:any
 }
 export const ExistingDataForAllModes = () => (CurrentClass2)
 
 //ExistingDataForIvrOnly
-@Component<any>({
+@Component({
   ...BaseOptions,
+})
+class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
@@ -83,16 +81,17 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
       shouldSetChoices: false,
       configPath: 'config.prompt'
     })
-  },
-})
-class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
+  }
+
   @blockVuexNamespace.Action setMaxDurationSeconds:any
 }
 export const ExistingDataForIvrOnly = () => (CurrentClass3)
 
 //ExistingDataForTextOnly
-@Component<any>({
+@Component({
   ...BaseOptions,
+})
+class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
@@ -103,24 +102,24 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
       shouldSetChoices: false,
       configPath: 'config.prompt'
     })
-  },
-})
-class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
+  }
+
   @blockVuexNamespace.Action setMaxResponseCharacters:any
 }
 export const ExistingDataForTextOnly = () => (CurrentClass4)
 
 //NonStartingBlock
-@Component<any>(
+@Component(
     {
       ...BaseOptions,
-      async mounted() {
-        const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
-
-        this.setDescription(blockId)
-        await this.fakeCaseBlockAsFirstBlock(flowId)
-      },
     }
 )
-class CurrentClass5 extends BaseMountedVueClass {}
+class CurrentClass5 extends BaseMountedVueClass {
+  async mounted() {
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
+
+    this.setDescription(blockId)
+    await this.fakeCaseBlockAsFirstBlock(flowId)
+  }
+}
 export const NonStartingBlock = () => (CurrentClass5)
