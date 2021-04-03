@@ -4,10 +4,14 @@ import {
 } from 'vuex-class';
 import FlowBuilderContainer from './story-utils/FlowBuilderContainer.vue'
 import {Component} from 'vue-property-decorator'
+import {IRootState, store} from '@/store'
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import StoryRouter from 'storybook-vue-router'
 import {routes} from '@/router'
 import {IBaseOptions} from "./story-utils/storeSetup";
+import Vuex from "vuex";
+
+Vue.use(Vuex)
 
 // Allow story to load components which use <router-link>
 const decorators = [() => ({ template: '<div><story/></div>' })];
@@ -32,6 +36,7 @@ const ToolbarTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {FlowBuilderContainer, TreeBuilderToolbar},
   template: ToolbarTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 @Component({

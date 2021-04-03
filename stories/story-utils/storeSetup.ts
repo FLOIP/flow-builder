@@ -23,6 +23,7 @@ Vue.use(Vuex)
 export interface IBaseOptions {
   components: any;
   template: string;
+  store?: any;
 }
 
 /**
