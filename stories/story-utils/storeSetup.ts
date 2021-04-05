@@ -73,14 +73,17 @@ export class BaseMountedVueClass extends Vue {
       this.$store.unregisterModule(['flow', BLOCK_TYPE])
     }
     // todo: this will end up in `flow_addBlankBlockByType` once we get async import builds working
+    console.log(`Registering module flow/${BLOCK_TYPE}`)
     this.$store.registerModule(['flow', BLOCK_TYPE], blockTypeStore)
   }
 
   async baseMounted(BLOCK_TYPE: string, blockTypeStore: any): Promise<any> {
     if (isEmpty(storyInitState)) {
+      console.log('storyInitState is empty')
       storyInitState = cloneDeep(this.$store.state)
     } else {
       // Make sure we have cleared state in store for each new mounted story, as we're using one flow to put blocks
+      console.log('storyInitState is NOT empty, clearing it')
       Object.assign(this.$store.state, cloneDeep(storyInitState))
     }
 
