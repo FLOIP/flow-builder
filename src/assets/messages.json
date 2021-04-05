@@ -1,6 +1,6 @@
 {
   "en.flow-builder": {
-    "scanf-format-string-invalid": "Chaîne de format non valide. Veuillez consulter la documentation de scanf: https://www.php.net/manual/en/function.sscanf.php",
+    "scanf-format-string-invalid": "Format String Invalid. Please refer to the documentation for scanf: https://www.php.net/manual/en/function.sscanf.php",
     "edit-variable": "Enter Variable Name",
     "format-string": "Format String",
     "enter-format-string": "Enter Format String",
