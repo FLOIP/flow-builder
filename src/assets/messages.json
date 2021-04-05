@@ -1,5 +1,9 @@
 {
   "en.flow-builder": {
+    "scanf-format-string-invalid": "Format String Invalid. Please refer to the documentation for scanf: https://www.php.net/manual/en/function.sscanf.php",
+    "edit-variable": "Enter Variable Name",
+    "format-string": "Format String",
+    "enter-format-string": "Enter Format String",
     "flow-name":  "Flow name",
     "flow-label": "Flow label",
     "flow-importer": "Flow importer",
@@ -1539,6 +1543,10 @@
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
   },
   "fr.flow-builder": {
+    "scanf-format-string-invalid": "Chaîne de format non valide. Veuillez vous référer à la documentation: https://www.php.net/manual/en/function.sscanf.php",
+    "edit-variable": "Modifier le nom de la variable",
+    "format-string": "Chaîne de format",
+    "enter-format-string": "Entrez la chaîne de format",
     "flow-name":  "Nom du flux",
     "flow-label": "Libélé du flux",
     "flow-importer": "importateur de flux",
