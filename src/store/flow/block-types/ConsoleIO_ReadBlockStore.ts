@@ -7,14 +7,23 @@ import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUui
 import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import { defaults, split } from 'lodash'
 import { IFlowsState } from '../index'
+import { sscanf } from 'scanf'
 
 export const BLOCK_TYPE = 'ConsoleIO\\Read'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   destinationVariablesFields: (state, getters, rootState, rootGetters): string[] => {
     const activeBlock = rootGetters['builder/activeBlock']
-    // TODO: correct the destination variables array according to scanf library we're using, and think about consecutive % or other error we should avoid
-    return new Array(split(activeBlock.config.format_string || '', '%').length - 1)
+    try {
+      //We don't care what string we use to test the format string
+      //...we just want to know how many scanf variables we will read.
+      //When we would only read a single variable the library only gives back one value
+      //...rather than an array so we have to force it into an array.
+      const destinationVariables = sscanf('any string', activeBlock.config.format_string || '')
+      return (typeof destinationVariables === 'object') ? destinationVariables : [destinationVariables]
+    } catch (error) {
+      return []
+    }
   },
 }
 

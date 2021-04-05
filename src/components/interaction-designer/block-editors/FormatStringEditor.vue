@@ -2,17 +2,18 @@
   <div>
     <text-editor v-model="formatString"
         :label="'flow-builder.format-string' | trans"
-        :placeholder="'flow-builder.enter-format-string' | trans"/>
-    <small class="text-muted" v-if="!isScanfSelectorValid">
-      {{'flow-builder.scanf-format-string-invalid' | trans}}
-    </small>
+        :placeholder="'flow-builder.enter-format-string' | trans">
+      <small class="text-danger" v-if="!isScanfSelectorValid">
+        {{'flow-builder.scanf-format-string-invalid' | trans}}
+      </small>
+    </text-editor>
   </div>
 </template>
 
 <script>
 import TextEditor from '@/components/common/TextEditor'
 import lang from '@/lib/filters/lang'
-import scanf from 'scanf'
+import { sscanf } from 'scanf'
 
 export default {
   components: {
@@ -37,7 +38,7 @@ export default {
       },
       set(newFormatString) {
         try {
-          scanf(newFormatString)
+          sscanf('any string', newFormatString)
           this.isScanfSelectorValid = true
         } catch (error) {
           this.isScanfSelectorValid = false
