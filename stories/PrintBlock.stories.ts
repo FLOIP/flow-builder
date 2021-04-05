@@ -5,13 +5,17 @@ import {
   BaseMountedVueClass,
   BaseMountedVueClassWithResourceAndMode, IBaseOptions,
 } from './story-utils/storeSetup'
-import {Component} from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
 
 export default {
   title: 'ConsoleIo/Print Block',
   // Our exports that end in "Data" are not stories.
   excludeStories: /.*Data$/,
 }
+
+Vue.use(Vuex)
 
 const PrintBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
@@ -24,6 +28,7 @@ const PrintBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {PrintBlock, FlowBuilderSidebarEditorContainer},
   template: PrintBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default log block state

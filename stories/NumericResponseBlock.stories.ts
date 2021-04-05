@@ -6,8 +6,12 @@ import {
   BaseMountedVueClass,
   BaseMountedVueClassWithResourceAndMode, IBaseOptions,
 } from './story-utils/storeSetup'
-import {Component} from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -28,6 +32,7 @@ const NumericResponseBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {NumericResponseBlock, FlowBuilderSidebarEditorContainer},
   template: NumericResponseBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default numeric-response block state

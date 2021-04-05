@@ -2,7 +2,11 @@ import OutputBlock from '@/components/interaction-designer/block-types/Core_Outp
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import outputBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
-import {Component} from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 export default {
   title: 'Core/Output Block Styled',
@@ -21,6 +25,7 @@ const OutputBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {OutputBlock, FlowBuilderSidebarEditorContainer},
   template: OutputBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default log block state

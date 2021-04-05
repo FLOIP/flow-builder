@@ -1,4 +1,4 @@
-import {Component} from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
 import {
   BaseMountedVueClass,
   BaseMountedVueClassWithResourceAndMode,
@@ -11,6 +11,10 @@ import selectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimiti
 import {
   SupportedMode,
 } from '@floip/flow-runner'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 export default {
   component: SelectOneResponseBlock,
@@ -31,6 +35,7 @@ const BaseOptions: IBaseOptions = {
     FlowBuilderSidebarEditorContainer,
     SelectOneResponseBlock,
   },
+  store: new Vuex.Store<IRootState>(store),
 }
 
 @Component({

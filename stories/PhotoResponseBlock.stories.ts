@@ -2,7 +2,11 @@ import PhotoResponseBlock from '@/components/interaction-designer/block-types/Sm
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import photoResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
-import {Component} from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 export default {
   title: 'SmartDevices/Photo Response Block',
@@ -21,6 +25,7 @@ const PhotoResponseBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {PhotoResponseBlock, FlowBuilderSidebarEditorContainer},
   template: PhotoResponseBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default photo-response block state

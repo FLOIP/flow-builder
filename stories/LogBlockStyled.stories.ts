@@ -2,7 +2,11 @@ import LogBlock from '@/components/interaction-designer/block-types/Core_LogBloc
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
-import {Component} from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 export default {
   title: 'Core/Log Block Styled',
@@ -20,6 +24,7 @@ const LogBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {LogBlock, FlowBuilderSidebarEditorContainer},
   template: LogBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default case block state

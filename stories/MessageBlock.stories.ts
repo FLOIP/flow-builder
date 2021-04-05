@@ -6,7 +6,11 @@ import {
   BaseMountedVueClassWithResourceAndMode, IBaseOptions,
 } from './story-utils/storeSetup'
 
-import {Component} from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 export default {
   title: 'MobilePrimitives/Message Block',
@@ -24,6 +28,7 @@ const MessageBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {MessageBlock, FlowBuilderSidebarEditorContainer},
   template: MessageBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 @Component({

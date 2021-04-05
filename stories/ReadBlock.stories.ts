@@ -2,8 +2,12 @@ import ReadBlock from '@/components/interaction-designer/block-types/ConsoleIO_R
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import readBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
-import {Component} from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -24,6 +28,7 @@ const readBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {ReadBlock, FlowBuilderSidebarEditorContainer},
   template: readBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default log block state

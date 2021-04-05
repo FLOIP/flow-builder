@@ -2,8 +2,12 @@ import LocationResponseBlock from '@/components/interaction-designer/block-types
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import locationResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
-import {Component} from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -24,6 +28,7 @@ const LocationResponseBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {LocationResponseBlock, FlowBuilderSidebarEditorContainer},
   template: LocationResponseBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default location-response block state

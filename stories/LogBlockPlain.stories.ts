@@ -1,8 +1,12 @@
-import {Component} from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
 import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock.vue'
 import PlainFlowBuilderBlockEditorContainer from './story-utils/PlainFlowBuilderBlockEditorContainer.vue'
 import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 export default {
   title: 'Core/Log Block Plain',
@@ -21,6 +25,7 @@ const LogBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {LogBlock, PlainFlowBuilderBlockEditorContainer},
   template: LogBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default log block state

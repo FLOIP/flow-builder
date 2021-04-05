@@ -1,4 +1,4 @@
-import {Component} from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
 import {
   BaseMountedVueClass,
   BaseMountedVueClassWithResourceAndMode,
@@ -11,6 +11,10 @@ import selectManyStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimit
 import {
   SupportedMode,
 } from '@floip/flow-runner'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 export default {
   component: selectManyResponseBlock,
@@ -31,6 +35,7 @@ const BaseOptions: IBaseOptions = {
     selectManyResponseBlock,
   },
   template: SelectManyTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 @Component({

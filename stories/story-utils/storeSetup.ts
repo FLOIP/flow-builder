@@ -103,7 +103,9 @@ export class BaseMountedVueClass extends Vue {
   }
 }
 
-@Component({})
+@Component({
+  store: new Vuex.Store<IRootState>(store),
+})
 export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass {
   @flowVuexNamespace.Mutation resource_setValue: any
   @flowVuexNamespace.Mutation flow_setSupportedMode: any

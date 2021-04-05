@@ -7,8 +7,12 @@ import {
   BaseMountedVueClass,
   BaseMountedVueClassWithResourceAndMode, IBaseOptions,
 } from './story-utils/storeSetup'
-import {Component} from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -29,6 +33,7 @@ const OpenResponseBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {OpenResponseBlock, FlowBuilderSidebarEditorContainer},
   template: OpenResponseBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default open-response block state

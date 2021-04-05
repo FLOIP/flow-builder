@@ -2,9 +2,12 @@ import RunAnotherFlowBlock from '@/components/interaction-designer/block-types/C
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import runAnotherFlowBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
-import {Component} from "vue-property-decorator";
-
+import {Component, Vue} from "vue-property-decorator";
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 export default {
   title: 'Core/Run Another Flow Block Styled',
@@ -22,6 +25,7 @@ const RunAnotherFlowBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {RunAnotherFlowBlock, FlowBuilderSidebarEditorContainer},
   template: RunAnotherFlowBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default log block state
