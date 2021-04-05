@@ -37,7 +37,7 @@ const BaseOptions: IBaseOptions = {
   }
 )
 class CurrentClass1 extends BaseMountedVueClass {
-  async mounted() {
+  async created() {
     await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
   }
 }
@@ -48,7 +48,7 @@ export const Default = () => (CurrentClass1)
   ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
-  async mounted() {
+  async created() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
 
     this.setDescription(blockId)
@@ -72,7 +72,7 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
   ...BaseOptions,
 })
 class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
-  async mounted() {
+  async created() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: SupportedMode.IVR})
@@ -97,7 +97,7 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
   ...BaseOptions,
 })
 class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
-  async mounted() {
+  async created() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: [SupportedMode.SMS, SupportedMode.USSD]})
@@ -122,7 +122,7 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
     }
 )
 class CurrentClass5 extends BaseMountedVueClass {
-  async mounted() {
+  async created() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
 
     this.setDescription(blockId)

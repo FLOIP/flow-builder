@@ -33,7 +33,7 @@ const BaseOptions: IBaseOptions = {
   }
 )
 class DefaultClass extends BaseMountedVueClass {
-  async mounted() {
+  async created() {
     await this.baseMounted(BLOCK_TYPE, readBlockStore)
   }
 }
@@ -45,7 +45,7 @@ export const Default = () => (DefaultClass)
   }
 )
 class ExistingDataClass extends BaseMountedVueClass {
-  async mounted() {
+  async created() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
 
     this.setDescription(blockId)
@@ -62,7 +62,7 @@ export const ExistingDataBlock = () => (ExistingDataClass)
   }
 )
 class ExistingDataNonStartingClass extends BaseMountedVueClass {
-  async mounted() {
+  async created() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
 
     this.setDescription(blockId)

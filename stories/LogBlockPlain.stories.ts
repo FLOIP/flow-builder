@@ -28,7 +28,7 @@ const BaseOptions: IBaseOptions = {
   ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {
-  async mounted() {
+  async created() {
     await this.baseMounted(BLOCK_TYPE, logBlockStore)
   }
 }
@@ -38,7 +38,7 @@ export const Default = () => (DefaultClass)
   ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClass {
-  async mounted() {
+  async created() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
     this.setDescription(blockId)

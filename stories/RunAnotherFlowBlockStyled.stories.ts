@@ -29,7 +29,7 @@ const BaseOptions: IBaseOptions = {
   ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {
-  async mounted() {
+  async created() {
     await this.baseMounted(BLOCK_TYPE, runAnotherFlowBlockStore)
     const flowOne = await this.flow_createWith({
       props: {uuid: (new IdGeneratorUuidV4()).generate(), name: 'My other flow'}
