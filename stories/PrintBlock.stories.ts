@@ -31,7 +31,7 @@ const BaseOptions: IBaseOptions = {
   ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {
-  async created() {
+  async mounted() {
     await this.baseMounted(BLOCK_TYPE, printBlockStore)
   }
 }
@@ -44,7 +44,7 @@ export const Default = () => {
   }
 )
 class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
-  async created() {
+  async mounted() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
 
     this.setDescription(blockId)
@@ -62,7 +62,7 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
   }
 )
 class NonStartingBlockClass extends BaseMountedVueClass {
-  async created() {
+  async mounted() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
 
     this.setDescription(blockId)

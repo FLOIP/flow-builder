@@ -30,7 +30,7 @@ const BaseOptions: IBaseOptions = {
   ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {
-  async created() {
+  async mounted() {
     await this.baseMounted(BLOCK_TYPE, caseBlockStore)
   }
 }
@@ -41,7 +41,7 @@ export const Default = () => (DefaultClass)
   ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClass {
-  async created() {
+  async mounted() {
     const { block } = await this.baseMounted(BLOCK_TYPE, caseBlockStore)
     const blockId = block.uuid
 

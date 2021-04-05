@@ -28,7 +28,7 @@ const BaseOptions: IBaseOptions = {
   ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {
-  async created() {
+  async mounted() {
     await this.baseMounted(BLOCK_TYPE, outputBlockStore)
   }
 }

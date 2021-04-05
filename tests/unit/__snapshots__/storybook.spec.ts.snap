@@ -103,9 +103,7 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -258,9 +256,7 @@ exports[`Storyshots ConsoleIo/Read Block Default 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -432,9 +428,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -621,9 +615,7 @@ exports[`Storyshots Core/Log Block Styled Default 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -931,9 +923,7 @@ exports[`Storyshots Core/Output Block Styled Default 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -1098,9 +1088,7 @@ exports[`Storyshots Core/Run Another Flow Block Styled Default 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -1270,9 +1258,7 @@ exports[`Storyshots Flow/Flow Editor Default 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div
                             class="form-group flow-label"
                           >
@@ -1522,9 +1508,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div
                             class="form-group flow-label"
                           >
@@ -1781,20 +1765,200 @@ exports[`Storyshots InteractionDesigner/Toolbar Default 1`] = `
                       <div>
                         <a
                           class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
+                          href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
                           
-            Edit Flow
+            View Flow
           
                         </a>
                       </div>
                        
-                      <!---->
+                      <div
+                        class="dropdown mr-2"
+                      >
+                        <button
+                          class="btn btn-outline-secondary dropdown-toggle"
+                          data-toggle="dropdown"
+                          type="button"
+                        >
+                          
+            Add Block
+          
+                        </button>
+                         
+                        <div
+                          class="dropdown-menu"
+                        >
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Print"
+                            href="#"
+                          >
+                            
+                Print
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Read"
+                            href="#"
+                          >
+                            
+                Read
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Case"
+                            href="#"
+                          >
+                            
+                Case
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Log"
+                            href="#"
+                          >
+                            
+                Log
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Output"
+                            href="#"
+                          >
+                            
+                Output
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\RunFlow"
+                            href="#"
+                          >
+                            
+                Run Flow
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\Message"
+                            href="#"
+                          >
+                            
+                Message
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            href="#"
+                          >
+                            
+                Numeric Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            href="#"
+                          >
+                            
+                Open Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            href="#"
+                          >
+                            
+                Select One Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            href="#"
+                          >
+                            
+                Select Many Responses
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\LocationResponse"
+                            href="#"
+                          >
+                            
+                Location Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            href="#"
+                          >
+                            
+                Photo Response
+              
+                          </a>
+                           
+                          <!---->
+                           
+                          <!---->
+                        </div>
+                      </div>
                        
-                      <!---->
+                      <button
+                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        disabled="disabled"
+                        type="button"
+                      >
+                        
+          Duplicate
+        
+                      </button>
                        
-                      <!---->
+                      <button
+                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        disabled="disabled"
+                        type="button"
+                      >
+                        
+          Delete
+        
+                      </button>
                         
                       <div
                         class="btn-group pull-right mr-2"
@@ -2970,9 +3134,7 @@ exports[`Storyshots MobilePrimitives/Message Block Default 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -3130,9 +3292,7 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -3285,9 +3445,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Default 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -3523,7 +3681,24 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Default 1`] = `
                                   </a>
                                 </li>
                                  
-                                <!---->
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1"
+                                    href="#"
+                                    style="overflow: hidden;"
+                                  >
+                                    
+                  Upload
+                
+                                    <input
+                                      accept="audio/*"
+                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                      type="file"
+                                    />
+                                  </a>
+                                </li>
                               </ul>
                                
                               <div
@@ -3684,9 +3859,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Default 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -3908,7 +4081,24 @@ exports[`Storyshots MobilePrimitives/Open Response Block Default 1`] = `
                                   </a>
                                 </li>
                                  
-                                <!---->
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1"
+                                    href="#"
+                                    style="overflow: hidden;"
+                                  >
+                                    
+                  Upload
+                
+                                    <input
+                                      accept="audio/*"
+                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                      type="file"
+                                    />
+                                  </a>
+                                </li>
                               </ul>
                                
                               <div
@@ -4088,9 +4278,7 @@ exports[`Storyshots MobilePrimitives/SelectOneResponseBlock More Languages 1`] =
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -4343,9 +4531,7 @@ exports[`Storyshots SmartDevices/Location Response Block Default 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -4547,9 +4733,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -4745,9 +4929,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Default 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"
@@ -4904,9 +5086,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
   
                         </h3>
                          
-                        <fieldset
-                          disabled="disabled"
-                        >
+                        <fieldset>
                           <div>
                             <div
                               class="form-group"

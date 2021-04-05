@@ -31,7 +31,7 @@ const BaseOptions: IBaseOptions = {
   ...BaseOptions,
 })
 class CurrentClass1 extends BaseMountedVueClass {
-  async created() {
+  async mounted() {
     await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)
   }
 }
@@ -42,7 +42,7 @@ export const Default = () => (CurrentClass1)
   ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClass {
-  async created() {
+  async mounted() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)
 
     this.setDescription(blockId)
@@ -60,7 +60,7 @@ export const ExistingDataPreFilled = () => (CurrentClass2)
   ...BaseOptions,
 })
 class CurrentClass3 extends BaseMountedVueClass {
-  async created() {
+  async mounted() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)
 
     this.setDescription(blockId)
