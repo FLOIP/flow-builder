@@ -27,19 +27,16 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       return memo
     }, choices)
   },
-  allChoicesHaveContent: (state, getters): boolean => Object.keys(getters.inflatedChoices).every((key: string) => someItemsHaveValue(getters.inflatedChoices[key].values, 'value')),
-  twoChoicesBlank: (state, getters): boolean => {
+  allChoicesHaveContent: (): boolean =>
+    Object.keys(getters.inflatedChoices).every((key: string) =>
+      someItemsHaveValue(getters.inflatedChoices[key].values, 'value')),
+  twoChoicesBlank: (): boolean => {
     let blankNumber = 0
     return Object.keys(getters.inflatedChoices).some((key: string) => {
       if (!someItemsHaveValue(getters.inflatedChoices[key].values, 'value')) {
         blankNumber += 1
       }
-
-      if (blankNumber > 1) {
-        return true
-      }
-
-      return false
+      return blankNumber > 1
     })
   },
 }
@@ -53,14 +50,14 @@ export const mutations: MutationTree<IFlowsState> = {
       (this.state.flow as unknown) as IContext,
     ) as ISelectOneResponseBlock
     delete block.config.choices[choiceKeyToRemove]
-    const choices: { [key: string]: string } = {}
+    const choicesInitialValue: { [key: string]: string } = {}
     // rekey
     block.config.choices = Object.keys(block.config.choices)
       .sort()
       .reduce((choices, choiceKey: string, index: number) => {
         choices[index + 1] = block.config.choices[choiceKey]
         return choices
-      }, choices)
+      }, choicesInitialValue)
   },
   pushNewChoice(state, {choiceId, blockId, newIndex}) {
     // TODO - this shouldn't be necessary
@@ -74,7 +71,7 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async popFirstEmptyChoice({commit, rootGetters, getters}) {
+  async popFirstEmptyChoice({commit, rootGetters}) {
     const choiceToRemove = find(
       Object.keys(getters.inflatedChoices),
       (key: string) => !someItemsHaveValue(getters.inflatedChoices[key].values, 'value'),
@@ -89,7 +86,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return null
   },
   async editSelectOneResponseBlockChoice({
-    commit, dispatch, getters, rootGetters,
+    commit, dispatch, rootGetters,
   }) {
     const activeBlock = rootGetters['builder/activeBlock']
     if (getters.allChoicesHaveContent) {

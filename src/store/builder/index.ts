@@ -10,6 +10,7 @@ import {IBlock, SupportedMode, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 import {createFormattedDate} from '@floip/flow-runner/dist/domain/DateFormat'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import * as blankFlow from './blank-flow.json'
 
 // TODO: migrate these to flight-monitor
 export enum OperationKind {
@@ -228,8 +229,8 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
       kind: OperationKind.CONNECTION_CREATE,
       data: {source: {blockId, exitId}, position, target: null},
     }
-
-    commit('setOperation', {operation}) // this would be a flight-monitor create(key)
+    // this would be a flight-monitor create(key)
+    commit('setOperation', {operation})
   },
 
   setConnectionCreateTargetBlock({commit, state}, {block}) {
@@ -314,22 +315,21 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    * }
    * @param dispatch
    * @param commit
-   * @param state
    * @param rootState
    * @param flows
    */
   async importFlowsAndResources({rootState}, {flows, resources}) {
     console.debug('importing flows & resources ...')
-    console.log({flows, resources})
+    console.debug({flows, resources})
     const {flow: flowState} = rootState
     const defaultSupportedMode = [SupportedMode.IVR, SupportedMode.SMS, SupportedMode.USSD]
 
     // add default activated modes if not set yet
-    for (const key in flows) {
-      if (!flows[key].hasOwnProperty('supportedModes') || !flows[key].supportedModes.length) {
-        flows[key].supportedModes = defaultSupportedMode
+    flows.forEach((flow) => {
+      if (!flow.supportedModes || !flow.supportedModes.length) {
+        flow.supportedModes = defaultSupportedMode
       }
-    }
+    })
 
     // Update flow state
     flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flows)
@@ -348,7 +348,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     console.debug('builder', 'loading flow...')
 
     // todo: we need something like: set context
-    const flowContext = require('./blank-flow.json')
+    const flowContext = blankFlow.default
     const flow = flowContext.flows[0]
     flow.uuid = new IdGeneratorUuidV4().generate()
     flow.lastModified = createFormattedDate()
@@ -356,7 +356,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     // @ts-ignore
     flow.languages = cloneDeep(rootState.trees.ui.languages)
 
-    flowContext.resources.forEach((resource: any) => commit('flow/resource_add', {resource}, {root: true}))
+    flowContext.resources.forEach((resource) => commit('flow/resource_add', {resource}, {root: true}))
 
     await dispatch('flow/flow_add', {flow}, {root: true})
 

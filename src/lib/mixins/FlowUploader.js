@@ -1,5 +1,5 @@
 import Flow from '@flowjs/flow.js'
-import {extend, chain} from 'lodash'
+import {extend, flow, find, assign} from 'lodash'
 
 const dispatch = (el, name, data) => {
   el.dispatchEvent(extend(new Event(name, {
@@ -36,13 +36,13 @@ export default {
         extend(el.style, {overflow: 'hidden'})
         uploader.assignBrowse(el)
 
-        chain(el.children)
-          .find({
+        flow(
+          find({
             tagName: 'INPUT',
             type: 'file',
-          })
-          .assign({accept})
-          .value()
+          }),
+          assign({accept}).value(),
+        )(el.children)
 
         // todo: migrate to proxied catch-all handler (voto5 legacy todo)
         // uploader.on('catchAll', (name, file/*or files*/, e) => console.debug(name))

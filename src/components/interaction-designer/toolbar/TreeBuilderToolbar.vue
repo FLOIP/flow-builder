@@ -182,9 +182,9 @@ import Routes from '@/lib/mixins/Routes'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
-import lodash, {isEmpty, get, isNil, identity} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
+import {isEmpty, get, isNil, identity, pickBy as _pickBy} from 'lodash'
 // import {affix as Affix} from 'vue-strap'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
@@ -392,7 +392,7 @@ export default {
       return this.trans(`flow-builder.${className}`)
     },
     shouldDisplayDividerBefore(blockClasses, className) {
-      const shouldShowDividerBeforeBlock = lodash.pickBy(blockClasses, (classDetails) =>
+      const shouldShowDividerBeforeBlock = _pickBy(blockClasses, (classDetails) =>
         this.hasClassDetail(classDetails, 'dividerBefore'))[className]
       return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
     },
@@ -402,7 +402,7 @@ export default {
 
     // This could be extracted to a helper mixin of some sort so it can be used in other places
     removeNilValues(obj) {
-      return lodash.pickBy(obj, identity)
+      return _pickBy(obj, identity)
     },
 
     getDeleteToolTip() {

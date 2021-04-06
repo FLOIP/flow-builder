@@ -220,7 +220,7 @@ export default {
     ...mapMutations('builder', ['setBlockPositionTo']),
 
     ...mapActions('builder', {
-      _removeConnectionFrom: 'removeConnectionFrom',
+      builder_removeConnectionFrom: 'removeConnectionFrom',
     }),
 
     ...mapActions('builder', [
@@ -301,7 +301,7 @@ export default {
 
     removeConnectionFrom(exit) {
       const {block} = this
-      this._removeConnectionFrom({block, exit})
+      this.builder_removeConnectionFrom({block, exit})
     },
 
     handleDraggableInitializedFor({uuid}, {draggable}) {

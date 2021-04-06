@@ -1,4 +1,4 @@
-var eslintConfig = require('../../.eslintrc.js');
+var eslintConfig = require('../../eslintrc.js');
 //Note that this config is for the current folder only
 
 module.exports = Object.assign({}, eslintConfig, {

@@ -26,10 +26,11 @@ export const DEFAULT_MODES = [SupportedMode.SMS, SupportedMode.USSD, SupportedMo
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   activeFlow: (state) => state.flows.length && getActiveFlowFrom((state as unknown) as IContext),
-
-  hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) =>
+  // eslint-disable-next-line no-shadow
+  hasTextMode: (_, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) =>
     includes(getters.activeFlow.supportedModes || [], mode)),
-  hasVoiceMode: (state, getters) => includes(getters.activeFlow.supportedModes || [], SupportedMode.IVR),
+  // eslint-disable-next-line no-shadow
+  hasVoiceMode: (_, getters) => includes(getters.activeFlow.supportedModes || [], SupportedMode.IVR),
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -77,7 +78,10 @@ export const mutations: MutationTree<IFlowsState> = {
 
     forEach(blocks, ({exits}) => {
       const exitsTowardUs = exits.filter((e) => e.destinationBlock === blockId)
-      forEach(exitsTowardUs, (e) => (e.destinationBlock = undefined))
+      forEach(exitsTowardUs, (e) => {
+        e.destinationBlock = undefined
+        return e
+      })
     })
 
     // @ts-ignore
@@ -129,7 +133,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       props: {uuid: new IdGeneratorUuidV4().generate()},
     })
 
-    return await dispatch('flow_add', {flow})
+    return dispatch('flow_add', {flow})
   },
 
   async flow_add({state}, {flow}): Promise<IFlow> {
@@ -188,6 +192,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return resource
   },
   async flow_addBlankResourceForEnabledModesAndLangs({
+    // eslint-disable-next-line no-shadow
     getters,
     dispatch,
     commit,

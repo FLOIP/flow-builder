@@ -45,7 +45,7 @@
 
 <script>
 import lang from '@/lib/filters/lang'
-import {forEach, invoke, get, endsWith} from 'lodash'
+import {forEach, invoke, get, endsWith, includes} from 'lodash'
 import Vue from 'vue'
 import {
   mapActions, mapGetters, mapMutations, mapState,
@@ -140,7 +140,7 @@ export default {
 
       // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
       designerWorkspaceHeight: ({trees: {ui}}) => ui.designerWorkspaceHeight,
-
+      isEditableLocked: ({trees: {ui}}) => ui.isEditableLocked,
       tree: ({trees: {tree}}) => tree,
       validationResultsEmptyTree: ({trees: {tree}}) => !tree.blocks.length,
       hasVoice: ({trees: {tree}}) => tree.details.hasVoice,
@@ -160,7 +160,7 @@ export default {
 
     // pure vuejs block types handle readonly mode on their own
     isPureVueBlock() {
-      return _.includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
+      return includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
     },
 
     sidebarType() {
@@ -243,7 +243,7 @@ export default {
     },
 
     updateIsEditableFromParams(mode) {
-      const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!app.ui.isEditableLocked)
+      const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!this.isEditableLocked)
       this.setIsEditable(isEditable)
     },
 
@@ -265,7 +265,7 @@ export default {
     },
 
     hoistResourceViewerToPushState(hash) {
-      if (!_.endsWith(hash, '/resource-viewer')) {
+      if (!endsWith(hash, '/resource-viewer')) {
         return
       }
 

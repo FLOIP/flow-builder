@@ -50,7 +50,7 @@ export default {
     regexFloatFiltering: {
       type: String,
       required: false,
-      default: '[0-9\-.,]',
+      default: '[0-9-.,]',
     },
   },
   methods: {

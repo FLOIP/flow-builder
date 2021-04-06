@@ -21,7 +21,7 @@ export const mutations: MutationTree<IFlowsState> = {}
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async editCaseBlockExit(
     {
-      commit, dispatch, getters, rootGetters,
+      commit, dispatch, rootGetters,
     },
     {identifier, value}: { identifier: string; value: string },
   ) {

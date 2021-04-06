@@ -86,7 +86,7 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async block_createBlockDefaultExitWith({dispatch},
     {props}: { props: { uuid: string } & Partial<IBlockExit> }): Promise<IBlockExit> {
-    return await dispatch('block_createBlockExitWith', {
+    return dispatch('block_createBlockExitWith', {
       props: {
         ...props,
         default: true,

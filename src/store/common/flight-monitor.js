@@ -1,5 +1,6 @@
 import axios, {CancelToken} from 'axios'
 import {invoke, uniqueId} from 'lodash'
+// eslint-disable-next-line import/no-extraneous-dependencies
 import qs from 'qs'
 import Vue from 'vue'
 
@@ -96,9 +97,8 @@ export default {
     },
 
     cancelAll({commit, state: {flights}}) {
-      for (const key of Object.keys(flights)) {
-        commit('cancel', {key})
-      }
+      const fightsKeys = Object.keys(flights)
+      fightsKeys.forEach((key) => commit('cancel', {key}))
     },
   },
   getters: {

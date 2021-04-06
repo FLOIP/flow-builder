@@ -51,7 +51,7 @@ const builderVuexNamespace = namespace('builder')
 
 // providing this generic is required by tsserver checking but not in the build run by yarn storybook
 // TODO - understand what is going on here and if there is something more correct we should have instead
-@Component<any>({
+@Component({
   components: {
     ExpressionEditor,
     BlockNameEditor,

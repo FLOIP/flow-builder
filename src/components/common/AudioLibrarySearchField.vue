@@ -100,7 +100,8 @@
 </template>
 
 <script>
-import fuse from 'fuse.js'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Fuse from 'fuse.js'
 import {trim} from 'lodash'
 import VueFocus from 'vue-focus'
 import lang from '@/lib/filters/lang'
@@ -162,16 +163,21 @@ export default {
       console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
 
       const keys = ['filename', 'description']
-      return (this.cache[query] = new fuse(this.audioFiles, {keys}).search(query))
+      this.cache[query] = new Fuse(this.audioFiles, {keys}).search(query)
+      return this.cache[query]
     },
 
     // todo: push pagination into isolated component
     incrementPage() {
-      this.hasNext && (this.offset += 1)
+      if (this.hasNext) {
+        this.offset += 1
+      }
     },
 
     decrementPage() {
-      this.hasPrevious && (this.offset -= 1)
+      if (this.hasPrevious) {
+        this.offset -= 1
+      }
     },
 
     resetPagination() {

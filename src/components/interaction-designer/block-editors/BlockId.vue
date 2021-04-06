@@ -12,7 +12,7 @@ import {IBlock} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
 import lang from '@/lib/filters/lang'
 
-@Component<any>({
+@Component({
   mixins: [lang],
 })
 class BlockId extends Vue {

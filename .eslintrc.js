@@ -28,6 +28,11 @@ module.exports = {
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/class-name-casing': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+    // Need to remove this rule after all the ts-ignore comments are removed
+    '@typescript-eslint/ban-ts-ignore': 'off',
+    // Remove this after any is replaced in all the files
+    '@typescript-eslint/no-explicit-any': 'off',
 
     /*************************
      * Modified ESLint rules *
@@ -61,7 +66,7 @@ module.exports = {
     'no-console': [
       'warn',
       {
-        allow: ['warn', 'error', 'info'],
+        allow: ['warn', 'error', 'info', 'debug'],
       },
     ],
     'object-curly-spacing': ['error', 'never'],
@@ -117,16 +122,7 @@ module.exports = {
     /**********
      * Import *
      **********/
-    'import/named': 'off',
-    'import/namespace': 'off',
-    'import/default': 'off',
-    'import/no-named-as-default-member': 'off',
-    'import/no-named-as-default': 'off',
     'import/no-cycle': 'off',
-    'import/no-unused-modules': 'off',
-    'import/no-deprecated': 'off',
-
-    'import/no-absolute-path': 'off',
 
     /**********
      * Lodash *
@@ -150,9 +146,6 @@ module.exports = {
     'lodash/prefer-startswith': 'off',
     'lodash/prefer-times': 'off',
 
-    // this is as warning, as it breaks type inference
-    'lodash/prop-shorthand': ['warn', 'never'],
-
     /**************
      * Jest Rules *
      **************/
@@ -161,8 +154,6 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
-
-
   },
   overrides: [
     {

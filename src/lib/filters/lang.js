@@ -1,6 +1,7 @@
-const proxy = (name, args) => (global.Lang ? global.Lang[name].apply(global.Lang, args) : args[0])
-const createProxy = (name) => function () {
-  return proxy(name, arguments)
+const proxy = (name, args) => (global.Lang ? global.Lang[name](...args) : args[0])
+// eslint-disable-next-line func-names
+const createProxy = (name) => function (...args) {
+  return proxy(name, args)
 }
 
 export default {

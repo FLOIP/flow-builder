@@ -1,5 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path')
+// eslint-disable-next-line import/no-extraneous-dependencies,@typescript-eslint/no-var-requires
 const bodyParser = require('body-parser')
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const cookieParser = require('cookie-parser')
 
 module.exports = {

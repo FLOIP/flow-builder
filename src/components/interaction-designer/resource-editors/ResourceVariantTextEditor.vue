@@ -103,6 +103,7 @@
 <script>
 import Vue from 'vue'
 import lang from '@/lib/filters/lang'
+// eslint-disable-next-line import/no-extraneous-dependencies
 import {parse as floipExpressionParser} from '@floip/expression-parser'
 import {isObject, some} from 'lodash'
 import VueFocus from 'vue-focus'
@@ -190,7 +191,7 @@ export default {
     },
 
     characterCounter() {
-      const hasUnicode = !/^[\x00-\x7F]*$/.test(this.content)
+      const hasUnicode = !/^[x00-\x7F]*$/.test(this.content)
       const count = this.content.length
 
       console.debug('BlockTextContentEditorForLangAndType', 'characterCounter', {

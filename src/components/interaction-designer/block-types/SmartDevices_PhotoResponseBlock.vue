@@ -40,7 +40,7 @@ import BlockId from '../block-editors/BlockId.vue'
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
+@Component({
   components: {
     BlockNameEditor,
     BlockLabelEditor,

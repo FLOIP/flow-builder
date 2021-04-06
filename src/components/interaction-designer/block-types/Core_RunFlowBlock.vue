@@ -37,7 +37,7 @@ import {Component, Prop} from 'vue-property-decorator'
 
 import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import {IFlow} from '@floip/flow-runner'
-import {IFlowsState} from '@/store/flow/index'
+import {IFlowsState} from '@/store/flow'
 import RunAnotherFlowStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
 import lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
@@ -50,7 +50,7 @@ import BlockId from '../block-editors/BlockId.vue'
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
+@Component({
   components: {
     BlockNameEditor,
     BlockLabelEditor,

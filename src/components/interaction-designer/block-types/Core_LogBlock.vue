@@ -14,28 +14,32 @@
         <hr />
 
         <h4>Log Message</h4>
-        <template v-for="{ id: languageId, name: language } in flow.languages">
-          <div class="block-content-editor-lang">
-            <h5 class="badge badge-info">
-              {{ language || "flow-builder.unknown-language" | trans }}
-            </h5>
-          </div>
+        <template>
+          <div v-for="{ id: languageId, name: language } in flow.languages" :key="languageId">
+            <div class="block-content-editor-lang">
+              <h5 class="badge badge-info">
+                {{ language || "flow-builder.unknown-language" | trans }}
+              </h5>
+            </div>
 
-          <template v-for="(mode) in flow.supportedModes">
-            <h6>{{ `flow-builder.${mode}-content` | trans }}</h6>
-            <resource-variant-text-editor
-              :resource-id="messageResource.uuid"
-              :resource-variant="
-                findOrGenerateStubbedVariantOn(messageResource, {
-                  languageId,
-                  contentType: ['text'],
-                  modes: [mode],
-                })
-              "
-              :mode="mode"
-              :enable-autogen-button="true || enableAutogenButton"
-            />
-          </template>
+            <template>
+              <div v-for="(mode, i) in flow.supportedModes" :key="i">
+                <h6>{{ `flow-builder.${mode}-content` | trans }}</h6>
+                <resource-variant-text-editor
+                  :resource-id="messageResource.uuid"
+                  :resource-variant="
+                    findOrGenerateStubbedVariantOn(messageResource, {
+                      languageId,
+                      contentType: ['text'],
+                      modes: [mode],
+                    })
+                  "
+                  :mode="mode"
+                  :enable-autogen-button="true || enableAutogenButton"
+                />
+              </div>
+            </template>
+          </div>
         </template>
       </div>
 
@@ -70,7 +74,7 @@ import BlockId from '../block-editors/BlockId.vue'
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
+@Component({
   components: {
     ResourceEditor,
     ResourceVariantTextEditor,

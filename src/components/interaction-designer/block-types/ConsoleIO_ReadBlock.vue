@@ -57,7 +57,7 @@ import BlockId from '../block-editors/BlockId.vue'
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
+@Component({
   components: {
     ResourceEditor,
     BlockNameEditor,

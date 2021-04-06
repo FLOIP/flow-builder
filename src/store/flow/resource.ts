@@ -93,7 +93,7 @@ export const mutations: MutationTree<IFlowsState> = {
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async resource_createWith(
-    {dispatch},
+    _,
     {props}: { props: { uuid: string } & Partial<IResourceDefinition> },
   ): Promise<IResourceDefinition> {
     return {
@@ -126,7 +126,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   resource_setValueModeSpecific(
-    {commit, dispatch, state},
+    {commit, state},
     {
       resourceId,
       filter,
@@ -158,8 +158,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         resourceId,
         variant: Object.assign(cloneDeep(variant), {modes: [mode], value}),
       })
-
-      return // specialized case, we're done here
+      // specialized case, we're done here
+      return
     }
 
     commit('resource_setValue', {resourceId, filter: variant, value})
@@ -255,11 +255,14 @@ export function discoverContentTypesFor(
 
   const defaultModeMappings = {
     // @note -- contentType order inadvertently determines render order on UI.
-    [SupportedMode.IVR]: [AUDIO], // voice
+    // voice
+    [SupportedMode.IVR]: [AUDIO],
     [SupportedMode.SMS]: [TEXT],
     [SupportedMode.USSD]: [TEXT],
-    [SupportedMode.OFFLINE]: [TEXT, IMAGE, VIDEO], // clipboard
-    [SupportedMode.RICH_MESSAGING]: [TEXT, IMAGE, VIDEO], // social
+    // clipboard
+    [SupportedMode.OFFLINE]: [TEXT, IMAGE, VIDEO],
+    // social
+    [SupportedMode.RICH_MESSAGING]: [TEXT, IMAGE, VIDEO],
   }
 
   if (!resource || !resource.values.length) {
@@ -268,15 +271,15 @@ export function discoverContentTypesFor(
   let contentTypeOverrides: { [key in SupportedMode]?: SupportedContentType[] } = {}
   // TODO - think harder about this - what happens when a mode has a non standard content type - e.g. ivr on a log block
   // What happens in a future localised resource world on things like LogBlock? Do we need a log resource value for every language?
-  contentTypeOverrides = resource.values.reduce((contentTypeOverrides, value) => {
-    value.modes.reduce((contentTypeOverrides, resourceMode) => {
-      if (!contentTypeOverrides[resourceMode]) {
-        contentTypeOverrides[resourceMode] = []
+  contentTypeOverrides = resource.values.reduce((contentTypes, value) => {
+    value.modes.reduce((contentTypesValues, resourceMode) => {
+      if (!contentTypesValues[resourceMode]) {
+        contentTypesValues[resourceMode] = []
       }
-      contentTypeOverrides[resourceMode]!.push(value.contentType)
-      return contentTypeOverrides
-    }, contentTypeOverrides)
-    return contentTypeOverrides
+      contentTypesValues[resourceMode].push(value.contentType)
+      return contentTypesValues
+    }, contentTypes)
+    return contentTypes
   }, contentTypeOverrides)
   // @ts-ignore
   return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]

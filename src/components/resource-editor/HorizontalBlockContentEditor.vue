@@ -137,7 +137,7 @@ export default {
   },
 
   methods: {
-    debouncedSaveTree: debounce(function () {
+    debouncedSaveTree: debounce(() => {
       this.$store.dispatch('attemptSaveTree')
     }, 500),
 
