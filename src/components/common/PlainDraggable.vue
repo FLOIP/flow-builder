@@ -69,7 +69,7 @@ export default {
       // prevent css translate() animations for move
       // they don't seem to be throttled enough for leaderline to follow tightly
       leftTop: false,
-      disabled: true,
+      disabled: false,
       onDrag: this.handleDragged,
       onDragStart: this.handleDragStarted,
       onDragEnd: this.handleDragEnded,

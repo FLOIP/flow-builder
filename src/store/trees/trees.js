@@ -50,6 +50,7 @@ export default {
         enabledFeatures: [
           /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
         ],
+        subscriberPropertyFields: [],
       },
     }
   },
@@ -347,6 +348,7 @@ export default {
     },
 
     addSubscriberPropertyField({ ui }, { property }) {
+      console.log('addSubscriberPropertyField', ui)
       ui.subscriberPropertyFields.push(property)
     },
 
