@@ -63,7 +63,7 @@ export interface IBuilderState {
 
 export const stateFactory = (): IBuilderState => ({
   activeBlockId: null,
-  isEditable: false,
+  isEditable: true,
   activeConnectionsContext: [],
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: {

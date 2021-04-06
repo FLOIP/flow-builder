@@ -4,20 +4,22 @@
       {{ 'flow-builder.edit-block-type' | trans({ block_type: trans(`flow-builder.${block.type}`) }) }}
     </h3>
 
-    <block-name-editor :block="block"/>
-    <block-label-editor :block="block"/>
-    <block-semantic-label-editor :block="block"/>
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block"/>
+      <block-label-editor :block="block"/>
+      <block-semantic-label-editor :block="block"/>
 
-    <contact-property-selector :block="block"/>
+      <contact-property-selector :block="block"/>
 
-    <expression-editor :label="'flow-builder.contact-property-expression' | trans"
-                       :placeholder="'flow-builder.edit-expression' | trans"
-                       :current-expression="propertyValue"
-                       @commitExpressionChange="commitExpressionChange"/>
+      <expression-editor :label="'flow-builder.contact-property-expression' | trans"
+                         :placeholder="'flow-builder.edit-expression' | trans"
+                         :current-expression="propertyValue"
+                         @commitExpressionChange="commitExpressionChange"/>
 
-    <first-block-editor-button
+      <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid"/>
+    </fieldset>
 
     <block-id :block="block"/>
   </div>
@@ -46,6 +48,7 @@ import { createDefaultBlockTypeInstallerFor } from "@/store/builder";
 import { get } from 'lodash'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const builderVuexNamespace = namespace('builder')
 
 //providing this generic is required by tsserver checking but not in the build run by yarn storybook
 //TODO - understand what is going on here and if there is something more correct we should have instead
@@ -70,7 +73,7 @@ class Core_SetContactPropertyBlock extends Vue {
   }
 
   @blockVuexNamespace.Action editSetContactPropertyExpression!: (params: { blockId: string, value: string }) => Promise<string>
-
+  @builderVuexNamespace.Getter isEditable !: boolean
   commitExpressionChange(value: string): Promise<string> {
     return this.editSetContactPropertyExpression({ blockId: this.block.uuid, value })
   }
