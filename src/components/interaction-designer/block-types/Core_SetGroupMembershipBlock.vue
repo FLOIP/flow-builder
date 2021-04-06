@@ -4,28 +4,31 @@
       {{ 'flow-builder.edit-block-type' | trans({ block_type: trans(`flow-builder.${block.type}`) }) }}
     </h3>
 
-    <block-name-editor :block="block"/>
-    <block-label-editor :block="block"/>
-    <block-semantic-label-editor :block="block"/>
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block"/>
+      <block-label-editor :block="block"/>
+      <block-semantic-label-editor :block="block"/>
 
-    <div class="form-group">
-      <label>{{'flow-builder.action-label' | trans}}</label>
-      <vue-multiselect v-model="selectedAction"
-                       track-by="id"
-                       label="name"
-                       :placeholder="'flow-builder.action-placeholder' | trans"
-                       :options="actionsList"
-                       :allow-empty="true"
-                       :show-labels="false"
-                       :searchable="false">
-      </vue-multiselect>
-    </div>
+      <div class="form-group">
+        <label>{{'flow-builder.action-label' | trans}}</label>
+        <vue-multiselect v-model="selectedAction"
+                         track-by="id"
+                         label="name"
+                         :placeholder="'flow-builder.action-placeholder' | trans"
+                         :options="actionsList"
+                         :allow-empty="true"
+                         :show-labels="false"
+                         :searchable="false">
+        </vue-multiselect>
+      </div>
 
-    <group-selector :block="block"/>
+      <group-selector :block="block"/>
 
-    <first-block-editor-button
+      <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid"/>
+
+    </fieldset>
 
     <block-id :block="block"/>
   </div>
@@ -56,6 +59,7 @@ import { find } from 'lodash'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 
 interface IGroupOption {
   id: string;
@@ -110,6 +114,8 @@ class Core_SetGroupMembershipBlock extends Vue {
   }
 
   @blockVuexNamespace.Action setIsMemberFromGroup: (group: IGroupOption) => Promise<any>
+
+  @builderVuexNamespace.Getter isEditable !: boolean
 
   @flowVuexNamespace.Mutation block_updateConfigByPath
 }

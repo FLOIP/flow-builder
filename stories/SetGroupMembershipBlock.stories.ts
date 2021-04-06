@@ -47,6 +47,9 @@ export const Default = () => (DefaultClass)
 @Component<any>({
   ...baseOptions,
   async mounted() {
+    // @ts-ignore
+    await baseMounted.bind(this)(BLOCK_TYPE, SetGroupMembershipStore)
+
     // Add sample data
     this.addContactGroup({
       group: {
@@ -60,9 +63,6 @@ export const Default = () => (DefaultClass)
         name: "Group 2"
       }
     })
-
-    // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, SetGroupMembershipStore)
   },
 })
 class ExistingDataBlockClass extends BaseMountedVueClass {
