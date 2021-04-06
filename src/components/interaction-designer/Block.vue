@@ -37,7 +37,7 @@
       </header>
 
       <div class="block-exits">
-        <div v-for="exit in block.exits"
+        <div v-for="(exit, key) in block.exits"
              :key="exit.uuid"
              class="block-exit"
              :class="{
@@ -54,7 +54,7 @@
             <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
           </div>
 
-          <h3 class="block-exit-tag badge badge-warning">{{exit.tag || '—'}}</h3>
+          <h3 class="block-exit-tag badge badge-warning">{{visibleExitTag(key, exit)}}</h3>
 
           <template v-if="exit.destinationBlock == null">
             <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
@@ -131,7 +131,7 @@
 
 <script>
 import Vue from 'vue'
-import { isNumber, forEach } from 'lodash'
+import { isNumber, forEach, filter } from 'lodash'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
@@ -140,6 +140,9 @@ import { ResourceResolver, SupportedMode } from '@floip/flow-runner'
 import { OperationKind, generateConnectionLayoutKeyFor } from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import lang from '@/lib/filters/lang'
+import {BLOCK_TYPE as BLOCK_TYPE__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
+import {BLOCK_TYPE as BLOCK_TYPE__SELECT_ONE_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import {BLOCK_TYPE as BLOCK_TYPE__SELECT_MANY_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 
 import { BTooltip } from 'bootstrap-vue'
 
@@ -166,7 +169,7 @@ export default {
 
   computed: {
     ...mapState('flow', ['resources']),
-    ...mapState('builder', ['activeBlockId', 'operations']),
+    ...mapState('builder', ['activeBlockId', 'operations', 'activeConnectionsContext']),
     ...mapState({
       blockClasses: ({ trees: { ui } }) => ui.blockClasses,
     }),
@@ -177,18 +180,24 @@ export default {
       return isNumber(this.x) && isNumber(this.y)
     },
 
+    isAssociatedWithActiveConnection({ block, activeConnectionsContext }) {
+      return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid || context.targetId === block.uuid).length
+    },
+
     // todo: does this component know too much, what out of the above mapped state can be mapped?
     // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
 
     isConnectionSourceRelocateActive: ({ operations }) => !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
     isConnectionCreateActive: ({ operations }) => !!operations[OperationKind.CONNECTION_CREATE].data,
-    isBlockActivated: ({ activeBlockId, block, operations }) => {
-      if (activeBlockId && activeBlockId === block.uuid) {
+    isBlockActivated: ({
+      activeBlockId, isAssociatedWithActiveConnection, block, operations,
+    }) => {
+      if ((activeBlockId && activeBlockId === block.uuid) || isAssociatedWithActiveConnection) {
         return true
       }
 
       const { data } = operations[OperationKind.CONNECTION_CREATE]
-      return data && data.target === block.uuid
+      return data && data.targetId === block.uuid
     },
   },
 
@@ -233,6 +242,21 @@ export default {
       return resource.hasText()
         ? resource.getText()
         : uuid
+    },
+
+    visibleExitTag(key, exit) {
+      if (!exit.tag && !exit.semanticLabel) {
+        return '—'
+      }
+
+      const { block } = this
+      if (block.type === BLOCK_TYPE__CASE_BLOCK) {
+        return `${key + 1}: ${exit.tag}`
+      } else if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semanticLabel) {
+        return exit.semanticLabel
+      }
+
+      return exit.tag
     },
 
     // todo: push NodeExit into it's own vue component

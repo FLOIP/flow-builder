@@ -209,7 +209,7 @@ export default {
     ...mapGetters('flow', ['activeFlow', 'activeFlowContainer']),
     ...mapGetters('builder', ['activeBlock']),
     ...mapState('flow', ['flows', 'resources']),
-    ...mapGetters('builder', ['isEditable']),
+    ...mapGetters('builder', ['isEditable', 'activeBlock']),
     ...mapState('builder', ['activeBlockId']),
 
     ...mapGetters([
