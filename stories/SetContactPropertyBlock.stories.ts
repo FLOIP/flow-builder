@@ -30,22 +30,29 @@ const SetContactPropertyBlockTemplate = `
 let baseOptions = {
   components: {SetContactPropertyBlock, FlowBuilderSidebarEditorContainer},
   template: SetContactPropertyBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 // default state
 @Component<any>({
   ...baseOptions,
+  store: new Vuex.Store<IRootState>(store),
+})
+class DefaultClass extends BaseMountedVueClass {
   async mounted() {
     // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, SetContactPropertyStore)
-  },
-})
-class DefaultClass extends BaseMountedVueClass {}
+  }
+}
 export const Default = () => (DefaultClass)
 
 @Component<any>({
   ...baseOptions,
+  store: new Vuex.Store<IRootState>(store),
+})
+class ExistingDataBlockClass extends BaseMountedVueClass {
   async mounted() {
+    // @ts-ignore
+    await baseMounted.bind(this)(BLOCK_TYPE, SetContactPropertyStore)
+
     // Add sample data
     this.addSubscriberPropertyField({
       property: {
@@ -68,12 +75,7 @@ export const Default = () => (DefaultClass)
         "displayLabel": "Comment"
       }
     })
-
-    // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, SetContactPropertyStore)
-  },
-})
-class ExistingDataBlockClass extends BaseMountedVueClass {
+  }
   @Mutation addSubscriberPropertyField!: ({ property }) => void
 }
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
