@@ -185,7 +185,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
   //TODO - In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
   //see comment on flow_setFlowContainer
-  async flow_fetch({ state, getters, commit }, { fetchRoute }): Promise<IFlow> {
+  async flow_fetch({ state, getters, commit }, { fetchRoute }): Promise<IContext> {
     if(!fetchRoute) {
       console.info("Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store")
       return getters.activeFlow
@@ -194,7 +194,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       const { data } = await axios.get(fetchRoute)
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
-      return getters.activeFlow
+      return data
     } catch(error) {
       console.info(`Server error fetching flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null

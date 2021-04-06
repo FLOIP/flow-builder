@@ -32,8 +32,9 @@ import {IFlow} from '@floip/flow-runner'
   {
     mixins: [lang, Routes],
     async mounted() {
-      const flow = await this.flow_fetch({fetchRoute: this.route('flows.fetchFlowServer', {flowId: this.uuid})})
-      if(flow) {
+      const flowContainer = await this.flow_fetch({fetchRoute: this.route('flows.fetchFlowServer', {flowId: this.uuid})})
+      if(flowContainer) {
+        this.flow_setActiveFlowId({flowId: this.uuid})
         const nextUrl = this.$route.query.nextUrl
         if(nextUrl) {
           this.$router.replace(nextUrl)
@@ -69,6 +70,7 @@ class FetchFlow extends Vue {
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action flow_fetch!: ({fetchRoute: string}) => Promise<IFlow>
+  @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({flowId: string}) => void
   @Mutation configure 
   @Getter isConfigured!: boolean
 }
