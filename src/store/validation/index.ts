@@ -2,6 +2,10 @@ import {
   ActionTree, GetterTree, Module, MutationTree,
 } from 'vuex'
 import { IRootState } from '@/store'
+import Ajv from 'ajv'
+import { JSONSchema7 } from 'json-schema'
+
+const ajv = new Ajv();
 
 export interface IValidationState {
 
@@ -32,3 +36,17 @@ export const store: Module<IValidationState, IRootState> = {
 }
 
 export default store
+
+/**
+ * Usage :
+ * const validate = createDefaultJsonSchemaValidatorFactoryFor(require('./some-json-schema.json')
+ * const data = {
+ *   ...
+ * }
+ * const isValid = validate(data)
+ *
+ * @param jsonSchema
+ */
+export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchema7) {
+  return ajv.compile(jsonSchema)
+}
