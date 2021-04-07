@@ -15,7 +15,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
 import { namespace } from "vuex-class";
-import { IFlow } from "@floip/flow-runner";
+import {IBlock, IFlow} from "@floip/flow-runner";
 import { IValidationStatus, debutValidationStatus } from "@/store/validation";
 
 const flowVuexNamespace = namespace('flow')
@@ -31,18 +31,33 @@ export default class BuilderCanvas extends Vue {
     this.$store.dispatch('builder/loadFlow')
   }
 
-  @Watch('activeFlow', { deep: true })
-  onActiveFlowChanged(newFlow: IFlow) {
+  @Watch('activeFlow', { deep: true, immediate: true })
+  async onActiveFlowChanged(newFlow: IFlow) {
     console.debug('active flow has changed, validating ...')
-    this.validate_flow({ flow: newFlow })
-    debutValidationStatus(this.flowValidationStatus)
+    await this.validate_flow({ flow: newFlow })
+    debutValidationStatus(this.flowValidationStatus, 'flow validation status')
+  }
+
+  @Watch('activeFlow.blocks', { deep: true, immediate: true })
+  async onBlocksInActiveFlowChanged(newBlocks: IBlock[]) {
+    if (!!newBlocks && newBlocks.length > 0) {
+      console.debug('blocks inside active flow have changed, validating ...');
+      for (let i = 0; i < newBlocks.length; i++) {
+        const currentBlock = newBlocks[i]
+        await this.validate_block({ block: currentBlock })
+        debutValidationStatus(this.blockValidationStatuses[currentBlock.uuid], `validation status for block ${currentBlock.uuid}`)
+      }
+    }
   }
 
   @flowVuexNamespace.State flows: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
 
   @validationVuexNamespace.State flowValidationStatus!: IValidationStatus
+  @validationVuexNamespace.State blockValidationStatuses!: { [key: string]: IValidationStatus }
+
   @validationVuexNamespace.Action validate_flow: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_block: ({ block } : { block: IBlock }) => Promise<IValidationStatus>
 }
 
 export { BuilderCanvas }
