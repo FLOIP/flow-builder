@@ -12,24 +12,37 @@
 </template>
 
 <script lang="ts">
-import { mapState } from 'vuex'
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
+import { namespace } from "vuex-class";
+import { IFlow } from "@floip/flow-runner";
+import { IValidationStatus, debutValidationStatus } from "@/store/validation";
 
-  @Component({
-    components: {
-      Block,
-    },
+const flowVuexNamespace = namespace('flow')
+const validationVuexNamespace = namespace('validation')
 
-    computed: {
-      ...mapState('flow', ['flows']),
-    },
-
-    mounted() {
-      this.$store.dispatch('builder/loadFlow')
-    },
-  })
+@Component({
+  components: {
+    Block,
+  },
+})
 export default class BuilderCanvas extends Vue {
+  mounted() {
+    this.$store.dispatch('builder/loadFlow')
+  }
+
+  @Watch('activeFlow', { deep: true })
+  onActiveFlowChanged(newFlow: IFlow) {
+    console.debug('active flow has changed, validating ...')
+    this.validate_flow({ flow: newFlow })
+    debutValidationStatus(this.flowValidationStatus)
+  }
+
+  @flowVuexNamespace.State flows: IFlow[]
+  @flowVuexNamespace.Getter activeFlow!: IFlow
+
+  @validationVuexNamespace.State flowValidationStatus!: IValidationStatus
+  @validationVuexNamespace.Action validate_flow: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
 }
 
 export { BuilderCanvas }
