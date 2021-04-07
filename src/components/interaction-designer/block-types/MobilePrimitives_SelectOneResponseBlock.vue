@@ -133,8 +133,8 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
 
-    @blockVuexNamespace.Getter inflatedChoices: {[key: string]: IResourceDefinition}
-    @blockVuexNamespace.State inflatedEmptyChoice: {[key: string]: IResourceDefinition}
+    @blockVuexNamespace.Getter inflatedChoices?: {[key: string]: IResourceDefinition}
+    @blockVuexNamespace.State inflatedEmptyChoice?: {[key: string]: IResourceDefinition}
 
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
     @blockVuexNamespace.Action editEmptyChoice!: ({ choice }: { choice: IInflatedChoicesInterface }) => Promise<object>

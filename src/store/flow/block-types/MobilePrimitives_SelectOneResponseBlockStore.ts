@@ -128,13 +128,13 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       resource: rootGetters['flow/resourcesByUuid'][blankResource.uuid]
     }
   },
-  async popFirstEmptyChoice({commit, rootGetters, getters}) {
+  async popFirstEmptyChoice({commit, dispatch, rootGetters, getters}) {
     const choiceKeyToRemove = find(Object.keys(getters.inflatedChoices), (key: string) => {
       return <boolean>getters.isInflatedChoiceBlankOnKey(key)
     })
     if (choiceKeyToRemove) {
       const choiceToRemove = rootGetters['builder/activeBlock'].config.choices[choiceKeyToRemove]
-      commit('deleteChoiceByKey', {choiceKeyToRemove: choiceKeyToRemove, blockId: rootGetters['builder/activeBlock'].uuid})
+      dispatch('deleteChoiceByKey', {choiceKeyToRemove: choiceKeyToRemove, blockId: rootGetters['builder/activeBlock'].uuid})
       return choiceToRemove
     }
     return null
@@ -158,7 +158,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       const activeBlock = rootGetters['builder/activeBlock'];
       const newIndex = Object.keys(activeBlock.config.choices || {}).length + 1
       const resourceUuid = state.inflatedEmptyChoice.resource.uuid
-      commit('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
+      dispatch('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
       commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: state.inflatedEmptyChoice.exit}, {root: true})
 
       // associate new blank resource to the empty choice, this is important to stop endless watching
