@@ -17,6 +17,7 @@ import Block from '@/components/interaction-designer/Block.vue'
 import { namespace } from "vuex-class";
 import {IBlock, IFlow} from "@floip/flow-runner";
 import { IValidationStatus, debutValidationStatus } from "@/store/validation";
+import { find, isEqual, cloneDeep } from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
@@ -38,16 +39,26 @@ export default class BuilderCanvas extends Vue {
     debutValidationStatus(this.flowValidationStatus, 'flow validation status')
   }
 
-  @Watch('activeFlow.blocks', { deep: true, immediate: true })
-  async onBlocksInActiveFlowChanged(newBlocks: IBlock[]) {
+  @Watch('blocksOnActiveFlowForWatcher', { deep: true, immediate: true })
+  async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]) {
     if (!!newBlocks && newBlocks.length > 0) {
       console.debug('blocks inside active flow have changed, validating ...');
-      for (let i = 0; i < newBlocks.length; i++) {
-        const currentBlock = newBlocks[i]
-        await this.validate_block({ block: currentBlock })
-        debutValidationStatus(this.blockValidationStatuses[currentBlock.uuid], `validation status for block ${currentBlock.uuid}`)
+      for (let i = 0;  i < newBlocks.length; i++) {
+        const currentNewBlock = newBlocks[i]
+        const currentOldBlock = find(oldBlocks, { 'uuid': currentNewBlock.uuid })
+
+        if (isEqual(currentNewBlock, currentOldBlock)) {
+          continue; // no changes found
+        }
+
+        await this.validate_block({ block: currentNewBlock });
+        debutValidationStatus(this.blockValidationStatuses[currentNewBlock.uuid], `validation status for block ${currentNewBlock.uuid}`)
       }
     }
+  }
+
+  get blocksOnActiveFlowForWatcher() {
+    return cloneDeep(this.activeFlow.blocks) // needed to make comparison between new & old values on watcher
   }
 
   @flowVuexNamespace.State flows: IFlow[]
