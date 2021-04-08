@@ -61,7 +61,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-interface IGroupOption {
+interface IGroupActionOption {
   id: string;
   name: string;
 }
@@ -84,7 +84,7 @@ class Core_SetGroupMembershipBlock extends Vue {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
 
-  actionsList: IGroupOption[] = [
+  actionsList: IGroupActionOption[] = [
     {
       id: ADD_KEY,
       name: trans('flow-builder.add'),
@@ -97,7 +97,7 @@ class Core_SetGroupMembershipBlock extends Vue {
 
   get selectedAction() {
     const { isMember } = this.block.config as ISetGroupMembershipBlockConfig
-    //TODO: we can remove the safe cast JSON.parse(isMember) once ISetGroupMembershipBlockConfig isMember type is changed to boolean
+    //TODO: we can remove the safe cast JSON.parse(isMember) once ISetGroupMembershipBlockConfig.isMember type is changed to boolean
     if (JSON.parse(isMember) === false) {
       return find(this.actionsList, { id: REMOVE_KEY }) || null
     }
@@ -109,11 +109,11 @@ class Core_SetGroupMembershipBlock extends Vue {
     return null
   }
 
-  set selectedAction(group: IGroupOption) {
-    this.setIsMemberFromGroup(group)
+  set selectedAction(action: IGroupActionOption) {
+    this.setIsMember(action)
   }
 
-  @blockVuexNamespace.Action setIsMemberFromGroup: (group: IGroupOption) => Promise<any>
+  @blockVuexNamespace.Action setIsMember: (action: IGroupActionOption) => Promise<any>
 
   @builderVuexNamespace.Getter isEditable !: boolean
 

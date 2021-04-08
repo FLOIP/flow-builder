@@ -43,12 +43,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  async setIsMemberFromGroup({ commit, rootGetters }, group) {
+  async setIsMember({ commit, rootGetters }, action) {
     const activeBlock = rootGetters['builder/activeBlock']
     commit('flow/block_updateConfigByPath', {
       blockId: activeBlock.uuid,
       path: 'isMember',
-      value: group === null || group === undefined ? null : (group.id === ADD_KEY),
+      value: action === null || action === undefined ? null : (action.id === ADD_KEY),
     }, { root: true })
   },
 }
