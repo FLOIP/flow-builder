@@ -107,11 +107,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
   },
   pushNewChoice({ state, rootState, rootGetters, commit }, { choiceId, newIndex }) {
     const activeBlock = rootGetters['builder/activeBlock']
-    commit('flow/block_updateConfigByPath', {
-      blockId: activeBlock.uuid,
-      path: `choices.${newIndex}`,
-      value: choiceId,
-    }, { root: true })
+    Vue.set(activeBlock.config.choices, newIndex, choiceId)
   },
   async createVolatileEmptyChoice({state, dispatch, rootGetters}, { index }) {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
