@@ -10,12 +10,12 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue?vue&type=template&id=2c320afc&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),(_vm.promptResource)?_c('resource-editor',{attrs:{"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e(),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}}),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue?vue&type=template&id=242e2b16&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),(_vm.promptResource)?_c('resource-editor',{attrs:{"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e(),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],1),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue?vue&type=template&id=2c320afc&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue?vue&type=template&id=242e2b16&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("d4ec");
@@ -42,24 +42,6 @@ var lib = __webpack_require__("4bb5");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/vue-property-decorator.js
 var vue_property_decorator = __webpack_require__("60a3");
 
-// EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceEditor.vue + 27 modules
-var ResourceEditor = __webpack_require__("510a");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
-var NameEditor = __webpack_require__("f04e");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue + 4 modules
-var LabelEditor = __webpack_require__("3411");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue + 4 modules
-var SemanticLabelEditor = __webpack_require__("1b4e");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue + 4 modules
-var FirstBlockEditorButton = __webpack_require__("192b");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
-var BlockId = __webpack_require__("792f");
-
 // EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
 var runtime = __webpack_require__("96cf");
 
@@ -68,7 +50,6 @@ var asyncToGenerator = __webpack_require__("1da1");
 
 // EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
 var IdGeneratorUuidV4 = __webpack_require__("31aa");
-var IdGeneratorUuidV4_default = /*#__PURE__*/__webpack_require__.n(IdGeneratorUuidV4);
 
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __webpack_require__("2ef0");
@@ -101,7 +82,7 @@ var actions = {
               _context.next = 7;
               return dispatch('flow/block_createBlockDefaultExitWith', {
                 props: {
-                  uuid: new IdGeneratorUuidV4_default.a().generate(),
+                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate(),
                   tag: 'Default',
                   label: 'Default'
                 }
@@ -144,6 +125,24 @@ var lang = __webpack_require__("3a37");
 // EXTERNAL MODULE: ./src/store/builder/index.ts + 6 modules
 var builder = __webpack_require__("af98");
 
+// EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceEditor.vue + 37 modules
+var ResourceEditor = __webpack_require__("510a");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
+var NameEditor = __webpack_require__("f04e");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue + 4 modules
+var LabelEditor = __webpack_require__("3411");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue + 4 modules
+var SemanticLabelEditor = __webpack_require__("1b4e");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue + 4 modules
+var FirstBlockEditorButton = __webpack_require__("192b");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
+var BlockId = __webpack_require__("792f");
+
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue?vue&type=script&lang=ts&
 
 
@@ -163,6 +162,7 @@ var builder = __webpack_require__("af98");
 
 
 var flowVuexNamespace = Object(lib["c" /* namespace */])('flow');
+var builderVuexNamespace = Object(lib["c" /* namespace */])('builder');
 
 var ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock = /*#__PURE__*/function (_Vue) {
   Object(inherits["a" /* default */])(ConsoleIO_PrintBlock, _Vue);
@@ -185,13 +185,15 @@ var ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock = /*#__PURE
   return ConsoleIO_PrintBlock;
 }(external_commonjs_vue_commonjs2_vue_root_Vue_default.a);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "block", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "block", void 0);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "flow", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "flow", void 0);
 
-Object(tslib_es6["__decorate"])([flowVuexNamespace.Getter], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "resourcesByUuid", void 0);
+Object(tslib_es6["a" /* __decorate */])([flowVuexNamespace.Getter], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "resourcesByUuid", void 0);
 
-ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator["a" /* Component */])({
+Object(tslib_es6["a" /* __decorate */])([builderVuexNamespace.Getter], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "isEditable", void 0);
+
+ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock = Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["a" /* Component */])({
   components: {
     ResourceEditor: ResourceEditor["a" /* default */],
     BlockNameEditor: NameEditor["a" /* default */],
