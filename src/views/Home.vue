@@ -32,7 +32,7 @@ import {Mutation, namespace} from 'vuex-class'
 import {IFlow} from '@floip/flow-runner'
 const flowVuexNamespace = namespace('flow')
 
-@Component<any>(
+@Component(
   {
     mixins: [lang, Routes],
     async created() {

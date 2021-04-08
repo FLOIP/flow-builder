@@ -36,7 +36,7 @@ import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
 import {IFlow, IContext} from '@floip/flow-runner'
 
-@Component<any>(
+@Component(
   {
     components: {
       FlowEditor,

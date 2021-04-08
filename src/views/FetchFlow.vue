@@ -28,7 +28,7 @@ import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
 import {IFlow} from '@floip/flow-runner'
 
-@Component<any>(
+@Component(
   {
     mixins: [lang, Routes],
     async mounted() {
