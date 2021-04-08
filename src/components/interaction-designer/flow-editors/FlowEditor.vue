@@ -1,30 +1,35 @@
 <template>
   <div class="flow-editor">
     <h3 class="no-room-above">
-      {{'flow-builder.edit-flow' | trans}}
+      {{flowHeader | trans}}
     </h3>
 
-    <fieldset :disabled="!isEditable">
-      <flow-name-editor :flow="flow" />
-      <flow-label-editor :flow="flow" />
-      <flow-interaction-timeout-editor :flow="flow" />
-      <flow-languages-editor
-        :flow="flow"
-        @commitFlowLanguagesChange="updateFlowLanguages"/>
-      <flow-modes-editor
-        :flow="flow"
-        @commitFlowModesChange="updateFlowModes"/>
+    <fieldset :disabled="!isEditable && sidebar">
+      <div class="row">
+          <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
+            <flow-label-editor :flow="flow" />
+            <flow-interaction-timeout-editor :flow="flow" />
+          </div>
+          <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
+            <flow-languages-editor
+              :flow="flow"
+              @commitFlowLanguagesChange="updateFlowLanguages"/>
+            <flow-modes-editor
+              :flow="flow"
+              @commitFlowModesChange="updateFlowModes"/>
+          </div>
+      </div>
     </fieldset>
   </div>
 </template>
 
 <script lang="ts">
+
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { IFlow } from '@floip/flow-runner'
 import { namespace } from 'vuex-class'
 import lang from '@/lib/filters/lang'
-import FlowNameEditor from './NameEditor.vue'
 import FlowLabelEditor from './LabelEditor.vue'
 import FlowInteractionTimeoutEditor from './InteractionTimeoutEditor.vue'
 import FlowLanguagesEditor from './LanguagesEditor.vue'
@@ -35,16 +40,17 @@ const builderVuexNamespace = namespace('builder')
 
 @Component<any>({
   components: {
-    FlowNameEditor,
     FlowLabelEditor,
     FlowInteractionTimeoutEditor,
     FlowLanguagesEditor,
-    FlowModesEditor,
+    FlowModesEditor
   },
   mixins: [lang],
 })
 class FlowEditor extends Vue {
     @Prop() readonly flow!: IFlow
+    @Prop({default: 'flow-builder.edit-flow'}) readonly flowHeader!: string
+    @Prop({default: true}) readonly sidebar!: boolean
 
     updateFlowLanguages(value) {
       this.flow_setLanguages({ flowId: this.flow.uuid, value })
