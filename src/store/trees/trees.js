@@ -353,7 +353,6 @@ export default {
     },
 
     addSubscriberPropertyField({ ui }, { property }) {
-      console.log('addSubscriberPropertyField', ui)
       ui.subscriberPropertyFields.push(property)
     },
 
