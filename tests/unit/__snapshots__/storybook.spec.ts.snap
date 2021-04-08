@@ -178,7 +178,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                         href="#/trees/1/interaction-designer/edit"
                         title="Click to toggle editing"
                       >
-
+                        
             Edit Flow
           
                       </a>
@@ -188,26 +188,26 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                       <!---->
                        
                       <!---->
-
+                       
                       <a
                         class="btn btn-outline-secondary mr-2"
                         href="#/flows/new"
                       >
-
+                        
           New Flow
-
+        
                       </a>
-
+                       
                       <a
                         aria-current="page"
                         class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
-
+                        
           Home
-
+        
                       </a>
-
+                        
                       <div
                         class="btn-group pull-right mr-2"
                       >
@@ -301,7 +301,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         href="#/trees/1/interaction-designer/view"
                         title="Click to toggle editing"
                       >
-
+                        
             View Flow
           
                       </a>
@@ -400,15 +400,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
               
                           </a>
                           <!---->
-
+                           
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="Core\\\\SetGroupMembership"
                             href="#"
                           >
-
+                            
                 Set Group Membership
-
+              
                           </a>
                           <!---->
                            
@@ -518,21 +518,21 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         class="btn btn-outline-secondary mr-2"
                         href="#/flows/new"
                       >
-
+                        
           New Flow
-
+        
                       </a>
-
+                       
                       <a
                         aria-current="page"
                         class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
-
+                        
           Home
-
+        
                       </a>
-
+                       
                       <a
                         class="btn btn-success"
                         disabled="disabled"
@@ -655,7 +655,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                         href="#/trees/1/interaction-designer/view"
                         title="Click to toggle editing"
                       >
-
+                        
             View Flow
           
                       </a>
@@ -760,12 +760,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             data-block-type="Core\\\\SetGroupMembership"
                             href="#"
                           >
-
+                            
                 Set Group Membership
-
+              
                           </a>
                           <!---->
-
+                           
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="MobilePrimitives\\\\Message"
@@ -867,26 +867,26 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
           Delete
         
                       </button>
-
+                       
                       <a
                         class="btn btn-outline-secondary mr-2"
                         href="#/flows/new"
                       >
-
+                        
           New Flow
-
+        
                       </a>
-
+                       
                       <a
                         aria-current="page"
                         class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
-
+                        
           Home
-
+        
                       </a>
-
+                        
                       <div
                         class="btn-group pull-right mr-2"
                       >
@@ -1008,7 +1008,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         href="#/trees/1/interaction-designer/view"
                         title="Click to toggle editing"
                       >
-
+                        
             View Flow
           
                       </a>
@@ -1107,15 +1107,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
               
                           </a>
                           <!---->
-
+                           
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="Core\\\\SetGroupMembership"
                             href="#"
                           >
-
+                            
                 Set Group Membership
-
+              
                           </a>
                           <!---->
                            
@@ -1220,26 +1220,26 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
           Delete
         
                       </button>
-
+                       
                       <a
                         class="btn btn-outline-secondary mr-2"
                         href="#/flows/new"
                       >
-
+                        
           New Flow
-
+        
                       </a>
-
+                       
                       <a
                         aria-current="page"
                         class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
-
+                        
           Home
-
+        
                       </a>
-
+                        
                       <div
                         class="btn-group pull-right mr-2"
                       >
@@ -1333,7 +1333,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                         href="#/trees/1/interaction-designer/edit"
                         title="Click to toggle editing"
                       >
-
+                        
             Edit Flow
           
                       </a>
@@ -1343,26 +1343,26 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       <!---->
                        
                       <!---->
-
+                       
                       <a
                         class="btn btn-outline-secondary mr-2"
                         href="#/flows/new"
                       >
-
+                        
           New Flow
-
+        
                       </a>
-
+                       
                       <a
                         aria-current="page"
                         class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
-
+                        
           Home
-
+        
                       </a>
-
+                        
                       <div
                         class="btn-group pull-right mr-2"
                       >
