@@ -177,8 +177,8 @@ export default {
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
-    if((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
     }
 
     global.builder = this // initialize global reference for legacy + debugging
@@ -195,13 +195,16 @@ export default {
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   mounted() {
-      this.flow_setActiveFlowId({flowId: this.id})
+    this.flow_setActiveFlowId({ flowId: this.id })
 
-      //if nothing was found for the flow Id
-      if(!this.activeFlow) {
-        this.flow_setActiveFlowId({flowId: null})
-        this.$router.replace(`${this.route('flows.fetchFlow', {flowId: this.id})}?nextUrl=${this.$route.path}`)
-      }
+    // if nothing was found for the flow Id
+    if (!this.activeFlow) {
+      this.flow_setActiveFlowId({ flowId: null })
+      this.$router.replace(
+        this.route('flows.fetchFlow', { flowId: this.id }),
+        { query: { nextUrl: this.$route.path } },
+      )
+    }
 
     this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
     this.deselectBlocks()
