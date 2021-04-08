@@ -1,6 +1,36 @@
 {
   "ui": {
     "routes": {
+      "flows": {
+        "persistFlow": {
+          "name": "persistFlow",
+          "path": "\/backend\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["POST", "PUT"]
+        },
+        "fetchFlowServer": {
+          "name": "fetchFlowServer",
+          "path": "\/backend\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["GET"]
+        },
+        "newFlow": {
+          "name": "newFlow",
+          "path": "\/flows\/new",
+          "methods": ["GET"]
+        },
+        "fetchFlow": {
+          "name": "fetchFlow",
+          "path": "\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["GET"]
+        },
+        "home": {
+          "name": "home",
+          "path": "\/",
+          "methods": ["GET"]
+        }
+      },
       "trees": {
         "editTree": {
           "name": "editTree",
@@ -267,6 +297,7 @@
     "treeSets": [],
     "enabledFeatures": [
       "audioUpload",
+      "treeSave",
       "callToRecord"
     ]
   },

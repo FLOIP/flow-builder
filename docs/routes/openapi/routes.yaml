@@ -1,0 +1,166 @@
+openapi: 3.0.1
+info:
+  title: Flow Builder Routes
+  description: This document describes the specification for any implementation of
+    the server required for integration of the flow builder with a backend.
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: Flows
+  description: Operations about flows and flow blocks
+  externalDocs:
+    description: Find out more about flows
+    url: https://floip.gitbook.io/flow-specification/
+paths:
+  /flows/{id}:
+    get:
+      tags:
+      - Flows
+      operationId: Fetch Flow
+      summary: Finds Flow in Container by ID
+      parameters:
+      - name: id
+        in: path
+        description: ID of flow to return.
+        required: true
+        schema:
+          type: uuid 
+      responses:
+        200:
+          description: Returns the flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers
+            for full spec. The 'flows' attribute of the returned container will contain
+            the flow itself and any nested flows. 'resources' will contain any nested
+            resources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowContainer'
+        404:
+          description: Flow not found
+          content: {}
+    post:
+      tags:
+      - Flows
+      operationId: Save Flow
+      summary: Create a Flow and associated Resources. UUIDs are generated
+        client side so the builder can operate without a backend. 
+        That means we need to track whether the flow is created on the server or not in this builder
+        with an attribute on the container - `created` - rather than with whether or not the flow
+        has a uuid yet. `created` is not sent to the server.
+        This route is used when `created` === false 
+      parameters:
+      - name: id
+        in: path
+        description: Creates a flow and it's associated resources
+        required: true
+        schema:
+          type: uuid 
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/FlowContainer'
+        required: true
+      responses:
+        200:
+          description: Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers
+            for full spec. The 'flows' attribute of the returned container will contain
+            the flow itself and any nested flows. 'resources' will contain any nested
+            resources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowContainer'
+        500:
+          description: Error in flow creation including validation errors (the builder
+            should prevent these client side before we get to that point though)
+          content: {}
+      x-codegen-request-body-name: flow_container
+    put:
+      tags:
+      - Flows
+      operationId: Update Flow
+      summary: Update a Flow and associated Resources. UUIDs are generated
+        client side so the builder can operate without a backend. 
+        That means we need to track whether the flow is created on the server or not in this builder
+        with an attribute on the container - `created` - rather than with whether or not the flow
+        has a uuid yet. `created` is not sent to the server.
+        This route is used when `created` === true
+      parameters:
+      - name: id
+        in: path
+        description: Updates a flow and it's associated resources by ID
+        required: true
+        schema:
+          type: uuid 
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/FlowContainer'
+        required: true
+      responses:
+        200:
+          description: Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers
+            for full spec. The 'flows' attribute of the returned container will contain
+            the flow itself and any nested flows. 'resources' will contain any nested
+            resources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowContainer'
+        500:
+          description: Error in flow update including validation errors (the builder
+            should prevent these client side before we get to that point though)
+          content: {}
+      x-codegen-request-body-name: flow_container
+  /flows/import:
+    post:
+      tags:
+        - Flows
+      operationId: Import Flow
+      description: WIP
+      responses:
+        200:
+          description: WIP
+  /blocks/{id}:
+    post:
+      tags:
+        - Flows
+      description: WIP
+      operationId: Persist Block
+      parameters:
+      - name: id
+        in: path
+        description: ID of the block.
+        required: true
+        schema:
+          type: uuid 
+      responses: 
+        200:
+          description: WIP
+components:
+  schemas:
+    FlowContainer:
+      type: object
+      properties:
+        specification_version:
+          type: string
+        uuid:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        platform_metadata:
+          type: object
+          properties: {}
+        flows:
+          type: array
+          items:
+            type: object
+            properties: {}
+        resources:
+          type: object
+          properties: {}
