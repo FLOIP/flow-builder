@@ -24,9 +24,9 @@
 <script lang="ts">
 import lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import { Component } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { forEach } from 'lodash'
+import { forEach, isEmpty } from 'lodash'
 import {store} from '@/store'
 import {Mutation, namespace} from 'vuex-class'
 import {IFlow} from '@floip/flow-runner'
@@ -41,11 +41,16 @@ const flowVuexNamespace = namespace('flow')
       forEach(store.modules, (v, k) =>
         !$store.hasModule(k) && $store.registerModule(k, v))
 
-      this.configure({})
+      if((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+        this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+      }
     },
   },
 )
 class Home extends Vue {
+  @Prop({default: () => ({})}) readonly appConfig!: object
+  @Prop({default: () => ({})}) readonly builderConfig!: object
+
   @flowVuexNamespace.State flows!: IFlow[]
   @Mutation configure
 }
