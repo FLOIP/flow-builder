@@ -8,7 +8,7 @@ window.app = window.app || {};
   app.ui.changes = 0
 
   app.ui.saveTimer = app.ui.saveTimer || 60
-  app.ui.saveCurrentlyInProgress = 0
+  app.ui.isSaveCurrentlyInProgress = false
 
   app.ui.removeClassPrefix = function (blockClassName) {
     return blockClassName.substr(11)
@@ -48,13 +48,13 @@ window.app = window.app || {};
     const outputData = JSON.stringify(app.tree)
 
     const treeId = app.tree.get('id')
-    if (app.ui.saveCurrentlyInProgress == 1) {
+    if (app.ui.isSaveCurrentlyInProgress === true) {
       console.log('Save currently in progress')
       return
     }
 
     const treeUpdatedConflict = builder.$store.state.trees.ui.treeUpdateConflict
-    app.ui.saveCurrentlyInProgress = 1
+    app.ui.isSaveCurrentlyInProgress = true
 
     app.audioChoice.setTopUpdatesBar(Lang.trans('trees.saving-tree'))
     app.dataControl._setValidationResultsForUI([])
@@ -76,7 +76,7 @@ window.app = window.app || {};
           $('#myModal').modal({ show: true, backdrop: 'static' })
         }
 
-        app.ui.saveCurrentlyInProgress = 0
+        app.ui.isSaveCurrentlyInProgress = false
         app.dataControl._setValidationResultsForUI(response.validation_results)
 
         app.ui.previousTreeJson = outputData // used to detect changes in vuejs
@@ -100,7 +100,7 @@ window.app = window.app || {};
         }
       })
       .always(() => {
-        app.ui.saveCurrentlyInProgress = 0
+        app.ui.isSaveCurrentlyInProgress = false
       })
 
     // Create Adapter from jQuery-promise-api to ES6-promise-api

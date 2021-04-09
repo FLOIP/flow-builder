@@ -82,7 +82,7 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
   activeBlock: ({ activeBlockId }, { blocksById }) => (activeBlockId ? blocksById[activeBlockId] : null),
 
   blocksById: (state, getters, rootState, rootGetters) => {
-    const { blocks } = rootGetters['flow/activeFlow']
+    const { blocks } = rootGetters['flow/activeFlow'] ? rootGetters['flow/activeFlow'] : { blocks: [] }
     return keyBy(blocks, 'uuid')
   },
 
@@ -328,26 +328,6 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     // make sure we use the same languages ids on both UI & Flows
     rootState.trees.ui.languages = flows[0].languages
   },
-
-  async loadFlow({
-    dispatch, commit, state, rootState,
-  }) {
-    console.debug('builder', 'loading flow...')
-
-    // todo: we need something like: set context
-    const flowContext = require('./blank-flow.json')
-    const flow = flowContext.flows[0]
-    flow.uuid = (new IdGeneratorUuidV4()).generate()
-    flow.lastModified = createFormattedDate()
-    flow.languages = cloneDeep(rootState.trees.ui.languages)
-
-    flowContext.resources.forEach((resource: any) => commit('flow/resource_add', { resource }, { root: true }))
-
-    await dispatch('flow/flow_add', { flow }, { root: true })
-
-    console.debug('builder', 'flow loaded.')
-  },
-
   setIsEditable({ commit }, value) {
     const boolVal = Boolean(value)
     commit('setIsEditable', boolVal)

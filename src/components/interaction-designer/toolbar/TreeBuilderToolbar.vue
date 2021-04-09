@@ -30,14 +30,15 @@
             </router-link>
           </div>
 
-          <div v-if="!ui.isEditableLocked" @click="attemptSaveTree">
-            <router-link :to="editOrViewTreeJsUrl"
-                         class="btn btn-outline-secondary mr-2"
-                         :title="trans('flow-builder.click-to-toggle-editing')"
-            >
+          <router-link v-if="!ui.isEditableLocked"
+             :to="editOrViewTreeJsUrl"
+             event=""
+             :title="trans('flow-builder.click-to-toggle-editing')"
+             class="btn btn-outline-secondary mr-2"
+             :class="{active: isEditable}"
+             @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
               {{isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow')}}
             </router-link>
-          </div>
 
           <div v-if="isEditable" class="dropdown mr-2">
             <button type="button"
@@ -135,15 +136,23 @@
             {{trans('flow-builder.delete')}}
           </button>
 
+          <router-link :to="route('flows.newFlow')" class="btn btn-outline-secondary mr-2">
+            {{trans('flow-builder.new-flow')}}
+          </router-link>
+          <router-link :to="route('flows.home')" class="btn btn-outline-secondary mr-2">
+            {{trans('flow-builder.home')}}
+          </router-link>
+
           <slot name="extra-buttons"/>
 
+          <!--TODO - do disable if no changes logic-->
           <div class="btn-group pull-right mr-2">
             <button v-if="isEditable && isFeatureTreeSaveEnabled"
                     type="button"
                     class="btn btn-primary tree-save-tree"
                     :title="trans('flow-builder.save-changes-to-the-flow')"
-                    :disabled="isTreeSaving || !hasChanges"
-                    @click="attemptSaveTree">
+                    :disabled="!!isTreeSaving"
+                    @click="handlePersistFlow()">
               {{saveButtonText}}
             </button>
             <slot name="right-grouped-buttons"/>
@@ -189,6 +198,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   isImporterVisible = false
 
   // Computed ####################
+
   isEmpty(value?: any): boolean {
     return isEmpty(value)
   }
@@ -218,12 +228,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     ))
   }
 
-  get jsKey() { // deprecate
-    return lodash.get(this.selectedBlock, 'jsKey')
-  }
-
   get editTreeUrl() {
-    return this.editTreeRoute({})
+    return this.editTreeRoute()
   }
 
   get treeViewUrl() {
@@ -282,10 +288,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   get saveButtonText() {
-    if (this.hasChanges) {
-      return this.trans('flow-builder.save')
-    }
-    return this.trans('flow-builder.saved')
+  //TODO - once we can detect changes again we will change this text when saved
+  return this.trans('flow-builder.save')
   }
 
   get rootBlockClassesToDisplay() {
@@ -315,7 +319,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   // Methods #####################
-  async handleAddBlockByTypeSelected({ type }: { type: string }) {
+
+  async handleAddBlockByTypeSelected({ type }) {
     const { uuid: blockId } = await this.flow_addBlankBlockByType({
       type,
       // @ts-ignore TODO: remove this once IBlock has platform_metadata key
@@ -326,6 +331,27 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       },
     }) // todo push out to intx-designer
     this.activateBlock({ blockId })
+  }
+
+  async handlePersistFlow(route) {
+    //TODO - hook into validation system when we have it - block the logic here if invalid.
+
+    //If we aren't in edit mode there should be nothing to persist
+    if(this.isEditable) {
+      this.setTreeSaving(true)
+      const flowContainer = await this.flow_persist({
+        persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
+        flowContainer: this.activeFlowContainer
+      })
+      this.setTreeSaving(false)
+      if(!flowContainer) {
+        //TODO - hook into showing validation errors design when we have it
+        //This won't show normal validation errors as the frontend should have caught them. We'll use this to show server errors.
+      }
+    }
+    if(route) {
+      this.$router.push(route)
+    }
   }
 
   handleRemoveActivatedBlockTriggered() {
@@ -344,7 +370,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   editTreeRoute({ component = null, mode = null }: { component?: any; mode?: string | null }) {
     const context = this.removeNilValues({
-      treeId: this.tree.id,
+      treeId: this.activeFlow.uuid,
       component,
       mode,
     })
@@ -376,6 +402,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return lodash.pickBy(obj, lodash.identity)
   }
 
+  getDeleteToolTip() {
+    return this.trans('flow-builder.tooltip-delete-block')
+  }
+
   // ########### VUEX ###############
   @State(({ trees: { tree } }) => tree) tree!: any
 
@@ -403,10 +433,14 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   @Getter isResourceEditorEnabled!: boolean
 
+  @Mutation setTreeSaving ??
+
   @Action attemptSaveTree?: void
 
   // Flow
   @flowVuexNamespace.Getter activeFlow?: IFlow
+
+  @flowVuexNamespace.Getter activeFlowContainer?!
 
   @flowVuexNamespace.State flows?: IFlow[]
 
@@ -418,6 +452,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   @flowVuexNamespace.Action flow_duplicateBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => Promise<IBlock>
 
+  @flowVuexNamespace.Action flow_persist??
   // Builder
   @builderVuexNamespace.Getter isEditable!: boolean
 

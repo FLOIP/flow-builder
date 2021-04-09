@@ -10,12 +10,12 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=template&id=8e39f506&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('block-threshold-editor',{attrs:{"block":_vm.block},on:{"commitAccuracyThresholdMetersChange":_vm.updateThreshold}}),_c('block-timeout-editor',{attrs:{"block":_vm.block},on:{"commitAccuracyTimeoutSecondsChange":_vm.updateTimeout}}),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}}),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=template&id=12fb441e&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('block-threshold-editor',{attrs:{"block":_vm.block},on:{"commitAccuracyThresholdMetersChange":_vm.updateThreshold}}),_c('block-timeout-editor',{attrs:{"block":_vm.block},on:{"commitAccuracyTimeoutSecondsChange":_vm.updateTimeout}}),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],1),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=template&id=8e39f506&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=template&id=12fb441e&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("d4ec");
@@ -42,303 +42,6 @@ var lib = __webpack_require__("4bb5");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/vue-property-decorator.js
 var vue_property_decorator = __webpack_require__("60a3");
 
-// EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceEditor.vue + 27 modules
-var ResourceEditor = __webpack_require__("510a");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
-var NameEditor = __webpack_require__("f04e");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue + 4 modules
-var LabelEditor = __webpack_require__("3411");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue + 4 modules
-var SemanticLabelEditor = __webpack_require__("1b4e");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue + 4 modules
-var FirstBlockEditorButton = __webpack_require__("192b");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
-var BlockId = __webpack_require__("792f");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=665feaa7&
-var ThresholdEditorvue_type_template_id_665feaa7_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group block-threshold"},[_c('float-editor',{attrs:{"is-editable":_vm.isEditable,"min":0,"regex-float-filtering":'[0-9.,]',"label":_vm._f("trans")('flow-builder.accuracy-threshold-in-meters'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.threshold),callback:function ($$v) {_vm.threshold=_vm._n($$v)},expression:"threshold"}})],1)}
-var ThresholdEditorvue_type_template_id_665feaa7_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=665feaa7&
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/FloatEditor.vue?vue&type=template&id=1a52cdca&
-var FloatEditorvue_type_template_id_1a52cdca_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"float-editor"},[_c('label',[_vm._v(_vm._s(_vm.label))]),(_vm.isEditable)?_c('div',[_c('input',{staticClass:"form-control",attrs:{"type":"number","min":_vm.min,"placeholder":_vm.placeholder,"step":_vm.step},domProps:{"value":_vm.value},on:{"keypress":_vm.filterFloat,"keydown":function($event){return _vm.$emit('keydown', $event)},"input":function($event){return _vm.$emit('input', $event.target.value)}}})]):_c('p',[_vm._v(" "+_vm._s(_vm.value)+" ")]),_vm._t("default")],2)}
-var FloatEditorvue_type_template_id_1a52cdca_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/common/FloatEditor.vue?vue&type=template&id=1a52cdca&
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
-var es_number_constructor = __webpack_require__("a9e3");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.constructor.js
-var es_regexp_constructor = __webpack_require__("4d63");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
-var es_regexp_exec = __webpack_require__("ac1f");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.to-string.js
-var es_regexp_to_string = __webpack_require__("25f0");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.match.js
-var es_string_match = __webpack_require__("466d");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/FloatEditor.vue?vue&type=script&lang=js&
-
-
-
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ var FloatEditorvue_type_script_lang_js_ = ({
-  props: {
-    isEditable: {
-      default: true,
-      type: Boolean
-    },
-    label: {
-      type: [String, Number],
-      required: true
-    },
-    placeholder: {
-      type: String,
-      default: ""
-    },
-    step: {
-      type: String,
-      default: "0.1"
-    },
-    value: {
-      type: [String, Number],
-      required: true
-    },
-    min: {
-      type: [String, Number],
-      required: false,
-      default: '' // Meaning it's accepting negative by default
-
-    },
-    regexFloatFiltering: {
-      type: String,
-      required: false,
-      default: '[0-9\-.,]'
-    }
-  },
-  methods: {
-    filterFloat: function filterFloat(e) {
-      if (!e.key.match(new RegExp(this.regexFloatFiltering, 'g'))) {
-        e.preventDefault();
-      }
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/components/common/FloatEditor.vue?vue&type=script&lang=js&
- /* harmony default export */ var common_FloatEditorvue_type_script_lang_js_ = (FloatEditorvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__("2877");
-
-// CONCATENATED MODULE: ./src/components/common/FloatEditor.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  common_FloatEditorvue_type_script_lang_js_,
-  FloatEditorvue_type_template_id_1a52cdca_render,
-  FloatEditorvue_type_template_id_1a52cdca_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var FloatEditor = (component.exports);
-// EXTERNAL MODULE: ./node_modules/lodash/lodash.js
-var lodash = __webpack_require__("2ef0");
-
-// EXTERNAL MODULE: ./src/lib/filters/lang.js
-var lang = __webpack_require__("3a37");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var ThresholdEditorvue_type_script_lang_js_ = ({
-  components: {
-    FloatEditor: FloatEditor
-  },
-  mixins: [lang["a" /* default */]],
-  props: {
-    isEditable: {
-      default: true,
-      type: Boolean
-    },
-    block: {
-      type: Object,
-      required: true
-    }
-  },
-  data: function data() {
-    return {
-      defaultValue: 5.0
-    };
-  },
-  computed: {
-    threshold: {
-      get: function get() {
-        return Object(lodash["get"])(this.block, 'config.accuracyThresholdMeters', this.defaultValue);
-      },
-      set: function set(value) {
-        this.$emit('commitAccuracyThresholdMetersChange', value);
-      }
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=script&lang=js&
- /* harmony default export */ var block_editors_ThresholdEditorvue_type_script_lang_js_ = (ThresholdEditorvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue
-
-
-
-
-
-/* normalize component */
-
-var ThresholdEditor_component = Object(componentNormalizer["a" /* default */])(
-  block_editors_ThresholdEditorvue_type_script_lang_js_,
-  ThresholdEditorvue_type_template_id_665feaa7_render,
-  ThresholdEditorvue_type_template_id_665feaa7_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var ThresholdEditor = (ThresholdEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=346c1fd3&
-var TimeoutEditorvue_type_template_id_346c1fd3_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group block-timeout"},[_c('numeric-editor',{attrs:{"is-editable":_vm.isEditable,"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.Accuracy-timeout-in-seconds'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.timeout),callback:function ($$v) {_vm.timeout=_vm._n($$v)},expression:"timeout"}})],1)}
-var TimeoutEditorvue_type_template_id_346c1fd3_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=346c1fd3&
-
-// EXTERNAL MODULE: ./src/components/common/NumericEditor.vue + 4 modules
-var NumericEditor = __webpack_require__("2f00");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var TimeoutEditorvue_type_script_lang_js_ = ({
-  components: {
-    NumericEditor: NumericEditor["a" /* default */]
-  },
-  mixins: [lang["a" /* default */]],
-  props: {
-    isEditable: {
-      default: true,
-      type: Boolean
-    },
-    block: {
-      type: Object,
-      required: true
-    }
-  },
-  data: function data() {
-    return {
-      defaultValue: 120
-    };
-  },
-  computed: {
-    timeout: {
-      get: function get() {
-        return Object(lodash["get"])(this.block, 'config.accuracyTimeoutSeconds', this.defaultValue);
-      },
-      set: function set(value) {
-        this.$emit('commitAccuracyTimeoutSecondsChange', value);
-      }
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=script&lang=js&
- /* harmony default export */ var block_editors_TimeoutEditorvue_type_script_lang_js_ = (TimeoutEditorvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue
-
-
-
-
-
-/* normalize component */
-
-var TimeoutEditor_component = Object(componentNormalizer["a" /* default */])(
-  block_editors_TimeoutEditorvue_type_script_lang_js_,
-  TimeoutEditorvue_type_template_id_346c1fd3_render,
-  TimeoutEditorvue_type_template_id_346c1fd3_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var TimeoutEditor = (TimeoutEditor_component.exports);
 // EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
 var runtime = __webpack_require__("96cf");
 
@@ -347,7 +50,9 @@ var asyncToGenerator = __webpack_require__("1da1");
 
 // EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
 var IdGeneratorUuidV4 = __webpack_require__("31aa");
-var IdGeneratorUuidV4_default = /*#__PURE__*/__webpack_require__.n(IdGeneratorUuidV4);
+
+// EXTERNAL MODULE: ./node_modules/lodash/lodash.js
+var lodash = __webpack_require__("2ef0");
 
 // CONCATENATED MODULE: ./src/store/flow/block-types/SmartDevices_LocationResponseBlockStore.ts
 
@@ -423,7 +128,7 @@ var actions = {
               _context3.next = 4;
               return dispatch('flow/block_createBlockDefaultExitWith', {
                 props: {
-                  uuid: new IdGeneratorUuidV4_default.a().generate(),
+                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate(),
                   tag: 'Default',
                   label: 'Default'
                 }
@@ -436,7 +141,7 @@ var actions = {
               _context3.next = 7;
               return dispatch('flow/block_createBlockExitWith', {
                 props: {
-                  uuid: new IdGeneratorUuidV4_default.a().generate(),
+                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate(),
                   tag: 'Error',
                   label: 'Error'
                 }
@@ -474,9 +179,289 @@ var actions = {
   mutations: mutations,
   actions: actions
 });
+// EXTERNAL MODULE: ./src/lib/filters/lang.js
+var lang = __webpack_require__("3a37");
+
 // EXTERNAL MODULE: ./src/store/builder/index.ts + 6 modules
 var builder = __webpack_require__("af98");
 
+// EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceEditor.vue + 37 modules
+var ResourceEditor = __webpack_require__("510a");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
+var NameEditor = __webpack_require__("f04e");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue + 4 modules
+var LabelEditor = __webpack_require__("3411");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue + 4 modules
+var SemanticLabelEditor = __webpack_require__("1b4e");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue + 4 modules
+var FirstBlockEditorButton = __webpack_require__("192b");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
+var BlockId = __webpack_require__("792f");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=5f1ae662&
+var ThresholdEditorvue_type_template_id_5f1ae662_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group block-threshold"},[_c('float-editor',{attrs:{"min":0,"regex-float-filtering":'[0-9.,]',"label":_vm._f("trans")('flow-builder.accuracy-threshold-in-meters'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.threshold),callback:function ($$v) {_vm.threshold=_vm._n($$v)},expression:"threshold"}})],1)}
+var ThresholdEditorvue_type_template_id_5f1ae662_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=5f1ae662&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/FloatEditor.vue?vue&type=template&id=068ac83e&
+var FloatEditorvue_type_template_id_068ac83e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"float-editor"},[_c('label',[_vm._v(_vm._s(_vm.label))]),_c('div',[_c('input',{staticClass:"form-control",attrs:{"type":"number","min":_vm.min,"placeholder":_vm.placeholder,"step":_vm.step},domProps:{"value":_vm.value},on:{"keypress":_vm.filterFloat,"keydown":function($event){return _vm.$emit('keydown', $event)},"input":function($event){return _vm.$emit('input', $event.target.value)}}})]),_vm._t("default")],2)}
+var FloatEditorvue_type_template_id_068ac83e_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/common/FloatEditor.vue?vue&type=template&id=068ac83e&
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
+var es_number_constructor = __webpack_require__("a9e3");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.constructor.js
+var es_regexp_constructor = __webpack_require__("4d63");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
+var es_regexp_exec = __webpack_require__("ac1f");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.to-string.js
+var es_regexp_to_string = __webpack_require__("25f0");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.match.js
+var es_string_match = __webpack_require__("466d");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/FloatEditor.vue?vue&type=script&lang=js&
+
+
+
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ var FloatEditorvue_type_script_lang_js_ = ({
+  props: {
+    label: {
+      type: [String, Number],
+      required: true
+    },
+    placeholder: {
+      type: String,
+      default: ''
+    },
+    step: {
+      type: String,
+      default: '0.1'
+    },
+    value: {
+      type: [String, Number],
+      required: true
+    },
+    min: {
+      type: [String, Number],
+      required: false,
+      default: '' // Meaning it's accepting negative by default
+
+    },
+    regexFloatFiltering: {
+      type: String,
+      required: false,
+      default: '[0-9\-.,]'
+    }
+  },
+  methods: {
+    filterFloat: function filterFloat(e) {
+      if (!e.key.match(new RegExp(this.regexFloatFiltering, 'g'))) {
+        e.preventDefault();
+      }
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/common/FloatEditor.vue?vue&type=script&lang=js&
+ /* harmony default export */ var common_FloatEditorvue_type_script_lang_js_ = (FloatEditorvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2877");
+
+// CONCATENATED MODULE: ./src/components/common/FloatEditor.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  common_FloatEditorvue_type_script_lang_js_,
+  FloatEditorvue_type_template_id_068ac83e_render,
+  FloatEditorvue_type_template_id_068ac83e_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var FloatEditor = (component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var ThresholdEditorvue_type_script_lang_js_ = ({
+  components: {
+    FloatEditor: FloatEditor
+  },
+  mixins: [lang["a" /* default */]],
+  props: {
+    block: {
+      type: Object,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      defaultValue: 5.0
+    };
+  },
+  computed: {
+    threshold: {
+      get: function get() {
+        return Object(lodash["get"])(this.block, 'config.accuracyThresholdMeters', this.defaultValue);
+      },
+      set: function set(value) {
+        this.$emit('commitAccuracyThresholdMetersChange', value);
+      }
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=script&lang=js&
+ /* harmony default export */ var block_editors_ThresholdEditorvue_type_script_lang_js_ = (ThresholdEditorvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue
+
+
+
+
+
+/* normalize component */
+
+var ThresholdEditor_component = Object(componentNormalizer["a" /* default */])(
+  block_editors_ThresholdEditorvue_type_script_lang_js_,
+  ThresholdEditorvue_type_template_id_5f1ae662_render,
+  ThresholdEditorvue_type_template_id_5f1ae662_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ThresholdEditor = (ThresholdEditor_component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=697f500a&
+var TimeoutEditorvue_type_template_id_697f500a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group block-timeout"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.Accuracy-timeout-in-seconds'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.timeout),callback:function ($$v) {_vm.timeout=_vm._n($$v)},expression:"timeout"}})],1)}
+var TimeoutEditorvue_type_template_id_697f500a_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=697f500a&
+
+// EXTERNAL MODULE: ./src/components/common/NumericEditor.vue + 4 modules
+var NumericEditor = __webpack_require__("2f00");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var TimeoutEditorvue_type_script_lang_js_ = ({
+  components: {
+    NumericEditor: NumericEditor["a" /* default */]
+  },
+  mixins: [lang["a" /* default */]],
+  props: {
+    block: {
+      type: Object,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      defaultValue: 120
+    };
+  },
+  computed: {
+    timeout: {
+      get: function get() {
+        return Object(lodash["get"])(this.block, 'config.accuracyTimeoutSeconds', this.defaultValue);
+      },
+      set: function set(value) {
+        this.$emit('commitAccuracyTimeoutSecondsChange', value);
+      }
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=script&lang=js&
+ /* harmony default export */ var block_editors_TimeoutEditorvue_type_script_lang_js_ = (TimeoutEditorvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue
+
+
+
+
+
+/* normalize component */
+
+var TimeoutEditor_component = Object(componentNormalizer["a" /* default */])(
+  block_editors_TimeoutEditorvue_type_script_lang_js_,
+  TimeoutEditorvue_type_template_id_697f500a_render,
+  TimeoutEditorvue_type_template_id_697f500a_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var TimeoutEditor = (TimeoutEditor_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=script&lang=ts&
 
 
@@ -499,6 +484,7 @@ var builder = __webpack_require__("af98");
 
 var flowVuexNamespace = Object(lib["c" /* namespace */])('flow');
 var blockVuexNamespace = Object(lib["c" /* namespace */])("flow/".concat(BLOCK_TYPE));
+var builderVuexNamespace = Object(lib["c" /* namespace */])('builder');
 
 var SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock = /*#__PURE__*/function (_Vue) {
   Object(inherits["a" /* default */])(SmartDevices_LocationResponseBlock, _Vue);
@@ -532,17 +518,19 @@ var SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_Locat
   return SmartDevices_LocationResponseBlock;
 }(external_commonjs_vue_commonjs2_vue_root_Vue_default.a);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "block", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "block", void 0);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "flow", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "flow", void 0);
 
-Object(tslib_es6["__decorate"])([flowVuexNamespace.Getter], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "resourcesByUuid", void 0);
+Object(tslib_es6["a" /* __decorate */])([flowVuexNamespace.Getter], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "resourcesByUuid", void 0);
 
-Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "setAccuracyThreshold", void 0);
+Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Action], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "setAccuracyThreshold", void 0);
 
-Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "setAccuracyTimeout", void 0);
+Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Action], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "setAccuracyTimeout", void 0);
 
-SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator["a" /* Component */])({
+Object(tslib_es6["a" /* __decorate */])([builderVuexNamespace.Getter], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "isEditable", void 0);
+
+SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock = Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["a" /* Component */])({
   components: {
     ResourceEditor: ResourceEditor["a" /* default */],
     BlockNameEditor: NameEditor["a" /* default */],

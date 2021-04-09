@@ -5,12 +5,12 @@
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue?vue&type=template&id=18dcf050&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"starting-block-button"},[( true)?[_c('h4',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.options')))]),_c('div',{staticClass:"form-group"},[_c('button',{staticClass:"btn btn-secondary btn-sm",attrs:{"type":"button","disabled":_vm.isStartBlock},on:{"click":function($event){return _vm.setStartBlock($event)}}},[(_vm.isStartBlock)?[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.currently-set-as-starting-block'))+" ")]:[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.set-as-starting-block'))+" ")]],2)])]:undefined],2)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue?vue&type=template&id=b24146e6&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"starting-block-button"},[(_vm.isEditable)?[_c('h4',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.options')))]),_c('div',{staticClass:"form-group"},[_c('button',{staticClass:"btn btn-secondary btn-sm",attrs:{"type":"button","disabled":_vm.isStartBlock},on:{"click":function($event){return _vm.setStartBlock($event)}}},[(_vm.isStartBlock)?[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.currently-set-as-starting-block'))+" ")]:[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.set-as-starting-block'))+" ")]],2)])]:_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue?vue&type=template&id=18dcf050&
+// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue?vue&type=template&id=b24146e6&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("d4ec");
@@ -83,17 +83,17 @@ var FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton = /*#__
   return FirstBlockEditorButton;
 }(external_commonjs_vue_commonjs2_vue_root_Vue_default.a);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])({
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])({
   default: true
 })], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton.prototype, "isEditable", void 0);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton.prototype, "blockId", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton.prototype, "blockId", void 0);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton.prototype, "flow", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton.prototype, "flow", void 0);
 
-Object(tslib_es6["__decorate"])([flowVuexNamespace.Mutation], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton.prototype, "flow_setFirstBlockId", void 0);
+Object(tslib_es6["a" /* __decorate */])([flowVuexNamespace.Mutation], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton.prototype, "flow_setFirstBlockId", void 0);
 
-FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton = Object(tslib_es6["__decorate"])([Object(vue_property_decorator["a" /* Component */])({
+FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton = Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["a" /* Component */])({
   mixins: [lang["a" /* default */]]
 })], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton);
 /* harmony default export */ var FirstBlockEditorButtonvue_type_script_lang_ts_ = (FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton);
@@ -130,12 +130,12 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue?vue&type=template&id=07ceef3b&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('text-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.block-semantic-label'),"placeholder":_vm._f("trans")('flow-builder.enter-block-semantic-label')},model:{value:(_vm.semanticLabel),callback:function ($$v) {_vm.semanticLabel=$$v},expression:"semanticLabel"}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue?vue&type=template&id=27c5e423&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('text-editor',{attrs:{"label":_vm._f("trans")('flow-builder.block-semantic-label'),"placeholder":_vm._f("trans")('flow-builder.enter-block-semantic-label')},model:{value:(_vm.semanticLabel),callback:function ($$v) {_vm.semanticLabel=$$v},expression:"semanticLabel"}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue?vue&type=template&id=07ceef3b&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue?vue&type=template&id=27c5e423&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/defineProperty.js
 var defineProperty = __webpack_require__("ade3");
@@ -166,7 +166,6 @@ var _components$mixins$pr;
 //
 //
 //
-//
 
 
 
@@ -176,10 +175,6 @@ var _components$mixins$pr;
   },
   mixins: [lang["a" /* default */]],
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean
-    },
     block: {
       type: Object,
       required: true
@@ -231,15 +226,12 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/LabelEditor.vue?vue&type=template&id=1cd96f6e&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('text-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.block-label'),"placeholder":_vm._f("trans")('flow-builder.enter-block-label')},model:{value:(_vm.label),callback:function ($$v) {_vm.label=$$v},expression:"label"}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/LabelEditor.vue?vue&type=template&id=43e99a97&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('text-editor',{attrs:{"label":_vm._f("trans")('flow-builder.block-label'),"placeholder":_vm._f("trans")('flow-builder.enter-block-label')},model:{value:(_vm.label),callback:function ($$v) {_vm.label=$$v},expression:"label"}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue?vue&type=template&id=1cd96f6e&
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/defineProperty.js
-var defineProperty = __webpack_require__("ade3");
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue?vue&type=template&id=43e99a97&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
 var objectSpread2 = __webpack_require__("5530");
@@ -255,11 +247,6 @@ var lang = __webpack_require__("3a37");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/LabelEditor.vue?vue&type=script&lang=js&
 
-
-
-var _components$mixins$pr;
-
-//
 //
 //
 //
@@ -271,34 +258,32 @@ var _components$mixins$pr;
 
 
 
-/* harmony default export */ var LabelEditorvue_type_script_lang_js_ = (_components$mixins$pr = {
+/* harmony default export */ var LabelEditorvue_type_script_lang_js_ = ({
   components: {
     TextEditor: TextEditor["a" /* default */]
   },
   mixins: [lang["a" /* default */]],
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean
-    },
     block: {
       type: Object,
       required: true
     }
-  }
-}, Object(defineProperty["a" /* default */])(_components$mixins$pr, "mixins", [lang["a" /* default */]]), Object(defineProperty["a" /* default */])(_components$mixins$pr, "computed", {
-  label: {
-    get: function get() {
-      return this.block.label;
-    },
-    set: function set(value) {
-      this.block_setLabel({
-        blockId: this.block.uuid,
-        value: value
-      });
+  },
+  computed: {
+    label: {
+      get: function get() {
+        return this.block.label;
+      },
+      set: function set(value) {
+        this.block_setLabel({
+          blockId: this.block.uuid,
+          value: value
+        });
+      }
     }
-  }
-}), Object(defineProperty["a" /* default */])(_components$mixins$pr, "methods", Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["c" /* mapMutations */])('flow', ['block_setLabel']))), _components$mixins$pr);
+  },
+  methods: Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["c" /* mapMutations */])('flow', ['block_setLabel']))
+});
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue?vue&type=script&lang=js&
  /* harmony default export */ var block_editors_LabelEditorvue_type_script_lang_js_ = (LabelEditorvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
@@ -332,12 +317,12 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/BlockId.vue?vue&type=template&id=7d26466e&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/BlockId.vue?vue&type=template&id=475fe9ce&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"text-right"},[_c('small',{staticClass:"text-muted"},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.block-id'))+": "),_c('em',[_vm._v(_vm._s(_vm.blockId))])])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue?vue&type=template&id=7d26466e&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue?vue&type=template&id=475fe9ce&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("d4ec");
@@ -395,9 +380,9 @@ var BlockIdvue_type_script_lang_ts_BlockId = /*#__PURE__*/function (_Vue) {
   return BlockId;
 }(external_commonjs_vue_commonjs2_vue_root_Vue_default.a);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], BlockIdvue_type_script_lang_ts_BlockId.prototype, "block", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], BlockIdvue_type_script_lang_ts_BlockId.prototype, "block", void 0);
 
-BlockIdvue_type_script_lang_ts_BlockId = Object(tslib_es6["__decorate"])([Object(vue_property_decorator["a" /* Component */])({
+BlockIdvue_type_script_lang_ts_BlockId = Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["a" /* Component */])({
   mixins: [lang["a" /* default */]]
 })], BlockIdvue_type_script_lang_ts_BlockId);
 /* harmony default export */ var BlockIdvue_type_script_lang_ts_ = (BlockIdvue_type_script_lang_ts_BlockId);
@@ -429,7 +414,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 /***/ }),
 
-/***/ "cab8":
+/***/ "cab88":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -439,12 +424,12 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_RunFlowBlock.vue?vue&type=template&id=a70b1664&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('div',{staticClass:"form-group"},[_c('label',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.destination-flow')))]),_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.destinationFlowId),expression:"destinationFlowId"}],staticClass:"form-control",on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.destinationFlowId=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"value":""}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.none-selected'))+" ")]),_vm._l((_vm.otherFlows),function(flow,i){return _c('option',{domProps:{"value":flow.uuid}},[_vm._v(" "+_vm._s(flow.name)+" ")])})],2)]),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}}),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_RunFlowBlock.vue?vue&type=template&id=1109ad9d&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('div',{staticClass:"form-group"},[_c('label',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.destination-flow')))]),_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.destinationFlowId),expression:"destinationFlowId"}],staticClass:"form-control",on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.destinationFlowId=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"value":""}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.none-selected'))+" ")]),_vm._l((_vm.otherFlows),function(flow,i){return _c('option',{domProps:{"value":flow.uuid}},[_vm._v(" "+_vm._s(flow.name)+" ")])})],2)]),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],1),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_RunFlowBlock.vue?vue&type=template&id=a70b1664&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_RunFlowBlock.vue?vue&type=template&id=1109ad9d&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("d4ec");
@@ -471,21 +456,6 @@ var lib = __webpack_require__("4bb5");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/vue-property-decorator.js
 var vue_property_decorator = __webpack_require__("60a3");
 
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
-var NameEditor = __webpack_require__("f04e");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue + 4 modules
-var LabelEditor = __webpack_require__("3411");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue + 4 modules
-var SemanticLabelEditor = __webpack_require__("1b4e");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue + 4 modules
-var FirstBlockEditorButton = __webpack_require__("192b");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
-var BlockId = __webpack_require__("792f");
-
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.filter.js
 var es_array_filter = __webpack_require__("4de4");
 
@@ -497,7 +467,6 @@ var asyncToGenerator = __webpack_require__("1da1");
 
 // EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
 var IdGeneratorUuidV4 = __webpack_require__("31aa");
-var IdGeneratorUuidV4_default = /*#__PURE__*/__webpack_require__.n(IdGeneratorUuidV4);
 
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __webpack_require__("2ef0");
@@ -511,13 +480,15 @@ var lodash = __webpack_require__("2ef0");
 var BLOCK_TYPE = 'Core\\RunFlow';
 var getters = {
   otherFlows: function otherFlows(state, getters, rootState, rootGetters) {
-    //TODO - this should actually be container.flows?
-    //TODO - why does this error in typescript? - flow does exist on IRootState etc...
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    return rootState.flow.flows.filter(function (flow) {
+    return (// TODO - this should actually be container.flows?
+      // TODO - why does this error in typescript? - flow does exist on IRootState etc...
       // @ts-ignore - TS2339: Property 'flow' does not exist on type
-      return flow.uuid !== rootGetters['flow/activeFlow'].uuid;
-    });
+      rootState.flow.flows.filter(function (flow) {
+        return (// @ts-ignore - TS2339: Property 'flow' does not exist on type
+          flow.uuid !== rootGetters['flow/activeFlow'].uuid
+        );
+      })
+    );
   }
 };
 var mutations = {};
@@ -561,7 +532,7 @@ var actions = {
               _context2.next = 4;
               return dispatch('flow/block_createBlockDefaultExitWith', {
                 props: {
-                  uuid: new IdGeneratorUuidV4_default.a().generate(),
+                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate(),
                   tag: 'Default',
                   label: 'Default'
                 }
@@ -574,7 +545,7 @@ var actions = {
               _context2.next = 7;
               return dispatch('flow/block_createBlockExitWith', {
                 props: {
-                  uuid: new IdGeneratorUuidV4_default.a().generate(),
+                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate(),
                   tag: 'Error',
                   label: 'Error'
                 }
@@ -617,6 +588,21 @@ var lang = __webpack_require__("3a37");
 // EXTERNAL MODULE: ./src/store/builder/index.ts + 6 modules
 var builder = __webpack_require__("af98");
 
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
+var NameEditor = __webpack_require__("f04e");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue + 4 modules
+var LabelEditor = __webpack_require__("3411");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue + 4 modules
+var SemanticLabelEditor = __webpack_require__("1b4e");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue + 4 modules
+var FirstBlockEditorButton = __webpack_require__("192b");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
+var BlockId = __webpack_require__("792f");
+
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_RunFlowBlock.vue?vue&type=script&lang=ts&
 
 
@@ -635,6 +621,7 @@ var builder = __webpack_require__("af98");
 
 
 var blockVuexNamespace = Object(lib["c" /* namespace */])("flow/".concat(BLOCK_TYPE));
+var builderVuexNamespace = Object(lib["c" /* namespace */])('builder');
 
 var Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock = /*#__PURE__*/function (_Vue) {
   Object(inherits["a" /* default */])(Core_RunAnotherFlowBlock, _Vue);
@@ -650,7 +637,7 @@ var Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock = /*#__PUR
   Object(createClass["a" /* default */])(Core_RunAnotherFlowBlock, [{
     key: "destinationFlowId",
     get: function get() {
-      //TODO - fix IRunFlowBlockConfig - it should have flow_id according to spec - not flowId
+      // TODO - fix IRunFlowBlockConfig - it should have flow_id according to spec - not flowId
       return this.block.config.flowId || '';
     },
     set: function set(newDestinationFlowId) {
@@ -664,15 +651,17 @@ var Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock = /*#__PUR
   return Core_RunAnotherFlowBlock;
 }(external_commonjs_vue_commonjs2_vue_root_Vue_default.a);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock.prototype, "block", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock.prototype, "block", void 0);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator["b" /* Prop */])()], Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock.prototype, "flow", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock.prototype, "flow", void 0);
 
-Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock.prototype, "setDestinationFlowId", void 0);
+Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Action], Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock.prototype, "setDestinationFlowId", void 0);
 
-Object(tslib_es6["__decorate"])([blockVuexNamespace.Getter], Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock.prototype, "otherFlows", void 0);
+Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Getter], Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock.prototype, "otherFlows", void 0);
 
-Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator["a" /* Component */])({
+Object(tslib_es6["a" /* __decorate */])([builderVuexNamespace.Getter], Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock.prototype, "isEditable", void 0);
+
+Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock = Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["a" /* Component */])({
   components: {
     BlockNameEditor: NameEditor["a" /* default */],
     BlockLabelEditor: LabelEditor["a" /* default */],
@@ -717,12 +706,12 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0afcbaee-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/NameEditor.vue?vue&type=template&id=5d3e1d52&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('text-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.block-name'),"placeholder":_vm._f("trans")('flow-builder.enter-block-name')},on:{"keydown":_vm.filterName},model:{value:(_vm.name),callback:function ($$v) {_vm.name=$$v},expression:"name"}},[_c('small',{staticClass:"text-muted"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.only-accepts-word-characters'))+" ")])])],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/NameEditor.vue?vue&type=template&id=5088e573&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('text-editor',{attrs:{"label":_vm._f("trans")('flow-builder.block-name'),"placeholder":_vm._f("trans")('flow-builder.enter-block-name')},on:{"keydown":_vm.filterName},model:{value:(_vm.name),callback:function ($$v) {_vm.name=$$v},expression:"name"}},[_c('small',{staticClass:"text-muted"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.only-accepts-word-characters'))+" ")])])],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue?vue&type=template&id=5d3e1d52&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue?vue&type=template&id=5088e573&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
 var es_function_name = __webpack_require__("b0c0");
@@ -763,7 +752,6 @@ var lang = __webpack_require__("3a37");
 //
 //
 //
-//
 
 
 
@@ -773,10 +761,6 @@ var lang = __webpack_require__("3a37");
   },
   mixins: [lang["a" /* default */]],
   props: {
-    isEditable: {
-      default: true,
-      type: Boolean
-    },
     block: {
       type: Object,
       required: true
