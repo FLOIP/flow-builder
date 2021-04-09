@@ -179,7 +179,7 @@ import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConver
 import { computeBlockPositionsFrom } from '@/store/builder'
 import { VBTooltipPlugin } from 'bootstrap-vue'
 import Component, { mixins } from 'vue-class-component'
-import { Action, Getter, namespace, State } from 'vuex-class'
+import { Action, Getter, namespace, State, Mutation } from 'vuex-class'
 import { IBlock, IContext, IFlow, IResourceDefinition } from '@floip/flow-runner'
 
 Vue.use(VBTooltipPlugin)
@@ -320,7 +320,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   // Methods #####################
 
-  async handleAddBlockByTypeSelected({ type }) {
+  async handleAddBlockByTypeSelected({ type } : { type: IBlock['type']}) {
     const { uuid: blockId } = await this.flow_addBlankBlockByType({
       type,
       // @ts-ignore TODO: remove this once IBlock has platform_metadata key
@@ -368,9 +368,9 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     this.isImporterVisible = !this.isImporterVisible
   }
 
-  editTreeRoute({ component = null, mode = null }: { component?: any; mode?: string | null }) {
+  editTreeRoute({ component = null, mode = null }: { component?: any; mode?: string | null } = {}) {
     const context = this.removeNilValues({
-      treeId: this.activeFlow.uuid,
+      treeId: this.activeFlow?.uuid,
       component,
       mode,
     })
@@ -416,8 +416,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @Getter isFeatureViewResultsEnabled!: boolean
   @Getter isFeatureUpdateInteractionTotalsEnabled!: boolean
   @Getter isResourceEditorEnabled!: boolean
-  @Mutation setTreeSaving?: void
-  @Action attemptSaveTree?: void
+  @Mutation setTreeSaving!: (isSaving: boolean) => void
+  @Action attemptSaveTree!: void
 
   // Flow
   @flowVuexNamespace.Getter activeFlow?: IFlow

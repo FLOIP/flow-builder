@@ -31,48 +31,50 @@ import {IFlow} from '@floip/flow-runner'
 @Component(
   {
     mixins: [lang, Routes],
-    async mounted() {
-      const flowContainer = await this.flow_fetch({fetchRoute: this.route('flows.fetchFlowServer', {flowId: this.uuid})})
-      if(flowContainer) {
-        this.flow_setActiveFlowId({flowId: this.uuid})
-        const nextUrl = this.$route.query.nextUrl
-        if(nextUrl) {
-          this.$router.replace(nextUrl)
-        } else {
-          this.message = 'flow-builder.flow-found'
-          this.flowLink = this.route('trees.editTree', {treeId: this.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})
-        }
-      } else{
-        this.message = 'flow-builder.flow-not-found'
-        this.showNewButton = true
-      }
-    },
-    async created() {
-      const {$store} = this
-
-      forEach(store.modules, (v, k) =>
-        !$store.hasModule(k) && $store.registerModule(k, v))
-
-      if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-        this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
-      }
-    },
   },
 )
 class FetchFlow extends Vue {
   @Prop({required: true}) readonly uuid!: string
-  @Prop({default: () => ({})}) readonly appConfig!: object
-  @Prop({default: () => ({})}) readonly builderConfig!: object
+  @Prop({default: {}}) readonly appConfig!: object
+  @Prop({default: {}}) readonly builderConfig!: object
 
   message = 'flow-builder.fetching-flow'
   showNewButton = false
   flowLink = null
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Action flow_fetch!: ({fetchRoute: string}) => Promise<IFlow>
-  @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({flowId: string}) => void
+  @flowVuexNamespace.Action flow_fetch!: ({ fetchRoute }: { fetchRoute: string }) => Promise<IFlow>
+  @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({ flowId }: { flowId: string }) => void
   @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
   @Getter isConfigured!: boolean
+
+  async mounted() {
+    const flowContainer = await this.flow_fetch({fetchRoute: this.route('flows.fetchFlowServer', {flowId: this.uuid})})
+    if(flowContainer) {
+      this.flow_setActiveFlowId({flowId: this.uuid})
+      const nextUrl = this.$route.query.nextUrl
+      if(nextUrl) {
+        this.$router.replace(nextUrl)
+      } else {
+        this.message = 'flow-builder.flow-found'
+        this.flowLink = this.route('trees.editTree', {treeId: this.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})
+      }
+    } else{
+      this.message = 'flow-builder.flow-not-found'
+      this.showNewButton = true
+    }
+  }
+
+  async created() {
+    const {$store} = this
+
+    forEach(store.modules, (v, k) =>
+      !$store.hasModule(k) && $store.registerModule(k, v))
+
+    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+    }
+  }
 }
 
 export default FetchFlow

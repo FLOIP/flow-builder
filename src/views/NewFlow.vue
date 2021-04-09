@@ -43,24 +43,26 @@ import { RawLocation } from 'vue-router'
       FlowEditor,
     },
     mixins: [lang, Routes],
-    async mounted() {
-        await this.flow_addBlankFlow()
-    },
-    async created() {
-      const {$store} = this
-
-      forEach(store.modules, (v, k) =>
-        !$store.hasModule(k) && $store.registerModule(k, v))
-
-      if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-        this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
-      }
-    },
   },
 )
 class NewFlow extends Vue {
-  @Prop({default: () => ({})}) readonly appConfig!: object
-  @Prop({default: () => ({})}) readonly builderConfig!: object
+  @Prop({default: {}}) readonly appConfig!: object
+  @Prop({default: {}}) readonly builderConfig!: object
+
+  async mounted() {
+    await this.flow_addBlankFlow()
+  }
+
+  async created() {
+    const {$store} = this
+
+    forEach(store.modules, (v, k) =>
+      !$store.hasModule(k) && $store.registerModule(k, v))
+
+    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+    }
+  }
 
   async handlePersistFlow(route: RawLocation) {
     this.flowError = null
