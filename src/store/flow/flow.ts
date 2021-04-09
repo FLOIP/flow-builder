@@ -72,7 +72,7 @@ export const mutations: MutationTree<IFlowsState> = {
     state.isCreated = createdState
   },
   flow_setActiveFlowId(state, {flowId}: {flowId: string}) {
-    state.firstFlowId = flowId
+    state.first_flow_id = flowId
   },
   flow_addBlock(state, { flowId, block }: {flowId: string; block: IBlock}) {
     if (block == null) {
@@ -169,7 +169,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_add({ state }, { flow }): Promise<IFlow> {
-    //const length = state.flows.push(flow) // mutating here, because we need to define a root-level scope for this type of action
+    const length = state.flows.push(flow) // mutating here, because we need to define a root-level scope for this type of action
     //TODO - understand why this was here? Surely we can have an active flow that isn't the first and only one?
     //if (length === 1) {
       state.first_flow_id = flow.uuid

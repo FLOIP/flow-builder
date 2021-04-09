@@ -112,12 +112,12 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
   async createVolatileEmptyChoice({state, dispatch, rootGetters}, { index }) {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankExit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
-      props: ({
-        uuid: (new IdGeneratorUuidV4()).generate(),
+      props: {
+        uuid: await (new IdGeneratorUuidV4()).generate(),
         test: `block.value = ${index}`,
         label: blankResource.uuid,
         semantic_label: '',
-      }) as IBlockExitTestRequired,
+      } as IBlockExitTestRequired,
     }, {root: true})
     state.inflatedEmptyChoice = {
       exit: blankExit,
