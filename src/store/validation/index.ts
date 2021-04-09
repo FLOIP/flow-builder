@@ -95,7 +95,7 @@ export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchem
   return ajv.compile(jsonSchema)
 }
 
-export function debutValidationStatus(status: IValidationStatus, customMessage: string) {
+export function debugValidationStatus(status: IValidationStatus, customMessage: string) {
   console.debug(
     customMessage,
     ' | isValid:', status.isValid,

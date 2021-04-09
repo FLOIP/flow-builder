@@ -16,7 +16,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
 import { namespace } from "vuex-class";
 import {IBlock, IFlow} from "@floip/flow-runner";
-import { IValidationStatus, debutValidationStatus } from "@/store/validation";
+import { IValidationStatus, debugValidationStatus } from "@/store/validation";
 import { find, isEqual, cloneDeep } from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
@@ -36,7 +36,7 @@ export default class BuilderCanvas extends Vue {
   async onActiveFlowChanged(newFlow: IFlow) {
     console.debug('active flow has changed, validating ...')
     await this.validate_flow({ flow: newFlow })
-    debutValidationStatus(this.flowValidationStatus, 'flow validation status')
+    debugValidationStatus(this.flowValidationStatus, 'flow validation status')
   }
 
   @Watch('blocksOnActiveFlowForWatcher', { deep: true, immediate: true })
@@ -52,7 +52,7 @@ export default class BuilderCanvas extends Vue {
         }
 
         await this.validate_block({ block: currentNewBlock });
-        debutValidationStatus(this.blockValidationStatuses[currentNewBlock.uuid], `validation status for block ${currentNewBlock.uuid}`)
+        debugValidationStatus(this.blockValidationStatuses[currentNewBlock.uuid], `validation status for block ${currentNewBlock.uuid}`)
       }
     }
   }
