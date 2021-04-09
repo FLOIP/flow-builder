@@ -43,6 +43,7 @@ export class BaseMountedVueClass extends Vue {
   @flowVuexNamespace.Action flow_add!: ({ flow } : { flow: IFlow}) => Promise<IFlow>
   @flowVuexNamespace.Action flow_createWith!: ({ props }: {props: {uuid: string} & Partial<IFlow>}) => Promise<IFlow>
 
+  @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({ flowId }: { flowId: IFlow['uuid'] }) => void
   @flowVuexNamespace.Mutation block_setName: any
   @flowVuexNamespace.Mutation block_setLabel: any
   @flowVuexNamespace.Mutation block_setSemanticLabel: any

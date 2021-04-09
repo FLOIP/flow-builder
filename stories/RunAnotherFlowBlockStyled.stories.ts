@@ -46,7 +46,5 @@ class DefaultClass extends BaseMountedVueClass {
     await this.flow_add({flow:flowTwo})
     this.flow_setActiveFlowId({flowId: baseFlowId})
   }
-
-  @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({ flowId }: { flowId: IFlow['uuid'] }) void
 }
 export const Default = () => (DefaultClass)

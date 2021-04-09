@@ -10,7 +10,7 @@ import StoryRouter from 'storybook-vue-router'
 import { routes } from './story-utils/router'
 import {
   findFlowWith,
-  IContext,
+  IContext, IFlow,
 } from '@floip/flow-runner'
 import {IBaseOptions} from './story-utils/storeSetup'
 import Vuex from "vuex";
@@ -38,6 +38,7 @@ const ToolbarTemplate = `
     <tree-builder-toolbar/>
   </flow-builder-container>`
 
+// @ts-ignore: Custom store shim for stories only
 store.modules.flow.mutations.flow_setActiveFlowUUID = function flow_setActiveFlowUUID(state, { flowId, newUUID }) {
   const flow = findFlowWith(flowId, state as unknown as IContext)
   flow.uuid = newUUID
@@ -70,7 +71,7 @@ class BaseMountedClass extends Vue {
   @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Mutation flow_setActiveFlowUUID: any
-  @builderVuexNamespace.Action setIsEditable: (value: boolean) => void
+  @builderVuexNamespace.Action setIsEditable!: (value: boolean) => void
 }
 
 // Default
