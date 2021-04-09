@@ -19,24 +19,21 @@
 <script lang="ts">
 
 import { forEach, isEmpty } from 'lodash'
-import lang from '@/lib/filters/lang'
+import lang, {Lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import { Component, Prop } from 'vue-property-decorator'
-import Vue from 'vue'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
 import {IFlow} from '@floip/flow-runner'
+import { mixins } from "vue-class-component";
+import {RawLocation} from "vue-router";
 
-@Component(
-  {
-    mixins: [lang, Routes],
-  },
-)
-class FetchFlow extends Vue {
+@Component({})
+class FetchFlow extends mixins(Routes, Lang) {
   @Prop({required: true}) readonly uuid!: string
-  @Prop({default: {}}) readonly appConfig!: object
-  @Prop({default: {}}) readonly builderConfig!: object
+  @Prop({ default: () => ({}) }) readonly appConfig!: object
+  @Prop({ default: () => ({}) }) readonly builderConfig!: object
 
   message = 'flow-builder.fetching-flow'
   showNewButton = false
@@ -52,9 +49,9 @@ class FetchFlow extends Vue {
     const flowContainer = await this.flow_fetch({fetchRoute: this.route('flows.fetchFlowServer', {flowId: this.uuid})})
     if(flowContainer) {
       this.flow_setActiveFlowId({flowId: this.uuid})
-      const nextUrl = this.$route.query.nextUrl
+      const nextUrl: RawLocation = this.$route.query.nextUrl as RawLocation
       if(nextUrl) {
-        this.$router.replace(nextUrl)
+        await this.$router.replace(nextUrl)
       } else {
         this.message = 'flow-builder.flow-found'
         this.flowLink = this.route('trees.editTree', {treeId: this.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})

@@ -181,6 +181,7 @@ import { VBTooltipPlugin } from 'bootstrap-vue'
 import Component, { mixins } from 'vue-class-component'
 import { Action, Getter, namespace, State, Mutation } from 'vuex-class'
 import { IBlock, IContext, IFlow, IResourceDefinition } from '@floip/flow-runner'
+import {RawLocation} from "vue-router";
 
 Vue.use(VBTooltipPlugin)
 
@@ -333,14 +334,14 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     this.activateBlock({ blockId })
   }
 
-  async handlePersistFlow(route) {
+  async handlePersistFlow(route: RawLocation) {
     //TODO - hook into validation system when we have it - block the logic here if invalid.
 
     //If we aren't in edit mode there should be nothing to persist
     if(this.isEditable) {
       this.setTreeSaving(true)
       const flowContainer = await this.flow_persist({
-        persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
+        persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow?.uuid }),
         flowContainer: this.activeFlowContainer
       })
       this.setTreeSaving(false)
@@ -427,7 +428,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @flowVuexNamespace.Action flow_removeBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => void
   @flowVuexNamespace.Action flow_addBlankBlockByType!: ({ type, ...props }: Partial<IBlock>) => Promise<IBlock>
   @flowVuexNamespace.Action flow_duplicateBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => Promise<IBlock>
-  @flowVuexNamespace.Action flow_persist!: ({ persistRoute, flowContainer }: { persistRoute: any, flowContainer: IContext }) => Promise<IContext | null>
+  @flowVuexNamespace.Action flow_persist!: ({ persistRoute, flowContainer }: { persistRoute: any, flowContainer?: IContext }) => Promise<IContext | null>
 
   // Builder
   @builderVuexNamespace.Getter isEditable!: boolean

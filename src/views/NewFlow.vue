@@ -46,8 +46,8 @@ import { RawLocation } from 'vue-router'
   },
 )
 class NewFlow extends Vue {
-  @Prop({default: {}}) readonly appConfig!: object
-  @Prop({default: {}}) readonly builderConfig!: object
+  @Prop({ default: () => ({}) }) readonly appConfig!: object
+  @Prop({ default: () => ({}) }) readonly builderConfig!: object
 
   async mounted() {
     await this.flow_addBlankFlow()

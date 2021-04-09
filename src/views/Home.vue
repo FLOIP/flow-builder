@@ -38,8 +38,8 @@ const flowVuexNamespace = namespace('flow')
   },
 )
 class Home extends Vue {
-  @Prop({default: {}}) readonly appConfig!: object
-  @Prop({default: {}}) readonly builderConfig!: object
+  @Prop({ default: () => ({}) }) readonly appConfig!: object
+  @Prop({ default: () => ({}) }) readonly builderConfig!: object
 
   @flowVuexNamespace.State flows!: IFlow[]
   @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
