@@ -61,14 +61,14 @@ export default class BuilderCanvas extends Vue {
     return cloneDeep(this.activeFlow.blocks) // needed to make comparison between new & old values on watcher
   }
 
-  @flowVuexNamespace.State flows: IFlow[]
+  @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
 
   @validationVuexNamespace.State flowValidationStatus!: IValidationStatus
   @validationVuexNamespace.State blockValidationStatuses!: { [key: string]: IValidationStatus }
 
-  @validationVuexNamespace.Action validate_flow: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
-  @validationVuexNamespace.Action validate_block: ({ block } : { block: IBlock }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_flow!: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_block!: ({ block } : { block: IBlock }) => Promise<IValidationStatus>
 }
 
 export { BuilderCanvas }
