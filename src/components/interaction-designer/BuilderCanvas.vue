@@ -1,8 +1,8 @@
 <template>
-  <div v-if="flows.length"
+  <div v-if="activeFlow"
        class="builder-canvas no-select">
 
-    <block v-for="block in flows[0].blocks"
+    <block v-for="block in activeFlow.blocks"
            :key="block.uuid"
            :id="`block/${block.uuid}`"
            :block="block"

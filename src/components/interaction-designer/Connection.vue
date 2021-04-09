@@ -6,9 +6,21 @@
 <script>
 // import LeaderLine from 'leader-line'
 import { set } from 'lodash'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 
 const { LeaderLine } = window
+
+const categoryColorMappings = {
+  'category-0-faint': '#fbfdfb',
+  'category-0-light': '#97BD8A',
+  'category-0-dark': '#38542f',
+  'category-1-faint': '#fdfdfe',
+  'category-1-light': '#6897BB',
+  'category-1-dark': '#30516a',
+  'category-2-faint': '#fdfbf8',
+  'category-2-light': '#C69557',
+  'category-2-dark': '#6e4e25',
+}
 
 export default {
   props: {
@@ -25,14 +37,59 @@ export default {
   data() {
     return {
       // line: null, // no need to set up observers over this
+      isPermanentlyActive: false,
     }
   },
 
   computed: {
+    ...mapState('builder', ['activeConnectionContext']),
     ...mapGetters('builder', ['blocksById']),
 
-    sourceId: ({ exit }) => `exit/${exit.uuid}/handle`,
-    targetId: ({ exit }) => (exit.destination_block
+    options() {
+      return {
+        startPlug: 'square',
+
+        startPlugColor: categoryColorMappings[`category-${this.colorCategory}-light`],
+        endPlugColor: categoryColorMappings[`category-${this.colorCategory}-dark`],
+        gradient: true,
+
+        startSocket: 'bottom',
+        endSocket: 'top',
+
+        size: 3,
+        outline: true,
+        outlineColor: '#ffffff',
+        // outlineSize: 0.08,
+
+        path: 'grid',
+        // path: 'fluid',
+        // path: 'arc',
+        // path: 'magnet',
+
+        middleLabel: LeaderLine.captionLabel(this.exit.tag, {
+          color: categoryColorMappings[`category-${this.colorCategory}-dark`],
+          fontSize: 12,
+          // lineOffset: 65,
+        }),
+      }
+    },
+
+    prominentOptions() {
+      return {
+        size: this.options.size + 3,
+      }
+    },
+
+    connectionContext() {
+      return {
+        sourceId: this.source?.uuid,
+        targetId: this.target?.uuid,
+        exitId: this.exit?.uuid,
+      }
+    },
+
+    sourceElementId: ({ exit }) => `exit/${exit.uuid}/handle`,
+    targetElementId: ({ exit }) => (exit.destination_block
       ? `block/${exit.destination_block}/handle`
       : `exit/${exit.uuid}/pseudo-block-handle`),
 
@@ -64,6 +121,7 @@ export default {
   },
 
   methods: {
+    ...mapMutations('builder', ['activateConnection', 'deactivateConnection', 'activateBlock']),
     reposition() {
       if (!this.line) {
         return
@@ -72,12 +130,45 @@ export default {
       const position = this.line.position()
 
       console.debug('connection', 'repositioning', {
-        source: this.source?.uuid,
-        target: this.target?.uuid,
+        sourceId: this.source?.uuid,
+        targetId: this.target?.uuid,
         position,
         x: this.line.top,
         y: this.line.left,
       })
+    },
+    mouseOverHandler() {
+      this.line.setOptions(this.prominentOptions)
+      this.activateConnection({ connectionContext: this.connectionContext })
+    },
+    mouseOutHandler() {
+      if (!this.isPermanentlyActive) {
+        this.line.setOptions(this.options)
+        this.deactivateConnection({ connectionContext: this.connectionContext })
+      }
+    },
+    clickHandler() {
+      this.isPermanentlyActive = true
+      this.line.setOptions(this.prominentOptions)
+      this.activateConnection({ connectionContext: this.connectionContext })
+      this.activateBlock({ blockId: null })
+    },
+    clickAwayHandler(connectionElement) {
+      document.addEventListener('click', (event) => {
+        try { // Do not listen if the connection was not fully set
+          const checkExistingEnd = this.line.end
+        } catch (e) {
+          return
+        }
+
+        const isClickInside = connectionElement.contains(event.target)
+
+        if (!isClickInside) {
+          this.isPermanentlyActive = false
+          this.line.setOptions(this.options)
+          this.deactivateConnection({ connectionContext: this.connectionContext })
+        }
+      }, false)
     },
   },
 
@@ -96,58 +187,30 @@ export default {
     //       What I'm thinking is that we can just leverage these x/y's? How do we then update them?
     // new LeaderLine(element1, LeaderLine.pointAnchor(element3, {x: 10, y: 30}));
 
-    const categoryColorMappings = {
-      'category-0-faint': '#fbfdfb',
-      'category-0-light': '#97BD8A',
-      'category-0-dark': '#38542f',
-      'category-1-faint': '#fdfdfe',
-      'category-1-light': '#6897BB',
-      'category-1-dark': '#30516a',
-      'category-2-faint': '#fdfbf8',
-      'category-2-light': '#C69557',
-      'category-2-dark': '#6e4e25',
-    }
-
-    const options = {
-      startPlug: 'square',
-
-      startPlugColor: categoryColorMappings[`category-${this.colorCategory}-light`],
-      endPlugColor: categoryColorMappings[`category-${this.colorCategory}-dark`],
-      gradient: true,
-
-      startSocket: 'bottom',
-      endSocket: 'top',
-
-      size: 3,
-      outline: true,
-      outlineColor: '#ffffff',
-      // outlineSize: 0.08,
-
-      path: 'grid',
-      // path: 'fluid',
-      // path: 'arc',
-      // path: 'magnet',
-
-      middleLabel: LeaderLine.captionLabel(this.exit.tag, {
-        color: categoryColorMappings[`category-${this.colorCategory}-dark`],
-        fontSize: 12,
-        // lineOffset: 65,
-      }),
-
-    }
-
     // const {sourcePosition, targetPosition} = this
     // this.line = new LeaderLine(
     //     LeaderLine.pointAnchor(document.body, sourcePosition),
     //     LeaderLine.pointAnchor(document.body, targetPosition), options)
 
     const blockPaddingOffset = { x: 34, y: -7 }
-    const start = document.getElementById(this.sourceId)
+    const start = document.getElementById(this.sourceElementId)
     const end = this.position
-      ? document.getElementById(this.targetId)
-      : LeaderLine.pointAnchor(document.getElementById(this.targetId), blockPaddingOffset)
+      ? document.getElementById(this.targetElementId)
+      : LeaderLine.pointAnchor(document.getElementById(this.targetElementId), blockPaddingOffset)
 
-    this.line = new LeaderLine(start, end, options)
+    this.line = new LeaderLine(start, end, this.options)
+
+    // Add event listeners
+    const self = this
+    const connectionElement = document.querySelector('body>.leader-line:last-of-type') // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
+
+    connectionElement.addEventListener('click', self.clickHandler, false)
+
+    connectionElement.addEventListener('click', self.clickAwayHandler(connectionElement), false)
+
+    connectionElement.addEventListener('mouseover', self.mouseOverHandler, false)
+
+    connectionElement.addEventListener('mouseout', self.mouseOutHandler, false)
 
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false
@@ -155,3 +218,13 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+svg.leader-line {
+  cursor: pointer;
+}
+// Considering the parent svg.leader-line has `pointer-events: none;`,
+// this is important to listen SVG mouse events on shape only
+svg.leader-line *{
+  pointer-events: auto !important;
+}
+</style>

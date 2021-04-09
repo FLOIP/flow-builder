@@ -31,6 +31,7 @@ set -e # abort on errors
 #----------------------------------------------------------
 git apply -v patches/gh-pages-prepare-router.patch
 git apply -v patches/gh-pages-prepare-vue-config.patch
+git apply -v patches/remove-backend-routes-from-config.patch
 
 # End of custom script!
 trap : 0
