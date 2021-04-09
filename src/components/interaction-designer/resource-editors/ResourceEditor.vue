@@ -1,6 +1,6 @@
 <template>
   <div class="resource-editor">
-    <hr />
+    <hr v-if="label"/>
 
     <h4 v-if="label">{{label}}</h4>
 
@@ -128,13 +128,13 @@ const builderVuexNamespace = namespace('builder')
     },
   })
 export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
-  @Prop({ required: true }) block: IBlock
+  @Prop({ required: true }) block!: IBlock
 
-  @Prop({ required: true }) flow: IFlow
+  @Prop({ required: true }) flow!: IFlow
 
-  @Prop() resource: IResourceDefinition
+  @Prop() resource!: IResourceDefinition
 
-  @Prop() label: string | number
+  @Prop() label?: string | number
 
     discoverContentTypesFor = discoverContentTypesFor
 
