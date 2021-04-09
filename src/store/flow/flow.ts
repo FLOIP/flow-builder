@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import axios from 'axios'
 import {
   findBlockWith,
   findFlowWith,
@@ -16,20 +17,63 @@ import moment from 'moment'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import {
-  defaults, includes, forEach, cloneDeep, get, has,
+  defaults,
+  includes,
+  forEach,
+  cloneDeep,
+  get,
+  has,
+  omit
 } from 'lodash'
 import { discoverContentTypesFor } from '@/store/flow/resource'
 import { computeBlockPositionsFrom } from '@/store/builder'
 import { IFlowsState } from '.'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  activeFlow: (state) => state.flows.length && getActiveFlowFrom(state as unknown as IContext),
-
+  //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the firstFlowId doesn't correspond to a flow
+  activeFlow: (state) => {
+    if(state.flows.length) {
+      try {
+        return getActiveFlowFrom(state as unknown as IContext)
+      } catch(err) {
+        return null
+      }
+    }
+  },
+  //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
+  activeFlowContainer: state => {
+    return {
+      isCreated: state.isCreated,
+      specification_version: "TODO",
+      uuid: "TODO",
+      name: "TODO",
+      description: "TODO",
+      platform_metadata: {},
+      flows: state.flows,
+      resources: state.resources
+    } as unknown as IContext
+  },
   hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supportedModes || [], mode)),
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supportedModes || [], SupportedMode.IVR),
 }
 
 export const mutations: MutationTree<IFlowsState> = {
+  //TODO - consider if this is correct? This only gets what the current flow needs and removes from the store any other flows
+  //That means the flow list page (which we will build the production version of later) will get cleared of all flows if we continue with the current model - see the temporary page /src/views/Home.vue - unless we fetch the list again
+  //That doesn't make sense if we run the builder standalone - without a fetch of the flows list
+  flow_setFlowContainer(state, flowContainer) {
+    const persistedState = flowContainer
+    state.isCreated = persistedState.isCreated
+    state.flows = persistedState.flows
+    state.resources = persistedState.resources
+  },
+  //used to track whether we should put or post when persisting
+  flow_updateCreatedState(state, createdState) {
+    state.isCreated = createdState
+  },
+  flow_setActiveFlowId(state, {flowId}: {flowId: string}) {
+    state.firstFlowId = flowId
+  },
   flow_addBlock(state, { flowId, block }: {flowId: string; block: IBlock}) {
     if (block == null) {
       throw new ValidationException('Unable to add null block to flow')
@@ -54,12 +98,12 @@ export const mutations: MutationTree<IFlowsState> = {
     const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
     Vue.set(flow, 'firstBlockId', block.uuid)
   },
-  flow_setName(state, { flowId, value }) {
-    findFlowWith(flowId, state as unknown as IContext).name = value
+  flow_setNameFromLabel(state, {flowId, label}) {
+    findFlowWith(flowId, state as unknown as IContext).name = label.replace(/\W+/g, '')
   },
 
-  flow_setLabel(state, { flowId, value }) {
-    findFlowWith(flowId, state as unknown as IContext).label = value
+  flow_setLabel(state, { flowId, label }) {
+    findFlowWith(flowId, state as unknown as IContext).label = label
   },
 
   flow_setInteractionTimeout(state, { flowId, value }) {
@@ -78,6 +122,43 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
+
+  async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext | null> {
+    const restVerb = flowContainer.isCreated ? 'put' : 'post'
+    const oldCreatedState = flowContainer.isCreated
+    if(!persistRoute) {
+      console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store")
+      commit('flow_setFlowContainer', flowContainer)
+      return getters.activeFlowContainer
+    }
+    try {
+      const { data } = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
+      commit('flow_setFlowContainer', data)
+      commit('flow_updateCreatedState', true)
+      return getters.activeFlowContainer
+    } catch(error) {
+      commit('flow_updateCreatedState', oldCreatedState)
+      console.info(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
+      return null
+    }
+  },
+  //TODO - In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
+  //see comment on flow_setFlowContainer
+  async flow_fetch({ state, getters, commit }, { fetchRoute }): Promise<IFlow | null> {
+    if(!fetchRoute) {
+      console.info("Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store")
+      return getters.activeFlow
+    }
+    try {
+      const { data } = await axios.get(fetchRoute)
+      commit('flow_setFlowContainer', data)
+      commit('flow_updateCreatedState', true)
+      return data
+    } catch(error) {
+      console.info(`Server error fetching flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
+      return null
+    }
+  },
   // todo: this `flow_` prefix doesn't follow suit
   //       because it's actually a method on the root state // IContext-ish type
   //       (same as mutation: `flow_activateBlock` and `flow_add`
@@ -89,9 +170,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async flow_add({ state }, { flow }): Promise<IFlow> {
     const length = state.flows.push(flow) // mutating here, because we need to define a root-level scope for this type of action
-    if (length === 1) {
+    //TODO - understand why this was here? Surely we can have an active flow that isn't the first and only one?
+    //if (length === 1) {
       state.firstFlowId = flow.uuid
-    }
+    //}
 
     return flow
   },

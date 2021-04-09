@@ -35,6 +35,7 @@ const BaseOptions: IBaseOptions = {
 class DefaultClass extends BaseMountedVueClass {
   async mounted() {
     await this.baseMounted(BLOCK_TYPE, runAnotherFlowBlockStore)
+    const baseFlowId = this.activeFlow.uuid
     const flowOne = await this.flow_createWith({
       props: {uuid: (new IdGeneratorUuidV4()).generate(), name: 'My other flow'}
     })
@@ -43,6 +44,9 @@ class DefaultClass extends BaseMountedVueClass {
       props: {uuid: (new IdGeneratorUuidV4()).generate(), name: 'My third flow'}
     })
     await this.flow_add({flow:flowTwo})
+    this.flow_setActiveFlowId({flowId: baseFlowId})
   }
+
+  @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({ flowId }: { flowId: IFlow['uuid'] }) void
 }
 export const Default = () => (DefaultClass)

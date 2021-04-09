@@ -1,14 +1,18 @@
 import Vue from 'vue'
 import {
   Action, Mutation, namespace
-} from 'vuex-class';
+} from 'vuex-class'
 import FlowBuilderContainer from './story-utils/FlowBuilderContainer.vue'
 import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import StoryRouter from 'storybook-vue-router'
-import {routes} from '@/router'
-import {IBaseOptions} from "./story-utils/storeSetup";
+import { routes } from './story-utils/router'
+import {
+  findFlowWith,
+  IContext,
+} from '@floip/flow-runner'
+import {IBaseOptions} from './story-utils/storeSetup'
 import Vuex from "vuex";
 
 Vue.use(Vuex)
@@ -20,6 +24,7 @@ decorators.push(StoryRouter({}, {
 }))
 
 const builderVuexNamespace = namespace('builder')
+const flowVuexNamespace = namespace('flow')
 
 export default {
   title: 'InteractionDesigner/Toolbar',
@@ -29,9 +34,15 @@ export default {
 }
 
 const ToolbarTemplate = `
-  <flow-builder-container>
+  <flow-builder-container v-if="activeFlow">
     <tree-builder-toolbar/>
   </flow-builder-container>`
+
+store.modules.flow.mutations.flow_setActiveFlowUUID = function flow_setActiveFlowUUID(state, { flowId, newUUID }) {
+  const flow = findFlowWith(flowId, state as unknown as IContext)
+  flow.uuid = newUUID
+  state.firstFlowId = newUUID
+}
 
 const BaseOptions: IBaseOptions = {
   components: {FlowBuilderContainer, TreeBuilderToolbar},
@@ -43,9 +54,12 @@ const BaseOptions: IBaseOptions = {
   ...BaseOptions,
 })
 class BaseMountedClass extends Vue {
-  created() {
+  async created() {
     this.configure({appConfig: {}, builderConfig: {}});
     this.initializeTreeModel() // from trees store
+    await this.flow_addBlankFlow()
+    //Force all the links to have a static flow id
+    this.flow_setActiveFlowUUID({ flowId: this.activeFlow.uuid, newUUID: "1" })
   }
 
   @Action initializeTreeModel: any
@@ -53,7 +67,9 @@ class BaseMountedClass extends Vue {
   @Mutation configure: any
   @Mutation addEnabledFeature: any
   @Mutation removeEnabledFeature: any
-
+  @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
+  @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Mutation flow_setActiveFlowUUID: any
   @builderVuexNamespace.Action setIsEditable: (value: boolean) => void
 }
 
@@ -118,7 +134,7 @@ export const WithSaveButton = () => (SaveClass)
 // With Extra right grouped button
 let BaseOptions2 = BaseOptions
 BaseOptions2.template = `
-  <flow-builder-container>
+  <flow-builder-container v-if="activeFlow">
     <tree-builder-toolbar>
       <template slot="right-grouped-buttons">
         <a href="#"
@@ -153,7 +169,7 @@ export const WithGroupedButtonsSlot = () => (GroupButtonsSlotClass)
 // With Extra buttons
 let BaseOptions3 = BaseOptions
 BaseOptions3.template = `
-  <flow-builder-container>
+  <flow-builder-container v-if="activeFlow">
     <tree-builder-toolbar>
       <template slot="extra-buttons">
         <a href="#"

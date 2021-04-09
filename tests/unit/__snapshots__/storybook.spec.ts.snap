@@ -53,11 +53,11 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Print block
-  
+
                         </h3>
-                         
+
                         <fieldset>
                           <div>
                             <div
@@ -66,22 +66,22 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                               <label>
                                 Block name
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block name"
                               />
-                               
+
                               <small
                                 class="text-muted"
                               >
-                                
+
       Only accepts word characters
-    
+
                               </small>
                             </div>
                           </div>
-                           
+
                           <div>
                             <div
                               class="form-group"
@@ -89,15 +89,15 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                               <label>
                                 Block label
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block label"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <div>
                             <div
                               class="form-group"
@@ -105,24 +105,24 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                               <label>
                                 Block semantic label
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block semantic label"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <!---->
-                           
+
                           <div
                             class="starting-block-button"
                           >
                             <h4>
                               Options
                             </h4>
-                             
+
                             <div
                               class="form-group"
                             >
@@ -131,21 +131,21 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
                               fake-uuid-181
                             </em>
@@ -218,11 +218,11 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Read block
-  
+
                         </h3>
-                         
+
                         <fieldset>
                           <div>
                             <div
@@ -231,22 +231,22 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                               <label>
                                 Block name
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block name"
                               />
-                               
+
                               <small
                                 class="text-muted"
                               >
-                                
+
       Only accepts word characters
-    
+
                               </small>
                             </div>
                           </div>
-                           
+
                           <div>
                             <div
                               class="form-group"
@@ -254,15 +254,15 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                               <label>
                                 Block label
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block label"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <div>
                             <div
                               class="form-group"
@@ -270,15 +270,15 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                               <label>
                                 Block semantic label
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block semantic label"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <div>
                             <div
                               class="form-group"
@@ -286,22 +286,22 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                               <label>
                                 flow-builder.format-string
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="flow-builder.enter-format-string"
                               />
-                               
+
                             </div>
                           </div>
-                            
+
                           <div
                             class="starting-block-button"
                           >
                             <h4>
                               Options
                             </h4>
-                             
+
                             <div
                               class="form-group"
                             >
@@ -310,21 +310,21 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
                               fake-uuid-199
                             </em>
@@ -481,11 +481,11 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Flow
-  
+
                         </h3>
-                         
+
                         <fieldset>
                           <div
                             class="form-group flow-label"
@@ -496,15 +496,15 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               <label>
                                 Flow name
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter flow name"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <div
                             class="form-group flow-name"
                           >
@@ -514,15 +514,15 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               <label>
                                 Flow label
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter flow label"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <div
                             class="form-group flow-interaction-timeout"
                           >
@@ -532,7 +532,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               <label>
                                 Interaction timeout
                               </label>
-                               
+
                               <div>
                                 <input
                                   class="form-control"
@@ -541,17 +541,17 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   type="number"
                                 />
                               </div>
-                               
+
                             </div>
                           </div>
-                           
+
                           <div
                             class="form-group flow-languages"
                           >
                             <label>
                               Languages
                             </label>
-                             
+
                             <div
                               class="checkbox"
                             >
@@ -563,10 +563,10 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   type="checkbox"
                                   value="[object Object]"
                                 />
-                                
+
 
       English
-    
+
                               </label>
                             </div>
                             <div
@@ -580,21 +580,21 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   type="checkbox"
                                   value="[object Object]"
                                 />
-                                
+
 
       Spanish
-    
+
                               </label>
                             </div>
                           </div>
-                           
+
                           <div
                             class="form-group flow-modes"
                           >
                             <label>
                               Modes
                             </label>
-                             
+
                             <div
                               class="checkbox"
                             >
@@ -606,9 +606,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   type="checkbox"
                                   value="sms"
                                 />
-                                
+
       sms
-    
+
                               </label>
                             </div>
                             <div
@@ -622,9 +622,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   type="checkbox"
                                   value="ussd"
                                 />
-                                
+
       ussd
-    
+
                               </label>
                             </div>
                             <div
@@ -638,9 +638,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   type="checkbox"
                                   value="ivr"
                                 />
-                                
+
       ivr
-    
+
                               </label>
                             </div>
                             <div
@@ -654,9 +654,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   type="checkbox"
                                   value="rich_messaging"
                                 />
-                                
+
       rich_messaging
-    
+
                               </label>
                             </div>
                             <div
@@ -670,9 +670,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   type="checkbox"
                                   value="offline"
                                 />
-                                
+
       offline
-    
+
                               </label>
                             </div>
                           </div>
@@ -746,12 +746,12 @@ exports[`Storyshots InteractionDesigner/Toolbar Default 1`] = `
                           href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
-                          
+
             View Flow
-          
+
                         </a>
                       </div>
-                       
+
                       <div
                         class="dropdown mr-2"
                       >
@@ -760,182 +760,182 @@ exports[`Storyshots InteractionDesigner/Toolbar Default 1`] = `
                           data-toggle="dropdown"
                           type="button"
                         >
-                          
+
             Add Block
-          
+
                         </button>
-                         
+
                         <div
                           class="dropdown-menu"
                         >
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="ConsoleIO\\\\Print"
                             href="#"
                           >
-                            
+
                 Print
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="ConsoleIO\\\\Read"
                             href="#"
                           >
-                            
+
                 Read
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="Core\\\\Case"
                             href="#"
                           >
-                            
+
                 Case
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="Core\\\\Log"
                             href="#"
                           >
-                            
+
                 Log
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="Core\\\\Output"
                             href="#"
                           >
-                            
+
                 Output
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="Core\\\\RunFlow"
                             href="#"
                           >
-                            
+
                 Run Flow
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="MobilePrimitives\\\\Message"
                             href="#"
                           >
-                            
+
                 Message
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="MobilePrimitives\\\\NumericResponse"
                             href="#"
                           >
-                            
+
                 Numeric Response
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="MobilePrimitives\\\\OpenResponse"
                             href="#"
                           >
-                            
+
                 Open Response
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="MobilePrimitives\\\\SelectOneResponse"
                             href="#"
                           >
-                            
+
                 Select One Response
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="MobilePrimitives\\\\SelectManyResponse"
                             href="#"
                           >
-                            
+
                 Select Many Responses
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="SmartDevices\\\\LocationResponse"
                             href="#"
                           >
-                            
+
                 Location Response
-              
+
                           </a>
                           <!---->
-                           
+
                           <a
                             class="dropdown-item tree-add-block"
                             data-block-type="SmartDevices\\\\PhotoResponse"
                             href="#"
                           >
-                            
+
                 Photo Response
-              
+
                           </a>
-                           
+
                           <!---->
-                           
+
                           <!---->
                         </div>
                       </div>
-                       
+
                       <button
                         class="btn btn-outline-secondary tree-duplicate-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
-                        
+
           Duplicate
-        
+
                       </button>
-                       
+
                       <button
                         class="btn btn-outline-secondary tree-delete-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
-                        
+
           Delete
-        
+
                       </button>
                         
                       <div
@@ -1006,24 +1006,41 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                        
                       <!---->
                        
-                      <div>
-                        <a
-                          class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
-                          title="Click to toggle editing"
-                        >
-                          
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/trees/1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+
             Edit Flow
           
-                        </a>
-                      </div>
+                      </a>
                        
                       <!---->
                        
                       <!---->
                        
                       <!---->
-                        
+
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+
+          New Flow
+
+                      </a>
+
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+
+          Home
+
+                      </a>
+
                       <div
                         class="btn-group pull-right mr-2"
                       >
@@ -1112,17 +1129,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         </a>
                       </div>
                        
-                      <div>
-                        <a
-                          class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
+                      <a
+                        class="btn btn-outline-secondary mr-2 active"
+                        href="#/trees/1/interaction-designer/view"
+                        title="Click to toggle editing"
+                      >
+
             View Flow
           
-                        </a>
-                      </div>
+                      </a>
                        
                       <div
                         class="dropdown mr-2"
@@ -1311,6 +1326,25 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </button>
                        
                       <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+
+          New Flow
+
+                      </a>
+
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+
+          Home
+
+                      </a>
+
+                      <a
                         class="btn btn-success"
                         disabled="disabled"
                         href="#"
@@ -1336,12 +1370,11 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       >
                         <button
                           class="btn btn-primary tree-save-tree"
-                          disabled="disabled"
                           title="Save changes to the flow"
                           type="button"
                         >
                           
-            Saved
+            Save
           
                         </button>
                          
@@ -1428,17 +1461,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                         </a>
                       </div>
                        
-                      <div>
-                        <a
-                          class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
+                      <a
+                        class="btn btn-outline-secondary mr-2 active"
+                        href="#/trees/1/interaction-designer/view"
+                        title="Click to toggle editing"
+                      >
+
             View Flow
           
-                        </a>
-                      </div>
+                      </a>
                        
                       <div
                         class="dropdown mr-2"
@@ -1625,18 +1656,36 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
           Delete
         
                       </button>
-                        
+
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+
+          New Flow
+
+                      </a>
+
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+
+          Home
+
+                      </a>
+
                       <div
                         class="btn-group pull-right mr-2"
                       >
                         <button
                           class="btn btn-primary tree-save-tree"
-                          disabled="disabled"
                           title="Save changes to the flow"
                           type="button"
                         >
                           
-            Saved
+            Save
           
                         </button>
                          
@@ -1743,17 +1792,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         </a>
                       </div>
                        
-                      <div>
-                        <a
-                          class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
+                      <a
+                        class="btn btn-outline-secondary mr-2 active"
+                        href="#/trees/1/interaction-designer/view"
+                        title="Click to toggle editing"
+                      >
+
             View Flow
           
-                        </a>
-                      </div>
+                      </a>
                        
                       <div
                         class="dropdown mr-2"
@@ -1940,7 +1987,26 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
           Delete
         
                       </button>
-                        
+
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+
+          New Flow
+
+                      </a>
+
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+
+          Home
+
+                      </a>
+
                       <div
                         class="btn-group pull-right mr-2"
                       >
@@ -2029,24 +2095,41 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                         </a>
                       </div>
                        
-                      <div>
-                        <a
-                          class="btn btn-outline-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
-                          title="Click to toggle editing"
-                        >
-                          
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/trees/1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+
             Edit Flow
           
-                        </a>
-                      </div>
+                      </a>
                        
                       <!---->
                        
                       <!---->
                        
                       <!---->
-                        
+
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+
+          New Flow
+
+                      </a>
+
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+
+          Home
+
+                      </a>
+
                       <div
                         class="btn-group pull-right mr-2"
                       >
@@ -2119,11 +2202,11 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Message block
-  
+
                         </h3>
-                         
+
                         <fieldset>
                           <div>
                             <div
@@ -2132,22 +2215,22 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                               <label>
                                 Block name
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block name"
                               />
-                               
+
                               <small
                                 class="text-muted"
                               >
-                                
+
       Only accepts word characters
-    
+
                               </small>
                             </div>
                           </div>
-                           
+
                           <div>
                             <div
                               class="form-group"
@@ -2155,15 +2238,15 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                               <label>
                                 Block label
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block label"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <div>
                             <div
                               class="form-group"
@@ -2171,24 +2254,24 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                               <label>
                                 Block semantic label
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block semantic label"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <!---->
-                           
+
                           <div
                             class="starting-block-button"
                           >
                             <h4>
                               Options
                             </h4>
-                             
+
                             <div
                               class="form-group"
                             >
@@ -2197,21 +2280,21 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
                               fake-uuid-62
                             </em>
@@ -2392,11 +2475,11 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Location Response block
-  
+
                         </h3>
-                         
+
                         <fieldset>
                           <div>
                             <div
@@ -2405,22 +2488,22 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                               <label>
                                 Block name
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block name"
                               />
-                               
+
                               <small
                                 class="text-muted"
                               >
-                                
+
       Only accepts word characters
-    
+
                               </small>
                             </div>
                           </div>
-                           
+
                           <div>
                             <div
                               class="form-group"
@@ -2428,15 +2511,15 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                               <label>
                                 Block label
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block label"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <div>
                             <div
                               class="form-group"
@@ -2444,15 +2527,15 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                               <label>
                                 Block semantic label
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block semantic label"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <div
                             class="form-group block-threshold"
                           >
@@ -2462,7 +2545,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                               <label>
                                 flow-builder.accuracy-threshold-in-meters
                               </label>
-                               
+
                               <div>
                                 <input
                                   class="form-control"
@@ -2472,10 +2555,10 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                   type="number"
                                 />
                               </div>
-                               
+
                             </div>
                           </div>
-                           
+
                           <div
                             class="form-group block-timeout"
                           >
@@ -2485,7 +2568,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                               <label>
                                 flow-builder.Accuracy-timeout-in-seconds
                               </label>
-                               
+
                               <div>
                                 <input
                                   class="form-control"
@@ -2494,17 +2577,17 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                   type="number"
                                 />
                               </div>
-                               
+
                             </div>
                           </div>
-                           
+
                           <div
                             class="starting-block-button"
                           >
                             <h4>
                               Options
                             </h4>
-                             
+
                             <div
                               class="form-group"
                             >
@@ -2513,21 +2596,21 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
                               fake-uuid-13
                             </em>
@@ -2600,11 +2683,11 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Photo Response block
-  
+
                         </h3>
-                         
+
                         <fieldset>
                           <div>
                             <div
@@ -2613,22 +2696,22 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                               <label>
                                 Block name
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block name"
                               />
-                               
+
                               <small
                                 class="text-muted"
                               >
-                                
+
       Only accepts word characters
-    
+
                               </small>
                             </div>
                           </div>
-                           
+
                           <div>
                             <div
                               class="form-group"
@@ -2636,15 +2719,15 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                               <label>
                                 Block label
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block label"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <div>
                             <div
                               class="form-group"
@@ -2652,22 +2735,22 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                               <label>
                                 Block semantic label
                               </label>
-                               
+
                               <textarea
                                 class="form-control"
                                 placeholder="Enter a block semantic label"
                               />
-                               
+
                             </div>
                           </div>
-                           
+
                           <div
                             class="starting-block-button"
                           >
                             <h4>
                               Options
                             </h4>
-                             
+
                             <div
                               class="form-group"
                             >
@@ -2676,21 +2759,21 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
                               fake-uuid-160
                             </em>

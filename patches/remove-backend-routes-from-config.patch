@@ -1,0 +1,23 @@
+diff --git a/builder.config.json b/builder.config.json
+index 5a519dd..0a3e307 100644
+--- a/builder.config.json
++++ b/builder.config.json
+@@ -2,18 +2,6 @@
+   "ui": {
+     "routes": {
+       "flows": {
+-        "persistFlow": {
+-          "name": "persistFlow",
+-          "path": "\/backend\/flows\/{flowId}",
+-          "params": ["flowId"],
+-          "methods": ["POST", "PUT"]
+-        },
+-        "fetchFlowServer": {
+-          "name": "fetchFlowServer",
+-          "path": "\/backend\/flows\/{flowId}",
+-          "params": ["flowId"],
+-          "methods": ["GET"]
+-        },
+         "newFlow": {
+           "name": "newFlow",
+           "path": "\/flows\/new",

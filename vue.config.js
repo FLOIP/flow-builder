@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
@@ -19,6 +20,10 @@ module.exports = {
   },
   devServer: {
     before(app) {
+
+      //webpack dev server doesn't accept posts by default but we want stub routes for testing
+      //https://stackoverflow.com/questions/47442543/how-do-i-get-webpack-dev-server-to-accept-post-requests
+      const bodyParser = require('body-parser')
       app.use(cookieParser())
 
       // use bodyParser for axios request
@@ -59,6 +64,31 @@ module.exports = {
         }
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(result))
+      })
+      // Returns a flow container. The first flow is the active flow.
+      // (Other flows are there because they are nested in this first flow
+      // ...and referenced by UUID I think)
+      app.get('/backend/flows/:id', (req, res) => {
+        try {
+          const flow = fs.readFileSync(`src/store/builder/${req.params.id}-flow.json`)
+          res.writeHead(200, { 'Content-Type': 'application/json' })
+          res.end(flow)
+        } catch (err) {
+          res.writeHead(404, { 'Content-Type': 'application/json' })
+          res.end("Flow not found")
+        }
+      })
+      //In the success case, just echo the flow back
+      app.post('/backend/flows/:id', bodyParser.json(), (req, res) => {
+        const flow = req.body
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(flow))
+      })
+      //In the success case, just echo the flow back
+      app.put('/backend/flows/:id', bodyParser.json(), (req, res) => {
+        const flow = req.body
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(flow))
       })
 
       // Mock call to record start, with this format
