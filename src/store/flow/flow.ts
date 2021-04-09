@@ -17,12 +17,12 @@ import moment from 'moment'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import {
-  defaults, 
-  includes, 
-  forEach, 
-  cloneDeep, 
-  get, 
-  has, 
+  defaults,
+  includes,
+  forEach,
+  cloneDeep,
+  get,
+  has,
   omit
 } from 'lodash'
 import { discoverContentTypesFor } from '@/store/flow/resource'
@@ -32,7 +32,7 @@ import { IFlowsState } from '.'
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the firstFlowId doesn't correspond to a flow
   activeFlow: (state) => {
-    if(state.flows.length) { 
+    if(state.flows.length) {
       try {
         return getActiveFlowFrom(state as unknown as IContext)
       } catch(err) {
@@ -62,7 +62,7 @@ export const mutations: MutationTree<IFlowsState> = {
   //That means the flow list page (which we will build the production version of later) will get cleared of all flows if we continue with the current model - see the temporary page /src/views/Home.vue - unless we fetch the list again
   //That doesn't make sense if we run the builder standalone - without a fetch of the flows list
   flow_setFlowContainer(state, flowContainer) {
-    const persistedState = flowContainer 
+    const persistedState = flowContainer
     state.isCreated = persistedState.isCreated
     state.flows = persistedState.flows
     state.resources = persistedState.resources
@@ -103,7 +103,7 @@ export const mutations: MutationTree<IFlowsState> = {
   },
 
   flow_setLabel(state, { flowId, label }) {
-    findFlowWith(flowId, state as unknown as IContext).label = label 
+    findFlowWith(flowId, state as unknown as IContext).label = label
   },
 
   flow_setInteractionTimeout(state, { flowId, value }) {
@@ -123,7 +123,7 @@ export const mutations: MutationTree<IFlowsState> = {
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
-  async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext> {
+  async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext | null> {
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
     if(!persistRoute) {
@@ -135,7 +135,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       const { data } = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
-      return getters.activeFlowContainer 
+      return getters.activeFlowContainer
     } catch(error) {
       commit('flow_updateCreatedState', oldCreatedState)
       console.info(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
@@ -144,7 +144,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
   //TODO - In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
   //see comment on flow_setFlowContainer
-  async flow_fetch({ state, getters, commit }, { fetchRoute }): Promise<IContext> {
+  async flow_fetch({ state, getters, commit }, { fetchRoute }): Promise<IFlow | null> {
     if(!fetchRoute) {
       console.info("Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store")
       return getters.activeFlow

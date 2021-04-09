@@ -180,7 +180,7 @@ import { computeBlockPositionsFrom } from '@/store/builder'
 import { VBTooltipPlugin } from 'bootstrap-vue'
 import Component, { mixins } from 'vue-class-component'
 import { Action, Getter, namespace, State } from 'vuex-class'
-import { IBlock, IFlow, IResourceDefinition } from '@floip/flow-runner'
+import { IBlock, IContext, IFlow, IResourceDefinition } from '@floip/flow-runner'
 
 Vue.use(VBTooltipPlugin)
 
@@ -402,66 +402,38 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return lodash.pickBy(obj, lodash.identity)
   }
 
-  getDeleteToolTip() {
-    return this.trans('flow-builder.tooltip-delete-block')
-  }
-
   // ########### VUEX ###############
   @State(({ trees: { tree } }) => tree) tree!: any
-
   @State(({ trees: { ui } }) => ui) ui!: any
-
   @Getter isTreeSaving!: number | boolean
-
   @Getter isBlockAvailableByBlockClass?: any
-
   @Getter hasChanges!: boolean
-
   @Getter isTreeValid!: boolean
-
   @Getter selectedBlock?: IBlock
-
   @Getter isFeatureTreeSaveEnabled!: boolean
-
   @Getter isFeatureTreeSendEnabled!: boolean
-
   @Getter isFeatureTreeDuplicateEnabled!: boolean
-
   @Getter isFeatureViewResultsEnabled!: boolean
-
   @Getter isFeatureUpdateInteractionTotalsEnabled!: boolean
-
   @Getter isResourceEditorEnabled!: boolean
-
-  @Mutation setTreeSaving ??
-
+  @Mutation setTreeSaving?: void
   @Action attemptSaveTree?: void
 
   // Flow
   @flowVuexNamespace.Getter activeFlow?: IFlow
-
-  @flowVuexNamespace.Getter activeFlowContainer?!
-
+  @flowVuexNamespace.Getter activeFlowContainer?: IContext
   @flowVuexNamespace.State flows?: IFlow[]
-
   @flowVuexNamespace.State resources?: IResourceDefinition[]
-
   @flowVuexNamespace.Action flow_removeBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => void
-
   @flowVuexNamespace.Action flow_addBlankBlockByType!: ({ type, ...props }: Partial<IBlock>) => Promise<IBlock>
-
   @flowVuexNamespace.Action flow_duplicateBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => Promise<IBlock>
+  @flowVuexNamespace.Action flow_persist!: ({ persistRoute, flowContainer }: { persistRoute: any, flowContainer: IContext }) => Promise<IContext | null>
 
-  @flowVuexNamespace.Action flow_persist??
   // Builder
   @builderVuexNamespace.Getter isEditable!: boolean
-
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
-
   @builderVuexNamespace.Getter activeBlock?: IBlock
-
   @builderVuexNamespace.Action importFlowsAndResources!: ({ flows, resources }: { flows: IFlow[]; resources: IResourceDefinition[]}) => Promise<void>
-
   @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
 }
 </script>

@@ -52,7 +52,7 @@ class Home extends Vue {
   @Prop({default: () => ({})}) readonly builderConfig!: object
 
   @flowVuexNamespace.State flows!: IFlow[]
-  @Mutation configure
+  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
 }
 
 export default Home

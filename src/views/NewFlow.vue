@@ -35,6 +35,7 @@ import { forEach, isEmpty } from 'lodash'
 import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
 import {IFlow, IContext} from '@floip/flow-runner'
+import { RawLocation } from 'vue-router'
 
 @Component(
   {
@@ -61,7 +62,7 @@ class NewFlow extends Vue {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 
-  async handlePersistFlow(route) {
+  async handlePersistFlow(route: RawLocation) {
     this.flowError = null
     const flowContainer = await this.flow_persist({
       //@ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
@@ -76,13 +77,13 @@ class NewFlow extends Vue {
     }
   }
 
-  flowError = null;
+  flowError: string | null = null;
 
   @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
-  @flowVuexNamespace.Action flow_persist!: ({persistRoute: string, flowContainer: IContext}) => Promise<IContext>
+  @flowVuexNamespace.Action flow_persist!: ({ persistRoute, flowContainer }: { persistRoute: any, flowContainer: IContext }) => Promise<IContext | null>
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Getter activeFlowContainer!: IContext
-  @Mutation configure 
+  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
   @Getter isConfigured!: boolean
 }
 

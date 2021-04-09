@@ -71,11 +71,11 @@ class FetchFlow extends Vue {
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action flow_fetch!: ({fetchRoute: string}) => Promise<IFlow>
   @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({flowId: string}) => void
-  @Mutation configure 
+  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
   @Getter isConfigured!: boolean
 }
 
-export default FetchFlow 
+export default FetchFlow
 
 </script>
 
