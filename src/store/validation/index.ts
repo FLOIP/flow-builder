@@ -59,7 +59,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   async validate_flow({ state }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {
     if (isEmpty(state.flowValidator)) {
       // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
-      state.flowValidator = createDefaultJsonSchemaValidatorFactoryFor(require('../../../_tmp/flowSpecJsonSchema.json'))
+      state.flowValidator = createDefaultJsonSchemaValidatorFactoryFor(require('../../../_tmp/flowSpecJsonSchema.json'), '#/definitions/IFlow')
     }
     const validate = state.flowValidator
 
@@ -90,9 +90,19 @@ export default store
  * const error = validate.errors
  *
  * @param jsonSchema
+ * @param subSchema, Specify it if we want to pick a sub definition eg: pick `#/definitions/IFlow` under IContainer
  */
-export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchema7): ValidateFunction {
-  return ajv.compile(jsonSchema)
+export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchema7, subSchema: string = ''): ValidateFunction {
+  if (subSchema === '') {
+    return ajv.compile(jsonSchema)
+  } else {
+    ajv.addSchema(jsonSchema)
+    const validate = ajv.getSchema(subSchema)
+    if (!validate) {
+      throw new Error(`Cannot find definition ${subSchema} in schema ${jsonSchema}`)
+    }
+    return validate as ValidateFunction
+  }
 }
 
 export function debugValidationStatus(status: IValidationStatus, customMessage: string) {
