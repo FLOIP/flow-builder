@@ -13,7 +13,7 @@ const DEV_ERROR_KEYWORDS = [
   'required' // missing props
 ]
 
-interface IIndexedString { [key: string]: string }
+export interface IIndexedString { [key: string]: string }
 
 export interface IValidationStatus { // important context for future debug or testing
   isValid: boolean | PromiseLike<any>;

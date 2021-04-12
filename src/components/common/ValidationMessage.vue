@@ -15,8 +15,8 @@ import {Component, Prop} from 'vue-property-decorator';
 import { mixins } from 'vue-class-component';
 import { Lang } from "@/lib/filters/lang";
 import { BAlert } from 'bootstrap-vue'
-import {namespace} from "vuex-class";
-import {IValidationStatus} from "@/store/validation";
+import { namespace } from "vuex-class";
+import { IIndexedString } from "@/store/validation";
 
 const validationVuexNamespace = namespace('validation')
 
@@ -32,12 +32,10 @@ class ValidationMessage extends mixins(Lang) {
   shouldShowMessage = true
 
   get errorMessage() {
-    // TODO: get the message text in flowValidationStatus/blockValidationStatuses by messageKey
-    return 'Lorem ipsum dolor sit amet, consectetur adipisicing elit'
+    return this.indexedErrorMessages[messageKey]
   }
 
-  @validationVuexNamespace.State flowValidationStatus!: IValidationStatus
-  @validationVuexNamespace.State blockValidationStatuses!: { [key:string]: IValidationStatus }
+  @validationVuexNamespace.State indexedErrorMessages!: IIndexedString
 }
 export default ValidationMessage
 </script>
