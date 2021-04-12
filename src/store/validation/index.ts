@@ -8,10 +8,16 @@ import { IBlock, IFlow } from '@floip/flow-runner'
 import { isEmpty, get } from 'lodash'
 
 const ajv = new Ajv();
+const DEV_ERROR_KEYWORDS = [
+  'additionalProperties', // unwanted extra props
+  'required' // missing props
+]
 
-export interface IValidationStatus {
+interface IIndexedString { [key: string]: string }
+
+export interface IValidationStatus { // important context for future debug or testing
   isValid: boolean | PromiseLike<any>;
-  errors?: null | Array<ErrorObject>; // AJV errors
+  ajvErrors?: null | Array<ErrorObject>;
 }
 
 export interface IValidationState {
@@ -19,13 +25,17 @@ export interface IValidationState {
   blockTypeValidators: { [key: string]: ValidateFunction }; //keys are block types
   flowValidationStatus: IValidationStatus;
   flowValidator: ValidateFunction;
+
+  indexedErrorMessages: IIndexedString; // Human readable errors
 }
 
 export const stateFactory = (): IValidationState => ({
   blockValidationStatuses: {} as { [key:string]: IValidationStatus },
   blockTypeValidators: {} as { [key: string]: ValidateFunction },
   flowValidationStatus: {} as IValidationStatus,
-  flowValidator: {} as ValidateFunction
+  flowValidator: {} as ValidateFunction,
+
+  indexedErrorMessages: {} as IIndexedString
 })
 
 export const getters: GetterTree<IValidationState, IRootState> = {
@@ -33,11 +43,26 @@ export const getters: GetterTree<IValidationState, IRootState> = {
 }
 
 export const mutations: MutationTree<IValidationState> = {
-
+  indexedMessageFromAjvErrors(state, { keyPrefix, errors }: { keyPrefix: string, errors: undefined | null | Array<ErrorObject> }) {
+    errors?.forEach((error, key) => {
+      let index = '', message = ''
+      if (DEV_ERROR_KEYWORDS.includes(error.keyword)) {
+        // this is more likely a dev issue than user error
+        // error.dataPath could be empty or not for such errors
+        index = `${keyPrefix}${error.schemaPath}`
+        message = `${error.message}, for params ${JSON.stringify(error.params)}`
+        console.error(`Schema issue found when validating ${index}: ${message}`)
+      } else {
+        index = `${keyPrefix}${error.dataPath}`
+        message = error.message as string
+      }
+      state.indexedErrorMessages[index] = message as string
+    })
+  }
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
-  async validate_block({ state }, { block } : { block: IBlock }): Promise<IValidationStatus> {
+  async validate_block({ state, commit }, { block } : { block: IBlock }): Promise<IValidationStatus> {
     const { uuid: blockId, type: blockType } = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const blockJsonSchemaFile = `I${blockTypeWithoutNameSpace}Block.json`
@@ -47,27 +72,40 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       state.blockTypeValidators[blockTypeWithoutNameSpace] = createDefaultJsonSchemaValidatorFactoryFor(require(`../../../_tmp/${blockJsonSchemaFile}`))
     }
     const validate = state.blockTypeValidators[blockTypeWithoutNameSpace]
-
+    const keyPrefix = `block/${blockId}/`
     state.blockValidationStatuses[blockId] = {
       isValid: validate(block),
-      errors: validate.errors,
+      ajvErrors: validate.errors,
     }
 
+    commit('indexedMessageFromAjvErrors', {
+      keyPrefix,
+      errors: validate.errors
+    })
+
+    debugValidationStatus(state.blockValidationStatuses[blockId], `validation status for block ${blockId}`)
     return state.blockValidationStatuses[blockId]
   },
 
-  async validate_flow({ state }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {
+  async validate_flow({ state, commit }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {
     if (isEmpty(state.flowValidator)) {
       // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
       state.flowValidator = createDefaultJsonSchemaValidatorFactoryFor(require('../../../_tmp/flowSpecJsonSchema.json'), '#/definitions/IFlow')
     }
     const validate = state.flowValidator
 
+    const keyPrefix = `flow/${flow.uuid}/`
     state.flowValidationStatus = {
       isValid: validate(flow),
-      errors: validate.errors,
+      ajvErrors: validate.errors,
     }
 
+    commit('indexedMessageFromAjvErrors', {
+      keyPrefix,
+      errors: validate.errors
+    })
+
+    debugValidationStatus(state.flowValidationStatus, 'flow validation status')
     return state.flowValidationStatus
   }
 }
@@ -105,11 +143,11 @@ export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchem
   }
 }
 
-export function debugValidationStatus(status: IValidationStatus, customMessage: string) {
+function debugValidationStatus(status: IValidationStatus, customMessage: string) {
   console.debug(
     customMessage,
     ' | isValid:', status.isValid,
-    ' | errors:', `${status.hasOwnProperty('errors') && !!status.errors! ? (status.errors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
-    ' | details:', status
+    ' | error message:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
+    ' | error details:', status
   )
 }
