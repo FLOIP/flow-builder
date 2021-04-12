@@ -15,27 +15,21 @@ const DEV_ERROR_KEYWORDS = [
 
 export interface IIndexedString { [key: string]: string }
 
-export interface IValidationStatus { // important context for future debug or testing
+export interface IValidationStatus {
   isValid: boolean | PromiseLike<any>;
   ajvErrors?: null | Array<ErrorObject>;
 }
 
 export interface IValidationState {
-  blockValidationStatuses: { [key: string]: IValidationStatus }; //keys are block ids
-  blockTypeValidators: { [key: string]: ValidateFunction }; //keys are block types
-  flowValidationStatus: IValidationStatus;
-  flowValidator: ValidateFunction;
-
-  indexedErrorMessages: IIndexedString; // Human readable errors
+  validationStatuses: { [key: string]: IValidationStatus }; //important context for future debug or testing, keys are index like `flow/flowId`
+  validators: { [key: string]: ValidateFunction }; //AJV validators, keys are types
+  flattenErrorMessages: IIndexedString; // Human readable errors, keys are index like `flow/flowId/.path/.to/.prop`. Note that indexedErrors has more elements than validationStatuses
 }
 
 export const stateFactory = (): IValidationState => ({
-  blockValidationStatuses: {} as { [key:string]: IValidationStatus },
-  blockTypeValidators: {} as { [key: string]: ValidateFunction },
-  flowValidationStatus: {} as IValidationStatus,
-  flowValidator: {} as ValidateFunction,
-
-  indexedErrorMessages: {} as IIndexedString
+  validationStatuses: {} as { [key:string]: IValidationStatus },
+  validators: {} as { [key: string]: ValidateFunction },
+  flattenErrorMessages: {} as IIndexedString
 })
 
 export const getters: GetterTree<IValidationState, IRootState> = {
@@ -43,7 +37,7 @@ export const getters: GetterTree<IValidationState, IRootState> = {
 }
 
 export const mutations: MutationTree<IValidationState> = {
-  indexedMessageFromAjvErrors(state, { keyPrefix, errors }: { keyPrefix: string, errors: undefined | null | Array<ErrorObject> }) {
+  flatValidationStatuses(state, { keyPrefix, errors }: { keyPrefix: string, errors: undefined | null | Array<ErrorObject> }) {
     errors?.forEach((error, key) => {
       let index = '', message = ''
       if (DEV_ERROR_KEYWORDS.includes(error.keyword)) {
@@ -56,7 +50,7 @@ export const mutations: MutationTree<IValidationState> = {
         index = `${keyPrefix}${error.dataPath}`
         message = error.message as string
       }
-      state.indexedErrorMessages[index] = message as string
+      state.flattenErrorMessages[index] = message as string
     })
   }
 }
@@ -67,46 +61,47 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const blockJsonSchemaFile = `I${blockTypeWithoutNameSpace}Block.json`
 
-    if (isEmpty(state.blockTypeValidators) || !state.blockTypeValidators.hasOwnProperty(blockTypeWithoutNameSpace)) {
+    if (isEmpty(state.validators) || !state.validators.hasOwnProperty(blockTypeWithoutNameSpace)) {
       // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
-      state.blockTypeValidators[blockTypeWithoutNameSpace] = createDefaultJsonSchemaValidatorFactoryFor(require(`../../../_tmp/${blockJsonSchemaFile}`))
+      state.validators[blockTypeWithoutNameSpace] = createDefaultJsonSchemaValidatorFactoryFor(require(`../../../_tmp/${blockJsonSchemaFile}`))
     }
-    const validate = state.blockTypeValidators[blockTypeWithoutNameSpace]
-    const keyPrefix = `block/${blockId}/`
-    state.blockValidationStatuses[blockId] = {
+    const validate = state.validators[blockTypeWithoutNameSpace]
+    const index = `block/${blockId}/`
+    state.validationStatuses[index] = {
       isValid: validate(block),
       ajvErrors: validate.errors,
     }
 
-    commit('indexedMessageFromAjvErrors', {
-      keyPrefix,
+    commit('flatValidationStatuses', {
+      keyPrefix: index,
       errors: validate.errors
     })
 
-    debugValidationStatus(state.blockValidationStatuses[blockId], `validation status for block ${blockId}`)
-    return state.blockValidationStatuses[blockId]
+    debugValidationStatus(state.validationStatuses[blockId], `validation status for block ${blockId}`)
+    return state.validationStatuses[blockId]
   },
 
   async validate_flow({ state, commit }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {
-    if (isEmpty(state.flowValidator)) {
+    const validationType = 'flow'
+    if (isEmpty(state.validators) || !state.validators.hasOwnProperty(validationType)) {
       // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
-      state.flowValidator = createDefaultJsonSchemaValidatorFactoryFor(require('../../../_tmp/flowSpecJsonSchema.json'), '#/definitions/IFlow')
+      state.validators[validationType] = createDefaultJsonSchemaValidatorFactoryFor(require('../../../_tmp/flowSpecJsonSchema.json'), '#/definitions/IFlow')
     }
-    const validate = state.flowValidator
+    const validate = state.validators[validationType]
 
-    const keyPrefix = `flow/${flow.uuid}/`
-    state.flowValidationStatus = {
+    const index = `flow/${flow.uuid}/`
+    state.validationStatuses[index] = {
       isValid: validate(flow),
       ajvErrors: validate.errors,
     }
 
-    commit('indexedMessageFromAjvErrors', {
-      keyPrefix,
+    commit('flatValidationStatuses', {
+      keyPrefix: index,
       errors: validate.errors
     })
 
-    debugValidationStatus(state.flowValidationStatus, 'flow validation status')
-    return state.flowValidationStatus
+    debugValidationStatus(state.validationStatuses[flow.uuid], `flow validation status`)
+    return state.validationStatuses[flow.uuid]
   }
 }
 
@@ -144,10 +139,12 @@ export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchem
 }
 
 function debugValidationStatus(status: IValidationStatus, customMessage: string) {
-  console.debug(
-    customMessage,
-    ' | isValid:', status.isValid,
-    ' | error message:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
-    ' | error details:', status
-  )
+  if (status) {
+    console.debug(
+      customMessage,
+      ' | isValid:', status.isValid,
+      ' | error message:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
+      ' | error details:', status
+    )
+  }
 }
