@@ -19,6 +19,11 @@
           "path": "\/flows\/new",
           "methods": ["GET"]
         },
+        "importFlow": {
+          "name": "importFlow",
+          "path": "\/flows\/import",
+          "methods": ["GET"]
+        },
         "fetchFlow": {
           "name": "fetchFlow",
           "path": "\/flows\/{flowId}",
