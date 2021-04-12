@@ -14,9 +14,10 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import { namespace } from "vuex-class";
-import {IBlock, IFlow} from "@floip/flow-runner";
+import { namespace } from 'vuex-class'
+import {IBlock, IFlow} from '@floip/flow-runner'
 import { find, isEqual, cloneDeep } from 'lodash'
+import { IValidationStatus } from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
@@ -56,9 +57,6 @@ export default class BuilderCanvas extends Vue {
 
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
-
-  @validationVuexNamespace.State flowValidationStatus!: IValidationStatus
-  @validationVuexNamespace.State blockValidationStatuses!: { [key: string]: IValidationStatus }
 
   @validationVuexNamespace.Action validate_flow!: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_block!: ({ block } : { block: IBlock }) => Promise<IValidationStatus>
