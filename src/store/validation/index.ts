@@ -77,8 +77,8 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       errors: validate.errors
     })
 
-    debugValidationStatus(state.validationStatuses[blockId], `validation status for block ${blockId}`)
-    return state.validationStatuses[blockId]
+    debugValidationStatus(state.validationStatuses[index], `validation status for ${index}`)
+    return state.validationStatuses[index]
   },
 
   async validate_flow({ state, commit }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {
@@ -100,8 +100,8 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       errors: validate.errors
     })
 
-    debugValidationStatus(state.validationStatuses[flow.uuid], `flow validation status`)
-    return state.validationStatuses[flow.uuid]
+    debugValidationStatus(state.validationStatuses[index], `flow validation status`)
+    return state.validationStatuses[index]
   }
 }
 
@@ -146,5 +146,7 @@ function debugValidationStatus(status: IValidationStatus, customMessage: string)
       ' | error message:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
       ' | error details:', status
     )
+  } else {
+    console.debug('the status in debugValidationStatus was undefined')
   }
 }
