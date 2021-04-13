@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import {
   ActionTree, GetterTree, Module, MutationTree,
 } from 'vuex'
@@ -5,7 +6,7 @@ import { IRootState } from '@/store'
 import Ajv, { ValidateFunction, ErrorObject } from 'ajv'
 import { JSONSchema7 } from 'json-schema'
 import { IBlock, IFlow } from '@floip/flow-runner'
-import { isEmpty, get } from 'lodash'
+import { isEmpty, get, forIn } from 'lodash'
 
 const ajv = new Ajv();
 const DEV_ERROR_KEYWORDS = [
@@ -23,36 +24,35 @@ export interface IValidationStatus {
 export interface IValidationState {
   validationStatuses: { [key: string]: IValidationStatus }; //important context for future debug or testing, keys are index like `flow/flowId`
   validators: { [key: string]: ValidateFunction }; //AJV validators, keys are types
-  flattenErrorMessages: IIndexedString; // Human readable errors, keys are index like `flow/flowId/.path/.to/.prop`. Note that indexedErrors has more elements than validationStatuses
 }
 
 export const stateFactory = (): IValidationState => ({
   validationStatuses: {} as { [key:string]: IValidationStatus },
   validators: {} as { [key: string]: ValidateFunction },
-  flattenErrorMessages: {} as IIndexedString
 })
 
 export const getters: GetterTree<IValidationState, IRootState> = {
-
+  /**
+   * Human readable errors, keys are index like `flow/flowId/.path/.to/.prop`.
+   * Note that indexedErrors has more elements than validationStatuses
+   */
+  flattenErrorMessages(state): IIndexedString {
+    let accumulator: IIndexedString = {}
+    console.log('run getter flattenErrorMessages')
+    forIn(state.validationStatuses, function (validationStatus: IValidationStatus, index: string) {
+      console.log('loop', index)
+      flatValidationStatuses({
+        keyPrefix: index,
+        errors: validationStatus.ajvErrors,
+        accumulator
+      })
+    })
+    return accumulator
+  }
 }
 
 export const mutations: MutationTree<IValidationState> = {
-  flatValidationStatuses(state, { keyPrefix, errors }: { keyPrefix: string, errors: undefined | null | Array<ErrorObject> }) {
-    errors?.forEach((error, key) => {
-      let index = '', message = ''
-      if (DEV_ERROR_KEYWORDS.includes(error.keyword)) {
-        // this is more likely a dev issue than user error
-        // error.dataPath could be empty or not for such errors
-        index = `${keyPrefix}${error.schemaPath}`
-        message = `${error.message}, for params ${JSON.stringify(error.params)}`
-        console.error(`Schema issue found when validating ${index}: ${message}`)
-      } else {
-        index = `${keyPrefix}${error.dataPath}`
-        message = error.message as string
-      }
-      state.flattenErrorMessages[index] = message as string
-    })
-  }
+
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
@@ -67,14 +67,9 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     }
     const validate = state.validators[blockTypeWithoutNameSpace]
     const index = `block/${blockId}/`
-    state.validationStatuses[index] = {
+    Vue.set(state.validationStatuses, index, {
       isValid: validate(block),
       ajvErrors: validate.errors,
-    }
-
-    commit('flatValidationStatuses', {
-      keyPrefix: index,
-      errors: validate.errors
     })
 
     debugValidationStatus(state.validationStatuses[index], `validation status for ${index}`)
@@ -90,14 +85,9 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     const validate = state.validators[validationType]
 
     const index = `flow/${flow.uuid}/`
-    state.validationStatuses[index] = {
+    Vue.set(state.validationStatuses, index, {
       isValid: validate(flow),
       ajvErrors: validate.errors,
-    }
-
-    commit('flatValidationStatuses', {
-      keyPrefix: index,
-      errors: validate.errors
     })
 
     debugValidationStatus(state.validationStatuses[index], `flow validation status`)
@@ -149,4 +139,21 @@ function debugValidationStatus(status: IValidationStatus, customMessage: string)
   } else {
     console.debug('the status in debugValidationStatus was undefined')
   }
+}
+
+function flatValidationStatuses({ keyPrefix, errors, accumulator }: { keyPrefix: string, errors: undefined | null | Array<ErrorObject>, accumulator: IIndexedString }) {
+  errors?.forEach((error, key) => {
+    let index = '', message = ''
+    if (DEV_ERROR_KEYWORDS.includes(error.keyword)) {
+      // this is more likely a dev issue than user error
+      // error.dataPath could be empty or not for such errors
+      index = `${keyPrefix}${error.schemaPath}`
+      message = `${error.message}, for params ${JSON.stringify(error.params)}`
+      console.error(`Schema issue found on ${index}: ${message}`)
+    } else {
+      index = `${keyPrefix}${error.dataPath}`
+      message = error.message as string
+    }
+    accumulator[index] = message as string
+  })
 }
