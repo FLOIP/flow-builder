@@ -38,9 +38,7 @@ export const getters: GetterTree<IValidationState, IRootState> = {
    */
   flattenErrorMessages(state): IIndexedString {
     let accumulator: IIndexedString = {}
-    console.log('run getter flattenErrorMessages')
     forIn(state.validationStatuses, function (validationStatus: IValidationStatus, index: string) {
-      console.log('loop', index)
       flatValidationStatuses({
         keyPrefix: index,
         errors: validationStatus.ajvErrors,
