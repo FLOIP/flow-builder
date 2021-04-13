@@ -1,5 +1,6 @@
 {
   "en.flow-builder": {
+    "fix-it": "Fix it",
     "accuracy-threshold-in-meters": "Accuracy threshold in meters",
     "accuracy-timeout-in-seconds":"Accuracy timout in seconds",
     "format-string": "Format String",
@@ -1551,6 +1552,7 @@
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
   },
   "fr.flow-builder": {
+    "fix-it": "Répare le",
     "accuracy-threshold-in-meters": "Seuil de précision en mètres",
     "accuracy-timeout-in-seconds":"Précision timout en quelques secondes",
     "format-string": "Format Chaîne",

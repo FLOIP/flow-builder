@@ -6,7 +6,7 @@
       fade
       :show="isValid"
     >
-      {{ errorMessage }}
+      {{ errorMessage }} <a :href="messageKey" class="alert-link float-right" v-if="showFixAction">{{ trans('flow-builder.fix-it') }}</a>
     </b-alert>
   </div>
 </template>
@@ -28,7 +28,7 @@ const validationVuexNamespace = namespace('validation')
 })
 class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
-  @Prop() showFixAction?: boolean
+  @Prop( { default: false } ) showFixAction?: boolean
 
   get errorMessage() {
     // get value by property (not by path like with lodash.get()), as the messageKey can contain `.` chars

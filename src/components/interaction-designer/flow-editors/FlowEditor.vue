@@ -10,7 +10,7 @@
             <flow-label-editor :flow="flow" />
             <validation-message
               :message-key="`flow/${flow.uuid}/.interaction_timeout`"
-              #input-control="{ isValid, test }">
+              #input-control="{ isValid }">
               <flow-interaction-timeout-editor :flow="flow" :state="!isValid"/>
             </validation-message>
           </div>
