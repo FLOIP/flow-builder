@@ -3,7 +3,7 @@
     <b-alert
       variant="warning"
       fade
-      :show="shouldShowMessage"
+      :show="!!errorMessage"
     >
       {{ errorMessage }}
     </b-alert>
@@ -29,13 +29,15 @@ class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
   @Prop() showFixAction?: boolean
 
-  shouldShowMessage = true
-
   get errorMessage() {
-    return this.indexedErrorMessages[messageKey]
+    // get value by property (not by path like with lodash.get()), as the messageKey can contain `.` chars
+    if (!this.flattenErrorMessages.hasOwnProperty(this.messageKey)) {
+      return ''
+    }
+    return this.flattenErrorMessages[this.messageKey]
   }
 
-  @validationVuexNamespace.State indexedErrorMessages!: IIndexedString
+  @validationVuexNamespace.Getter flattenErrorMessages!: IIndexedString
 }
 export default ValidationMessage
 </script>
