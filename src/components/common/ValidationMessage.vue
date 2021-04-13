@@ -1,9 +1,10 @@
 <template>
   <div class="validation-message">
+    <slot name="input-control" :isValid="isValid"></slot>
     <b-alert
       variant="warning"
       fade
-      :show="!!errorMessage"
+      :show="isValid"
     >
       {{ errorMessage }}
     </b-alert>
@@ -35,6 +36,10 @@ class ValidationMessage extends mixins(Lang) {
       return ''
     }
     return this.flattenErrorMessages[this.messageKey]
+  }
+
+  get isValid() {
+    return !!this.errorMessage
   }
 
   @validationVuexNamespace.Getter flattenErrorMessages!: IIndexedString

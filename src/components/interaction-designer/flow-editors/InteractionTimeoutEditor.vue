@@ -3,7 +3,8 @@
     <numeric-editor v-model.number="interactionTimeout"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.Interaction-timeout' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+        :placeholder="'flow-builder.enter-value' | trans"
+        :state="state">
     </numeric-editor>
   </div>
 </template>
@@ -25,11 +26,12 @@ const flowVuexNamespace = namespace('flow')
   mixins: [lang],
 })
 class InteractionTimeoutEditor extends Vue {
-    @Prop() readonly flow!: IFlow
+  @Prop() readonly flow!: IFlow
+  @Prop() state?: boolean
 
     get interactionTimeout(): number {
       // 30 comes from src/store/flow/flow.ts
-      return this.flow.interaction_timeout || 30
+      return this.flow.interaction_timeout
     }
 
     set interactionTimeout(value: number) {
