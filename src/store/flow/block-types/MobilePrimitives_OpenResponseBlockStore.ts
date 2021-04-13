@@ -5,7 +5,7 @@ import {
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IOpenResponseBlock } from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
-import { defaults } from 'lodash'
+import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives\\OpenResponse'
@@ -59,7 +59,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     commit('flow/resource_add', { resource: blankResource }, { root: true })
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',

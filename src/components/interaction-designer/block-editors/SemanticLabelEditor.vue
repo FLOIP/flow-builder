@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="block-semantic-label">
     <text-editor v-model="semanticLabel"
         :label="'flow-builder.block-semantic-label' | trans"
         :placeholder="'flow-builder.enter-block-semantic-label' | trans"/>

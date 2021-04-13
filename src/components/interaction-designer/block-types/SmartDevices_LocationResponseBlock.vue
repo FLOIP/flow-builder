@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="smart-devices-location-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>

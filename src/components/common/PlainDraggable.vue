@@ -1,5 +1,5 @@
 <template>
-  <div><slot></slot></div>
+  <div class="plain-draggable"><slot></slot></div>
 </template>
 <script>
 import PlainDraggable from 'plain-draggable'

@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group">
+  <div class="block-contact-property form-group">
     <label>{{'flow-builder.contact-property-label' | trans}}</label>
     <vue-multiselect v-model="selectedProperty"
                      track-by="id"

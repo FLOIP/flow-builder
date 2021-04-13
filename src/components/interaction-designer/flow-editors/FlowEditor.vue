@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flow-editor">
     <h3 class="no-room-above">
       {{flowHeader | trans}}
     </h3>

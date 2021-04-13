@@ -128,6 +128,13 @@
         "is_branching": false,
         "category":  0
       },
+      "Core\\SetGroupMembership": {
+        "name": "Core\\SetGroupMembership",
+        "type": "Core\\SetGroupMembership",
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0
+      },
       "MobilePrimitives\\Message": {
         "name": "MobilePrimitives\\Message",
         "type": "MobilePrimitives\\Message",
