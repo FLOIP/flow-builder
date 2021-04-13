@@ -9,7 +9,7 @@ import {
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { defaults, without } from 'lodash'
+import { defaults, set } from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
@@ -69,6 +69,9 @@ export const mutations: MutationTree<IFlowsState> = {
     const currentConfig: {[key: string]: any} = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = { ...currentConfig }
+  },
+  block_updateConfigByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object }) {
+    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config, path, value);
   },
   block_setBlockExitDestinationBlockId(state, { blockId, exitId, destinationBlockId }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)

@@ -121,6 +121,13 @@
         "is_branching": false,
         "category":  0
       },
+      "Core\\SetContactProperty": {
+        "name": "Core\\SetContactProperty",
+        "type": "Core\\SetContactProperty",
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0
+      },
       "MobilePrimitives\\Message": {
         "name": "MobilePrimitives\\Message",
         "type": "MobilePrimitives\\Message",
