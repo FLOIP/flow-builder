@@ -1,6 +1,6 @@
 <template>
   <div class="resource-editor">
-    <hr />
+    <hr v-if="label"/>
 
     <h4 v-if="label">{{label}}</h4>
 
@@ -21,8 +21,6 @@
                                                 {languageId, contentType, modes: [mode]})"
 
                                         :mode="mode"
-
-                                        :is-editable="true || isEditable"
                                         v-if="contentType === SupportedContentType.TEXT"
                                         :enable-autogen-button="true || enableAutogenButton" />
 
@@ -32,12 +30,15 @@
 
               <ul class="nav nav-tabs">
                 <li class="nav-item">
-                  <a class="nav-link active" @click.prevent="" href="#">{{'flow-builder.library' | trans}}</a>
+                  <a class="nav-link px-2 py-1 active" @click.prevent="" href="#">{{'flow-builder.library' | trans}}</a>
+                </li>
+                <li v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled" class="nav-item">
+                  <a @click.prevent="triggerRecordViaPhoneFor(languageId)" href="#" class="nav-link px-2 py-1">{{'flow-builder.phone-recording' | trans}}</a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item" v-if="isEditable">
                   <a v-if="isFeatureAudioUploadEnabled"
-                     class="nav-link"
+                     class="nav-link px-2 py-1"
                      v-flow-uploader="{
                       target: route('trees.resumeableAudioUpload'),
                       token: `${block.uuid}${languageId}`,
@@ -59,6 +60,9 @@
                 :selectedAudioFile="findOrGenerateStubbedVariantOn(
                    resource,
                    {languageId, contentType, modes: [mode]}).value"/>
+
+            <phone-recorder v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{languageId, contentType, modes: [mode]}).value"
+                            :recordingKey="`${block.uuid}:${languageId}`" />
           </div>
         </template>
       </template>
@@ -72,40 +76,41 @@ import {
   Mutation,
   namespace,
 } from 'vuex-class'
-  import {
-    IBlock,
-    IFlow,
-    IResourceDefinition,
-    SupportedContentType,
-    SupportedMode,
-  } from '@floip/flow-runner'
-  import lang from '@/lib/filters/lang'
-  import Permissions from '@/lib/mixins/Permissions'
-  import Routes from '@/lib/mixins/Routes'
-  import FlowUploader from '@/lib/mixins/FlowUploader'
-  import {Component} from 'vue-property-decorator'
-  import Vue from 'vue'
-  import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
-  import {
+import {
+  IBlock,
+  IFlow,
+  IResourceDefinition,
+  SupportedContentType,
+  SupportedMode,
+} from '@floip/flow-runner'
+import lang from '@/lib/filters/lang'
+import Permissions from '@/lib/mixins/Permissions'
+import Routes from '@/lib/mixins/Routes'
+import FlowUploader from '@/lib/mixins/FlowUploader'
+import { Component } from 'vue-property-decorator'
+import Vue from 'vue'
+import {
   discoverContentTypesFor,
-    findOrGenerateStubbedVariantOn,
-    findResourceVariantOverModesOn
-  } from '@/store/flow/resource'
-  import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
-  import UploadMonitor from '../block-editors/UploadMonitor.vue'
-import ValidationException from "@floip/flow-runner/src/domain/exceptions/ValidationException";
-import {cloneDeep} from "lodash";
+  findOrGenerateStubbedVariantOn,
+  findResourceVariantOverModesOn,
+} from '@/store/flow/resource'
+import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
+import { ValidationException } from '@floip/flow-runner/src/domain/exceptions/ValidationException'
+import PhoneRecorder from '@/components/interaction-designer/block-editors/PhoneRecorder.vue'
+import UploadMonitor from '../block-editors/UploadMonitor.vue'
+import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
 
-  const flowVuexNamespace = namespace('flow')
+const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 
   interface IAudioFile {
-    id: string,
-    filename: string,
-    description: string,
-    language_id: string,
-    duration_seconds: string,
-    original_extension: string,
-    created_at: string
+    id: string;
+    filename: string;
+    description: string;
+    language_id: string;
+    duration_seconds: string;
+    original_extension: string;
+    created_at: string;
   }
 
   @Component({
@@ -124,7 +129,7 @@ import {cloneDeep} from "lodash";
       resource: {
         type: Object as () => IResourceDefinition,
         default: null,
-      }
+      },
     },
 
     mixins: [
@@ -138,30 +143,40 @@ import {cloneDeep} from "lodash";
       AudioLibrarySelector,
       ResourceVariantTextEditor,
       UploadMonitor,
+      PhoneRecorder,
     },
   })
-  export class ResourceEditor extends Vue {
+export class ResourceEditor extends Vue {
     discoverContentTypesFor = discoverContentTypesFor
+
     findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
+
     findResourceVariantOverModesOn = findResourceVariantOverModesOn
+
     SupportedMode = SupportedMode
+
     SupportedContentType = SupportedContentType
 
-    handleFilesSubmittedFor(key, {data}) {
-      console.debug(`call handleFilesSubmittedFor`)
-      this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
+    triggerRecordViaPhoneFor(langId) {
+      this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', { langId, isVisible: true })
+    }
+
+    handleFilesSubmittedFor(key, { data }) {
+      console.debug('call handleFilesSubmittedFor')
+      this.$store.dispatch('multimediaUpload/uploadFiles', { ...data, key })
     }
 
     handleFileSuccessFor(key, langId, event) {
-      const {data: {file, json}} = event
-      const {uuid: jsKey} = this.block
+      const { data: { file, json } } = event
+      // @ts-ignore
+      const { uuid: jsKey } = this.block
       const {
-            audio_file_id: id,
-            audio_uuid: filename,
-            created_at: {date: created_at},
-            description,
-            duration_seconds,
-          } = JSON.parse(json)
+        audio_file_id: id,
+        audio_uuid: filename,
+        created_at: { date: created_at },
+        description,
+        duration_seconds,
+      } = JSON.parse(json)
       const extension = description.split('.')[description.split('.').length - 1]
       const uploadedAudio: IAudioFile = {
         id,
@@ -170,12 +185,13 @@ import {cloneDeep} from "lodash";
         language_id: langId,
         duration_seconds,
         original_extension: extension,
-        created_at
+        created_at,
       }
 
       this.resource_setOrCreateValueModeSpecific({
+        // @ts-ignore
         resourceId: this.resource.uuid,
-        filter: {languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
+        filter: { languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
         value: description,
       })
       event.target.blur() // remove the focus from the `upload` Tab
@@ -195,12 +211,15 @@ import {cloneDeep} from "lodash";
     }
 
     @Getter availableAudio!: IAudioFile[]
+
     @Getter isFeatureAudioUploadEnabled
 
     @Mutation pushAudioIntoLibrary
 
     @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific
-  }
 
-  export default ResourceEditor
+    @builderVuexNamespace.Getter isEditable !: boolean
+}
+
+export default ResourceEditor
 </script>

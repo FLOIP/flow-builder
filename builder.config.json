@@ -1,6 +1,36 @@
 {
   "ui": {
     "routes": {
+      "flows": {
+        "persistFlow": {
+          "name": "persistFlow",
+          "path": "\/backend\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["POST", "PUT"]
+        },
+        "fetchFlowServer": {
+          "name": "fetchFlowServer",
+          "path": "\/backend\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["GET"]
+        },
+        "newFlow": {
+          "name": "newFlow",
+          "path": "\/flows\/new",
+          "methods": ["GET"]
+        },
+        "fetchFlow": {
+          "name": "fetchFlow",
+          "path": "\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["GET"]
+        },
+        "home": {
+          "name": "home",
+          "path": "\/",
+          "methods": ["GET"]
+        }
+      },
       "trees": {
         "editTree": {
           "name": "editTree",
@@ -11,6 +41,18 @@
         "resumeableAudioUpload": {
           "name": "resumeableAudioUpload",
           "path": "\/audiofiles\/upload",
+          "params": [],
+          "methods": ["POST", "HEAD"]
+        },
+        "calltorecordStart": {
+          "name": "calltorecordStart",
+          "path": "\/calltorecord\/start",
+          "params": [],
+          "methods": ["POST", "HEAD"]
+        },
+        "calltorecordStatus": {
+          "name": "calltorecordStatus",
+          "path": "\/calltorecord\/status",
           "params": [],
           "methods": ["POST", "HEAD"]
         }
@@ -247,7 +289,9 @@
     "messageSets": [],
     "treeSets": [],
     "enabledFeatures": [
-      "audioUpload"
+      "audioUpload",
+      "treeSave",
+      "callToRecord"
     ]
   },
   "audio": {

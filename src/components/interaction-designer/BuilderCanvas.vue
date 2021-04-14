@@ -1,8 +1,8 @@
 <template>
-  <div v-if="flows.length"
+  <div v-if="activeFlow"
        class="builder-canvas no-select">
 
-    <block v-for="block in flows[0].blocks"
+    <block v-for="block in activeFlow.blocks"
            :key="block.uuid"
            :id="`block/${block.uuid}`"
            :block="block"
@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts">
-  import {mapState} from 'vuex'
-  import {Component, Vue} from 'vue-property-decorator'
-  import Block from "@/components/interaction-designer/Block.vue"
+import { mapGetters } from 'vuex'
+import { Component, Vue } from 'vue-property-decorator'
+import Block from '@/components/interaction-designer/Block.vue'
 
   @Component({
     components: {
@@ -22,17 +22,14 @@
     },
 
     computed: {
-      ...mapState('flow', ['flows']),
+      ...mapGetters('flow', ['activeFlow']),
     },
 
-    mounted() {
-      this.$store.dispatch('builder/loadFlow')
-    },
   })
-  export default class BuilderCanvas extends Vue {
-  }
+export default class BuilderCanvas extends Vue {
+}
 
-  export {BuilderCanvas}
+export { BuilderCanvas }
 </script>
 
 <style scoped>
