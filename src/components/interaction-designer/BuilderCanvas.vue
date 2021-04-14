@@ -110,4 +110,10 @@
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
   }
+
+  .builder-canvas {
+    /*standard proportion min-width and min-height here so that initial render on slower machines*/
+    min-width: 1024px;
+    min-height: 768px;
+  }
 </style>
