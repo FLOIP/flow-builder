@@ -1,6 +1,6 @@
 <template>
   <div class="resource-variant-text-editor">
-    <div v-if="isEditable" class="content-editor" :class="{'content-editor-selected': !!content}">
+    <div class="content-editor" :class="{'content-editor-selected': !!content}">
       <textarea v-model="content"
               v-focus="isSelected"
               @focus="select"
@@ -72,125 +72,131 @@
       </div>
     </div>
 
-    <template v-if="!isEditable">
-      <p v-if="content">{{content}}</p>
-      <p v-else>
-        <em class="text-muted">{{'flow-builder.no-sms-content-yet' | trans}}</em>
-      </p>
-    </template>
+<!--    <template v-if="!isEditable">-->
+<!--      <p v-if="content">{{content}}</p>-->
+<!--      <p>-->
+<!--        <em class="text-muted">{{'flow-builder.no-sms-content-yet' | trans}}</em>-->
+<!--      </p>-->
+<!--    </template>-->
   </div>
 </template>
 
 <script>
-  import Vue from 'vue'
-  import lang from '@/lib/filters/lang'
-  import {parse as floipExpressionParser} from '@floip/expression-parser'
-  import {isObject, some} from 'lodash'
-  import VueFocus from 'vue-focus'
-  import {mapActions} from 'vuex'
-  import {VBTooltipPlugin} from 'bootstrap-vue'
-  // import BlockContentAutogenButton from './BlockContentAutogenButton'
+import Vue from 'vue'
+import lang from '@/lib/filters/lang'
+import { parse as floipExpressionParser } from '@floip/expression-parser'
+import { isObject, some } from 'lodash'
+import VueFocus from 'vue-focus'
+import { mapActions } from 'vuex'
+import { BTooltip } from 'bootstrap-vue'
 
-  Vue.use(VBTooltipPlugin)
+// import BlockContentAutogenButton from './BlockContentAutogenButton'
 
-  export default {
-    components: {
-      // BlockContentAutogenButton,
+Vue.component('b-tooltip', BTooltip)
+
+export default {
+  components: {
+    // BlockContentAutogenButton,
+  },
+  mixins: [lang, VueFocus.mixin],
+
+  props: {
+    isEditable: Boolean,
+    resourceId: {
+      type: String,
+      default: null,
     },
-    mixins: [lang, VueFocus.mixin],
-
-    props: {
-      isEditable: Boolean,
-      resourceId: {
-        type: String,
-        default: null},
-      resourceVariant: {
-        type: Object, //as () => IResourceDefinitionContentTypeSpecific
-        default: null},
-      mode: {
-        type: String,
-        default: null},
-
-      enableAutogenButton: {
-        type: Boolean,
-        default: true},
-
-      // block: Object, // maybe!?
-      // langId: [String, Number],
-      // type: String,
-      // pathToTextContent: String,
+    resourceVariant: {
+      type: Object, // as () => IResourceDefinitionContentTypeSpecific
+      default: null,
+    },
+    mode: {
+      type: String,
+      default: null,
     },
 
-    data: () => ({isSelected: false}),
+    enableAutogenButton: {
+      type: Boolean,
+      default: true,
+    },
 
-    computed: {
-      content: {
-        get() {
-          return this.resourceVariant.value
-        },
+    // block: Object, // maybe!?
+    // langId: [String, Number],
+    // type: String,
+    // pathToTextContent: String,
+  },
 
-        set(value) {
-          const {resourceId, mode} = this
-          const {languageId, contentType} = this.resourceVariant
+  data: () => ({ isSelected: false }),
 
-          this.resource_setOrCreateValueModeSpecific({
-            resourceId,
-            filter: {languageId, contentType, modes: [mode]},
-            value})
-        },
+  computed: {
+    content: {
+      get() {
+        return this.resourceVariant.value
       },
 
-      contentExpressionAST() {
-        let ast = []
+      set(value) {
+        const { resourceId, mode } = this
+        const { languageId, contentType } = this.resourceVariant
 
-        try {
-          ast = floipExpressionParser(this.content)
-        } catch (e) {
-          if (e instanceof SyntaxError || e.name === 'SyntaxError') {
-            return e
-          }
-        }
-
-        const hasMembers = some(ast, isObject)
-        return hasMembers
-            ? ast
-            : null
+        this.resource_setOrCreateValueModeSpecific({
+          resourceId,
+          filter: { languageId, contentType, modes: [mode] },
+          value,
+        })
       },
+    },
 
-      doesContentContainExpression() {
-        return !!this.contentExpressionAST
-      },
+    contentExpressionAST() {
+      let ast = []
 
-      doesContentContainExpressionError() {
-        return !!(this.contentExpressionAST instanceof Error)
-      },
-
-      characterCounter() {
-        const
-            hasUnicode = !/^[\x00-\x7F]*$/.test(this.content),
-            count = this.content.length
-
-        console.debug('BlockTextContentEditorForLangAndType', 'characterCounter', {hasUnicode, count})
-
-        return {
-          hasUnicode,
-          count,
-          pages: hasUnicode ? Math.ceil(count / 70) : Math.ceil(count / 160),
+      try {
+        ast = floipExpressionParser(this.content)
+      } catch (e) {
+        if (e instanceof SyntaxError || e.name === 'SyntaxError') {
+          return e
         }
       }
+
+      const hasMembers = some(ast, isObject)
+      return hasMembers
+        ? ast
+        : null
     },
 
-    methods: {
-      ...mapActions('flow', ['resource_setOrCreateValueModeSpecific']),
+    doesContentContainExpression() {
+      return !!this.contentExpressionAST
+    },
 
-      select() {this.isSelected = true},
-      deselect() {this.isSelected = false},
+    doesContentContainExpressionError() {
+      return !!(this.contentExpressionAST instanceof Error)
+    },
 
-      // debouncedSaveTree: debounce(function () {
-      //   this.$store.dispatch('attemptSaveTree')
-      // }, 500),
-    }
-  }
+    characterCounter() {
+      const
+        hasUnicode = !/^[\x00-\x7F]*$/.test(this.content)
+      const count = this.content.length
+
+      console.debug('BlockTextContentEditorForLangAndType', 'characterCounter', { hasUnicode, count })
+
+      return {
+        hasUnicode,
+        count,
+        pages: hasUnicode ? Math.ceil(count / 70) : Math.ceil(count / 160),
+      }
+    },
+  },
+
+  methods: {
+    ...mapActions('flow', ['resource_setOrCreateValueModeSpecific']),
+
+    select() { this.isSelected = true },
+    deselect() { this.isSelected = false },
+
+    // debouncedSaveTree: debounce(function () {
+    //   this.$store.dispatch('attemptSaveTree')
+    // }, 500),
+  },
+}
 </script>
 
 <x-style lang="scss" scoped>
