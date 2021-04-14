@@ -157,6 +157,10 @@
             </button>
             <slot name="right-grouped-buttons"/>
           </div>
+
+          <div>
+            <button type="button" class="btn btn-link" @click="scrollTo">Test scroll</button>
+          </div>
         </div>
       </div>
     </div>
@@ -422,6 +426,16 @@ export default {
     // This could be extracted to a helper mixin of some sort so it can be used in other places
     removeNilValues(obj) {
       return lodash.pickBy(obj, lodash.identity)
+    },
+
+    scrollTo() {
+      const field = 'config.text.maxResponseCharacters'
+      const blockId = '95bd9e4a-93cd-46f2-9b43-8edb935c202f'
+      this.$router.push({
+        name: 'block-scroll-to-anchor',
+        params: { blockId, field },
+      })
+      this.activateBlock({ blockId })
     },
   },
 }
