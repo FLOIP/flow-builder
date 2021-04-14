@@ -34,10 +34,10 @@
       </h3>
     </header>
 
-    <div class="block-exits">
+    <div class="block-exits d-flex">
       <div v-for="exit in block.exits"
            :key="exit.uuid"
-           class="block-exit"
+           class="block-exit col flex-shrink-1 pb-1 pt-1 pl-2 pr-2"
            :class="{
              'initial': false,
              'pending': isConnectionSourceRelocateActive,
@@ -177,7 +177,6 @@
       ...mapGetters('builder', ['blocksById']),
 
       labelContainerDynamicStyle() {
-        console.log(`get labelContainerMaxWidth ${this.labelContainerMaxWidth}`)
         return {
           'max-width': `${this.labelContainerMaxWidth}px`
         }
@@ -452,7 +451,6 @@
     }
 
     .block-exits {
-      display: flex;
       white-space: nowrap;
       position: relative;
       top: 0em;
@@ -464,17 +462,14 @@
         transition: border-radius 200ms ease-in-out;
 
         min-width: 25px;
-        flex-basis: 100px;
-        flex-shrink: 1;
+        max-width: 100px;
 
-        padding: 0.25em 1em;
         text-align: center;
 
         .block-exit-tag  {
           display: block;
 
           min-width: 25px;
-          max-width: 100px;
 
           margin: 0 0 0.5em 0;
           padding: 0.4em;
