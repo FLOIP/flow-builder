@@ -207,7 +207,6 @@ export default {
     }),
 
     ...mapGetters('flow', ['activeFlow', 'activeFlowContainer']),
-    ...mapGetters('builder', ['activeBlock']),
     ...mapState('flow', ['flows', 'resources']),
     ...mapGetters('builder', ['isEditable', 'activeBlock']),
     ...mapState('builder', ['activeBlockId']),
@@ -352,24 +351,28 @@ export default {
         },
       }) // todo push out to intx-designer
       this.activateBlock({ blockId })
+      this.$router.history.replace({
+        name: 'block-selected-details',
+        params: { blockId },
+      })
     },
     async handlePersistFlow(route) {
-      //TODO - hook into validation system when we have it - block the logic here if invalid.
+      // TODO - hook into validation system when we have it - block the logic here if invalid.
 
-      //If we aren't in edit mode there should be nothing to persist
-      if(this.isEditable) {
+      // If we aren't in edit mode there should be nothing to persist
+      if (this.isEditable) {
         this.setTreeSaving(true)
         const flowContainer = await this.flow_persist({
           persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
-          flowContainer: this.activeFlowContainer
+          flowContainer: this.activeFlowContainer,
         })
         this.setTreeSaving(false)
-        if(!flowContainer) {
-          //TODO - hook into showing validation errors design when we have it
-          //This won't show normal validation errors as the frontend should have caught them. We'll use this to show server errors.
+        if (!flowContainer) {
+          // TODO - hook into showing validation errors design when we have it
+          // This won't show normal validation errors as the frontend should have caught them. We'll use this to show server errors.
         }
       }
-      if(route) {
+      if (route) {
         this.$router.push(route)
       }
     },

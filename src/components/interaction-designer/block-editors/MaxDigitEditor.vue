@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasIvr" class="form-group block-max-digits">
+  <div v-if="hasIvr" class="form-group block-max-digits" :id="`${block.uuid}.config.ivr.maxDigits`">
     <numeric-editor v-model.number="maxDigits"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.maximum-digits' | trans"

@@ -14,28 +14,39 @@ export const routes = [
     component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/FetchFlow.vue'),
   },
   {
-    path: '/trees/create', /* no-op */
-  },
-  {
     path: '/trees/:id/interaction-designer/:mode',
+    alias: '/flows/:id/interaction-designer/:mode',
+    name: 'flow-canvas',
     props: (route) => ({ id: route.params.id, mode: route.params.mode }),
     component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue'),
-  }, {
-    path: '/trees/:id',
-    redirect: '/trees/:id/interaction-designer/view',
-  }, {
-    path: '/trees/:id/edit',
-    redirect: '/trees/:id/interaction-designer/edit',
-  }, {
-    path: '/trees/:id/view',
-    redirect: '/trees/:id/interaction-designer/view',
-  }, {
-    path: '/trees/:id/interaction-designer',
-    redirect: '/trees/:id/interaction-designer/view',
-  }, {
-    path: '/trees/:id',
-    alias: '/trees/:id/interaction-designer/edit',
-    component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue'),
+    children: [
+      {
+        path: 'details',
+        name: 'flow-details',
+        meta: { isSidebarShown: true },
+      },
+      {
+        path: 'block/:blockId',
+        name: 'block-selected',
+        props: (route) => ({ blockId: route.params.blockId }),
+        children: [
+          {
+            path: 'details',
+            name: 'block-selected-details',
+            meta: { isSidebarShown: true },
+          },
+          {
+            path: ':field',
+            name: 'block-scroll-to-anchor',
+            meta: { isSidebarShown: true },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: '*',
+    redirect: '/',
   },
 ]
 

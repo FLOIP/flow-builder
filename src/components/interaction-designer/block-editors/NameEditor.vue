@@ -1,5 +1,5 @@
 <template>
-  <div class="block-name">
+  <div class="block-name" :id="`${block.uuid}.name`">
     <text-editor v-model="name"
         :label="'flow-builder.block-name' | trans"
         :placeholder="'flow-builder.enter-block-name' | trans"

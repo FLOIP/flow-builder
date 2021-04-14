@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group flow-modes">
+  <div class="form-group flow-modes" :id="`${flow.uuid}.modes`">
     <label>{{'flow-builder.modes' | trans}}</label>
     <div v-for="mode in availableModes"
         :key="mode"

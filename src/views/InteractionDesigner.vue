@@ -2,7 +2,14 @@
   <div v-if="activeFlow" class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
-    <div class="tree-sidebar-container">
+    <div class="sidebar-cue" @click="showOrHideSidebar">
+      <i class="glyphicon"
+         :class="{'glyphicon-edit': !$route.meta.isSidebarShown,
+                  'glyphicon-remove': $route.meta.isSidebarShown}">
+      </i>
+    </div>
+
+    <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}">
       <div v-if="activeBlock" class="tree-sidebar"
            :class="[`category-${blockClasses[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
@@ -200,16 +207,17 @@ export default {
     // if nothing was found for the flow Id
     if (!this.activeFlow) {
       this.flow_setActiveFlowId({ flowId: null })
-      this.$router.replace(
-        this.route('flows.fetchFlow', { flowId: this.id }),
-        { query: { nextUrl: this.$route.path } },
-      )
+      this.$router.replace(`${this.route('flows.fetchFlow', { flowId: this.id })}?nextUrl=${this.$route.path}`)
     }
 
     this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
     this.deselectBlocks()
     this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
 
+    const { blockId } = this.$route.params
+    if (blockId) {
+      this.activateBlock({ blockId })
+    }
     console.debug('Vuej tree interaction designer mounted!')
   },
   watch: {
@@ -248,6 +256,10 @@ export default {
       }
 
       this.activateBlock({ blockId: null })
+      const routeName = this.$route.meta.isSidebarShown ? 'flow-details' : 'flow-canvas'
+      this.$router.history.replace({
+        name: routeName,
+      })
     },
 
     updateIsEditableFromParams(mode) {
@@ -272,13 +284,26 @@ export default {
       return !isEditableLocked && mode === 'edit' || !mode && lodash.endsWith(hash, '/edit')
     },
 
-		  hoistResourceViewerToPushState(hash) {
+    hoistResourceViewerToPushState(hash) {
       if (!_.endsWith(hash, '/resource-viewer')) {
         return
       }
 
       this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
     },
+
+    showOrHideSidebar() {
+      let routeName = ''
+      if (this.$route.name.includes('block')) {
+        routeName = this.$route.meta.isSidebarShown ? 'block-selected' : 'block-selected-details'
+      } else {
+        routeName = this.$route.meta.isSidebarShown ? 'flow-canvas' : 'flow-details'
+      }
+      this.$router.history.replace({
+        name: routeName,
+      })
+    },
+
   },
 }
 </script>
@@ -323,7 +348,7 @@ export default {
       box-shadow: 0 3px 6px #CACACA;
 
       padding: 1em;
-      margin-top: 1em;
+      margin-top: 3.5em;
 
       transition:
         200ms background-color ease-in-out,
@@ -425,6 +450,16 @@ export default {
     @include block-category(0, $category-0-faint, $category-0-light, $category-0-dark);
     @include block-category(1, $category-1-faint, $category-1-light, $category-1-dark);
     @include block-category(2, $category-2-faint, $category-2-light, $category-2-dark);
+  }
+
+  .sidebar-cue {
+    cursor: pointer;
+    background-color: #eee;
+    padding: 5px;
+    position: fixed;
+    right: 0;
+    top: 70px;
+    z-index: 50;
   }
 
   // @note - these styles have been extracted so the output can be reused between storybook and voto5
