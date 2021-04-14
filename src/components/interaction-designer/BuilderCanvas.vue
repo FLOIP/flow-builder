@@ -14,10 +14,13 @@
 </template>
 
 <script lang="ts">
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import { Component, Vue } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
 import lodash from 'lodash'
+
+const defaultHeight = window.screen.availHeight
+const defaultWidth = window.screen.availWidth
 
   @Component({
     components: {
@@ -25,57 +28,58 @@ import lodash from 'lodash'
     },
 
     computed: {
-      ...mapState('flow', ['flows']),
       ...mapGetters('flow', ['activeFlow']),
 
+      blockAtTheLowestPosition() {
+        return lodash.maxBy(this.activeFlow.blocks, 'platform_metadata.io_viamo.uiData.yPosition')
+      },
+
+      blockAtTheFurthestRightPosition() {
+        return lodash.maxBy(this.activeFlow.blocks, 'platform_metadata.io_viamo.uiData.xPosition')
+      },
+
       canvasHeight() {
-        const defaultHeight = window.screen.availHeight
-        if (!this.flows[0].blocks && this.flows[0].blocks.length) {
+        if (!this.activeFlow.blocks && this.activeFlow.blocks.length) {
           return defaultHeight
         }
 
-        const blockAtTheLowestPosition = lodash.maxBy(this.flows[0].blocks, 'platform_metadata.io_viamo.uiData.yPosition')
-
-        if (!blockAtTheLowestPosition) {
+        if (!this.blockAtTheLowestPosition) {
           console.debug('Interaction Designer', 'Unable to find block at the lowest position')
           return defaultHeight
         }
 
-        const blockElement = document.getElementById(`block/${blockAtTheLowestPosition.uuid}`)
+        const blockElement = document.getElementById(`block/${this.blockAtTheLowestPosition.uuid}`)
 
         if (!blockElement) {
-          console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${blockAtTheLowestPosition.uuid}`)
+          console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition.uuid}`)
           return defaultHeight
         }
 
         const blockHeight = blockElement.clientHeight
         const marginHeight = 100
-        return lodash.get(blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.yPosition') + blockHeight + marginHeight
+        return lodash.get(this.blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.yPosition') + blockHeight + marginHeight
       },
 
       canvasWidth() {
-        const defaultWidth = window.screen.availWidth
-        if (!this.flows[0].blocks && this.flows[0].blocks.length) {
+        if (!this.activeFlow.blocks && this.activeFlow.blocks.length) {
           return defaultWidth
         }
 
-        const blockAtTheFurthestRightPosition = lodash.maxBy(this.flows[0].blocks, 'platform_metadata.io_viamo.uiData.xPosition')
-
-        if (!blockAtTheFurthestRightPosition) {
+        if (!this.blockAtTheFurthestRightPosition) {
           console.debug('Interaction Designer', 'Unable to find block at the furthest right position')
           return defaultWidth
         }
 
-        const blockElement = document.getElementById(`block/${blockAtTheFurthestRightPosition.uuid}`)
+        const blockElement = document.getElementById(`block/${this.blockAtTheFurthestRightPosition.uuid}`)
 
         if (!blockElement) {
-          console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${blockAtTheFurthestRightPosition.uuid}`)
+          console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition.uuid}`)
           return defaultWidth
         }
 
         const blockWidth = blockElement.clientWidth
         const marginWidth = 100
-        return lodash.get(blockAtTheFurthestRightPosition, 'platform_metadata.io_viamo.uiData.xPosition') + blockWidth + marginWidth
+        return lodash.get(this.blockAtTheFurthestRightPosition, 'platform_metadata.io_viamo.uiData.xPosition') + blockWidth + marginWidth
       },
     },
 
