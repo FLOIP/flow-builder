@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { Component, Vue } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
 import lodash from 'lodash'
@@ -25,6 +25,7 @@ import lodash from 'lodash'
     },
 
     computed: {
+      ...mapState('flow', ['flows']),
       ...mapGetters('flow', ['activeFlow']),
 
       canvasHeight() {
@@ -61,12 +62,14 @@ import lodash from 'lodash'
         const blockAtTheFurthestRightPosition = lodash.maxBy(this.flows[0].blocks, 'platform_metadata.io_viamo.uiData.xPosition')
 
         if (!blockAtTheFurthestRightPosition) {
+          console.debug('Interaction Designer', 'Unable to find block at the furthest right position')
           return defaultWidth
         }
 
         const blockElement = document.getElementById(`block/${blockAtTheFurthestRightPosition.uuid}`)
 
         if (!blockElement) {
+          console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${blockAtTheFurthestRightPosition.uuid}`)
           return defaultWidth
         }
 
@@ -76,24 +79,26 @@ import lodash from 'lodash'
       },
     },
 
-    mounted() {
-      this.$store.dispatch('builder/loadFlow')
-
-      // Auto scroll, needed to put in mounted()
-      this.$watch('canvasHeight', (newValue) => {
-        window.scrollTo({
-          top: newValue,
-          behavior: 'smooth'
-        })
-      }, { immediate: true });
-
-      this.$watch('canvasWidth', (newValue) => {
-        window.scrollTo({
-          left: newValue,
-          behavior: 'smooth'
-        })
-      }, { immediate: true });
-    },
+    watch: {
+      canvasHeight: {
+        immediate: true,
+        handler: function (newValue) {
+          window.scrollTo({
+            top: newValue,
+            behavior: 'smooth'
+          })
+        }
+      },
+      canvasWidth: {
+        immediate: true,
+        handler: function (newValue) {
+          window.scrollTo({
+            left: newValue,
+            behavior: 'smooth'
+          })
+        }
+      }
+    }
   })
 export default class BuilderCanvas extends Vue {
 }
