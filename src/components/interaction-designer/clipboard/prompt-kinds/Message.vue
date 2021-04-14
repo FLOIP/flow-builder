@@ -27,6 +27,7 @@ export default {
     BlockActionButtons,
   },
   props: {
+    // TODO: use class inheritance to avoid repeating code when we transform this into vue-class` based component
     context: IContext,
     index: Number,
     isComplete: Boolean,

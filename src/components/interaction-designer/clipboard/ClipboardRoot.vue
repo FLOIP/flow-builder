@@ -9,7 +9,7 @@
     </header>
     <main>
       <div v-for="(blockData, i) in blocksData" :key="i" class="mt-2">
-        <div class="card" :class="{'gray-background': !isFocused(i)}">
+        <div class="card" :class="{'gray-background': !isBlockFocused(i)}">
           <div class="card-body sm-padding-below font-roboto">
             <component :is="blockData.prompt.config.kind"
                        :context="context"
@@ -87,13 +87,10 @@ export default {
     this.initializeFlowRunner()
   },
   computed: {
-    isFocused(index) {
-      return this.isBlockFocused(index)
-    },
+    ...mapGetters('clipboard', ['getBlocksData', 'isBlockFocused']),
   },
   methods: {
     ...mapGetters('flow', ['getFlowsState']),
-    ...mapGetters('clipboard', ['getBlocksData', 'isBlockFocused', 'getBlockPrompt']),
     ...mapActions('clipboard', ['setSimulatorActive', 'setBlocksData', 'setIsFocused']),
 
     content(promptId) {
@@ -135,7 +132,7 @@ export default {
 
       this.context = context
       this.runner = new FlowRunner(context)
-      await this.goNext(0)
+      await this.goNext()
     },
 
     async goNext() {
