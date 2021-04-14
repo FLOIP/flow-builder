@@ -214,10 +214,19 @@ export default {
     this.deselectBlocks()
     this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
 
-    const { blockId } = this.$route.params
-    if (blockId) {
-      this.activateBlock({ blockId })
-    }
+    setTimeout(() => {
+      const { blockId, field } = this.$route.params
+      if (blockId) {
+        this.activateBlock({ blockId })
+      }
+      if (field) {
+        const anchor = `${blockId}.${field}`
+        const ele = document.getElementById(anchor)
+        if (ele) {
+          ele.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }
+    }, 500)
     console.debug('Vuej tree interaction designer mounted!')
   },
   watch: {
