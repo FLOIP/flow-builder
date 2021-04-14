@@ -152,10 +152,9 @@
         return;
       }
 
-      const blockExitsContainerWidth = this.block.exits.length * blockExitElement.clientWidth
-
-      if (LABEL_CONTAINER_MAX_WIDTH < blockExitsContainerWidth) {
-        this.labelContainerMaxWidth = blockExitsContainerWidth
+      // This allows us to shrink .block-exit into the min-width before extending the block label container
+      if (LABEL_CONTAINER_MAX_WIDTH < this.block.exits.length * blockExitElement.clientWidth) { // compare with `n x {inner width}`
+        this.labelContainerMaxWidth = this.block.exits.length * blockExitElement.offsetWidth // but set with `n x {outer width}`
       }
     },
 
