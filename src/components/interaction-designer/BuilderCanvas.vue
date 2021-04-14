@@ -36,17 +36,20 @@
         const blockAtTheLowestPosition = lodash.maxBy(this.flows[0].blocks, 'platform_metadata.io_viamo.uiData.yPosition')
 
         if (!blockAtTheLowestPosition) {
+          console.debug('Interaction Designer', 'Unable to find block at the lowest position')
           return defaultHeight
         }
 
         const blockElement = document.getElementById(`block/${blockAtTheLowestPosition.uuid}`)
 
         if (!blockElement) {
+          console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${blockAtTheLowestPosition.uuid}`)
           return defaultHeight
         }
 
         const blockHeight = blockElement.clientHeight
-        return lodash.get(blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.yPosition') + blockHeight + 100
+        const marginHeight = 100
+        return lodash.get(blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.yPosition') + blockHeight + marginHeight
       },
 
       canvasWidth() {
@@ -68,7 +71,8 @@
         }
 
         const blockWidth = blockElement.clientWidth
-        return lodash.get(blockAtTheFurthestRightPosition, 'platform_metadata.io_viamo.uiData.xPosition') + blockWidth + 100
+        const marginWidth = 100
+        return lodash.get(blockAtTheFurthestRightPosition, 'platform_metadata.io_viamo.uiData.xPosition') + blockWidth + marginWidth
       },
     },
 
