@@ -21,7 +21,7 @@
           </option>
         </select>
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />

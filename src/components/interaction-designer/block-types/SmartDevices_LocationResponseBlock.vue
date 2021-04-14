@@ -11,7 +11,7 @@
 
       <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold"/>
       <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout"/>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />

@@ -13,7 +13,7 @@
           :placeholder="'flow-builder.edit-expression' | trans"
           :current-expression="value"
           @commitExpressionChange="commitExpressionChange"/>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
