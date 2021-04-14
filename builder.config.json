@@ -81,6 +81,15 @@
         "rightToLeft": false,
         "code": null,
         "deletedAt": null
+      },
+      {
+        "id": "24",
+        "name": "French",
+        "abbreviation": "FR",
+        "orgId": "1008107874829627392",
+        "rightToLeft": false,
+        "code": null,
+        "deletedAt": null
       }
     ],
     "blockClasses": {
