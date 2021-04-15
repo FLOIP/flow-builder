@@ -29,25 +29,13 @@
                 label=""
                 :placeholder="'flow-builder.edit-flow-json' | trans">
               </text-editor>
-              <label v-if="languagesMissing">Matches for these languages could not be found</label>
-              <div v-for="missingLanguage in missingLanguages">
-                <div class="form-check form-check-inline">
-                  <label class="form-check-label">{{missingLanguage.label || missingLanguage.id}}</label>
-                  <select class="form-control" @change="updateLanguageMappings(missingLanguage, $event)"> 
-                    <!-- Why isn't this working?-->
-                    <option value="" :selected="languageMappingsEmpty">
-                      {{ 'flow-builder.none-selected' | trans }}
-                    </option>
-                    <option v-for="language in existingLanguagesWithoutMatch" :value="JSON.stringify(language)">
-                      {{ language }}
-                    </option>
-                  </select>
-                  <button class="btn btn-primary"
-                    @click="handleMatchLanguage(missingLanguage)">
-                    {{'flow-builder.update' | trans}}
-                  </button>
-                </div>
-              </div>
+              <import-matcher v-if="languagesMissing" 
+                @reactToMatch="handleMatchLanguage" 
+                :missing-matches="missingLanguages" 
+                type-id="id" 
+                type-label="label" 
+                :existing-options-without-match="existingLanguagesWithoutMatch" 
+                :match-text-not-found="'match-for-languages-not-found' | trans"/>
             </div>
 
             <br>
@@ -60,24 +48,13 @@
               label=""
               :placeholder="'flow-builder.paste-flow-json' | trans">
             </text-editor>
-              <label v-if="languagesMissing">Matches for these languages could not be found</label>
-              <div v-for="missingLanguage in missingLanguages">
-                <div class="form-check form-check-inline">
-                  <label class="form-check-label">{{missingLanguage.label || missingLanguage.id}}</label>
-                  <select class="form-control" @change="updateLanguageMappings(missingLanguage, $event)"> 
-                    <option value="" :selected="languageMappingsEmpty">
-                      {{ 'flow-builder.none-selected' | trans }}
-                    </option>
-                    <option v-for="language in existingLanguagesWithoutMatch" :value="JSON.stringify(language)">
-                      {{ language }}
-                    </option>
-                  </select>
-                  <button class="btn btn-primary"
-                    @click="handleMatchLanguage(missingLanguage)">
-                    {{'flow-builder.update' | trans}}
-                  </button>
-                </div>
-              </div>
+            <import-matcher v-if="languagesMissing" 
+              @reactToMatch="handleMatchLanguage" 
+              :missing-matches="missingLanguages" 
+              type-id="id" 
+              type-label="label" 
+              :existing-options-without-match="existingLanguagesWithoutMatch" 
+              :match-text-not-found="'match-for-languages-not-found' | trans"/>
 
             <div class="mt-5 float-right">
               <a :href="route('trees.editTree', {treeId: flowUUID, component: 'interaction-designer', mode: 'edit'})"
@@ -121,11 +98,13 @@ import {IFlow, IContext} from '@floip/flow-runner'
 import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage'
 
 import TextEditor from '@/components/common/TextEditor.vue'
+import ImportMatcher from '@/components/interaction-designer/flow-editors/ImportMatcher.vue'
 
 @Component(
   {
     components: {
-      TextEditor
+      TextEditor,
+      ImportMatcher
     },
     mixins: [lang, Routes],
     async created() {
@@ -138,16 +117,6 @@ import TextEditor from '@/components/common/TextEditor.vue'
         this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
       }
     },
-    async mounted() {
-      //if(!this.activeFlowContainer) {
-        //this.addEmptyFlowContainer()
-        //langs, groups, props come from builder.config.json
-        //flow or flow container imported?
-        //can match against langs, groups and props
-        //Do resolve ui when conflict
-        //What do we do for lang matching in transfer contact?
-      //}
-    }
   },
 )
 class ImportFlow extends Vue {
@@ -161,7 +130,6 @@ class ImportFlow extends Vue {
   missingLanguages = []
   existingLanguagesWithoutMatch = []
   flowError = null;
-  languageMappings = {}
 
   get uploadOrPaste () {
     return this.uploadOrPasteSetting
@@ -173,16 +141,7 @@ class ImportFlow extends Vue {
     this.uploadOrPasteSetting = value
   }
 
-  updateLanguageMappings(missingLanguage, event) {
-    this.languageMappings[missingLanguage.id] = event.target.value
-  }
-
-  get languageMappingsEmpty() {
-    return isEmpty(this.languageMappings)
-  }
-
   get flowJson() {
-    //TODO - check this is what we do elsewhere
     return this.flowJsonText
   }
   set flowJson(value) {
@@ -203,8 +162,6 @@ class ImportFlow extends Vue {
     const oldFlowContainer = cloneDeep(this.flowContainer)
     const newFlowContainer = cloneDeep(flowContainer)
     this.flowContainer = flowContainer
-    //Probably no longer needed. Validations will be exclude fields, not just require.
-    //this.flowContainer = this.cleanFlow(flowContainer) 
 
     if(this.detectedLanguageChanges(newFlowContainer, oldFlowContainer)) {
       this.languageMappings = {}
@@ -254,34 +211,13 @@ class ImportFlow extends Vue {
     }
   }
 
-  //cleanFlow(flowContainer) {
-    ////clean languages or org specific stuff - we may be copying between accounts
-    //if(get(flowContainer, 'flows[0].languages')) {
-      //flowContainer.flows[0].languages = get(flowContainer, 'flows[0].languages', [])
-        //.map((language) => {
-          //return this.cleanLanguage(language)
-      //})
-    //}
-    //return flowContainer
-  //}
-
-  //cleanLanguage(language) {
-    //return pick(language, ['name', 'abbreviation', 'rightToLeft', 'code'])
-  //}
-
-  handleMatchLanguage(oldLanguage) {
-    const matchingNewLanguageJson = get(this.languageMappings, oldLanguage.id)
-    if(matchingNewLanguageJson) {
-      const matchingNewLanguage = JSON.parse(matchingNewLanguageJson)
-      //we should have given validation errors long before here if flowContainer.flows[0].languages is not present
-      this.flowContainer.flows[0].languages.push(matchingNewLanguage)
-      this.flowJsonText = JSON.stringify(this.flowContainer, null, 2)
-      this.languageMappings = omit(this.languageMappings, oldLanguage.id)
-      this.missingLanguages = reject(this.missingLanguages, (language) => {
-        return isEqual(language, oldLanguage)
-      })
-      this.validateLanguages(this.flowContainer)
-    }
+  handleMatchLanguage(oldLanguage, matchingNewLanguage) {
+    this.flowContainer.flows[0].languages.push(matchingNewLanguage)
+    this.flowJsonText = JSON.stringify(this.flowContainer, null, 2)
+    this.missingLanguages = reject(this.missingLanguages, (language) => {
+      return isEqual(language, oldLanguage)
+    })
+    this.validateLanguages(this.flowContainer)
   }
 
   get flowUUID() {
@@ -297,6 +233,7 @@ class ImportFlow extends Vue {
 
 
   async handleFileUpload(event) {
+    //TODO - this should properly reset things
     const selectedFile = event.target.files[0]
 
     const reader = new FileReader()
