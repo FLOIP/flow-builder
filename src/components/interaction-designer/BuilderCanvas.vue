@@ -6,6 +6,7 @@
 
     <block v-for="block in activeFlow.blocks"
            :key="block.uuid"
+           :ref="`block/${block.uuid}`"
            :id="`block/${block.uuid}`"
            :block="block"
            :x="block.platform_metadata.io_viamo.uiData.xPosition"
@@ -19,12 +20,17 @@ import { Component, Vue } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
 import lodash from 'lodash'
 
-const defaultHeight = window.screen.availHeight
-const defaultWidth = window.screen.availWidth
-
   @Component({
     components: {
       Block,
+    },
+
+    data() {
+      return {
+        // last computed data, will be used in case the DOM not yet ready
+        lastComputedCanvasHeight: this.windowHeight,
+        lastComputedCanvasWidth: this.windowWidth,
+      }
     },
 
     computed: {
@@ -38,69 +44,90 @@ const defaultWidth = window.screen.availWidth
         return lodash.maxBy(this.activeFlow.blocks, 'platform_metadata.io_viamo.uiData.xPosition')
       },
 
+      windowHeight() {
+        return window.screen.availHeight
+      },
+
+      windowWidth() {
+        return window.screen.availWidth
+      },
+
       canvasHeight() {
         if (!this.activeFlow.blocks && this.activeFlow.blocks.length) {
-          return defaultHeight
+          return this.windowHeight
         }
 
         if (!this.blockAtTheLowestPosition) {
           console.debug('Interaction Designer', 'Unable to find block at the lowest position')
-          return defaultHeight
+          return this.windowHeight
         }
 
-        const blockElement = document.getElementById(`block/${this.blockAtTheLowestPosition.uuid}`)
+        const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition.uuid}`]
 
-        if (!blockElement) {
+        if (!blockElementRef) {
           console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition.uuid}`)
-          return defaultHeight
+          return this.lastComputedCanvasHeight
         }
 
-        const blockHeight = blockElement.clientHeight
+        const yPosition = lodash.get(this.blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.yPosition')
+        const blockHeight = blockElementRef[0].$refs['draggable'].$el.offsetHeight
         const marginHeight = 100
-        return lodash.get(this.blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.yPosition') + blockHeight + marginHeight
+        const scrollHeight = yPosition + blockHeight + marginHeight
+
+        console.log('compare height', yPosition, blockHeight, marginHeight, scrollHeight, this.windowHeight)
+        if (scrollHeight < this.windowHeight) {
+          return this.windowHeight
+        }
+
+        this.lastComputedCanvasHeight = scrollHeight
+        return scrollHeight
       },
 
       canvasWidth() {
         if (!this.activeFlow.blocks && this.activeFlow.blocks.length) {
-          return defaultWidth
+          return this.windowWidth
         }
 
         if (!this.blockAtTheFurthestRightPosition) {
           console.debug('Interaction Designer', 'Unable to find block at the furthest right position')
-          return defaultWidth
+          return this.windowWidth
         }
 
-        const blockElement = document.getElementById(`block/${this.blockAtTheFurthestRightPosition.uuid}`)
+        const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition.uuid}`]
 
-        if (!blockElement) {
+        if (!blockElementRef) {
           console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition.uuid}`)
-          return defaultWidth
+          return this.lastComputedCanvasWidth
         }
 
-        const blockWidth = blockElement.clientWidth
+        const xPosition = lodash.get(this.blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.xPosition')
+        const blockWidth = blockElementRef[0].$refs['draggable'].$el.offsetWidth
         const marginWidth = 100
-        return lodash.get(this.blockAtTheFurthestRightPosition, 'platform_metadata.io_viamo.uiData.xPosition') + blockWidth + marginWidth
+        const scrollWidth = xPosition + blockWidth + marginWidth
+
+        if (scrollWidth < this.windowWidth) {
+          return this.windowWidth
+        }
+
+        this.lastComputedCanvasWidth = scrollWidth
+        return scrollWidth
       },
     },
 
     watch: {
-      canvasHeight: {
-        immediate: true,
-        handler: function (newValue) {
-          window.scrollTo({
-            top: newValue,
-            behavior: 'smooth'
-          })
-        }
+      canvasHeight: function (newValue) {
+        console.log('canvasHeight changed', newValue)
+        window.scrollTo({
+          top: newValue,
+          behavior: 'smooth'
+        })
       },
-      canvasWidth: {
-        immediate: true,
-        handler: function (newValue) {
-          window.scrollTo({
-            left: newValue,
-            behavior: 'smooth'
-          })
-        }
+      canvasWidth: function (newValue) {
+        console.log('canvasWidth changed', newValue)
+        window.scrollTo({
+          left: newValue,
+          behavior: 'smooth'
+        })
       }
     }
   })
