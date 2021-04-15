@@ -34,7 +34,8 @@
                 <div class="form-check form-check-inline">
                   <label class="form-check-label">{{missingLanguage.label || missingLanguage.id}}</label>
                   <select class="form-control" @change="updateLanguageMappings(missingLanguage, $event)"> 
-                    <option value="">
+                    <!-- Why isn't this working?-->
+                    <option value="" :selected="languageMappingsEmpty">
                       {{ 'flow-builder.none-selected' | trans }}
                     </option>
                     <option v-for="language in existingLanguagesWithoutMatch" :value="JSON.stringify(language)">
@@ -64,7 +65,7 @@
                 <div class="form-check form-check-inline">
                   <label class="form-check-label">{{missingLanguage.label || missingLanguage.id}}</label>
                   <select class="form-control" @change="updateLanguageMappings(missingLanguage, $event)"> 
-                    <option value="">
+                    <option value="" :selected="languageMappingsEmpty">
                       {{ 'flow-builder.none-selected' | trans }}
                     </option>
                     <option v-for="language in existingLanguagesWithoutMatch" :value="JSON.stringify(language)">
@@ -81,7 +82,7 @@
             <div class="mt-5 float-right">
               <a :href="route('trees.editTree', {treeId: flowUUID, component: 'interaction-designer', mode: 'edit'})"
                 class="btn btn-primary"
-                :class="{'disabled': !flowUUID || flowError}"
+                :class="{'disabled': disableContinue}"
                 @click.prevent="handleImportFlow(route('trees.editTree', {treeId: flowUUID, component: 'interaction-designer', mode: 'edit'}))">
                 {{'flow-builder.save-and-continue' | trans}}
               </a>
@@ -176,6 +177,10 @@ class ImportFlow extends Vue {
     this.languageMappings[missingLanguage.id] = event.target.value
   }
 
+  get languageMappingsEmpty() {
+    return isEmpty(this.languageMappings)
+  }
+
   get flowJson() {
     //TODO - check this is what we do elsewhere
     return this.flowJsonText
@@ -220,6 +225,10 @@ class ImportFlow extends Vue {
       return false
     }
     return true
+  }
+
+  get disableContinue() {
+    return !this.flowUUID || this.flowError || !isEmpty(this.missingLanguages)
   }
 
   validateLanguages(flowContainer) {
@@ -271,6 +280,7 @@ class ImportFlow extends Vue {
       this.missingLanguages = reject(this.missingLanguages, (language) => {
         return isEqual(language, oldLanguage)
       })
+      this.validateLanguages(this.flowContainer)
     }
   }
 
@@ -299,7 +309,7 @@ class ImportFlow extends Vue {
   }
   //In case someone is editing a language, let's give them a second to finish before we tell them it doesn't match
   debounceHandleFlowJsonTextChange = debounce(this.handleFlowJsonTextChange, 3000)
-  handleFlowJsonTextChange(value) {
+  async handleFlowJsonTextChange(value) {
     this.flowJson = value
   }
   async handleImportFlow(route) {
