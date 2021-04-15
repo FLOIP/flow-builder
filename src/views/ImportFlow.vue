@@ -23,8 +23,9 @@
                 @change="handleFileUpload">
                   {{'flow-builder.import-file' | trans}}
               </input>
-              <text-editor v-model="flowJson"
-                @change="handleFlowJsonTextChange"
+              <text-editor :value="flowJson"
+                @keydown="preserveEditPosition"
+                @input="handleFlowJsonTextChange"
                 v-if="flowJsonText"
                 label=""
                 :placeholder="'flow-builder.edit-flow-json' | trans">
@@ -53,8 +54,9 @@
             <label class="mt-2 no-weight">
               <input type="radio" value="paste" v-model="uploadOrPaste"> {{'flow-builder.paste-json-directly' | trans}}
             </label>
-            <text-editor v-model="flowJson"
-                @change="handleFlowJsonTextChange"
+            <text-editor :value="flowJson"
+                @keydown="preserveEditPosition"
+                @input="handleFlowJsonTextChange"
                 v-if="uploadOrPaste === 'paste'"
                 label=""
                 :placeholder="'flow-builder.paste-flow-json' | trans">
@@ -112,6 +114,7 @@ import {
   differenceWith,
   isEqual,
   cloneDeep,
+  debounce,
 } from 'lodash'
 import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
@@ -160,6 +163,7 @@ class ImportFlow extends Vue {
   existingLanguagesWithoutMatch = []
   flowError = null;
   languageMappings = {}
+  editPosition = 0
 
   get uploadOrPaste () {
     return this.uploadOrPasteSetting
@@ -294,9 +298,39 @@ class ImportFlow extends Vue {
 
     const contents = reader.readAsText(selectedFile, "UTF-8")
   }
-  async handleFlowJsonTextChange(event) {
-    this.flowJson = event.target.value
+  preserveEditPosition(event) {
+    this.editPosition = event.target.selectionStart
   }
+  handleFlowJsonTextChange(value) {
+    //Not working because we are using a component, not an actual plain text input...
+    //don't use the component and use https://stackoverflow.com/questions/56323912/which-event-is-triggered-when-v-model-value-is-changing? Or, if advantages, use something like this with component?
+    //maybe just only do update when loses focus?
+    //TODO - comment why necessary - because we match and overwrite what we can.
+    //toto
+    const debounceTextEntry = debounce((value) => {
+      this.flowJson = value
+    }, 1000); //here your declare your function
+    debounceTextEntry(value);
+  }
+	/**
+	 * Set caret position in a div (cursor position)
+	 * Tested in contenteditable div
+	 * @@param el :  js selector to your element
+	 * @@param caretPos : index : exemple 5
+	 */
+	function setCaretPosition(el, caretPos) {
+		var range = document.createRange();
+		var sel = window.getSelection();
+		if (caretPos > el.childNodes[0].length) {
+			range.setStart(el.childNodes[0], el.childNodes[0].length);
+		}
+		else
+		{
+			range.setStart(el.childNodes[0], caretPos);
+		}		
+		range.collapse(true);
+		sel.removeAllRanges();
+	}
   async handleImportFlow(route) {
     this.flowError = null
     //TODO - ensure UUIDs generated?
