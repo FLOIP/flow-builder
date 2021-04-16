@@ -227,8 +227,6 @@ export default {
       'applyConnectionCreate',
     ]),
 
-    ...mapMutations('builder', ['activateBlock']),
-
     resolveTextResource(uuid) {
       const { resources } = this
       const context = {
@@ -252,7 +250,7 @@ export default {
       const { block } = this
       if (block.type === BLOCK_TYPE__CASE_BLOCK) {
         return `${key + 1}: ${exit.tag}`
-      } else if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semanticLabel) {
+      } if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semanticLabel) {
         return exit.semanticLabel
       }
 
@@ -393,7 +391,6 @@ export default {
 
     selectBlock() {
       const { block: { uuid: blockId } } = this
-      this.activateBlock({ blockId })
       const routerName = this.$route.meta.isSidebarShown ? 'block-selected-details' : 'block-selected'
       this.$router.history.replace({
         name: routerName,

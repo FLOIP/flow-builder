@@ -2,14 +2,14 @@
   <div v-if="activeFlow" class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
-    <div class="sidebar-cue" @click="showOrHideSidebar">
-      <i class="glyphicon"
-         :class="{'glyphicon-edit': !$route.meta.isSidebarShown,
-                  'glyphicon-remove': $route.meta.isSidebarShown}">
-      </i>
-    </div>
+    <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}" :key="activeBlock && activeBlock.uuid">
+      <div class="sidebar-cue" :class="{'sidebar-close': $route.meta.isSidebarShown}" @click="showOrHideSidebar">
+        <i class="glyphicon"
+           :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
+                  'glyphicon-resize-small': $route.meta.isSidebarShown}">
+        </i>
+      </div>
 
-    <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}">
       <div v-if="activeBlock" class="tree-sidebar"
            :class="[`category-${blockClasses[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
@@ -218,16 +218,23 @@ export default {
       const { blockId, field } = this.$route.params
       if (blockId) {
         this.activateBlock({ blockId })
+        const blockEle = document.querySelector(`#block\\/${blockId} .plain-draggable`)
+        if (blockEle) {
+          blockEle.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
       }
       if (field) {
-        const anchor = `${blockId}.${field}`
-        const ele = document.getElementById(anchor)
+        const ele = document.getElementById(`${blockId}.${field}`)
         if (ele) {
           ele.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
       }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.activateBlock({ blockId: to.params.blockId || null })
+    next()
   },
   watch: {
     mode(newMode) {
@@ -264,7 +271,6 @@ export default {
         return
       }
 
-      this.activateBlock({ blockId: null })
       const routeName = this.$route.meta.isSidebarShown ? 'flow-details' : 'flow-canvas'
       this.$router.history.replace({
         name: routeName,
@@ -357,7 +363,7 @@ export default {
       box-shadow: 0 3px 6px #CACACA;
 
       padding: 1em;
-      margin-top: 3.5em;
+      margin-top: 1em;
 
       transition:
         200ms background-color ease-in-out,
@@ -469,6 +475,10 @@ export default {
     right: 0;
     top: 70px;
     z-index: 50;
+  }
+
+  .sidebar-close {
+    right: 350px;
   }
 
   // @note - these styles have been extracted so the output can be reused between storybook and voto5
