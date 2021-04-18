@@ -25,10 +25,17 @@
               </input>
               <text-editor :value="flowJson"
                 @input="debounceHandleFlowJsonTextChange"
+                @keydown="setUpdating"
                 v-if="flowJsonText"
                 label=""
                 :placeholder="'flow-builder.edit-flow-json' | trans">
               </text-editor>
+              <div v-if="updating">
+                <br>
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
               <import-matcher v-if="languagesMissing" 
                 @reactToMatch="handleMatchLanguage" 
                 :missing-matches="missingLanguages" 
@@ -42,19 +49,28 @@
             <label class="mt-2 no-weight">
               <input type="radio" value="paste" v-model="uploadOrPaste"> {{'flow-builder.paste-json-directly' | trans}}
             </label>
-            <text-editor :value="flowJson"
-              @input="debounceHandleFlowJsonTextChange"
-              v-if="uploadOrPaste === 'paste'"
-              label=""
-              :placeholder="'flow-builder.paste-flow-json' | trans">
-            </text-editor>
-            <import-matcher v-if="languagesMissing" 
-              @reactToMatch="handleMatchLanguage" 
-              :missing-matches="missingLanguages" 
-              type-id="id" 
-              type-label="label" 
-              :existing-options-without-match="existingLanguagesWithoutMatch" 
-              :match-text-not-found="'match-for-languages-not-found' | trans"/>
+            <div v-if="uploadOrPaste === 'paste'">
+              <text-editor :value="flowJson"
+                @input="debounceHandleFlowJsonTextChange"
+                @keydown="setUpdating"
+                v-if="uploadOrPaste === 'paste'"
+                label=""
+                :placeholder="'flow-builder.paste-flow-json' | trans">
+              </text-editor>
+              <div v-if="updating">
+                <br>
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+              <import-matcher v-if="languagesMissing" 
+                @reactToMatch="handleMatchLanguage" 
+                :missing-matches="missingLanguages" 
+                type-id="id" 
+                type-label="label" 
+                :existing-options-without-match="existingLanguagesWithoutMatch" 
+                :match-text-not-found="'match-for-languages-not-found' | trans"/>
+            </div>
 
             <div class="mt-5 float-right">
               <a :href="route('trees.editTree', {treeId: flowUUID, component: 'interaction-designer', mode: 'edit'})"
@@ -130,15 +146,18 @@ class ImportFlow extends Vue {
   flowJsonText = ""
   matchingLanguages = []
   missingLanguages = []
+  missingProperties = []
+  missingGroups = []
   existingLanguagesWithoutMatch = []
-  flowError = null;
+  flowError = null
+  updating = false
 
   get uploadOrPaste () {
     return this.uploadOrPasteSetting
   }
   set uploadOrPaste (value) {
-    if(this.uploadOrPasteSetting === 'upload' && value === 'paste') {
-      this.flowJsonText = ""
+    if(value !== this.uploadOrPasteSetting) {
+      this.reset()
     }
     this.uploadOrPasteSetting = value
   }
@@ -170,9 +189,25 @@ class ImportFlow extends Vue {
       this.validateLanguages(this.flowContainer)
     }
     this.flowJsonText = JSON.stringify(this.flowContainer, null, 2)
-    //check languages
     //check props
     //check groups
+  }
+
+  reset() {
+    this.flowContainer = null
+    this.uploadOrPasteSetting = "upload"
+    this.flowJsonText = ""
+    this.matchingLanguages = []
+    this.missingLanguages = []
+    this.missingProperties = []
+    this.missingGroups = []
+    this.existingLanguagesWithoutMatch = []
+    this.flowError = null
+    this.updating = false
+  }
+
+  setUpdating() {
+    this.updating = true
   }
 
   detectedLanguageChanges(flowContainer, oldFlowContainer) {
@@ -187,7 +222,11 @@ class ImportFlow extends Vue {
   }
 
   get disableContinue() {
-    return !this.flowUUID || this.flowError || !isEmpty(this.missingLanguages)
+    return !this.flowUUID ||
+      this.flowError ||
+      !isEmpty(this.missingLanguages)
+      !isEmpty(this.missingProperties)
+      !isEmpty(this.missingGroups)
   }
 
   validateLanguages(flowContainer) {
@@ -230,8 +269,10 @@ class ImportFlow extends Vue {
     return !isEmpty(this.missingLanguages) 
   }
   get propertiesMissing() {
+    return !isEmpty(this.missingProperties)
   }
   get groupsMissing() {
+    return !isEmpty(this.missingGroups)
   }
 
 
@@ -251,6 +292,7 @@ class ImportFlow extends Vue {
   debounceHandleFlowJsonTextChange = debounce(this.handleFlowJsonTextChange, 3000)
   async handleFlowJsonTextChange(value) {
     this.flowJson = value
+    this.updating = false
   }
   async handleImportFlow(route) {
     //TODO - ensure UUIDs generated?
