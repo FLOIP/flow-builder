@@ -147,6 +147,7 @@ class ImportFlow extends Vue {
     return this.flowJsonText
   }
   set flowJson(value) {
+    this.flowError = null
     this.flowJsonText = value
     let flowContainer
     try {
@@ -166,7 +167,6 @@ class ImportFlow extends Vue {
     this.flowContainer = flowContainer
 
     if(this.detectedLanguageChanges(newFlowContainer, oldFlowContainer)) {
-      this.languageMappings = {}
       this.validateLanguages(this.flowContainer)
     }
     this.flowJsonText = JSON.stringify(this.flowContainer, null, 2)
@@ -253,21 +253,22 @@ class ImportFlow extends Vue {
     this.flowJson = value
   }
   async handleImportFlow(route) {
-    this.flowError = null
     //TODO - ensure UUIDs generated?
-    //const flowContainer = await this.flow_importFlow({
-    //TODO - is this flow or flow container?
-      //flow: this.flow
-    //})
+    const flowContainer = await this.flow_persist({
+      //@ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
+      persistRoute: this.route('flows.persistFlow', { flowId: this.flowContainer.uuid }),
+      flowContainer: this.flowContainer
+    })
     if(flowContainer) {
       this.$router.push(route)
     } else {
       this.flowError = 'flow-builder.problem-importing-flow'
-      //TODO - hook into validation system when we have it.
+      //TODO - hook into validation system when we have it to display any errors? Or should we have caught any errors already?
     }
   }
 
   @flowVuexNamespace.Action flow_importFlow!: ({flow: IFlow}) => Promise<IContext>
+  @flowVuexNamespace.Action flow_persist!: ({persistRoute: string, flowContainer: IContext}) => Promise<IContext>
   @Mutation configure 
   @Getter isConfigured!: boolean
   @Getter languages!: ILanguage[] 
