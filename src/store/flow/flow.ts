@@ -162,8 +162,6 @@ export const mutations: MutationTree<IFlowsState> = {
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
-  async flow_importFlow({ state, getters, commit }, { flowContainer }): Promise<IContext> {
-  },
   async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext> {
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
