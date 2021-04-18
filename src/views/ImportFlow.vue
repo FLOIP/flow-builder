@@ -97,6 +97,8 @@ const flowVuexNamespace = namespace('flow')
 import {IFlow, IContext} from '@floip/flow-runner'
 import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage'
 
+import { updateResourcesForLanguageMatch } from '../store/flow/utils/importHelpers'
+
 import TextEditor from '@/components/common/TextEditor.vue'
 import ImportMatcher from '@/components/interaction-designer/flow-editors/ImportMatcher.vue'
 
@@ -213,6 +215,7 @@ class ImportFlow extends Vue {
 
   handleMatchLanguage(oldLanguage, matchingNewLanguage) {
     this.flowContainer.flows[0].languages.push(matchingNewLanguage)
+    this.flowContainer.resources = updateResourcesForLanguageMatch(this.flowContainer.resources, oldLanguage.id, matchingNewLanguage.id)
     this.flowJsonText = JSON.stringify(this.flowContainer, null, 2)
     this.missingLanguages = reject(this.missingLanguages, (language) => {
       return isEqual(language, oldLanguage)
