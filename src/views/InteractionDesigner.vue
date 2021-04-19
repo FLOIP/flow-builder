@@ -8,13 +8,11 @@
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
-
-          <div v-if="activeBlock"
-               :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
-               :block="activeBlock"
-               :flow="activeFlow"
-          />
-
+          <component v-if="activeBlock"
+                     :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
+                     :block="activeBlock"
+                     :flow="activeFlow">
+          </component>
         </div>
 
 <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->

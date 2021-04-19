@@ -15,7 +15,7 @@ import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import { defaults, find, max, filter, first, get } from 'lodash'
+import { defaultsDeep, find, max, filter, first, get } from 'lodash'
 import { IResourceDefinitionVariantOverModesFilter } from '../resource'
 import { IFlowsState } from '../index'
 
@@ -182,7 +182,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
     await dispatch('createVolatileEmptyChoice', { index: 0 })
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',

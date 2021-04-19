@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="console-io-print-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -14,6 +14,7 @@
                        :block="block"
                        :flow="flow" />
 
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
