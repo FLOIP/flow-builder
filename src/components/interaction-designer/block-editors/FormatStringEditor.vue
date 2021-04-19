@@ -2,7 +2,8 @@
   <div>
     <text-editor v-model="formatString"
         :label="'flow-builder.format-string' | trans"
-        :placeholder="'flow-builder.enter-format-string' | trans"/>
+        :placeholder="'flow-builder.enter-format-string' | trans"
+        :state="state" />
   </div>
 </template>
 
@@ -19,6 +20,11 @@ export default {
     block: {
       type: Object,
       required: true,
+    },
+    state: {
+      type: Boolean,
+      default: undefined, // to tell boostrap `No state`
+      required: false,
     },
   },
   computed: {

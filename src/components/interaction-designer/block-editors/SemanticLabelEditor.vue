@@ -1,8 +1,9 @@
 <template>
   <div>
     <text-editor v-model="semanticLabel"
-        :label="'flow-builder.block-semantic-label' | trans"
-        :placeholder="'flow-builder.enter-block-semantic-label' | trans"/>
+                 :label="'flow-builder.block-semantic-label' | trans"
+                 :placeholder="'flow-builder.enter-block-semantic-label' | trans"
+                 :state="state" />
   </div>
 </template>
 
@@ -20,6 +21,11 @@ export default {
     block: {
       type: Object,
       required: true,
+    },
+    state: {
+      type: Boolean,
+      default: undefined, // to tell boostrap `No state`
+      required: false,
     },
   },
   mixins: [lang],

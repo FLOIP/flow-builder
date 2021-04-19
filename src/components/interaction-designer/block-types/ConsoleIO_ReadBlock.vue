@@ -5,21 +5,32 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
+      <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
+        <block-name-editor :block="block" :state="!isNameValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
+        <block-label-editor :block="block" :state="!isLabelValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
+        <block-semantic-label-editor :block="block" :state="!isSemanticLabelValid" />
+      </validation-message>
 
       <!--Specific config-->
-      <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString"/>
+      <validation-message :message-key="`block/${block.uuid}/.config.format_string`" #input-control="{ isValid: isFormatStringValid }">
+        <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString" :state="!isFormatStringValid"/>
+      </validation-message>
 
-      <div v-for="(variableStringFormat,i) in destinationVariablesFields"
-           class="form-group form-inline">
-        <text-editor :label="i+1"
-            :placeholder="'flow-builder.edit-variable' | trans"
-            value=""
-            @keydown="filterVariableName"
-            @input="updatedestinationVariables($event, i)"/>
-      </div>
+      <validation-message :message-key="`block/${block.uuid}/.config.destination_variables`" #input-control="{ isValid: isDestinationVariablesValid }">
+        <div v-for="(variableStringFormat,i) in destinationVariablesFields"
+             class="form-group form-inline">
+          <text-editor :label="i+1"
+              :placeholder="'flow-builder.edit-variable' | trans"
+              :state="!isDestinationVariablesValid"
+              value=""
+              @keydown="filterVariableName"
+              @input="updatedestinationVariables($event, i)"/>
+        </div>
+      </validation-message>
 
       <first-block-editor-button
           :flow="flow"
@@ -48,6 +59,7 @@ import BlockFormatStringEditor from '../block-editors/FormatStringEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -62,6 +74,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     TextEditor,
     BlockId,
+    ValidationMessage
   },
 })
 class ConsoleIO_ReadBlock extends mixins(Lang) {

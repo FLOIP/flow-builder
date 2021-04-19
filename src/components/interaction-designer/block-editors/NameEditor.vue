@@ -1,9 +1,10 @@
 <template>
   <div>
     <text-editor v-model="name"
-        :label="'flow-builder.block-name' | trans"
-        :placeholder="'flow-builder.enter-block-name' | trans"
-        @keydown="filterName">
+                 :label="'flow-builder.block-name' | trans"
+                 :placeholder="'flow-builder.enter-block-name' | trans"
+                 :state="state"
+                 @keydown="filterName">
       <small class="text-muted">
         {{'flow-builder.only-accepts-word-characters' | trans}}
       </small>
@@ -25,6 +26,11 @@ export default {
     block: {
       type: Object,
       required: true,
+    },
+    state: {
+      type: Boolean,
+      default: undefined, // to tell boostrap `No state`
+      required: false,
     },
   },
   computed: {

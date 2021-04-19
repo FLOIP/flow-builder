@@ -1,8 +1,9 @@
 <template>
   <div>
     <text-editor v-model="label"
-        :label="'flow-builder.block-label' | trans"
-        :placeholder="'flow-builder.enter-block-label' | trans"/>
+                 :label="'flow-builder.block-label' | trans"
+                 :placeholder="'flow-builder.enter-block-label' | trans"
+                 :state="state"/>
   </div>
 </template>
 
@@ -23,6 +24,7 @@ const flowVuexNamespace = namespace('flow')
 })
 export default class LabelEditor extends Vue {
   @Prop() block!: IBlock
+  @Prop() state?: boolean
 
   get label(): IBlock['label'] {
     return this.block.label
