@@ -1,6 +1,6 @@
 <template>
   <div class="new-contents">
-  //Take a look at login style for an example of how this well could look
+    <!-- TODO Take a look at login style for an example of how this well could look -->
     <div class="row">
       <div class="col-sm-8 offset-sm-2">
         <div class="card">
@@ -24,9 +24,10 @@
                   {{'flow-builder.import-file' | trans}}
               </input>
               <text-editor :value="flowJson"
-                @input="setUpdating();debounceHandleFlowJsonTextChange()"
+                @input="setUpdatingAndHandleFlowJsonTextChange"
                 v-if="flowJsonText"
                 label=""
+                class="tall-text"
                 :placeholder="'flow-builder.edit-flow-json' | trans">
               </text-editor>
               <div v-if="updating">
@@ -50,9 +51,10 @@
             </label>
             <div v-if="uploadOrPaste === 'paste'">
               <text-editor :value="flowJson"
-                @input="setUpdating();debounceHandleFlowJsonTextChange()"
+                @input="setUpdatingAndHandleFlowJsonTextChange"
                 v-if="uploadOrPaste === 'paste'"
                 label=""
+                class="tall-text"
                 :placeholder="'flow-builder.paste-flow-json' | trans">
               </text-editor>
               <div v-if="updating">
@@ -78,7 +80,7 @@
                 {{'flow-builder.save-and-continue' | trans}}
               </a>
             </div>
-            //cancel button - router link back or home is default
+            <!-- TODO cancel button - router link back or home is default -->
           </div>
         </div>
       </div>
@@ -187,6 +189,14 @@ class ImportFlow extends Vue {
     if(this.detectedLanguageChanges(newFlowContainer, oldFlowContainer)) {
       this.validateLanguages(this.flowContainer)
     }
+    //matching on "property_key" == "name" in builder
+    //if(this.detectedPropertyChanges(newFlowContainer, oldFlowContainer)) {
+      //this.validateProperties(this.flowContainer)
+    //}
+    ////matching on "groupKey" == "id" in builder
+    //if(this.detectedGroupChanges(newFlowContainer, oldFlowContainer)) {
+      //this.validateGroups(this.flowContainer)
+    //}
     this.flowJsonText = JSON.stringify(this.flowContainer, null, 2)
     //check props
     //check groups
@@ -208,8 +218,9 @@ class ImportFlow extends Vue {
     this.existingLanguagesWithoutMatch = []
   }
 
-  setUpdating() {
+  setUpdatingAndHandleFlowJsonTextChange(value) {
     this.updating = true
+    this.debounceHandleFlowJsonTextChange(value)
   }
 
   detectedLanguageChanges(flowContainer, oldFlowContainer) {
@@ -323,4 +334,7 @@ export default ImportFlow
 </script>
 
 <style lang="scss">
+  .tall-text {
+    min-height: 200px
+  }
 </style>
