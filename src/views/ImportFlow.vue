@@ -24,8 +24,7 @@
                   {{'flow-builder.import-file' | trans}}
               </input>
               <text-editor :value="flowJson"
-                @input="debounceHandleFlowJsonTextChange"
-                @keydown="setUpdating"
+                @input="setUpdating();debounceHandleFlowJsonTextChange()"
                 v-if="flowJsonText"
                 label=""
                 :placeholder="'flow-builder.edit-flow-json' | trans">
@@ -51,8 +50,7 @@
             </label>
             <div v-if="uploadOrPaste === 'paste'">
               <text-editor :value="flowJson"
-                @input="debounceHandleFlowJsonTextChange"
-                @keydown="setUpdating"
+                @input="setUpdating();debounceHandleFlowJsonTextChange()"
                 v-if="uploadOrPaste === 'paste'"
                 label=""
                 :placeholder="'flow-builder.paste-flow-json' | trans">
@@ -173,6 +171,7 @@ class ImportFlow extends Vue {
       //check valid json
       flowContainer = JSON.parse(this.flowJsonText)
     } catch (e) {
+      this.resetLanguageMatching()
       this.flowError = "flow-builder.invalid-json-provided"
       return
     }
@@ -197,13 +196,16 @@ class ImportFlow extends Vue {
     this.flowContainer = null
     this.uploadOrPasteSetting = "upload"
     this.flowJsonText = ""
-    this.matchingLanguages = []
-    this.missingLanguages = []
+    this.resetLanguageMatching()
     this.missingProperties = []
     this.missingGroups = []
-    this.existingLanguagesWithoutMatch = []
     this.flowError = null
     this.updating = false
+  }
+  resetLanguageMatching() {
+    this.matchingLanguages = []
+    this.missingLanguages = []
+    this.existingLanguagesWithoutMatch = []
   }
 
   setUpdating() {
@@ -289,7 +291,7 @@ class ImportFlow extends Vue {
     const contents = reader.readAsText(selectedFile, "UTF-8")
   }
   //In case someone is editing a language, let's give them a second to finish before we tell them it doesn't match
-  debounceHandleFlowJsonTextChange = debounce(this.handleFlowJsonTextChange, 3000)
+  debounceHandleFlowJsonTextChange = debounce(this.handleFlowJsonTextChange, 2000)
   async handleFlowJsonTextChange(value) {
     this.flowJson = value
     this.updating = false
