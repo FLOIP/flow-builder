@@ -131,7 +131,8 @@ function debugValidationStatus(status: IValidationStatus, customMessage: string)
     console.debug(
       customMessage,
       ' | isValid:', status.isValid,
-      ' | error message:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
+      ' | error dataPaths:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'dataPath', 'undefined')).join(';') : 'undefined'}`,
+      ' | error messages:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
       ' | error details:', status
     )
   } else {
