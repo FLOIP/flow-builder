@@ -285,7 +285,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async flow_createWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IFlow>}): Promise<IFlow> {
     return {
       ...defaults(props, {
-        org_id: '', // awful default value, but we've typed it to string
         name: '',
         label: '', // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
         last_modified: moment().format('c'),
