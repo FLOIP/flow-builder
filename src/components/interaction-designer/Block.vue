@@ -30,16 +30,16 @@
           {{trans(`flow-builder.${block.type}`)}}
         </p>
 
-        <h3 class="block-label" :style="labelContainerDynamicStyle"
+        <h3 class="block-label" :style="{ maxWidth: `${this.labelContainerMaxWidth}px` }"
             :class="{'empty': !block.label}">
           {{block.label || 'Untitled block'}}
         </h3>
       </header>
 
-      <div class="block-exits d-flex">
+      <div class="block-exits d-flex" :ref="`block/${block.uuid}/exits`" :id="`block/${block.uuid}/exits`">
         <div v-for="(exit, key) in block.exits"
              :key="exit.uuid"
-             class="block-exit col flex-shrink-1 pb-1 pt-1 pl-2 pr-2"
+             class="block-exit col flex-shrink-1 pb-1 pt-1 pl-3 pr-3"
              :class="{
                'initial': false,
                'pending': isConnectionSourceRelocateActive,
@@ -162,18 +162,10 @@ export default {
     this.draggablesByExitId = {} // todo: these need to be (better) lifecycle-managed (eg. mcq add/remove exit).
   },
 
-  updated() {
-    // Update the label container max width
-    const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`) // one exit
-
-    if (!blockExitElement) {
-      return;
-    }
-
-    // This allows us to shrink .block-exit into the min-width before extending the block label container
-    if (LABEL_CONTAINER_MAX_WIDTH < this.block.exits.length * blockExitElement.clientWidth) { // compare with `n x {inner width}`
-      this.labelContainerMaxWidth = this.block.exits.length * blockExitElement.offsetWidth // but set with `n x {outer width}`
-    }
+  mounted() {
+    this.$nextTick(function () {
+      this.updateLabelContainerMaxWidth()
+    })
   },
 
   data() {
@@ -181,6 +173,14 @@ export default {
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
       // draggablesByExitId: {}, // no need to vuejs-observe these
+    }
+  },
+
+  watch: {
+    blockExitsLength(newValue, oldValue) {
+      this.$nextTick(function () {
+        this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
+      })
     }
   },
 
@@ -193,10 +193,8 @@ export default {
 
     ...mapGetters('builder', ['blocksById', 'isEditable']),
 
-    labelContainerDynamicStyle() {
-      return {
-        'max-width': `${this.labelContainerMaxWidth}px`
-      }
+    blockExitsLength() {
+      return this.block.exits.length
     },
 
     hasLayout() {
@@ -251,6 +249,30 @@ export default {
     ]),
 
     ...mapMutations('builder', ['activateBlock']),
+
+    updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
+      const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`) // one exit
+
+      if (!blockExitElement) {
+        console.debug('blockExitWidth', 'DOM not ready yet on',`#block\\/${this.block.uuid} .block-exit`)
+        return;
+      }
+
+      // This allows us to shrink .block-exit into the min-width before extending the block label container
+      if(isRemoving) { // Removing exit
+        if (LABEL_CONTAINER_MAX_WIDTH < (blockExitsLength - 1) * blockExitElement.offsetWidth) { // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible
+          this.labelContainerMaxWidth = (blockExitsLength -1) * blockExitElement.offsetWidth// but set with `n x {outer width}`
+          return;
+        }
+      } else { // Adding new exit
+        if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) { // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible (especially when removing exits)
+          this.labelContainerMaxWidth = blockExitsLength * blockExitElement.offsetWidth// but set with `n x {outer width}`
+          return;
+        }
+      }
+
+      this.labelContainerMaxWidth = LABEL_CONTAINER_MAX_WIDTH
+    },
 
     resolveTextResource(uuid) {
       const { resources } = this
@@ -457,7 +479,6 @@ export default {
       font-size: 14px;
       font-weight: normal;
       min-width: 300px;
-      max-width: 650px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
