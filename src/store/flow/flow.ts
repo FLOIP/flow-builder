@@ -287,7 +287,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       ...defaults(props, {
         name: '',
         label: '', // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
-        last_modified: moment().format('c'),
+        last_modified: moment().toISOString(),
         interaction_timeout: 30,
         vendor_metadata: {},
 
