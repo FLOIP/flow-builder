@@ -30,7 +30,7 @@ const validationVuexNamespace = namespace('validation')
 export default class BuilderCanvas extends Vue {
   @Watch('activeFlow', { deep: true, immediate: true })
   async onActiveFlowChanged(newFlow: IFlow) {
-    console.debug('active flow has changed, validating ...')
+    console.debug('active flow has changed, validating ...', newFlow)
     await this.validate_flow({ flow: newFlow })
   }
 

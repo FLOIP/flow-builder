@@ -7,11 +7,13 @@
       "properties": {
         "uuid": {
           "type": "string",
-          "description": "A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)"
+          "description": "A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)",
+          "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$"
         },
         "name": {
           "type": "string",
-          "description": "A human-readable \"variable name\" for this block. This must be restricted to word characters so that it can be used as a variable name in expressions. When blocks write results output, they write to a variable corresponding the name of the block."
+          "description": "A human-readable \"variable name\" for this block. This must be restricted to word characters so that it can be used as a variable name in expressions. When blocks write results output, they write to a variable corresponding the name of the block.",
+          "pattern": "^[a-zA-Z_]\\w*$"
         },
         "label": {
           "type": "string",
@@ -68,19 +70,23 @@
       "properties": {
         "uuid": {
           "type": "string",
-          "description": "A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)"
+          "description": "A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)",
+          "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$"
         },
         "label": {
           "type": "string",
-          "description": "This is the human-readable name of the exit (as a translated resource ID), which might be presented to a contact."
+          "description": "This is the human-readable name of the exit (as a translated resource ID), which might be presented to a contact.",
+          "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$"
         },
         "tag": {
           "type": "string",
-          "description": "This is an identifier for the exit, suitable for use as a variable name in rolling up results (e.g.: \"male\"). It does not need to be unique within the block; multiple exits may be tagged the same. (Some authoring tools may choose to auto-generate the tag from the label's primary language, to avoid usability problems with these getting out of sync.) Word characters only."
+          "description": "This is an identifier for the exit, suitable for use as a variable name in rolling up results (e.g.: \"male\"). It does not need to be unique within the block; multiple exits may be tagged the same. (Some authoring tools may choose to auto-generate the tag from the label's primary language, to avoid usability problems with these getting out of sync.) Word characters only.",
+          "pattern": "^[a-zA-Z_]\\w*$"
         },
         "destination_block": {
           "type": "string",
-          "description": "This is the uuid of the Block this exit connects to. It can be null if the exit does not connect to a block (if it is the final block)."
+          "description": "This is the uuid of the Block this exit connects to. It can be null if the exit does not connect to a block (if it is the final block).",
+          "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$"
         },
         "semantic_label": {
           "type": "string",
