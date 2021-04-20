@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$ref": "#/definitions/IOpenResponseBlock",
+  "$ref": "#/definitions/ISelectManyResponseBlock",
   "definitions": {
-    "IOpenResponseBlock": {
+    "ISelectManyResponseBlock": {
       "type": "object",
       "properties": {
         "uuid": {
@@ -32,27 +32,48 @@
           "description": "A specific string designating the type or \"subclass\" of this Block. This must be one of the Block type names within the specification, such as Core.RunFlow or MobilePrimitives.Message."
         },
         "config": {
-          "$ref": "#/definitions/IOpenResponseBlockConfig",
+          "$ref": "#/definitions/ISelectOneResponseBlockConfig",
           "description": "Additional parameters that are specific to the type of the block. Details are provided within the Block documentation."
         },
         "exits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/IBlockExit"
+            "$ref": "#/definitions/IBlockExitTestRequired"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "prompt_audio": {
+          "type": "string"
+        },
+        "question_prompt": {
+          "type": "string"
+        },
+        "choices_prompt": {
+          "type": "string"
+        },
+        "choices": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
       "required": [
+        "choices",
         "config",
         "exits",
         "name",
+        "prompt",
+        "prompt_audio",
         "type",
         "uuid"
       ],
       "additionalProperties": false
     },
-    "IOpenResponseBlockConfig": {
+    "ISelectOneResponseBlockConfig": {
       "type": "object",
       "properties": {
         "set_contact_property": {
@@ -74,33 +95,23 @@
         "prompt_audio": {
           "type": "string"
         },
-        "ivr": {
-          "type": "object",
-          "properties": {
-            "max_duration_seconds": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          "required": [
-            "max_duration_seconds"
-          ],
-          "additionalProperties": false
+        "question_prompt": {
+          "type": "string"
         },
-        "text": {
+        "choices_prompt": {
+          "type": "string"
+        },
+        "choices": {
           "type": "object",
-          "properties": {
-            "max_response_characters": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          "additionalProperties": false
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
       "required": [
         "prompt",
-        "prompt_audio"
+        "prompt_audio",
+        "choices"
       ],
       "additionalProperties": false
     },
@@ -120,7 +131,7 @@
       ],
       "additionalProperties": false
     },
-    "IBlockExit": {
+    "IBlockExitTestRequired": {
       "type": "object",
       "properties": {
         "uuid": {
@@ -160,13 +171,13 @@
         }
       },
       "required": [
-        "uuid",
+        "config",
         "label",
         "tag",
-        "config"
+        "test",
+        "uuid"
       ],
-      "additionalProperties": false,
-      "description": "Block Exit: https://floip.gitbook.io/flow-specification/flows#exit-node-specification"
+      "additionalProperties": false
     }
   }
 }
