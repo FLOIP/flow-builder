@@ -8,7 +8,7 @@ import { JSONSchema7 } from 'json-schema'
 import { IBlock, IFlow } from '@floip/flow-runner'
 import { isEmpty, get, forIn } from 'lodash'
 
-const ajv = new Ajv();
+const ajv = new Ajv({ allErrors:true })
 const DEV_ERROR_KEYWORDS = [
   'additionalProperties', // unwanted extra props
   'required' // missing props
