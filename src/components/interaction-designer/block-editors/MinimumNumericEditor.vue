@@ -3,7 +3,8 @@
     <numeric-editor v-model.number="minValue"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.minimum-value-(inclusive)' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+        :placeholder="'flow-builder.enter-value' | trans"
+        :state="state">
     </numeric-editor>
   </div>
 </template>
@@ -22,6 +23,11 @@ export default {
     block: {
       type: Object,
       required: true,
+    },
+    state: {
+      type: Boolean,
+      default: undefined, // to tell boostrap `No state`
+      required: false,
     },
   },
   data() {

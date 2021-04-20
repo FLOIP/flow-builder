@@ -5,12 +5,21 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
-
-      <block-max-duration-seconds-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
-      <block-max-response-characters-editor :block="block" :hasText="hasTextMode" @commitMaxResponseCharactersChange="setMaxResponseCharacters"/>
+      <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
+        <block-name-editor :block="block" :state="!isNameValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
+        <block-label-editor :block="block" :state="!isLabelValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
+        <block-semantic-label-editor :block="block" :state="!isSemanticLabelValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.config.ivr.max_duration_seconds`" #input-control="{ isValid: isMaxDurationValid }">
+        <block-max-duration-seconds-editor :block="block" :state="!isMaxDurationValid" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.config.text.max_response_characters`" #input-control="{ isValid: isMaxResponseValid }">
+        <block-max-response-characters-editor :block="block" :state="!isMaxResponseValid" :hasText="hasTextMode" @commitMaxResponseCharactersChange="setMaxResponseCharacters"/>
+      </validation-message>
 
       <resource-editor v-if="promptResource"
                        :resource="promptResource"
@@ -48,6 +57,7 @@ import BlockId from '../block-editors/BlockId.vue'
 import BlockMaxDurationSecondsEditor from '../block-editors/MaxDurationSecondsEditor.vue'
 import BlockMaxResponseCharactersEditor from '../block-editors/MaxResponseCharactersEditor.vue'
 import { mixins } from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -63,6 +73,7 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     BlockMaxDurationSecondsEditor,
     BlockMaxResponseCharactersEditor,
+    ValidationMessage
   },
 })
 class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {

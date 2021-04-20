@@ -3,7 +3,8 @@
     <numeric-editor v-model.number="duration"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.max-duration-in-seconds' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+        :placeholder="'flow-builder.enter-value' | trans"
+        :state="state">
     </numeric-editor>
   </div>
 </template>
@@ -26,6 +27,11 @@ export default {
     block: {
       type: Object,
       required: true,
+    },
+    state: {
+      type: Boolean,
+      default: undefined, // to tell boostrap `No state`
+      required: false,
     },
   },
   data() {

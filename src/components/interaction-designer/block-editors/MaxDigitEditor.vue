@@ -3,7 +3,8 @@
     <numeric-editor v-model.number="maxDigits"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.maximum-digits' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+        :placeholder="'flow-builder.enter-value' | trans"
+        :state="state">
     </numeric-editor>
   </div>
 </template>
@@ -26,6 +27,11 @@ export default {
     hasIvr: {
       default: true,
       type: Boolean,
+    },
+    state: {
+      type: Boolean,
+      default: undefined, // to tell boostrap `No state`
+      required: false,
     },
   },
 
