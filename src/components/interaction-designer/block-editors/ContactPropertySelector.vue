@@ -21,14 +21,9 @@ import { Component, Prop } from 'vue-property-decorator';
 import {Getter, namespace} from 'vuex-class'
 import lang from '@/lib/filters/lang';
 import { find } from 'lodash'
+import { IContactPropertyOption } from '../../../store/flow/block-types/Core_SetContactPropertyStore'
 
 const flowVuexNamespace = namespace('flow')
-
-interface IContactPropertyOption {
-  id: string
-  name: string
-  displayLabel: string
-}
 
 @Component<any>({
   components: {

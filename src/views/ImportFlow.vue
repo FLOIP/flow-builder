@@ -36,13 +36,20 @@
                   <span class="sr-only">Loading...</span>
                 </div>
               </div>
-              <import-matcher v-if="languagesMissing" 
-                @reactToMatch="handleMatchLanguage" 
-                :missing-matches="missingLanguages" 
-                type-id="id" 
-                type-label="label" 
-                :existing-options-without-match="existingLanguagesWithoutMatch" 
+              <import-matcher v-if="languagesMissing"
+                @reactToMatch="handleMatchLanguage"
+                :missing-matches="missingLanguages"
+                type-id="id"
+                type-label="label"
+                :existing-options-without-match="existingLanguagesWithoutMatch"
                 :match-text-not-found="'match-for-languages-not-found' | trans"/>
+              <import-matcher v-if="propertiesMissing"
+                @reactToMatch="handleMatchProperty"
+                :missing-matches="missingProperties"
+                type-id="name"
+                type-label="name"
+                :existing-options-without-match="existingPropertiesWithoutMatch"
+                :match-text-not-found="'match-for-properties-not-found' | trans"/>
             </div>
 
             <br>
@@ -63,13 +70,20 @@
                   <span class="sr-only">Loading...</span>
                 </div>
               </div>
-              <import-matcher v-if="languagesMissing" 
-                @reactToMatch="handleMatchLanguage" 
-                :missing-matches="missingLanguages" 
-                type-id="id" 
-                type-label="label" 
-                :existing-options-without-match="existingLanguagesWithoutMatch" 
+              <import-matcher v-if="languagesMissing"
+                @reactToMatch="handleMatchLanguage"
+                :missing-matches="missingLanguages"
+                type-id="id"
+                type-label="label"
+                :existing-options-without-match="existingLanguagesWithoutMatch"
                 :match-text-not-found="'match-for-languages-not-found' | trans"/>
+              <import-matcher v-if="propertiesMissing"
+                @reactToMatch="handleMatchProperty"
+                :missing-matches="missingProperties"
+                type-id="name"
+                type-label="name"
+                :existing-options-without-match="existingPropertiesWithoutMatch"
+                :match-text-not-found="'match-for-properties-not-found' | trans"/>
             </div>
 
             <div class="mt-5 float-right">
@@ -99,16 +113,21 @@ import {
   forEach, 
   isEmpty, 
   get,
+  set,
   find,
+  findIndex,
   pick,
   omit,
   reject,
+  keys,
+  filter,
   differenceWith,
   isEqual,
   cloneDeep,
   debounce,
 } from 'lodash'
 import {store} from '@/store'
+import { IContactPropertyOption } from '../store/flow/block-types/Core_SetContactPropertyStore'
 const flowVuexNamespace = namespace('flow')
 import {IFlow, IContext} from '@floip/flow-runner'
 import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage'
@@ -146,11 +165,17 @@ class ImportFlow extends Vue {
   flowJsonText = ""
   matchingLanguages = []
   missingLanguages = []
-  missingProperties = []
-  missingGroups = []
   existingLanguagesWithoutMatch = []
+  blocksMissingProperties: any = {}
+  missingProperties = []
+  matchingProperties = []
+  existingPropertiesWithoutMatch = []
+  blocksMissingGroups = []
+  matchingGroups = []
+  existingGroupsWithoutMatch = []
   flowError = null
   updating = false
+  propertyBlocks = []
 
   get uploadOrPaste () {
     return this.uploadOrPasteSetting
@@ -174,6 +199,8 @@ class ImportFlow extends Vue {
       flowContainer = JSON.parse(this.flowJsonText)
     } catch (e) {
       this.resetLanguageMatching()
+      this.resetPropertyMatching()
+      this.resetGroupMatching()
       this.flowError = "flow-builder.invalid-json-provided"
       return
     }
@@ -190,9 +217,11 @@ class ImportFlow extends Vue {
       this.validateLanguages(this.flowContainer)
     }
     //matching on "property_key" == "name" in builder
-    //if(this.detectedPropertyChanges(newFlowContainer, oldFlowContainer)) {
-      //this.validateProperties(this.flowContainer)
-    //}
+    const newPropertyBlocks = this.getPropertyBlocks(flowContainer)
+    if(this.detectedPropertyChanges(newPropertyBlocks)) {
+      this.propertyBlocks = newPropertyBlocks
+      this.validateProperties(this.propertyBlocks)
+    }
     ////matching on "groupKey" == "id" in builder
     //if(this.detectedGroupChanges(newFlowContainer, oldFlowContainer)) {
       //this.validateGroups(this.flowContainer)
@@ -202,20 +231,38 @@ class ImportFlow extends Vue {
     //check groups
   }
 
+  getPropertyBlocks(flowContainer) {
+    return filter(get(flowContainer, 'flows[0].blocks'), (block) => { 
+      return block.type === "Core\\SetContactProperty" 
+    })
+  }
+
   reset() {
     this.flowContainer = null
     this.uploadOrPasteSetting = "upload"
     this.flowJsonText = ""
     this.resetLanguageMatching()
-    this.missingProperties = []
-    this.missingGroups = []
+    this.resetPropertyMatching()
+    this.resetGroupMatching()
     this.flowError = null
     this.updating = false
+    this.propertyBlocks = []
   }
   resetLanguageMatching() {
     this.matchingLanguages = []
     this.missingLanguages = []
     this.existingLanguagesWithoutMatch = []
+  }
+  resetPropertyMatching() {
+    this.matchingLanguages = []
+    this.blocksMissingProperties = {} 
+    this.missingProperties = []
+    this.existingPropertiesWithoutMatch = []
+  }
+  resetGroupMatching() {
+    this.matchingGroups = []
+    this.blocksMissingGroups = []
+    this.existingGroupsWithoutMatch = []
   }
 
   setUpdatingAndHandleFlowJsonTextChange(value) {
@@ -225,6 +272,9 @@ class ImportFlow extends Vue {
 
   detectedLanguageChanges(flowContainer, oldFlowContainer) {
     return !isEqual(get(flowContainer, 'flows[0].languages'), get(oldFlowContainer, 'flows[0].languages'))
+  }
+  detectedPropertyChanges(newPropertyBlocks) {
+    return !isEqual(newPropertyBlocks, this.propertyBlocks)
   }
 
   checkSingleFlowOnly(flowContainer) {
@@ -238,8 +288,8 @@ class ImportFlow extends Vue {
     return !this.flowUUID ||
       this.flowError ||
       !isEmpty(this.missingLanguages)
-      !isEmpty(this.missingProperties)
-      !isEmpty(this.missingGroups)
+      !isEmpty(this.blocksMissingProperties)
+      !isEmpty(this.blocksMissingGroups)
   }
 
   validateLanguages(flowContainer) {
@@ -251,7 +301,7 @@ class ImportFlow extends Vue {
           return isEqual(orgLanguage, language)
         })
         if(!matchingLanguage) {
-          //Unlike the others we don't reset this. 
+          //Unlike the others we don't reset this.
           //A previously unmatched language can only be fixed by updating or adding a language 
           this.missingLanguages.push(language)
         } else {
@@ -265,6 +315,38 @@ class ImportFlow extends Vue {
     }
   }
 
+  validateProperties(newPropertyBlocks) {
+    const matchingProperties = []
+    newPropertyBlocks.forEach((propertyBlock) => {
+      const propertyIdentifier = get(propertyBlock, 'config.set_contact_property.property_key')
+      if(propertyIdentifier) {
+        let matchingProperty = find(this.subscriberPropertyFields, (orgProperty) => {
+          return isEqual(orgProperty.name, propertyIdentifier)
+        })
+        if(!matchingProperty) {
+          //Unlike the others we don't reset this. 
+          //A previously unmatched property can only be fixed by updating or adding a language 
+          //
+          //Name is all we can get when there isn't a match
+          //...as the block sidebar gets the actual displayLabel by matching
+          if(!get(this.blocksMissingProperties, propertyIdentifier)) {
+            this.blocksMissingProperties[propertyIdentifier] = []
+          }
+          this.blocksMissingProperties[propertyIdentifier].push(propertyBlock.uuid)
+        } else {
+          matchingProperties.push(matchingProperty)
+        }
+      }
+    })
+
+    this.missingProperties = keys(this.blocksMissingProperties).map((propertyIdentifier) => {
+      return { name: propertyIdentifier, blockIds: this.blocksMissingProperties[propertyIdentifier] }
+    })
+    this.matchingProperties = matchingProperties
+    //Update the languages so we use the org settings for things like id and orgId
+    this.existingPropertiesWithoutMatch = differenceWith(this.subscriberPropertyFields, this.matchingProperties, isEqual);
+  }
+
   handleMatchLanguage(oldLanguage, matchingNewLanguage) {
     this.flowContainer.flows[0].languages.push(matchingNewLanguage)
     this.flowContainer.resources = updateResourcesForLanguageMatch(this.flowContainer.resources, oldLanguage.id, matchingNewLanguage.id)
@@ -273,6 +355,24 @@ class ImportFlow extends Vue {
       return isEqual(language, oldLanguage)
     })
     this.validateLanguages(this.flowContainer)
+  }
+  handleMatchProperty(oldProperty, matchingNewProperty) {
+    console.log(oldProperty.blockIds)
+    oldProperty.blockIds.forEach((blockId) => {
+      const blockIndex = findIndex(this.flowContainer.flows[0].blocks, (block) => { return block.uuid === blockId })
+      console.log(blockIndex)
+      set(this.flowContainer.flows[0].blocks, `${blockIndex}.config.set_contact_property.property_key`, matchingNewProperty.name)
+    })
+    this.flowJsonText = JSON.stringify(this.flowContainer, null, 2)
+    //missingProperties gets updated again when we validate below
+    this.blocksMissingProperties = keys(this.blocksMissingProperties).reduce((newBlocksMissingProperties, propertyIdentifier) => {
+      if(oldProperty.name !== propertyIdentifier) {
+        newBlocksMissingProperties[propertyIdentifier] = this.blocksMissingProperties[propertyIdentifier]
+      }
+      return newBlocksMissingProperties
+    }, {})
+    const newPropertyBlocks = this.getPropertyBlocks(this.flowContainer)
+    this.validateProperties(newPropertyBlocks)
   }
 
   get flowUUID() {
@@ -285,7 +385,7 @@ class ImportFlow extends Vue {
     return !isEmpty(this.missingProperties)
   }
   get groupsMissing() {
-    return !isEmpty(this.missingGroups)
+    return !isEmpty(this.blocksMissingGroups)
   }
 
 
@@ -327,6 +427,7 @@ class ImportFlow extends Vue {
   @Mutation configure 
   @Getter isConfigured!: boolean
   @Getter languages!: ILanguage[] 
+  @Getter subscriberPropertyFields: IContactPropertyOption[]
 }
 
 export default ImportFlow 
