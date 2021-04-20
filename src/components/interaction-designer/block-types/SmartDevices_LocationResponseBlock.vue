@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="smart-devices-location-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -11,7 +11,7 @@
 
       <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold"/>
       <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout"/>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />

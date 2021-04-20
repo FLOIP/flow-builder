@@ -1,5 +1,5 @@
 <template>
-  <div class="text-right">
+  <div class="block-id text-right">
     <small class="text-muted">{{'flow-builder.block-id' | trans}}: <em>{{blockId}}</em></small>
   </div>
 </template>

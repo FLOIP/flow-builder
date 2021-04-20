@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="core-case-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -16,7 +16,7 @@
             :expression-identifier="exit.uuid"
             @commitExpressionChange="editCaseBlockExit"/>
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
