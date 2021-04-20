@@ -5,14 +5,23 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
+      <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
+        <block-name-editor :block="block" :state="!isNameValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
+       <block-label-editor :block="block" :state="!isLabelValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
+        <block-semantic-label-editor :block="block" :state="!isSemanticLabelValid" />
+      </validation-message>
 
-      <expression-editor :label="'flow-builder.output-expression' | trans"
+      <validation-message :message-key="`block/${block.uuid}/.config.value`" #input-control="{ isValid: isValueValid }">
+        <expression-editor :label="'flow-builder.output-expression' | trans"
           :placeholder="'flow-builder.edit-expression' | trans"
           :current-expression="value"
+          :state="!isValueValid"
           @commitExpressionChange="commitExpressionChange"/>
+      </validation-message>
 
       <first-block-editor-button
           :flow="flow"
@@ -38,6 +47,7 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -50,6 +60,7 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    ValidationMessage
   },
 })
 class Core_OutputBlock extends mixins(Lang) {
