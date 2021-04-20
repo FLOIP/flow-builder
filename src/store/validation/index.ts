@@ -34,7 +34,7 @@ export const stateFactory = (): IValidationState => ({
 export const getters: GetterTree<IValidationState, IRootState> = {
   /**
    * Human readable errors, keys are index like `flow/flowId/.path/.to/.prop`.
-   * Note that indexedErrors has more elements than validationStatuses
+   * Note that indexedErrors has more elements than validationStatuses.
    */
   flattenErrorMessages(state): IIndexedString {
     let accumulator: IIndexedString = {}
