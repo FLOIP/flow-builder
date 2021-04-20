@@ -20,21 +20,37 @@ import { Component, Vue } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
 import lodash from 'lodash'
 
+const MARGIN_HEIGHT = 100 //px
+const MARGIN_WIDTH = 100 //px
+const DEBOUNCE_SCROLL_TIMER = 100 //ms
+
   @Component({
     components: {
       Block,
     },
 
-    data() {
-      return {
-        // last computed data, will be used in case the DOM not yet ready
-        lastComputedCanvasHeight: this.windowHeight,
-        lastComputedCanvasWidth: this.windowWidth,
-      }
-    },
-
     computed: {
       ...mapGetters('flow', ['activeFlow']),
+
+      blockHeight() {
+        const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition.uuid}`]
+        if (!blockElementRef) {
+          console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition.uuid}`)
+          return 150 // temporary dummy height for UI scroll purpose
+        }
+        return blockElementRef[0].$refs['draggable'].$el.offsetHeight
+      },
+
+      blockWidth() {
+        const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition.uuid}`]
+
+        if (!blockElementRef) {
+          console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition.uuid}`)
+          return 110 // temporary dummy width for UI scroll purpose
+        }
+
+        return blockElementRef[0].$refs['draggable'].$el.offsetWidth
+      },
 
       blockAtTheLowestPosition() {
         return lodash.maxBy(this.activeFlow.blocks, 'platform_metadata.io_viamo.uiData.yPosition')
@@ -62,24 +78,13 @@ import lodash from 'lodash'
           return this.windowHeight
         }
 
-        const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition.uuid}`]
-
-        if (!blockElementRef) {
-          console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition.uuid}`)
-          return this.lastComputedCanvasHeight
-        }
-
         const yPosition = lodash.get(this.blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.yPosition')
-        const blockHeight = blockElementRef[0].$refs['draggable'].$el.offsetHeight
-        const marginHeight = 100
-        const scrollHeight = yPosition + blockHeight + marginHeight
+        const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
 
-        console.log('compare height', yPosition, blockHeight, marginHeight, scrollHeight, this.windowHeight)
         if (scrollHeight < this.windowHeight) {
           return this.windowHeight
         }
 
-        this.lastComputedCanvasHeight = scrollHeight
         return scrollHeight
       },
 
@@ -93,42 +98,40 @@ import lodash from 'lodash'
           return this.windowWidth
         }
 
-        const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition.uuid}`]
-
-        if (!blockElementRef) {
-          console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition.uuid}`)
-          return this.lastComputedCanvasWidth
-        }
-
         const xPosition = lodash.get(this.blockAtTheLowestPosition, 'platform_metadata.io_viamo.uiData.xPosition')
-        const blockWidth = blockElementRef[0].$refs['draggable'].$el.offsetWidth
-        const marginWidth = 100
-        const scrollWidth = xPosition + blockWidth + marginWidth
+        const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
 
         if (scrollWidth < this.windowWidth) {
           return this.windowWidth
         }
 
-        this.lastComputedCanvasWidth = scrollWidth
         return scrollWidth
       },
     },
 
     watch: {
       canvasHeight: function (newValue) {
-        console.log('canvasHeight changed', newValue)
-        window.scrollTo({
-          top: newValue,
-          behavior: 'smooth'
-        })
+        console.debug('canvas height changed to', newValue)
+        this.debounceVerticalScroll()
       },
       canvasWidth: function (newValue) {
-        console.log('canvasWidth changed', newValue)
-        window.scrollTo({
-          left: newValue,
-          behavior: 'smooth'
-        })
+        console.debug('canvas width changed to', newValue)
+        this.debounceHorizontalScroll()
       }
+    },
+
+    methods: {
+      debounceVerticalScroll: lodash.debounce(function() { // !important: do not change to arrow function
+        window.scrollTo({
+          top: this.canvasHeight,
+        })
+      }, DEBOUNCE_SCROLL_TIMER),
+
+      debounceHorizontalScroll: lodash.debounce(function() { // !important: do not change to arrow function
+        window.scrollTo({
+          left: this.canvasWidth,
+        })
+      }, DEBOUNCE_SCROLL_TIMER)
     }
   })
 export default class BuilderCanvas extends Vue {
