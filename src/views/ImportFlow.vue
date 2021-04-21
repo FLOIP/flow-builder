@@ -10,7 +10,10 @@
             </h2>
             <p>{{'flow-builder.create-flow-from-json'}}</p>
             <div v-if="flowError" class="alert alert-danger" role="alert">
-              {{flowError | trans}}
+              <p>{{flowError | trans}}</p>
+            </div>
+            <div v-if="hasUnsupportedBlockClasses" class="alert alert-danger" role="alert">
+              {{ `${trans('flow-builder.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}` }}
             </div>
 
             <label class="mt-2 no-weight">
@@ -133,9 +136,12 @@ import {
   pick,
   omit,
   reject,
+  uniq,
   keys,
   filter,
   differenceWith,
+  difference,
+  join,
   isEqual,
   cloneDeep,
   debounce,
@@ -326,7 +332,24 @@ class ImportFlow extends Vue {
       this.flowError ||
       this.languagesMissing ||
       this.propertiesMissing ||
-      this.groupsMissing
+      this.groupsMissing ||
+      this.hasUnsupportedBlockClasses
+  }
+
+  get hasUnsupportedBlockClasses() {
+    return !isEmpty(difference(this.uploadedBlockTypes, this.blockClasses))
+  }
+
+  get unsupportedBlockClasses() {
+    return difference(this.uploadedBlockTypes, this.blockClasses)
+  }
+
+  get unsupportedBlockClassesList() {
+    return join(this.unsupportedBlockClasses, ', ')
+  }
+
+  get uploadedBlockTypes() {
+    return uniq(get(this.flowContainer, 'flows[0].blocks', []).map((block) => block.type ))
   }
 
   validateLanguages(flowContainer) {
@@ -510,6 +533,7 @@ class ImportFlow extends Vue {
   @Getter languages!: ILanguage[] 
   @Getter subscriberPropertyFields: IContactPropertyOption[]
   @Getter groups: IGroupOption[]
+  @Getter blockClasses: string[]
 }
 
 export default ImportFlow 
