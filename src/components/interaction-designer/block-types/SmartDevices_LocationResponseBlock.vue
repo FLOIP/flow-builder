@@ -5,12 +5,21 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-name-editor  :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
-
-      <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold"/>
-      <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout"/>
+      <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
+        <block-name-editor  :block="block" :state="!isNameValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
+        <block-label-editor :block="block" :state="!isLabelValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
+        <block-semantic-label-editor :block="block" :state="!isSemanticLabelValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.config.accuracy_threshold_meters`" #input-control="{ isValid: isThresholdMetersValid }">
+        <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold" :state="!isThresholdMetersValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.config.accuracy_timeout_seconds`" #input-control="{ isValid: isTimeoutSecondsValid }">
+        <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout" :state="!isTimeoutSecondsValid" />
+      </validation-message>
 
       <first-block-editor-button
           :flow="flow"
@@ -41,6 +50,7 @@ import BlockId from '../block-editors/BlockId.vue'
 import BlockThresholdEditor from '../block-editors/ThresholdEditor.vue'
 import BlockTimeoutEditor from '../block-editors/TimeoutEditor.vue'
 import { mixins } from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -56,6 +66,7 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     BlockThresholdEditor,
     BlockTimeoutEditor,
+    ValidationMessage
   },
 })
 class SmartDevices_LocationResponseBlock extends mixins(Lang) {

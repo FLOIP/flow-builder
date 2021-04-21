@@ -4,7 +4,8 @@
         :min="0"
         :regex-float-filtering="'[0-9.,]'"
         :label="'flow-builder.accuracy-threshold-in-meters' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+        :placeholder="'flow-builder.enter-value' | trans"
+        :state="state">
     </float-editor>
   </div>
 </template>
@@ -23,6 +24,11 @@ export default {
     block: {
       type: Object,
       required: true,
+    },
+    state: {
+      type: Boolean,
+      default: undefined, // to tell boostrap `No state`
+      required: false,
     },
   },
   data() {
