@@ -1,17 +1,10 @@
-//TODO - storyshots currently don't seem to be working
-
-import Vue from 'vue'
-import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
-
 import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-import {IRootState, store} from '@/store'
-import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
-
-import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from './story-utils/storeSetup'
-import {Component} from "vue-property-decorator";
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
+import {Component, Vue} from "vue-property-decorator";
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
 
 Vue.use(Vuex)
 
@@ -23,112 +16,49 @@ export default {
 
 const LogBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <log-block 
-      :block="activeBlock" 
+    <log-block
+      :block="activeBlock"
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
+const BaseOptions: IBaseOptions = {
+  components: {LogBlock, FlowBuilderSidebarEditorContainer},
+  template: LogBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
+}
 
 // default case block state
-@Component<any>({
-  components: {LogBlock, FlowBuilderSidebarEditorContainer},
-  template: LogBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
-  async mounted() {
-    // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
-  },
+@Component({
+  ...BaseOptions,
 })
-class DefaultClass extends BaseMountedVueClass {}
+class DefaultClass extends BaseMountedVueClass {
+  async mounted() {
+    await this.baseMounted(BLOCK_TYPE, logBlockStore)
+  }
+}
 export const Default = () => (DefaultClass)
 
-export const ExistingDataBlock = () => ({
-  components: {LogBlock, FlowBuilderSidebarEditorContainer},
-  template: LogBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
-  async mounted() {
-    // @ts-ignore
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
-
-    //TODO - support sending props to baseMounted?
-    // @ts-ignore - TS2339: Property 'block_setName' does not exist on type
-    this.block_setName({blockId: blockId, value: "A Name"})
-    // @ts-ignore - TS2339: Property 'block_setLabel' does not exist on type
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    // @ts-ignore - TS2339: Property 'block_setSemanticLabel' does not exist on type
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-  },
-  computed: {
-    ...mapGetters('flow', [
-      'activeFlow',
-    ]),
-    ...mapGetters('builder', [
-      'activeBlock',
-    ]),
-  },
-
-  methods: {
-    ...mapMutations('flow', [
-      'block_setName',
-      'block_setLabel',
-      'block_setSemanticLabel'
-    ]),
-    ...mapMutations('builder', [
-      'activateBlock',
-    ]),
-    ...mapActions('flow', [
-      'flow_addBlankFlow',
-      'flow_addBlankBlockByType']),
-  }
+@Component({
+  ...BaseOptions,
 })
-
-export const ExistingDataNonStartingBlock = () => ({
-  components: {LogBlock, FlowBuilderSidebarEditorContainer},
-  template: LogBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
+class CurrentClass2 extends BaseMountedVueClass {
   async mounted() {
-    // @ts-ignore
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, logBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
-    // @ts-ignore - TS2339: Property 'block_setName' does not exist on type
-    this.block_setName({blockId: blockId, value: "A Name"})
-    // @ts-ignore - TS2339: Property 'block_setLabel' does not exist on type
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    // @ts-ignore - TS2339: Property 'block_setSemanticLabel' does not exist on type
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-
-    // Fake a 1st block to make sure the current block won't be selected
-    // @ts-ignore
-    await safeRegisterBlockModule.bind(this)(CASE_BLOCK_TYPE, caseBlockStore)
-    // @ts-ignore - TS2339: Property 'flow_addBlankBlockByType' does not exist on type
-    const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
-    const {uuid: caseBlockId} = caseBlock 
-    
-    // @ts-ignore - TS2339: Property 'block_setFirstBlockId' does not exist on type
-    this.flow_setFirstBlockId({blockId: caseBlockId, flowId: flowId})
-  },
-
-  computed: {
-    ...mapGetters('flow', [
-      'activeFlow',
-    ]),
-    ...mapGetters('builder', [
-      'activeBlock',
-    ]),
-  },
-
-  methods: {
-    ...mapMutations('flow', [
-      'block_setName',
-      'block_setLabel',
-      'block_setSemanticLabel',
-      'flow_setFirstBlockId'
-    ]),
-    ...mapMutations('builder', [
-      'activateBlock',
-    ]),
-    ...mapActions('flow', [
-      'flow_addBlankFlow',
-      'flow_addBlankBlockByType']),
+    this.setDescription(blockId)
   }
+}
+export const ExistingDataBlock = () => (CurrentClass2)
+
+@Component({
+  ...BaseOptions,
 })
+class CurrentClass3 extends BaseMountedVueClass {
+  async mounted() {
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
+
+    this.setDescription(blockId)
+    await this.fakeCaseBlockAsFirstBlock(flowId)
+  }
+}
+export const ExistingDataNonStartingBlock = () => (CurrentClass3)

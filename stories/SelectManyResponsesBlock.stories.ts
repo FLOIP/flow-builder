@@ -1,31 +1,24 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import {Component} from 'vue-property-decorator'
-
-import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
-
-Vue.use(Vuex)
-
+import {Component, Vue} from 'vue-property-decorator'
+import {
+  BaseMountedVueClass,
+  BaseMountedVueClassWithResourceAndMode,
+  IBaseOptions
+} from './story-utils/storeSetup'
 import selectManyResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import {IRootState, store} from '@/store'
 import selectManyStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
-import {namespace} from 'vuex-class'
-import {get} from 'lodash'
-
-const flowVuexNamespace = namespace('flow')
 
 import {
   SupportedMode,
-  SupportedContentType,
-  IFlow,
 } from '@floip/flow-runner'
-import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+
+Vue.use(Vuex)
 
 export default {
   component: selectManyResponseBlock,
   title: 'MobilePrimitives/selectManyResponseBlock',
-  store: new Vuex.Store({}),
 }
 
 const SelectManyTemplate = `
@@ -36,131 +29,60 @@ const SelectManyTemplate = `
     </flow-builder-sidebar-editor-container>
   `
 
-@Component<any>({
-  template: SelectManyTemplate,
-  
+const BaseOptions: IBaseOptions = {
   components: {
     FlowBuilderSidebarEditorContainer,
     selectManyResponseBlock,
   },
-
+  template: SelectManyTemplate,
   store: new Vuex.Store<IRootState>(store),
-
-  async mounted() {
-    // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
-  },
-})
-class InFlowBuilderClass extends BaseMountedVueClass {}
-
-export const InFlowBuilder = () => {
-  return InFlowBuilderClass
 }
 
-@Component<any>({
-  template: SelectManyTemplate,
-  components: {
-    FlowBuilderSidebarEditorContainer,
-    selectManyResponseBlock,
-  },
-
-  store: new Vuex.Store<IRootState>(store),
-
+@Component({
+  ...BaseOptions,
+})
+class InFlowBuilderClass extends BaseMountedVueClass {
   async mounted() {
-    // @ts-ignore
-    const {block, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
+    await this.baseMounted(BLOCK_TYPE, selectManyStore)
+  }
+}
+export const InFlowBuilder = () => InFlowBuilderClass
+
+@Component({
+  ...BaseOptions,
+
+})
+class IvrOnlyClass extends BaseMountedVueClass {
+  async mounted() {
+    const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectManyStore)
     flow.supportedModes = [SupportedMode.IVR]
-  },
-
-})
-class IvrOnlyClass extends BaseMountedVueClass {}
-
-export const IvrOnly = () => {
-  return IvrOnlyClass
+  }
 }
-@Component<any>({
-  template: SelectManyTemplate,
-  
-  components: {
-    FlowBuilderSidebarEditorContainer,
-    selectManyResponseBlock,
-  },
+export const IvrOnly = () => IvrOnlyClass
 
-  store: new Vuex.Store<IRootState>(store),
-
+@Component({
+  ...BaseOptions,
+})
+class MoreLanguagesClass extends BaseMountedVueClass {
   async mounted() {
-    // @ts-ignore
-    const {block, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
+    const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectManyStore)
     flow.languages = [{id: '1', label: 'English'}, {id: '2', label: 'French'}] // mutation
-  },
+  }
+}
+export const MoreLanguages = () => MoreLanguagesClass
+
+@Component({
+  ...BaseOptions,
 
 })
-class MoreLanguagesClass extends BaseMountedVueClass {}
-
-export const MoreLanguages = () => {
-  return MoreLanguagesClass
-}
-@Component<any>({
-  template: SelectManyTemplate,
-  
-  components: {
-    FlowBuilderSidebarEditorContainer,
-    selectManyResponseBlock,
-  },
-
-  store: new Vuex.Store<IRootState>(store),
-
+class ExistingDataClass extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    // @ts-ignore
-    const {block: {uuid: blockId}, flow} = await baseMounted.bind(this)(BLOCK_TYPE, selectManyStore)
-    this.block_setName({blockId: blockId, value: "A Name"})
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-    // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
-    const {
-      languages: {
-        0: {id: languageId}
-      },
-    }: IFlow = this.activeFlow
-    const resourceId = get(this.activeBlock, `config.prompt`, '')
-    const choiceResourceId = get(this.activeBlock, `config.choices.1`, '')
-
-    const variantSms: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.SMS],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.TEXT],
-    }
-    const variantUssd: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.USSD],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.TEXT],
-    }
-    const variantIvr: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.IVR],
-      // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-      contentType: [SupportedContentType.AUDIO],
-    }
-    // we're assuming this pseudo-variants exist
-    this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
-    this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
-
-    this.resource_setValue({resourceId: choiceResourceId, filter: variantSms, value: "text for SMS"})
-    this.resource_setValue({resourceId: choiceResourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId: choiceResourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
-  },
-
-})
-class ExistingDataClass extends BaseMountedVueClass {
-  @flowVuexNamespace.Mutation block_setName!: void
-  @flowVuexNamespace.Mutation block_setLabel!: void
-  @flowVuexNamespace.Mutation block_setSemanticLabel!: void
-  @flowVuexNamespace.Mutation resource_setValue!: void
+    const {block: {uuid: blockId}, flow} = await this.baseMounted(BLOCK_TYPE, selectManyStore)
+    this.setDescription(blockId)
+    this.setResourceData({
+      shouldSetChoices: true,
+      configPath: 'config.prompt'
+    })
+  }
 }
-
-export const ExistingData = () => {
-  return ExistingDataClass 
-}
+export const ExistingData = () => ExistingDataClass

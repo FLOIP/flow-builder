@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="core-log-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -30,7 +30,7 @@
           </template>
         </template>
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -51,7 +51,7 @@ import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceReso
 import { findOrGenerateStubbedVariantOn } from '@/store/flow/resource'
 import LogStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_LogBlockStore'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'

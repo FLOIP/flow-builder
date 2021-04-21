@@ -166,7 +166,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import lodash, { isEmpty } from 'lodash'

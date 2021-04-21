@@ -1,19 +1,13 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 import RunAnotherFlowBlock from '@/components/interaction-designer/block-types/Core_RunFlowBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import {baseMounted, BaseMountedVueClass} from './story-utils/storeSetup'
-
-import {IRootState, store} from '@/store'
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import runAnotherFlowBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
-import {Component} from "vue-property-decorator";
-import {IFlow} from "@floip/flow-runner";
-import {namespace} from 'vuex-class'
-const flowVuexNamespace = namespace('flow')
+import {Component, Vue} from "vue-property-decorator";
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
 
 Vue.use(Vuex)
-
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 export default {
   title: 'Core/Run Another Flow Block Styled',
@@ -23,39 +17,34 @@ export default {
 
 const RunAnotherFlowBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <run-another-flow-block 
-      :block="activeBlock" 
+    <run-another-flow-block
+      :block="activeBlock"
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-
-// default log block state
-@Component<any>({
+const BaseOptions: IBaseOptions = {
   components: {RunAnotherFlowBlock, FlowBuilderSidebarEditorContainer},
   template: RunAnotherFlowBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
-  async mounted() {
-    // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, runAnotherFlowBlockStore)
-    const baseFlowId = this.activeFlow.uuid
-    // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
-    const flowOne = await this.flow_createWith({
-      props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My other flow'}
-    })
-    // @ts-ignore - TS2339: Property 'flow_add' does not exist on type
-    await this.flow_add({flow:flowOne})
-    // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
-    const flowTwo = await this.flow_createWith({
-      props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My third flow'}
-    })
-    // // @ts-ignore - TS2339: Property 'flow_add' does not exist on type
-    await this.flow_add({flow:flowTwo})
-    this.flow_setActiveFlowId({flowId: baseFlowId})
-  },
+}
+
+// default state
+@Component({
+  ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {
-  @flowVuexNamespace.Action flow_add!: Promise<IFlow>
-  @flowVuexNamespace.Action flow_createWith!: Promise<IFlow>
-  @flowVuexNamespace.Mutation flow_setActiveFlowId
+  async mounted() {
+    await this.baseMounted(BLOCK_TYPE, runAnotherFlowBlockStore)
+    const baseFlowId = this.activeFlow.uuid
+    const flowOne = await this.flow_createWith({
+      props: {uuid: (new IdGeneratorUuidV4()).generate(), name: 'My other flow'}
+    })
+    await this.flow_add({flow:flowOne})
+    const flowTwo = await this.flow_createWith({
+      props: {uuid: (new IdGeneratorUuidV4()).generate(), name: 'My third flow'}
+    })
+    await this.flow_add({flow:flowTwo})
+    this.flow_setActiveFlowId({flowId: baseFlowId})
+  }
 }
 export const Default = () => (DefaultClass)

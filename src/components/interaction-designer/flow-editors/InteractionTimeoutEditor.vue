@@ -9,12 +9,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { IFlow } from '@floip/flow-runner'
 import NumericEditor from '@/components/common/NumericEditor.vue'
 import { namespace } from 'vuex-class'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
+import { mixins } from "vue-class-component";
 
 const flowVuexNamespace = namespace('flow')
 
@@ -22,9 +22,8 @@ const flowVuexNamespace = namespace('flow')
   components: {
     NumericEditor,
   },
-  mixins: [lang],
 })
-class InteractionTimeoutEditor extends Vue {
+class InteractionTimeoutEditor extends mixins(Lang) {
     @Prop() readonly flow!: IFlow
 
     get interactionTimeout(): number {

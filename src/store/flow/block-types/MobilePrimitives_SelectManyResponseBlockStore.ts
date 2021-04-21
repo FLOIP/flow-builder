@@ -1,7 +1,7 @@
 import { ISelectOneResponseBlock } from "@floip/flow-runner/dist/model/block/ISelectOneResponseBlock"
 import { IBlockExit } from "@floip/flow-runner"
 import { IdGeneratorUuidV4 } from "@floip/flow-runner/dist/domain/IdGeneratorUuidV4"
-import { defaults } from 'lodash'
+import { defaultsDeep } from 'lodash'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IFlowsState } from '@/store/flow'
 import { IRootState } from '@/store'
@@ -45,7 +45,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
     await dispatch('createVolatileEmptyChoice', { index: 0 })
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',

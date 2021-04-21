@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="smart-devices-location-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -11,7 +11,7 @@
 
       <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold"/>
       <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout"/>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -30,7 +30,7 @@ import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import LocationStore, { BLOCK_TYPE } from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mobile-primitive-select-one-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -52,7 +52,7 @@
                          :block="block"
                          :flow="flow" />
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -76,7 +76,7 @@ import SelectOneStore, {
   BLOCK_TYPE,
   IInflatedChoicesInterface
 } from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
