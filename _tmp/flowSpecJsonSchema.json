@@ -152,18 +152,22 @@
           "items": {
             "$ref": "#/definitions/IBlock"
           },
+          "minItems": 1,
           "type": "array"
         },
         "exit_block_id": {
           "description": "If provided, the ID of the block in blocks that will be jumped to if there is an error or deliberate exit condition during Flow Run. If not provided, the Flow Run will end immediately.",
+          "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$",
           "type": "string"
         },
         "first_block_id": {
           "description": "The ID of the block in blocks that is at the beginning of the flow.",
+          "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$",
           "type": "string"
         },
         "interaction_timeout": {
           "description": "The number of seconds of inactivity after which Contact input for this flow is no longer accepted, and Runs in progress are terminated",
+          "minimum": 0,
           "type": "number"
         },
         "label": {
@@ -175,10 +179,12 @@
           "items": {
             "$ref": "#/definitions/ILanguage"
           },
+          "minItems": 1,
           "type": "array"
         },
         "last_modified": {
           "description": "The time when this flow was last modified, in UTC, with microsecond precision: \"2016-12-25 13:42:05.234598\"",
+          "format": "date-time",
           "type": "string"
         },
         "name": {
@@ -190,10 +196,12 @@
           "items": {
             "$ref": "#/definitions/SupportedMode"
           },
+          "minItems": 1,
           "type": "array"
         },
         "uuid": {
           "description": "A globally unique identifier for this Flow.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)",
+          "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$",
           "type": "string"
         },
         "vendor_metadata": {

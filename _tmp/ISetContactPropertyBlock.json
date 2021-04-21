@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$ref": "#/definitions/IOpenResponseBlock",
+  "$ref": "#/definitions/ISetContactPropertyBlock",
   "definitions": {
-    "IOpenResponseBlock": {
+    "ISetContactPropertyBlock": {
       "type": "object",
       "properties": {
         "uuid": {
@@ -32,7 +32,7 @@
           "description": "A specific string designating the type or \"subclass\" of this Block. This must be one of the Block type names within the specification, such as Core.RunFlow or MobilePrimitives.Message."
         },
         "config": {
-          "$ref": "#/definitions/IOpenResponseBlockConfig",
+          "$ref": "#/definitions/ISetContactPropertyBlockConfig",
           "description": "Additional parameters that are specific to the type of the block. Details are provided within the Block documentation."
         },
         "exits": {
@@ -52,7 +52,7 @@
       ],
       "additionalProperties": false
     },
-    "IOpenResponseBlockConfig": {
+    "ISetContactPropertyBlockConfig": {
       "type": "object",
       "properties": {
         "set_contact_property": {
@@ -67,41 +67,8 @@
               }
             }
           ]
-        },
-        "prompt": {
-          "type": "string"
-        },
-        "prompt_audio": {
-          "type": "string"
-        },
-        "ivr": {
-          "type": "object",
-          "properties": {
-            "max_duration_seconds": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          "required": [
-            "max_duration_seconds"
-          ],
-          "additionalProperties": false
-        },
-        "text": {
-          "type": "object",
-          "properties": {
-            "max_response_characters": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          "additionalProperties": false
         }
       },
-      "required": [
-        "prompt",
-        "prompt_audio"
-      ],
       "additionalProperties": false
     },
     "SetContactProperty": {
