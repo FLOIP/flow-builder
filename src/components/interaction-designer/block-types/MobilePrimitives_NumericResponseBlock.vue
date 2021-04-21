@@ -37,7 +37,7 @@ import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumer
 import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import NumericStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'

@@ -83,7 +83,7 @@ import {
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'

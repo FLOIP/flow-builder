@@ -17,20 +17,19 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { IFlow, SupportedMode } from '@floip/flow-runner'
 import NumericEditor from '@/components/common/NumericEditor.vue'
 
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
+import { mixins } from "vue-class-component";
 
 @Component({
   components: {
     NumericEditor,
   },
-  mixins: [lang],
 })
-class ModeEditor extends Vue {
+class ModeEditor extends mixins(Lang) {
     @Prop() readonly flow!: IFlow
 
     private availableModes = Object.values(SupportedMode)

@@ -14,13 +14,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import VueMultiselect from 'vue-multiselect';
 import { IBlock, ISetContactPropertyBlockConfig } from '@floip/flow-runner';
 import { Component, Prop } from 'vue-property-decorator';
 import {Getter, namespace} from 'vuex-class'
-import lang from '@/lib/filters/lang';
+import Lang from '@/lib/filters/lang';
 import { find } from 'lodash'
+import { mixins } from "vue-class-component";
 
 const flowVuexNamespace = namespace('flow')
 
@@ -34,9 +34,8 @@ interface IContactPropertyOption {
   components: {
     VueMultiselect,
   },
-  mixins: [lang],
 })
-class ContactPropertySelector extends Vue {
+class ContactPropertySelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   get selectedProperty() {
