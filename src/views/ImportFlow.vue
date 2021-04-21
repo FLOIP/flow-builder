@@ -517,7 +517,7 @@ export default ImportFlow
 </script>
 
 <style lang="scss">
-  .tall-text {
+  .tall-text textarea {
     min-height: 200px
   }
 </style>
