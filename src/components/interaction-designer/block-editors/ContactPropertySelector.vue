@@ -47,12 +47,12 @@ class ContactPropertySelector extends Vue {
       },
     } = this.block.config as ISetContactPropertyBlockConfig
     if (!propertyKey) {
-      return null
+      return {} as IContactPropertyOption
     }
 
     const propertyOption = find(this.subscriberPropertyFields, { name: propertyKey }) as IContactPropertyOption
     if (!propertyOption) {
-      return null
+      return {} as IContactPropertyOption
     }
 
     return propertyOption
@@ -66,8 +66,8 @@ class ContactPropertySelector extends Vue {
     })
   }
 
-  @flowVuexNamespace.Mutation block_updateConfigByPath
-  @Getter subscriberPropertyFields: object[]
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
+  @Getter subscriberPropertyFields!: object[]
 }
 
 export default ContactPropertySelector;

@@ -41,12 +41,12 @@ class GroupSelector extends Vue {
   get selectedGroup() {
     const { groupKey } = this.block.config as ISetGroupMembershipBlockConfig
     if (!groupKey) {
-      return null
+      return {} as IGroupOption
     }
 
     const groupOption = find(this.groups, { id: groupKey }) as IGroupOption
     if (!groupOption) {
-      return null
+      return {} as IGroupOption
     }
 
     return groupOption
@@ -65,8 +65,8 @@ class GroupSelector extends Vue {
     })
   }
 
-  @flowVuexNamespace.Mutation block_updateConfigByPath
-  @Getter groups: object[]
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
+  @Getter groups!: object[]
 }
 
 export default GroupSelector

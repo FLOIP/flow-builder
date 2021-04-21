@@ -35,7 +35,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -53,9 +52,10 @@ import GroupSelector from '@/components/interaction-designer/block-editors/Group
 import VueMultiselect from 'vue-multiselect'
 
 import SetGroupMembershipStore, { BLOCK_TYPE, ADD_KEY, REMOVE_KEY } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
-import lang, { trans } from '@/lib/filters/lang'
+import { Lang } from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import { find } from 'lodash'
+import {mixins} from "vue-class-component";
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
@@ -78,20 +78,19 @@ interface IGroupActionOption {
     GroupSelector,
     VueMultiselect,
   },
-  mixins: [lang],
 })
-class Core_SetGroupMembershipBlock extends Vue {
+class Core_SetGroupMembershipBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
 
   actionsList: IGroupActionOption[] = [
     {
       id: ADD_KEY,
-      name: trans('flow-builder.add'),
+      name: this.trans('flow-builder.add'),
     },
     {
       id: REMOVE_KEY,
-      name: trans('flow-builder.remove'),
+      name: this.trans('flow-builder.remove'),
     },
   ]
 
@@ -99,25 +98,25 @@ class Core_SetGroupMembershipBlock extends Vue {
     const { isMember } = this.block.config as ISetGroupMembershipBlockConfig
     //TODO: we can remove the safe cast JSON.parse(isMember) once ISetGroupMembershipBlockConfig.isMember type is changed to boolean
     if (JSON.parse(isMember) === false) {
-      return find(this.actionsList, { id: REMOVE_KEY }) || null
+      return find(this.actionsList, { id: REMOVE_KEY }) || {} as IGroupActionOption
     }
 
     if (JSON.parse(isMember) === true) {
-      return find(this.actionsList, { id: ADD_KEY }) || null
+      return find(this.actionsList, { id: ADD_KEY }) || {} as IGroupActionOption
     }
 
-    return null
+    return {} as IGroupActionOption
   }
 
   set selectedAction(action: IGroupActionOption) {
     this.setIsMember(action)
   }
 
-  @blockVuexNamespace.Action setIsMember: (action: IGroupActionOption) => Promise<any>
+  @blockVuexNamespace.Action setIsMember!: (action: IGroupActionOption) => Promise<any>
 
-  @builderVuexNamespace.Getter isEditable !: boolean
+  @builderVuexNamespace.Getter isEditable!: boolean
 
-  @flowVuexNamespace.Mutation block_updateConfigByPath
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
 }
 
 export default Core_SetGroupMembershipBlock
