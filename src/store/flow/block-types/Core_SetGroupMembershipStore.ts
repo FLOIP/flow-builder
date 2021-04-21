@@ -8,6 +8,11 @@ import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUui
 import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
+export interface IGroupOption {
+  id: string;
+  name: string;
+}
+
 export const ADD_KEY = 'add'
 export const REMOVE_KEY = 'remove'
 

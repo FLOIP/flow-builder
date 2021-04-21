@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label>{{matchNotFoundText}}</label>
+    <label>{{ matchNotFoundText | trans }}</label>
     <div v-for="missingMatch in missingMatches" :key="`${getIdentifier(missingMatch)}-missing`">
       <div class="form-check form-check-inline">
         <label class="form-check-label">{{getLabel(missingMatch)}}</label>

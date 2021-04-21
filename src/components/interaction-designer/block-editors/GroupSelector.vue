@@ -24,10 +24,7 @@ import { find } from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 
-interface IGroupOption {
-  id: string;
-  name: string;
-}
+import { IGroupOption } from '../../../store/flow/block-types/Core_SetGroupMembershipStore'
 
 @Component<any>({
   components: {
