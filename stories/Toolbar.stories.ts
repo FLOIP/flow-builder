@@ -42,7 +42,7 @@ const ToolbarTemplate = `
 store.modules.flow.mutations.flow_setActiveFlowUUID = function flow_setActiveFlowUUID(state, { flowId, newUUID }) {
   const flow = findFlowWith(flowId, state as unknown as IContext)
   flow.uuid = newUUID
-  state.firstFlowId = newUUID
+  state.first_flow_id = newUUID
 }
 
 const BaseOptions: IBaseOptions = {
