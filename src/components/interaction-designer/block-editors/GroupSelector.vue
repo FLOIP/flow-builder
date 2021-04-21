@@ -38,12 +38,12 @@ class GroupSelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   get selectedGroup() {
-    const { groupKey } = this.block.config as ISetGroupMembershipBlockConfig
-    if (!groupKey) {
+    const { group_key } = this.block.config as ISetGroupMembershipBlockConfig
+    if (!group_key) {
       return {} as IGroupOption
     }
 
-    const groupOption = find(this.groups, { id: groupKey }) as IGroupOption
+    const groupOption = find(this.groups, { id: group_key }) as IGroupOption
     if (!groupOption) {
       return {} as IGroupOption
     }
@@ -54,7 +54,7 @@ class GroupSelector extends mixins(Lang) {
   set selectedGroup(value: IGroupOption) {
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
-      path: 'groupKey',
+      path: 'group_key',
       value: value.id,
     })
     this.block_updateConfigByPath({

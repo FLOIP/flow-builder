@@ -93,13 +93,13 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
   ]
 
   get selectedAction() {
-    const { isMember } = this.block.config as ISetGroupMembershipBlockConfig
-    //TODO: we can remove the safe cast JSON.parse(isMember) once ISetGroupMembershipBlockConfig.isMember type is changed to boolean
-    if (JSON.parse(isMember) === false) {
+    const { is_member } = this.block.config as ISetGroupMembershipBlockConfig
+    //TODO: we can remove the safe cast JSON.parse(is_member) once ISetGroupMembershipBlockConfig.is_member type is changed to boolean
+    if (JSON.parse(is_member) === false) {
       return find(this.actionsList, { id: REMOVE_KEY }) || {} as IGroupActionOption
     }
 
-    if (JSON.parse(isMember) === true) {
+    if (JSON.parse(is_member) === true) {
       return find(this.actionsList, { id: ADD_KEY }) || {} as IGroupActionOption
     }
 

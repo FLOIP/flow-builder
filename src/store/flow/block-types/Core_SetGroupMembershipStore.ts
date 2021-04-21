@@ -22,7 +22,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
@@ -35,9 +35,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       label: '',
       semanticLabel: '',
       config: {
-        groupKey: '',
+        group_key: '',
         groupName: '',
-        isMember: null,
+        is_member: null,
       },
       exits,
     })
@@ -47,7 +47,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const activeBlock = rootGetters['builder/activeBlock']
     commit('flow/block_updateConfigByPath', {
       blockId: activeBlock.uuid,
-      path: 'isMember',
+      path: 'is_member',
       value: action === null || action === undefined ? null : (action.id === ADD_KEY),
     }, { root: true })
   },
