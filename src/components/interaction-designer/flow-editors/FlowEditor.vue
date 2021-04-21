@@ -11,7 +11,7 @@
             <validation-message
               :message-key="`flow/${flow.uuid}/.interaction_timeout`"
               #input-control="{ isValid }">
-              <flow-interaction-timeout-editor :flow="flow" :state="!isValid"/>
+              <flow-interaction-timeout-editor :flow="flow" :validationState="!isValid"/>
             </validation-message>
           </div>
           <div :class="{'col-12': sidebar, 'col-6': !sidebar}">

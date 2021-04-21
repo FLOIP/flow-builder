@@ -4,7 +4,7 @@
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.Interaction-timeout' | trans"
         :placeholder="'flow-builder.enter-value' | trans"
-        :state="state">
+        :validationState="validationState">
     </numeric-editor>
   </div>
 </template>
@@ -26,7 +26,7 @@ const flowVuexNamespace = namespace('flow')
 })
 class InteractionTimeoutEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
-  @Prop() state?: boolean
+  @Prop() validationState?: boolean
 
   get interactionTimeout(): number {
     // 30 comes from src/store/flow/flow.ts
