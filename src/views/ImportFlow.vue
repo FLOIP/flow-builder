@@ -54,7 +54,7 @@
                 @reactToMatch="handleMatchGroup"
                 :missing-matches="missingGroups"
                 type-id="id"
-                type-label="id"
+                type-label="groupName"
                 :existing-options-without-match="existingGroupsWithoutMatch"
                 match-not-found-text="flow-builder.match-for-groups-not-found"/>
             </div>
@@ -95,7 +95,7 @@
                 @reactToMatch="handleMatchGroup"
                 :missing-matches="missingGroups"
                 type-id="id"
-                type-label="id"
+                type-label="groupName"
                 :existing-options-without-match="existingGroupsWithoutMatch"
                 match-not-found-text="flow-builder.match-for-groups-not-found"/>
             </div>
@@ -388,9 +388,11 @@ class ImportFlow extends Vue {
     const matchingGroups = []
     newGroupBlocks.forEach((groupBlock) => {
       const groupIdentifier = get(groupBlock, 'config.groupKey')
+      const groupName = get(groupBlock, 'config.groupName')
       if(groupIdentifier) {
         let matchingGroup = find(this.groups, (orgGroup) => {
           return isEqual(orgGroup.id, groupIdentifier)
+            isEqual(orgGroup.name, groupName)
         })
         if(!matchingGroup) {
           //Unlike the others we don't reset this. 
@@ -399,9 +401,9 @@ class ImportFlow extends Vue {
           //Name is all we can get when there isn't a match
           //...as the block sidebar gets the actual displayLabel by matching
           if(!get(this.blocksMissingGroups, groupIdentifier)) {
-            this.blocksMissingGroups[groupIdentifier] = []
+            this.blocksMissingGroups[groupIdentifier] = { groupName: groupName, blockIds: [] }
           }
-          this.blocksMissingGroups[groupIdentifier].push(groupBlock.uuid)
+          this.blocksMissingGroups[groupIdentifier]['blockIds'].push(groupBlock.uuid)
         } else {
           matchingGroups.push(matchingGroup)
         }
@@ -409,7 +411,7 @@ class ImportFlow extends Vue {
     })
 
     this.missingGroups = keys(this.blocksMissingGroups).map((groupIdentifier) => {
-      return { id: groupIdentifier, blockIds: this.blocksMissingGroups[groupIdentifier] }
+      return Object.assign({ id: groupIdentifier }, this.blocksMissingGroups[groupIdentifier])
     })
     this.matchingGroups = matchingGroups
     //Update the languages so we use the org settings for things like id and orgId
