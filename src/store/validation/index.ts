@@ -8,7 +8,7 @@ import { JSONSchema7 } from 'json-schema'
 import { IBlock, IFlow } from '@floip/flow-runner'
 import { isEmpty, get, forIn } from 'lodash'
 
-const ajv = new Ajv();
+const ajv = new Ajv({ allErrors:true })
 const DEV_ERROR_KEYWORDS = [
   'additionalProperties', // unwanted extra props
   'required' // missing props
@@ -34,7 +34,7 @@ export const stateFactory = (): IValidationState => ({
 export const getters: GetterTree<IValidationState, IRootState> = {
   /**
    * Human readable errors, keys are index like `flow/flowId/.path/.to/.prop`.
-   * Note that indexedErrors has more elements than validationStatuses
+   * Note that indexedErrors has more elements than validationStatuses.
    */
   flattenErrorMessages(state): IIndexedString {
     let accumulator: IIndexedString = {}
@@ -131,7 +131,8 @@ function debugValidationStatus(status: IValidationStatus, customMessage: string)
     console.debug(
       customMessage,
       ' | isValid:', status.isValid,
-      ' | error message:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
+      ' | error dataPaths:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'dataPath', 'undefined')).join(';') : 'undefined'}`,
+      ' | error messages:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
       ' | error details:', status
     )
   } else {
