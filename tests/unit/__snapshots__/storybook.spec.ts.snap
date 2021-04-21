@@ -49,7 +49,9 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                       data-block-type="ConsoleIO\\\\Print"
                       data-for-block-id="fake-uuid-181"
                     >
-                      <div>
+                      <div
+                        class="console-io-print-block"
+                      >
                         <h3
                           class="no-room-above"
                         >
@@ -59,7 +61,9 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                         </h3>
                          
                         <fieldset>
-                          <div>
+                          <div
+                            class="block-name"
+                          >
                             <div
                               class="form-group"
                             >
@@ -82,7 +86,9 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                             </div>
                           </div>
                            
-                          <div>
+                          <div
+                            class="block-label"
+                          >
                             <div
                               class="form-group"
                             >
@@ -98,7 +104,9 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                             </div>
                           </div>
                            
-                          <div>
+                          <div
+                            class="block-semantic-label"
+                          >
                             <div
                               class="form-group"
                             >
@@ -115,7 +123,7 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                           </div>
                            
                           <!---->
-                           
+                            
                           <div
                             class="starting-block-button"
                           >
@@ -140,7 +148,7 @@ exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
                         </fieldset>
                          
                         <div
-                          class="text-right"
+                          class="block-id text-right"
                         >
                           <small
                             class="text-muted"
@@ -214,7 +222,9 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                       data-block-type="ConsoleIO\\\\Read"
                       data-for-block-id="fake-uuid-199"
                     >
-                      <div>
+                      <div
+                        class="console-io-read-block"
+                      >
                         <h3
                           class="no-room-above"
                         >
@@ -224,7 +234,9 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                         </h3>
                          
                         <fieldset>
-                          <div>
+                          <div
+                            class="block-name"
+                          >
                             <div
                               class="form-group"
                             >
@@ -247,7 +259,9 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                             </div>
                           </div>
                            
-                          <div>
+                          <div
+                            class="block-label"
+                          >
                             <div
                               class="form-group"
                             >
@@ -263,7 +277,9 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                             </div>
                           </div>
                            
-                          <div>
+                          <div
+                            class="block-semantic-label"
+                          >
                             <div
                               class="form-group"
                             >
@@ -279,7 +295,9 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                             </div>
                           </div>
                            
-                          <div>
+                          <div
+                            class="block-format-string"
+                          >
                             <div
                               class="form-group"
                             >
@@ -294,7 +312,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                
                             </div>
                           </div>
-                            
+                             
                           <div
                             class="starting-block-button"
                           >
@@ -319,7 +337,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                         </fieldset>
                          
                         <div
-                          class="text-right"
+                          class="block-id text-right"
                         >
                           <small
                             class="text-muted"
@@ -501,7 +519,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                       class="tree-sidebar-edit-flow"
                       data-for-flow-id="fake-uuid-10"
                     >
-                      <div>
+                      <div
+                        class="flow-editor"
+                      >
                         <h3
                           class="no-room-above"
                         >
@@ -518,7 +538,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               class="col-12"
                             >
                               <div
-                                class="form-group flow-name"
+                                class="form-group flow-label"
                               >
                                 <div
                                   class="form-group"
@@ -737,7 +757,78 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
             <div
               class="interaction-designer-contents panel panel-default"
             >
-              <!---->
+              <div
+                class="tree-builder-toolbar"
+              >
+                <!---->
+                 
+                <div
+                  class="tree-workspace-panel-heading panel-heading"
+                >
+                  <div
+                    class="tree-workspace-panel-heading-contents"
+                  >
+                    <div
+                      class="btn-toolbar"
+                    >
+                      <button
+                        class="btn btn-outline-secondary mr-2"
+                      >
+                        <i
+                          class="glyphicon glyphicon-chevron-up"
+                        />
+                        
+          Import / Export
+        
+                      </button>
+                       
+                      <!---->
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/trees/1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+                        
+            Edit Flow
+          
+                      </a>
+                       
+                      <!---->
+                       
+                      <!---->
+                       
+                      <!---->
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+                        
+          New Flow
+        
+                      </a>
+                       
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+                        
+          Home
+        
+                      </a>
+                        
+                      <div
+                        class="btn-group pull-right mr-2"
+                      >
+                        <!---->
+                         
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -769,7 +860,329 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
             <div
               class="interaction-designer-contents panel panel-default"
             >
-              <!---->
+              <div
+                class="tree-builder-toolbar"
+              >
+                <!---->
+                 
+                <div
+                  class="tree-workspace-panel-heading panel-heading"
+                >
+                  <div
+                    class="tree-workspace-panel-heading-contents"
+                  >
+                    <div
+                      class="btn-toolbar"
+                    >
+                      <button
+                        class="btn btn-outline-secondary mr-2"
+                      >
+                        <i
+                          class="glyphicon glyphicon-chevron-up"
+                        />
+                        
+          Import / Export
+        
+                      </button>
+                       
+                      <div
+                        class="btn-group mr-2"
+                      >
+                        <a
+                          class="btn btn-outline-secondary active"
+                          href="#/trees/1/interaction-designer"
+                        >
+                          
+            Flow view
+          
+                        </a>
+                         
+                        <a
+                          class="btn btn-secondary"
+                          href="#/trees/1/resource-viewer"
+                        >
+                          
+            Resources view
+          
+                        </a>
+                      </div>
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2 active"
+                        href="#/trees/1/interaction-designer/view"
+                        title="Click to toggle editing"
+                      >
+                        
+            View Flow
+          
+                      </a>
+                       
+                      <div
+                        class="dropdown mr-2"
+                      >
+                        <button
+                          class="btn btn-outline-secondary dropdown-toggle"
+                          data-toggle="dropdown"
+                          type="button"
+                        >
+                          
+            Add Block
+          
+                        </button>
+                         
+                        <div
+                          class="dropdown-menu"
+                        >
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Print"
+                            href="#"
+                          >
+                            
+                Print
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Read"
+                            href="#"
+                          >
+                            
+                Read
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Case"
+                            href="#"
+                          >
+                            
+                Case
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Log"
+                            href="#"
+                          >
+                            
+                Log
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Output"
+                            href="#"
+                          >
+                            
+                Output
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\RunFlow"
+                            href="#"
+                          >
+                            
+                Run Flow
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetContactProperty"
+                            href="#"
+                          >
+                            
+                Set Contact Property
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetGroupMembership"
+                            href="#"
+                          >
+                            
+                Set Group Membership
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\Message"
+                            href="#"
+                          >
+                            
+                Message
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            href="#"
+                          >
+                            
+                Numeric Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            href="#"
+                          >
+                            
+                Open Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            href="#"
+                          >
+                            
+                Select One Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            href="#"
+                          >
+                            
+                Select Many Responses
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\LocationResponse"
+                            href="#"
+                          >
+                            
+                Location Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            href="#"
+                          >
+                            
+                Photo Response
+              
+                          </a>
+                           
+                          <!---->
+                           
+                          <!---->
+                        </div>
+                      </div>
+                       
+                      <button
+                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        disabled="disabled"
+                        type="button"
+                      >
+                        
+          Duplicate
+        
+                      </button>
+                       
+                      <button
+                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        disabled="disabled"
+                        type="button"
+                      >
+                        
+          Delete
+        
+                      </button>
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+                        
+          New Flow
+        
+                      </a>
+                       
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+                        
+          Home
+        
+                      </a>
+                       
+                      <a
+                        class="btn btn-success"
+                        disabled="disabled"
+                        href="#"
+                        title="another grouped button"
+                      >
+                        
+           Action X
+        
+                      </a>
+                       
+                      <a
+                        class="btn btn-warning"
+                        href="#"
+                        title="another grouped button"
+                      >
+                        
+           Action Y
+        
+                      </a>
+                       
+                      <div
+                        class="btn-group pull-right mr-2"
+                      >
+                        <button
+                          class="btn btn-primary tree-save-tree"
+                          title="Save changes to the flow"
+                          type="button"
+                        >
+                          
+            Save
+          
+                        </button>
+                         
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -801,7 +1214,328 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
             <div
               class="interaction-designer-contents panel panel-default"
             >
-              <!---->
+              <div
+                class="tree-builder-toolbar"
+              >
+                <!---->
+                 
+                <div
+                  class="tree-workspace-panel-heading panel-heading"
+                >
+                  <div
+                    class="tree-workspace-panel-heading-contents"
+                  >
+                    <div
+                      class="btn-toolbar"
+                    >
+                      <button
+                        class="btn btn-outline-secondary mr-2"
+                      >
+                        <i
+                          class="glyphicon glyphicon-chevron-up"
+                        />
+                        
+          Import / Export
+        
+                      </button>
+                       
+                      <div
+                        class="btn-group mr-2"
+                      >
+                        <a
+                          class="btn btn-outline-secondary active"
+                          href="#/trees/1/interaction-designer"
+                        >
+                          
+            Flow view
+          
+                        </a>
+                         
+                        <a
+                          class="btn btn-secondary"
+                          href="#/trees/1/resource-viewer"
+                        >
+                          
+            Resources view
+          
+                        </a>
+                      </div>
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2 active"
+                        href="#/trees/1/interaction-designer/view"
+                        title="Click to toggle editing"
+                      >
+                        
+            View Flow
+          
+                      </a>
+                       
+                      <div
+                        class="dropdown mr-2"
+                      >
+                        <button
+                          class="btn btn-outline-secondary dropdown-toggle"
+                          data-toggle="dropdown"
+                          type="button"
+                        >
+                          
+            Add Block
+          
+                        </button>
+                         
+                        <div
+                          class="dropdown-menu"
+                        >
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Print"
+                            href="#"
+                          >
+                            
+                Print
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Read"
+                            href="#"
+                          >
+                            
+                Read
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Case"
+                            href="#"
+                          >
+                            
+                Case
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Log"
+                            href="#"
+                          >
+                            
+                Log
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Output"
+                            href="#"
+                          >
+                            
+                Output
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\RunFlow"
+                            href="#"
+                          >
+                            
+                Run Flow
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetContactProperty"
+                            href="#"
+                          >
+                            
+                Set Contact Property
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetGroupMembership"
+                            href="#"
+                          >
+                            
+                Set Group Membership
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\Message"
+                            href="#"
+                          >
+                            
+                Message
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            href="#"
+                          >
+                            
+                Numeric Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            href="#"
+                          >
+                            
+                Open Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            href="#"
+                          >
+                            
+                Select One Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            href="#"
+                          >
+                            
+                Select Many Responses
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\LocationResponse"
+                            href="#"
+                          >
+                            
+                Location Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            href="#"
+                          >
+                            
+                Photo Response
+              
+                          </a>
+                           
+                          <!---->
+                           
+                          <!---->
+                        </div>
+                      </div>
+                       
+                      <button
+                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        disabled="disabled"
+                        type="button"
+                      >
+                        
+          Duplicate
+        
+                      </button>
+                       
+                      <button
+                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        disabled="disabled"
+                        type="button"
+                      >
+                        
+          Delete
+        
+                      </button>
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+                        
+          New Flow
+        
+                      </a>
+                       
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+                        
+          Home
+        
+                      </a>
+                        
+                      <div
+                        class="btn-group pull-right mr-2"
+                      >
+                        <button
+                          class="btn btn-primary tree-save-tree"
+                          title="Save changes to the flow"
+                          type="button"
+                        >
+                          
+            Save
+          
+                        </button>
+                         
+                        <a
+                          class="btn btn-success"
+                          disabled="disabled"
+                          href="#"
+                          title="another grouped button"
+                        >
+                          
+           Action X
+        
+                        </a>
+                         
+                        <a
+                          class="btn btn-warning"
+                          href="#"
+                          title="another grouped button"
+                        >
+                          
+           Action Y
+        
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -833,7 +1567,300 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
             <div
               class="interaction-designer-contents panel panel-default"
             >
-              <!---->
+              <div
+                class="tree-builder-toolbar"
+              >
+                <!---->
+                 
+                <div
+                  class="tree-workspace-panel-heading panel-heading"
+                >
+                  <div
+                    class="tree-workspace-panel-heading-contents"
+                  >
+                    <div
+                      class="btn-toolbar"
+                    >
+                      <button
+                        class="btn btn-outline-secondary mr-2"
+                      >
+                        <i
+                          class="glyphicon glyphicon-chevron-up"
+                        />
+                        
+          Import / Export
+        
+                      </button>
+                       
+                      <div
+                        class="btn-group mr-2"
+                      >
+                        <a
+                          class="btn btn-outline-secondary active"
+                          href="#/trees/1/interaction-designer"
+                        >
+                          
+            Flow view
+          
+                        </a>
+                         
+                        <a
+                          class="btn btn-secondary"
+                          href="#/trees/1/resource-viewer"
+                        >
+                          
+            Resources view
+          
+                        </a>
+                      </div>
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2 active"
+                        href="#/trees/1/interaction-designer/view"
+                        title="Click to toggle editing"
+                      >
+                        
+            View Flow
+          
+                      </a>
+                       
+                      <div
+                        class="dropdown mr-2"
+                      >
+                        <button
+                          class="btn btn-outline-secondary dropdown-toggle"
+                          data-toggle="dropdown"
+                          type="button"
+                        >
+                          
+            Add Block
+          
+                        </button>
+                         
+                        <div
+                          class="dropdown-menu"
+                        >
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Print"
+                            href="#"
+                          >
+                            
+                Print
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="ConsoleIO\\\\Read"
+                            href="#"
+                          >
+                            
+                Read
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Case"
+                            href="#"
+                          >
+                            
+                Case
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Log"
+                            href="#"
+                          >
+                            
+                Log
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\Output"
+                            href="#"
+                          >
+                            
+                Output
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\RunFlow"
+                            href="#"
+                          >
+                            
+                Run Flow
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetContactProperty"
+                            href="#"
+                          >
+                            
+                Set Contact Property
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetGroupMembership"
+                            href="#"
+                          >
+                            
+                Set Group Membership
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\Message"
+                            href="#"
+                          >
+                            
+                Message
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            href="#"
+                          >
+                            
+                Numeric Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            href="#"
+                          >
+                            
+                Open Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            href="#"
+                          >
+                            
+                Select One Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            href="#"
+                          >
+                            
+                Select Many Responses
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\LocationResponse"
+                            href="#"
+                          >
+                            
+                Location Response
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            href="#"
+                          >
+                            
+                Photo Response
+              
+                          </a>
+                           
+                          <!---->
+                           
+                          <!---->
+                        </div>
+                      </div>
+                       
+                      <button
+                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        disabled="disabled"
+                        type="button"
+                      >
+                        
+          Duplicate
+        
+                      </button>
+                       
+                      <button
+                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        disabled="disabled"
+                        type="button"
+                      >
+                        
+          Delete
+        
+                      </button>
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+                        
+          New Flow
+        
+                      </a>
+                       
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+                        
+          Home
+        
+                      </a>
+                        
+                      <div
+                        class="btn-group pull-right mr-2"
+                      >
+                        <!---->
+                         
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -865,7 +1892,98 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
             <div
               class="interaction-designer-contents panel panel-default"
             >
-              <!---->
+              <div
+                class="tree-builder-toolbar"
+              >
+                <!---->
+                 
+                <div
+                  class="tree-workspace-panel-heading panel-heading"
+                >
+                  <div
+                    class="tree-workspace-panel-heading-contents"
+                  >
+                    <div
+                      class="btn-toolbar"
+                    >
+                      <button
+                        class="btn btn-outline-secondary mr-2"
+                      >
+                        <i
+                          class="glyphicon glyphicon-chevron-up"
+                        />
+                        
+          Import / Export
+        
+                      </button>
+                       
+                      <div
+                        class="btn-group mr-2"
+                      >
+                        <a
+                          class="btn btn-outline-secondary active"
+                          href="#/trees/1/interaction-designer"
+                        >
+                          
+            Flow view
+          
+                        </a>
+                         
+                        <a
+                          class="btn btn-secondary"
+                          href="#/trees/1/resource-viewer"
+                        >
+                          
+            Resources view
+          
+                        </a>
+                      </div>
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/trees/1/interaction-designer/edit"
+                        title="Click to toggle editing"
+                      >
+                        
+            Edit Flow
+          
+                      </a>
+                       
+                      <!---->
+                       
+                      <!---->
+                       
+                      <!---->
+                       
+                      <a
+                        class="btn btn-outline-secondary mr-2"
+                        href="#/flows/new"
+                      >
+                        
+          New Flow
+        
+                      </a>
+                       
+                      <a
+                        aria-current="page"
+                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        href="#/"
+                      >
+                        
+          Home
+        
+                      </a>
+                        
+                      <div
+                        class="btn-group pull-right mr-2"
+                      >
+                        <!---->
+                         
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -924,7 +2042,9 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                       data-block-type="MobilePrimitives\\\\Message"
                       data-for-block-id="fake-uuid-62"
                     >
-                      <div>
+                      <div
+                        class="mobile-primitive-message-block"
+                      >
                         <h3
                           class="no-room-above"
                         >
@@ -934,7 +2054,9 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                         </h3>
                          
                         <fieldset>
-                          <div>
+                          <div
+                            class="block-name"
+                          >
                             <div
                               class="form-group"
                             >
@@ -957,7 +2079,9 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                             </div>
                           </div>
                            
-                          <div>
+                          <div
+                            class="block-label"
+                          >
                             <div
                               class="form-group"
                             >
@@ -973,7 +2097,9 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                             </div>
                           </div>
                            
-                          <div>
+                          <div
+                            class="block-semantic-label"
+                          >
                             <div
                               class="form-group"
                             >
@@ -990,7 +2116,7 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                           </div>
                            
                           <!---->
-                           
+                            
                           <div
                             class="starting-block-button"
                           >
@@ -1015,7 +2141,7 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                         </fieldset>
                          
                         <div
-                          class="text-right"
+                          class="block-id text-right"
                         >
                           <small
                             class="text-muted"
@@ -1197,7 +2323,9 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                       data-block-type="SmartDevices\\\\LocationResponse"
                       data-for-block-id="fake-uuid-13"
                     >
-                      <div>
+                      <div
+                        class="smart-devices-location-response-block"
+                      >
                         <h3
                           class="no-room-above"
                         >
@@ -1207,7 +2335,9 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                         </h3>
                          
                         <fieldset>
-                          <div>
+                          <div
+                            class="block-name"
+                          >
                             <div
                               class="form-group"
                             >
@@ -1230,7 +2360,9 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                             </div>
                           </div>
                            
-                          <div>
+                          <div
+                            class="block-label"
+                          >
                             <div
                               class="form-group"
                             >
@@ -1246,7 +2378,9 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                             </div>
                           </div>
                            
-                          <div>
+                          <div
+                            class="block-semantic-label"
+                          >
                             <div
                               class="form-group"
                             >
@@ -1306,7 +2440,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                
                             </div>
                           </div>
-                           
+                            
                           <div
                             class="starting-block-button"
                           >
@@ -1331,7 +2465,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                         </fieldset>
                          
                         <div
-                          class="text-right"
+                          class="block-id text-right"
                         >
                           <small
                             class="text-muted"
@@ -1405,7 +2539,9 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                       data-block-type="SmartDevices\\\\PhotoResponse"
                       data-for-block-id="fake-uuid-160"
                     >
-                      <div>
+                      <div
+                        class="smart-devices-photo-response-block"
+                      >
                         <h3
                           class="no-room-above"
                         >
@@ -1415,7 +2551,9 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                         </h3>
                          
                         <fieldset>
-                          <div>
+                          <div
+                            class="block-name"
+                          >
                             <div
                               class="form-group"
                             >
@@ -1438,7 +2576,9 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                             </div>
                           </div>
                            
-                          <div>
+                          <div
+                            class="block-label"
+                          >
                             <div
                               class="form-group"
                             >
@@ -1454,7 +2594,9 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                             </div>
                           </div>
                            
-                          <div>
+                          <div
+                            class="block-semantic-label"
+                          >
                             <div
                               class="form-group"
                             >
@@ -1469,7 +2611,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                
                             </div>
                           </div>
-                           
+                            
                           <div
                             class="starting-block-button"
                           >
@@ -1494,7 +2636,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                         </fieldset>
                          
                         <div
-                          class="text-right"
+                          class="block-id text-right"
                         >
                           <small
                             class="text-muted"
