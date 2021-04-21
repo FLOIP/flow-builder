@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="core-output-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -13,7 +13,7 @@
           :placeholder="'flow-builder.edit-expression' | trans"
           :current-expression="value"
           @commitExpressionChange="commitExpressionChange"/>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -30,7 +30,7 @@ import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock'
 import { IFlow } from '@floip/flow-runner'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 import OutputStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_OutputBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'

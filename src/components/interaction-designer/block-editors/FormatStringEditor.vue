@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="block-format-string">
     <text-editor v-model="formatString"
         :label="'flow-builder.format-string' | trans"
         :placeholder="'flow-builder.enter-format-string' | trans"/>
@@ -8,7 +8,7 @@
 
 <script>
 import TextEditor from '@/components/common/TextEditor'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
