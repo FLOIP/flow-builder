@@ -20,17 +20,19 @@
         <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString" :state="!isFormatStringValid"/>
       </validation-message>
 
-      <validation-message :message-key="`block/${block.uuid}/.config.destination_variables`" #input-control="{ isValid: isDestinationVariablesValid }">
-        <div v-for="(variableStringFormat,i) in destinationVariablesFields"
-             class="form-group form-inline">
+
+      <div v-for="(variableStringFormat,i) in destinationVariablesFields"
+           class="form-group form-inline">
+        <validation-message :message-key="`block/${block.uuid}/.config.destination_variables[${i}]`" #input-control="{ isValid: isDestinationVariablesValid }">
           <text-editor :label="i+1"
               :placeholder="'flow-builder.edit-variable' | trans"
               :state="!isDestinationVariablesValid"
               value=""
               @keydown="filterVariableName"
               @input="updatedestinationVariables($event, i)"/>
-        </div>
-      </validation-message>
+        </validation-message>
+      </div>
+
 
       <first-block-editor-button
           :flow="flow"
