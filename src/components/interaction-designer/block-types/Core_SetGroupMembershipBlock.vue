@@ -52,10 +52,10 @@ import GroupSelector from '@/components/interaction-designer/block-editors/Group
 import VueMultiselect from 'vue-multiselect'
 
 import SetGroupMembershipStore, { BLOCK_TYPE, ADD_KEY, REMOVE_KEY } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import { find } from 'lodash'
-import {mixins} from "vue-class-component";
+import { mixins } from "vue-class-component";
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
@@ -66,9 +66,7 @@ interface IGroupActionOption {
   name: string;
 }
 
-//providing this generic is required by tsserver checking but not in the build run by yarn storybook
-//TODO - understand what is going on here and if there is something more correct we should have instead
-@Component<any>({
+@Component({
   components: {
     BlockNameEditor,
     BlockLabelEditor,

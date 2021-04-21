@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import lodash, { forEach } from 'lodash'
 
 import { mapState } from 'vuex'

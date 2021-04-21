@@ -27,7 +27,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -36,7 +35,7 @@ import { IBlockExitTestRequired, IFlow, IBlockExit } from '@floip/flow-runner'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 
 import CaseStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_CaseBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'

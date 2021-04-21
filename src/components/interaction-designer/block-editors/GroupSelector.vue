@@ -14,13 +14,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import VueMultiselect from 'vue-multiselect'
 import { IBlock, ISetGroupMembershipBlockConfig } from '@floip/flow-runner'
 import { Component, Prop } from 'vue-property-decorator'
 import { namespace, Getter } from 'vuex-class'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { find } from 'lodash'
+import { mixins } from "vue-class-component";
 
 const flowVuexNamespace = namespace('flow')
 
@@ -33,9 +33,8 @@ interface IGroupOption {
   components: {
     VueMultiselect,
   },
-  mixins: [lang],
 })
-class GroupSelector extends Vue {
+class GroupSelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   get selectedGroup() {

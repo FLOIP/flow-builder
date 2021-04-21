@@ -76,7 +76,7 @@ import SelectOneStore, {
   BLOCK_TYPE,
   IInflatedChoicesInterface
 } from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'

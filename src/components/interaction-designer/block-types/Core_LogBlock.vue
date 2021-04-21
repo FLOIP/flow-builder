@@ -51,7 +51,7 @@ import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceReso
 import { findOrGenerateStubbedVariantOn } from '@/store/flow/resource'
 import LogStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_LogBlockStore'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
