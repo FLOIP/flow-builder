@@ -208,14 +208,17 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       flows,
       resources,
     } = this as { flows: IFlow[]; resources: IResourceDefinition[] }
-    return {
-      flows,
-      resources,
-    }
+    return JSON.stringify(
+      {
+        flows,
+        resources,
+      },
+      null,
+      2,)
   }
 
-  set flow({ flows, resources }: { flows: IFlow[]; resources: IResourceDefinition[]}) {
-    this.importFlowsAndResources({ flows, resources })
+  set flow(value: string) {
+    this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[]; resources: IResourceDefinition[]})
   }
 
   get editTreeUrl() {
