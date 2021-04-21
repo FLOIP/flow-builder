@@ -112,7 +112,7 @@
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '2'), AND(channel.mode != 'ivr', OR(block.value = '2', LOWER(block.value) = 'no'))))"
             }
           ],
-          "type": "MobilePrimitives\\SelectOneResponse"
+          "type": "MobilePrimitives.SelectOneResponse"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb92536d34",
@@ -174,7 +174,7 @@
               "semanticLabel": ""
             }
           ],
-          "type": "MobilePrimitives\\NumericResponse"
+          "type": "MobilePrimitives.NumericResponse"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb92667e05",
@@ -240,7 +240,7 @@
               "semanticLabel": ""
             }
           ],
-          "type": "Core\\Case"
+          "type": "Core.Case"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb92b0431d",
@@ -290,7 +290,7 @@
               "semanticLabel": ""
             }
           ],
-          "type": "MobilePrimitives\\Message"
+          "type": "MobilePrimitives.Message"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
@@ -370,7 +370,7 @@
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '2'), AND(channel.mode != 'ivr', OR(block.value = '2', LOWER(block.value) = 'no'))))"
             }
           ],
-          "type": "MobilePrimitives\\SelectManyResponse"
+          "type": "MobilePrimitives.SelectManyResponse"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb933994fe",
@@ -432,7 +432,7 @@
               "semanticLabel": ""
             }
           ],
-          "type": "MobilePrimitives\\NumericResponse"
+          "type": "MobilePrimitives.NumericResponse"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
@@ -492,7 +492,7 @@
               "semanticLabel": ""
             }
           ],
-          "type": "MobilePrimitives\\OpenResponse"
+          "type": "MobilePrimitives.OpenResponse"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb93718673",
@@ -542,7 +542,7 @@
               "semanticLabel": ""
             }
           ],
-          "type": "MobilePrimitives\\Message"
+          "type": "MobilePrimitives.Message"
         }
       ]
     }
