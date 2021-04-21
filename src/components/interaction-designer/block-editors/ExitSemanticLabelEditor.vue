@@ -10,7 +10,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -30,10 +30,10 @@ export default {
   computed: {
     semanticLabel: {
       get() {
-        return this.exit.semanticLabel
+        return this.exit.semantic_label
       },
       set(value) {
-        this.exit.semanticLabel = value
+        this.exit.semantic_label = value
         this.$emit('commitSemanticLabel', value)
       },
     },

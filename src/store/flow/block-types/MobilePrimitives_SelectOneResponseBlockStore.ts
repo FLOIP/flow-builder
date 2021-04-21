@@ -15,7 +15,7 @@ import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import { defaults, find, max, filter, first, get } from 'lodash'
+import { defaultsDeep, find, max, filter, first, get } from 'lodash'
 import { IResourceDefinitionVariantOverModesFilter } from '../resource'
 import { IFlowsState } from '../index'
 
@@ -58,10 +58,10 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
     })) as IBlockExit
   },
   isInflatedChoiceBlankOnKey: (state, getters) => (key: any): boolean => {
-    return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semanticLabel')
+    return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semantic_label')
   },
   isInflatedEmptyChoiceBlank: (state, getters): boolean => {
-    return !someItemsHaveValue(state.inflatedEmptyChoice.resource.values || [], 'value') && !get(state.inflatedEmptyChoice, 'exit.semanticLabel')
+    return !someItemsHaveValue(state.inflatedEmptyChoice.resource.values || [], 'value') && !get(state.inflatedEmptyChoice, 'exit.semantic_label')
   },
   allChoicesHaveContent: (state, getters): boolean => {
     return Object.keys(getters.inflatedChoices).every((key: string) => {
@@ -184,7 +184,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
     await dispatch('createVolatileEmptyChoice', { index: 0 })
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',
@@ -195,8 +195,8 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       ],
       config: {
         prompt: blankPromptResource.uuid,
-        questionPrompt: blankQuestionPromptResource.uuid,
-        choicesPrompt: blankChoicesPromptResource.uuid,
+        question_prompt: blankQuestionPromptResource.uuid,
+        choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
       },
     })

@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import momentFilters from '@/lib/filters/moment'
 
 export default {

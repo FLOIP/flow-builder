@@ -14,7 +14,7 @@
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
 import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {

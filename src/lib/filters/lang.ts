@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Component from 'vue-class-component'
+import { Component } from 'vue-property-decorator'
 
 type globalType = typeof global & {
   Lang: any;
@@ -11,17 +11,14 @@ const createProxy = (name: string) => function () {
   return proxy(name, arguments)
 }
 
-export const trans = createProxy('trans')
-export const choice = createProxy('choice')
-
 // For vue-class based components
 @Component({
   filters: {
-    trans,
-    choice,
+    trans: createProxy('trans'),
+    choice: createProxy('choice'),
   },
 })
-export class Lang extends Vue {
+class Lang extends Vue {
   trans(translation: string) {
     return thisGlobal.Lang.trans(translation)
   }
@@ -38,6 +35,7 @@ export class Lang extends Vue {
   }
 }
 
+export default Lang
+
 // For non vue-class based components
-const lang = Lang
-export default lang
+export const lang = Lang

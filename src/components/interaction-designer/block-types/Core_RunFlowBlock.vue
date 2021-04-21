@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="core-run-flow-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -21,7 +21,7 @@
           </option>
         </select>
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -38,7 +38,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import { IFlow } from '@floip/flow-runner'
 import RunAnotherFlowStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_RunFlowBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -65,8 +65,7 @@ class Core_RunAnotherFlowBlock extends mixins(Lang) {
     @Prop()readonly flow!: IFlow
 
     get destinationFlowId(): string {
-      // TODO - fix IRunFlowBlockConfig - it should have flow_id according to spec - not flowId
-      return this.block.config.flow_id || ''
+      return this.block.config.flow_id
     }
 
     set destinationFlowId(newDestinationFlowId: string) {
