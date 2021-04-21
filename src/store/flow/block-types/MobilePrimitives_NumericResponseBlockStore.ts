@@ -34,7 +34,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId,
       key: 'ivr',
       value: {
-        maxDigits: value,
+        max_digits: value,
       },
     }, { root: true })
     return value

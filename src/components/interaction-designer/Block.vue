@@ -245,15 +245,15 @@ export default {
     },
 
     visibleExitTag(key, exit) {
-      if (!exit.tag && !exit.semanticLabel) {
+      if (!exit.tag && !exit.semantic_label) {
         return '—'
       }
 
       const { block } = this
       if (block.type === BLOCK_TYPE__CASE_BLOCK) {
         return `${key + 1}: ${exit.tag}`
-      } else if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semanticLabel) {
-        return exit.semanticLabel
+      } else if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semantic_label) {
+        return exit.semantic_label
       }
 
       return exit.tag

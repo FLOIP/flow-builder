@@ -56,8 +56,8 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       ],
       config: {
         prompt: blankPromptResource.uuid,
-        questionPrompt: blankQuestionPromptResource.uuid,
-        choicesPrompt: blankChoicesPromptResource.uuid,
+        question_prompt: blankQuestionPromptResource.uuid,
+        choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
       },
     })

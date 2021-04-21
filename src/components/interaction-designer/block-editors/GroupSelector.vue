@@ -59,7 +59,7 @@ class GroupSelector extends mixins(Lang) {
     })
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
-      path: 'groupName',
+      path: 'group_name',
       value: value.name,
     })
   }

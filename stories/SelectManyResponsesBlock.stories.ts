@@ -55,7 +55,7 @@ export const InFlowBuilder = () => InFlowBuilderClass
 class IvrOnlyClass extends BaseMountedVueClass {
   async mounted() {
     const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectManyStore)
-    flow.supportedModes = [SupportedMode.IVR]
+    flow.supported_modes = [SupportedMode.IVR]
   }
 }
 export const IvrOnly = () => IvrOnlyClass

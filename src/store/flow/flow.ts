@@ -48,7 +48,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       uuid: "TODO",
       name: "TODO",
       description: "TODO",
-      platform_metadata: {},
+      vendor_metadata: {},
       flows: state.flows,
       resources: state.resources
     } as unknown as IContext
