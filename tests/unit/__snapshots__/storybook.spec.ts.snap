@@ -435,6 +435,30 @@ exports[`Storyshots Core/Run Another Flow Block Styled Default 1`] = `
 </div>
 `;
 
+exports[`Storyshots Core/Set Contact Property Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Core/Set Contact Property Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Core/Set Group Membership Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots Core/Set Group Membership Existing Data Block 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
 exports[`Storyshots Flow/Flow Editor Default 1`] = `
 <div>
   <!---->
@@ -959,6 +983,28 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetContactProperty"
+                            href="#"
+                          >
+                            
+                Set Contact Property
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetGroupMembership"
+                            href="#"
+                          >
+                            
+                Set Group Membership
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
                             data-block-type="MobilePrimitives\\\\Message"
                             href="#"
                           >
@@ -1291,6 +1337,28 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetContactProperty"
+                            href="#"
+                          >
+                            
+                Set Contact Property
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetGroupMembership"
+                            href="#"
+                          >
+                            
+                Set Group Membership
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
                             data-block-type="MobilePrimitives\\\\Message"
                             href="#"
                           >
@@ -1616,6 +1684,28 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                           >
                             
                 Run Flow
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetContactProperty"
+                            href="#"
+                          >
+                            
+                Set Contact Property
+              
+                          </a>
+                          <!---->
+                           
+                          <a
+                            class="dropdown-item tree-add-block"
+                            data-block-type="Core\\\\SetGroupMembership"
+                            href="#"
+                          >
+                            
+                Set Group Membership
               
                           </a>
                           <!---->

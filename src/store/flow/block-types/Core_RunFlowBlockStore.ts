@@ -6,7 +6,7 @@ import {
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
-import { defaults } from 'lodash'
+import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
 export const BLOCK_TYPE = 'Core\\RunFlow'
@@ -45,7 +45,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }, { root: true }),
     ]
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',

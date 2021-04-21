@@ -31,7 +31,7 @@ const BaseOptions: IBaseOptions = {
   store: new Vuex.Store<IRootState>(store),
 }
 
-// default log block state
+// default state
 @Component({
   ...BaseOptions,
 })

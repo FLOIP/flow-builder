@@ -1,34 +1,30 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import {
-  IBlock, IBlockExit, SupportedMode, SupportedContentType,
+  IBlockExit,
+  ISetGroupMembershipBlockConfig,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-// import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to create at flow-runner
 import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'SmartDevices\\PhotoResponse'
+export const ADD_KEY = 'add'
+export const REMOVE_KEY = 'remove'
+
+export const BLOCK_TYPE = 'Core\\SetGroupMembership'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
 export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async createWith({ rootGetters, dispatch, commit }, { props }: {props: {uuid: string} & Partial<IBlock>}) {
+  async createWith({ dispatch }, { props }: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: (new IdGeneratorUuidV4()).generate(),
           tag: 'Default',
           label: 'Default',
-        }) as IBlockExit,
-      }, { root: true }),
-      await dispatch('flow/block_createBlockExitWith', {
-        props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
-          tag: 'Error',
-          label: 'Error',
         }) as IBlockExit,
       }, { root: true }),
     ]
@@ -38,8 +34,22 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       name: '',
       label: '',
       semanticLabel: '',
+      config: {
+        groupKey: '',
+        groupName: '',
+        isMember: null,
+      },
       exits,
     })
+  },
+
+  async setIsMember({ commit, rootGetters }, action) {
+    const activeBlock = rootGetters['builder/activeBlock']
+    commit('flow/block_updateConfigByPath', {
+      blockId: activeBlock.uuid,
+      path: 'isMember',
+      value: action === null || action === undefined ? null : (action.id === ADD_KEY),
+    }, { root: true })
   },
 }
 

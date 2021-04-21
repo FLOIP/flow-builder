@@ -2,7 +2,7 @@
 if: (type = push AND branch = master) OR type = pull_request
 language: node_js
 node_js:
-  - "stable"
+  - 14
 install: yarn install
 script:
   - yarn test:unit --no-cache
