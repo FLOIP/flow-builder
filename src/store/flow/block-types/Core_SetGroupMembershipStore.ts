@@ -11,7 +11,7 @@ import { IFlowsState } from '../index'
 export const ADD_KEY = 'add'
 export const REMOVE_KEY = 'remove'
 
-export const BLOCK_TYPE = 'Core\\SetGroupMembership'
+export const BLOCK_TYPE = 'Core.SetGroupMembership'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
