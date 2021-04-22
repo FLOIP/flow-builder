@@ -11,7 +11,7 @@
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
 import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -33,7 +33,7 @@ export default {
   computed: {
     maxValue: {
       get() {
-        return get(this.block, 'config.validationMaximum', this.defaultValue)
+        return get(this.block, 'config.validation_maximum', this.defaultValue)
       },
       set(value) {
         this.$emit('commitValidationMaximumChange', value)

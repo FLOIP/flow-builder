@@ -8,7 +8,7 @@ import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock'
 import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'Core\\Output'
+export const BLOCK_TYPE = 'Core.Output'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
 }
@@ -25,7 +25,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
@@ -36,7 +36,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       config: {
         value: '',
       },

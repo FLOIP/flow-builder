@@ -11,7 +11,7 @@
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
 import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -37,7 +37,7 @@ export default {
   computed: {
     duration: {
       get() {
-        return get(this.block, 'config.ivr.maxDurationSeconds', '')
+        return get(this.block, 'config.ivr.max_duration_seconds', '')
       },
       set(value) {
         this.$emit('commitMaxDurationChange', value)

@@ -9,13 +9,12 @@
 <script>
 import { mapMutations } from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
     TextEditor,
   },
-  mixins: [lang],
   props: {
     block: {
       type: Object,
@@ -26,7 +25,7 @@ export default {
   computed: {
     semanticLabel: {
       get() {
-        return this.block.semanticLabel
+        return this.block.semantic_label || ''
       },
       set(value) {
         this.block_setSemanticLabel({ blockId: this.block.uuid, value })

@@ -19,11 +19,6 @@
           "path": "\/flows\/new",
           "methods": ["GET"]
         },
-        "importFlow": {
-          "name": "importFlow",
-          "path": "\/flows\/import",
-          "methods": ["GET"]
-        },
         "fetchFlow": {
           "name": "fetchFlow",
           "path": "\/flows\/{flowId}",
@@ -66,134 +61,117 @@
     "languages": [
       {
         "id": "22",
-        "name": "English",
-        "abbreviation": "EN",
-        "orgId": "1008107874829627392",
-        "rightToLeft": false,
-        "code": null,
-        "deletedAt": null
+        "label": "English",
+        "iso_639_3": "EN"
       },
       {
         "id": "23",
-        "name": "Spanish",
-        "abbreviation": "ES",
-        "orgId": "1008107874829627392",
-        "rightToLeft": false,
-        "code": null,
-        "deletedAt": null
-      },
-      {
-        "id": "24",
-        "name": "French",
-        "abbreviation": "FR",
-        "orgId": "1008107874829627392",
-        "rightToLeft": false,
-        "code": null,
-        "deletedAt": null
+        "label": "Spanish",
+        "iso_639_3": "ES"
       }
     ],
     "blockClasses": {
-      "ConsoleIO\\Print": {
-        "name": "ConsoleIO\\Print",
-        "type": "ConsoleIO\\Print",
+      "ConsoleIO.Print": {
+        "name": "ConsoleIO.Print",
+        "type": "ConsoleIO.Print",
         "is_interactive": false,
         "is_branching": false,
         "category":  0
       },
-      "ConsoleIO\\Read": {
-        "name": "ConsoleIO\\Read",
-        "type": "ConsoleIO\\Read",
+      "ConsoleIO.Read": {
+        "name": "ConsoleIO.Read",
+        "type": "ConsoleIO.Read",
         "is_interactive": true,
         "is_branching": false,
         "category":  1
       },
-      "Core\\Case": {
-        "name": "Core\\Case",
-        "type": "Core\\Case",
+      "Core.Case": {
+        "name": "Core.Case",
+        "type": "Core.Case",
         "is_interactive": false,
         "is_branching": true,
         "category":  2
       },
-      "Core\\Log": {
-        "name": "Core\\Log",
-        "type": "Core\\Log",
+      "Core.Log": {
+        "name": "Core.Log",
+        "type": "Core.Log",
         "is_interactive": false,
         "is_branching": false,
         "category":  0
       },
-      "Core\\Output": {
-        "name": "Core\\Output",
-        "type": "Core\\Output",
+      "Core.Output": {
+        "name": "Core.Output",
+        "type": "Core.Output",
         "is_interactive": false,
         "is_branching": false,
         "category":  0
       },
-      "Core\\RunFlow": {
-        "name": "Core\\RunFlow",
-        "type": "Core\\RunFlow",
+      "Core.RunFlow": {
+        "name": "Core.RunFlow",
+        "type": "Core.RunFlow",
         "is_interactive": false,
         "is_branching": false,
         "category":  0
       },
-      "Core\\SetContactProperty": {
-        "name": "Core\\SetContactProperty",
-        "type": "Core\\SetContactProperty",
+      "Core.SetContactProperty": {
+        "name": "Core.SetContactProperty",
+        "type": "Core.SetContactProperty",
         "is_interactive": false,
         "is_branching": false,
         "category":  0
       },
-      "Core\\SetGroupMembership": {
-        "name": "Core\\SetGroupMembership",
-        "type": "Core\\SetGroupMembership",
+      "Core.SetGroupMembership": {
+        "name": "Core.SetGroupMembership",
+        "type": "Core.SetGroupMembership",
         "is_interactive": false,
         "is_branching": false,
         "category":  0
       },
-      "MobilePrimitives\\Message": {
-        "name": "MobilePrimitives\\Message",
-        "type": "MobilePrimitives\\Message",
+      "MobilePrimitives.Message": {
+        "name": "MobilePrimitives.Message",
+        "type": "MobilePrimitives.Message",
         "is_interactive": true,
         "is_branching": false,
         "category":  1
       },
-      "MobilePrimitives\\NumericResponse": {
-        "name": "MobilePrimitives\\NumericResponse",
-        "type": "MobilePrimitives\\NumericResponse",
+      "MobilePrimitives.NumericResponse": {
+        "name": "MobilePrimitives.NumericResponse",
+        "type": "MobilePrimitives.NumericResponse",
         "is_interactive": true,
         "is_branching": false,
         "category":  1
       },
-      "MobilePrimitives\\OpenResponse": {
-        "name": "MobilePrimitives\\OpenResponse",
-        "type": "MobilePrimitives\\OpenResponse",
+      "MobilePrimitives.OpenResponse": {
+        "name": "MobilePrimitives.OpenResponse",
+        "type": "MobilePrimitives.OpenResponse",
         "is_interactive": true,
         "is_branching": false,
         "category":  1
       },
-      "MobilePrimitives\\SelectOneResponse": {
-        "name": "MobilePrimitives\\SelectOneResponse",
-        "type": "MobilePrimitives\\SelectOneResponse",
+      "MobilePrimitives.SelectOneResponse": {
+        "name": "MobilePrimitives.SelectOneResponse",
+        "type": "MobilePrimitives.SelectOneResponse",
         "is_interactive": true,
         "is_branching": true,
         "category":  2
       },
-      "MobilePrimitives\\SelectManyResponse": {
-        "name": "MobilePrimitives\\SelectManyResponse",
-        "type": "MobilePrimitives\\SelectManyResponse",
+      "MobilePrimitives.SelectManyResponse": {
+        "name": "MobilePrimitives.SelectManyResponse",
+        "type": "MobilePrimitives.SelectManyResponse",
         "is_interactive": true,
         "is_branching": true,
         "category":  2
       },
-      "SmartDevices\\LocationResponse": {
-        "name": "SmartDevices\\LocationResponse",
-        "type": "SmartDevices\\LocationResponse",
+      "SmartDevices.LocationResponse": {
+        "name": "SmartDevices.LocationResponse",
+        "type": "SmartDevices.LocationResponse",
         "is_interactive": true,
         "is_branching": false,
         "category":  1
       },
-      "SmartDevices\\PhotoResponse": {
-        "name": "SmartDevices\\PhotoResponse",
-        "type": "SmartDevices\\PhotoResponse",
+      "SmartDevices.PhotoResponse": {
+        "name": "SmartDevices.PhotoResponse",
+        "type": "SmartDevices.PhotoResponse",
         "is_interactive": true,
         "is_branching": false,
         "category":  1

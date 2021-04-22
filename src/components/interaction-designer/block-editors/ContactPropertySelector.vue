@@ -14,14 +14,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import VueMultiselect from 'vue-multiselect';
 import { IBlock, ISetContactPropertyBlockConfig } from '@floip/flow-runner';
 import { Component, Prop } from 'vue-property-decorator';
 import {Getter, namespace} from 'vuex-class'
-import lang from '@/lib/filters/lang';
+import Lang from '@/lib/filters/lang';
 import { find } from 'lodash'
 import { IContactPropertyOption } from '../../../store/flow/block-types/Core_SetContactPropertyStore'
+import { mixins } from "vue-class-component";
 
 const flowVuexNamespace = namespace('flow')
 
@@ -29,9 +29,8 @@ const flowVuexNamespace = namespace('flow')
   components: {
     VueMultiselect,
   },
-  mixins: [lang],
 })
-class ContactPropertySelector extends Vue {
+class ContactPropertySelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   get selectedProperty() {
@@ -42,12 +41,12 @@ class ContactPropertySelector extends Vue {
       },
     } = this.block.config as ISetContactPropertyBlockConfig
     if (!propertyKey) {
-      return null
+      return {} as IContactPropertyOption
     }
 
     const propertyOption = find(this.subscriberPropertyFields, { name: propertyKey }) as IContactPropertyOption
     if (!propertyOption) {
-      return null
+      return {} as IContactPropertyOption
     }
 
     return propertyOption
@@ -61,8 +60,8 @@ class ContactPropertySelector extends Vue {
     })
   }
 
-  @flowVuexNamespace.Mutation block_updateConfigByPath
-  @Getter subscriberPropertyFields: object[]
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
+  @Getter subscriberPropertyFields!: object[]
 }
 
 export default ContactPropertySelector;

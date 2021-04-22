@@ -56,10 +56,10 @@
 
           <h3 class="block-exit-tag badge badge-warning">{{visibleExitTag(key, exit)}}</h3>
 
-          <template v-if="exit.destinationBlock == null">
+          <template v-if="exit.destination_block == null">
             <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
                              :class="{
-                                 'btn-info': exit.destinationBlock != null,
+                                 'btn-info': exit.destination_block != null,
                              }"
                              :id="`exit/${exit.uuid}/pseudo-block-handle`"
                              :key="`exit/${exit.uuid}/pseudo-block-handle`"
@@ -75,7 +75,7 @@
             <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
               <div class="handle-move-link btn btn-secondary btn-xs"
                    :class="{
-                                 'btn-info': exit.destinationBlock != null,
+                                 'btn-info': exit.destination_block != null,
                              }"
                    :id="`exit/${exit.uuid}/handle`">
                 <i class="glyphicon glyphicon-move"></i>
@@ -84,17 +84,17 @@
               <connection :key="`exit/${exit.uuid}/line-for-draft`"
                           :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
                           :source="block"
-                          :target="blocksById[exit.destinationBlock]"
+                          :target="blocksById[exit.destination_block]"
                           :exit="exit"
                           :position="livePosition"
                           :color-category="blockClasses[block.type].category" />
             </template>
           </template>
 
-          <template v-if="exit.destinationBlock != null">
+          <template v-if="exit.destination_block != null">
             <plain-draggable class="block-exit-move-handle handle-move-link btn btn-outline-secondary btn-xs btn-flat"
                              :class="{
-                                 // 'btn-secondary': exit.destinationBlock != null,
+                                 // 'btn-secondary': exit.destination_block != null,
                              }"
                              :id="`exit/${exit.uuid}/handle`"
                              :key="`exit/${exit.uuid}/handle`"
@@ -117,7 +117,7 @@
             <connection :key="`exit/${exit.uuid}/line`"
                         :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
                         :source="livePosition ? null : block"
-                        :target="blocksById[exit.destinationBlock]"
+                        :target="blocksById[exit.destination_block]"
                         :exit="exit"
                         :position="livePosition"
                         :color-category="blockClasses[block.type].category" />
@@ -139,7 +139,7 @@ import PlainDraggable from '@/components/common/PlainDraggable.vue'
 import { ResourceResolver, SupportedMode } from '@floip/flow-runner'
 import { OperationKind, generateConnectionLayoutKeyFor } from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import {BLOCK_TYPE as BLOCK_TYPE__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
 import {BLOCK_TYPE as BLOCK_TYPE__SELECT_ONE_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {BLOCK_TYPE as BLOCK_TYPE__SELECT_MANY_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
@@ -245,15 +245,15 @@ export default {
     },
 
     visibleExitTag(key, exit) {
-      if (!exit.tag && !exit.semanticLabel) {
+      if (!exit.tag && !exit.semantic_label) {
         return '—'
       }
 
       const { block } = this
       if (block.type === BLOCK_TYPE__CASE_BLOCK) {
         return `${key + 1}: ${exit.tag}`
-      } else if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semanticLabel) {
-        return exit.semanticLabel
+      } else if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semantic_label) {
+        return exit.semantic_label
       }
 
       return exit.tag

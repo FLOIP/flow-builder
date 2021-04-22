@@ -12,7 +12,7 @@
 <script>
 import FloatEditor from '@/components/common/FloatEditor'
 import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -34,7 +34,7 @@ export default {
   computed: {
     threshold: {
       get() {
-        return get(this.block, 'config.accuracyThresholdMeters', this.defaultValue)
+        return get(this.block, 'config.accuracy_threshold_meters', this.defaultValue)
       },
       set(value) {
         this.$emit('commitAccuracyThresholdMetersChange', value)

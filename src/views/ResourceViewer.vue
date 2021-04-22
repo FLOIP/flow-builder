@@ -257,7 +257,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import fuse from 'fuse.js'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import lodash from 'lodash'
 
 import HorizontalBlockContentEditor from '@/components/resource-editor/HorizontalBlockContentEditor'

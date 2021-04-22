@@ -27,37 +27,39 @@
 </template>
 
 <script lang="ts">
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { forEach, isEmpty } from 'lodash'
 import {store} from '@/store'
-import {Mutation, namespace} from 'vuex-class'
+import {Getter, Mutation, namespace} from 'vuex-class'
 import {IFlow} from '@floip/flow-runner'
 const flowVuexNamespace = namespace('flow')
 
 @Component(
   {
     mixins: [lang, Routes],
-    async created() {
-      const {$store} = this
-
-      forEach(store.modules, (v, k) =>
-        !$store.hasModule(k) && $store.registerModule(k, v))
-
-      if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-        this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
-      }
-    },
   },
 )
 class Home extends Vue {
-  @Prop({default: () => ({})}) readonly appConfig!: object
-  @Prop({default: () => ({})}) readonly builderConfig!: object
+  @Prop({ default: () => ({}) }) readonly appConfig!: object
+  @Prop({ default: () => ({}) }) readonly builderConfig!: object
 
   @flowVuexNamespace.State flows!: IFlow[]
-  @Mutation configure
+  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
+  @Getter isConfigured!: boolean
+
+  async created() {
+    const {$store} = this
+
+    forEach(store.modules, (v, k) =>
+      !$store.hasModule(k) && $store.registerModule(k, v))
+
+    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+    }
+  }
 }
 
 export default Home
