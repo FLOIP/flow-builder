@@ -68,7 +68,8 @@
                              @initialized="handleDraggableInitializedFor(exit, $event)"
                              @dragStarted="onCreateExitDragStarted($event, exit)"
                              @dragged="onCreateExitDragged($event)"
-                             @dragEnded="onCreateExitDragEnded($event, exit)">
+                             @dragEnded="onCreateExitDragEnded($event, exit)"
+                             @destroyed="handleDraggableDestroyedFor(exit)">
               <i class="glyphicon glyphicon-move"></i>
             </plain-draggable>
 
@@ -103,7 +104,8 @@
                              @initialized="handleDraggableInitializedFor(exit, $event)"
                              @dragStarted="onMoveExitDragStarted($event, exit)"
                              @dragged="onMoveExitDragged($event)"
-                             @dragEnded="onMoveExitDragEnded($event, exit)">
+                             @dragEnded="onMoveExitDragEnded($event, exit)"
+                             @destroyed="handleDraggableDestroyedFor(exit)">
               <i class="glyphicon glyphicon-move"></i>
             </plain-draggable>
 
@@ -321,6 +323,10 @@ export default {
       const { uuid: blockId } = this.block
 
       console.debug('Block', 'handleDraggableInitializedFor', { blockId, exitId: uuid, coords: { left, top } })
+    },
+
+    handleDraggableDestroyedFor({ uuid }) {
+      delete this.draggablesByExitId[uuid]
     },
 
     onCreateExitDragStarted({ draggable }, exit) {

@@ -90,6 +90,7 @@ export default {
   },
 
   destroyed() {
+    this.$emit('destroyed')
     this.draggable.remove()
   },
 }
