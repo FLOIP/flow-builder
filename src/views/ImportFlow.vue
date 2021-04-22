@@ -252,8 +252,6 @@ class ImportFlow extends Vue {
       this.validateGroups(this.groupBlocks)
     }
     this.flowJsonText = JSON.stringify(this.flowContainer, null, 2)
-    //check props
-    //check groups
   }
 
   getPropertyBlocks(flowContainer) {
@@ -420,9 +418,6 @@ class ImportFlow extends Vue {
         if(!matchingGroup) {
           //Unlike the others we don't reset this. 
           //A previously unmatched group can only be fixed by updating or adding a language 
-          //
-          //Name is all we can get when there isn't a match
-          //...as the block sidebar gets the actual displayLabel by matching
           if(!get(this.blocksMissingGroups, groupIdentifier)) {
             this.blocksMissingGroups[groupIdentifier] = { groupName: groupName, blockIds: [] }
           }
@@ -512,7 +507,6 @@ class ImportFlow extends Vue {
     const contents = reader.readAsText(selectedFile, "UTF-8")
   }
   async handleImportFlow(route) {
-    //TODO - ensure UUIDs generated?
     const flowContainer = await this.flow_persist({
       //@ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
       persistRoute: this.route('flows.persistFlow', { flowId: this.flowContainer.uuid }),
