@@ -6,23 +6,23 @@
 
     <fieldset :disabled="!isEditable">
       <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
-        <block-name-editor :block="block" :state="!isNameValid" />
+        <block-name-editor :block="block" :validationState="!isNameValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
-        <block-label-editor :block="block" :state="!isLabelValid" />
+        <block-label-editor :block="block" :validationState="!isLabelValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
-        <block-semantic-label-editor :block="block" :state="!isSemanticLabelValid" />
+        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
       </validation-message>
 
       <validation-message :message-key="`block/${block.uuid}/.config.validation_minimum`" #input-control="{ isValid: isValidationMinimumValid }">
-        <block-minimum-numeric-editor :block="block" :state="!isValidationMinimumValid" @commitValidationMinimumChange="updateValidationMin"/>
+        <block-minimum-numeric-editor :block="block" :validationState="!isValidationMinimumValid" @commitValidationMinimumChange="updateValidationMin"/>
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.config.validation_maximum`" #input-control="{ isValid: isValidationMaximumValid }">
-        <block-maximum-numeric-editor :block="block" :state="!isValidationMaximumValid" @commitValidationMaximumChange="updateValidationMax"/>
+        <block-maximum-numeric-editor :block="block" :validationState="!isValidationMaximumValid" @commitValidationMaximumChange="updateValidationMax"/>
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.config.ivr.max_digits`" #input-control="{ isValid: isMaxDigitsValid }">
-        <block-max-digit-editor :block="block" :state="!isMaxDigitsValid" :hasIvr="hasVoiceMode" @commitMaxDigitsChange="updateMaxDigits"/>
+        <block-max-digit-editor :block="block" :validationState="!isMaxDigitsValid" :hasIvr="hasVoiceMode" @commitMaxDigitsChange="updateMaxDigits"/>
       </validation-message>
 
       <resource-editor v-if="promptResource"

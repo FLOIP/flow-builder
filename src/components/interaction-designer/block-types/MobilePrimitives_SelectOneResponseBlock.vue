@@ -6,13 +6,13 @@
 
     <fieldset :disabled="!isEditable">
       <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
-        <block-name-editor :block="block" :state="!isNameValid" />
+        <block-name-editor :block="block" :validationState="!isNameValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
-        <block-label-editor :block="block" :state="!isLabelValid" />
+        <block-label-editor :block="block" :validationState="!isLabelValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
-        <block-semantic-label-editor :block="block" :state="!isSemanticLabelValid" />
+        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
       </validation-message>
 
       <div class="prompt-resource">

@@ -6,19 +6,19 @@
 
     <fieldset :disabled="!isEditable">
       <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
-        <block-name-editor :block="block" :state="!isNameValid" />
+        <block-name-editor :block="block" :validationState="!isNameValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
-        <block-label-editor :block="block" :state="!isLabelValid" />
+        <block-label-editor :block="block" :validationState="!isLabelValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
-        <block-semantic-label-editor :block="block" :state="!isSemanticLabelValid" />
+        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.config.ivr.max_duration_seconds`" #input-control="{ isValid: isMaxDurationValid }">
-        <block-max-duration-seconds-editor :block="block" :state="!isMaxDurationValid" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
+        <block-max-duration-seconds-editor :block="block" :validationState="!isMaxDurationValid" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.config.text.max_response_characters`" #input-control="{ isValid: isMaxResponseValid }">
-        <block-max-response-characters-editor :block="block" :state="!isMaxResponseValid" :hasText="hasTextMode" @commitMaxResponseCharactersChange="setMaxResponseCharacters"/>
+        <block-max-response-characters-editor :block="block" :validationState="!isMaxResponseValid" :hasText="hasTextMode" @commitMaxResponseCharactersChange="setMaxResponseCharacters"/>
       </validation-message>
 
       <resource-editor v-if="promptResource"

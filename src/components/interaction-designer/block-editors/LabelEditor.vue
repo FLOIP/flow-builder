@@ -3,7 +3,7 @@
     <text-editor v-model="label"
                  :label="'flow-builder.block-label' | trans"
                  :placeholder="'flow-builder.enter-block-label' | trans"
-                 :state="state"/>
+                 :validationState="validationState"/>
   </div>
 </template>
 
@@ -24,7 +24,7 @@ const flowVuexNamespace = namespace('flow')
 })
 export default class LabelEditor extends mixins(Lang) {
   @Prop() block!: IBlock
-  @Prop() state?: boolean
+  @Prop() validationState?: boolean
 
   get label(): IBlock['label'] {
     return this.block.label

@@ -3,7 +3,7 @@
       v-model="expression"
       :label="label"
       :placeholder="placeholder"
-      :state="state" />
+      :validationState="validationState" />
 </template>
 
 <script>
@@ -30,9 +30,9 @@ export default {
       type: [String, Number],
       default: null,
     },
-    state: {
+    validationState: {
       type: Boolean,
-      default: undefined, // to tell boostrap `No state`
+      default: null, // to tell boostrap `No state`
       required: false,
     },
   },

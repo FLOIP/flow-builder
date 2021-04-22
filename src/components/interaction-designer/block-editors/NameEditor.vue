@@ -3,7 +3,7 @@
     <text-editor v-model="name"
                  :label="'flow-builder.block-name' | trans"
                  :placeholder="'flow-builder.enter-block-name' | trans"
-                 :state="state"
+                 :validationState="validationState"
                  @keydown="filterName">
       <small class="text-muted">
         {{'flow-builder.only-accepts-word-characters' | trans}}
@@ -27,9 +27,9 @@ export default {
       type: Object,
       required: true,
     },
-    state: {
+    validationState: {
       type: Boolean,
-      default: undefined, // to tell boostrap `No state`
+      default: null, // to tell boostrap `No state`
       required: false,
     },
   },

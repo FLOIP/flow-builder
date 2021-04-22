@@ -4,7 +4,7 @@
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.max-response-characters' | trans"
         :placeholder="'flow-builder.enter-value' | trans"
-        :state="state">
+        :validationState="validationState">
     </numeric-editor>
     <small class="text-muted">
       {{'flow-builder.unlimited-if-not-defined-or-set-as-zero' | trans}}
@@ -31,9 +31,9 @@ export default {
       type: Object,
       required: true,
     },
-    state: {
+    validationState: {
       type: Boolean,
-      default: undefined, // to tell boostrap `No state`
+      default: null, // to tell boostrap `No state`
       required: false,
     },
   },

@@ -3,7 +3,7 @@
     <text-editor v-model="semanticLabel"
                  :label="'flow-builder.block-semantic-label' | trans"
                  :placeholder="'flow-builder.enter-block-semantic-label' | trans"
-                 :state="state" />
+                 :validationState="validationState" />
   </div>
 </template>
 
@@ -21,9 +21,9 @@ export default {
       type: Object,
       required: true,
     },
-    state: {
+    validationState: {
       type: Boolean,
-      default: undefined, // to tell boostrap `No state`
+      default: null, // to tell boostrap `No state`
       required: false,
     },
   },
