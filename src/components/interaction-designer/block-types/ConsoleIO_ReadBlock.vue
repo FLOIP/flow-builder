@@ -1,23 +1,23 @@
 <template>
-  <div>
+  <div class="console-io-read-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <fieldset :disabled="!isEditable">
       <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
-        <block-name-editor :block="block" :state="!isNameValid" />
+        <block-name-editor :block="block" :validationState="!isNameValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
-        <block-label-editor :block="block" :state="!isLabelValid" />
+        <block-label-editor :block="block" :validationState="!isLabelValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
-        <block-semantic-label-editor :block="block" :state="!isSemanticLabelValid" />
+        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
       </validation-message>
 
       <!--Specific config-->
       <validation-message :message-key="`block/${block.uuid}/.config.format_string`" #input-control="{ isValid: isFormatStringValid }">
-        <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString" :state="!isFormatStringValid"/>
+        <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString" :validationState="!isFormatStringValid"/>
       </validation-message>
 
 
@@ -26,13 +26,15 @@
         <validation-message :message-key="`block/${block.uuid}/.config.destination_variables[${i}]`" #input-control="{ isValid: isDestinationVariablesValid }">
           <text-editor :label="i+1"
               :placeholder="'flow-builder.edit-variable' | trans"
-              :state="!isDestinationVariablesValid"
+              :validationState="!isDestinationVariablesValid"
               value=""
               @keydown="filterVariableName"
               @input="updatedestinationVariables($event, i)"/>
         </validation-message>
       </div>
 
+
+      <slot name="extras"></slot>
 
       <first-block-editor-button
           :flow="flow"
@@ -51,7 +53,7 @@ import { IFlow } from '@floip/flow-runner'
 import { IReadBlock } from '@floip/flow-runner/src/model/block/IReadBlock'
 import TextEditor from '@/components/common/TextEditor.vue'
 import ReadStore, { BLOCK_TYPE } from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'

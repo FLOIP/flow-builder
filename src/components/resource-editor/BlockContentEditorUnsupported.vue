@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   	props: ['block', 'blockTypes'],

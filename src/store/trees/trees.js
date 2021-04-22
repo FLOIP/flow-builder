@@ -52,7 +52,8 @@ export default {
           /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
         ],
         isSaveCurrentlyInProgress: false,
-        isEditable: true
+        isEditable: true,
+        subscriberPropertyFields: [],
       },
     }
   },
@@ -77,7 +78,9 @@ export default {
 
     selectedBlock: ({ tree, ui }, getters, rootState) => lodash.find(get(tree, 'blocks', []), { jsKey: ui.selectedBlock }),
 
-    subscriberPropertyFields: ({ ui }) => lodash.get(ui, 'subscriberPropertyFields'),
+    subscriberPropertyFields: ({ ui }) => lodash.get(ui, 'subscriberPropertyFields', []),
+
+    groups: ({ ui }) => lodash.get(ui, 'groups', []),
 
     interactiveBlockClasses: ({ ui }, getters, rootState) => lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
 
@@ -353,6 +356,10 @@ export default {
 
     addSubscriberPropertyField({ ui }, { property }) {
       ui.subscriberPropertyFields.push(property)
+    },
+
+    addContactGroup({ ui }, { group }) {
+      ui.groups.push(group)
     },
 
     setTreeUpdateConflictStatus(state, { treeUpdateConflict }) {

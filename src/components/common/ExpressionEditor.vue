@@ -1,7 +1,9 @@
 <template>
-  <text-editor v-model="expression"
+  <text-editor class="expression-editor"
+      v-model="expression"
       :label="label"
-      :placeholder="placeholder"/>
+      :placeholder="placeholder"
+      :validationState="validationState" />
 </template>
 
 <script>
@@ -27,6 +29,11 @@ export default {
     expressionIdentifier: {
       type: [String, Number],
       default: null,
+    },
+    validationState: {
+      type: Boolean,
+      default: null, // to tell boostrap `No state`
+      required: false,
     },
   },
 

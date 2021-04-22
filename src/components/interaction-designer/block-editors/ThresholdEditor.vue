@@ -12,7 +12,7 @@
 <script>
 import FloatEditor from '@/components/common/FloatEditor'
 import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {

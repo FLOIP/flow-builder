@@ -1,24 +1,35 @@
 <template>
-  <div>
+  <div class="mobile-primitive-numeric-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
+      <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
+        <block-name-editor :block="block" :validationState="!isNameValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
+        <block-label-editor :block="block" :validationState="!isLabelValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
+        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
+      </validation-message>
 
-      <block-minimum-numeric-editor :block="block" @commitValidationMinimumChange="updateValidationMin"/>
-      <block-maximum-numeric-editor :block="block" @commitValidationMaximumChange="updateValidationMax"/>
-
-      <block-max-digit-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDigitsChange="updateMaxDigits"/>
+      <validation-message :message-key="`block/${block.uuid}/.config.validation_minimum`" #input-control="{ isValid: isValidationMinimumValid }">
+        <block-minimum-numeric-editor :block="block" :validationState="!isValidationMinimumValid" @commitValidationMinimumChange="updateValidationMin"/>
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.config.validation_maximum`" #input-control="{ isValid: isValidationMaximumValid }">
+        <block-maximum-numeric-editor :block="block" :validationState="!isValidationMaximumValid" @commitValidationMaximumChange="updateValidationMax"/>
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.config.ivr.max_digits`" #input-control="{ isValid: isMaxDigitsValid }">
+        <block-max-digit-editor :block="block" :validationState="!isMaxDigitsValid" :hasIvr="hasVoiceMode" @commitMaxDigitsChange="updateMaxDigits"/>
+      </validation-message>
 
       <resource-editor v-if="promptResource"
                        :resource="promptResource"
                        :block="block"
                        :flow="flow" />
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -37,7 +48,7 @@ import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumer
 import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import NumericStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -49,6 +60,7 @@ import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue
 import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
 import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
 import { mixins } from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -65,6 +77,7 @@ const builderVuexNamespace = namespace('builder')
     BlockMinimumNumericEditor,
     BlockMaximumNumericEditor,
     BlockMaxDigitEditor,
+    ValidationMessage
   },
 })
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {

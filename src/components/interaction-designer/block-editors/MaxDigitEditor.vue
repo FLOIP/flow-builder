@@ -3,7 +3,8 @@
     <numeric-editor v-model.number="maxDigits"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.maximum-digits' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+        :placeholder="'flow-builder.enter-value' | trans"
+        :validationState="validationState">
     </numeric-editor>
   </div>
 </template>
@@ -11,7 +12,7 @@
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
 import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -26,6 +27,11 @@ export default {
     hasIvr: {
       default: true,
       type: Boolean,
+    },
+    validationState: {
+      type: Boolean,
+      default: null, // to tell boostrap `No state`
+      required: false,
     },
   },
 

@@ -1,25 +1,13 @@
-//TODO - storyshots currently don't seem to be working
-
-import Vue from 'vue'
-import Vuex from 'vuex'
-
 import PrintBlock from '@/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-import {IRootState, store} from '@/store'
-import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import printBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
-
-import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from './story-utils/storeSetup'
-import {IFlow, SupportedContentType, SupportedMode} from '@floip/flow-runner'
-import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
-import {get} from 'lodash'
-import {namespace} from 'vuex-class'
-import {Component} from 'vue-property-decorator'
-
-Vue.use(Vuex)
-
-const flowVuexNamespace = namespace('flow')
+import {
+  BaseMountedVueClass,
+  BaseMountedVueClassWithResourceAndMode, IBaseOptions,
+} from './story-utils/storeSetup'
+import {Component, Vue} from 'vue-property-decorator'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
 
 export default {
   title: 'ConsoleIo/Print Block',
@@ -27,111 +15,63 @@ export default {
   excludeStories: /.*Data$/,
 }
 
+Vue.use(Vuex)
+
 const PrintBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <print-block 
-      :block="activeBlock" 
+    <print-block
+      :block="activeBlock"
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
 
-// default log block state
-@Component<any>({
+const BaseOptions: IBaseOptions = {
   components: {PrintBlock, FlowBuilderSidebarEditorContainer},
   template: PrintBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
+}
 
-  async mounted() {
-    // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
-  },
+// default state
+@Component({
+  ...BaseOptions,
 })
-class DefaultClass extends BaseMountedVueClass {}
-export const Default = () => { 
+class DefaultClass extends BaseMountedVueClass {
+  async mounted() {
+    await this.baseMounted(BLOCK_TYPE, printBlockStore)
+  }
+}
+export const Default = () => {
   return DefaultClass
 }
 
-@Component<any>({
-    components: {PrintBlock, FlowBuilderSidebarEditorContainer},
-    template: PrintBlockTemplate,
-    store: new Vuex.Store<IRootState>(store),
-    async mounted() {
-      // @ts-ignore
-      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
-
-      //TODO - support sending props to baseMounted?
-      this.block_setName({blockId: blockId, value: "A Name"})
-      this.block_setLabel({blockId: blockId, value: "A Label"})
-      this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-
-      // Set values on resource editor // TODO: find better way to do this once the resource editor is fully implemented
-      const {
-        languages: {
-          0: {id: languageId}
-        },
-      }: IFlow = this.activeFlow
-      const resourceId = get(this.activeBlock, `config.message`, '')
-
-      const variantSms: IResourceDefinitionVariantOverModesFilter = {
-        languageId,
-        modes: [SupportedMode.SMS],
-        // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-        contentType: [SupportedContentType.TEXT],
-      }
-      const variantUssd: IResourceDefinitionVariantOverModesFilter = {
-        languageId,
-        modes: [SupportedMode.USSD],
-        // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-        contentType: [SupportedContentType.TEXT],
-      }
-      const variantIvr: IResourceDefinitionVariantOverModesFilter = {
-        languageId,
-        modes: [SupportedMode.IVR],
-        // @ts-ignore: TODO: remove this ts-ignore once we find a way to match `contentType` type from /@floip/flow-runner/dist/domain/IResourceResolver.d.ts:IResourceDefinitionContentTypeSpecific interface
-        contentType: [SupportedContentType.AUDIO],
-      }
-      // we're assuming this pseudo-variants exist
-      this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
-      this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-      this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/IVR audio.mp3"})
-    },
+@Component({
+  ...BaseOptions,
   }
 )
-class ExistingDataBlockClass extends BaseMountedVueClass {
-  @flowVuexNamespace.Mutation block_setName!: void
-  @flowVuexNamespace.Mutation block_setLabel!: void
-  @flowVuexNamespace.Mutation block_setSemanticLabel!: void
-  @flowVuexNamespace.Mutation resource_setValue!: void
+class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
+  async mounted() {
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
+
+    this.setDescription(blockId)
+    this.setResourceData({
+      shouldSetChoices: false,
+      configPath: 'config.message'
+    })
+  }
 }
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
 
-@Component<any>(
+@Component(
   {
-    components: {PrintBlock, FlowBuilderSidebarEditorContainer},
-    template: PrintBlockTemplate,
-    store: new Vuex.Store<IRootState>(store),
-    async mounted() {
-      // @ts-ignore
-      const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, printBlockStore)
-
-      this.block_setName({blockId: blockId, value: "A Name"})
-      this.block_setLabel({blockId: blockId, value: "A Label"})
-      this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-
-      // Fake a 1st block to make sure the current block won't be selected
-      // @ts-ignore
-      await safeRegisterBlockModule.bind(this)(CASE_BLOCK_TYPE, caseBlockStore)
-      const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
-      const {uuid: caseBlockId} = caseBlock
-
-      this.flow_setFirstBlockId({blockId: caseBlockId, flowId: flowId})
-    },
+    ...BaseOptions,
   }
 )
 class NonStartingBlockClass extends BaseMountedVueClass {
-  @flowVuexNamespace.Mutation block_setName!: void
-  @flowVuexNamespace.Mutation block_setLabel!: void
-  @flowVuexNamespace.Mutation block_setSemanticLabel!: void
-  @flowVuexNamespace.Mutation flow_setFirstBlockId!: void
+  async mounted() {
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
+
+    this.setDescription(blockId)
+    await this.fakeCaseBlockAsFirstBlock(flowId)
+  }
 }
 export const NonStartingBlock = () => (NonStartingBlockClass)

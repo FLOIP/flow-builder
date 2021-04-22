@@ -1,13 +1,19 @@
 <template>
-  <div>
+  <div class="mobile-primitive-select-one-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
+      <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
+        <block-name-editor :block="block" :validationState="!isNameValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
+        <block-label-editor :block="block" :validationState="!isLabelValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
+        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
+      </validation-message>
 
       <div class="prompt-resource">
         <resource-editor v-if="promptResource"
@@ -52,7 +58,7 @@
                          :block="block"
                          :flow="flow" />
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -76,7 +82,7 @@ import SelectOneStore, {
   BLOCK_TYPE,
   IInflatedChoicesInterface
 } from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -86,6 +92,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -100,6 +107,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     ResourceEditor,
     BlockId,
+    ValidationMessage
   },
 })
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {

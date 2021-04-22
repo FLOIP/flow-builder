@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="block-name">
     <text-editor v-model="name"
                  :label="'flow-builder.block-name' | trans"
                  :placeholder="'flow-builder.enter-block-name' | trans"
-                 :state="state"
+                 :validationState="validationState"
                  @keydown="filterName">
       <small class="text-muted">
         {{'flow-builder.only-accepts-word-characters' | trans}}
@@ -15,7 +15,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -27,9 +27,9 @@ export default {
       type: Object,
       required: true,
     },
-    state: {
+    validationState: {
       type: Boolean,
-      default: undefined, // to tell boostrap `No state`
+      default: null, // to tell boostrap `No state`
       required: false,
     },
   },
