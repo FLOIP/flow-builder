@@ -16,11 +16,14 @@
       </validation-message>
 
       <div v-for="(exit,i) in exits" class="form-group form-inline">
-        <expression-editor :label="i+1"
-            :placeholder="'flow-builder.edit-expression' | trans"
-            :current-expression="exit.test"
-            :expression-identifier="exit.uuid"
-            @commitExpressionChange="editCaseBlockExit"/>
+        <validation-message :message-key="`block/${block.uuid}/.exits[${i}].test`" #input-control="{ isValid: isExitTestValid }">
+          <expression-editor :label="i+1"
+              :placeholder="'flow-builder.edit-expression' | trans"
+              :state="!isExitTestValid"
+              :current-expression="exit.test"
+              :expression-identifier="exit.uuid"
+              @commitExpressionChange="editCaseBlockExit"/>
+        </validation-message>
       </div>
       <slot name="extras"></slot>
       <first-block-editor-button
