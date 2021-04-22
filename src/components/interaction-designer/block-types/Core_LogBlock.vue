@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="core-log-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -30,7 +30,7 @@
           </template>
         </template>
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -41,7 +41,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -52,7 +51,7 @@ import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceReso
 import { findOrGenerateStubbedVariantOn } from '@/store/flow/resource'
 import LogStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_LogBlockStore'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -60,23 +59,23 @@ import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      ResourceVariantTextEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-    },
-    mixins: [lang],
-  })
-class Core_LogBlock extends Vue {
+@Component({
+  components: {
+    ResourceEditor,
+    ResourceVariantTextEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+  },
+})
+class Core_LogBlock extends mixins(Lang) {
     @Prop()readonly block!: ILogBlock
 
     @Prop()readonly flow!: IFlow

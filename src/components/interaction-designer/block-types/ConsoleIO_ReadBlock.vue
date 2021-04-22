@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="console-io-read-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -20,7 +20,7 @@
             @keydown="filterVariableName"
             @input="updatedestinationVariables($event, i)"/>
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -31,7 +31,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -39,7 +38,7 @@ import { IFlow } from '@floip/flow-runner'
 import { IReadBlock } from '@floip/flow-runner/src/model/block/IReadBlock'
 import TextEditor from '@/components/common/TextEditor.vue'
 import ReadStore, { BLOCK_TYPE } from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -48,44 +47,41 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import BlockFormatStringEditor from '../block-editors/FormatStringEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import { mixins } from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      BlockFormatStringEditor,
-      FirstBlockEditorButton,
-      TextEditor,
-      BlockId,
-    },
-    mixins: [lang],
-  })
-class ConsoleIO_ReadBlock extends Vue {
+@Component({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    BlockFormatStringEditor,
+    FirstBlockEditorButton,
+    TextEditor,
+    BlockId,
+  },
+})
+class ConsoleIO_ReadBlock extends mixins(Lang) {
     @Prop()readonly block!: IReadBlock
 
     @Prop()readonly flow!: IFlow
 
-    filterVariableName(e) {
+    filterVariableName(e: any) {
       if (e.key.match(/\W+|Enter/g)) {
         e.preventDefault()
       }
     }
 
-    updatedestinationVariables(value, i) {
+    updatedestinationVariables(value: string, i: number) {
       this.editDestinationVariable({ variableName: value, keyIndex: i })
     }
 
     @blockVuexNamespace.Action setFormatString!: (newFormatString: string) => Promise<string>
 
-    @blockVuexNamespace.Action editDestinationVariable!: ({
-      variableName: string,
-      keyIndex: number,
-    }) => Promise<string>
+    @blockVuexNamespace.Action editDestinationVariable!: ({ variableName, keyIndex }: { variableName: string; keyIndex: number}) => Promise<string[]>
 
     @blockVuexNamespace.Getter destinationVariablesFields!: () => Promise<string[]>
 

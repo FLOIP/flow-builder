@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="block-name">
     <text-editor v-model="name"
         :label="'flow-builder.block-name' | trans"
         :placeholder="'flow-builder.enter-block-name' | trans"
@@ -14,7 +14,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {

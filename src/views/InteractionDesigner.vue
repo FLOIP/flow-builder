@@ -8,13 +8,11 @@
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
-
-          <div v-if="activeBlock"
-               :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
-               :block="activeBlock"
-               :flow="activeFlow"
-          />
-
+          <component v-if="activeBlock"
+                     :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
+                     :block="activeBlock"
+                     :flow="activeFlow">
+          </component>
         </div>
 
 <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
@@ -44,7 +42,7 @@
 </template>
 
 <script>
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import lodash, { forEach, invoke, isEmpty } from 'lodash'
 import Vue from 'vue'
@@ -201,8 +199,8 @@ export default {
     if (!this.activeFlow) {
       this.flow_setActiveFlowId({ flowId: null })
       this.$router.replace(
-        this.route('flows.fetchFlow', { flowId: this.id }),
-        { query: { nextUrl: this.$route.path } },
+        { path: this.route('flows.fetchFlow', { flowId: this.id }),
+          query: { nextUrl: this.$route.path } },
       )
     }
 

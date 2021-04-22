@@ -7,7 +7,7 @@ import {
 } from 'vuex'
 import { IRootState } from '@/store'
 import {
-  IBlockExit, IBlock, SupportedMode, ValidationException,
+  IBlockExit, IBlock, IFlow, IResourceDefinition, SupportedMode, ValidationException,
 } from '@floip/flow-runner'
 import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block'
 import { createFormattedDate } from '@floip/flow-runner/dist/domain/DateFormat'
@@ -63,7 +63,7 @@ export interface IBuilderState {
 
 export const stateFactory = (): IBuilderState => ({
   activeBlockId: null,
-  isEditable: false,
+  isEditable: true,
   activeConnectionsContext: [],
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: {
@@ -109,9 +109,7 @@ export const mutations: MutationTree<IBuilderState> = {
     state.activeConnectionsContext = filter(state.activeConnectionsContext, (context) => context !== connectionContext)
   },
 
-  setOperation({ operations }, { operation }: {operation: SupportedOperation}) {
-    // TODO - type checking - remove this ignore and fix these errors - they seem to be quite serious but I'm not sure how to resolve them
-    // @ts-ignore
+  setOperation({ operations }: { operations: any }, { operation }: { operation: SupportedOperation }) {
     operations[operation.kind] = operation
   },
 
@@ -305,7 +303,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    */
   async importFlowsAndResources({
     dispatch, commit, state, rootState,
-  }, { flows, resources }) {
+  }, { flows, resources }: { flows: IFlow[]; resources: IResourceDefinition[]}) {
     console.debug('importing flows & resources ...')
     console.log({ flows, resources })
     const { flow: flowState } = rootState
@@ -328,8 +326,6 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resources)
 
     // make sure we use the same languages ids on both UI & Flows
-    // TODO - type checking - remove this and resolve the error
-    // @ts-ignore
     rootState.trees.ui.languages = flows[0].languages
   },
   setIsEditable({ commit }, value) {
@@ -373,7 +369,7 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   ]
 }
 
-export function computeBlockPositionsFrom(block: IBlock | null) {
+export function computeBlockPositionsFrom(block?: IBlock | null) {
   const xDelta = 80; const
     yDelta = 80
 

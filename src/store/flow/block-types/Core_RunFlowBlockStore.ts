@@ -2,23 +2,21 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import {
   IBlockExit,
+  IFlow,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
-import { defaults } from 'lodash'
+import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
 export const BLOCK_TYPE = 'Core\\RunFlow'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  otherFlows: (state, getters, rootState, rootGetters): IFlowsState[] =>
-    // TODO - this should actually be container.flows?
-    // TODO - why does this error in typescript? - flow does exist on IRootState etc...
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    rootState.flow.flows.filter((flow: IFlowsState) =>
-      // @ts-ignore - TS2339: Property 'flow' does not exist on type
-      flow.uuid !== rootGetters['flow/activeFlow'].uuid)
-  ,
+  otherFlows: (state, getters, rootState, rootGetters): IFlow[] => {
+    return rootState.flow.flows.filter((flow: IFlow) => {
+      return flow.uuid !== rootGetters['flow/activeFlow'].uuid
+    })
+  },
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -47,7 +45,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }, { root: true }),
     ]
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',

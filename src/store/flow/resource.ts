@@ -70,7 +70,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   resource_setOrCreateValueModeSpecific(
     { commit, dispatch, state },
-    { resourceId, filter, value }: {resourceId: string; filter: IResourceDefinitionVariantOverModes; value: string},
+    { resourceId, filter, value }: { resourceId: IResourceDefinition['uuid']; filter: IResourceDefinitionVariantOverModes; value: string },
   ) {
     try {
       // @note - `find()` raises when absent; this verifies its presence
@@ -224,6 +224,5 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
     }, contentTypeOverrides)
     return contentTypeOverrides
   }, contentTypeOverrides)
-  // @ts-ignore
   return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]
 }

@@ -1,9 +1,9 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { IBlockExit, SupportedMode, SupportedContentType } from '@floip/flow-runner'
+import { IBlockExit, SupportedMode, SupportedContentType, IBlock } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock'
-import { defaults } from 'lodash'
+import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives\\NumericResponse'
@@ -13,7 +13,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {}
 export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async setValidationMinimum({ commit, rootGetters }, { blockId, value }: {blockId: string; value: number}) {
+  async setValidationMinimum({ commit, rootGetters }, { blockId, value }: { blockId: IBlock['uuid']; value: number | string }) {
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validationMinimum',
@@ -21,7 +21,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, { root: true })
     return value
   },
-  async setValidationMaximum({ commit, rootGetters }, { blockId, value }: {blockId: string; value: number}) {
+  async setValidationMaximum({ commit, rootGetters }, { blockId, value }: { blockId: IBlock['uuid']; value: number | string }) {
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validationMaximum',
@@ -29,7 +29,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, { root: true })
     return value
   },
-  async setMaxDigits({ commit, rootGetters }, { blockId, value }: {blockId: string; value: number}) {
+  async setMaxDigits({ commit, rootGetters }, { blockId, value }: { blockId: IBlock['uuid']; value: number | string }) {
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'ivr',
@@ -60,7 +60,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     commit('flow/resource_add', { resource: blankResource }, { root: true })
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',

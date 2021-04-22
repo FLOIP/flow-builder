@@ -15,7 +15,7 @@ import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import { defaults, find, max, filter, first, get } from 'lodash'
+import { defaultsDeep, find, max, filter, first, get } from 'lodash'
 import { IResourceDefinitionVariantOverModesFilter } from '../resource'
 import { IFlowsState } from '../index'
 
@@ -23,7 +23,7 @@ import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/l
 
 export const BLOCK_TYPE = 'MobilePrimitives\\SelectOneResponse'
 
-interface IInflatedChoicesInterface {
+export interface IInflatedChoicesInterface {
   exit: IBlockExit,
   resource: IResourceDefinition
 }
@@ -57,7 +57,7 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
       label: resourceUuid
     })) as IBlockExit
   },
-  isInflatedChoiceBlankOnKey: (state, getters) => (key): boolean => {
+  isInflatedChoiceBlankOnKey: (state, getters) => (key: any): boolean => {
     return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semanticLabel')
   },
   isInflatedEmptyChoiceBlank: (state, getters): boolean => {
@@ -86,27 +86,29 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
 }
 
 export const mutations: MutationTree<ICustomFlowState> = {
-  deleteChoiceByKey(state, { choiceKeyToRemove, blockId }) {
-    // TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    const block: ISelectOneResponseBlock = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext) as ISelectOneResponseBlock
-    delete block.config.choices[choiceKeyToRemove]
-    const choices: {[key: string]: string} = {}
-    // rekey
-    block.config.choices = Object.keys(block.config.choices).sort().reduce((choices, choiceKey: string, index: number) => {
-      choices[index + 1] = block.config.choices[choiceKey]
-      return choices
-    }, choices)
-  },
-  pushNewChoice(state, { choiceId, blockId, newIndex }) {
-    // TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    const block: ISelectOneResponseBlock = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext) as ISelectOneResponseBlock
-    Vue.set(block.config.choices, newIndex, choiceId)
-  },
+
 }
 
 export const actions: ActionTree<ICustomFlowState, IRootState> = {
+  deleteChoiceByKey({ state, rootState, rootGetters, commit }, { choiceKeyToRemove }) {
+    const activeBlock = rootGetters['builder/activeBlock']
+    delete activeBlock.config.choices[choiceKeyToRemove]
+
+    // Rekey
+    const choices: {[key: string]: string} = {}
+    commit('flow/block_updateConfigByKey', {
+      blockId: activeBlock.uuid,
+      key: 'choices',
+      value: Object.keys(activeBlock.config.choices).sort().reduce((choices, choiceKey: string, index: number) => {
+        choices[index + 1] = activeBlock.config.choices[choiceKey]
+        return choices
+      }, choices),
+    }, { root: true })
+  },
+  pushNewChoice({ state, rootState, rootGetters, commit }, { choiceId, newIndex }) {
+    const activeBlock = rootGetters['builder/activeBlock']
+    Vue.set(activeBlock.config.choices, newIndex, choiceId)
+  },
   async createVolatileEmptyChoice({state, dispatch, rootGetters}, { index }) {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankExit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
@@ -122,19 +124,19 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       resource: rootGetters['flow/resourcesByUuid'][blankResource.uuid]
     }
   },
-  async popFirstEmptyChoice({commit, rootGetters, getters}) {
+  async popFirstEmptyChoice({commit, dispatch, rootGetters, getters}) {
     const choiceKeyToRemove = find(Object.keys(getters.inflatedChoices), (key: string) => {
       return <boolean>getters.isInflatedChoiceBlankOnKey(key)
     })
     if (choiceKeyToRemove) {
       const choiceToRemove = rootGetters['builder/activeBlock'].config.choices[choiceKeyToRemove]
-      commit('deleteChoiceByKey', {choiceKeyToRemove: choiceKeyToRemove, blockId: rootGetters['builder/activeBlock'].uuid})
+      dispatch('deleteChoiceByKey', {choiceKeyToRemove: choiceKeyToRemove, blockId: rootGetters['builder/activeBlock'].uuid})
       return choiceToRemove
     }
     return null
   },
   async editSelectOneResponseBlockChoice({
-    commit, dispatch, getters, rootGetters,
+   commit, dispatch, getters, rootGetters,
   }) {
     const activeBlock = rootGetters['builder/activeBlock']
     if (!getters.allChoicesHaveContent) { // then remove the 1st blank exit
@@ -152,7 +154,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       const activeBlock = rootGetters['builder/activeBlock'];
       const newIndex = Object.keys(activeBlock.config.choices || {}).length + 1
       const resourceUuid = state.inflatedEmptyChoice.resource.uuid
-      commit('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
+      dispatch('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
       commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: state.inflatedEmptyChoice.exit}, {root: true})
 
       // associate new blank resource to the empty choice, this is important to stop endless watching
@@ -182,7 +184,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
     await dispatch('createVolatileEmptyChoice', { index: 0 })
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',
