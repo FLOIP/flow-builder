@@ -24,6 +24,7 @@ export const updateResourcesForLanguageMatch = function (resources: IResourceDef
 //We just overwrite any existing flows/resources with a given uuid
 //This is because they are uuids
 //We warn this will happen in the importer
+//For now we don't care about flow container uuid collisions as we aren't quite sure on the role of flow container yet
 export const mergeFlowContainer = function (existingFlowContainer: IContext, newFlowContainer: IContext): IContext {
   //there should only be a single flow imported at a time currently. We block any more than this in the importer
   const newFlow = get(newFlowContainer, 'flows[0]')
