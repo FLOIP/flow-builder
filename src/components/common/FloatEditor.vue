@@ -6,6 +6,7 @@
           type="number"
           :min="min"
           class="form-control"
+          :class="{ 'is-invalid': isInvalid }"
           :placeholder="placeholder"
           :value="value"
           :step="step"
@@ -51,6 +52,17 @@ export default {
       required: false,
       default: '[0-9\-.,]',
     },
+    validationState: {
+      type: Boolean,
+      default: null, // to tell boostrap `No state`
+      required: false,
+    },
+  },
+  computed: {
+    isInvalid() {
+      // strict comparison, because `undefined` doesn't mean invalid
+      return this.validationState === false
+    }
   },
   methods: {
     filterFloat(e) {
