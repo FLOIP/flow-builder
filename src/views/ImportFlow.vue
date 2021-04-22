@@ -507,7 +507,7 @@ class ImportFlow extends Vue {
     const contents = reader.readAsText(selectedFile, "UTF-8")
   }
   async handleImportFlow(route) {
-    const flowContainer = await this.flow_persist({
+    const flowContainer = await this.flow_import({
       //@ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
       persistRoute: this.route('flows.persistFlow', { flowId: this.flowContainer.uuid }),
       flowContainer: this.flowContainer
@@ -520,14 +520,13 @@ class ImportFlow extends Vue {
     }
   }
 
-  @flowVuexNamespace.Action flow_importFlow!: ({flow: IFlow}) => Promise<IContext>
-  @flowVuexNamespace.Action flow_persist!: ({persistRoute: string, flowContainer: IContext}) => Promise<IContext>
-  @Mutation configure 
+  @flowVuexNamespace.Action flow_import!: ({persistRoute: string, flowContainer: IContext}) => Promise<IContext>
+  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
   @Getter isConfigured!: boolean
   @Getter languages!: ILanguage[] 
-  @Getter subscriberPropertyFields: IContactPropertyOption[]
-  @Getter groups: IGroupOption[]
-  @Getter blockClasses: string[]
+  @Getter subscriberPropertyFields!: IContactPropertyOption[]
+  @Getter groups!: IGroupOption[]
+  @Getter blockClasses!: string[]
 }
 
 export default ImportFlow 
