@@ -1,11 +1,11 @@
 <template>
-  <div class="card" :class="{'gray-background': !isFocused}">
-    <div class="card-body sm-padding-below font-roboto">
-      <h4 class="card-title font-weight-regular pl-0 text-color-title">{{prompt.block.label}}</h4>
-      <p class="card-text">
-        {{content}}
-        <i class="bi bi-pencil-fill"></i>
-      </p>
+    <div>
+      <div class="d-flex justify-content-between">
+        <slot name="title"></slot>
+        <i v-if="!isFocused && !isComplete" @click="editBlock"
+           class="glyphicon glyphicon-pencil cursor-pointer"></i>
+      </div>
+      <slot name="content"></slot>
 
     <div class="form-group">
       <div v-for="(option, index) in options" :key="index" class="form-check">
@@ -30,14 +30,15 @@
     <block-action-buttons
       :is-disabled="false"
       :is-focused="isFocused"
-      :on-next-clicked="submitAnswer"/>
+      :on-next-clicked="submitAnswer"
+      :is-block-interaction="isBlockInteraction"
+      :on-cancel-clicked="onCancel"
+    />
     </div>
-  </div>
 </template>
 <script>
-import {
-  Context, IContext, SelectOnePrompt,
-} from '@floip/flow-runner'
+import { Context, IContext } from '@floip/flow-runner'
+import { mapActions, mapGetters } from 'vuex'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 export default {
@@ -46,59 +47,80 @@ export default {
   },
   props: {
     context: IContext,
-    prompt: SelectOnePrompt,
+    index: Number,
+    isComplete: Boolean,
     goNext: Function,
+    onEditComplete: Function,
+  },
+  data() {
+    return {
+      selectedItem: null,
+      backUpValue: '',
+      options: [],
+      errorMsg: null,
+      isBlockInteraction: false,
+    }
   },
   mounted() {
     this.setOptions()
   },
   computed: {
-    content() {
-      const result = Context.prototype.getResource.call(this.context, this.prompt.config.prompt)
-      return result.hasText() ? result.getText() : this.prompt.block.label
+    ...mapGetters('clipboard', ['isBlockFocused', 'getBlockPrompt']),
+    isFocused() {
+      return this.isBlockFocused(this.index)
+    },
+    prompt() {
+      return this.getBlockPrompt(this.index)
     },
   },
-  data() {
-    return {
-      selectedItem: null,
-      options: [],
-      errorMsg: null,
-      isFocused: true,
-    }
-  },
   methods: {
+    ...mapActions('clipboard', ['setIsFocused', 'setLastBlockUnEditable', 'setLastBlockEditable']),
     setOptions() {
-      for (const choice of this.prompt.config.choices) {
-        let option
+      const { choices } = this.prompt.config
+      choices.forEach((choice) => {
         try {
-          option = Context.prototype.getResource.call(this.context, choice.value).getText()
-        } catch (e) {
-          console.log('error fetching resource ')
-        }
-        if (option) {
+          const option = Context.prototype.getResource.call(this.context, choice.value).getText()
           this.options.push({
             key: choice.key,
             value: option,
           })
+        } catch (e) {
+          console.warn('error fetching resource ')
         }
-      }
+      })
     },
     checkIsValid() {
       try {
-        const validity = this.prompt.validate(this.selectedItem)
+        this.prompt.validate(this.selectedItem)
         this.errorMsg = ''
       } catch (e) {
         this.errorMsg = e.message
       }
     },
-    submitAnswer() {
+    async submitAnswer() {
       this.checkIsValid()
       if (!this.errorMsg) {
+        if (this.isBlockInteraction) {
+          await this.onEditComplete(this.index)
+          this.isBlockInteraction = false
+        }
         this.prompt.value = this.selectedItem
-        this.prompt.fulfill(this.selectedItem)
-        this.isFocused = false
+        this.setIsFocused({ index: this.index, value: false })
         this.goNext()
       }
+    },
+    editBlock() {
+      this.setLastBlockUnEditable()
+      this.setIsFocused({ index: this.index, value: true })
+      this.isBlockInteraction = true
+      this.backUpValue = this.prompt.value
+    },
+    onCancel() {
+      this.setLastBlockEditable()
+      this.setIsFocused({ index: this.index, value: false })
+      this.isBlockInteraction = false
+      this.selectedItem = this.backUpValue
+      this.errorMsg = ''
     },
   },
 }
