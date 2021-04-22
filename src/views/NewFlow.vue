@@ -26,7 +26,7 @@
 <script lang="ts">
 
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
@@ -35,6 +35,7 @@ import { forEach, isEmpty } from 'lodash'
 import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
 import {IFlow, IContext} from '@floip/flow-runner'
+import { RawLocation } from 'vue-router'
 
 @Component(
   {
@@ -42,26 +43,28 @@ import {IFlow, IContext} from '@floip/flow-runner'
       FlowEditor,
     },
     mixins: [lang, Routes],
-    async mounted() {
-        await this.flow_addBlankFlow()
-    },
-    async created() {
-      const {$store} = this
-
-      forEach(store.modules, (v, k) =>
-        !$store.hasModule(k) && $store.registerModule(k, v))
-
-      if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-        this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
-      }
-    },
   },
 )
 class NewFlow extends Vue {
-  @Prop({default: () => ({})}) readonly appConfig!: object
-  @Prop({default: () => ({})}) readonly builderConfig!: object
+  @Prop({ default: () => ({}) }) readonly appConfig!: object
+  @Prop({ default: () => ({}) }) readonly builderConfig!: object
 
-  async handlePersistFlow(route) {
+  async mounted() {
+    await this.flow_addBlankFlow()
+  }
+
+  async created() {
+    const {$store} = this
+
+    forEach(store.modules, (v, k) =>
+      !$store.hasModule(k) && $store.registerModule(k, v))
+
+    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+    }
+  }
+
+  async handlePersistFlow(route: RawLocation) {
     this.flowError = null
     const flowContainer = await this.flow_persist({
       //@ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
@@ -69,20 +72,20 @@ class NewFlow extends Vue {
       flowContainer: this.activeFlowContainer
     })
     if(flowContainer) {
-      this.$router.push(route)
+      await this.$router.push(route)
     } else {
       this.flowError = 'flow-builder.problem-creating-flow'
       //TODO - hook into validation system when we have it.
     }
   }
 
-  flowError = null;
+  flowError: string | null = null;
 
   @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
-  @flowVuexNamespace.Action flow_persist!: ({persistRoute: string, flowContainer: IContext}) => Promise<IContext>
+  @flowVuexNamespace.Action flow_persist!: ({ persistRoute, flowContainer }: { persistRoute: any, flowContainer: IContext }) => Promise<IContext | null>
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Getter activeFlowContainer!: IContext
-  @Mutation configure 
+  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
   @Getter isConfigured!: boolean
 }
 

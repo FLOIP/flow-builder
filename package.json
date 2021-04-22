@@ -18,7 +18,7 @@
     "md-docs": "./node_modules/widdershins/widdershins.js docs/routes/openapi/routes.yaml docs/routes/markdown/routes.md --language_tabs 'javascript:Javascript' --omitHeader"
   },
   "dependencies": {
-    "@floip/flow-runner": "^0.0.95",
+    "@floip/flow-runner": "^1.0.1",
     "@flowjs/flow.js": "^2.13.0",
     "@types/lodash": "^4.14.157",
     "@types/uuid": "^8.0.0",

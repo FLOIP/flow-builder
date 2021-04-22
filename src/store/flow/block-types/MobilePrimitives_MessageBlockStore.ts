@@ -10,7 +10,7 @@ import { IMessageBlock } from '@floip/flow-runner/src/model/block/IMessageBlock'
 import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'MobilePrimitives\\Message'
+export const BLOCK_TYPE = 'MobilePrimitives.Message'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
@@ -24,7 +24,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
@@ -35,7 +35,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits,
       config: {
         prompt: blankMessageResource.uuid,

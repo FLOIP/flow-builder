@@ -16,7 +16,7 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   mixins: [lang],
@@ -32,7 +32,7 @@ export default {
 
   computed: {
     isExitBlock() {
-      return this.blockId === this.flow.exitBlockId
+      return this.blockId === this.flow.exit_block_id
     },
   },
 

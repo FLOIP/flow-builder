@@ -12,15 +12,15 @@
         <hr />
 
         <h4>Log Message</h4>
-        <template v-for="{id: languageId, name: language} in flow.languages">
+        <template v-for="{id: languageId, label: language} in flow.languages">
           <div class="block-content-editor-lang">
             <h5 class="badge badge-info">
               {{language || 'flow-builder.unknown-language' | trans}}
             </h5>
           </div>
 
-          <template v-for="mode in flow.supportedModes">
-            <h6>{{`flow-builder.${mode}-content` | trans}}</h6>
+          <template v-for="mode in flow.supported_modes">
+            <h6>{{`flow-builder.${mode.toLowerCase()}-content` | trans}}</h6>
             <resource-variant-text-editor :resource-id="messageResource.uuid"
                                           :resource-variant="findOrGenerateStubbedVariantOn(
                                             messageResource,
@@ -41,7 +41,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -52,7 +51,7 @@ import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceReso
 import { findOrGenerateStubbedVariantOn } from '@/store/flow/resource'
 import LogStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_LogBlockStore'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -60,23 +59,23 @@ import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      ResourceVariantTextEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-    },
-    mixins: [lang],
-  })
-class Core_LogBlock extends Vue {
+@Component({
+  components: {
+    ResourceEditor,
+    ResourceVariantTextEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+  },
+})
+class Core_LogBlock extends mixins(Lang) {
     @Prop()readonly block!: ILogBlock
 
     @Prop()readonly flow!: IFlow

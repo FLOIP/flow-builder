@@ -11,7 +11,7 @@
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
 import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -33,7 +33,7 @@ export default {
   computed: {
     minValue: {
       get() {
-        return get(this.block, 'config.validationMinimum', this.defaultValue)
+        return get(this.block, 'config.validation_minimum', this.defaultValue)
       },
       set(value) {
         this.$emit('commitValidationMinimumChange', value)
