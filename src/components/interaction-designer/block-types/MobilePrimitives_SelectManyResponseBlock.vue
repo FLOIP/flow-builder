@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mobile-primitive-select-many-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -56,7 +56,7 @@
                          :block="block"
                          :flow="flow" />
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />

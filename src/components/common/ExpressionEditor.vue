@@ -1,5 +1,6 @@
 <template>
-  <text-editor v-model="expression"
+  <text-editor class="expression-editor"
+      v-model="expression"
       :label="label"
       :placeholder="placeholder"
       :state="state" />

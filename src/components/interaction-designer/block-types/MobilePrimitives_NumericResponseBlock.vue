@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mobile-primitive-numeric-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -29,7 +29,7 @@
                        :resource="promptResource"
                        :block="block"
                        :flow="flow" />
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -48,7 +48,7 @@ import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumer
 import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import NumericStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'

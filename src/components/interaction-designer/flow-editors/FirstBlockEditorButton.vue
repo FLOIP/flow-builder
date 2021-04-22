@@ -20,18 +20,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { IBlock, IFlow } from '@floip/flow-runner'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { namespace } from 'vuex-class'
+import { mixins } from "vue-class-component";
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({
-  mixins: [lang],
-})
-class FirstBlockEditorButton extends Vue {
+@Component({})
+class FirstBlockEditorButton extends mixins(Lang) {
     @Prop({ default: true }) readonly isEditable!: boolean
 
     @Prop()readonly blockId!: string

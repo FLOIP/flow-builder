@@ -14,7 +14,7 @@
 <script lang="ts">
 import {Component, Prop} from 'vue-property-decorator';
 import { mixins } from 'vue-class-component';
-import { Lang } from "@/lib/filters/lang";
+import Lang from "@/lib/filters/lang";
 import { BAlert } from 'bootstrap-vue'
 import { namespace } from "vuex-class";
 import { IIndexedString } from "@/store/validation";

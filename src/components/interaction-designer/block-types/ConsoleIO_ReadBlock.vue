@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="console-io-read-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -32,6 +32,8 @@
         </div>
       </validation-message>
 
+      <slot name="extras"></slot>
+
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -49,7 +51,7 @@ import { IFlow } from '@floip/flow-runner'
 import { IReadBlock } from '@floip/flow-runner/src/model/block/IReadBlock'
 import TextEditor from '@/components/common/TextEditor.vue'
 import ReadStore, { BLOCK_TYPE } from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
