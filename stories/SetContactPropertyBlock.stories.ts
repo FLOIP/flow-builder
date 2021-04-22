@@ -4,7 +4,7 @@ import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
 import SetContactPropertyBlock from '@/components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
-import {baseMounted, BaseMountedVueClass} from './story-utils/storeSetup'
+import { BaseMountedVueClass } from './story-utils/storeSetup'
 
 import {IRootState, store} from '@/store'
 import SetContactPropertyStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetContactPropertyStore'
@@ -38,8 +38,7 @@ let baseOptions = {
 })
 class DefaultClass extends BaseMountedVueClass {
   async mounted() {
-    // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, SetContactPropertyStore)
+    await this.baseMounted(BLOCK_TYPE, SetContactPropertyStore)
   }
 }
 export const Default = () => (DefaultClass)
@@ -50,8 +49,7 @@ export const Default = () => (DefaultClass)
 })
 class ExistingDataBlockClass extends BaseMountedVueClass {
   async mounted() {
-    // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, SetContactPropertyStore)
+    await this.baseMounted(BLOCK_TYPE, SetContactPropertyStore)
 
     // Add sample data
     this.addSubscriberPropertyField({
@@ -76,6 +74,6 @@ class ExistingDataBlockClass extends BaseMountedVueClass {
       }
     })
   }
-  @Mutation addSubscriberPropertyField!: ({ property }) => void
+  @Mutation addSubscriberPropertyField!: ({ property }: { property: any }) => void
 }
 export const ExistingDataBlock = () => (ExistingDataBlockClass)

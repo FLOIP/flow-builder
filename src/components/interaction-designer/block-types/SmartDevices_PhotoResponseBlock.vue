@@ -29,28 +29,28 @@ import {
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import PhotoStore, { BLOCK_TYPE } from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-    },
-    mixins: [lang],
-  })
-class SmartDevices_PhotoResponseBlock extends Vue {
+@Component({
+  components: {
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+  },
+})
+class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
     // @Prop()readonly block!: IPhotoResponseBlock
     @Prop()readonly block!: IBlock
 
