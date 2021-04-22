@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="smart-devices-photo-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -14,6 +14,7 @@
         <block-semantic-label-editor :block="block" :state="!isSemanticLabelValid" />
       </validation-message>
 
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -35,7 +36,7 @@ import {
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import PhotoStore, { BLOCK_TYPE } from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'

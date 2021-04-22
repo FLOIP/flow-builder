@@ -1,18 +1,19 @@
 <template>
-  <div>
+  <div class="block-label">
     <text-editor v-model="label"
                  :label="'flow-builder.block-label' | trans"
                  :placeholder="'flow-builder.enter-block-label' | trans"
-                 :state="state"/>
+                 :validationState="validationState"/>
   </div>
 </template>
 
 <script lang="ts">
 import TextEditor from '@/components/common/TextEditor.vue'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { IBlock } from '@floip/flow-runner'
 import { namespace } from 'vuex-class'
+import { mixins } from "vue-class-component";
 
 const flowVuexNamespace = namespace('flow')
 
@@ -20,11 +21,10 @@ const flowVuexNamespace = namespace('flow')
   components: {
     TextEditor,
   },
-  mixins: [lang],
 })
-export default class LabelEditor extends Vue {
+export default class LabelEditor extends mixins(Lang) {
   @Prop() block!: IBlock
-  @Prop() state?: boolean
+  @Prop() validationState?: boolean
 
   get label(): IBlock['label'] {
     return this.block.label

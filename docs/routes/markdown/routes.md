@@ -62,7 +62,7 @@ fetch('/flows/{id}',
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -95,7 +95,7 @@ const inputBody = '{
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -143,7 +143,7 @@ fetch('/flows/{id}',
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -176,7 +176,7 @@ const inputBody = '{
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -224,7 +224,7 @@ fetch('/flows/{id}',
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -336,7 +336,7 @@ This operation does not require authentication
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -353,7 +353,7 @@ This operation does not require authentication
 |uuid|string|false|none|none|
 |name|string|false|none|none|
 |description|string|false|none|none|
-|platform_metadata|object|false|none|none|
+|vendor_metadata|object|false|none|none|
 |flows|[object]|false|none|none|
 |resources|object|false|none|none|
 
