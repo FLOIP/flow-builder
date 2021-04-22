@@ -57,7 +57,7 @@
                 @reactToMatch="handleMatchGroup"
                 :missing-matches="missingGroups"
                 type-id="id"
-                type-label="groupName"
+                type-label="group_name"
                 :existing-options-without-match="existingGroupsWithoutMatch"
                 match-not-found-text="flow-builder.match-for-groups-not-found"/>
             </div>
@@ -98,7 +98,7 @@
                 @reactToMatch="handleMatchGroup"
                 :missing-matches="missingGroups"
                 type-id="id"
-                type-label="groupName"
+                type-label="group_name"
                 :existing-options-without-match="existingGroupsWithoutMatch"
                 match-not-found-text="flow-builder.match-for-groups-not-found"/>
             </div>
@@ -245,7 +245,7 @@ class ImportFlow extends Vue {
       this.propertyBlocks = newPropertyBlocks
       this.validateProperties(this.propertyBlocks)
     }
-    //matching on "groupKey" == "id" in builder.config.json
+    //matching on "group_key" == "id" in builder.config.json
     const newGroupBlocks = this.getGroupBlocks(flowContainer)
     if(this.detectedGroupChanges(newGroupBlocks)) {
       this.groupBlocks = newGroupBlocks
@@ -408,8 +408,8 @@ class ImportFlow extends Vue {
   validateGroups(newGroupBlocks) {
     const matchingGroups = []
     newGroupBlocks.forEach((groupBlock) => {
-      const groupIdentifier = get(groupBlock, 'config.groupKey')
-      const groupName = get(groupBlock, 'config.groupName')
+      const groupIdentifier = get(groupBlock, 'config.group_key')
+      const groupName = get(groupBlock, 'config.group_name')
       if(groupIdentifier) {
         let matchingGroup = find(this.groups, (orgGroup) => {
           return isEqual(orgGroup.id, groupIdentifier)
@@ -464,8 +464,8 @@ class ImportFlow extends Vue {
   handleMatchGroup(oldGroup, matchingNewGroup) {
     oldGroup.blockIds.forEach((blockId) => {
       const blockIndex = findIndex(this.flowContainer.flows[0].blocks, (block) => { return block.uuid === blockId })
-      set(this.flowContainer.flows[0].blocks, `${blockIndex}.config.groupKey`, matchingNewGroup.id)
-      set(this.flowContainer.flows[0].blocks, `${blockIndex}.config.groupName`, matchingNewGroup.name)
+      set(this.flowContainer.flows[0].blocks, `${blockIndex}.config.group_key`, matchingNewGroup.id)
+      set(this.flowContainer.flows[0].blocks, `${blockIndex}.config.group_name`, matchingNewGroup.name)
     })
     this.flowJsonText = JSON.stringify(this.flowContainer, null, 2)
     //missingGroups gets updated again when we validate below
