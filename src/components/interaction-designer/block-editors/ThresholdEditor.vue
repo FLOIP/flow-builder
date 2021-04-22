@@ -5,7 +5,7 @@
         :regex-float-filtering="'[0-9.,]'"
         :label="'flow-builder.accuracy-threshold-in-meters' | trans"
         :placeholder="'flow-builder.enter-value' | trans"
-        :state="state">
+        :validationState="validationState">
     </float-editor>
   </div>
 </template>
@@ -25,9 +25,9 @@ export default {
       type: Object,
       required: true,
     },
-    state: {
+    validationState: {
       type: Boolean,
-      default: undefined, // to tell boostrap `No state`
+      default: null, // to tell boostrap `No state`
       required: false,
     },
   },

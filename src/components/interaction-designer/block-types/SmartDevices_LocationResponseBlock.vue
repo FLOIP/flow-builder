@@ -6,20 +6,20 @@
 
     <fieldset :disabled="!isEditable">
       <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
-        <block-name-editor  :block="block" :state="!isNameValid" />
+        <block-name-editor  :block="block" :validationState="!isNameValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
-        <block-label-editor :block="block" :state="!isLabelValid" />
+        <block-label-editor :block="block" :validationState="!isLabelValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
-        <block-semantic-label-editor :block="block" :state="!isSemanticLabelValid" />
+        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
       </validation-message>
 
       <validation-message :message-key="`block/${block.uuid}/.config.accuracy_threshold_meters`" #input-control="{ isValid: isThresholdMetersValid }">
-        <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold" :state="!isThresholdMetersValid" />
+        <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold" :validationState="!isThresholdMetersValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.config.accuracy_timeout_seconds`" #input-control="{ isValid: isTimeoutSecondsValid }">
-        <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout" :state="!isTimeoutSecondsValid" />
+        <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout" :validationState="!isTimeoutSecondsValid" />
       </validation-message>
 
       <slot name="extras"></slot>

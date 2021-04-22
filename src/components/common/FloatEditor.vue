@@ -52,16 +52,16 @@ export default {
       required: false,
       default: '[0-9\-.,]',
     },
-    state: {
+    validationState: {
       type: Boolean,
-      default: undefined, // to tell boostrap `No state`
+      default: null, // to tell boostrap `No state`
       required: false,
     },
   },
   computed: {
     isInvalid() {
       // strict comparison, because `undefined` doesn't mean invalid
-      return this.state === false
+      return this.validationState === false
     }
   },
   methods: {
