@@ -7,7 +7,7 @@ import {
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IPrintBlock } from '@floip/flow-runner/src/model/block/IPrintBlock'
-import { defaults } from 'lodash'
+import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
 export const BLOCK_TYPE = 'ConsoleIO.Print'
@@ -31,7 +31,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }, { root: true }),
     ]
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',

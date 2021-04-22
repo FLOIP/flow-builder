@@ -19,7 +19,7 @@
 <script lang="ts">
 
 import { forEach, isEmpty } from 'lodash'
-import lang, {Lang} from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import { Component, Prop } from 'vue-property-decorator'
 import {Getter, Mutation, namespace} from 'vuex-class'

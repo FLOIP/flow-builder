@@ -26,7 +26,7 @@
 <script lang="ts">
 
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'

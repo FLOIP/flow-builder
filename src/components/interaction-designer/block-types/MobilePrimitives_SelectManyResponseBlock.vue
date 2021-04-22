@@ -1,12 +1,18 @@
 <template>
-  <div>
+  <div class="mobile-primitive-select-many-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
+      <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
+        <block-name-editor :block="block" :validationState="!isNameValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
+        <block-label-editor :block="block" :validationState="!isLabelValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
+        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
+      </validation-message>
       <div class="prompt-resource">
         <resource-editor v-if="promptResource"
                          :label="'flow-builder.prompt' | trans"
@@ -50,7 +56,7 @@
                          :block="block"
                          :flow="flow" />
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -78,6 +84,7 @@ import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -91,6 +98,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     ResourceEditor,
     BlockId,
+    ValidationMessage
   },
 })
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {

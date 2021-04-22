@@ -3,7 +3,7 @@ import { IRootState } from '@/store'
 import { IBlockExit, SupportedMode, SupportedContentType, IBlock } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock'
-import { defaults } from 'lodash'
+import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
@@ -24,7 +24,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMaximum({ commit, rootGetters }, { blockId, value }: { blockId: IBlock['uuid']; value: number | string }) {
     commit('flow/block_updateConfigByKey', {
       blockId,
-      key: 'validation_minimum',
+      key: 'validation_maximum',
       value,
     }, { root: true })
     return value
@@ -34,7 +34,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId,
       key: 'ivr',
       value: {
-        maxDigits: value,
+        max_digits: value,
       },
     }, { root: true })
     return value
@@ -60,7 +60,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     commit('flow/resource_add', { resource: blankResource }, { root: true })
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',

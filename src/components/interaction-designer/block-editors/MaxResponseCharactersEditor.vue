@@ -3,7 +3,8 @@
     <numeric-editor v-model.number="maxResponse"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.max-response-characters' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
+        :placeholder="'flow-builder.enter-value' | trans"
+        :validationState="validationState">
     </numeric-editor>
     <small class="text-muted">
       {{'flow-builder.unlimited-if-not-defined-or-set-as-zero' | trans}}
@@ -14,7 +15,7 @@
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
 import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -29,6 +30,11 @@ export default {
     block: {
       type: Object,
       required: true,
+    },
+    validationState: {
+      type: Boolean,
+      default: null, // to tell boostrap `No state`
+      required: false,
     },
   },
   data() {

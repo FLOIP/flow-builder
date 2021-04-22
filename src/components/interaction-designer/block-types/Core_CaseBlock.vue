@@ -1,18 +1,18 @@
 <template>
-  <div>
+  <div class="core-case-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
     <fieldset :disabled="!isEditable">
       <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
-        <block-name-editor :block="block" :state="!isNameValid" />
+        <block-name-editor :block="block" :validationState="!isNameValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
-        <block-label-editor :block="block" :state="!isLabelValid" />
+        <block-label-editor :block="block" :validationState="!isLabelValid" />
       </validation-message>
       <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
-        <block-semantic-label-editor :block="block" :state="!isSemanticLabelValid" />
+        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
       </validation-message>
 
       <div v-for="(exit,i) in exits" class="form-group form-inline">
@@ -25,7 +25,7 @@
               @commitExpressionChange="editCaseBlockExit"/>
         </validation-message>
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -36,7 +36,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -45,7 +44,7 @@ import { IBlockExitTestRequired, IFlow, IBlockExit } from '@floip/flow-runner'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 
 import CaseStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_CaseBlockStore'
-import { Lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
