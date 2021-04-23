@@ -4,6 +4,7 @@
     <vue-multiselect v-model="selectedProperty"
                      track-by="id"
                      label="displayLabel"
+                     :class="{invalid: validationState === false}"
                      :placeholder="'flow-builder.contact-property-selector-placeholder' | trans"
                      :options="subscriberPropertyFields || []"
                      :allow-empty="false"
@@ -37,6 +38,7 @@ interface IContactPropertyOption {
 })
 class ContactPropertySelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
+  @Prop() validationState?: boolean
 
   get selectedProperty() {
     const {
@@ -71,3 +73,9 @@ class ContactPropertySelector extends mixins(Lang) {
 
 export default ContactPropertySelector;
 </script>
+
+<style lang="css" scoped>
+.invalid >>> .multiselect__tags {
+  border-color: #dc3545;
+}
+</style>

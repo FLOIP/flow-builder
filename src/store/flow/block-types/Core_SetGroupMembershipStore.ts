@@ -33,7 +33,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semantic_abel: '',
+      semantic_label: '',
       config: {
         group_key: '',
         group_name: '',

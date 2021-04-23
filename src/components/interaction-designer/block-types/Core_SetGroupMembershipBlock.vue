@@ -5,24 +5,35 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block"/>
-      <block-label-editor :block="block"/>
-      <block-semantic-label-editor :block="block"/>
+      <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
+        <block-name-editor :block="block" :validationState="!isNameValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
+        <block-label-editor :block="block" :validationState="!isLabelValid" />
+      </validation-message>
+      <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
+        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
+      </validation-message>
 
-      <div class="form-group">
-        <label>{{'flow-builder.action-label' | trans}}</label>
-        <vue-multiselect v-model="selectedAction"
-                         track-by="id"
-                         label="name"
-                         :placeholder="'flow-builder.action-placeholder' | trans"
-                         :options="actionsList"
-                         :allow-empty="true"
-                         :show-labels="false"
-                         :searchable="false">
-        </vue-multiselect>
-      </div>
+      <validation-message :message-key="`block/${block.uuid}/.config.is_member`" #input-control="{ isValid: isGroupAMemberValid }">
+        <div class="form-group">
+          <label>{{'flow-builder.action-label' | trans}}</label>
+          <vue-multiselect v-model="selectedAction"
+                           track-by="id"
+                           label="name"
+                           :class="{invalid: !isGroupAMemberValid === false}"
+                           :placeholder="'flow-builder.action-placeholder' | trans"
+                           :options="actionsList"
+                           :allow-empty="true"
+                           :show-labels="false"
+                           :searchable="false">
+          </vue-multiselect>
+        </div>
+      </validation-message>
 
-      <group-selector :block="block"/>
+      <validation-message :message-key="`block/${block.uuid}/.config.group_name`" #input-control="{ isValid: isGroupNameValid }">
+        <group-selector :block="block" :validationState="!isGroupNameValid" />
+      </validation-message>
       <slot name="extras"></slot>
       <first-block-editor-button
         :flow="flow"
@@ -56,6 +67,7 @@ import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import { find } from 'lodash'
 import { mixins } from "vue-class-component";
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
@@ -75,6 +87,7 @@ interface IGroupActionOption {
     BlockId,
     GroupSelector,
     VueMultiselect,
+    ValidationMessage
   },
 })
 class Core_SetGroupMembershipBlock extends mixins(Lang) {
@@ -120,3 +133,9 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
 export default Core_SetGroupMembershipBlock
 export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SetGroupMembershipStore)
 </script>
+
+<style lang="css" scoped>
+.invalid >>> .multiselect__tags {
+  border-color: #dc3545;
+}
+</style>

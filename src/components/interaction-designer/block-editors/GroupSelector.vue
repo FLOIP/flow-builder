@@ -4,6 +4,7 @@
     <vue-multiselect v-model="selectedGroup"
                      track-by="id"
                      label="name"
+                     :class="{invalid: validationState === false}"
                      :placeholder="'flow-builder.group-selector-placeholder' | trans"
                      :options="groups"
                      :allow-empty="false"
@@ -36,6 +37,7 @@ interface IGroupOption {
 })
 class GroupSelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
+  @Prop() validationState?: boolean
 
   get selectedGroup() {
     const { group_key } = this.block.config as ISetGroupMembershipBlockConfig
@@ -70,3 +72,9 @@ class GroupSelector extends mixins(Lang) {
 
 export default GroupSelector
 </script>
+
+<style lang="css" scoped>
+.invalid >>> .multiselect__tags {
+  border-color: #dc3545;
+}
+</style>
