@@ -74,6 +74,10 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockExitWith(exitId, block)
       .destination_block = destinationBlockId
   },
+  block_updateVendorMetadataByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
+    // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
+    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).vendor_metadata, path, value);
+  },
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
@@ -137,6 +141,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       destinationBlockId: secondDestinationBlockId,
     })
   },
+
+  async block_updateExitsFromBranchingType({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    console.log('block_updateExitsFromBranchingType')
+  }
 }
 
 export interface IDeepBlockExitIdWithinFlow {

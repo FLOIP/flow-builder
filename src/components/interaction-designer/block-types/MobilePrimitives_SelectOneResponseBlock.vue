@@ -52,7 +52,11 @@
                          :block="block"
                          :flow="flow" />
       </div>
+
+      <block-output-branching-config :block="block"/>
+
       <slot name="extras"></slot>
+
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -84,6 +88,7 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+import BlockOutputBranchingConfig from '../block-editors/BlockOutputBranchingConfig.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
 
@@ -99,6 +104,7 @@ const builderVuexNamespace = namespace('builder')
     BlockExitSemanticLabelEditor,
     FirstBlockEditorButton,
     ResourceEditor,
+    BlockOutputBranchingConfig,
     BlockId,
   },
 })
