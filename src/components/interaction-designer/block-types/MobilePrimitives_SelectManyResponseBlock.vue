@@ -77,9 +77,7 @@ import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEdit
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
-
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
-import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -93,7 +91,6 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     ResourceEditor,
     BlockId,
-    ValidationMessage
   },
 })
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {

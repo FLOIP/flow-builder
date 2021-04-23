@@ -86,7 +86,6 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
-import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -101,7 +100,6 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     ResourceEditor,
     BlockId,
-    ValidationMessage
   },
 })
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
