@@ -5,15 +5,10 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
-        <block-name-editor :block="block" :validationState="!isNameValid" />
-      </validation-message>
-      <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
-        <block-label-editor :block="block" :validationState="!isLabelValid" />
-      </validation-message>
-      <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
-        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
-      </validation-message>
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
+
       <validation-message :message-key="`block/${block.uuid}/.config.ivr.max_duration_seconds`" #input-control="{ isValid: isMaxDurationValid }">
         <block-max-duration-seconds-editor :block="block" :validationState="!isMaxDurationValid" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
       </validation-message>

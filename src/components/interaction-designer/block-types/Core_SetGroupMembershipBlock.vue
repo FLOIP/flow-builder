@@ -5,15 +5,9 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid: isNameValid }">
-        <block-name-editor :block="block" :validationState="!isNameValid" />
-      </validation-message>
-      <validation-message :message-key="`block/${block.uuid}/.label`" #input-control="{ isValid: isLabelValid }">
-        <block-label-editor :block="block" :validationState="!isLabelValid" />
-      </validation-message>
-      <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid: isSemanticLabelValid }">
-        <block-semantic-label-editor :block="block" :validationState="!isSemanticLabelValid" />
-      </validation-message>
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
       <!-- TODO: Verify the type of is_member(boolean or string) and then enable validation for this field -->
 <!--      <validation-message :message-key="`block/${block.uuid}/.config.is_member`" #input-control="{ isValid: isGroupAMemberValid }">-->
@@ -22,7 +16,6 @@
           <vue-multiselect v-model="selectedAction"
                            track-by="id"
                            label="name"
-                           :class="{invalid: !isGroupAMemberValid === false}"
                            :placeholder="'flow-builder.action-placeholder' | trans"
                            :options="actionsList"
                            :allow-empty="true"
@@ -35,7 +28,7 @@
       <validation-message :message-key="`block/${block.uuid}/.config.group_key`" #input-control="{ isValid: isGroupKeyValid }">
         <group-selector :block="block" :validationState="!isGroupKeyValid" />
       </validation-message>
-      
+
       <slot name="extras"></slot>
       <first-block-editor-button
         :flow="flow"

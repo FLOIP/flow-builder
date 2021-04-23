@@ -1,30 +1,29 @@
 <template>
-  <div class="block-semantic-label">
-    <text-editor v-model="semanticLabel"
-                 :label="'flow-builder.block-semantic-label' | trans"
-                 :placeholder="'flow-builder.enter-block-semantic-label' | trans"
-                 :validationState="validationState" />
-  </div>
+  <validation-message :message-key="`block/${block.uuid}/.semantic_label`" #input-control="{ isValid }">
+    <div class="block-semantic-label">
+      <text-editor v-model="semanticLabel"
+                   :label="'flow-builder.block-semantic-label' | trans"
+                   :placeholder="'flow-builder.enter-block-semantic-label' | trans"
+                   :validationState="!isValid" />
+    </div>
+  </validation-message>
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
 import { lang } from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage';
 
 export default {
   components: {
     TextEditor,
+    ValidationMessage
   },
   props: {
     block: {
       type: Object,
       required: true,
-    },
-    validationState: {
-      type: Boolean,
-      default: null, // to tell boostrap `No state`
-      required: false,
     },
   },
   mixins: [lang],
