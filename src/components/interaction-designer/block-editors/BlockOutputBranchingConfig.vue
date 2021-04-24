@@ -47,7 +47,7 @@
   export default class BlockOutputBranchingConfig extends mixins(Lang){
     @Prop() readonly block!: IBlock
 
-    branchingType: string = BRANCHING_TYPE_SEGREGATED
+    defaultBranchingType: string = BRANCHING_TYPE_SEGREGATED
 
     get isBranchingTypeSegregated() {
       return this.branching === BRANCHING_TYPE_SEGREGATED
@@ -61,8 +61,8 @@
       // TODO: confirm this path because FLOIP spec doesn't provide a definition for the output branching persistence
       let value = get(this.block, 'vendor_metadata.branchingType')
       if (isNil(value) && this.block) {
-        this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'branchingType', value: this.branchingType})
-        return this.branchingType
+        this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'branchingType', value: this.defaultBranchingType })
+        return this.defaultBranchingType
       }
       return value
     }
@@ -74,10 +74,11 @@
       } else {
         this.block_unifyExitsBranching( { blockId: this.block.uuid })
       }
+      this.$emit('commitIsSegregatedBranching', this.isBranchingTypeSegregated)
     }
 
     @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
-    @flowVuexNamespace.Action block_segregateExitsBranching!: ( { blockId }: { blockId: IBlock['uuid']} ) => void
-    @flowVuexNamespace.Action block_unifyExitsBranching!: ( { blockId }: { blockId: IBlock['uuid']} ) => void
+    @flowVuexNamespace.Action block_segregateExitsBranching!: ( { blockId }: { blockId: IBlock['uuid'] } ) => void
+    @flowVuexNamespace.Action block_unifyExitsBranching!: ( { blockId }: { blockId: IBlock['uuid'] } ) => void
   }
 </script>

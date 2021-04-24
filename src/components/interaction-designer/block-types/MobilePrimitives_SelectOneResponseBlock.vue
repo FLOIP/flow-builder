@@ -53,7 +53,7 @@
                          :flow="flow" />
       </div>
 
-      <block-output-branching-config :block="block"/>
+      <block-output-branching-config :block="block" @commitIsSegregatedBranching="handleBranchingTypeChange"/>
 
       <slot name="extras"></slot>
 
@@ -91,6 +91,7 @@ import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockOutputBranchingConfig from '../block-editors/BlockOutputBranchingConfig.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
+import { set } from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -137,10 +138,14 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
       this.editEmptyChoice( { choice: oldChoice as IInflatedChoicesInterface })
     }
 
+  handleBranchingTypeChange(isSegregatedBranching: boolean) {
+    set(this.inflatedEmptyChoice!.exit.config, 'is_visible', isSegregatedBranching)
+  }
+
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
 
-    @blockVuexNamespace.Getter inflatedChoices?: {[key: string]: IResourceDefinition}
-    @blockVuexNamespace.State inflatedEmptyChoice?: {[key: string]: IResourceDefinition}
+    @blockVuexNamespace.Getter inflatedChoices?: {[key: string]: IInflatedChoicesInterface}
+    @blockVuexNamespace.State inflatedEmptyChoice?: IInflatedChoicesInterface
 
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
     @blockVuexNamespace.Action editEmptyChoice!: ({ choice }: { choice: IInflatedChoicesInterface }) => Promise<object>

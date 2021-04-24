@@ -92,7 +92,7 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
       return exit.tag.toLowerCase() == 'default'
     })
 
-    return get(defaultExit.config, 'is_visible', true)
+    return !get(defaultExit.config, 'is_visible', true)
   },
 }
 
