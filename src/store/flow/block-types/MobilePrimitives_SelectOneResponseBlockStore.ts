@@ -82,7 +82,18 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
       return false
     })
   },
+  isExitsBranchingSegregated: (state, getters, rootState, rootGetters): boolean => {
+    const currentBlock = rootGetters['builder/activeBlock']
+    if(!currentBlock) { // eg: on the way to create the block
+      return true
+    }
 
+    const defaultExit = find(currentBlock.exits, function (exit) {
+      return exit.tag.toLowerCase() == 'default'
+    })
+
+    return get(defaultExit.config, 'is_visible', true)
+  },
 }
 
 export const mutations: MutationTree<ICustomFlowState> = {
@@ -109,7 +120,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     const activeBlock = rootGetters['builder/activeBlock']
     Vue.set(activeBlock.config.choices, newIndex, choiceId)
   },
-  async createVolatileEmptyChoice({state, dispatch, rootGetters}, { index }) {
+  async createVolatileEmptyChoice({state, dispatch, getters, rootGetters}, { index }) {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankExit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
       props: {
@@ -117,6 +128,9 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
         test: `block.value = ${index}`,
         label: blankResource.uuid,
         semantic_label: '',
+        config: {
+          is_visible: getters.isExitsBranchingSegregated
+        }
       } as IBlockExitTestRequired,
     }, {root: true})
     state.inflatedEmptyChoice = {
@@ -158,8 +172,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: state.inflatedEmptyChoice.exit}, {root: true})
 
       // associate new blank resource to the empty choice, this is important to stop endless watching
-      const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-      await dispatch('createVolatileEmptyChoice', { blankResource, index: newIndex })
+      await dispatch('createVolatileEmptyChoice', { index: newIndex })
     }
   },
 

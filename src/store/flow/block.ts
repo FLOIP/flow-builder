@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import {
   IContext,
   IBlock,
@@ -49,6 +50,10 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).test = value
   },
+  block_setExitConfigByPath(state, { exitId, blockId, path, value }: {exitId: string; blockId: string; path: string; value: object | string}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    set(findBlockExitWith(exitId, block).config, path, value)
+  },
   block_setExitSemanticLabel(state, { exitId, blockId, value }: { exitId: string, blockId: string, value: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).semantic_label = value
@@ -84,8 +89,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async block_createBlockDefaultExitWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IBlockExit>}): Promise<IBlockExit> {
     return await dispatch('block_createBlockExitWith', {
       props: {
-        ...props,
-        default: true,
+        ...defaults(props, { default: true })
       },
     })
   },
@@ -145,11 +149,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async block_segregateExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     // Hide the default exit & show all other exits
-    forEach(block.exits, function (exit) {
+    forEach(block.exits, function (exit, i) {
       if(exit.tag.toLowerCase() == 'default') {
-        set(exit.config, 'is_visible', false)
+        commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: false })
       } else {
-        set(exit.config, 'is_visible', true)
+        commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: true })
       }
     })
   },
@@ -157,11 +161,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async block_unifyExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     // Show default & error only, hide others
-    forEach(block.exits, function (exit) {
-      if(['default', 'error'].includes(exit.tag.toLowerCase())) {
-        set(exit.config, 'is_visible', true)
+    forEach(block.exits, function (exit, i) {
+      const tag = exit.tag.toLowerCase()
+      if(['default', 'error'].includes(tag)) {
+        commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: true })
       } else {
-        set(exit.config, 'is_visible', false)
+        commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: false })
       }
     })
   }
