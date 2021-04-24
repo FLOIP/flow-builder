@@ -82,6 +82,8 @@ export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseB
   @blockVuexNamespace.Getter inflatedChoices?: { [key: string]: IInflatedChoicesInterface }
   @blockVuexNamespace.State inflatedEmptyChoice?: IInflatedChoicesInterface
 
+  @blockVuexNamespace.Mutation updateInflatedEmptyChoiceVisibility!: ({ value }: { value: boolean }) => void
+
   @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
   @blockVuexNamespace.Action editEmptyChoice!: () => Promise<object>
 

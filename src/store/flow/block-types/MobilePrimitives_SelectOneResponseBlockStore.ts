@@ -15,7 +15,7 @@ import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import { defaultsDeep, find, max, filter, first, get } from 'lodash'
+import {defaultsDeep, find, max, filter, first, get, set} from 'lodash'
 import { IResourceDefinitionVariantOverModesFilter } from '../resource'
 import { IFlowsState } from '../index'
 
@@ -97,7 +97,9 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
 }
 
 export const mutations: MutationTree<ICustomFlowState> = {
-
+  updateInflatedEmptyChoiceVisibility(state, { value }: { value: boolean }) {
+    set(state.inflatedEmptyChoice.exit.config, 'is_visible', value);
+  },
 }
 
 export const actions: ActionTree<ICustomFlowState, IRootState> = {

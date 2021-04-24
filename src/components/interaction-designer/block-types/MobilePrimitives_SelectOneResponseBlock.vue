@@ -139,13 +139,15 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     }
 
   handleBranchingTypeChange(isSegregatedBranching: boolean) {
-    set(this.inflatedEmptyChoice!.exit.config, 'is_visible', isSegregatedBranching)
+    this.updateInflatedEmptyChoiceVisibility({ value: isSegregatedBranching })
   }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
 
     @blockVuexNamespace.Getter inflatedChoices?: {[key: string]: IInflatedChoicesInterface}
     @blockVuexNamespace.State inflatedEmptyChoice?: IInflatedChoicesInterface
+
+    @blockVuexNamespace.Mutation updateInflatedEmptyChoiceVisibility!: ({ value }: { value: boolean }) => void
 
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
     @blockVuexNamespace.Action editEmptyChoice!: ({ choice }: { choice: IInflatedChoicesInterface }) => Promise<object>

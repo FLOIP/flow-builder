@@ -35,6 +35,10 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Default',
       label: 'Default',
+      default: true,
+      config: {
+        is_visible: false //TODO: confirm if we should move this out from config, and update FLOIP spec for `exits`
+      }
     }
 
     const errorExitProps: Partial<IBlockExit> = {
