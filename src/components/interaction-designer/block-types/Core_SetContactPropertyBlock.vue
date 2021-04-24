@@ -9,9 +9,7 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <validation-message :message-key="`block/${block.uuid}/.config.set_contact_property.property_key`" #input-control="{ isValid: isContactPropertyValid }">
-        <contact-property-selector :block="block" :validationState="!isContactPropertyValid" />
-      </validation-message>
+      <contact-property-selector :block="block" />
       <validation-message :message-key="`block/${block.uuid}/.config.set_contact_property.property_value`" #input-control="{ isValid: isContactPropertyValueValid }">
         <expression-editor :label="'flow-builder.contact-property-expression' | trans"
                          :placeholder="'flow-builder.edit-expression' | trans"

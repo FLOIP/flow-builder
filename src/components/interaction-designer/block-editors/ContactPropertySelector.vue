@@ -1,17 +1,19 @@
 <template>
-  <div class="block-contact-property form-group">
-    <label>{{'flow-builder.contact-property-label' | trans}}</label>
-    <vue-multiselect v-model="selectedProperty"
-                     track-by="id"
-                     label="displayLabel"
-                     :class="{invalid: validationState === false}"
-                     :placeholder="'flow-builder.contact-property-selector-placeholder' | trans"
-                     :options="subscriberPropertyFields || []"
-                     :allow-empty="false"
-                     :show-labels="false"
-                     :searchable="true">
-    </vue-multiselect>
-  </div>
+  <validation-message :message-key="`block/${block.uuid}/.config.set_contact_property.property_key`" #input-control="{ isValid: isInvalid }">
+    <div class="block-contact-property form-group">
+      <label>{{'flow-builder.contact-property-label' | trans}}</label>
+      <vue-multiselect v-model="selectedProperty"
+                       track-by="id"
+                       label="displayLabel"
+                       :class="{invalid: isInvalid}"
+                       :placeholder="'flow-builder.contact-property-selector-placeholder' | trans"
+                       :options="subscriberPropertyFields || []"
+                       :allow-empty="false"
+                       :show-labels="false"
+                       :searchable="true">
+      </vue-multiselect>
+    </div>
+  </validation-message>
 </template>
 
 <script lang="ts">
@@ -22,6 +24,7 @@ import {Getter, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang';
 import { find } from 'lodash'
 import { mixins } from "vue-class-component";
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const flowVuexNamespace = namespace('flow')
 
@@ -34,11 +37,11 @@ interface IContactPropertyOption {
 @Component<any>({
   components: {
     VueMultiselect,
+    ValidationMessage
   },
 })
 class ContactPropertySelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
-  @Prop() validationState?: boolean
 
   get selectedProperty() {
     const {

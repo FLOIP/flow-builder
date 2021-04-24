@@ -1,22 +1,26 @@
 <template>
-  <div v-if="hasIvr" class="form-group block-max-digits">
-    <numeric-editor v-model.number="maxDigits"
-        :regex-numeric-filtering="'[0-9]'"
-        :label="'flow-builder.maximum-digits' | trans"
-        :placeholder="'flow-builder.enter-value' | trans"
-        :validationState="validationState">
-    </numeric-editor>
-  </div>
+  <validation-message :message-key="`block/${block.uuid}/.config.ivr.max_digits`" #input-control="{ isValid }">
+    <div v-if="hasIvr" class="form-group block-max-digits">
+      <numeric-editor v-model.number="maxDigits"
+          :regex-numeric-filtering="'[0-9]'"
+          :label="'flow-builder.maximum-digits' | trans"
+          :placeholder="'flow-builder.enter-value' | trans"
+          :validationState="!isValid">
+      </numeric-editor>
+    </div>
+  </validation-message>
 </template>
 
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
 import { get } from 'lodash'
 import { lang } from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage';
 
 export default {
   components: {
     NumericEditor,
+    ValidationMessage
   },
   mixins: [lang],
   props: {
@@ -28,13 +32,7 @@ export default {
       default: true,
       type: Boolean,
     },
-    validationState: {
-      type: Boolean,
-      default: null, // to tell boostrap `No state`
-      required: false,
-    },
   },
-
   computed: {
     maxDigits: {
       get() {

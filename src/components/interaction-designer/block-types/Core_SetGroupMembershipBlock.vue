@@ -25,9 +25,7 @@
         </div>
 <!--      </validation-message>-->
 
-      <validation-message :message-key="`block/${block.uuid}/.config.group_key`" #input-control="{ isValid: isGroupKeyValid }">
-        <group-selector :block="block" :validationState="!isGroupKeyValid" />
-      </validation-message>
+      <group-selector :block="block" />
 
       <slot name="extras"></slot>
       <first-block-editor-button

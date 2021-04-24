@@ -10,9 +10,7 @@
       <block-semantic-label-editor :block="block" />
 
       <!--Specific config-->
-      <validation-message :message-key="`block/${block.uuid}/.config.format_string`" #input-control="{ isValid: isFormatStringValid }">
-        <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString" :validationState="!isFormatStringValid"/>
-      </validation-message>
+      <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString" />
 
       <div v-for="(variableStringFormat,i) in destinationVariablesFields"
            class="form-group form-inline">

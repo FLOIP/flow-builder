@@ -1,25 +1,29 @@
 <template>
-  <div v-if="hasText" class="form-group block-max-response-characters">
-    <numeric-editor v-model.number="maxResponse"
-        :regex-numeric-filtering="'[0-9]'"
-        :label="'flow-builder.max-response-characters' | trans"
-        :placeholder="'flow-builder.enter-value' | trans"
-        :validationState="validationState">
-    </numeric-editor>
-    <small class="text-muted">
-      {{'flow-builder.unlimited-if-not-defined-or-set-as-zero' | trans}}
-    </small>
-  </div>
+  <validation-message :message-key="`block/${block.uuid}/.config.text.max_response_characters`" #input-control="{ isValid }">
+    <div v-if="hasText" class="form-group block-max-response-characters">
+      <numeric-editor v-model.number="maxResponse"
+          :regex-numeric-filtering="'[0-9]'"
+          :label="'flow-builder.max-response-characters' | trans"
+          :placeholder="'flow-builder.enter-value' | trans"
+          :validationState="!isValid">
+      </numeric-editor>
+      <small class="text-muted">
+        {{'flow-builder.unlimited-if-not-defined-or-set-as-zero' | trans}}
+      </small>
+    </div>
+  </validation-message>
 </template>
 
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
 import { get } from 'lodash'
 import { lang } from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage';
 
 export default {
   components: {
     NumericEditor,
+    ValidationMessage
   },
   mixins: [lang],
   props: {
@@ -30,11 +34,6 @@ export default {
     block: {
       type: Object,
       required: true,
-    },
-    validationState: {
-      type: Boolean,
-      default: null, // to tell boostrap `No state`
-      required: false,
     },
   },
   data() {

@@ -9,12 +9,8 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <validation-message :message-key="`block/${block.uuid}/.config.accuracy_threshold_meters`" #input-control="{ isValid: isThresholdMetersValid }">
-        <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold" :validationState="!isThresholdMetersValid" />
-      </validation-message>
-      <validation-message :message-key="`block/${block.uuid}/.config.accuracy_timeout_seconds`" #input-control="{ isValid: isTimeoutSecondsValid }">
-        <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout" :validationState="!isTimeoutSecondsValid" />
-      </validation-message>
+      <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold" />
+      <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout" />
 
       <slot name="extras"></slot>
       <first-block-editor-button
@@ -46,7 +42,6 @@ import BlockId from '../block-editors/BlockId.vue'
 import BlockThresholdEditor from '../block-editors/ThresholdEditor.vue'
 import BlockTimeoutEditor from '../block-editors/TimeoutEditor.vue'
 import { mixins } from 'vue-class-component'
-import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -62,7 +57,6 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     BlockThresholdEditor,
     BlockTimeoutEditor,
-    ValidationMessage
   },
 })
 class SmartDevices_LocationResponseBlock extends mixins(Lang) {
