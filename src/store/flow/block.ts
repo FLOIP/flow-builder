@@ -9,7 +9,7 @@ import {
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { defaults, set } from 'lodash'
+import { defaults, set, forEach } from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
@@ -142,9 +142,28 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  async block_updateExitsFromBranchingType({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
+  async block_segregateExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    console.log('block_updateExitsFromBranchingType')
+    // Hide the default exit & show all other exits
+    forEach(block.exits, function (exit) {
+      if(exit.tag.toLowerCase() == 'default') {
+        set(exit.config, 'is_visible', false)
+      } else {
+        set(exit.config, 'is_visible', true)
+      }
+    })
+  },
+
+  async block_unifyExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    // Show default & error only, hide others
+    forEach(block.exits, function (exit) {
+      if(['default', 'error'].includes(exit.tag.toLowerCase())) {
+        set(exit.config, 'is_visible', true)
+      } else {
+        set(exit.config, 'is_visible', false)
+      }
+    })
   }
 }
 

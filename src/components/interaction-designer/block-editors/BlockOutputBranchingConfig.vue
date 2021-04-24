@@ -69,10 +69,15 @@
 
     set branching(value) {
       this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'branchingType', value })
-      this.block_updateExitsFromBranchingType( { blockId: this.block.uuid })
+      if(value === BRANCHING_TYPE_SEGREGATED) {
+        this.block_segregateExitsBranching( { blockId: this.block.uuid })
+      } else {
+        this.block_unifyExitsBranching( { blockId: this.block.uuid })
+      }
     }
 
     @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
-    @flowVuexNamespace.Action block_updateExitsFromBranchingType!: ( { blockId }: { blockId: IBlock['uuid']} ) => void
+    @flowVuexNamespace.Action block_segregateExitsBranching!: ( { blockId }: { blockId: IBlock['uuid']} ) => void
+    @flowVuexNamespace.Action block_unifyExitsBranching!: ( { blockId }: { blockId: IBlock['uuid']} ) => void
   }
 </script>

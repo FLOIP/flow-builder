@@ -163,8 +163,6 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     }
   },
 
-  // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
-  //       but, it doesn't seem to mention how this is configured
   async createWith({ state, commit, dispatch, rootGetters }, { props }: {props: {uuid: string} & Partial<ISelectOneResponseBlock>}) {
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankQuestionPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
@@ -174,6 +172,10 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Default',
       label: 'Default',
+      default: true,
+      config: {
+        is_visible: false //TODO: confirm if we should move this out from config, and update FLOIP spec for `exits`
+      }
     }
 
     const errorExitProps: Partial<IBlockExit> = {

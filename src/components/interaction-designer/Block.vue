@@ -37,7 +37,7 @@
       </header>
 
       <div class="block-exits d-flex" :ref="`block/${block.uuid}/exits`" :id="`block/${block.uuid}/exits`">
-        <div v-for="(exit, key) in block.exits"
+        <div v-for="(exit, key) in visibleExits"
              :key="exit.uuid"
              class="block-exit col flex-shrink-1 pb-1 pt-1 pl-3 pr-3"
              :class="{
@@ -54,7 +54,7 @@
             <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
           </div>
 
-          <h3 class="block-exit-tag badge badge-warning">{{visibleExitTag(key, exit)}}</h3>
+          <h3 class="block-exit-tag badge badge-warning">{{exitTagText(key, exit)}}</h3>
 
           <template v-if="exit.destination_block == null">
             <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
@@ -131,7 +131,7 @@
 
 <script>
 import Vue from 'vue'
-import { isNumber, forEach, filter } from 'lodash'
+import { isNumber, forEach, filter, get, isNil } from 'lodash'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
@@ -195,6 +195,13 @@ export default {
 
     blockExitsLength() {
       return this.block.exits.length
+    },
+
+    visibleExits() {
+      return filter(this.block.exits, function(exit) {
+        const isVisible = get(exit.config, 'is_visible') //TODO: change lodash.get with direct prop access when `is_visible` is in IBlockExit interface
+        return isNil(isVisible) || isVisible // By default, exit should be visible, unless we set `is_visible = false` on purpose
+      })
     },
 
     hasLayout() {
@@ -289,7 +296,7 @@ export default {
         : uuid
     },
 
-    visibleExitTag(key, exit) {
+    exitTagText(key, exit) {
       if (!exit.tag && !exit.semantic_label) {
         return '—'
       }
