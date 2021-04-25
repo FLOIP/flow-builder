@@ -1,11 +1,14 @@
 import {
   IResourceDefinition,
   IContext,
+  IBlock,
 } from '@floip/flow-runner'
 
 import {
   get,
   findIndex,
+  isEqual,
+  filter,
 } from 'lodash'
 
 export const updateResourcesForLanguageMatch = function (resources: IResourceDefinition[], oldId: string, newId: string): IResourceDefinition[] {
@@ -50,4 +53,32 @@ const replaceResourcesWhenNecessary = function(existingResources: IResourceDefin
     }
   })
   return existingResources
+}
+
+export const checkSingleFlowOnly = function(flowContainer: IContext) {
+  if(flowContainer.flows.length !== 1) {
+    return false
+  }
+  return true
+}
+
+export const detectedLanguageChanges = function({ flowContainer, oldFlowContainer }: { flowContainer: IContext, oldFlowContainer: IContext | null}) {
+  return !isEqual(get(flowContainer, 'flows[0].languages'), get(oldFlowContainer, 'flows[0].languages'))
+}
+export const detectedPropertyChanges = function({ newPropertyBlocks, oldPropertyBlocks }: { newPropertyBlocks: IBlock[], oldPropertyBlocks: IBlock[] }) {
+  return !isEqual(newPropertyBlocks, oldPropertyBlocks)
+}
+export const detectedGroupChanges = function({ newGroupBlocks, oldGroupBlocks }: { newGroupBlocks: IBlock[], oldGroupBlocks: IBlock[] }) {
+  return !isEqual(newGroupBlocks, oldGroupBlocks)
+}
+
+export const getPropertyBlocks = function(flowContainer: IContext) {
+  return filter(get(flowContainer, 'flows[0].blocks'), (block) => { 
+    return block.type === "Core\\SetContactProperty" 
+  })
+}
+export const getGroupBlocks = function(flowContainer: IContext) {
+  return filter(get(flowContainer, 'flows[0].blocks'), (block) => {
+    return block.type === "Core\\SetGroupMembership"
+  })
 }
