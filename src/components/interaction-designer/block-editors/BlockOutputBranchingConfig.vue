@@ -12,7 +12,7 @@
               data-toggle="tooltip"
               data-placement="bottom"
               :title="'flow-builder.separate-output-for-each-choice' | trans">
-        <i class="v5icon-branching-on v5icon-2x">X</i>
+        <i class="v5icon-branching-on v5icon-2x"></i>
       </button>
       <button @click="setBranching('unified')"
               class="btn btn-sm"
@@ -24,7 +24,7 @@
               data-toggle="tooltip"
               data-placement="bottom"
               :title="'flow-builder.one-output-for-all-choices' | trans">
-        <i class="v5icon-branching-off v5icon-2x">Y</i>
+        <i class="v5icon-branching-off v5icon-2x"></i>
       </button>
     </div>
   </div>
@@ -68,7 +68,7 @@
       }
     }
 
-    setBranching(value) {
+    setBranching(value: string) {
       const willBranchingTypeSegregated = value === BRANCHING_TYPE_SEGREGATED
       if(willBranchingTypeSegregated) {
         this.block_segregateExitsBranching( { blockId: this.block.uuid })
