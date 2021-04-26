@@ -10,7 +10,7 @@ import {
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { defaults, set, forEach } from 'lodash'
+import { defaults, set, forEach, isNil } from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
@@ -58,9 +58,13 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).semantic_label = value
   },
-  block_pushNewExit(state, { blockId, newExit }: {blockId: string; newExit: IBlockExit}) {
+  block_pushNewExit(state, { blockId, newExit, insertAtIndex = undefined }: {blockId: string; newExit: IBlockExit, insertAtIndex: number | undefined}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    block.exits.push(newExit)
+    if (!isNil(insertAtIndex)) { // insertion
+      block.exits.splice(insertAtIndex, 0, newExit);
+    } else { // just push
+      block.exits.push(newExit);
+    }
   },
   block_updateConfig(state, { blockId, newConfig }: {blockId: string; newConfig: object}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)

@@ -171,7 +171,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       const newIndex = Object.keys(activeBlock.config.choices || {}).length + 1
       const resourceUuid = state.inflatedEmptyChoice.resource.uuid
       dispatch('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
-      commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: state.inflatedEmptyChoice.exit}, {root: true})
+      commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: state.inflatedEmptyChoice.exit, insertAtIndex: activeBlock.exits.length - 1}, {root: true})
 
       // associate new blank resource to the empty choice, this is important to stop endless watching
       await dispatch('createVolatileEmptyChoice', { index: newIndex })
