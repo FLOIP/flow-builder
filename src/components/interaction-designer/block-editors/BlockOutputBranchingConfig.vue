@@ -69,12 +69,13 @@
 
     set branching(value) {
       this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'branchingType', value })
-      if(value === BRANCHING_TYPE_SEGREGATED) {
+      const willBranchingTypeSegregated = value === BRANCHING_TYPE_SEGREGATED
+      if(willBranchingTypeSegregated) {
         this.block_segregateExitsBranching( { blockId: this.block.uuid })
       } else {
         this.block_unifyExitsBranching( { blockId: this.block.uuid })
       }
-      this.$emit('commitIsSegregatedBranching', this.isBranchingTypeSegregated)
+      this.$emit('commitIsSegregatedBranching', willBranchingTypeSegregated)
     }
 
     @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
