@@ -1,6 +1,6 @@
 <template>
   <div class="resource-editor">
-    <hr />
+    <hr v-if="label"/>
 
     <h4 v-if="label">{{label}}</h4>
 
@@ -16,6 +16,7 @@
           <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
 
           <resource-variant-text-editor :resource-id="resource.uuid"
+                                        :id="`${block.uuid}.config.prompt.${language}.${mode}`"
                                         :resource-variant="findOrGenerateStubbedVariantOn(
                                                 resource,
                                                 {languageId, contentType, modes: [mode]})"
@@ -24,7 +25,7 @@
                                         v-if="contentType === SupportedContentType.TEXT"
                                         :enable-autogen-button="true || enableAutogenButton" />
 
-          <div v-if="contentType === SupportedContentType.AUDIO">
+          <div v-if="contentType === SupportedContentType.AUDIO" :id="`${block.uuid}.config.prompt.${language}.${mode}`">
             <template v-if="!findAudioResourceVariantFor(resource, {languageId, contentType: contentType, modes: [mode]})">
               <upload-monitor :uploadKey="`${block.uuid}:${languageId}`" />
 

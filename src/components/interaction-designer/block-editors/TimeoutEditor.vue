@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group block-timeout">
+  <div class="form-group block-timeout" :id="`${block.uuid}.config.accuracyTimeoutSeconds`">
     <numeric-editor v-model.number="timeout"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.Accuracy-timeout-in-seconds' | trans"

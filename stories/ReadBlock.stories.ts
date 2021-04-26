@@ -33,7 +33,7 @@ const readBlockTemplate = `
   </flow-builder-sidebar-editor-container>
 `
 
-// default log block state
+// default state
 @Component<any>(
   {
     components: {ReadBlock, FlowBuilderSidebarEditorContainer},

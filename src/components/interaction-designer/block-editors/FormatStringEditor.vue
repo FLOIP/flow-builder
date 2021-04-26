@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="block-format-string">
     <text-editor v-model="formatString"
         :label="'flow-builder.format-string' | trans"
         :placeholder="'flow-builder.enter-format-string' | trans"/>

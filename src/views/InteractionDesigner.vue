@@ -1,24 +1,27 @@
 <template>
-  <div class="interaction-designer-contents">
+  <div v-if="activeFlow" class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
-    <div class="tree-sidebar-container">
+    <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}" :key="activeBlock && activeBlock.uuid">
+      <div class="sidebar-cue" :class="{'sidebar-close': $route.meta.isSidebarShown}" @click="showOrHideSidebar">
+        <i class="glyphicon"
+           :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
+                  'glyphicon-resize-small': $route.meta.isSidebarShown}">
+        </i>
+      </div>
+
       <div v-if="isSimulatorActive" class="tree-sidebar">
         <clipboard-root />
       </div>
-
-      <div v-else-if="activeBlock" class="tree-sidebar"
-           :class="[`category-${blockClasses[activeBlock.type].category}`]">
+      <div v-else-if="activeBlock" class="tree-sidebar" :class="[`category-${blockClasses[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
-
-          <div v-if="activeBlock"
-               :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
-               :block="activeBlock"
-               :flow="activeFlow"
-          />
-
+          <component v-if="activeBlock"
+                     :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
+                     :block="activeBlock"
+                     :flow="activeFlow">
+          </component>
         </div>
 
 <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
@@ -50,7 +53,8 @@
 
 <script>
 import lang from '@/lib/filters/lang'
-import lodash, { forEach, invoke } from 'lodash'
+import Routes from '@/lib/mixins/Routes'
+import lodash, { forEach, invoke, isEmpty } from 'lodash'
 import Vue from 'vue'
 import {
   mapActions, mapGetters, mapMutations, mapState,
@@ -93,7 +97,7 @@ export default {
     },
   },
 
-  mixins: [lang],
+  mixins: [lang, Routes],
 
   components: {
     // ...BlockTypes,
@@ -133,9 +137,9 @@ export default {
       simulateClipboard: true,
     }
   },
-
   computed: {
     ...mapGetters([
+      'isConfigured',
       'selectedBlock',
       'hasChanges',
       'hasIssues',
@@ -148,7 +152,6 @@ export default {
 
       // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
       designerWorkspaceHeight: ({ trees: { tree, ui } }) => ui.designerWorkspaceHeight,
-
       tree: ({ trees: { tree, ui } }) => tree,
       validationResultsEmptyTree: ({ trees: { tree, ui } }) => !tree.blocks.length,
       hasVoice: ({ trees: { tree } }) => tree.details.hasVoice,
@@ -187,7 +190,9 @@ export default {
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
-    this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+    }
 
     global.builder = this // initialize global reference for legacy + debugging
 
@@ -203,23 +208,54 @@ export default {
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   mounted() {
+    this.flow_setActiveFlowId({ flowId: this.id })
+
+    // if nothing was found for the flow Id
+    if (!this.activeFlow) {
+      this.flow_setActiveFlowId({ flowId: null })
+      this.$router.replace(
+        { path: this.route('flows.fetchFlow', { flowId: this.id }),
+          query: { nextUrl: this.$route.path } },
+      )
+    }
+
     this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
     this.deselectBlocks()
     this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
 
+    setTimeout(() => {
+      const { blockId, field } = this.$route.params
+      if (blockId) {
+        this.activateBlock({ blockId })
+        const blockEle = document.querySelector(`#block\\/${blockId} .plain-draggable`)
+        if (blockEle) {
+          blockEle.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }
+      if (field) {
+        const ele = document.getElementById(`${blockId}.${field}`)
+        if (ele) {
+          ele.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }
+    }, 500)
     console.debug('Vuej tree interaction designer mounted!')
   },
-
+  beforeRouteUpdate(to, from, next) {
+    this.activateBlock({ blockId: to.params.blockId || null })
+    next()
+  },
   watch: {
     mode(newMode) {
-      this.updateIsEditableFromParams(newMode)
+      this.updateIsEditableFromParams(newMode) // `this.mode` comes from captured param in js-routes
     },
   },
-
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
     ...mapMutations('builder', ['activateBlock']),
     ...mapActions('builder', ['setIsEditable']),
+    ...mapMutations('flow', ['flow_setActiveFlowId']),
+
     ...mapActions([
       'attemptSaveTree',
       'discoverTallestBlockForDesignerWorkspaceHeight',
@@ -243,7 +279,10 @@ export default {
         return
       }
 
-      this.activateBlock({ blockId: null })
+      const routeName = this.$route.meta.isSidebarShown ? 'flow-details' : 'flow-canvas'
+      this.$router.history.replace({
+        name: routeName,
+      })
     },
 
     updateIsEditableFromParams(mode) {
@@ -275,6 +314,19 @@ export default {
 
       this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
     },
+
+    showOrHideSidebar() {
+      let routeName = ''
+      if (this.$route.name.includes('block')) {
+        routeName = this.$route.meta.isSidebarShown ? 'block-selected' : 'block-selected-details'
+      } else {
+        routeName = this.$route.meta.isSidebarShown ? 'flow-canvas' : 'flow-details'
+      }
+      this.$router.history.replace({
+        name: routeName,
+      })
+    },
+
   },
 }
 </script>
@@ -421,6 +473,20 @@ export default {
     @include block-category(0, $category-0-faint, $category-0-light, $category-0-dark);
     @include block-category(1, $category-1-faint, $category-1-light, $category-1-dark);
     @include block-category(2, $category-2-faint, $category-2-light, $category-2-dark);
+  }
+
+  .sidebar-cue {
+    cursor: pointer;
+    background-color: #eee;
+    padding: 5px;
+    position: fixed;
+    right: 0;
+    top: 70px;
+    z-index: 50;
+  }
+
+  .sidebar-close {
+    right: 350px;
   }
 
   // @note - these styles have been extracted so the output can be reused between storybook and voto5

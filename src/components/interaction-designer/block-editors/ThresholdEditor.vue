@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group block-threshold">
+  <div class="form-group block-threshold" :id="`${block.uuid}.config.accuracyThresholdMeters`">
     <float-editor v-model.number="threshold"
         :min="0"
         :regex-float-filtering="'[0-9.,]'"

@@ -1,12 +1,14 @@
 import {
-  cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get,
+  cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get, filter, union,
 } from 'lodash'
 import Vue from 'vue'
 import {
   ActionTree, GetterTree, Module, MutationTree,
 } from 'vuex'
 import { IRootState } from '@/store'
-import { IBlock, SupportedMode, ValidationException } from '@floip/flow-runner'
+import {
+  IBlockExit, IBlock, SupportedMode, ValidationException,
+} from '@floip/flow-runner'
 import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block'
 import { createFormattedDate } from '@floip/flow-runner/dist/domain/DateFormat'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
@@ -31,8 +33,14 @@ export interface IConnectionCreateOperation {
   data: null | {
     source: IDeepBlockExitIdWithinFlow;
     position: IPosition; // todo: rename to startingPosition
-    target: IBlock['uuid'] | null;
+    targetId: IBlock['uuid'] | null;
   };
+}
+
+export interface IConnectionContext {
+  sourceId: IBlock['uuid'];
+  targetId: IBlock['uuid'];
+  exitId: IBlockExit['uuid'];
 }
 
 export type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation
@@ -45,6 +53,7 @@ interface IPosition {
 export interface IBuilderState {
   activeBlockId: IBlock['uuid'] | null;
   isEditable: boolean;
+  activeConnectionsContext: IConnectionContext[];
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation;
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation;
@@ -54,7 +63,8 @@ export interface IBuilderState {
 
 export const stateFactory = (): IBuilderState => ({
   activeBlockId: null,
-  isEditable: false,
+  isEditable: true,
+  activeConnectionsContext: [],
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: {
       kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
@@ -72,7 +82,7 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
   activeBlock: ({ activeBlockId }, { blocksById }) => (activeBlockId ? blocksById[activeBlockId] : null),
 
   blocksById: (state, getters, rootState, rootGetters) => {
-    const { blocks } = rootGetters['flow/activeFlow']
+    const { blocks } = rootGetters['flow/activeFlow'] ? rootGetters['flow/activeFlow'] : { blocks: [] }
     return keyBy(blocks, 'uuid')
   },
 
@@ -89,6 +99,14 @@ export const mutations: MutationTree<IBuilderState> = {
 
     // simulate engaging with specified block
     // FlowRunner.prototype.navigateTo(block, state as unknown as IContext)
+  },
+
+  activateConnection(state, { connectionContext }) {
+    state.activeConnectionsContext = union([connectionContext], state.activeConnectionsContext)
+  },
+
+  deactivateConnection(state, { connectionContext }) {
+    state.activeConnectionsContext = filter(state.activeConnectionsContext, (context) => context !== connectionContext)
   },
 
   setOperation({ operations }, { operation }: {operation: SupportedOperation}) {
@@ -206,7 +224,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
 
     const operation: IConnectionCreateOperation = {
       kind: OperationKind.CONNECTION_CREATE,
-      data: { source: { blockId, exitId }, position, target: null },
+      data: { source: { blockId, exitId }, position, targetId: null },
     }
 
     commit('setOperation', { operation }) // this would be a flight-monitor create(key)
@@ -221,7 +239,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     const { source, position } = data
     const operation: IConnectionCreateOperation = {
       kind: OperationKind.CONNECTION_CREATE,
-      data: { source, position, target: block.uuid },
+      data: { source, position, targetId: block.uuid },
     }
 
     commit('setOperation', { operation })
@@ -233,14 +251,14 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
       throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
     }
 
-    const { source, target, position } = data
-    if (!isEqual(target, block.uuid)) {
+    const { source, targetId, position } = data
+    if (!isEqual(targetId, block.uuid)) {
       throw new ValidationException('Unable to nullify exit relocation from different exit.')
     }
 
     const operation: IConnectionCreateOperation = {
       kind: OperationKind.CONNECTION_CREATE,
-      data: { source, position, target: null },
+      data: { source, position, targetId: null },
     }
 
     commit('setOperation', { operation })
@@ -254,7 +272,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
 
     const {
       source: { blockId, exitId },
-      target: destinationBlockId,
+      targetId: destinationBlockId,
     } = data
 
     commit('flow/block_setBlockExitDestinationBlockId', { blockId, exitId, destinationBlockId }, { root: true })
@@ -314,28 +332,6 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     // @ts-ignore
     rootState.trees.ui.languages = flows[0].languages
   },
-
-  async loadFlow({
-    dispatch, commit, state, rootState,
-  }) {
-    console.debug('builder', 'loading flow...')
-
-    // todo: we need something like: set context
-    const flowContext = require('./blank-flow.json')
-    const flow = flowContext.flows[0]
-    flow.uuid = (new IdGeneratorUuidV4()).generate()
-    flow.lastModified = createFormattedDate()
-    // TODO - type checking - remove this and resolve the error
-    // @ts-ignore
-    flow.languages = cloneDeep(rootState.trees.ui.languages)
-
-    flowContext.resources.forEach((resource: any) => commit('flow/resource_add', { resource }, { root: true }))
-
-    await dispatch('flow/flow_add', { flow }, { root: true })
-
-    console.debug('builder', 'flow loaded.')
-  },
-
   setIsEditable({ commit }, value) {
     const boolVal = Boolean(value)
     commit('setIsEditable', boolVal)

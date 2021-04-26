@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mobile-primitive-select-one-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -30,13 +30,29 @@
                          :block="block"
                          :flow="flow" />
       </div>
-      <div v-for="(choiceKey) in Object.keys(inflatedChoices)" class="form-group form-inline">
-        <resource-editor :label="`Choice ${choiceKey}`"
-                         :resource="inflatedChoices[choiceKey]"
+      <div class="form-group">
+        <!--Show non empty choices-->
+        <template v-for="(choiceKey) in Object.keys(inflatedChoices)" >
+          <hr/>
+          <h4>{{`Choice ${choiceKey}`}}</h4>
+          <block-exit-semantic-label-editor v-if="inflatedChoices[choiceKey].exit"
+                                            :exit="inflatedChoices[choiceKey].exit"
+                                            :block="block"/>
+
+          <resource-editor :resource="inflatedChoices[choiceKey].resource"
+                           :block="block"
+                           :flow="flow" />
+        </template>
+        <!--Show empty choice-->
+        <hr/>
+        <h4>{{`Choice ${Object.keys(inflatedChoices).length + 1}`}}</h4>
+        <block-exit-semantic-label-editor :exit="inflatedEmptyChoice.exit"/>
+
+        <resource-editor :resource="inflatedEmptyChoice.resource"
                          :block="block"
                          :flow="flow" />
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -63,7 +79,7 @@ import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-
+import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
@@ -77,6 +93,7 @@ const builderVuexNamespace = namespace('builder')
       BlockNameEditor,
       BlockLabelEditor,
       BlockSemanticLabelEditor,
+      BlockExitSemanticLabelEditor,
       FirstBlockEditorButton,
       ResourceEditor,
       BlockId,
@@ -102,14 +119,23 @@ export class MobilePrimitives_SelectOneResponseBlock extends Vue {
 
     @Watch('inflatedChoices', { deep: true })
     onChoicesChanged(newChoices: object) {
+      console.debug('Watched inflatedChoices')
       this.editSelectOneResponseBlockChoice()
+    }
+
+    @Watch('inflatedEmptyChoice', { deep: true })
+    onEmptyChoiceChanged(newChoice: object, oldChoice: object) {
+      console.debug('Watched inflatedEmptyChoice', newChoice, oldChoice)
+      this.editEmptyChoice({ choice: oldChoice })
     }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
 
-    @blockVuexNamespace.Getter inflatedChoices!: {[key: string]: IResourceDefinition}
+    @blockVuexNamespace.Getter inflatedChoices: {[key: string]: IResourceDefinition}
+    @blockVuexNamespace.State inflatedEmptyChoice: {[key: string]: IResourceDefinition}
 
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
+    @blockVuexNamespace.Action editEmptyChoice!: ({ choice: IInflatedChoicesInterface }) => Promise<object>
 
     @builderVuexNamespace.Getter isEditable !: boolean
 }

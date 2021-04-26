@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group flow-interaction-timeout">
+  <div class="form-group flow-interaction-timeout" :id="`${flow.uuid}.interactionTimeout`">
     <numeric-editor v-model.number="interactionTimeout"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.Interaction-timeout' | trans"

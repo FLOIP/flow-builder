@@ -1,6 +1,36 @@
 {
   "ui": {
     "routes": {
+      "flows": {
+        "persistFlow": {
+          "name": "persistFlow",
+          "path": "\/backend\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["POST", "PUT"]
+        },
+        "fetchFlowServer": {
+          "name": "fetchFlowServer",
+          "path": "\/backend\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["GET"]
+        },
+        "newFlow": {
+          "name": "newFlow",
+          "path": "\/flows\/new",
+          "methods": ["GET"]
+        },
+        "fetchFlow": {
+          "name": "fetchFlow",
+          "path": "\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["GET"]
+        },
+        "home": {
+          "name": "home",
+          "path": "\/",
+          "methods": ["GET"]
+        }
+      },
       "trees": {
         "editTree": {
           "name": "editTree",
@@ -87,6 +117,20 @@
       "Core\\RunFlow": {
         "name": "Core\\RunFlow",
         "type": "Core\\RunFlow",
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0
+      },
+      "Core\\SetContactProperty": {
+        "name": "Core\\SetContactProperty",
+        "type": "Core\\SetContactProperty",
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0
+      },
+      "Core\\SetGroupMembership": {
+        "name": "Core\\SetGroupMembership",
+        "type": "Core\\SetGroupMembership",
         "is_interactive": false,
         "is_branching": false,
         "category":  0
@@ -261,6 +305,7 @@
     "enabledFeatures": [
       "audioUpload",
       "simulator",
+      "treeSave",
       "callToRecord"
     ]
   },

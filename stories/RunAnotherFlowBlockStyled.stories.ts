@@ -29,7 +29,7 @@ const RunAnotherFlowBlockTemplate = `
   </flow-builder-sidebar-editor-container>
 `
 
-// default log block state
+// default state
 @Component<any>({
   components: {RunAnotherFlowBlock, FlowBuilderSidebarEditorContainer},
   template: RunAnotherFlowBlockTemplate,
@@ -37,6 +37,7 @@ const RunAnotherFlowBlockTemplate = `
   async mounted() {
     // @ts-ignore
     await baseMounted.bind(this)(BLOCK_TYPE, runAnotherFlowBlockStore)
+    const baseFlowId = this.activeFlow.uuid
     // @ts-ignore - TS2339: Property 'flow_createWith' does not exist on type
     const flowOne = await this.flow_createWith({
       props: {uuid: (new IdGeneratorUuidV4).generate(), name: 'My other flow'}
@@ -49,10 +50,12 @@ const RunAnotherFlowBlockTemplate = `
     })
     // // @ts-ignore - TS2339: Property 'flow_add' does not exist on type
     await this.flow_add({flow:flowTwo})
+    this.flow_setActiveFlowId({flowId: baseFlowId})
   },
 })
 class DefaultClass extends BaseMountedVueClass {
   @flowVuexNamespace.Action flow_add!: Promise<IFlow>
   @flowVuexNamespace.Action flow_createWith!: Promise<IFlow>
+  @flowVuexNamespace.Mutation flow_setActiveFlowId
 }
 export const Default = () => (DefaultClass)

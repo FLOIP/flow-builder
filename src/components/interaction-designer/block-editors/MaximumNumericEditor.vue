@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group block-validation-max">
+  <div class="form-group block-validation-max" :id="`${block.uuid}.config.validationMaximum`">
     <numeric-editor v-model.number="maxValue"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.maximum-value-(inclusive)' | trans"

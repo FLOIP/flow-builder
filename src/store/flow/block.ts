@@ -9,7 +9,7 @@ import {
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { defaults, without } from 'lodash'
+import { defaults, set } from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
@@ -53,6 +53,10 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).test = value
   },
+  block_setExitSemanticLabel(state, { exitId, blockId, value }: { exitId: string, blockId: string, value: string }) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    findBlockExitWith(exitId, block).semanticLabel = value
+  },
   block_pushNewExit(state, { blockId, newExit }: {blockId: string; newExit: IBlockExit}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     block.exits.push(newExit)
@@ -65,6 +69,9 @@ export const mutations: MutationTree<IFlowsState> = {
     const currentConfig: {[key: string]: any} = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = { ...currentConfig }
+  },
+  block_updateConfigByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object }) {
+    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config, path, value);
   },
   block_setBlockExitDestinationBlockId(state, { blockId, exitId, destinationBlockId }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -97,10 +104,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }),
     }
   },
-  async block_updateBlockExitWith({ dispatch, commit, state }, { blockId, exitId, props: { test, tag } }: {blockId: string; exitId: string; props: Partial<IBlockExit>}) {
+  async block_updateBlockExitWith({ dispatch, commit, state }, { blockId, exitId, props: { test, tag, semanticLabel } }: {blockId: string; exitId: string; props: Partial<IBlockExit>}) {
     // TODO - handle other props apart from test
     commit('block_setExitTag', { blockId, exitId, value: tag })
     commit('block_setExitTest', { blockId, exitId, value: test })
+    commit('block_setExitSemanticLabel', { blockId, exitId, value: semanticLabel })
   },
 
   async block_swapBlockExitDestinationBlockIds(

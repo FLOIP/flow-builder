@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="console-io-read-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -20,7 +20,7 @@
             @keydown="filterVariableName"
             @input="updatedestinationVariables($event, i)"/>
       </div>
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />

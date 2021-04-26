@@ -30,14 +30,15 @@
             </router-link>
           </div>
 
-          <div v-if="!ui.isEditableLocked" @click="attemptSaveTree">
-            <router-link :to="editOrViewTreeJsUrl"
-                         class="btn btn-outline-secondary mr-2"
-                         :title="trans('flow-builder.click-to-toggle-editing')"
-            >
+          <router-link v-if="!ui.isEditableLocked"
+             :to="editOrViewTreeJsUrl"
+             event=""
+             :title="trans('flow-builder.click-to-toggle-editing')"
+             class="btn btn-outline-secondary mr-2"
+             :class="{active: isEditable}"
+             @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
               {{isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow')}}
             </router-link>
-          </div>
 
           <div v-if="isEditable" class="dropdown mr-2">
             <button type="button"
@@ -135,15 +136,23 @@
             {{trans('flow-builder.delete')}}
           </button>
 
+          <router-link :to="route('flows.newFlow')" class="btn btn-outline-secondary mr-2">
+            {{trans('flow-builder.new-flow')}}
+          </router-link>
+          <router-link :to="route('flows.home')" class="btn btn-outline-secondary mr-2">
+            {{trans('flow-builder.home')}}
+          </router-link>
+
           <slot name="extra-buttons"/>
 
+          <!--TODO - do disable if no changes logic-->
           <div class="btn-group pull-right mr-2">
             <button v-if="isEditable && isFeatureTreeSaveEnabled"
                     type="button"
                     class="btn btn-primary tree-save-tree"
                     :title="trans('flow-builder.save-changes-to-the-flow')"
-                    :disabled="isTreeSaving || !hasChanges"
-                    @click="attemptSaveTree">
+                    :disabled="!!isTreeSaving"
+                    @click="handlePersistFlow()">
               {{saveButtonText}}
             </button>
             <slot name="right-grouped-buttons"/>
@@ -207,7 +216,7 @@ export default {
       ui: ({ trees: { ui } }) => ui,
     }),
 
-    ...mapGetters('flow', ['activeFlow', 'hasOfflineMode']),
+    ...mapGetters('flow', ['activeFlow', 'activeFlowContainer', 'hasOfflineMode']),
     ...mapState('flow', ['flows', 'resources']),
     ...mapState('builder', ['activeBlockId']),
     ...mapGetters('clipboard', ['isSimulatorActive']),
@@ -252,9 +261,6 @@ export default {
           ['platform_metadata', 'io_viamo'],
         ))
       },
-    },
-    jsKey() { // deprecate
-      return lodash.get(this.selectedBlock, 'jsKey')
     },
     editTreeUrl() {
       return this.editTreeRoute()
@@ -307,10 +313,8 @@ export default {
     },
 
     saveButtonText() {
-      if (this.hasChanges) {
+        //TODO - once we can detect changes again we will change this text when saved
         return this.trans('flow-builder.save')
-      }
-      return this.trans('flow-builder.saved')
     },
 
     rootBlockClassesToDisplay() {
@@ -343,8 +347,9 @@ export default {
     isEmpty,
 
     ...mapActions(['attemptSaveTree']),
+    ...mapMutations(['setTreeSaving']),
     ...mapMutations('flow', ['flow_removeBlock']),
-    ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
+    ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock', 'flow_persist']),
     ...mapActions('builder', ['importFlowsAndResources']),
     ...mapMutations('builder', ['activateBlock']),
     ...mapActions('clipboard', ['setSimulatorActive']),
@@ -358,7 +363,30 @@ export default {
           },
         },
       }) // todo push out to intx-designer
-      this.activateBlock({ blockId })
+      this.$router.history.replace({
+        name: 'block-selected-details',
+        params: { blockId },
+      })
+    },
+    async handlePersistFlow(route) {
+      // TODO - hook into validation system when we have it - block the logic here if invalid.
+
+      // If we aren't in edit mode there should be nothing to persist
+      if (this.isEditable) {
+        this.setTreeSaving(true)
+        const flowContainer = await this.flow_persist({
+          persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow.uuid }),
+          flowContainer: this.activeFlowContainer,
+        })
+        this.setTreeSaving(false)
+        if (!flowContainer) {
+          // TODO - hook into showing validation errors design when we have it
+          // This won't show normal validation errors as the frontend should have caught them. We'll use this to show server errors.
+        }
+      }
+      if (route) {
+        this.$router.push(route)
+      }
     },
 
     handleRemoveActivatedBlockTriggered() {
@@ -380,7 +408,7 @@ export default {
       mode = null,
     } = {}) {
       const context = this.removeNilValues({
-        treeId: this.tree.id,
+        treeId: this.activeFlow.uuid,
         component,
         mode,
       })

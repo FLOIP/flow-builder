@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 // @ts-ignore
-import Home from '../views/Home.vue'
 import { routes as treesRoutes } from './trees'
 
 Vue.use(VueRouter)
@@ -11,9 +10,20 @@ export const routes: Array<RouteConfig> = [
   ...treesRoutes,
 ]
 
-const router = new VueRouter({
+const scrollBehavior = (to) => {
+  if (to.params.field) {
+    const anchor = `${to.params.blockId}.${to.params.field}`
+    const ele = document.getElementById(anchor)
+    if (ele) {
+      ele.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }
+}
+
+export const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
+  scrollBehavior,
   routes,
 })
 
