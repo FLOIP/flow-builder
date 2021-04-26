@@ -90,7 +90,8 @@ export default {
   },
 
   destroyed() {
-    this.$emit('destroyed')
+    const { draggable } = this
+    this.$emit('destroyed', { draggable })
     this.draggable.remove()
   },
 }
