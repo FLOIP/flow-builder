@@ -74,11 +74,11 @@ export const detectedGroupChanges = function({ newGroupBlocks, oldGroupBlocks }:
 
 export const getPropertyBlocks = function(flowContainer: IContext) {
   return filter(get(flowContainer, 'flows[0].blocks'), (block) => { 
-    return block.type === "Core\\SetContactProperty" 
+    return block.type === "Core.SetContactProperty" 
   })
 }
 export const getGroupBlocks = function(flowContainer: IContext) {
   return filter(get(flowContainer, 'flows[0].blocks'), (block) => {
-    return block.type === "Core\\SetGroupMembership"
+    return block.type === "Core.SetGroupMembership"
   })
 }

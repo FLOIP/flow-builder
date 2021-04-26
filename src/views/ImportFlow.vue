@@ -130,20 +130,9 @@ import {
   forEach, 
   isEmpty, 
   get,
-  set,
-  find,
-  findIndex,
-  pick,
-  omit,
-  reject,
   uniq,
-  keys,
-  filter,
-  differenceWith,
   difference,
   join,
-  isEqual,
-  cloneDeep,
   debounce,
 } from 'lodash'
 import {store} from '@/store'
@@ -294,6 +283,7 @@ class ImportFlow extends Vue {
       flowContainer: this.flowContainer
     })
     if(flowContainer) {
+      this.reset()
       this.$router.push(route)
     } else {
       this.setFlowError('flow-builder.problem-importing-flow')
@@ -327,7 +317,7 @@ class ImportFlow extends Vue {
   @importVuexNamespace.State existingLanguagesWithoutMatch!: ILanguage[]
   @importVuexNamespace.State missingProperties!: {name: string, blockIds: string[]}[]
   @importVuexNamespace.State existingPropertiesWithoutMatch!: IContactPropertyOption[]
-  @importVuexNamespace.State missingGroups!: {id: string, groupName: string, blockIds: string[]}[]
+  @importVuexNamespace.State missingGroups!: {id: string, group_name: string, blockIds: string[]}[]
   @importVuexNamespace.State existingGroupsWithoutMatch!: IGroupOption[]
 }
 

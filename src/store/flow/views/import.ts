@@ -18,24 +18,15 @@ import {
 } from '../utils/importHelpers'
 
 import { 
-  forEach, 
-  isEmpty, 
   get,
   set,
   find,
   findIndex,
-  pick,
-  omit,
   reject,
-  uniq,
   keys,
-  filter,
   differenceWith,
-  difference,
-  join,
   isEqual,
   cloneDeep,
-  debounce,
 } from 'lodash'
 
 export const getters: GetterTree<IImportState, IRootState> = {}
@@ -249,14 +240,14 @@ export const actions: ActionTree<IImportState, IRootState> = {
       const groupName = get(groupBlock, 'config.group_name')
       if(groupIdentifier) {
         let matchingGroup = find(rootGetters.groups, (orgGroup) => {
-          return isEqual(orgGroup.id, groupIdentifier)
-            isEqual(orgGroup.name, groupName)
+          return (isEqual(orgGroup.id, groupIdentifier) &&
+            isEqual(orgGroup.name, groupName))
         })
         if(!matchingGroup) {
           //Unlike the others we don't reset this. 
           //A previously unmatched group can only be fixed by updating or adding a language 
           if(!get(blocksMissingGroups, groupIdentifier)) {
-            blocksMissingGroups[groupIdentifier] = { 'groupName': groupName, blockIds: [] }
+            blocksMissingGroups[groupIdentifier] = { 'group_name': groupName, blockIds: [] }
           }
           blocksMissingGroups[groupIdentifier]['blockIds'].push(groupBlock.uuid)
         } else {
@@ -315,7 +306,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     commit('setFlowContainerBlocks', blocks)
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
     //missingGroups gets updated again when we validate below
-    const newBlocksMissingGroups: {[key: string]: {groupName: string, blockIds: string[]}} = {}
+    const newBlocksMissingGroups: {[key: string]: {group_name: string, blockIds: string[]}} = {}
     commit('setBlocksMissingGroups', keys(state.blocksMissingGroups).reduce((newBlocksMissingGroups, groupIdentifier) => {
       if(oldGroup.id !== groupIdentifier) {
         newBlocksMissingGroups[groupIdentifier] = state.blocksMissingGroups[groupIdentifier]
@@ -335,8 +326,8 @@ export interface IImportState {
   missingProperties: {name: string, blockIds: string[]}[] 
   matchingProperties: IContactPropertyOption[]
   existingPropertiesWithoutMatch: IContactPropertyOption[]
-  blocksMissingGroups: {[key: string]: {groupName: string, blockIds: string[]}}
-  missingGroups: {id: string, groupName: string, blockIds: string[]}[]
+  blocksMissingGroups: {[key: string]: {group_name: string, blockIds: string[]}}
+  missingGroups: {id: string, group_name: string, blockIds: string[]}[]
   matchingGroups: IGroupOption[]
   existingGroupsWithoutMatch: IGroupOption[]
   flowContainer: IContext | null
