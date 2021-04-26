@@ -146,7 +146,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  async block_segregateExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
+  block_segregateExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     // Hide the default exit & show all other exits
     forEach(block.exits, function (exit, i) {
@@ -158,7 +158,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  async block_unifyExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
+  block_unifyExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     // Show default & error only, hide others
     forEach(block.exits, function (exit, i) {

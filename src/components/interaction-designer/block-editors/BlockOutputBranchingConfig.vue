@@ -2,7 +2,7 @@
   <div class="form-group">
     <label>{{'flow-builder.output-branching' | trans}}</label><br/>
     <div class="btn-group">
-      <button @click="branching = 'segregated'"
+      <button @click="setBranching('segregated')"
               class="btn btn-sm"
               :class="{
                 active: isBranchingTypeSegregated,
@@ -14,7 +14,7 @@
               :title="'flow-builder.separate-output-for-each-choice' | trans">
         <i class="v5icon-branching-on v5icon-2x">X</i>
       </button>
-      <button @click="branching = 'unified'"
+      <button @click="setBranching('unified')"
               class="btn btn-sm"
               :class="{
                 active: isBranchingTypeUnified,
@@ -47,34 +47,37 @@
   export default class BlockOutputBranchingConfig extends mixins(Lang){
     @Prop() readonly block!: IBlock
 
-    defaultBranchingType: string = BRANCHING_TYPE_SEGREGATED
+    branchingType: string = BRANCHING_TYPE_SEGREGATED
 
     get isBranchingTypeSegregated() {
-      return this.branching === BRANCHING_TYPE_SEGREGATED
+      return this.branchingType === BRANCHING_TYPE_SEGREGATED
     }
 
     get isBranchingTypeUnified() {
-      return this.branching === BRANCHING_TYPE_UNIFIED
+      return this.branchingType === BRANCHING_TYPE_UNIFIED
     }
 
-    get branching() {
-      // TODO: confirm this path because FLOIP spec doesn't provide a definition for the output branching persistence
-      let value = get(this.block, 'vendor_metadata.branchingType')
+    mounted() {
+      // @ts-ignore TODO: remove this once IBlock has vendor_metadata key, and confirm this path because FLOIP spec doesn't provide a definition for the output branching persistence
+      let value = get(this.block.vendor_metadata, 'branchingType')
       if (isNil(value) && this.block) {
-        this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'branchingType', value: this.defaultBranchingType })
-        return this.defaultBranchingType
+        this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'branchingType', value: this.branchingType })
+        return this.branchingType
+      } else {
+        this.branchingType = value
       }
-      return value
     }
 
-    set branching(value) {
-      this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'branchingType', value })
+    setBranching(value) {
       const willBranchingTypeSegregated = value === BRANCHING_TYPE_SEGREGATED
       if(willBranchingTypeSegregated) {
         this.block_segregateExitsBranching( { blockId: this.block.uuid })
+        this.branchingType = BRANCHING_TYPE_SEGREGATED
       } else {
         this.block_unifyExitsBranching( { blockId: this.block.uuid })
+        this.branchingType = BRANCHING_TYPE_UNIFIED
       }
+      this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'branchingType', value })
       this.$emit('commitIsSegregatedBranching', willBranchingTypeSegregated)
     }
 
