@@ -30,16 +30,16 @@
           {{trans(`flow-builder.${block.type}`)}}
         </p>
 
-        <h3 class="block-label"
+        <h3 class="block-label" :style="{ maxWidth: `${this.labelContainerMaxWidth}px` }"
             :class="{'empty': !block.label}">
           {{block.label || 'Untitled block'}}
         </h3>
       </header>
 
-      <div class="block-exits">
+      <div class="block-exits d-flex" :ref="`block/${block.uuid}/exits`" :id="`block/${block.uuid}/exits`">
         <div v-for="(exit, key) in block.exits"
              :key="exit.uuid"
-             class="block-exit"
+             class="block-exit col flex-shrink-1 pb-1 pt-1 pl-3 pr-3"
              :class="{
                'initial': false,
                'pending': isConnectionSourceRelocateActive,
@@ -139,7 +139,7 @@ import PlainDraggable from '@/components/common/PlainDraggable.vue'
 import { ResourceResolver, SupportedMode } from '@floip/flow-runner'
 import { OperationKind, generateConnectionLayoutKeyFor } from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import {BLOCK_TYPE as BLOCK_TYPE__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
 import {BLOCK_TYPE as BLOCK_TYPE__SELECT_ONE_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {BLOCK_TYPE as BLOCK_TYPE__SELECT_MANY_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
@@ -147,6 +147,8 @@ import {BLOCK_TYPE as BLOCK_TYPE__SELECT_MANY_BLOCK} from '@/store/flow/block-ty
 import { BTooltip } from 'bootstrap-vue'
 
 Vue.component('b-tooltip', BTooltip)
+
+const LABEL_CONTAINER_MAX_WIDTH = 650
 
 export default {
   props: ['block', 'x', 'y'],
@@ -160,10 +162,25 @@ export default {
     this.draggablesByExitId = {} // todo: these need to be (better) lifecycle-managed (eg. mcq add/remove exit).
   },
 
+  mounted() {
+    this.$nextTick(function () {
+      this.updateLabelContainerMaxWidth()
+    })
+  },
+
   data() {
     return {
       livePosition: null,
+      labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
       // draggablesByExitId: {}, // no need to vuejs-observe these
+    }
+  },
+
+  watch: {
+    blockExitsLength(newValue, oldValue) {
+      this.$nextTick(function () {
+        this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
+      })
     }
   },
 
@@ -175,6 +192,10 @@ export default {
     }),
 
     ...mapGetters('builder', ['blocksById', 'isEditable']),
+
+    blockExitsLength() {
+      return this.block.exits.length
+    },
 
     hasLayout() {
       return isNumber(this.x) && isNumber(this.y)
@@ -226,6 +247,32 @@ export default {
       'setConnectionCreateTargetBlockToNullFrom',
       'applyConnectionCreate',
     ]),
+
+    ...mapMutations('builder', ['activateBlock']),
+
+    updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
+      const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`) // one exit
+
+      if (!blockExitElement) {
+        console.debug('blockExitWidth', 'DOM not ready yet on',`#block\\/${this.block.uuid} .block-exit`)
+        return;
+      }
+
+      // This allows us to shrink .block-exit into the min-width before extending the block label container
+      if(isRemoving) { // Removing exit
+        if (LABEL_CONTAINER_MAX_WIDTH < (blockExitsLength - 1) * blockExitElement.offsetWidth) { // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible
+          this.labelContainerMaxWidth = (blockExitsLength -1) * blockExitElement.offsetWidth// but set with `n x {outer width}`
+          return;
+        }
+      } else { // Adding new exit
+        if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) { // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible (especially when removing exits)
+          this.labelContainerMaxWidth = blockExitsLength * blockExitElement.offsetWidth// but set with `n x {outer width}`
+          return;
+        }
+      }
+
+      this.labelContainerMaxWidth = LABEL_CONTAINER_MAX_WIDTH
+    },
 
     resolveTextResource(uuid) {
       const { resources } = this
@@ -310,6 +357,7 @@ export default {
     removeConnectionFrom(exit) {
       const { block } = this
       this._removeConnectionFrom({ block, exit })
+      this.labelContainerMaxWidth = this.labelContainerMaxWidth + 0 // force render, useful if the exit label is very short
     },
 
     handleDraggableInitializedFor({ uuid }, { draggable }) {
@@ -413,7 +461,7 @@ export default {
     top: 0;
     z-index: 1*10;
 
-    min-width: 122px;
+    min-width: 300px;
     padding: 0.4em;
     padding-bottom: 0.25em;
     scroll-margin: 35px;
@@ -434,6 +482,10 @@ export default {
     .block-label {
       font-size: 14px;
       font-weight: normal;
+      min-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &.empty {
         color: #aaa;
@@ -462,7 +514,6 @@ export default {
     }
 
     .block-exits {
-      display: flex;
       white-space: nowrap;
       position: relative;
       top: 0em;
@@ -473,18 +524,15 @@ export default {
         border: 1px dashed transparent;
         transition: border-radius 200ms ease-in-out;
 
-        /*flex: auto;*/
-        min-width: 6em;
-        max-width: 140px;
+        min-width: 25px;
+        max-width: 100px;
 
-        padding: 0.25em 1em;
         text-align: center;
 
         .block-exit-tag  {
           display: block;
 
-          min-width: 6em;
-          max-width: 140px;
+          min-width: 25px;
 
           margin: 0 0 0.5em 0;
           padding: 0.4em;

@@ -68,7 +68,6 @@ import {
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import SelectManyResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import { namespace } from 'vuex-class'
-import lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -83,27 +82,26 @@ import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vu
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      BlockExitSemanticLabelEditor,
-      FirstBlockEditorButton,
-      ResourceEditor,
-      BlockId,
-    },
-    mixins: [lang],
-  })
-  export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
-    //Important: Even we extends from SelectOneResponseBlock, to avoid conflict we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation
-    @blockVuexNamespace.Getter inflatedChoices!: { [key: string]: IResourceDefinition }
-    @blockVuexNamespace.State inflatedEmptyChoice: { [key: string]: IResourceDefinition }
+@Component<any>({
+  components: {
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    BlockExitSemanticLabelEditor,
+    FirstBlockEditorButton,
+    ResourceEditor,
+    BlockId,
+  },
+})
+export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
+  //Important: Even we extends from SelectOneResponseBlock, to avoid conflict we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation
+  @blockVuexNamespace.Getter inflatedChoices?: { [key: string]: IResourceDefinition }
+  @blockVuexNamespace.State inflatedEmptyChoice?: { [key: string]: IResourceDefinition }
 
-    @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
-    @blockVuexNamespace.Action editEmptyChoice!: () => Promise<object>
+  @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
+  @blockVuexNamespace.Action editEmptyChoice!: () => Promise<object>
 
-    @builderVuexNamespace.Getter isEditable !: boolean
+  @builderVuexNamespace.Getter isEditable !: boolean
 }
 
 export default MobilePrimitives_SelectManyResponseBlock

@@ -24,47 +24,46 @@
 </template>
 
 <script lang="ts">
-
-import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { IFlow } from '@floip/flow-runner'
 import { namespace } from 'vuex-class'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import FlowLabelEditor from './LabelEditor.vue'
 import FlowInteractionTimeoutEditor from './InteractionTimeoutEditor.vue'
 import FlowLanguagesEditor from './LanguagesEditor.vue'
 import FlowModesEditor from './ModesEditor.vue'
+import { ILanguage, SupportedMode } from "@floip/flow-runner/src/index";
+import { mixins } from "vue-class-component";
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
+@Component({
   components: {
     FlowLabelEditor,
     FlowInteractionTimeoutEditor,
     FlowLanguagesEditor,
     FlowModesEditor
   },
-  mixins: [lang],
 })
-class FlowEditor extends Vue {
+class FlowEditor extends mixins(Lang) {
     @Prop() readonly flow!: IFlow
     @Prop({default: 'flow-builder.edit-flow'}) readonly flowHeader!: string
     @Prop({default: true}) readonly sidebar!: boolean
 
-    updateFlowLanguages(value) {
+    updateFlowLanguages(value: ILanguage[] | ILanguage) {
       this.flow_setLanguages({ flowId: this.flow.uuid, value })
     }
 
-    updateFlowModes(value) {
+    updateFlowModes(value: SupportedMode[] | SupportedMode) {
       this.flow_setSupportedMode({ flowId: this.flow.uuid, value })
     }
 
-    @flowVuexNamespace.Mutation flow_setLanguages
+  @flowVuexNamespace.Mutation flow_setLanguages: any
 
-    @flowVuexNamespace.Mutation flow_setSupportedMode
+  @flowVuexNamespace.Mutation flow_setSupportedMode!: any
 
-    @builderVuexNamespace.Getter isEditable
+  @builderVuexNamespace.Getter isEditable!: boolean
 }
 
 export default FlowEditor

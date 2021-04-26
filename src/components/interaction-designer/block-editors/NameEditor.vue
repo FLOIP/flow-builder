@@ -14,7 +14,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {

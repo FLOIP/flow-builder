@@ -26,7 +26,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -43,16 +42,15 @@ import BlockId from '../block-editors/BlockId.vue'
 import ContactPropertySelector from "@/components/interaction-designer/block-editors/ContactPropertySelector.vue"
 
 import SetContactPropertyStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_SetContactPropertyStore'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from "@/store/builder";
 import { get } from 'lodash'
+import { mixins } from "vue-class-component";
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-//providing this generic is required by tsserver checking but not in the build run by yarn storybook
-//TODO - understand what is going on here and if there is something more correct we should have instead
-@Component<any>({
+@Component({
   components: {
     ExpressionEditor,
     BlockNameEditor,
@@ -62,9 +60,8 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     ContactPropertySelector,
   },
-  mixins: [lang],
 })
-class Core_SetContactPropertyBlock extends Vue {
+class Core_SetContactPropertyBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
 
