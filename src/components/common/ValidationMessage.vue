@@ -1,10 +1,10 @@
 <template>
   <div class="validation-message">
-    <slot name="input-control" :isValid="isValid"></slot>
+    <slot name="input-control" :isInvalid="isInvalid"></slot>
     <b-alert
       variant="warning"
       fade
-      :show="isValid"
+      :show="isInvalid"
     >
       {{ errorMessage }} <a :href="messageKey" class="alert-link float-right" v-if="showFixAction">{{ trans('flow-builder.fix-it') }}</a>
     </b-alert>
@@ -38,7 +38,7 @@ class ValidationMessage extends mixins(Lang) {
     return this.flattenErrorMessages[this.messageKey]
   }
 
-  get isValid() {
+  get isInvalid() {
     return !!this.errorMessage
   }
 
