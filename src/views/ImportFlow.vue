@@ -26,6 +26,7 @@
                 @change="handleFileUpload">
                   {{'flow-builder.import-file' | trans}}
               </input>
+              <p v-if="fileName"><strong>Uploaded File:</strong> {{fileName}}</p>
               <text-editor :value="flowJson"
                 @input="setUpdatingAndHandleFlowJsonTextChange"
                 v-if="flowJsonText"
@@ -164,6 +165,7 @@ class ImportFlow extends Vue {
 
   uploadOrPasteSetting = "upload"
   updating = false
+  fileName = ""
 
   async created() {
     const {$store} = this
@@ -180,6 +182,7 @@ class ImportFlow extends Vue {
   }
 
   reset() {
+    this.fileName = ""
     this.baseReset()
     this.resetLanguageMatching()
     this.resetPropertyMatching()
@@ -259,6 +262,8 @@ class ImportFlow extends Vue {
     this.reset()
 
     const selectedFile = event.target.files[0]
+    this.fileName = selectedFile.name
+    event.target.value = ''
 
     const reader = new FileReader()
 
