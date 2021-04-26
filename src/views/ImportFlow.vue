@@ -156,19 +156,6 @@ import ImportMatcher from '@/components/interaction-designer/flow-editors/Import
       ImportMatcher
     },
     mixins: [lang, Routes],
-    async created() {
-      const {$store} = this
-
-      forEach(store.modules, (v, k) =>
-        !$store.hasModule(k) && $store.registerModule(k, v))
-
-      $store.hasModule(['flow', 'import'])
-        || $store.registerModule(['flow', 'import'], ImportStore)
-
-      if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-        this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
-      }
-    },
   },
 )
 class ImportFlow extends Vue {
@@ -177,6 +164,20 @@ class ImportFlow extends Vue {
 
   uploadOrPasteSetting = "upload"
   updating = false
+
+  async created() {
+    const {$store} = this
+
+    forEach(store.modules, (v, k) =>
+      !$store.hasModule(k) && $store.registerModule(k, v))
+
+    $store.hasModule(['flow', 'import'])
+      || $store.registerModule(['flow', 'import'], ImportStore)
+
+    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+    }
+  }
 
   reset() {
     this.baseReset()
@@ -202,7 +203,7 @@ class ImportFlow extends Vue {
     this.setFlowJson(value)
   }
 
-  setUpdatingAndHandleFlowJsonTextChange(value) {
+  setUpdatingAndHandleFlowJsonTextChange(value: string) {
     this.updating = true
     this.debounceHandleFlowJsonTextChange(value)
   }
@@ -210,7 +211,7 @@ class ImportFlow extends Vue {
   //In case someone is editing a language, let's give them a second to finish before we tell them it doesn't match
   debounceHandleFlowJsonTextChange = debounce(this.handleFlowJsonTextChange, 2000)
 
-  async handleFlowJsonTextChange(value) {
+  async handleFlowJsonTextChange(value: string) {
     this.flowJson = value
     this.updating = false
   }
@@ -237,7 +238,7 @@ class ImportFlow extends Vue {
   }
 
   get uploadedBlockTypes() {
-    return uniq(get(this.flowContainer, 'flows[0].blocks', []).map((block) => block.type ))
+    return uniq(get(this.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type ))
   }
 
   get flowUUID() {
@@ -254,29 +255,29 @@ class ImportFlow extends Vue {
   }
 
 
-  async handleFileUpload(event) {
+  async handleFileUpload(event: any) {
     this.reset()
 
     const selectedFile = event.target.files[0]
 
     const reader = new FileReader()
 
-    reader.onload = (readEvent) => {
+    reader.onload = (readEvent: any) => {
       this.flowJson = readEvent.target.result.toString()
     }
 
     const contents = reader.readAsText(selectedFile, "UTF-8")
   }
-  handleMatchLanguage(oldLanguage, matchingNewLanguage) {
+  handleMatchLanguage(oldLanguage: ILanguage, matchingNewLanguage: ILanguage) {
     this.matchLanguage({oldLanguage, matchingNewLanguage})
   }
-  handleMatchProperty(oldProperty, matchingNewProperty) {
+  handleMatchProperty(oldProperty: {name: string, blockIds: string[]}, matchingNewProperty: IContactPropertyOption) {
     this.matchProperty({oldProperty, matchingNewProperty})
   }
-  handleMatchGroup(oldGroup, matchingNewGroup) {
+  handleMatchGroup(oldGroup: {id: string, group_name: string, blockIds: string[]}, matchingNewGroup: IGroupOption) {
     this.matchGroup({oldGroup, matchingNewGroup})
   }
-  async handleImportFlow(route) {
+  async handleImportFlow(route: string) {
     const flowContainer = await this.flow_import({
       //@ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
       persistRoute: this.route('flows.persistFlow', { flowId: this.flowContainer.uuid }),
