@@ -1,14 +1,10 @@
-import Vue from 'vue'
-import Vuex, {mapActions, mapGetters, mapMutations} from 'vuex'
-
 import OutputBlock from '@/components/interaction-designer/block-types/Core_OutputBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-import {baseMounted, BaseMountedVueClass} from './story-utils/storeSetup'
-
-import {IRootState, store} from '@/store'
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import outputBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
-import {Component} from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
 
 Vue.use(Vuex)
 
@@ -20,21 +16,25 @@ export default {
 
 const OutputBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <output-block 
-      :block="activeBlock" 
+    <output-block
+      :block="activeBlock"
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-// default state
-@Component<any>({
+
+const BaseOptions: IBaseOptions = {
   components: {OutputBlock, FlowBuilderSidebarEditorContainer},
   template: OutputBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
-  async mounted() {
-    // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, outputBlockStore)
-  },
+}
 
+// default state
+@Component({
+  ...BaseOptions,
 })
-class DefaultClass extends BaseMountedVueClass {}
+class DefaultClass extends BaseMountedVueClass {
+  async mounted() {
+    await this.baseMounted(BLOCK_TYPE, outputBlockStore)
+  }
+}
 export const Default = () => (DefaultClass)

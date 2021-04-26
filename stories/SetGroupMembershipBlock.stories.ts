@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import SetGroupMembershipBlock from '@/components/interaction-designer/block-types/Core_SetGroupMembershipBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
-import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
+import { BaseMountedVueClass } from './story-utils/storeSetup'
 
 import { IRootState, store } from '@/store'
 import SetGroupMembershipStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
@@ -37,7 +37,7 @@ let baseOptions = {
 @Component<any>({
   ...baseOptions,
   async mounted() {
-    await baseMounted.bind(this)(BLOCK_TYPE, SetGroupMembershipStore)
+    await this.baseMounted(BLOCK_TYPE, SetGroupMembershipStore)
   },
 
 })
@@ -47,8 +47,7 @@ export const Default = () => (DefaultClass)
 @Component<any>({
   ...baseOptions,
   async mounted() {
-    // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, SetGroupMembershipStore)
+    await this.baseMounted(BLOCK_TYPE, SetGroupMembershipStore)
 
     // Add sample data
     this.addContactGroup({
@@ -66,6 +65,6 @@ export const Default = () => (DefaultClass)
   },
 })
 class ExistingDataBlockClass extends BaseMountedVueClass {
-  @Mutation addContactGroup!: ({ group }) => void
+  @Mutation addContactGroup!: ({ group }: { group: any }) => void
 }
 export const ExistingDataBlock = () => (ExistingDataBlockClass)

@@ -16,7 +16,7 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   mixins: [lang],
