@@ -8,18 +8,20 @@
             <h2>
               {{'flow-builder.import-flow' | trans}}
             </h2>
-            <p>{{'flow-builder.create-flow-from-json'}}</p>
+            <p>{{'flow-builder.create-flow-from-json' | trans}}</p>
             <label class="mt-2 no-weight">
               <input type="radio" value="upload" v-model="uploadOrPaste"> {{'flow-builder.import-json-file' | trans}}
             </label>
-            <br>
-            <div v-if="uploadOrPaste === 'upload'">
-              <input type="file"
-                class="btn btn-default"
-                @change="handleFileUpload">
-                  {{'flow-builder.import-file' | trans}}
-              </input>
-              <p v-if="fileName"><strong>Uploaded File:</strong> {{fileName}}</p>
+            <div class="ml-3 mr-3" v-if="uploadOrPaste === 'upload'">
+              <div class="form-inline mb-2">
+                <span class="one-line">
+                  <a class="btn btn-outline-secondary" @click="chooseFile">
+                    {{'flow-builder.import-file' | trans}}
+                    <input type="file" id="flowUpload" @change="handleFileUpload" hidden/>
+                  </a>
+                  <strong v-if="fileName" class="ml-1">{{'flow-builder.uploaded-file' | trans}}</strong> {{fileName}}
+                </span>
+              </div>
               <text-editor :value="flowJson"
                 @input="setUpdatingAndHandleFlowJsonTextChange"
                 v-if="flowJsonText"
@@ -29,31 +31,31 @@
               </text-editor>
               <error-handler/>
             </div>
+            <div class="mt-2">
+              <label class="mt-2 no-weight">
+                <input type="radio" value="paste" v-model="uploadOrPaste"> {{'flow-builder.paste-json-directly' | trans}}
+              </label>
+              <div class="ml-3 mr-3" v-if="uploadOrPaste === 'paste'">
+                <text-editor :value="flowJson"
+                  @input="setUpdatingAndHandleFlowJsonTextChange"
+                  label=""
+                  class="tall-text"
+                  :placeholder="'flow-builder.paste-flow-json' | trans">
+                </text-editor>
+                <error-handler/>
+              </div>
 
-            <br>
-            <label class="mt-2 no-weight">
-              <input type="radio" value="paste" v-model="uploadOrPaste"> {{'flow-builder.paste-json-directly' | trans}}
-            </label>
-            <div v-if="uploadOrPaste === 'paste'">
-              <text-editor :value="flowJson"
-                @input="setUpdatingAndHandleFlowJsonTextChange"
-                label=""
-                class="tall-text"
-                :placeholder="'flow-builder.paste-flow-json' | trans">
-              </text-editor>
-              <error-handler/>
-            </div>
-
-            <div class="mt-5 float-right">
-              <router-link :to="route('flows.cancelImport')" class="btn btn-outline-secondary mr-2">
-                {{trans('flow-builder.cancel')}}
-              </router-link>
-              <a :href="route('trees.editTree', {treeId: flowUUID, component: 'interaction-designer', mode: 'edit'})"
-                class="btn btn-primary"
-                :class="{'disabled': disableContinue}"
-                @click.prevent="handleImportFlow(route('trees.editTree', {treeId: flowUUID, component: 'interaction-designer', mode: 'edit'}))">
-                {{'flow-builder.save-and-continue' | trans}}
-              </a>
+              <div class="mt-5 float-right">
+                <router-link :to="route('flows.cancelImport')" class="btn btn-outline-secondary mr-2">
+                  {{trans('flow-builder.cancel')}}
+                </router-link>
+                <a :href="route('trees.editTree', {treeId: flowUUID, component: 'interaction-designer', mode: 'edit'})"
+                  class="btn btn-primary"
+                  :class="{'disabled': disableContinue}"
+                  @click.prevent="handleImportFlow(route('trees.editTree', {treeId: flowUUID, component: 'interaction-designer', mode: 'edit'}))">
+                  {{'flow-builder.create-flow' | trans}}
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -169,6 +171,10 @@ class ImportFlow extends Vue {
     return get(this.flowContainer, 'flows[0].uuid')
   }
 
+  chooseFile(event: any) {
+    event.target.children[0].click()
+  }
+
   async handleFileUpload(event: any) {
     this.reset()
 
@@ -242,5 +248,10 @@ export default ImportFlow
 <style lang="scss">
   .tall-text textarea {
     min-height: 200px
+  }
+  .one-line {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 </style>

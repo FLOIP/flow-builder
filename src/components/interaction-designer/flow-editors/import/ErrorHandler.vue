@@ -7,12 +7,13 @@
       </div>
     </div>
     <div v-if="flowError" class="alert alert-danger" role="alert">
-      <p>{{flowError | trans}}</p>
+      {{flowError | trans}}
     </div>
     <div v-if="hasUnsupportedBlockClasses" class="alert alert-danger" role="alert">
       {{ `${trans('flow-builder.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}` }}
     </div>
     <import-matcher v-if="languagesMissing"
+      class="mt-2"
       @reactToMatch="handleMatchLanguage"
       :missing-matches="missingLanguages"
       type-id="id"
@@ -20,6 +21,7 @@
       :existing-options-without-match="existingLanguagesWithoutMatch"
       match-not-found-text="flow-builder.match-for-languages-not-found"/>
     <import-matcher v-if="propertiesMissing"
+      class="mt-2"
       @reactToMatch="handleMatchProperty"
       :missing-matches="missingProperties"
       type-id="name"
@@ -27,6 +29,7 @@
       :existing-options-without-match="existingPropertiesWithoutMatch"
       match-not-found-text="flow-builder.match-for-properties-not-found"/>
     <import-matcher v-if="groupsMissing"
+      class="mt-2"
       @reactToMatch="handleMatchGroup"
       :missing-matches="missingGroups"
       type-id="id"

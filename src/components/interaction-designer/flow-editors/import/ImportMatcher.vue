@@ -3,8 +3,8 @@
     <label>{{ matchNotFoundText | trans }}</label>
     <div v-for="missingMatch in missingMatches" :key="`${getIdentifier(missingMatch)}-missing`">
       <div class="form-check form-check-inline">
-        <label class="form-check-label">{{getLabel(missingMatch)}}</label>
-        <select class="form-control" @change="updateMappings(missingMatch, $event)">
+        <label class="form-check-label mr-2">{{getLabel(missingMatch)}}</label>
+        <select class="form-control mr-2" @change="updateMappings(missingMatch, $event)">
           <option value="" :selected="mappingsEmpty" key="default">
             {{ 'flow-builder.none-selected' | trans }}
           </option>
