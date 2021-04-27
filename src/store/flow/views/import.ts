@@ -3,6 +3,10 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import { IContext, IBlock } from '@floip/flow-runner'
 import {
+  join,
+  isEmpty,
+  difference,
+  uniq,
   get,
   set,
   find,
@@ -28,7 +32,29 @@ import {
   getPropertyBlocks,
 } from '../utils/importHelpers'
 
-export const getters: GetterTree<IImportState, IRootState> = {}
+export const getters: GetterTree<IImportState, IRootState> = {
+  languagesMissing: (state) => {
+    return !isEmpty(state.missingLanguages)
+  },
+  propertiesMissing: (state) => {
+    return !isEmpty(state.missingProperties)
+  },
+  groupsMissing: (state) => {
+    return !isEmpty(state.missingGroups)
+  },
+  hasUnsupportedBlockClasses: (state, getters) => {
+    return !isEmpty(getters.unsupportedBlockClasses)
+  },
+  unsupportedBlockClasses: (state, getters, rootState, rootGetters) => {
+    return difference(getters.uploadedBlockTypes, rootGetters.blockClasses)
+  },
+  unsupportedBlockClassesList: (state, getters) => {
+    return join(getters.unsupportedBlockClasses, ', ')
+  },
+  uploadedBlockTypes: (state) => {
+    return uniq(get(state.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type))
+  }
+}
 
 export const mutations: MutationTree<IImportState> = {
   setUpdating(state, updatingStatus) {

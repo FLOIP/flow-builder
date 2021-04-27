@@ -37,7 +37,6 @@
             <div v-if="uploadOrPaste === 'paste'">
               <text-editor :value="flowJson"
                 @input="setUpdatingAndHandleFlowJsonTextChange"
-                v-if="uploadOrPaste === 'paste'"
                 label=""
                 class="tall-text"
                 :placeholder="'flow-builder.paste-flow-json' | trans">
@@ -74,20 +73,14 @@ import {
   forEach,
   isEmpty,
   get,
-  uniq,
-  difference,
-  join,
   debounce,
 } from 'lodash'
 import { store } from '@/store'
-import { IContext, IBlock } from '@floip/flow-runner'
-import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage'
+import { IContext } from '@floip/flow-runner'
 
 import TextEditor from '@/components/common/TextEditor.vue'
 import ErrorHandler from '@/components/interaction-designer/flow-editors/import/ErrorHandler.vue'
 import ImportStore from '../store/flow/views/import'
-import { IGroupOption } from '../store/flow/block-types/Core_SetGroupMembershipStore'
-import { IContactPropertyOption } from '../store/flow/block-types/Core_SetContactPropertyStore'
 
 const flowVuexNamespace = namespace('flow')
 const importVuexNamespace = namespace('flow/import')
@@ -172,36 +165,8 @@ class ImportFlow extends Vue {
       || this.hasUnsupportedBlockClasses
   }
 
-  get hasUnsupportedBlockClasses() {
-    return !isEmpty(this.unsupportedBlockClasses)
-  }
-
-  get unsupportedBlockClasses() {
-    return difference(this.uploadedBlockTypes, this.blockClasses)
-  }
-
-  get unsupportedBlockClassesList() {
-    return join(this.unsupportedBlockClasses, ', ')
-  }
-
-  get uploadedBlockTypes() {
-    return uniq(get(this.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type))
-  }
-
   get flowUUID() {
     return get(this.flowContainer, 'flows[0].uuid')
-  }
-
-  get languagesMissing() {
-    return !isEmpty(this.missingLanguages)
-  }
-
-  get propertiesMissing() {
-    return !isEmpty(this.missingProperties)
-  }
-
-  get groupsMissing() {
-    return !isEmpty(this.missingGroups)
   }
 
   async handleFileUpload(event: any) {
@@ -218,18 +183,6 @@ class ImportFlow extends Vue {
     }
 
     const contents = reader.readAsText(selectedFile, 'UTF-8')
-  }
-
-  handleMatchLanguage(oldLanguage: ILanguage, matchingNewLanguage: ILanguage) {
-    this.matchLanguage({ oldLanguage, matchingNewLanguage })
-  }
-
-  handleMatchProperty(oldProperty: {name: string; blockIds: string[]}, matchingNewProperty: IContactPropertyOption) {
-    this.matchProperty({ oldProperty, matchingNewProperty })
-  }
-
-  handleMatchGroup(oldGroup: {id: string; group_name: string; blockIds: string[]}, matchingNewGroup: IGroupOption) {
-    this.matchGroup({ oldGroup, matchingNewGroup })
   }
 
   async handleImportFlow(route: string) {
@@ -253,19 +206,13 @@ class ImportFlow extends Vue {
 
   @Getter isConfigured!: boolean
 
-  @Getter blockClasses!: string[]
+  @importVuexNamespace.Getter hasUnsupportedBlockClasses!: boolean
 
-  @importVuexNamespace.Action validateLanguages!: (flowContainer: IContext) => Promise<void>
+  @importVuexNamespace.Getter languagesMissing!: boolean
 
-  @importVuexNamespace.Action validateProperties!: (newPropertyBlocks: IBlock[]) => Promise<void>
+  @importVuexNamespace.Getter groupsMissing!: boolean
 
-  @importVuexNamespace.Action validateGroups!: (newGroupBlocks: IBlock[]) => Promise<void>
-
-  @importVuexNamespace.Action matchLanguage!: ({ oldLanguage, matchingNewLanguage }: {oldLanguage: ILanguage; matchingNewLanguage: ILanguage}) => Promise<void>
-
-  @importVuexNamespace.Action matchProperty!: ({ oldProperty, matchingNewProperty }: {oldProperty: object; matchingNewProperty: object}) => Promise<void>
-
-  @importVuexNamespace.Action matchGroup!: ({ oldGroup, matchingNewGroup }: {oldGroup: object; matchingNewGroup: object}) => Promise<void>
+  @importVuexNamespace.Getter propertiesMissing!: boolean
 
   @importVuexNamespace.Action setFlowJson!: (value: string) => Promise<void>
 
@@ -286,18 +233,6 @@ class ImportFlow extends Vue {
   @importVuexNamespace.State flowJsonText!: string
 
   @importVuexNamespace.State flowContainer!: IContext
-
-  @importVuexNamespace.State missingLanguages!: ILanguage[]
-
-  @importVuexNamespace.State existingLanguagesWithoutMatch!: ILanguage[]
-
-  @importVuexNamespace.State missingProperties!: {name: string; blockIds: string[]}[]
-
-  @importVuexNamespace.State existingPropertiesWithoutMatch!: IContactPropertyOption[]
-
-  @importVuexNamespace.State missingGroups!: {id: string; group_name: string; blockIds: string[]}[]
-
-  @importVuexNamespace.State existingGroupsWithoutMatch!: IGroupOption[]
 }
 
 export default ImportFlow

@@ -41,14 +41,7 @@ import lang from '@/lib/filters/lang'
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import { Getter, namespace } from 'vuex-class'
-import {
-  isEmpty,
-  get,
-  uniq,
-  difference,
-  join,
-} from 'lodash'
-import { IContext, IBlock } from '@floip/flow-runner'
+import { IContext } from '@floip/flow-runner'
 import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import TextEditor from '@/components/common/TextEditor.vue'
 import ImportMatcher from '@/components/interaction-designer/flow-editors/import/ImportMatcher.vue'
@@ -67,34 +60,6 @@ const importVuexNamespace = namespace('flow/import')
   },
 )
 class ErrorHandler extends Vue {
-  get hasUnsupportedBlockClasses() {
-    return !isEmpty(this.unsupportedBlockClasses)
-  }
-
-  get unsupportedBlockClasses() {
-    return difference(this.uploadedBlockTypes, this.blockClasses)
-  }
-
-  get unsupportedBlockClassesList() {
-    return join(this.unsupportedBlockClasses, ', ')
-  }
-
-  get uploadedBlockTypes() {
-    return uniq(get(this.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type))
-  }
-
-  get languagesMissing() {
-    return !isEmpty(this.missingLanguages)
-  }
-
-  get propertiesMissing() {
-    return !isEmpty(this.missingProperties)
-  }
-
-  get groupsMissing() {
-    return !isEmpty(this.missingGroups)
-  }
-
   handleMatchLanguage(oldLanguage: ILanguage, matchingNewLanguage: ILanguage) {
     this.matchLanguage({ oldLanguage, matchingNewLanguage })
   }
@@ -126,6 +91,16 @@ class ErrorHandler extends Vue {
   @importVuexNamespace.Action matchGroup!: (
     { oldGroup, matchingNewGroup }: {oldGroup: object; matchingNewGroup: object}
   ) => Promise<void>
+
+  @importVuexNamespace.Getter hasUnsupportedBlockClasses!: boolean
+
+  @importVuexNamespace.Getter unsupportedBlockClassesList!: string
+
+  @importVuexNamespace.Getter languagesMissing!: boolean
+
+  @importVuexNamespace.Getter groupsMissing!: boolean
+
+  @importVuexNamespace.Getter propertiesMissing!: boolean
 
   @importVuexNamespace.State flowError!: string
 
