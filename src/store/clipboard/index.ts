@@ -2,6 +2,7 @@ import {
   ActionTree, GetterTree, Module, MutationTree,
 } from 'vuex'
 import { IRootState } from '@/store'
+import { router } from '@/router'
 
 export interface BlocksData {
   isFocused: boolean;
@@ -23,6 +24,8 @@ export const getters: GetterTree<IClipboardState, IRootState> = {
   blocksData: (state) => state.blocksData,
   getBlockPrompt: (state) => (index) => state.blocksData[index].prompt,
   isBlockFocused: (state) => (index) => state.blocksData[index].isFocused,
+  hasSimulator: (_, _2, _3, rootGetters) =>
+    rootGetters['flow/hasOfflineMode'] && rootGetters.isFeatureSimulatorEnabled && !rootGetters['builder/isEditable']
 }
 
 export const mutations: MutationTree<IClipboardState> = {
@@ -40,6 +43,10 @@ export const mutations: MutationTree<IClipboardState> = {
 export const actions: ActionTree<IClipboardState, IRootState> = {
   setSimulatorActive({ commit }, value) {
     commit('setSimulatorActive', value)
+    const routeName = value ? 'flow-simulator' : 'flow-details'
+    router.replace({
+      name: routeName
+    })
   },
   setBlocksData({ commit }, data) {
     commit('setBlocksData', data)

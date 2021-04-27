@@ -38,7 +38,7 @@
              :class="{active: isEditable}"
              @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
               {{isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow')}}
-            </router-link>
+          </router-link>
 
           <div v-if="isEditable" class="dropdown mr-2">
             <button type="button"
@@ -216,11 +216,11 @@ export default {
       ui: ({ trees: { ui } }) => ui,
     }),
 
-    ...mapGetters('flow', ['activeFlow', 'activeFlowContainer', 'hasOfflineMode']),
+    ...mapGetters('flow', ['activeFlow', 'activeFlowContainer']),
     ...mapState('flow', ['flows', 'resources']),
     ...mapState('builder', ['activeBlockId']),
-    ...mapGetters('clipboard', ['isSimulatorActive']),
     ...mapGetters('builder', ['activeBlock', 'isEditable']),
+    ...mapGetters('clipboard', ['hasSimulator']),
     ...mapGetters([
       'isTreeSaving',
       'isBlockAvailableByBlockClass',
@@ -232,7 +232,6 @@ export default {
       'isFeatureTreeDuplicateEnabled',
       'isFeatureViewResultsEnabled',
       'isFeatureUpdateInteractionTotalsEnabled',
-      'isFeatureSimulatorEnabled',
       'isResourceEditorEnabled',
     ]),
 
@@ -295,16 +294,12 @@ export default {
       return this.isTreeValid ? `/trees/${this.tree.id}/publishversion` : ''
     },
     editOrViewTreeJsUrl() {
-      if (this.isEditable) {
-        return this.editTreeRoute({
-          component: 'interaction-designer',
-          mode: 'view',
-        })
+      return {
+        params: {
+          id: this.activeFlow.uuid,
+          mode: this.isEditable ? 'view': 'edit'
+        }
       }
-      return this.editTreeRoute({
-        component: 'interaction-designer',
-        mode: 'edit',
-      })
     },
     duplicateTreeLink() {
       return this.isFeatureTreeDuplicateEnabled
@@ -338,9 +333,6 @@ export default {
     },
     canViewResultsTotals() {
       return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
-    },
-    hasSimulator() {
-      return this.hasOfflineMode && this.isFeatureSimulatorEnabled
     },
   },
   methods: {

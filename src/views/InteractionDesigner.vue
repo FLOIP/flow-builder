@@ -10,7 +10,7 @@
         </i>
       </div>
 
-      <div v-if="isSimulatorActive" class="tree-sidebar">
+      <div v-if="$route.name === 'flow-simulator'" class="tree-sidebar">
         <clipboard-root />
       </div>
       <div v-else-if="activeBlock" class="tree-sidebar" :class="[`category-${blockClasses[activeBlock.type].category}`]">
@@ -164,7 +164,7 @@ export default {
 
     ...mapGetters('flow', ['activeFlow']),
     ...mapGetters('builder', ['activeBlock', 'isEditable']),
-    ...mapGetters('clipboard', ['isSimulatorActive']),
+    ...mapGetters('clipboard', ['hasSimulator']),
 
     jsKey() {
       return lodash.get(this.selectedBlock, 'jsKey')
@@ -238,6 +238,9 @@ export default {
           ele.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
       }
+      if (this.$route.name === 'flow-simulator' && this.hasSimulator()) {
+        this.setSimulatorActive(true)
+      }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
   },
@@ -255,6 +258,7 @@ export default {
     ...mapMutations('builder', ['activateBlock']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
+    ...mapActions('clipboard', ['setSimulatorActive']),
 
     ...mapActions([
       'attemptSaveTree',

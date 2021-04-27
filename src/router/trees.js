@@ -26,6 +26,11 @@ export const routes = [
         meta: { isSidebarShown: true },
       },
       {
+        path: 'simulator',
+        name: 'flow-simulator',
+        meta: { isSidebarShown: true },
+      },
+      {
         path: 'block/:blockId',
         name: 'block-selected',
         props: (route) => ({ blockId: route.params.blockId }),
