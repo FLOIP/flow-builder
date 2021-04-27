@@ -3,7 +3,7 @@
     <label>{{label}}</label>
     <textarea
         class="form-control"
-        :class="{ 'is-invalid': isInvalid }"
+        :class="{ 'is-invalid': validationState }"
         :placeholder="placeholder"
         :value="value"
         @keydown="$emit('keydown', $event)"
@@ -29,15 +29,9 @@ export default {
     },
     validationState: {
       type: Boolean,
-      default: null, // to tell boostrap `No state`
+      default: null,
       required: false,
     },
-  },
-  computed: {
-    isInvalid() {
-      // strict comparison, because `undefined` doesn't mean invalid
-      return this.validationState === false
-    }
   },
 }
 </script>

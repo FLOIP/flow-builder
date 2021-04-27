@@ -1,11 +1,11 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.accuracy_timeout_seconds`" #input-control="{ isValid }">
+  <validation-message :message-key="`block/${block.uuid}/.config.accuracy_timeout_seconds`" #input-control="{ isInvalid }">
     <div class="form-group block-timeout">
       <numeric-editor v-model.number="timeout"
           :regex-numeric-filtering="'[0-9]'"
           :label="'flow-builder.accuracy-timeout-in-seconds' | trans"
           :placeholder="'flow-builder.enter-value' | trans"
-          :validationState="!isValid">
+          :validationState="isInvalid">
       </numeric-editor>
     </div>
   </validation-message>

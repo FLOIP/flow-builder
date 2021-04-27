@@ -8,10 +8,10 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <validation-message :message-key="`block/${block.uuid}/.config.flow_id`" #input-control="{ isValid: isFlowIdInvalid }">
+      <validation-message :message-key="`block/${block.uuid}/.config.flow_id`" #input-control="{ isInvalid }">
         <div class="form-group">
           <label>{{ 'flow-builder.destination-flow' | trans }}</label>
-          <select class="form-control" v-model="destinationFlowId" :class="{ 'is-invalid': isFlowIdInvalid }">
+          <select class="form-control" v-model="destinationFlowId" :class="{ 'is-invalid': isInvalid }">
             <option value="">
               {{ 'flow-builder.none-selected' | trans }}
             </option>

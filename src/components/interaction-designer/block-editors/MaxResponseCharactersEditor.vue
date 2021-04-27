@@ -1,11 +1,11 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.text.max_response_characters`" #input-control="{ isValid }">
+  <validation-message :message-key="`block/${block.uuid}/.config.text.max_response_characters`" #input-control="{ isInvalid }">
     <div v-if="hasText" class="form-group block-max-response-characters">
       <numeric-editor v-model.number="maxResponse"
           :regex-numeric-filtering="'[0-9]'"
           :label="'flow-builder.max-response-characters' | trans"
           :placeholder="'flow-builder.enter-value' | trans"
-          :validationState="!isValid">
+          :validationState="isInvalid">
       </numeric-editor>
       <small class="text-muted">
         {{'flow-builder.unlimited-if-not-defined-or-set-as-zero' | trans}}

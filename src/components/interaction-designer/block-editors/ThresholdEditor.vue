@@ -1,12 +1,12 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.accuracy_threshold_meters`" #input-control="{ isValid }">
+  <validation-message :message-key="`block/${block.uuid}/.config.accuracy_threshold_meters`" #input-control="{ isInvalid }">
     <div class="form-group block-threshold">
       <float-editor v-model.number="threshold"
           :min="0"
           :regex-float-filtering="'[0-9.,]'"
           :label="'flow-builder.accuracy-threshold-in-meters' | trans"
           :placeholder="'flow-builder.enter-value' | trans"
-          :validationState="!isValid">
+          :validationState="isInvalid">
       </float-editor>
     </div>
   </validation-message>

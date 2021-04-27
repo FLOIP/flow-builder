@@ -14,10 +14,10 @@
 
       <div v-for="(variableStringFormat,i) in destinationVariablesFields"
            class="form-group form-inline">
-        <validation-message :message-key="`block/${block.uuid}/.config.destination_variables[${i}]`" #input-control="{ isValid: isDestinationVariablesValid }">
+        <validation-message :message-key="`block/${block.uuid}/.config.destination_variables[${i}]`" #input-control="{ isInvalid }">
           <text-editor :label="i+1"
               :placeholder="'flow-builder.edit-variable' | trans"
-              :validationState="!isDestinationVariablesValid"
+              :validationState="isInvalid"
               value=""
               @keydown="filterVariableName"
               @input="updatedestinationVariables($event, i)"/>

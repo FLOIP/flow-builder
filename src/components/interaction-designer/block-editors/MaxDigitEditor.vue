@@ -1,11 +1,11 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.ivr.max_digits`" #input-control="{ isValid }">
+  <validation-message :message-key="`block/${block.uuid}/.config.ivr.max_digits`" #input-control="{ isInvalid }">
     <div v-if="hasIvr" class="form-group block-max-digits">
       <numeric-editor v-model.number="maxDigits"
           :regex-numeric-filtering="'[0-9]'"
           :label="'flow-builder.maximum-digits' | trans"
           :placeholder="'flow-builder.enter-value' | trans"
-          :validationState="!isValid">
+          :validationState="isInvalid">
       </numeric-editor>
     </div>
   </validation-message>

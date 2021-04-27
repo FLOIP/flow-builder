@@ -6,7 +6,7 @@
           type="number"
           :min="min"
           class="form-control"
-          :class="{ 'is-invalid': isInvalid }"
+          :class="{ 'is-invalid': validationState }"
           :placeholder="placeholder"
           :value="value"
           :step="step"
@@ -15,10 +15,6 @@
           @input="$emit('input', $event.target.value)"
       />
     </div>
-
-<!--    <p v-else>-->
-<!--      {{value}}-->
-<!--    </p>-->
     <slot/>
   </div>
 </template>
@@ -54,15 +50,9 @@ export default {
     },
     validationState: {
       type: Boolean,
-      default: null, // to tell boostrap `No state`
+      default: null,
       required: false,
     },
-  },
-  computed: {
-    isInvalid() {
-      // strict comparison, because `undefined` doesn't mean invalid
-      return this.validationState === false
-    }
   },
   methods: {
     filterFloat(e) {
