@@ -105,6 +105,9 @@
             </div>
 
             <div class="mt-5 float-right">
+              <router-link :to="route('flows.cancelImport')" class="btn btn-outline-secondary mr-2">
+                {{trans('flow-builder.cancel')}}
+              </router-link>
               <a :href="route('trees.editTree', {treeId: flowUUID, component: 'interaction-designer', mode: 'edit'})"
                 class="btn btn-primary"
                 :class="{'disabled': disableContinue}"
@@ -112,7 +115,6 @@
                 {{'flow-builder.save-and-continue' | trans}}
               </a>
             </div>
-            <!-- TODO cancel button - router link back or home is default -->
           </div>
         </div>
       </div>
@@ -300,9 +302,6 @@ class ImportFlow extends Vue {
   @flowVuexNamespace.Action flow_import!: ({ persistRoute, flowContainer }: { persistRoute: string, flowContainer: IContext }) => Promise<IContext>
   @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
   @Getter isConfigured!: boolean
-  @Getter languages!: ILanguage[] 
-  @Getter subscriberPropertyFields!: IContactPropertyOption[]
-  @Getter groups!: IGroupOption[]
   @Getter blockClasses!: string[]
   @importVuexNamespace.Action validateLanguages!: (flowContainer: IContext) => Promise<void>
   @importVuexNamespace.Action validateProperties!: (newPropertyBlocks: IBlock[]) => Promise<void>

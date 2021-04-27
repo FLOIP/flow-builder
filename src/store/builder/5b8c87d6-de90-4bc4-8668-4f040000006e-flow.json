@@ -7,8 +7,8 @@
   "flows": [
     {
       "uuid": "5b8c87d6-de90-4bc4-8668-4f040000006e",
-      "name": "Clipboard Shortcut Tree For Backtracking",
-      "label": "",
+      "name": "ClipboardShortcutTreeForBacktracking",
+      "label": "Clipboard Shortcut Tree For Backtracking",
       "last_modified": "2019-10-10 23:46:30.000000+00:00",
       "interaction_timeout": 172800,
       "supported_modes": [
