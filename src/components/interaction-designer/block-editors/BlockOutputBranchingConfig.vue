@@ -58,10 +58,11 @@
     }
 
     mounted() {
-      // @ts-ignore TODO: remove this once IBlock has vendor_metadata key, and confirm this path because FLOIP spec doesn't provide a definition for the output branching persistence
-      let value = get(this.block.vendor_metadata, 'branchingType')
+      const path = 'io_viamo.branchingType'
+      // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
+      let value = get(this.block.vendor_metadata, path)
       if (isNil(value) && this.block) {
-        this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'branchingType', value: this.branchingType })
+        this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path, value: this.branchingType })
         return this.branchingType
       } else {
         this.branchingType = value
@@ -77,7 +78,7 @@
         this.block_unifyExitsBranching( { blockId: this.block.uuid })
         this.branchingType = BRANCHING_TYPE_UNIFIED
       }
-      this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'branchingType', value })
+      this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'io_viamo.branchingType', value })
       this.$emit('commitIsSegregatedBranching', willBranchingTypeSegregated)
     }
 
