@@ -39,21 +39,23 @@ import {
 })
 class ImportMatcher extends Vue {
   @Prop({ default: '' }) readonly matchNotFoundText!: string
+
   @Prop({ required: true }) readonly typeId!: string
+
   @Prop({ required: true }) readonly typeLabel!: string
 
-  @Prop({ required: true }) readonly missingMatches!: any[] 
+  @Prop({ required: true }) readonly missingMatches!: any[]
 
-  @Prop({ required: true }) readonly existingOptionsWithoutMatch!: any[] 
+  @Prop({ required: true }) readonly existingOptionsWithoutMatch!: any[]
 
   mappings: {[key: string]: string} = {}
 
   getLabel(missingMatch: {[key: string]: string}): string {
-    return get(missingMatch, this.typeLabel, "")
+    return get(missingMatch, this.typeLabel, '')
   }
 
   getIdentifier(missingMatch: {[key: string]: string}): string {
-    return get(missingMatch, this.typeId, "")
+    return get(missingMatch, this.typeId, '')
   }
 
   updateMappings(missingMatch: {[key: string]: string}, event: {target: {value: string}}) {
