@@ -39,5 +39,56 @@
     }
   ],
   "resources": [
+    {
+      "uuid": "29841127-3247-461e-829a-89c000000000",
+      "values": [
+        {
+          "languageId": "23",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "Yes"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-461e-829a-94d800000000",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "No"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-cdc5199dc271",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "Yes"
+        }
+      ]
+    }
   ]
 }
