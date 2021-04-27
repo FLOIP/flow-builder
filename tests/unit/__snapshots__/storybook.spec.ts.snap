@@ -199,7 +199,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                      
                                     <div>
                                       <input
-                                        class="form-control is-invalid"
+                                        class="form-control"
                                         min="0"
                                         placeholder="Enter value"
                                         type="number"
