@@ -17,7 +17,7 @@ import {
 import Vue from 'vue'
 import { defaultsDeep, find, filter, get, set } from 'lodash'
 import { IResourceDefinitionVariantOverModesFilter } from '../resource'
-import { findExitFromResourceUuid } from '../block'
+import {findBlockExitsRef, findExitFromResourceUuid} from '../block'
 import { IFlowsState } from '../index'
 
 import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
@@ -163,11 +163,12 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       const activeBlock = rootGetters['builder/activeBlock'];
       const newIndex = Object.keys(activeBlock.config.choices || {}).length + 1
       const resourceUuid = state.inflatedEmptyChoice.resource.uuid
+      const blockExit = findBlockExitsRef(activeBlock, !getters.isExitsBranchingSegregated)
       dispatch('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
       commit('flow/block_pushNewExit', {
           blockId: activeBlock.uuid,
           newExit: state.inflatedEmptyChoice.exit,
-          insertAtIndex: activeBlock.exits.length - 1, // insert before 'Error' exit
+          insertAtIndex: blockExit.length - 1, // insert before 'Error' exit
           shouldUseCache: !getters.isExitsBranchingSegregated // use cache if unified branching
         }, {
         root: true
