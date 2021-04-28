@@ -53,7 +53,7 @@
               </div>
             </div>
 
-            <div class="float-right mt-2">
+            <div class="float-right mt-3">
               <router-link :to="route('flows.cancelImport')" class="btn btn-outline-secondary mr-2">
                 {{trans('flow-builder.cancel')}}
               </router-link>
