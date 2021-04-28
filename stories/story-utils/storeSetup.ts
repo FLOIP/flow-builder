@@ -142,10 +142,11 @@ export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass 
     this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
 
     if (shouldSetChoices) {
-      const choiceResourceId = get(this.activeBlock, `config.choices.1`, '')
-      this.resource_setValue({resourceId: choiceResourceId, filter: variantSms, value: "text for SMS"})
-      this.resource_setValue({resourceId: choiceResourceId, filter: variantUssd, value: "text for USSD"})
-      this.resource_setValue({resourceId: choiceResourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
+      // TODO: uncomment these if needed, when we found a solution for the above todo. This is not working for now.
+      // const choiceResourceId = get(this.activeBlock, `config.choices.1`, '')
+      // this.resource_setValue({resourceId: choiceResourceId, filter: variantSms, value: "text for SMS"})
+      // this.resource_setValue({resourceId: choiceResourceId, filter: variantUssd, value: "text for USSD"})
+      // this.resource_setValue({resourceId: choiceResourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
     }
   }
 }
