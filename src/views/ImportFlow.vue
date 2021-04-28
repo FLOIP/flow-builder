@@ -10,6 +10,9 @@
                 {{'flow-builder.import-flow' | trans}}
               </h2>
               <p>{{'flow-builder.create-flow-from-json' | trans}}</p>
+              <div class="alert alert-danger" role="alert">
+                {{'flow-builder.import-note'| trans}}
+              </div>
             </div>
             <div>
               <label class="mt-2 no-weight">

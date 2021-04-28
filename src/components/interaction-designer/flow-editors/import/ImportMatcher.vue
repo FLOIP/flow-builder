@@ -2,22 +2,30 @@
   <div>
     <label>{{ matchNotFoundText | trans }}</label>
     <div v-for="missingMatch in missingMatches" :key="`${getIdentifier(missingMatch)}-missing`">
-      <div class="form-check form-check-inline">
-        <label class="form-check-label mr-2">{{getLabel(missingMatch)}}</label>
-        <select class="form-control mr-2" @change="updateMappings(missingMatch, $event)">
-          <option value="" :selected="mappingsEmpty" key="default">
-            {{ 'flow-builder.none-selected' | trans }}
-          </option>
-          <option v-for="option in existingOptionsWithoutMatch"
-            :value="JSON.stringify(option)"
-            :key="`${getIdentifier(option)}-option`">
-              {{ option }}
-          </option>
-        </select>
-        <button class="btn btn-primary"
-          @click="handleMatch(missingMatch)">
-          {{'flow-builder.update' | trans}}
-        </button>
+      <div class="form-check form-check-inline full-width">
+        <div class="row full-width ml-1">
+          <div class="col-xl-2 col-md-3">
+            <label class="form-check-label full-width mt-2 mb-2">{{getLabel(missingMatch)}}</label>
+          </div>
+          <div class="col-xl-8 col-md-6">
+            <select class="form-control full-width" @change="updateMappings(missingMatch, $event)">
+              <option value="" :selected="mappingsEmpty" key="default">
+                {{ 'flow-builder.none-selected' | trans }}
+              </option>
+              <option v-for="option in existingOptionsWithoutMatch"
+                :value="JSON.stringify(option)"
+                :key="`${getIdentifier(option)}-option`">
+                  {{ option }}
+              </option>
+            </select>
+          </div>
+          <div class="col-xl-2 col-md-3">
+            <button class="btn btn-primary full-width"
+              @click="handleMatch(missingMatch)">
+              {{'flow-builder.update' | trans}}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -79,3 +87,9 @@ class ImportMatcher extends Vue {
 export default ImportMatcher
 
 </script>
+
+<style lang="scss">
+  .full-width {
+    width: 100%
+  }
+</style>
