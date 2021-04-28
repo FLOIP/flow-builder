@@ -10,7 +10,7 @@ import {
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { defaults, set, get, isNil } from 'lodash'
+import {defaults, set, get, isNil, find, filter} from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
@@ -59,7 +59,8 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockExitWith(exitId, block).semantic_label = value
   },
   block_pushNewExit(state, { blockId, newExit, insertAtIndex = undefined, shouldUseCache = false }: {blockId: string; newExit: IBlockExit, insertAtIndex: number | undefined, shouldUseCache: boolean}) {
-    const blockExits = findBlockExitsRef(blockId, state as unknown as IContext, shouldUseCache)
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    const blockExits = findBlockExitsRef(block, shouldUseCache)
 
     if (!isNil(insertAtIndex)) { // insertion, eg: case for block types having branching exits option (Segregated | Unified)
       blockExits.splice(insertAtIndex, 0, newExit);
@@ -150,31 +151,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       destinationBlockId: secondDestinationBlockId,
     })
   },
-
-  // block_segregateExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
-  //   const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-  //   // Hide the default exit & show all other exits
-  //   forEach(block.exits, function (exit, i) {
-  //     if(exit.tag.toLowerCase() == 'default') {
-  //       commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: false })
-  //     } else {
-  //       commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: true })
-  //     }
-  //   })
-  // },
-  //
-  // block_unifyExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
-  //   const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-  //   // Show default & error only, hide others
-  //   forEach(block.exits, function (exit, i) {
-  //     const tag = exit.tag.toLowerCase()
-  //     if(['default', 'error'].includes(tag)) {
-  //       commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: true })
-  //     } else {
-  //       commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: false })
-  //     }
-  //   })
-  // }
 }
 
 export interface IDeepBlockExitIdWithinFlow {
@@ -182,12 +158,19 @@ export interface IDeepBlockExitIdWithinFlow {
   exitId: IBlockExit['uuid'];
 }
 
-export function findBlockExitsRef(uuid: string, ctx: IContext, shouldUseCache = false) {
-  const block = findBlockOnActiveFlowWith(uuid, ctx)
+export function findBlockExitsRef(block: IBlock, shouldUseCache = false) {
   if (shouldUseCache) {
+    console.debug('Using block exits from cache')
     // @ts-ignore: TODO: remove this once IBlock has vendor_metadata key
     return get(block.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits')
   } else {
+    console.debug('Not using block exits from cache')
     return block.exits
   }
+}
+
+export function findExitFromResourceUuid(resourceUuid: string, block: IBlock, shouldUseCache = false): IBlockExit {
+  const blockExits = findBlockExitsRef(block, shouldUseCache)
+  const blockExit = find(blockExits, { label: resourceUuid }) as IBlockExit
+  return blockExit
 }

@@ -15,8 +15,9 @@ import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import {defaultsDeep, find, max, filter, first, get, set} from 'lodash'
+import { defaultsDeep, find, filter, get, set } from 'lodash'
 import { IResourceDefinitionVariantOverModesFilter } from '../resource'
+import { findExitFromResourceUuid } from '../block'
 import { IFlowsState } from '../index'
 
 import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
@@ -44,18 +45,13 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
 
     return Object.keys(currentBlock.config.choices).reduce((memo, choiceKey): {[key: string]: IInflatedChoicesInterface} => {
       const resourceUuid = currentBlock.config.choices[choiceKey]
+      const exit = findExitFromResourceUuid(resourceUuid, currentBlock, !getters.isExitsBranchingSegregated)
       memo[choiceKey] = {
-        exit: getters.blockExitFromResourceUuid(resourceUuid),
+        exit,
         resource: rootGetters['flow/resourcesByUuid'][resourceUuid]
       }
       return memo
     }, choices)
-  },
-  blockExitFromResourceUuid: (state, getters, rootState, rootGetters) => (resourceUuid: string): IBlockExit => {
-    const currentBlock = rootGetters['builder/activeBlock']
-    return first(filter(currentBlock.exits, {
-      label: resourceUuid
-    })) as IBlockExit
   },
   isInflatedChoiceBlankOnKey: (state, getters) => (key: any): boolean => {
     return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semantic_label')
@@ -95,9 +91,7 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
 }
 
 export const mutations: MutationTree<ICustomFlowState> = {
-  // updateInflatedEmptyChoiceVisibility(state, { value }: { value: boolean }) {
-  //   set(state.inflatedEmptyChoice.exit.config, 'is_visible', value);
-  // },
+
 }
 
 export const actions: ActionTree<ICustomFlowState, IRootState> = {
