@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts">
-import {IBlock, IFlow} from '@floip/flow-runner'
+import { IFlow } from '@floip/flow-runner'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {
   IResourceDefinition,
@@ -91,7 +91,6 @@ import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockOutputBranchingConfig from '../block-editors/BlockOutputBranchingConfig.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
-import { set } from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)

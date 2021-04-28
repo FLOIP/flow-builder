@@ -3,7 +3,6 @@ import { IBlockExit } from "@floip/flow-runner"
 import { IdGeneratorUuidV4 } from "@floip/flow-runner/dist/domain/IdGeneratorUuidV4"
 import { defaultsDeep } from 'lodash'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import { IFlowsState } from '@/store/flow'
 import { IRootState } from '@/store'
 import {
   getters as selectOneGetters,

@@ -110,7 +110,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async block_createBlockDefaultExitWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IBlockExit>}): Promise<IBlockExit> {
     return await dispatch('block_createBlockExitWith', {
       props: {
-        ...defaults(props, { default: true })
+        ...props,
+        default: true,
       },
     })
   },

@@ -3,11 +3,7 @@ import { IRootState } from '@/store'
 import {
   IBlockExitTestRequired,
   IBlockExit,
-  IFlow,
-  IContext,
-  SupportedContentType,
-  findBlockOnActiveFlowWith,
-  IResourceDefinitionContentTypeSpecific, IBlock,
+  IBlock,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
@@ -15,7 +11,7 @@ import {
   IResourceDefinition,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import { defaultsDeep, find, filter, get, set } from 'lodash'
+import { defaultsDeep, find, filter, get } from 'lodash'
 import {findBlockExitsRef, findExitFromResourceUuid} from '../block'
 import { IFlowsState } from '../index'
 
