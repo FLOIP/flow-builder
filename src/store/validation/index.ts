@@ -14,6 +14,8 @@ const DEV_ERROR_KEYWORDS = [
   'required' // missing props
 ]
 
+let validators = new Map<string, ValidateFunction>() //AJV validators, keys are types
+
 interface IIndexedString { [key: string]: string }
 
 export interface IValidationStatus {
@@ -22,13 +24,11 @@ export interface IValidationStatus {
 }
 
 export interface IValidationState {
-  validationStatuses: { [key: string]: IValidationStatus }; //important context for future debug or testing, keys are index like `flow/flowId`
-  validators: { [key: string]: ValidateFunction }; //AJV validators, keys are types
+  validationStatuses: { [key: string]: IValidationStatus }; //important context for future debug or testing, keys are index like `flow/flowId
 }
 
 export const stateFactory = (): IValidationState => ({
   validationStatuses: {} as { [key:string]: IValidationStatus },
-  validators: {} as { [key: string]: ValidateFunction },
 })
 
 export const getters: GetterTree<IValidationState, IRootState> = {
@@ -59,11 +59,11 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const blockJsonSchemaFile = `I${blockTypeWithoutNameSpace}Block.json`
 
-    if (isEmpty(state.validators) || !state.validators.hasOwnProperty(blockTypeWithoutNameSpace)) {
+    if (isEmpty(validators) || !validators.has(blockTypeWithoutNameSpace)) {
       // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
-      state.validators[blockTypeWithoutNameSpace] = createDefaultJsonSchemaValidatorFactoryFor(require(`../../../_tmp/${blockJsonSchemaFile}`))
+      validators.set(blockTypeWithoutNameSpace, createDefaultJsonSchemaValidatorFactoryFor(require(`../../../_tmp/${blockJsonSchemaFile}`)))
     }
-    const validate = state.validators[blockTypeWithoutNameSpace]
+    const validate = validators.get(blockTypeWithoutNameSpace)!
     const index = `block/${blockId}/`
     Vue.set(state.validationStatuses, index, {
       isValid: validate(block),
@@ -76,11 +76,11 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
   async validate_flow({ state, commit }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {
     const validationType = 'flow'
-    if (isEmpty(state.validators) || !state.validators.hasOwnProperty(validationType)) {
+    if (isEmpty(validators) || !validators.has(validationType)) {
       // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
-      state.validators[validationType] = createDefaultJsonSchemaValidatorFactoryFor(require('../../../_tmp/flowSpecJsonSchema.json'), '#/definitions/IFlow')
+      validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(require('../../../_tmp/flowSpecJsonSchema.json'), '#/definitions/IFlow'))
     }
-    const validate = state.validators[validationType]
+    const validate = validators.get(validationType)!
 
     const index = `flow/${flow.uuid}/`
     Vue.set(state.validationStatuses, index, {
