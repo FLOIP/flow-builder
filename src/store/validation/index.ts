@@ -57,14 +57,9 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   async validate_block({ state, commit }, { block } : { block: IBlock }): Promise<IValidationStatus> {
     const { uuid: blockId, type: blockType } = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
-    const blockJsonSchemaFile = `I${blockTypeWithoutNameSpace}Block.json`
-
-    if (isEmpty(validators) || !validators.has(blockTypeWithoutNameSpace)) {
-      // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
-      validators.set(blockTypeWithoutNameSpace, createDefaultJsonSchemaValidatorFactoryFor(require(`../../../_tmp/${blockJsonSchemaFile}`)))
-    }
-    const validate = validators.get(blockTypeWithoutNameSpace)!
+    const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
     const index = `block/${blockId}/`
+
     Vue.set(state.validationStatuses, index, {
       isValid: validate(block),
       ajvErrors: validate.errors,
@@ -75,13 +70,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   },
 
   async validate_flow({ state, commit }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {
-    const validationType = 'flow'
-    if (isEmpty(validators) || !validators.has(validationType)) {
-      // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
-      validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(require('../../../_tmp/flowSpecJsonSchema.json'), '#/definitions/IFlow'))
-    }
-    const validate = validators.get(validationType)!
-
+    const validate = getOrCreateFlowValidator()
     const index = `flow/${flow.uuid}/`
     Vue.set(state.validationStatuses, index, {
       isValid: validate(flow),
@@ -102,6 +91,24 @@ export const store: Module<IValidationState, IRootState> = {
 }
 
 export default store
+
+function getOrCreateBlockValidatorFor(blockType: string): ValidateFunction {
+  if (isEmpty(validators) || !validators.has(blockType)) {
+    const blockJsonSchemaFile = `I${blockType}Block.json`
+    // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
+    validators.set(blockType, createDefaultJsonSchemaValidatorFactoryFor(require(`../../../_tmp/${blockJsonSchemaFile}`)))
+  }
+  return validators.get(blockType)!
+}
+
+function getOrCreateFlowValidator(): ValidateFunction {
+  const validationType = 'flow'
+  if (isEmpty(validators) || !validators.has(validationType)) {
+    // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(require('../../../_tmp/flowSpecJsonSchema.json'), '#/definitions/IFlow'))
+  }
+  return validators.get(validationType)!
+}
 
 /**
  * Create AJV Validator
