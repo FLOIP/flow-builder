@@ -77,7 +77,6 @@ export default {
   data() {
     return {
       runner: FlowRunner,
-      blocksData: [],
       context: {},
       isComplete: false,
       unsupportedBlockName: '',
@@ -87,20 +86,19 @@ export default {
     this.initializeFlowRunner()
   },
   computed: {
-    ...mapGetters('clipboard', ['getBlocksData', 'isBlockFocused']),
+    ...mapGetters('clipboard', ['blocksData', 'isBlockFocused']),
+    ...mapGetters('flow', ['currentFlowsState']),
   },
   methods: {
-    ...mapGetters('flow', ['getFlowsState']),
-    ...mapActions('clipboard', ['setSimulatorActive', 'setBlocksData', 'setIsFocused']),
+    ...mapActions('clipboard', ['setSimulatorActive', 'resetBlocksData', 'setIsFocused', 'addToBlocksData', 'removeFromBlocksData']),
 
     content(promptId) {
-      console.log('content for prompt ', promptId)
       const result = Context.prototype.getResource.call(this.context, promptId)
       return result.hasText() ? result.getText() : ''
     },
 
     getUpdatedFlowState() {
-      const flowState = this.getFlowsState()
+      const flowState = this.currentFlowsState
       // TODO: Need to remove this after a fix is available on flow runner
       flowState.flows[0].blocks.map(({ exits }) => exits.map((e) => {
         e.test = e.test || 'true'
@@ -130,6 +128,7 @@ export default {
         resources,
       )
 
+      this.resetBlocksData()
       this.context = context
       this.runner = new FlowRunner(context)
       await this.goNext()
@@ -144,8 +143,7 @@ export default {
           return
         }
         const { prompt }: IRichCursorInputRequired = cursor
-        this.blocksData.push({ prompt, isFocused: true })
-        this.setBlocksData(this.blocksData)
+        this.addToBlocksData({ prompt, isFocused: true })
       } catch (e) {
         if (e.message.includes('Unable to find factory for block type')) {
           [, this.unsupportedBlockName] = e.message.split(': ')
@@ -160,9 +158,8 @@ export default {
       const seekSteps = (this.blocksData.length - 1) - index
       const cursor = await backtracking.seek(seekSteps, this.context)
 
-      this.blocksData.splice(index)
-      this.blocksData.push({ prompt: cursor.prompt, isFocused: true })
-      this.setBlocksData(this.blocksData)
+      this.removeFromBlocksData(index)
+      this.addToBlocksData({ prompt: cursor.prompt, isFocused: true })
     },
 
     closeSimulator() {

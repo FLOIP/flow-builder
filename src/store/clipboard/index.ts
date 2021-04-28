@@ -29,9 +29,6 @@ export const mutations: MutationTree<IClipboardState> = {
   setSimulatorActive(state, value) {
     state.isSimulatorActive = value
   },
-  setBlocksData(state, data) {
-    state.blocksData = data
-  },
   setIsFocused(state, { index, value }) {
     state.blocksData[index].isFocused = value
   },
@@ -41,8 +38,8 @@ export const actions: ActionTree<IClipboardState, IRootState> = {
   setSimulatorActive({ commit }, value) {
     commit('setSimulatorActive', value)
   },
-  setBlocksData({ commit }, data) {
-    commit('setBlocksData', data)
+  resetBlocksData({ state }) {
+    state.blocksData = []
   },
   setIsFocused({ commit }, data) {
     commit('setIsFocused', data)
@@ -55,6 +52,12 @@ export const actions: ActionTree<IClipboardState, IRootState> = {
     const lastIndex = state.blocksData.length - 1
     commit('setIsFocused', { index: lastIndex, value: true })
   },
+  addToBlocksData({ state }, data) {
+    state.blocksData.push(data)
+  },
+  removeFromBlocksData({ state }, index) {
+    state.blocksData.splice(index)
+  }
 }
 
 export const store: Module<IClipboardState, IRootState> = {

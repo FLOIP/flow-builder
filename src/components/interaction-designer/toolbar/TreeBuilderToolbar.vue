@@ -411,10 +411,6 @@ export default {
     removeNilValues(obj) {
       return lodash.pickBy(obj, lodash.identity)
     },
-
-    getDeleteToolTip() {
-      return this.trans('flow-builder.tooltip-delete-block')
-    },
   },
 }
 </script>
