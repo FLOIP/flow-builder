@@ -7,7 +7,7 @@ import {
   IContext,
   SupportedContentType,
   findBlockOnActiveFlowWith,
-  IResourceDefinitionContentTypeSpecific,
+  IResourceDefinitionContentTypeSpecific, IBlock,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
@@ -88,18 +88,16 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
       return true
     }
 
-    const defaultExit = find(currentBlock.exits, function (exit) {
-      return exit.tag.toLowerCase() == 'default'
+    return !!find(currentBlock.exits, function (exit) {
+      return exit.default // We assume the 'Default' exit has `default: true`
     })
-
-    return !get(defaultExit.config, 'is_visible', true)
   },
 }
 
 export const mutations: MutationTree<ICustomFlowState> = {
-  updateInflatedEmptyChoiceVisibility(state, { value }: { value: boolean }) {
-    set(state.inflatedEmptyChoice.exit.config, 'is_visible', value);
-  },
+  // updateInflatedEmptyChoiceVisibility(state, { value }: { value: boolean }) {
+  //   set(state.inflatedEmptyChoice.exit.config, 'is_visible', value);
+  // },
 }
 
 export const actions: ActionTree<ICustomFlowState, IRootState> = {
@@ -178,6 +176,75 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     }
   },
 
+  cacheSegregatedExits({ state, commit, getters }, { blockId }: { blockId: IBlock['uuid']}) {
+    commit('flow/block_updateVendorMetadataByPath', {
+      blockId,
+      path: 'io_viamo.cache.outputBranching.segregatedExits',
+      value: getters.segregatedExits
+    }, { root: true })
+  },
+
+  cacheUnifiedExits({ state, commit, getters }, { blockId }: { blockId: IBlock['uuid']}) {
+    commit('flow/block_updateVendorMetadataByPath', {
+      blockId,
+      path: 'io_viamo.cache.outputBranching.unifiedExits',
+      value: getters.unifiedExits
+    }, { root: true })
+  },
+
+  cacheExits({ state, commit, getters, rootGetters }, { blockId }: { blockId: IBlock['uuid']}) {
+    const activeBlock = rootGetters['builder/activeBlock']
+    const segregatedPath = 'io_viamo.cache.outputBranching.segregatedExits'
+    const cachedSegregatedExits = get(activeBlock.vendor_metadata, segregatedPath)
+    if (!cachedSegregatedExits) {
+      const segregatedExits = filter(activeBlock.exits, function (exit) {
+        return exit.tag.toLowerCase() !== 'default'
+      })
+      commit('flow/block_updateVendorMetadataByPath', {
+        blockId,
+        path: segregatedPath,
+        value: segregatedExits
+      }, { root: true });
+    }
+
+    const unifiedPath = 'io_viamo.cache.outputBranching.unifiedExits'
+    const cachedUnifiedExits = get(activeBlock.vendor_metadata, unifiedPath)
+    if (!cachedUnifiedExits) {
+      const unifiedExits = filter(activeBlock.exits, function (exit) {
+        return ['default', 'error'].includes(exit.tag.toLowerCase())
+      })
+      commit('flow/block_updateVendorMetadataByPath', {
+        blockId,
+        path: unifiedPath,
+        value: unifiedExits
+      }, { root: true });
+    }
+  },
+
+  makeExitsSegregated({ state, commit, getters, rootGetters }, { blockId }: { blockId: IBlock['uuid']}) {
+    const activeBlock: IBlock = rootGetters['builder/activeBlock']
+    // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
+    const cachedExits = get(activeBlock.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits')
+    if (cachedExits) {
+      activeBlock.exits = cachedExits
+      console.debug('makeExitsSegregated', cachedExits)
+    } else {
+      console.debug('cached segregated exits are empty')
+    }
+  },
+
+  makeExitsUnified({ state, commit, getters, rootGetters }, { blockId }: { blockId: IBlock['uuid']}) {
+    const activeBlock: IBlock = rootGetters['builder/activeBlock']
+    // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
+    const cachedExits = get(activeBlock.vendor_metadata, 'io_viamo.cache.outputBranching.unifiedExits')
+    if (cachedExits) {
+      activeBlock.exits = cachedExits
+      console.debug('makeExitsUnified', cachedExits)
+    } else {
+      console.debug('cached unified exits are empty')
+    }
+  },
+
   async createWith({ state, commit, dispatch, rootGetters }, { props }: {props: {uuid: string} & Partial<ISelectOneResponseBlock>}) {
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankQuestionPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
@@ -188,9 +255,6 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       tag: 'Default',
       label: 'Default',
       default: true,
-      config: {
-        is_visible: false //TODO: confirm if we should move this out from config, and update FLOIP spec for `exits`
-      }
     }
 
     const errorExitProps: Partial<IBlockExit> = {

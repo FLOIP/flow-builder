@@ -72,18 +72,14 @@
     setBranching(value: string) {
       const willBranchingTypeSegregated = value === BRANCHING_TYPE_SEGREGATED
       if(willBranchingTypeSegregated) {
-        this.block_segregateExitsBranching( { blockId: this.block.uuid })
         this.branchingType = BRANCHING_TYPE_SEGREGATED
       } else {
-        this.block_unifyExitsBranching( { blockId: this.block.uuid })
         this.branchingType = BRANCHING_TYPE_UNIFIED
       }
       this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'io_viamo.branchingType', value })
-      this.$emit('commitIsSegregatedBranching', willBranchingTypeSegregated)
+      this.$emit('commitIsSegregatedBranching')
     }
 
     @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
-    @flowVuexNamespace.Action block_segregateExitsBranching!: ( { blockId }: { blockId: IBlock['uuid'] } ) => void
-    @flowVuexNamespace.Action block_unifyExitsBranching!: ( { blockId }: { blockId: IBlock['uuid'] } ) => void
   }
 </script>

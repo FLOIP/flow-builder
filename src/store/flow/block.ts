@@ -60,7 +60,7 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   block_pushNewExit(state, { blockId, newExit, insertAtIndex = undefined }: {blockId: string; newExit: IBlockExit, insertAtIndex: number | undefined}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    if (!isNil(insertAtIndex)) { // insertion
+    if (!isNil(insertAtIndex)) { // insertion, eg: case for block types having branching exits option (Segregated | Unified)
       block.exits.splice(insertAtIndex, 0, newExit);
     } else { // just push
       block.exits.push(newExit);
@@ -150,30 +150,30 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  block_segregateExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    // Hide the default exit & show all other exits
-    forEach(block.exits, function (exit, i) {
-      if(exit.tag.toLowerCase() == 'default') {
-        commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: false })
-      } else {
-        commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: true })
-      }
-    })
-  },
-
-  block_unifyExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    // Show default & error only, hide others
-    forEach(block.exits, function (exit, i) {
-      const tag = exit.tag.toLowerCase()
-      if(['default', 'error'].includes(tag)) {
-        commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: true })
-      } else {
-        commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: false })
-      }
-    })
-  }
+  // block_segregateExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
+  //   const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+  //   // Hide the default exit & show all other exits
+  //   forEach(block.exits, function (exit, i) {
+  //     if(exit.tag.toLowerCase() == 'default') {
+  //       commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: false })
+  //     } else {
+  //       commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: true })
+  //     }
+  //   })
+  // },
+  //
+  // block_unifyExitsBranching({ state, commit, dispatch }, { blockId }: { blockId: IBlock['uuid']}) {
+  //   const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+  //   // Show default & error only, hide others
+  //   forEach(block.exits, function (exit, i) {
+  //     const tag = exit.tag.toLowerCase()
+  //     if(['default', 'error'].includes(tag)) {
+  //       commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: true })
+  //     } else {
+  //       commit('block_setExitConfigByPath', { exitId: exit.uuid, blockId: block.uuid, path: 'is_visible', value: false })
+  //     }
+  //   })
+  // }
 }
 
 export interface IDeepBlockExitIdWithinFlow {

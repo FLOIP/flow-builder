@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts">
-import { IFlow } from '@floip/flow-runner'
+import {IBlock, IFlow} from '@floip/flow-runner'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {
   IResourceDefinition,
@@ -138,8 +138,15 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
       this.editEmptyChoice( { choice: oldChoice as IInflatedChoicesInterface })
     }
 
-  handleBranchingTypeChange(isSegregatedBranching: boolean) {
-    this.updateInflatedEmptyChoiceVisibility({ value: isSegregatedBranching })
+  handleBranchingTypeChange() { //TODO: move to blockVuexNamespace ?
+      console.log('handleBranchingTypeChange, is segregated ?', this.isExitsBranchingSegregated)
+    // this.updateInflatedEmptyChoiceVisibility({ value: isSegregatedBranching })
+    this.cacheExits({ blockId: this.block.uuid })
+    if (this.isExitsBranchingSegregated) {
+      this.makeExitsSegregated({ blockId: this.block.uuid })
+    } else {
+      this.makeExitsUnified({ blockId: this.block.uuid })
+    }
   }
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
@@ -147,7 +154,13 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     @blockVuexNamespace.Getter inflatedChoices?: {[key: string]: IInflatedChoicesInterface}
     @blockVuexNamespace.State inflatedEmptyChoice?: IInflatedChoicesInterface
 
-    @blockVuexNamespace.Mutation updateInflatedEmptyChoiceVisibility!: ({ value }: { value: boolean }) => void
+    // @blockVuexNamespace.Mutation updateInflatedEmptyChoiceVisibility!: ({ value }: { value: boolean }) => void
+    @blockVuexNamespace.Getter isExitsBranchingSegregated!: boolean
+
+    // @blockVuexNamespace.Action cacheSegregatedExits!: ({ blockId }: { blockId: IBlock['uuid']}) => void
+    @blockVuexNamespace.Action cacheExits!: ({ blockId }: { blockId: IBlock['uuid']}) => void
+    @blockVuexNamespace.Action makeExitsSegregated!: ({ blockId }: { blockId: IBlock['uuid']}) => void
+    @blockVuexNamespace.Action makeExitsUnified!: ({ blockId }: { blockId: IBlock['uuid']}) => void
 
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
     @blockVuexNamespace.Action editEmptyChoice!: ({ choice }: { choice: IInflatedChoicesInterface }) => Promise<object>

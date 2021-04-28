@@ -37,7 +37,7 @@
       </header>
 
       <div class="block-exits d-flex" :ref="`block/${block.uuid}/exits`" :id="`block/${block.uuid}/exits`">
-        <div v-for="(exit, key) in visibleExits"
+        <div v-for="(exit, key) in block.exits"
              :key="exit.uuid"
              class="block-exit col flex-shrink-1 pb-1 pt-1 pl-3 pr-3"
              :class="{
@@ -131,7 +131,7 @@
 
 <script>
 import Vue from 'vue'
-import { isNumber, forEach, filter, get, isNil } from 'lodash'
+import { isNumber, forEach, filter } from 'lodash'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
@@ -195,13 +195,6 @@ export default {
 
     blockExitsLength() {
       return this.block.exits.length
-    },
-
-    visibleExits() {
-      return filter(this.block.exits, function(exit) {
-        const isVisible = get(exit.config, 'is_visible') //TODO: change lodash.get with direct prop access when `is_visible` is in IBlockExit interface
-        return isNil(isVisible) || isVisible // By default, exit should be visible, unless we set `is_visible = false` on purpose
-      })
     },
 
     hasLayout() {
