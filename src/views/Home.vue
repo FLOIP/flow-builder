@@ -9,7 +9,7 @@
             class="mt-3 btn btn-outline-secondary mr-2 active">{{'flow-builder.new-flow' | trans}}</router-link>
           <div class="mt-4">
             <router-link :to="route('flows.importFlow')"
-              title="trans('flow-builder.import-flow')"
+              :title="trans('flow-builder.import-flow')"
               class="mt-3 mr-2 active">{{'flow-builder.import-flow' | trans}}</router-link>
           </div>
           <div class="mt-4">
