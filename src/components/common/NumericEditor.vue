@@ -21,7 +21,7 @@
 <script>
 export default {
   props: {
-    validationState: {
+    validState: {
       type: Boolean,
       default: null, // to tell boostrap `No state`
       required: false,
@@ -47,7 +47,7 @@ export default {
   computed: {
     isInvalid() {
       // strict comparison, because `undefined` doesn't mean invalid
-      return this.validationState === false
+      return this.validState === false
     }
   },
   methods: {
