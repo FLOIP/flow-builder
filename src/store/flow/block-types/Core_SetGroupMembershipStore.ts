@@ -11,7 +11,7 @@ import { IFlowsState } from '../index'
 export const ADD_KEY = 'add'
 export const REMOVE_KEY = 'remove'
 
-export const BLOCK_TYPE = 'Core\\SetGroupMembership'
+export const BLOCK_TYPE = 'Core.SetGroupMembership'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
@@ -22,7 +22,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
@@ -33,11 +33,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_abel: '',
       config: {
-        groupKey: '',
-        groupName: '',
-        isMember: null,
+        group_key: '',
+        group_name: '',
+        is_member: null,
       },
       exits,
     })
@@ -47,7 +47,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const activeBlock = rootGetters['builder/activeBlock']
     commit('flow/block_updateConfigByPath', {
       blockId: activeBlock.uuid,
-      path: 'isMember',
+      path: 'is_member',
       value: action === null || action === undefined ? null : (action.id === ADD_KEY),
     }, { root: true })
   },

@@ -54,7 +54,7 @@ export const InFlowBuilder = () => InFlowBuilderClass
 class IvrOnlyClass extends BaseMountedVueClass {
   async mounted() {
     const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
-    flow.supportedModes = [SupportedMode.IVR]
+    flow.supported_modes = [SupportedMode.IVR]
   }
 }
 export const IvrOnly = () => IvrOnlyClass
@@ -65,7 +65,7 @@ export const IvrOnly = () => IvrOnlyClass
 class MoreLanguagesClass extends BaseMountedVueClass {
   async mounted() {
     const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
-    flow.languages = [{id: '1', name: 'English'}, {id: '2', name: 'French'}] // mutation
+    flow.languages = [{id: '1', label: 'English'}, {id: '2', label: 'French'}] // mutation
   }
 }
 export const MoreLanguages = () => MoreLanguagesClass

@@ -37,7 +37,7 @@ class FirstBlockEditorButton extends mixins(Lang) {
     @Prop()readonly flow!: IFlow
 
     get isStartBlock() {
-      return this.blockId === this.flow.firstBlockId
+      return this.blockId === this.flow.first_block_id
     }
 
     setStartBlock(event: any) {

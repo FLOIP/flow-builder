@@ -21,7 +21,7 @@ import { IFlowsState } from '../index'
 
 import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
 
-export const BLOCK_TYPE = 'MobilePrimitives\\SelectOneResponse'
+export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
 export interface IInflatedChoicesInterface {
   exit: IBlockExit,
@@ -58,10 +58,10 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
     })) as IBlockExit
   },
   isInflatedChoiceBlankOnKey: (state, getters) => (key: any): boolean => {
-    return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semanticLabel')
+    return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semantic_label')
   },
   isInflatedEmptyChoiceBlank: (state, getters): boolean => {
-    return !someItemsHaveValue(state.inflatedEmptyChoice.resource.values || [], 'value') && !get(state.inflatedEmptyChoice, 'exit.semanticLabel')
+    return !someItemsHaveValue(state.inflatedEmptyChoice.resource.values || [], 'value') && !get(state.inflatedEmptyChoice, 'exit.semantic_label')
   },
   allChoicesHaveContent: (state, getters): boolean => {
     return Object.keys(getters.inflatedChoices).every((key: string) => {
@@ -112,12 +112,12 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
   async createVolatileEmptyChoice({state, dispatch, rootGetters}, { index }) {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankExit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
-      props: ({
-        uuid: (new IdGeneratorUuidV4()).generate(),
+      props: {
+        uuid: await (new IdGeneratorUuidV4()).generate(),
         test: `block.value = ${index}`,
         label: blankResource.uuid,
-        semanticLabel: '',
-      }) as IBlockExitTestRequired,
+        semantic_label: '',
+      } as IBlockExitTestRequired,
     }, {root: true})
     state.inflatedEmptyChoice = {
       exit: blankExit,
@@ -171,13 +171,13 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     const blankChoicesPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
 
     const defaultExitProps: Partial<IBlockExit> = {
-      uuid: (new IdGeneratorUuidV4()).generate(),
+      uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Default',
       label: 'Default',
     }
 
     const errorExitProps: Partial<IBlockExit> = {
-      uuid: (new IdGeneratorUuidV4()).generate(),
+      uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Error',
       label: 'Error',
     }
@@ -188,15 +188,15 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits: [
         await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true }),
         await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true }),
       ],
       config: {
         prompt: blankPromptResource.uuid,
-        questionPrompt: blankQuestionPromptResource.uuid,
-        choicesPrompt: blankChoicesPromptResource.uuid,
+        question_prompt: blankQuestionPromptResource.uuid,
+        choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
       },
     })

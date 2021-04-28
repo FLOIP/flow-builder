@@ -175,7 +175,6 @@ import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
-import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
 import { computeBlockPositionsFrom } from '@/store/builder'
 import { VBTooltipPlugin } from 'bootstrap-vue'
 import Component, { mixins } from 'vue-class-component'
@@ -208,25 +207,18 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     const {
       flows,
       resources,
-    } = this
+    } = this as { flows: IFlow[]; resources: IResourceDefinition[] }
     return JSON.stringify(
-      convertKeysCase({
+      {
         flows,
         resources,
       },
-      'SNAKE',
-      ['platformMetadata', 'ioViamo']),
       null,
-      2,
-    )
+      2,)
   }
 
-  set flow(value) {
-    this.importFlowsAndResources(convertKeysCase(
-      JSON.parse(value),
-      'CAMEL',
-      ['platform_metadata', 'io_viamo'],
-    ))
+  set flow(value: string) {
+    this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[]; resources: IResourceDefinition[]})
   }
 
   get editTreeUrl() {
@@ -324,8 +316,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   async handleAddBlockByTypeSelected({ type } : { type: IBlock['type']}) {
     const { uuid: blockId } = await this.flow_addBlankBlockByType({
       type,
-      // @ts-ignore TODO: remove this once IBlock has platform_metadata key
-      platform_metadata: {
+      // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
+      vendor_metadata: {
         io_viamo: {
           uiData: computeBlockPositionsFrom(this.activeBlock),
         },

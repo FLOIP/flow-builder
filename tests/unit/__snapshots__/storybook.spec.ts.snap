@@ -14,162 +14,7 @@ exports[`Storyshots ConsoleIo/Print Block Existing Data Block 1`] = `
 
 exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="ConsoleIO\\\\Print"
-                      data-for-block-id="fake-uuid-181"
-                    >
-                      <div
-                        class="console-io-print-block"
-                      >
-                        <h3
-                          class="no-room-above"
-                        >
-                          
-    Edit Print block
-  
-                        </h3>
-                         
-                        <fieldset>
-                          <div
-                            class="block-name"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
-                               
-                              <small
-                                class="text-muted"
-                              >
-                                
-      Only accepts word characters
-    
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <!---->
-                            
-                          <div
-                            class="starting-block-button"
-                          >
-                            <h4>
-                              Options
-                            </h4>
-                             
-                            <div
-                              class="form-group"
-                            >
-                              <button
-                                class="btn btn-secondary btn-sm"
-                                disabled="disabled"
-                                type="button"
-                              >
-                                
-          Currently set as starting block
-        
-                              </button>
-                            </div>
-                          </div>
-                        </fieldset>
-                         
-                        <div
-                          class="block-id text-right"
-                        >
-                          <small
-                            class="text-muted"
-                          >
-                            Block Id: 
-                            <em>
-                              fake-uuid-181
-                            </em>
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 
@@ -187,178 +32,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Block 1`] = `
 
 exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="ConsoleIO\\\\Read"
-                      data-for-block-id="fake-uuid-199"
-                    >
-                      <div
-                        class="console-io-read-block"
-                      >
-                        <h3
-                          class="no-room-above"
-                        >
-                          
-    Edit Read block
-  
-                        </h3>
-                         
-                        <fieldset>
-                          <div
-                            class="block-name"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
-                               
-                              <small
-                                class="text-muted"
-                              >
-                                
-      Only accepts word characters
-    
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-format-string"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                flow-builder.format-string
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="flow-builder.enter-format-string"
-                              />
-                               
-                            </div>
-                          </div>
-                             
-                          <div
-                            class="starting-block-button"
-                          >
-                            <h4>
-                              Options
-                            </h4>
-                             
-                            <div
-                              class="form-group"
-                            >
-                              <button
-                                class="btn btn-secondary btn-sm"
-                                disabled="disabled"
-                                type="button"
-                              >
-                                
-          Currently set as starting block
-        
-                              </button>
-                            </div>
-                          </div>
-                        </fieldset>
-                         
-                        <div
-                          class="block-id text-right"
-                        >
-                          <small
-                            class="text-muted"
-                          >
-                            Block Id: 
-                            <em>
-                              fake-uuid-199
-                            </em>
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 
@@ -392,52 +66,7 @@ exports[`Storyshots Core/Log Block Styled Existing Data Block 1`] = `
 
 exports[`Storyshots Core/Log Block Styled Existing Data Non Starting Block 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="Core\\\\Log"
-                      data-for-block-id="fake-uuid-44"
-                    >
-                      <!---->
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 
@@ -517,7 +146,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                   >
                     <div
                       class="tree-sidebar-edit-flow"
-                      data-for-flow-id="fake-uuid-10"
+                      data-for-flow-id="fake-uuid-8"
                     >
                       <div
                         class="flow-editor"
@@ -640,10 +269,10 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                     <input
                                       class="flow-mode-toggle-checkbox"
                                       type="checkbox"
-                                      value="sms"
+                                      value="SMS"
                                     />
                                     
-      sms
+      SMS
     
                                   </label>
                                 </div>
@@ -656,10 +285,10 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                     <input
                                       class="flow-mode-toggle-checkbox"
                                       type="checkbox"
-                                      value="ussd"
+                                      value="USSD"
                                     />
                                     
-      ussd
+      USSD
     
                                   </label>
                                 </div>
@@ -672,10 +301,10 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                     <input
                                       class="flow-mode-toggle-checkbox"
                                       type="checkbox"
-                                      value="ivr"
+                                      value="IVR"
                                     />
                                     
-      ivr
+      IVR
     
                                   </label>
                                 </div>
@@ -688,10 +317,10 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                     <input
                                       class="flow-mode-toggle-checkbox"
                                       type="checkbox"
-                                      value="rich_messaging"
+                                      value="RICH_MESSAGING"
                                     />
                                     
-      rich_messaging
+      RICH_MESSAGING
     
                                   </label>
                                 </div>
@@ -704,10 +333,10 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                     <input
                                       class="flow-mode-toggle-checkbox"
                                       type="checkbox"
-                                      value="offline"
+                                      value="OFFLINE"
                                     />
                                     
-      offline
+      OFFLINE
     
                                   </label>
                                 </div>
@@ -937,7 +566,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Print"
+                            data-block-type="ConsoleIO.Print"
                             href="#"
                           >
                             
@@ -948,7 +577,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Read"
+                            data-block-type="ConsoleIO.Read"
                             href="#"
                           >
                             
@@ -959,7 +588,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Case"
+                            data-block-type="Core.Case"
                             href="#"
                           >
                             
@@ -970,7 +599,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Log"
+                            data-block-type="Core.Log"
                             href="#"
                           >
                             
@@ -981,7 +610,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Output"
+                            data-block-type="Core.Output"
                             href="#"
                           >
                             
@@ -992,7 +621,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\RunFlow"
+                            data-block-type="Core.RunFlow"
                             href="#"
                           >
                             
@@ -1003,7 +632,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\SetContactProperty"
+                            data-block-type="Core.SetContactProperty"
                             href="#"
                           >
                             
@@ -1014,7 +643,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\SetGroupMembership"
+                            data-block-type="Core.SetGroupMembership"
                             href="#"
                           >
                             
@@ -1025,7 +654,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\Message"
+                            data-block-type="MobilePrimitives.Message"
                             href="#"
                           >
                             
@@ -1036,7 +665,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            data-block-type="MobilePrimitives.NumericResponse"
                             href="#"
                           >
                             
@@ -1047,7 +676,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            data-block-type="MobilePrimitives.OpenResponse"
                             href="#"
                           >
                             
@@ -1058,7 +687,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            data-block-type="MobilePrimitives.SelectOneResponse"
                             href="#"
                           >
                             
@@ -1069,7 +698,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            data-block-type="MobilePrimitives.SelectManyResponse"
                             href="#"
                           >
                             
@@ -1080,7 +709,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\LocationResponse"
+                            data-block-type="SmartDevices.LocationResponse"
                             href="#"
                           >
                             
@@ -1091,7 +720,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            data-block-type="SmartDevices.PhotoResponse"
                             href="#"
                           >
                             
@@ -1291,7 +920,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Print"
+                            data-block-type="ConsoleIO.Print"
                             href="#"
                           >
                             
@@ -1302,7 +931,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Read"
+                            data-block-type="ConsoleIO.Read"
                             href="#"
                           >
                             
@@ -1313,7 +942,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Case"
+                            data-block-type="Core.Case"
                             href="#"
                           >
                             
@@ -1324,7 +953,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Log"
+                            data-block-type="Core.Log"
                             href="#"
                           >
                             
@@ -1335,7 +964,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Output"
+                            data-block-type="Core.Output"
                             href="#"
                           >
                             
@@ -1346,7 +975,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\RunFlow"
+                            data-block-type="Core.RunFlow"
                             href="#"
                           >
                             
@@ -1357,7 +986,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\SetContactProperty"
+                            data-block-type="Core.SetContactProperty"
                             href="#"
                           >
                             
@@ -1368,7 +997,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\SetGroupMembership"
+                            data-block-type="Core.SetGroupMembership"
                             href="#"
                           >
                             
@@ -1379,7 +1008,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\Message"
+                            data-block-type="MobilePrimitives.Message"
                             href="#"
                           >
                             
@@ -1390,7 +1019,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            data-block-type="MobilePrimitives.NumericResponse"
                             href="#"
                           >
                             
@@ -1401,7 +1030,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            data-block-type="MobilePrimitives.OpenResponse"
                             href="#"
                           >
                             
@@ -1412,7 +1041,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            data-block-type="MobilePrimitives.SelectOneResponse"
                             href="#"
                           >
                             
@@ -1423,7 +1052,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            data-block-type="MobilePrimitives.SelectManyResponse"
                             href="#"
                           >
                             
@@ -1434,7 +1063,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\LocationResponse"
+                            data-block-type="SmartDevices.LocationResponse"
                             href="#"
                           >
                             
@@ -1445,7 +1074,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            data-block-type="SmartDevices.PhotoResponse"
                             href="#"
                           >
                             
@@ -1644,7 +1273,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Print"
+                            data-block-type="ConsoleIO.Print"
                             href="#"
                           >
                             
@@ -1655,7 +1284,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO\\\\Read"
+                            data-block-type="ConsoleIO.Read"
                             href="#"
                           >
                             
@@ -1666,7 +1295,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Case"
+                            data-block-type="Core.Case"
                             href="#"
                           >
                             
@@ -1677,7 +1306,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Log"
+                            data-block-type="Core.Log"
                             href="#"
                           >
                             
@@ -1688,7 +1317,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\Output"
+                            data-block-type="Core.Output"
                             href="#"
                           >
                             
@@ -1699,7 +1328,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\RunFlow"
+                            data-block-type="Core.RunFlow"
                             href="#"
                           >
                             
@@ -1710,7 +1339,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\SetContactProperty"
+                            data-block-type="Core.SetContactProperty"
                             href="#"
                           >
                             
@@ -1721,7 +1350,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="Core\\\\SetGroupMembership"
+                            data-block-type="Core.SetGroupMembership"
                             href="#"
                           >
                             
@@ -1732,7 +1361,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\Message"
+                            data-block-type="MobilePrimitives.Message"
                             href="#"
                           >
                             
@@ -1743,7 +1372,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\NumericResponse"
+                            data-block-type="MobilePrimitives.NumericResponse"
                             href="#"
                           >
                             
@@ -1754,7 +1383,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\OpenResponse"
+                            data-block-type="MobilePrimitives.OpenResponse"
                             href="#"
                           >
                             
@@ -1765,7 +1394,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectOneResponse"
+                            data-block-type="MobilePrimitives.SelectOneResponse"
                             href="#"
                           >
                             
@@ -1776,7 +1405,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives\\\\SelectManyResponse"
+                            data-block-type="MobilePrimitives.SelectManyResponse"
                             href="#"
                           >
                             
@@ -1787,7 +1416,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\LocationResponse"
+                            data-block-type="SmartDevices.LocationResponse"
                             href="#"
                           >
                             
@@ -1798,7 +1427,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices\\\\PhotoResponse"
+                            data-block-type="SmartDevices.PhotoResponse"
                             href="#"
                           >
                             
@@ -2007,6 +1636,30 @@ exports[`Storyshots MobilePrimitives/Message Block Existing Data Block 1`] = `
 
 exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
 <div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Numeric Response Block Default 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For All Modes 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Ivr Only 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
+exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Text Only 1`] = `
+<div>
   <div
     class="viamo-app-container flow-builder-sidebar-editor-container"
     id="viamo-app"
@@ -2039,17 +1692,17 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                   >
                     <div
                       class="tree-sidebar-edit-block"
-                      data-block-type="MobilePrimitives\\\\Message"
-                      data-for-block-id="fake-uuid-62"
+                      data-block-type="MobilePrimitives.NumericResponse"
+                      data-for-block-id="fake-uuid-80"
                     >
                       <div
-                        class="mobile-primitive-message-block"
+                        class="mobile-primitive-numeric-response-block"
                       >
                         <h3
                           class="no-room-above"
                         >
                           
-    Edit Message block
+    Edit Numeric Response block
   
                         </h3>
                          
@@ -2115,7 +1768,245 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                             </div>
                           </div>
                            
-                          <!---->
+                          <div
+                            class="form-group block-validation-min"
+                          >
+                            <div
+                              class="number-editor"
+                            >
+                              <label>
+                                Minimum value (inclusive)
+                              </label>
+                               
+                              <div>
+                                <input
+                                  class="form-control"
+                                  min="0"
+                                  placeholder="Enter value"
+                                  type="number"
+                                />
+                              </div>
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="form-group block-validation-max"
+                          >
+                            <div
+                              class="number-editor"
+                            >
+                              <label>
+                                Maximum value (inclusive)
+                              </label>
+                               
+                              <div>
+                                <input
+                                  class="form-control"
+                                  min="0"
+                                  placeholder="Enter value"
+                                  type="number"
+                                />
+                              </div>
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="form-group block-max-digits"
+                          >
+                            <div
+                              class="number-editor"
+                            >
+                              <label>
+                                Maximum digits
+                              </label>
+                               
+                              <div>
+                                <input
+                                  class="form-control"
+                                  min="0"
+                                  placeholder="Enter value"
+                                  type="number"
+                                />
+                              </div>
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="resource-editor"
+                          >
+                            <!---->
+                             
+                            <!---->
+                             
+                            <div
+                              class="block-content-editor-lang"
+                            >
+                              <h5
+                                class="badge badge-info"
+                              >
+                                English
+                              </h5>
+                            </div>
+                             
+                            <h6>
+                              SMS Content
+                            </h6>
+                             
+                            <div
+                              class="resource-variant-text-editor"
+                            >
+                              <div
+                                class="content-editor"
+                              >
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter Text content"
+                                />
+                              </div>
+                               
+                              <div
+                                class="content-toolbar"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                                <!---->
+                              </div>
+                            </div>
+                             
+                            <!---->
+                            <h6>
+                              USSD Content
+                            </h6>
+                             
+                            <div
+                              class="resource-variant-text-editor"
+                            >
+                              <div
+                                class="content-editor"
+                              >
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter Text content"
+                                />
+                              </div>
+                               
+                              <div
+                                class="content-toolbar"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                                <!---->
+                              </div>
+                            </div>
+                             
+                            <!---->
+                            <h6>
+                              IVR Content
+                            </h6>
+                             
+                            <!---->
+                             
+                            <div>
+                              <div
+                                class="upload-monitor"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                              </div>
+                               
+                              <ul
+                                class="nav nav-tabs"
+                              >
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1 active"
+                                    href="#"
+                                  >
+                                    Library
+                                  </a>
+                                </li>
+                                 
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1"
+                                    href="#"
+                                  >
+                                    Phone recording
+                                  </a>
+                                </li>
+                                 
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1"
+                                    href="#"
+                                    style="overflow: hidden;"
+                                  >
+                                    
+                  Upload
+                
+                                    <input
+                                      accept="audio/*"
+                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                      type="file"
+                                    />
+                                  </a>
+                                </li>
+                              </ul>
+                               
+                              <div
+                                class="audio-library-selector"
+                              >
+                                <div
+                                  class="audio-library-search-field dropdown"
+                                >
+                                  <div
+                                    class="input-group"
+                                  >
+                                    <span
+                                      class="input-group-prepend"
+                                    >
+                                      <button
+                                        class="btn btn-outline-secondary dropdown-toggle"
+                                      >
+                                        <i
+                                          class="glyphicon glyphicon-search"
+                                        />
+                                      </button>
+                                    </span>
+                                     
+                                    <input
+                                      class="form-control"
+                                      placeholder="Search audio library…"
+                                      type="text"
+                                    />
+                                  </div>
+                                   
+                                  <!---->
+                                </div>
+                              </div>
+                               
+                              <div
+                                class="phone-recorder"
+                              >
+                                <!---->
+                              </div>
+                            </div>
+                          </div>
                             
                           <div
                             class="starting-block-button"
@@ -2148,7 +2039,7 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-62
+                              fake-uuid-80
                             </em>
                           </small>
                         </div>
@@ -2166,33 +2057,402 @@ exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
 </div>
 `;
 
-exports[`Storyshots MobilePrimitives/Numeric Response Block Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
-
-exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For All Modes 1`] = `
-<div>
-  <!---->
-</div>
-`;
-
-exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Ivr Only 1`] = `
-<div>
-  <!---->
-</div>
-`;
-
-exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Text Only 1`] = `
-<div>
-  <!---->
-</div>
-`;
-
 exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1`] = `
 <div>
-  <!---->
+  <div
+    class="viamo-app-container flow-builder-sidebar-editor-container"
+    id="viamo-app"
+  >
+    <div
+      class="container-full"
+    >
+      <div
+        class="main-content-container"
+      >
+        <section
+          id="tree-app"
+        >
+          <div
+            class="edit-tree"
+            id="tree-interaction-designer"
+          >
+            <div
+              class="interaction-designer-contents panel panel-default"
+            >
+              <div
+                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
+              >
+                <nav
+                  class="bs-docs-sidebar"
+                >
+                  <div
+                    class="tree-sidebar-menu"
+                    id="tree-sidebar"
+                  >
+                    <div
+                      class="tree-sidebar-edit-block"
+                      data-block-type="MobilePrimitives.NumericResponse"
+                      data-for-block-id="fake-uuid-86"
+                    >
+                      <div
+                        class="mobile-primitive-numeric-response-block"
+                      >
+                        <h3
+                          class="no-room-above"
+                        >
+                          
+    Edit Numeric Response block
+  
+                        </h3>
+                         
+                        <fieldset>
+                          <div
+                            class="block-name"
+                          >
+                            <div
+                              class="form-group"
+                            >
+                              <label>
+                                Block name
+                              </label>
+                               
+                              <textarea
+                                class="form-control"
+                                placeholder="Enter a block name"
+                              />
+                               
+                              <small
+                                class="text-muted"
+                              >
+                                
+      Only accepts word characters
+    
+                              </small>
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="block-label"
+                          >
+                            <div
+                              class="form-group"
+                            >
+                              <label>
+                                Block label
+                              </label>
+                               
+                              <textarea
+                                class="form-control"
+                                placeholder="Enter a block label"
+                              />
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="block-semantic-label"
+                          >
+                            <div
+                              class="form-group"
+                            >
+                              <label>
+                                Block semantic label
+                              </label>
+                               
+                              <textarea
+                                class="form-control"
+                                placeholder="Enter a block semantic label"
+                              />
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="form-group block-validation-min"
+                          >
+                            <div
+                              class="number-editor"
+                            >
+                              <label>
+                                Minimum value (inclusive)
+                              </label>
+                               
+                              <div>
+                                <input
+                                  class="form-control"
+                                  min="0"
+                                  placeholder="Enter value"
+                                  type="number"
+                                />
+                              </div>
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="form-group block-validation-max"
+                          >
+                            <div
+                              class="number-editor"
+                            >
+                              <label>
+                                Maximum value (inclusive)
+                              </label>
+                               
+                              <div>
+                                <input
+                                  class="form-control"
+                                  min="0"
+                                  placeholder="Enter value"
+                                  type="number"
+                                />
+                              </div>
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="form-group block-max-digits"
+                          >
+                            <div
+                              class="number-editor"
+                            >
+                              <label>
+                                Maximum digits
+                              </label>
+                               
+                              <div>
+                                <input
+                                  class="form-control"
+                                  min="0"
+                                  placeholder="Enter value"
+                                  type="number"
+                                />
+                              </div>
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="resource-editor"
+                          >
+                            <!---->
+                             
+                            <!---->
+                             
+                            <div
+                              class="block-content-editor-lang"
+                            >
+                              <h5
+                                class="badge badge-info"
+                              >
+                                English
+                              </h5>
+                            </div>
+                             
+                            <h6>
+                              SMS Content
+                            </h6>
+                             
+                            <div
+                              class="resource-variant-text-editor"
+                            >
+                              <div
+                                class="content-editor"
+                              >
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter Text content"
+                                />
+                              </div>
+                               
+                              <div
+                                class="content-toolbar"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                                <!---->
+                              </div>
+                            </div>
+                             
+                            <!---->
+                            <h6>
+                              USSD Content
+                            </h6>
+                             
+                            <div
+                              class="resource-variant-text-editor"
+                            >
+                              <div
+                                class="content-editor"
+                              >
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter Text content"
+                                />
+                              </div>
+                               
+                              <div
+                                class="content-toolbar"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                                <!---->
+                              </div>
+                            </div>
+                             
+                            <!---->
+                            <h6>
+                              IVR Content
+                            </h6>
+                             
+                            <!---->
+                             
+                            <div>
+                              <div
+                                class="upload-monitor"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                              </div>
+                               
+                              <ul
+                                class="nav nav-tabs"
+                              >
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1 active"
+                                    href="#"
+                                  >
+                                    Library
+                                  </a>
+                                </li>
+                                 
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1"
+                                    href="#"
+                                  >
+                                    Phone recording
+                                  </a>
+                                </li>
+                                 
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1"
+                                    href="#"
+                                    style="overflow: hidden;"
+                                  >
+                                    
+                  Upload
+                
+                                    <input
+                                      accept="audio/*"
+                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                      type="file"
+                                    />
+                                  </a>
+                                </li>
+                              </ul>
+                               
+                              <div
+                                class="audio-library-selector"
+                              >
+                                <div
+                                  class="audio-library-search-field dropdown"
+                                >
+                                  <div
+                                    class="input-group"
+                                  >
+                                    <span
+                                      class="input-group-prepend"
+                                    >
+                                      <button
+                                        class="btn btn-outline-secondary dropdown-toggle"
+                                      >
+                                        <i
+                                          class="glyphicon glyphicon-search"
+                                        />
+                                      </button>
+                                    </span>
+                                     
+                                    <input
+                                      class="form-control"
+                                      placeholder="Search audio library…"
+                                      type="text"
+                                    />
+                                  </div>
+                                   
+                                  <!---->
+                                </div>
+                              </div>
+                               
+                              <div
+                                class="phone-recorder"
+                              >
+                                <!---->
+                              </div>
+                            </div>
+                          </div>
+                            
+                          <div
+                            class="starting-block-button"
+                          >
+                            <h4>
+                              Options
+                            </h4>
+                             
+                            <div
+                              class="form-group"
+                            >
+                              <button
+                                class="btn btn-secondary btn-sm"
+                                disabled="disabled"
+                                type="button"
+                              >
+                                
+          Currently set as starting block
+        
+                              </button>
+                            </div>
+                          </div>
+                        </fieldset>
+                         
+                        <div
+                          class="block-id text-right"
+                        >
+                          <small
+                            class="text-muted"
+                          >
+                            Block Id: 
+                            <em>
+                              fake-uuid-86
+                            </em>
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
@@ -2216,13 +2476,771 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Ivr O
 
 exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text Only 1`] = `
 <div>
-  <!---->
+  <div
+    class="viamo-app-container flow-builder-sidebar-editor-container"
+    id="viamo-app"
+  >
+    <div
+      class="container-full"
+    >
+      <div
+        class="main-content-container"
+      >
+        <section
+          id="tree-app"
+        >
+          <div
+            class="edit-tree"
+            id="tree-interaction-designer"
+          >
+            <div
+              class="interaction-designer-contents panel panel-default"
+            >
+              <div
+                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
+              >
+                <nav
+                  class="bs-docs-sidebar"
+                >
+                  <div
+                    class="tree-sidebar-menu"
+                    id="tree-sidebar"
+                  >
+                    <div
+                      class="tree-sidebar-edit-block"
+                      data-block-type="MobilePrimitives.OpenResponse"
+                      data-for-block-id="fake-uuid-115"
+                    >
+                      <div
+                        class="mobile-primitive-open-response-block"
+                      >
+                        <h3
+                          class="no-room-above"
+                        >
+                          
+    Edit Open Response block
+  
+                        </h3>
+                         
+                        <fieldset>
+                          <div
+                            class="block-name"
+                          >
+                            <div
+                              class="form-group"
+                            >
+                              <label>
+                                Block name
+                              </label>
+                               
+                              <textarea
+                                class="form-control"
+                                placeholder="Enter a block name"
+                              />
+                               
+                              <small
+                                class="text-muted"
+                              >
+                                
+      Only accepts word characters
+    
+                              </small>
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="block-label"
+                          >
+                            <div
+                              class="form-group"
+                            >
+                              <label>
+                                Block label
+                              </label>
+                               
+                              <textarea
+                                class="form-control"
+                                placeholder="Enter a block label"
+                              />
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="block-semantic-label"
+                          >
+                            <div
+                              class="form-group"
+                            >
+                              <label>
+                                Block semantic label
+                              </label>
+                               
+                              <textarea
+                                class="form-control"
+                                placeholder="Enter a block semantic label"
+                              />
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="form-group block-max-duration-seconds"
+                          >
+                            <div
+                              class="number-editor"
+                            >
+                              <label>
+                                Maximum Duration (seconds)
+                              </label>
+                               
+                              <div>
+                                <input
+                                  class="form-control"
+                                  min="0"
+                                  placeholder="Enter value"
+                                  type="number"
+                                />
+                              </div>
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="form-group block-max-response-characters"
+                          >
+                            <div
+                              class="number-editor"
+                            >
+                              <label>
+                                Maximum Response Characters
+                              </label>
+                               
+                              <div>
+                                <input
+                                  class="form-control"
+                                  min="0"
+                                  placeholder="Enter value"
+                                  type="number"
+                                />
+                              </div>
+                               
+                            </div>
+                             
+                            <small
+                              class="text-muted"
+                            >
+                              
+    Unlimited if not defined or set as zero
+  
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="resource-editor"
+                          >
+                            <!---->
+                             
+                            <!---->
+                             
+                            <div
+                              class="block-content-editor-lang"
+                            >
+                              <h5
+                                class="badge badge-info"
+                              >
+                                English
+                              </h5>
+                            </div>
+                             
+                            <h6>
+                              SMS Content
+                            </h6>
+                             
+                            <div
+                              class="resource-variant-text-editor"
+                            >
+                              <div
+                                class="content-editor"
+                              >
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter Text content"
+                                />
+                              </div>
+                               
+                              <div
+                                class="content-toolbar"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                                <!---->
+                              </div>
+                            </div>
+                             
+                            <!---->
+                            <h6>
+                              USSD Content
+                            </h6>
+                             
+                            <div
+                              class="resource-variant-text-editor"
+                            >
+                              <div
+                                class="content-editor"
+                              >
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter Text content"
+                                />
+                              </div>
+                               
+                              <div
+                                class="content-toolbar"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                                <!---->
+                              </div>
+                            </div>
+                             
+                            <!---->
+                            <h6>
+                              IVR Content
+                            </h6>
+                             
+                            <!---->
+                             
+                            <div>
+                              <div
+                                class="upload-monitor"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                              </div>
+                               
+                              <ul
+                                class="nav nav-tabs"
+                              >
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1 active"
+                                    href="#"
+                                  >
+                                    Library
+                                  </a>
+                                </li>
+                                 
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1"
+                                    href="#"
+                                  >
+                                    Phone recording
+                                  </a>
+                                </li>
+                                 
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1"
+                                    href="#"
+                                    style="overflow: hidden;"
+                                  >
+                                    
+                  Upload
+                
+                                    <input
+                                      accept="audio/*"
+                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                      type="file"
+                                    />
+                                  </a>
+                                </li>
+                              </ul>
+                               
+                              <div
+                                class="audio-library-selector"
+                              >
+                                <div
+                                  class="audio-library-search-field dropdown"
+                                >
+                                  <div
+                                    class="input-group"
+                                  >
+                                    <span
+                                      class="input-group-prepend"
+                                    >
+                                      <button
+                                        class="btn btn-outline-secondary dropdown-toggle"
+                                      >
+                                        <i
+                                          class="glyphicon glyphicon-search"
+                                        />
+                                      </button>
+                                    </span>
+                                     
+                                    <input
+                                      class="form-control"
+                                      placeholder="Search audio library…"
+                                      type="text"
+                                    />
+                                  </div>
+                                   
+                                  <!---->
+                                </div>
+                              </div>
+                               
+                              <div
+                                class="phone-recorder"
+                              >
+                                <!---->
+                              </div>
+                            </div>
+                          </div>
+                            
+                          <div
+                            class="starting-block-button"
+                          >
+                            <h4>
+                              Options
+                            </h4>
+                             
+                            <div
+                              class="form-group"
+                            >
+                              <button
+                                class="btn btn-secondary btn-sm"
+                                disabled="disabled"
+                                type="button"
+                              >
+                                
+          Currently set as starting block
+        
+                              </button>
+                            </div>
+                          </div>
+                        </fieldset>
+                         
+                        <div
+                          class="block-id text-right"
+                        >
+                          <small
+                            class="text-muted"
+                          >
+                            Block Id: 
+                            <em>
+                              fake-uuid-115
+                            </em>
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] = `
 <div>
-  <!---->
+  <div
+    class="viamo-app-container flow-builder-sidebar-editor-container"
+    id="viamo-app"
+  >
+    <div
+      class="container-full"
+    >
+      <div
+        class="main-content-container"
+      >
+        <section
+          id="tree-app"
+        >
+          <div
+            class="edit-tree"
+            id="tree-interaction-designer"
+          >
+            <div
+              class="interaction-designer-contents panel panel-default"
+            >
+              <div
+                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
+              >
+                <nav
+                  class="bs-docs-sidebar"
+                >
+                  <div
+                    class="tree-sidebar-menu"
+                    id="tree-sidebar"
+                  >
+                    <div
+                      class="tree-sidebar-edit-block"
+                      data-block-type="MobilePrimitives.OpenResponse"
+                      data-for-block-id="fake-uuid-124"
+                    >
+                      <div
+                        class="mobile-primitive-open-response-block"
+                      >
+                        <h3
+                          class="no-room-above"
+                        >
+                          
+    Edit Open Response block
+  
+                        </h3>
+                         
+                        <fieldset>
+                          <div
+                            class="block-name"
+                          >
+                            <div
+                              class="form-group"
+                            >
+                              <label>
+                                Block name
+                              </label>
+                               
+                              <textarea
+                                class="form-control"
+                                placeholder="Enter a block name"
+                              />
+                               
+                              <small
+                                class="text-muted"
+                              >
+                                
+      Only accepts word characters
+    
+                              </small>
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="block-label"
+                          >
+                            <div
+                              class="form-group"
+                            >
+                              <label>
+                                Block label
+                              </label>
+                               
+                              <textarea
+                                class="form-control"
+                                placeholder="Enter a block label"
+                              />
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="block-semantic-label"
+                          >
+                            <div
+                              class="form-group"
+                            >
+                              <label>
+                                Block semantic label
+                              </label>
+                               
+                              <textarea
+                                class="form-control"
+                                placeholder="Enter a block semantic label"
+                              />
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="form-group block-max-duration-seconds"
+                          >
+                            <div
+                              class="number-editor"
+                            >
+                              <label>
+                                Maximum Duration (seconds)
+                              </label>
+                               
+                              <div>
+                                <input
+                                  class="form-control"
+                                  min="0"
+                                  placeholder="Enter value"
+                                  type="number"
+                                />
+                              </div>
+                               
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="form-group block-max-response-characters"
+                          >
+                            <div
+                              class="number-editor"
+                            >
+                              <label>
+                                Maximum Response Characters
+                              </label>
+                               
+                              <div>
+                                <input
+                                  class="form-control"
+                                  min="0"
+                                  placeholder="Enter value"
+                                  type="number"
+                                />
+                              </div>
+                               
+                            </div>
+                             
+                            <small
+                              class="text-muted"
+                            >
+                              
+    Unlimited if not defined or set as zero
+  
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="resource-editor"
+                          >
+                            <!---->
+                             
+                            <!---->
+                             
+                            <div
+                              class="block-content-editor-lang"
+                            >
+                              <h5
+                                class="badge badge-info"
+                              >
+                                English
+                              </h5>
+                            </div>
+                             
+                            <h6>
+                              SMS Content
+                            </h6>
+                             
+                            <div
+                              class="resource-variant-text-editor"
+                            >
+                              <div
+                                class="content-editor"
+                              >
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter Text content"
+                                />
+                              </div>
+                               
+                              <div
+                                class="content-toolbar"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                                <!---->
+                              </div>
+                            </div>
+                             
+                            <!---->
+                            <h6>
+                              USSD Content
+                            </h6>
+                             
+                            <div
+                              class="resource-variant-text-editor"
+                            >
+                              <div
+                                class="content-editor"
+                              >
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter Text content"
+                                />
+                              </div>
+                               
+                              <div
+                                class="content-toolbar"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                                <!---->
+                              </div>
+                            </div>
+                             
+                            <!---->
+                            <h6>
+                              IVR Content
+                            </h6>
+                             
+                            <!---->
+                             
+                            <div>
+                              <div
+                                class="upload-monitor"
+                              >
+                                <!---->
+                                 
+                                <!---->
+                                 
+                              </div>
+                               
+                              <ul
+                                class="nav nav-tabs"
+                              >
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1 active"
+                                    href="#"
+                                  >
+                                    Library
+                                  </a>
+                                </li>
+                                 
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1"
+                                    href="#"
+                                  >
+                                    Phone recording
+                                  </a>
+                                </li>
+                                 
+                                <li
+                                  class="nav-item"
+                                >
+                                  <a
+                                    class="nav-link px-2 py-1"
+                                    href="#"
+                                    style="overflow: hidden;"
+                                  >
+                                    
+                  Upload
+                
+                                    <input
+                                      accept="audio/*"
+                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                      type="file"
+                                    />
+                                  </a>
+                                </li>
+                              </ul>
+                               
+                              <div
+                                class="audio-library-selector"
+                              >
+                                <div
+                                  class="audio-library-search-field dropdown"
+                                >
+                                  <div
+                                    class="input-group"
+                                  >
+                                    <span
+                                      class="input-group-prepend"
+                                    >
+                                      <button
+                                        class="btn btn-outline-secondary dropdown-toggle"
+                                      >
+                                        <i
+                                          class="glyphicon glyphicon-search"
+                                        />
+                                      </button>
+                                    </span>
+                                     
+                                    <input
+                                      class="form-control"
+                                      placeholder="Search audio library…"
+                                      type="text"
+                                    />
+                                  </div>
+                                   
+                                  <!---->
+                                </div>
+                              </div>
+                               
+                              <div
+                                class="phone-recorder"
+                              >
+                                <!---->
+                              </div>
+                            </div>
+                          </div>
+                            
+                          <div
+                            class="starting-block-button"
+                          >
+                            <h4>
+                              Options
+                            </h4>
+                             
+                            <div
+                              class="form-group"
+                            >
+                              <button
+                                class="btn btn-secondary btn-sm"
+                                disabled="disabled"
+                                type="button"
+                              >
+                                
+          Currently set as starting block
+        
+                              </button>
+                            </div>
+                          </div>
+                        </fieldset>
+                         
+                        <div
+                          class="block-id text-right"
+                        >
+                          <small
+                            class="text-muted"
+                          >
+                            Block Id: 
+                            <em>
+                              fake-uuid-124
+                            </em>
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
@@ -2288,205 +3306,7 @@ exports[`Storyshots SmartDevices/Location Response Block Existing Data Pre Fille
 
 exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="SmartDevices\\\\LocationResponse"
-                      data-for-block-id="fake-uuid-13"
-                    >
-                      <div
-                        class="smart-devices-location-response-block"
-                      >
-                        <h3
-                          class="no-room-above"
-                        >
-                          
-    Edit Location Response block
-  
-                        </h3>
-                         
-                        <fieldset>
-                          <div
-                            class="block-name"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
-                               
-                              <small
-                                class="text-muted"
-                              >
-                                
-      Only accepts word characters
-    
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-threshold"
-                          >
-                            <div
-                              class="float-editor"
-                            >
-                              <label>
-                                flow-builder.accuracy-threshold-in-meters
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  step="0.1"
-                                  type="number"
-                                />
-                              </div>
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-timeout"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                flow-builder.Accuracy-timeout-in-seconds
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
-                              </div>
-                               
-                            </div>
-                          </div>
-                            
-                          <div
-                            class="starting-block-button"
-                          >
-                            <h4>
-                              Options
-                            </h4>
-                             
-                            <div
-                              class="form-group"
-                            >
-                              <button
-                                class="btn btn-secondary btn-sm"
-                                disabled="disabled"
-                                type="button"
-                              >
-                                
-          Currently set as starting block
-        
-                              </button>
-                            </div>
-                          </div>
-                        </fieldset>
-                         
-                        <div
-                          class="block-id text-right"
-                        >
-                          <small
-                            class="text-muted"
-                          >
-                            Block Id: 
-                            <em>
-                              fake-uuid-13
-                            </em>
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 
@@ -2504,159 +3324,6 @@ exports[`Storyshots SmartDevices/Photo Response Block Existing Data Pre Filled 1
 
 exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="SmartDevices\\\\PhotoResponse"
-                      data-for-block-id="fake-uuid-160"
-                    >
-                      <div
-                        class="smart-devices-photo-response-block"
-                      >
-                        <h3
-                          class="no-room-above"
-                        >
-                          
-    Edit Photo Response block
-  
-                        </h3>
-                         
-                        <fieldset>
-                          <div
-                            class="block-name"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
-                               
-                              <small
-                                class="text-muted"
-                              >
-                                
-      Only accepts word characters
-    
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                            
-                          <div
-                            class="starting-block-button"
-                          >
-                            <h4>
-                              Options
-                            </h4>
-                             
-                            <div
-                              class="form-group"
-                            >
-                              <button
-                                class="btn btn-secondary btn-sm"
-                                disabled="disabled"
-                                type="button"
-                              >
-                                
-          Currently set as starting block
-        
-                              </button>
-                            </div>
-                          </div>
-                        </fieldset>
-                         
-                        <div
-                          class="block-id text-right"
-                        >
-                          <small
-                            class="text-muted"
-                          >
-                            Block Id: 
-                            <em>
-                              fake-uuid-160
-                            </em>
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
