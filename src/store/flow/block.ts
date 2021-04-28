@@ -10,7 +10,7 @@ import {
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { defaults, set, forEach, isNil } from 'lodash'
+import { defaults, set, get, isNil } from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
@@ -58,12 +58,13 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).semantic_label = value
   },
-  block_pushNewExit(state, { blockId, newExit, insertAtIndex = undefined }: {blockId: string; newExit: IBlockExit, insertAtIndex: number | undefined}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+  block_pushNewExit(state, { blockId, newExit, insertAtIndex = undefined, shouldUseCache = false }: {blockId: string; newExit: IBlockExit, insertAtIndex: number | undefined, shouldUseCache: boolean}) {
+    const blockExits = findBlockExitsRef(blockId, state as unknown as IContext, shouldUseCache)
+
     if (!isNil(insertAtIndex)) { // insertion, eg: case for block types having branching exits option (Segregated | Unified)
-      block.exits.splice(insertAtIndex, 0, newExit);
+      blockExits.splice(insertAtIndex, 0, newExit);
     } else { // just push
-      block.exits.push(newExit);
+      blockExits.push(newExit);
     }
   },
   block_updateConfig(state, { blockId, newConfig }: {blockId: string; newConfig: object}) {
@@ -179,4 +180,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 export interface IDeepBlockExitIdWithinFlow {
   blockId: IBlock['uuid'];
   exitId: IBlockExit['uuid'];
+}
+
+export function findBlockExitsRef(uuid: string, ctx: IContext, shouldUseCache = false) {
+  const block = findBlockOnActiveFlowWith(uuid, ctx)
+  if (shouldUseCache) {
+    // @ts-ignore: TODO: remove this once IBlock has vendor_metadata key
+    return get(block.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits')
+  } else {
+    return block.exits
+  }
 }

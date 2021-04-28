@@ -77,7 +77,7 @@
         this.branchingType = BRANCHING_TYPE_UNIFIED
       }
       this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path: 'io_viamo.branchingType', value })
-      this.$emit('commitIsSegregatedBranching')
+      this.$emit('commitIsSegregatedBranching', willBranchingTypeSegregated)
     }
 
     @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void

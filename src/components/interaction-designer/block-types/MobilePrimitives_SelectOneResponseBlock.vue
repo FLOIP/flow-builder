@@ -138,13 +138,12 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
       this.editEmptyChoice( { choice: oldChoice as IInflatedChoicesInterface })
     }
 
-  handleBranchingTypeChange() { //TODO: move to blockVuexNamespace ?
-      console.log('handleBranchingTypeChange, is segregated ?', this.isExitsBranchingSegregated)
-    // this.updateInflatedEmptyChoiceVisibility({ value: isSegregatedBranching })
-    this.cacheExits({ blockId: this.block.uuid })
-    if (this.isExitsBranchingSegregated) {
+  handleBranchingTypeChange(willBranchingTypeSegregated: boolean) {
+      console.log('handleBranchingTypeChange, is segregated ?', willBranchingTypeSegregated)
+    if (willBranchingTypeSegregated) {
       this.makeExitsSegregated({ blockId: this.block.uuid })
     } else {
+      this.cacheSegregatedExits({ blockId: this.block.uuid })
       this.makeExitsUnified({ blockId: this.block.uuid })
     }
   }
@@ -158,7 +157,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     @blockVuexNamespace.Getter isExitsBranchingSegregated!: boolean
 
     // @blockVuexNamespace.Action cacheSegregatedExits!: ({ blockId }: { blockId: IBlock['uuid']}) => void
-    @blockVuexNamespace.Action cacheExits!: ({ blockId }: { blockId: IBlock['uuid']}) => void
+    @blockVuexNamespace.Action cacheSegregatedExits!: ({ blockId }: { blockId: IBlock['uuid']}) => void
     @blockVuexNamespace.Action makeExitsSegregated!: ({ blockId }: { blockId: IBlock['uuid']}) => void
     @blockVuexNamespace.Action makeExitsUnified!: ({ blockId }: { blockId: IBlock['uuid']}) => void
 

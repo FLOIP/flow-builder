@@ -88,8 +88,8 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
       return true
     }
 
-    return !!find(currentBlock.exits, function (exit) {
-      return exit.default // We assume the 'Default' exit has `default: true`
+    return !find(currentBlock.exits, function (exit) {
+      return exit.default // We assume the 'Default' exit has `default: true` if exits are unified
     })
   },
 }
@@ -128,9 +128,6 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
         test: `block.value = ${index}`,
         label: blankResource.uuid,
         semantic_label: '',
-        config: {
-          is_visible: getters.isExitsBranchingSegregated
-        }
       } as IBlockExitTestRequired,
     }, {root: true})
     state.inflatedEmptyChoice = {
@@ -169,56 +166,27 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       const newIndex = Object.keys(activeBlock.config.choices || {}).length + 1
       const resourceUuid = state.inflatedEmptyChoice.resource.uuid
       dispatch('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
-      commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: state.inflatedEmptyChoice.exit, insertAtIndex: activeBlock.exits.length - 1}, {root: true})
+      commit('flow/block_pushNewExit', {
+          blockId: activeBlock.uuid,
+          newExit: state.inflatedEmptyChoice.exit,
+          insertAtIndex: activeBlock.exits.length - 1,
+          shouldUseCache: !getters.isExitsBranchingSegregated // use cache if unified branching
+        }, {
+        root: true
+      })
 
       // associate new blank resource to the empty choice, this is important to stop endless watching
       await dispatch('createVolatileEmptyChoice', { index: newIndex })
     }
   },
 
-  cacheSegregatedExits({ state, commit, getters }, { blockId }: { blockId: IBlock['uuid']}) {
+  cacheSegregatedExits({ state, commit, getters, rootGetters }, { blockId }: { blockId: IBlock['uuid']}) {
+    const activeBlock: IBlock = rootGetters['builder/activeBlock']
     commit('flow/block_updateVendorMetadataByPath', {
       blockId,
       path: 'io_viamo.cache.outputBranching.segregatedExits',
-      value: getters.segregatedExits
+      value: filter(activeBlock.exits,  (exit) => !exit.default)
     }, { root: true })
-  },
-
-  cacheUnifiedExits({ state, commit, getters }, { blockId }: { blockId: IBlock['uuid']}) {
-    commit('flow/block_updateVendorMetadataByPath', {
-      blockId,
-      path: 'io_viamo.cache.outputBranching.unifiedExits',
-      value: getters.unifiedExits
-    }, { root: true })
-  },
-
-  cacheExits({ state, commit, getters, rootGetters }, { blockId }: { blockId: IBlock['uuid']}) {
-    const activeBlock = rootGetters['builder/activeBlock']
-    const segregatedPath = 'io_viamo.cache.outputBranching.segregatedExits'
-    const cachedSegregatedExits = get(activeBlock.vendor_metadata, segregatedPath)
-    if (!cachedSegregatedExits) {
-      const segregatedExits = filter(activeBlock.exits, function (exit) {
-        return exit.tag.toLowerCase() !== 'default'
-      })
-      commit('flow/block_updateVendorMetadataByPath', {
-        blockId,
-        path: segregatedPath,
-        value: segregatedExits
-      }, { root: true });
-    }
-
-    const unifiedPath = 'io_viamo.cache.outputBranching.unifiedExits'
-    const cachedUnifiedExits = get(activeBlock.vendor_metadata, unifiedPath)
-    if (!cachedUnifiedExits) {
-      const unifiedExits = filter(activeBlock.exits, function (exit) {
-        return ['default', 'error'].includes(exit.tag.toLowerCase())
-      })
-      commit('flow/block_updateVendorMetadataByPath', {
-        blockId,
-        path: unifiedPath,
-        value: unifiedExits
-      }, { root: true });
-    }
   },
 
   makeExitsSegregated({ state, commit, getters, rootGetters }, { blockId }: { blockId: IBlock['uuid']}) {
@@ -239,9 +207,9 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     const cachedExits = get(activeBlock.vendor_metadata, 'io_viamo.cache.outputBranching.unifiedExits')
     if (cachedExits) {
       activeBlock.exits = cachedExits
-      console.debug('makeExitsUnified', cachedExits)
+      console.log('makeExitsUnified', cachedExits)
     } else {
-      console.debug('cached unified exits are empty')
+      console.log('cached unified exits are empty')
     }
   },
 
@@ -264,6 +232,8 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     }
 
     await dispatch('createVolatileEmptyChoice', { index: 0 })
+    const defaultExit = await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true })
+    const errorExit = await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true })
 
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
@@ -271,8 +241,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       label: '',
       semantic_label: '',
       exits: [
-        await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true }),
-        await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true }),
+        errorExit,
       ],
       config: {
         prompt: blankPromptResource.uuid,
@@ -280,6 +249,20 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
         choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
       },
+      vendor_metadata: {
+        io_viamo: {
+          cache: {
+            outputBranching: {
+              segregatedExits: [
+                errorExit
+              ],
+              unifiedExits: [
+                defaultExit, errorExit
+              ]
+            }
+          }
+        }
+      }
     })
   },
 
