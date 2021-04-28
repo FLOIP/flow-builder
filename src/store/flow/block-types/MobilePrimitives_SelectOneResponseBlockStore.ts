@@ -147,7 +147,11 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     if (!getters.allChoicesHaveContent) { // then remove the 1st blank exit
       const exitLabel = await dispatch('popFirstEmptyChoice', { blockId: activeBlock.uuid })
       if (exitLabel) {
-        commit('flow/block_popExitsByLabel', { blockId: activeBlock.uuid, exitLabel }, { root: true })
+        dispatch('flow/block_popExitsByLabel', {
+          blockId: activeBlock.uuid,
+          exitLabel,
+          shouldUseCache: !getters.isExitsBranchingSegregated // use cache if unified branching
+        }, { root: true })
       }
     }
     return activeBlock.config.choices
@@ -163,7 +167,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       commit('flow/block_pushNewExit', {
           blockId: activeBlock.uuid,
           newExit: state.inflatedEmptyChoice.exit,
-          insertAtIndex: activeBlock.exits.length - 1,
+          insertAtIndex: activeBlock.exits.length - 1, // insert before 'Error' exit
           shouldUseCache: !getters.isExitsBranchingSegregated // use cache if unified branching
         }, {
         root: true
@@ -174,16 +178,16 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     }
   },
 
-  cacheSegregatedExits({ state, commit, getters, rootGetters }, { blockId }: { blockId: IBlock['uuid']}) {
+  cacheSegregatedExits({ state, commit, getters, rootGetters }) {
     const activeBlock: IBlock = rootGetters['builder/activeBlock']
     commit('flow/block_updateVendorMetadataByPath', {
-      blockId,
+      blockId: activeBlock.uuid,
       path: 'io_viamo.cache.outputBranching.segregatedExits',
       value: filter(activeBlock.exits,  (exit) => !exit.default)
     }, { root: true })
   },
 
-  makeExitsSegregated({ state, commit, getters, rootGetters }, { blockId }: { blockId: IBlock['uuid']}) {
+  makeExitsSegregated({ state, commit, getters, rootGetters }) {
     const activeBlock: IBlock = rootGetters['builder/activeBlock']
     // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
     const cachedExits = get(activeBlock.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits')
@@ -195,7 +199,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     }
   },
 
-  makeExitsUnified({ state, commit, getters, rootGetters }, { blockId }: { blockId: IBlock['uuid']}) {
+  makeExitsUnified({ state, commit, getters, rootGetters }) {
     const activeBlock: IBlock = rootGetters['builder/activeBlock']
     // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
     const cachedExits = get(activeBlock.vendor_metadata, 'io_viamo.cache.outputBranching.unifiedExits')

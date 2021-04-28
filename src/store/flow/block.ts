@@ -26,10 +26,6 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     block.exits = popFirstEmptyItem(block.exits, 'test')
   },
-  block_popExitsByLabel(state, { blockId, exitLabel }: {blockId: string; exitLabel: string}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    block.exits = block.exits.filter((item: IBlockExit) => item.label !== exitLabel)
-  },
   block_setName(state, { blockId, value }) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .name = value
@@ -68,6 +64,14 @@ export const mutations: MutationTree<IFlowsState> = {
       blockExits.push(newExit);
     }
   },
+  block_updateExits(state, { block, newExits, shouldUseCache = false }: { block: IBlock; newExits: IBlockExit[]; shouldUseCache: boolean }) {
+    if (shouldUseCache) {
+      // @ts-ignore: TODO: remove this once IBlock has vendor_metadata key
+      set(block.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits', newExits);
+    } else {
+      block.exits = newExits
+    }
+  },
   block_updateConfig(state, { blockId, newConfig }: {blockId: string; newConfig: object}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .config = newConfig
@@ -92,6 +96,17 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
+  block_popExitsByLabel({ dispatch, commit, state }, { blockId, exitLabel, shouldUseCache = false }: {blockId: string; exitLabel: string; shouldUseCache: boolean}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    const newBlockExits = findBlockExitsRef(block, shouldUseCache).filter((item: IBlockExit) => item.label !== exitLabel)
+
+    commit('block_updateExits', {
+      block,
+      newExits: newBlockExits,
+      shouldUseCache
+    })
+  },
+
   async block_createBlockDefaultExitWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IBlockExit>}): Promise<IBlockExit> {
     return await dispatch('block_createBlockExitWith', {
       props: {
@@ -158,11 +173,11 @@ export interface IDeepBlockExitIdWithinFlow {
   exitId: IBlockExit['uuid'];
 }
 
-export function findBlockExitsRef(block: IBlock, shouldUseCache = false) {
+export function findBlockExitsRef(block: IBlock, shouldUseCache = false): IBlockExit[] {
   if (shouldUseCache) {
     console.debug('Using block exits from cache')
     // @ts-ignore: TODO: remove this once IBlock has vendor_metadata key
-    return get(block.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits')
+    return get(block.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits') as IBlockExit[]
   } else {
     console.debug('Not using block exits from cache')
     return block.exits
