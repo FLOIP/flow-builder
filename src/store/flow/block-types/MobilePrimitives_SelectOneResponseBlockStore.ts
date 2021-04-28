@@ -16,7 +16,6 @@ import {
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
 import { defaultsDeep, find, filter, get, set } from 'lodash'
-import { IResourceDefinitionVariantOverModesFilter } from '../resource'
 import {findBlockExitsRef, findExitFromResourceUuid} from '../block'
 import { IFlowsState } from '../index'
 
@@ -194,9 +193,8 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     const cachedExits = get(activeBlock.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits')
     if (cachedExits) {
       activeBlock.exits = cachedExits
-      console.debug('makeExitsSegregated', cachedExits)
     } else {
-      console.debug('cached segregated exits are empty')
+      console.error('cached segregated exits are empty, make sure we cache it in createWith()')
     }
   },
 
@@ -206,9 +204,8 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     const cachedExits = get(activeBlock.vendor_metadata, 'io_viamo.cache.outputBranching.unifiedExits')
     if (cachedExits) {
       activeBlock.exits = cachedExits
-      console.log('makeExitsUnified', cachedExits)
     } else {
-      console.log('cached unified exits are empty')
+      console.error('cached unified exits are empty, make sure we cache it in createWith()')
     }
   },
 
@@ -250,7 +247,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       },
       vendor_metadata: {
         io_viamo: {
-          cache: {
+          cache: { // cache outputs when creating to facilitate future logic
             outputBranching: {
               segregatedExits: [
                 errorExit

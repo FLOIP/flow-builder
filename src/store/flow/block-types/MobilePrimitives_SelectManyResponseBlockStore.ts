@@ -36,9 +36,6 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       tag: 'Default',
       label: 'Default',
       default: true,
-      config: {
-        is_visible: false //TODO: confirm if we should move this out from config, and update FLOIP spec for `exits`
-      }
     }
 
     const errorExitProps: Partial<IBlockExit> = {
@@ -68,7 +65,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       },
       vendor_metadata: {
         io_viamo: {
-          cache: {
+          cache: { // cache outputs when creating to facilitate future logic
             outputBranching: {
               segregatedExits: [
                 errorExit
