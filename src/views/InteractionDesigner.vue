@@ -1,5 +1,5 @@
 <template>
-  <div class="interaction-designer-contents">
+  <div v-if="activeFlow" class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
     <div class="tree-sidebar-container">
@@ -12,13 +12,11 @@
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
-
-          <div v-if="activeBlock"
-               :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
-               :block="activeBlock"
-               :flow="activeFlow"
-          />
-
+          <component v-if="activeBlock"
+                     :is="`Flow${activeBlock.type.replace('.', '')}`"
+                     :block="activeBlock"
+                     :flow="activeFlow">
+          </component>
         </div>
 
 <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
@@ -49,8 +47,9 @@
 </template>
 
 <script>
-import lang from '@/lib/filters/lang'
-import lodash, { forEach, invoke } from 'lodash'
+import { lang } from '@/lib/filters/lang'
+import Routes from '@/lib/mixins/Routes'
+import lodash, { forEach, invoke, isEmpty } from 'lodash'
 import Vue from 'vue'
 import {
   mapActions, mapGetters, mapMutations, mapState,
@@ -93,7 +92,7 @@ export default {
     },
   },
 
-  mixins: [lang],
+  mixins: [lang, Routes],
 
   components: {
     // ...BlockTypes,
@@ -133,9 +132,9 @@ export default {
       simulateClipboard: true,
     }
   },
-
   computed: {
     ...mapGetters([
+      'isConfigured',
       'selectedBlock',
       'hasChanges',
       'hasIssues',
@@ -148,7 +147,6 @@ export default {
 
       // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
       designerWorkspaceHeight: ({ trees: { tree, ui } }) => ui.designerWorkspaceHeight,
-
       tree: ({ trees: { tree, ui } }) => tree,
       validationResultsEmptyTree: ({ trees: { tree, ui } }) => !tree.blocks.length,
       hasVoice: ({ trees: { tree } }) => tree.details.hasVoice,
@@ -187,7 +185,9 @@ export default {
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
-    this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+    }
 
     global.builder = this // initialize global reference for legacy + debugging
 
@@ -203,23 +203,34 @@ export default {
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   mounted() {
+    this.flow_setActiveFlowId({ flowId: this.id })
+
+    // if nothing was found for the flow Id
+    if (!this.activeFlow) {
+      this.flow_setActiveFlowId({ flowId: null })
+      this.$router.replace(
+        { path: this.route('flows.fetchFlow', { flowId: this.id }),
+          query: { nextUrl: this.$route.path } },
+      )
+    }
+
     this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
     this.deselectBlocks()
     this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
 
     console.debug('Vuej tree interaction designer mounted!')
   },
-
   watch: {
     mode(newMode) {
-      this.updateIsEditableFromParams(newMode)
+      this.updateIsEditableFromParams(newMode) // `this.mode` comes from captured param in js-routes
     },
   },
-
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
     ...mapMutations('builder', ['activateBlock']),
     ...mapActions('builder', ['setIsEditable']),
+    ...mapMutations('flow', ['flow_setActiveFlowId']),
+
     ...mapActions([
       'attemptSaveTree',
       'discoverTallestBlockForDesignerWorkspaceHeight',
@@ -229,8 +240,8 @@ export default {
       const { blockClasses } = this
 
       forEach(blockClasses, async ({ type }) => {
-        const normalizedType = type.replace('\\', '_')
-        const typeWithoutSeparators = type.replace(/\\/g, '')
+        const normalizedType = type.replace('.', '_')
+        const typeWithoutSeparators = type.replace('.', '')
         const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
         invoke(exported, 'install', this)
         Vue.component(`Flow${typeWithoutSeparators}`, exported.default)

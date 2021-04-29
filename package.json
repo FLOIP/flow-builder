@@ -14,10 +14,11 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "storybook:build": "vue-cli-service storybook:build -c config/storybook",
-    "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook"
+    "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
+    "md-docs": "./node_modules/widdershins/widdershins.js docs/routes/openapi/routes.yaml docs/routes/markdown/routes.md --language_tabs 'javascript:Javascript' --omitHeader"
   },
   "dependencies": {
-    "@floip/flow-runner": "^0.0.95",
+    "@floip/flow-runner": "^1.0.1",
     "@flowjs/flow.js": "^2.13.0",
     "@types/lodash": "^4.14.157",
     "@types/uuid": "^8.0.0",
@@ -47,6 +48,7 @@
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-focus": "^2.1.0",
+    "vue-multiselect": "^2.1.6",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0",
@@ -84,6 +86,7 @@
     "ts-vue-plugin": "^0.1.2",
     "typescript": "~3.9.3",
     "vue-cli-plugin-storybook": "~1.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "widdershins": "^4.0.1"
   }
 }

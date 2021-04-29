@@ -11,7 +11,7 @@
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
 import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -32,7 +32,7 @@ export default {
   computed: {
     maxDigits: {
       get() {
-        return get(this.block, 'config.ivr.maxDigits', '')
+        return get(this.block, 'config.ivr.max_digits', '')
       },
       set(value) {
         this.$emit('commitMaxDigitsChange', value)

@@ -27,6 +27,7 @@ export default {
     return {
       tree: null,
       ui: {
+        isConfigured: false,
         audioFiles: null,
         callCenterQueues: null,
         previousTreeJson: null,
@@ -50,12 +51,15 @@ export default {
         enabledFeatures: [
           /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
         ],
+        isSaveCurrentlyInProgress: false,
+        isEditable: true,
+        subscriberPropertyFields: [],
       },
     }
   },
 
   getters: {
-
+    isConfigured: ({ui}) => ui.isConfigured,
     isFeatureCallCenterQueuesEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'callCenterQueues'),
     isFeatureCallToRecordEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'callToRecord'),
     isFeatureMultimediaUploadEnabled: ({ ui }) => lodash.find(ui.enabledFeatures, (feature) => feature === 'multimediaUpload'),
@@ -75,7 +79,9 @@ export default {
 
     selectedBlock: ({ tree, ui }, getters, rootState) => lodash.find(get(tree, 'blocks', []), { jsKey: ui.selectedBlock }),
 
-    subscriberPropertyFields: ({ ui }) => lodash.get(ui, 'subscriberPropertyFields'),
+    subscriberPropertyFields: ({ ui }) => lodash.get(ui, 'subscriberPropertyFields', []),
+
+    groups: ({ ui }) => lodash.get(ui, 'groups', []),
 
     interactiveBlockClasses: ({ ui }, getters, rootState) => lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
 
@@ -100,7 +106,7 @@ export default {
     },
 
     isTreeSaving(state) {
-      return state.ui.saveCurrentlyInProgress
+      return state.ui.isSaveCurrentlyInProgress
     },
 
     hasClipboard: ({ tree }) => tree.details.hasClipboard,
@@ -156,6 +162,9 @@ export default {
   },
 
   mutations: {
+    setTreeSaving(state, isSaving) {
+      state.ui.isSaveCurrentlyInProgress = isSaving
+    },
 
     // TODO: find a better place to put the configure, putting it inside trees store doesn't make sense
     configure({ ui }, { appConfig, builderConfig }) {
@@ -165,6 +174,7 @@ export default {
         __TREES_UI__: uiOverrides,
         __APP__: appContext,
       } = bootstrapLegacyGlobalDependencies(appConfig, builderConfig)
+      ui.isConfigured = true
 
       // update this.state to expose permissions, etc
       lodash.merge(this.state, appContext)
@@ -347,6 +357,10 @@ export default {
 
     addSubscriberPropertyField({ ui }, { property }) {
       ui.subscriberPropertyFields.push(property)
+    },
+
+    addContactGroup({ ui }, { group }) {
+      ui.groups.push(group)
     },
 
     setTreeUpdateConflictStatus(state, { treeUpdateConflict }) {

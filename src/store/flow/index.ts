@@ -19,27 +19,26 @@ import {
   mutations as resourceMutations,
 } from './resource'
 
-// type IFlowsState = Pick<IContext, 'flows' | 'firstFlowId' | 'resources' | 'nestedFlowBlockInteractionIdStack'>
+// type IFlowsState = Pick<IContext, 'flows' | 'first_flow_id' | 'resources' | 'nested_flow_block_interaction_id_stack'>
 
 export interface IFlowsState {
+  //Created is *not* the same as persisted. It does not guarantee the current state is saved to the server. Only that the currently active flow in the container was persisted - the persistFlow route was called with the container and the active flow uuid and the route response did not have an error status code 
+  isCreated: boolean,
   flows: IFlow[];
   resources: IResourceDefinition[];
 
-  firstFlowId: string | null;
+  first_flow_id: string | null;
   // @note - for exciting future
-  nestedFlowBlockInteractionIdStack: string[];
-
-  // activeBlock: string | null, // this is actually a getter over IContext
+  nested_flow_block_interaction_id_stack: string[];
 }
 
 export const stateFactory = (): IFlowsState => ({
+  isCreated: false,
   flows: [],
   resources: [],
 
-  firstFlowId: null,
-  nestedFlowBlockInteractionIdStack: [], // todo: not quite right -- pulled from IContext
-
-  // activeBlock: null,
+  first_flow_id: null,
+  nested_flow_block_interaction_id_stack: [], // todo: not quite right -- pulled from IContext
 })
 
 export const getters: GetterTree<IFlowsState, IRootState> = {

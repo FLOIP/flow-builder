@@ -5,7 +5,7 @@
               v-focus="isSelected"
               @focus="select"
               @blur="deselect"
-              :placeholder="`flow-builder.enter-${resourceVariant.contentType}-content` | trans"
+              :placeholder="`flow-builder.enter-${resourceVariant.contentType.toString().toLowerCase()}-content` | trans"
               class="form-control"></textarea>
 
       <!-- <button @click="select"
@@ -83,7 +83,7 @@
 
 <script>
 import Vue from 'vue'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import { parse as floipExpressionParser } from '@floip/expression-parser'
 import { isObject, some } from 'lodash'
 import VueFocus from 'vue-focus'
