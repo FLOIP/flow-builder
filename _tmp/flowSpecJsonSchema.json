@@ -23,6 +23,7 @@
         },
         "name": {
           "description": "A human-readable \"variable name\" for this block. This must be restricted to word characters so that it can be used as a variable name in expressions. When blocks write results output, they write to a variable corresponding the name of the block.",
+          "pattern": "^[a-zA-Z_]\\w*$",
           "type": "string"
         },
         "semantic_label": {
@@ -35,6 +36,7 @@
         },
         "uuid": {
           "description": "A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
           "type": "string"
         },
         "vendor_metadata": {
@@ -64,6 +66,7 @@
         },
         "destination_block": {
           "description": "This is the uuid of the Block this exit connects to. It can be null if the exit does not connect to a block (if it is the final block).",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
           "type": "string"
         },
         "label": {
@@ -76,6 +79,7 @@
         },
         "tag": {
           "description": "This is an identifier for the exit, suitable for use as a variable name in rolling up results (e.g.: \"male\"). It does not need to be unique within the block; multiple exits may be tagged the same. (Some authoring tools may choose to auto-generate the tag from the label's primary language, to avoid usability problems with these getting out of sync.) Word characters only.",
+          "pattern": "^[a-zA-Z_]\\w*$",
           "type": "string"
         },
         "test": {
@@ -84,6 +88,7 @@
         },
         "uuid": {
           "description": "A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
           "type": "string"
         }
       },
@@ -127,6 +132,7 @@
         },
         "uuid": {
           "description": "A globally unique identifier for this Container.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
           "type": "string"
         },
         "vendor_metadata": {
@@ -157,12 +163,12 @@
         },
         "exit_block_id": {
           "description": "If provided, the ID of the block in blocks that will be jumped to if there is an error or deliberate exit condition during Flow Run. If not provided, the Flow Run will end immediately.",
-          "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
           "type": "string"
         },
         "first_block_id": {
           "description": "The ID of the block in blocks that is at the beginning of the flow.",
-          "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
           "type": "string"
         },
         "interaction_timeout": {
@@ -201,7 +207,7 @@
         },
         "uuid": {
           "description": "A globally unique identifier for this Flow.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)",
-          "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
           "type": "string"
         },
         "vendor_metadata": {
@@ -235,6 +241,7 @@
         },
         "iso_639_3": {
           "description": "ISO 639-3 code for the language. This is a 3-letter string, e.g. \"eng\". \"mis\" is the ISO 639-3 code for languages not yet included in ISO 639-3.",
+          "pattern": "^[a-z][a-z][a-z]$",
           "type": "string"
         },
         "label": {
