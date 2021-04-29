@@ -47,15 +47,16 @@
 </template>
 
 <script lang="ts">
-import lang from '@/lib/filters/lang'
-import { mapActions, mapGetters } from 'vuex'
+import Vue from 'vue'
 import {
-  IContext,
+  Context, IContext,
   createContextDataObjectFor,
   FlowRunner,
   IRichCursorInputRequired,
   SupportedMode,
-  IContact, BasicBacktrackingBehaviour, Context,
+  IContact,
+  IGroup,
+  BasicBacktrackingBehaviour,
 } from '@floip/flow-runner'
 import Message from './prompt-kinds/Message.vue'
 import Numeric from './prompt-kinds/Numeric.vue'
@@ -63,8 +64,16 @@ import Open from './prompt-kinds/Open.vue'
 import SelectOne from './prompt-kinds/SelectOne.vue'
 import SelectMany from './prompt-kinds/SelectMany.vue'
 import UnsupportedBlock from './shared/UnsupportedBlock.vue'
+import { IFlowsState } from '@/store/flow';
+import Component, { mixins } from 'vue-class-component'
+import Lang from '@/lib/filters/lang'
+import { namespace } from 'vuex-class'
+import { BlocksData } from '@/store/clipboard'
 
-export default {
+const flowVuexNamespace = namespace('flow')
+const clipboardVuexNamespace = namespace('clipboard')
+
+@Component({
   components: {
     Message,
     Numeric,
@@ -73,99 +82,100 @@ export default {
     SelectMany,
     UnsupportedBlock,
   },
-  mixins: [lang],
-  data() {
-    return {
-      runner: FlowRunner,
-      context: {},
-      isComplete: false,
-      unsupportedBlockName: '',
-    }
-  },
+})
+export default class ClipboardRoot extends mixins(Lang) {
+  runner!: FlowRunner
+  context!: IContext
+  isComplete = false
+  unsupportedBlockName = ''
+
   created() {
     this.initializeFlowRunner()
-  },
-  computed: {
-    ...mapGetters('clipboard', ['blocksData', 'isBlockFocused']),
-    ...mapGetters('flow', ['currentFlowsState']),
-  },
-  methods: {
-    ...mapActions('clipboard', ['setSimulatorActive', 'resetBlocksData', 'setIsFocused', 'addToBlocksData', 'removeFromBlocksData']),
+  }
 
-    content(promptId) {
-      const result = Context.prototype.getResource.call(this.context, promptId)
-      return result.hasText() ? result.getText() : ''
-    },
+  content(promptId: string): string {
+    const result = Context.prototype.getResource.call(this.context, promptId)
+    return result.hasText() ? result.getText() : ''
+  }
 
-    getUpdatedFlowState() {
-      const flowState = this.currentFlowsState
-      // TODO: Need to remove this after a fix is available on flow runner
-      flowState.flows[0].blocks.map(({ exits }) => exits.map((e) => {
-        e.test = e.test || 'true'
-        return e
-      }))
-      return flowState
-    },
+  getUpdatedFlowState(): IFlowsState {
+    const flowState: IFlowsState = this.currentFlowsState
+    // TODO: Need to remove this after a fix is available on flow runner
+    flowState.flows[0].blocks.map(({ exits }) => exits.map((e) => {
+      e.test = e.test || 'true'
+      return e
+    }))
+    return flowState
+  }
 
-    async initializeFlowRunner() {
-      const flowState = this.getUpdatedFlowState()
-      const contact = { id: '1' } as IContact
-      const groups = []
-      const userId = 'user-1234' // TODO: fix this value when user details are available
-      const orgId = 'org-1234'
-      const { flows } = flowState
-      const languageId = '22'
-      const mode = SupportedMode.OFFLINE
-      const { resources } = flowState
-      const context: IContext = createContextDataObjectFor(
-        contact,
-        groups,
-        userId,
-        orgId,
-        flows,
-        languageId,
-        mode,
-        resources,
-      )
+  async initializeFlowRunner() {
+    const flowState = this.getUpdatedFlowState()
+    const contact = { id: '1' } as IContact
+    const groups: IGroup[] = []
+    const userId = 'user-1234' // TODO: fix this value when user details are available
+    const orgId = 'org-1234'
+    const { flows } = flowState
+    const languageId = '22'
+    const mode = SupportedMode.OFFLINE
+    const { resources } = flowState
+    const context: IContext = await createContextDataObjectFor(
+      contact,
+      groups,
+      userId,
+      orgId,
+      flows,
+      languageId,
+      mode,
+      resources,
+    )
 
-      this.resetBlocksData()
-      this.context = context
-      this.runner = new FlowRunner(context)
-      await this.goNext()
-    },
+    this.resetBlocksData()
+    this.context = context
+    this.runner = new FlowRunner(context)
+    await this.goNext()
+  }
 
-    async goNext() {
-      this.isComplete = false
-      try {
-        const cursor: IRichCursorInputRequired = await this.runner.run()
-        if (!cursor) {
-          this.isComplete = true
-          return
-        }
-        const { prompt }: IRichCursorInputRequired = cursor
-        this.addToBlocksData({ prompt, isFocused: true })
-      } catch (e) {
-        if (e.message.includes('Unable to find factory for block type')) {
-          [, this.unsupportedBlockName] = e.message.split(': ')
-        }
-        console.warn(e.message)
+  async goNext() {
+    this.isComplete = false
+    try {
+      const cursor: IRichCursorInputRequired | undefined = await this.runner.run()
+      if (!cursor) {
+        this.isComplete = true
+        return
       }
-    },
+      const { prompt }: IRichCursorInputRequired = cursor
+      this.addToBlocksData({ prompt, isFocused: true })
+    } catch (e) {
+      if (e.message.includes('Unable to find factory for block type')) {
+        [, this.unsupportedBlockName] = e.message.split(': ')
+      }
+      console.warn(e.message)
+    }
+  }
 
-    async onEditComplete(index) {
-      this.setIsFocused({ index: this.blocksData.length - 1, value: true })
-      const backtracking: BasicBacktrackingBehaviour = this.runner.behaviours.basicBacktracking
-      const seekSteps = (this.blocksData.length - 1) - index
-      const cursor = await backtracking.seek(seekSteps, this.context)
+  async onEditComplete(index: number) {
+    this.setIsFocused({ index: this.blocksData.length - 1, value: true })
+    const backtracking: BasicBacktrackingBehaviour = this.runner.behaviours.basicBacktracking as BasicBacktrackingBehaviour
+    const seekSteps = (this.blocksData.length - 1) - index
+    const cursor = await backtracking.seek(seekSteps, this.context)
 
-      this.removeFromBlocksData(index)
-      this.addToBlocksData({ prompt: cursor.prompt, isFocused: true })
-    },
+    this.removeFromBlocksData(index)
+    this.addToBlocksData({ prompt: cursor.prompt, isFocused: true })
+  }
 
-    closeSimulator() {
-      this.setSimulatorActive(false)
-    },
-  },
+  closeSimulator() {
+    this.setSimulatorActive(false)
+  }
+
+  @flowVuexNamespace.Getter currentFlowsState!: IFlowsState
+
+  @clipboardVuexNamespace.Getter blocksData!: BlocksData[]
+  @clipboardVuexNamespace.Getter isBlockFocused!: boolean
+  @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
+  @clipboardVuexNamespace.Action resetBlocksData!: () => void
+  @clipboardVuexNamespace.Action setIsFocused!: (data: {index: number, value: boolean}) => void
+  @clipboardVuexNamespace.Action addToBlocksData!: (data: BlocksData) => void
+  @clipboardVuexNamespace.Action removeFromBlocksData!: (index: number) => void
 }
 </script>
 

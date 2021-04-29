@@ -2,10 +2,11 @@ import {
   ActionTree, GetterTree, Module, MutationTree,
 } from 'vuex'
 import { IRootState } from '@/store'
+import { IPrompt } from '@floip/flow-runner';
 
 export interface BlocksData {
   isFocused: boolean;
-  prompt: object;
+  prompt: IPrompt<any>;
 }
 
 export interface IClipboardState {
@@ -21,8 +22,8 @@ export const stateFactory = (): IClipboardState => ({
 export const getters: GetterTree<IClipboardState, IRootState> = {
   isSimulatorActive: (state) => state.isSimulatorActive,
   blocksData: (state) => state.blocksData,
-  getBlockPrompt: (state) => (index) => state.blocksData[index].prompt,
-  isBlockFocused: (state) => (index) => state.blocksData[index].isFocused,
+  getBlockPrompt: (state) => (index: number) => state.blocksData[index].prompt,
+  isBlockFocused: (state) => (index: number) => state.blocksData[index].isFocused,
 }
 
 export const mutations: MutationTree<IClipboardState> = {
@@ -52,10 +53,10 @@ export const actions: ActionTree<IClipboardState, IRootState> = {
     const lastIndex = state.blocksData.length - 1
     commit('setIsFocused', { index: lastIndex, value: true })
   },
-  addToBlocksData({ state }, data) {
+  addToBlocksData({ state }, data: BlocksData) {
     state.blocksData.push(data)
   },
-  removeFromBlocksData({ state }, index) {
+  removeFromBlocksData({ state }, index: number) {
     state.blocksData.splice(index)
   }
 }

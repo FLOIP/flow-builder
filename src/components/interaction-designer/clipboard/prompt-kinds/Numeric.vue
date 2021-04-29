@@ -24,7 +24,7 @@
 
       <block-action-buttons
         class="mt-3"
-        :is-disabled="isDisabled"
+        :is-disabled="!!errorMsg"
         :is-focused="isFocused"
         :on-next-clicked="submitAnswer"
         :is-block-interaction="isBlockInteraction"
@@ -32,78 +32,82 @@
       />
     </div>
 </template>
-<script>
-import { IContext } from '@floip/flow-runner'
-import { mapActions, mapGetters } from 'vuex'
-import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
-export default {
+<script lang="ts">
+import BlockActionButtons from '../shared/BlockActionButtons.vue'
+import Component, { mixins } from 'vue-class-component';
+import Lang from '@/lib/filters/lang';
+import { Prop } from 'vue-property-decorator';
+import { IPrompt } from '@floip/flow-runner';
+import { namespace } from 'vuex-class';
+
+const clipboardVuexNamespace = namespace('clipboard')
+
+@Component({
   components: {
-    BlockActionButtons,
+    BlockActionButtons
   },
-  props: {
-    context: IContext,
-    index: Number,
-    isComplete: Boolean,
-    goNext: Function,
-    onEditComplete: Function,
-  },
-  data() {
-    return {
-      enteredValue: '',
-      backUpValue: '',
-      errorMsg: null,
-      isBlockInteraction: false,
-    }
-  },
-  computed: {
-    ...mapGetters('clipboard', ['isBlockFocused', 'getBlockPrompt']),
-    isFocused() {
-      return this.isBlockFocused(this.index)
-    },
-    prompt() {
-      return this.getBlockPrompt(this.index)
-    },
-    isDisabled() {
-      return !!this.errorMsg
-    },
-  },
-  methods: {
-    ...mapActions('clipboard', ['setIsFocused', 'setLastBlockUnEditable', 'setLastBlockEditable']),
-    checkIsValid() {
-      const num = +this.enteredValue
-      try {
-        this.prompt.validate(num)
-        this.errorMsg = ''
-      } catch (e) {
-        this.errorMsg = e.message
-      }
-    },
-    async submitAnswer() {
-      this.checkIsValid()
-      if (!this.errorMsg) {
-        if (this.isBlockInteraction) {
-          await this.onEditComplete(this.index)
-          this.isBlockInteraction = false
-        }
-        this.prompt.value = +this.enteredValue
-        this.setIsFocused({ index: this.index, value: false })
-        this.goNext()
-      }
-    },
-    editBlock() {
-      this.setLastBlockUnEditable()
-      this.setIsFocused({ index: this.index, value: true })
-      this.isBlockInteraction = true
-      this.backUpValue = this.prompt.value
-    },
-    onCancel() {
-      this.setLastBlockEditable()
-      this.setIsFocused({ index: this.index, value: false })
-      this.isBlockInteraction = false
-      this.enteredValue = this.backUpValue
+})
+export default class Numeric extends mixins(Lang) {
+  @Prop() index!: number
+  @Prop() isComplete!: boolean
+  @Prop() goNext!: Function
+  @Prop() onEditComplete!: Function
+
+  isBlockInteraction = false
+  enteredValue = ''
+  backUpValue = ''
+  errorMsg: string | null = null
+
+  get isFocused() {
+    return this.isBlockFocused(this.index)
+  }
+  get prompt() {
+    return this.getBlockPrompt(this.index)
+  }
+
+  checkIsValid() {
+    const num = +this.enteredValue
+    try {
+      this.prompt.validate(num)
       this.errorMsg = ''
-    },
-  },
+    } catch (e) {
+      this.errorMsg = e.message
+    }
+  }
+
+  async submitAnswer() {
+    this.checkIsValid()
+    if (!this.errorMsg) {
+      if (this.isBlockInteraction) {
+        await this.onEditComplete(this.index)
+        this.isBlockInteraction = false
+      }
+      this.prompt.value = +this.enteredValue
+      this.setIsFocused({ index: this.index, value: false })
+      this.goNext()
+    }
+  }
+
+  editBlock() {
+    this.setLastBlockUnEditable()
+    this.setIsFocused({ index: this.index, value: true })
+    this.isBlockInteraction = true
+    this.backUpValue = this.prompt.value
+  }
+
+  onCancel() {
+    this.setLastBlockEditable()
+    this.setIsFocused({ index: this.index, value: false })
+    this.isBlockInteraction = false
+    this.enteredValue = this.backUpValue
+    this.errorMsg = ''
+  }
+
+  @clipboardVuexNamespace.Getter isBlockFocused!: (index: number) => boolean
+  @clipboardVuexNamespace.Getter getBlockPrompt!: (index: number) => IPrompt<any>
+  @clipboardVuexNamespace.Action setIsFocused!: (data: { index: number, value: boolean }) => void
+  @clipboardVuexNamespace.Action setLastBlockUnEditable!: () => void
+  @clipboardVuexNamespace.Action setLastBlockEditable!: () => void
 }
 </script>
