@@ -36,18 +36,20 @@ export default class BuilderCanvas extends Vue {
 
   @Watch('blocksOnActiveFlowForWatcher', { deep: true, immediate: true })
   async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]) {
-    if (!!newBlocks && newBlocks.length > 0) {
-      console.debug('blocks inside active flow have changed, validating ...');
-      for (let i = 0;  i < newBlocks.length; i++) {
-        const currentNewBlock = newBlocks[i]
-        const currentOldBlock = find(oldBlocks, { 'uuid': currentNewBlock.uuid })
+    if (newBlocks.length === 0) {
+      return
+    }
 
-        if (isEqual(currentNewBlock, currentOldBlock)) {
-          continue; // no changes found
-        }
+    console.debug('blocks inside active flow have changed, validating ...')
+    for (let i = 0;  i < newBlocks.length; i++) {
+      const currentNewBlock = newBlocks[i]
+      const currentOldBlock = find(oldBlocks, { 'uuid': currentNewBlock.uuid })
 
-        await this.validate_block({ block: currentNewBlock });
+      if (isEqual(currentNewBlock, currentOldBlock)) {
+        continue // no changes found
       }
+
+      await this.validate_block({ block: currentNewBlock })
     }
   }
 
