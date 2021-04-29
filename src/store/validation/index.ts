@@ -146,15 +146,15 @@ export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchem
 function debugValidationStatus(status: IValidationStatus, customMessage: string) {
   if (status) {
     console.debug(
+      'store/validation:',
       customMessage,
       ' | isValid:', status.isValid,
       ' | error dataPaths:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'dataPath', 'undefined')).join(';') : 'undefined'}`,
       ' | error messages:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
       ' | error details:', status
     )
-    console.log(JSON.stringify(status))
   } else {
-    console.debug('the status in debugValidationStatus was undefined')
+    console.debug('store/validation:','the status in debugValidationStatus was undefined')
   }
 }
 
@@ -166,7 +166,7 @@ function flatValidationStatuses({ keyPrefix, errors, accumulator }: { keyPrefix:
       // error.dataPath could be empty or not for such errors
       index = `${keyPrefix}${error.schemaPath}`
       message = `${error.message}, for params ${JSON.stringify(error.params)}`
-      console.error(`Schema issue found on ${index}: ${message}`)
+      console.error('store/validation:', `Schema issue found on ${index}: ${message}`)
     } else {
       index = `${keyPrefix}${error.dataPath}`
       message = error.message as string

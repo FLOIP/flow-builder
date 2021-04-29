@@ -30,7 +30,7 @@ const validationVuexNamespace = namespace('validation')
 export default class BuilderCanvas extends Vue {
   @Watch('activeFlow', { deep: true, immediate: true })
   async onActiveFlowChanged(newFlow: IFlow) {
-    console.debug('active flow has changed, validating ...', newFlow)
+    console.debug('watch/activeFlow:', 'active flow has changed, validating ...')
     await this.validate_flow({ flow: newFlow })
   }
 
@@ -40,7 +40,7 @@ export default class BuilderCanvas extends Vue {
       return
     }
 
-    console.debug('blocks inside active flow have changed, validating ...')
+    console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed, validating ...')
     for (let i = 0;  i < newBlocks.length; i++) {
       const currentNewBlock = newBlocks[i]
       const currentOldBlock = find(oldBlocks, { 'uuid': currentNewBlock.uuid })
