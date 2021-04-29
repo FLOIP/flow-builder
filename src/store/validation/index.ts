@@ -33,7 +33,17 @@ export const stateFactory = (): IValidationState => ({
 
 export const getters: GetterTree<IValidationState, IRootState> = {
   /**
-   * Human readable errors, keys are index like `flow/flowId/.path/.to/.prop`.
+   * Human readable errors, keys are index like `flow/flowId/.path.to.prop`
+   * check this repo to see more available example: https://github.com/ajv-validator/ajv-i18n/blob/master/messages/index.js
+   * eg:
+   * {
+   *   "flow/949b129a-ecf3-46b5-89a5-0a6ed577bc29/.blocks": "should NOT have fewer than 1 items",
+   *   "flow/949b129a-ecf3-46b5-89a5-0a6ed577bc29/.first_block_id": "should match pattern \"^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$\"",
+   *   "flow/949b129a-ecf3-46b5-89a5-0a6ed577bc29/.interaction_timeout": "should be number",
+   *   "flow/949b129a-ecf3-46b5-89a5-0a6ed577bc29/.languages": "should NOT have fewer than 1 items",
+   *   "flow/949b129a-ecf3-46b5-89a5-0a6ed577bc29/.supported_modes": "should NOT have fewer than 1 items"
+   * }
+   *
    * Note that indexedErrors has more elements than validationStatuses.
    */
   flattenErrorMessages(state): IIndexedString {
@@ -142,6 +152,7 @@ function debugValidationStatus(status: IValidationStatus, customMessage: string)
       ' | error messages:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
       ' | error details:', status
     )
+    console.log(JSON.stringify(status))
   } else {
     console.debug('the status in debugValidationStatus was undefined')
   }
