@@ -157,6 +157,15 @@
             </button>
             <slot name="right-grouped-buttons"/>
           </div>
+
+          <div class="btn-group pull-right mr-2" v-if="hasSimulator">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="setSimulatorActive(true)">
+              {{trans('flow-builder.show-clipboard-simulator')}}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -186,6 +195,7 @@ Vue.use(VBTooltipPlugin)
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
+const clipboardVuexNamespace = namespace('clipboard')
 
 @Component({
   components: {
@@ -311,6 +321,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
   }
 
+  get hasSimulator() {
+    return this.hasOfflineMode && this.isFeatureSimulatorEnabled
+  }
+
   // Methods #####################
 
   async handleAddBlockByTypeSelected({ type } : { type: IBlock['type']}) {
@@ -408,6 +422,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @Getter isFeatureTreeDuplicateEnabled!: boolean
   @Getter isFeatureViewResultsEnabled!: boolean
   @Getter isFeatureUpdateInteractionTotalsEnabled!: boolean
+  @Getter isFeatureSimulatorEnabled!: boolean
   @Getter isResourceEditorEnabled!: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
   @Action attemptSaveTree!: void
@@ -415,6 +430,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   // Flow
   @flowVuexNamespace.Getter activeFlow?: IFlow
   @flowVuexNamespace.Getter activeFlowContainer?: IContext
+  @flowVuexNamespace.Getter hasOfflineMode?: boolean
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.State resources?: IResourceDefinition[]
   @flowVuexNamespace.Action flow_removeBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => void
@@ -428,6 +444,9 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @builderVuexNamespace.Getter activeBlock?: IBlock
   @builderVuexNamespace.Action importFlowsAndResources!: ({ flows, resources }: { flows: IFlow[]; resources: IResourceDefinition[]}) => Promise<void>
   @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
+
+  // Clipboard
+  @clipboardVuexNamespace.Action setSimulatorActive: (value: boolean) => void
 }
 </script>
 
