@@ -1,7 +1,7 @@
 import { ISelectOneResponseBlock } from "@floip/flow-runner/dist/model/block/ISelectOneResponseBlock"
 import { IBlockExit } from "@floip/flow-runner"
 import { IdGeneratorUuidV4 } from "@floip/flow-runner/dist/domain/IdGeneratorUuidV4"
-import { defaults } from 'lodash'
+import { defaultsDeep } from 'lodash'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IFlowsState } from '@/store/flow'
 import { IRootState } from '@/store'
@@ -13,7 +13,7 @@ import {
   stateFactory,
 } from './MobilePrimitives_SelectOneResponseBlockStore'
 
-export const BLOCK_TYPE = 'MobilePrimitives\\SelectManyResponse'
+export const BLOCK_TYPE = 'MobilePrimitives.SelectManyResponse'
 
 export const getters: GetterTree<ICustomFlowState, IRootState> = {
   ...selectOneGetters,
@@ -32,32 +32,32 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     const blankChoicesPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
 
     const defaultExitProps: Partial<IBlockExit> = {
-      uuid: (new IdGeneratorUuidV4()).generate(),
+      uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Default',
       label: 'Default',
     }
 
     const errorExitProps: Partial<IBlockExit> = {
-      uuid: (new IdGeneratorUuidV4()).generate(),
+      uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Error',
       label: 'Error',
     }
 
     await dispatch('createVolatileEmptyChoice', { index: 0 })
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits: [
         await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true }),
         await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true }),
       ],
       config: {
         prompt: blankPromptResource.uuid,
-        questionPrompt: blankQuestionPromptResource.uuid,
-        choicesPrompt: blankChoicesPromptResource.uuid,
+        question_prompt: blankQuestionPromptResource.uuid,
+        choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
       },
     })

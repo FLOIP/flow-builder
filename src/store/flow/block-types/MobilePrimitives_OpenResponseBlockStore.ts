@@ -5,10 +5,10 @@ import {
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IOpenResponseBlock } from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
-import { defaults } from 'lodash'
+import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'MobilePrimitives\\OpenResponse'
+export const BLOCK_TYPE = 'MobilePrimitives.OpenResponse'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
@@ -21,7 +21,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId: activeBlock.uuid,
       key: 'ivr',
       value: {
-        maxDurationSeconds: newDuration,
+        max_duration_seconds: newDuration,
       },
     }, { root: true })
     return newDuration
@@ -29,7 +29,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async setMaxResponseCharacters({ commit, rootGetters }, newLength: number) {
     const activeBlock = rootGetters['builder/activeBlock']
     const value = {
-      maxResponseCharacters: newLength,
+      max_response_characters: newLength,
     }
     commit('flow/block_updateConfigByKey', {
       blockId: activeBlock.uuid,
@@ -42,14 +42,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
       }, { root: true }),
       await dispatch('flow/block_createBlockExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Error',
           label: 'Error',
         }) as IBlockExit,
@@ -59,11 +59,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     commit('flow/resource_add', { resource: blankResource }, { root: true })
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits,
       config: {
         prompt: blankResource.uuid,

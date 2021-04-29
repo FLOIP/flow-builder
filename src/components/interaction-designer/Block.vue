@@ -31,16 +31,16 @@
           {{trans(`flow-builder.${block.type}`)}}
         </p>
 
-        <h3 class="block-label"
+        <h3 class="block-label" :style="{ maxWidth: `${this.labelContainerMaxWidth}px` }"
             :class="{'empty': !block.label}">
           {{block.label || 'Untitled block'}}
         </h3>
       </header>
 
-      <div class="block-exits">
+      <div class="block-exits d-flex" :ref="`block/${block.uuid}/exits`" :id="`block/${block.uuid}/exits`">
         <div v-for="(exit, key) in block.exits"
              :key="exit.uuid"
-             class="block-exit"
+             class="block-exit col flex-shrink-1 pb-1 pt-1 pl-3 pr-3"
              :class="{
                'initial': false,
                'pending': isConnectionSourceRelocateActive,
@@ -57,10 +57,10 @@
 
           <h3 class="block-exit-tag badge badge-warning">{{visibleExitTag(key, exit)}}</h3>
 
-          <template v-if="exit.destinationBlock == null">
+          <template v-if="exit.destination_block == null">
             <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
                              :class="{
-                                 'btn-info': exit.destinationBlock != null,
+                                 'btn-info': exit.destination_block != null,
                              }"
                              :id="`exit/${exit.uuid}/pseudo-block-handle`"
                              :key="`exit/${exit.uuid}/pseudo-block-handle`"
@@ -69,14 +69,15 @@
                              @initialized="handleDraggableInitializedFor(exit, $event)"
                              @dragStarted="onCreateExitDragStarted($event, exit)"
                              @dragged="onCreateExitDragged($event)"
-                             @dragEnded="onCreateExitDragEnded($event, exit)">
+                             @dragEnded="onCreateExitDragEnded($event, exit)"
+                             @destroyed="handleDraggableDestroyedFor(exit)">
               <i class="glyphicon glyphicon-move"></i>
             </plain-draggable>
 
             <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
               <div class="handle-move-link btn btn-secondary btn-xs"
                    :class="{
-                                 'btn-info': exit.destinationBlock != null,
+                                 'btn-info': exit.destination_block != null,
                              }"
                    :id="`exit/${exit.uuid}/handle`">
                 <i class="glyphicon glyphicon-move"></i>
@@ -85,17 +86,17 @@
               <connection :key="`exit/${exit.uuid}/line-for-draft`"
                           :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
                           :source="block"
-                          :target="blocksById[exit.destinationBlock]"
+                          :target="blocksById[exit.destination_block]"
                           :exit="exit"
                           :position="livePosition"
                           :color-category="blockClasses[block.type].category" />
             </template>
           </template>
 
-          <template v-if="exit.destinationBlock != null">
+          <template v-if="exit.destination_block != null">
             <plain-draggable class="block-exit-move-handle handle-move-link btn btn-outline-secondary btn-xs btn-flat"
                              :class="{
-                                 // 'btn-secondary': exit.destinationBlock != null,
+                                 // 'btn-secondary': exit.destination_block != null,
                              }"
                              :id="`exit/${exit.uuid}/handle`"
                              :key="`exit/${exit.uuid}/handle`"
@@ -104,7 +105,8 @@
                              @initialized="handleDraggableInitializedFor(exit, $event)"
                              @dragStarted="onMoveExitDragStarted($event, exit)"
                              @dragged="onMoveExitDragged($event)"
-                             @dragEnded="onMoveExitDragEnded($event, exit)">
+                             @dragEnded="onMoveExitDragEnded($event, exit)"
+                             @destroyed="handleDraggableDestroyedFor(exit)">
               <i class="glyphicon glyphicon-move"></i>
             </plain-draggable>
 
@@ -118,7 +120,7 @@
             <connection :key="`exit/${exit.uuid}/line`"
                         :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
                         :source="livePosition ? null : block"
-                        :target="blocksById[exit.destinationBlock]"
+                        :target="blocksById[exit.destination_block]"
                         :exit="exit"
                         :position="livePosition"
                         :color-category="blockClasses[block.type].category" />
@@ -140,7 +142,7 @@ import PlainDraggable from '@/components/common/PlainDraggable.vue'
 import { ResourceResolver, SupportedMode } from '@floip/flow-runner'
 import { OperationKind, generateConnectionLayoutKeyFor } from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import {BLOCK_TYPE as BLOCK_TYPE__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
 import {BLOCK_TYPE as BLOCK_TYPE__SELECT_ONE_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {BLOCK_TYPE as BLOCK_TYPE__SELECT_MANY_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
@@ -148,6 +150,8 @@ import {BLOCK_TYPE as BLOCK_TYPE__SELECT_MANY_BLOCK} from '@/store/flow/block-ty
 import { BTooltip } from 'bootstrap-vue'
 
 Vue.component('b-tooltip', BTooltip)
+
+const LABEL_CONTAINER_MAX_WIDTH = 650
 
 export default {
   props: ['block', 'x', 'y'],
@@ -161,10 +165,25 @@ export default {
     this.draggablesByExitId = {} // todo: these need to be (better) lifecycle-managed (eg. mcq add/remove exit).
   },
 
+  mounted() {
+    this.$nextTick(function () {
+      this.updateLabelContainerMaxWidth()
+    })
+  },
+
   data() {
     return {
       livePosition: null,
+      labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
       // draggablesByExitId: {}, // no need to vuejs-observe these
+    }
+  },
+
+  watch: {
+    blockExitsLength(newValue, oldValue) {
+      this.$nextTick(function () {
+        this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
+      })
     }
   },
 
@@ -176,6 +195,10 @@ export default {
     }),
 
     ...mapGetters('builder', ['blocksById', 'isEditable']),
+
+    blockExitsLength() {
+      return this.block.exits.length
+    },
 
     hasLayout() {
       return isNumber(this.x) && isNumber(this.y)
@@ -230,6 +253,30 @@ export default {
 
     ...mapMutations('builder', ['activateBlock']),
 
+    updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
+      const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`) // one exit
+
+      if (!blockExitElement) {
+        console.debug('blockExitWidth', 'DOM not ready yet on',`#block\\/${this.block.uuid} .block-exit`)
+        return;
+      }
+
+      // This allows us to shrink .block-exit into the min-width before extending the block label container
+      if(isRemoving) { // Removing exit
+        if (LABEL_CONTAINER_MAX_WIDTH < (blockExitsLength - 1) * blockExitElement.offsetWidth) { // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible
+          this.labelContainerMaxWidth = (blockExitsLength -1) * blockExitElement.offsetWidth// but set with `n x {outer width}`
+          return;
+        }
+      } else { // Adding new exit
+        if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) { // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible (especially when removing exits)
+          this.labelContainerMaxWidth = blockExitsLength * blockExitElement.offsetWidth// but set with `n x {outer width}`
+          return;
+        }
+      }
+
+      this.labelContainerMaxWidth = LABEL_CONTAINER_MAX_WIDTH
+    },
+
     resolveTextResource(uuid) {
       const { resources } = this
       const context = {
@@ -246,15 +293,15 @@ export default {
     },
 
     visibleExitTag(key, exit) {
-      if (!exit.tag && !exit.semanticLabel) {
+      if (!exit.tag && !exit.semantic_label) {
         return '—'
       }
 
       const { block } = this
       if (block.type === BLOCK_TYPE__CASE_BLOCK) {
         return `${key + 1}: ${exit.tag}`
-      } else if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semanticLabel) {
-        return exit.semanticLabel
+      } else if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semantic_label) {
+        return exit.semantic_label
       }
 
       return exit.tag
@@ -313,6 +360,7 @@ export default {
     removeConnectionFrom(exit) {
       const { block } = this
       this._removeConnectionFrom({ block, exit })
+      this.labelContainerMaxWidth = this.labelContainerMaxWidth + 0 // force render, useful if the exit label is very short
     },
 
     handleDraggableInitializedFor({ uuid }, { draggable }) {
@@ -322,6 +370,10 @@ export default {
       const { uuid: blockId } = this.block
 
       console.debug('Block', 'handleDraggableInitializedFor', { blockId, exitId: uuid, coords: { left, top } })
+    },
+
+    handleDraggableDestroyedFor({ uuid }) {
+      delete this.draggablesByExitId[uuid]
     },
 
     onCreateExitDragStarted({ draggable }, exit) {
@@ -412,7 +464,7 @@ export default {
     top: 0;
     z-index: 1*10;
 
-    min-width: 122px;
+    min-width: 300px;
     padding: 0.4em;
     padding-bottom: 0.25em;
     scroll-margin: 35px;
@@ -433,6 +485,10 @@ export default {
     .block-label {
       font-size: 14px;
       font-weight: normal;
+      min-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &.empty {
         color: #aaa;
@@ -461,7 +517,6 @@ export default {
     }
 
     .block-exits {
-      display: flex;
       white-space: nowrap;
       position: relative;
       top: 0em;
@@ -472,18 +527,15 @@ export default {
         border: 1px dashed transparent;
         transition: border-radius 200ms ease-in-out;
 
-        /*flex: auto;*/
-        min-width: 6em;
-        max-width: 140px;
+        min-width: 25px;
+        max-width: 100px;
 
-        padding: 0.25em 1em;
         text-align: center;
 
         .block-exit-tag  {
           display: block;
 
-          min-width: 6em;
-          max-width: 140px;
+          min-width: 25px;
 
           margin: 0 0 0.5em 0;
           padding: 0.4em;

@@ -5,10 +5,10 @@ import {
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
-import { defaults } from 'lodash'
+import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'SmartDevices\\LocationResponse'
+export const BLOCK_TYPE = 'SmartDevices.LocationResponse'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
@@ -18,7 +18,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async setAccuracyThreshold({ commit, rootGetters }, { blockId, value }: {blockId: string; value: number}) {
     commit('flow/block_updateConfigByKey', {
       blockId,
-      key: 'accuracyThresholdMeters',
+      key: 'accuracy_threshold_meters',
       value,
     }, { root: true })
     return value
@@ -26,7 +26,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async setAccuracyTimeout({ commit, rootGetters }, { blockId, value }: {blockId: string; value: number}) {
     commit('flow/block_updateConfigByKey', {
       blockId,
-      key: 'accuracyTimeoutSeconds',
+      key: 'accuracy_timeout_seconds',
       value,
     }, { root: true })
     return value
@@ -35,29 +35,29 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
       }, { root: true }),
       await dispatch('flow/block_createBlockExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Error',
           label: 'Error',
         }) as IBlockExit,
       }, { root: true }),
     ]
 
-    return defaults(props, {
+    return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits,
       config: {
-        accuracyThresholdMeters: 5.0,
-        accuracyTimeoutSeconds: 120,
+        accuracy_threshold_meters: 5.0,
+        accuracy_timeout_seconds: 120,
       },
     })
   },

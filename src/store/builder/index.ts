@@ -7,7 +7,7 @@ import {
 } from 'vuex'
 import { IRootState } from '@/store'
 import {
-  IBlockExit, IBlock, SupportedMode, ValidationException,
+  IBlockExit, IBlock, IFlow, IResourceDefinition, SupportedMode, ValidationException,
 } from '@floip/flow-runner'
 import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block'
 import { createFormattedDate } from '@floip/flow-runner/dist/domain/DateFormat'
@@ -63,7 +63,7 @@ export interface IBuilderState {
 
 export const stateFactory = (): IBuilderState => ({
   activeBlockId: null,
-  isEditable: false,
+  isEditable: true,
   activeConnectionsContext: [],
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: {
@@ -109,21 +109,19 @@ export const mutations: MutationTree<IBuilderState> = {
     state.activeConnectionsContext = filter(state.activeConnectionsContext, (context) => context !== connectionContext)
   },
 
-  setOperation({ operations }, { operation }: {operation: SupportedOperation}) {
-    // TODO - type checking - remove this ignore and fix these errors - they seem to be quite serious but I'm not sure how to resolve them
-    // @ts-ignore
+  setOperation({ operations }: { operations: any }, { operation }: { operation: SupportedOperation }) {
     operations[operation.kind] = operation
   },
 
   setBlockPositionTo(state, { position: { x, y }, block }) {
-    // todo: ensure our platform_metadata.io_viamo is always instantiated with builder // uiData props
-    // if (!block.platform_metadata.io_viamo.uiData) {
-    //   defaultsDeep(block, {platform_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
-    //   Vue.observable(block.platform_metadata.io_viamo.uiData)
+    // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder // uiData props
+    // if (!block.vendor_metadata.io_viamo.uiData) {
+    //   defaultsDeep(block, {vendor_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
+    //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
     // }
 
-    block.platform_metadata.io_viamo.uiData.xPosition = x
-    block.platform_metadata.io_viamo.uiData.yPosition = y
+    block.vendor_metadata.io_viamo.uiData.xPosition = x
+    block.vendor_metadata.io_viamo.uiData.yPosition = y
   },
 
   setIsEditable(state, value) {
@@ -305,7 +303,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    */
   async importFlowsAndResources({
     dispatch, commit, state, rootState,
-  }, { flows, resources }) {
+  }, { flows, resources }: { flows: IFlow[]; resources: IResourceDefinition[]}) {
     console.debug('importing flows & resources ...')
     console.log({ flows, resources })
     const { flow: flowState } = rootState
@@ -317,19 +315,17 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
 
     // add default activated modes if not set yet
     for (const key in flows) {
-      if (!flows[key].hasOwnProperty('supportedModes') || !flows[key].supportedModes.length) {
-        flows[key].supportedModes = defaultSupportedMode
+      if (!flows[key].hasOwnProperty('supported_modes') || !flows[key].supported_modes.length) {
+        flows[key].supported_modes = defaultSupportedMode
       }
     }
 
     // Update flow state
     flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flows)
-    flowState.firstFlowId = flows[0].uuid
+    flowState.first_flow_id = flows[0].uuid
     flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resources)
 
     // make sure we use the same languages ids on both UI & Flows
-    // TODO - type checking - remove this and resolve the error
-    // @ts-ignore
     rootState.trees.ui.languages = flows[0].languages
   },
   setIsEditable({ commit }, value) {
@@ -360,8 +356,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
-    [get(source, 'platform_metadata.io_viamo.uiData.xPosition'), get(source, 'platform_metadata.io_viamo.uiData.yPosition')],
-    [get(target, 'platform_metadata.io_viamo.uiData.xPosition'), get(target, 'platform_metadata.io_viamo.uiData.yPosition')],
+    [get(source, 'vendor_metadata.io_viamo.uiData.xPosition'), get(source, 'vendor_metadata.io_viamo.uiData.yPosition')],
+    [get(target, 'vendor_metadata.io_viamo.uiData.xPosition'), get(target, 'vendor_metadata.io_viamo.uiData.yPosition')],
 
     // block titles
     source.label,
@@ -373,12 +369,12 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   ]
 }
 
-export function computeBlockPositionsFrom(block: IBlock | null) {
+export function computeBlockPositionsFrom(block?: IBlock | null) {
   const xDelta = 80; const
     yDelta = 80
 
-  let xPosition = get(block, 'platform_metadata.io_viamo.uiData.xPosition')
-  let yPosition = get(block, 'platform_metadata.io_viamo.uiData.yPosition')
+  let xPosition = get(block, 'vendor_metadata.io_viamo.uiData.xPosition')
+  let yPosition = get(block, 'vendor_metadata.io_viamo.uiData.yPosition')
 
   if (!xPosition || !yPosition) {
     const viewPortCenter = getViewportCenter()

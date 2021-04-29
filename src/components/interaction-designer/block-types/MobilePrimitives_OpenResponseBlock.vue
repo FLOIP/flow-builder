@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mobile-primitive-open-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
@@ -16,7 +16,7 @@
                        :resource="promptResource"
                        :block="block"
                        :flow="flow" />
-
+      <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -27,7 +27,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -38,7 +37,7 @@ import {
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import OpenResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -48,25 +47,25 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import BlockMaxDurationSecondsEditor from '../block-editors/MaxDurationSecondsEditor.vue'
 import BlockMaxResponseCharactersEditor from '../block-editors/MaxResponseCharactersEditor.vue'
+import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-      BlockMaxDurationSecondsEditor,
-      BlockMaxResponseCharactersEditor,
-    },
-    mixins: [lang],
-  })
-class MobilePrimitives_OpenResponseBlock extends Vue {
+@Component({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+    BlockMaxDurationSecondsEditor,
+    BlockMaxResponseCharactersEditor,
+  },
+})
+class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
     @Prop()readonly block!: IOpenResponseBlock
 
     @Prop()readonly flow!: IFlow
@@ -77,9 +76,9 @@ class MobilePrimitives_OpenResponseBlock extends Vue {
 
     @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
 
-    @flowVuexNamespace.Getter hasTextMode
+    @flowVuexNamespace.Getter hasTextMode!: boolean
 
-    @flowVuexNamespace.Getter hasVoiceMode
+    @flowVuexNamespace.Getter hasVoiceMode!: boolean
 
     @blockVuexNamespace.Action setMaxDurationSeconds!: (newDuration: number) => Promise<string>
 

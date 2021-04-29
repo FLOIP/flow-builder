@@ -14,7 +14,7 @@
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
 import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 
 export default {
   components: {
@@ -40,7 +40,7 @@ export default {
   computed: {
     maxResponse: {
       get() {
-        return get(this.block, 'config.text.maxResponseCharacters', '')
+        return get(this.block, 'config.text.max_response_characters', '')
       },
       set(value) {
         this.$emit('commitMaxResponseCharactersChange', value)

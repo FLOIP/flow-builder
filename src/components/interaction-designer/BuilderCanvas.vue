@@ -9,8 +9,8 @@
            :ref="`block/${block.uuid}`"
            :id="`block/${block.uuid}`"
            :block="block"
-           :x="block.platform_metadata.io_viamo.uiData.xPosition"
-           :y="block.platform_metadata.io_viamo.uiData.yPosition" />
+           :x="block.vendor_metadata.io_viamo.uiData.xPosition"
+           :y="block.vendor_metadata.io_viamo.uiData.yPosition" />
   </div>
 </template>
 
