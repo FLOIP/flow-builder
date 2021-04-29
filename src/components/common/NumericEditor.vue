@@ -6,7 +6,7 @@
           type="number"
           min="0"
           class="form-control"
-          :class="{ 'is-invalid': validationState }"
+          :class="{ 'is-invalid': isInvalid }"
           :placeholder="placeholder"
           :value="value"
           @keypress="filterNumeric"
@@ -21,7 +21,7 @@
 <script>
 export default {
   props: {
-    validationState: {
+    validState: {
       type: Boolean,
       default: null,
       required: false,
@@ -43,6 +43,12 @@ export default {
       required: false,
       default: '[0-9\-]',
     },
+  },
+  computed: {
+    isInvalid() {
+      // strict comparison, because `undefined` doesn't mean invalid
+      return this.validState === false
+    }
   },
   methods: {
     filterNumeric(e) {

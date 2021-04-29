@@ -1,10 +1,10 @@
 <template>
   <div class="validation-message">
-    <slot name="input-control" :isInvalid="isInvalid"></slot>
+    <slot name="input-control" :isValid="isValid"></slot>
     <b-alert
       variant="warning"
       fade
-      :show="isInvalid"
+      :show="!isValid"
     >
       {{ errorMessage }} <a :href="messageKey" class="alert-link float-right" v-if="showFixAction">{{ trans('flow-builder.fix-it') }}</a>
     </b-alert>
@@ -38,8 +38,8 @@ class ValidationMessage extends mixins(Lang) {
     return this.flattenErrorMessages[this.messageKey]
   }
 
-  get isInvalid() {
-    return !!this.errorMessage
+  get isValid() {
+    return !this.errorMessage
   }
 
   @validationVuexNamespace.Getter flattenErrorMessages!: IIndexedString
