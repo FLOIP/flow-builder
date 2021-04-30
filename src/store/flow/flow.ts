@@ -258,9 +258,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       // Let's just create all the modes. We might need them but if they are switched off they just don't get used
       Object.values(SupportedMode).forEach((mode: SupportedMode) => {
         memo.push({
-          languageId: language.id,
+          language_id: language.id,
           value: '',
-          contentType: discoverContentTypesFor(mode),
+          content_type: discoverContentTypesFor(mode),
           modes: [
             mode,
           ],

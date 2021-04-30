@@ -136,11 +136,11 @@ export default {
 
       set(value) {
         const { resourceId, mode } = this
-        const { languageId, contentType } = this.resourceVariant
+        const { language_id: languageId, content_type: contentType } = this.resourceVariant
 
         this.resource_setOrCreateValueModeSpecific({
           resourceId,
-          filter: { languageId, contentType, modes: [mode] },
+          filter: { language_id: languageId, content_type: contentType, modes: [mode] },
           value,
         })
       },

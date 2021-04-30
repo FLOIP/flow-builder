@@ -24,7 +24,7 @@
             <resource-variant-text-editor :resource-id="messageResource.uuid"
                                           :resource-variant="findOrGenerateStubbedVariantOn(
                                             messageResource,
-                                            {languageId, contentType: ['text'], modes: [mode]})"
+                                            {language_id: languageId, content_type: ['text'], modes: [mode]})"
                                           :mode="mode"
                                           :enable-autogen-button="true || enableAutogenButton" />
           </template>

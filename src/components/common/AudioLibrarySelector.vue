@@ -60,14 +60,14 @@ export default {
     clearSelection() {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
-        filter: { languageId: this.langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
+        filter: { language_id: this.langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
         value: '',
       })
     },
     selectAudioFile({ value, langId }) {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
-        filter: { languageId: langId, contentType: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
+        filter: { language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
         value: value.description,
       })
     },
