@@ -10,10 +10,10 @@
       <block-semantic-label-editor :block="block" />
 
       <div v-for="(exit,i) in exits" class="form-group form-inline">
-        <validation-message :message-key="`block/${block.uuid}/.exits[${i}].tag`" #input-control="{ isInvalid }">
+        <validation-message :message-key="`block/${block.uuid}/.exits[${i}].tag`" #input-control="{ isValid }">
           <expression-editor :label="i+1"
               :placeholder="'flow-builder.edit-expression' | trans"
-              :validationState="isInvalid"
+              :validState="isValid"
               :current-expression="exit.test"
               :expression-identifier="exit.uuid"
               @commitExpressionChange="editCaseBlockExit"/>

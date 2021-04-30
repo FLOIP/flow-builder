@@ -1,11 +1,11 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.validation_maximum`" #input-control="{ isInvalid }">
+  <validation-message :message-key="`block/${block.uuid}/.config.validation_maximum`" #input-control="{ isValid }">
     <div class="form-group block-validation-max">
       <numeric-editor v-model.number="maxValue"
           :regex-numeric-filtering="'[0-9]'"
           :label="'flow-builder.maximum-value-(inclusive)' | trans"
           :placeholder="'flow-builder.enter-value' | trans"
-          :validationState="isInvalid">
+          :validState="isValid">
       </numeric-editor>
     </div>
   </validation-message>

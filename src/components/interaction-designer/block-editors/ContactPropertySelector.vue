@@ -1,11 +1,11 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.set_contact_property.property_key`" #input-control="{ isInvalid }">
+  <validation-message :message-key="`block/${block.uuid}/.config.set_contact_property.property_key`" #input-control="{ isValid }">
     <div class="block-contact-property form-group">
       <label>{{'flow-builder.contact-property-label' | trans}}</label>
       <vue-multiselect v-model="selectedProperty"
                        track-by="id"
                        label="displayLabel"
-                       :class="{invalid: isInvalid}"
+                       :class="{invalid: isValid === false}"
                        :placeholder="'flow-builder.contact-property-selector-placeholder' | trans"
                        :options="subscriberPropertyFields || []"
                        :allow-empty="false"

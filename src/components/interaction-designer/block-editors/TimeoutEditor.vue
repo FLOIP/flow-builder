@@ -1,11 +1,11 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.accuracy_timeout_seconds`" #input-control="{ isInvalid }">
+  <validation-message :message-key="`block/${block.uuid}/.config.accuracy_timeout_seconds`" #input-control="{ isValid }">
     <div class="form-group block-timeout">
       <numeric-editor v-model.number="timeout"
           :regex-numeric-filtering="'[0-9]'"
           :label="'flow-builder.accuracy-timeout-in-seconds' | trans"
           :placeholder="'flow-builder.enter-value' | trans"
-          :validationState="isInvalid">
+          :validState="isValid">
       </numeric-editor>
     </div>
   </validation-message>
@@ -28,7 +28,7 @@ export default {
       type: Object,
       required: true,
     },
-    validationState: {
+    validState: {
       type: Boolean,
       default: null, // to tell boostrap `No state`
       required: false,

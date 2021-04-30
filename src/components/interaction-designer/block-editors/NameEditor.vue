@@ -1,10 +1,10 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isInvalid }">
+  <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid }">
     <div class="block-name">
       <text-editor v-model="name"
                    :label="'flow-builder.block-name' | trans"
                    :placeholder="'flow-builder.enter-block-name' | trans"
-                   :validationState="isInvalid"
+                   :validState="isValid"
                    @keydown="filterName">
         <small class="text-muted">
           {{'flow-builder.only-accepts-word-characters' | trans}}

@@ -3,7 +3,7 @@
     <label>{{label}}</label>
     <textarea
         class="form-control"
-        :class="{ 'is-invalid': validationState }"
+        :class="{ 'is-invalid': isInvalid }"
         :placeholder="placeholder"
         :value="value"
         @keydown="$emit('keydown', $event)"
@@ -27,11 +27,16 @@ export default {
       type: String,
       required: true,
     },
-    validationState: {
+    validState: {
       type: Boolean,
       default: null,
       required: false,
     },
   },
+  computed: {
+    isInvalid() {
+      return this.validState === false
+    }
+  }
 }
 </script>

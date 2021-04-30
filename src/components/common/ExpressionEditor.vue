@@ -3,7 +3,7 @@
       v-model="expression"
       :label="label"
       :placeholder="placeholder"
-      :validationState="validationState" />
+      :validState="validState" />
 </template>
 
 <script>
@@ -30,7 +30,7 @@ export default {
       type: [String, Number],
       default: null,
     },
-    validationState: {
+    validState: {
       type: Boolean,
       default: null,
       required: false,

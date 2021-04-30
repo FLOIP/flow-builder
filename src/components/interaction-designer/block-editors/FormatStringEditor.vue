@@ -1,10 +1,10 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.format_string`" #input-control="{ isInvalid }">
+  <validation-message :message-key="`block/${block.uuid}/.config.format_string`" #input-control="{ isValid }">
     <div class="block-format-string">
       <text-editor v-model="formatString"
           :label="'flow-builder.format-string' | trans"
           :placeholder="'flow-builder.enter-format-string' | trans"
-          :validationState="isInvalid" />
+          :validState="isValid" />
     </div>
   </validation-message>
 </template>
