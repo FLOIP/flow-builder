@@ -1,7 +1,7 @@
 import {
   IContext,
-  IResourceDefinition,
-  IResourceDefinitionContentTypeSpecific as IResourceDefinitionVariantOverModes,
+  IResource,
+  IResourceValue as IResourceDefinitionVariantOverModes,
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
@@ -18,7 +18,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 }
 
 export const mutations: MutationTree<IFlowsState> = {
-  resource_add({ resources }, { resource }: {resource: IResourceDefinition}) {
+  resource_add({ resources }, { resource }: {resource: IResource}) {
     resources.push(resource)
   },
 
@@ -59,7 +59,7 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async resource_createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<IResourceDefinition>}): Promise<IResourceDefinition> {
+  async resource_createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<IResource>}): Promise<IResource> {
     return {
       ...defaults(
         props,
@@ -70,7 +70,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   resource_setOrCreateValueModeSpecific(
     { commit, dispatch, state },
-    { resourceId, filter, value }: { resourceId: IResourceDefinition['uuid']; filter: IResourceDefinitionVariantOverModes; value: string },
+    { resourceId, filter, value }: { resourceId: IResource['uuid']; filter: IResourceDefinitionVariantOverModes; value: string },
   ) {
     try {
       // @note - `find()` raises when absent; this verifies its presence
@@ -124,7 +124,7 @@ export type IResourceDefinitionVariantOverModesFilterAsKey = Omit<IResourceDefin
 export type IResourceDefinitionVariantOverModesFilterWithResourceId =
     Partial<IResourceDefinitionVariantOverModes> & {resourceId: string}
 
-export function findResourceWith(uuid: string, { resources }: IContext): IResourceDefinition {
+export function findResourceWith(uuid: string, { resources }: IContext): IResource {
   const resource = find(resources, { uuid })
   if (resource == null) {
     throw new ValidationException(`Unable to find resource on context: ${uuid} in ${map(resources, 'uuid')}`)
@@ -145,7 +145,7 @@ export function findResourceVariantOverModesWith(
 }
 
 export function findResourceVariantOverModesOn(
-  resource: IResourceDefinition,
+  resource: IResource,
   filter: IResourceDefinitionVariantOverModesFilter,
 ) {
   const
@@ -179,7 +179,7 @@ export function findOrGenerateStubbedVariantFor(
 }
 
 export function findOrGenerateStubbedVariantOn(
-  resource: IResourceDefinition,
+  resource: IResource,
   filter: IResourceDefinitionVariantOverModesFilterAsKey,
 ): IResourceDefinitionVariantOverModes {
   try {
@@ -193,7 +193,7 @@ export function findOrGenerateStubbedVariantOn(
   }
 }
 
-export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourceDefinition): SupportedContentType[] {
+export function discoverContentTypesFor(mode: SupportedMode, resource?: IResource): SupportedContentType[] {
   const
     { TEXT } = SupportedContentType
   const { AUDIO } = SupportedContentType

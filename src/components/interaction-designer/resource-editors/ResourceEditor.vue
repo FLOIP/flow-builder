@@ -79,7 +79,7 @@ import {
 import {
   IBlock,
   IFlow,
-  IResourceDefinition,
+  IResource,
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
@@ -98,7 +98,7 @@ import { ValidationException } from '@floip/flow-runner/src/domain/exceptions/Va
 import PhoneRecorder from '@/components/interaction-designer/block-editors/PhoneRecorder.vue'
 import UploadMonitor from '../block-editors/UploadMonitor.vue'
 import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
-import { IResourceDefinitionContentTypeSpecific as IResourceDefinitionVariantOverModes } from "@floip/flow-runner/dist/domain/IResourceResolver";
+import { IResourceValue as IResourceDefinitionVariantOverModes } from "@floip/flow-runner/dist/domain/IResourceResolver";
 import { ILanguage } from "@floip/flow-runner/dist/flow-spec/ILanguage";
 import { mixins } from "vue-class-component";
 
@@ -132,7 +132,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 
   @Prop({ required: true }) flow!: IFlow
 
-  @Prop() resource!: IResourceDefinition
+  @Prop() resource!: IResource
 
   @Prop() label?: string | number
 
@@ -185,7 +185,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
       this.pushAudioIntoLibrary(uploadedAudio)
     }
 
-    findAudioResourceVariantFor(resource: IResourceDefinition, filter: IResourceDefinitionVariantOverModesFilter) {
+    findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter) {
       try {
         return findResourceVariantOverModesOn(resource, filter).value
       } catch (e) {
@@ -203,7 +203,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 
     @Mutation pushAudioIntoLibrary!: (audio: IAudioFile) => void
 
-    @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!: ({ resourceId, filter, value }: { resourceId: IResourceDefinition['uuid']; filter: IResourceDefinitionVariantOverModesWithOptionalValue; value: string }) => void
+    @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!: ({ resourceId, filter, value }: { resourceId: IResource['uuid']; filter: IResourceDefinitionVariantOverModesWithOptionalValue; value: string }) => void
 
     @builderVuexNamespace.Getter isEditable !: boolean
 }

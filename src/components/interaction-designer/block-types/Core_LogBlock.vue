@@ -46,7 +46,7 @@ import { Component, Prop } from 'vue-property-decorator'
 
 import { IFlow } from '@floip/flow-runner'
 import { ILogBlock } from '@floip/flow-runner/src/model/block/ILogBlock'
-import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
+import { IResource } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import { findOrGenerateStubbedVariantOn } from '@/store/flow/resource'
 import LogStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_LogBlockStore'
@@ -82,11 +82,11 @@ class Core_LogBlock extends mixins(Lang) {
 
     findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
-    get messageResource(): IResourceDefinition {
+    get messageResource(): IResource {
       return this.resourcesByUuid[this.block.config.message]
     }
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResource}
 
     @builderVuexNamespace.Getter isEditable !: boolean
   }

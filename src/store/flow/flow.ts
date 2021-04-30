@@ -9,8 +9,8 @@ import {
   IBlock,
   IContext,
   IFlow,
-  IResourceDefinition,
-  ValidationException, IResourceDefinitionContentTypeSpecific,
+  IResource,
+  ValidationException, IResourceValue,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import moment from 'moment'
@@ -243,18 +243,18 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return block
   },
 
-  async flow_addBlankResource({ dispatch, commit }): Promise<IResourceDefinition> {
+  async flow_addBlankResource({ dispatch, commit }): Promise<IResource> {
     const resource = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
 
     commit('resource_add', { resource })
 
     return resource
   },
-  async flow_addBlankResourceForEnabledModesAndLangs({ getters, dispatch, commit }): Promise<IResourceDefinition> {
+  async flow_addBlankResourceForEnabledModesAndLangs({ getters, dispatch, commit }): Promise<IResource> {
     // TODO - figure out of there should only be one value here at first? How would the resource editor change this?
     // TODO - is this right for setup of languages?
     // TODO - How will we add more blank values as supported languages are changed in the flow? We should probably also do this for modes rather than doing all possible modes here.
-    const values: IResourceDefinitionContentTypeSpecific = getters.activeFlow.languages.reduce((memo: object[], language: {id: string; name: string}) => {
+    const values: IResourceValue = getters.activeFlow.languages.reduce((memo: object[], language: {id: string; name: string}) => {
       // Let's just create all the modes. We might need them but if they are switched off they just don't get used
       Object.values(SupportedMode).forEach((mode: SupportedMode) => {
         memo.push({

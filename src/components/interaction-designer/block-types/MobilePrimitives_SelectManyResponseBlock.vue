@@ -64,7 +64,7 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import {
-  IResourceDefinition,
+  IResource,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import SelectManyResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import { namespace } from 'vuex-class'
@@ -95,8 +95,8 @@ const builderVuexNamespace = namespace('builder')
 })
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
   //Important: Even we extends from SelectOneResponseBlock, to avoid conflict we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation
-  @blockVuexNamespace.Getter inflatedChoices?: { [key: string]: IResourceDefinition }
-  @blockVuexNamespace.State inflatedEmptyChoice?: { [key: string]: IResourceDefinition }
+  @blockVuexNamespace.Getter inflatedChoices?: { [key: string]: IResource }
+  @blockVuexNamespace.State inflatedEmptyChoice?: { [key: string]: IResource }
 
   @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
   @blockVuexNamespace.Action editEmptyChoice!: () => Promise<object>

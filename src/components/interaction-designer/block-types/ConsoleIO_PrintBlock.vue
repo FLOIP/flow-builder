@@ -30,7 +30,7 @@ import { Component, Prop } from 'vue-property-decorator'
 
 import { IFlow } from '@floip/flow-runner'
 import { IPrintBlock } from '@floip/flow-runner/src/model/block/IPrintBlock'
-import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
+import { IResource } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import PrintStore, { BLOCK_TYPE } from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
@@ -61,11 +61,11 @@ class ConsoleIO_PrintBlock extends mixins(Lang) {
 
     @Prop()readonly flow!: IFlow
 
-    get promptResource(): IResourceDefinition {
+    get promptResource(): IResource {
       return this.resourcesByUuid[this.block.config.message]
     }
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResource}
 
     @builderVuexNamespace.Getter isEditable !: boolean
   }

@@ -27,7 +27,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner'
 // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
 import {
-  IResourceDefinition,
+  IResource,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import LocationStore, { BLOCK_TYPE } from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 import Lang from '@/lib/filters/lang'
@@ -72,7 +72,7 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
       this.setAccuracyTimeout({ blockId: this.block.uuid, value })
     }
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResource}
 
     @blockVuexNamespace.Action setAccuracyThreshold!: ({ blockId, value }: {blockId: string; value: number}) => Promise<string>
 

@@ -33,7 +33,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { IBlockExit, IFlow } from '@floip/flow-runner'
 import { IOpenResponseBlock } from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
 import {
-  IResourceDefinition,
+  IResource,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import OpenResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
@@ -70,11 +70,11 @@ class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
 
     @Prop()readonly flow!: IFlow
 
-    get promptResource(): IResourceDefinition {
+    get promptResource(): IResource {
       return this.resourcesByUuid[this.block.config.prompt]
     }
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResource}
 
     @flowVuexNamespace.Getter hasTextMode!: boolean
 

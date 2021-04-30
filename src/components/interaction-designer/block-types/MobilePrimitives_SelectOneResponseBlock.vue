@@ -67,7 +67,7 @@
 import { IFlow } from '@floip/flow-runner'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {
-  IResourceDefinition,
+  IResource,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import { namespace } from 'vuex-class'
 import { Component, Prop, Watch } from 'vue-property-decorator'
@@ -107,15 +107,15 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
     @Prop()readonly flow!: IFlow
 
-    get promptResource(): IResourceDefinition {
+    get promptResource(): IResource {
       return this.resourcesByUuid[this.block.config.prompt]
     }
 
-    get questionPromptResource(): IResourceDefinition {
+    get questionPromptResource(): IResource {
       return this.resourcesByUuid[this.block.config.question_prompt || '']
     }
 
-    get choicesPromptResource(): IResourceDefinition {
+    get choicesPromptResource(): IResource {
       return this.resourcesByUuid[this.block.config.choices_prompt || '']
     }
 
@@ -131,10 +131,10 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
       this.editEmptyChoice( { choice: oldChoice as IInflatedChoicesInterface })
     }
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResource}
 
-    @blockVuexNamespace.Getter inflatedChoices?: {[key: string]: IResourceDefinition}
-    @blockVuexNamespace.State inflatedEmptyChoice?: {[key: string]: IResourceDefinition}
+    @blockVuexNamespace.Getter inflatedChoices?: {[key: string]: IResource}
+    @blockVuexNamespace.State inflatedEmptyChoice?: {[key: string]: IResource}
 
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
     @blockVuexNamespace.Action editEmptyChoice!: ({ choice }: { choice: IInflatedChoicesInterface }) => Promise<object>

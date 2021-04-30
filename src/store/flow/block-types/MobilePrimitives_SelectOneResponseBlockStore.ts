@@ -7,12 +7,12 @@ import {
   IContext,
   SupportedContentType,
   findBlockOnActiveFlowWith,
-  IResourceDefinitionContentTypeSpecific,
+  IResourceValue,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import {
-  IResourceDefinition,
+  IResource,
 } from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
 import { defaultsDeep, find, max, filter, first, get } from 'lodash'
@@ -25,7 +25,7 @@ export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
 export interface IInflatedChoicesInterface {
   exit: IBlockExit,
-  resource: IResourceDefinition
+  resource: IResource
 }
 
 export interface ICustomFlowState extends Partial<IFlowsState> {

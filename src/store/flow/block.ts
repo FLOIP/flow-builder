@@ -2,7 +2,7 @@ import {
   IContext,
   IBlock,
   IBlockExit,
-  IResourceDefinition,
+  IResource,
   findBlockExitWith,
   ValidationException,
   findBlockOnActiveFlowWith,
@@ -87,7 +87,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async block_createBlockExitWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IBlockExit>}): Promise<IBlockExit> {
-    const resource: IResourceDefinition = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
+    const resource: IResource = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
 
     commit('resource_add', { resource })
 
