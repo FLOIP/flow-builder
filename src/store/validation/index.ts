@@ -109,9 +109,8 @@ export default store
 
 function getOrCreateBlockValidatorFor(blockType: string): ValidateFunction {
   if (isEmpty(validators) || !validators.has(blockType)) {
-    const blockJsonSchemaFile = `I${blockType}Block.json`
-    // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
-    validators.set(blockType, createDefaultJsonSchemaValidatorFactoryFor(require(`../../../_tmp/${blockJsonSchemaFile}`)))
+    const blockJsonSchema = require(`@floip/flow-runner/dist/resources/I${blockType}Block.json`)
+    validators.set(blockType, createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema))
   }
   return validators.get(blockType)!
 }
@@ -119,8 +118,8 @@ function getOrCreateBlockValidatorFor(blockType: string): ValidateFunction {
 function getOrCreateFlowValidator(): ValidateFunction {
   const validationType = 'flow'
   if (isEmpty(validators) || !validators.has(validationType)) {
-    // TODO: point to the right JSON once we consume the right flow-runner version, then delete tmp file
-    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(require('../../../_tmp/flowSpecJsonSchema.json'), '#/definitions/IFlow'))
+    const flowJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IFlow'))
   }
   return validators.get(validationType)!
 }
