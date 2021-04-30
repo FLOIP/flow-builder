@@ -4,15 +4,16 @@ import {
 } from 'vuex'
 import { IRootState } from '@/store'
 import Ajv, { ValidateFunction, ErrorObject } from 'ajv'
-//import ajvFormat from 'ajv-formats'
+import ajvFormat from 'ajv-formats'
 
 import { JSONSchema7 } from 'json-schema'
 import { IBlock, IFlow } from '@floip/flow-runner'
 import { isEmpty, get, forIn } from 'lodash'
 
 const ajv = new Ajv({ allErrors:true })
-//TODO: Uncomment this when consuming the right flow-runner version
-//ajvFormat(ajv) // we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
+
+// we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
+ajvFormat(ajv)
 
 const DEV_ERROR_KEYWORDS = [
   'additionalProperties', // unwanted extra props
