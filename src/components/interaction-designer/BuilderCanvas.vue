@@ -17,7 +17,7 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import { find, isEqual, cloneDeep } from 'lodash'
+import { find, isEqual, cloneDeep, debounce, maxBy, get } from 'lodash'
 import { namespace } from 'vuex-class'
 import { IBlock, IFlow } from '@floip/flow-runner'
 import { IValidationStatus } from '@/store/validation'
@@ -77,13 +77,13 @@ export default class BuilderCanvas extends Vue {
     this.debounceHorizontalScroll()
   }
 
-  debounceVerticalScroll = lodash.debounce(function(this: any) { // !important: do not change to arrow function
+  debounceVerticalScroll = debounce(function(this: any) { // !important: do not change to arrow function
     window.scrollTo({
       top: this.canvasHeight,
     })
   }, DEBOUNCE_SCROLL_TIMER)
 
-  debounceHorizontalScroll = lodash.debounce(function(this: any) { // !important: do not change to arrow function
+  debounceHorizontalScroll = debounce(function(this: any) { // !important: do not change to arrow function
     window.scrollTo({
       left: this.canvasWidth,
     })
@@ -116,11 +116,11 @@ export default class BuilderCanvas extends Vue {
   }
 
   get blockAtTheLowestPosition() {
-    return lodash.maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.yPosition')
+    return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.yPosition')
   }
 
   get blockAtTheFurthestRightPosition() {
-    return lodash.maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
+    return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
   }
 
   get windowHeight() {
@@ -141,7 +141,7 @@ export default class BuilderCanvas extends Vue {
       return this.windowHeight
     }
 
-    const yPosition = lodash.get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.yPosition')
+    const yPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.yPosition')
     const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
 
     if (scrollHeight < this.windowHeight) {
@@ -161,7 +161,7 @@ export default class BuilderCanvas extends Vue {
       return this.windowWidth
     }
 
-    const xPosition = lodash.get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.xPosition')
+    const xPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.xPosition')
     const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
 
     if (scrollWidth < this.windowWidth) {
