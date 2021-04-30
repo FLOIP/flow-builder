@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
 import { find, isEqual, cloneDeep } from 'lodash'
 import { namespace } from 'vuex-class'
