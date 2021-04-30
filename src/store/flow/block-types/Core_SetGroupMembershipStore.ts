@@ -45,10 +45,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async setIsMember({ commit, rootGetters }, action) {
     const activeBlock = rootGetters['builder/activeBlock']
+    let isMember = ''
+    if(action) {
+      const isMemberBoolean = action.id === ADD_KEY
+      isMember = isMemberBoolean.toString() // is_member is an expression, that's why it's a string
+    }
+
     commit('flow/block_updateConfigByPath', {
       blockId: activeBlock.uuid,
       path: 'is_member',
-      value: action === null || action === undefined ? null : (action.id === ADD_KEY),
+      value: isMember,
     }, { root: true })
   },
 }

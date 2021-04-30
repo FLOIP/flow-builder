@@ -25,9 +25,7 @@ import { Component, Prop } from 'vue-property-decorator'
 
 import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
-import {
-  IResourceDefinition,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
+import { IResource } from '@floip/flow-runner'
 
 import PhotoStore, { BLOCK_TYPE } from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import Lang from '@/lib/filters/lang'
@@ -57,7 +55,7 @@ class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
 
     @Prop()readonly flow!: IFlow
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResource}
 
     @builderVuexNamespace.Getter isEditable !: boolean
   }

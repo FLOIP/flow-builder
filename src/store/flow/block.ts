@@ -2,7 +2,7 @@ import {
   IContext,
   IBlock,
   IBlockExit,
-  IResourceDefinition,
+  IResource,
   findBlockExitWith,
   ValidationException,
   findBlockOnActiveFlowWith,
@@ -62,12 +62,12 @@ export const mutations: MutationTree<IFlowsState> = {
       .config = newConfig
   },
   block_updateConfigByKey(state, { blockId, key, value }: {blockId: string; key: string; value: object}) { // note that the {key} could be undefined inside `config` at block creation (eg: optional config)
-    const currentConfig: {[key: string]: any} = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
+    const currentConfig: {[key: string]: any} = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = { ...currentConfig }
   },
   block_updateConfigByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
-    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config, path, value);
+    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, path, value);
   },
   block_setBlockExitDestinationBlockId(state, { blockId, exitId, destinationBlockId }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -87,7 +87,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async block_createBlockExitWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IBlockExit>}): Promise<IBlockExit> {
-    const resource: IResourceDefinition = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
+    const resource: IResource = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
 
     commit('resource_add', { resource })
 

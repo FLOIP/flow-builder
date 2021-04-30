@@ -9,7 +9,7 @@
           <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
             <flow-label-editor :flow="flow" />
             <validation-message
-              :message-key="`flow/${flow.uuid}/.interaction_timeout`"
+              :message-key="`flow/${flow.uuid}/interaction_timeout`"
               #input-control="{ isValid }">
               <flow-interaction-timeout-editor :flow="flow" :validState="isValid"/>
             </validation-message>
