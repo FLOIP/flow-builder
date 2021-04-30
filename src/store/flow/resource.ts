@@ -193,14 +193,11 @@ export function findOrGenerateStubbedVariantOn(
   }
 }
 
-export function discoverContentTypesFor(mode: SupportedMode, resource?: IResource): SupportedContentType[] {
-  const
-    { TEXT } = SupportedContentType
-  const { AUDIO } = SupportedContentType
-  const { IMAGE } = SupportedContentType
-  const { VIDEO } = SupportedContentType
+export function discoverContentTypesFor(mode: SupportedMode, resource?: IResource): SupportedContentType[] | undefined {
+  const { TEXT, AUDIO, IMAGE, VIDEO, DATA } = SupportedContentType
 
-  const defaultModeMappings = { // @note -- contentType order inadvertently determines render order on UI.
+  // @note -- contentType order inadvertently determines render order on UI.
+  const defaultModeMappings: {[key in SupportedMode]?: SupportedContentType[]} = {
     [SupportedMode.IVR]: [AUDIO], // voice
     [SupportedMode.SMS]: [TEXT],
     [SupportedMode.USSD]: [TEXT],
@@ -211,7 +208,7 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
   if (!resource || !resource.values.length) {
     return defaultModeMappings[mode]
   }
-  let contentTypeOverrides: {[key in SupportedMode]?: SupportedContentType[]} = {}
+  let contentTypeOverrides: {[key in SupportedMode]?: string[]} = {}
   // TODO - think harder about this - what happens when a mode has a non standard content type - e.g. ivr on a log block
   // What happens in a future localised resource world on things like LogBlock? Do we need a log resource value for every language?
   contentTypeOverrides = resource.values.reduce((contentTypeOverrides, value) => {
@@ -219,7 +216,7 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
       if (!contentTypeOverrides[resourceMode]) {
         contentTypeOverrides[resourceMode] = []
       }
-      contentTypeOverrides[resourceMode]!.push(value.contentType)
+      contentTypeOverrides[resourceMode]!.push(value.content_type)
       return contentTypeOverrides
     }, contentTypeOverrides)
     return contentTypeOverrides

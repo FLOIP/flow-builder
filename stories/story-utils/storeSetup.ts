@@ -124,17 +124,17 @@ export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass 
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       language_id: languageId,
       modes: [SupportedMode.SMS],
-      content_type: [SupportedContentType.TEXT],
+      content_type: SupportedContentType.TEXT,
     }
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       language_id: languageId,
       modes: [SupportedMode.USSD],
-      content_type: [SupportedContentType.TEXT],
+      content_type: SupportedContentType.TEXT,
     }
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       language_id: languageId,
       modes: [SupportedMode.IVR],
-      content_type: [SupportedContentType.AUDIO],
+      content_type: SupportedContentType.AUDIO,
     }
     // we're assuming this pseudo-variants exist
     this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
