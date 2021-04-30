@@ -275,6 +275,22 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                     <input
                                       class="flow-mode-toggle-checkbox"
                                       type="checkbox"
+                                      value="TEXT"
+                                    />
+                                    
+      TEXT
+    
+                                  </label>
+                                </div>
+                                <div
+                                  class="checkbox"
+                                >
+                                  <label
+                                    class="font-weight-normal"
+                                  >
+                                    <input
+                                      class="flow-mode-toggle-checkbox"
+                                      type="checkbox"
                                       value="SMS"
                                     />
                                     
