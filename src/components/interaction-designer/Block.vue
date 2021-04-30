@@ -2,6 +2,7 @@
   <div @click="selectBlock">
     <plain-draggable
         v-if="hasLayout"
+        ref="draggable"
         class="block"
         :class="{
           active: isBlockActivated,

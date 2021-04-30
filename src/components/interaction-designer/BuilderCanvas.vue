@@ -1,9 +1,12 @@
 <template>
   <div v-if="activeFlow"
-       class="builder-canvas no-select">
+       class="builder-canvas no-select"
+       :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }"
+  >
 
     <block v-for="block in activeFlow.blocks"
            :key="block.uuid"
+           :ref="`block/${block.uuid}`"
            :id="`block/${block.uuid}`"
            :block="block"
            :x="block.vendor_metadata.io_viamo.uiData.xPosition"
@@ -14,13 +17,17 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import { namespace } from 'vuex-class'
-import {IBlock, IFlow} from '@floip/flow-runner'
 import { find, isEqual, cloneDeep } from 'lodash'
+import { namespace } from 'vuex-class'
+import { IBlock, IFlow } from '@floip/flow-runner'
 import { IValidationStatus } from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
+
+const MARGIN_HEIGHT = 100 //px
+const MARGIN_WIDTH = 100 //px
+const DEBOUNCE_SCROLL_TIMER = 100 //ms
 
 @Component({
   components: {
@@ -28,6 +35,9 @@ const validationVuexNamespace = namespace('validation')
   },
 })
 export default class BuilderCanvas extends Vue {
+  @Prop() block!: IBlock
+
+  // ###### Validation API Watchers [
   @Watch('activeFlow', { deep: true, immediate: true })
   async onActiveFlowChanged(newFlow: IFlow) {
     console.debug('watch/activeFlow:', 'active flow has changed, validating ...')
@@ -52,9 +62,113 @@ export default class BuilderCanvas extends Vue {
       await this.validate_block({ block: currentNewBlock })
     }
   }
+  // ] ######### end Validation API Watchers
+
+  // ##### Canvas dynamic size watchers [
+  @Watch('canvasHeight')
+  onCanvasHeightChanged(newValue: number) {
+    console.debug('canvas height changed to', newValue)
+    this.debounceVerticalScroll()
+  }
+
+  @Watch('canvasWidth')
+  onCanvasWidthChanged(newValue: number) {
+    console.debug('canvas width changed to', newValue)
+    this.debounceHorizontalScroll()
+  }
+
+  debounceVerticalScroll = lodash.debounce(function(this: any) { // !important: do not change to arrow function
+    window.scrollTo({
+      top: this.canvasHeight,
+    })
+  }, DEBOUNCE_SCROLL_TIMER)
+
+  debounceHorizontalScroll = lodash.debounce(function(this: any) { // !important: do not change to arrow function
+    window.scrollTo({
+      left: this.canvasWidth,
+    })
+  }, DEBOUNCE_SCROLL_TIMER)
+
+  // ] ######## end canvas dynamic size watchers
 
   get blocksOnActiveFlowForWatcher() {
     return cloneDeep(this.activeFlow.blocks) // needed to make comparison between new & old values on watcher
+  }
+
+  get blockHeight() {
+    const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
+    if (!blockElementRef) {
+      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition?.uuid}`)
+      return 150 // temporary dummy height for UI scroll purpose
+    }
+    return (<HTMLElement> (<Vue> blockElementRef[0].$refs['draggable']).$el).offsetHeight
+  }
+
+  get blockWidth() {
+    const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
+
+    if (!blockElementRef) {
+      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition?.uuid}`)
+      return 110 // temporary dummy width for UI scroll purpose
+    }
+
+    return (<HTMLElement> (<Vue> blockElementRef[0].$refs['draggable']).$el).offsetWidth
+  }
+
+  get blockAtTheLowestPosition() {
+    return lodash.maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.yPosition')
+  }
+
+  get blockAtTheFurthestRightPosition() {
+    return lodash.maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
+  }
+
+  get windowHeight() {
+    return window.screen.availHeight
+  }
+
+  get windowWidth() {
+    return window.screen.availWidth
+  }
+
+  get canvasHeight() {
+    if (!this.activeFlow.blocks && this.activeFlow.blocks!.length) {
+      return this.windowHeight
+    }
+
+    if (!this.blockAtTheLowestPosition) {
+      console.debug('Interaction Designer', 'Unable to find block at the lowest position')
+      return this.windowHeight
+    }
+
+    const yPosition = lodash.get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.yPosition')
+    const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
+
+    if (scrollHeight < this.windowHeight) {
+      return this.windowHeight
+    }
+
+    return scrollHeight
+  }
+
+  get canvasWidth(): number {
+    if (!this.activeFlow.blocks && this.activeFlow.blocks!.length) {
+      return this.windowWidth
+    }
+
+    if (!this.blockAtTheFurthestRightPosition) {
+      console.debug('Interaction Designer', 'Unable to find block at the furthest right position')
+      return this.windowWidth
+    }
+
+    const xPosition = lodash.get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.xPosition')
+    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
+
+    if (scrollWidth < this.windowWidth) {
+      return this.windowWidth
+    }
+
+    return scrollWidth
   }
 
   @flowVuexNamespace.State flows?: IFlow[]
@@ -78,7 +192,8 @@ export { BuilderCanvas }
   }
 
   .builder-canvas {
-    width: 9999px;
-    height: 9999px;
+    /*standard proportion min-width and min-height here so that initial render on slower machines*/
+    min-width: 1024px;
+    min-height: 768px;
   }
 </style>
