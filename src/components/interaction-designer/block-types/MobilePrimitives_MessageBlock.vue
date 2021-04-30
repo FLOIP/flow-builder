@@ -26,9 +26,8 @@
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
-import { IFlow } from '@floip/flow-runner'
+import { IFlow, IResource } from '@floip/flow-runner'
 import { IMessageBlock } from '@floip/flow-runner/src/model/block/IMessageBlock'
-import { IResource } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import MessageStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
 import Lang from '@/lib/filters/lang'

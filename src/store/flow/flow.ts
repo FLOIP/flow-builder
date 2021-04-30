@@ -305,7 +305,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
 
     // Deep clone
-    const duplicatedBlock = cloneDeep(block)
+    const duplicatedBlock: IBlock = cloneDeep(block) as IBlock
 
     // Set UUIDs, and remove non relevant props
     duplicatedBlock.uuid = await (new IdGeneratorUuidV4()).generate()
@@ -316,7 +316,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
 
     if (has(duplicatedBlock.config, 'prompt')) {
-      Vue.set(duplicatedBlock.config, 'prompt', (new IdGeneratorUuidV4()).generate())
+      Vue.set(duplicatedBlock.config!, 'prompt', await (new IdGeneratorUuidV4()).generate())
     }
 
     // Set UI positions

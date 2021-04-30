@@ -28,9 +28,8 @@
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
-import { IFlow } from '@floip/flow-runner'
+import { IFlow, IResource } from '@floip/flow-runner'
 import { IPrintBlock } from '@floip/flow-runner/src/model/block/IPrintBlock'
-import { IResource } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import PrintStore, { BLOCK_TYPE } from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'

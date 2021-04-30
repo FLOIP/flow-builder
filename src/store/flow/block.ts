@@ -62,12 +62,12 @@ export const mutations: MutationTree<IFlowsState> = {
       .config = newConfig
   },
   block_updateConfigByKey(state, { blockId, key, value }: {blockId: string; key: string; value: object}) { // note that the {key} could be undefined inside `config` at block creation (eg: optional config)
-    const currentConfig: {[key: string]: any} = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
+    const currentConfig: {[key: string]: any} = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = { ...currentConfig }
   },
   block_updateConfigByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
-    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config, path, value);
+    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, path, value);
   },
   block_setBlockExitDestinationBlockId(state, { blockId, exitId, destinationBlockId }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)

@@ -44,9 +44,8 @@
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
-import { IFlow } from '@floip/flow-runner'
+import { IFlow, IResource } from '@floip/flow-runner'
 import { ILogBlock } from '@floip/flow-runner/src/model/block/ILogBlock'
-import { IResource } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import { findOrGenerateStubbedVariantOn } from '@/store/flow/resource'
 import LogStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_LogBlockStore'

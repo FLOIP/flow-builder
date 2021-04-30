@@ -30,12 +30,8 @@
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
-import { IBlockExit, IFlow } from '@floip/flow-runner'
+import { IBlockExit, IFlow, IResource } from '@floip/flow-runner'
 import { IOpenResponseBlock } from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
-import {
-  IResource,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
-
 import OpenResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'

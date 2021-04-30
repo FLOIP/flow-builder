@@ -82,6 +82,7 @@ import {
   IResource,
   SupportedContentType,
   SupportedMode,
+  IResourceValue as IResourceDefinitionVariantOverModes,
 } from '@floip/flow-runner'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
@@ -98,9 +99,8 @@ import { ValidationException } from '@floip/flow-runner/src/domain/exceptions/Va
 import PhoneRecorder from '@/components/interaction-designer/block-editors/PhoneRecorder.vue'
 import UploadMonitor from '../block-editors/UploadMonitor.vue'
 import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
-import { IResourceValue as IResourceDefinitionVariantOverModes } from "@floip/flow-runner/dist/domain/IResourceResolver";
-import { ILanguage } from "@floip/flow-runner/dist/flow-spec/ILanguage";
-import { mixins } from "vue-class-component";
+import { ILanguage } from "@floip/flow-runner/dist/flow-spec/ILanguage"
+import { mixins } from "vue-class-component"
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')

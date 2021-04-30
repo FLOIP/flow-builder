@@ -3,20 +3,12 @@ import { IRootState } from '@/store'
 import {
   IBlockExitTestRequired,
   IBlockExit,
-  IFlow,
-  IContext,
-  SupportedContentType,
-  findBlockOnActiveFlowWith,
-  IResourceValue,
+  IResource
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
-import {
-  IResource,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import { defaultsDeep, find, max, filter, first, get } from 'lodash'
-import { IResourceDefinitionVariantOverModesFilter } from '../resource'
+import { defaultsDeep, find, filter, first, get } from 'lodash'
 import { IFlowsState } from '../index'
 
 import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'

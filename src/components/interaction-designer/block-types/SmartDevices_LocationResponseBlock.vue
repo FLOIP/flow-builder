@@ -26,9 +26,7 @@ import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner'
 // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
-import {
-  IResource,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
+import { IResource } from '@floip/flow-runner'
 import LocationStore, { BLOCK_TYPE } from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'

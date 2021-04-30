@@ -24,9 +24,7 @@ import { Component, Prop } from 'vue-property-decorator'
 
 import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
-import {
-  IResource,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
+import { IResource } from '@floip/flow-runner'
 
 import PhotoStore, { BLOCK_TYPE } from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import Lang from '@/lib/filters/lang'

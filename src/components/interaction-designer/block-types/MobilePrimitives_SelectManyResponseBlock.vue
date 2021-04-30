@@ -63,9 +63,7 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
-import {
-  IResource,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
+import { IResource } from '@floip/flow-runner'
 import SelectManyResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import { namespace } from 'vuex-class'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'

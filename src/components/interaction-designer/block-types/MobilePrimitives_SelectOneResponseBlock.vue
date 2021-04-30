@@ -64,11 +64,8 @@
 </template>
 
 <script lang="ts">
-import { IFlow } from '@floip/flow-runner'
+import { IFlow, IResource } from '@floip/flow-runner'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
-import {
-  IResource,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
 import { namespace } from 'vuex-class'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
