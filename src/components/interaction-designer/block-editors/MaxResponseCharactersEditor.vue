@@ -1,5 +1,5 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.text.max_response_characters`" #input-control="{ isValid }">
+  <validation-message :message-key="`block/${block.uuid}/config/text/max_response_characters`" #input-control="{ isValid }">
     <div v-if="hasText" class="form-group block-max-response-characters">
       <numeric-editor v-model.number="maxResponse"
           :regex-numeric-filtering="'[0-9]'"

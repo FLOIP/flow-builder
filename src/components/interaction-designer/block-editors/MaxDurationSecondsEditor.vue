@@ -1,5 +1,5 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.ivr.max_duration_seconds`" #input-control="{ isValid }">
+  <validation-message :message-key="`block/${block.uuid}/config/ivr/max_duration_seconds`" #input-control="{ isValid }">
     <div v-if="hasIvr" class="form-group block-max-duration-seconds">
       <numeric-editor v-model.number="duration"
           :regex-numeric-filtering="'[0-9]'"

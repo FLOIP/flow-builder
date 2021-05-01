@@ -9,13 +9,13 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <!-- TODO: Verify the type of is_member(boolean or string) and then enable validation for this field -->
-<!--      <validation-message :message-key="`block/${block.uuid}/.config.is_member`" #input-control="{ isValid: isGroupAMemberValid }">-->
+      <validation-message :message-key="`block/${block.uuid}/config/is_member`" #input-control="{ isValid: isValid }">
         <div class="form-group">
           <label>{{'flow-builder.action-label' | trans}}</label>
           <vue-multiselect v-model="selectedAction"
                            track-by="id"
                            label="name"
+                           :class="{invalid: isValid === false}"
                            :placeholder="'flow-builder.action-placeholder' | trans"
                            :options="actionsList"
                            :allow-empty="true"
@@ -23,7 +23,7 @@
                            :searchable="false">
           </vue-multiselect>
         </div>
-<!--      </validation-message>-->
+      </validation-message>
 
       <group-selector :block="block" />
 

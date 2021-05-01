@@ -9,7 +9,7 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <validation-message :message-key="`block/${block.uuid}/.config.value`" #input-control="{ isValid }">
+      <validation-message :message-key="`block/${block.uuid}/config/value`" #input-control="{ isValid }">
         <expression-editor :label="'flow-builder.output-expression' | trans"
           :placeholder="'flow-builder.edit-expression' | trans"
           :current-expression="value"

@@ -1,5 +1,5 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.accuracy_threshold_meters`" #input-control="{ isValid }">
+  <validation-message :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`" #input-control="{ isValid }">
     <div class="form-group block-threshold">
       <float-editor v-model.number="threshold"
           :min="0"

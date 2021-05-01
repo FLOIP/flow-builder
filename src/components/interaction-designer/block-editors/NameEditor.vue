@@ -1,5 +1,5 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.name`" #input-control="{ isValid }">
+  <validation-message :message-key="`block/${block.uuid}/name`" #input-control="{ isValid }">
     <div class="block-name">
       <text-editor v-model="name"
                    :label="'flow-builder.block-name' | trans"

@@ -1,5 +1,5 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.ivr.max_digits`" #input-control="{ isValid }">
+  <validation-message :message-key="`block/${block.uuid}/config/ivr/max_digits`" #input-control="{ isValid }">
     <div v-if="hasIvr" class="form-group block-max-digits">
       <numeric-editor v-model.number="maxDigits"
           :regex-numeric-filtering="'[0-9]'"

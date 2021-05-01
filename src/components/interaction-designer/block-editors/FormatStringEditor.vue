@@ -1,5 +1,5 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/.config.format_string`" #input-control="{ isValid }">
+  <validation-message :message-key="`block/${block.uuid}/config/format_string`" #input-control="{ isValid }">
     <div class="block-format-string">
       <text-editor v-model="formatString"
           :label="'flow-builder.format-string' | trans"
