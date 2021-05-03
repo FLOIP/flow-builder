@@ -12,7 +12,7 @@
       <!--    <tree-update-conflict-modal/>-->
       <div class="tree-workspace-panel-heading-contents">
         <div class="btn-toolbar">
-          <button class="btn btn-outline-secondary mr-2"
+          <button class="btn btn-secondary mr-2"
                   :class="{active: isImporterVisible}"
                   @click="toggleImportExport">
             <i class="glyphicon glyphicon-chevron-up"></i>
@@ -20,7 +20,7 @@
           </button>
 
           <div v-if="isResourceEditorEnabled" class="btn-group mr-2">
-            <router-link :to="treeViewUrl" class="btn btn-outline-secondary active">
+            <router-link :to="treeViewUrl" class="btn btn-secondary active">
               {{trans('flow-builder.flow-view')}}
             </router-link>
             <router-link :to="resourceViewUrl"
@@ -34,7 +34,7 @@
              :to="editOrViewTreeJsUrl"
              event=""
              :title="trans('flow-builder.click-to-toggle-editing')"
-             class="btn btn-outline-secondary mr-2"
+             class="btn btn-secondary mr-2"
              :class="{active: isEditable}"
              @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
               {{isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow')}}
@@ -42,7 +42,7 @@
 
           <div v-if="isEditable" class="dropdown mr-2">
             <button type="button"
-                    class="btn btn-outline-secondary dropdown-toggle"
+                    class="btn btn-secondary dropdown-toggle"
                     data-toggle="dropdown">
               {{trans('flow-builder.add-block')}}
             </button>
@@ -121,7 +121,7 @@
           <button v-if="isEditable"
                   type="button"
                   v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-                  class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                  class="btn btn-secondary tree-duplicate-block mr-2"
                   @click.prevent="handleDuplicateActivatedBlockTriggered"
                   :disabled="!activeBlockId">
             {{trans('flow-builder.duplicate')}}
@@ -130,16 +130,16 @@
           <button v-if="isEditable"
                   type="button"
                   v-b-tooltip.hover="transIf(activeBlockId, 'flow-builder.tooltip-delete-block')"
-                  class="btn btn-outline-secondary tree-delete-block mr-2"
+                  class="btn btn-secondary tree-delete-block mr-2"
                   @click.prevent="handleRemoveActivatedBlockTriggered"
                   :disabled="!activeBlockId">
             {{trans('flow-builder.delete')}}
           </button>
 
-          <router-link :to="route('flows.newFlow')" class="btn btn-outline-secondary mr-2">
+          <router-link :to="route('flows.newFlow')" class="btn btn-secondary mr-2">
             {{trans('flow-builder.new-flow')}}
           </router-link>
-          <router-link :to="route('flows.home')" class="btn btn-outline-secondary mr-2">
+          <router-link :to="route('flows.home')" class="btn btn-secondary mr-2">
             {{trans('flow-builder.home')}}
           </router-link>
 
