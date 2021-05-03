@@ -220,11 +220,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   set flow(value: string) {
     this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[]; resources: IResource[]})
   }
-
-  get editTreeUrl() {
-    return this.editTreeRoute()
-  }
-
   get treeViewUrl() {
     return this.editTreeRoute({
       component: 'interaction-designer',
@@ -237,28 +232,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     })
   }
 
-  get viewResultsUrl() {
-    return this.isFeatureViewResultsEnabled ? this.editTreeRoute({ component: 'results' }) : ''
-  }
-
-  get viewResultsSetUrl() {
-    return this.isFeatureViewResultsEnabled
-      ? this.route('trees.viewTreeSetResults', { treeSetId: this.tree.treeSetId })
-      : ''
-  }
-
   get downloadAudioUrl() {
     return this.editTreeRoute({
       component: 'downloadaudio',
     })
-  }
-
-  get sendOutgoingCallUrl() {
-    return this.isTreeValid ? `/outgoing/new?tree=${this.tree.id}` : ''
-  }
-
-  get publishVersionUrl() {
-    return this.isTreeValid ? `/trees/${this.tree.id}/publishversion` : ''
   }
 
   get editOrViewTreeJsUrl() {
@@ -272,12 +249,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       component: 'interaction-designer',
       mode: 'edit',
     })
-  }
-
-  get duplicateTreeLink() {
-    return this.isFeatureTreeDuplicateEnabled
-      ? this.route('trees.duplicateTreeAndContinue', { treeId: this.tree.id })
-      : ''
   }
 
   get saveButtonText() {
