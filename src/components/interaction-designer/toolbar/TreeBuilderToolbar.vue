@@ -179,7 +179,7 @@ import { computeBlockPositionsFrom } from '@/store/builder'
 import { VBTooltipPlugin } from 'bootstrap-vue'
 import Component, { mixins } from 'vue-class-component'
 import { Action, Getter, namespace, State, Mutation } from 'vuex-class'
-import { IBlock, IContext, IFlow, IResourceDefinition } from '@floip/flow-runner'
+import { IBlock, IContext, IFlow, IResource } from '@floip/flow-runner'
 import {RawLocation} from "vue-router";
 
 Vue.use(VBTooltipPlugin)
@@ -207,7 +207,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     const {
       flows,
       resources,
-    } = this as { flows: IFlow[]; resources: IResourceDefinition[] }
+    } = this as { flows: IFlow[]; resources: IResource[] }
     return JSON.stringify(
       {
         flows,
@@ -218,7 +218,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   set flow(value: string) {
-    this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[]; resources: IResourceDefinition[]})
+    this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[]; resources: IResource[]})
   }
 
   get editTreeUrl() {
@@ -416,7 +416,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @flowVuexNamespace.Getter activeFlow?: IFlow
   @flowVuexNamespace.Getter activeFlowContainer?: IContext
   @flowVuexNamespace.State flows?: IFlow[]
-  @flowVuexNamespace.State resources?: IResourceDefinition[]
+  @flowVuexNamespace.State resources?: IResource[]
   @flowVuexNamespace.Action flow_removeBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => void
   @flowVuexNamespace.Action flow_addBlankBlockByType!: ({ type, ...props }: Partial<IBlock>) => Promise<IBlock>
   @flowVuexNamespace.Action flow_duplicateBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => Promise<IBlock>
@@ -426,7 +426,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @builderVuexNamespace.Getter isEditable!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
   @builderVuexNamespace.Getter activeBlock?: IBlock
-  @builderVuexNamespace.Action importFlowsAndResources!: ({ flows, resources }: { flows: IFlow[]; resources: IResourceDefinition[]}) => Promise<void>
+  @builderVuexNamespace.Action importFlowsAndResources!: ({ flows, resources }: { flows: IFlow[]; resources: IResource[]}) => Promise<void>
   @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
 }
 </script>

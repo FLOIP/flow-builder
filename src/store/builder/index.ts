@@ -7,7 +7,7 @@ import {
 } from 'vuex'
 import { IRootState } from '@/store'
 import {
-  IBlockExit, IBlock, IFlow, IResourceDefinition, SupportedMode, ValidationException,
+  IBlockExit, IBlock, IFlow, IResource, SupportedMode, ValidationException,
 } from '@floip/flow-runner'
 import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block'
 import { createFormattedDate } from '@floip/flow-runner/dist/domain/DateFormat'
@@ -303,7 +303,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    */
   async importFlowsAndResources({
     dispatch, commit, state, rootState,
-  }, { flows, resources }: { flows: IFlow[]; resources: IResourceDefinition[]}) {
+  }, { flows, resources }: { flows: IFlow[]; resources: IResource[]}) {
     console.debug('importing flows & resources ...')
     console.log({ flows, resources })
     const { flow: flowState } = rootState
