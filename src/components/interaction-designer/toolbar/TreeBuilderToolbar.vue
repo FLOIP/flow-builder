@@ -146,7 +146,7 @@
           <slot name="extra-buttons"/>
 
           <!--TODO - do disable if no changes logic-->
-          <div class="btn-group pull-right mr-2">
+          <div class="btn-group ml-auto mr-2">
             <button v-if="isEditable && isFeatureTreeSaveEnabled"
                     type="button"
                     class="btn btn-primary tree-save-tree"
