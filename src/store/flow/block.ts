@@ -112,7 +112,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     { first, second }: {first: IDeepBlockExitIdWithinFlow; second: IDeepBlockExitIdWithinFlow},
   ) {
     if (!first || !second) {
-      throw new ValidationException(`Unable to swap destinationBlockId on null: ${JSON.stringify({ first, second })}`)
+      console.warn(`Unable to swap destinationBlockId on null: ${JSON.stringify({ first, second })}`)
+      return
     }
 
     const firstBlock = findBlockOnActiveFlowWith(first.blockId, state as unknown as IContext)
