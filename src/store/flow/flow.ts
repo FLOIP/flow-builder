@@ -257,13 +257,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const values: IResourceDefinitionContentTypeSpecific = getters.activeFlow.languages.reduce((memo: object[], language: {id: string; name: string}) => {
       // Let's just create all the modes. We might need them but if they are switched off they just don't get used
       Object.values(SupportedMode).forEach((mode: SupportedMode) => {
-        memo.push({
-          languageId: language.id,
-          value: '',
-          contentType: discoverContentTypesFor(mode),
-          modes: [
-            mode,
-          ],
+        discoverContentTypesFor(mode).forEach(contentType => {
+          memo.push({
+            languageId: language.id,
+            value: '',
+            contentType: contentType,
+            modes: [
+              mode,
+            ],
+          })
         })
       })
 
