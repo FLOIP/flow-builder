@@ -23,8 +23,8 @@
                   <span class="one-line">
                     <a class="btn btn-outline-secondary" @click="chooseFile">
                       {{'flow-builder.import-file' | trans}}
-                      <input type="file" id="flowUpload" @change="handleFileUpload" hidden/>
                     </a>
+                    <input type="file" id="flowUpload" @change="handleFileUpload" ref="file" hidden/>
                     <strong v-if="fileName" class="ml-1">{{'flow-builder.uploaded-file' | trans}}</strong> {{fileName}}
                   </span>
                 </div>
@@ -178,8 +178,9 @@ class ImportFlow extends Vue {
     return get(this.flowContainer, 'flows[0].uuid')
   }
 
-  chooseFile(event: any) {
-    event.target.children[0].click()
+  chooseFile() {
+    const fileInput: any = this.$refs.file
+    fileInput.click()
   }
 
   async handleFileUpload(event: any) {
