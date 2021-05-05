@@ -56,7 +56,7 @@ const replaceResourcesWhenNecessary = function (existingResources: IResourceDefi
 }
 
 export const checkSingleFlowOnly = function (flowContainer: IContext) {
-  if (flowContainer.flows.length !== 1) {
+  if (get(flowContainer, 'flows', []).length !== 1) {
     return false
   }
   return true
