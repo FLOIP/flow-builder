@@ -125,9 +125,7 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async flow_import({ state, getters, dispatch }, { persistRoute, flowContainer }): Promise<IContext | null> {
-    console.log(getters.activeFlowContainer)
     flowContainer = mergeFlowContainer(cloneDeep(getters.activeFlowContainer), flowContainer)
-    console.log(flowContainer)
     return await dispatch('flow_persist', { persistRoute, flowContainer })
   },
   async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext | null> {
