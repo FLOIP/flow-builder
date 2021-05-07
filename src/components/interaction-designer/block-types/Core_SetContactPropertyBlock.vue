@@ -11,7 +11,7 @@
 
       <contact-property-selector :block="block"/>
 
-      <expression-editor :label="'flow-builder.contact-property-expression' | trans"
+      <expression-input :label="'flow-builder.contact-property-expression' | trans"
                          :placeholder="'flow-builder.edit-expression' | trans"
                          :current-expression="propertyValue"
                          @commitExpressionChange="commitExpressionChange"/>
@@ -33,7 +33,6 @@ import {
   IFlow,
   IBlock,
 } from '@floip/flow-runner'
-import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -46,13 +45,14 @@ import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from "@/store/builder";
 import { get } from 'lodash'
 import { mixins } from "vue-class-component";
+import ExpressionInput from '@/components/common/ExpressionInput.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
-    ExpressionEditor,
+    ExpressionInput,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,

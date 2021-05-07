@@ -9,7 +9,7 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <expression-editor :label="'flow-builder.output-expression' | trans"
+      <expression-input :label="'flow-builder.output-expression' | trans"
           :placeholder="'flow-builder.edit-expression' | trans"
           :current-expression="value"
           @commitExpressionChange="commitExpressionChange"/>
@@ -28,7 +28,6 @@ import { Component, Prop } from 'vue-property-decorator'
 
 import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock'
 import { IFlow } from '@floip/flow-runner'
-import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 import OutputStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_OutputBlockStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
@@ -38,13 +37,14 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
+import ExpressionInput from '@/components/common/ExpressionInput.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
-    ExpressionEditor,
+    ExpressionInput,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,

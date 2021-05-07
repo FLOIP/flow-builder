@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@avcs/autosuggest@^1.7.5":
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/@avcs/autosuggest/-/autosuggest-1.7.5.tgz#50b3a9d0d0244d9b122183af8416745c8b0ff92c"
+  integrity sha512-ldJywpfvP8/Ooov09jke1aCU9YsEnYQVE9dKMPY7eoq8jmTkHm6WgRe3AvZOT93Y5S8X5Izjjy9T36d9ww8fdw==
+
 "@babel/code-frame@7.5.5":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.5.5.tgz#bc0782f6d69f7b7d49531219699b988f669a8f9d"
@@ -1330,6 +1335,14 @@
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-1.3.0.tgz#073f3f9fe166ce903e9a3a64d614a4fc9bc54c77"
   integrity sha512-8eGQ+pSM0msMjwOiuI0LCl4jsHLbgZJmzKLzUnhAIEEFxT0cwL+G8MX5desLPHsjE0uOt90AlloEeFYe/W0/8Q==
+  dependencies:
+    "@floip/expression-parser" "^1.10.0"
+    moment "^2.24.0"
+
+"@floip/expression-evaluator@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.0.tgz#925d289ba4763df452f6e555005aa3fac117f6ca"
+  integrity sha512-9t0Dw7/c8OrFkm8cT1m08r8CfHTsO5mm6373/cctz479EPmermt7KxQqRZtzesCMWh5yDVuxOC90kYHFaAlNZA==
   dependencies:
     "@floip/expression-parser" "^1.10.0"
     moment "^2.24.0"

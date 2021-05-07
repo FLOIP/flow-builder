@@ -9,7 +9,6 @@
   "scripts": {
     "build": "vue-cli-service build",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
     "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
@@ -18,6 +17,8 @@
     "md-docs": "./node_modules/widdershins/widdershins.js docs/routes/openapi/routes.yaml docs/routes/markdown/routes.md --language_tabs 'javascript:Javascript' --omitHeader"
   },
   "dependencies": {
+    "@avcs/autosuggest": "^1.7.5",
+    "@floip/expression-evaluator": "^2.1.0",
     "@floip/flow-runner": "^1.0.1",
     "@flowjs/flow.js": "^2.13.0",
     "@types/lodash": "^4.14.157",
