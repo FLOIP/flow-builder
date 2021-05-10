@@ -11,7 +11,7 @@
 
       <contact-property-selector :block="block"/>
 
-      <expression-input :label="'flow-builder.contact-property-expression' | trans"
+      <expression-input  :label="'flow-builder.contact-property-expression' | trans"
                          :placeholder="'flow-builder.edit-expression' | trans"
                          :current-expression="propertyValue"
                          @commitExpressionChange="commitExpressionChange"/>

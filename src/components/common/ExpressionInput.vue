@@ -1,20 +1,21 @@
 <template>
-  <textarea
-    ref="input"
-    :value="value"
-    :rows="rows"
-    :placeholder="placeholder"
-    class="form-control"
-    v-bind="attrs"
-    @input="emitValue($event.target.value)"
-    v-on="listeners"
-  />
+  <div class="form-group">
+    <label>{{label}}</label>
+    <textarea
+      class="form-control"
+      :placeholder="placeholder"
+      @input="$emit('input', $event.target.value)"
+      ref="input"
+      v-model="expression"
+    />
+    <slot/>
+  </div>
 </template>
 
 <script>
 import AutoSuggest from '@avcs/autosuggest'
 import '@avcs/autosuggest/dropdown.css'
-import {mapState} from 'vuex'
+import { mapGetters } from 'vuex';
 import {debounce} from 'lodash'
 import { MethodNodeEvaluatorFactory } from '@floip/expression-evaluator/dist/Evaluator/NodeEvaluator/MethodNodeEvaluator/Factory'
 import Lang from 'lib/filters/lang';
@@ -34,41 +35,55 @@ export default {
   mixins: [Lang],
 
   props: {
-    value: {
-      type: String,
-      default: '',
-    },
-    shortSyntax: {
-      type: Boolean,
-      default: false,
+    label: {
+      type: [String, Number],
+      required: true,
     },
     placeholder: {
       type: String,
       default: '',
+    },
+    currentExpression: {
+      type: String,
+      required: true,
+    },
+    expressionIdentifier: {
+      type: [String, Number],
+      default: null,
     },
   },
 
   data() {
     return {
       suggest: {},
-      didScroll: false,
-      didMount: false,
       debounceScroll: () => undefined,
     }
   },
 
   computed: {
-    ...mapState({
-      subscriberPropertyFields: state => state.trees.ui.subscriberPropertyFields,
-      blocks: state => state.trees.tree.blocks
-        .flatMap(b => [b.jsKey, b.customData.label])
-        .filter(f => f !== '')
-        .map(f => f.toLowerCase().replace(/\s/g, '_')),
-    }),
+    ...mapGetters(['subscriberPropertyFields']),
+    ...mapGetters('flow', ['activeFlow']),
+
+    expression: {
+      get() {
+        return this.currentExpression
+      },
+      set(value) {
+        if (this.expressionIdentifier !== null) {
+          value = {
+            identifier: this.expressionIdentifier,
+            value,
+          }
+        }
+        this.$emit('commitExpressionChange', value)
+      },
+    },
     expressionContext() {
+      const contactFields = this.subscriberPropertyFields.map(prop => prop.name).concat(defaultContactPropertyFields)
+      const blocks = this.activeFlow.blocks.flatMap(b => [b.name, b.uuid])
       return {
-        contact: this.subscriberPropertyFields.map(prop => prop.name).concat(defaultContactPropertyFields),
-        flow: this.blocks,
+        contact: contactFields,
+        flow: blocks,
         date: defaultDateFields,
       }
     },
@@ -128,33 +143,14 @@ export default {
         ...this.contextSuggestions,
         ...this.methodSuggestions,
       ]
-      if (this.shortSyntax === true) {
-        return suggestions
-      } else {
-        return [
-          ...suggestions,
-          this.topLevelSuggestions,
-        ]
-      }
-    },
-    // we can use the below methods to pass listeners and attributes
-    // to our underlying text area... that way this component
-    // can be used exactly the same
-    listeners() {
-      const {input, ...listeners} = this.$listeners
-      return listeners
-    },
-    rows() {
-      return this.$attrs.rows || 2
-    },
-    attrs() {
-      const {rows, ...attrs} = this.$attrs
-      return attrs
-    },
+      return [
+        ...suggestions,
+        this.topLevelSuggestions,
+      ]
+    }
   },
 
   mounted() {
-    this.didMount = true
     const input = this.$refs.input
     this.suggest = new AutoSuggest({
       caseSensitive: false,
@@ -170,33 +166,5 @@ export default {
   beforeDestroy() {
     window.removeEventListener('scroll', this.debounceScroll)
   },
-
-  methods: {
-    emitValue(value) {
-      this.$emit('input', value)
-      this.fixDropdownCoords()
-    },
-    // since this element is used on affixed content, we need to
-    // reset the coordinates of the dropdown when we scroll or other events
-    // occur
-    fixDropdownCoords() {
-      if (this.didScroll || this.didMount) {
-        const coords = this.$refs.input.getBoundingClientRect()
-        document.querySelectorAll('.dropdown.open').forEach((el) => {
-          el.style.left = `${coords.left}px`
-          el.style.top = `${coords.top}px`
-          el.style.position = 'fixed'
-          el.style.zIndex = '9999'
-        })
-      }
-      this.didScroll = false
-      this.didMount = false
-    },
-  },
-
 }
 </script>
-
-<style scoped>
-
-</style>
