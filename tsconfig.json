@@ -3,6 +3,8 @@
     "target": "esnext",
     "module": "esnext",
     "strict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
@@ -11,6 +13,9 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "plugins": [
       {"name": "ts-vue-plugin"}
     ],
@@ -31,6 +36,7 @@
     ]
   },
   "include": [
+    ".eslintrc.js",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
