@@ -14820,6 +14820,15 @@ shell-quote@1.7.2, shell-quote@^1.6.1:
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.7.2.tgz#67a7d02c76c9da24f99d20808fcaded0e0e04be2"
   integrity sha512-mRz/m/JVscCrkMyPqHc/bczi3OQHkLTqXHEFu0zDhK/qfv3UcOA4SVmRCLmos4bhjr9ekVQubj/R7waKapmiQg==
 
+shelljs@^0.7.5:
+  version "0.7.8"
+  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.7.8.tgz#decbcf874b0d1e5fb72e14b164a9683048e9acb3"
+  integrity sha1-3svPh0sNHl+3LhSxZKloMEjprLM=
+  dependencies:
+    glob "^7.0.0"
+    interpret "^1.0.0"
+    rechoir "^0.6.2"
+
 shelljs@^0.8.3:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.8.4.tgz#de7684feeb767f8716b326078a8a00875890e3c2"
@@ -16466,6 +16475,13 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+violation-comments-to-bitbucket-cloud-command-line@^1.26.0:
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/violation-comments-to-bitbucket-cloud-command-line/-/violation-comments-to-bitbucket-cloud-command-line-1.26.0.tgz#f109eecc885254b363a027b498897738fad62b06"
+  integrity sha512-LYMjqvTXh5lR8NyYx5YYABr/0/VAXjtXMvWQ+g8kZZTs9Pn42H3rJCfhtx5pvBuNYQloYNZ/Q7EYMqCs3qKqtg==
+  dependencies:
+    shelljs "^0.7.5"
 
 vm-browserify@^1.0.1:
   version "1.1.2"

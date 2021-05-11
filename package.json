@@ -9,7 +9,6 @@
   "scripts": {
     "build": "vue-cli-service build",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
     "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
@@ -85,6 +84,7 @@
     "ts-jest": "^26.4.4",
     "ts-vue-plugin": "^0.1.2",
     "typescript": "~3.9.3",
+    "violation-comments-to-bitbucket-cloud-command-line": "^1.26.0",
     "vue-cli-plugin-storybook": "~1.2.2",
     "vue-template-compiler": "^2.6.11",
     "widdershins": "^4.0.1"
