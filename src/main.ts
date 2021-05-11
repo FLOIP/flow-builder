@@ -25,6 +25,4 @@ async function main() {
   }).$mount('#app')
 }
 
-var it = {}
-
 main()
