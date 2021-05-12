@@ -6,7 +6,7 @@ import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumer
 import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'MobilePrimitives\\NumericResponse'
+export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
@@ -16,7 +16,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMinimum({ commit, rootGetters }, { blockId, value }: { blockId: IBlock['uuid']; value: number | string }) {
     commit('flow/block_updateConfigByKey', {
       blockId,
-      key: 'validationMinimum',
+      key: 'validation_minimum',
       value,
     }, { root: true })
     return value
@@ -24,7 +24,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMaximum({ commit, rootGetters }, { blockId, value }: { blockId: IBlock['uuid']; value: number | string }) {
     commit('flow/block_updateConfigByKey', {
       blockId,
-      key: 'validationMaximum',
+      key: 'validation_minimum',
       value,
     }, { root: true })
     return value
@@ -34,7 +34,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId,
       key: 'ivr',
       value: {
-        maxDigits: value,
+        max_digits: value,
       },
     }, { root: true })
     return value
@@ -43,14 +43,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
       }, { root: true }),
       await dispatch('flow/block_createBlockExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Error',
           label: 'Error',
         }) as IBlockExit,
@@ -64,12 +64,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits,
       config: {
         prompt: blankResource.uuid,
-        validationMinimum: '',
-        validationMaximum: '',
+        validation_minimum: '',
+        validation_maximum: '',
       },
     })
   },

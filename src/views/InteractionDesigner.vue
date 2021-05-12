@@ -16,7 +16,7 @@
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
           <component v-if="activeBlock"
-                     :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
+                     :is="`Flow${activeBlock.type.replace('.', '')}`"
                      :block="activeBlock"
                      :flow="activeFlow">
           </component>
@@ -257,8 +257,8 @@ export default {
       const { blockClasses } = this
 
       forEach(blockClasses, async ({ type }) => {
-        const normalizedType = type.replace('\\', '_')
-        const typeWithoutSeparators = type.replace(/\\/g, '')
+        const normalizedType = type.replace('.', '_')
+        const typeWithoutSeparators = type.replace('.', '')
         const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
 
         invoke(exported, 'install', this)

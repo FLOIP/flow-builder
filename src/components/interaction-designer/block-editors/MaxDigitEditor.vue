@@ -32,7 +32,7 @@ export default {
   computed: {
     maxDigits: {
       get() {
-        return get(this.block, 'config.ivr.maxDigits', '')
+        return get(this.block, 'config.ivr.max_digits', '')
       },
       set(value) {
         this.$emit('commitMaxDigitsChange', value)

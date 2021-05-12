@@ -25,7 +25,7 @@ export default {
   computed: {
     semanticLabel: {
       get() {
-        return this.block.semanticLabel
+        return this.block.semantic_label || ''
       },
       set(value) {
         this.block_setSemanticLabel({ blockId: this.block.uuid, value })

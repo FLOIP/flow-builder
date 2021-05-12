@@ -11,7 +11,7 @@
             type="checkbox"
             class="flow-language-toggle-checkbox"/>
 
-        {{language.name}}
+        {{language.label}}
       </label>
     </div>
   </div>

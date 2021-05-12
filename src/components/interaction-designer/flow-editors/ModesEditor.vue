@@ -35,7 +35,7 @@ class ModeEditor extends mixins(Lang) {
     private availableModes = Object.values(SupportedMode)
 
     get flowSelectedModes(): SupportedMode[] {
-      return this.flow.supportedModes
+      return this.flow.supported_modes
     }
 
     set flowSelectedModes(value: SupportedMode[]) {

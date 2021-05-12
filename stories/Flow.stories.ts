@@ -52,12 +52,10 @@ class CurrentClass2 extends BaseMountedVueClass {
     const {uuid: flowId} = await this.flow_addBlankFlow()
     const sampleLanguages: ILanguage[] = [
       {
-        id: '1',
-        name: "English",
-        abbreviation: "EN",
-        orgId: "",
-        rightToLeft: true,
-      },
+        id: '22',
+        label: 'English',
+        iso_639_3: "EN"
+      }
     ]
 
     const sampleModes = [

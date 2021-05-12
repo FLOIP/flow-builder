@@ -4,25 +4,21 @@
       "uuid": "5b8c87d6-de90-4bc4-8668-4f040000006e",
       "name": "Clipboard Shortcut Tree For Backtracking",
       "label": "",
-      "lastModified": "2019-10-10 23:46:30.000000+00:00",
-      "interactionTimeout": 172800,
-      "supportedModes": [
-        "sms",
-        "ivr",
-        "ussd"
+      "last_modified": "2019-10-10 23:46:30.000000+00:00",
+      "interaction_timeout": 172800,
+      "supported_modes": [
+        "SMS",
+        "IVR",
+        "USSD"
       ],
       "languages": [
         {
           "id": "22",
-          "name": "English",
-          "abbreviation": "EN",
-          "orgId": "1008107874829627392",
-          "rightToLeft": false,
-          "code": null,
-          "deletedAt": null
+          "label": "English",
+          "iso_639_3": "EN"
         }
       ],
-      "platform_metadata": {
+      "vendor_metadata": {
         "io_viamo": {
           "orgId": "1008107874829627392",
           "treeId": "116"
@@ -33,17 +29,17 @@
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
           "name": "1570737014110_68",
           "label": "Do you have more children to add?",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": {
             "choices": {
               "yes": "29841127-3247-461e-829a-89c000000000",
               "no": "29841127-3247-461e-829a-94d800000000"
             },
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
-            "questionPrompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
-            "choicesPrompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc"
+            "question_prompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
+            "choices_prompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "MultipleChoiceQuestionBlock",
               "customData": {
@@ -92,37 +88,37 @@
           "exits": [
             {
               "uuid": "29841127-3247-4610-8037-cdc5199dc271",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb92536d34",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb92536d34",
               "tag": "Yes",
               "label": "29841127-3247-4610-8037-cdc5199dc271",
-              "semanticLabel": "",
+              "semantic_label": "",
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '1'), AND(channel.mode != 'ivr', OR(block.value = '1', LOWER(block.value) = 'yes'))))"
             },
             {
               "uuid": "29841127-3247-4610-8037-cdc5199dc272",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb93718673",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb93718673",
               "tag": "No",
               "label": "29841127-3247-4610-8037-cdc5199dc272",
-              "semanticLabel": "",
+              "semantic_label": "",
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '2'), AND(channel.mode != 'ivr', OR(block.value = '2', LOWER(block.value) = 'no'))))"
             }
           ],
-          "type": "MobilePrimitives\\SelectOneResponse"
+          "type": "MobilePrimitives.SelectOneResponse"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb92536d34",
           "name": "1570737039229_96",
           "label": "What is their age?",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": {
-            "validationMinimum": 0,
-            "validationMaximum": 999,
+            "validation_minimum": 0,
+            "validation_minimum": 999,
             "ivr": {
-              "maxDigits": 3
+              "max_digits": 3
             },
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb92536d34"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "NumericQuestionBlock",
               "customData": {
@@ -156,28 +152,28 @@
           "exits": [
             {
               "uuid": "29841127-3247-4610-8037-cdc52896a851",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb92667e05",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb92667e05",
               "tag": "Default",
               "label": "Default",
-              "semanticLabel": ""
+              "semantic_label": ""
             },
             {
               "uuid": "29841127-3247-4610-8037-cdc52896a852",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
               "tag": "Error",
               "label": "Error",
-              "semanticLabel": ""
+              "semantic_label": ""
             }
           ],
-          "type": "MobilePrimitives\\NumericResponse"
+          "type": "MobilePrimitives.NumericResponse"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb92667e05",
           "name": "1570737051724_85",
           "label": "",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": [],
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "NumericBranchBlock",
               "customData": {
@@ -219,33 +215,33 @@
           "exits": [
             {
               "uuid": "29841127-3247-4610-8037-cdc5300939f5",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb92b0431d",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb92b0431d",
               "tag": "1",
               "label": "29841127-3247-4610-8037-cdc5300939f5",
-              "semanticLabel": "",
+              "semantic_label": "",
               "test": "@(flow.1570737039229_96.value > 18)"
             },
             {
               "uuid": "29841127-3247-4610-8037-cdc5300939f6",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
               "default": true,
               "test": "",
               "tag": "DEFAULT",
               "label": "29841127-3247-4610-8037-cdc5300939f6",
-              "semanticLabel": ""
+              "semantic_label": ""
             }
           ],
-          "type": "Core\\Case"
+          "type": "Core.Case"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb92b0431d",
           "name": "1570737100070_69",
           "label": "They aren't a child if they're over 18",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": {
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb92b0431d"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "MessageBlock",
               "customData": {
@@ -279,29 +275,29 @@
           "exits": [
             {
               "uuid": "29841127-3247-4610-8037-cdc54cda3755",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
               "tag": "Default",
               "label": "Default",
-              "semanticLabel": ""
+              "semantic_label": ""
             }
           ],
-          "type": "MobilePrimitives\\Message"
+          "type": "MobilePrimitives.Message"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
           "name": "1570737163787_41",
           "label": "Do they enjoy reading?",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": {
             "choices": {
               "yes": "29841127-3247-461e-829c-9fe800000000",
               "no": "29841127-3247-461e-829c-ab6800000000"
             },
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
-            "questionPrompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
-            "choicesPrompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75"
+            "question_prompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
+            "choices_prompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "MultipleChoiceQuestionBlock",
               "customData": {
@@ -350,37 +346,37 @@
           "exits": [
             {
               "uuid": "29841127-3247-4610-8037-cdc572d49db5",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb933994fe",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb933994fe",
               "tag": "Yes",
               "label": "29841127-3247-4610-8037-cdc572d49db5",
-              "semanticLabel": "",
+              "semantic_label": "",
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '1'), AND(channel.mode != 'ivr', OR(block.value = '1', LOWER(block.value) = 'yes'))))"
             },
             {
               "uuid": "29841127-3247-4610-8037-cdc572d49db6",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
               "tag": "No",
               "label": "29841127-3247-4610-8037-cdc572d49db6",
-              "semanticLabel": "",
+              "semantic_label": "",
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '2'), AND(channel.mode != 'ivr', OR(block.value = '2', LOWER(block.value) = 'no'))))"
             }
           ],
-          "type": "MobilePrimitives\\SelectManyResponse"
+          "type": "MobilePrimitives.SelectManyResponse"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb933994fe",
           "name": "1570737190064_62",
           "label": "How many books per year do they read?",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": {
-            "validationMinimum": 0,
-            "validationMaximum": 999,
+            "validation_minimum": 0,
+            "validation_minimum": 999,
             "ivr": {
-              "maxDigits": 3
+              "max_digits": 3
             },
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb933994fe"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "NumericQuestionBlock",
               "customData": {
@@ -414,33 +410,33 @@
           "exits": [
             {
               "uuid": "29841127-3247-4610-8037-cdc5827e3339",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
               "tag": "Default",
               "label": "Default",
-              "semanticLabel": ""
+              "semantic_label": ""
             },
             {
               "uuid": "29841127-3247-4610-8037-cdc5827e3340",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
               "tag": "Error",
               "label": "Error",
-              "semanticLabel": ""
+              "semantic_label": ""
             }
           ],
-          "type": "MobilePrimitives\\NumericResponse"
+          "type": "MobilePrimitives.NumericResponse"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
           "name": "1570737212703_19",
           "label": "What is thier name?",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": {
             "ivr": {
-              "maxDurationSeconds": 60
+              "max_duration_seconds": 60
             },
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb935c202f"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "OpenQuestionBlock",
               "customData": {
@@ -474,30 +470,30 @@
           "exits": [
             {
               "uuid": "29841127-3247-4610-8037-cdc58ffc925d",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
               "tag": "Default",
               "label": "Default",
-              "semanticLabel": ""
+              "semantic_label": ""
             },
             {
               "uuid": "29841127-3247-4610-8037-cdc58ffc925e",
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8edb935c202f",
               "tag": "Error",
               "label": "Error",
-              "semanticLabel": ""
+              "semantic_label": ""
             }
           ],
-          "type": "MobilePrimitives\\OpenResponse"
+          "type": "MobilePrimitives.OpenResponse"
         },
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8edb93718673",
           "name": "1570737226727_55",
           "label": "Thanks for entering info about your dependents",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": {
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb93718673"
           },
-          "platform_metadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "MessageBlock",
               "customData": {
@@ -531,13 +527,13 @@
           "exits": [
             {
               "uuid": "29841127-3247-4610-8037-cdc5985884ed",
-              "destinationBlock": null,
+              "destination_block": null,
               "tag": "Default",
               "label": "Default",
-              "semanticLabel": ""
+              "semantic_label": ""
             }
           ],
-          "type": "MobilePrimitives\\Message"
+          "type": "MobilePrimitives.Message"
         }
       ]
     }

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
+import VueRouter, { Route, RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue'
 import { routes as treesRoutes } from '@/router/trees.js'
 
@@ -10,7 +10,7 @@ export const routes: Array<RouteConfig> = [
   ...treesRoutes,
 ]
 
-const scrollBehavior = (to) => {
+const scrollBehavior = (to: Route) => {
   if (to.params.field) {
     const anchor = `${to.params.blockId}.${to.params.field}`
     const ele = document.getElementById(anchor)
