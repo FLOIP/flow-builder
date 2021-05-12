@@ -2258,7 +2258,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -2286,7 +2286,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -2313,97 +2313,74 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                             <!---->
                              
                             <div>
-                              <div
-                                class="upload-monitor"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
+                              <!---->
                                
                               <div
                                 class="audio-library-selector"
                               >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
+                                  data-audio-file-container-language="1"
                                 >
-                                  <div
-                                    class="input-group"
+                                  <button
+                                    class="audio-library-selection-clear-selection btn-ghost pull-right"
                                   >
-                                    <span
-                                      class="input-group-prepend"
-                                    >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
-                                      >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
+                                    <i
+                                      class="glyphicon glyphicon-remove"
                                     />
+                                  </button>
+                                   
+                                  <div
+                                    class="btn-group audio-library-selection-download-dropdown"
+                                  >
+                                    <button
+                                      class="btn btn-ghost dropdown-toggle"
+                                      data-toggle="dropdown"
+                                      type="button"
+                                    >
+                                      <span
+                                        aria-hidden="true"
+                                        class="glyphicon glyphicon-download-alt"
+                                      />
+                                       
+                                      <span
+                                        class="caret"
+                                      />
+                                    </button>
+                                     
+                                    <ul
+                                      class="dropdown-menu dropdown-menu-right"
+                                    >
+                                      <li>
+                                        <a
+                                          class="tree-block-audio-files-download-original"
+                                          href="path/to/ivr audio.mp3"
+                                          target="_blank"
+                                        >
+                                          Original file
+                                        </a>
+                                      </li>
+                                    </ul>
                                   </div>
                                    
-                                  <!---->
+                                  <p
+                                    class="audio-file-description"
+                                    title="path/to/ivr audio.mp3"
+                                  >
+                                    
+      path/to/ivr audio.mp3
+    
+                                  </p>
+                                   
+                                  <div
+                                    class="btn-toolbar"
+                                  >
+                                    <!---->
+                                  </div>
                                 </div>
                               </div>
                                
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
-                              </div>
+                              <!---->
                             </div>
                           </div>
                             
@@ -3046,7 +3023,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -3074,7 +3051,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -3101,97 +3078,74 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                             <!---->
                              
                             <div>
-                              <div
-                                class="upload-monitor"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
+                              <!---->
                                
                               <div
                                 class="audio-library-selector"
                               >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
+                                  data-audio-file-container-language="1"
                                 >
-                                  <div
-                                    class="input-group"
+                                  <button
+                                    class="audio-library-selection-clear-selection btn-ghost pull-right"
                                   >
-                                    <span
-                                      class="input-group-prepend"
-                                    >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
-                                      >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
+                                    <i
+                                      class="glyphicon glyphicon-remove"
                                     />
+                                  </button>
+                                   
+                                  <div
+                                    class="btn-group audio-library-selection-download-dropdown"
+                                  >
+                                    <button
+                                      class="btn btn-ghost dropdown-toggle"
+                                      data-toggle="dropdown"
+                                      type="button"
+                                    >
+                                      <span
+                                        aria-hidden="true"
+                                        class="glyphicon glyphicon-download-alt"
+                                      />
+                                       
+                                      <span
+                                        class="caret"
+                                      />
+                                    </button>
+                                     
+                                    <ul
+                                      class="dropdown-menu dropdown-menu-right"
+                                    >
+                                      <li>
+                                        <a
+                                          class="tree-block-audio-files-download-original"
+                                          href="path/to/ivr audio.mp3"
+                                          target="_blank"
+                                        >
+                                          Original file
+                                        </a>
+                                      </li>
+                                    </ul>
                                   </div>
                                    
-                                  <!---->
+                                  <p
+                                    class="audio-file-description"
+                                    title="path/to/ivr audio.mp3"
+                                  >
+                                    
+      path/to/ivr audio.mp3
+    
+                                  </p>
+                                   
+                                  <div
+                                    class="btn-toolbar"
+                                  >
+                                    <!---->
+                                  </div>
                                 </div>
                               </div>
                                
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
-                              </div>
+                              <!---->
                             </div>
                           </div>
                             
