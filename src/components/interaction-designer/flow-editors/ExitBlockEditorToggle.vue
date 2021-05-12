@@ -5,7 +5,7 @@
         <button type="button"
             class="btn btn-secondary btn-sm"
             :class="{active: isExitBlock}"
-            @click="toggleExitBlock($event)">
+            @click="toggleExitBlock()">
           <template v-if="isExitBlock">
             {{'flow-builder.unset-as-exit-block' | trans}}
           </template>
@@ -30,20 +30,18 @@ const flowVuexNamespace = namespace('flow')
 @Component({})
 class ExitBlockEditorToggle extends mixins(Lang) {
   @Prop({ default: true }) readonly isEditable!: boolean
-
-  @Prop()readonly blockId!: string
-
-  @Prop()readonly flow!: IFlow
+  @Prop() readonly blockId!: string
+  @Prop() readonly flow!: IFlow
 
   get isExitBlock() {
     return this.blockId === this.flow.exit_block_id
   }
 
-  toggleExitBlock(event: any) {
-    const { flow: { uuid: flowId }, blockId } = this
-    this.flow_setExitBlockId({ flowId, blockId })
-    console.log(this.isExitBlock)
-    console.log(this.blockId === this.flow.exit_block_id)
+  toggleExitBlock() {
+    this.flow_setExitBlockId({
+      flowId: this.flow.uuid,
+      blockId: this.isExitBlock ? null : this.blockId,
+    })
   }
 
   @flowVuexNamespace.Mutation flow_setExitBlockId!: ({ flowId, blockId }: {flowId: IFlow['uuid']; blockId: IBlock['uuid']}) => void
