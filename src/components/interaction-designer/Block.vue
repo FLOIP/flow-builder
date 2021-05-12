@@ -32,6 +32,7 @@
             {{trans(`flow-builder.${block.type}`)}}
           </p>
           <i v-if="activeFlow.first_block_id === block.uuid" class="glyphicon glyphicon-arrow-down"></i>
+          <i v-if="activeFlow.exit_block_id === block.uuid" class="glyphicon glyphicon-log-out"></i>
         </div>
 
         <h3 class="block-label" :style="{ maxWidth: `${this.labelContainerMaxWidth}px` }"

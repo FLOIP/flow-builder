@@ -44,7 +44,7 @@ class ExitBlockEditorToggle extends mixins(Lang) {
     })
   }
 
-  @flowVuexNamespace.Mutation flow_setExitBlockId!: ({ flowId, blockId }: {flowId: IFlow['uuid']; blockId: IBlock['uuid']}) => void
+  @flowVuexNamespace.Mutation flow_setExitBlockId!: ({ flowId, blockId }: {flowId: IFlow['uuid']; blockId: IBlock['uuid'] | null}) => void
 }
 export default ExitBlockEditorToggle
 </script>
