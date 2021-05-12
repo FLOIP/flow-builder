@@ -22,6 +22,9 @@
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
+      <exit-block-editor-toggle
+        :flow="flow"
+        :block-id="block.uuid" />
     </fieldset>
 
     <block-id :block="block" />
@@ -49,6 +52,7 @@ import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue
 import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
 import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
 import { mixins } from 'vue-class-component'
+import ExitBlockEditorToggle from '@/components/interaction-designer/flow-editors/ExitBlockEditorToggle.vue';
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -61,6 +65,7 @@ const builderVuexNamespace = namespace('builder')
     BlockLabelEditor,
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
+    ExitBlockEditorToggle,
     BlockId,
     BlockMinimumNumericEditor,
     BlockMaximumNumericEditor,

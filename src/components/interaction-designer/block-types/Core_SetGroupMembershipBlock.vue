@@ -27,7 +27,9 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid"/>
-
+      <exit-block-editor-toggle
+        :flow="flow"
+        :block-id="block.uuid" />
     </fieldset>
 
     <block-id :block="block"/>
@@ -56,6 +58,7 @@ import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import { find } from 'lodash'
 import { mixins } from "vue-class-component";
+import ExitBlockEditorToggle from '@/components/interaction-designer/flow-editors/ExitBlockEditorToggle.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
@@ -72,6 +75,7 @@ interface IGroupActionOption {
     BlockLabelEditor,
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
+    ExitBlockEditorToggle,
     BlockId,
     GroupSelector,
     VueMultiselect,

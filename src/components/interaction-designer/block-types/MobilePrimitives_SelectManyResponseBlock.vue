@@ -54,6 +54,9 @@
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
+      <exit-block-editor-toggle
+        :flow="flow"
+        :block-id="block.uuid" />
     </fieldset>
 
     <block-id :block="block" />
@@ -78,6 +81,7 @@ import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
+import ExitBlockEditorToggle from '@/components/interaction-designer/flow-editors/ExitBlockEditorToggle.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -89,6 +93,7 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     BlockExitSemanticLabelEditor,
     FirstBlockEditorButton,
+    ExitBlockEditorToggle,
     ResourceEditor,
     BlockId,
   },

@@ -18,6 +18,9 @@
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
+      <exit-block-editor-toggle
+        :flow="flow"
+        :block-id="block.uuid" />
     </fieldset>
 
     <block-id :block="block" />
@@ -39,6 +42,7 @@ import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
+import ExitBlockEditorToggle from '../flow-editors/ExitBlockEditorToggle.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
@@ -53,6 +57,7 @@ const builderVuexNamespace = namespace('builder')
     BlockLabelEditor,
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
+    ExitBlockEditorToggle,
     BlockId,
   },
 })
