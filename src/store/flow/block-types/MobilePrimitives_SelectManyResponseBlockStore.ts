@@ -3,7 +3,6 @@ import { IBlockExit } from "@floip/flow-runner"
 import { IdGeneratorUuidV4 } from "@floip/flow-runner/dist/domain/IdGeneratorUuidV4"
 import { defaultsDeep } from 'lodash'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import { IFlowsState } from '@/store/flow'
 import { IRootState } from '@/store'
 import {
   getters as selectOneGetters,
@@ -35,6 +34,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Default',
       label: 'Default',
+      default: true,
     }
 
     const errorExitProps: Partial<IBlockExit> = {
@@ -44,6 +44,9 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     }
 
     await dispatch('createVolatileEmptyChoice', { index: 0 })
+    const defaultExit = await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true })
+    const errorExit = await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true })
+
 
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
@@ -51,8 +54,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       label: '',
       semantic_label: '',
       exits: [
-        await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true }),
-        await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true }),
+        errorExit,
       ],
       config: {
         prompt: blankPromptResource.uuid,
@@ -60,6 +62,20 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
         choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
       },
+      vendor_metadata: {
+        io_viamo: {
+          cache: { // cache outputs when creating to facilitate future logic
+            outputBranching: {
+              segregatedExits: [
+                errorExit
+              ],
+              unifiedExits: [
+                defaultExit, errorExit
+              ]
+            }
+          }
+        }
+      }
     })
   },
 }

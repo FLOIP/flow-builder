@@ -55,7 +55,7 @@
             <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1"></span>
           </div>
 
-          <h3 class="block-exit-tag badge badge-warning">{{visibleExitTag(key, exit)}}</h3>
+          <h3 class="block-exit-tag badge badge-warning">{{exitTagText(key, exit)}}</h3>
 
           <template v-if="exit.destination_block == null">
             <plain-draggable class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
@@ -292,7 +292,7 @@ export default {
         : uuid
     },
 
-    visibleExitTag(key, exit) {
+    exitTagText(key, exit) {
       if (!exit.tag && !exit.semantic_label) {
         return '—'
       }
