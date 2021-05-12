@@ -1,50 +1,50 @@
 <template>
   <div class="flow-editor exit-block-editor-toggle">
-    <template v-if="isEditable && hasClipboard">
+    <template v-if="isEditable">
       <div class="form-group">
         <button type="button"
             class="btn btn-secondary btn-sm"
             :class="{active: isExitBlock}"
-            @click="toggleExitBlock">
-          <template v-if="isExitBlock">{{'flow-builder.unset-as-exit-block' | trans}}</template>
-          <template v-else>{{'flow-builder.set-as-exit-block' | trans}}</template>
+            @click="toggleExitBlock()">
+          <template v-if="isExitBlock">
+            {{'flow-builder.unset-as-exit-block' | trans}}
+          </template>
+          <template v-else>
+            {{'flow-builder.set-as-exit-block' | trans}}
+          </template>
         </button>
       </div>
     </template>
   </div>
 </template>
 
-<script>
-import { mapMutations } from 'vuex'
-import { lang } from '@/lib/filters/lang'
+<script lang="ts">
+import { Component, Prop } from 'vue-property-decorator'
+import { IBlock, IFlow } from '@floip/flow-runner'
+import Lang from '@/lib/filters/lang'
+import { namespace } from 'vuex-class'
+import { mixins } from "vue-class-component";
 
-export default {
-  mixins: [lang],
-  props: {
-    flow: Object,
-    blockId: String, // toggle for particular block
+const flowVuexNamespace = namespace('flow')
 
-    isEditable: {
-      type: Boolean,
-      default: true,
-    },
-  },
+@Component({})
+class ExitBlockEditorToggle extends mixins(Lang) {
+  @Prop({ default: true }) readonly isEditable!: boolean
+  @Prop() readonly blockId!: string
+  @Prop() readonly flow!: IFlow
 
-  computed: {
-    isExitBlock() {
-      return this.blockId === this.flow.exit_block_id
-    },
-  },
+  get isExitBlock() {
+    return this.blockId === this.flow.exit_block_id
+  }
 
-  methods: {
-    ...mapMutations('flow', ['flow_setExitBlockId']),
+  toggleExitBlock() {
+    this.flow_setExitBlockId({
+      flowId: this.flow.uuid,
+      blockId: this.isExitBlock ? null : this.blockId,
+    })
+  }
 
-    toggleExitBlock() {
-      this.flow_setExitBlockId({
-        flowId: this.flow.uuid,
-        blockId: this.isExitBlock ? null : this.blockId,
-      })
-    },
-  },
+  @flowVuexNamespace.Mutation flow_setExitBlockId!: ({ flowId, blockId }: {flowId: IFlow['uuid']; blockId: IBlock['uuid']}) => void
 }
+export default ExitBlockEditorToggle
 </script>

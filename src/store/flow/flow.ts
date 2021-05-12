@@ -89,8 +89,7 @@ export const mutations: MutationTree<IFlowsState> = {
 
   flow_setExitBlockId(state, { flowId, blockId }) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
-    flow.exit_block_id = block.uuid
+    Vue.set(flow, 'exit_block_id', blockId)
   },
 
   flow_setFirstBlockId(state, { flowId, blockId }) {
@@ -98,6 +97,7 @@ export const mutations: MutationTree<IFlowsState> = {
     const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
     Vue.set(flow, 'first_block_id', block.uuid)
   },
+
   flow_setNameFromLabel(state, {flowId, label}) {
     findFlowWith(flowId, state as unknown as IContext).name = label.replace(/\W+/g, '')
   },
