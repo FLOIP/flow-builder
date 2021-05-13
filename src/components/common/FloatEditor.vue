@@ -6,6 +6,7 @@
           type="number"
           :min="min"
           class="form-control"
+          :class="{ 'is-invalid': isInvalid }"
           :placeholder="placeholder"
           :value="value"
           :step="step"
@@ -14,10 +15,6 @@
           @input="$emit('input', $event.target.value)"
       />
     </div>
-
-<!--    <p v-else>-->
-<!--      {{value}}-->
-<!--    </p>-->
     <slot/>
   </div>
 </template>
@@ -51,6 +48,16 @@ export default {
       required: false,
       default: '[0-9\-.,]',
     },
+    validState: {
+      type: Boolean,
+      default: null,
+      required: false,
+    },
+  },
+  computed: {
+    isInvalid() {
+      return validState === false
+    }
   },
   methods: {
     filterFloat(e) {

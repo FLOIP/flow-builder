@@ -5,24 +5,28 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block"/>
-      <block-label-editor :block="block"/>
-      <block-semantic-label-editor :block="block"/>
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-      <div class="form-group">
-        <label>{{'flow-builder.action-label' | trans}}</label>
-        <vue-multiselect v-model="selectedAction"
-                         track-by="id"
-                         label="name"
-                         :placeholder="'flow-builder.action-placeholder' | trans"
-                         :options="actionsList"
-                         :allow-empty="true"
-                         :show-labels="false"
-                         :searchable="false">
-        </vue-multiselect>
-      </div>
+      <validation-message :message-key="`block/${block.uuid}/config/is_member`" #input-control="{ isValid: isValid }">
+        <div class="form-group">
+          <label>{{'flow-builder.action-label' | trans}}</label>
+          <vue-multiselect v-model="selectedAction"
+                           track-by="id"
+                           label="name"
+                           :class="{invalid: isValid === false}"
+                           :placeholder="'flow-builder.action-placeholder' | trans"
+                           :options="actionsList"
+                           :allow-empty="true"
+                           :show-labels="false"
+                           :searchable="false">
+          </vue-multiselect>
+        </div>
+      </validation-message>
 
-      <group-selector :block="block"/>
+      <group-selector :block="block" />
+
       <slot name="extras"></slot>
       <first-block-editor-button
         :flow="flow"
@@ -56,6 +60,7 @@ import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import { find } from 'lodash'
 import { mixins } from "vue-class-component";
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
@@ -75,6 +80,7 @@ interface IGroupActionOption {
     BlockId,
     GroupSelector,
     VueMultiselect,
+    ValidationMessage
   },
 })
 class Core_SetGroupMembershipBlock extends mixins(Lang) {
@@ -94,12 +100,11 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
 
   get selectedAction() {
     const { is_member } = this.block.config as ISetGroupMembershipBlockConfig
-    //TODO: we can remove the safe cast JSON.parse(is_member) once ISetGroupMembershipBlockConfig.is_member type is changed to boolean
-    if (JSON.parse(is_member) === false) {
+    if (is_member === 'false') {
       return find(this.actionsList, { id: REMOVE_KEY }) || {} as IGroupActionOption
     }
 
-    if (JSON.parse(is_member) === true) {
+    if (is_member === 'true') {
       return find(this.actionsList, { id: ADD_KEY }) || {} as IGroupActionOption
     }
 
@@ -120,3 +125,9 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
 export default Core_SetGroupMembershipBlock
 export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SetGroupMembershipStore)
 </script>
+
+<style lang="css" scoped>
+.invalid >>> .multiselect__tags {
+  border-color: #dc3545;
+}
+</style>

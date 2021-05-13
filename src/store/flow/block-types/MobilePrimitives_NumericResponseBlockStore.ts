@@ -24,7 +24,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMaximum({ commit, rootGetters }, { blockId, value }: { blockId: IBlock['uuid']; value: number | string }) {
     commit('flow/block_updateConfigByKey', {
       blockId,
-      key: 'validation_minimum',
+      key: 'validation_maximum',
       value,
     }, { root: true })
     return value
