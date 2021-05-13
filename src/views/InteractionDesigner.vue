@@ -219,9 +219,9 @@ export default {
       const { blockId, field } = this.$route.params
       if (blockId) {
         this.activateBlock({ blockId })
-        const blockEle = document.querySelector(`#block\\/${blockId} .plain-draggable`)
-        if (blockEle) {
-          blockEle.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        const blockElement = document.querySelector(`#block\\/${blockId} .plain-draggable`)
+        if (blockElement) {
+          blockElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
       }
       if (field) {

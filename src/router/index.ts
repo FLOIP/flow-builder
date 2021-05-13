@@ -13,9 +13,11 @@ export const routes: Array<RouteConfig> = [
 const scrollBehavior = (to: Route) => {
   if (to.params.field) {
     const anchor = `${to.params.blockId}.${to.params.field}`
-    const ele = document.getElementById(anchor)
-    if (ele) {
-      ele.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    const domElement = document.getElementById(anchor)
+    if (domElement) {
+      domElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    } else {
+      console.debug('Deep linking: cannot scroll to ', anchor, ' as the DOM element is not found')
     }
   }
 }
