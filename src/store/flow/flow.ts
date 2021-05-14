@@ -18,6 +18,7 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import {
   defaults,
+  defaultsDeep,
   includes,
   forEach,
   cloneDeep,

@@ -185,25 +185,31 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               </div>
                                
                               <div
-                                class="form-group flow-interaction-timeout"
+                                class="validation-message"
                               >
                                 <div
-                                  class="number-editor"
+                                  class="form-group flow-interaction-timeout"
                                 >
-                                  <label>
-                                    Interaction timeout
-                                  </label>
-                                   
-                                  <div>
-                                    <input
-                                      class="form-control"
-                                      min="0"
-                                      placeholder="Enter value"
-                                      type="number"
-                                    />
+                                  <div
+                                    class="number-editor"
+                                  >
+                                    <label>
+                                      Interaction timeout
+                                    </label>
+                                     
+                                    <div>
+                                      <input
+                                        class="form-control"
+                                        min="0"
+                                        placeholder="Enter value"
+                                        type="number"
+                                      />
+                                    </div>
+                                     
                                   </div>
-                                   
                                 </div>
+                                 
+                                <!---->
                               </div>
                             </div>
                              

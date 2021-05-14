@@ -22,7 +22,7 @@ const DEV_ERROR_KEYWORDS = [
 
 let validators = new Map<string, ValidateFunction>() //AJV validators, keys are types
 
-interface IIndexedString { [key: string]: string }
+export interface IIndexedString { [key: string]: string }
 
 export interface IValidationStatus {
   isValid: boolean | PromiseLike<any>;
@@ -39,15 +39,16 @@ export const stateFactory = (): IValidationState => ({
 
 export const getters: GetterTree<IValidationState, IRootState> = {
   /**
-   * Human readable errors, keys are index like `flow/flowId/.path.to.prop`
+   * Human readable errors, keys are index like `flow/flowId/path/to/prop`
    * check this repo to see more available example: https://github.com/ajv-validator/ajv-i18n/blob/master/messages/index.js
    * eg:
    * {
-   *   "flow/949b129a-ecf3-46b5-89a5-0a6ed577bc29/.blocks": "should NOT have fewer than 1 items",
-   *   "flow/949b129a-ecf3-46b5-89a5-0a6ed577bc29/.first_block_id": "should match pattern \"^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$\"",
-   *   "flow/949b129a-ecf3-46b5-89a5-0a6ed577bc29/.interaction_timeout": "should be number",
-   *   "flow/949b129a-ecf3-46b5-89a5-0a6ed577bc29/.languages": "should NOT have fewer than 1 items",
-   *   "flow/949b129a-ecf3-46b5-89a5-0a6ed577bc29/.supported_modes": "should NOT have fewer than 1 items"
+   *   "flow/1607666a-2216-4a17-b8ba-9eb861d72933/blocks/0/name": "should match pattern \"^[a-zA-Z_]\\w*$\"",
+   *   "flow/1607666a-2216-4a17-b8ba-9eb861d72933/languages/0/iso_639_3": "should match pattern \"^[a-z][a-z][a-z]$\"",
+   *   "block/a520eb17-49f0-4617-af18-b0d524f921ce#/required": "should have required property 'config', for params {\"missingProperty\":\"config\"}",
+   *   "block/a520eb17-49f0-4617-af18-b0d524f921ce/name": "should match pattern \"^[a-zA-Z_]\\w*$\"",
+   *   "block/a520eb17-49f0-4617-af18-b0d524f921ce/exits/1/tag": "should match pattern \"^[a-zA-Z_]\\w*$\"",
+   *   "block/44663ef4-5e1f-4ead-a8e5-05d6f7d47f0d/name": "should match pattern \"^[a-zA-Z_]\\w*$\""
    * }
    *
    * Note that indexedErrors has more elements than validationStatuses.
@@ -74,7 +75,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     const { uuid: blockId, type: blockType } = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
-    const index = `block/${blockId}/`
+    const index = `block/${blockId}`
 
     Vue.set(state.validationStatuses, index, {
       isValid: validate(block),
@@ -87,7 +88,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
   async validate_flow({ state, commit }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator()
-    const index = `flow/${flow.uuid}/`
+    const index = `flow/${flow.uuid}`
     Vue.set(state.validationStatuses, index, {
       isValid: validate(flow),
       ajvErrors: validate.errors,
