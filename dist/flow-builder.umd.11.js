@@ -1,6 +1,6 @@
 ((typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] = (typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] || []).push([[11],{
 
-/***/ "41bd":
+/***/ "5c47":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,19 +8,15 @@
 __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
+__webpack_require__.d(__webpack_exports__, "MobilePrimitives_SelectOneResponseBlock", function() { return /* reexport */ MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock; });
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=template&id=67097155&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('div',{staticClass:"text-only-resource-editor"},[_c('hr'),_c('h4',[_vm._v("Log Message")]),_vm._l((_vm.flow.languages),function(ref){
-var languageId = ref.id;
-var language = ref.name;
-return [_c('div',{staticClass:"block-content-editor-lang"},[_c('h5',{staticClass:"badge badge-info"},[_vm._v(" "+_vm._s(_vm._f("trans")(language || 'flow-builder.unknown-language'))+" ")])]),_vm._l((_vm.flow.supportedModes),function(mode){return [_c('h6',[_vm._v(_vm._s(_vm._f("trans")(("flow-builder." + mode + "-content"))))]),_c('resource-variant-text-editor',{attrs:{"resource-id":_vm.messageResource.uuid,"resource-variant":_vm.findOrGenerateStubbedVariantOn(
-                                          _vm.messageResource,
-                                          {languageId: languageId, contentType: ['text'], modes: [mode]}),"mode":mode,"enable-autogen-button": true || false}})]})]})],2),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],1),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"359b40c9-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=5cefd516&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mobile-primitive-select-one-response-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('div',{staticClass:"prompt-resource"},[(_vm.promptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.prompt'),"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_c('div',{staticClass:"question-prompt-resource"},[(_vm.questionPromptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.question-prompt'),"resource":_vm.questionPromptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_c('div',{staticClass:"choices-prompt-resource"},[(_vm.choicesPromptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.choices-prompt'),"resource":_vm.choicesPromptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_c('div',{staticClass:"form-group"},[_vm._l((Object.keys(_vm.inflatedChoices)),function(choiceKey){return [_c('hr'),_c('h4',[_vm._v(_vm._s(("Choice " + choiceKey)))]),(_vm.inflatedChoices[choiceKey].exit)?_c('block-exit-semantic-label-editor',{attrs:{"exit":_vm.inflatedChoices[choiceKey].exit,"block":_vm.block}}):_vm._e(),_c('resource-editor',{attrs:{"resource":_vm.inflatedChoices[choiceKey].resource,"block":_vm.block,"flow":_vm.flow}})]}),_c('hr'),_c('h4',[_vm._v(_vm._s(("Choice " + (Object.keys(_vm.inflatedChoices).length + 1))))]),_c('block-exit-semantic-label-editor',{attrs:{"exit":_vm.inflatedEmptyChoice.exit}}),_c('resource-editor',{attrs:{"resource":_vm.inflatedEmptyChoice.resource,"block":_vm.block,"flow":_vm.flow}})],2),_vm._t("extras"),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=template&id=67097155&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=5cefd516&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("d4ec");
@@ -37,107 +33,20 @@ var createSuper = __webpack_require__("2caf");
 // EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
 var tslib_es6 = __webpack_require__("9ab4");
 
-// EXTERNAL MODULE: external {"commonjs":"vue","commonjs2":"vue","root":"Vue"}
-var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
-var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
-
 // EXTERNAL MODULE: ./node_modules/vuex-class/lib/index.js + 1 modules
 var lib = __webpack_require__("4bb5");
 
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/vue-property-decorator.js
 var vue_property_decorator = __webpack_require__("60a3");
 
-// EXTERNAL MODULE: ./src/store/flow/resource.ts
-var resource = __webpack_require__("393e");
+// EXTERNAL MODULE: ./src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts
+var MobilePrimitives_SelectOneResponseBlockStore = __webpack_require__("ecef");
 
-// EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
-var runtime = __webpack_require__("96cf");
+// EXTERNAL MODULE: ./src/lib/filters/lang.ts
+var lang = __webpack_require__("4a51");
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__("1da1");
-
-// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
-var IdGeneratorUuidV4 = __webpack_require__("31aa");
-
-// EXTERNAL MODULE: ./node_modules/lodash/lodash.js
-var lodash = __webpack_require__("2ef0");
-
-// CONCATENATED MODULE: ./src/store/flow/block-types/Core_LogBlockStore.ts
-
-
-
-
-var BLOCK_TYPE = 'Core\\Log';
-var getters = {};
-var mutations = {};
-var actions = {
-  createWith: function createWith(_ref, _ref2) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var rootGetters, commit, dispatch, props, blankLogResource, exits;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              rootGetters = _ref.rootGetters, commit = _ref.commit, dispatch = _ref.dispatch;
-              props = _ref2.props;
-              _context.next = 4;
-              return dispatch('flow/flow_addBlankResource', null, {
-                root: true
-              });
-
-            case 4:
-              blankLogResource = _context.sent;
-              _context.next = 7;
-              return dispatch('flow/block_createBlockDefaultExitWith', {
-                props: {
-                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate(),
-                  tag: 'Default',
-                  label: 'Default'
-                }
-              }, {
-                root: true
-              });
-
-            case 7:
-              _context.t0 = _context.sent;
-              exits = [_context.t0];
-              return _context.abrupt("return", Object(lodash["defaults"])(props, {
-                type: BLOCK_TYPE,
-                name: '',
-                label: '',
-                semanticLabel: '',
-                exits: exits,
-                config: {
-                  message: blankLogResource.uuid
-                }
-              }));
-
-            case 10:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  }
-};
-/* harmony default export */ var Core_LogBlockStore = ({
-  namespaced: true,
-  getters: getters,
-  mutations: mutations,
-  actions: actions
-});
 // EXTERNAL MODULE: ./src/store/builder/index.ts + 6 modules
 var builder = __webpack_require__("af98");
-
-// EXTERNAL MODULE: ./src/lib/filters/lang.js
-var lang = __webpack_require__("3a37");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceEditor.vue + 37 modules
-var ResourceEditor = __webpack_require__("510a");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue + 4 modules
-var ResourceVariantTextEditor = __webpack_require__("bb40");
 
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
 var NameEditor = __webpack_require__("f04e");
@@ -148,13 +57,22 @@ var LabelEditor = __webpack_require__("3411");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue + 4 modules
 var SemanticLabelEditor = __webpack_require__("1b4e");
 
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue + 4 modules
+var ExitSemanticLabelEditor = __webpack_require__("70f0");
+
 // EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue + 4 modules
 var FirstBlockEditorButton = __webpack_require__("192b");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceEditor.vue + 37 modules
+var ResourceEditor = __webpack_require__("510a");
 
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
 var BlockId = __webpack_require__("792f");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=script&lang=ts&
+// EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
+var vue_class_component_esm = __webpack_require__("2fe1");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=script&lang=ts&
 
 
 
@@ -173,63 +91,99 @@ var BlockId = __webpack_require__("792f");
 
 
 
+var flowVuexNamespace = Object(lib["e" /* namespace */])('flow');
+var blockVuexNamespace = Object(lib["e" /* namespace */])("flow/".concat(MobilePrimitives_SelectOneResponseBlockStore["a" /* BLOCK_TYPE */]));
+var builderVuexNamespace = Object(lib["e" /* namespace */])('builder');
 
-var flowVuexNamespace = Object(lib["c" /* namespace */])('flow');
-var builderVuexNamespace = Object(lib["c" /* namespace */])('builder');
+var MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock = /*#__PURE__*/function (_mixins) {
+  Object(inherits["a" /* default */])(MobilePrimitives_SelectOneResponseBlock, _mixins);
 
-var Core_LogBlockvue_type_script_lang_ts_Core_LogBlock = /*#__PURE__*/function (_Vue) {
-  Object(inherits["a" /* default */])(Core_LogBlock, _Vue);
+  var _super = Object(createSuper["a" /* default */])(MobilePrimitives_SelectOneResponseBlock);
 
-  var _super = Object(createSuper["a" /* default */])(Core_LogBlock);
+  function MobilePrimitives_SelectOneResponseBlock() {
+    Object(classCallCheck["a" /* default */])(this, MobilePrimitives_SelectOneResponseBlock);
 
-  function Core_LogBlock() {
-    var _this;
-
-    Object(classCallCheck["a" /* default */])(this, Core_LogBlock);
-
-    _this = _super.apply(this, arguments);
-    _this.findOrGenerateStubbedVariantOn = resource["c" /* findOrGenerateStubbedVariantOn */];
-    return _this;
+    return _super.apply(this, arguments);
   }
 
-  Object(createClass["a" /* default */])(Core_LogBlock, [{
-    key: "messageResource",
+  Object(createClass["a" /* default */])(MobilePrimitives_SelectOneResponseBlock, [{
+    key: "onChoicesChanged",
+    value: function onChoicesChanged(newChoices) {
+      console.debug('Watched inflatedChoices');
+      this.editSelectOneResponseBlockChoice();
+    }
+  }, {
+    key: "onEmptyChoiceChanged",
+    value: function onEmptyChoiceChanged(newChoice, oldChoice) {
+      console.debug('Watched inflatedEmptyChoice', newChoice, oldChoice);
+      this.editEmptyChoice({
+        choice: oldChoice
+      });
+    }
+  }, {
+    key: "promptResource",
     get: function get() {
-      return this.resourcesByUuid[this.block.config.message];
+      return this.resourcesByUuid[this.block.config.prompt];
+    }
+  }, {
+    key: "questionPromptResource",
+    get: function get() {
+      return this.resourcesByUuid[this.block.config.question_prompt || ''];
+    }
+  }, {
+    key: "choicesPromptResource",
+    get: function get() {
+      return this.resourcesByUuid[this.block.config.choices_prompt || ''];
     }
   }]);
 
-  return Core_LogBlock;
-}(external_commonjs_vue_commonjs2_vue_root_Vue_default.a);
+  return MobilePrimitives_SelectOneResponseBlock;
+}(Object(vue_class_component_esm["c" /* mixins */])(lang["a" /* default */]));
 
-Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock.prototype, "block", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "block", void 0);
 
-Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock.prototype, "flow", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "flow", void 0);
 
-Object(tslib_es6["a" /* __decorate */])([flowVuexNamespace.Getter], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock.prototype, "resourcesByUuid", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["d" /* Watch */])('inflatedChoices', {
+  deep: true
+})], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "onChoicesChanged", null);
 
-Object(tslib_es6["a" /* __decorate */])([builderVuexNamespace.Getter], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock.prototype, "isEditable", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["d" /* Watch */])('inflatedEmptyChoice', {
+  deep: true
+})], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "onEmptyChoiceChanged", null);
 
-Core_LogBlockvue_type_script_lang_ts_Core_LogBlock = Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["a" /* Component */])({
+Object(tslib_es6["a" /* __decorate */])([flowVuexNamespace.Getter], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "resourcesByUuid", void 0);
+
+Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Getter], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "inflatedChoices", void 0);
+
+Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.State], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "inflatedEmptyChoice", void 0);
+
+Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Action], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "editSelectOneResponseBlockChoice", void 0);
+
+Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Action], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "editEmptyChoice", void 0);
+
+Object(tslib_es6["a" /* __decorate */])([builderVuexNamespace.Getter], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "isEditable", void 0);
+
+MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock = Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["a" /* Component */])({
   components: {
-    ResourceEditor: ResourceEditor["a" /* default */],
-    ResourceVariantTextEditor: ResourceVariantTextEditor["a" /* default */],
     BlockNameEditor: NameEditor["a" /* default */],
     BlockLabelEditor: LabelEditor["a" /* default */],
     BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
+    BlockExitSemanticLabelEditor: ExitSemanticLabelEditor["a" /* default */],
     FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
+    ResourceEditor: ResourceEditor["a" /* default */],
     BlockId: BlockId["a" /* default */]
-  },
-  mixins: [lang["a" /* default */]]
-})], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock);
-/* harmony default export */ var Core_LogBlockvue_type_script_lang_ts_ = (Core_LogBlockvue_type_script_lang_ts_Core_LogBlock);
-var install = Object(builder["c" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, Core_LogBlockStore);
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=script&lang=ts&
- /* harmony default export */ var block_types_Core_LogBlockvue_type_script_lang_ts_ = (Core_LogBlockvue_type_script_lang_ts_); 
+  }
+})], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock);
+
+/* harmony default export */ var MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_ = (MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock);
+var install = Object(builder["c" /* createDefaultBlockTypeInstallerFor */])(MobilePrimitives_SelectOneResponseBlockStore["a" /* BLOCK_TYPE */], MobilePrimitives_SelectOneResponseBlockStore["c" /* default */]);
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=script&lang=ts&
+ /* harmony default export */ var block_types_MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_ = (MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__("2877");
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_LogBlock.vue
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue
 
 
 
@@ -238,7 +192,7 @@ var componentNormalizer = __webpack_require__("2877");
 /* normalize component */
 
 var component = Object(componentNormalizer["a" /* default */])(
-  block_types_Core_LogBlockvue_type_script_lang_ts_,
+  block_types_MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_,
   render,
   staticRenderFns,
   false,
@@ -248,7 +202,101 @@ var component = Object(componentNormalizer["a" /* default */])(
   
 )
 
-/* harmony default export */ var block_types_Core_LogBlock = __webpack_exports__["default"] = (component.exports);
+/* harmony default export */ var block_types_MobilePrimitives_SelectOneResponseBlock = __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "70f0":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"359b40c9-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue?vue&type=template&id=4ea94166&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('text-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.block-exit-semantic-label'),"placeholder":_vm._f("trans")('flow-builder.enter-block-exit-semantic-label')},model:{value:(_vm.semanticLabel),callback:function ($$v) {_vm.semanticLabel=$$v},expression:"semanticLabel"}})],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue?vue&type=template&id=4ea94166&
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
+var objectSpread2 = __webpack_require__("5530");
+
+// EXTERNAL MODULE: ./node_modules/vuex/dist/vuex.esm.js
+var vuex_esm = __webpack_require__("2f62");
+
+// EXTERNAL MODULE: ./src/components/common/TextEditor.vue + 4 modules
+var TextEditor = __webpack_require__("d883");
+
+// EXTERNAL MODULE: ./src/lib/filters/lang.ts
+var lang = __webpack_require__("4a51");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue?vue&type=script&lang=js&
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var ExitSemanticLabelEditorvue_type_script_lang_js_ = ({
+  components: {
+    TextEditor: TextEditor["a" /* default */]
+  },
+  mixins: [lang["b" /* lang */]],
+  props: {
+    isEditable: {
+      default: true,
+      type: Boolean
+    },
+    exit: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    semanticLabel: {
+      get: function get() {
+        return this.exit.semantic_label;
+      },
+      set: function set(value) {
+        this.exit.semantic_label = value;
+        this.$emit('commitSemanticLabel', value);
+      }
+    }
+  },
+  methods: Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["c" /* mapMutations */])('flow', ['block_setExitSemanticLabel']))
+});
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue?vue&type=script&lang=js&
+ /* harmony default export */ var block_editors_ExitSemanticLabelEditorvue_type_script_lang_js_ = (ExitSemanticLabelEditorvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2877");
+
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  block_editors_ExitSemanticLabelEditorvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ExitSemanticLabelEditor = __webpack_exports__["a"] = (component.exports);
 
 /***/ })
 

@@ -423,7 +423,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                       class="btn-toolbar"
                     >
                       <button
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                       >
                         <i
                           class="glyphicon glyphicon-chevron-up"
@@ -436,7 +436,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                       <!---->
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/trees/1/interaction-designer/edit"
                         title="Click to toggle editing"
                       >
@@ -452,7 +452,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                       <!---->
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/flows/new"
                       >
                         
@@ -462,7 +462,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                        
                       <a
                         aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
                         
@@ -471,7 +471,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                       </a>
                         
                       <div
-                        class="btn-group pull-right mr-2"
+                        class="btn-group ml-auto mr-2"
                       >
                         <!---->
                          
@@ -526,7 +526,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       class="btn-toolbar"
                     >
                       <button
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                       >
                         <i
                           class="glyphicon glyphicon-chevron-up"
@@ -540,7 +540,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         class="btn-group mr-2"
                       >
                         <a
-                          class="btn btn-outline-secondary active"
+                          class="btn btn-secondary active"
                           href="#/trees/1/interaction-designer"
                         >
                           
@@ -559,7 +559,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </div>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2 active"
+                        class="btn btn-secondary mr-2 active"
                         href="#/trees/1/interaction-designer/view"
                         title="Click to toggle editing"
                       >
@@ -572,7 +572,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         class="dropdown mr-2"
                       >
                         <button
-                          class="btn btn-outline-secondary dropdown-toggle"
+                          class="btn btn-secondary dropdown-toggle"
                           data-toggle="dropdown"
                           type="button"
                         >
@@ -757,7 +757,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </div>
                        
                       <button
-                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        class="btn btn-secondary tree-duplicate-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -767,7 +767,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </button>
                        
                       <button
-                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        class="btn btn-secondary tree-delete-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -777,7 +777,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </button>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/flows/new"
                       >
                         
@@ -787,7 +787,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                        
                       <a
                         aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
                         
@@ -817,7 +817,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </a>
                        
                       <div
-                        class="btn-group pull-right mr-2"
+                        class="btn-group ml-auto mr-2"
                       >
                         <button
                           class="btn btn-primary tree-save-tree"
@@ -880,7 +880,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       class="btn-toolbar"
                     >
                       <button
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                       >
                         <i
                           class="glyphicon glyphicon-chevron-up"
@@ -894,7 +894,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                         class="btn-group mr-2"
                       >
                         <a
-                          class="btn btn-outline-secondary active"
+                          class="btn btn-secondary active"
                           href="#/trees/1/interaction-designer"
                         >
                           
@@ -913,7 +913,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       </div>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2 active"
+                        class="btn btn-secondary mr-2 active"
                         href="#/trees/1/interaction-designer/view"
                         title="Click to toggle editing"
                       >
@@ -926,7 +926,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                         class="dropdown mr-2"
                       >
                         <button
-                          class="btn btn-outline-secondary dropdown-toggle"
+                          class="btn btn-secondary dropdown-toggle"
                           data-toggle="dropdown"
                           type="button"
                         >
@@ -1111,7 +1111,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       </div>
                        
                       <button
-                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        class="btn btn-secondary tree-duplicate-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -1121,7 +1121,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       </button>
                        
                       <button
-                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        class="btn btn-secondary tree-delete-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -1131,7 +1131,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       </button>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/flows/new"
                       >
                         
@@ -1141,7 +1141,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                        
                       <a
                         aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
                         
@@ -1150,7 +1150,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       </a>
                         
                       <div
-                        class="btn-group pull-right mr-2"
+                        class="btn-group ml-auto mr-2"
                       >
                         <button
                           class="btn btn-primary tree-save-tree"
@@ -1233,7 +1233,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       class="btn-toolbar"
                     >
                       <button
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                       >
                         <i
                           class="glyphicon glyphicon-chevron-up"
@@ -1247,7 +1247,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         class="btn-group mr-2"
                       >
                         <a
-                          class="btn btn-outline-secondary active"
+                          class="btn btn-secondary active"
                           href="#/trees/1/interaction-designer"
                         >
                           
@@ -1266,7 +1266,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       </div>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2 active"
+                        class="btn btn-secondary mr-2 active"
                         href="#/trees/1/interaction-designer/view"
                         title="Click to toggle editing"
                       >
@@ -1279,7 +1279,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         class="dropdown mr-2"
                       >
                         <button
-                          class="btn btn-outline-secondary dropdown-toggle"
+                          class="btn btn-secondary dropdown-toggle"
                           data-toggle="dropdown"
                           type="button"
                         >
@@ -1464,7 +1464,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       </div>
                        
                       <button
-                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        class="btn btn-secondary tree-duplicate-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -1474,7 +1474,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       </button>
                        
                       <button
-                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        class="btn btn-secondary tree-delete-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -1484,7 +1484,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       </button>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/flows/new"
                       >
                         
@@ -1494,7 +1494,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                        
                       <a
                         aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
                         
@@ -1503,7 +1503,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       </a>
                         
                       <div
-                        class="btn-group pull-right mr-2"
+                        class="btn-group ml-auto mr-2"
                       >
                         <!---->
                          
@@ -1558,7 +1558,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       class="btn-toolbar"
                     >
                       <button
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                       >
                         <i
                           class="glyphicon glyphicon-chevron-up"
@@ -1572,7 +1572,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                         class="btn-group mr-2"
                       >
                         <a
-                          class="btn btn-outline-secondary active"
+                          class="btn btn-secondary active"
                           href="#/trees/1/interaction-designer"
                         >
                           
@@ -1591,7 +1591,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       </div>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/trees/1/interaction-designer/edit"
                         title="Click to toggle editing"
                       >
@@ -1607,7 +1607,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       <!---->
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/flows/new"
                       >
                         
@@ -1617,7 +1617,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                        
                       <a
                         aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
                         
@@ -1626,7 +1626,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       </a>
                         
                       <div
-                        class="btn-group pull-right mr-2"
+                        class="btn-group ml-auto mr-2"
                       >
                         <!---->
                          
