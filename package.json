@@ -85,7 +85,7 @@
     "storybook-vue-router": "^1.0.7",
     "ts-jest": "^26.4.4",
     "ts-vue-plugin": "^0.1.2",
-    "typescript": "~3.9.3",
+    "typescript": "^4.2.3",
     "violation-comments-to-github-command-line": "^1.19.0",
     "vue-cli-plugin-storybook": "~1.2.2",
     "vue-template-compiler": "^2.6.11",

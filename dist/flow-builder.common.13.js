@@ -1,6 +1,6 @@
 ((typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] = (typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] || []).push([[13],{
 
-/***/ "2d61":
+/***/ "b6b9":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10,12 +10,18 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=template&id=3b91098e&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('block-minimum-numeric-editor',{attrs:{"block":_vm.block},on:{"commitValidationMinimumChange":_vm.updateValidationMin}}),_c('block-maximum-numeric-editor',{attrs:{"block":_vm.block},on:{"commitValidationMaximumChange":_vm.updateValidationMax}}),_c('block-max-digit-editor',{attrs:{"block":_vm.block,"hasIvr":_vm.hasVoiceMode},on:{"commitMaxDigitsChange":_vm.updateMaxDigits}}),(_vm.promptResource)?_c('resource-editor',{attrs:{"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e(),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],1),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"359b40c9-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue?vue&type=template&id=4f169895&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"console-io-read-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('block-format-string-editor',{attrs:{"block":_vm.block},on:{"commitFormatStringChange":_vm.setFormatString}}),_vm._l((_vm.destinationVariablesFields),function(variableStringFormat,i){return _c('div',{staticClass:"form-group form-inline"},[_c('text-editor',{attrs:{"label":i+1,"placeholder":_vm._f("trans")('flow-builder.edit-variable'),"value":""},on:{"keydown":_vm.filterVariableName,"input":function($event){return _vm.updatedestinationVariables($event, i)}}})],1)}),_vm._t("extras"),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=template&id=3b91098e&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue?vue&type=template&id=4f169895&
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
+var es_regexp_exec = __webpack_require__("ac1f");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.match.js
+var es_string_match = __webpack_require__("466d");
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("d4ec");
@@ -32,15 +38,14 @@ var createSuper = __webpack_require__("2caf");
 // EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
 var tslib_es6 = __webpack_require__("9ab4");
 
-// EXTERNAL MODULE: external {"commonjs":"vue","commonjs2":"vue","root":"Vue"}
-var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
-var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
-
 // EXTERNAL MODULE: ./node_modules/vuex-class/lib/index.js + 1 modules
 var lib = __webpack_require__("4bb5");
 
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/vue-property-decorator.js
 var vue_property_decorator = __webpack_require__("60a3");
+
+// EXTERNAL MODULE: ./src/components/common/TextEditor.vue + 4 modules
+var TextEditor = __webpack_require__("d883");
 
 // EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
 var runtime = __webpack_require__("96cf");
@@ -54,34 +59,43 @@ var IdGeneratorUuidV4 = __webpack_require__("31aa");
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __webpack_require__("2ef0");
 
-// CONCATENATED MODULE: ./src/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore.ts
+// CONCATENATED MODULE: ./src/store/flow/block-types/ConsoleIO_ReadBlockStore.ts
 
 
 
 
-var BLOCK_TYPE = 'MobilePrimitives\\NumericResponse';
-var getters = {};
+var BLOCK_TYPE = 'ConsoleIO.Read';
+var ConsoleIO_ReadBlockStore_getters = {
+  destinationVariablesFields: function destinationVariablesFields(state, getters, rootState, rootGetters) {
+    var activeBlock = rootGetters['builder/activeBlock']; // TODO: correct the destination variables array according to scanf library we're using, and think about consecutive % or other error we should avoid
+
+    return new Array(Object(lodash["split"])(activeBlock.config.format_string || '', '%').length - 1);
+  }
+};
 var mutations = {};
 var actions = {
-  setValidationMinimum: function setValidationMinimum(_ref, _ref2) {
+  setFormatString: function setFormatString(_ref, newFormatString) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var commit, rootGetters, blockId, value;
+      var commit, rootGetters, activeBlock, newConfig;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               commit = _ref.commit, rootGetters = _ref.rootGetters;
-              blockId = _ref2.blockId, value = _ref2.value;
+              activeBlock = rootGetters['builder/activeBlock'];
+              newConfig = {
+                format_string: newFormatString
+              };
               commit('flow/block_updateConfigByKey', {
-                blockId: blockId,
-                key: 'validationMinimum',
-                value: value
+                blockId: activeBlock.uuid,
+                key: 'format_string',
+                value: newFormatString
               }, {
                 root: true
               });
-              return _context.abrupt("return", value);
+              return _context.abrupt("return", newConfig);
 
-            case 4:
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -89,25 +103,28 @@ var actions = {
       }, _callee);
     }))();
   },
-  setValidationMaximum: function setValidationMaximum(_ref3, _ref4) {
+  editDestinationVariable: function editDestinationVariable(_ref2, _ref3) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var commit, rootGetters, blockId, value;
+      var commit, dispatch, getters, rootGetters, variableName, keyIndex, activeBlock, newDestinationVariables;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref3.commit, rootGetters = _ref3.rootGetters;
-              blockId = _ref4.blockId, value = _ref4.value;
+              commit = _ref2.commit, dispatch = _ref2.dispatch, getters = _ref2.getters, rootGetters = _ref2.rootGetters;
+              variableName = _ref3.variableName, keyIndex = _ref3.keyIndex;
+              activeBlock = rootGetters['builder/activeBlock'];
+              newDestinationVariables = activeBlock.config.destination_variables || [];
+              newDestinationVariables[keyIndex] = variableName;
               commit('flow/block_updateConfigByKey', {
-                blockId: blockId,
-                key: 'validationMaximum',
-                value: value
+                blockId: activeBlock.uuid,
+                key: 'destination_variables',
+                value: newDestinationVariables
               }, {
                 root: true
               });
-              return _context2.abrupt("return", value);
+              return _context2.abrupt("return", newDestinationVariables);
 
-            case 4:
+            case 7:
             case "end":
               return _context2.stop();
           }
@@ -115,112 +132,93 @@ var actions = {
       }, _callee2);
     }))();
   },
-  setMaxDigits: function setMaxDigits(_ref5, _ref6) {
+  createWith: function createWith(_ref4, _ref5) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-      var commit, rootGetters, blockId, value;
+      var dispatch, props, exits;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref5.commit, rootGetters = _ref5.rootGetters;
-              blockId = _ref6.blockId, value = _ref6.value;
-              commit('flow/block_updateConfigByKey', {
-                blockId: blockId,
-                key: 'ivr',
-                value: {
-                  maxDigits: value
-                }
-              }, {
-                root: true
-              });
-              return _context3.abrupt("return", value);
+              dispatch = _ref4.dispatch;
+              props = _ref5.props;
+              _context3.t0 = dispatch;
+              _context3.next = 5;
+              return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
 
-            case 4:
+            case 5:
+              _context3.t1 = _context3.sent;
+              _context3.t2 = {
+                uuid: _context3.t1,
+                tag: 'Default',
+                label: 'Default'
+              };
+              _context3.t3 = {
+                props: _context3.t2
+              };
+              _context3.t4 = {
+                root: true
+              };
+              _context3.next = 11;
+              return (0, _context3.t0)('flow/block_createBlockDefaultExitWith', _context3.t3, _context3.t4);
+
+            case 11:
+              _context3.t5 = _context3.sent;
+              exits = [_context3.t5];
+              _context3.t6 = exits;
+              _context3.t7 = dispatch;
+              _context3.next = 17;
+              return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
+
+            case 17:
+              _context3.t8 = _context3.sent;
+              _context3.t9 = {
+                uuid: _context3.t8,
+                tag: 'Error',
+                label: 'Error'
+              };
+              _context3.t10 = {
+                props: _context3.t9
+              };
+              _context3.t11 = {
+                root: true
+              };
+              _context3.next = 23;
+              return (0, _context3.t7)('flow/block_createBlockExitWith', _context3.t10, _context3.t11);
+
+            case 23:
+              _context3.t12 = _context3.sent;
+
+              _context3.t6.push.call(_context3.t6, _context3.t12);
+
+              return _context3.abrupt("return", Object(lodash["defaultsDeep"])(props, {
+                type: BLOCK_TYPE,
+                name: '',
+                label: '',
+                semantic_label: '',
+                config: {
+                  format_string: '',
+                  destination_variables: []
+                },
+                exits: exits
+              }));
+
+            case 26:
             case "end":
               return _context3.stop();
           }
         }
       }, _callee3);
     }))();
-  },
-  createWith: function createWith(_ref7, _ref8) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-      var rootGetters, dispatch, commit, props, exits, blankResource;
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
-        while (1) {
-          switch (_context4.prev = _context4.next) {
-            case 0:
-              rootGetters = _ref7.rootGetters, dispatch = _ref7.dispatch, commit = _ref7.commit;
-              props = _ref8.props;
-              _context4.next = 4;
-              return dispatch('flow/block_createBlockDefaultExitWith', {
-                props: {
-                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate(),
-                  tag: 'Default',
-                  label: 'Default'
-                }
-              }, {
-                root: true
-              });
-
-            case 4:
-              _context4.t0 = _context4.sent;
-              _context4.next = 7;
-              return dispatch('flow/block_createBlockExitWith', {
-                props: {
-                  uuid: new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate(),
-                  tag: 'Error',
-                  label: 'Error'
-                }
-              }, {
-                root: true
-              });
-
-            case 7:
-              _context4.t1 = _context4.sent;
-              exits = [_context4.t0, _context4.t1];
-              _context4.next = 11;
-              return dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {
-                root: true
-              });
-
-            case 11:
-              blankResource = _context4.sent;
-              commit('flow/resource_add', {
-                resource: blankResource
-              }, {
-                root: true
-              });
-              return _context4.abrupt("return", Object(lodash["defaults"])(props, {
-                type: BLOCK_TYPE,
-                name: '',
-                label: '',
-                semanticLabel: '',
-                exits: exits,
-                config: {
-                  prompt: blankResource.uuid,
-                  validationMinimum: '',
-                  validationMaximum: ''
-                }
-              }));
-
-            case 14:
-            case "end":
-              return _context4.stop();
-          }
-        }
-      }, _callee4);
-    }))();
   }
 };
-/* harmony default export */ var MobilePrimitives_NumericResponseBlockStore = ({
+/* harmony default export */ var ConsoleIO_ReadBlockStore = ({
   namespaced: true,
-  getters: getters,
+  getters: ConsoleIO_ReadBlockStore_getters,
   mutations: mutations,
   actions: actions
 });
-// EXTERNAL MODULE: ./src/lib/filters/lang.js
-var lang = __webpack_require__("3a37");
+// EXTERNAL MODULE: ./src/lib/filters/lang.ts
+var lang = __webpack_require__("4a51");
 
 // EXTERNAL MODULE: ./src/store/builder/index.ts + 6 modules
 var builder = __webpack_require__("af98");
@@ -237,25 +235,14 @@ var LabelEditor = __webpack_require__("3411");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue + 4 modules
 var SemanticLabelEditor = __webpack_require__("1b4e");
 
-// EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue + 4 modules
-var FirstBlockEditorButton = __webpack_require__("192b");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
-var BlockId = __webpack_require__("792f");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=template&id=71156732&
-var MinimumNumericEditorvue_type_template_id_71156732_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group block-validation-min"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.minimum-value-(inclusive)'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.minValue),callback:function ($$v) {_vm.minValue=_vm._n($$v)},expression:"minValue"}})],1)}
-var MinimumNumericEditorvue_type_template_id_71156732_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"359b40c9-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/FormatStringEditor.vue?vue&type=template&id=1cdd65b4&
+var FormatStringEditorvue_type_template_id_1cdd65b4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"block-format-string"},[_c('text-editor',{attrs:{"label":_vm._f("trans")('flow-builder.format-string'),"placeholder":_vm._f("trans")('flow-builder.enter-format-string')},model:{value:(_vm.formatString),callback:function ($$v) {_vm.formatString=$$v},expression:"formatString"}})],1)}
+var FormatStringEditorvue_type_template_id_1cdd65b4_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=template&id=71156732&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/FormatStringEditor.vue?vue&type=template&id=1cdd65b4&
 
-// EXTERNAL MODULE: ./src/components/common/NumericEditor.vue + 4 modules
-var NumericEditor = __webpack_require__("2f00");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=script&lang=js&
-//
-//
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/FormatStringEditor.vue?vue&type=script&lang=js&
 //
 //
 //
@@ -266,40 +253,34 @@ var NumericEditor = __webpack_require__("2f00");
 //
 
 
-
-/* harmony default export */ var MinimumNumericEditorvue_type_script_lang_js_ = ({
+/* harmony default export */ var FormatStringEditorvue_type_script_lang_js_ = ({
   components: {
-    NumericEditor: NumericEditor["a" /* default */]
+    TextEditor: TextEditor["a" /* default */]
   },
-  mixins: [lang["a" /* default */]],
+  mixins: [lang["b" /* lang */]],
   props: {
     block: {
       type: Object,
       required: true
     }
   },
-  data: function data() {
-    return {
-      defaultValue: 0
-    };
-  },
   computed: {
-    minValue: {
+    formatString: {
       get: function get() {
-        return Object(lodash["get"])(this.block, 'config.validationMinimum', this.defaultValue);
+        return this.block.config.format_string;
       },
       set: function set(value) {
-        this.$emit('commitValidationMinimumChange', value);
+        this.$emit('commitFormatStringChange', value);
       }
     }
   }
 });
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=script&lang=js&
- /* harmony default export */ var block_editors_MinimumNumericEditorvue_type_script_lang_js_ = (MinimumNumericEditorvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/FormatStringEditor.vue?vue&type=script&lang=js&
+ /* harmony default export */ var block_editors_FormatStringEditorvue_type_script_lang_js_ = (FormatStringEditorvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__("2877");
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/FormatStringEditor.vue
 
 
 
@@ -308,9 +289,9 @@ var componentNormalizer = __webpack_require__("2877");
 /* normalize component */
 
 var component = Object(componentNormalizer["a" /* default */])(
-  block_editors_MinimumNumericEditorvue_type_script_lang_js_,
-  MinimumNumericEditorvue_type_template_id_71156732_render,
-  MinimumNumericEditorvue_type_template_id_71156732_staticRenderFns,
+  block_editors_FormatStringEditorvue_type_script_lang_js_,
+  FormatStringEditorvue_type_template_id_1cdd65b4_render,
+  FormatStringEditorvue_type_template_id_1cdd65b4_staticRenderFns,
   false,
   null,
   null,
@@ -318,147 +299,17 @@ var component = Object(componentNormalizer["a" /* default */])(
   
 )
 
-/* harmony default export */ var MinimumNumericEditor = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=template&id=51ac838e&
-var MaximumNumericEditorvue_type_template_id_51ac838e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group block-validation-max"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.maximum-value-(inclusive)'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.maxValue),callback:function ($$v) {_vm.maxValue=_vm._n($$v)},expression:"maxValue"}})],1)}
-var MaximumNumericEditorvue_type_template_id_51ac838e_staticRenderFns = []
+/* harmony default export */ var FormatStringEditor = (component.exports);
+// EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue + 4 modules
+var FirstBlockEditorButton = __webpack_require__("192b");
 
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
+var BlockId = __webpack_require__("792f");
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=template&id=51ac838e&
+// EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
+var vue_class_component_esm = __webpack_require__("2fe1");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var MaximumNumericEditorvue_type_script_lang_js_ = ({
-  components: {
-    NumericEditor: NumericEditor["a" /* default */]
-  },
-  mixins: [lang["a" /* default */]],
-  props: {
-    block: {
-      type: Object,
-      required: true
-    }
-  },
-  data: function data() {
-    return {
-      defaultValue: 0
-    };
-  },
-  computed: {
-    maxValue: {
-      get: function get() {
-        return Object(lodash["get"])(this.block, 'config.validationMaximum', this.defaultValue);
-      },
-      set: function set(value) {
-        this.$emit('commitValidationMaximumChange', value);
-      }
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=script&lang=js&
- /* harmony default export */ var block_editors_MaximumNumericEditorvue_type_script_lang_js_ = (MaximumNumericEditorvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue
-
-
-
-
-
-/* normalize component */
-
-var MaximumNumericEditor_component = Object(componentNormalizer["a" /* default */])(
-  block_editors_MaximumNumericEditorvue_type_script_lang_js_,
-  MaximumNumericEditorvue_type_template_id_51ac838e_render,
-  MaximumNumericEditorvue_type_template_id_51ac838e_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var MaximumNumericEditor = (MaximumNumericEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"48ce26ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=7a8f9b0b&
-var MaxDigitEditorvue_type_template_id_7a8f9b0b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.hasIvr)?_c('div',{staticClass:"form-group block-max-digits"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.maximum-digits'),"placeholder":_vm._f("trans")('flow-builder.enter-value')},model:{value:(_vm.maxDigits),callback:function ($$v) {_vm.maxDigits=_vm._n($$v)},expression:"maxDigits"}})],1):_vm._e()}
-var MaxDigitEditorvue_type_template_id_7a8f9b0b_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=7a8f9b0b&
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var MaxDigitEditorvue_type_script_lang_js_ = ({
-  components: {
-    NumericEditor: NumericEditor["a" /* default */]
-  },
-  mixins: [lang["a" /* default */]],
-  props: {
-    block: {
-      type: Object,
-      required: true
-    },
-    hasIvr: {
-      default: true,
-      type: Boolean
-    }
-  },
-  computed: {
-    maxDigits: {
-      get: function get() {
-        return Object(lodash["get"])(this.block, 'config.ivr.maxDigits', '');
-      },
-      set: function set(value) {
-        this.$emit('commitMaxDigitsChange', value);
-      }
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=script&lang=js&
- /* harmony default export */ var block_editors_MaxDigitEditorvue_type_script_lang_js_ = (MaxDigitEditorvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxDigitEditor.vue
-
-
-
-
-
-/* normalize component */
-
-var MaxDigitEditor_component = Object(componentNormalizer["a" /* default */])(
-  block_editors_MaxDigitEditorvue_type_script_lang_js_,
-  MaxDigitEditorvue_type_template_id_7a8f9b0b_render,
-  MaxDigitEditorvue_type_template_id_7a8f9b0b_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var MaxDigitEditor = (MaxDigitEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=script&lang=ts&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue?vue&type=script&lang=ts&
 
 
 
@@ -479,90 +330,70 @@ var MaxDigitEditor_component = Object(componentNormalizer["a" /* default */])(
 
 
 
-var flowVuexNamespace = Object(lib["c" /* namespace */])('flow');
-var blockVuexNamespace = Object(lib["c" /* namespace */])("flow/".concat(BLOCK_TYPE));
-var builderVuexNamespace = Object(lib["c" /* namespace */])('builder');
 
-var MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock = /*#__PURE__*/function (_Vue) {
-  Object(inherits["a" /* default */])(MobilePrimitives_NumericResponseBlock, _Vue);
+var blockVuexNamespace = Object(lib["e" /* namespace */])("flow/".concat(BLOCK_TYPE));
+var builderVuexNamespace = Object(lib["e" /* namespace */])('builder');
 
-  var _super = Object(createSuper["a" /* default */])(MobilePrimitives_NumericResponseBlock);
+var ConsoleIO_ReadBlockvue_type_script_lang_ts_ConsoleIO_ReadBlock = /*#__PURE__*/function (_mixins) {
+  Object(inherits["a" /* default */])(ConsoleIO_ReadBlock, _mixins);
 
-  function MobilePrimitives_NumericResponseBlock() {
-    Object(classCallCheck["a" /* default */])(this, MobilePrimitives_NumericResponseBlock);
+  var _super = Object(createSuper["a" /* default */])(ConsoleIO_ReadBlock);
+
+  function ConsoleIO_ReadBlock() {
+    Object(classCallCheck["a" /* default */])(this, ConsoleIO_ReadBlock);
 
     return _super.apply(this, arguments);
   }
 
-  Object(createClass["a" /* default */])(MobilePrimitives_NumericResponseBlock, [{
-    key: "promptResource",
-    get: function get() {
-      return this.resourcesByUuid[this.block.config.prompt];
+  Object(createClass["a" /* default */])(ConsoleIO_ReadBlock, [{
+    key: "filterVariableName",
+    value: function filterVariableName(e) {
+      if (e.key.match(/\W+|Enter/g)) {
+        e.preventDefault();
+      }
     }
   }, {
-    key: "updateValidationMin",
-    value: function updateValidationMin(value) {
-      this.setValidationMinimum({
-        blockId: this.block.uuid,
-        value: value
-      });
-    }
-  }, {
-    key: "updateValidationMax",
-    value: function updateValidationMax(value) {
-      this.setValidationMaximum({
-        blockId: this.block.uuid,
-        value: value
-      });
-    }
-  }, {
-    key: "updateMaxDigits",
-    value: function updateMaxDigits(value) {
-      this.setMaxDigits({
-        blockId: this.block.uuid,
-        value: value
+    key: "updatedestinationVariables",
+    value: function updatedestinationVariables(value, i) {
+      this.editDestinationVariable({
+        variableName: value,
+        keyIndex: i
       });
     }
   }]);
 
-  return MobilePrimitives_NumericResponseBlock;
-}(external_commonjs_vue_commonjs2_vue_root_Vue_default.a);
+  return ConsoleIO_ReadBlock;
+}(Object(vue_class_component_esm["c" /* mixins */])(lang["a" /* default */]));
 
-Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "block", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], ConsoleIO_ReadBlockvue_type_script_lang_ts_ConsoleIO_ReadBlock.prototype, "block", void 0);
 
-Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "flow", void 0);
+Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["b" /* Prop */])()], ConsoleIO_ReadBlockvue_type_script_lang_ts_ConsoleIO_ReadBlock.prototype, "flow", void 0);
 
-Object(tslib_es6["a" /* __decorate */])([flowVuexNamespace.Getter], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "resourcesByUuid", void 0);
+Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Action], ConsoleIO_ReadBlockvue_type_script_lang_ts_ConsoleIO_ReadBlock.prototype, "setFormatString", void 0);
 
-Object(tslib_es6["a" /* __decorate */])([flowVuexNamespace.Getter], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "hasVoiceMode", void 0);
+Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Action], ConsoleIO_ReadBlockvue_type_script_lang_ts_ConsoleIO_ReadBlock.prototype, "editDestinationVariable", void 0);
 
-Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Action], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "setValidationMinimum", void 0);
+Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Getter], ConsoleIO_ReadBlockvue_type_script_lang_ts_ConsoleIO_ReadBlock.prototype, "destinationVariablesFields", void 0);
 
-Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Action], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "setValidationMaximum", void 0);
+Object(tslib_es6["a" /* __decorate */])([builderVuexNamespace.Getter], ConsoleIO_ReadBlockvue_type_script_lang_ts_ConsoleIO_ReadBlock.prototype, "isEditable", void 0);
 
-Object(tslib_es6["a" /* __decorate */])([blockVuexNamespace.Action], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "setMaxDigits", void 0);
-
-Object(tslib_es6["a" /* __decorate */])([builderVuexNamespace.Getter], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "isEditable", void 0);
-
-MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock = Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["a" /* Component */])({
+ConsoleIO_ReadBlockvue_type_script_lang_ts_ConsoleIO_ReadBlock = Object(tslib_es6["a" /* __decorate */])([Object(vue_property_decorator["a" /* Component */])({
   components: {
     ResourceEditor: ResourceEditor["a" /* default */],
     BlockNameEditor: NameEditor["a" /* default */],
     BlockLabelEditor: LabelEditor["a" /* default */],
     BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
+    BlockFormatStringEditor: FormatStringEditor,
     FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
-    BlockId: BlockId["a" /* default */],
-    BlockMinimumNumericEditor: MinimumNumericEditor,
-    BlockMaximumNumericEditor: MaximumNumericEditor,
-    BlockMaxDigitEditor: MaxDigitEditor
-  },
-  mixins: [lang["a" /* default */]]
-})], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock);
-/* harmony default export */ var MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_ = (MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock);
-var install = Object(builder["c" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, MobilePrimitives_NumericResponseBlockStore);
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=script&lang=ts&
- /* harmony default export */ var block_types_MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_ = (MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_); 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue
+    TextEditor: TextEditor["a" /* default */],
+    BlockId: BlockId["a" /* default */]
+  }
+})], ConsoleIO_ReadBlockvue_type_script_lang_ts_ConsoleIO_ReadBlock);
+/* harmony default export */ var ConsoleIO_ReadBlockvue_type_script_lang_ts_ = (ConsoleIO_ReadBlockvue_type_script_lang_ts_ConsoleIO_ReadBlock);
+var install = Object(builder["c" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, ConsoleIO_ReadBlockStore);
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue?vue&type=script&lang=ts&
+ /* harmony default export */ var block_types_ConsoleIO_ReadBlockvue_type_script_lang_ts_ = (ConsoleIO_ReadBlockvue_type_script_lang_ts_); 
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue
 
 
 
@@ -570,8 +401,8 @@ var install = Object(builder["c" /* createDefaultBlockTypeInstallerFor */])(BLOC
 
 /* normalize component */
 
-var MobilePrimitives_NumericResponseBlock_component = Object(componentNormalizer["a" /* default */])(
-  block_types_MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_,
+var ConsoleIO_ReadBlock_component = Object(componentNormalizer["a" /* default */])(
+  block_types_ConsoleIO_ReadBlockvue_type_script_lang_ts_,
   render,
   staticRenderFns,
   false,
@@ -581,7 +412,7 @@ var MobilePrimitives_NumericResponseBlock_component = Object(componentNormalizer
   
 )
 
-/* harmony default export */ var block_types_MobilePrimitives_NumericResponseBlock = __webpack_exports__["default"] = (MobilePrimitives_NumericResponseBlock_component.exports);
+/* harmony default export */ var block_types_ConsoleIO_ReadBlock = __webpack_exports__["default"] = (ConsoleIO_ReadBlock_component.exports);
 
 /***/ })
 
