@@ -296,6 +296,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       },
     }) // todo push out to intx-designer
     this.activateBlock({ blockId })
+    this.$router.history.replace({
+      name: 'block-selected-details',
+      params: { blockId },
+    })
   }
 
   async handlePersistFlow(route: RawLocation) {
