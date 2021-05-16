@@ -24,10 +24,10 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
         run: |
           yarn eslint -f checkstyle -o eslint_report.xml 'src/**/*' --ext .js --ext .ts --ext .tsx --ext .vue --ignore-pattern '*.css' --ignore-pattern '*.json' --ignore-pattern '*.yml' || true
-          yarn violation-comments-to-github-command-line -ot $token -ro FLOIP -rn flow-builder -prid $pullRequestId -comment-only-changed-content true -create-comment-with-all-single-file-comments true -create-single-file-comments true -show-debug-info -v "CHECKSTYLE" "." ".*/eslint_report.xml" ESLint || true 
+          yarn violation-comments-to-github-command-line -ot $token -ro FLOIP -rn flow-builder -prid $pullRequestId -comment-only-changed-content true -create-comment-with-all-single-file-comments true -create-single-file-comments true -v "CHECKSTYLE" "." ".*/eslint_report.xml" ESLint || true 
       - name: PostEslintToGthub
         env:
           pullRequestId: ${{github.event.number}}
           token: ${{secrets.GITHUB_TOKEN}}
         if: ${{failure()}}
-        run: yarn violation-comments-to-github-command-line -ot $token -ro FLOIP -rn flow-builder -prid $pullRequestId -comment-only-changed-content true -create-comment-with-all-single-file-comments true -create-single-file-comments true -v "CHECKSTYLE" "." ".*/eslint_report.xml" ESLint || true 
+        run: yarn violation-comments-to-github-command-line -ot $token -ro FLOIP -rn flow-builder -prid $pullRequestId -comment-only-changed-content true -create-comment-with-all-single-file-comments true -create-single-file-comments true -show-debug-info -v "CHECKSTYLE" "." ".*/eslint_report.xml" ESLint || true 
