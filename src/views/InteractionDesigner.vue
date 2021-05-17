@@ -1,6 +1,7 @@
 <template>
   <div v-if="activeFlow" class="interaction-designer-contents">
     <tree-builder-toolbar/>
+    <error-notifications/>
 
     <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}" :key="activeBlock && activeBlock.uuid">
       <div class="sidebar-cue" :class="{'sidebar-close': $route.meta.isSidebarShown}" @click="showOrHideSidebar">
@@ -71,6 +72,7 @@ import { store } from '@/store'
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import { BuilderCanvas } from '@/components/interaction-designer/BuilderCanvas'
+import ErrorNotifications from '@/components/interaction-designer/ErrorNotifications.vue'
 
 // import '../TreeDiffLogger'
 
@@ -103,6 +105,7 @@ export default {
     TreeBuilderToolbar,
     BuilderCanvas,
     FlowEditor,
+    ErrorNotifications,
     // TreeUpdateConflictModal,
   },
 
