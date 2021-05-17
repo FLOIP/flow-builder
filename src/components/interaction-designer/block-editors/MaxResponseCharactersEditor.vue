@@ -1,6 +1,6 @@
 <template>
   <validation-message :message-key="`block/${block.uuid}/config/text/max_response_characters`" #input-control="{ isValid }">
-    <div v-if="hasText" class="form-group block-max-response-characters" :id="`${block.uuid}.config.text.maxResponseCharacters`">
+    <div v-if="hasText" class="block-max-response-characters" :id="`${block.uuid}.config.text.maxResponseCharacters`">
       <numeric-editor v-model.number="maxResponse"
           :regex-numeric-filtering="'[0-9]'"
           :label="'flow-builder.max-response-characters' | trans"

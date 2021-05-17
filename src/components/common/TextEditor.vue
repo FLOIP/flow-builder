@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group">
+  <div>
     <label>{{label}}</label>
     <textarea
         class="form-control"

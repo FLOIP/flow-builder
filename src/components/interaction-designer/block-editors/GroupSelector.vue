@@ -1,6 +1,6 @@
 <template>
   <validation-message :message-key="`block/${block.uuid}/config/group_key`" #input-control="{ isValid }">
-    <div class="block-group form-group">
+    <div class="block-group">
       <label>{{'flow-builder.group-label' | trans}}</label>
       <vue-multiselect v-model="selectedGroup"
                        track-by="id"
