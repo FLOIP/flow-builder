@@ -87,53 +87,53 @@
 </template>
 
 <script>
-  import lang from '@/lib/filters/lang'
-	import lodash from 'lodash'
-  import {mapGetters, mapState} from 'vuex'
-	import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
-  //TODO: resolve this import when we want to use this current component correctly
-	// import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType'
+import { lang } from '@/lib/filters/lang'
+import lodash from 'lodash'
+import { mapGetters, mapState } from 'vuex'
+import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
+//TODO: resolve this import when we want to use this current component correctly
+// import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType'
 
-	export default {
-		props: [
-			'alternateAudioFileSelections',
-			'tree',
-			'block',
-			'enabledLanguages',
-      'blockTypes',
-			'languageNames'],
+export default {
+  props: [
+    'alternateAudioFileSelections',
+    'tree',
+    'block',
+    'enabledLanguages',
+    'blockTypes',
+    'languageNames'],
 
-		components: {
-			AudioLibrarySelector,
-      // BlockTextContentEditorForLangAndType,
-		},
+  components: {
+    AudioLibrarySelector,
+    // BlockTextContentEditorForLangAndType,
+  },
 
-    mixins: [lang],
+  mixins: [lang],
 
-    computed: {
-      ...mapGetters(['isEditable']),
-      ...mapState({
-        audioFiles: ({trees: {ui: {audioFiles}}}) => audioFiles
-      }),
+  computed: {
+    ...mapGetters(['isEditable']),
+    ...mapState({
+      audioFiles: ({ trees: { ui: { audioFiles } } }) => audioFiles,
+    }),
+  },
+
+  methods: {
+    debouncedSaveTree: lodash.debounce(function () {
+      this.$store.dispatch('attemptSaveTree')
+    }, 500),
+
+    selectAudioFileFor({ langId, value }) {
+      const { jsKey } = this.block
+      this.$store.commit('updateAudioFileFor', { jsKey, langId, value })
+      this.$store.commit('updateReviewedStateFor', { jsKey, langId, value: false })
+      this.debouncedSaveTree()
     },
 
-		methods: {
-			debouncedSaveTree: lodash.debounce(function () {
-				this.$store.dispatch('attemptSaveTree')
-			}, 500),
-
-			selectAudioFileFor({langId, value}) {
-				const {jsKey} = this.block
-				this.$store.commit('updateAudioFileFor', {jsKey, langId, value})
-				this.$store.commit('updateReviewedStateFor', {jsKey, langId, value: false})
-				this.debouncedSaveTree();
-			},
-
-			toggleReviewedStateFor(langId) {
-				const previousVal = !!lodash.get(this.block.customData.reviewed, langId, false)
-				this.$store.commit('updateReviewedStateFor', {jsKey: this.block.jsKey, langId, value: !previousVal})
-				this.debouncedSaveTree()
-			}
-		}
-	}
+    toggleReviewedStateFor(langId) {
+      const previousVal = !!lodash.get(this.block.customData.reviewed, langId, false)
+      this.$store.commit('updateReviewedStateFor', { jsKey: this.block.jsKey, langId, value: !previousVal })
+      this.debouncedSaveTree()
+    },
+  },
+}
 </script>

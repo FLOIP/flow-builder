@@ -11,28 +11,26 @@
             type="checkbox"
             class="flow-language-toggle-checkbox"/>
 
-        {{language.name}}
+        {{language.label}}
       </label>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component, Prop} from 'vue-property-decorator'
-  import {IFlow} from '@floip/flow-runner'
-  import NumericEditor from '@/components/common/NumericEditor.vue'
-  import ILanguage from '@floip/flow-runner/dist/flow-spec/ILanguage'
-  import lang from '@/lib/filters/lang'
+import { Component, Prop } from 'vue-property-decorator'
+import { IFlow } from '@floip/flow-runner'
+import NumericEditor from '@/components/common/NumericEditor.vue'
+import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage'
+import Lang from '@/lib/filters/lang'
+import { mixins } from "vue-class-component";
 
-  @Component<any>({
-    components: {
-      NumericEditor,
-    },
-    mixins: [lang],
-  })
-  class LanguagesEditor extends Vue {
-    @Prop({default: true}) readonly isEditable!: boolean
+@Component({
+  components: {
+    NumericEditor,
+  },
+})
+class LanguagesEditor extends mixins(Lang) {
     @Prop() readonly flow!: IFlow
 
     get languages(): ILanguage[] {
@@ -48,5 +46,5 @@
     }
   }
 
-  export default LanguagesEditor
+export default LanguagesEditor
 </script>

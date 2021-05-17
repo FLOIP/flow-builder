@@ -1,25 +1,35 @@
 import Vue from 'vue'
-import {forEach} from 'lodash'
-import InteractionDesignerComponent from "./views/InteractionDesigner.vue"
+import InteractionDesignerComponent from './views/InteractionDesigner.vue'
+import FetchFlowComponent from './views/FetchFlow.vue'
+import NewFlowComponent from './views/NewFlow.vue'
+import HomeComponent from './views/Home.vue'
+import { forEach } from 'lodash'
 
 export const appConfig = require('../app.config')
 export const builderConfig = require('../builder.config')
 
 export const InteractionDesigner = InteractionDesignerComponent
+export const FetchFlow = FetchFlowComponent
+export const NewFlow = NewFlowComponent
+export const Home = HomeComponent
 
-const Components = {
-  InteractionDesignerComponent
-};
+const Components: {[key: string]: any} = {
+  InteractionDesignerComponent,
+  FetchFlowComponent,
+  NewFlowComponent,
+  HomeComponent,
+}
 
 // expose block-type components to consumer repositories
 // eg: import {ConsoleIORead} from '@floip/flow-builder'
 forEach(builderConfig.ui.blockClasses, async ({type}, key) => {
-  const typeWithoutSeparators = type.replace(/\\/g, '')
+  const typeWithoutSeparators = type.replace('.', '')
   Components[typeWithoutSeparators] = await import(`../src/${key}.vue`)
 })
 
-Object.keys(Components).forEach(name => {
+
+Object.keys(Components).forEach((name) => {
   Vue.component(name, Components[name])
-});
+})
 
 export default Components

@@ -1,7 +1,6 @@
 <template>
   <div v-if="hasIvr" class="form-group block-max-digits">
     <numeric-editor v-model.number="maxDigits"
-        :is-editable="isEditable"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.maximum-digits' | trans"
         :placeholder="'flow-builder.enter-value' | trans">
@@ -10,39 +9,35 @@
 </template>
 
 <script>
-  import NumericEditor from '@/components/common/NumericEditor'
-  import {get} from 'lodash'
-  import lang from '@/lib/filters/lang'
+import NumericEditor from '@/components/common/NumericEditor'
+import { get } from 'lodash'
+import { lang } from '@/lib/filters/lang'
 
-  export default {
-    components: {
-      NumericEditor,
+export default {
+  components: {
+    NumericEditor,
+  },
+  mixins: [lang],
+  props: {
+    block: {
+      type: Object,
+      required: true,
     },
-    mixins: [lang],
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
-      },
-      block: {
-        type: Object,
-        required: true,
-      },
-      hasIvr: {
-        default: true,
-        type: Boolean,
-      },
+    hasIvr: {
+      default: true,
+      type: Boolean,
     },
+  },
 
-    computed: {
-      maxDigits: {
-        get() {
-          return get(this.block, 'config.ivr.maxDigits', '')
-        },
-        set(value) {
-          this.$emit('commitMaxDigitsChange', value)
-        }
-      }
-    }
-  }
+  computed: {
+    maxDigits: {
+      get() {
+        return get(this.block, 'config.ivr.max_digits', '')
+      },
+      set(value) {
+        this.$emit('commitMaxDigitsChange', value)
+      },
+    },
+  },
+}
 </script>

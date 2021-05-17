@@ -17,27 +17,25 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component, Prop} from 'vue-property-decorator'
-  import {IFlow} from '@floip/flow-runner'
-  import NumericEditor from '@/components/common/NumericEditor.vue'
-  import {SupportedMode} from '@floip/flow-runner'
-  import lang from '@/lib/filters/lang'
+import { Component, Prop } from 'vue-property-decorator'
+import { IFlow, SupportedMode } from '@floip/flow-runner'
+import NumericEditor from '@/components/common/NumericEditor.vue'
 
-  @Component<any>({
-    components: {
-      NumericEditor,
-    },
-    mixins: [lang]
-  })
-  class ModeEditor extends Vue {
-    @Prop({default: true}) readonly isEditable!: boolean
+import Lang from '@/lib/filters/lang'
+import { mixins } from "vue-class-component";
+
+@Component({
+  components: {
+    NumericEditor,
+  },
+})
+class ModeEditor extends mixins(Lang) {
     @Prop() readonly flow!: IFlow
 
     private availableModes = Object.values(SupportedMode)
 
     get flowSelectedModes(): SupportedMode[] {
-      return this.flow.supportedModes
+      return this.flow.supported_modes
     }
 
     set flowSelectedModes(value: SupportedMode[]) {
@@ -45,5 +43,5 @@
     }
   }
 
-  export default ModeEditor
+export default ModeEditor
 </script>

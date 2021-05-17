@@ -141,48 +141,48 @@
 </template>
 
 <script>
-  import lang from '@/lib/filters/lang'
-  import lodash from 'lodash'
-	import VueFocus from 'vue-focus'
+import { lang } from '@/lib/filters/lang'
+import lodash from 'lodash'
+import VueFocus from 'vue-focus'
 
-	export default {
-		props: ['focus', 'data', 'isAudioLibraryEmpty'],
-		mixins: [lang, VueFocus.mixin],
+export default {
+  props: ['focus', 'data', 'isAudioLibraryEmpty'],
+  mixins: [lang, VueFocus.mixin],
 
-		data() {
-			return {
-				pattern: '',
-				replaceExisting: true,
-				expanded: false
-			}
-		},
+  data() {
+    return {
+      pattern: '',
+      replaceExisting: true,
+      expanded: false,
+    }
+  },
 
-    computed: {
-			disabled() {
-				return this.data.isPending
-      },
-
-      isValid() {
-				return lodash.includes(this.pattern, '[label]')
-            && lodash.includes(this.pattern, '[language]')
-      }
+  computed: {
+    disabled() {
+      return this.data.isPending
     },
 
-		methods: {
-			cancel() {
-				this.$emit('cancel')
-			},
+    isValid() {
+      return lodash.includes(this.pattern, '[label]')
+            && lodash.includes(this.pattern, '[language]')
+    },
+  },
 
-			confirm() {
-				this.$emit('confirm', {
-					value: this.pattern,
-					replaceExisting: this.replaceExisting
-				})
-			},
+  methods: {
+    cancel() {
+      this.$emit('cancel')
+    },
 
-			toggleExpanded() {
-				this.expanded = !this.expanded
-			}
-		}
-	}
+    confirm() {
+      this.$emit('confirm', {
+        value: this.pattern,
+        replaceExisting: this.replaceExisting,
+      })
+    },
+
+    toggleExpanded() {
+      this.expanded = !this.expanded
+    },
+  },
+}
 </script>

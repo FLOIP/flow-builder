@@ -1,55 +1,51 @@
 <template>
-  <text-editor v-model="expression"
+  <text-editor class="expression-editor"
+      v-model="expression"
       :label="label"
-      :is-editable="isEditable"
       :placeholder="placeholder"/>
 </template>
 
 <script>
-  import TextEditor from '@/components/common/TextEditor'
+import TextEditor from '@/components/common/TextEditor'
 
-  export default {
-    components: {
-      TextEditor,
+export default {
+  components: {
+    TextEditor,
+  },
+  props: {
+    label: {
+      type: [String, Number],
+      required: true,
     },
-    props: {
-      isEditable: {
-        default: true,
-        type: Boolean,
-      },
-      label: {
-        type: [String, Number],
-        required: true,
-      },
-      placeholder: {
-        type: String,
-        required: true,
-      },
-      currentExpression: {
-        type: String,
-        required: true,
-      },
-      expressionIdentifier: {
-        type: [String, Number],
-        default: null,
-      },
+    placeholder: {
+      type: String,
+      required: true,
     },
+    currentExpression: {
+      type: String,
+      required: true,
+    },
+    expressionIdentifier: {
+      type: [String, Number],
+      default: null,
+    },
+  },
 
-    computed: {
-      expression: {
-        get() {
-          return this.currentExpression
-        },
-        set(value) {
-          if (this.expressionIdentifier !== null) {
-            value = {
-              identifier: this.expressionIdentifier,
-              value,
-            }
+  computed: {
+    expression: {
+      get() {
+        return this.currentExpression
+      },
+      set(value) {
+        if (this.expressionIdentifier !== null) {
+          value = {
+            identifier: this.expressionIdentifier,
+            value,
           }
-          this.$emit('commitExpressionChange', value)
-        },
+        }
+        this.$emit('commitExpressionChange', value)
       },
     },
-  }
+  },
+}
 </script>
