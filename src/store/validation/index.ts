@@ -27,6 +27,7 @@ export interface IIndexedString { [key: string]: string }
 export interface IValidationStatus {
   isValid: boolean | PromiseLike<any>;
   ajvErrors?: null | Array<ErrorObject>;
+  type: string;
 }
 
 export interface IValidationState {
@@ -63,7 +64,8 @@ export const getters: GetterTree<IValidationState, IRootState> = {
       })
     })
     return accumulator
-  }
+  },
+  validationStatuses: state => state.validationStatuses
 }
 
 export const mutations: MutationTree<IValidationState> = {
@@ -80,6 +82,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     Vue.set(state.validationStatuses, index, {
       isValid: validate(block),
       ajvErrors: validate.errors,
+      type: block.type,
     })
 
     debugValidationStatus(state.validationStatuses[index], `validation status for ${index}`)
@@ -92,6 +95,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     Vue.set(state.validationStatuses, index, {
       isValid: validate(flow),
       ajvErrors: validate.errors,
+      type: 'flow'
     })
 
     debugValidationStatus(state.validationStatuses[index], `flow validation status`)
