@@ -1,7 +1,7 @@
 import OutputBlock from '@/components/interaction-designer/block-types/Core_OutputBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
-import outputBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
+import outputBlockStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_OutputBlockStore'
 import {Component, Vue} from "vue-property-decorator";
 import Vuex from "vuex";
 import {IRootState, store} from "@/store";
@@ -34,7 +34,7 @@ const BaseOptions: IBaseOptions = {
 })
 class DefaultClass extends BaseMountedVueClass {
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, outputBlockStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, outputBlockStore)
   }
 }
 export const Default = () => (DefaultClass)

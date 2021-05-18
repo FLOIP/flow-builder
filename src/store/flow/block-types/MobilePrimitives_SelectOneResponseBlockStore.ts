@@ -12,8 +12,15 @@ import { defaultsDeep, find, filter, first, get } from 'lodash'
 import { IFlowsState } from '../index'
 
 import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
+import { IBlockClassConfig } from '@/store/flow/block'
 
-export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
+export const BLOCK_CLASS_CONFIG: IBlockClassConfig = {
+  name: 'MobilePrimitives.SelectOneResponse',
+  type: 'MobilePrimitives.SelectOneResponse',
+  is_interactive: true,
+  is_branching: true,
+  category:  2
+}
 
 export interface IInflatedChoicesInterface {
   exit: IBlockExit,
@@ -177,7 +184,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     await dispatch('createVolatileEmptyChoice', { index: 0 })
 
     return defaultsDeep(props, {
-      type: BLOCK_TYPE,
+      type: BLOCK_CLASS_CONFIG.type,
       name: '',
       label: '',
       semantic_label: '',

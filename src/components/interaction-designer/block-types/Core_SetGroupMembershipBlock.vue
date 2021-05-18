@@ -51,13 +51,13 @@ import BlockId from '../block-editors/BlockId.vue'
 import GroupSelector from '@/components/interaction-designer/block-editors/GroupSelector.vue'
 import VueMultiselect from 'vue-multiselect'
 
-import SetGroupMembershipStore, { BLOCK_TYPE, ADD_KEY, REMOVE_KEY } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
+import SetGroupMembershipStore, { BLOCK_CLASS_CONFIG, ADD_KEY, REMOVE_KEY } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import { find } from 'lodash'
 import { mixins } from "vue-class-component";
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
@@ -117,5 +117,5 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
 }
 
 export default Core_SetGroupMembershipBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SetGroupMembershipStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, SetGroupMembershipStore)
 </script>

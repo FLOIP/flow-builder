@@ -143,9 +143,9 @@ import { ResourceResolver, SupportedMode } from '@floip/flow-runner'
 import { OperationKind, generateConnectionLayoutKeyFor } from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import { lang } from '@/lib/filters/lang'
-import {BLOCK_TYPE as BLOCK_TYPE__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
-import {BLOCK_TYPE as BLOCK_TYPE__SELECT_ONE_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
-import {BLOCK_TYPE as BLOCK_TYPE__SELECT_MANY_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
+import {BLOCK_CLASS_CONFIG as BLOCK_CLASS_CONFIG__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
+import {BLOCK_CLASS_CONFIG as BLOCK_CLASS_CONFIG__SELECT_ONE_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import {BLOCK_CLASS_CONFIG as BLOCK_CLASS_CONFIG__SELECT_MANY_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 
 import { BTooltip } from 'bootstrap-vue'
 
@@ -299,9 +299,9 @@ export default {
       }
 
       const { block } = this
-      if (block.type === BLOCK_TYPE__CASE_BLOCK) {
+      if (block.type === BLOCK_CLASS_CONFIG__CASE_BLOCK.type) {
         return `${key + 1}: ${exit.tag}`
-      } else if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semantic_label) {
+      } else if ((block.type === BLOCK_CLASS_CONFIG__SELECT_ONE_BLOCK.type || block.type === BLOCK_CLASS_CONFIG__SELECT_MANY_BLOCK.type) && exit.semantic_label) {
         return exit.semantic_label
       }
 

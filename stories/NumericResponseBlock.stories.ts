@@ -1,6 +1,6 @@
 import NumericResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import numericResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
+import numericResponseBlockStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
 import {SupportedMode} from '@floip/flow-runner'
 import {
   BaseMountedVueClass,
@@ -13,7 +13,7 @@ import {IRootState, store} from "@/store";
 
 Vue.use(Vuex)
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 
 export default {
   title: 'MobilePrimitives/Numeric Response Block',
@@ -43,7 +43,7 @@ const BaseOptions: IBaseOptions = {
 )
 class CurrentClass1 extends BaseMountedVueClass {
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, numericResponseBlockStore)
   }
 }
 export const Default = () => (CurrentClass1)
@@ -54,7 +54,7 @@ export const Default = () => (CurrentClass1)
 })
 class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, numericResponseBlockStore)
 
     this.setDescription(blockId)
     this.setResourceData({
@@ -78,7 +78,7 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
 })
 class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, numericResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: SupportedMode.IVR})
     this.setValidationMinimum({blockId, value:0})
@@ -103,7 +103,7 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
 })
 class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, numericResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: [SupportedMode.SMS, SupportedMode.USSD]})
     this.setValidationMinimum({blockId, value:0})
@@ -128,7 +128,7 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
 )
 class CurrentClass5 extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, numericResponseBlockStore)
 
     this.setDescription(blockId)
     await this.fakeCaseBlockAsFirstBlock(flowId)

@@ -7,8 +7,15 @@ import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUui
 import { ILogBlock } from '@floip/flow-runner/src/model/block/ILogBlock'
 import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
+import { IBlockClassConfig } from '@/store/flow/block'
 
-export const BLOCK_TYPE = 'Core.Log'
+export const BLOCK_CLASS_CONFIG: IBlockClassConfig = {
+  name: 'Core.Log',
+  type: 'Core.Log',
+  is_interactive: false,
+  is_branching: false,
+  category:  0
+}
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
@@ -34,7 +41,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
 
     return defaultsDeep(props, {
-      type: BLOCK_TYPE,
+      type: BLOCK_CLASS_CONFIG.type,
       name: '',
       label: '',
       semantic_label: '',

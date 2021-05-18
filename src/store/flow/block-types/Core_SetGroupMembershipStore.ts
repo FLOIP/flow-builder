@@ -7,11 +7,18 @@ import {
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
+import { IBlockClassConfig } from '@/store/flow/block'
+
+export const BLOCK_CLASS_CONFIG: IBlockClassConfig = {
+  name: 'Core.SetGroupMembership',
+  type: 'Core.SetGroupMembership',
+  is_interactive: false,
+  is_branching: false,
+  category:  0
+}
 
 export const ADD_KEY = 'add'
 export const REMOVE_KEY = 'remove'
-
-export const BLOCK_TYPE = 'Core.SetGroupMembership'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
@@ -30,7 +37,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
 
     return defaultsDeep(props, {
-      type: BLOCK_TYPE,
+      type: BLOCK_CLASS_CONFIG.type,
       name: '',
       label: '',
       semantic_label: '',

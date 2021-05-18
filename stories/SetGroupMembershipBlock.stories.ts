@@ -7,7 +7,7 @@ import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarE
 import { BaseMountedVueClass } from './story-utils/storeSetup'
 
 import { IRootState, store } from '@/store'
-import SetGroupMembershipStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
+import SetGroupMembershipStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 import { Component } from "vue-property-decorator";
 import SetContactPropertyStore from "../src/store/flow/block-types/Core_SetContactPropertyStore";
 import {Mutation} from "vuex-class";
@@ -37,7 +37,7 @@ let baseOptions = {
 @Component<any>({
   ...baseOptions,
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, SetGroupMembershipStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, SetGroupMembershipStore)
   },
 
 })
@@ -47,7 +47,7 @@ export const Default = () => (DefaultClass)
 @Component<any>({
   ...baseOptions,
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, SetGroupMembershipStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, SetGroupMembershipStore)
 
     // Add sample data
     this.addContactGroup({

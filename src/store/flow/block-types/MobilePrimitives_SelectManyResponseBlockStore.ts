@@ -12,8 +12,15 @@ import {
   ICustomFlowState,
   stateFactory,
 } from './MobilePrimitives_SelectOneResponseBlockStore'
+import { IBlockClassConfig } from '@/store/flow/block'
 
-export const BLOCK_TYPE = 'MobilePrimitives.SelectManyResponse'
+export const BLOCK_CLASS_CONFIG: IBlockClassConfig = {
+  name: 'MobilePrimitives.SelectManyResponse',
+  type: 'MobilePrimitives.SelectManyResponse',
+  is_interactive: true,
+  is_branching: true,
+  category:  2
+}
 
 export const getters: GetterTree<ICustomFlowState, IRootState> = {
   ...selectOneGetters,
@@ -46,7 +53,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     await dispatch('createVolatileEmptyChoice', { index: 0 })
 
     return defaultsDeep(props, {
-      type: BLOCK_TYPE,
+      type: BLOCK_CLASS_CONFIG.type,
       name: '',
       label: '',
       semantic_label: '',

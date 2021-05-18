@@ -6,7 +6,7 @@ import {
 } from './story-utils/storeSetup'
 import selectManyResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import selectManyStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
+import selectManyStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 
 import {
   SupportedMode,
@@ -43,7 +43,7 @@ const BaseOptions: IBaseOptions = {
 })
 class InFlowBuilderClass extends BaseMountedVueClass {
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, selectManyStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, selectManyStore)
   }
 }
 export const InFlowBuilder = () => InFlowBuilderClass
@@ -54,7 +54,7 @@ export const InFlowBuilder = () => InFlowBuilderClass
 })
 class IvrOnlyClass extends BaseMountedVueClass {
   async mounted() {
-    const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectManyStore)
+    const {block, flow} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, selectManyStore)
     flow.supported_modes = [SupportedMode.IVR]
   }
 }
@@ -65,7 +65,7 @@ export const IvrOnly = () => IvrOnlyClass
 })
 class MoreLanguagesClass extends BaseMountedVueClass {
   async mounted() {
-    const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectManyStore)
+    const {block, flow} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, selectManyStore)
     flow.languages = [{id: '1', label: 'English'}, {id: '2', label: 'French'}] // mutation
   }
 }
@@ -77,7 +77,7 @@ export const MoreLanguages = () => MoreLanguagesClass
 })
 class ExistingDataClass extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow} = await this.baseMounted(BLOCK_TYPE, selectManyStore)
+    const {block: {uuid: blockId}, flow} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, selectManyStore)
     this.setDescription(blockId)
     this.setResourceData({
       shouldSetChoices: true,

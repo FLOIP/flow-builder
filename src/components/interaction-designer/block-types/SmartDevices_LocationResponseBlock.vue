@@ -27,7 +27,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner'
 // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
 import { IResource } from '@floip/flow-runner'
-import LocationStore, { BLOCK_TYPE } from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
+import LocationStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
@@ -41,7 +41,7 @@ import BlockTimeoutEditor from '../block-editors/TimeoutEditor.vue'
 import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
@@ -80,5 +80,5 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
   }
 
 export default SmartDevices_LocationResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LocationStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, LocationStore)
 </script>

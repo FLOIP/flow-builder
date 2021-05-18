@@ -143,3 +143,11 @@ export interface IDeepBlockExitIdWithinFlow {
   blockId: IBlock['uuid'];
   exitId: IBlockExit['uuid'];
 }
+
+export interface IBlockClassConfig {
+  name: string,
+  type: string,
+  is_interactive: boolean,
+  is_branching: boolean,
+  category:  number
+}

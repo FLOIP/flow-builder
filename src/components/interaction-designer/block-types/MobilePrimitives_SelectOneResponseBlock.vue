@@ -70,7 +70,7 @@ import { namespace } from 'vuex-class'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
 import SelectOneStore, {
-  BLOCK_TYPE,
+  BLOCK_CLASS_CONFIG,
   IInflatedChoicesInterface
 } from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
@@ -85,7 +85,7 @@ import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component<any>({
@@ -140,5 +140,5 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 }
 
 export default MobilePrimitives_SelectOneResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectOneStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, SelectOneStore)
 </script>

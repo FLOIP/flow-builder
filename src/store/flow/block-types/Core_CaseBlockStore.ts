@@ -11,8 +11,15 @@ import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
 import { allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
+import { IBlockClassConfig } from '@/store/flow/block'
 
-export const BLOCK_TYPE = 'Core.Case'
+export const BLOCK_CLASS_CONFIG: IBlockClassConfig = {
+  name: 'Core.Case',
+  type: 'Core.Case',
+  is_interactive: false,
+  is_branching: true,
+  category:  2
+}
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   allExitsHaveTests: (state, getters, rootState, rootGetters): boolean => allItemsHaveValue(rootGetters['builder/activeBlock'].exits, 'test'),
@@ -62,7 +69,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
 
     return defaultsDeep(props, {
-      type: BLOCK_TYPE,
+      type: BLOCK_CLASS_CONFIG.type,
       name: '',
       label: '',
       semantic_label: '',

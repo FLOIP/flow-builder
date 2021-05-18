@@ -37,7 +37,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { IFlow } from '@floip/flow-runner'
 import { IReadBlock } from '@floip/flow-runner/src/model/block/IReadBlock'
 import TextEditor from '@/components/common/TextEditor.vue'
-import ReadStore, { BLOCK_TYPE } from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
+import ReadStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
@@ -49,7 +49,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
@@ -89,5 +89,5 @@ class ConsoleIO_ReadBlock extends mixins(Lang) {
   }
 
 export default ConsoleIO_ReadBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, ReadStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, ReadStore)
 </script>

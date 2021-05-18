@@ -1,6 +1,6 @@
 import OpenResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_OpenResponseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import openResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
+import openResponseBlockStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
 import {SupportedMode} from '@floip/flow-runner'
 
 import {
@@ -14,7 +14,7 @@ import {IRootState, store} from "@/store";
 
 Vue.use(Vuex)
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 
 export default {
   title: 'MobilePrimitives/Open Response Block',
@@ -44,7 +44,7 @@ const BaseOptions: IBaseOptions = {
 )
 class CurrentClass1 extends BaseMountedVueClass {
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, openResponseBlockStore)
   }
 }
 export const Default = () => (CurrentClass1)
@@ -55,7 +55,7 @@ export const Default = () => (CurrentClass1)
 })
 class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, openResponseBlockStore)
 
     this.setDescription(blockId)
     this.setResourceData({
@@ -77,7 +77,7 @@ export const ExistingDataForAllModes = () => (CurrentClass2)
 })
 class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, openResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: SupportedMode.IVR})
     this.setMaxDurationSeconds(3*60)
@@ -98,7 +98,7 @@ export const ExistingDataForIvrOnly = () => (CurrentClass3)
 })
 class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, openResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: [SupportedMode.SMS, SupportedMode.USSD]})
     this.setMaxResponseCharacters(160)
@@ -121,7 +121,7 @@ export const ExistingDataForTextOnly = () => (CurrentClass4)
 )
 class CurrentClass5 extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, openResponseBlockStore)
 
     this.setDescription(blockId)
     await this.fakeCaseBlockAsFirstBlock(flowId)

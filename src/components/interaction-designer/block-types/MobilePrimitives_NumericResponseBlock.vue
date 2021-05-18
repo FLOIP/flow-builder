@@ -35,7 +35,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { IBlock, IBlockExit, IFlow, IResource } from '@floip/flow-runner'
 import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 
-import NumericStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
+import NumericStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
@@ -50,7 +50,7 @@ import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
 import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
@@ -101,5 +101,5 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   }
 
 export default MobilePrimitives_NumericResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, NumericStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, NumericStore)
 </script>

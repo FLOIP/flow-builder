@@ -37,7 +37,7 @@ import { Component, Prop } from 'vue-property-decorator'
 
 import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import { IFlow } from '@floip/flow-runner'
-import RunAnotherFlowStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_RunFlowBlockStore'
+import RunAnotherFlowStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_RunFlowBlockStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -47,7 +47,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
@@ -82,5 +82,5 @@ class Core_RunAnotherFlowBlock extends mixins(Lang) {
   }
 
 export default Core_RunAnotherFlowBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, RunAnotherFlowStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, RunAnotherFlowStore)
 </script>

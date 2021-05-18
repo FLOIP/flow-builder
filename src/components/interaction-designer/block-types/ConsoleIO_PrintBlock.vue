@@ -31,7 +31,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { IFlow, IResource } from '@floip/flow-runner'
 import { IPrintBlock } from '@floip/flow-runner/src/model/block/IPrintBlock'
 
-import PrintStore, { BLOCK_TYPE } from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
+import PrintStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -70,5 +70,5 @@ class ConsoleIO_PrintBlock extends mixins(Lang) {
   }
 
 export default ConsoleIO_PrintBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, PrintStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, PrintStore)
 </script>
