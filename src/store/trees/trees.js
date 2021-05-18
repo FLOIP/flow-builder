@@ -171,13 +171,13 @@ export default {
     },
 
     // TODO: find a better place to put the configure, putting it inside trees store doesn't make sense
-    configure({ ui }, { appConfig, builderConfig }) {
+    configure({ ui }, { appConfig, builderConfig, supportedBlockTypes }) {
       const {
         app,
         __AUDIO__: audio,
         __TREES_UI__: uiOverrides,
         __APP__: appContext,
-      } = bootstrapLegacyGlobalDependencies(appConfig, builderConfig)
+      } = bootstrapLegacyGlobalDependencies(appConfig, builderConfig, supportedBlockTypes)
       ui.isConfigured = true
 
       // update this.state to expose permissions, etc

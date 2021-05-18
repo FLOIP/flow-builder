@@ -83,6 +83,10 @@ export default {
         return {}
       },
     },
+    supportedBlockTypes: {
+      type: Object,
+      required: true,
+    }
   },
 
   mixins: [lang, Routes],
@@ -146,7 +150,6 @@ export default {
       hasUssd: ({ trees: { tree } }) => tree.details.hasUssd,
       hasSocial: ({ trees: { tree } }) => tree.details.hasSocial,
       hasClipboard: ({ trees: { tree } }) => tree.details.hasClipboard,
-      blockClasses: ({ trees: { ui } }) => ui.blockClasses,
     }),
 
     ...mapGetters('flow', ['activeFlow']),
@@ -177,7 +180,7 @@ export default {
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig, supportedBlockTypes: this.supportedBlockTypes })
     }
 
     global.builder = this // initialize global reference for legacy + debugging
@@ -228,16 +231,15 @@ export default {
       'initializeTreeModel']),
 
     async registerBlockTypes() {
-      const { blockClasses } = this
-
-        forEach(blockClasses, async ({type}, key) => {
-          const typeWithoutSeparators = type.replace('.', '')
-          const exported = await import(`@/${key}.vue`) // static path prefix such as `@/` is important, as webpack won't accept fully dynamic statement such as import(${key}.vue`)
-
-          invoke(exported, 'install', this)
-          this.$options.components[`Flow${typeWithoutSeparators}`] = exported.default
-        })
-      },
+      console.log('registerBlockTypes', this.supportedBlockTypes)
+      forEach(this.supportedBlockTypes, async ({ type }) => {
+        const normalizedType = type.replace('.', '_')
+        const typeWithoutSeparators = type.replace('.', '')
+        const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
+        invoke(exported, 'install', this)
+        this.$options.components[`Flow${typeWithoutSeparators}`] = exported.default
+      })
+    },
 
     handleCanvasSelected({ target }) {
       if (!target.classList.contains('builder-canvas')) {
