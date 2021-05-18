@@ -26,7 +26,7 @@
                                         :enable-autogen-button="true || enableAutogenButton" />
 
           <div v-if="contentType === SupportedContentType.AUDIO" :id="`${block.uuid}.config.prompt.${language}.${mode}`">
-            <template v-if="!findAudioResourceVariantFor(resource, {languageId, contentType: contentType, modes: [mode]})">
+            <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
               <upload-monitor :uploadKey="`${block.uuid}:${languageId}`" />
 
               <ul class="nav nav-tabs">
