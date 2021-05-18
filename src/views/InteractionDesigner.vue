@@ -4,7 +4,7 @@
 
     <div class="tree-sidebar-container">
       <div v-if="activeBlock" class="tree-sidebar"
-           :class="[`category-${blockClassFromBlockType(activeBlock.type).category}`]">
+           :class="[`category-${supportedBlockTypes(activeBlock.type).category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
@@ -131,7 +131,6 @@ export default {
     ...mapGetters([
       'isConfigured',
       'selectedBlock',
-      'blockClassFromBlockType',
       'hasChanges',
       'hasIssues',
       'isTreeSaving',
@@ -158,6 +157,10 @@ export default {
     jsKey() {
       return lodash.get(this.selectedBlock, 'jsKey')
     },
+
+    // blockClasses() {
+    //   return this.supportedBlockTypes
+    // },
 
     isPureVueBlock() { // pure vuejs block types handle readonly mode on their own
       return _.includes(this.pureVuejsBlocks, lodash.get(this.selectedBlock, 'type'))
@@ -231,7 +234,6 @@ export default {
       'initializeTreeModel']),
 
     async registerBlockTypes() {
-      console.log('registerBlockTypes', this.supportedBlockTypes)
       forEach(this.supportedBlockTypes, async ({ type }) => {
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')

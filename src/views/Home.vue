@@ -30,6 +30,7 @@ import { forEach, isEmpty } from 'lodash'
 import {store} from '@/store'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {IFlow} from '@floip/flow-runner'
+import { defaultBlockTypes } from '@/lib'
 const flowVuexNamespace = namespace('flow')
 
 @Component(
@@ -40,9 +41,10 @@ const flowVuexNamespace = namespace('flow')
 class Home extends Vue {
   @Prop({ default: () => ({}) }) readonly appConfig!: object
   @Prop({ default: () => ({}) }) readonly builderConfig!: object
+  @Prop({ default: () => defaultBlockTypes }) supportedBlockTypes!: object
 
   @flowVuexNamespace.State flows!: IFlow[]
-  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
+  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object; supportedBlockTypes: object }) => void
   @Getter isConfigured!: boolean
 
   async created() {
@@ -52,7 +54,7 @@ class Home extends Vue {
       !$store.hasModule(k) && $store.registerModule(k, v))
 
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig, supportedBlockTypes: this.supportedBlockTypes })
     }
   }
 }

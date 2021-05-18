@@ -36,6 +36,7 @@ import {store} from '@/store'
 const flowVuexNamespace = namespace('flow')
 import {IFlow, IContext} from '@floip/flow-runner'
 import { RawLocation } from 'vue-router'
+import { defaultBlockTypes } from '@/lib'
 
 @Component(
   {
@@ -48,6 +49,7 @@ import { RawLocation } from 'vue-router'
 class NewFlow extends Vue {
   @Prop({ default: () => ({}) }) readonly appConfig!: object
   @Prop({ default: () => ({}) }) readonly builderConfig!: object
+  @Prop({ default: () => defaultBlockTypes }) supportedBlockTypes!: object
 
   async mounted() {
     await this.flow_addBlankFlow()
@@ -60,7 +62,7 @@ class NewFlow extends Vue {
       !$store.hasModule(k) && $store.registerModule(k, v))
 
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig, supportedBlockTypes: this.supportedBlockTypes })
     }
   }
 
@@ -85,7 +87,7 @@ class NewFlow extends Vue {
   @flowVuexNamespace.Action flow_persist!: ({ persistRoute, flowContainer }: { persistRoute: any, flowContainer: IContext }) => Promise<IContext | null>
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Getter activeFlowContainer!: IContext
-  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
+  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object; supportedBlockTypes: object }) => void
   @Getter isConfigured!: boolean
 }
 
