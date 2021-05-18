@@ -37,6 +37,13 @@
       }
     ],
     "blockClasses": {
+      "components/interaction-designer/block-types/LocationBlock": {
+        "name": "LocationBlock",
+        "type": "LocationBlock",
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0
+      },
       "components/interaction-designer/block-types/ConsoleIO_PrintBlock": {
         "name": "ConsoleIO\\Print",
         "type": "ConsoleIO\\Print",

@@ -14,8 +14,8 @@ export const BLOCK_TYPE = 'MobilePrimitives\\Message'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
-export const mutations: MutationTree<IFlowsState> = {
-}
+export const mutations: MutationTree<IFlowsState> = {}
+
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async createWith({rootGetters, commit, dispatch}, {props}: {props: {uuid: string} & Partial<IMessageBlock>}) {

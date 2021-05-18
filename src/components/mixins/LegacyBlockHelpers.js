@@ -102,7 +102,8 @@ export default {
 
       this.renderDatepickersFor(selectedBlock);
 
-      app.audioControl.initalizeAudioButtons();
+      // todo: is this still needed anywhere? (via voto5/public/ui3/js/voto/10-voto-audio-player.js)
+      // app.audioControl.initalizeAudioButtons();
     },
 
     renderDatepickersFor: function (selectedBlock) {

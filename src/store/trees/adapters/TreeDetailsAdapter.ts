@@ -1,8 +1,12 @@
-import Vue from 'vue'
-import {IFlow} from "@floip/flow-runner";
-import {Store} from "vuex";
+/* eslint-disable no-underscore-dangle */
 
-export function createTreeDetailsAdapterFor(flow: IFlow, store: Store<any>) {
+import {map} from 'lodash'
+import Vue from 'vue'
+import {Store} from 'vuex'
+import {IFlow, SupportedMode} from '@floip/flow-runner'
+import {ITree} from '@/store/trees/adapters/TreeAdapter'
+
+export function createTreeDetailsAdapterFor(flow: IFlow, tree: ITree, store: Store<any>) {
   return new Vue({
     store,
 
@@ -11,77 +15,66 @@ export function createTreeDetailsAdapterFor(flow: IFlow, store: Store<any>) {
     computed: {
       title: {
         get() {
-          return this.$data._flow.x
+          return this.$data._flow.name
         },
-
-        set() {
-
-        }
       },
+
       description: {
         get() {
-          return this.$data._flow.x
+          return this.$data._flow.label
         },
-
-        set() {
-
-        }
       },
-      hasVoice: {
-        get() {
-          return this.$store.getters['flow/hasVoiceMode']
-        },
 
-        set(isEnabled: boolean) {
-          // flow_setSupportedMode
-        }
+      // todo: when should we use getters vs. FlowAdapter?
+      hasClipboard() {
+        return this.$data._flow.supportedModes.indexOf(SupportedMode.OFFLINE) !== -1
       },
-      enabledLanguages: {
-        get() {
-          return this.$data._flow.x
-        },
 
-        set() {
-          // flow_setSupportedMode
-        }
+      hasSms() {
+        return this.$data._flow.supportedModes.indexOf(SupportedMode.SMS) !== -1
       },
-      hasSms: {
-        get() {
-          return this.$store.getters['flow/hasSMSMode']
-        },
 
-        set() {
-          // flow_setSupportedMode
-        }
+      hasSocial() {
+        return this.$data._flow.supportedModes.indexOf(SupportedMode.RICH_MESSAGING) !== -1
       },
-      hasUssd: {
-        get() {
-          return this.$store.getters['flow/hasUssdMode']
-        },
 
-        set() {
-          // flow_setSupportedMode
-        }
+      hasUssd() {
+        return this.$data._flow.supportedModes.indexOf(SupportedMode.USSD) !== -1
       },
-      hasSocial: {
-        get() {
-          return this.$data._flow.x
-        },
 
-        set() {
-          // flow_setSupportedMode
-        }
+      hasVoice() {
+        return this.$data._flow.supportedModes.indexOf(SupportedMode.IVR) !== -1
       },
+
       startingBlockKey: {
         get() {
-          return this.$data._flow.x
+          return this.$data._flow.firstBlockId
         },
 
         set(blockId) {
-          this.flow_setFirstBlockId({flowId: this.$data._flow.uuid, blockId})
-        }
+          this.flow_setFirstBlockId({flowId: this.$data._flow.uuid, blockId});
+        },
+      },
+
+      exitBlockKey: {
+        get() {
+          return this.$data._flow.exitBlockId
+        },
+
+        // set(blockId) {
+        // this.flow_setFirstBlockId({flowId: this.$data._flow.uuid, blockId});
+        // },
+      },
+
+      enabledLanguages: {
+        get() {
+          return map(this.$data._flow.languages, 'id')
+        },
+
+        // set() {
+        // flow_setSupportedMode
+        // },
       },
     },
-  })
+  });
 }
-

@@ -360,7 +360,7 @@ window.app = window.app || {};
 
 		getBlock: function(blockKey) {
 			// Passes back the block *by reference* which allows for direct editing.
-			return _.findWhere(this.get('blocks'), {jsKey: blockKey});
+			return _.find(this.get('blocks'), {jsKey: blockKey});
 		},
 
 		editBlock: function(blockKey, blockData, arrayKey) {
@@ -437,7 +437,7 @@ window.app = window.app || {};
 
 			var maxConnections = thisBlock['uiData']['numConnections'];
 
-			_.each(_.where(connections, {startBlockKey: blockKey}), function(e) {
+			_.each(_.filter(connections, {startBlockKey: blockKey}), function(e) {
 
 				var nodeNumber = e.outputKey.slice(-1);
 
@@ -513,7 +513,7 @@ window.app = window.app || {};
 
 			var blocks;
 			blocks = this.get('blocks');
-			blocks = _.without(blocks, _.findWhere(blocks, {jsKey: blockKey}));
+			blocks = _.without(blocks, _.find(blocks, {jsKey: blockKey}));
 
 			this.set('blocks', blocks);
 
@@ -699,13 +699,13 @@ window.app = window.app || {};
 
 				// Massive thanks to
 				// http://stackoverflow.com/a/16994286
-				connections = _.without(connections, _.findWhere(connections, {startBlockKey: startBlockKey, outputKey: outputKey}));
+				connections = _.without(connections, _.find(connections, {startBlockKey: startBlockKey, outputKey: outputKey}));
 
 			}
 			else if (startBlockKey) {
 
 				// Filter literally everything with that starting block key
-				connections = _.difference(connections, _.where(connections, {startBlockKey: startBlockKey}));
+				connections = _.difference(connections, _.filter(connections, {startBlockKey: startBlockKey}));
 
 			}
 
@@ -726,7 +726,7 @@ window.app = window.app || {};
 			enabledLanguages.push(languageKey.toString());
 
 			// Order according to the original app.ui.languages order
-			newEnabledLanguages = _.intersection(_.pluck(app.ui.languages, 'id'), app.tree.get('details')['enabledLanguages']);
+			newEnabledLanguages = _.intersection(_.map(app.ui.languages, 'id'), app.tree.get('details')['enabledLanguages']);
 
 			app.tree.get('details').enabledLanguages = newEnabledLanguages;
 
@@ -818,8 +818,7 @@ window.app = window.app || {};
 				missingLanguageIdsSocialContent = [];
 				missingLanguageIdsClipboardContent = [];
 
-				const blockClass = _.pickBy(app.ui.blockClasses, (value, key) => value.type === block.type)
-				if(blockClass.hasContent == 1){
+				if(app.ui.blockClasses[block.type].hasContent == 1){
 
 					if(app.tree.get('details').hasVoice && _.keys(block.audioFiles).length < tree.enabledLanguages.length) {
 					missingLanguageIdsAudioFiles = _.difference(tree.enabledLanguages, _.keys(block.audioFiles));
@@ -1013,10 +1012,10 @@ window.app = window.app || {};
 
     var keysToVerifiedMap = {},
         keysToExistsMap = {},
-        keys = _.pluck(blocks, 'jsKey'),
+        keys = _.map(blocks, 'jsKey'),
         validateKey = function (key) {
           keysToVerifiedMap[key] = true
-          keysToExistsMap[key] = _.contains(keys, key)
+          keysToExistsMap[key] = _.includes(keys, key)
         };
 
     _.forEach(connections, function (conn, i) {
@@ -1027,7 +1026,7 @@ window.app = window.app || {};
       extractedKey && validateKey(extractedKey);
     }, this);
 
-    return _.contains(_.values(keysToExistsMap), 0);
+    return _.includes(_.values(keysToExistsMap), 0);
   }
 
 	app.Tree._mergeAndSanitizeImportedInto = function (treeJson, importJson) {
@@ -1108,6 +1107,7 @@ window.app = window.app || {};
 			"RandomOrderMultipleChoiceQuestionBlock": ['setSubscriberPropertyConfiguration'],
 			"MultipleChoiceQuestionBlock": ['setSubscriberPropertyConfiguration'],
 			"NumericQuestionBlock": ['setSubscriberPropertyConfiguration'],
+			"DateQuestionBlock": ['setSubscriberPropertyConfiguration'],
 			"CollaborativeFilteringRatingBlock": ['candidateBlocks'],
 			"CollaborativeFilteringRatioBranchBlock": ['candidateBlock'],
 		}
@@ -1139,7 +1139,7 @@ window.app = window.app || {};
   app.Tree.validateTreeData = function (json, schema) {
     // Usage:
     // schema = app.Tree.createJsonSchemaFor(
-    //    _.pluck(app.ui.languages, 'id'),
+    //    _.map(app.ui.languages, 'id'),
     //    _.keys(app.ui.blockClasses))
     // app.tree = app.Tree.validateAndCreateFrom(json, schema)
 

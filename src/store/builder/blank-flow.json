@@ -14,7 +14,8 @@
       "languages": [],
       "platform_metadata": {},
       "blocks": [],
-      "firstBlockId": ""
+      "firstBlockId": "",
+      "exitBlockId": ""
     }
   ],
   "resources": []

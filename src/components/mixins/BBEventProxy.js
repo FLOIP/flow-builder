@@ -1,3 +1,4 @@
+import Backbone from 'backbone'
 import lodash from 'lodash'
 
 export default {

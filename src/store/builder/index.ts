@@ -43,6 +43,7 @@ interface IPosition {
 
 export interface IBuilderState {
   activeBlockId: IBlock['uuid'] | null,
+  isEditable: boolean,
 
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation,
@@ -53,6 +54,7 @@ export interface IBuilderState {
 
 export const stateFactory = (): IBuilderState => ({
   activeBlockId: null,
+  isEditable: true,
 
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: {

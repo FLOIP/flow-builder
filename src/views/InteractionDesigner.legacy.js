@@ -17,6 +17,11 @@ export default {
     }
   },
 
+  // todo: prune out stale builder business from:
+  //  - views/InteractionDesigner.legacy.js
+  //  - views/InteractionDesigner.vue
+  //  - store/trees/10-trees-model.js
+  //  - components/mixins/LegacyBlockHelpers.js
   mounted() {
     // Start up running the app
     // This in turn calls the jsPlumb initial setup
@@ -140,6 +145,8 @@ export default {
       // Thanks to
       // http://stackoverflow.com/a/5683169
       const type = $(e.currentTarget).data('block-type');
+
+      // skip this indirection; the data-prop comes from builder.config.json::classDetails
       const numConnections = $(e.currentTarget).data('default-num-connections');
 
       blockData = _.extend({}, _.get(this.$store.state.trees.ui.blockDefaults, type, {}));

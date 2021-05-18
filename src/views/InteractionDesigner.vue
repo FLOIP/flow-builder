@@ -9,11 +9,12 @@
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
 
-          <div v-if="activeBlock"
-               :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
-               :block="activeBlock"
-               :flow="activeFlow" />
+<!--          <div v-if="activeBlock"-->
+<!--               :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"-->
+<!--               :block="activeBlock"-->
+<!--               :flow="activeFlow" />-->
 
+          <location-block></location-block>
         </div>
 
 
@@ -63,6 +64,7 @@
   import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
   import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
   import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
+  import LocationBlock from '@/components/interaction-designer/block-types/LocationBlock';
 
   // import '../TreeDiffLogger'
 
@@ -87,6 +89,7 @@
     mixins: [lang],
 
     components: {
+      LocationBlock,
       // ...BlockTypes,
       // Affix,
       // JsPlumbBlock,

@@ -1,7 +1,28 @@
+/* eslint-disable @typescript-eslint/interface-name-prefix */
 import {find, keyBy, mapValues} from 'lodash'
 import Vue from 'vue'
 import {mapMutations, Store} from "vuex"
 import {IBlock, IFlow, IResource, SupportedMode} from "@floip/flow-runner"
+
+export interface ITreeBlock {
+  jsKey: string
+  type: string
+
+  customData: {}
+  uiData: {}
+
+  smsContent: {} // {"206062": ""},
+  ussdContent: {}
+  socialContent: {} // {"206062": {"text": "Social content"}},
+  clipboardContent: {}
+
+  smsAutogenLangs: string[]
+  ussdAutogenLangs: string[]
+  socialAutogenLangs: string[]
+  clipboardAutogenLangs: string[]
+
+  audioFiles: {} // ?
+}
 
 export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
   return new Vue({
@@ -11,12 +32,13 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
     computed: {
       jsKey() {
-        this._block.uuid
+        return this.$data._block.uuid
       },
 
       type: {
         get() {
-          return this.$data._block.type
+          const block = this.$data._block;
+          return block.vendor_metadata.io_viamo.type || block.type
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -26,7 +48,7 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
       customData: {
         get() {
-          return this.$data._block.platform_metadata.io_viamo.customData
+          return this.$data._block.vendor_metadata.io_viamo.customData
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -36,7 +58,7 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
       uiData: {
         get() {
-          return this.$data._block.platform_metadata.io_viamo.uiData
+          return this.$data._block.vendor_metadata.io_viamo.uiData
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -101,7 +123,7 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
       smsAutogenLangs: {
         get() {
-          return this.uiData.smsAutogenLangs
+          return this.$data._block.vendor_metadata.io_viamo.smsAutogenLangs
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -111,7 +133,7 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
       ussdAutogenLangs: {
         get() {
-          return this.uiData.ussdAutogenLangs
+          return this.$data._block.vendor_metadata.io_viamo.ussdAutogenLangs
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -121,7 +143,7 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
       socialAutogenLangs: {
         get() {
-          return this.uiData.socialAutogenLangs
+          return this.$data._block.vendor_metadata.io_viamo.socialAutogenLangs
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -131,7 +153,7 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
       clipboardAutogenLangs: {
         get() {
-          return this.uiData.clipboardAutogenLangs
+          return this.$data._block.vendor_metadata.io_viamo.clipboardAutogenLangs
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -141,9 +163,9 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
     },
 
     watch: {
-      ['customData.title'](value, previousValue) {
-        this.block_setName({blockId: this.$data._block.uuid, value})
-      },
+      // ['customData.title'](value, previousValue) {
+      //   this.block_setName({blockId: this.$data._block.uuid, value})
+      // },
     },
 
     methods: {
