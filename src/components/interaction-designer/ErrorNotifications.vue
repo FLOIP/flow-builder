@@ -12,7 +12,7 @@
             <div class="card-body">
               <div class="d-flex justify-content-between">
                 <b>{{status.type}}</b>
-                <button type="button" class="btn btn-link" @click="fixIssue(key, error.dataPath)">
+                <button type="button" class="btn btn-link" @click="fixIssue(key, error.dataPath, status)">
                   Fix Issue
                 </button>
               </div>
@@ -39,25 +39,31 @@ export default {
     }
   },
   methods: {
-    fixIssue(key, dataPath) {
+    fixIssue(key, dataPath, status) {
       const field = key + dataPath
-      const blockId = key.replace('block/','')
-      console.log(field, blockId)
-      this.$router.push({
-        name: 'block-scroll-to-anchor',
-        params: { blockId, field },
-      })
+      if (status.type === 'flow') {
+        this.$router.push({
+          name: 'flow-details',
+        })
+      } else {
+        const blockId = key.replace('block/','')
+        this.$router.push({
+          name: 'block-scroll-to-anchor',
+          params: { blockId, field },
+        })
+      }
     }
   }
 
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .notifications-panel {
   position: fixed;
   width: 100vw;
   top: 60px;
+  z-index: 2 * 10;
 }
 .notification {
   width: 500px;
