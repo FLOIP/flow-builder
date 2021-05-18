@@ -35,15 +35,7 @@ export default {
     ...mapGetters('validation', ['validationStatuses']),
 
     statuses() {
-      const statuses = this.validationStatuses
-      for(const key: string in statuses) {
-        statuses[key].ajvErrors.map((error) => {
-          const ref = key + error.dataPath
-          return {...error, ref}
-        })
-      }
-      console.log(statuses)
-      return statuses
+      return this.validationStatuses
     }
   },
   methods: {
