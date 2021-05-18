@@ -6,7 +6,7 @@
         class="block"
         :class="{
           active: isBlockActivated,
-          [`category-${blockClassFromBlockType(block.type).category}`]: true,
+          [`category-${blockClasses[block.type].category}`]: true,
         }"
         :startX="x"
         :startY="y"
@@ -89,7 +89,7 @@
                           :target="blocksById[exit.destination_block]"
                           :exit="exit"
                           :position="livePosition"
-                          :color-category="blockClassFromBlockType(block.type).category" />
+                          :color-category="blockClasses[block.type].category" />
             </template>
           </template>
 
@@ -123,7 +123,7 @@
                         :target="blocksById[exit.destination_block]"
                         :exit="exit"
                         :position="livePosition"
-                        :color-category="blockClassFromBlockType(block.type).category" />
+                        :color-category="blockClasses[block.type].category" />
           </template>
 
         </div>
@@ -195,7 +195,6 @@ export default {
     }),
 
     ...mapGetters('builder', ['blocksById', 'isEditable']),
-    ...mapGetters(['blockClassFromBlockType']),
 
     blockExitsLength() {
       return this.block.exits.length

@@ -4,7 +4,7 @@
 
     <div class="tree-sidebar-container">
       <div v-if="activeBlock" class="tree-sidebar"
-           :class="[`category-${supportedBlockTypes(activeBlock.type).category}`]">
+           :class="[`category-${supportedBlockTypes[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">

@@ -3,7 +3,6 @@ import InteractionDesignerComponent from './views/InteractionDesigner.vue'
 import FetchFlowComponent from './views/FetchFlow.vue'
 import NewFlowComponent from './views/NewFlow.vue'
 import HomeComponent from './views/Home.vue'
-import { forEach } from 'lodash'
 import { BLOCK_CLASS_CONFIG as PRINT_BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
 import { BLOCK_CLASS_CONFIG as READ_BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
 import { BLOCK_CLASS_CONFIG as CASE_BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_CaseBlockStore'
@@ -52,14 +51,6 @@ const Components: {[key: string]: any} = {
   NewFlowComponent,
   HomeComponent,
 }
-
-// expose block-type components to consumer repositories
-// eg: import {ConsoleIORead} from '@floip/flow-builder'
-forEach(builderConfig.ui.blockClasses, async ({type}, key) => {
-  const typeWithoutSeparators = type.replace('.', '')
-  Components[typeWithoutSeparators] = await import(`../src/${key}.vue`)
-})
-
 
 Object.keys(Components).forEach((name) => {
   Vue.component(name, Components[name])
