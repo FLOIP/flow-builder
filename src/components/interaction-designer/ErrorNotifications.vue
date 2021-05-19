@@ -12,11 +12,11 @@
             <div class="card-body">
               <div class="d-flex justify-content-between">
                 <b>{{status.type}}</b>
-                <button type="button" class="btn btn-link" @click="fixIssue(key, error.dataPath, status)">
+                <button type="button" class="btn btn-link text-dark" @click="fixIssue(key, error.dataPath, status)">
                   Fix Issue
                 </button>
               </div>
-              {{error.dataPath}} - {{error.message}}
+              <span class="error-message">{{error.dataPath}} - {{error.message}}</span>
             </div>
           </div>
         </li>
@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     fixIssue(key, dataPath, status) {
-      const field = key + dataPath
       if (status.type === 'flow') {
         this.$router.push({
           name: 'flow-details',
@@ -49,7 +48,7 @@ export default {
         const blockId = key.replace('block/','')
         this.$router.push({
           name: 'block-scroll-to-anchor',
-          params: { blockId, field },
+          params: { blockId, field: dataPath },
         })
       }
     }
@@ -70,5 +69,11 @@ export default {
   padding: 0;
   max-height: 500px;
   overflow-y: scroll;
+}
+.card {
+  background: #F8F2F2;
+}
+.error-message {
+  color: #f96b6d;
 }
 </style>

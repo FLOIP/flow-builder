@@ -16,7 +16,6 @@
           <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
 
           <resource-variant-text-editor :resource-id="resource.uuid"
-                                        :id="`${block.uuid}.config.prompt.${language}.${mode}`"
                                         :resource-variant="findOrGenerateStubbedVariantOn(
                                                 resource,
                                                 {language_id: languageId, content_type: contentType, modes: [mode]})"
@@ -25,7 +24,7 @@
                                         v-if="contentType === SupportedContentType.TEXT"
                                         :enable-autogen-button="true || enableAutogenButton" />
 
-          <div v-if="contentType === SupportedContentType.AUDIO" :id="`${block.uuid}.config.prompt.${language}.${mode}`">
+          <div v-if="contentType === SupportedContentType.AUDIO">
             <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
               <upload-monitor :uploadKey="`${block.uuid}:${languageId}`" />
 

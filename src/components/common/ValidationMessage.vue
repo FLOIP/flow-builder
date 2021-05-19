@@ -1,5 +1,5 @@
 <template>
-  <div class="validation-message form-group">
+  <div class="validation-message form-group" :id="messageKey">
     <slot name="input-control" :isValid="isValid"></slot>
     <small class="text-danger">{{ errorMessage }}</small>
   </div>

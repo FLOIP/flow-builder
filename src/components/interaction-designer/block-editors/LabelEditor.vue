@@ -1,6 +1,6 @@
 <template>
   <validation-message :message-key="`block/${block.uuid}/label`" #input-control="{ isValid }">
-    <div class="block-label" :id="`${block.uuid}.label`">
+    <div class="block-label">
       <text-editor v-model="label"
                    :label="'flow-builder.block-label' | trans"
                    :placeholder="'flow-builder.enter-block-label' | trans"

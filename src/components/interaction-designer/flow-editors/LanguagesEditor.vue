@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group flow-languages" :id="`${flow.uuid}.languages`">
+  <div class="form-group flow-languages">
     <label>{{'flow-builder.languages' | trans}}</label>
     <div v-for="language in languages"
         :key="language.id"
