@@ -1108,6 +1108,7 @@ window.app = window.app || {};
 			"MultipleChoiceQuestionBlock": ['setSubscriberPropertyConfiguration'],
 			"NumericQuestionBlock": ['setSubscriberPropertyConfiguration'],
 			"DateQuestionBlock": ['setSubscriberPropertyConfiguration'],
+			"ExpressionResultBlock": ['setSubscriberPropertyConfiguration'],
 			"CollaborativeFilteringRatingBlock": ['candidateBlocks'],
 			"CollaborativeFilteringRatioBranchBlock": ['candidateBlock'],
 		}

@@ -74,13 +74,16 @@ export default {
     isFeatureAudioUploadEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'audioUpload'),
     isFeatureViewResultsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, feature => feature === 'viewResults'),
 
-		selectedBlock: ({tree, ui}, getters, rootState) => lodash.find(get(tree, 'blocks', []), {jsKey: ui.selectedBlock}),
+		selectedBlock: ({tree, ui}, getters, rootState) =>
+		  lodash.find(get(tree, 'blocks', []), {jsKey: ui.selectedBlock}),
 
     subscriberPropertyFields: ({ui}) => lodash.get(ui, "subscriberPropertyFields"),
 
 		interactiveBlockClasses: ({ui}, getters, rootState) => lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
 
-    blockClassFromBlockType: ({ui}, getters, rootState) => (blockType) => lodash.values(lodash.pickBy(ui.blockClasses, (value, key) => value.type === blockType))[0],
+    blockClassFromBlockType: ({ui}, getters, rootState) =>
+      (blockType) => lodash.values(lodash.pickBy(ui.blockClasses, (value, key) =>
+        value.type === blockType))[0],
 
 		interactiveBlocksInTree: ({tree}, {interactiveBlockClasses}, rootState) =>
 				lodash.filter(tree.blocks, b =>
@@ -176,6 +179,7 @@ export default {
       set(app, 'audioChoice.audioLibrary', audio.library)
       set(app, 'audioChoice.recorderList', audio.recording.recorders)
 
+      // todo: does this muck with our proxy reference?
       state.ui = lodash.assign(uiOverrides, {
         audioFiles: audio.library,
         previousTreeJson: JSON.stringify(uiOverrides.originalTreeJson),
@@ -379,7 +383,7 @@ export default {
 
     initializeTreeModelFromImport({commit, dispatch, state: {ui}}) {
       const schema = app.Tree.createJsonSchemaFor(
-          _.pluck(ui.languages, 'id'),
+          _.map(ui.languages, 'id'),
           _.keys(ui.blockClasses)),
           tree = app.Tree._mergeAndSanitizeImportedInto(ui.originalTreeJson, ui.importTreeJson)
 
@@ -535,7 +539,8 @@ export default {
           numericEndPlural: ' digits.',
           numericEndSingular: ' digit.',
           validationCode: 'Please reply with your unique code',
-        }
+          dateFormatStart: 'Reply with format',
+        },
       }
 
       if (tree.details.hasSms || tree.details.hasUssd || tree.details.hasSocial || tree.details.hasClipboard) {
@@ -586,6 +591,24 @@ export default {
           }
         } else if (block.type == "IdValidationBlock") {
           generatedText = grammar.EN.validationCode
+        } else if (block.type === 'DateQuestionBlock') {
+          const dateFormat = block.customData.dateFormat
+          const dateSeparator = block.customData.dateSeparator
+
+          if ((dateFormat != null && dateSeparator == null) || (dateFormat != null && dateFormat.length < 5)) {
+            generatedText += ` ${grammar.EN.dateFormatStart} ${dateFormat + grammar.EN.conclusion}`
+          } else if (dateFormat != null) {
+            const dateStringArray = [dateFormat.charAt(0) + dateFormat.charAt(1)]
+            for (let i = 2; i < dateFormat.length; i += 1) {
+              const lastChar = dateStringArray[dateStringArray.length - 1].charAt(0)
+              if (dateFormat.charAt(i) === lastChar) {
+                dateStringArray[dateStringArray.length - 1] = dateStringArray[dateStringArray.length - 1] + lastChar
+              } else {
+                dateStringArray.push(dateFormat.charAt(i))
+              }
+            }
+            generatedText += ` ${grammar.EN.dateFormatStart} ${dateStringArray.join(dateSeparator) + grammar.EN.conclusion}`
+          }
         }
 
         lodash.forEach(['sms', 'ussd', 'social', 'clipboard'], contentType => {
@@ -808,10 +831,11 @@ export default {
       const key = 'interaction-totals'
       const url = routeFrom('trees.ajaxTotalInteractions', {treeId: state.tree.id}, state.ui.routes)
       const params = {startDate, endDate}
-
-      const response = await dispatch('flights/createCancellableXhr', {key, url, params})
-      if (response) {
+      try {
+        const response = await dispatch('flights/createCancellableXhr', {key, url, params})
         commit('setInteractionTotals', {interactionTotals: response.data})
+      } catch (e) {
+        console.error('store/trees', 'Unable to fetch interaction totals', e)
       }
     },
   },

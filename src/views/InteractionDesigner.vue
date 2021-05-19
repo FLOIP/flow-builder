@@ -16,19 +16,6 @@
 
           <location-block></location-block>
         </div>
-
-
-<!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
-<!--                     :jsonValidationResults="jsonValidationResults"-->
-<!--                     :isTreeValid="isTreeValid"/>-->
-
-<!--        <tree-viewer v-if="sidebarType === 'TreeViewer'"/>-->
-
-<!--        <block-viewer-->
-<!--          :key="jsKey"-->
-<!--          v-if="sidebarType === 'BlockViewer'"-->
-<!--          :data-for-block-id="jsKey" />-->
-
       </div>
       <div v-else class="tree-sidebar">
         <div class="tree-sidebar-edit-block">
@@ -49,16 +36,9 @@
   import lodash, {forEach, invoke} from 'lodash'
   import Vue from 'vue'
   import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-  // import {affix as Affix} from 'vue-strap'
-  // import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
-
-  // import * as BlockTypes from './block-types'
-  // import JsPlumbBlock from './JsPlumbBlock'
 
   import {store} from '@/store'
 
-  // import TreeEditor from './TreeEditor'
-  // import TreeViewer from './TreeViewer'
   // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
   // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
   import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
@@ -90,11 +70,6 @@
 
     components: {
       LocationBlock,
-      // ...BlockTypes,
-      // Affix,
-      // JsPlumbBlock,
-      // TreeEditor,
-      // TreeViewer,
       TreeBuilderToolbar,
       BuilderCanvas,
       FlowEditor,
@@ -102,27 +77,7 @@
     },
 
     data() {
-      return {
-        pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
-          'CallBackWithCallCenterBlock',
-          'CollaborativeFilteringQuestionBlock',
-          'CollaborativeFilteringRatingBlock',
-          'CollaborativeFilteringRatioBranchBlock',
-          'CreateSubscriberBlock',
-          'CurrentTimeBranchBlock',
-          'DirectorySelectionBlock',
-          'EntitySelectionBlock',
-          'GenerateCodeBlock',
-          'GroupPropertyBlock',
-          'SubscriberPropertiesSnapshotBlock',
-          'SubscriberPropertyBlock',
-          'SummaryBlock',
-          'ValidateCodeBlock',
-          'WebhookBlock',
-          'WebhookContentBlock',
-          'RecordGroupMessageBlock',
-          'PlayGroupMessageBlock',
-        ]}
+      return {}
     },
 
     computed: {
@@ -159,20 +114,6 @@
 
       jsKey() {
         return lodash.get(this.selectedBlock, 'jsKey')
-      },
-
-      isPureVueBlock() { // pure vuejs block types handle readonly mode on their own
-        return _.includes(this.pureVuejsBlocks, lodash.get(this.selectedBlock, 'type'))
-      },
-
-      sidebarType() {
-        const
-            blockType = lodash.get(this.selectedBlock, 'type'),
-            blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
-
-        return this.isEditable
-            ? blockType || 'TreeEditor'
-            : blockViewerType || 'TreeViewer'
       },
     },
 
@@ -253,7 +194,7 @@
           return false
         }
 
-        return !isEditableLocked && mode === 'edit'|| !mode && lodash.endsWith(hash, '/edit')
+        return !isEditableLocked && mode === 'edit' || !mode && lodash.endsWith(hash, '/edit')
       },
 
 		  hoistResourceViewerToPushState(hash) {
