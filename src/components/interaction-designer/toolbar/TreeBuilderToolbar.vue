@@ -57,9 +57,9 @@
                    :key="className + 'item'"
                    @click.prevent="handleAddBlockByTypeSelected(classDetails)"
                    class="dropdown-item tree-add-block"
-                   :data-block-type="className"
+                   :data-block-type="classDetails.name"
                    :data-default-num-connections="classDetails['defaultConnections']">
-                  {{translateTreeClassName(className)}}
+                  {{translateTreeClassName(classDetails.name)}}
                 </a>
               </template>
 
@@ -81,9 +81,9 @@
                          href="#"
                          :key="className + 'item'"
                          class="dropdown-item tree-add-block"
-                         :data-block-type="className"
+                         :data-block-type="classDetails.name"
                          :data-default-num-connections="classDetails['defaultConnections']">
-                        {{translateTreeClassName(className)}}
+                        {{translateTreeClassName(classDetails.name)}}
                       </a>
                     </template>
                   </div>
@@ -107,9 +107,9 @@
                          href="#"
                          :key="className + 'item'"
                          class="dropdown-item tree-add-block"
-                         :data-block-type="className"
+                         :data-block-type="classDetails.name"
                          :data-default-num-connections="classDetails['defaultConnections']">
-                        {{translateTreeClassName(className)}}
+                        {{translateTreeClassName(classDetails.name)}}
                       </a>
                     </template>
                   </div>

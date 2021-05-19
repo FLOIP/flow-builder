@@ -41,13 +41,13 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import ContactPropertySelector from "@/components/interaction-designer/block-editors/ContactPropertySelector.vue"
 
-import SetContactPropertyStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_SetContactPropertyStore'
+import SetContactPropertyStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from "@/store/builder";
 import { get } from 'lodash'
 import { mixins } from "vue-class-component";
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
@@ -77,5 +77,5 @@ class Core_SetContactPropertyBlock extends mixins(Lang) {
 }
 
 export default Core_SetContactPropertyBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SetContactPropertyStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, SetContactPropertyStore)
 </script>

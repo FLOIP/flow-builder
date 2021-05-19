@@ -84,7 +84,10 @@ export default {
 
     interactiveBlockClasses: ({ ui }, getters, rootState) => lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
 
-    interactiveBlocksInTree: ({ tree }, { interactiveBlockClasses }, rootState) => lodash.filter(tree.blocks, (b) => lodash.includes(Object.keys(interactiveBlockClasses), b.type)),
+    interactiveBlocksInTree: ({ tree }, { interactiveBlockClasses }, rootState) =>
+      lodash.filter(tree.blocks, (b) =>
+        lodash.includes(Object.keys(interactiveBlockClasses), b.type)
+      ),
 
     isEditable: ({ ui }) => !!ui.isEditable,
 
@@ -166,13 +169,13 @@ export default {
     },
 
     // TODO: find a better place to put the configure, putting it inside trees store doesn't make sense
-    configure({ ui }, { appConfig, builderConfig }) {
+    configure({ ui }, { appConfig, builderConfig, supportedBlockTypes }) {
       const {
         app,
         __AUDIO__: audio,
         __TREES_UI__: uiOverrides,
         __APP__: appContext,
-      } = bootstrapLegacyGlobalDependencies(appConfig, builderConfig)
+      } = bootstrapLegacyGlobalDependencies(appConfig, builderConfig, supportedBlockTypes)
       ui.isConfigured = true
 
       // update this.state to expose permissions, etc

@@ -64,7 +64,7 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import { IResource } from '@floip/flow-runner'
-import SelectManyResponseStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
+import SelectManyResponseStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import { namespace } from 'vuex-class'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -77,7 +77,7 @@ import BlockId from '../block-editors/BlockId.vue'
 
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component<any>({
@@ -103,5 +103,5 @@ export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseB
 }
 
 export default MobilePrimitives_SelectManyResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectManyResponseStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, SelectManyResponseStore)
 </script>

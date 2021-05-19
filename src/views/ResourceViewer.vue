@@ -263,7 +263,7 @@ import lodash from 'lodash'
 import HorizontalBlockContentEditor from '@/components/resource-editor/HorizontalBlockContentEditor'
 import BatchMatchAudioFilesPrompt from '@/components/resource-editor/BatchMatchAudioFilesPrompt'
 import BlockContentEditorUnsupported from '@/components/resource-editor/BlockContentEditorUnsupported'
-import stores from '../stores'
+import stores from '@/store'
 
 export default {
   components: {

@@ -1,6 +1,6 @@
 import PrintBlock from '@/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import printBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
+import printBlockStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
 import {
   BaseMountedVueClass,
   BaseMountedVueClassWithResourceAndMode, IBaseOptions,
@@ -37,7 +37,7 @@ const BaseOptions: IBaseOptions = {
 })
 class DefaultClass extends BaseMountedVueClass {
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, printBlockStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, printBlockStore)
   }
 }
 export const Default = () => {
@@ -50,7 +50,7 @@ export const Default = () => {
 )
 class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, printBlockStore)
 
     this.setDescription(blockId)
     this.setResourceData({
@@ -68,7 +68,7 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
 )
 class NonStartingBlockClass extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, printBlockStore)
 
     this.setDescription(blockId)
     await this.fakeCaseBlockAsFirstBlock(flowId)

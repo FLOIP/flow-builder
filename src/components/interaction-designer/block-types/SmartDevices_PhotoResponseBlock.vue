@@ -26,7 +26,7 @@ import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
 import { IResource } from '@floip/flow-runner'
 
-import PhotoStore, { BLOCK_TYPE } from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
+import PhotoStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -60,5 +60,5 @@ class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
   }
 
 export default SmartDevices_PhotoResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, PhotoStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, PhotoStore)
 </script>

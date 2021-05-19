@@ -7,7 +7,7 @@ import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarE
 import { BaseMountedVueClass } from './story-utils/storeSetup'
 
 import {IRootState, store} from '@/store'
-import SetContactPropertyStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetContactPropertyStore'
+import SetContactPropertyStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import {Component} from "vue-property-decorator";
 import {Mutation} from "vuex-class";
 
@@ -38,7 +38,7 @@ let baseOptions = {
 })
 class DefaultClass extends BaseMountedVueClass {
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, SetContactPropertyStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, SetContactPropertyStore)
   }
 }
 export const Default = () => (DefaultClass)
@@ -49,7 +49,7 @@ export const Default = () => (DefaultClass)
 })
 class ExistingDataBlockClass extends BaseMountedVueClass {
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, SetContactPropertyStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, SetContactPropertyStore)
 
     // Add sample data
     this.addSubscriberPropertyField({

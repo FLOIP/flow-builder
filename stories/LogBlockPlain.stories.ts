@@ -1,7 +1,7 @@
 import {Component, Vue} from 'vue-property-decorator'
 import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock.vue'
 import PlainFlowBuilderBlockEditorContainer from './story-utils/PlainFlowBuilderBlockEditorContainer.vue'
-import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
+import logBlockStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_LogBlockStore'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import Vuex from "vuex";
 import {IRootState, store} from "@/store";
@@ -34,7 +34,7 @@ const BaseOptions: IBaseOptions = {
 })
 class DefaultClass extends BaseMountedVueClass {
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, logBlockStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, logBlockStore)
   }
 }
 export const Default = () => (DefaultClass)
@@ -44,7 +44,7 @@ export const Default = () => (DefaultClass)
 })
 class CurrentClass2 extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, logBlockStore)
 
     this.setDescription(blockId)
   }

@@ -29,7 +29,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock'
 import { IFlow } from '@floip/flow-runner'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
-import OutputStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_OutputBlockStore'
+import OutputStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_OutputBlockStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -39,7 +39,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
@@ -71,5 +71,5 @@ class Core_OutputBlock extends mixins(Lang) {
   }
 
 export default Core_OutputBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, OutputStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, OutputStore)
 </script>

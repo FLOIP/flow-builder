@@ -1,6 +1,6 @@
 import ReadBlock from '@/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import readBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
+import readBlockStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
@@ -9,7 +9,7 @@ import {IRootState, store} from "@/store";
 
 Vue.use(Vuex)
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 
 export default {
   title: 'ConsoleIo/Read Block',
@@ -39,7 +39,7 @@ const BaseOptions: IBaseOptions = {
 )
 class DefaultClass extends BaseMountedVueClass {
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, readBlockStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, readBlockStore)
   }
 }
 export const Default = () => (DefaultClass)
@@ -51,7 +51,7 @@ export const Default = () => (DefaultClass)
 )
 class ExistingDataClass extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, readBlockStore)
 
     this.setDescription(blockId)
     this.setFormatString("%s lorem ipsum %d [...]")
@@ -68,7 +68,7 @@ export const ExistingDataBlock = () => (ExistingDataClass)
 )
 class ExistingDataNonStartingClass extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, readBlockStore)
 
     this.setDescription(blockId)
     this.setFormatString("%s lorem ipsum %d [...]")

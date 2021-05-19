@@ -28,12 +28,14 @@ const flowVuexNamespace = namespace('flow')
 import {IFlow} from '@floip/flow-runner'
 import { mixins } from "vue-class-component";
 import {RawLocation} from "vue-router";
+import { defaultBlockTypes } from '@/lib'
 
 @Component({})
 class FetchFlow extends mixins(Routes, Lang) {
   @Prop({required: true}) readonly uuid!: string
   @Prop({ default: () => ({}) }) readonly appConfig!: object
   @Prop({ default: () => ({}) }) readonly builderConfig!: object
+  @Prop({ default: () => defaultBlockTypes }) supportedBlockTypes!: object
 
   message = 'flow-builder.fetching-flow'
   showNewButton = false
@@ -42,7 +44,7 @@ class FetchFlow extends mixins(Routes, Lang) {
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action flow_fetch!: ({ fetchRoute }: { fetchRoute: string }) => Promise<IFlow>
   @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({ flowId }: { flowId: string }) => void
-  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
+  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object; supportedBlockTypes: object }) => void
   @Getter isConfigured!: boolean
 
   async mounted() {
@@ -69,7 +71,7 @@ class FetchFlow extends mixins(Routes, Lang) {
       !$store.hasModule(k) && $store.registerModule(k, v))
 
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig, supportedBlockTypes: this.supportedBlockTypes })
     }
   }
 }

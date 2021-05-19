@@ -5,8 +5,15 @@ import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUui
 import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
+import { IBlockClassConfig } from '@/store/flow/block'
 
-export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
+export const BLOCK_CLASS_CONFIG: IBlockClassConfig = {
+  name: 'MobilePrimitives.NumericResponse',
+  type: 'MobilePrimitives.NumericResponse',
+  is_interactive: true,
+  is_branching: false,
+  category:  1
+}
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
@@ -61,7 +68,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     commit('flow/resource_add', { resource: blankResource }, { root: true })
 
     return defaultsDeep(props, {
-      type: BLOCK_TYPE,
+      type: BLOCK_CLASS_CONFIG.type,
       name: '',
       label: '',
       semantic_label: '',

@@ -29,7 +29,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { IFlow, IResource } from '@floip/flow-runner'
 import { IMessageBlock } from '@floip/flow-runner/src/model/block/IMessageBlock'
 
-import MessageStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
+import MessageStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
@@ -68,5 +68,5 @@ class MobilePrimitives_MessageBlock extends mixins(Lang) {
   }
 
 export default MobilePrimitives_MessageBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, MessageStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, MessageStore)
 </script>

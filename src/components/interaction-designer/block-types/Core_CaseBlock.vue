@@ -34,7 +34,7 @@ import { ICaseBlock } from '@floip/flow-runner/src/model/block/ICaseBlock'
 import { IBlockExitTestRequired, IFlow, IBlockExit } from '@floip/flow-runner'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 
-import CaseStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_CaseBlockStore'
+import CaseStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_CaseBlockStore'
 import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -44,7 +44,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
@@ -72,5 +72,5 @@ class Core_CaseBlock extends mixins(Lang) {
   }
 
 export default Core_CaseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, CaseStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, CaseStore)
 </script>

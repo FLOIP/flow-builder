@@ -1,6 +1,6 @@
 import MessageBlock from '@/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import messageBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
+import messageBlockStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
 import {
   BaseMountedVueClass,
   BaseMountedVueClassWithResourceAndMode, IBaseOptions,
@@ -36,7 +36,7 @@ const BaseOptions: IBaseOptions = {
 })
 class DefaultClass extends BaseMountedVueClass {
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, messageBlockStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, messageBlockStore)
   }
 }
 // default log block state
@@ -49,7 +49,7 @@ export const Default = () => (DefaultClass)
 )
 class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, messageBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, messageBlockStore)
 
     this.setDescription(blockId)
     this.setResourceData({
@@ -67,7 +67,7 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
 )
 class NonStartingBlockClass extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, messageBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, messageBlockStore)
     await this.fakeCaseBlockAsFirstBlock(flowId)
   }
 }

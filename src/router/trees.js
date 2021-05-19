@@ -1,4 +1,5 @@
 // todo: children of /trees base url
+import { defaultBlockTypes } from '@/lib'
 export const routes = [
   {
     path: '/',
@@ -18,7 +19,11 @@ export const routes = [
   },
   {
     path: '/trees/:id/interaction-designer/:mode',
-    props: (route) => ({ id: route.params.id, mode: route.params.mode }),
+    props: (route) => ({
+      id: route.params.id,
+      mode: route.params.mode,
+      supportedBlockTypes: defaultBlockTypes,
+    }),
     component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue'),
   }, {
     path: '/trees/:id',

@@ -23,7 +23,7 @@ export class PlainFlowBuilderBlockEditorContainer extends Vue {
   @Prop({default: null}) readonly block!: IBlock
 
   created() {
-    this.configure({appConfig: {}, builderConfig: {}});
+    this.configure({appConfig: {}, builderConfig: {}, supportedBlockTypes: {}});
   }
 
   @Mutation configure: any

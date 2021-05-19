@@ -4,7 +4,7 @@
 
     <div class="tree-sidebar-container">
       <div v-if="activeBlock" class="tree-sidebar"
-           :class="[`category-${blockClasses[activeBlock.type].category}`]">
+           :class="[`category-${supportedBlockTypes[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
@@ -83,6 +83,10 @@ export default {
         return {}
       },
     },
+    supportedBlockTypes: {
+      type: Object,
+      required: true,
+    }
   },
 
   mixins: [lang, Routes],
@@ -145,7 +149,6 @@ export default {
       hasUssd: ({ trees: { tree } }) => tree.details.hasUssd,
       hasSocial: ({ trees: { tree } }) => tree.details.hasSocial,
       hasClipboard: ({ trees: { tree } }) => tree.details.hasClipboard,
-      blockClasses: ({ trees: { ui } }) => ui.blockClasses,
     }),
 
     ...mapGetters('flow', ['activeFlow']),
@@ -154,6 +157,10 @@ export default {
     jsKey() {
       return lodash.get(this.selectedBlock, 'jsKey')
     },
+
+    // blockClasses() {
+    //   return this.supportedBlockTypes
+    // },
 
     isPureVueBlock() { // pure vuejs block types handle readonly mode on their own
       return _.includes(this.pureVuejsBlocks, lodash.get(this.selectedBlock, 'type'))
@@ -176,7 +183,7 @@ export default {
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig, supportedBlockTypes: this.supportedBlockTypes })
     }
 
     global.builder = this // initialize global reference for legacy + debugging
@@ -227,15 +234,12 @@ export default {
       'initializeTreeModel']),
 
     async registerBlockTypes() {
-      const { blockClasses } = this
-
-      forEach(blockClasses, async ({ type }) => {
+      forEach(this.supportedBlockTypes, async ({ type }) => {
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')
         const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
-
         invoke(exported, 'install', this)
-        Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
+        this.$options.components[`Flow${typeWithoutSeparators}`] = exported.default
       })
     },
 

@@ -12,9 +12,10 @@ import {
 import {get, isEmpty, cloneDeep} from 'lodash'
 import { IResourceDefinitionVariantOverModesFilter } from "../../src/store/flow/resource";
 import Component from 'vue-class-component'
-import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
+import caseBlockStore, { BLOCK_CLASS_CONFIG as CASE_BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_CaseBlockStore'
 import Vuex from "vuex";
 import {IRootState, store} from "@/store";
+import { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_CaseBlockStore'
 
 let storyInitState: any = {}
 
@@ -59,8 +60,8 @@ export class BaseMountedVueClass extends Vue {
    * Fake a 1st block to make sure the current block won't be selected
    */
   async fakeCaseBlockAsFirstBlock(flowId: string) {
-    await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore)
-    const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
+    await this.safeRegisterBlockModule(CASE_BLOCK_CLASS_CONFIG.type, caseBlockStore)
+    const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_CLASS_CONFIG.type})
     const {uuid: caseBlockId} = caseBlock
     this.flow_setFirstBlockId({blockId: caseBlockId, flowId: flowId})
   }
@@ -69,16 +70,16 @@ export class BaseMountedVueClass extends Vue {
    * Safe register block module
    * Because some weird race condition is leading to modules not getting unregistered when clicking between stories before the next story re-registers
    */
-  async safeRegisterBlockModule(BLOCK_TYPE: string, blockTypeStore: any): Promise<any> {
-    if (this.$store.hasModule(['flow', BLOCK_TYPE])) {
-      this.$store.unregisterModule(['flow', BLOCK_TYPE])
+  async safeRegisterBlockModule(blockType: string, blockTypeStore: any): Promise<any> {
+    if (this.$store.hasModule(['flow', blockType])) {
+      this.$store.unregisterModule(['flow', blockType])
     }
     // todo: this will end up in `flow_addBlankBlockByType` once we get async import builds working
-    console.log(`Registering module flow/${BLOCK_TYPE}`)
-    this.$store.registerModule(['flow', BLOCK_TYPE], blockTypeStore)
+    console.log(`Registering module flow/${BLOCK_CLASS_CONFIG.type}`)
+    this.$store.registerModule(['flow', blockType], blockTypeStore)
   }
 
-  async baseMounted(BLOCK_TYPE: string, blockTypeStore: any): Promise<any> {
+  async baseMounted(blockType: string, blockTypeStore: any): Promise<any> {
     if (isEmpty(storyInitState)) {
       console.log('storyInitState is empty')
       storyInitState = cloneDeep(this.$store.state)
@@ -88,14 +89,14 @@ export class BaseMountedVueClass extends Vue {
       Object.assign(this.$store.state, cloneDeep(storyInitState))
     }
 
-    await this.safeRegisterBlockModule(BLOCK_TYPE, blockTypeStore);
+    await this.safeRegisterBlockModule(blockType, blockTypeStore);
 
     let flow = await this.flow_addBlankFlow();
     flow.languages = [
       { id: '1', label: 'English' } as ILanguage
       ] // mutation
 
-    const block =  await this.flow_addBlankBlockByType({type: BLOCK_TYPE})
+    const block =  await this.flow_addBlankBlockByType({type: blockType})
     const {uuid: blockId} = block
 
     this.activateBlock({blockId})

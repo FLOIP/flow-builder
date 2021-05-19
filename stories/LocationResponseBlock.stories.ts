@@ -1,6 +1,6 @@
 import LocationResponseBlock from '@/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import locationResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
+import locationResponseBlockStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
@@ -9,7 +9,7 @@ import {IRootState, store} from "@/store";
 
 Vue.use(Vuex)
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 
 export default {
   title: 'SmartDevices/Location Response Block',
@@ -37,7 +37,7 @@ const BaseOptions: IBaseOptions = {
 })
 class CurrentClass1 extends BaseMountedVueClass {
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, locationResponseBlockStore)
   }
 }
 export const Default = () => (CurrentClass1)
@@ -48,7 +48,7 @@ export const Default = () => (CurrentClass1)
 })
 class CurrentClass2 extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, locationResponseBlockStore)
 
     this.setDescription(blockId)
     this.setAccuracyThreshold({blockId, value:10.3})
@@ -66,7 +66,7 @@ export const ExistingDataPreFilled = () => (CurrentClass2)
 })
 class CurrentClass3 extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, locationResponseBlockStore)
 
     this.setDescription(blockId)
     await this.fakeCaseBlockAsFirstBlock(flowId)

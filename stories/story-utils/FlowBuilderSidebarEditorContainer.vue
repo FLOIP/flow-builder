@@ -41,7 +41,7 @@
     @Prop({default: null}) readonly flow!: IFlow
     created() {
 
-      this.configure({appConfig: {}, builderConfig: {}});
+      this.configure({appConfig: {}, builderConfig: {}, supportedBlockTypes: {}});
 
     }
     @Mutation configure: any

@@ -7,8 +7,15 @@ import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUui
 import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import { defaultsDeep, split } from 'lodash'
 import { IFlowsState } from '../index'
+import { IBlockClassConfig } from '@/store/flow/block'
 
-export const BLOCK_TYPE = 'ConsoleIO.Read'
+export const BLOCK_CLASS_CONFIG: IBlockClassConfig = {
+  name: 'ConsoleIO.Read',
+  type: 'ConsoleIO.Read',
+  is_interactive: true,
+  is_branching: false,
+  category:  1
+}
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   destinationVariablesFields: (state, getters, rootState, rootGetters): string[] => {
@@ -67,7 +74,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     )
 
     return defaultsDeep(props, {
-      type: BLOCK_TYPE,
+      type: BLOCK_CLASS_CONFIG.type,
       name: '',
       label: '',
       semantic_label: '',
