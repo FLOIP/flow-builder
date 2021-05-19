@@ -14,7 +14,6 @@ import {
 } from '@floip/flow-runner'
 import {IBaseOptions} from './story-utils/storeSetup'
 import Vuex from "vuex";
-import { defaultBlockTypes } from '@/lib'
 
 Vue.use(Vuex)
 
@@ -57,7 +56,7 @@ const BaseOptions: IBaseOptions = {
 })
 class BaseMountedClass extends Vue {
   async created() {
-    this.configure({appConfig: {}, builderConfig: {}, supportedBlockTypes: defaultBlockTypes});
+    this.configure({appConfig: {}, builderConfig: {}, supportedBlockTypes: {}});
     this.initializeTreeModel() // from trees store
     await this.flow_addBlankFlow()
     //Force all the links to have a static flow id
