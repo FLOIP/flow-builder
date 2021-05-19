@@ -1,18 +1,18 @@
 <template>
-  <div class="interaction-designer-contents">
+  <div v-if="activeFlow" class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
     <div class="tree-sidebar-container">
       <div v-if="activeBlock" class="tree-sidebar"
-           :class="[`category-${blockClassFromBlockType(activeBlock.type).category}`]">
+           :class="[`category-${supportedBlockTypes[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
-
-<!--          <div v-if="activeBlock"-->
-<!--               :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"-->
-<!--               :block="activeBlock"-->
-<!--               :flow="activeFlow" />-->
+<!--          <component v-if="activeBlock"-->
+<!--                     :is="`Flow${activeBlock.type.replace('.', '')}`"-->
+<!--                     :block="activeBlock"-->
+<!--                     :flow="activeFlow">-->
+<!--          </component>-->
 
           <location-block></location-block>
         </div>
@@ -32,155 +32,180 @@
 </template>
 
 <script>
-  import lang from '@/lib/filters/lang'
-  import lodash, {forEach, invoke} from 'lodash'
-  import Vue from 'vue'
-  import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
+import { lang } from '@/lib/filters/lang'
+import Routes from '@/lib/mixins/Routes'
+import lodash, { forEach, invoke, isEmpty } from 'lodash'
+import Vue from 'vue'
+import {
+  mapActions,
+  mapGetters,
+  mapMutations,
+  mapState,
+} from 'vuex'
 
-  import {store} from '@/store'
+import { store } from '@/store'
 
-  // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
+// import LegacyInteractionDesigner from './InteractionDesigner.legacy'
   // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
   import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
   import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
   import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
   import LocationBlock from '@/components/interaction-designer/block-types/LocationBlock';
 
-  // import '../TreeDiffLogger'
+// import '../TreeDiffLogger'
 
-  export default {
-    props: {
-      id: {type: String},
-      mode: {type: String},
-      appConfig: {
-        type: Object,
-        default: function() {
-          return {}
-        }
-      },
-      builderConfig: {
-        type: Object,
-        default: function() {
-          return {}
-        }
-      }
-    },
-
-    mixins: [lang],
-
-    components: {
-      LocationBlock,
-      TreeBuilderToolbar,
-      BuilderCanvas,
-      FlowEditor,
-      // TreeUpdateConflictModal,
-    },
-
-    data() {
-      return {}
-    },
-
-    computed: {
-      ...mapGetters([
-        'selectedBlock',
-        'blockClassFromBlockType',
-        'isEditable',
-        'hasChanges',
-        'hasIssues',
-        'isTreeSaving',
-        'isTreeValid',
-        'jsonValidationResults',
-        'validationResults',
-      ]),
-      ...mapState({
-
-        // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
-        designerWorkspaceHeight: ({trees: {tree, ui}}) => ui.designerWorkspaceHeight,
-
-
-
-        tree: ({trees: {tree, ui}}) => tree,
-        validationResultsEmptyTree: ({trees: {tree, ui}}) => !tree.blocks.length,
-        hasVoice: ({trees: {tree}}) => tree.details.hasVoice,
-        hasSms: ({trees: {tree}}) => tree.details.hasSms,
-        hasUssd: ({trees: {tree}}) => tree.details.hasUssd,
-        hasSocial: ({trees: {tree}}) => tree.details.hasSocial,
-        hasClipboard: ({trees: {tree}}) => tree.details.hasClipboard,
-        blockClasses:  ({trees: {ui}}) => ui.blockClasses,
-      }),
-
-      ...mapGetters('flow', ['activeFlow']),
-      ...mapGetters('builder', ['activeBlock']),
-
-      jsKey() {
-        return lodash.get(this.selectedBlock, 'jsKey')
+export default {
+  props: {
+    id: { type: String },
+    mode: { type: String },
+    appConfig: {
+      type: Object,
+      default() {
+        return {}
       },
     },
+    builderConfig: {
+      type: Object,
+      default() {
+        return {}
+      },
+    },
+    supportedBlockTypes: {
+      type: Object,
+      required: true,
+    }
+  },
 
-    created() {
-      global.builder = this // initialize global reference for legacy + debugging
+  mixins: [lang, Routes],
 
-      const {$store} = this
-      forEach(store.modules, (v, k) =>
-        !$store.hasModule(k) && $store.registerModule(k, v))
+  components: {
+    LocationBlock,
+    TreeBuilderToolbar,
+    BuilderCanvas,
+    FlowEditor,
+    // TreeUpdateConflictModal,
+  },
 
-      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig});
+  data() {
+    return {}
+  },
+  computed: {
+    ...mapGetters([
+      'isConfigured',
+      'selectedBlock',
+      'hasChanges',
+      'hasIssues',
+      'isTreeSaving',
+      'isTreeValid',
+      'jsonValidationResults',
+      'validationResults',
+    ]),
+    ...mapState({
 
-      this.registerBlockTypes()
+      // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
+      designerWorkspaceHeight: ({ trees: { tree, ui } }) => ui.designerWorkspaceHeight,
+      tree: ({ trees: { tree, ui } }) => tree,
+      validationResultsEmptyTree: ({ trees: { tree, ui } }) => !tree.blocks.length,
+      hasVoice: ({ trees: { tree } }) => tree.details.hasVoice,
+      hasSms: ({ trees: { tree } }) => tree.details.hasSms,
+      hasUssd: ({ trees: { tree } }) => tree.details.hasUssd,
+      hasSocial: ({ trees: { tree } }) => tree.details.hasSocial,
+      hasClipboard: ({ trees: { tree } }) => tree.details.hasClipboard,
+    }),
 
-      // this.initializeTreeModel()
+    ...mapGetters('flow', ['activeFlow']),
+    ...mapGetters('builder', ['activeBlock', 'isEditable']),
+
+    jsKey() {
+      return lodash.get(this.selectedBlock, 'jsKey')
+    },
+
+    // blockClasses() {
+    //   return this.supportedBlockTypes
+    // },
+  },
+
+  created() {
+    const {$store} = this
+
+    forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
+
+    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig, supportedBlockTypes: this.supportedBlockTypes })
+    }
+
+    global.builder = this // initialize global reference for legacy + debugging
+
+    this.registerBlockTypes()
+
+    // this.initializeTreeModel()
       this.updateIsEditableFromParams(this.mode) // `this.mode` comes from captured param in js-routes
     },
 
-    activated() {
-      this.deselectBlocks() // todo: remove once we have jsKey in our js-route
+  activated() {
+    this.deselectBlocks() // todo: remove once we have jsKey in our js-route
+  },
+
+  /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
+  mounted() {
+    this.flow_setActiveFlowId({ flowId: this.id })
+
+    // if nothing was found for the flow Id
+    if (!this.activeFlow) {
+      this.flow_setActiveFlowId({ flowId: null })
+      this.$router.replace(
+        { path: this.route('flows.fetchFlow', { flowId: this.id }),
+          query: { nextUrl: this.$route.path } },
+      )
+    }
+
+    this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
+    this.deselectBlocks()
+    this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
+
+    console.debug('Vuej tree interaction designer mounted!')
+  },
+  watch: {
+    mode(newMode) {
+      this.updateIsEditableFromParams(newMode) // `this.mode` comes from captured param in js-routes
+    },
+  },
+  methods: {
+    ...mapMutations(['deselectBlocks', 'configure']),
+    ...mapMutations('builder', ['activateBlock']),
+    ...mapActions('builder', ['setIsEditable']),
+    ...mapMutations('flow', ['flow_setActiveFlowId']),
+
+    ...mapActions([
+      'attemptSaveTree',
+      'discoverTallestBlockForDesignerWorkspaceHeight',
+      'initializeTreeModel']),
+
+    async registerBlockTypes() {
+      forEach(this.supportedBlockTypes, async ({ type }) => {
+        const normalizedType = type.replace('.', '_')
+        const typeWithoutSeparators = type.replace('.', '')
+        const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
+        invoke(exported, 'install', this)
+        this.$options.components[`Flow${typeWithoutSeparators}`] = exported.default
+      })
     },
 
-    /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
-    mounted() {
-      this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
-      this.deselectBlocks()
-      // this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
+    handleCanvasSelected({ target }) {
+      if (!target.classList.contains('builder-canvas')) {
+        console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
+        return
+      }
 
-      console.debug('Vuej tree interaction designer mounted!')
-		},
+      this.activateBlock({ blockId: null })
+    },
 
-    methods: {
-        ...mapMutations(['deselectBlocks', 'configure']),
-        ...mapMutations('builder', ['activateBlock']),
+    updateIsEditableFromParams(mode) {
+      const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!app.ui.isEditableLocked)
+      this.setIsEditable(isEditable)
+    },
 
-        ...mapActions([
-          'attemptSaveTree',
-          'discoverTallestBlockForDesignerWorkspaceHeight',
-          'initializeTreeModel']),
-
-      async registerBlockTypes() {
-        const {blockClasses} = this
-
-        forEach(blockClasses, async ({type}, key) => {
-          const typeWithoutSeparators = type.replace(/\\/g, '')
-          const exported = await import(`@/${key}.vue`) // static path prefix such as `@/` is important, as webpack won't accept fully dynamic statement such as import(${key}.vue`)
-
-          invoke(exported, 'install', this)
-          this.$options.components[`Flow${typeWithoutSeparators}`] = exported.default
-        })
-      },
-
-      handleCanvasSelected({target}) {
-        if (!target.classList.contains('builder-canvas')) {
-          console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
-          return
-        }
-
-        this.activateBlock({blockId: null})
-      },
-
-      updateIsEditableFromParams(mode) {
-        const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!app.ui.isEditableLocked)
-        this.$store.commit('updateIsEditable', {value: isEditable})
-      },
-
-      /** --------------------------------| has-editable-locked | not-editable-locked |
+    /** --------------------------------| has-editable-locked | not-editable-locked |
        | mode-is-absent+view-url-suffix   |        0            |     0               |
        | mode-is-absent+edit-url-suffix   |        0 (r=>view)  |     1               |
        | mode-is-absent+absent-url-suffix |        0 (r=>view)  |     0 (r=>view)     | <- Equivalent to /view
@@ -189,23 +214,23 @@
        | mode-is-edit                     |        0 (r=>view)  |     1               |
        | mode-is-edit+view-url-suffix     |        0 (r=>view)  |     1               |
        ------------------------------------------------------------------------------ */
-      discoverIsEditableFrom(mode, hash, isEditableLocked) {
-        if (isEditableLocked) {
-          return false
-        }
+    discoverIsEditableFrom(mode, hash, isEditableLocked) {
+      if (isEditableLocked) {
+        return false
+      }
 
-        return !isEditableLocked && mode === 'edit' || !mode && lodash.endsWith(hash, '/edit')
-      },
+      return !isEditableLocked && mode === 'edit' || !mode && lodash.endsWith(hash, '/edit')
+    },
 
 		  hoistResourceViewerToPushState(hash) {
-        if (!_.endsWith(hash, '/resource-viewer')) {
-          return
-        }
+      if (!_.endsWith(hash, '/resource-viewer')) {
+        return
+      }
 
-        this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
-      },
+      this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
     },
-	}
+  },
+}
 </script>
 
 <!--<style src="../css/voto3.css"></style>-->
@@ -272,7 +297,6 @@
 
     box-shadow: 0 3px 6px #CACACA;
   }
-
 
   // color categorizations
   $category-0-faint: #fbfdfb;

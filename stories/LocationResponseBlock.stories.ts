@@ -1,21 +1,15 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-
 import LocationResponseBlock from '@/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-import {IRootState, store} from '@/store'
-import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
-import locationResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
-
-import {baseMounted, BaseMountedVueClass, safeRegisterBlockModule} from './story-utils/storeSetup'
-import {Component} from 'vue-property-decorator'
+import locationResponseBlockStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
+import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
 
 Vue.use(Vuex)
 
-const flowVuexNamespace = namespace('flow')
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 
 export default {
   title: 'SmartDevices/Location Response Block',
@@ -25,87 +19,57 @@ export default {
 
 const LocationResponseBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <location-response-block 
-      :block="activeBlock" 
+    <location-response-block
+      :block="activeBlock"
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
 
-const BaseOptions = {
+const BaseOptions: IBaseOptions = {
   components: {LocationResponseBlock, FlowBuilderSidebarEditorContainer},
   template: LocationResponseBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default location-response block state
-@Component<any>(
-    {
-        ...BaseOptions,
-        store: new Vuex.Store<IRootState>(store),
-        async mounted() {
-          // @ts-ignore
-            await baseMounted.bind(this)(BLOCK_TYPE, locationResponseBlockStore)
-        },
-    }
-)
-class CurrentClass1 extends BaseMountedVueClass {}
+@Component({
+  ...BaseOptions,
+})
+class CurrentClass1 extends BaseMountedVueClass {
+  async mounted() {
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, locationResponseBlockStore)
+  }
+}
 export const Default = () => (CurrentClass1)
 
 //ExistingDataPreFilled
-@Component<any>({
-    ...BaseOptions,
-    store: new Vuex.Store<IRootState>(store),
-    async mounted() {
-      // @ts-ignore
-        const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, locationResponseBlockStore)
-
-        this.setDescription(blockId)
-        this.setAccuracyThreshold({blockId, value:10.3})
-        this.setAccuracyTimeout({blockId, value:145})
-    },
+@Component({
+  ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClass {
-    setDescription(blockId: string) { // TODO: Find a wait to define this in BaseClass or other ParentClass without '_this.setDescription is not a function' error
-        this.block_setName({blockId: blockId, value: "A Name"})
-        this.block_setLabel({blockId: blockId, value: "A Label"})
-        this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-    }
+  async mounted() {
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, locationResponseBlockStore)
 
-    @blockVuexNamespace.Action setAccuracyThreshold:any
-    @blockVuexNamespace.Action setAccuracyTimeout:any
+    this.setDescription(blockId)
+    this.setAccuracyThreshold({blockId, value:10.3})
+    this.setAccuracyTimeout({blockId, value:145})
+  }
 
-    @flowVuexNamespace.Mutation block_setName:any
-    @flowVuexNamespace.Mutation block_setLabel:any
-    @flowVuexNamespace.Mutation block_setSemanticLabel:any
+  @blockVuexNamespace.Action setAccuracyThreshold:any
+  @blockVuexNamespace.Action setAccuracyTimeout:any
 }
 export const ExistingDataPreFilled = () => (CurrentClass2)
 
 //NonStartingBlock
-@Component<any>(
-    {
-        ...BaseOptions,
-        store: new Vuex.Store<IRootState>(store),
-        async mounted() {
-          // @ts-ignore
-            const {block: {uuid: blockId}, flow: {uuid: flowId}} = await baseMounted.bind(this)(BLOCK_TYPE, locationResponseBlockStore)
-
-            this.block_setName({blockId: blockId, value: "A Name"})
-            this.block_setLabel({blockId: blockId, value: "A Label"})
-            this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-
-            // Fake a 1st block to make sure the current block won't be selected
-            // @ts-ignore
-            await safeRegisterBlockModule.bind(this)(CASE_BLOCK_TYPE, caseBlockStore)
-            const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
-            const {uuid: caseBlockId} = caseBlock
-
-            this.flow_setFirstBlockId({blockId: caseBlockId, flowId: flowId})
-        },
-    }
-)
+@Component({
+  ...BaseOptions,
+})
 class CurrentClass3 extends BaseMountedVueClass {
-    @flowVuexNamespace.Mutation block_setName:any
-    @flowVuexNamespace.Mutation block_setLabel:any
-    @flowVuexNamespace.Mutation block_setSemanticLabel:any
-    @flowVuexNamespace.Mutation flow_setFirstBlockId:any
+  async mounted() {
+    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_CLASS_CONFIG.type, locationResponseBlockStore)
+
+    this.setDescription(blockId)
+    await this.fakeCaseBlockAsFirstBlock(flowId)
+  }
 }
 export const NonStartingBlock = () => (CurrentClass3)

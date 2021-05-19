@@ -1,26 +1,29 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
-import {IRootState} from '@/store'
+import { ActionTree, GetterTree, MutationTree } from 'vuex'
+import { IRootState } from '@/store'
 import {
   IBlockExitTestRequired,
   findBlockOnActiveFlowWith,
   IContext,
 } from '@floip/flow-runner'
-import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import ICaseBlock from '@floip/flow-runner/src/model/block/ICaseBlock'
-import {defaults} from 'lodash'
-import {IFlowsState} from '../index'
+import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import { ICaseBlock } from '@floip/flow-runner/src/model/block/ICaseBlock'
+import { defaultsDeep } from 'lodash'
+import { IFlowsState } from '../index'
 
-import { allItemsHaveValue, twoItemsBlank} from '../utils/listBuilder'
+import { allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
+import { IBlockClassConfig } from '@/store/flow/block'
 
-export const BLOCK_TYPE = 'Core\\Case'
+export const BLOCK_CLASS_CONFIG: IBlockClassConfig = {
+  name: 'Core.Case',
+  type: 'Core.Case',
+  is_interactive: false,
+  is_branching: true,
+  category:  2
+}
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  allExitsHaveTests: (state, getters, rootState, rootGetters): boolean => {
-    return allItemsHaveValue(rootGetters['builder/activeBlock'].exits, 'test')
-  },
-  twoExitsBlank: (state, getters, rootState, rootGetters): boolean => {
-    return twoItemsBlank(rootGetters['builder/activeBlock'].exits, 'test')
-  },
+  allExitsHaveTests: (state, getters, rootState, rootGetters): boolean => allItemsHaveValue(rootGetters['builder/activeBlock'].exits, 'test'),
+  twoExitsBlank: (state, getters, rootState, rootGetters): boolean => twoItemsBlank(rootGetters['builder/activeBlock'].exits, 'test'),
 
 }
 
@@ -28,7 +31,9 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async editCaseBlockExit({commit, dispatch, getters, rootGetters}, {identifier, value}: {identifier: string; value: string}) {
+  async editCaseBlockExit({
+    commit, dispatch, getters, rootGetters,
+  }, { identifier, value }: {identifier: string; value: string}) {
     const activeBlock = rootGetters['builder/activeBlock']
     await dispatch('flow/block_updateBlockExitWith', {
       blockId: rootGetters['builder/activeBlock'].uuid,
@@ -37,37 +42,37 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         tag: value,
         test: value,
       },
-    }, {root: true})
+    }, { root: true })
 
     if (getters.allExitsHaveTests) {
       const exit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: '',
           test: '',
         }) as IBlockExitTestRequired,
-      }, {root: true})
-      commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: exit}, {root: true})
+      }, { root: true })
+      commit('flow/block_pushNewExit', { blockId: activeBlock.uuid, newExit: exit }, { root: true })
     } else if (getters.twoExitsBlank) {
-      commit('flow/block_popFirstExitWithoutTest', {blockId: activeBlock.uuid}, {root: true})
+      commit('flow/block_popFirstExitWithoutTest', { blockId: activeBlock.uuid }, { root: true })
     }
   },
-  async createWith({dispatch}, {props}: {props: {uuid: string} & Partial<ICaseBlock>}) {
+  async createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<ICaseBlock>}) {
     const exits: IBlockExitTestRequired[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: '',
           test: '',
         }) as IBlockExitTestRequired,
-      }, {root: true}),
+      }, { root: true }),
     ]
 
-    return defaults(props, {
-      type: BLOCK_TYPE,
+    return defaultsDeep(props, {
+      type: BLOCK_CLASS_CONFIG.type,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits,
     })
   },

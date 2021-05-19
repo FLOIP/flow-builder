@@ -2,5 +2,9 @@
 import initStoryshots from '@storybook/addon-storyshots'
 
 initStoryshots({
-  configPath: "./config/storybook/"
+  configPath: './config/storybook/',
 })
+
+// Mock Uuid used by @flow-runner IdGeneratorUuidV4.ts to avoid error during test
+let count = 0
+jest.mock('uuid', () => ({ v4: () => `fake-uuid-${count++}` } ))

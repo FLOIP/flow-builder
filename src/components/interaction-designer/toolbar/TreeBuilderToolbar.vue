@@ -12,7 +12,7 @@
       <!--    <tree-update-conflict-modal/>-->
       <div class="tree-workspace-panel-heading-contents">
         <div class="btn-toolbar">
-          <button class="btn btn-outline-secondary mr-2"
+          <button class="btn btn-secondary mr-2"
                   :class="{active: isImporterVisible}"
                   @click="toggleImportExport">
             <i class="glyphicon glyphicon-chevron-up"></i>
@@ -20,7 +20,7 @@
           </button>
 
           <div v-if="isResourceEditorEnabled" class="btn-group mr-2">
-            <router-link :to="treeViewUrl" class="btn btn-outline-secondary active">
+            <router-link :to="treeViewUrl" class="btn btn-secondary active">
               {{trans('flow-builder.flow-view')}}
             </router-link>
             <router-link :to="resourceViewUrl"
@@ -30,18 +30,19 @@
             </router-link>
           </div>
 
-          <a v-if="!ui.isEditableLocked"
-             :href="editOrViewTreeJsUrl"
+          <router-link v-if="!ui.isEditableLocked"
+             :to="editOrViewTreeJsUrl"
+             event=""
              :title="trans('flow-builder.click-to-toggle-editing')"
-             class="btn btn-outline-secondary mr-2"
-             :class="{active: ui.isEditable}"
-             @click="attemptSaveTree">
-            {{trans('flow-builder.edit-flow')}}
-          </a>
+             class="btn btn-secondary mr-2"
+             :class="{active: isEditable}"
+             @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
+              {{isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow')}}
+            </router-link>
 
-          <div v-if="ui.isEditable" class="dropdown mr-2">
+          <div v-if="isEditable" class="dropdown mr-2">
             <button type="button"
-                    class="btn btn-outline-secondary dropdown-toggle"
+                    class="btn btn-secondary dropdown-toggle"
                     data-toggle="dropdown">
               {{trans('flow-builder.add-block')}}
             </button>
@@ -117,31 +118,41 @@
             </div>
           </div>
 
-          <button v-if="ui.isEditable"
+          <button v-if="isEditable"
                   type="button"
-                  class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                  v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
+                  class="btn btn-secondary tree-duplicate-block mr-2"
                   @click.prevent="handleDuplicateActivatedBlockTriggered"
                   :disabled="!activeBlockId">
             {{trans('flow-builder.duplicate')}}
           </button>
 
-          <button v-if="ui.isEditable"
+          <button v-if="isEditable"
                   type="button"
-                  class="btn btn-outline-secondary tree-delete-block mr-2"
+                  v-b-tooltip.hover="transIf(activeBlockId, 'flow-builder.tooltip-delete-block')"
+                  class="btn btn-secondary tree-delete-block mr-2"
                   @click.prevent="handleRemoveActivatedBlockTriggered"
                   :disabled="!activeBlockId">
             {{trans('flow-builder.delete')}}
           </button>
 
+          <router-link :to="route('flows.newFlow')" class="btn btn-secondary mr-2">
+            {{trans('flow-builder.new-flow')}}
+          </router-link>
+          <router-link :to="route('flows.home')" class="btn btn-secondary mr-2">
+            {{trans('flow-builder.home')}}
+          </router-link>
+
           <slot name="extra-buttons"/>
 
-          <div class="btn-group pull-right mr-2">
-            <button v-if="ui.isEditable && isFeatureTreeSaveEnabled"
+          <!--TODO - do disable if no changes logic-->
+          <div class="btn-group ml-auto mr-2">
+            <button v-if="isEditable && isFeatureTreeSaveEnabled"
                     type="button"
                     class="btn btn-primary tree-save-tree"
                     :title="trans('flow-builder.save-changes-to-the-flow')"
-                    :disabled="isTreeSaving || !hasChanges"
-                    @click="attemptSaveTree">
+                    :disabled="!!isTreeSaving"
+                    @click="handlePersistFlow()">
               {{saveButtonText}}
             </button>
             <slot name="right-grouped-buttons"/>
@@ -152,235 +163,245 @@
 
   </div>
 
-
 </template>
 <script lang="ts">
-  import lang from '@/lib/filters/lang'
-  import Permissions from '@/lib/mixins/Permissions'
-  import Routes from '@/lib/mixins/Routes'
-  import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-  import lodash, {get, isEmpty, isNil} from 'lodash'
-  import flow from 'lodash/fp/flow'
-  import pickBy from 'lodash/fp/pickBy'
-  // import {affix as Affix} from 'vue-strap'
-  // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
-  // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
-  import convertKeysCase from '@/store/flow/utils/DataObjectPropertyNameCaseConverter'
-  import {computeBlockPositionsFrom} from '@/store/builder'
+import Vue from 'vue'
+import Lang from '@/lib/filters/lang'
+import Permissions from '@/lib/mixins/Permissions'
+import Routes from '@/lib/mixins/Routes'
+import lodash, { get, isEmpty, isNil} from 'lodash'
+import flow from 'lodash/fp/flow'
+import pickBy from 'lodash/fp/pickBy'
+// import {affix as Affix} from 'vue-strap'
+// import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
+// import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
+import { computeBlockPositionsFrom } from '@/store/builder'
+import { VBTooltipPlugin } from 'bootstrap-vue'
+import Component, { mixins } from 'vue-class-component'
+import { Action, Getter, namespace, State, Mutation } from 'vuex-class'
+import { IBlock, IContext, IFlow, IResource } from '@floip/flow-runner'
+import {RawLocation} from "vue-router";
 
-  export default {
-    components: {
-      // Affix,
-      // TreeUpdateConflictModal,
-      // InteractionTotalsDateRangeConfiguration
-    },
-    mixins: [
-      lang,
-      Permissions,
-      Routes,
-    ],
-    data() {
-      return {
-        isImporterVisible: false,
-      }
-    },
-    computed: {
-      ...mapState({
-        tree: ({trees: {tree}}) => tree,
-        ui: ({trees: {ui}}) => ui,
-      }),
+Vue.use(VBTooltipPlugin)
 
-      ...mapGetters('flow', ['activeFlow']),
-      ...mapGetters('builder', ['activeBlock']),
-      ...mapState('flow', ['flows', 'resources']),
-      ...mapState('builder', ['activeBlockId']),
+const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 
-      ...mapGetters([
-        'isEditable',
-        'isTreeSaving',
-        'isBlockAvailableByBlockClass',
-        'hasChanges',
-        'isTreeValid',
-        'isFeatureTreeSaveEnabled',
-        'isFeatureTreeSendEnabled',
-        'isFeatureTreeDuplicateEnabled',
-        'isFeatureViewResultsEnabled',
-        'isFeatureUpdateInteractionTotalsEnabled',
-        'isResourceEditorEnabled',
-      ]),
+@Component({
+  components: {
+    // Affix,
+    // TreeUpdateConflictModal,
+    // InteractionTotalsDateRangeConfiguration
+  },
+})
+export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
+  isImporterVisible = false
 
-      flow: {
-        get() {
-          const {flows, resources} = this
-            return JSON.stringify(
-                convertKeysCase({flows, resources},
-                'SNAKE',
-                ['platformMetadata', 'ioViamo']),
-                null,
-                2)
+  // Computed ####################
+
+  isEmpty(value?: any): boolean {
+    return isEmpty(value)
+  }
+
+  get flow() {
+    const {
+      flows,
+      resources,
+    } = this as { flows: IFlow[]; resources: IResource[] }
+    return JSON.stringify(
+      {
+        flows,
+        resources,
+      },
+      null,
+      2,)
+  }
+
+  set flow(value: string) {
+    this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[]; resources: IResource[]})
+  }
+  get treeViewUrl() {
+    return this.editTreeRoute({
+      component: 'interaction-designer',
+    })
+  }
+
+  get resourceViewUrl() {
+    return this.editTreeRoute({
+      component: 'resource-viewer',
+    })
+  }
+
+  get downloadAudioUrl() {
+    return this.editTreeRoute({
+      component: 'downloadaudio',
+    })
+  }
+
+  get editOrViewTreeJsUrl() {
+    if (this.isEditable) {
+      return this.editTreeRoute({
+        component: 'interaction-designer',
+        mode: 'view',
+      })
+    }
+    return this.editTreeRoute({
+      component: 'interaction-designer',
+      mode: 'edit',
+    })
+  }
+
+  get saveButtonText() {
+  //TODO - once we can detect changes again we will change this text when saved
+  return this.trans('flow-builder.save')
+  }
+
+  get rootBlockClassesToDisplay() {
+    return flow(
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'advancedMenu')),
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'branchingMenu')),
+    )(this.ui.blockClasses)
+  }
+
+  get rootDropdownClassesToDisplay() {
+    return flow(
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+      pickBy((classDetails: { [key: string]: any }) => this.hasClassDetail(classDetails, 'branchingMenu')),
+    )(this.ui.blockClasses)
+  }
+
+  get advancedDropdownClassesToDisplay() {
+    return flow(
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
+      pickBy((classDetails: { [key: string]: any }) => this.hasClassDetail(classDetails, 'advancedMenu')),
+    )(this.ui.blockClasses)
+  }
+
+  get canViewResultsTotals() {
+    return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
+  }
+
+  // Methods #####################
+
+  async handleAddBlockByTypeSelected({ type } : { type: IBlock['type']}) {
+    const { uuid: blockId } = await this.flow_addBlankBlockByType({
+      type,
+      // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
+      vendor_metadata: {
+        io_viamo: {
+          uiData: computeBlockPositionsFrom(this.activeBlock),
         },
+      },
+    }) // todo push out to intx-designer
 
-        set(value) {
-            this.importFlowsAndResources(convertKeysCase(
-                JSON.parse(value),
-                'CAMEL',
-                ['platform_metadata', 'io_viamo']
-            ))
-        }
-      },
-      editTreeUrl() {
-        return this.editTreeRoute()
-      },
-      treeViewUrl() {
-        return this.editTreeRoute({
-          component: 'interaction-designer',
-        })
-      },
-      resourceViewUrl() {
-        return this.editTreeRoute({
-          component: 'resource-viewer',
-        })
-      },
-      viewResultsUrl() {
-        return this.isFeatureViewResultsEnabled ? this.editTreeRoute({component: 'results'}) : ''
-      },
-      viewResultsSetUrl() {
-        return this.isFeatureViewResultsEnabled
-            ? this.route('trees.viewTreeSetResults', {treeSetId: this.tree.treeSetId})
-            : ''
-      },
-      downloadAudioUrl() {
-        return this.editTreeRoute({
-          component: 'downloadaudio',
-        })
-      },
-      sendOutgoingCallUrl() {
-        return this.isTreeValid ? `/outgoing/new?tree=${this.tree.id}` : ''
-      },
-      publishVersionUrl() {
-        return this.isTreeValid ? `/trees/${this.tree.id}/publishversion` : ''
-      },
-      editOrViewTreeJsUrl() {
-        if (this.ui.isEditable) {
-          return this.editTreeRoute({
-            component: 'interaction-designer',
-            mode: 'view',
-          })
-        } else {
-          return this.editTreeRoute({
-            component: 'interaction-designer',
-            mode: 'edit',
-          })
-        }
-      },
-      duplicateTreeLink() {
-        return this.isFeatureTreeDuplicateEnabled
-            ? this.route('trees.duplicateTreeAndContinue', {treeId: this.tree.id})
-            : ''
-      },
+    this.activateBlock({blockId})
+  }
 
-      saveButtonText() {
-        if (this.hasChanges) {
-          return this.trans('flow-builder.save')
-        } else {
-          return this.trans('flow-builder.saved')
-        }
-      },
+  async handlePersistFlow(route: RawLocation) {
+    //TODO - hook into validation system when we have it - block the logic here if invalid.
 
-      rootBlockClassesToDisplay() {
-        return flow(
-            pickBy(classDetails => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-            pickBy(classDetails => !this.hasClassDetail(classDetails, 'advancedMenu')),
-            pickBy(classDetails => !this.hasClassDetail(classDetails, 'branchingMenu')),
-        )(this.ui.blockClasses)
-      },
+    //If we aren't in edit mode there should be nothing to persist
+    if(this.isEditable) {
+      this.setTreeSaving(true)
+      const flowContainer = await this.flow_persist({
+        persistRoute: this.route('flows.persistFlow', { flowId: this.activeFlow?.uuid }),
+        flowContainer: this.activeFlowContainer
+      })
+      this.setTreeSaving(false)
+      if(!flowContainer) {
+        //TODO - hook into showing validation errors design when we have it
+        //This won't show normal validation errors as the frontend should have caught them. We'll use this to show server errors.
+      }
+    }
+    if(route) {
+      this.$router.push(route)
+    }
+  }
 
-      rootDropdownClassesToDisplay() {
-        return flow(
-            pickBy(classDetails => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-            pickBy(classDetails => this.hasClassDetail(classDetails, 'branchingMenu')),
-        )(this.ui.blockClasses)
-      },
+  handleRemoveActivatedBlockTriggered() {
+    const { activeBlockId: blockId } = this
+    this.flow_removeBlock({ blockId })
+  }
 
-      advancedDropdownClassesToDisplay() {
-        return flow(
-            pickBy(classDetails => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-            pickBy(classDetails => this.hasClassDetail(classDetails, 'advancedMenu')),
-        )(this.ui.blockClasses)
-      },
-      canViewResultsTotals() {
-        return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
-      },
-    },
-    methods: {
-      isEmpty,
-
-      ...mapActions(['attemptSaveTree']),
-      ...mapMutations('flow', ['flow_removeBlock']),
-      ...mapActions('flow', ['flow_addBlankBlockByType', 'flow_duplicateBlock']),
-      ...mapMutations('builder', ['activateBlock']),
-      ...mapActions('builder', ['importFlowsAndResources']),
-      ...mapMutations('builder', ['activateBlock']),
-
-      async handleAddBlockByTypeSelected({type}) {
-        const {uuid: blockId} = await this.flow_addBlankBlockByType({
-          type,
-          platform_metadata: {
-            io_viamo: {
-              uiData: computeBlockPositionsFrom(this.activeBlock)
-            }
-          }
-        }); // todo push out to intx-designer
-
-        this.activateBlock({blockId})
-      },
-
-      handleRemoveActivatedBlockTriggered() {
-        const {activeBlockId: blockId} = this
-        this.flow_removeBlock({blockId})
-      },
-
-      async handleDuplicateActivatedBlockTriggered() {
+  async handleDuplicateActivatedBlockTriggered() {
         const {activeBlockId: blockId} = this
         const {uuid: duplicateBlockId} = await this.flow_duplicateBlock({blockId})
         this.activateBlock({blockId: duplicateBlockId})
-      },
+      }
 
-      toggleImportExport() {
-        this.isImporterVisible = !this.isImporterVisible
-      },
-
-      editTreeRoute({component = null, mode = null} = {}) {
-        const context = this.removeNilValues({
-          treeId: get(this.tree, 'id', 0),
-          component,
-          mode,
-        })
-        return this.route('trees.editTree', context)
-      },
-      hasClassDetail(classDetails, attribute) {
-        return !lodash.isNil(classDetails[attribute]) && classDetails[attribute]
-      },
-      translateTreeClassName(className) {
-        return this.trans(`flow-builder.${className}`)
-      },
-      shouldDisplayDividerBefore(blockClasses, className) {
-        const shouldShowDividerBeforeBlock = lodash.pickBy(
-            blockClasses,
-            classDetails => this.hasClassDetail(classDetails, 'dividerBefore'),
-        )[className]
-        return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
-      },
-      handleResourceViewerSelected() {
-        this.$el.scrollIntoView(true)
-      },
-
-      // This could be extracted to a helper mixin of some sort so it can be used in other places
-      removeNilValues(obj) {
-        return lodash.pickBy(obj, (x) => !isNil(x))
-      },
-    },
+  toggleImportExport() {
+    this.isImporterVisible = !this.isImporterVisible
   }
+
+  editTreeRoute({ component = null, mode = null }: { component?: any; mode?: string | null } = {}) {
+    const context = this.removeNilValues({
+      treeId: this.activeFlow?.uuid,
+      component,
+      mode,
+    })
+    return this.route('trees.editTree', context)
+  }
+
+  hasClassDetail(classDetails: { [key: string]: any }, attribute: string) {
+    return !lodash.isNil(classDetails[attribute]) && classDetails[attribute]
+  }
+
+  translateTreeClassName(className: string) {
+    return this.trans(`flow-builder.${className}`)
+  }
+
+  shouldDisplayDividerBefore(blockClasses: { [key: string]: any }, className: string) {
+    const shouldShowDividerBeforeBlock = lodash.pickBy(
+      blockClasses,
+      (classDetails) => this.hasClassDetail(classDetails, 'dividerBefore'),
+    )[className]
+    return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
+  }
+
+  handleResourceViewerSelected() {
+    this.$el.scrollIntoView(true)
+  }
+
+  // This could be extracted to a helper mixin of some sort so it can be used in other places
+  removeNilValues(obj: any) {
+    return lodash.pickBy(obj, (x) => !isNil(x))
+  }
+
+  // ########### VUEX ###############
+  @State(({ trees: { tree } }) => tree) tree!: any
+  @State(({ trees: { ui } }) => ui) ui!: any
+  @Getter isTreeSaving!: number | boolean
+  @Getter isBlockAvailableByBlockClass?: any
+  @Getter hasChanges!: boolean
+  @Getter isTreeValid!: boolean
+  @Getter selectedBlock?: IBlock
+  @Getter isFeatureTreeSaveEnabled!: boolean
+  @Getter isFeatureTreeSendEnabled!: boolean
+  @Getter isFeatureTreeDuplicateEnabled!: boolean
+  @Getter isFeatureViewResultsEnabled!: boolean
+  @Getter isFeatureUpdateInteractionTotalsEnabled!: boolean
+  @Getter isResourceEditorEnabled!: boolean
+  @Mutation setTreeSaving!: (isSaving: boolean) => void
+  @Action attemptSaveTree!: void
+
+  // Flow
+  @flowVuexNamespace.Getter activeFlow?: IFlow
+  @flowVuexNamespace.Getter activeFlowContainer?: IContext
+  @flowVuexNamespace.State flows?: IFlow[]
+  @flowVuexNamespace.State resources?: IResource[]
+  @flowVuexNamespace.Action flow_removeBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => void
+  @flowVuexNamespace.Action flow_addBlankBlockByType!: ({ type, ...props }: Partial<IBlock>) => Promise<IBlock>
+  @flowVuexNamespace.Action flow_duplicateBlock!: ({ flowId, blockId }: { flowId?: string; blockId: IBlock['uuid'] | undefined }) => Promise<IBlock>
+  @flowVuexNamespace.Action flow_persist!: ({ persistRoute, flowContainer }: { persistRoute: any, flowContainer?: IContext }) => Promise<IContext | null>
+
+  // Builder
+  @builderVuexNamespace.Getter isEditable!: boolean
+  @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
+  @builderVuexNamespace.Getter activeBlock?: IBlock
+  @builderVuexNamespace.Action importFlowsAndResources!: ({ flows, resources }: { flows: IFlow[]; resources: IResource[]}) => Promise<void>
+  @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
+}
 </script>
 
 <style lang="scss">

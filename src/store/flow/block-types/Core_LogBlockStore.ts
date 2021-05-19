@@ -1,16 +1,21 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
-import {IRootState} from '@/store'
+import { ActionTree, GetterTree, MutationTree } from 'vuex'
+import { IRootState } from '@/store'
 import {
-  SupportedContentType,
-  SupportedMode,
   IBlockExit,
 } from '@floip/flow-runner'
-import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import ILogBlock from '@floip/flow-runner/src/model/block/ILogBlock'
-import {defaults} from 'lodash'
-import {IFlowsState} from '../index'
+import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import { ILogBlock } from '@floip/flow-runner/src/model/block/ILogBlock'
+import { defaultsDeep } from 'lodash'
+import { IFlowsState } from '../index'
+import { IBlockClassConfig } from '@/store/flow/block'
 
-export const BLOCK_TYPE = 'Core\\Log'
+export const BLOCK_CLASS_CONFIG: IBlockClassConfig = {
+  name: 'Core.Log',
+  type: 'Core.Log',
+  is_interactive: false,
+  is_branching: false,
+  category:  0
+}
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
@@ -18,28 +23,28 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
-  async createWith({rootGetters, commit, dispatch}, {props}: {props: {uuid: string} & Partial<ILogBlock>}) {
+  async createWith({ rootGetters, commit, dispatch }, { props }: {props: {uuid: string} & Partial<ILogBlock>}) {
     // todo: do we need to generate this resource here? and do we need overrides??
     //       (check the other block types as well; I thought the idea was to generate them
     //       in-flight)
 
-    const blankLogResource = await dispatch('flow/flow_addBlankResource', null, {root: true})
+    const blankLogResource = await dispatch('flow/flow_addBlankResource', null, { root: true })
 
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
-      }, {root: true}),
+      }, { root: true }),
     ]
 
-    return defaults(props, {
-      type: BLOCK_TYPE,
+    return defaultsDeep(props, {
+      type: BLOCK_CLASS_CONFIG.type,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits,
       config: {
         message: blankLogResource.uuid,

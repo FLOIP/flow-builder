@@ -1,15 +1,17 @@
 import ImportedLang from 'lang.js'
 import ImportedMoment from 'moment'
 import ImportedJquery from 'jquery'
-import {merge, isEmpty} from 'lodash'
+import { merge, isEmpty } from 'lodash'
 import {createAppUiAdapterFor} from '@/store/trees/adapters/AppUiAdapter'
 
-export function bootstrapLegacyGlobalDependencies(appConfig = {}, builderConfig = {}) {
+export function bootstrapLegacyGlobalDependencies(appConfig = {}, builderConfig = {}, supportedBlockTypes = {}) {
   // initialize configuration sources
   const __APP__ = !isEmpty(appConfig) ? appConfig : require('../../../app.config')
   const __CONTEXT__ = !isEmpty(builderConfig) ? builderConfig : require('../../../builder.config')
-  const i18nMessages = appConfig.i18n ? appConfig.i18n : require('../../assets/messages.json')
-
+  if (supportedBlockTypes) {
+    __CONTEXT__['ui']['blockClasses'] = supportedBlockTypes
+  }
+  const i18nMessages = appConfig.i18n ? appConfig.i18n : require('../../assets/messages.json');
 
   // todo: the remaining legacy code still expects the ability to mutate data directly on `app.ui.*` rather than using trees store
   //      for now, we'll need to ensure app.ui === __TREES_UI__ */
@@ -20,7 +22,7 @@ export function bootstrapLegacyGlobalDependencies(appConfig = {}, builderConfig 
   const __AUDIO__ = app.audio
 
   // configure libraries
-  const Lang = new ImportedLang
+  const Lang = new ImportedLang()
   Lang.setMessages(i18nMessages)
   Lang.setLocale(__APP__.locale)
   Lang.defaultLocale = 'en'

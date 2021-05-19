@@ -4,18 +4,18 @@
       "uuid": "5b8c87d6-de90-4bc4-8668-4f040000006e",
       "name": "",
       "label": "",
-      "lastModified": "2019-10-10 23:46:30.000000+00:00",
-      "interactionTimeout": 172800,
-      "supportedModes": [
-        "sms",
-        "ivr",
-        "ussd"
+      "last_modified": "2019-10-10 23:46:30.000000+00:00",
+      "interaction_timeout": 172800,
+      "supported_modes": [
+        "SMS",
+        "IVR",
+        "USSD"
       ],
       "languages": [],
-      "platform_metadata": {},
+      "vendor_metadata": {},
       "blocks": [],
-      "firstBlockId": "",
-      "exitBlockId": ""
+      "first_block_id": "",
+      "exit_block_id": ""
     }
   ],
   "resources": []

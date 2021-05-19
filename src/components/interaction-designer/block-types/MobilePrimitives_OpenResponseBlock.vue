@@ -1,85 +1,88 @@
 <template>
-  <div>
+  <div class="mobile-primitive-open-response-block">
     <h3 class="no-room-above">
       {{'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)})}}
     </h3>
 
-    <block-name-editor :block="block" />
-    <block-label-editor :block="block" />
-    <block-semantic-label-editor :block="block" />
+    <fieldset :disabled="!isEditable">
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-    <block-max-duration-seconds-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
-    <block-max-response-characters-editor :block="block" :hasText="hasTextMode" @commitMaxResponseCharactersChange="setMaxResponseCharacters"/>
+      <block-max-duration-seconds-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDurationChange="setMaxDurationSeconds"/>
+      <block-max-response-characters-editor :block="block" :hasText="hasTextMode" @commitMaxResponseCharactersChange="setMaxResponseCharacters"/>
 
-    <resource-editor v-if="promptResource"
-                     :resource="promptResource"
-                     :block="block"
-                     :flow="flow" />
-
-    <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <resource-editor v-if="promptResource"
+                       :resource="promptResource"
+                       :block="block"
+                       :flow="flow" />
+      <slot name="extras"></slot>
+      <first-block-editor-button
+          :flow="flow"
+          :block-id="block.uuid" />
+    </fieldset>
 
     <block-id :block="block" />
   </div>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {namespace} from 'vuex-class'
-  import {Component, Prop} from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
+import { Component, Prop } from 'vue-property-decorator'
 
-  import {IBlockExit, IFlow} from '@floip/flow-runner'
-  import IOpenResponseBlock from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
-  import {
-    IResourceDefinition,
-  } from '@floip/flow-runner/src/domain/IResourceResolver'
+import { IBlockExit, IFlow, IResource } from '@floip/flow-runner'
+import { IOpenResponseBlock } from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
+import OpenResponseStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
+import Lang from '@/lib/filters/lang'
+import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
+import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+import BlockNameEditor from '../block-editors/NameEditor.vue'
+import BlockLabelEditor from '../block-editors/LabelEditor.vue'
+import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
+import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
+import BlockId from '../block-editors/BlockId.vue'
+import BlockMaxDurationSecondsEditor from '../block-editors/MaxDurationSecondsEditor.vue'
+import BlockMaxResponseCharactersEditor from '../block-editors/MaxResponseCharactersEditor.vue'
+import { mixins } from 'vue-class-component'
 
-  import ResourceEditor from '../resource-editors/ResourceEditor.vue'
-  import BlockNameEditor from '../block-editors/NameEditor.vue'
-  import BlockLabelEditor from '../block-editors/LabelEditor.vue'
-  import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-  import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-  import BlockId from '../block-editors/BlockId.vue'
-  import BlockMaxDurationSecondsEditor from '../block-editors/MaxDurationSecondsEditor.vue'
-  import BlockMaxResponseCharactersEditor from '../block-editors/MaxResponseCharactersEditor.vue'
+const flowVuexNamespace = namespace('flow')
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
+const builderVuexNamespace = namespace('builder')
 
-  import OpenResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
-  import lang from '@/lib/filters/lang'
-  import {createDefaultBlockTypeInstallerFor} from "@/store/builder";
-
-  const flowVuexNamespace = namespace('flow')
-  const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
-
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-      BlockMaxDurationSecondsEditor,
-      BlockMaxResponseCharactersEditor,
-    },
-    mixins: [lang],
-  })
-  class MobilePrimitives_OpenResponseBlock extends Vue {
+@Component({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+    BlockMaxDurationSecondsEditor,
+    BlockMaxResponseCharactersEditor,
+  },
+})
+class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
     @Prop()readonly block!: IOpenResponseBlock
+
     @Prop()readonly flow!: IFlow
 
-    get promptResource(): IResourceDefinition {
+    get promptResource(): IResource {
       return this.resourcesByUuid[this.block.config.prompt]
     }
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
-    @flowVuexNamespace.Getter hasTextMode
-    @flowVuexNamespace.Getter hasVoiceMode
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResource}
 
-    @blockVuexNamespace.Action setMaxDurationSeconds!: ( newDuration: number) => Promise<string>
-    @blockVuexNamespace.Action setMaxResponseCharacters!: ( newLength: number) => Promise<string>
+    @flowVuexNamespace.Getter hasTextMode!: boolean
+
+    @flowVuexNamespace.Getter hasVoiceMode!: boolean
+
+    @blockVuexNamespace.Action setMaxDurationSeconds!: (newDuration: number) => Promise<string>
+
+    @blockVuexNamespace.Action setMaxResponseCharacters!: (newLength: number) => Promise<string>
+
+    @builderVuexNamespace.Getter isEditable !: boolean
   }
 
-  export default MobilePrimitives_OpenResponseBlock
-  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, OpenResponseStore)
+export default MobilePrimitives_OpenResponseBlock
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, OpenResponseStore)
 </script>

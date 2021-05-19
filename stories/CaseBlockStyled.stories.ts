@@ -1,17 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import {Component} from 'vue-property-decorator'
-
+import {Component, Vue} from 'vue-property-decorator'
 import CaseBlock from '@/components/interaction-designer/block-types/Core_CaseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-import {IRootState, store} from '@/store'
-import caseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
-
-import { baseMounted, BaseMountedVueClass } from './story-utils/storeSetup'
+import caseBlockStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/Core_CaseBlockStore'
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import {namespace} from "vuex-class";
-const flowVuexNamespace = namespace('flow')
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+import Vuex from "vuex";
+import {IRootState, store} from "@/store";
+const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
 
 Vue.use(Vuex)
 
@@ -23,53 +18,42 @@ export default {
 
 const CaseBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
-    <case-block 
-      :block="activeBlock" 
+    <case-block
+      :block="activeBlock"
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
 
-const BaseOptions = {
+const BaseOptions: IBaseOptions = {
   components: {CaseBlock, FlowBuilderSidebarEditorContainer},
   template: CaseBlockTemplate,
+  store: new Vuex.Store<IRootState>(store),
 }
 
 // default case block state
-@Component<any>({
+@Component({
   ...BaseOptions,
-  store: new Vuex.Store<IRootState>(store),
-  async mounted() {
-    // @ts-ignore
-    await baseMounted.bind(this)(BLOCK_TYPE, caseBlockStore)
-  },
 })
-class DefaultClass extends BaseMountedVueClass {}
+class DefaultClass extends BaseMountedVueClass {
+  async mounted() {
+    await this.baseMounted(BLOCK_CLASS_CONFIG.type, caseBlockStore)
+  }
+}
 export const Default = () => (DefaultClass)
 
 //ExistingDataBlock
-@Component<any>({
+@Component({
   ...BaseOptions,
-  store: new Vuex.Store<IRootState>(store),
-  async mounted() {
-    // @ts-ignore
-    const { block } = await baseMounted.bind(this)(BLOCK_TYPE, caseBlockStore)
-    const blockId = block.uuid
-
-    // @ts-ignore - TS2339: Property 'block_setName' does not exist on type
-    this.block_setName({blockId: blockId, value: "A Name"})
-    // @ts-ignore - TS2339: Property 'block_setLabel' does not exist on type
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    // @ts-ignore - TS2339: Property 'block_setSemanticLabel' does not exist on type
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
-    // @ts-ignore - TS2339: Property 'editCaseBlockExit' does not exist on type
-    this.editCaseBlockExit({identifier: block.exits[0].uuid, value: "A expression"})
-  }
 })
 class CurrentClass2 extends BaseMountedVueClass {
-  @blockVuexNamespace.Action editCaseBlockExit:any
+  async mounted() {
+    const { block } = await this.baseMounted(BLOCK_CLASS_CONFIG.type, caseBlockStore)
+    const blockId = block.uuid
 
-  @flowVuexNamespace.Mutation block_setName:any
-  @flowVuexNamespace.Mutation block_setLabel:any
-  @flowVuexNamespace.Mutation block_setSemanticLabel:any
+    this.setDescription(blockId)
+    this.editCaseBlockExit({identifier: block.exits[0].uuid, value: "A expression"})
+  }
+
+  @blockVuexNamespace.Action editCaseBlockExit:any
 }
 export const ExistingDataBlock = () => (CurrentClass2)
