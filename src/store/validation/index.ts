@@ -65,7 +65,7 @@ export const getters: GetterTree<IValidationState, IRootState> = {
     })
     return accumulator
   },
-  validationStatuses: state => state.validationStatuses
+  validationStatuses: state => state.validationStatuses,
 }
 
 export const mutations: MutationTree<IValidationState> = {
@@ -73,7 +73,7 @@ export const mutations: MutationTree<IValidationState> = {
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
-  async validate_block({ state, commit }, { block } : { block: IBlock }): Promise<IValidationStatus> {
+  async validate_block({ state, commit, dispatch }, { block } : { block: IBlock }): Promise<IValidationStatus> {
     const { uuid: blockId, type: blockType } = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
@@ -84,9 +84,16 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       ajvErrors: validate.errors,
       type: block.type,
     })
-
+    if (validate.errors === null) {
+      dispatch('remove_block_validation', { blockId })
+    }
     debugValidationStatus(state.validationStatuses[index], `validation status for ${index}`)
     return state.validationStatuses[index]
+  },
+
+  remove_block_validation({ state }, { blockId }: { blockId: IBlock['uuid']}): void {
+    const index = `block/${blockId}`
+    Vue.delete(state.validationStatuses, index)
   },
 
   async validate_flow({ state, commit }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {

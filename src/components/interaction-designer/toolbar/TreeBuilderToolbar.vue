@@ -186,6 +186,7 @@ Vue.use(VBTooltipPlugin)
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
+const validationVuexNamespace = namespace('validation')
 
 @Component({
   components: {
@@ -326,6 +327,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   handleRemoveActivatedBlockTriggered() {
     const { activeBlockId: blockId } = this
     this.flow_removeBlock({ blockId })
+    this.remove_block_validation({ blockId })
   }
 
   handleDuplicateActivatedBlockTriggered() {
@@ -404,6 +406,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @builderVuexNamespace.Getter activeBlock?: IBlock
   @builderVuexNamespace.Action importFlowsAndResources!: ({ flows, resources }: { flows: IFlow[]; resources: IResource[]}) => Promise<void>
   @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
+
+  @validationVuexNamespace.Action remove_block_validation!: ({ blockId }: { blockId: IBlock['uuid']}) => void
 }
 </script>
 
