@@ -189,7 +189,6 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       ],
       config: {
         prompt: blankPromptResource.uuid,
-        prompt_audio: '',
         question_prompt: blankQuestionPromptResource.uuid,
         choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
