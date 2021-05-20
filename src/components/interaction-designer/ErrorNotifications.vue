@@ -37,49 +37,53 @@
 </template>
 
 <script lang="ts">
-import Lang from '@/lib/filters/lang'
-import { mapGetters } from 'vuex'
-import { pickBy, values } from 'lodash'
+import Lang from '@/lib/filters/lang';
+import { pickBy, values } from 'lodash';
+import { IValidationStatus } from '@/store/validation';
+import Routes from '@/lib/mixins/Routes';
+import Component, { mixins } from 'vue-class-component';
+import { namespace } from 'vuex-class';
 
-export default {
-  mixins: [Lang],
-  computed: {
-    ...mapGetters('validation', ['validationStatuses']),
+const validationVuexNamespace = namespace('validation')
 
-    flowValidationErrors() {
-      const flowValidationResults = pickBy(this.validationStatuses, function(value, key) {
-        return value.type === 'flow'
-      })
-      return values(flowValidationResults)[0].ajvErrors
-    },
-    blockValidationStatuses() {
-      const blockValidationResults = pickBy(this.validationStatuses, function(value, key) {
-        return value.type !== 'flow'
-      })
-      return blockValidationResults
-    },
-    numberOfBlocksWithErrors() {
-      return values(this.blockValidationStatuses).length
-    }
-  },
-  methods: {
-    fixFlowError() {
-      this.$router.push({
-        name: 'flow-details',
-      })
-    },
-    fixBlockError(key, dataPath, status) {
-      const blockId = key.replace('block/', '');
-      this.$router.push({
-        name: 'block-scroll-to-anchor',
-        params: {
-          blockId,
-          field: dataPath
-        },
-      })
-    }
+@Component({})
+export default class ErrorNotifications extends mixins(Routes, Lang) {
+  get flowValidationErrors() {
+    const flowValidationResults: { [key:string]: IValidationStatus } = pickBy(this.validationStatuses, function(value: IValidationStatus) {
+      return value.type === 'flow'
+    })
+    return values(flowValidationResults)[0].ajvErrors || []
   }
-};
+
+  get blockValidationStatuses() {
+    return pickBy(this.validationStatuses, function (value: IValidationStatus) {
+      return value.type !== 'flow'
+    })
+  }
+
+  get numberOfBlocksWithErrors() {
+    return values(this.blockValidationStatuses).length
+  }
+
+  fixFlowError() {
+    this.$router.push({
+      name: 'flow-details',
+    })
+  }
+
+  fixBlockError(key: string, dataPath: string) {
+    const blockId = key.replace('block/', '');
+    this.$router.push({
+      name: 'block-scroll-to-anchor',
+      params: {
+        blockId,
+        field: dataPath
+      },
+    })
+  }
+
+  @validationVuexNamespace.Getter validationStatuses!: { [key: string]: IValidationStatus }
+}
 </script>
 
 <style scoped lang="scss">

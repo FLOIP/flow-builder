@@ -297,7 +297,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       },
     }) // todo push out to intx-designer
     this.activateBlock({ blockId })
-    this.$router.history.replace({
+    this.$router.push({
       name: 'block-selected-details',
       params: { blockId },
     })
@@ -407,7 +407,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @builderVuexNamespace.Action importFlowsAndResources!: ({ flows, resources }: { flows: IFlow[]; resources: IResource[]}) => Promise<void>
   @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
 
-  @validationVuexNamespace.Action remove_block_validation!: ({ blockId }: { blockId: IBlock['uuid']}) => void
+  @validationVuexNamespace.Action remove_block_validation!: ({ blockId }: { blockId: IBlock['uuid'] | undefined}) => void
 }
 </script>
 
