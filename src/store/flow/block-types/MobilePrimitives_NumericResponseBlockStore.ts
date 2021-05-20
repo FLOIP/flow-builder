@@ -68,8 +68,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits,
       config: {
         prompt: blankResource.uuid,
+        prompt_audio: {},
         validation_minimum: '',
         validation_maximum: '',
+        ivr: {
+          max_digits: ''
+        }
       },
     })
   },

@@ -166,12 +166,14 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Default',
       label: 'Default',
+      test: '',
     }
 
     const errorExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Error',
       label: 'Error',
+      test: '',
     }
 
     await dispatch('createVolatileEmptyChoice', { index: 0 })
@@ -187,6 +189,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       ],
       config: {
         prompt: blankPromptResource.uuid,
+        prompt_audio: '',
         question_prompt: blankQuestionPromptResource.uuid,
         choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},

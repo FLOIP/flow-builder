@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     isInvalid() {
-      return validState === false
+      return this.validState === false
     }
   },
   methods: {
