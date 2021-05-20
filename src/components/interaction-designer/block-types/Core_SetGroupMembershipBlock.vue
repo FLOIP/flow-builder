@@ -100,11 +100,11 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
 
   get selectedAction() {
     const { is_member } = this.block.config as ISetGroupMembershipBlockConfig
-    if (is_member === 'false') {
+    if (!is_member) {
       return find(this.actionsList, { id: REMOVE_KEY }) || {} as IGroupActionOption
     }
 
-    if (is_member === 'true') {
+    if (is_member) {
       return find(this.actionsList, { id: ADD_KEY }) || {} as IGroupActionOption
     }
 
