@@ -454,6 +454,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                         <!---->
                          
                       </div>
+                       
+                      <!---->
                     </div>
                   </div>
                 </div>
@@ -808,6 +810,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         </button>
                          
                       </div>
+                       
+                      <!---->
                     </div>
                   </div>
                 </div>
@@ -1161,6 +1165,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
         
                         </a>
                       </div>
+                       
+                      <!---->
                     </div>
                   </div>
                 </div>
@@ -1486,6 +1492,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         <!---->
                          
                       </div>
+                       
+                      <!---->
                     </div>
                   </div>
                 </div>
@@ -1609,6 +1617,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                         <!---->
                          
                       </div>
+                       
+                      <!---->
                     </div>
                   </div>
                 </div>
