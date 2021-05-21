@@ -52,7 +52,7 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
     const flowValidationResults: { [key:string]: IValidationStatus } = pickBy(this.validationStatuses, function(value: IValidationStatus) {
       return value.type === 'flow'
     })
-    return values(flowValidationResults)[0].ajvErrors || []
+    return values(flowValidationResults)[0]?.ajvErrors || []
   }
 
   get blockValidationStatuses() {
