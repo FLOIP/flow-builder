@@ -41,38 +41,22 @@
 
 <script lang="ts">
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
-import Component, { mixins } from 'vue-class-component';
-import Lang from '@/lib/filters/lang';
-import { Prop } from 'vue-property-decorator';
-import { Context, IContext, IPrompt } from '@floip/flow-runner';
-import { namespace } from 'vuex-class';
-
-const clipboardVuexNamespace = namespace('clipboard')
+import Component, { mixins } from 'vue-class-component'
+import Lang from '@/lib/filters/lang'
+import { Prop } from 'vue-property-decorator'
+import { Context, IContext } from '@floip/flow-runner'
+import { PromptKindMixin } from '@/components/interaction-designer/clipboard/shared/PromptKindMixin'
 
 @Component({
   components: {
     BlockActionButtons
   },
 })
-export default class Numeric extends mixins(Lang) {
-  @Prop() index!: number
-  @Prop() isComplete!: boolean
-  @Prop() goNext!: Function
-  @Prop() onEditComplete!: Function
-  @Prop() context!: IContext
-
-  isBlockInteraction = false
+export default class Numeric extends mixins(Lang, PromptKindMixin) {
   selectedChoices: string[] = []
   options: {key: string, value: string}[] = []
   backUpValue = []
   errorMsg: string | null = null
-
-  get isFocused() {
-    return this.isBlockFocused(this.index)
-  }
-  get prompt() {
-    return this.getBlockPrompt(this.index)
-  }
 
   mounted() {
     this.setOptions();
@@ -129,11 +113,5 @@ export default class Numeric extends mixins(Lang) {
     this.selectedChoices = this.backUpValue
     this.errorMsg = ''
   }
-
-  @clipboardVuexNamespace.Getter isBlockFocused!: (index: number) => boolean
-  @clipboardVuexNamespace.Getter getBlockPrompt!: (index: number) => IPrompt<any>
-  @clipboardVuexNamespace.Action setIsFocused!: (data: { index: number, value: boolean }) => void
-  @clipboardVuexNamespace.Action setLastBlockUnEditable!: () => void
-  @clipboardVuexNamespace.Action setLastBlockEditable!: () => void
 }
 </script>

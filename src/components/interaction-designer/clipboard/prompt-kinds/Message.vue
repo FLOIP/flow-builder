@@ -20,33 +20,15 @@
 <script lang="ts">
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 import Component, { mixins } from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { IPrompt } from '@floip/flow-runner';
 import Lang from '@/lib/filters/lang';
-
-const clipboardVuexNamespace = namespace('clipboard')
+import { PromptKindMixin } from '@/components/interaction-designer/clipboard/shared/PromptKindMixin';
 
 @Component({
   components: {
     BlockActionButtons
   },
 })
-export default class Message extends mixins(Lang) {
-  @Prop() index!: number
-  @Prop() isComplete!: boolean
-  @Prop() goNext!: Function
-  @Prop() onEditComplete!: Function
-
-  isBlockInteraction = false
-
-  get isFocused() {
-    return this.isBlockFocused(this.index)
-  }
-  get prompt() {
-    return this.getBlockPrompt(this.index)
-  }
-
+export default class Message extends mixins(Lang, PromptKindMixin) {
   async submitAnswer() {
     if (this.isBlockInteraction) {
       await this.onEditComplete(this.index)
@@ -56,23 +38,5 @@ export default class Message extends mixins(Lang) {
     this.setIsFocused({ index: this.index, value: false })
     this.goNext()
   }
-
-  editBlock() {
-    this.setIsFocused({ index: this.index, value: true })
-    this.setLastBlockUnEditable()
-    this.isBlockInteraction = true
-  }
-
-  onCancel() {
-    this.setLastBlockEditable()
-    this.setIsFocused({ index: this.index, value: false })
-    this.isBlockInteraction = false
-  }
-
-  @clipboardVuexNamespace.Getter isBlockFocused!: (index: number) => boolean
-  @clipboardVuexNamespace.Getter getBlockPrompt!: (index: number) => IPrompt<any>
-  @clipboardVuexNamespace.Action setIsFocused!: (data: { index: number, value: boolean }) => void
-  @clipboardVuexNamespace.Action setLastBlockUnEditable!: () => void
-  @clipboardVuexNamespace.Action setLastBlockEditable!: () => void
 }
 </script>
