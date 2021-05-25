@@ -51,7 +51,7 @@ import { PromptKindMixin } from '@/components/interaction-designer/clipboard/sha
     BlockActionButtons
   },
 })
-export default class Numeric extends mixins(Lang, PromptKindMixin) {
+export default class SelectMany extends mixins(Lang, PromptKindMixin) {
   selectedChoices: string[] = []
   options: {key: string, value: string}[] = []
   backUpValue = []

@@ -41,7 +41,7 @@ import { PromptKindMixin } from '@/components/interaction-designer/clipboard/sha
     BlockActionButtons
   },
 })
-export default class Numeric extends mixins(Lang, PromptKindMixin) {
+export default class Open extends mixins(Lang, PromptKindMixin) {
   enteredValue = ''
   backUpValue = ''
 
