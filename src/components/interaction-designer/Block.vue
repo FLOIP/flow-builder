@@ -2,6 +2,7 @@
   <div @click="selectBlock">
     <plain-draggable
         v-if="hasLayout"
+        ref="draggable"
         class="block"
         :class="{
           active: isBlockActivated,
@@ -280,7 +281,7 @@ export default {
       const { resources } = this
       const context = {
         resources,
-        languageId: '22',
+        language_id: '22',
         mode: SupportedMode.SMS,
       }
       const resource = new ResourceResolver(context)// as IContext) // this isn't ts

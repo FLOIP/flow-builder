@@ -68,11 +68,8 @@
 </template>
 
 <script lang="ts">
-import { IFlow } from '@floip/flow-runner'
+import { IFlow, IResource } from '@floip/flow-runner'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
-import {
-  IResourceDefinition,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
 import { namespace } from 'vuex-class'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
@@ -113,15 +110,15 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
     @Prop()readonly flow!: IFlow
 
-    get promptResource(): IResourceDefinition {
+    get promptResource(): IResource {
       return this.resourcesByUuid[this.block.config.prompt]
     }
 
-    get questionPromptResource(): IResourceDefinition {
+    get questionPromptResource(): IResource {
       return this.resourcesByUuid[this.block.config.question_prompt || '']
     }
 
-    get choicesPromptResource(): IResourceDefinition {
+    get choicesPromptResource(): IResource {
       return this.resourcesByUuid[this.block.config.choices_prompt || '']
     }
 
@@ -146,16 +143,16 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     }
   }
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResource}
 
-    @blockVuexNamespace.Getter inflatedChoices?: {[key: string]: IInflatedChoicesInterface}
-    @blockVuexNamespace.State inflatedEmptyChoice?: IInflatedChoicesInterface
+  @blockVuexNamespace.Getter inflatedChoices?: {[key: string]: IInflatedChoicesInterface}
+  @blockVuexNamespace.State inflatedEmptyChoice?: IInflatedChoicesInterface
 
-    @blockVuexNamespace.Getter isExitsBranchingSegregated!: boolean
+  @blockVuexNamespace.Getter isExitsBranchingSegregated!: boolean
 
-    @blockVuexNamespace.Action cacheSegregatedExits!: () => void
-    @blockVuexNamespace.Action makeExitsSegregated!: () => void
-    @blockVuexNamespace.Action makeExitsUnified!: () => void
+  @blockVuexNamespace.Action cacheSegregatedExits!: () => void
+  @blockVuexNamespace.Action makeExitsSegregated!: () => void
+  @blockVuexNamespace.Action makeExitsUnified!: () => void
 
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
     @blockVuexNamespace.Action editEmptyChoice!: ({ choice }: { choice: IInflatedChoicesInterface }) => Promise<object>

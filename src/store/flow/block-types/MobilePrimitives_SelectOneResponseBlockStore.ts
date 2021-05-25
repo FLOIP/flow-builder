@@ -4,15 +4,13 @@ import {
   IBlockExitTestRequired,
   IBlockExit,
   IBlock,
+  IResource
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
-import {
-  IResourceDefinition,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import { defaultsDeep, find, filter, get } from 'lodash'
-import {findBlockExitsRef, findExitFromResourceUuid} from '../block'
+import { defaultsDeep, find, filter, first, get } from 'lodash'
+import { findBlockExitsRef, findExitFromResourceUuid } from '../block'
 import { IFlowsState } from '../index'
 
 import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
@@ -21,7 +19,7 @@ export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
 export interface IInflatedChoicesInterface {
   exit: IBlockExit,
-  resource: IResourceDefinition
+  resource: IResource
 }
 
 export interface ICustomFlowState extends Partial<IFlowsState> {
