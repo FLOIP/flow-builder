@@ -14,6 +14,7 @@ export class PromptKindMixin extends Vue {
   @Prop() onEditComplete!: Function
   @Prop() context!: IContext
 
+  errorMsg: string | null = null
   isBlockInteraction = false
 
   get isFocused() {
@@ -24,16 +25,35 @@ export class PromptKindMixin extends Vue {
     return this.getBlockPrompt(this.index)
   }
 
-  editBlock() {
+  checkIsValid(value: unknown) {
+    try {
+      this.prompt.validate(value)
+      this.errorMsg = ''
+    } catch (e) {
+      this.errorMsg = e.message
+    }
+  }
+
+  async submitAnswerCommon() {
+    if (this.isBlockInteraction) {
+      await this.onEditComplete(this.index)
+      this.isBlockInteraction = false
+    }
+    this.setIsFocused({ index: this.index, value: false })
+    this.goNext()
+  }
+
+  editBlockCommon() {
     this.setLastBlockUnEditable()
     this.setIsFocused({ index: this.index, value: true })
     this.isBlockInteraction = true
   }
 
-  onCancel() {
+  onCancelCommon() {
     this.setLastBlockEditable()
     this.setIsFocused({ index: this.index, value: false })
     this.isBlockInteraction = false
+    this.errorMsg = ''
   }
 
   @clipboardVuexNamespace.Getter isBlockFocused!: (index: number) => boolean

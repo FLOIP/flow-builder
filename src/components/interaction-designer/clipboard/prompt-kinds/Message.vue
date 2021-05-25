@@ -2,7 +2,7 @@
     <div>
       <div class="d-flex justify-content-between">
         <slot name="title"></slot>
-        <i v-if="!isFocused && !isComplete" @click="editBlock"
+        <i v-if="!isFocused && !isComplete" @click="editBlockCommon"
            class="glyphicon glyphicon-pencil cursor-pointer"></i>
       </div>
       <slot name="content"></slot>
@@ -12,7 +12,7 @@
           :is-focused="isFocused"
           :on-next-clicked="submitAnswer"
           :is-block-interaction="isBlockInteraction"
-          :on-cancel-clicked="onCancel"
+          :on-cancel-clicked="onCancelCommon"
       />
     </div>
 </template>
@@ -30,13 +30,8 @@ import { PromptKindMixin } from '@/components/interaction-designer/clipboard/sha
 })
 export default class Message extends mixins(Lang, PromptKindMixin) {
   async submitAnswer() {
-    if (this.isBlockInteraction) {
-      await this.onEditComplete(this.index)
-      this.isBlockInteraction = false
-    }
     this.prompt.value = null
-    this.setIsFocused({ index: this.index, value: false })
-    this.goNext()
+    await this.submitAnswerCommon()
   }
 }
 </script>

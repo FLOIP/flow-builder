@@ -43,7 +43,6 @@
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 import Component, { mixins } from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import { Prop } from 'vue-property-decorator'
 import { Context, IContext } from '@floip/flow-runner'
 import { PromptKindMixin } from '@/components/interaction-designer/clipboard/shared/PromptKindMixin'
 
@@ -56,7 +55,6 @@ export default class Numeric extends mixins(Lang, PromptKindMixin) {
   selectedChoices: string[] = []
   options: {key: string, value: string}[] = []
   backUpValue = []
-  errorMsg: string | null = null
 
   mounted() {
     this.setOptions();
@@ -77,41 +75,22 @@ export default class Numeric extends mixins(Lang, PromptKindMixin) {
     })
   }
 
-  checkIsValid() {
-    try {
-      this.prompt.validate(this.selectedChoices)
-      this.errorMsg = ''
-    } catch (e) {
-      this.errorMsg = e.message
-    }
-  }
-
   async submitAnswer() {
-    this.checkIsValid()
+    this.checkIsValid(this.selectedChoices)
     if (!this.errorMsg) {
-      if (this.isBlockInteraction) {
-        await this.onEditComplete(this.index)
-        this.isBlockInteraction = false
-      }
       this.prompt.value = this.selectedChoices
-      this.setIsFocused({ index: this.index, value: false })
-      this.goNext()
+      await this.submitAnswerCommon()
     }
   }
 
   editBlock() {
-    this.setLastBlockUnEditable()
-    this.setIsFocused({ index: this.index, value: true })
-    this.isBlockInteraction = true
+    this.editBlockCommon()
     this.backUpValue = this.prompt.value
   }
 
   onCancel() {
-    this.setLastBlockEditable()
-    this.setIsFocused({ index: this.index, value: false })
-    this.isBlockInteraction = false
+    this.onCancelCommon()
     this.selectedChoices = this.backUpValue
-    this.errorMsg = ''
   }
 }
 </script>

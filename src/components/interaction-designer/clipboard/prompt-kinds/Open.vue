@@ -44,43 +44,23 @@ import { PromptKindMixin } from '@/components/interaction-designer/clipboard/sha
 export default class Numeric extends mixins(Lang, PromptKindMixin) {
   enteredValue = ''
   backUpValue = ''
-  errorMsg: string | null = null
-
-  checkIsValid() {
-    try {
-      this.prompt.validate(this.enteredValue)
-      this.errorMsg = ''
-    } catch (e) {
-      this.errorMsg = e.message
-    }
-  }
 
   async submitAnswer() {
-    this.checkIsValid()
+    this.checkIsValid(this.enteredValue)
     if (!this.errorMsg) {
-      if (this.isBlockInteraction) {
-        await this.onEditComplete(this.index)
-        this.isBlockInteraction = false
-      }
       this.prompt.value = this.enteredValue
-      this.setIsFocused({ index: this.index, value: false })
-      this.goNext()
+      await this.submitAnswerCommon()
     }
   }
 
   editBlock() {
-    this.setLastBlockUnEditable()
-    this.setIsFocused({ index: this.index, value: true })
-    this.isBlockInteraction = true
+    this.editBlockCommon()
     this.backUpValue = this.prompt.value
   }
 
   onCancel() {
-    this.setLastBlockEditable()
-    this.setIsFocused({ index: this.index, value: false })
-    this.isBlockInteraction = false
+    this.onCancelCommon()
     this.enteredValue = this.backUpValue
-    this.errorMsg = ''
   }
 }
 </script>
