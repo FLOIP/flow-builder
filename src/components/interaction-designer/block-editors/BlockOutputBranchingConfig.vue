@@ -59,7 +59,6 @@
 
     mounted() {
       const path = 'io_viamo.branchingType'
-      // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
       let value = get(this.block.vendor_metadata, path)
       if (isNil(value) && this.block) {
         this.block_updateVendorMetadataByPath({ blockId: this.block.uuid, path, value: this.branchingType })
