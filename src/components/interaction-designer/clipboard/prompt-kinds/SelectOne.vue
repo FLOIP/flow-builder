@@ -75,10 +75,7 @@ export default class SelectOne extends mixins(Lang, PromptKindMixin) {
 
   async submitAnswer() {
     this.checkIsValid(this.selectedItem)
-    if (!this.errorMsg) {
-      this.prompt.value = this.selectedItem
-      await this.submitAnswerCommon()
-    }
+    await this.submitAnswerCommon(this.selectedItem)
   }
 
   editBlock() {

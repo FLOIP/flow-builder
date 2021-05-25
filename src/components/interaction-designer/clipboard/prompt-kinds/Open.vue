@@ -47,10 +47,7 @@ export default class Open extends mixins(Lang, PromptKindMixin) {
 
   async submitAnswer() {
     this.checkIsValid(this.enteredValue)
-    if (!this.errorMsg) {
-      this.prompt.value = this.enteredValue
-      await this.submitAnswerCommon()
-    }
+    await this.submitAnswerCommon(this.enteredValue)
   }
 
   editBlock() {

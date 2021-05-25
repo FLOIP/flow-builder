@@ -30,8 +30,7 @@ import { PromptKindMixin } from '@/components/interaction-designer/clipboard/sha
 })
 export default class Message extends mixins(Lang, PromptKindMixin) {
   async submitAnswer() {
-    this.prompt.value = null
-    await this.submitAnswerCommon()
+    await this.submitAnswerCommon(null)
   }
 }
 </script>

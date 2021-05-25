@@ -34,13 +34,16 @@ export class PromptKindMixin extends Vue {
     }
   }
 
-  async submitAnswerCommon() {
-    if (this.isBlockInteraction) {
-      await this.onEditComplete(this.index)
-      this.isBlockInteraction = false
+  async submitAnswerCommon(value: unknown) {
+    if (!this.errorMsg) {
+      if (this.isBlockInteraction) {
+        await this.onEditComplete(this.index)
+        this.isBlockInteraction = false
+      }
+      this.prompt.value = value
+      this.setIsFocused({ index: this.index, value: false })
+      this.goNext()
     }
-    this.setIsFocused({ index: this.index, value: false })
-    this.goNext()
   }
 
   editBlockCommon() {

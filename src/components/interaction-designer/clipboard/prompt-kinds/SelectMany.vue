@@ -77,10 +77,7 @@ export default class SelectMany extends mixins(Lang, PromptKindMixin) {
 
   async submitAnswer() {
     this.checkIsValid(this.selectedChoices)
-    if (!this.errorMsg) {
-      this.prompt.value = this.selectedChoices
-      await this.submitAnswerCommon()
-    }
+    await this.submitAnswerCommon(this.selectedChoices)
   }
 
   editBlock() {

@@ -49,12 +49,9 @@ export default class Numeric extends mixins(Lang, PromptKindMixin) {
   backUpValue = ''
 
   async submitAnswer() {
-    const num = +this.enteredValue
-    this.checkIsValid(num)
-    if (!this.errorMsg) {
-      this.prompt.value = +this.enteredValue
-      await this.submitAnswerCommon()
-    }
+    const value = +this.enteredValue
+    this.checkIsValid(value)
+    await this.submitAnswerCommon(value)
   }
 
   editBlock() {

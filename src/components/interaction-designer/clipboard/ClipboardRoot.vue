@@ -19,7 +19,7 @@
                        :on-edit-complete="onEditComplete"
             >
               <template #title>
-                <h4 class="card-title font-weight-regular pl-0 text-color-title">
+                <h4 class="card-title font-weight-regular pl-0 text-color-title" v-if="!cursorChangeInProgress">
                   {{blockData.prompt.block.label}}
                 </h4>
               </template>
@@ -88,14 +88,17 @@ export default class ClipboardRoot extends mixins(Lang) {
   context!: IContext
   isComplete = false
   unsupportedBlockName = ''
+  cursorChangeInProgress = false
 
   created() {
     this.initializeFlowRunner()
   }
 
-  content(promptId: string): string {
-    const result = Context.prototype.getResource.call(this.context, promptId)
-    return result.hasText() ? result.getText() : ''
+  content(promptId: string): string | void {
+    if (!this.cursorChangeInProgress) {
+      const result = Context.prototype.getResource.call(this.context, promptId)
+      return result.hasText() ? result.getText() : ''
+    }
   }
 
   getUpdatedFlowState(): IFlowsState {
@@ -156,8 +159,9 @@ export default class ClipboardRoot extends mixins(Lang) {
     this.setIsFocused({ index: this.blocksData.length - 1, value: true })
     const backtracking: BasicBacktrackingBehaviour = this.runner.behaviours.basicBacktracking as BasicBacktrackingBehaviour
     const seekSteps = (this.blocksData.length - 1) - index
+    this.cursorChangeInProgress = true
     const cursor = await backtracking.seek(seekSteps, this.context)
-
+    this.cursorChangeInProgress = false
     this.removeFromBlocksData(index)
     this.addToBlocksData({ prompt: cursor.prompt, isFocused: true })
   }
