@@ -1,16 +1,19 @@
 <template>
-  <div class="block-group form-group">
-    <label>{{'flow-builder.group-label' | trans}}</label>
-    <vue-multiselect v-model="selectedGroup"
-                     track-by="id"
-                     label="name"
-                     :placeholder="'flow-builder.group-selector-placeholder' | trans"
-                     :options="groups"
-                     :allow-empty="false"
-                     :show-labels="false"
-                     :searchable="true">
-    </vue-multiselect>
-  </div>
+  <validation-message :message-key="`block/${block.uuid}/config/group_key`" #input-control="{ isValid }">
+    <div class="block-group form-group">
+      <label>{{'flow-builder.group-label' | trans}}</label>
+      <vue-multiselect v-model="selectedGroup"
+                       track-by="id"
+                       label="name"
+                       :class="{invalid: isValid === false}"
+                       :placeholder="'flow-builder.group-selector-placeholder' | trans"
+                       :options="groups"
+                       :allow-empty="false"
+                       :show-labels="false"
+                       :searchable="true">
+      </vue-multiselect>
+    </div>
+  </validation-message>
 </template>
 
 <script lang="ts">
@@ -21,6 +24,7 @@ import { namespace, Getter } from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import { find } from 'lodash'
 import { mixins } from "vue-class-component";
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const flowVuexNamespace = namespace('flow')
 
@@ -32,6 +36,7 @@ interface IGroupOption {
 @Component<any>({
   components: {
     VueMultiselect,
+    ValidationMessage,
   },
 })
 class GroupSelector extends mixins(Lang) {
@@ -70,3 +75,9 @@ class GroupSelector extends mixins(Lang) {
 
 export default GroupSelector
 </script>
+
+<style lang="css" scoped>
+.invalid >>> .multiselect__tags {
+  border-color: #dc3545;
+}
+</style>

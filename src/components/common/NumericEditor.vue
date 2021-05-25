@@ -23,7 +23,7 @@ export default {
   props: {
     validState: {
       type: Boolean,
-      default: null, // to tell boostrap `No state`
+      default: null,
       required: false,
     },
     label: {

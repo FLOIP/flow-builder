@@ -9,8 +9,9 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold"/>
-      <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout"/>
+      <block-threshold-editor :block="block" @commitAccuracyThresholdMetersChange="updateThreshold" />
+      <block-timeout-editor :block="block" @commitAccuracyTimeoutSecondsChange="updateTimeout" />
+
       <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
