@@ -47,7 +47,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import {
   Context, IContext,
   createContextDataObjectFor,
@@ -103,7 +102,8 @@ export default class ClipboardRoot extends mixins(Lang) {
 
   getUpdatedFlowState(): IFlowsState {
     const flowState: IFlowsState = this.currentFlowsState
-    // TODO: Need to remove this after a fix is available on flow runner
+    // TODO: There is an error with exits for Select one and Select Many blocks.
+    // Clicking next on these blocks throws an error. Added the below code as a work around until a better solution is available
     flowState.flows[0].blocks.map(({ exits }) => exits.map((e) => {
       e.test = e.test || 'true'
       return e
