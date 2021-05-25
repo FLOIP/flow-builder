@@ -129,7 +129,6 @@ export default class ClipboardRoot extends mixins(Lang) {
       resources,
     )
 
-    this.resetBlocksData()
     this.context = context
     this.runner = new FlowRunner(context)
     await this.goNext()
@@ -165,6 +164,10 @@ export default class ClipboardRoot extends mixins(Lang) {
 
   closeSimulator() {
     this.setSimulatorActive(false)
+  }
+
+  destroyed() {
+    this.resetBlocksData()
   }
 
   @flowVuexNamespace.Getter currentFlowsState!: IFlowsState

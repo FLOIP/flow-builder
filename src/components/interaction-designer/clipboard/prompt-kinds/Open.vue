@@ -14,7 +14,7 @@
             class="form-control"
             :class="{'is-invalid': errorMsg}"
             :disabled="!isFocused"
-            @keyup="checkIsValid"/>
+            @keyup="checkIsValid(enteredValue)"/>
         <div v-if="errorMsg" class="invalid-feedback">
           <small>{{errorMsg}}</small>
         </div>
@@ -32,9 +32,9 @@
 
 <script lang="ts">
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
-import Component, { mixins } from 'vue-class-component';
-import Lang from '@/lib/filters/lang';
-import { PromptKindMixin } from '@/components/interaction-designer/clipboard/shared/PromptKindMixin';
+import Component, { mixins } from 'vue-class-component'
+import Lang from '@/lib/filters/lang'
+import { PromptKindMixin } from '@/components/interaction-designer/clipboard/shared/PromptKindMixin'
 
 @Component({
   components: {

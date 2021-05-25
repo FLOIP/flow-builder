@@ -18,7 +18,7 @@
           :disabled="!isFocused"
           :id="index"
           v-model="selectedItem"
-          @change="checkIsValid"
+          @change="checkIsValid(selectedItem)"
         />
         <label class="form-check-label" :for="index">{{option.value}}</label>
       </div>
@@ -39,10 +39,10 @@
 
 <script lang="ts">
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
-import Component, { mixins } from 'vue-class-component';
-import Lang from '@/lib/filters/lang';
-import { Context } from '@floip/flow-runner';
-import { PromptKindMixin } from '@/components/interaction-designer/clipboard/shared/PromptKindMixin';
+import Component, { mixins } from 'vue-class-component'
+import Lang from '@/lib/filters/lang'
+import { Context } from '@floip/flow-runner'
+import { PromptKindMixin } from '@/components/interaction-designer/clipboard/shared/PromptKindMixin'
 
 @Component({
   components: {
@@ -55,7 +55,7 @@ export default class Numeric extends mixins(Lang, PromptKindMixin) {
   backUpValue = ''
 
   mounted() {
-    this.setOptions();
+    this.setOptions()
   }
 
   setOptions() {
