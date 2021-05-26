@@ -18,15 +18,36 @@
         <div class="header-actions-left">
 <!--          <font-awesome-icon :icon="['fas', 'check-circle']" class="fa-btn" :style="{color: '#0069d9'}"/>-->
         </div>
-        <div class="header-actions-right">
-<!--          <font-awesome-icon :icon="['far', 'trash-alt']" class="mr-1 ml-2 fa-btn" :style="{color: '#dc3545'}"/>-->
-          <font-awesome-icon
-            v-if="isEditable"
-            :icon="['far', 'clone']"
-            class="mr-1 ml-2 fa-btn"
-            v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-            @click.prevent="flow_duplicateBlock({ blockId: block.uuid })"
-          />
+        <div class="header-actions-right d-flex">
+          <!--Delete-->
+          <div v-if="isEditable" class="mr-1 ml-2">
+            <div v-if="isDeleting">
+              <button class="btn btn-secondary btn-xs" @click.prevent="isDeleting = false">
+                {{trans('flow-builder.cancel')}}
+              </button>
+              <button class="btn btn-danger btn-xs ml-2" @click.prevent="handleDeleteBlock()">
+                {{trans('flow-builder.delete')}}
+              </button>
+            </div>
+            <font-awesome-icon
+              v-if="!isDeleting"
+              :icon="['far', 'trash-alt']"
+              class="fa-btn"
+              :style="{color: '#dc3545'}"
+              v-b-tooltip.hover="trans('flow-builder.tooltip-delete-block')"
+              @click.prevent="isDeleting = true"
+            />
+          </div>
+          <!--Duplicate-->
+          <div class="mr-1 ml-2">
+            <font-awesome-icon
+              v-if="isEditable"
+              :icon="['far', 'clone']"
+              class="fa-btn"
+              v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
+              @click.prevent="flow_duplicateBlock({ blockId: block.uuid })"
+            />
+          </div>
         </div>
       </div>
 
@@ -193,6 +214,7 @@ export default {
 
   data() {
     return {
+      isDeleting: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
       // draggablesByExitId: {}, // no need to vuejs-observe these
@@ -273,10 +295,16 @@ export default {
     ]),
 
     ...mapActions('flow', [
-      'flow_duplicateBlock'
+      'flow_duplicateBlock',
+      'flow_removeBlock',
     ]),
 
     ...mapMutations('builder', ['activateBlock']),
+
+    handleDeleteBlock() {
+      this.flow_removeBlock({ blockId: this.block.uuid })
+      this.isDeleting = false
+    },
 
     updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
       const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`) // one exit
