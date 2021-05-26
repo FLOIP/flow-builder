@@ -27,9 +27,13 @@
           @mouseenter="isConnectionCreateActive && activateBlockAsDropZone($event)"
           @mouseleave="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
 
-        <p class="block-type text-muted">
-          {{trans(`flow-builder.${block.type}`)}}
-        </p>
+        <div class="d-flex justify-content-between">
+          <p class="block-type text-muted">
+            {{trans(`flow-builder.${block.type}`)}}
+          </p>
+          <i v-if="activeFlow.first_block_id === block.uuid"
+             class="glyphicon glyphicon-arrow-down"></i>
+        </div>
 
         <h3 class="block-label" :style="{ maxWidth: `${this.labelContainerMaxWidth}px` }"
             :class="{'empty': !block.label}">
@@ -195,6 +199,7 @@ export default {
     }),
 
     ...mapGetters('builder', ['blocksById', 'isEditable']),
+    ...mapGetters('flow', ['activeFlow']),
 
     blockExitsLength() {
       return this.block.exits.length
