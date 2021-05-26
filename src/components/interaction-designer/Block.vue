@@ -278,11 +278,6 @@ export default {
 
     ...mapMutations('builder', ['activateBlock']),
 
-    // handleDuplicateBlockTriggered() {
-    //   // const { activeBlockId: blockId } = this
-    //   this.flow_duplicateBlock({ blockId: this.block.uuid })
-    // },
-
     updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
       const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`) // one exit
 
