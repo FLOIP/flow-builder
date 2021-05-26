@@ -22,11 +22,11 @@
           <!--Delete-->
           <div v-if="isEditable" class="mr-1 ml-2">
             <div v-if="isDeleting">
-              <button class="btn btn-secondary btn-xs" @click.prevent="isDeleting = false">
-                {{trans('flow-builder.cancel')}}
+              <button class="btn btn-light btn-xs" @click.prevent="isDeleting = false">
+                <small>{{trans('flow-builder.cancel')}}</small>
               </button>
-              <button class="btn btn-danger btn-xs ml-2" @click.prevent="handleDeleteBlock()">
-                {{trans('flow-builder.delete')}}
+              <button class="btn btn-danger btn-xs ml-1" @click.prevent="handleDeleteBlock()">
+                <small>{{trans('flow-builder.delete-block')}}</small>
               </button>
             </div>
             <font-awesome-icon
