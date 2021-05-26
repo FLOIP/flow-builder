@@ -32,7 +32,7 @@
             <font-awesome-icon
               v-if="!isDeleting"
               :icon="['far', 'trash-alt']"
-              class="fa-btn fa-btn-danger"
+              class="fa-btn text-danger"
               v-b-tooltip.hover="trans('flow-builder.tooltip-delete-block')"
               @click.prevent="isDeleting = true"
             />
@@ -507,10 +507,6 @@ export default {
 <style lang="scss">
   .fa-btn {
     cursor: pointer;
-  }
-
-  .fa-btn-danger {
-    color: #dc3545;
   }
 
   .btn-secondary.btn-flat {
