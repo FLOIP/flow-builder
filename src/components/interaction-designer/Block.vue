@@ -13,7 +13,15 @@
         :is-editable="isEditable"
         @dragged="onMoved"
         @dragStarted="selectBlock">
-
+      <div class="d-flex justify-content-between">
+        <div class="header-actions-left">
+<!--          <font-awesome-icon :icon="['fas', 'check-circle']" class="fa-btn" :style="{color: '#0069d9'}"/>-->
+        </div>
+        <div class="header-actions-right">
+<!--          <font-awesome-icon :icon="['far', 'trash-alt']" class="mr-1 ml-2 fa-btn" :style="{color: '#dc3545'}"/>-->
+          <font-awesome-icon :icon="['far', 'clone']" class="mr-1 ml-2 fa-btn"/>
+        </div>
+      </div>
       <header
           :id="`block/${block.uuid}/handle`"
           class="block-target draggable-handle"
@@ -458,6 +466,14 @@ export default {
 </script>
 
 <style lang="scss">
+  .fa-btn {
+    cursor: pointer;
+  }
+
+  .fa-btn:hover:before{
+    opacity:10;
+  }
+
   .btn-secondary.btn-flat {
     @extend .btn-secondary;
     background: transparent;
