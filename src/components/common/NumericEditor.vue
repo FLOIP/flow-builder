@@ -6,6 +6,7 @@
           type="number"
           min="0"
           class="form-control"
+          :class="{ 'is-invalid': isInvalid }"
           :placeholder="placeholder"
           :value="value"
           @keypress="filterNumeric"
@@ -18,10 +19,13 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-
 export default {
   props: {
+    validState: {
+      type: Boolean,
+      default: null,
+      required: false,
+    },
     label: {
       type: [String, Number],
       required: true,
@@ -39,6 +43,12 @@ export default {
       required: false,
       default: '[0-9\-]',
     },
+  },
+  computed: {
+    isInvalid() {
+      // strict comparison, because `undefined` doesn't mean invalid
+      return this.validState === false
+    }
   },
   methods: {
     filterNumeric(e) {

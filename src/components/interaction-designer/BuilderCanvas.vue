@@ -15,13 +15,15 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import lodash from 'lodash'
-import {namespace} from "vuex-class";
-import {IBlock, IFlow} from "@floip/flow-runner";
+import { find, isEqual, cloneDeep, debounce, maxBy, get } from 'lodash'
+import { namespace } from 'vuex-class'
+import { IBlock, IFlow } from '@floip/flow-runner'
+import { IValidationStatus } from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
+const validationVuexNamespace = namespace('validation')
 
 const MARGIN_HEIGHT = 100 //px
 const MARGIN_WIDTH = 100 //px
@@ -33,109 +35,147 @@ const DEBOUNCE_SCROLL_TIMER = 100 //ms
   },
 })
 export default class BuilderCanvas extends Vue {
-    @Prop() block!: IBlock
+  @Prop() block!: IBlock
 
-    @Watch('canvasHeight')
-    onCanvasHeightChanged(newValue: number) {
-      console.debug('canvas height changed to', newValue)
-      this.debounceVerticalScroll()
+  // ###### Validation API Watchers [
+  @Watch('activeFlow', { deep: true, immediate: true })
+  async onActiveFlowChanged(newFlow: IFlow) {
+    console.debug('watch/activeFlow:', 'active flow has changed, validating ...')
+    await this.validate_flow({ flow: newFlow })
+  }
+
+  @Watch('blocksOnActiveFlowForWatcher', { deep: true, immediate: true })
+  async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]) {
+    if (newBlocks.length === 0) {
+      return
     }
 
-    @Watch('canvasWidth')
-    onCanvasWidthChanged(newValue: number) {
-      console.debug('canvas width changed to', newValue)
-      this.debounceHorizontalScroll()
-    }
+    console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed, validating ...')
+    for (let i = 0;  i < newBlocks.length; i++) {
+      const currentNewBlock = newBlocks[i]
+      const currentOldBlock = find(oldBlocks, { 'uuid': currentNewBlock.uuid })
 
-    debounceVerticalScroll = lodash.debounce(function(this: any) { // !important: do not change to arrow function
-      window.scrollTo({
-        top: this.canvasHeight,
-      })
-    }, DEBOUNCE_SCROLL_TIMER)
-
-    debounceHorizontalScroll = lodash.debounce(function(this: any) { // !important: do not change to arrow function
-      window.scrollTo({
-        left: this.canvasWidth,
-      })
-    }, DEBOUNCE_SCROLL_TIMER)
-
-    get blockHeight() {
-      const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
-      if (!blockElementRef) {
-        console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition?.uuid}`)
-        return 150 // temporary dummy height for UI scroll purpose
-      }
-      return (<HTMLElement> (<Vue> blockElementRef[0].$refs['draggable']).$el).offsetHeight
-    }
-
-    get blockWidth() {
-      const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
-
-      if (!blockElementRef) {
-        console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition?.uuid}`)
-        return 110 // temporary dummy width for UI scroll purpose
+      if (isEqual(currentNewBlock, currentOldBlock)) {
+        continue // no changes found
       }
 
-      return (<HTMLElement> (<Vue> blockElementRef[0].$refs['draggable']).$el).offsetWidth
+      await this.validate_block({ block: currentNewBlock })
+    }
+  }
+  // ] ######### end Validation API Watchers
+
+  // ##### Canvas dynamic size watchers [
+  @Watch('canvasHeight')
+  onCanvasHeightChanged(newValue: number) {
+    console.debug('canvas height changed to', newValue)
+    this.debounceVerticalScroll()
+  }
+
+  @Watch('canvasWidth')
+  onCanvasWidthChanged(newValue: number) {
+    console.debug('canvas width changed to', newValue)
+    this.debounceHorizontalScroll()
+  }
+
+  debounceVerticalScroll = debounce(function(this: any) { // !important: do not change to arrow function
+    window.scrollTo({
+      top: this.canvasHeight,
+    })
+  }, DEBOUNCE_SCROLL_TIMER)
+
+  debounceHorizontalScroll = debounce(function(this: any) { // !important: do not change to arrow function
+    window.scrollTo({
+      left: this.canvasWidth,
+    })
+  }, DEBOUNCE_SCROLL_TIMER)
+
+  // ] ######## end canvas dynamic size watchers
+
+  get blocksOnActiveFlowForWatcher() {
+    return cloneDeep(this.activeFlow.blocks) // needed to make comparison between new & old values on watcher
+  }
+
+  get blockHeight() {
+    const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
+    if (!blockElementRef) {
+      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition?.uuid}`)
+      return 150 // temporary dummy height for UI scroll purpose
+    }
+    return (<HTMLElement> (<Vue> blockElementRef[0].$refs['draggable']).$el).offsetHeight
+  }
+
+  get blockWidth() {
+    const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
+
+    if (!blockElementRef) {
+      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition?.uuid}`)
+      return 110 // temporary dummy width for UI scroll purpose
     }
 
-    get blockAtTheLowestPosition() {
-      return lodash.maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.yPosition')
+    return (<HTMLElement> (<Vue> blockElementRef[0].$refs['draggable']).$el).offsetWidth
+  }
+
+  get blockAtTheLowestPosition() {
+    return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.yPosition')
+  }
+
+  get blockAtTheFurthestRightPosition() {
+    return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
+  }
+
+  get windowHeight() {
+    return window.screen.availHeight
+  }
+
+  get windowWidth() {
+    return window.screen.availWidth
+  }
+
+  get canvasHeight() {
+    if (!this.activeFlow.blocks && this.activeFlow.blocks!.length) {
+      return this.windowHeight
     }
 
-    get blockAtTheFurthestRightPosition() {
-      return lodash.maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
+    if (!this.blockAtTheLowestPosition) {
+      console.debug('Interaction Designer', 'Unable to find block at the lowest position')
+      return this.windowHeight
     }
 
-    get windowHeight() {
-      return window.screen.availHeight
+    const yPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.yPosition')
+    const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
+
+    if (scrollHeight < this.windowHeight) {
+      return this.windowHeight
     }
 
-    get windowWidth() {
-      return window.screen.availWidth
+    return scrollHeight
+  }
+
+  get canvasWidth(): number {
+    if (!this.activeFlow.blocks && this.activeFlow.blocks!.length) {
+      return this.windowWidth
     }
 
-    get canvasHeight() {
-      if (!this.activeFlow.blocks && this.activeFlow.blocks!.length) {
-        return this.windowHeight
-      }
-
-      if (!this.blockAtTheLowestPosition) {
-        console.debug('Interaction Designer', 'Unable to find block at the lowest position')
-        return this.windowHeight
-      }
-
-      const yPosition = lodash.get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.yPosition')
-      const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
-
-      if (scrollHeight < this.windowHeight) {
-        return this.windowHeight
-      }
-
-      return scrollHeight
+    if (!this.blockAtTheFurthestRightPosition) {
+      console.debug('Interaction Designer', 'Unable to find block at the furthest right position')
+      return this.windowWidth
     }
 
-    get canvasWidth(): number {
-      if (!this.activeFlow.blocks && this.activeFlow.blocks!.length) {
-        return this.windowWidth
-      }
+    const xPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.xPosition')
+    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
 
-      if (!this.blockAtTheFurthestRightPosition) {
-        console.debug('Interaction Designer', 'Unable to find block at the furthest right position')
-        return this.windowWidth
-      }
-
-      const xPosition = lodash.get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.xPosition')
-      const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
-
-      if (scrollWidth < this.windowWidth) {
-        return this.windowWidth
-      }
-
-      return scrollWidth
+    if (scrollWidth < this.windowWidth) {
+      return this.windowWidth
     }
 
-    @flowVuexNamespace.Getter activeFlow!: IFlow
+    return scrollWidth
+  }
+
+  @flowVuexNamespace.State flows?: IFlow[]
+  @flowVuexNamespace.Getter activeFlow!: IFlow
+
+  @validationVuexNamespace.Action validate_flow!: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_block!: ({ block } : { block: IBlock }) => Promise<IValidationStatus>
 }
 
 export { BuilderCanvas }

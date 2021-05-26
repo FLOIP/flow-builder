@@ -185,25 +185,31 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               </div>
                                
                               <div
-                                class="form-group flow-interaction-timeout"
+                                class="validation-message"
                               >
                                 <div
-                                  class="number-editor"
+                                  class="form-group flow-interaction-timeout"
                                 >
-                                  <label>
-                                    Interaction timeout
-                                  </label>
-                                   
-                                  <div>
-                                    <input
-                                      class="form-control"
-                                      min="0"
-                                      placeholder="Enter value"
-                                      type="number"
-                                    />
+                                  <div
+                                    class="number-editor"
+                                  >
+                                    <label>
+                                      Interaction timeout
+                                    </label>
+                                     
+                                    <div>
+                                      <input
+                                        class="form-control"
+                                        min="0"
+                                        placeholder="Enter value"
+                                        type="number"
+                                      />
+                                    </div>
+                                     
                                   </div>
-                                   
                                 </div>
+                                 
+                                <!---->
                               </div>
                             </div>
                              
@@ -260,6 +266,22 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   Modes
                                 </label>
                                  
+                                <div
+                                  class="checkbox"
+                                >
+                                  <label
+                                    class="font-weight-normal"
+                                  >
+                                    <input
+                                      class="flow-mode-toggle-checkbox"
+                                      type="checkbox"
+                                      value="TEXT"
+                                    />
+                                    
+      TEXT
+    
+                                  </label>
+                                </div>
                                 <div
                                   class="checkbox"
                                 >
@@ -401,7 +423,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                       class="btn-toolbar"
                     >
                       <button
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                       >
                         <i
                           class="glyphicon glyphicon-chevron-up"
@@ -414,7 +436,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                       <!---->
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/trees/1/interaction-designer/edit"
                         title="Click to toggle editing"
                       >
@@ -430,7 +452,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                       <!---->
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/flows/new"
                       >
                         
@@ -440,7 +462,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                        
                       <a
                         aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
                         
@@ -449,7 +471,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                       </a>
                         
                       <div
-                        class="btn-group pull-right mr-2"
+                        class="btn-group ml-auto mr-2"
                       >
                         <!---->
                          
@@ -504,7 +526,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       class="btn-toolbar"
                     >
                       <button
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                       >
                         <i
                           class="glyphicon glyphicon-chevron-up"
@@ -518,7 +540,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         class="btn-group mr-2"
                       >
                         <a
-                          class="btn btn-outline-secondary active"
+                          class="btn btn-secondary active"
                           href="#/trees/1/interaction-designer"
                         >
                           
@@ -537,7 +559,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </div>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2 active"
+                        class="btn btn-secondary mr-2 active"
                         href="#/trees/1/interaction-designer/view"
                         title="Click to toggle editing"
                       >
@@ -550,7 +572,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         class="dropdown mr-2"
                       >
                         <button
-                          class="btn btn-outline-secondary dropdown-toggle"
+                          class="btn btn-secondary dropdown-toggle"
                           data-toggle="dropdown"
                           type="button"
                         >
@@ -735,7 +757,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </div>
                        
                       <button
-                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        class="btn btn-secondary tree-duplicate-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -745,7 +767,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </button>
                        
                       <button
-                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        class="btn btn-secondary tree-delete-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -755,7 +777,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </button>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/flows/new"
                       >
                         
@@ -765,7 +787,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                        
                       <a
                         aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
                         
@@ -795,7 +817,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       </a>
                        
                       <div
-                        class="btn-group pull-right mr-2"
+                        class="btn-group ml-auto mr-2"
                       >
                         <button
                           class="btn btn-primary tree-save-tree"
@@ -858,7 +880,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       class="btn-toolbar"
                     >
                       <button
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                       >
                         <i
                           class="glyphicon glyphicon-chevron-up"
@@ -872,7 +894,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                         class="btn-group mr-2"
                       >
                         <a
-                          class="btn btn-outline-secondary active"
+                          class="btn btn-secondary active"
                           href="#/trees/1/interaction-designer"
                         >
                           
@@ -891,7 +913,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       </div>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2 active"
+                        class="btn btn-secondary mr-2 active"
                         href="#/trees/1/interaction-designer/view"
                         title="Click to toggle editing"
                       >
@@ -904,7 +926,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                         class="dropdown mr-2"
                       >
                         <button
-                          class="btn btn-outline-secondary dropdown-toggle"
+                          class="btn btn-secondary dropdown-toggle"
                           data-toggle="dropdown"
                           type="button"
                         >
@@ -1089,7 +1111,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       </div>
                        
                       <button
-                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        class="btn btn-secondary tree-duplicate-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -1099,7 +1121,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       </button>
                        
                       <button
-                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        class="btn btn-secondary tree-delete-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -1109,7 +1131,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       </button>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/flows/new"
                       >
                         
@@ -1119,7 +1141,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                        
                       <a
                         aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
                         
@@ -1128,7 +1150,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       </a>
                         
                       <div
-                        class="btn-group pull-right mr-2"
+                        class="btn-group ml-auto mr-2"
                       >
                         <button
                           class="btn btn-primary tree-save-tree"
@@ -1211,7 +1233,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       class="btn-toolbar"
                     >
                       <button
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                       >
                         <i
                           class="glyphicon glyphicon-chevron-up"
@@ -1225,7 +1247,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         class="btn-group mr-2"
                       >
                         <a
-                          class="btn btn-outline-secondary active"
+                          class="btn btn-secondary active"
                           href="#/trees/1/interaction-designer"
                         >
                           
@@ -1244,7 +1266,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       </div>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2 active"
+                        class="btn btn-secondary mr-2 active"
                         href="#/trees/1/interaction-designer/view"
                         title="Click to toggle editing"
                       >
@@ -1257,7 +1279,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         class="dropdown mr-2"
                       >
                         <button
-                          class="btn btn-outline-secondary dropdown-toggle"
+                          class="btn btn-secondary dropdown-toggle"
                           data-toggle="dropdown"
                           type="button"
                         >
@@ -1442,7 +1464,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       </div>
                        
                       <button
-                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
+                        class="btn btn-secondary tree-duplicate-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -1452,7 +1474,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       </button>
                        
                       <button
-                        class="btn btn-outline-secondary tree-delete-block mr-2"
+                        class="btn btn-secondary tree-delete-block mr-2"
                         disabled="disabled"
                         type="button"
                       >
@@ -1462,7 +1484,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       </button>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/flows/new"
                       >
                         
@@ -1472,7 +1494,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                        
                       <a
                         aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
                         
@@ -1481,7 +1503,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       </a>
                         
                       <div
-                        class="btn-group pull-right mr-2"
+                        class="btn-group ml-auto mr-2"
                       >
                         <!---->
                          
@@ -1536,7 +1558,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       class="btn-toolbar"
                     >
                       <button
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                       >
                         <i
                           class="glyphicon glyphicon-chevron-up"
@@ -1550,7 +1572,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                         class="btn-group mr-2"
                       >
                         <a
-                          class="btn btn-outline-secondary active"
+                          class="btn btn-secondary active"
                           href="#/trees/1/interaction-designer"
                         >
                           
@@ -1569,7 +1591,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       </div>
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/trees/1/interaction-designer/edit"
                         title="Click to toggle editing"
                       >
@@ -1585,7 +1607,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       <!---->
                        
                       <a
-                        class="btn btn-outline-secondary mr-2"
+                        class="btn btn-secondary mr-2"
                         href="#/flows/new"
                       >
                         
@@ -1595,7 +1617,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                        
                       <a
                         aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
+                        class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                         href="#/"
                       >
                         
@@ -1604,7 +1626,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       </a>
                         
                       <div
-                        class="btn-group pull-right mr-2"
+                        class="btn-group ml-auto mr-2"
                       >
                         <!---->
                          
@@ -1708,130 +1730,166 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                          
                         <fieldset>
                           <div
-                            class="block-name"
+                            class="validation-message"
                           >
                             <div
-                              class="form-group"
+                              class="block-name"
                             >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
-                               
-                              <small
-                                class="text-muted"
+                              <div
+                                class="form-group"
                               >
-                                
-      Only accepts word characters
-    
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-validation-min"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Minimum value (inclusive)
-                              </label>
-                               
-                              <div>
-                                <input
+                                <label>
+                                  Block name
+                                </label>
+                                 
+                                <textarea
                                   class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
+                                  placeholder="Enter a block name"
                                 />
+                                 
+                                <small
+                                  class="text-muted"
+                                >
+                                  
+        Only accepts word characters
+      
+                                </small>
                               </div>
-                               
                             </div>
+                             
+                            <!---->
                           </div>
                            
                           <div
-                            class="form-group block-validation-max"
+                            class="validation-message"
                           >
                             <div
-                              class="number-editor"
+                              class="block-label"
                             >
-                              <label>
-                                Maximum value (inclusive)
-                              </label>
-                               
-                              <div>
-                                <input
+                              <div
+                                class="form-group"
+                              >
+                                <label>
+                                  Block label
+                                </label>
+                                 
+                                <textarea
                                   class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
+                                  placeholder="Enter a block label"
                                 />
+                                 
                               </div>
-                               
                             </div>
+                             
+                            <!---->
                           </div>
                            
                           <div
-                            class="form-group block-max-digits"
+                            class="validation-message"
                           >
                             <div
-                              class="number-editor"
+                              class="block-semantic-label"
                             >
-                              <label>
-                                Maximum digits
-                              </label>
-                               
-                              <div>
-                                <input
+                              <div
+                                class="form-group"
+                              >
+                                <label>
+                                  Block semantic label
+                                </label>
+                                 
+                                <textarea
                                   class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
+                                  placeholder="Enter a block semantic label"
                                 />
+                                 
                               </div>
-                               
                             </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="form-group block-validation-min"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Minimum value (inclusive)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="form-group block-validation-max"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum value (inclusive)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="form-group block-max-digits"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum digits
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
                           </div>
                            
                           <div
@@ -2107,130 +2165,166 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                          
                         <fieldset>
                           <div
-                            class="block-name"
+                            class="validation-message"
                           >
                             <div
-                              class="form-group"
+                              class="block-name"
                             >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
-                               
-                              <small
-                                class="text-muted"
+                              <div
+                                class="form-group"
                               >
-                                
-      Only accepts word characters
-    
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-validation-min"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Minimum value (inclusive)
-                              </label>
-                               
-                              <div>
-                                <input
+                                <label>
+                                  Block name
+                                </label>
+                                 
+                                <textarea
                                   class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
+                                  placeholder="Enter a block name"
                                 />
+                                 
+                                <small
+                                  class="text-muted"
+                                >
+                                  
+        Only accepts word characters
+      
+                                </small>
                               </div>
-                               
                             </div>
+                             
+                            <!---->
                           </div>
                            
                           <div
-                            class="form-group block-validation-max"
+                            class="validation-message"
                           >
                             <div
-                              class="number-editor"
+                              class="block-label"
                             >
-                              <label>
-                                Maximum value (inclusive)
-                              </label>
-                               
-                              <div>
-                                <input
+                              <div
+                                class="form-group"
+                              >
+                                <label>
+                                  Block label
+                                </label>
+                                 
+                                <textarea
                                   class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
+                                  placeholder="Enter a block label"
                                 />
+                                 
                               </div>
-                               
                             </div>
+                             
+                            <!---->
                           </div>
                            
                           <div
-                            class="form-group block-max-digits"
+                            class="validation-message"
                           >
                             <div
-                              class="number-editor"
+                              class="block-semantic-label"
                             >
-                              <label>
-                                Maximum digits
-                              </label>
-                               
-                              <div>
-                                <input
+                              <div
+                                class="form-group"
+                              >
+                                <label>
+                                  Block semantic label
+                                </label>
+                                 
+                                <textarea
                                   class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
+                                  placeholder="Enter a block semantic label"
                                 />
+                                 
                               </div>
-                               
                             </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="form-group block-validation-min"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Minimum value (inclusive)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="form-group block-validation-max"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum value (inclusive)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="form-group block-max-digits"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum digits
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
                           </div>
                            
                           <div
@@ -2501,116 +2595,146 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                          
                         <fieldset>
                           <div
-                            class="block-name"
+                            class="validation-message"
                           >
                             <div
-                              class="form-group"
+                              class="block-name"
                             >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
+                              <div
+                                class="form-group"
+                              >
+                                <label>
+                                  Block name
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block name"
+                                />
+                                 
+                                <small
+                                  class="text-muted"
+                                >
+                                  
+        Only accepts word characters
+      
+                                </small>
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="block-label"
+                            >
+                              <div
+                                class="form-group"
+                              >
+                                <label>
+                                  Block label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="block-semantic-label"
+                            >
+                              <div
+                                class="form-group"
+                              >
+                                <label>
+                                  Block semantic label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block semantic label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="form-group block-max-duration-seconds"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum Duration (seconds)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="form-group block-max-response-characters"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum Response Characters
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
                                
                               <small
                                 class="text-muted"
                               >
                                 
-      Only accepts word characters
+      Unlimited if not defined or set as zero
     
                               </small>
                             </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-max-duration-seconds"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Maximum Duration (seconds)
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
-                              </div>
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-max-response-characters"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Maximum Response Characters
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
-                              </div>
-                               
-                            </div>
                              
-                            <small
-                              class="text-muted"
-                            >
-                              
-    Unlimited if not defined or set as zero
-  
-                            </small>
+                            <!---->
                           </div>
                            
                           <div
@@ -2886,116 +3010,146 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                          
                         <fieldset>
                           <div
-                            class="block-name"
+                            class="validation-message"
                           >
                             <div
-                              class="form-group"
+                              class="block-name"
                             >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
+                              <div
+                                class="form-group"
+                              >
+                                <label>
+                                  Block name
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block name"
+                                />
+                                 
+                                <small
+                                  class="text-muted"
+                                >
+                                  
+        Only accepts word characters
+      
+                                </small>
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="block-label"
+                            >
+                              <div
+                                class="form-group"
+                              >
+                                <label>
+                                  Block label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="block-semantic-label"
+                            >
+                              <div
+                                class="form-group"
+                              >
+                                <label>
+                                  Block semantic label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block semantic label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="form-group block-max-duration-seconds"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum Duration (seconds)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
+                            class="validation-message"
+                          >
+                            <div
+                              class="form-group block-max-response-characters"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum Response Characters
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
                                
                               <small
                                 class="text-muted"
                               >
                                 
-      Only accepts word characters
+      Unlimited if not defined or set as zero
     
                               </small>
                             </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-max-duration-seconds"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Maximum Duration (seconds)
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
-                              </div>
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-max-response-characters"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Maximum Response Characters
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
-                              </div>
-                               
-                            </div>
                              
-                            <small
-                              class="text-muted"
-                            >
-                              
-    Unlimited if not defined or set as zero
-  
-                            </small>
+                            <!---->
                           </div>
                            
                           <div

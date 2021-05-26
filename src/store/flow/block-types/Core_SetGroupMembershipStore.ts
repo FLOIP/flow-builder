@@ -8,6 +8,11 @@ import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUui
 import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
+export interface IGroupOption {
+  id: string;
+  name: string;
+}
+
 export const ADD_KEY = 'add'
 export const REMOVE_KEY = 'remove'
 
@@ -33,7 +38,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semantic_abel: '',
+      semantic_label: '',
       config: {
         group_key: '',
         group_name: '',
@@ -45,10 +50,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async setIsMember({ commit, rootGetters }, action) {
     const activeBlock = rootGetters['builder/activeBlock']
+    let isMember = false
+    if(action) {
+      isMember = action.id === ADD_KEY
+    }
+
     commit('flow/block_updateConfigByPath', {
       blockId: activeBlock.uuid,
       path: 'is_member',
-      value: action === null || action === undefined ? null : (action.id === ADD_KEY),
+      value: isMember,
     }, { root: true })
   },
 }

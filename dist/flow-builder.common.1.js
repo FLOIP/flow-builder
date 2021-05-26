@@ -57,20 +57,20 @@ var string = __webpack_require__("fa73");
 
 var progress_bar_props = Object(utils_props["b" /* makePropsConfigurable */])({
   animated: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], null),
-  label: Object(utils_props["a" /* makeProp */])(props["k" /* PROP_TYPE_STRING */]),
-  labelHtml: Object(utils_props["a" /* makeProp */])(props["k" /* PROP_TYPE_STRING */]),
-  max: Object(utils_props["a" /* makeProp */])(props["h" /* PROP_TYPE_NUMBER_STRING */], null),
-  precision: Object(utils_props["a" /* makeProp */])(props["h" /* PROP_TYPE_NUMBER_STRING */], null),
+  label: Object(utils_props["a" /* makeProp */])(props["l" /* PROP_TYPE_STRING */]),
+  labelHtml: Object(utils_props["a" /* makeProp */])(props["l" /* PROP_TYPE_STRING */]),
+  max: Object(utils_props["a" /* makeProp */])(props["i" /* PROP_TYPE_NUMBER_STRING */], null),
+  precision: Object(utils_props["a" /* makeProp */])(props["i" /* PROP_TYPE_NUMBER_STRING */], null),
   showProgress: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], null),
   showValue: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], null),
   striped: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], null),
-  value: Object(utils_props["a" /* makeProp */])(props["h" /* PROP_TYPE_NUMBER_STRING */], 0),
-  variant: Object(utils_props["a" /* makeProp */])(props["k" /* PROP_TYPE_STRING */])
-}, components["g" /* NAME_PROGRESS_BAR */]); // --- Main component ---
+  value: Object(utils_props["a" /* makeProp */])(props["i" /* PROP_TYPE_NUMBER_STRING */], 0),
+  variant: Object(utils_props["a" /* makeProp */])(props["l" /* PROP_TYPE_STRING */])
+}, components["h" /* NAME_PROGRESS_BAR */]); // --- Main component ---
 // @vue/component
 
 var BProgressBar = /*#__PURE__*/vue["b" /* Vue */].extend({
-  name: components["g" /* NAME_PROGRESS_BAR */],
+  name: components["h" /* NAME_PROGRESS_BAR */],
   mixins: [normalize_slot["a" /* normalizeSlotMixin */]],
   inject: {
     bvProgress: {
@@ -183,17 +183,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var progressBarProps = Object(object["i" /* omit */])(progress_bar_props, ['label', 'labelHtml']);
 var progress_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(_objectSpread(_objectSpread({}, progressBarProps), {}, {
   animated: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
-  height: Object(utils_props["a" /* makeProp */])(props["k" /* PROP_TYPE_STRING */]),
-  max: Object(utils_props["a" /* makeProp */])(props["h" /* PROP_TYPE_NUMBER_STRING */], 100),
-  precision: Object(utils_props["a" /* makeProp */])(props["h" /* PROP_TYPE_NUMBER_STRING */], 0),
+  height: Object(utils_props["a" /* makeProp */])(props["l" /* PROP_TYPE_STRING */]),
+  max: Object(utils_props["a" /* makeProp */])(props["i" /* PROP_TYPE_NUMBER_STRING */], 100),
+  precision: Object(utils_props["a" /* makeProp */])(props["i" /* PROP_TYPE_NUMBER_STRING */], 0),
   showProgress: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
   showValue: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
   striped: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false)
-})), components["f" /* NAME_PROGRESS */]); // --- Main component ---
+})), components["g" /* NAME_PROGRESS */]); // --- Main component ---
 // @vue/component
 
 var BProgress = /*#__PURE__*/vue["b" /* Vue */].extend({
-  name: components["f" /* NAME_PROGRESS */],
+  name: components["g" /* NAME_PROGRESS */],
   mixins: [normalize_slot["a" /* normalizeSlotMixin */]],
   provide: function provide() {
     return {
@@ -270,7 +270,7 @@ var constants_props = __webpack_require__("a723");
 var safe_types = __webpack_require__("ca88");
 
 // EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/slots.js
-var constants_slots = __webpack_require__("9b76");
+var slots = __webpack_require__("9b76");
 
 // EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/array.js
 var array = __webpack_require__("2326");
@@ -290,44 +290,9 @@ var identity = __webpack_require__("6c06");
 // EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/inspect.js
 var inspect = __webpack_require__("7b1e");
 
-// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/props.js
-var utils_props = __webpack_require__("cf75");
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/model.js
+var model = __webpack_require__("58f2");
 
-// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/utils/model.js
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-var model_makeModelMixin = function makeModelMixin(prop) {
-  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-      _ref$type = _ref.type,
-      type = _ref$type === void 0 ? constants_props["a" /* PROP_TYPE_ANY */] : _ref$type,
-      _ref$defaultValue = _ref.defaultValue,
-      defaultValue = _ref$defaultValue === void 0 ? undefined : _ref$defaultValue,
-      _ref$validator = _ref.validator,
-      validator = _ref$validator === void 0 ? undefined : _ref$validator,
-      _ref$event = _ref.event,
-      event = _ref$event === void 0 ? events["m" /* EVENT_NAME_INPUT */] : _ref$event;
-
-  var props = _defineProperty({}, prop, Object(utils_props["a" /* makeProp */])(type, defaultValue, validator)); // @vue/component
-
-
-  var mixin = vue["b" /* Vue */].extend({
-    model: {
-      prop: prop,
-      event: event
-    },
-    props: props
-  });
-  return {
-    mixin: mixin,
-    props: props,
-    prop: prop,
-    event: event
-  };
-};
 // EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/object.js
 var object = __webpack_require__("d82f");
 
@@ -337,9 +302,9 @@ var warn = __webpack_require__("686b");
 // CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/utils/observe-dom.js
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { observe_dom_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function observe_dom_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -412,6 +377,9 @@ var observe_dom_observeDom = function observeDom(el, callback, options)
 
   return obs;
 };
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/props.js
+var utils_props = __webpack_require__("cf75");
+
 // EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/clone-deep.js
 var clone_deep = __webpack_require__("c9a9");
 
@@ -474,7 +442,7 @@ var attrsMixin = cache_makePropCacheMixin('$attrs', 'bvAttrs');
  // --- Props ---
 
 var id_props = {
-  id: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */])
+  id: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */])
 }; // --- Mixin ---
 // @vue/component
 
@@ -543,7 +511,7 @@ var listenOnDocumentMixin = vue["b" /* Vue */].extend({
 
     this[PROP] = {}; // Set up our beforeDestroy handler (client only)
 
-    this.$once(events["v" /* HOOK_EVENT_NAME_BEFORE_DESTROY */], function () {
+    this.$once(events["x" /* HOOK_EVENT_NAME_BEFORE_DESTROY */], function () {
       var items = _this[PROP] || {}; // Immediately delete this[PROP] to prevent the
       // listenOn/Off methods from running (which may occur
       // due to requestAnimationFrame/transition delays)
@@ -553,7 +521,7 @@ var listenOnDocumentMixin = vue["b" /* Vue */].extend({
       Object(object["h" /* keys */])(items).forEach(function (eventName) {
         var handlers = items[eventName] || [];
         handlers.forEach(function (handler) {
-          return Object(utils_events["a" /* eventOff */])(document, eventName, handler, events["u" /* EVENT_OPTIONS_NO_CAPTURE */]);
+          return Object(utils_events["a" /* eventOff */])(document, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
         });
       });
     });
@@ -563,18 +531,18 @@ var listenOnDocumentMixin = vue["b" /* Vue */].extend({
       on ? this.listenOnDocument(eventName, handler) : this.listenOffDocument(eventName, handler);
     },
     listenOnDocument: function listenOnDocument(eventName, handler) {
-      if (this[PROP] && Object(inspect["j" /* isString */])(eventName) && Object(inspect["e" /* isFunction */])(handler)) {
+      if (this[PROP] && Object(inspect["k" /* isString */])(eventName) && Object(inspect["e" /* isFunction */])(handler)) {
         this[PROP][eventName] = this[PROP][eventName] || [];
 
         if (!Object(array["a" /* arrayIncludes */])(this[PROP][eventName], handler)) {
           this[PROP][eventName].push(handler);
-          Object(utils_events["b" /* eventOn */])(document, eventName, handler, events["u" /* EVENT_OPTIONS_NO_CAPTURE */]);
+          Object(utils_events["b" /* eventOn */])(document, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
         }
       }
     },
     listenOffDocument: function listenOffDocument(eventName, handler) {
-      if (this[PROP] && Object(inspect["j" /* isString */])(eventName) && Object(inspect["e" /* isFunction */])(handler)) {
-        Object(utils_events["a" /* eventOff */])(document, eventName, handler, events["u" /* EVENT_OPTIONS_NO_CAPTURE */]);
+      if (this[PROP] && Object(inspect["k" /* isString */])(eventName) && Object(inspect["e" /* isFunction */])(handler)) {
+        Object(utils_events["a" /* eventOff */])(document, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
         this[PROP][eventName] = (this[PROP][eventName] || []).filter(function (h) {
           return h !== handler;
         });
@@ -615,7 +583,7 @@ var listenOnWindowMixin = vue["b" /* Vue */].extend({
       Object(object["h" /* keys */])(items).forEach(function (eventName) {
         var handlers = items[eventName] || [];
         handlers.forEach(function (handler) {
-          return Object(utils_events["a" /* eventOff */])(window, eventName, handler, events["u" /* EVENT_OPTIONS_NO_CAPTURE */]);
+          return Object(utils_events["a" /* eventOff */])(window, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
         });
       });
     }
@@ -625,18 +593,18 @@ var listenOnWindowMixin = vue["b" /* Vue */].extend({
       on ? this.listenOnWindow(eventName, handler) : this.listenOffWindow(eventName, handler);
     },
     listenOnWindow: function listenOnWindow(eventName, handler) {
-      if (env["f" /* IS_BROWSER */] && this[listen_on_window_PROP] && Object(inspect["j" /* isString */])(eventName) && Object(inspect["e" /* isFunction */])(handler)) {
+      if (env["f" /* IS_BROWSER */] && this[listen_on_window_PROP] && Object(inspect["k" /* isString */])(eventName) && Object(inspect["e" /* isFunction */])(handler)) {
         this[listen_on_window_PROP][eventName] = this[listen_on_window_PROP][eventName] || [];
 
         if (!Object(array["a" /* arrayIncludes */])(this[listen_on_window_PROP][eventName], handler)) {
           this[listen_on_window_PROP][eventName].push(handler);
-          Object(utils_events["b" /* eventOn */])(window, eventName, handler, events["u" /* EVENT_OPTIONS_NO_CAPTURE */]);
+          Object(utils_events["b" /* eventOn */])(window, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
         }
       }
     },
     listenOffWindow: function listenOffWindow(eventName, handler) {
-      if (env["f" /* IS_BROWSER */] && this[listen_on_window_PROP] && Object(inspect["j" /* isString */])(eventName) && Object(inspect["e" /* isFunction */])(handler)) {
-        Object(utils_events["a" /* eventOff */])(window, eventName, handler, events["u" /* EVENT_OPTIONS_NO_CAPTURE */]);
+      if (env["f" /* IS_BROWSER */] && this[listen_on_window_PROP] && Object(inspect["k" /* isString */])(eventName) && Object(inspect["e" /* isFunction */])(handler)) {
+        Object(utils_events["a" /* eventOff */])(window, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
         this[listen_on_window_PROP][eventName] = (this[listen_on_window_PROP][eventName] || []).filter(function (h) {
           return h !== handler;
         });
@@ -682,14 +650,14 @@ var decode = decodeURIComponent; // Stringifies an object of query parameters
 // See: https://github.com/vuejs/vue-router/blob/dev/src/util/query.js
 
 var router_stringifyQueryObj = function stringifyQueryObj(obj) {
-  if (!Object(inspect["i" /* isPlainObject */])(obj)) {
+  if (!Object(inspect["j" /* isPlainObject */])(obj)) {
     return '';
   }
 
   var query = Object(object["h" /* keys */])(obj).map(function (key) {
     var value = obj[key];
 
-    if (Object(inspect["k" /* isUndefined */])(value)) {
+    if (Object(inspect["l" /* isUndefined */])(value)) {
       return '';
     } else if (Object(inspect["f" /* isNull */])(value)) {
       return router_encode(key);
@@ -697,7 +665,7 @@ var router_stringifyQueryObj = function stringifyQueryObj(obj) {
       return value.reduce(function (results, value2) {
         if (Object(inspect["f" /* isNull */])(value2)) {
           results.push(router_encode(key));
-        } else if (!Object(inspect["k" /* isUndefined */])(value2)) {
+        } else if (!Object(inspect["l" /* isUndefined */])(value2)) {
           // Faster than string interpolation
           results.push(router_encode(key) + '=' + router_encode(value2));
         }
@@ -728,7 +696,7 @@ var router_parseQuery = function parseQuery(query) {
     var key = decode(parts.shift());
     var value = parts.length > 0 ? decode(parts.join('=')) : null;
 
-    if (Object(inspect["k" /* isUndefined */])(parsed[key])) {
+    if (Object(inspect["l" /* isUndefined */])(parsed[key])) {
       parsed[key] = value;
     } else if (Object(inspect["a" /* isArray */])(parsed[key])) {
       parsed[key].push(value);
@@ -793,12 +761,12 @@ var router_computeHref = function computeHref() {
   } // Fallback to `to` prop (if `to` is a string)
 
 
-  if (Object(inspect["j" /* isString */])(to)) {
+  if (Object(inspect["k" /* isString */])(to)) {
     return to || toFallback;
   } // Fallback to `to.path' + `to.query` + `to.hash` prop (if `to` is an object)
 
 
-  if (Object(inspect["i" /* isPlainObject */])(to) && (to.path || to.query || to.hash)) {
+  if (Object(inspect["j" /* isPlainObject */])(to) && (to.path || to.query || to.hash)) {
     var path = Object(string["c" /* toString */])(to.path);
     var query = router_stringifyQueryObj(to.query);
     var hash = Object(string["c" /* toString */])(to.hash);
@@ -847,18 +815,18 @@ function link_defineProperty(obj, key, value) { if (key in obj) { Object.defineP
 
  // --- Constants ---
 
-var ROOT_EVENT_NAME_CLICKED = Object(utils_events["e" /* getRootEventName */])(components["c" /* NAME_LINK */], 'clicked'); // --- Props ---
+var ROOT_EVENT_NAME_CLICKED = Object(utils_events["e" /* getRootEventName */])(components["d" /* NAME_LINK */], 'clicked'); // --- Props ---
 // `<router-link>` specific props
 
 var routerLinkProps = {
-  activeClass: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  activeClass: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   append: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   event: Object(utils_props["a" /* makeProp */])(constants_props["d" /* PROP_TYPE_ARRAY_STRING */], events["c" /* EVENT_NAME_CLICK */]),
   exact: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  exactActiveClass: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  exactActiveClass: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   replace: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  routerTag: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'a'),
-  to: Object(utils_props["a" /* makeProp */])(constants_props["j" /* PROP_TYPE_OBJECT_STRING */])
+  routerTag: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'a'),
+  to: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_OBJECT_STRING */])
 }; // `<nuxt-link>` specific props
 
 var nuxtLinkProps = {
@@ -875,20 +843,20 @@ var nuxtLinkProps = {
 var link_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(link_objectSpread(link_objectSpread(link_objectSpread({}, nuxtLinkProps), routerLinkProps), {}, {
   active: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   disabled: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  href: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  href: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   // Must be `null` if no value provided
-  rel: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], null),
+  rel: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], null),
   // To support 3rd party router links based on `<router-link>` (i.e. `g-link` for Gridsome)
   // Default is to auto choose between `<router-link>` and `<nuxt-link>`
   // Gridsome doesn't provide a mechanism to auto detect and has caveats
   // such as not supporting FQDN URLs or hash only URLs
-  routerComponentName: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
-  target: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], '_self')
-})), components["c" /* NAME_LINK */]); // --- Main component ---
+  routerComponentName: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  target: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], '_self')
+})), components["d" /* NAME_LINK */]); // --- Main component ---
 // @vue/component
 
 var BLink = /*#__PURE__*/vue["b" /* Vue */].extend({
-  name: components["c" /* NAME_LINK */],
+  name: components["d" /* NAME_LINK */],
   // Mixin order is important!
   mixins: [attrsMixin, listenersMixin, listen_on_root["a" /* listenOnRootMixin */], normalize_slot["a" /* normalizeSlotMixin */]],
   inheritAttrs: false,
@@ -949,7 +917,7 @@ var BLink = /*#__PURE__*/vue["b" /* Vue */].extend({
         rel: rel,
         target: target
       }), {}, {
-        tabindex: disabled ? '-1' : Object(inspect["k" /* isUndefined */])(bvAttrs.tabindex) ? null : bvAttrs.tabindex,
+        tabindex: disabled ? '-1' : Object(inspect["l" /* isUndefined */])(bvAttrs.tabindex) ? null : bvAttrs.tabindex,
         'aria-disabled': disabled ? 'true' : null
       });
     },
@@ -1053,12 +1021,12 @@ var button_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(o
   // Tri-state: `true`, `false` or `null`
   // => On, off, not a toggle
   pressed: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], null),
-  size: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  size: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   squared: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  tag: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'button'),
-  type: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'button'),
-  variant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'secondary')
-})), components["a" /* NAME_BUTTON */]); // --- Helper methods ---
+  tag: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'button'),
+  type: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'button'),
+  variant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'secondary')
+})), components["b" /* NAME_BUTTON */]); // --- Helper methods ---
 // Focus handler for toggle buttons
 // Needs class of 'focus' when focused
 
@@ -1144,7 +1112,7 @@ var computeAttrs = function computeAttrs(props, data) {
 
 
 var BButton = /*#__PURE__*/vue["b" /* Vue */].extend({
-  name: components["a" /* NAME_BUTTON */],
+  name: components["b" /* NAME_BUTTON */],
   functional: true,
   props: button_props,
   render: function render(h, _ref2) {
@@ -1208,69 +1176,9 @@ var BButton = /*#__PURE__*/vue["b" /* Vue */].extend({
     return h(link ? BLink : props.tag, Object(lib_esm["a" /* mergeData */])(data, componentData), children);
   }
 });
-// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/normalize-slot.js
-var utils_normalize_slot = __webpack_require__("365c");
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/components/button/button-close.js
+var button_close = __webpack_require__("f29e");
 
-// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/components/button/button-close.js
-function button_close_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-
- // --- Props ---
-
-var button_close_props = Object(utils_props["b" /* makePropsConfigurable */])({
-  ariaLabel: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'Close'),
-  content: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], '&times;'),
-  disabled: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  textVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */])
-}, components["b" /* NAME_BUTTON_CLOSE */]); // --- Main component ---
-// @vue/component
-
-var BButtonClose = /*#__PURE__*/vue["b" /* Vue */].extend({
-  name: components["b" /* NAME_BUTTON_CLOSE */],
-  functional: true,
-  props: button_close_props,
-  render: function render(h, _ref) {
-    var props = _ref.props,
-        data = _ref.data,
-        slots = _ref.slots,
-        scopedSlots = _ref.scopedSlots;
-    var $slots = slots();
-    var $scopedSlots = scopedSlots || {};
-    var componentData = {
-      staticClass: 'close',
-      class: button_close_defineProperty({}, "text-".concat(props.textVariant), props.textVariant),
-      attrs: {
-        type: 'button',
-        disabled: props.disabled,
-        'aria-label': props.ariaLabel ? String(props.ariaLabel) : null
-      },
-      on: {
-        click: function click(event) {
-          // Ensure click on button HTML content is also disabled
-
-          /* istanbul ignore if: bug in JSDOM still emits click on inner element */
-          if (props.disabled && Object(inspect["d" /* isEvent */])(event)) {
-            Object(utils_events["f" /* stopEvent */])(event);
-          }
-        }
-      }
-    }; // Careful not to override the default slot with innerHTML
-
-    if (!Object(utils_normalize_slot["a" /* hasNormalizedSlot */])(constants_slots["a" /* SLOT_NAME_DEFAULT */], $scopedSlots, $slots)) {
-      componentData.domProps = {
-        innerHTML: props.content
-      };
-    }
-
-    return h('button', Object(lib_esm["a" /* mergeData */])(data, componentData), Object(utils_normalize_slot["b" /* normalizeSlot */])(constants_slots["a" /* SLOT_NAME_DEFAULT */], {}, $scopedSlots, $slots));
-  }
-});
 // EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/components/transition/bv-transition.js
 var bv_transition = __webpack_require__("ce2a");
 
@@ -1305,7 +1213,7 @@ var BVTransporterTarget = /*#__PURE__*/vue["b" /* Vue */].extend({
   // components, which means the next parent of any component rendered inside
   // of this one will be the parent from which is was portal'd
   abstract: true,
-  name: components["m" /* NAME_TRANSPORTER_TARGET */],
+  name: components["n" /* NAME_TRANSPORTER_TARGET */],
   props: {
     // Even though we only support a single root element,
     // VNodes are always passed as an array
@@ -1338,15 +1246,15 @@ var transporter_props = {
   // String: CSS selector,
   // HTMLElement: Element reference
   // Mainly needed for tooltips/popovers inside modals
-  container: Object(utils_props["a" /* makeProp */])([safe_types["c" /* HTMLElement */], constants_props["k" /* PROP_TYPE_STRING */]], 'body'),
+  container: Object(utils_props["a" /* makeProp */])([safe_types["c" /* HTMLElement */], constants_props["l" /* PROP_TYPE_STRING */]], 'body'),
   disabled: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   // This should be set to match the root element type
-  tag: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'div')
+  tag: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'div')
 }; // --- Main component ---
 // @vue/component
 
 var BVTransporter = /*#__PURE__*/vue["b" /* Vue */].extend({
-  name: components["l" /* NAME_TRANSPORTER */],
+  name: components["m" /* NAME_TRANSPORTER */],
   mixins: [normalize_slot["a" /* normalizeSlotMixin */]],
   props: transporter_props,
   watch: {
@@ -1384,7 +1292,7 @@ var BVTransporter = /*#__PURE__*/vue["b" /* Vue */].extend({
       /* istanbul ignore else */
       if (env["f" /* IS_BROWSER */]) {
         var container = this.container;
-        return Object(inspect["j" /* isString */])(container) ? Object(dom["x" /* select */])(container) : container;
+        return Object(inspect["k" /* isString */])(container) ? Object(dom["x" /* select */])(container) : container;
       } else {
         return null;
       }
@@ -1599,7 +1507,7 @@ var ModalManager = /*#__PURE__*/vue["b" /* Vue */].extend({
       if (modal && this.modals.indexOf(modal) === -1) {
         // Add modal to modals array
         this.modals.push(modal);
-        modal.$once(events["v" /* HOOK_EVENT_NAME_BEFORE_DESTROY */], function () {
+        modal.$once(events["x" /* HOOK_EVENT_NAME_BEFORE_DESTROY */], function () {
           _this2.unregisterModal(modal);
         });
       }
@@ -1797,7 +1705,7 @@ function modal_defineProperty(obj, key, value) { if (key in obj) { Object.define
 
  // --- Constants ---
 
-var _makeModelMixin = model_makeModelMixin('visible', {
+var _makeModelMixin = Object(model["a" /* makeModelMixin */])('visible', {
   type: constants_props["e" /* PROP_TYPE_BOOLEAN */],
   defaultValue: false,
   event: events["b" /* EVENT_NAME_CHANGE */]
@@ -1827,35 +1735,35 @@ var OBSERVER_CONFIG = {
 }; // --- Props ---
 
 var modal_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(modal_objectSpread(modal_objectSpread(modal_objectSpread({}, id_props), modelProps), {}, {
-  ariaLabel: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
-  autoFocusButton: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], null,
+  ariaLabel: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  autoFocusButton: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], null,
   /* istanbul ignore next */
   function (value) {
-    return Object(inspect["l" /* isUndefinedOrNull */])(value) || Object(array["a" /* arrayIncludes */])(BUTTONS, value);
+    return Object(inspect["m" /* isUndefinedOrNull */])(value) || Object(array["a" /* arrayIncludes */])(BUTTONS, value);
   }),
-  bodyBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  bodyBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   bodyClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
-  bodyTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  bodyTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   busy: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  buttonSize: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  buttonSize: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   cancelDisabled: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  cancelTitle: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'Cancel'),
-  cancelTitleHtml: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
-  cancelVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'secondary'),
+  cancelTitle: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'Cancel'),
+  cancelTitleHtml: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  cancelVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'secondary'),
   centered: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   contentClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
   dialogClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
-  footerBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
-  footerBorderVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  footerBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  footerBorderVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   footerClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
-  footerTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
-  headerBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
-  headerBorderVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  footerTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  headerBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  headerBorderVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   headerClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
-  headerCloseContent: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], '&times;'),
-  headerCloseLabel: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'Close'),
-  headerCloseVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
-  headerTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  headerCloseContent: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], '&times;'),
+  headerCloseLabel: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'Close'),
+  headerCloseVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  headerTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   // TODO: Rename to `noBackdrop` and deprecate `hideBackdrop`
   hideBackdrop: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   // TODO: Rename to `noFooter` and deprecate `hideFooter`
@@ -1874,24 +1782,24 @@ var modal_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(ob
   noStacking: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   okDisabled: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   okOnly: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  okTitle: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'OK'),
-  okTitleHtml: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
-  okVariant: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'primary'),
+  okTitle: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'OK'),
+  okTitleHtml: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  okVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'primary'),
   // HTML Element, CSS selector string or Vue component instance
-  returnFocus: Object(utils_props["a" /* makeProp */])([safe_types["c" /* HTMLElement */], constants_props["i" /* PROP_TYPE_OBJECT */], constants_props["k" /* PROP_TYPE_STRING */]]),
+  returnFocus: Object(utils_props["a" /* makeProp */])([safe_types["c" /* HTMLElement */], constants_props["j" /* PROP_TYPE_OBJECT */], constants_props["l" /* PROP_TYPE_STRING */]]),
   scrollable: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  size: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'md'),
+  size: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'md'),
   static: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  title: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  title: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   titleClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
-  titleHtml: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */]),
+  titleHtml: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
   titleSrOnly: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  titleTag: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_STRING */], 'h5')
-})), components["d" /* NAME_MODAL */]); // --- Main component ---
+  titleTag: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'h5')
+})), components["e" /* NAME_MODAL */]); // --- Main component ---
 // @vue/component
 
 var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
-  name: components["d" /* NAME_MODAL */],
+  name: components["e" /* NAME_MODAL */],
   mixins: [attrsMixin, idMixin, modelMixin, listenOnDocumentMixin, listen_on_root["a" /* listenOnRootMixin */], listenOnWindowMixin, normalize_slot["a" /* normalizeSlotMixin */], scoped_style["a" /* scopedStyleMixin */]],
   inheritAttrs: false,
   props: modal_props,
@@ -2025,7 +1933,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
         'aria-modal': isVisible ? 'true' : null,
         'aria-label': ariaLabel,
         'aria-labelledby': this.hideHeader || ariaLabel || // TODO: Rename slot to `title` and deprecate `modal-title`
-        !(this.hasNormalizedSlot(constants_slots["h" /* SLOT_NAME_MODAL_TITLE */]) || this.titleHtml || this.title) ? null : this.modalTitleId,
+        !(this.hasNormalizedSlot(slots["i" /* SLOT_NAME_MODAL_TITLE */]) || this.titleHtml || this.title) ? null : this.modalTitleId,
         'aria-describedby': this.modalBodyId
       };
     }
@@ -2045,12 +1953,12 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
     this.zIndex = modalManager.getBaseZIndex(); // Listen for events from others to either open or close ourselves
     // and listen to all modals to enable/disable enforce focus
 
-    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["d" /* NAME_MODAL */], events["r" /* EVENT_NAME_SHOW */]), this.showHandler);
-    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["d" /* NAME_MODAL */], events["l" /* EVENT_NAME_HIDE */]), this.hideHandler);
-    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["d" /* NAME_MODAL */], events["t" /* EVENT_NAME_TOGGLE */]), this.toggleHandler); // Listen for `bv:modal::show events`, and close ourselves if the
+    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["e" /* NAME_MODAL */], events["t" /* EVENT_NAME_SHOW */]), this.showHandler);
+    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["e" /* NAME_MODAL */], events["n" /* EVENT_NAME_HIDE */]), this.hideHandler);
+    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["e" /* NAME_MODAL */], events["v" /* EVENT_NAME_TOGGLE */]), this.toggleHandler); // Listen for `bv:modal::show events`, and close ourselves if the
     // opening modal not us
 
-    this.listenOnRoot(Object(utils_events["e" /* getRootEventName */])(components["d" /* NAME_MODAL */], events["r" /* EVENT_NAME_SHOW */]), this.modalListener); // Initially show modal?
+    this.listenOnRoot(Object(utils_events["e" /* getRootEventName */])(components["e" /* NAME_MODAL */], events["t" /* EVENT_NAME_SHOW */]), this.modalListener); // Initially show modal?
 
     if (this[MODEL_PROP_NAME] === true) {
       this.$nextTick(this.show);
@@ -2112,7 +2020,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
         // If we are in the process of closing, wait until hidden before re-opening
 
         /* istanbul ignore next */
-        this.$once(events["k" /* EVENT_NAME_HIDDEN */], this.show);
+        this.$once(events["m" /* EVENT_NAME_HIDDEN */], this.show);
         /* istanbul ignore next */
 
         return;
@@ -2121,7 +2029,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       this.isOpening = true; // Set the element to return focus to when closed
 
       this.$_returnFocus = this.$_returnFocus || this.getActiveElement();
-      var showEvt = this.buildEvent(events["r" /* EVENT_NAME_SHOW */], {
+      var showEvt = this.buildEvent(events["t" /* EVENT_NAME_SHOW */], {
         cancelable: true
       });
       this.emitEvent(showEvt); // Don't show if canceled
@@ -2146,13 +2054,13 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       }
 
       this.isClosing = true;
-      var hideEvt = this.buildEvent(events["l" /* EVENT_NAME_HIDE */], {
+      var hideEvt = this.buildEvent(events["n" /* EVENT_NAME_HIDE */], {
         cancelable: trigger !== TRIGGER_FORCE,
         trigger: trigger || null
       }); // We emit specific event for one of the three built-in buttons
 
       if (trigger === BUTTON_OK) {
-        this.$emit(events["p" /* EVENT_NAME_OK */], hideEvt);
+        this.$emit(events["r" /* EVENT_NAME_OK */], hideEvt);
       } else if (trigger === BUTTON_CANCEL) {
         this.$emit(events["a" /* EVENT_NAME_CANCEL */], hideEvt);
       } else if (trigger === BUTTON_CLOSE) {
@@ -2209,7 +2117,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       /* istanbul ignore next: commenting out for now until we can test stacking */
       if (modalManager.modalsAreOpen && this.noStacking) {
         // If another modal(s) is already open, wait for it(them) to close
-        this.listenOnRootOnce(Object(utils_events["e" /* getRootEventName */])(components["d" /* NAME_MODAL */], events["k" /* EVENT_NAME_HIDDEN */]), this.doShow);
+        this.listenOnRootOnce(Object(utils_events["e" /* getRootEventName */])(components["e" /* NAME_MODAL */], events["m" /* EVENT_NAME_HIDDEN */]), this.doShow);
         return;
       }
 
@@ -2259,7 +2167,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       // when trying to pre-focus an element
 
       Object(dom["w" /* requestAF */])(function () {
-        _this3.emitEvent(_this3.buildEvent(events["s" /* EVENT_NAME_SHOWN */]));
+        _this3.emitEvent(_this3.buildEvent(events["u" /* EVENT_NAME_SHOWN */]));
 
         _this3.setEnforceFocus(true);
 
@@ -2294,14 +2202,14 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
         //       to the `hidden` event, not just only the `hide` event
 
 
-        _this4.emitEvent(_this4.buildEvent(events["k" /* EVENT_NAME_HIDDEN */]));
+        _this4.emitEvent(_this4.buildEvent(events["m" /* EVENT_NAME_HIDDEN */]));
       });
     },
     emitEvent: function emitEvent(bvEvent) {
       var type = bvEvent.type; // We emit on `$root` first in case a global listener wants to cancel
       // the event first before the instance emits its event
 
-      this.emitOnRoot(Object(utils_events["e" /* getRootEventName */])(components["d" /* NAME_MODAL */], type), bvEvent, bvEvent.componentId);
+      this.emitOnRoot(Object(utils_events["e" /* getRootEventName */])(components["e" /* NAME_MODAL */], type), bvEvent, bvEvent.componentId);
       this.$emit(type, bvEvent);
     },
     // UI event handlers
@@ -2313,14 +2221,14 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       var modal = this.$refs.modal;
 
       var onceModalMouseup = function onceModalMouseup(event) {
-        Object(utils_events["a" /* eventOff */])(modal, 'mouseup', onceModalMouseup, events["u" /* EVENT_OPTIONS_NO_CAPTURE */]);
+        Object(utils_events["a" /* eventOff */])(modal, 'mouseup', onceModalMouseup, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
 
         if (event.target === modal) {
           _this5.ignoreBackdropClick = true;
         }
       };
 
-      Object(utils_events["b" /* eventOn */])(modal, 'mouseup', onceModalMouseup, events["u" /* EVENT_OPTIONS_NO_CAPTURE */]);
+      Object(utils_events["b" /* eventOn */])(modal, 'mouseup', onceModalMouseup, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
     },
     onClickOut: function onClickOut(event) {
       if (this.ignoreBackdropClick) {
@@ -2465,7 +2373,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       this.$_returnFocus = null;
       this.$nextTick(function () {
         // Is el a string CSS selector?
-        el = Object(inspect["j" /* isString */])(el) ? Object(dom["x" /* select */])(el) : el;
+        el = Object(inspect["k" /* isString */])(el) ? Object(dom["x" /* select */])(el) : el;
 
         if (el) {
           // Possibly could be a component reference
@@ -2486,13 +2394,13 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
 
       if (!this.hideHeader) {
         // TODO: Rename slot to `header` and deprecate `modal-header`
-        var $modalHeader = this.normalizeSlot(constants_slots["e" /* SLOT_NAME_MODAL_HEADER */], this.slotScope);
+        var $modalHeader = this.normalizeSlot(slots["f" /* SLOT_NAME_MODAL_HEADER */], this.slotScope);
 
         if (!$modalHeader) {
           var $closeButton = h();
 
           if (!this.hideHeaderClose) {
-            $closeButton = h(BButtonClose, {
+            $closeButton = h(button_close["a" /* BButtonClose */], {
               props: {
                 content: this.headerCloseContent,
                 disabled: this.isTransitioning,
@@ -2504,7 +2412,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
               },
               ref: 'close-button'
             }, // TODO: Rename slot to `header-close` and deprecate `modal-header-close`
-            [this.normalizeSlot(constants_slots["f" /* SLOT_NAME_MODAL_HEADER_CLOSE */])]);
+            [this.normalizeSlot(slots["g" /* SLOT_NAME_MODAL_HEADER_CLOSE */])]);
           }
 
           $modalHeader = [h(this.titleTag, {
@@ -2514,9 +2422,9 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
               id: this.modalTitleId
             },
             // TODO: Rename slot to `title` and deprecate `modal-title`
-            domProps: this.hasNormalizedSlot(constants_slots["h" /* SLOT_NAME_MODAL_TITLE */]) ? {} : Object(html["a" /* htmlOrText */])(this.titleHtml, this.title)
+            domProps: this.hasNormalizedSlot(slots["i" /* SLOT_NAME_MODAL_TITLE */]) ? {} : Object(html["a" /* htmlOrText */])(this.titleHtml, this.title)
           }, // TODO: Rename slot to `title` and deprecate `modal-title`
-          this.normalizeSlot(constants_slots["h" /* SLOT_NAME_MODAL_TITLE */], this.slotScope)), $closeButton];
+          this.normalizeSlot(slots["i" /* SLOT_NAME_MODAL_TITLE */], this.slotScope)), $closeButton];
         }
 
         $header = h('header', {
@@ -2537,13 +2445,13 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
           id: this.modalBodyId
         },
         ref: 'body'
-      }, this.normalizeSlot(constants_slots["a" /* SLOT_NAME_DEFAULT */], this.slotScope)); // Modal footer
+      }, this.normalizeSlot(slots["a" /* SLOT_NAME_DEFAULT */], this.slotScope)); // Modal footer
 
       var $footer = h();
 
       if (!this.hideFooter) {
         // TODO: Rename slot to `footer` and deprecate `modal-footer`
-        var $modalFooter = this.normalizeSlot(constants_slots["d" /* SLOT_NAME_MODAL_FOOTER */], this.slotScope);
+        var $modalFooter = this.normalizeSlot(slots["e" /* SLOT_NAME_MODAL_FOOTER */], this.slotScope);
 
         if (!$modalFooter) {
           var $cancelButton = h();
@@ -2556,13 +2464,13 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
                 disabled: this.cancelDisabled || this.busy || this.isTransitioning
               },
               // TODO: Rename slot to `cancel-button` and deprecate `modal-cancel`
-              domProps: this.hasNormalizedSlot(constants_slots["c" /* SLOT_NAME_MODAL_CANCEL */]) ? {} : Object(html["a" /* htmlOrText */])(this.cancelTitleHtml, this.cancelTitle),
+              domProps: this.hasNormalizedSlot(slots["d" /* SLOT_NAME_MODAL_CANCEL */]) ? {} : Object(html["a" /* htmlOrText */])(this.cancelTitleHtml, this.cancelTitle),
               on: {
                 click: this.onCancel
               },
               ref: 'cancel-button'
             }, // TODO: Rename slot to `cancel-button` and deprecate `modal-cancel`
-            this.normalizeSlot(constants_slots["c" /* SLOT_NAME_MODAL_CANCEL */]));
+            this.normalizeSlot(slots["d" /* SLOT_NAME_MODAL_CANCEL */]));
           }
 
           var $okButton = h(BButton, {
@@ -2572,13 +2480,13 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
               disabled: this.okDisabled || this.busy || this.isTransitioning
             },
             // TODO: Rename slot to `ok-button` and deprecate `modal-ok`
-            domProps: this.hasNormalizedSlot(constants_slots["g" /* SLOT_NAME_MODAL_OK */]) ? {} : Object(html["a" /* htmlOrText */])(this.okTitleHtml, this.okTitle),
+            domProps: this.hasNormalizedSlot(slots["h" /* SLOT_NAME_MODAL_OK */]) ? {} : Object(html["a" /* htmlOrText */])(this.okTitleHtml, this.okTitle),
             on: {
               click: this.onOk
             },
             ref: 'ok-button'
           }, // TODO: Rename slot to `ok-button` and deprecate `modal-ok`
-          this.normalizeSlot(constants_slots["g" /* SLOT_NAME_MODAL_OK */]));
+          this.normalizeSlot(slots["h" /* SLOT_NAME_MODAL_OK */]));
           $modalFooter = [$cancelButton, $okButton];
         }
 
@@ -2679,7 +2587,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
             id: this.modalBackdropId
           }
         }, // TODO: Rename slot to `backdrop` and deprecate `modal-backdrop`
-        this.normalizeSlot(constants_slots["b" /* SLOT_NAME_MODAL_BACKDROP */]));
+        this.normalizeSlot(slots["c" /* SLOT_NAME_MODAL_BACKDROP */]));
       }
 
       $backdrop = h(bv_transition["a" /* BVTransition */], {

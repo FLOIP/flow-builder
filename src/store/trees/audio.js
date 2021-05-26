@@ -162,8 +162,8 @@ export default {
           props: {
             uuid,
             values: {
-              languageId: langId,
-              contentType: SupportedContentType.AUDIO,
+              language_id: langId,
+              content_type: SupportedContentType.AUDIO,
               modes: [SupportedMode.IVR],
               value: description,
             },

@@ -121,21 +121,9 @@ export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass 
 
     // Set values on resource editor
     // TODO: find better way to do this once the resource editor is fully implemented, the goal is to set resources' value correctly. The implementation below is just an
-    const variantSms: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.SMS],
-      contentType: SupportedContentType.TEXT,
-    }
-    const variantUssd: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.USSD],
-      contentType: SupportedContentType.TEXT,
-    }
-    const variantIvr: IResourceDefinitionVariantOverModesFilter = {
-      languageId,
-      modes: [SupportedMode.IVR],
-      contentType: SupportedContentType.AUDIO,
-    }
+    const variantSms: IResourceDefinitionVariantOverModesFilter = { language_id: languageId, modes: [SupportedMode.SMS], content_type: SupportedContentType.TEXT }
+    const variantUssd: IResourceDefinitionVariantOverModesFilter = { language_id: languageId, modes: [SupportedMode.USSD], content_type: SupportedContentType.TEXT }
+    const variantIvr: IResourceDefinitionVariantOverModesFilter = { language_id: languageId, modes: [SupportedMode.IVR], content_type: SupportedContentType.AUDIO }
     // we're assuming this pseudo-variants exist
     this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
     this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
