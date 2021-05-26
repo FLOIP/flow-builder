@@ -29,6 +29,7 @@ import {
 import { discoverContentTypesFor } from '@/store/flow/resource'
 import { computeBlockPositionsFrom } from '@/store/builder'
 import { IFlowsState } from '.'
+import { mergeFlowContainer } from './utils/importHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
@@ -124,6 +125,10 @@ export const mutations: MutationTree<IFlowsState> = {
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
+  async flow_import({ state, getters, dispatch }, { persistRoute, flowContainer }): Promise<IContext | null> {
+    flowContainer = mergeFlowContainer(cloneDeep(getters.activeFlowContainer), flowContainer)
+    return await dispatch('flow_persist', { persistRoute, flowContainer })
+  },
   async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext | null> {
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
