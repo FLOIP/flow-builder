@@ -166,12 +166,14 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Default',
       label: 'Default',
+      test: '',
     }
 
     const errorExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Error',
       label: 'Error',
+      test: '',
     }
 
     await dispatch('createVolatileEmptyChoice', { index: 0 })

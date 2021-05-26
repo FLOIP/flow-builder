@@ -7,6 +7,7 @@
       <block-name-editor :block="block" />
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
+
       <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"

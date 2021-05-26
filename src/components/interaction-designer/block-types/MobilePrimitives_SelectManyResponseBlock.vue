@@ -7,6 +7,7 @@
       <block-name-editor :block="block" />
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
+
       <div class="prompt-resource">
         <resource-editor v-if="promptResource"
                          :label="'flow-builder.prompt' | trans"
@@ -74,7 +75,6 @@ import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEdit
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
-
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
