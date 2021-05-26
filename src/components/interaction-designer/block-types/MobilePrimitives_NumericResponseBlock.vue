@@ -11,7 +11,6 @@
 
       <block-minimum-numeric-editor :block="block" @commitValidationMinimumChange="updateValidationMin"/>
       <block-maximum-numeric-editor :block="block" @commitValidationMaximumChange="updateValidationMax"/>
-
       <block-max-digit-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDigitsChange="updateMaxDigits"/>
 
       <resource-editor v-if="promptResource"
@@ -32,9 +31,8 @@
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
-import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner'
+import { IBlock, IBlockExit, IFlow, IResource } from '@floip/flow-runner'
 import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock'
-import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import NumericStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
 import Lang from '@/lib/filters/lang'
@@ -72,7 +70,7 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
 
     @Prop()readonly flow!: IFlow
 
-    get promptResource(): IResourceDefinition {
+    get promptResource(): IResource {
       return this.resourcesByUuid[this.block.config.prompt]
     }
 
@@ -88,7 +86,7 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
       this.setMaxDigits({ blockId: this.block.uuid, value })
     }
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResource}
 
     @flowVuexNamespace.Getter hasVoiceMode!: boolean
 

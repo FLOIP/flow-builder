@@ -1,8 +1,9 @@
 <template>
   <div class="form-group">
-    <label>{{label}}</label>
+    <label v-if="label">{{label}}</label>
     <textarea
         class="form-control"
+        :class="{ 'is-invalid': isInvalid }"
         :placeholder="placeholder"
         :value="value"
         @keydown="$emit('keydown', $event)"
@@ -26,6 +27,16 @@ export default {
       type: String,
       required: true,
     },
+    validState: {
+      type: Boolean,
+      default: null,
+      required: false,
+    },
   },
+  computed: {
+    isInvalid() {
+      return this.validState === false
+    }
+  }
 }
 </script>

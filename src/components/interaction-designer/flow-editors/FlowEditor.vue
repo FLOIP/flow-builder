@@ -8,7 +8,11 @@
       <div class="row">
           <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
             <flow-label-editor :flow="flow" />
-            <flow-interaction-timeout-editor :flow="flow" />
+            <validation-message
+              :message-key="`flow/${flow.uuid}/interaction_timeout`"
+              #input-control="{ isValid }">
+              <flow-interaction-timeout-editor :flow="flow" :validState="isValid"/>
+            </validation-message>
           </div>
           <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
             <flow-languages-editor
@@ -33,6 +37,7 @@ import FlowInteractionTimeoutEditor from './InteractionTimeoutEditor.vue'
 import FlowLanguagesEditor from './LanguagesEditor.vue'
 import FlowModesEditor from './ModesEditor.vue'
 import { ILanguage, SupportedMode } from "@floip/flow-runner/src/index";
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import { mixins } from "vue-class-component";
 
 const flowVuexNamespace = namespace('flow')
@@ -43,7 +48,8 @@ const builderVuexNamespace = namespace('builder')
     FlowLabelEditor,
     FlowInteractionTimeoutEditor,
     FlowLanguagesEditor,
-    FlowModesEditor
+    FlowModesEditor,
+    ValidationMessage
   },
 })
 class FlowEditor extends mixins(Lang) {
