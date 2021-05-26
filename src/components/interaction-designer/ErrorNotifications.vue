@@ -1,32 +1,32 @@
 <template>
   <main class="error-notifications-wrapper">
-<!--    <section class="alert alert-danger d-flex mb-0" role="alert" v-if="flowValidationErrors.length > 0">-->
+<!--    <section class="alert alert-danger d-flex notification-panel mb-0" role="alert" v-if="flowValidationErrors.length > 0">-->
 <!--      <span class="align-self-center ml-2">You have a validation issue with your flow</span>-->
 <!--      <button type="button" class="btn btn-link text-dark" @click="fixFlowError()">-->
 <!--        Fix Issue-->
 <!--      </button>-->
 <!--    </section>-->
-    <section class="alert alert-danger d-flex" role="alert" v-if="numberOfBlocksWithErrors > 0">
+    <section class="alert alert-danger d-flex notification-panel" role="alert" v-if="numberOfBlocksWithErrors > 0">
       <span class="align-self-center ml-2">
         You have {{numberOfBlocksWithErrors}} block(s) that has validation issue.
       </span>
       <div class="dropdown">
-        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="true">
           Locate blocks to fix issue
           <span class="caret"></span>
         </button>
         <ul class="notification dropdown-menu" aria-labelledby="dropdownMenu1">
           <li v-for="(status, key) in blockValidationStatuses">
-            <div class="card card-deck" v-for="error in status.ajvErrors">
-              <div class="card-body">
-                <div class="d-flex justify-content-between">
-                  <b>{{ (status.type).split('.')[1] }}</b>
-                  <button type="button" class="btn btn-link text-dark" @click="fixBlockError(key, error.dataPath)">
-                    Fix Issue
-                  </button>
-                </div>
-                <span class="error-message">{{ error.dataPath }} - {{ error.message }}</span>
+            <div class="card" >
+              <div class="card-title m-0 p-2">
+                {{ (status.type).split('.')[1] }}
+              </div>
+              <div class="card-body d-flex justify-content-between" v-for="error in status.ajvErrors">
+                <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
+                <button type="button" class="btn btn-link" @click="fixBlockError(key, error.dataPath)">
+                  Fix Issue
+                </button>
               </div>
             </div>
           </li>
@@ -94,10 +94,14 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
   z-index: 2 * 10;
 }
 
+.notification-panel {
+  padding: 5px 10px;
+}
+
 .notification {
   width: 500px;
   padding: 0;
-  max-height: 500px;
+  max-height: 400px;
   overflow-y: scroll;
 }
 
@@ -105,7 +109,10 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
   background: #F8F2F2;
 }
 
-.error-message {
-  color: #f96b6d;
+.card-body {
+  padding-top: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 </style>
