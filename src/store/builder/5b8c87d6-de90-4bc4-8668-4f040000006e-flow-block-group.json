@@ -1,0 +1,96 @@
+{
+  "specification_version": "flow spec version",
+  "uuid": "container uuid",
+  "name": "container name",
+  "description": "container description",
+  "vendor_metadata": {},
+  "flows": [
+    {
+      "uuid": "463580a6-ff3a-4e43-a2be-4265cc33dd91",
+      "org_id": "",
+      "name": "",
+      "label": "",
+      "last_modified": "c",
+      "interaction_timeout": 30,
+      "vendor_metadata": {},
+      "supported_modes": [
+        "SMS",
+        "USSD",
+        "IVR"
+      ],
+      "languages": [],
+      "blocks": [
+        {
+          "uuid": "31570470-cb83-436a-97d6-5a0ce471280e",
+          "vendor_metadata": {
+            "io_viamo": {
+              "uiData": {
+                "xPosition": 390,
+                "yPosition": 275
+              }
+            }
+          },
+          "type": "Core.SetContactProperty",
+          "name": "",
+          "label": "",
+          "semantic_label": "",
+          "config": {
+            "set_contact_property": {
+              "property_key": "name_3",
+              "property_value": ""
+            }
+          },
+          "exits": [
+            {
+              "uuid": "e41f9b81-165f-4fa7-9c93-7870d93ae5c4",
+              "tag": "Default",
+              "label": "Default",
+              "default": true,
+              "config": {}
+            }
+          ]
+        },
+        {
+          "uuid": "bc3da62c-f036-4ec6-b157-5c43ac44b3db",
+          "vendor_metadata": {
+            "io_viamo": {
+              "uiData": {
+                "xPosition": 844,
+                "yPosition": 250
+              }
+            }
+          },
+          "type": "Core.SetGroupMembership",
+          "name": "",
+          "label": "",
+          "semantic_abel": "",
+          "config": {
+            "group_key": 988,
+            "group_name": "Group 3",
+            "is_member": null
+          },
+          "exits": [
+            {
+              "uuid": "c0152ecc-bd8b-465a-9fd7-58c8039cca96",
+              "tag": "Default",
+              "label": "Default",
+              "default": true,
+              "config": {}
+            }
+          ]
+        }
+      ],
+      "first_block_id": "31570470-cb83-436a-97d6-5a0ce471280e"
+    }
+  ],
+  "resources": [
+    {
+      "uuid": "7aa63f91-1eeb-466b-a27d-4fdee496a2e9",
+      "values": []
+    },
+    {
+      "uuid": "ecb48341-5134-4a34-a75f-004fd976b369",
+      "values": []
+    }
+  ]
+}

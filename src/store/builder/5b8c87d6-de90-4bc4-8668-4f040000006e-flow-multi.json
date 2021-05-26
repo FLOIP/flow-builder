@@ -1,0 +1,44 @@
+{
+  "specification_version": "flow spec version",
+  "uuid": "container uuid",
+  "name": "container name",
+  "description": "container description",
+  "vendor_metadata": {},
+  "flows": [
+    {},
+    {
+      "uuid": "5b8c87d6-de90-4bc4-8668-4f040000006e",
+      "name": "Clipboard Shortcut Tree For Backtracking",
+      "label": "",
+      "last_modified": "2019-10-10 23:46:30.000000+00:00",
+      "interaction_timeout": 172800,
+      "supported_modes": [
+        "sms",
+        "ivr",
+        "ussd"
+      ],
+      "languages": [
+        {
+          "id": "22",
+          "label": "English",
+          "iso_639_3": "EN"
+        },
+        {
+          "id": "23",
+          "label": "Esperanto",
+          "iso_639_3": "EN"
+        }
+      ],
+      "vendor_metadata": {
+        "io_viamo": {
+          "orgId": "1008107874829627392",
+          "treeId": "116"
+        }
+      },
+      "blocks": [
+      ]
+    }
+  ],
+  "resources": [
+  ]
+}

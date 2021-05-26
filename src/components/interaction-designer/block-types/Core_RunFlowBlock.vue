@@ -8,19 +8,21 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <div class="form-group">
-        <label>{{ 'flow-builder.destination-flow' | trans }}</label>
+      <validation-message :message-key="`block/${block.uuid}/config/flow_id`" #input-control="{ isValid }">
+        <div class="form-group">
+          <label>{{ 'flow-builder.destination-flow' | trans }}</label>
+          <select class="form-control" v-model="destinationFlowId" :class="{ 'is-invalid': isValid === false }">
+            <option value="">
+              {{ 'flow-builder.none-selected' | trans }}
+            </option>
+            <option v-for="(flow, i) in otherFlows"
+                :value="flow.uuid">
+              {{ flow.name }}
+            </option>
+          </select>
+        </div>
+      </validation-message>
 
-        <select class="form-control" v-model="destinationFlowId">
-          <option value="">
-            {{ 'flow-builder.none-selected' | trans }}
-          </option>
-          <option v-for="(flow, i) in otherFlows"
-              :value="flow.uuid">
-            {{ flow.name }}
-          </option>
-        </select>
-      </div>
       <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
@@ -46,6 +48,7 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -57,6 +60,7 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    ValidationMessage
   },
 })
 class Core_RunAnotherFlowBlock extends mixins(Lang) {
