@@ -23,16 +23,11 @@ import { Component, Prop } from 'vue-property-decorator';
 import {Getter, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang';
 import { find } from 'lodash'
+import { IContactPropertyOption } from '../../../store/flow/block-types/Core_SetContactPropertyStore'
 import { mixins } from "vue-class-component";
 import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const flowVuexNamespace = namespace('flow')
-
-interface IContactPropertyOption {
-  id: string
-  name: string
-  displayLabel: string
-}
 
 @Component<any>({
   components: {

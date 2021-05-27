@@ -84,6 +84,8 @@ export default {
 
     interactiveBlockClasses: ({ ui }, getters, rootState) => lodash.pickBy(ui.blockClasses, (value, key) => value.is_interactive),
 
+    blockClasses: ({ ui }) => lodash.keys(ui.blockClasses),
+
     interactiveBlocksInTree: ({ tree }, { interactiveBlockClasses }, rootState) => lodash.filter(tree.blocks, (b) => lodash.includes(Object.keys(interactiveBlockClasses), b.type)),
 
     isEditable: ({ ui }) => !!ui.isEditable,

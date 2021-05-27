@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label>{{label}}</label>
+    <label v-if="label">{{label}}</label>
     <textarea
         class="form-control"
         :class="{ 'is-invalid': isInvalid }"
