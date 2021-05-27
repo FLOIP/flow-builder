@@ -451,7 +451,11 @@ export default {
 
     selectBlock() {
       const { block: { uuid: blockId } } = this
-      this.activateBlock({ blockId })
+      const routerName = this.$route.meta.isSidebarShown ? 'block-selected-details' : 'block-selected'
+      this.$router.history.replace({
+        name: routerName,
+        params: { blockId },
+      })
     },
   },
 }
