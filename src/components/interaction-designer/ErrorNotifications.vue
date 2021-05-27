@@ -110,9 +110,10 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
 }
 
 .card-body {
-  padding-top: 0;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding: 0 0.5rem;
+}
+
+.card-title {
+  padding-bottom: 0 !important;
 }
 </style>
