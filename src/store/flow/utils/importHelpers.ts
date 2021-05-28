@@ -12,7 +12,7 @@ import {
   cloneDeep,
 } from 'lodash'
 
-export const updateResourcesForLanguageMatch = function (
+export function updateResourcesForLanguageMatch(
   resources: IResource[], oldId: string, newId: string,
 ): IResource[] {
   return resources.map((resource) => {
@@ -28,7 +28,7 @@ export const updateResourcesForLanguageMatch = function (
   })
 }
 
-const replaceResourcesWhenNecessary = function (
+export function replaceResourcesWhenNecessary(
   existingResources: IResource[], newResources: IResource[],
 ): IResource[] {
   const newExistingResources = cloneDeep(existingResources)
@@ -53,7 +53,7 @@ const replaceResourcesWhenNecessary = function (
 // We warn this will happen in the importer
 // For now we don't care about flow container uuid collisions
 // ...as we aren't quite sure on the role of flow container yet
-export const mergeFlowContainer = function (
+export function mergeFlowContainer(
   existingFlowContainer: IContext, newFlowContainer: IContext,
 ): IContext {
   const newExistingFlowContainer = cloneDeep(existingFlowContainer)
@@ -78,34 +78,34 @@ export const mergeFlowContainer = function (
   return newExistingFlowContainer
 }
 
-export const checkSingleFlowOnly = function (flowContainer: IContext) {
+export function checkSingleFlowOnly(flowContainer: IContext) {
   if (get(flowContainer, 'flows', []).length !== 1) {
     return false
   }
   return true
 }
 
-export const detectedLanguageChanges = function (
+export function detectedLanguageChanges(
   { flowContainer, oldFlowContainer }:
   { flowContainer: IContext; oldFlowContainer: IContext | null},
 ) {
   return !isEqual(get(flowContainer, 'flows[0].languages'), get(oldFlowContainer, 'flows[0].languages'))
 }
-export const detectedPropertyChanges = function (
+export function detectedPropertyChanges(
   { newPropertyBlocks, oldPropertyBlocks }:
   { newPropertyBlocks: IBlock[]; oldPropertyBlocks: IBlock[] },
 ) {
   return !isEqual(newPropertyBlocks, oldPropertyBlocks)
 }
-export const detectedGroupChanges = function (
+export function detectedGroupChanges(
   { newGroupBlocks, oldGroupBlocks }: { newGroupBlocks: IBlock[]; oldGroupBlocks: IBlock[] },
 ) {
   return !isEqual(newGroupBlocks, oldGroupBlocks)
 }
 
-export const getPropertyBlocks = function (flowContainer: IContext) {
+export function getPropertyBlocks(flowContainer: IContext) {
   return filter(get(flowContainer, 'flows[0].blocks'), (block) => block.type === 'Core.SetContactProperty')
 }
-export const getGroupBlocks = function (flowContainer: IContext) {
+export function getGroupBlocks(flowContainer: IContext) {
   return filter(get(flowContainer, 'flows[0].blocks'), (block) => block.type === 'Core.SetGroupMembership')
 }
