@@ -49,7 +49,7 @@ import Lang from '@/lib/filters/lang'
 import Component, { mixins } from "vue-class-component";
 import { namespace } from 'vuex-class'
 import { IBlock } from '@floip/flow-runner'
-import {forEach, size} from 'lodash'
+import { size } from 'lodash'
 const flowVuexNamespace = namespace('flow')
 
 @Component({})
