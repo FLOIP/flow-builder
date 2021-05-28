@@ -273,7 +273,7 @@ export default {
     ]),
 
     ...mapActions('flow', [
-      'flow_duplicateBlock'
+      'flow_duplicateBlock',
     ]),
 
     ...mapMutations('builder', ['activateBlock']),
