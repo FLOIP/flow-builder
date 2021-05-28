@@ -392,8 +392,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @Getter isFeatureTreeSendEnabled!: boolean
   @Getter isFeatureTreeDuplicateEnabled!: boolean
   @Getter isFeatureViewResultsEnabled!: boolean
-  @Getter isFeatureUpdateInteractionTotalsEnabled!: boolean
   @Getter isFeatureSimulatorEnabled!: boolean
+  @Getter isFeatureUpdateInteractionTotalsEnabled!: boolean
   @Getter isResourceEditorEnabled!: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
   @Action attemptSaveTree!: void
@@ -417,7 +417,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
 
   // Clipboard
-  @clipboardVuexNamespace.Action setSimulatorActive: (value: boolean) => void
+  @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
 }
 </script>
 

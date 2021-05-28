@@ -2,7 +2,7 @@
     <div>
       <div class="d-flex justify-content-between">
         <slot name="title"></slot>
-        <i v-if="!isFocused && !isComplete" @click="editBlock"
+        <i v-if="!isFocused && !isComplete" @click="editBlockCommon"
            class="glyphicon glyphicon-pencil cursor-pointer"></i>
       </div>
       <slot name="content"></slot>
@@ -12,63 +12,25 @@
           :is-focused="isFocused"
           :on-next-clicked="submitAnswer"
           :is-block-interaction="isBlockInteraction"
-          :on-cancel-clicked="onCancel"
+          :on-cancel-clicked="onCancelCommon"
       />
     </div>
 </template>
 
-<script>
-import { IContext } from '@floip/flow-runner'
-import { mapActions, mapGetters } from 'vuex'
+<script lang="ts">
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
+import Component, { mixins } from 'vue-class-component'
+import Lang from '@/lib/filters/lang'
+import { PromptKindMixin } from '@/components/interaction-designer/clipboard/shared/PromptKindMixin'
 
-export default {
+@Component({
   components: {
-    BlockActionButtons,
+    BlockActionButtons
   },
-  props: {
-    // TODO: use class inheritance to avoid repeating code when we transform this into vue-class` based component
-    context: IContext,
-    index: Number,
-    isComplete: Boolean,
-    goNext: Function,
-    onEditComplete: Function,
-  },
-  data() {
-    return {
-      isBlockInteraction: false,
-    }
-  },
-  computed: {
-    ...mapGetters('clipboard', ['isBlockFocused', 'getBlockPrompt']),
-    isFocused() {
-      return this.isBlockFocused(this.index)
-    },
-    prompt() {
-      return this.getBlockPrompt(this.index)
-    },
-  },
-  methods: {
-    ...mapActions('clipboard', ['setIsFocused', 'setLastBlockUnEditable', 'setLastBlockEditable']),
-    async submitAnswer() {
-      if (this.isBlockInteraction) {
-        await this.onEditComplete(this.index)
-        this.isBlockInteraction = false
-      }
-      this.prompt.value = null
-      this.setIsFocused({ index: this.index, value: false })
-      this.goNext()
-    },
-    editBlock() {
-      this.setIsFocused({ index: this.index, value: true })
-      this.setLastBlockUnEditable()
-      this.isBlockInteraction = true
-    },
-    onCancel() {
-      this.setLastBlockEditable()
-      this.setIsFocused({ index: this.index, value: false })
-      this.isBlockInteraction = false
-    },
-  },
+})
+export default class Message extends mixins(Lang, PromptKindMixin) {
+  async submitAnswer() {
+    await this.submitAnswerCommon(null)
+  }
 }
 </script>
