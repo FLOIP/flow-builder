@@ -65,7 +65,6 @@ export const getters: GetterTree<IValidationState, IRootState> = {
     })
     return accumulator
   },
-  validationStatuses: state => state.validationStatuses,
 }
 
 export const mutations: MutationTree<IValidationState> = {
