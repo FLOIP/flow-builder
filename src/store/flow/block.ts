@@ -9,7 +9,7 @@ import {
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { defaults, set } from 'lodash'
+import { defaults, set, forEach } from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
@@ -142,8 +142,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  block_select({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
-    console.log('block_select')
+  async block_select({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
+    state.selectedBlocks.push(blockId)
     commit('block_updateVendorMetadataByPath', {
       blockId,
       path: 'io_viamo.uiData.isSelected',
@@ -151,14 +151,20 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  block_deselect({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
-    console.log('block_deselect')
+  async block_deselect({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
+    state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId) // remove it
     commit('block_updateVendorMetadataByPath', {
       blockId,
       path: 'io_viamo.uiData.isSelected',
       value: false
     })
   },
+
+  async block_clearMultiSelection({ state, dispatch }) {
+    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
+      dispatch('block_deselect', { blockId })
+    })
+  }
 }
 
 export interface IDeepBlockExitIdWithinFlow {
