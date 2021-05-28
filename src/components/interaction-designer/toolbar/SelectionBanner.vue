@@ -4,38 +4,42 @@
       <div class="mr-3">
         {{ 'flow-builder.selected-x-blocks' | trans({ x: countSelectedBlocks }) }}.
       </div>
-      <div class="mr-3" v-if="deleting">
-        <b>{{ 'flow-builder.confirmation-for-delete-selection' | trans }}</b>
+
+      <!--Main multiselect actions-->
+      <div v-if="!deleting">
+        <button
+          class="btn btn-danger btn-sm mr-2"
+          @click="deleting = true">
+          <font-awesome-icon :icon="['far', 'trash-alt']"/>
+          {{ 'flow-builder.delete' | trans }}
+        </button>
+
+        <button class="btn btn-outline-dark btn-sm mr-2"
+                @click="handleMultipleDuplicate">
+          <font-awesome-icon :icon="['far', 'clone']"/>
+          {{ 'flow-builder.duplicate' | trans }}
+        </button>
+
+        <button class="btn btn-outline-dark btn-sm ml-4"
+                @click="flow_clearMultiSelection">
+          {{ 'flow-builder.clear-selection' | trans }}
+        </button>
       </div>
 
-      <button
-        class="btn btn-danger btn-sm"
-        v-if="!deleting"
-        @click="deleting = true">
-        <font-awesome-icon
-          :icon="['far', 'trash-alt']"
-          class="fa-btn"
-        />
-        {{ 'flow-builder.delete' | trans }}
-      </button>
+      <!--Delete confirmation-->
+      <div v-if="deleting">
+        <b class="mr-3">{{ 'flow-builder.confirmation-for-delete-selection' | trans }}</b>
 
-      <button class="btn btn-outline-dark btn-sm mr-2"
-              v-if="deleting"
-              @click="deleting = false">
-        {{ 'flow-builder.no-cancel' | trans }}
-      </button>
+        <button class="btn btn-outline-dark btn-sm mr-2"
+                @click="deleting = false">
+          {{ 'flow-builder.no-cancel' | trans }}
+        </button>
 
-      <button class="btn btn-danger btn-sm mr-2"
-              v-if="deleting"
-              @click="confirmMultipleDeletion">
-        {{ 'flow-builder.yes-delete' | trans }}
-      </button>
-
-      <button class="btn btn-outline-dark btn-sm ml-4"
-              v-if="!deleting"
-              @click="flow_clearMultiSelection">
-        {{ 'flow-builder.clear-selection' | trans }}
-      </button>
+        <button class="btn btn-danger btn-sm mr-2"
+                @click="confirmMultipleDeletion">
+          {{ 'flow-builder.yes-delete' | trans }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -61,8 +65,14 @@ export default class SelectionBanner extends mixins(Lang) {
     this.deleting = false
   }
 
+  handleMultipleDuplicate() {
+    this.flow_duplicateAllSelectedBlocks()
+    this.flow_clearMultiSelection()
+  }
+
   @flowVuexNamespace.State selectedBlocks!: IBlock['uuid'][]
   @flowVuexNamespace.Action flow_clearMultiSelection!: () => void
   @flowVuexNamespace.Action flow_removeAllSelectedBlocks!: () => void
+  @flowVuexNamespace.Action flow_duplicateAllSelectedBlocks!: () => void
 }
 </script>

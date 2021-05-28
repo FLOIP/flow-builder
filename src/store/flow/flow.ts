@@ -347,6 +347,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     state.selectedBlocks = []
   },
+
+  async flow_duplicateAllSelectedBlocks({ state, dispatch }) {
+    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
+      dispatch('flow_duplicateBlock', { blockId })
+    })
+  },
 }
 
 export const DEFAULT_MODES = [
