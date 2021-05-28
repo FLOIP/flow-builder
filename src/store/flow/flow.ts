@@ -333,6 +333,20 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     return duplicatedBlock
   },
+
+  async flow_clearMultiSelection({ state, dispatch }) {
+    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
+      dispatch('block_deselect', { blockId })
+    })
+  },
+
+  async flow_removeAllSelectedBlocks({ state, dispatch }) {
+    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
+      dispatch('flow_removeBlock', { blockId })
+    })
+
+    state.selectedBlocks = []
+  },
 }
 
 export const DEFAULT_MODES = [

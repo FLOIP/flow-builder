@@ -5,7 +5,7 @@
         {{ 'flow-builder.selected-x-blocks' | trans({ x: countSelectedBlocks }) }}.
       </div>
       <div class="mr-3" v-if="deleting">
-        <b>Are you sure you want to delete your selection ?</b>
+        <b>{{ 'flow-builder.confirmation-for-delete-selection' | trans }}</b>
       </div>
 
       <button
@@ -22,18 +22,18 @@
       <button class="btn btn-outline-dark btn-sm mr-2"
               v-if="deleting"
               @click="deleting = false">
-        No, cancel
+        {{ 'flow-builder.no-cancel' | trans }}
       </button>
 
       <button class="btn btn-danger btn-sm mr-2"
               v-if="deleting"
-              @click="">
-        Yes, delete
+              @click="confirmMultipleDeletion">
+        {{ 'flow-builder.yes-delete' | trans }}
       </button>
 
       <button class="btn btn-outline-dark btn-sm ml-4"
               v-if="!deleting"
-              @click="block_clearMultiSelection">
+              @click="flow_clearMultiSelection">
         {{ 'flow-builder.clear-selection' | trans }}
       </button>
     </div>
@@ -57,10 +57,12 @@ export default class SelectionBanner extends mixins(Lang) {
   }
 
   confirmMultipleDeletion() {
-    this.deleting = true
+    this.flow_removeAllSelectedBlocks()
+    this.deleting = false
   }
 
   @flowVuexNamespace.State selectedBlocks!: IBlock['uuid'][]
-  @flowVuexNamespace.Action block_clearMultiSelection!: void
+  @flowVuexNamespace.Action flow_clearMultiSelection!: () => void
+  @flowVuexNamespace.Action flow_removeAllSelectedBlocks!: () => void
 }
 </script>
