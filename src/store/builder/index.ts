@@ -1,5 +1,5 @@
 import {
-  cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get, filter, union,
+  cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get, filter, union, includes
 } from 'lodash'
 import Vue from 'vue'
 import {
@@ -369,7 +369,7 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   ]
 }
 
-export function computeBlockPositionsFrom(block?: IBlock | null) {
+export function computeBlockUiData(block?: IBlock | null) {
   const xDelta = 160
   const yDelta = 180
 
@@ -382,7 +382,11 @@ export function computeBlockPositionsFrom(block?: IBlock | null) {
     yPosition = viewPortCenter.y
   }
 
-  return { xPosition: xPosition + xDelta, yPosition: yPosition + yDelta }
+  return {
+    xPosition: xPosition + xDelta,
+    yPosition: yPosition + yDelta,
+    isSelected: false,
+  }
 }
 
 export function getViewportCenter() {

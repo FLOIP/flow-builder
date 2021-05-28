@@ -157,7 +157,7 @@ import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
-import { computeBlockPositionsFrom } from '@/store/builder'
+import { computeBlockUiData } from '@/store/builder'
 import { VBTooltipPlugin } from 'bootstrap-vue'
 import Component, { mixins } from 'vue-class-component'
 import { Action, Getter, namespace, State, Mutation } from 'vuex-class'
@@ -272,7 +272,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
       vendor_metadata: {
         io_viamo: {
-          uiData: computeBlockPositionsFrom(this.activeBlock),
+          uiData: computeBlockUiData(this.activeBlock),
         },
       },
     }) // todo push out to intx-designer

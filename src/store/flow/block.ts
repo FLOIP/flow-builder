@@ -69,6 +69,9 @@ export const mutations: MutationTree<IFlowsState> = {
   block_updateConfigByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
     set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, path, value);
   },
+  block_updateVendorMetadataByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
+    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).vendor_metadata!, path, value);
+  },
   block_setBlockExitDestinationBlockId(state, { blockId, exitId, destinationBlockId }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block)
@@ -136,6 +139,24 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId: first.blockId,
       exitId: first.exitId,
       destinationBlockId: secondDestinationBlockId,
+    })
+  },
+
+  block_select({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
+    console.log('block_select')
+    commit('block_updateVendorMetadataByPath', {
+      blockId,
+      path: 'io_viamo.uiData.isSelected',
+      value: true
+    })
+  },
+
+  block_deselect({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
+    console.log('block_deselect')
+    commit('block_updateVendorMetadataByPath', {
+      blockId,
+      path: 'io_viamo.uiData.isSelected',
+      value: false
     })
   },
 }
