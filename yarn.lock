@@ -16520,13 +16520,6 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-violation-comments-to-bitbucket-cloud-command-line@^1.26.0:
-  version "1.26.0"
-  resolved "https://registry.yarnpkg.com/violation-comments-to-bitbucket-cloud-command-line/-/violation-comments-to-bitbucket-cloud-command-line-1.26.0.tgz#f109eecc885254b363a027b498897738fad62b06"
-  integrity sha512-LYMjqvTXh5lR8NyYx5YYABr/0/VAXjtXMvWQ+g8kZZTs9Pn42H3rJCfhtx5pvBuNYQloYNZ/Q7EYMqCs3qKqtg==
-  dependencies:
-    shelljs "^0.7.5"
-
 violation-comments-to-github-command-line@^1.19.0:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/violation-comments-to-github-command-line/-/violation-comments-to-github-command-line-1.19.0.tgz#9223300df879ed291497ba4fbb9e47bf0796acd4"

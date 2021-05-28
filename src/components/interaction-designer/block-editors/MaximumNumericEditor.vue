@@ -1,6 +1,6 @@
 <template>
   <validation-message :message-key="`block/${block.uuid}/config/validation_maximum`" #input-control="{ isValid }">
-    <div class="form-group block-validation-max">
+    <div class="form-group block-validation-max" :id="`${block.uuid}.config.validationMaximum`">
       <numeric-editor v-model.number="maxValue"
           :regex-numeric-filtering="'[0-9]'"
           :label="'flow-builder.maximum-value-(inclusive)' | trans"

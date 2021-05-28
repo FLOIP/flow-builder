@@ -2,7 +2,14 @@
   <div v-if="activeFlow" class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
-    <div class="tree-sidebar-container">
+    <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}" :key="activeBlock && activeBlock.uuid">
+      <div class="sidebar-cue" :class="{'sidebar-close': $route.meta.isSidebarShown}" @click="showOrHideSidebar">
+        <i class="glyphicon"
+           :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
+                  'glyphicon-resize-small': $route.meta.isSidebarShown}">
+        </i>
+      </div>
+
       <div v-if="isSimulatorActive" class="tree-sidebar">
         <clipboard-root />
       </div>
@@ -70,7 +77,7 @@ import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBu
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
-import { SupportedMode } from '@floip/flow-runner'
+import { scrollBehavior, scrollBlockIntoView } from '@/router'
 
 // import '../TreeDiffLogger'
 
@@ -218,7 +225,21 @@ export default {
     this.deselectBlocks()
     this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
 
+    setTimeout(() => {
+      const { blockId, field } = this.$route.params
+      if (blockId) {
+        this.activateBlock({ blockId })
+        scrollBlockIntoView(blockId)
+      }
+      if (field) {
+        scrollBehavior(this.$route)
+      }
+    }, 500)
     console.debug('Vuej tree interaction designer mounted!')
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.activateBlock({ blockId: to.params.blockId || null })
+    next()
   },
   watch: {
     mode(newMode) {
@@ -254,7 +275,10 @@ export default {
         return
       }
 
-      this.activateBlock({ blockId: null })
+      const routeName = this.$route.meta.isSidebarShown ? 'flow-details' : 'flow-canvas'
+      this.$router.history.replace({
+        name: routeName,
+      })
     },
 
     updateIsEditableFromParams(mode) {
@@ -286,6 +310,19 @@ export default {
 
       this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
     },
+
+    showOrHideSidebar() {
+      let routeName = ''
+      if (this.$route.name.includes('block')) {
+        routeName = this.$route.meta.isSidebarShown ? 'block-selected' : 'block-selected-details'
+      } else {
+        routeName = this.$route.meta.isSidebarShown ? 'flow-canvas' : 'flow-details'
+      }
+      this.$router.history.replace({
+        name: routeName,
+      })
+    },
+
   },
 }
 </script>
@@ -432,6 +469,20 @@ export default {
     @include block-category(0, $category-0-faint, $category-0-light, $category-0-dark);
     @include block-category(1, $category-1-faint, $category-1-light, $category-1-dark);
     @include block-category(2, $category-2-faint, $category-2-light, $category-2-dark);
+  }
+
+  .sidebar-cue {
+    cursor: pointer;
+    background-color: #eee;
+    padding: 5px;
+    position: fixed;
+    right: 0;
+    top: 70px;
+    z-index: 50;
+  }
+
+  .sidebar-close {
+    right: 350px;
   }
 
   // @note - these styles have been extracted so the output can be reused between storybook and voto5

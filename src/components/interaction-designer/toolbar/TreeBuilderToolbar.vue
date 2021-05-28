@@ -203,6 +203,7 @@ const clipboardVuexNamespace = namespace('clipboard')
     // TreeUpdateConflictModal,
     // InteractionTotalsDateRangeConfiguration
   },
+
 })
 export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isImporterVisible = false
@@ -309,6 +310,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       },
     }) // todo push out to intx-designer
     this.activateBlock({ blockId })
+    this.$router.push({
+      name: 'block-selected-details',
+      params: { blockId },
+    })
   }
 
   async handlePersistFlow(route: RawLocation) {
