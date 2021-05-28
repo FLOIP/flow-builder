@@ -15,7 +15,7 @@
         </button>
 
         <button class="btn btn-outline-dark btn-sm mr-2"
-                @click="handleMultipleDuplicate">
+                @click.prevent="handleMultipleDuplicate">
           <font-awesome-icon :icon="['far', 'clone']"/>
           {{ 'flow-builder.duplicate' | trans }}
         </button>
@@ -49,7 +49,7 @@ import Lang from '@/lib/filters/lang'
 import Component, { mixins } from "vue-class-component";
 import { namespace } from 'vuex-class'
 import { IBlock } from '@floip/flow-runner'
-import { size } from 'lodash'
+import {forEach, size} from 'lodash'
 const flowVuexNamespace = namespace('flow')
 
 @Component({})
@@ -60,14 +60,14 @@ export default class SelectionBanner extends mixins(Lang) {
     return size(this.selectedBlocks)
   }
 
-  confirmMultipleDeletion() {
-    this.flow_removeAllSelectedBlocks()
+  async confirmMultipleDeletion() {
+    await this.flow_removeAllSelectedBlocks()
     this.deleting = false
   }
 
-  handleMultipleDuplicate() {
-    this.flow_duplicateAllSelectedBlocks()
-    this.flow_clearMultiSelection()
+  async handleMultipleDuplicate() {
+    await this.flow_duplicateAllSelectedBlocks()
+    await this.flow_clearMultiSelection()
   }
 
   @flowVuexNamespace.State selectedBlocks!: IBlock['uuid'][]
