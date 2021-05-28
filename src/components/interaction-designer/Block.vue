@@ -16,7 +16,17 @@
 
       <div class="d-flex justify-content-between">
         <div class="header-actions-left">
-<!--          <font-awesome-icon :icon="['fas', 'check-circle']" class="fa-btn" :style="{color: '#0069d9'}"/>-->
+          <!--Selection-->
+          <font-awesome-icon
+            :icon="['fas', 'check-circle']"
+            class="fa-btn text-primary"
+            v-b-tooltip.hover="trans('flow-builder.deselect-block')"
+          />
+          <font-awesome-icon
+            :icon="['far', 'circle']"
+            class="fa-btn"
+            v-b-tooltip.hover="trans('flow-builder.select-block')"
+          />
         </div>
         <div class="header-actions-right d-flex">
           <!--Delete-->
