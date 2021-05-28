@@ -2,10 +2,10 @@
   <div class="selection-banner" v-if="!!countSelectedBlocks">
     <div class="alert alert-primary mb-0 d-flex" role="alert">
       <div class="mr-3">
-        You have selected {{countSelectedBlocks}} blocks
+        {{ 'flow-builder.selected-x-blocks' | trans({ x: countSelectedBlocks }) }}
       </div>
       <button class="btn btn-outline-dark btn-sm" @click="block_clearMultiSelection">
-        Clear selection
+        {{ 'flow-builder.clear-selection' | trans }}
       </button>
     </div>
   </div>
