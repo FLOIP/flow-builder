@@ -1,5 +1,5 @@
 import {
-  IResourceDefinition,
+  IResource,
   IContext,
   IBlock,
 } from '@floip/flow-runner'
@@ -11,11 +11,11 @@ import {
   filter,
 } from 'lodash'
 
-export const updateResourcesForLanguageMatch = function (resources: IResourceDefinition[], oldId: string, newId: string): IResourceDefinition[] {
+export const updateResourcesForLanguageMatch = function (resources: IResource[], oldId: string, newId: string): IResource[] {
   return resources.map((resource) => {
     resource.values = resource.values.map((value) => {
-      if (value.languageId === oldId) {
-        value.languageId = newId
+      if (value.language_id === oldId) {
+        value.language_id = newId
       }
       return value
     })
@@ -42,7 +42,7 @@ export const mergeFlowContainer = function (existingFlowContainer: IContext, new
   return existingFlowContainer
 }
 
-const replaceResourcesWhenNecessary = function (existingResources: IResourceDefinition[], newResources: IResourceDefinition[]): IResourceDefinition[] {
+const replaceResourcesWhenNecessary = function (existingResources: IResource[], newResources: IResource[]): IResource[] {
   newResources.forEach((resource) => {
     const newResourceUUID = resource.uuid
     const existingResourceIndex = findIndex(existingResources, (oldResource) => oldResource.uuid == newResourceUUID)
