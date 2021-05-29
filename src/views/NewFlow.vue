@@ -10,9 +10,9 @@
             <flow-editor :flow="activeFlow" flow-header="flow-builder.create-flow" :sidebar=false />
 
             <div class="float-right">
-              <a :href="route('trees.editTree', {treeId: activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})"
+              <a :href="route('flows.editTree', {flowId: activeFlow.uuid, component: 'designer', mode: 'edit'})"
                 class="btn btn-primary"
-                @click.prevent="handlePersistFlow(route('trees.editTree', {treeId: activeFlow.uuid, component: 'interaction-designer', mode: 'edit'}))">
+                @click.prevent="handlePersistFlow(route('flows.editTree', {flowId: activeFlow.uuid, component: 'designer', mode: 'edit'}))">
                 {{'flow-builder.save-and-continue' | trans}}
               </a>
             </div>

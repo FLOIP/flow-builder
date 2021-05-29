@@ -54,7 +54,7 @@ class FetchFlow extends mixins(Routes, Lang) {
         await this.$router.replace(nextUrl)
       } else {
         this.message = 'flow-builder.flow-found'
-        this.flowLink = this.route('trees.editTree', {treeId: this.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})
+        this.flowLink = this.route('flows.editTree', {flowId: this.activeFlow.uuid, component: 'designer', mode: 'edit'})
       }
     } else{
       this.message = 'flow-builder.flow-not-found'
