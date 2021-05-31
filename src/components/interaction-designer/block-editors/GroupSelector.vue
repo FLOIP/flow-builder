@@ -28,10 +28,7 @@ import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const flowVuexNamespace = namespace('flow')
 
-interface IGroupOption {
-  id: string;
-  name: string;
-}
+import { IGroupOption } from '../../../store/flow/block-types/Core_SetGroupMembershipStore'
 
 @Component<any>({
   components: {

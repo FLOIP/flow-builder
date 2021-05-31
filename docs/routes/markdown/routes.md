@@ -245,41 +245,6 @@ fetch('/flows/{id}',
 This operation does not require authentication
 </aside>
 
-## Import Flow
-
-<a id="opIdImport Flow"></a>
-
-> Code samples
-
-```javascript
-
-fetch('/flows/import',
-{
-  method: 'POST'
-
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-`POST /flows/import`
-
-WIP
-
-<h3 id="import-flow-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|WIP|None|
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
 ## Persist Block
 
 <a id="opIdPersist Block"></a>

@@ -16,7 +16,6 @@
 
       <div class="d-flex justify-content-between">
         <div class="header-actions-left">
-<!--          <font-awesome-icon :icon="['fas', 'check-circle']" class="fa-btn" :style="{color: '#0069d9'}"/>-->
         </div>
         <div class="header-actions-right d-flex">
           <!--Delete-->
@@ -498,7 +497,11 @@ export default {
 
     selectBlock() {
       const { block: { uuid: blockId } } = this
-      this.activateBlock({ blockId })
+      const routerName = this.$route.meta.isSidebarShown ? 'block-selected-details' : 'block-selected'
+      this.$router.history.replace({
+        name: routerName,
+        params: { blockId },
+      })
     },
   },
 }
