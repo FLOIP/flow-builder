@@ -1,6 +1,6 @@
 <template>
   <validation-message :message-key="`block/${block.uuid}/config/validation_minimum`" #input-control="{ isValid }">
-    <div class="form-group block-validation-min">
+    <div class="form-group block-validation-min" :id="`${block.uuid}.config.validationMinimum`">
       <numeric-editor v-model.number="minValue"
           :regex-numeric-filtering="'[0-9]'"
           :label="'flow-builder.minimum-value-(inclusive)' | trans"
