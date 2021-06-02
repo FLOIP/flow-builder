@@ -1,5 +1,5 @@
 <template>
-  <div @click="activateBlock({ blockId: block.uuid })">
+  <div @click="selectBlock">
     <plain-draggable
         v-if="hasLayout"
         ref="draggable"
@@ -12,7 +12,7 @@
         :startY="y"
         :is-editable="isEditable"
         @dragged="onMoved"
-        @dragStarted="activateBlock({ blockId: block.uuid })">
+        @dragStarted="selectBlock">
 
       <div class="d-flex justify-content-between">
         <div class="header-actions-left">
@@ -514,6 +514,15 @@ export default {
 
       this.applyConnectionSourceRelocate()
       this.livePosition = null
+    },
+
+    selectBlock() {
+      const { block: { uuid: blockId } } = this
+      const routerName = this.$route.meta.isSidebarShown ? 'block-selected-details' : 'block-selected'
+      this.$router.history.replace({
+        name: routerName,
+        params: { blockId },
+      })
     },
   },
 }
