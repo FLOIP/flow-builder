@@ -2,7 +2,7 @@
   <div v-if="activeFlow" class="interaction-designer-contents">
     <tree-builder-toolbar/>
 
-    <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}" :key="activeBlock && activeBlock.uuid">
+    <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}" :key="isSimulatorActive || (activeBlock && activeBlock.uuid)">
       <div class="sidebar-cue" :class="{'sidebar-close': $route.meta.isSidebarShown}" @click="showOrHideSidebar">
         <i class="glyphicon"
            :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
