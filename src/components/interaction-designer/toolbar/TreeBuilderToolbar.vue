@@ -257,7 +257,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   get editOrViewTreeJsUrl() {
     return {
       params: {
-        id: this.activeFlow.uuid,
+        id: this.activeFlow?.uuid,
         mode: this.isEditable ? 'view' : 'edit',
       },
     }
