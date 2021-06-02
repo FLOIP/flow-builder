@@ -324,6 +324,7 @@ export default {
     ...mapMutations('builder', ['activateBlock']),
 
     handleDeleteBlock() {
+      this.block_deselect({ blockId: this.block.uuid })
       this.flow_removeBlock({ blockId: this.block.uuid })
       this.isDeleting = false
     },
