@@ -1,21 +1,26 @@
 <template>
-  <div class="form-group block-validation-min" :id="`${block.uuid}.config.validationMinimum`">
-    <numeric-editor v-model.number="minValue"
-        :regex-numeric-filtering="'[0-9]'"
-        :label="'flow-builder.minimum-value-(inclusive)' | trans"
-        :placeholder="'flow-builder.enter-value' | trans">
-    </numeric-editor>
-  </div>
+  <validation-message :message-key="`block/${block.uuid}/config/validation_minimum`" #input-control="{ isValid }">
+    <div class="form-group block-validation-min" :id="`${block.uuid}.config.validationMinimum`">
+      <numeric-editor v-model.number="minValue"
+          :regex-numeric-filtering="'[0-9]'"
+          :label="'flow-builder.minimum-value-(inclusive)' | trans"
+          :placeholder="'flow-builder.enter-value' | trans"
+          :validState="isValid">
+      </numeric-editor>
+    </div>
+  </validation-message>
 </template>
 
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
 import { get } from 'lodash'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage';
 
 export default {
   components: {
     NumericEditor,
+    ValidationMessage,
   },
   mixins: [lang],
   props: {
@@ -33,7 +38,7 @@ export default {
   computed: {
     minValue: {
       get() {
-        return get(this.block, 'config.validationMinimum', this.defaultValue)
+        return get(this.block, 'config.validation_minimum', this.defaultValue)
       },
       set(value) {
         this.$emit('commitValidationMinimumChange', value)

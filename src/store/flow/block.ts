@@ -2,7 +2,7 @@ import {
   IContext,
   IBlock,
   IBlockExit,
-  IResourceDefinition,
+  IResource,
   findBlockExitWith,
   ValidationException,
   findBlockOnActiveFlowWith,
@@ -22,15 +22,11 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 
 export const mutations: MutationTree<IFlowsState> = {
   block_popFirstExitWithoutTest(state, { blockId }: {blockId: string}) {
-    // TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    const block = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext)
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     block.exits = popFirstEmptyItem(block.exits, 'test')
   },
   block_popExitsByLabel(state, { blockId, exitLabel }: {blockId: string; exitLabel: string}) {
-    // TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    const block = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext)
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     block.exits = block.exits.filter((item: IBlockExit) => item.label !== exitLabel)
   },
   block_setName(state, { blockId, value }) {
@@ -43,7 +39,7 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   block_setSemanticLabel(state, { blockId, value }) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-      .semanticLabel = value
+      .semantic_label = value
   },
   block_setExitTag(state, { exitId, blockId, value }: {exitId: string; blockId: string; value: string}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -55,7 +51,7 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   block_setExitSemanticLabel(state, { exitId, blockId, value }: { exitId: string, blockId: string, value: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    findBlockExitWith(exitId, block).semanticLabel = value
+    findBlockExitWith(exitId, block).semantic_label = value
   },
   block_pushNewExit(state, { blockId, newExit }: {blockId: string; newExit: IBlockExit}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -66,17 +62,17 @@ export const mutations: MutationTree<IFlowsState> = {
       .config = newConfig
   },
   block_updateConfigByKey(state, { blockId, key, value }: {blockId: string; key: string; value: object}) { // note that the {key} could be undefined inside `config` at block creation (eg: optional config)
-    const currentConfig: {[key: string]: any} = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
+    const currentConfig: {[key: string]: any} = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = { ...currentConfig }
   },
-  block_updateConfigByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object }) {
-    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config, path, value);
+  block_updateConfigByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
+    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, path, value);
   },
   block_setBlockExitDestinationBlockId(state, { blockId, exitId, destinationBlockId }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block)
-      .destinationBlock = destinationBlockId
+      .destination_block = destinationBlockId
   },
 }
 
@@ -91,7 +87,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async block_createBlockExitWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IBlockExit>}): Promise<IBlockExit> {
-    const resource: IResourceDefinition = await dispatch('resource_createWith', { props: { uuid: (new IdGeneratorUuidV4()).generate() } })
+    const resource: IResource = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
 
     commit('resource_add', { resource })
 
@@ -100,15 +96,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         label: resource.uuid,
         tag: '',
         config: {},
-        destinationBlock: undefined, // prerequisite for reactivity, even optional params
+        destination_block: undefined, // prerequisite for reactivity, even optional params
       }),
     }
   },
-  async block_updateBlockExitWith({ dispatch, commit, state }, { blockId, exitId, props: { test, tag, semanticLabel } }: {blockId: string; exitId: string; props: Partial<IBlockExit>}) {
+  async block_updateBlockExitWith({ dispatch, commit, state }, { blockId, exitId, props: { test, tag, semantic_label } }: {blockId: string; exitId: string; props: Partial<IBlockExit>}) {
     // TODO - handle other props apart from test
     commit('block_setExitTag', { blockId, exitId, value: tag })
     commit('block_setExitTest', { blockId, exitId, value: test })
-    commit('block_setExitSemanticLabel', { blockId, exitId, value: semanticLabel })
+    commit('block_setExitSemanticLabel', { blockId, exitId, value: semantic_label })
   },
 
   async block_swapBlockExitDestinationBlockIds(
@@ -116,14 +112,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     { first, second }: {first: IDeepBlockExitIdWithinFlow; second: IDeepBlockExitIdWithinFlow},
   ) {
     if (!first || !second) {
-      throw new ValidationException(`Unable to swap destinationBlockId on null: ${JSON.stringify({ first, second })}`)
+      console.warn(`Unable to swap destinationBlockId on null: ${JSON.stringify({ first, second })}`)
+      return
     }
 
     const firstBlock = findBlockOnActiveFlowWith(first.blockId, state as unknown as IContext)
     const secondBlock = findBlockOnActiveFlowWith(second.blockId, state as unknown as IContext)
 
-    const { destinationBlock: firstDestinationBlockId } = findBlockExitWith(first.exitId, firstBlock)
-    const { destinationBlock: secondDestinationBlockId } = findBlockExitWith(second.exitId, secondBlock)
+    const { destination_block: firstDestinationBlockId } = findBlockExitWith(first.exitId, firstBlock)
+    const { destination_block: secondDestinationBlockId } = findBlockExitWith(second.exitId, secondBlock)
 
     // todo: this works only when the exit we're targetting is empty
     // todo: blah --- a repaint from HMR redraws it correctly -- why?!

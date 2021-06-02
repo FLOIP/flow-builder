@@ -69,7 +69,7 @@ export default {
       // prevent css translate() animations for move
       // they don't seem to be throttled enough for leaderline to follow tightly
       leftTop: false,
-      disabled: false,
+      disabled: false, // synced with src/store/builder/index.ts:isEditable=true
       onDrag: this.handleDragged,
       onDragStart: this.handleDragStarted,
       onDragEnd: this.handleDragEnded,
@@ -90,6 +90,8 @@ export default {
   },
 
   destroyed() {
+    const { draggable } = this
+    this.$emit('destroyed', { draggable })
     this.draggable.remove()
   },
 }

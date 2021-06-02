@@ -9,10 +9,14 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <expression-editor :label="'flow-builder.output-expression' | trans"
+      <validation-message :message-key="`block/${block.uuid}/config/value`" #input-control="{ isValid }">
+        <expression-editor :label="'flow-builder.output-expression' | trans"
           :placeholder="'flow-builder.edit-expression' | trans"
           :current-expression="value"
+          :validState="isValid === false"
           @commitExpressionChange="commitExpressionChange"/>
+      </validation-message>
+
       <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
@@ -23,7 +27,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -31,31 +34,31 @@ import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock'
 import { IFlow } from '@floip/flow-runner'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 import OutputStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_OutputBlockStore'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import { mixins } from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  // providing this generic is required by tsserver checking but not in the build run by yarn storybook
-  // TODO - understand what is going on here and if there is something more correct we should have instead
-  @Component<any>({
-    components: {
-      ExpressionEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-    },
-    mixins: [lang],
-  })
-class Core_OutputBlock extends Vue {
+@Component({
+  components: {
+    ExpressionEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+    ValidationMessage
+  },
+})
+class Core_OutputBlock extends mixins(Lang) {
     @Prop()readonly block!: IOutputBlock
 
     @Prop()readonly flow!: IFlow

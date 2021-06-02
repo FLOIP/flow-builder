@@ -11,7 +11,6 @@
 
       <block-minimum-numeric-editor :block="block" @commitValidationMinimumChange="updateValidationMin"/>
       <block-maximum-numeric-editor :block="block" @commitValidationMaximumChange="updateValidationMax"/>
-
       <block-max-digit-editor :block="block" :hasIvr="hasVoiceMode" @commitMaxDigitsChange="updateMaxDigits"/>
 
       <resource-editor v-if="promptResource"
@@ -29,16 +28,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
-import { IBlockExit, IFlow } from '@floip/flow-runner'
+import { IBlock, IBlockExit, IFlow, IResource } from '@floip/flow-runner'
 import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock'
-import { IResourceDefinition } from '@floip/flow-runner/src/domain/IResourceResolver'
 
 import NumericStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -49,55 +46,55 @@ import BlockId from '../block-editors/BlockId.vue'
 import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue'
 import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
 import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
+import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      ResourceEditor,
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      FirstBlockEditorButton,
-      BlockId,
-      BlockMinimumNumericEditor,
-      BlockMaximumNumericEditor,
-      BlockMaxDigitEditor,
-    },
-    mixins: [lang],
-  })
-class MobilePrimitives_NumericResponseBlock extends Vue {
+@Component({
+  components: {
+    ResourceEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    FirstBlockEditorButton,
+    BlockId,
+    BlockMinimumNumericEditor,
+    BlockMaximumNumericEditor,
+    BlockMaxDigitEditor,
+  },
+})
+class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
     @Prop()readonly block!: INumericResponseBlock
 
     @Prop()readonly flow!: IFlow
 
-    get promptResource(): IResourceDefinition {
+    get promptResource(): IResource {
       return this.resourcesByUuid[this.block.config.prompt]
     }
 
-    updateValidationMin(value) {
+    updateValidationMin(value: number | string) {
       this.setValidationMinimum({ blockId: this.block.uuid, value })
     }
 
-    updateValidationMax(value) {
+    updateValidationMax(value: number | string) {
       this.setValidationMaximum({ blockId: this.block.uuid, value })
     }
 
-    updateMaxDigits(value) {
+    updateMaxDigits(value: number | string) {
       this.setMaxDigits({ blockId: this.block.uuid, value })
     }
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResource}
 
-    @flowVuexNamespace.Getter hasVoiceMode
+    @flowVuexNamespace.Getter hasVoiceMode!: boolean
 
-    @blockVuexNamespace.Action setValidationMinimum!: ({ blockId: string, value: number }) => Promise<string>
+    @blockVuexNamespace.Action setValidationMinimum!: ({ blockId, value }: { blockId: IBlock['uuid']; value: number | string }) => Promise<string>
 
-    @blockVuexNamespace.Action setValidationMaximum!: ({ blockId: string, value: number }) => Promise<string>
+    @blockVuexNamespace.Action setValidationMaximum!: ({ blockId, value }: { blockId: IBlock['uuid']; value: number | string }) => Promise<string>
 
-    @blockVuexNamespace.Action setMaxDigits!: ({ blockId: string, value: number }) => Promise<string>
+    @blockVuexNamespace.Action setMaxDigits!: ({ blockId, value }: { blockId: IBlock['uuid']; value: number | string }) => Promise<string>
 
     @builderVuexNamespace.Getter isEditable !: boolean
   }

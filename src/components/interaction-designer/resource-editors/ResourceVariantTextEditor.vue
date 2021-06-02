@@ -5,7 +5,7 @@
               v-focus="isSelected"
               @focus="select"
               @blur="deselect"
-              :placeholder="`flow-builder.enter-${resourceVariant.contentType}-content` | trans"
+              :placeholder="`flow-builder.enter-${resourceVariant.content_type.toString().toLowerCase()}-content` | trans"
               class="form-control"></textarea>
 
       <!-- <button @click="select"
@@ -83,7 +83,7 @@
 
 <script>
 import Vue from 'vue'
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import { parse as floipExpressionParser } from '@floip/expression-parser'
 import { isObject, some } from 'lodash'
 import VueFocus from 'vue-focus'
@@ -107,7 +107,7 @@ export default {
       default: null,
     },
     resourceVariant: {
-      type: Object, // as () => IResourceDefinitionContentTypeSpecific
+      type: Object, // as () => IResourceValue
       default: null,
     },
     mode: {
@@ -136,11 +136,11 @@ export default {
 
       set(value) {
         const { resourceId, mode } = this
-        const { languageId, contentType } = this.resourceVariant
+        const { language_id: languageId, content_type: contentType } = this.resourceVariant
 
         this.resource_setOrCreateValueModeSpecific({
           resourceId,
-          filter: { languageId, contentType, modes: [mode] },
+          filter: { language_id: languageId, content_type: contentType, modes: [mode] },
           value,
         })
       },

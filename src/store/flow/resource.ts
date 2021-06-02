@@ -1,7 +1,7 @@
 import {
   IContext,
-  IResourceDefinition,
-  IResourceDefinitionContentTypeSpecific as IResourceDefinitionVariantOverModes,
+  IResource,
+  IResourceValue as IResourceDefinitionVariantOverModes,
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
@@ -18,7 +18,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 }
 
 export const mutations: MutationTree<IFlowsState> = {
-  resource_add({ resources }, { resource }: {resource: IResourceDefinition}) {
+  resource_add({ resources }, { resource }: {resource: IResource}) {
     resources.push(resource)
   },
 
@@ -59,7 +59,7 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async resource_createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<IResourceDefinition>}): Promise<IResourceDefinition> {
+  async resource_createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<IResource>}): Promise<IResource> {
     return {
       ...defaults(
         props,
@@ -70,7 +70,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   resource_setOrCreateValueModeSpecific(
     { commit, dispatch, state },
-    { resourceId, filter, value }: {resourceId: string; filter: IResourceDefinitionVariantOverModes; value: string},
+    { resourceId, filter, value }: { resourceId: IResource['uuid']; filter: IResourceDefinitionVariantOverModes; value: string },
   ) {
     try {
       // @note - `find()` raises when absent; this verifies its presence
@@ -124,7 +124,7 @@ export type IResourceDefinitionVariantOverModesFilterAsKey = Omit<IResourceDefin
 export type IResourceDefinitionVariantOverModesFilterWithResourceId =
     Partial<IResourceDefinitionVariantOverModes> & {resourceId: string}
 
-export function findResourceWith(uuid: string, { resources }: IContext): IResourceDefinition {
+export function findResourceWith(uuid: string, { resources }: IContext): IResource {
   const resource = find(resources, { uuid })
   if (resource == null) {
     throw new ValidationException(`Unable to find resource on context: ${uuid} in ${map(resources, 'uuid')}`)
@@ -145,7 +145,7 @@ export function findResourceVariantOverModesWith(
 }
 
 export function findResourceVariantOverModesOn(
-  resource: IResourceDefinition,
+  resource: IResource,
   filter: IResourceDefinitionVariantOverModesFilter,
 ) {
   const
@@ -179,7 +179,7 @@ export function findOrGenerateStubbedVariantFor(
 }
 
 export function findOrGenerateStubbedVariantOn(
-  resource: IResourceDefinition,
+  resource: IResource,
   filter: IResourceDefinitionVariantOverModesFilterAsKey,
 ): IResourceDefinitionVariantOverModes {
   try {
@@ -193,14 +193,11 @@ export function findOrGenerateStubbedVariantOn(
   }
 }
 
-export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourceDefinition): SupportedContentType[] {
-  const
-    { TEXT } = SupportedContentType
-  const { AUDIO } = SupportedContentType
-  const { IMAGE } = SupportedContentType
-  const { VIDEO } = SupportedContentType
+export function discoverContentTypesFor(mode: SupportedMode, resource?: IResource): SupportedContentType[] | undefined {
+  const { TEXT, AUDIO, IMAGE, VIDEO, DATA } = SupportedContentType
 
-  const defaultModeMappings = { // @note -- contentType order inadvertently determines render order on UI.
+  // @note -- contentType order inadvertently determines render order on UI.
+  const defaultModeMappings: {[key in SupportedMode]?: SupportedContentType[]} = {
     [SupportedMode.IVR]: [AUDIO], // voice
     [SupportedMode.SMS]: [TEXT],
     [SupportedMode.USSD]: [TEXT],
@@ -211,7 +208,7 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
   if (!resource || !resource.values.length) {
     return defaultModeMappings[mode]
   }
-  let contentTypeOverrides: {[key in SupportedMode]?: SupportedContentType[]} = {}
+  let contentTypeOverrides: {[key in SupportedMode]?: string[]} = {}
   // TODO - think harder about this - what happens when a mode has a non standard content type - e.g. ivr on a log block
   // What happens in a future localised resource world on things like LogBlock? Do we need a log resource value for every language?
   contentTypeOverrides = resource.values.reduce((contentTypeOverrides, value) => {
@@ -219,11 +216,10 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
       if (!contentTypeOverrides[resourceMode]) {
         contentTypeOverrides[resourceMode] = []
       }
-      contentTypeOverrides[resourceMode]!.push(value.contentType)
+      contentTypeOverrides[resourceMode]!.push(value.content_type)
       return contentTypeOverrides
     }, contentTypeOverrides)
     return contentTypeOverrides
   }, contentTypeOverrides)
-  // @ts-ignore
   return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]
 }

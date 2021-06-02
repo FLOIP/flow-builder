@@ -5,15 +5,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { IBlock } from '@floip/flow-runner'
 import { Component, Prop } from 'vue-property-decorator'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
+import { mixins } from "vue-class-component";
 
-  @Component<any>({
-    mixins: [lang],
-  })
-class BlockId extends Vue {
+@Component({})
+class BlockId extends mixins(Lang) {
     @Prop()readonly block!: IBlock
 
     get blockId(): string {

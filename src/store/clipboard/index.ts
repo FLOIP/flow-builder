@@ -3,10 +3,11 @@ import {
 } from 'vuex'
 import { IRootState } from '@/store'
 import { router } from '@/router'
+import { IPrompt } from '@floip/flow-runner'
 
 export interface BlocksData {
   isFocused: boolean;
-  prompt: object;
+  prompt: IPrompt<any>;
 }
 
 export interface IClipboardState {
@@ -22,18 +23,14 @@ export const stateFactory = (): IClipboardState => ({
 export const getters: GetterTree<IClipboardState, IRootState> = {
   isSimulatorActive: (state) => state.isSimulatorActive,
   blocksData: (state) => state.blocksData,
-  getBlockPrompt: (state) => (index) => state.blocksData[index].prompt,
-  isBlockFocused: (state) => (index) => state.blocksData[index].isFocused,
-  hasSimulator: (_, _2, _3, rootGetters) =>
-    rootGetters['flow/hasOfflineMode'] && rootGetters.isFeatureSimulatorEnabled && !rootGetters['builder/isEditable']
+  getBlockPrompt: (state) => (index: number) => state.blocksData[index].prompt,
+  isBlockFocused: (state) => (index: number) => state.blocksData[index].isFocused,
+  hasSimulator: (_, _2, _3, rootGetters) => rootGetters['flow/hasOfflineMode'] && rootGetters.isFeatureSimulatorEnabled && !rootGetters['builder/isEditable'],
 }
 
 export const mutations: MutationTree<IClipboardState> = {
   setSimulatorActive(state, value) {
     state.isSimulatorActive = value
-  },
-  setBlocksData(state, data) {
-    state.blocksData = data
   },
   setIsFocused(state, { index, value }) {
     state.blocksData[index].isFocused = value
@@ -45,11 +42,11 @@ export const actions: ActionTree<IClipboardState, IRootState> = {
     commit('setSimulatorActive', value)
     const routeName = value ? 'flow-simulator' : 'flow-details'
     router.replace({
-      name: routeName
+      name: routeName,
     })
   },
-  setBlocksData({ commit }, data) {
-    commit('setBlocksData', data)
+  resetBlocksData({ state }) {
+    state.blocksData = []
   },
   setIsFocused({ commit }, data) {
     commit('setIsFocused', data)
@@ -61,6 +58,12 @@ export const actions: ActionTree<IClipboardState, IRootState> = {
   setLastBlockEditable({ commit, state }) {
     const lastIndex = state.blocksData.length - 1
     commit('setIsFocused', { index: lastIndex, value: true })
+  },
+  addToBlocksData({ state }, data: BlocksData) {
+    state.blocksData.push(data)
+  },
+  removeFromBlocksData({ state }, index: number) {
+    state.blocksData.splice(index)
   },
 }
 

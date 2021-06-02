@@ -1,8 +1,6 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import {
-  SupportedContentType,
-  SupportedMode,
   IBlockExit,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
@@ -10,7 +8,7 @@ import { ILogBlock } from '@floip/flow-runner/src/model/block/ILogBlock'
 import { defaultsDeep } from 'lodash'
 import { IFlowsState } from '../index'
 
-export const BLOCK_TYPE = 'Core\\Log'
+export const BLOCK_TYPE = 'Core.Log'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
 
@@ -28,7 +26,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
@@ -39,7 +37,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits,
       config: {
         message: blankLogResource.uuid,

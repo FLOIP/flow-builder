@@ -64,17 +64,16 @@
 </template>
 
 <script lang="ts">
-import { IFlow } from '@floip/flow-runner'
+import { IFlow, IResource } from '@floip/flow-runner'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
-import {
-  IResourceDefinition,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
-import SelectOneStore, { BLOCK_TYPE } from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
-import lang from '@/lib/filters/lang'
+import SelectOneStore, {
+  BLOCK_TYPE,
+  IInflatedChoicesInterface
+} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -83,38 +82,38 @@ import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEdit
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import { mixins } from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-  @Component<any>({
-    components: {
-      BlockNameEditor,
-      BlockLabelEditor,
-      BlockSemanticLabelEditor,
-      BlockExitSemanticLabelEditor,
-      FirstBlockEditorButton,
-      ResourceEditor,
-      BlockId,
-    },
-    mixins: [lang],
-  })
-export class MobilePrimitives_SelectOneResponseBlock extends Vue {
+@Component<any>({
+  components: {
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    BlockExitSemanticLabelEditor,
+    FirstBlockEditorButton,
+    ResourceEditor,
+    BlockId,
+  },
+})
+export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     @Prop()readonly block!: ISelectOneResponseBlock
 
     @Prop()readonly flow!: IFlow
 
-    get promptResource(): IResourceDefinition {
+    get promptResource(): IResource {
       return this.resourcesByUuid[this.block.config.prompt]
     }
 
-    get questionPromptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.questionPrompt || '']
+    get questionPromptResource(): IResource {
+      return this.resourcesByUuid[this.block.config.question_prompt || '']
     }
 
-    get choicesPromptResource(): IResourceDefinition {
-      return this.resourcesByUuid[this.block.config.choicesPrompt || '']
+    get choicesPromptResource(): IResource {
+      return this.resourcesByUuid[this.block.config.choices_prompt || '']
     }
 
     @Watch('inflatedChoices', { deep: true })
@@ -126,16 +125,16 @@ export class MobilePrimitives_SelectOneResponseBlock extends Vue {
     @Watch('inflatedEmptyChoice', { deep: true })
     onEmptyChoiceChanged(newChoice: object, oldChoice: object) {
       console.debug('Watched inflatedEmptyChoice', newChoice, oldChoice)
-      this.editEmptyChoice({ choice: oldChoice })
+      this.editEmptyChoice( { choice: oldChoice as IInflatedChoicesInterface })
     }
 
-    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResourceDefinition}
+    @flowVuexNamespace.Getter resourcesByUuid!: {[key: string]: IResource}
 
-    @blockVuexNamespace.Getter inflatedChoices: {[key: string]: IResourceDefinition}
-    @blockVuexNamespace.State inflatedEmptyChoice: {[key: string]: IResourceDefinition}
+    @blockVuexNamespace.Getter inflatedChoices?: {[key: string]: IResource}
+    @blockVuexNamespace.State inflatedEmptyChoice?: {[key: string]: IResource}
 
     @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
-    @blockVuexNamespace.Action editEmptyChoice!: ({ choice: IInflatedChoicesInterface }) => Promise<object>
+    @blockVuexNamespace.Action editEmptyChoice!: ({ choice }: { choice: IInflatedChoicesInterface }) => Promise<object>
 
     @builderVuexNamespace.Getter isEditable !: boolean
 }

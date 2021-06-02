@@ -1,42 +1,41 @@
 <template>
-  <div class="block-contact-property form-group">
-    <label>{{'flow-builder.contact-property-label' | trans}}</label>
-    <vue-multiselect v-model="selectedProperty"
-                     track-by="id"
-                     label="displayLabel"
-                     :placeholder="'flow-builder.contact-property-selector-placeholder' | trans"
-                     :options="subscriberPropertyFields || []"
-                     :allow-empty="false"
-                     :show-labels="false"
-                     :searchable="true">
-    </vue-multiselect>
-  </div>
+  <validation-message :message-key="`block/${block.uuid}/config/set_contact_property/property_key`" #input-control="{ isValid }">
+    <div class="block-contact-property form-group">
+      <label>{{'flow-builder.contact-property-label' | trans}}</label>
+      <vue-multiselect v-model="selectedProperty"
+                       track-by="id"
+                       label="displayLabel"
+                       :class="{invalid: isValid === false}"
+                       :placeholder="'flow-builder.contact-property-selector-placeholder' | trans"
+                       :options="subscriberPropertyFields || []"
+                       :allow-empty="false"
+                       :show-labels="false"
+                       :searchable="true">
+      </vue-multiselect>
+    </div>
+  </validation-message>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import VueMultiselect from 'vue-multiselect';
 import { IBlock, ISetContactPropertyBlockConfig } from '@floip/flow-runner';
 import { Component, Prop } from 'vue-property-decorator';
 import {Getter, namespace} from 'vuex-class'
-import lang from '@/lib/filters/lang';
+import Lang from '@/lib/filters/lang';
 import { find } from 'lodash'
+import { IContactPropertyOption } from '../../../store/flow/block-types/Core_SetContactPropertyStore'
+import { mixins } from "vue-class-component";
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const flowVuexNamespace = namespace('flow')
-
-interface IContactPropertyOption {
-  id: string
-  name: string
-  displayLabel: string
-}
 
 @Component<any>({
   components: {
     VueMultiselect,
+    ValidationMessage
   },
-  mixins: [lang],
 })
-class ContactPropertySelector extends Vue {
+class ContactPropertySelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   get selectedProperty() {
@@ -47,12 +46,12 @@ class ContactPropertySelector extends Vue {
       },
     } = this.block.config as ISetContactPropertyBlockConfig
     if (!propertyKey) {
-      return null
+      return {} as IContactPropertyOption
     }
 
     const propertyOption = find(this.subscriberPropertyFields, { name: propertyKey }) as IContactPropertyOption
     if (!propertyOption) {
-      return null
+      return {} as IContactPropertyOption
     }
 
     return propertyOption
@@ -66,9 +65,15 @@ class ContactPropertySelector extends Vue {
     })
   }
 
-  @flowVuexNamespace.Mutation block_updateConfigByPath
-  @Getter subscriberPropertyFields: object[]
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
+  @Getter subscriberPropertyFields!: object[]
 }
 
 export default ContactPropertySelector;
 </script>
+
+<style lang="css" scoped>
+.invalid >>> .multiselect__tags {
+  border-color: #dc3545;
+}
+</style>

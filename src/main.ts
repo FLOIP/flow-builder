@@ -21,7 +21,7 @@ async function main() {
   new Vue({
     router,
     store: new Vuex.Store({}),
-    render: (h) => h(App),
+    render: (h) => h(Vue.extend(App)),
   }).$mount('#app')
 }
 

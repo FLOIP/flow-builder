@@ -12,7 +12,7 @@ export const FetchFlow = FetchFlowComponent
 export const NewFlow = NewFlowComponent
 export const Home = HomeComponent
 
-const Components = {
+const Components: {[key: string]: any} = {
   InteractionDesignerComponent,
   FetchFlowComponent,
   NewFlowComponent,

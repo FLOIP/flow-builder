@@ -115,15 +115,6 @@ paths:
             should prevent these client side before we get to that point though)
           content: {}
       x-codegen-request-body-name: flow_container
-  /flows/import:
-    post:
-      tags:
-        - Flows
-      operationId: Import Flow
-      description: WIP
-      responses:
-        200:
-          description: WIP
   /blocks/{id}:
     post:
       tags:
@@ -153,7 +144,7 @@ components:
           type: string
         description:
           type: string
-        platform_metadata:
+        vendor_metadata:
           type: object
           properties: {}
         flows:

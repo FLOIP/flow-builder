@@ -3,29 +3,21 @@ import { IRootState } from '@/store'
 import {
   IBlockExitTestRequired,
   IBlockExit,
-  IFlow,
-  IContext,
-  SupportedContentType,
-  findBlockOnActiveFlowWith,
-  IResourceDefinitionContentTypeSpecific,
+  IResource
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
-import {
-  IResourceDefinition,
-} from '@floip/flow-runner/src/domain/IResourceResolver'
 import Vue from 'vue'
-import { defaultsDeep, find, max, filter, first, get } from 'lodash'
-import { IResourceDefinitionVariantOverModesFilter } from '../resource'
+import { defaultsDeep, find, filter, first, get } from 'lodash'
 import { IFlowsState } from '../index'
 
 import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
 
-export const BLOCK_TYPE = 'MobilePrimitives\\SelectOneResponse'
+export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
-interface IInflatedChoicesInterface {
+export interface IInflatedChoicesInterface {
   exit: IBlockExit,
-  resource: IResourceDefinition
+  resource: IResource
 }
 
 export interface ICustomFlowState extends Partial<IFlowsState> {
@@ -57,11 +49,11 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
       label: resourceUuid
     })) as IBlockExit
   },
-  isInflatedChoiceBlankOnKey: (state, getters) => (key): boolean => {
-    return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semanticLabel')
+  isInflatedChoiceBlankOnKey: (state, getters) => (key: any): boolean => {
+    return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semantic_label')
   },
   isInflatedEmptyChoiceBlank: (state, getters): boolean => {
-    return !someItemsHaveValue(state.inflatedEmptyChoice.resource.values || [], 'value') && !get(state.inflatedEmptyChoice, 'exit.semanticLabel')
+    return !someItemsHaveValue(state.inflatedEmptyChoice.resource.values || [], 'value') && !get(state.inflatedEmptyChoice, 'exit.semantic_label')
   },
   allChoicesHaveContent: (state, getters): boolean => {
     return Object.keys(getters.inflatedChoices).every((key: string) => {
@@ -86,55 +78,57 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
 }
 
 export const mutations: MutationTree<ICustomFlowState> = {
-  deleteChoiceByKey(state, { choiceKeyToRemove, blockId }) {
-    // TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    const block: ISelectOneResponseBlock = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext) as ISelectOneResponseBlock
-    delete block.config.choices[choiceKeyToRemove]
-    const choices: {[key: string]: string} = {}
-    // rekey
-    block.config.choices = Object.keys(block.config.choices).sort().reduce((choices, choiceKey: string, index: number) => {
-      choices[index + 1] = block.config.choices[choiceKey]
-      return choices
-    }, choices)
-  },
-  pushNewChoice(state, { choiceId, blockId, newIndex }) {
-    // TODO - this shouldn't be necessary
-    // @ts-ignore - TS2339: Property 'flow' does not exist on type
-    const block: ISelectOneResponseBlock = findBlockOnActiveFlowWith(blockId, this.state.flow as unknown as IContext) as ISelectOneResponseBlock
-    Vue.set(block.config.choices, newIndex, choiceId)
-  },
+
 }
 
 export const actions: ActionTree<ICustomFlowState, IRootState> = {
+  deleteChoiceByKey({ state, rootState, rootGetters, commit }, { choiceKeyToRemove }) {
+    const activeBlock = rootGetters['builder/activeBlock']
+    delete activeBlock.config.choices[choiceKeyToRemove]
+
+    // Rekey
+    const choices: {[key: string]: string} = {}
+    commit('flow/block_updateConfigByKey', {
+      blockId: activeBlock.uuid,
+      key: 'choices',
+      value: Object.keys(activeBlock.config.choices).sort().reduce((choices, choiceKey: string, index: number) => {
+        choices[index + 1] = activeBlock.config.choices[choiceKey]
+        return choices
+      }, choices),
+    }, { root: true })
+  },
+  pushNewChoice({ state, rootState, rootGetters, commit }, { choiceId, newIndex }) {
+    const activeBlock = rootGetters['builder/activeBlock']
+    Vue.set(activeBlock.config.choices, newIndex, choiceId)
+  },
   async createVolatileEmptyChoice({state, dispatch, rootGetters}, { index }) {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankExit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
-      props: ({
-        uuid: (new IdGeneratorUuidV4()).generate(),
+      props: {
+        uuid: await (new IdGeneratorUuidV4()).generate(),
         test: `block.value = ${index}`,
         label: blankResource.uuid,
-        semanticLabel: '',
-      }) as IBlockExitTestRequired,
+        semantic_label: '',
+      } as IBlockExitTestRequired,
     }, {root: true})
     state.inflatedEmptyChoice = {
       exit: blankExit,
       resource: rootGetters['flow/resourcesByUuid'][blankResource.uuid]
     }
   },
-  async popFirstEmptyChoice({commit, rootGetters, getters}) {
+  async popFirstEmptyChoice({commit, dispatch, rootGetters, getters}) {
     const choiceKeyToRemove = find(Object.keys(getters.inflatedChoices), (key: string) => {
       return <boolean>getters.isInflatedChoiceBlankOnKey(key)
     })
     if (choiceKeyToRemove) {
       const choiceToRemove = rootGetters['builder/activeBlock'].config.choices[choiceKeyToRemove]
-      commit('deleteChoiceByKey', {choiceKeyToRemove: choiceKeyToRemove, blockId: rootGetters['builder/activeBlock'].uuid})
+      dispatch('deleteChoiceByKey', {choiceKeyToRemove: choiceKeyToRemove, blockId: rootGetters['builder/activeBlock'].uuid})
       return choiceToRemove
     }
     return null
   },
   async editSelectOneResponseBlockChoice({
-    commit, dispatch, getters, rootGetters,
+   commit, dispatch, getters, rootGetters,
   }) {
     const activeBlock = rootGetters['builder/activeBlock']
     if (!getters.allChoicesHaveContent) { // then remove the 1st blank exit
@@ -152,7 +146,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       const activeBlock = rootGetters['builder/activeBlock'];
       const newIndex = Object.keys(activeBlock.config.choices || {}).length + 1
       const resourceUuid = state.inflatedEmptyChoice.resource.uuid
-      commit('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
+      dispatch('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
       commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: state.inflatedEmptyChoice.exit}, {root: true})
 
       // associate new blank resource to the empty choice, this is important to stop endless watching
@@ -169,15 +163,17 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     const blankChoicesPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
 
     const defaultExitProps: Partial<IBlockExit> = {
-      uuid: (new IdGeneratorUuidV4()).generate(),
+      uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Default',
       label: 'Default',
+      test: '',
     }
 
     const errorExitProps: Partial<IBlockExit> = {
-      uuid: (new IdGeneratorUuidV4()).generate(),
+      uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Error',
       label: 'Error',
+      test: '',
     }
 
     await dispatch('createVolatileEmptyChoice', { index: 0 })
@@ -186,15 +182,15 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       type: BLOCK_TYPE,
       name: '',
       label: '',
-      semanticLabel: '',
+      semantic_label: '',
       exits: [
         await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true }),
         await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true }),
       ],
       config: {
         prompt: blankPromptResource.uuid,
-        questionPrompt: blankQuestionPromptResource.uuid,
-        choicesPrompt: blankChoicesPromptResource.uuid,
+        question_prompt: blankQuestionPromptResource.uuid,
+        choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
       },
     })

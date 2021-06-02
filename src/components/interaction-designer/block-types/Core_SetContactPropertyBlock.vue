@@ -5,16 +5,19 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block"/>
-      <block-label-editor :block="block"/>
-      <block-semantic-label-editor :block="block"/>
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-      <contact-property-selector :block="block"/>
-
-      <expression-editor :label="'flow-builder.contact-property-expression' | trans"
+      <contact-property-selector :block="block" />
+      <validation-message :message-key="`block/${block.uuid}/config/set_contact_property/property_value`" #input-control="{ isValid }">
+        <expression-editor :label="'flow-builder.contact-property-expression' | trans"
                          :placeholder="'flow-builder.edit-expression' | trans"
                          :current-expression="propertyValue"
+                         :validState="isValid"
                          @commitExpressionChange="commitExpressionChange"/>
+      </validation-message>
+
       <slot name="extras"></slot>
       <first-block-editor-button
         :flow="flow"
@@ -26,7 +29,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -43,16 +45,16 @@ import BlockId from '../block-editors/BlockId.vue'
 import ContactPropertySelector from "@/components/interaction-designer/block-editors/ContactPropertySelector.vue"
 
 import SetContactPropertyStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_SetContactPropertyStore'
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from "@/store/builder";
 import { get } from 'lodash'
+import { mixins } from "vue-class-component";
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-//providing this generic is required by tsserver checking but not in the build run by yarn storybook
-//TODO - understand what is going on here and if there is something more correct we should have instead
-@Component<any>({
+@Component({
   components: {
     ExpressionEditor,
     BlockNameEditor,
@@ -61,10 +63,10 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
     ContactPropertySelector,
+    ValidationMessage
   },
-  mixins: [lang],
 })
-class Core_SetContactPropertyBlock extends Vue {
+class Core_SetContactPropertyBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
 

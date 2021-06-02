@@ -62,7 +62,7 @@ fetch('/flows/{id}',
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -95,7 +95,7 @@ const inputBody = '{
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -143,7 +143,7 @@ fetch('/flows/{id}',
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -176,7 +176,7 @@ const inputBody = '{
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -224,7 +224,7 @@ fetch('/flows/{id}',
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -240,41 +240,6 @@ fetch('/flows/{id}',
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Error in flow update including validation errors (the builder should prevent these client side before we get to that point though)|None|
 
 <h3 id="update-flow-responseschema">Response Schema</h3>
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
-## Import Flow
-
-<a id="opIdImport Flow"></a>
-
-> Code samples
-
-```javascript
-
-fetch('/flows/import',
-{
-  method: 'POST'
-
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-`POST /flows/import`
-
-WIP
-
-<h3 id="import-flow-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|WIP|None|
 
 <aside class="success">
 This operation does not require authentication
@@ -336,7 +301,7 @@ This operation does not require authentication
   "uuid": "string",
   "name": "string",
   "description": "string",
-  "platform_metadata": {},
+  "vendor_metadata": {},
   "flows": [
     {}
   ],
@@ -353,7 +318,7 @@ This operation does not require authentication
 |uuid|string|false|none|none|
 |name|string|false|none|none|
 |description|string|false|none|none|
-|platform_metadata|object|false|none|none|
+|vendor_metadata|object|false|none|none|
 |flows|[object]|false|none|none|
 |resources|object|false|none|none|
 

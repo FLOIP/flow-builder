@@ -13,12 +13,14 @@
       <div v-if="$route.name === 'flow-simulator'" class="tree-sidebar">
         <clipboard-root />
       </div>
-      <div v-else-if="activeBlock" class="tree-sidebar" :class="[`category-${blockClasses[activeBlock.type].category}`]">
+
+      <div v-else-if="activeBlock" class="tree-sidebar"
+           :class="[`category-${blockClasses[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
              :data-block-type="activeBlock && activeBlock.type"
              :data-for-block-id="activeBlock && activeBlock.uuid">
           <component v-if="activeBlock"
-                     :is="`Flow${activeBlock.type.replace(/\\/g, '')}`"
+                     :is="`Flow${activeBlock.type.replace('.', '')}`"
                      :block="activeBlock"
                      :flow="activeFlow">
           </component>
@@ -52,7 +54,7 @@
 </template>
 
 <script>
-import lang from '@/lib/filters/lang'
+import { lang } from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import lodash, { forEach, invoke, isEmpty } from 'lodash'
 import Vue from 'vue'
@@ -75,7 +77,7 @@ import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBu
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
-import { SupportedMode } from '@floip/flow-runner'
+import { scrollBehavior, scrollBlockIntoView } from '@/router'
 
 // import '../TreeDiffLogger'
 
@@ -227,16 +229,10 @@ export default {
       const { blockId, field } = this.$route.params
       if (blockId) {
         this.activateBlock({ blockId })
-        const blockEle = document.querySelector(`#block\\/${blockId} .plain-draggable`)
-        if (blockEle) {
-          blockEle.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }
+        scrollBlockIntoView(blockId)
       }
       if (field) {
-        const ele = document.getElementById(`${blockId}.${field}`)
-        if (ele) {
-          ele.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }
+        scrollBehavior(this.$route)
       }
       if (this.$route.name === 'flow-simulator' && this.hasSimulator()) {
         this.setSimulatorActive(true)
@@ -269,8 +265,8 @@ export default {
       const { blockClasses } = this
 
       forEach(blockClasses, async ({ type }) => {
-        const normalizedType = type.replace('\\', '_')
-        const typeWithoutSeparators = type.replace(/\\/g, '')
+        const normalizedType = type.replace('.', '_')
+        const typeWithoutSeparators = type.replace('.', '')
         const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
         invoke(exported, 'install', this)
         Vue.component(`Flow${typeWithoutSeparators}`, exported.default)

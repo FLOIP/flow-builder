@@ -5,24 +5,28 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block"/>
-      <block-label-editor :block="block"/>
-      <block-semantic-label-editor :block="block"/>
+      <block-name-editor :block="block" />
+      <block-label-editor :block="block" />
+      <block-semantic-label-editor :block="block" />
 
-      <div class="form-group">
-        <label>{{'flow-builder.action-label' | trans}}</label>
-        <vue-multiselect v-model="selectedAction"
-                         track-by="id"
-                         label="name"
-                         :placeholder="'flow-builder.action-placeholder' | trans"
-                         :options="actionsList"
-                         :allow-empty="true"
-                         :show-labels="false"
-                         :searchable="false">
-        </vue-multiselect>
-      </div>
+      <validation-message :message-key="`block/${block.uuid}/config/is_member`" #input-control="{ isValid: isValid }">
+        <div class="form-group">
+          <label>{{'flow-builder.action-label' | trans}}</label>
+          <vue-multiselect v-model="selectedAction"
+                           track-by="id"
+                           label="name"
+                           :class="{invalid: isValid === false}"
+                           :placeholder="'flow-builder.action-placeholder' | trans"
+                           :options="actionsList"
+                           :allow-empty="true"
+                           :show-labels="false"
+                           :searchable="false">
+          </vue-multiselect>
+        </div>
+      </validation-message>
 
-      <group-selector :block="block"/>
+      <group-selector :block="block" />
+
       <slot name="extras"></slot>
       <first-block-editor-button
         :flow="flow"
@@ -35,7 +39,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
@@ -53,9 +56,11 @@ import GroupSelector from '@/components/interaction-designer/block-editors/Group
 import VueMultiselect from 'vue-multiselect'
 
 import SetGroupMembershipStore, { BLOCK_TYPE, ADD_KEY, REMOVE_KEY } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
-import lang, { trans } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import { createDefaultBlockTypeInstallerFor } from '@/store/builder'
 import { find } from 'lodash'
+import { mixins } from "vue-class-component";
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
@@ -66,9 +71,7 @@ interface IGroupActionOption {
   name: string;
 }
 
-//providing this generic is required by tsserver checking but not in the build run by yarn storybook
-//TODO - understand what is going on here and if there is something more correct we should have instead
-@Component<any>({
+@Component({
   components: {
     BlockNameEditor,
     BlockLabelEditor,
@@ -77,49 +80,54 @@ interface IGroupActionOption {
     BlockId,
     GroupSelector,
     VueMultiselect,
+    ValidationMessage
   },
-  mixins: [lang],
 })
-class Core_SetGroupMembershipBlock extends Vue {
+class Core_SetGroupMembershipBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
 
   actionsList: IGroupActionOption[] = [
     {
       id: ADD_KEY,
-      name: trans('flow-builder.add'),
+      name: this.trans('flow-builder.add'),
     },
     {
       id: REMOVE_KEY,
-      name: trans('flow-builder.remove'),
+      name: this.trans('flow-builder.remove'),
     },
   ]
 
   get selectedAction() {
-    const { isMember } = this.block.config as ISetGroupMembershipBlockConfig
-    //TODO: we can remove the safe cast JSON.parse(isMember) once ISetGroupMembershipBlockConfig.isMember type is changed to boolean
-    if (JSON.parse(isMember) === false) {
-      return find(this.actionsList, { id: REMOVE_KEY }) || null
+    const { is_member } = this.block.config as ISetGroupMembershipBlockConfig
+    if (!is_member) {
+      return find(this.actionsList, { id: REMOVE_KEY }) || {} as IGroupActionOption
     }
 
-    if (JSON.parse(isMember) === true) {
-      return find(this.actionsList, { id: ADD_KEY }) || null
+    if (is_member) {
+      return find(this.actionsList, { id: ADD_KEY }) || {} as IGroupActionOption
     }
 
-    return null
+    return {} as IGroupActionOption
   }
 
   set selectedAction(action: IGroupActionOption) {
     this.setIsMember(action)
   }
 
-  @blockVuexNamespace.Action setIsMember: (action: IGroupActionOption) => Promise<any>
+  @blockVuexNamespace.Action setIsMember!: (action: IGroupActionOption) => Promise<any>
 
-  @builderVuexNamespace.Getter isEditable !: boolean
+  @builderVuexNamespace.Getter isEditable!: boolean
 
-  @flowVuexNamespace.Mutation block_updateConfigByPath
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
 }
 
 export default Core_SetGroupMembershipBlock
 export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SetGroupMembershipStore)
 </script>
+
+<style lang="css" scoped>
+.invalid >>> .multiselect__tags {
+  border-color: #dc3545;
+}
+</style>
