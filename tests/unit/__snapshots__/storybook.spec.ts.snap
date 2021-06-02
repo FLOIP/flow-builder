@@ -447,8 +447,6 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                        
                       <!---->
                        
-                      <!---->
-                       
                       <a
                         class="btn btn-secondary mr-2"
                         href="#/flows/new"
@@ -753,16 +751,6 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                           <!---->
                         </div>
                       </div>
-                       
-                      <button
-                        class="btn btn-secondary tree-delete-block mr-2"
-                        disabled="disabled"
-                        type="button"
-                      >
-                        
-          Delete
-        
-                      </button>
                        
                       <a
                         class="btn btn-secondary mr-2"
@@ -1098,16 +1086,6 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                         </div>
                       </div>
                        
-                      <button
-                        class="btn btn-secondary tree-delete-block mr-2"
-                        disabled="disabled"
-                        type="button"
-                      >
-                        
-          Delete
-        
-                      </button>
-                       
                       <a
                         class="btn btn-secondary mr-2"
                         href="#/flows/new"
@@ -1441,16 +1419,6 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         </div>
                       </div>
                        
-                      <button
-                        class="btn btn-secondary tree-delete-block mr-2"
-                        disabled="disabled"
-                        type="button"
-                      >
-                        
-          Delete
-        
-                      </button>
-                       
                       <a
                         class="btn btn-secondary mr-2"
                         href="#/flows/new"
@@ -1567,8 +1535,6 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
             Edit Flow
           
                       </a>
-                       
-                      <!---->
                        
                       <!---->
                        
