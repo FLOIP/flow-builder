@@ -8,6 +8,12 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import {defaultsDeep} from 'lodash'
 import {IFlowsState} from '../index'
 
+export interface IContactPropertyOption {
+  id: string
+  name: string
+  displayLabel: string
+}
+
 export const BLOCK_TYPE = 'Core.SetContactProperty'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}

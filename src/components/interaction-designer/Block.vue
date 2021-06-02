@@ -1,5 +1,5 @@
 <template>
-  <div @click="activateBlock({ blockId: block.uuid })">
+  <div @click="selectBlock">
     <plain-draggable
         v-if="hasLayout"
         ref="draggable"
@@ -12,7 +12,7 @@
         :startY="y"
         :is-editable="isEditable"
         @dragged="onMoved"
-        @dragStarted="activateBlock({ blockId: block.uuid })">
+        @dragStarted="selectBlock">
 
       <div class="d-flex justify-content-between">
         <div class="header-actions-left">
@@ -188,7 +188,7 @@
 
 <script>
 import Vue from 'vue'
-import {isNumber, forEach, filter, get} from 'lodash'
+import {isNumber, forEach, filter, includes} from 'lodash'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
@@ -243,7 +243,10 @@ export default {
   },
 
   computed: {
-    ...mapState('flow', ['resources']),
+    ...mapState('flow', [
+      'resources',
+      'selectedBlocks',
+    ]),
     ...mapState('builder', ['activeBlockId', 'operations', 'activeConnectionsContext']),
     ...mapState({
       blockClasses: ({ trees: { ui } }) => ui.blockClasses,
@@ -265,7 +268,7 @@ export default {
     },
 
     isBlockSelected() {
-      return this.block.vendor_metadata.io_viamo.uiData.isSelected
+      return includes(this.selectedBlocks, this.block.uuid)
     },
 
     // todo: does this component know too much, what out of the above mapped state can be mapped?
@@ -514,6 +517,15 @@ export default {
 
       this.applyConnectionSourceRelocate()
       this.livePosition = null
+    },
+
+    selectBlock() {
+      const { block: { uuid: blockId } } = this
+      const routerName = this.$route.meta.isSidebarShown ? 'block-selected-details' : 'block-selected'
+      this.$router.history.replace({
+        name: routerName,
+        params: { blockId },
+      })
     },
   },
 }

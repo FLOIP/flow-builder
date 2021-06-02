@@ -168,6 +168,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                             >
                               <div
                                 class="form-group flow-label"
+                                id="fake-uuid-8.label"
                               >
                                 <div
                                   class="form-group"
@@ -189,6 +190,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               >
                                 <div
                                   class="form-group flow-interaction-timeout"
+                                  id="fake-uuid-8.interactionTimeout"
                                 >
                                   <div
                                     class="number-editor"
@@ -218,6 +220,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                             >
                               <div
                                 class="form-group flow-languages"
+                                id="fake-uuid-8.languages"
                               >
                                 <label>
                                   Languages
@@ -261,6 +264,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                
                               <div
                                 class="form-group flow-modes"
+                                id="fake-uuid-8.modes"
                               >
                                 <label>
                                   Modes
@@ -1716,6 +1720,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           >
                             <div
                               class="block-name"
+                              id="fake-uuid-80.name"
                             >
                               <div
                                 class="form-group"
@@ -1747,6 +1752,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           >
                             <div
                               class="block-label"
+                              id="fake-uuid-80.label"
                             >
                               <div
                                 class="form-group"
@@ -1771,6 +1777,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           >
                             <div
                               class="block-semantic-label"
+                              id="fake-uuid-80.semanticLabel"
                             >
                               <div
                                 class="form-group"
@@ -1795,6 +1802,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           >
                             <div
                               class="form-group block-validation-min"
+                              id="fake-uuid-80.config.validationMinimum"
                             >
                               <div
                                 class="number-editor"
@@ -1823,6 +1831,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           >
                             <div
                               class="form-group block-validation-max"
+                              id="fake-uuid-80.config.validationMaximum"
                             >
                               <div
                                 class="number-editor"
@@ -1851,6 +1860,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           >
                             <div
                               class="form-group block-max-digits"
+                              id="fake-uuid-80.config.ivr.maxDigits"
                             >
                               <div
                                 class="number-editor"
@@ -1897,6 +1907,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                              
                             <div
                               class="resource-variant-text-editor"
+                              id="fake-uuid-80.config.prompt.English.SMS"
                             >
                               <div
                                 class="content-editor"
@@ -1925,6 +1936,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                              
                             <div
                               class="resource-variant-text-editor"
+                              id="fake-uuid-80.config.prompt.English.USSD"
                             >
                               <div
                                 class="content-editor"
@@ -1953,7 +1965,9 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                              
                             <!---->
                              
-                            <div>
+                            <div
+                              id="fake-uuid-80.config.prompt.English.IVR"
+                            >
                               <div
                                 class="upload-monitor"
                               >
@@ -2151,6 +2165,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           >
                             <div
                               class="block-name"
+                              id="fake-uuid-86.name"
                             >
                               <div
                                 class="form-group"
@@ -2182,6 +2197,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           >
                             <div
                               class="block-label"
+                              id="fake-uuid-86.label"
                             >
                               <div
                                 class="form-group"
@@ -2206,6 +2222,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           >
                             <div
                               class="block-semantic-label"
+                              id="fake-uuid-86.semanticLabel"
                             >
                               <div
                                 class="form-group"
@@ -2230,6 +2247,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           >
                             <div
                               class="form-group block-validation-min"
+                              id="fake-uuid-86.config.validationMinimum"
                             >
                               <div
                                 class="number-editor"
@@ -2258,6 +2276,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           >
                             <div
                               class="form-group block-validation-max"
+                              id="fake-uuid-86.config.validationMaximum"
                             >
                               <div
                                 class="number-editor"
@@ -2286,6 +2305,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           >
                             <div
                               class="form-group block-max-digits"
+                              id="fake-uuid-86.config.ivr.maxDigits"
                             >
                               <div
                                 class="number-editor"
@@ -2332,6 +2352,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                              
                             <div
                               class="resource-variant-text-editor"
+                              id="fake-uuid-86.config.prompt.English.SMS"
                             >
                               <div
                                 class="content-editor"
@@ -2360,6 +2381,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                              
                             <div
                               class="resource-variant-text-editor"
+                              id="fake-uuid-86.config.prompt.English.USSD"
                             >
                               <div
                                 class="content-editor"
@@ -2388,7 +2410,9 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                              
                             <!---->
                              
-                            <div>
+                            <div
+                              id="fake-uuid-86.config.prompt.English.IVR"
+                            >
                               <div
                                 class="upload-monitor"
                               >
@@ -2604,6 +2628,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           >
                             <div
                               class="block-name"
+                              id="fake-uuid-115.name"
                             >
                               <div
                                 class="form-group"
@@ -2635,6 +2660,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           >
                             <div
                               class="block-label"
+                              id="fake-uuid-115.label"
                             >
                               <div
                                 class="form-group"
@@ -2659,6 +2685,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           >
                             <div
                               class="block-semantic-label"
+                              id="fake-uuid-115.semanticLabel"
                             >
                               <div
                                 class="form-group"
@@ -2683,6 +2710,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           >
                             <div
                               class="form-group block-max-duration-seconds"
+                              id="fake-uuid-115.config.ivr.maxDurationSeconds"
                             >
                               <div
                                 class="number-editor"
@@ -2711,6 +2739,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           >
                             <div
                               class="form-group block-max-response-characters"
+                              id="fake-uuid-115.config.text.maxResponseCharacters"
                             >
                               <div
                                 class="number-editor"
@@ -2765,6 +2794,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                              
                             <div
                               class="resource-variant-text-editor"
+                              id="fake-uuid-115.config.prompt.English.SMS"
                             >
                               <div
                                 class="content-editor"
@@ -2793,6 +2823,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                              
                             <div
                               class="resource-variant-text-editor"
+                              id="fake-uuid-115.config.prompt.English.USSD"
                             >
                               <div
                                 class="content-editor"
@@ -2821,7 +2852,9 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                              
                             <!---->
                              
-                            <div>
+                            <div
+                              id="fake-uuid-115.config.prompt.English.IVR"
+                            >
                               <div
                                 class="upload-monitor"
                               >
@@ -3019,6 +3052,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                           >
                             <div
                               class="block-name"
+                              id="fake-uuid-124.name"
                             >
                               <div
                                 class="form-group"
@@ -3050,6 +3084,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                           >
                             <div
                               class="block-label"
+                              id="fake-uuid-124.label"
                             >
                               <div
                                 class="form-group"
@@ -3074,6 +3109,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                           >
                             <div
                               class="block-semantic-label"
+                              id="fake-uuid-124.semanticLabel"
                             >
                               <div
                                 class="form-group"
@@ -3098,6 +3134,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                           >
                             <div
                               class="form-group block-max-duration-seconds"
+                              id="fake-uuid-124.config.ivr.maxDurationSeconds"
                             >
                               <div
                                 class="number-editor"
@@ -3126,6 +3163,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                           >
                             <div
                               class="form-group block-max-response-characters"
+                              id="fake-uuid-124.config.text.maxResponseCharacters"
                             >
                               <div
                                 class="number-editor"
@@ -3180,6 +3218,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                              
                             <div
                               class="resource-variant-text-editor"
+                              id="fake-uuid-124.config.prompt.English.SMS"
                             >
                               <div
                                 class="content-editor"
@@ -3208,6 +3247,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                              
                             <div
                               class="resource-variant-text-editor"
+                              id="fake-uuid-124.config.prompt.English.USSD"
                             >
                               <div
                                 class="content-editor"
@@ -3236,7 +3276,9 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                              
                             <!---->
                              
-                            <div>
+                            <div
+                              id="fake-uuid-124.config.prompt.English.IVR"
+                            >
                               <div
                                 class="upload-monitor"
                               >
