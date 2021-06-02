@@ -144,20 +144,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async block_select({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
     state.selectedBlocks.push(blockId)
-    commit('block_updateVendorMetadataByPath', {
-      blockId,
-      path: 'io_viamo.uiData.isSelected',
-      value: true
-    })
   },
 
   async block_deselect({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
     state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId) // remove it
-    commit('block_updateVendorMetadataByPath', {
-      blockId,
-      path: 'io_viamo.uiData.isSelected',
-      value: false
-    })
   },
 
   async block_clearMultiSelection({ state, dispatch }) {
