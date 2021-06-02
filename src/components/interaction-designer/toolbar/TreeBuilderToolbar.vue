@@ -120,15 +120,6 @@
 
           <button v-if="isEditable"
                   type="button"
-                  v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-                  class="btn btn-secondary tree-duplicate-block mr-2"
-                  @click.prevent="handleDuplicateActivatedBlockTriggered"
-                  :disabled="!activeBlockId">
-            {{trans('flow-builder.duplicate')}}
-          </button>
-
-          <button v-if="isEditable"
-                  type="button"
                   v-b-tooltip.hover="transIf(activeBlockId, 'flow-builder.tooltip-delete-block')"
                   class="btn btn-secondary tree-delete-block mr-2"
                   @click.prevent="handleRemoveActivatedBlockTriggered"
@@ -326,11 +317,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   handleRemoveActivatedBlockTriggered() {
     const { activeBlockId: blockId } = this
     this.flow_removeBlock({ blockId })
-  }
-
-  handleDuplicateActivatedBlockTriggered() {
-    const { activeBlockId: blockId } = this
-    this.flow_duplicateBlock({ blockId })
   }
 
   toggleImportExport() {

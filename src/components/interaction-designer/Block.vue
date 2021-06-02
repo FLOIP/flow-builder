@@ -14,6 +14,20 @@
         @dragged="onMoved"
         @dragStarted="selectBlock">
 
+      <div class="d-flex justify-content-between">
+        <div class="header-actions-left">
+        </div>
+        <div class="header-actions-right">
+          <font-awesome-icon
+            v-if="isEditable"
+            :icon="['far', 'clone']"
+            class="mr-1 ml-2 fa-btn"
+            v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
+            @click.prevent="flow_duplicateBlock({ blockId: block.uuid })"
+          />
+        </div>
+      </div>
+
       <header
           :id="`block/${block.uuid}/handle`"
           class="block-target draggable-handle"
@@ -256,6 +270,10 @@ export default {
       'applyConnectionCreate',
     ]),
 
+    ...mapActions('flow', [
+      'flow_duplicateBlock',
+    ]),
+
     ...mapMutations('builder', ['activateBlock']),
 
     updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
@@ -462,6 +480,10 @@ export default {
 </script>
 
 <style lang="scss">
+  .fa-btn {
+    cursor: pointer;
+  }
+
   .btn-secondary.btn-flat {
     @extend .btn-secondary;
     background: transparent;
