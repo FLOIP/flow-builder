@@ -58,7 +58,7 @@
               :icon="['far', 'clone']"
               class="fa-btn"
               v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-              @click.prevent="flow_duplicateBlock({ blockId: block.uuid })"
+              @click.prevent="handleDuplicateBlock"
             />
           </div>
         </div>
@@ -327,6 +327,10 @@ export default {
       this.block_deselect({ blockId: this.block.uuid })
       this.flow_removeBlock({ blockId: this.block.uuid })
       this.isDeleting = false
+    },
+
+    handleDuplicateBlock() {
+      this.flow_duplicateBlock({ blockId: this.block.uuid })
     },
 
     updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
