@@ -356,13 +356,13 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
    */
   handleHeightChangeFromDOM() {
     let height = 0
-    const elementRef = this.$refs['builder-toolbar']
+    const elementRef = this.$refs['builder-toolbar'] as Element
     if (!elementRef) {
       console.debug('Interaction Designer', 'Unable to find DOM element corresponding to builder-toolbar')
     }
 
     forEach(elementRef.childNodes, function(child) {
-      height = height + child.offsetHeight
+      height = height + (<HTMLElement> child).offsetHeight
     })
 
     if (height > 0) {
@@ -418,6 +418,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   .tree-builder-toolbar-alerts {
     position: fixed;
     margin-top: 60px;
-    z-index: 4*10;
+    z-index: 3*10;
   }
 </style>

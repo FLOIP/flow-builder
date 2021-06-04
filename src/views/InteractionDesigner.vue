@@ -48,7 +48,10 @@
     </div>
 
     <div class="tree-contents"
-         :x-style="{'min-height': `${designerWorkspaceHeight}px`}">
+         :style="{
+            'min-height': `${designerWorkspaceHeight}px`,
+            'padding-top': `${toolbarHeight + 5}px`
+         }">
       <builder-canvas @click.native="handleCanvasSelected" />
     </div>
   </div>
@@ -384,7 +387,7 @@ export default {
 
   .tree-builder-toolbar-main-menu {
     position: fixed;
-    z-index: 3*10;
+    z-index: 4*10;
 
     width: 100vw;
 
