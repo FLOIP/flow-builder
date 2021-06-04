@@ -1,5 +1,5 @@
 <template>
-  <div class="tree-builder-toolbar">
+  <div class="tree-builder-toolbar" ref="builder-toolbar">
     <div class="tree-builder-toolbar-main-menu">
       <div v-if="isImporterVisible"
            class="flows-importer alert alert-info">
@@ -145,7 +145,7 @@
       </div>
     </div>
     <div class="tree-builder-toolbar-alerts w-100">
-      <selection-banner/>
+      <selection-banner @updated="handleHeightChangeFromDOM"/>
     </div>
   </div>
 
@@ -156,7 +156,7 @@ import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
-import lodash, { isEmpty } from 'lodash'
+import lodash, { isEmpty, forEach } from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
@@ -186,6 +186,7 @@ const builderVuexNamespace = namespace('builder')
 })
 export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isImporterVisible = false
+  height = 60
 
   // Computed ####################
 
@@ -350,6 +351,26 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return lodash.pickBy(obj, lodash.identity)
   }
 
+  /**
+   * We have to make sure this is called using $nextTick() because we play with DOM
+   */
+  handleHeightChangeFromDOM() {
+    let height = 0
+    const elementRef = this.$refs['builder-toolbar']
+    if (!elementRef) {
+      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to builder-toolbar')
+    }
+
+    forEach(elementRef.childNodes, function(child) {
+      height = height + child.offsetHeight
+    })
+
+    if (height > 0) {
+      this.height = height
+      this.$emit('height-updated', this.height)
+    }
+  }
+
   // ########### VUEX ###############
   @State(({ trees: { tree } }) => tree) tree!: any
   @State(({ trees: { ui } }) => ui) ui!: any
@@ -397,5 +418,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   .tree-builder-toolbar-alerts {
     position: fixed;
     margin-top: 60px;
+    z-index: 4*10;
   }
 </style>

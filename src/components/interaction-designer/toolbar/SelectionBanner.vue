@@ -56,6 +56,10 @@ const flowVuexNamespace = namespace('flow')
 export default class SelectionBanner extends mixins(Lang) {
   deleting: boolean = false
 
+  updated() {
+    this.$emit('updated')
+  }
+
   get countSelectedBlocks() {
     return size(this.selectedBlocks)
   }

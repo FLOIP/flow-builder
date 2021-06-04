@@ -1,9 +1,15 @@
 <template>
   <div v-if="activeFlow" class="interaction-designer-contents">
-    <tree-builder-toolbar/>
+    <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate"/>
 
-    <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}" :key="activeBlock && activeBlock.uuid">
-      <div class="sidebar-cue" :class="{'sidebar-close': $route.meta.isSidebarShown}" @click="showOrHideSidebar">
+    <div class="tree-sidebar-container"
+         :class="{ 'slide-out': !$route.meta.isSidebarShown,}"
+         :key="activeBlock && activeBlock.uuid"
+         :style="{ paddingTop: `${toolbarHeight}px` }">
+      <div class="sidebar-cue"
+           :class="{'sidebar-close': $route.meta.isSidebarShown}"
+           @click="showOrHideSidebar"
+           :style="{ top: `${toolbarHeight}px` }">
         <i class="glyphicon"
            :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
                   'glyphicon-resize-small': $route.meta.isSidebarShown}">
@@ -109,6 +115,7 @@ export default {
 
   data() {
     return {
+      toolbarHeight: 60,
       pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
         'CallBackWithCallCenterBlock',
         'CollaborativeFilteringQuestionBlock',
@@ -315,6 +322,10 @@ export default {
       })
     },
 
+    handleToolBarHeightUpdate(height) {
+      this.toolbarHeight = height
+    }
+
   },
 }
 </script>
@@ -349,7 +360,6 @@ export default {
     overflow-y: scroll;
 
     padding: 1em;
-    padding-top: $toolbar-height;
     transition: right 200ms ease-in-out;
 
     .tree-sidebar {
@@ -469,7 +479,7 @@ export default {
     padding: 5px;
     position: fixed;
     right: 0;
-    top: 70px;
+    margin-top: 1em;
     z-index: 50;
   }
 
