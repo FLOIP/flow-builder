@@ -3,8 +3,23 @@
        class="builder-canvas no-select"
        :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }"
   >
+    <plain-draggable class="all-selected-block"
+                     :start-x="80" :start-y="80" style="width: 100px; height: 100px;">
+      <div class="draggable-handle" style="cursor: pointer">
+        <div style="background-color: #531944; color: white">
+          Drag me
+        </div>
+      </div>
+      <block v-for="block in allSelectedBlocks"
+             :key="block.uuid"
+             :ref="`block/${block.uuid}`"
+             :id="`block/${block.uuid}`"
+             :block="block"
+             :x="block.vendor_metadata.io_viamo.uiData.xPosition"
+             :y="block.vendor_metadata.io_viamo.uiData.yPosition" />
+    </plain-draggable>
 
-    <block v-for="block in activeFlow.blocks"
+    <block v-for="block in allNonSelectedBlocks" class="non-selected-block"
            :key="block.uuid"
            :ref="`block/${block.uuid}`"
            :id="`block/${block.uuid}`"
@@ -17,10 +32,11 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import { find, isEqual, cloneDeep, debounce, maxBy, get } from 'lodash'
+import { find, isEqual, cloneDeep, debounce, maxBy, get, filter, includes } from 'lodash'
 import { namespace } from 'vuex-class'
 import { IBlock, IFlow } from '@floip/flow-runner'
 import { IValidationStatus } from '@/store/validation'
+import PlainDraggable from '@/components/common/PlainDraggable.vue'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
@@ -32,6 +48,7 @@ const DEBOUNCE_SCROLL_TIMER = 100 //ms
 @Component({
   components: {
     Block,
+    PlainDraggable,
   },
 })
 export default class BuilderCanvas extends Vue {
@@ -171,7 +188,20 @@ export default class BuilderCanvas extends Vue {
     return scrollWidth
   }
 
+  get allSelectedBlocks() {
+    return filter(this.activeFlow.blocks, (block) => {
+      return includes(this.selectedBlocks, block.uuid)
+    })
+  }
+
+  get allNonSelectedBlocks() {
+    return filter(this.activeFlow.blocks, (block) => {
+      return !includes(this.selectedBlocks, block.uuid)
+    })
+  }
+
   @flowVuexNamespace.State flows?: IFlow[]
+  @flowVuexNamespace.State selectedBlocks!: IBlock['uuid'][]
   @flowVuexNamespace.Getter activeFlow!: IFlow
 
   @validationVuexNamespace.Action validate_flow!: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
