@@ -61,7 +61,7 @@ export default class SelectionBanner extends mixins(Lang) {
   }
 
   get countSelectedBlocks() {
-    return size(this.selectedBlocks)
+    return size(this.selectedBlockUuids)
   }
 
   async confirmMultipleDeletion() {
@@ -74,7 +74,7 @@ export default class SelectionBanner extends mixins(Lang) {
     await this.flow_clearMultiSelection()
   }
 
-  @flowVuexNamespace.State selectedBlocks!: IBlock['uuid'][]
+  @flowVuexNamespace.State selectedBlockUuids!: IBlock['uuid'][]
   @flowVuexNamespace.Action flow_clearMultiSelection!: () => void
   @flowVuexNamespace.Action flow_removeAllSelectedBlocks!: () => void
   @flowVuexNamespace.Action flow_duplicateAllSelectedBlocks!: () => void

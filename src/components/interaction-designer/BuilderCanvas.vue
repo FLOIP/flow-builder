@@ -4,7 +4,11 @@
        :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }"
   >
     <plain-draggable class="all-selected-block"
-                     :start-x="400" :start-y="400" style="width: 100px; height: 100px;"
+                     :start-x="selectedBlocksRectArea.x" :start-y="selectedBlocksRectArea.y"
+                     :style="{
+                       width: `${selectedBlocksRectArea.width}px`,
+                       height: `${selectedBlocksRectArea.height}px`
+                     }"
                      @dragStarted="onStartedMultiSelectionDrag($event)"
                      @dragged="onMovedMultiSelection"
                      @dragEnded="onEndedMultiSelectionDrag($event)"
@@ -36,7 +40,7 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import {find, isEqual, cloneDeep, debounce, maxBy, get, filter, includes, forEach} from 'lodash'
+import {find, isEqual, cloneDeep, debounce, maxBy, minBy, get, filter, includes, forEach} from 'lodash'
 import { namespace } from 'vuex-class'
 import {findBlockWith, IBlock, IFlow} from '@floip/flow-runner'
 import { IValidationStatus } from '@/store/validation'
@@ -193,6 +197,14 @@ export default class BuilderCanvas extends Vue {
     return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
   }
 
+  get blockAtTheTopPosition() {
+    return minBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.yPosition')
+  }
+
+  get blockAtTheFurthestLeftPosition() {
+    return minBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
+  }
+
   get windowHeight() {
     return window.screen.availHeight
   }
@@ -243,19 +255,20 @@ export default class BuilderCanvas extends Vue {
 
   get allSelectedBlocks() {
     return filter(this.activeFlow.blocks, (block) => {
-      return includes(this.selectedBlocks, block.uuid)
+      return includes(this.selectedBlockUuids, block.uuid)
     })
   }
 
   get allNonSelectedBlocks() {
     return filter(this.activeFlow.blocks, (block) => {
-      return !includes(this.selectedBlocks, block.uuid)
+      return !includes(this.selectedBlockUuids, block.uuid)
     })
   }
 
   @flowVuexNamespace.State flows?: IFlow[]
-  @flowVuexNamespace.State selectedBlocks!: IBlock['uuid'][]
+  @flowVuexNamespace.State selectedBlockUuids!: IBlock['uuid'][]
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Getter selectedBlocksRectArea!: object
 
   @builderVuexNamespace.State draggableForBlocksByUuid!: object
   @builderVuexNamespace.State multiDragPositions!: { start: IPosition; end: IPosition }
@@ -288,5 +301,6 @@ export { BuilderCanvas }
     position: absolute;
     left: 0;
     top: 0;
+    z-index: 20;
   }
 </style>

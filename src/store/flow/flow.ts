@@ -24,7 +24,7 @@ import {
   cloneDeep,
   get,
   has,
-  omit
+  omit, min, max
 } from 'lodash'
 import { discoverContentTypesFor } from '@/store/flow/resource'
 import { computeBlockUiData } from '@/store/builder'
@@ -58,6 +58,38 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   },
   hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supported_modes || [], mode)),
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
+
+  selectedBlocksRectArea: (state, getters) => {
+    let abscissa: number[] = []
+    let ordinate: number[] = []
+    forEach(state.selectedBlockUuids, function (blockId) {
+      const { vendor_metadata: {
+        io_viamo: {
+          uiData: {
+            xPosition: x,
+            yPosition: y
+          }
+        }
+      }} = findBlockWith(blockId, getters.activeFlow)
+
+      abscissa.push(x ? x: 0);
+      ordinate.push(y ? y : 0)
+    })
+
+    const minX = min(abscissa)
+    const minY = min(ordinate)
+    const maxX = max(abscissa)
+    const maxY = max(ordinate)
+
+    const x = minX ? minX : 0
+    const y = minY ? minY : 0
+    return {
+      x,
+      y,
+      width: maxX ? (maxX - x): x,
+      height: maxY ? (maxY - y): y,
+    }
+  }
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -345,26 +377,26 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_clearMultiSelection({ state, dispatch }) {
-    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
+    forEach(state.selectedBlockUuids, (blockId: IBlock['uuid']) => {
       dispatch('block_deselect', { blockId })
     })
   },
 
   async flow_removeAllSelectedBlocks({ state, dispatch }) {
-    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
+    forEach(state.selectedBlockUuids, (blockId: IBlock['uuid']) => {
       dispatch('flow_removeBlock', { blockId })
     })
 
-    state.selectedBlocks = []
+    state.selectedBlockUuids = []
   },
 
   async flow_duplicateAllSelectedBlocks({ state, dispatch }) {
     let newBlocksUuid: string[] = []
-    forEach(state.selectedBlocks, async (blockId: IBlock['uuid']) => {
+    forEach(state.selectedBlockUuids, async (blockId: IBlock['uuid']) => {
       const duplicatedBlock: IBlock = await dispatch('flow_duplicateBlock', { blockId })
       newBlocksUuid.push(duplicatedBlock.uuid)
     })
-    state.selectedBlocks = newBlocksUuid
+    state.selectedBlockUuids = newBlocksUuid
   },
 }
 

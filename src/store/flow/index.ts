@@ -30,7 +30,7 @@ export interface IFlowsState {
   first_flow_id: string | null;
   // @note - for exciting future
   nested_flow_block_interaction_id_stack: string[];
-  selectedBlocks: IBlock['uuid'][];
+  selectedBlockUuids: IBlock['uuid'][];
 }
 
 export const stateFactory = (): IFlowsState => ({
@@ -40,7 +40,7 @@ export const stateFactory = (): IFlowsState => ({
 
   first_flow_id: null,
   nested_flow_block_interaction_id_stack: [], // todo: not quite right -- pulled from IContext
-  selectedBlocks: [],
+  selectedBlockUuids: [],
 })
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
