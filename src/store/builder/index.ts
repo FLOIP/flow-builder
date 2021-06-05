@@ -43,7 +43,7 @@ export interface IConnectionContext {
 
 export type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation
 
-interface IPosition {
+export interface IPosition {
   x: number;
   y: number;
 }
@@ -57,6 +57,8 @@ export interface IBuilderState {
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation;
     [OperationKind.BLOCK_RELOCATE]: null;
   };
+  draggableForBlocksByUuid: object;
+  multiDragPositions: { start: IPosition; end: IPosition };
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -74,6 +76,8 @@ export const stateFactory = (): IBuilderState => ({
     },
     [OperationKind.BLOCK_RELOCATE]: null,
   },
+  draggableForBlocksByUuid: {},
+  multiDragPositions: {} as { start: IPosition; end: IPosition }
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
@@ -383,7 +387,6 @@ export function computeBlockUiData(block?: IBlock | null) {
   return {
     xPosition: xPosition + xDelta,
     yPosition: yPosition + yDelta,
-    isSelected: false,
   }
 }
 

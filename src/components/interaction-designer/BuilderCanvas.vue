@@ -4,7 +4,11 @@
        :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }"
   >
     <plain-draggable class="all-selected-block"
-                     :start-x="80" :start-y="80" style="width: 100px; height: 100px;">
+                     :start-x="80" :start-y="80" style="width: 100px; height: 100px;"
+                     @dragStarted="onStartedMultiSelectionDrag($event)"
+                     @dragged="onMovedMultiSelection"
+                     @dragEnded="onEndedMultiSelectionDrag($event)"
+    >
       <div class="draggable-handle" style="cursor: pointer">
         <div style="background-color: #531944; color: white">
           Drag me
@@ -32,13 +36,15 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import { find, isEqual, cloneDeep, debounce, maxBy, get, filter, includes } from 'lodash'
+import {find, isEqual, cloneDeep, debounce, maxBy, get, filter, includes, forEach} from 'lodash'
 import { namespace } from 'vuex-class'
-import { IBlock, IFlow } from '@floip/flow-runner'
+import {findBlockWith, IBlock, IFlow} from '@floip/flow-runner'
 import { IValidationStatus } from '@/store/validation'
 import PlainDraggable from '@/components/common/PlainDraggable.vue'
+import {IPosition} from "@/store/builder";
 
 const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 const validationVuexNamespace = namespace('validation')
 
 const MARGIN_HEIGHT = 100 //px
@@ -53,6 +59,10 @@ const DEBOUNCE_SCROLL_TIMER = 100 //ms
 })
 export default class BuilderCanvas extends Vue {
   @Prop() block!: IBlock
+
+  created() {
+    this.blockDraggablesById = {}
+  }
 
   // ###### Validation API Watchers [
   @Watch('activeFlow', { deep: true, immediate: true })
@@ -107,6 +117,49 @@ export default class BuilderCanvas extends Vue {
   }, DEBOUNCE_SCROLL_TIMER)
 
   // ] ######## end canvas dynamic size watchers
+
+  onMovedMultiSelection({ position: { left: x, top: y } }) {
+    this.$nextTick(() => {
+      forEach(this.draggableForBlocksByUuid, (draggable, blockId) => {
+        // draggable.position()
+        // const block = findBlockWith(blockId, this.activeFlow)
+        // this.setBlockPositionTo({ position: { x, y }, block })
+      })
+
+      console.debug('Multiple blocks', 'onMoved', 'positioned all of', this.draggableForBlocksByUuid)
+    })
+  }
+
+  onStartedMultiSelectionDrag({ draggable }) {
+    const { left: x, top: y } = draggable
+    this.multiDragPositions.start = { x, y }
+  }
+
+  onEndedMultiSelectionDrag({ draggable }) {
+    const { left: x, top: y } = draggable
+    this.multiDragPositions.end = { x, y }
+
+    const xDelta = x - this.multiDragPositions.start.x
+    const yDelta = y - this.multiDragPositions.start.y
+
+    this.$nextTick(() => {
+      forEach(this.draggableForBlocksByUuid, (draggable, blockId) => {
+        // draggable.position()
+        const block = findBlockWith(blockId, this.activeFlow)
+        const { vendor_metadata: {
+          io_viamo: {
+            uiData: {
+              xPosition: initialXPosition,
+              yPosition: initialYPosition
+            }
+          }
+        }} = block
+        this.setBlockPositionTo({ position: { x: initialXPosition + xDelta, y: initialYPosition + yDelta }, block })
+      })
+
+      console.debug('Multiple blocks', 'ended drag', 'positioned all of', this.draggableForBlocksByUuid)
+    })
+  }
 
   get blocksOnActiveFlowForWatcher() {
     return cloneDeep(this.activeFlow.blocks) // needed to make comparison between new & old values on watcher
@@ -203,6 +256,10 @@ export default class BuilderCanvas extends Vue {
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.State selectedBlocks!: IBlock['uuid'][]
   @flowVuexNamespace.Getter activeFlow!: IFlow
+
+  @builderVuexNamespace.State draggableForBlocksByUuid!: object
+  @builderVuexNamespace.State multiDragPositions!: { start: IPosition; end: IPosition }
+  @builderVuexNamespace.Mutation setBlockPositionTo!: ({ position, block }: { position: any, block: IBlock }) => void
 
   @validationVuexNamespace.Action validate_flow!: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_block!: ({ block } : { block: IBlock }) => Promise<IValidationStatus>

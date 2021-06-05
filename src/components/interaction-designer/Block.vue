@@ -11,8 +11,10 @@
         :startX="x"
         :startY="y"
         :is-editable="isEditable"
+        @initialized="handleDraggableInitializedForBlock(block, $event)"
         @dragged="onMoved"
-        @dragStarted="selectBlock">
+        @dragStarted="selectBlock"
+        @destroyed="handleDraggableDestroyedForBlock(block)">
 
       <div class="d-flex justify-content-between">
         <div class="header-actions-left">
@@ -247,7 +249,12 @@ export default {
       'resources',
       'selectedBlocks',
     ]),
-    ...mapState('builder', ['activeBlockId', 'operations', 'activeConnectionsContext']),
+    ...mapState('builder', [
+      'activeBlockId',
+      'operations',
+      'activeConnectionsContext',
+      'draggableForBlocksByUuid',
+    ]),
     ...mapState({
       blockClasses: ({ trees: { ui } }) => ui.blockClasses,
     }),
@@ -454,6 +461,18 @@ export default {
 
     handleDraggableDestroyedFor({ uuid }) {
       delete this.draggablesByExitId[uuid]
+    },
+
+    handleDraggableInitializedForBlock({ uuid }, { draggable }) {
+      this.draggableForBlocksByUuid[uuid] = draggable
+
+      const { left, top } = draggable
+
+      console.debug('Block', 'handleDraggableInitializedForBlock', { blockId: uuid, coords: { left, top } })
+    },
+
+    handleDraggableDestroyedForBlock({ uuid }) {
+      delete this.draggableForBlocksByUuid[uuid]
     },
 
     onCreateExitDragStarted({ draggable }, exit) {
