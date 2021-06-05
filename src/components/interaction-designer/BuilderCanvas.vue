@@ -4,12 +4,12 @@
        :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }"
   >
     <plain-draggable class="all-selected-block"
-                     :start-x="80" :start-y="80" style="width: 100px; height: 100px;"
+                     :start-x="400" :start-y="400" style="width: 100px; height: 100px;"
                      @dragStarted="onStartedMultiSelectionDrag($event)"
                      @dragged="onMovedMultiSelection"
                      @dragEnded="onEndedMultiSelectionDrag($event)"
     >
-      <div class="draggable-handle" style="cursor: pointer">
+      <div class="draggable-handle drag-multiselect" style="cursor: pointer">
         <div style="background-color: #531944; color: white">
           Drag me
         </div>
@@ -282,5 +282,11 @@ export { BuilderCanvas }
     /*standard proportion min-width and min-height here so that initial render on slower machines*/
     min-width: 1024px;
     min-height: 768px;
+  }
+
+  .all-selected-block {
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 </style>
