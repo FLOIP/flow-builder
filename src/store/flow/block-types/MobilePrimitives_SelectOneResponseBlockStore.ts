@@ -169,7 +169,14 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       test: '',
     }
 
-    await dispatch('createVolatileEmptyChoice', { index: 1 })
+    const errorExitProps: Partial<IBlockExit> = {
+      uuid: await (new IdGeneratorUuidV4()).generate(),
+      tag: 'Error',
+      label: 'Error',
+      test: '',
+    }
+
+    await dispatch('createVolatileEmptyChoice', { index: 0 })
 
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
@@ -178,6 +185,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       semantic_label: '',
       exits: [
         await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true }),
+        await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true }),
       ],
       config: {
         prompt: blankPromptResource.uuid,
