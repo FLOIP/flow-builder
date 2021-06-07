@@ -6,8 +6,10 @@
     <plain-draggable class="all-selected-block"
                      :start-x="selectedBlocksRectArea.x" :start-y="selectedBlocksRectArea.y"
                      :style="{
-                       width: `${selectedBlocksRectArea.width}px`,
-                       height: `${selectedBlocksRectArea.height}px`
+                       top: `${selectedBlocksRectArea.y}px`,
+                       left: `${selectedBlocksRectArea.x}px`,
+                       width: `${selectedBlocksRectArea.x + selectedBlocksRectArea.width}px`,
+                       height: `${selectedBlocksRectArea.y + selectedBlocksRectArea.height}px`
                      }"
                      @dragStarted="onStartedMultiSelectionDrag($event)"
                      @dragged="onMovedMultiSelection"
@@ -299,8 +301,6 @@ export { BuilderCanvas }
 
   .all-selected-block {
     position: absolute;
-    left: 0;
-    top: 0;
     z-index: 20;
   }
 </style>
