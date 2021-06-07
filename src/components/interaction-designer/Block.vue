@@ -216,7 +216,7 @@ export default {
   },
 
   created() {
-    this.draggablesByExitId = {} // todo: these need to be (better) lifecycle-managed (eg. mcq add/remove exit).
+    this.initDraggableForExitsByUuid()
   },
 
   mounted() {
@@ -230,7 +230,6 @@ export default {
       isDeleting: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
-      // draggablesByExitId: {}, // no need to vuejs-observe these
     }
   },
 
@@ -247,7 +246,9 @@ export default {
       'resources',
       'selectedBlocks',
     ]),
-    ...mapState('builder', ['activeBlockId', 'operations', 'activeConnectionsContext']),
+    ...mapState('builder',
+      ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid']
+    ),
     ...mapState({
       blockClasses: ({ trees: { ui } }) => ui.blockClasses,
     }),
@@ -294,7 +295,7 @@ export default {
       generateConnectionLayoutKeyFor,
     },
 
-    ...mapMutations('builder', ['setBlockPositionTo']),
+    ...mapMutations('builder', ['setBlockPositionTo', 'initDraggableForExitsByUuid']),
 
     ...mapActions('builder', {
       _removeConnectionFrom: 'removeConnectionFrom',
@@ -431,9 +432,9 @@ export default {
       this.$nextTick(() => {
         this.setBlockPositionTo({ position: { x, y }, block })
 
-        forEach(this.draggablesByExitId, (draggable) => draggable.position())
+        forEach(this.draggableForExitsByUuid, (draggable) => draggable.position())
 
-        console.debug('Block', 'onMoved', 'positioned all of', this.draggablesByExitId)
+        console.debug('Block', 'onMoved', 'positioned all of', this.draggableForExitsByUuid)
       })
     },
 
@@ -444,7 +445,7 @@ export default {
     },
 
     handleDraggableInitializedFor({ uuid }, { draggable }) {
-      this.draggablesByExitId[uuid] = draggable
+      this.draggableForExitsByUuid[uuid] = draggable
 
       const { left, top } = draggable
       const { uuid: blockId } = this.block
@@ -453,7 +454,7 @@ export default {
     },
 
     handleDraggableDestroyedFor({ uuid }) {
-      delete this.draggablesByExitId[uuid]
+      delete this.draggableForExitsByUuid[uuid]
     },
 
     onCreateExitDragStarted({ draggable }, exit) {
