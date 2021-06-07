@@ -13,6 +13,19 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import 'scss/main.scss'
 
+/**
+ * Vue way for Fontawesome
+ * more details: https://www.npmjs.com/package/@fortawesome/vue-fontawesome#the-icon-property
+ *
+ */
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCircle, faClone, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+library.add(faCircle, faCheckCircle, faClone, faTrashAlt)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
 Vue.use(Vuex)
 
 Vue.config.productionTip = false
