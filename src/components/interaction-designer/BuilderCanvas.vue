@@ -4,17 +4,17 @@
        :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }"
   >
     <plain-draggable class="all-selected-block"
-                     :start-x="selectedBlocksInnerRectArea.x" :start-y="selectedBlocksInnerRectArea.y"
+                     :start-x="selectedBlocksOuterRectArea.x" :start-y="selectedBlocksOuterRectArea.y"
                      :style="{
-                       top: `${selectedBlocksInnerRectArea.y}px`,
-                       left: `${selectedBlocksInnerRectArea.x}px`,
+                       top: `${selectedBlocksOuterRectArea.y}px`,
+                       left: `${selectedBlocksOuterRectArea.x}px`,
                      }"
                      @dragStarted="onStartedMultiSelectionDrag($event)"
                      @dragged="onMovedMultiSelection"
                      @dragEnded="onEndedMultiSelectionDrag($event)"
     >
       <div class="draggable-handle drag-multiselect">
-        <div style="background-color: #531944; color: white" :style="{
+        <div class="drag-element border-primary rounder" :style="{
                        width: `${selectedBlocksOuterRectArea.width}px`,
                        height: `${selectedBlocksOuterRectArea.height}px`
                      }">
@@ -269,9 +269,13 @@ export default class BuilderCanvas extends Vue {
   }
 
   get selectedBlocksOuterRectArea() {
+    const margin = 50
     const outerArea = cloneDeep(this.selectedBlocksInnerRectArea)
-    outerArea.height = outerArea.height + this.blockHeight
-    outerArea.width = outerArea.width + this.blockWidth
+    outerArea.height = outerArea.height + this.blockHeight + 2*margin
+    outerArea.width = outerArea.width + this.blockWidth + 2*margin
+
+    outerArea.x = outerArea.x - margin
+    outerArea.y = outerArea.y - margin
     return outerArea
   }
 
@@ -315,6 +319,11 @@ export { BuilderCanvas }
   .drag-multiselect {
     cursor: grab;
     z-index: 15;
-    border: red;
+  }
+
+  .drag-element {
+    /*background-color: #531944;*/
+    background-color: transparent;
+    border: medium dashed;
   }
 </style>
