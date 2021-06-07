@@ -12,7 +12,9 @@
         :startY="y"
         :is-editable="isEditable"
         @dragged="onMoved"
-        @dragStarted="selectBlock">
+        @dragStarted="selectBlock"
+        @dragEnded="handleDraggableEndedForBlock"
+        @destroyed="handleDraggableDestroyedForBlock">
 
       <div class="d-flex justify-content-between">
         <div class="header-actions-left">
@@ -432,8 +434,13 @@ export default {
       this.$nextTick(() => {
         this.setBlockPositionTo({ position: { x, y }, block })
 
-        forEach(this.draggableForExitsByUuid, (draggable) => draggable.position())
-
+        forEach(this.draggableForExitsByUuid, (draggable, key) => {
+          try {
+            draggable.position()
+          } catch (e) {
+            console.warn('Block', 'onMoved', 'positioning draggable on', key, 'can\'t access property "initElm", props is undefined')
+          }
+        })
         console.debug('Block', 'onMoved', 'positioned all of', this.draggableForExitsByUuid)
       })
     },
@@ -533,6 +540,22 @@ export default {
         params: { blockId },
       })
     },
+
+    handleDraggableEndedForBlock() {
+      console.debug('Block', 'handleDraggableEndedForBlock')
+      const self = this
+      forEach(this.block.exits, function (exit) {
+        delete self.draggableForExitsByUuid[exit.uuid]
+      })
+    },
+
+    handleDraggableDestroyedForBlock() {
+      console.debug('Block', 'handleDraggableDestroyedForBlock')
+      const self = this
+      forEach(this.block.exits, function (exit) {
+        delete self.draggableForExitsByUuid[exit.uuid]
+      })
+    }
   },
 }
 </script>
