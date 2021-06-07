@@ -57,6 +57,7 @@ export interface IBuilderState {
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation;
     [OperationKind.BLOCK_RELOCATE]: null;
   };
+  draggableForExitsByUuid: object;
   draggableForBlocksByUuid: object;
   multiDragPositions: { start: IPosition; end: IPosition };
 }
@@ -76,6 +77,7 @@ export const stateFactory = (): IBuilderState => ({
     },
     [OperationKind.BLOCK_RELOCATE]: null,
   },
+  draggableForExitsByUuid: {},
   draggableForBlocksByUuid: {},
   multiDragPositions: {} as { start: IPosition; end: IPosition }
 })
@@ -129,6 +131,10 @@ export const mutations: MutationTree<IBuilderState> = {
   setIsEditable(state, value) {
     state.isEditable = value
   },
+
+  initDraggableForExitsByUuid(state) {
+    state.draggableForExitsByUuid = {}
+  }
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
