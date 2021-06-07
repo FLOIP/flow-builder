@@ -370,8 +370,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
 }
 
 export function computeBlockPositionsFrom(block?: IBlock | null) {
-  const xDelta = 80; const
-    yDelta = 80
+  const xDelta = 160
+  const yDelta = 180
 
   let xPosition = get(block, 'vendor_metadata.io_viamo.uiData.xPosition')
   let yPosition = get(block, 'vendor_metadata.io_viamo.uiData.yPosition')

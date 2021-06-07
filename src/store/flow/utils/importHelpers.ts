@@ -1,5 +1,5 @@
 import {
-  IResourceDefinition,
+  IResource,
   IContext,
   IBlock,
 } from '@floip/flow-runner'
@@ -9,72 +9,103 @@ import {
   findIndex,
   isEqual,
   filter,
+  cloneDeep,
 } from 'lodash'
 
-export const updateResourcesForLanguageMatch = function (resources: IResourceDefinition[], oldId: string, newId: string): IResourceDefinition[] {
+export function updateResourcesForLanguageMatch(
+  resources: IResource[], oldId: string, newId: string,
+): IResource[] {
   return resources.map((resource) => {
-    resource.values = resource.values.map((value) => {
-      if (value.languageId === oldId) {
-        value.languageId = newId
+    const newResource = cloneDeep(resource)
+    newResource.values = resource.values.map((value) => {
+      const newValue = cloneDeep(value)
+      if (value.language_id === oldId) {
+        newValue.language_id = newId // eslint-disable-line @typescript-eslint/camelcase
       }
-      return value
+      return newValue
     })
-    return resource
+    return newResource
   })
+}
+
+export function replaceResourcesWhenNecessary(
+  existingResources: IResource[], newResources: IResource[],
+): IResource[] {
+  const newExistingResources = cloneDeep(existingResources)
+  newResources.forEach((resource) => {
+    const newResourceUUID = resource.uuid
+    const existingResourceIndex = findIndex(
+      newExistingResources,
+      (oldResource) => oldResource.uuid === newResourceUUID,
+    )
+    if (existingResourceIndex < 0) {
+      newExistingResources.push(resource)
+    } else {
+      newExistingResources[existingResourceIndex] = resource
+    }
+  })
+  return newExistingResources
 }
 
 // We shouldn't need any special logic over collisions
 // We just overwrite any existing flows/resources with a given uuid
 // This is because they are uuids
 // We warn this will happen in the importer
-// For now we don't care about flow container uuid collisions as we aren't quite sure on the role of flow container yet
-export const mergeFlowContainer = function (existingFlowContainer: IContext, newFlowContainer: IContext): IContext {
-  // there should only be a single flow imported at a time currently. We block any more than this in the importer
+// For now we don't care about flow container uuid collisions
+// ...as we aren't quite sure on the role of flow container yet
+export function mergeFlowContainer(
+  existingFlowContainer: IContext, newFlowContainer: IContext,
+): IContext {
+  const newExistingFlowContainer = cloneDeep(existingFlowContainer)
+  // There should only be a single flow imported at a time currently.
+  // We block any more than this in the importer
   const newFlow = get(newFlowContainer, 'flows[0]')
   const newFlowUUID = get(newFlowContainer, 'flows[0].uuid')
-  const existingFlowIndex = findIndex(existingFlowContainer.flows, (flow) => flow.uuid == newFlowUUID)
+  const existingFlowIndex = findIndex(
+    newExistingFlowContainer.flows,
+    (flow) => flow.uuid === newFlowUUID,
+  )
   if (existingFlowIndex < 0) {
-    existingFlowContainer.flows.push(newFlow)
+    newExistingFlowContainer.flows.push(newFlow)
   } else {
-    existingFlowContainer.flows[existingFlowIndex] = newFlow
+    newExistingFlowContainer.flows[existingFlowIndex] = newFlow
   }
-  existingFlowContainer.resources = replaceResourcesWhenNecessary(existingFlowContainer.resources, newFlowContainer.resources)
-  return existingFlowContainer
+  const newResources = cloneDeep(newExistingFlowContainer.resources)
+  newExistingFlowContainer.resources = replaceResourcesWhenNecessary(
+    newResources,
+    newFlowContainer.resources,
+  )
+  return newExistingFlowContainer
 }
 
-const replaceResourcesWhenNecessary = function (existingResources: IResourceDefinition[], newResources: IResourceDefinition[]): IResourceDefinition[] {
-  newResources.forEach((resource) => {
-    const newResourceUUID = resource.uuid
-    const existingResourceIndex = findIndex(existingResources, (oldResource) => oldResource.uuid == newResourceUUID)
-    if (existingResourceIndex < 0) {
-      existingResources.push(resource)
-    } else {
-      existingResources[existingResourceIndex] = resource
-    }
-  })
-  return existingResources
-}
-
-export const checkSingleFlowOnly = function (flowContainer: IContext) {
+export function checkSingleFlowOnly(flowContainer: IContext) {
   if (get(flowContainer, 'flows', []).length !== 1) {
     return false
   }
   return true
 }
 
-export const detectedLanguageChanges = function ({ flowContainer, oldFlowContainer }: { flowContainer: IContext; oldFlowContainer: IContext | null}) {
+export function detectedLanguageChanges(
+  { flowContainer, oldFlowContainer }:
+  { flowContainer: IContext; oldFlowContainer: IContext | null},
+) {
   return !isEqual(get(flowContainer, 'flows[0].languages'), get(oldFlowContainer, 'flows[0].languages'))
 }
-export const detectedPropertyChanges = function ({ newPropertyBlocks, oldPropertyBlocks }: { newPropertyBlocks: IBlock[]; oldPropertyBlocks: IBlock[] }) {
+export function detectedPropertyChanges(
+  { newPropertyBlocks, oldPropertyBlocks }:
+  { newPropertyBlocks: IBlock[]; oldPropertyBlocks: IBlock[] },
+) {
   return !isEqual(newPropertyBlocks, oldPropertyBlocks)
 }
-export const detectedGroupChanges = function ({ newGroupBlocks, oldGroupBlocks }: { newGroupBlocks: IBlock[]; oldGroupBlocks: IBlock[] }) {
+export function detectedGroupChanges(
+  { newGroupBlocks, oldGroupBlocks }: { newGroupBlocks: IBlock[]; oldGroupBlocks: IBlock[] },
+) {
   return !isEqual(newGroupBlocks, oldGroupBlocks)
 }
 
-export const getPropertyBlocks = function (flowContainer: IContext) {
+export function getPropertyBlocks(flowContainer: IContext) {
   return filter(get(flowContainer, 'flows[0].blocks'), (block) => block.type === 'Core.SetContactProperty')
 }
-export const getGroupBlocks = function (flowContainer: IContext) {
+export function getGroupBlocks(flowContainer: IContext) {
   return filter(get(flowContainer, 'flows[0].blocks'), (block) => block.type === 'Core.SetGroupMembership')
 }

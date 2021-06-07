@@ -1,6 +1,6 @@
 <template>
   <validation-message :message-key="`block/${block.uuid}/semantic_label`" #input-control="{ isValid }">
-    <div class="block-semantic-label">
+    <div class="block-semantic-label" :id="`${block.uuid}.semanticLabel`">
       <text-editor v-model="semanticLabel"
                    :label="'flow-builder.block-semantic-label' | trans"
                    :placeholder="'flow-builder.enter-block-semantic-label' | trans"

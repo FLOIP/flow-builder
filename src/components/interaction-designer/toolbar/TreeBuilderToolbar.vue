@@ -118,24 +118,6 @@
             </div>
           </div>
 
-          <button v-if="isEditable"
-                  type="button"
-                  v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-                  class="btn btn-secondary tree-duplicate-block mr-2"
-                  @click.prevent="handleDuplicateActivatedBlockTriggered"
-                  :disabled="!activeBlockId">
-            {{trans('flow-builder.duplicate')}}
-          </button>
-
-          <button v-if="isEditable"
-                  type="button"
-                  v-b-tooltip.hover="transIf(activeBlockId, 'flow-builder.tooltip-delete-block')"
-                  class="btn btn-secondary tree-delete-block mr-2"
-                  @click.prevent="handleRemoveActivatedBlockTriggered"
-                  :disabled="!activeBlockId">
-            {{trans('flow-builder.delete')}}
-          </button>
-
           <router-link :to="route('flows.newFlow')" class="btn btn-secondary mr-2">
             {{trans('flow-builder.new-flow')}}
           </router-link>
@@ -193,6 +175,7 @@ const builderVuexNamespace = namespace('builder')
     // TreeUpdateConflictModal,
     // InteractionTotalsDateRangeConfiguration
   },
+
 })
 export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isImporterVisible = false
@@ -295,6 +278,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       },
     }) // todo push out to intx-designer
     this.activateBlock({ blockId })
+    this.$router.push({
+      name: 'block-selected-details',
+      params: { blockId },
+    })
   }
 
   async handlePersistFlow(route: RawLocation) {
@@ -316,16 +303,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     if(route) {
       this.$router.push(route)
     }
-  }
-
-  handleRemoveActivatedBlockTriggered() {
-    const { activeBlockId: blockId } = this
-    this.flow_removeBlock({ blockId })
-  }
-
-  handleDuplicateActivatedBlockTriggered() {
-    const { activeBlockId: blockId } = this
-    this.flow_duplicateBlock({ blockId })
   }
 
   toggleImportExport() {
