@@ -4,19 +4,20 @@
        :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }"
   >
     <plain-draggable class="all-selected-block"
-                     :start-x="selectedBlocksRectArea.x" :start-y="selectedBlocksRectArea.y"
+                     :start-x="selectedBlocksInnerRectArea.x" :start-y="selectedBlocksInnerRectArea.y"
                      :style="{
-                       top: `${selectedBlocksRectArea.y}px`,
-                       left: `${selectedBlocksRectArea.x}px`,
-                       width: `${selectedBlocksRectArea.x + selectedBlocksRectArea.width}px`,
-                       height: `${selectedBlocksRectArea.y + selectedBlocksRectArea.height}px`
+                       top: `${selectedBlocksInnerRectArea.y}px`,
+                       left: `${selectedBlocksInnerRectArea.x}px`,
                      }"
                      @dragStarted="onStartedMultiSelectionDrag($event)"
                      @dragged="onMovedMultiSelection"
                      @dragEnded="onEndedMultiSelectionDrag($event)"
     >
-      <div class="draggable-handle drag-multiselect" style="cursor: pointer">
-        <div style="background-color: #531944; color: white">
+      <div class="draggable-handle drag-multiselect">
+        <div style="background-color: #531944; color: white" :style="{
+                       width: `${selectedBlocksOuterRectArea.width}px`,
+                       height: `${selectedBlocksOuterRectArea.height}px`
+                     }">
           Drag me
         </div>
       </div>
@@ -267,10 +268,17 @@ export default class BuilderCanvas extends Vue {
     })
   }
 
+  get selectedBlocksOuterRectArea() {
+    const outerArea = cloneDeep(this.selectedBlocksInnerRectArea)
+    outerArea.height = outerArea.height + this.blockHeight
+    outerArea.width = outerArea.width + this.blockWidth
+    return outerArea
+  }
+
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.State selectedBlockUuids!: IBlock['uuid'][]
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Getter selectedBlocksRectArea!: object
+  @flowVuexNamespace.Getter selectedBlocksInnerRectArea!: object
 
   @builderVuexNamespace.State draggableForBlocksByUuid!: object
   @builderVuexNamespace.State multiDragPositions!: { start: IPosition; end: IPosition }
@@ -302,5 +310,11 @@ export { BuilderCanvas }
   .all-selected-block {
     position: absolute;
     z-index: 20;
+  }
+
+  .drag-multiselect {
+    cursor: grab;
+    z-index: 15;
+    border: red;
   }
 </style>

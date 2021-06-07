@@ -59,7 +59,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supported_modes || [], mode)),
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
 
-  selectedBlocksRectArea: (state, getters) => {
+  selectedBlocksInnerRectArea: (state, getters) => {
     let abscissa: number[] = []
     let ordinate: number[] = []
     forEach(state.selectedBlockUuids, function (blockId) {
