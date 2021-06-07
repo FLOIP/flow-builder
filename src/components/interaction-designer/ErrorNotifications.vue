@@ -59,15 +59,15 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
     return this.validationStatuses[flowKey]?.ajvErrors || []
   }
 
-  get blockValidationStatuses(): { [key: string]: IValidationStatus }  {
-    var blocksMap = this.activeFlow?.blocks.reduce((map, block) => {
+  get blockValidationStatuses(): { [key: string]: IValidationStatus } {
+    const blocksMap = this.activeFlow?.blocks.reduce((map: {[key: string]: boolean}, block) => {
       map[`block/${block.uuid}`] = true
       return map
     }, {})
-    if (!blocksMap || size(blocksMap) == 0) {
+    if (!blocksMap || size(blocksMap) === 0) {
       return {}
     }
-    return pickBy(this.validationStatuses, function (value: IValidationStatus, key) {
+    return pickBy(this.validationStatuses, (value: IValidationStatus, key) => {
       return value.type !== 'flow' && blocksMap[key]
     })
   }

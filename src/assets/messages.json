@@ -1600,7 +1600,7 @@
     "fix-issue": "Resoudre le probleme",
     "locate-block-issue": "Repérez blocs à numéro fixe",
     "flow-error-message": "Vous avez un problème de validation avec votre flux",
-    "block-error-message": "Vous avez bloc :block_count (s) qui a problème de validation.",
+    "block-error-message": "Vous avez bloc(s) :block_count qui a problème de validation.",
     "accuracy-threshold-in-meters": "Seuil de précision en mètres",
     "accuracy-timeout-in-seconds":"Précision timout en quelques secondes",
     "format-string": "Format Chaîne",
