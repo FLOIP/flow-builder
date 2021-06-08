@@ -3,12 +3,12 @@
        class="builder-canvas no-select"
        :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }"
   >
-    <plain-draggable class="all-selected-block"
-                     :start-x="selectedBlocksOuterRectArea.x" :start-y="selectedBlocksOuterRectArea.y"
+    <plain-draggable v-if="allSelectedBlocks.length > 0" class="all-selected-block"
                      :style="{
                        top: `${selectedBlocksOuterRectArea.y}px`,
                        left: `${selectedBlocksOuterRectArea.x}px`,
                      }"
+                     @initialized="onInitializedMultiSelectionDrag($event)"
                      @dragStarted="onStartedMultiSelectionDrag($event)"
                      @dragged="onMovedMultiSelection"
                      @dragEnded="onEndedMultiSelectionDrag($event)"
@@ -21,16 +21,9 @@
           Drag me
         </div>
       </div>
-      <block v-for="block in allSelectedBlocks"
-             :key="block.uuid"
-             :ref="`block/${block.uuid}`"
-             :id="`block/${block.uuid}`"
-             :block="block"
-             :x="block.vendor_metadata.io_viamo.uiData.xPosition"
-             :y="block.vendor_metadata.io_viamo.uiData.yPosition" />
     </plain-draggable>
 
-    <block v-for="block in allNonSelectedBlocks" class="non-selected-block"
+    <block v-for="block in this.activeFlow.blocks"
            :key="block.uuid"
            :ref="`block/${block.uuid}`"
            :id="`block/${block.uuid}`"
@@ -125,12 +118,22 @@ export default class BuilderCanvas extends Vue {
 
   // ] ######## end canvas dynamic size watchers
 
+  onInitializedMultiSelectionDrag({ draggable }) {
+
+  }
+
   onMovedMultiSelection({ position: { left: x, top: y } }) {
+    this.multiDragPositions.end = { x, y }
+    const delta = {
+      x: x - this.multiDragPositions.start.x,
+      y: y - this.multiDragPositions.start.y
+    }
     this.$nextTick(() => {
       forEach(this.draggableForBlocksByUuid, (draggable, blockId) => {
-        // draggable.position()
         // const block = findBlockWith(blockId, this.activeFlow)
         // this.setBlockPositionTo({ position: { x, y }, block })
+        // this.setBlockPositionFromDelta({delta, block})
+        // draggable.position()
       })
 
       console.debug('Multiple blocks', 'onMoved', 'positioned all of', this.draggableForBlocksByUuid)
@@ -146,22 +149,21 @@ export default class BuilderCanvas extends Vue {
     const { left: x, top: y } = draggable
     this.multiDragPositions.end = { x, y }
 
-    const xDelta = x - this.multiDragPositions.start.x
-    const yDelta = y - this.multiDragPositions.start.y
+    const delta = {
+      x: x - this.multiDragPositions.start.x,
+      y: y - this.multiDragPositions.start.y
+    }
+
+    console.debug('checkRS', 'BuilderCanvas', 'move multiselection using delta', delta)
 
     this.$nextTick(() => {
-      forEach(this.draggableForBlocksByUuid, (draggable, blockId) => {
-        // draggable.position()
-        const block = findBlockWith(blockId, this.activeFlow)
-        const { vendor_metadata: {
-          io_viamo: {
-            uiData: {
-              xPosition: initialXPosition,
-              yPosition: initialYPosition
-            }
-          }
-        }} = block
-        this.setBlockPositionTo({ position: { x: initialXPosition + xDelta, y: initialYPosition + yDelta }, block })
+      forEach(this.draggableForBlocksByUuid, (blockDraggable, blockId) => {
+        if (includes(this.selectedBlockUuids, blockId)) {
+          const block = findBlockWith(blockId, this.activeFlow);
+          const newPosition = this.setBlockPositionFromDelta({ delta, block })
+          // Object.assign(blockDraggable, { left: newPosition.x, top: newPosition.y })
+          blockDraggable.position()
+        }
       })
 
       console.debug('Multiple blocks', 'ended drag', 'positioned all of', this.draggableForBlocksByUuid)
@@ -269,7 +271,7 @@ export default class BuilderCanvas extends Vue {
   }
 
   get selectedBlocksOuterRectArea() {
-    const margin = 50
+    const margin = 20
     const outerArea = cloneDeep(this.selectedBlocksInnerRectArea)
     outerArea.height = outerArea.height + this.blockHeight + 2*margin
     outerArea.width = outerArea.width + this.blockWidth + 2*margin
@@ -287,6 +289,7 @@ export default class BuilderCanvas extends Vue {
   @builderVuexNamespace.State draggableForBlocksByUuid!: object
   @builderVuexNamespace.State multiDragPositions!: { start: IPosition; end: IPosition }
   @builderVuexNamespace.Mutation setBlockPositionTo!: ({ position, block }: { position: any, block: IBlock }) => void
+  @builderVuexNamespace.Action setBlockPositionFromDelta!: () => void
 
   @validationVuexNamespace.Action validate_flow!: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_block!: ({ block } : { block: IBlock }) => Promise<IValidationStatus>
@@ -313,15 +316,16 @@ export { BuilderCanvas }
 
   .all-selected-block {
     position: absolute;
-    z-index: 20;
+    z-index: 10;
   }
 
   .drag-multiselect {
     cursor: grab;
-    z-index: 15;
   }
 
   .drag-element {
+    pointer-events: none;
+    cursor: none;
     /*background-color: #531944;*/
     background-color: transparent;
     border: medium dashed;

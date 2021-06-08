@@ -12998,9 +12998,9 @@ pkg-up@3.1.0, pkg-up@^3.1.0:
     find-up "^3.0.0"
 
 plain-draggable@^2.5.12:
-  version "2.5.12"
-  resolved "https://registry.yarnpkg.com/plain-draggable/-/plain-draggable-2.5.12.tgz#d97c6d91740c0afd6c9738245efd2698ddf56a66"
-  integrity sha512-NVt88QV/MffzEPPRYB77OQjHJ0jtKcyjQcHhBjPvHiMNE1qKSz6eSlJB8YYi5reRxMHVJeOq4jZXTMozHe1SCQ==
+  version "2.5.14"
+  resolved "https://registry.yarnpkg.com/plain-draggable/-/plain-draggable-2.5.14.tgz#5a93a076c9b12f78d5fec077b60a47b28e2bb2c4"
+  integrity sha512-jJUkj/2lQm6Z3vkbPCYIDiDiOG5aXic18OPld8o+hJ+ZDcuODVX1mKnRoePDugP+/KO/v9FALuQd+rhr+LLJ5w==
 
 pn@^1.1.0:
   version "1.1.0"

@@ -7,7 +7,7 @@ import {
 } from 'vuex'
 import { IRootState } from '@/store'
 import {
-  IBlockExit, IBlock, IFlow, IResource, SupportedMode, ValidationException,
+  IBlockExit, IBlock, IFlow, IResource, SupportedMode, ValidationException, findBlockWith,
 } from '@floip/flow-runner'
 import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block'
 
@@ -138,6 +138,26 @@ export const mutations: MutationTree<IBuilderState> = {
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
+  setBlockPositionFromDelta({ commit }, { delta: { x, y }, block }) {
+    console.log('checkRs', 'setBlockPositionFromDelta', x, y, block)
+    const { vendor_metadata: {
+      io_viamo: {
+        uiData: {
+          xPosition: initialXPosition,
+          yPosition: initialYPosition
+        }
+      }
+    }} = block
+
+    const newPosition = {
+      x: initialXPosition + x,
+      y: initialYPosition + y
+    }
+
+    commit('setBlockPositionTo', { position: newPosition, block })
+    return newPosition
+  },
+
   removeConnectionFrom({ commit }, { block: { uuid: blockId }, exit: { uuid: exitId } }) {
     commit('flow/block_setBlockExitDestinationBlockId', {
       blockId,

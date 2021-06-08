@@ -1,5 +1,5 @@
 <template>
-  <div @click="selectBlock">
+  <div @click="selectBlock" >
     <plain-draggable
         v-if="hasLayout"
         ref="draggable"
@@ -10,8 +10,12 @@
         }"
         :startX="x"
         :startY="y"
+        :style="{ // make the UI reactive using style, startX & statY only update prop position
+          top: `${y}px`,
+          left: `${x}px`,
+        }"
         :is-editable="isEditable"
-        @initialized="handleDraggableInitializedForBlock(block, $event)"
+        @initialized="handleDraggableInitializedForBlock($event)"
         @dragged="onMoved"
         @dragStarted="selectBlock"
         @dragEnded="handleDraggableEndedForBlock"
@@ -469,12 +473,12 @@ export default {
       delete this.draggableForExitsByUuid[uuid]
     },
 
-    handleDraggableInitializedForBlock({ uuid }, { draggable }) {
-      this.draggableForBlocksByUuid[uuid] = draggable
+    handleDraggableInitializedForBlock({ draggable }) {
+      this.draggableForBlocksByUuid[this.block.uuid] = draggable;
 
       const { left, top } = draggable
 
-      console.debug('Block', 'handleDraggableInitializedForBlock', { blockId: uuid, coords: { left, top } })
+      console.debug('Block', 'handleDraggableInitializedForBlock', { blockId: this.block.uuid, coords: { left, top } })
     },
 
     onCreateExitDragStarted({ draggable }, exit) {
@@ -586,8 +590,6 @@ export default {
 
   .block {
     position: absolute;
-    left: 0;
-    top: 0;
     z-index: 1*10;
 
     min-width: 300px;
