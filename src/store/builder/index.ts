@@ -57,6 +57,7 @@ export interface IBuilderState {
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation;
     [OperationKind.BLOCK_RELOCATE]: null;
   };
+  draggableForExitsByUuid: object
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -74,6 +75,7 @@ export const stateFactory = (): IBuilderState => ({
     },
     [OperationKind.BLOCK_RELOCATE]: null,
   },
+  draggableForExitsByUuid: {}
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
@@ -125,6 +127,10 @@ export const mutations: MutationTree<IBuilderState> = {
   setIsEditable(state, value) {
     state.isEditable = value
   },
+
+  initDraggableForExitsByUuid(state) {
+    state.draggableForExitsByUuid = {}
+  }
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
@@ -365,7 +371,7 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   ]
 }
 
-export function computeBlockPositionsFrom(block?: IBlock | null) {
+export function computeBlockUiData(block?: IBlock | null) {
   const xDelta = 160
   const yDelta = 180
 
@@ -378,7 +384,11 @@ export function computeBlockPositionsFrom(block?: IBlock | null) {
     yPosition = viewPortCenter.y
   }
 
-  return { xPosition: xPosition + xDelta, yPosition: yPosition + yDelta }
+  return {
+    xPosition: xPosition + xDelta,
+    yPosition: yPosition + yDelta,
+    isSelected: false,
+  }
 }
 
 export function getViewportCenter() {
