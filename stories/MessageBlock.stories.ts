@@ -49,7 +49,7 @@ export const Default = () => (DefaultClass)
 )
 class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, messageBlockStore)
+    const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, messageBlockStore)
 
     this.setDescription(blockId)
     this.setResourceData({
@@ -67,7 +67,7 @@ export const ExistingDataBlock = () => (ExistingDataBlockClass)
 )
 class NonStartingBlockClass extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, messageBlockStore)
+    const {flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, messageBlockStore)
     await this.fakeCaseBlockAsFirstBlock(flowId)
   }
 }

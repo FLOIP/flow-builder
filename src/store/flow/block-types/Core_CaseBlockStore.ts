@@ -1,10 +1,6 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import {
-  IBlockExitTestRequired,
-  findBlockOnActiveFlowWith,
-  IContext,
-} from '@floip/flow-runner'
+import { IBlockExitTestRequired } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { ICaseBlock } from '@floip/flow-runner/src/model/block/ICaseBlock'
 import { defaultsDeep } from 'lodash'
@@ -15,8 +11,8 @@ import { allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
 export const BLOCK_TYPE = 'Core.Case'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  allExitsHaveTests: (state, getters, rootState, rootGetters): boolean => allItemsHaveValue(rootGetters['builder/activeBlock'].exits, 'test'),
-  twoExitsBlank: (state, getters, rootState, rootGetters): boolean => twoItemsBlank(rootGetters['builder/activeBlock'].exits, 'test'),
+  allExitsHaveTests: (_, _2, _3, rootGetters): boolean => allItemsHaveValue(rootGetters['builder/activeBlock'].exits, 'test'),
+  twoExitsBlank: (_, _2, _3, rootGetters): boolean => twoItemsBlank(rootGetters['builder/activeBlock'].exits, 'test'),
 
 }
 

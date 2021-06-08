@@ -59,7 +59,7 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async resource_createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<IResource>}): Promise<IResource> {
+  async resource_createWith(_, { props }: {props: {uuid: string} & Partial<IResource>}): Promise<IResource> {
     return {
       ...defaults(
         props,
@@ -86,7 +86,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   resource_setValueModeSpecific(
-    { commit, dispatch, state },
+    { commit, state },
     { resourceId, filter, value }: {resourceId: string; filter: IResourceDefinitionVariantOverModes} & {value: string; mode: SupportedMode},
   ) {
     // find resource variant over modes
@@ -194,7 +194,7 @@ export function findOrGenerateStubbedVariantOn(
 }
 
 export function discoverContentTypesFor(mode: SupportedMode, resource?: IResource): SupportedContentType[] | undefined {
-  const { TEXT, AUDIO, IMAGE, VIDEO, DATA } = SupportedContentType
+  const { TEXT, AUDIO, IMAGE, VIDEO } = SupportedContentType
 
   // @note -- contentType order inadvertently determines render order on UI.
   const defaultModeMappings: {[key in SupportedMode]?: SupportedContentType[]} = {

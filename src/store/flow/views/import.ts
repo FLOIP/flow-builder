@@ -20,8 +20,6 @@ import {
 import { IContactPropertyOption } from '../block-types/Core_SetContactPropertyStore'
 import { IGroupOption } from '../block-types/Core_SetGroupMembershipStore'
 
-import { IFlowsState } from '../index'
-
 import {
   updateResourcesForLanguageMatch,
   checkSingleFlowOnly,
@@ -42,13 +40,13 @@ export const getters: GetterTree<IImportState, IRootState> = {
   groupsMissing: (state) => {
     return !isEmpty(state.missingGroups)
   },
-  hasUnsupportedBlockClasses: (state, getters) => {
+  hasUnsupportedBlockClasses: (_, getters) => {
     return !isEmpty(getters.unsupportedBlockClasses)
   },
-  unsupportedBlockClasses: (state, getters, rootState, rootGetters) => {
+  unsupportedBlockClasses: (_, getters, _2, rootGetters) => {
     return difference(getters.uploadedBlockTypes, rootGetters.blockClasses)
   },
-  unsupportedBlockClassesList: (state, getters) => {
+  unsupportedBlockClassesList: (_, getters) => {
     return join(getters.unsupportedBlockClasses, ', ')
   },
   uploadedBlockTypes: (state) => {

@@ -12,7 +12,7 @@ import { IFlowsState } from '../index'
 export const BLOCK_TYPE = 'Core.RunFlow'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  otherFlows: (state, getters, rootState, rootGetters): IFlow[] => {
+  otherFlows: (_, _2, rootState, rootGetters): IFlow[] => {
     return rootState.flow.flows.filter((flow: IFlow) => {
       return flow.uuid !== rootGetters['flow/activeFlow'].uuid
     })

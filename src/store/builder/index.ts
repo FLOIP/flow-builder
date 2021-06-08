@@ -1,5 +1,5 @@
 import {
-  cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get, filter, union,
+  flatMap, isEqual, keyBy, map, mapValues, get, filter, union,
 } from 'lodash'
 import Vue from 'vue'
 import {
@@ -10,8 +10,6 @@ import {
   IBlockExit, IBlock, IFlow, IResource, SupportedMode, ValidationException,
 } from '@floip/flow-runner'
 import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block'
-import { createFormattedDate } from '@floip/flow-runner/dist/domain/DateFormat'
-import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 export enum OperationKind { // todo migrate these to flight-monitor
   CONNECTION_SOURCE_RELOCATE = 'CONNECTION_SOURCE_RELOCATE',
@@ -81,14 +79,14 @@ export const stateFactory = (): IBuilderState => ({
 export const getters: GetterTree<IBuilderState, IRootState> = {
   activeBlock: ({ activeBlockId }, { blocksById }) => (activeBlockId ? blocksById[activeBlockId] : null),
 
-  blocksById: (state, getters, rootState, rootGetters) => {
+  blocksById: (_, _2, _3, rootGetters) => {
     const { blocks } = rootGetters['flow/activeFlow'] ? rootGetters['flow/activeFlow'] : { blocks: [] }
     return keyBy(blocks, 'uuid')
   },
 
-  nodeLabelsById: (state, getters, { flow: { flows } }, rootGetters) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
+  nodeLabelsById: (_, _2, { flow: { flows } }, _3) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
 
-  exitLabelsById: (state, getters, { flow: { flows } }, rootGetters) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
+  exitLabelsById: (_, _2, { flow: { flows } }, _3) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
 }
@@ -113,7 +111,7 @@ export const mutations: MutationTree<IBuilderState> = {
     operations[operation.kind] = operation
   },
 
-  setBlockPositionTo(state, { position: { x, y }, block }) {
+  setBlockPositionTo(_, { position: { x, y }, block }) {
     // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder // uiData props
     // if (!block.vendor_metadata.io_viamo.uiData) {
     //   defaultsDeep(block, {vendor_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
@@ -262,7 +260,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     commit('setOperation', { operation })
   },
 
-  applyConnectionCreate({ dispatch, commit, state: { operations } }) {
+  applyConnectionCreate({ commit, state: { operations } }) {
     const { data } = operations[OperationKind.CONNECTION_CREATE]
     if (!data) {
       throw new ValidationException(`Unable to complete uninitialized operation: ${JSON.stringify(data)}`)
@@ -301,9 +299,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    * @param rootState
    * @param flows
    */
-  async importFlowsAndResources({
-    dispatch, commit, state, rootState,
-  }, { flows, resources }: { flows: IFlow[]; resources: IResource[]}) {
+  async importFlowsAndResources({ rootState }, { flows, resources }: { flows: IFlow[]; resources: IResource[]}) {
     console.debug('importing flows & resources ...')
     console.log({ flows, resources })
     const { flow: flowState } = rootState

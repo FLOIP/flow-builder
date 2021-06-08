@@ -24,7 +24,7 @@ import 'vue-multiselect/dist/vue-multiselect.min.css'
 import '@/scss/main.scss'
 
 import Vue from 'vue'
-import {Component, Prop} from 'vue-property-decorator'
+import {Component} from 'vue-property-decorator'
 
 @Component({})
 export class FlowBuilderContainer extends Vue {

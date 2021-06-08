@@ -71,7 +71,7 @@ export const mutations: MutationTree<IValidationState> = {
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
-  async validate_block({ state, commit }, { block } : { block: IBlock }): Promise<IValidationStatus> {
+  async validate_block({ state }, { block } : { block: IBlock }): Promise<IValidationStatus> {
     const { uuid: blockId, type: blockType } = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
@@ -86,7 +86,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     return state.validationStatuses[index]
   },
 
-  async validate_flow({ state, commit }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {
+  async validate_flow({ state }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator()
     const index = `flow/${flow.uuid}`
     Vue.set(state.validationStatuses, index, {
@@ -165,7 +165,7 @@ function debugValidationStatus(status: IValidationStatus, customMessage: string)
 }
 
 function flatValidationStatuses({ keyPrefix, errors, accumulator }: { keyPrefix: string, errors: undefined | null | Array<ErrorObject>, accumulator: IIndexedString }) {
-  errors?.forEach((error, key) => {
+  errors?.forEach((error) => {
     let index = '', message = ''
     if (DEV_ERROR_KEYWORDS.includes(error.keyword)) {
       // this is more likely a dev issue than user error

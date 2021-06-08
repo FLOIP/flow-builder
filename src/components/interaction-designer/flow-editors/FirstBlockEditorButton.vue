@@ -6,7 +6,7 @@
         <button type="button"
             class="btn btn-secondary btn-sm"
             :disabled="isStartBlock"
-            @click="setStartBlock($event)">
+            @click="setStartBlock">
           <template v-if="isStartBlock">
             {{'flow-builder.currently-set-as-starting-block' | trans}}
           </template>
@@ -40,7 +40,7 @@ class FirstBlockEditorButton extends mixins(Lang) {
       return this.blockId === this.flow.first_block_id
     }
 
-    setStartBlock(event: any) {
+    setStartBlock() {
       const { flow: { uuid: flowId }, blockId } = this
       this.flow_setFirstBlockId({ flowId, blockId })
     }

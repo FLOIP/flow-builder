@@ -50,11 +50,11 @@ const dispatch = (el: any, name: string, data: any) => {
 
         // todo: when do we call upload on a multiselect-upload and file-added triggered multiple times? (voto5 legacy todo)
         // uploader.on('fileAdded', (file, e) => dispatch(el, 'filesSubmitted', {file, uploader})) // uploader.upload()
-        uploader.on('filesSubmitted', (files: any, e: any) => dispatch(el, 'filesSubmitted', {
+        uploader.on('filesSubmitted', (files: any) => dispatch(el, 'filesSubmitted', {
           files,
           uploader,
         })) // uploader.upload()
-        uploader.on('fileProgress', (file: any, e: any) => dispatch(el, 'fileProgress', {
+        uploader.on('fileProgress', (file: any) => dispatch(el, 'fileProgress', {
           file,
           uploader,
         }))
@@ -70,7 +70,7 @@ const dispatch = (el: any, name: string, data: any) => {
         })) // uploader.cancel()
       },
 
-      unbind(el, binding) {
+      unbind() {
       },
     },
   },

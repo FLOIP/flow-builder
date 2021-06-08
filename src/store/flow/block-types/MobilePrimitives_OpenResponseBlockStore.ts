@@ -38,7 +38,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, { root: true })
     return value
   },
-  async createWith({ rootGetters, dispatch, commit }, { props }: {props: {uuid: string} & Partial<IOpenResponseBlock>}) {
+  async createWith({ dispatch, commit }, { props }: {props: {uuid: string} & Partial<IOpenResponseBlock>}) {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({

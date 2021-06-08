@@ -32,7 +32,7 @@ import { mixins } from "vue-class-component";
 class ModeEditor extends mixins(Lang) {
     @Prop() readonly flow!: IFlow
 
-    private availableModes = Object.values(SupportedMode)
+    availableModes = Object.values(SupportedMode)
 
     get flowSelectedModes(): SupportedMode[] {
       return this.flow.supported_modes

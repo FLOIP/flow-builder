@@ -4,7 +4,6 @@ import {
   IBlockExit,
   IResource,
   findBlockExitWith,
-  ValidationException,
   findBlockOnActiveFlowWith,
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
@@ -77,7 +76,7 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async block_createBlockDefaultExitWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IBlockExit>}): Promise<IBlockExit> {
+  async block_createBlockDefaultExitWith({ dispatch }, { props }: {props: {uuid: string} & Partial<IBlockExit>}): Promise<IBlockExit> {
     return await dispatch('block_createBlockExitWith', {
       props: {
         ...props,
@@ -86,7 +85,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  async block_createBlockExitWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IBlockExit>}): Promise<IBlockExit> {
+  async block_createBlockExitWith({ dispatch, commit }, { props }: {props: {uuid: string} & Partial<IBlockExit>}): Promise<IBlockExit> {
     const resource: IResource = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
 
     commit('resource_add', { resource })
@@ -100,7 +99,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }),
     }
   },
-  async block_updateBlockExitWith({ dispatch, commit, state }, { blockId, exitId, props: { test, tag, semantic_label } }: {blockId: string; exitId: string; props: Partial<IBlockExit>}) {
+  async block_updateBlockExitWith({ commit }, { blockId, exitId, props: { test, tag, semantic_label } }: {blockId: string; exitId: string; props: Partial<IBlockExit>}) {
     // TODO - handle other props apart from test
     commit('block_setExitTag', { blockId, exitId, value: tag })
     commit('block_setExitTest', { blockId, exitId, value: test })

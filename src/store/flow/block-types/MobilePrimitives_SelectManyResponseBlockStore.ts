@@ -3,7 +3,6 @@ import { IBlockExit } from "@floip/flow-runner"
 import { IdGeneratorUuidV4 } from "@floip/flow-runner/dist/domain/IdGeneratorUuidV4"
 import { defaultsDeep } from 'lodash'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import { IFlowsState } from '@/store/flow'
 import { IRootState } from '@/store'
 import {
   getters as selectOneGetters,
@@ -26,7 +25,7 @@ export const mutations: MutationTree<ICustomFlowState> = {
 export const actions: ActionTree<ICustomFlowState, IRootState> = {
   ...selectOneActions,
 
-  async createWith({ state, commit, dispatch }, { props }: {props: {uuid: string} & Partial<ISelectOneResponseBlock>}) {
+  async createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<ISelectOneResponseBlock>}) {
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankQuestionPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankChoicesPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })

@@ -11,7 +11,7 @@ import Vue from 'vue'
 import { defaultsDeep, find, filter, first, get } from 'lodash'
 import { IFlowsState } from '../index'
 
-import { someItemsHaveValue, allItemsHaveValue, twoItemsBlank } from '../utils/listBuilder'
+import { someItemsHaveValue } from '../utils/listBuilder'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
@@ -30,7 +30,7 @@ export const stateFactory = ():ICustomFlowState => ({
 })
 
 export const getters: GetterTree<ICustomFlowState, IRootState> = {
-  inflatedChoices: (state, getters, rootState, rootGetters): object => {
+  inflatedChoices: (_, getters, _3, rootGetters): object => {
     const currentBlock = rootGetters['builder/activeBlock']
     const choices: { [key: string]: IInflatedChoicesInterface } = {}
 
@@ -43,24 +43,24 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
       return memo
     }, choices)
   },
-  blockExitFromResourceUuid: (state, getters, rootState, rootGetters) => (resourceUuid: string): IBlockExit => {
+  blockExitFromResourceUuid: (_, _2, _3, rootGetters) => (resourceUuid: string): IBlockExit => {
     const currentBlock = rootGetters['builder/activeBlock']
     return first(filter(currentBlock.exits, {
       label: resourceUuid
     })) as IBlockExit
   },
-  isInflatedChoiceBlankOnKey: (state, getters) => (key: any): boolean => {
+  isInflatedChoiceBlankOnKey: (_, getters) => (key: any): boolean => {
     return !someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value') && !get(getters.inflatedChoices[key], 'exit.semantic_label')
   },
-  isInflatedEmptyChoiceBlank: (state, getters): boolean => {
+  isInflatedEmptyChoiceBlank: (state): boolean => {
     return !someItemsHaveValue(state.inflatedEmptyChoice.resource.values || [], 'value') && !get(state.inflatedEmptyChoice, 'exit.semantic_label')
   },
-  allChoicesHaveContent: (state, getters): boolean => {
+  allChoicesHaveContent: (_, getters): boolean => {
     return Object.keys(getters.inflatedChoices).every((key: string) => {
       return !getters.isInflatedChoiceBlankOnKey(key)
     })
   },
-  twoChoicesBlank: (state, getters, rootState, rootGetters): boolean => {
+  twoChoicesBlank: (_, getters): boolean => {
     let blankNumber = 0
     return Object.keys(getters.inflatedChoices).some((key: string) => {
       if (!someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value')) {
@@ -82,7 +82,7 @@ export const mutations: MutationTree<ICustomFlowState> = {
 }
 
 export const actions: ActionTree<ICustomFlowState, IRootState> = {
-  deleteChoiceByKey({ state, rootState, rootGetters, commit }, { choiceKeyToRemove }) {
+  deleteChoiceByKey({ rootGetters, commit }, { choiceKeyToRemove }) {
     const activeBlock = rootGetters['builder/activeBlock']
     delete activeBlock.config.choices[choiceKeyToRemove]
 
@@ -97,7 +97,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       }, choices),
     }, { root: true })
   },
-  pushNewChoice({ state, rootState, rootGetters, commit }, { choiceId, newIndex }) {
+  pushNewChoice({ rootGetters }, { choiceId, newIndex }) {
     const activeBlock = rootGetters['builder/activeBlock']
     Vue.set(activeBlock.config.choices, newIndex, choiceId)
   },
@@ -116,7 +116,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       resource: rootGetters['flow/resourcesByUuid'][blankResource.uuid]
     }
   },
-  async popFirstEmptyChoice({commit, dispatch, rootGetters, getters}) {
+  async popFirstEmptyChoice({ dispatch, rootGetters, getters}) {
     const choiceKeyToRemove = find(Object.keys(getters.inflatedChoices), (key: string) => {
       return <boolean>getters.isInflatedChoiceBlankOnKey(key)
     })
@@ -157,7 +157,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
   // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
   //       but, it doesn't seem to mention how this is configured
-  async createWith({ state, commit, dispatch, rootGetters }, { props }: {props: {uuid: string} & Partial<ISelectOneResponseBlock>}) {
+  async createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<ISelectOneResponseBlock>}) {
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankQuestionPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })
     const blankChoicesPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, { root: true })

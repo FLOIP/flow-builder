@@ -5,7 +5,6 @@ import {
   findFlowWith,
   getActiveFlowFrom,
   SupportedMode,
-  SupportedContentType,
   IBlock,
   IContext,
   IFlow,
@@ -18,7 +17,6 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import {
   defaults,
-  defaultsDeep,
   includes,
   forEach,
   cloneDeep,
@@ -56,8 +54,8 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       resources: state.resources
     } as unknown as IContext
   },
-  hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supported_modes || [], mode)),
-  hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
+  hasTextMode: (_, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supported_modes || [], mode)),
+  hasVoiceMode: (_, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -126,11 +124,11 @@ export const mutations: MutationTree<IFlowsState> = {
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
-  async flow_import({ state, getters, dispatch }, { persistRoute, flowContainer }): Promise<IContext | null> {
+  async flow_import({ getters, dispatch }, { persistRoute, flowContainer }): Promise<IContext | null> {
     flowContainer = mergeFlowContainer(cloneDeep(getters.activeFlowContainer), flowContainer)
     return await dispatch('flow_persist', { persistRoute, flowContainer })
   },
-  async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext | null> {
+  async flow_persist({ getters, commit }, { persistRoute, flowContainer }): Promise<IContext | null> {
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
     if(!persistRoute) {
@@ -151,7 +149,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
   //TODO - In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
   //see comment on flow_setFlowContainer
-  async flow_fetch({ state, getters, commit }, { fetchRoute }): Promise<IFlow | null> {
+  async flow_fetch({ getters, commit }, { fetchRoute }): Promise<IFlow | null> {
     if(!fetchRoute) {
       console.info("Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store")
       return getters.activeFlow
@@ -169,14 +167,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   // todo: this `flow_` prefix doesn't follow suit
   //       because it's actually a method on the root state // IContext-ish type
   //       (same as mutation: `flow_activateBlock` and `flow_add`
-  async flow_addBlankFlow({ dispatch, commit, state }): Promise<IFlow> {
+  async flow_addBlankFlow({ dispatch }): Promise<IFlow> {
     const flow = await dispatch('flow_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
 
     return await dispatch('flow_add', { flow })
   },
 
   async flow_add({ state }, { flow }): Promise<IFlow> {
-    const length = state.flows.push(flow) // mutating here, because we need to define a root-level scope for this type of action
+    // const length = state.flows.push(flow) // mutating here, because we need to define a root-level scope for this type of action
     //TODO - understand why this was here? Surely we can have an active flow that isn't the first and only one?
     //if (length === 1) {
       state.first_flow_id = flow.uuid
@@ -223,7 +221,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     commit('builder/activateBlock', { blockId: null }, { root: true })
   },
 
-  async flow_addBlankBlockByType({ commit, dispatch, state }, { type, ...props }: Partial<IBlock>): Promise<IBlock> {
+  async flow_addBlankBlockByType({ commit, dispatch }, { type, ...props }: Partial<IBlock>): Promise<IBlock> {
     // if (!state[type]) {
     // todo: for some reason {snakeCase} from 'lodash' doesn't work?
     // todo: for some reason dynamic imports aren't working w/ storybook build
@@ -289,7 +287,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return blankResource
   },
 
-  async flow_createWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IFlow>}): Promise<IFlow> {
+  async flow_createWith(_, { props }: {props: {uuid: string} & Partial<IFlow>}): Promise<IFlow> {
     return {
       ...defaults(props, {
         name: '',
@@ -307,7 +305,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
   },
 
-  async flow_duplicateBlock({ dispatch, commit, state }, { flowId, blockId }: {flowId: string; blockId: IBlock['uuid']}): Promise<IBlock> {
+  async flow_duplicateBlock({ commit, state }, { flowId, blockId }: {flowId: string; blockId: IBlock['uuid']}): Promise<IBlock> {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
 
@@ -317,7 +315,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // Set UUIDs, and remove non relevant props
     duplicatedBlock.uuid = await (new IdGeneratorUuidV4()).generate()
 
-    duplicatedBlock.exits.forEach(async (item, index, arr) => {
+    duplicatedBlock.exits.forEach(async (item) => {
       item.uuid = await (new IdGeneratorUuidV4()).generate()
       delete item.destination_block
     })

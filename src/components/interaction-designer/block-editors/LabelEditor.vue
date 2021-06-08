@@ -12,7 +12,7 @@
 <script lang="ts">
 import TextEditor from '@/components/common/TextEditor.vue'
 import Lang from '@/lib/filters/lang'
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import { IBlock } from '@floip/flow-runner'
 import { namespace } from 'vuex-class'
 import { mixins } from "vue-class-component";

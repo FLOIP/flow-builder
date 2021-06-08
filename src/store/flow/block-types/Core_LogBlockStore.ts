@@ -16,7 +16,7 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
-  async createWith({ rootGetters, commit, dispatch }, { props }: {props: {uuid: string} & Partial<ILogBlock>}) {
+  async createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<ILogBlock>}) {
     // todo: do we need to generate this resource here? and do we need overrides??
     //       (check the other block types as well; I thought the idea was to generate them
     //       in-flight)

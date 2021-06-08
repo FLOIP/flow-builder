@@ -8,9 +8,8 @@ import { BaseMountedVueClass } from './story-utils/storeSetup'
 
 import { IRootState, store } from '@/store'
 import SetGroupMembershipStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
-import { Component } from "vue-property-decorator";
-import SetContactPropertyStore from "../src/store/flow/block-types/Core_SetContactPropertyStore";
-import {Mutation} from "vuex-class";
+import { Component } from "vue-property-decorator"
+import {Mutation} from "vuex-class"
 
 Vue.use(Vuex)
 

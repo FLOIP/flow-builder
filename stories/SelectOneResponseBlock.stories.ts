@@ -53,7 +53,7 @@ export const InFlowBuilder = () => InFlowBuilderClass
 })
 class IvrOnlyClass extends BaseMountedVueClass {
   async mounted() {
-    const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
+    const {flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
     flow.supported_modes = [SupportedMode.IVR]
   }
 }
@@ -64,7 +64,7 @@ export const IvrOnly = () => IvrOnlyClass
 })
 class MoreLanguagesClass extends BaseMountedVueClass {
   async mounted() {
-    const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
+    const {flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
     flow.languages = [{id: '1', label: 'English'}, {id: '2', label: 'French'}] // mutation
   }
 }
@@ -75,7 +75,7 @@ export const MoreLanguages = () => MoreLanguagesClass
 })
 class ExistingDataClass extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
+    const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
     this.setDescription(blockId)
     this.setResourceData({
       shouldSetChoices: true,

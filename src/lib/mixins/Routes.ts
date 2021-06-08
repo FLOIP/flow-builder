@@ -13,16 +13,14 @@ export function interpolateRouteWith(context: any, route?: any) {
 
   context = context || {}
 
-  const {
-    id, path, params, methods,
-  } = route
+  const { path, params } = route
   const isPathComplete = isEmpty(params)
 
   if (isPathComplete) {
     return path
   }
 
-  return path.replace(PATH_PARAM_DISCOVERER, (m: any, prefix = '', captured: string, isOptional: boolean) => {
+  return path.replace(PATH_PARAM_DISCOVERER, (_: any, prefix = '', captured: string, isOptional: boolean) => {
     const param = captured.trim()
     const absent = !(param in context)
 

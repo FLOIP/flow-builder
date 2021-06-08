@@ -156,9 +156,8 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
       this.$store.dispatch('multimediaUpload/uploadFiles', { ...data, key })
     }
 
-    handleFileSuccessFor(key: string, langId: ILanguage['id'], event: any) {
-      const { data: { file, json } } = event
-      const { uuid: jsKey } = this.block
+    handleFileSuccessFor(_: string, langId: ILanguage['id'], event: any) {
+      const { data: { json } } = event
       const {
         audio_file_id: id,
         audio_uuid: filename,

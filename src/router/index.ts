@@ -1,6 +1,5 @@
 import Vue from 'vue'
-import VueRouter, { Route, RouteConfig } from 'vue-router';
-import Home from '../views/Home.vue'
+import VueRouter, { Route, RouteConfig } from 'vue-router'
 import { routes as treesRoutes } from '@/router/trees.js'
 
 Vue.use(VueRouter)
