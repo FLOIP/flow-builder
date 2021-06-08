@@ -7,18 +7,12 @@ module.exports = {
 
   parser: 'vue-eslint-parser',
   parserOptions: {
-    project: 'tsconfig.json',
-    parser: '@typescript-eslint/parser',
     ecmaVersion: 2020,
-    ecmaFeatures: {
-      jsx: true,
-    },
   },
 
   extends: [
     // TODO: Once we upgrade to Vue3, we need to change this to 'plugin:vue/vue3-recommended'
     'plugin:vue/recommended',
-
     '@vue/airbnb',
     '@vue/typescript/recommended',
 
@@ -28,17 +22,12 @@ module.exports = {
 
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:import/typescript',
-
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
 
   plugins: [
+    'vue',
     'jest',
     'lodash',
-    '@typescript-eslint',
   ],
   overrides: [
     {
@@ -59,55 +48,14 @@ module.exports = {
     /********************
      * Typescript rules *
      ********************/
-    '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'off',
-    '@typescript-eslint/strict-boolean-expressions': [
-      'error',
-      {
-        allowNullableBoolean: true,
-      },
-    ],
-    // Disabled until we can take the time to fix uses of object
-    '@typescript-eslint/ban-types': 'off',
-
-    // Disabled until we can take the time to fix uses
-    '@typescript-eslint/restrict-template-expressions': 'off',
-
-    '@typescript-eslint/no-unsafe-call': 'off',
-    '@typescript-eslint/no-unsafe-return': 'off',
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    '@typescript-eslint/semi': 'off',
-    '@typescript-eslint/no-use-before-define': 'off',
-    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/camelcase': 'off',
+    '@typescript-eslint/class-name-casing': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-member-accessibility': 'off',
-    '@typescript-eslint/no-object-literal-type-assertion': 'off',
-    '@typescript-eslint/require-await': 'off',
-    '@typescript-eslint/no-floating-promises': 'off',
-    // Might be able to get rid of this after TS 4.0
-    '@typescript-eslint/no-unsafe-member-access': 'off',
-    '@typescript-eslint/explicit-function-return-type': [
-      'warn',
-      {
-        allowExpressions: true,
-        allowTypedFunctionExpressions: true,
-        allowHigherOrderFunctions: true,
-      },
-    ],
-    '@typescript-eslint/member-delimiter-style': [
-      'warn',
-      {
-        multiline: {
-          delimiter: 'comma',
-          requireLast: true,
-        },
-        singleline: {
-          delimiter: 'comma',
-          requireLast: false,
-        },
-      },
-    ],
+    '@typescript-eslint/no-use-before-define': 'off',
+    // Need to remove this rule after all the ts-ignore comments are removed
+    '@typescript-eslint/ban-ts-ignore': 'off',
+    // Remove this after any is replaced in all the files
+    '@typescript-eslint/no-explicit-any': 'off',
 
     /*************************
      * Modified ESLint rules *
