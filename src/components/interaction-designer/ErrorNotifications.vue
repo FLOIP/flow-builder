@@ -53,6 +53,10 @@ const validationVuexNamespace = namespace('validation')
 
 @Component({})
 export default class ErrorNotifications extends mixins(Routes, Lang) {
+  updated() {
+    this.$emit('updated')
+  }
+
   // TODO: Need to test the below function - https://viamoinc.atlassian.net/browse/VMO-3905
   get flowValidationErrors() {
     const flowKey = `flow/${this.activeFlow?.uuid}`
@@ -100,9 +104,6 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
 
 <style scoped lang="scss">
 .error-notifications-wrapper {
-  position: fixed;
-  width: 100vw;
-  top: 60px;
   z-index: 2 * 10;
 }
 

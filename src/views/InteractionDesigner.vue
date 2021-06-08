@@ -1,10 +1,15 @@
 <template>
   <div v-if="activeFlow" class="interaction-designer-contents">
-    <tree-builder-toolbar/>
-    <error-notifications/>
+    <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate"/>
 
-    <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}" :key="activeBlock && activeBlock.uuid">
-      <div class="sidebar-cue" :class="{'sidebar-close': $route.meta.isSidebarShown}" @click="showOrHideSidebar">
+    <div class="tree-sidebar-container"
+         :class="{ 'slide-out': !$route.meta.isSidebarShown,}"
+         :key="activeBlock && activeBlock.uuid"
+         :style="{ paddingTop: `${toolbarHeight}px` }">
+      <div class="sidebar-cue"
+           :class="{'sidebar-close': $route.meta.isSidebarShown}"
+           @click="showOrHideSidebar"
+           :style="{ top: `${toolbarHeight}px` }">
         <i class="glyphicon"
            :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
                   'glyphicon-resize-small': $route.meta.isSidebarShown}">
@@ -43,7 +48,10 @@
     </div>
 
     <div class="tree-contents"
-         :x-style="{'min-height': `${designerWorkspaceHeight}px`}">
+         :style="{
+            'min-height': `${designerWorkspaceHeight}px`,
+            'padding-top': `${toolbarHeight + 5}px`
+         }">
       <builder-canvas @click.native="handleCanvasSelected" />
     </div>
   </div>
@@ -72,7 +80,6 @@ import { store } from '@/store'
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import { BuilderCanvas } from '@/components/interaction-designer/BuilderCanvas'
-import ErrorNotifications from '@/components/interaction-designer/ErrorNotifications.vue'
 import { scrollBehavior, scrollBlockIntoView } from '@/router'
 
 // import '../TreeDiffLogger'
@@ -106,12 +113,12 @@ export default {
     TreeBuilderToolbar,
     BuilderCanvas,
     FlowEditor,
-    ErrorNotifications,
     // TreeUpdateConflictModal,
   },
 
   data() {
     return {
+      toolbarHeight: 60,
       pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
         'CallBackWithCallCenterBlock',
         'CollaborativeFilteringQuestionBlock',
@@ -318,6 +325,10 @@ export default {
       })
     },
 
+    handleToolBarHeightUpdate(height) {
+      this.toolbarHeight = height
+    }
+
   },
 }
 </script>
@@ -352,7 +363,6 @@ export default {
     overflow-y: scroll;
 
     padding: 1em;
-    padding-top: $toolbar-height;
     transition: right 200ms ease-in-out;
 
     .tree-sidebar {
@@ -375,9 +385,9 @@ export default {
     }
   }
 
-  .tree-builder-toolbar {
+  .tree-builder-toolbar-main-menu {
     position: fixed;
-    z-index: 3*10;
+    z-index: 4*10;
 
     width: 100vw;
 
@@ -472,7 +482,7 @@ export default {
     padding: 5px;
     position: fixed;
     right: 0;
-    top: 70px;
+    margin-top: 1em;
     z-index: 50;
   }
 
