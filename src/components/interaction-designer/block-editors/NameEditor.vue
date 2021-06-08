@@ -1,24 +1,29 @@
 <template>
-  <div class="block-name">
-    <text-editor v-model="name"
-        :label="'flow-builder.block-name' | trans"
-        :placeholder="'flow-builder.enter-block-name' | trans"
-        @keydown="filterName">
-      <small class="text-muted">
-        {{'flow-builder.only-accepts-word-characters' | trans}}
-      </small>
-    </text-editor>
-  </div>
+  <validation-message :message-key="`block/${block.uuid}/name`" #input-control="{ isValid }">
+    <div class="block-name" :id="`${block.uuid}.name`">
+      <text-editor v-model="name"
+                   :label="'flow-builder.block-name' | trans"
+                   :placeholder="'flow-builder.enter-block-name' | trans"
+                   :validState="isValid"
+                   @keydown="filterName">
+        <small class="text-muted">
+          {{'flow-builder.only-accepts-word-characters' | trans}}
+        </small>
+      </text-editor>
+    </div>
+  </validation-message>
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
 import { lang } from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage';
 
 export default {
   components: {
     TextEditor,
+    ValidationMessage
   },
   mixins: [lang],
   props: {
@@ -36,7 +41,6 @@ export default {
         this.block_setName({ blockId: this.block.uuid, value })
       },
     },
-
   },
   methods: {
     ...mapMutations('flow', ['block_setName']),

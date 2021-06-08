@@ -9,8 +9,8 @@ import {
   IBlock,
   IContext,
   IFlow,
-  IResourceDefinition,
-  ValidationException, IResourceDefinitionContentTypeSpecific,
+  IResource,
+  ValidationException, IResourceValue,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import moment from 'moment'
@@ -18,6 +18,7 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import {
   defaults,
+  defaultsDeep,
   includes,
   forEach,
   cloneDeep,
@@ -27,7 +28,9 @@ import {
 } from 'lodash'
 import { discoverContentTypesFor } from '@/store/flow/resource'
 import { computeBlockPositionsFrom } from '@/store/builder'
+import { router } from '@/router'
 import { IFlowsState } from '.'
+import { mergeFlowContainer } from './utils/importHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
@@ -123,6 +126,10 @@ export const mutations: MutationTree<IFlowsState> = {
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
+  async flow_import({ state, getters, dispatch }, { persistRoute, flowContainer }): Promise<IContext | null> {
+    flowContainer = mergeFlowContainer(cloneDeep(getters.activeFlowContainer), flowContainer)
+    return await dispatch('flow_persist', { persistRoute, flowContainer })
+  },
   async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext | null> {
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
@@ -243,24 +250,24 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return block
   },
 
-  async flow_addBlankResource({ dispatch, commit }): Promise<IResourceDefinition> {
+  async flow_addBlankResource({ dispatch, commit }): Promise<IResource> {
     const resource = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
 
     commit('resource_add', { resource })
 
     return resource
   },
-  async flow_addBlankResourceForEnabledModesAndLangs({ getters, dispatch, commit }): Promise<IResourceDefinition> {
+  async flow_addBlankResourceForEnabledModesAndLangs({ getters, dispatch, commit }): Promise<IResource> {
     // TODO - figure out of there should only be one value here at first? How would the resource editor change this?
     // TODO - is this right for setup of languages?
     // TODO - How will we add more blank values as supported languages are changed in the flow? We should probably also do this for modes rather than doing all possible modes here.
-    const values: IResourceDefinitionContentTypeSpecific = getters.activeFlow.languages.reduce((memo: object[], language: {id: string; name: string}) => {
+    const values: IResourceValue = getters.activeFlow.languages.reduce((memo: object[], language: {id: string; name: string}) => {
       // Let's just create all the modes. We might need them but if they are switched off they just don't get used
       Object.values(SupportedMode).forEach((mode: SupportedMode) => {
         memo.push({
-          languageId: language.id,
+          language_id: language.id,
           value: '',
-          contentType: discoverContentTypesFor(mode),
+          content_type: discoverContentTypesFor(mode),
           modes: [
             mode,
           ],
@@ -285,10 +292,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async flow_createWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IFlow>}): Promise<IFlow> {
     return {
       ...defaults(props, {
-        org_id: '', // awful default value, but we've typed it to string
         name: '',
         label: '', // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
-        last_modified: moment().format('c'),
+        last_modified: moment().toISOString(),
         interaction_timeout: 30,
         vendor_metadata: {},
 
@@ -306,7 +312,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
 
     // Deep clone
-    const duplicatedBlock = cloneDeep(block)
+    const duplicatedBlock: IBlock = cloneDeep(block) as IBlock
 
     // Set UUIDs, and remove non relevant props
     duplicatedBlock.uuid = await (new IdGeneratorUuidV4()).generate()
@@ -317,7 +323,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
 
     if (has(duplicatedBlock.config, 'prompt')) {
-      Vue.set(duplicatedBlock.config, 'prompt', (new IdGeneratorUuidV4()).generate())
+      Vue.set(duplicatedBlock.config!, 'prompt', await (new IdGeneratorUuidV4()).generate())
     }
 
     // Set UI positions
@@ -329,7 +335,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
 
     commit('flow_addBlock', { block: duplicatedBlock })
-    commit('builder/activateBlock', { blockId: duplicatedBlock.uuid }, { root: true })
+
+    router.replace({
+      name: 'block-selected-details',
+      params: { blockId: duplicatedBlock.uuid },
+    })
 
     return duplicatedBlock
   },

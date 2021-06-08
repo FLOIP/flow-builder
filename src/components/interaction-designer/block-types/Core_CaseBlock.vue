@@ -10,11 +10,14 @@
       <block-semantic-label-editor :block="block" />
 
       <div v-for="(exit,i) in exits" class="form-group form-inline">
-        <expression-editor :label="i+1"
-            :placeholder="'flow-builder.edit-expression' | trans"
-            :current-expression="exit.test"
-            :expression-identifier="exit.uuid"
-            @commitExpressionChange="editCaseBlockExit"/>
+        <validation-message :message-key="`block/${block.uuid}/exits/${i}/tag`" #input-control="{ isValid }">
+          <expression-editor :label="i+1"
+              :placeholder="'flow-builder.edit-expression' | trans"
+              :validState="isValid"
+              :current-expression="exit.test"
+              :expression-identifier="exit.uuid"
+              @commitExpressionChange="editCaseBlockExit"/>
+        </validation-message>
       </div>
       <slot name="extras"></slot>
       <first-block-editor-button
@@ -43,6 +46,7 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -55,6 +59,7 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    ValidationMessage
   },
 })
 class Core_CaseBlock extends mixins(Lang) {

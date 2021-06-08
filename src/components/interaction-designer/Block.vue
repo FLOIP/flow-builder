@@ -14,6 +14,41 @@
         @dragged="onMoved"
         @dragStarted="selectBlock">
 
+      <div class="d-flex justify-content-between">
+        <div class="header-actions-left">
+        </div>
+        <div class="header-actions-right d-flex">
+          <!--Delete-->
+          <div v-if="isEditable" class="mr-1 ml-2">
+            <div v-if="isDeleting">
+              <button class="btn btn-light btn-xs" @click.prevent="isDeleting = false">
+                <small>{{trans('flow-builder.cancel')}}</small>
+              </button>
+              <button class="btn btn-danger btn-xs ml-1" @click.prevent="handleDeleteBlock()">
+                <small>{{trans('flow-builder.delete-block')}}</small>
+              </button>
+            </div>
+            <font-awesome-icon
+              v-if="!isDeleting"
+              :icon="['far', 'trash-alt']"
+              class="fa-btn text-danger"
+              v-b-tooltip.hover="trans('flow-builder.tooltip-delete-block')"
+              @click.prevent="isDeleting = true"
+            />
+          </div>
+          <!--Duplicate-->
+          <div class="mr-1 ml-2">
+            <font-awesome-icon
+              v-if="isEditable"
+              :icon="['far', 'clone']"
+              class="fa-btn"
+              v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
+              @click.prevent="flow_duplicateBlock({ blockId: block.uuid })"
+            />
+          </div>
+        </div>
+      </div>
+
       <header
           :id="`block/${block.uuid}/handle`"
           class="block-target draggable-handle"
@@ -27,9 +62,13 @@
           @mouseenter="isConnectionCreateActive && activateBlockAsDropZone($event)"
           @mouseleave="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
 
-        <p class="block-type text-muted">
-          {{trans(`flow-builder.${block.type}`)}}
-        </p>
+        <div class="d-flex justify-content-between">
+          <p class="block-type text-muted">
+            {{trans(`flow-builder.${block.type}`)}}
+          </p>
+          <i v-if="activeFlow.first_block_id === block.uuid"
+             class="glyphicon glyphicon-arrow-down"></i>
+        </div>
 
         <h3 class="block-label" :style="{ maxWidth: `${this.labelContainerMaxWidth}px` }"
             :class="{'empty': !block.label}">
@@ -173,6 +212,7 @@ export default {
 
   data() {
     return {
+      isDeleting: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
       // draggablesByExitId: {}, // no need to vuejs-observe these
@@ -195,6 +235,7 @@ export default {
     }),
 
     ...mapGetters('builder', ['blocksById', 'isEditable']),
+    ...mapGetters('flow', ['activeFlow']),
 
     blockExitsLength() {
       return this.block.exits.length
@@ -251,7 +292,17 @@ export default {
       'applyConnectionCreate',
     ]),
 
+    ...mapActions('flow', [
+      'flow_duplicateBlock',
+      'flow_removeBlock',
+    ]),
+
     ...mapMutations('builder', ['activateBlock']),
+
+    handleDeleteBlock() {
+      this.flow_removeBlock({ blockId: this.block.uuid })
+      this.isDeleting = false
+    },
 
     updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
       const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`) // one exit
@@ -281,7 +332,7 @@ export default {
       const { resources } = this
       const context = {
         resources,
-        languageId: '22',
+        language_id: '22',
         mode: SupportedMode.SMS,
       }
       const resource = new ResourceResolver(context)// as IContext) // this isn't ts
@@ -446,13 +497,21 @@ export default {
 
     selectBlock() {
       const { block: { uuid: blockId } } = this
-      this.activateBlock({ blockId })
+      const routerName = this.$route.meta.isSidebarShown ? 'block-selected-details' : 'block-selected'
+      this.$router.history.replace({
+        name: routerName,
+        params: { blockId },
+      })
     },
   },
 }
 </script>
 
 <style lang="scss">
+  .fa-btn {
+    cursor: pointer;
+  }
+
   .btn-secondary.btn-flat {
     @extend .btn-secondary;
     background: transparent;

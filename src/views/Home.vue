@@ -5,8 +5,13 @@
         <main class="px-3">
           <h1>Create a new Flow</h1>
           <router-link :to="route('flows.newFlow')"
-            title="trans('flow-builder.create-a-new-flow')"
+            title="trans('flow-builder.new-flow')"
             class="mt-3 btn btn-outline-secondary mr-2 active">{{'flow-builder.new-flow' | trans}}</router-link>
+          <div class="mt-4">
+            <router-link :to="route('flows.importFlow')"
+              :title="trans('flow-builder.import-flow')"
+              class="mt-3 mr-2 active">{{'flow-builder.import-flow' | trans}}</router-link>
+          </div>
           <div class="mt-4">
             <h2>Existing Flows</h2>
             <div v-for="flow in flows">
