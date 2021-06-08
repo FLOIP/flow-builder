@@ -1,7 +1,7 @@
 <template>
   <main class="error-notifications-wrapper">
 <!--    TODO: Need to uncomment the below piece once validation messages are added for a flow - https://viamoinc.atlassian.net/browse/VMO-3905-->
-<!--    <section class="alert alert-danger d-flex mb-0 py-sm-1 px-1" role="alert" v-if="flowValidationErrors.length > 0">-->
+<!--    <section class="alert alert-danger d-flex mb-0 py-sm-1 px-2" role="alert" v-if="flowValidationErrors.length > 0">-->
 <!--      <span class="align-self-center ml-2">-->
 <!--        {{ 'flow-builder.flow-error-message' | trans }}-->
 <!--      </span>-->
@@ -9,7 +9,7 @@
 <!--        {{ 'flow-builder.fix-issue' | trans }}-->
 <!--      </button>-->
 <!--    </section>-->
-    <section class="alert alert-danger d-flex py-sm-1 px-1" role="alert" v-if="numberOfBlocksWithErrors > 0">
+    <section class="alert alert-danger d-flex py-sm-1 px-2" role="alert" v-if="numberOfBlocksWithErrors > 0">
       <span class="align-self-center ml-2">
         {{ 'flow-builder.block-error-message' | trans({block_count: numberOfBlocksWithErrors}) }}
       </span>

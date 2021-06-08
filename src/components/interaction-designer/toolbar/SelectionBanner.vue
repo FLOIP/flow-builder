@@ -1,6 +1,6 @@
 <template>
   <div class="selection-banner" v-if="!!countSelectedBlocks">
-    <div class="alert alert-primary mb-0 d-flex" role="alert">
+    <div class="alert alert-primary mb-0 d-flex py-sm-2 px-3" role="alert">
       <div class="mr-3">
         {{ 'flow-builder.selected-x-blocks' | trans({ x: countSelectedBlocks }) }}.
       </div>

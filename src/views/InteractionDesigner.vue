@@ -4,12 +4,10 @@
 
     <div class="tree-sidebar-container"
          :class="{ 'slide-out': !$route.meta.isSidebarShown,}"
-         :key="activeBlock && activeBlock.uuid"
-         :style="{ paddingTop: `${toolbarHeight}px` }">
+         :key="activeBlock && activeBlock.uuid">
       <div class="sidebar-cue"
            :class="{'sidebar-close': $route.meta.isSidebarShown}"
-           @click="showOrHideSidebar"
-           :style="{ top: `${toolbarHeight}px` }">
+           @click="showOrHideSidebar">
         <i class="glyphicon"
            :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
                   'glyphicon-resize-small': $route.meta.isSidebarShown}">
@@ -356,13 +354,14 @@ export default {
   .tree-sidebar-container {
     position: fixed;
     right: 0;
-    z-index: 2*10;
+    z-index: 3*10;
 
     height: 100vh;
     width: $sidebar-width;
     overflow-y: scroll;
 
     padding: 1em;
+    margin-top: 3em;
     transition: right 200ms ease-in-out;
 
     .tree-sidebar {
@@ -481,9 +480,9 @@ export default {
     background-color: #eee;
     padding: 5px;
     position: fixed;
-    right: 0;
     margin-top: 1em;
-    z-index: 50;
+    right: 0;
+    z-index: 5*10;
   }
 
   .sidebar-close {

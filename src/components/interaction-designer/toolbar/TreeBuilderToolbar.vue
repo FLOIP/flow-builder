@@ -170,7 +170,7 @@ import { Action, Getter, namespace, State, Mutation } from 'vuex-class'
 import { IBlock, IContext, IFlow, IResource } from '@floip/flow-runner'
 import { RawLocation } from 'vue-router'
 import SelectionBanner from "@/components/interaction-designer/toolbar/SelectionBanner.vue";
-import ErrorNotifications from '@/components/interaction-designer/ErrorNotifications.vue'
+import ErrorNotifications from '@/components/interaction-designer/toolbar/ErrorNotifications.vue'
 
 Vue.use(VBTooltipPlugin)
 
