@@ -149,12 +149,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async block_deselect({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
     state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId) // remove it
   },
-
-  async block_clearMultiSelection({ state, dispatch }) {
-    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
-      dispatch('block_deselect', { blockId })
-    })
-  }
 }
 
 export interface IDeepBlockExitIdWithinFlow {

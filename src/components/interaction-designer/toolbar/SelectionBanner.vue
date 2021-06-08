@@ -2,11 +2,44 @@
   <div class="selection-banner" v-if="!!countSelectedBlocks">
     <div class="alert alert-primary mb-0 d-flex" role="alert">
       <div class="mr-3">
-        {{ 'flow-builder.selected-x-blocks' | trans({ x: countSelectedBlocks }) }}
+        {{ 'flow-builder.selected-x-blocks' | trans({ x: countSelectedBlocks }) }}.
       </div>
-      <button class="btn btn-outline-dark btn-sm" @click="block_clearMultiSelection">
-        {{ 'flow-builder.clear-selection' | trans }}
-      </button>
+
+      <!--Main multiselect actions-->
+      <div v-if="!deleting">
+        <button
+          class="btn btn-danger btn-sm mr-2"
+          @click="deleting = true">
+          <font-awesome-icon :icon="['far', 'trash-alt']"/>
+          {{ 'flow-builder.delete' | trans }}
+        </button>
+
+        <button class="btn btn-outline-dark btn-sm mr-2"
+                @click.prevent="handleMultipleDuplicate">
+          <font-awesome-icon :icon="['far', 'clone']"/>
+          {{ 'flow-builder.duplicate' | trans }}
+        </button>
+
+        <button class="btn btn-outline-dark btn-sm ml-4"
+                @click="flow_clearMultiSelection">
+          {{ 'flow-builder.clear-selection' | trans }}
+        </button>
+      </div>
+
+      <!--Delete confirmation-->
+      <div v-if="deleting">
+        <b class="mr-3">{{ 'flow-builder.confirmation-for-delete-selection' | trans }}</b>
+
+        <button class="btn btn-outline-dark btn-sm mr-2"
+                @click="deleting = false">
+          {{ 'flow-builder.no-cancel' | trans }}
+        </button>
+
+        <button class="btn btn-danger btn-sm mr-2"
+                @click="confirmMultipleDeletion">
+          {{ 'flow-builder.yes-delete' | trans }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -21,12 +54,29 @@ const flowVuexNamespace = namespace('flow')
 
 @Component({})
 export default class SelectionBanner extends mixins(Lang) {
+  deleting: boolean = false
+
+  updated() {
+    this.$emit('updated')
+  }
 
   get countSelectedBlocks() {
     return size(this.selectedBlocks)
   }
 
+  async confirmMultipleDeletion() {
+    await this.flow_removeAllSelectedBlocks()
+    this.deleting = false
+  }
+
+  async handleMultipleDuplicate() {
+    await this.flow_duplicateAllSelectedBlocks()
+    await this.flow_clearMultiSelection()
+  }
+
   @flowVuexNamespace.State selectedBlocks!: IBlock['uuid'][]
-  @flowVuexNamespace.Action block_clearMultiSelection!: void
+  @flowVuexNamespace.Action flow_clearMultiSelection!: () => void
+  @flowVuexNamespace.Action flow_removeAllSelectedBlocks!: () => void
+  @flowVuexNamespace.Action flow_duplicateAllSelectedBlocks!: () => void
 }
 </script>
