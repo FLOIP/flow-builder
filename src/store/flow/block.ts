@@ -9,7 +9,7 @@ import {
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { defaults, set } from 'lodash'
+import { defaults, set, forEach } from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
@@ -68,6 +68,9 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   block_updateConfigByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
     set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, path, value);
+  },
+  block_updateVendorMetadataByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
+    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).vendor_metadata!, path, value);
   },
   block_setBlockExitDestinationBlockId(state, { blockId, exitId, destinationBlockId }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -138,6 +141,20 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       destinationBlockId: secondDestinationBlockId,
     })
   },
+
+  async block_select({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
+    state.selectedBlocks.push(blockId)
+  },
+
+  async block_deselect({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
+    state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId) // remove it
+  },
+
+  async block_clearMultiSelection({ state, dispatch }) {
+    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
+      dispatch('block_deselect', { blockId })
+    })
+  }
 }
 
 export interface IDeepBlockExitIdWithinFlow {

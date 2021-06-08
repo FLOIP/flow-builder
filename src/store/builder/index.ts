@@ -1,5 +1,5 @@
 import {
-  cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get, filter, union,
+  flatMap, isEqual, keyBy, map, mapValues, get, filter, union
 } from 'lodash'
 import Vue from 'vue'
 import {
@@ -10,8 +10,6 @@ import {
   IBlockExit, IBlock, IFlow, IResource, SupportedMode, ValidationException,
 } from '@floip/flow-runner'
 import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block'
-import { createFormattedDate } from '@floip/flow-runner/dist/domain/DateFormat'
-import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 export enum OperationKind { // todo migrate these to flight-monitor
   CONNECTION_SOURCE_RELOCATE = 'CONNECTION_SOURCE_RELOCATE',
@@ -369,7 +367,7 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   ]
 }
 
-export function computeBlockPositionsFrom(block?: IBlock | null) {
+export function computeBlockUiData(block?: IBlock | null) {
   const xDelta = 160
   const yDelta = 180
 
@@ -382,7 +380,11 @@ export function computeBlockPositionsFrom(block?: IBlock | null) {
     yPosition = viewPortCenter.y
   }
 
-  return { xPosition: xPosition + xDelta, yPosition: yPosition + yDelta }
+  return {
+    xPosition: xPosition + xDelta,
+    yPosition: yPosition + yDelta,
+    isSelected: false,
+  }
 }
 
 export function getViewportCenter() {

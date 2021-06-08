@@ -27,7 +27,7 @@ import {
   omit
 } from 'lodash'
 import { discoverContentTypesFor } from '@/store/flow/resource'
-import { computeBlockPositionsFrom } from '@/store/builder'
+import { computeBlockUiData } from '@/store/builder'
 import { router } from '@/router'
 import { IFlowsState } from '.'
 import { mergeFlowContainer } from './utils/importHelpers'
@@ -330,7 +330,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
     duplicatedBlock.vendor_metadata = {
       io_viamo: {
-        uiData: computeBlockPositionsFrom(block),
+        uiData: computeBlockUiData(block),
       },
     }
 

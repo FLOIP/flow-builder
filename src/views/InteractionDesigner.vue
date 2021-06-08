@@ -372,7 +372,7 @@ export default {
     }
   }
 
-  .tree-builder-toolbar {
+  .tree-builder-toolbar-main-menu {
     position: fixed;
     z-index: 3*10;
 

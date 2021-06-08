@@ -16,6 +16,21 @@
 
       <div class="d-flex justify-content-between">
         <div class="header-actions-left">
+          <!--Selection-->
+          <font-awesome-icon
+            v-if="isBlockSelected"
+            :icon="['fas', 'check-circle']"
+            class="fa-btn text-primary"
+            v-b-tooltip.hover="trans('flow-builder.deselect-block')"
+            @click="block_deselect({ blockId: block.uuid })"
+          />
+          <font-awesome-icon
+            v-if="!isBlockSelected"
+            :icon="['far', 'circle']"
+            class="fa-btn"
+            v-b-tooltip.hover="trans('flow-builder.select-block')"
+            @click="block_select({ blockId: block.uuid })"
+          />
         </div>
         <div class="header-actions-right d-flex">
           <!--Delete-->
@@ -173,12 +188,12 @@
 
 <script>
 import Vue from 'vue'
-import { isNumber, forEach, filter } from 'lodash'
+import {isNumber, forEach, filter, includes} from 'lodash'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
 import PlainDraggable from '@/components/common/PlainDraggable.vue'
-import { ResourceResolver, SupportedMode } from '@floip/flow-runner'
+import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
 import { OperationKind, generateConnectionLayoutKeyFor } from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import { lang } from '@/lib/filters/lang'
@@ -228,7 +243,10 @@ export default {
   },
 
   computed: {
-    ...mapState('flow', ['resources']),
+    ...mapState('flow', [
+      'resources',
+      'selectedBlocks',
+    ]),
     ...mapState('builder', ['activeBlockId', 'operations', 'activeConnectionsContext']),
     ...mapState({
       blockClasses: ({ trees: { ui } }) => ui.blockClasses,
@@ -247,6 +265,10 @@ export default {
 
     isAssociatedWithActiveConnection({ block, activeConnectionsContext }) {
       return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid || context.targetId === block.uuid).length
+    },
+
+    isBlockSelected() {
+      return includes(this.selectedBlocks, this.block.uuid)
     },
 
     // todo: does this component know too much, what out of the above mapped state can be mapped?
@@ -295,6 +317,8 @@ export default {
     ...mapActions('flow', [
       'flow_duplicateBlock',
       'flow_removeBlock',
+      'block_select',
+      'block_deselect',
     ]),
 
     ...mapMutations('builder', ['activateBlock']),
