@@ -28,7 +28,7 @@ import {
 } from 'lodash'
 import { discoverContentTypesFor } from '@/store/flow/resource'
 import { computeBlockPositionsFrom } from '@/store/builder'
-import { router } from '@/router'
+//import { router } from '@/router'
 import { IFlowsState } from '.'
 import { mergeFlowContainer } from './utils/importHelpers'
 
@@ -336,10 +336,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     commit('flow_addBlock', { block: duplicatedBlock })
 
-    router.replace({
-      name: 'block-selected-details',
-      params: { blockId: duplicatedBlock.uuid },
-    })
+    //router.replace({
+      //name: 'block-selected-details',
+      //params: { blockId: duplicatedBlock.uuid },
+    //})
 
     return duplicatedBlock
   },
