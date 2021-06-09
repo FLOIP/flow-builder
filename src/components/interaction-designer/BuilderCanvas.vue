@@ -3,15 +3,18 @@
        class="builder-canvas no-select"
        :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }"
   >
-    <plain-draggable v-if="allSelectedBlocks.length > 0" class="all-selected-block"
-                     :style="{
-                       top: `${selectedBlocksOuterRectArea.y}px`,
-                       left: `${selectedBlocksOuterRectArea.x}px`,
-                     }"
+
+    <plain-draggable v-if="selectedBlocks.length > 0" class="all-selected-block"
                      @initialized="onInitializedMultiSelectionDrag($event)"
                      @dragStarted="onStartedMultiSelectionDrag($event)"
                      @dragged="onMovedMultiSelection"
                      @dragEnded="onEndedMultiSelectionDrag($event)"
+                     :start-x="selectedBlocksOuterRectArea.x"
+                     :start-y="selectedBlocksOuterRectArea.y"
+                     :style="{ // make position reactive, because startX/Y are not
+                       top: `${selectedBlocksOuterRectArea.y}px`,
+                       left: `${selectedBlocksOuterRectArea.x}px`,
+                     }"
     >
       <div class="draggable-handle drag-multiselect">
         <div class="drag-element border-primary rounder" :style="{
@@ -20,6 +23,25 @@
                      }">
           Drag me
         </div>
+
+        <plain-draggable class="selected-block-area border-secondary"
+                         v-for="currentSelectedBlock in areasForMultipleMove"
+                         :start-x="currentSelectedBlock.left"
+                         :start-y="currentSelectedBlock.top"
+                         :style="{
+                           left: `${currentSelectedBlock.left}px`,
+                           top: `${currentSelectedBlock.top}px`,
+                           width: `${currentSelectedBlock.width}px`,
+                           height: `${currentSelectedBlock.height}px`,
+                         }">
+
+          <p class="block-type text-muted">
+            TYPE
+          </p>
+          <span>
+            'Untitled block'
+          </span>
+        </plain-draggable>
       </div>
     </plain-draggable>
 
@@ -42,6 +64,8 @@ import {findBlockWith, IBlock, IFlow} from '@floip/flow-runner'
 import { IValidationStatus } from '@/store/validation'
 import PlainDraggable from '@/components/common/PlainDraggable.vue'
 import {IPosition} from "@/store/builder";
+import Lang from '@/lib/filters/lang'
+import {mixins} from "vue-class-component";
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -57,7 +81,7 @@ const DEBOUNCE_SCROLL_TIMER = 100 //ms
     PlainDraggable,
   },
 })
-export default class BuilderCanvas extends Vue {
+export default class BuilderCanvas extends mixins(Lang) {
   @Prop() block!: IBlock
 
   created() {
@@ -157,6 +181,7 @@ export default class BuilderCanvas extends Vue {
     console.debug('checkRS', 'BuilderCanvas', 'move multiselection using delta', delta)
 
     this.$nextTick(() => {
+      Object.assign(draggable, { left: x, top: y })
       forEach(this.draggableForBlocksByUuid, (blockDraggable, blockId) => {
         if (includes(this.selectedBlockUuids, blockId)) {
           const block = findBlockWith(blockId, this.activeFlow);
@@ -170,28 +195,36 @@ export default class BuilderCanvas extends Vue {
     })
   }
 
-  get blocksOnActiveFlowForWatcher() {
-    return cloneDeep(this.activeFlow.blocks) // needed to make comparison between new & old values on watcher
-  }
-
-  get blockHeight() {
-    const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
+  getBlockHeightFromDom(blockUuid) {
+    const blockElementRef = this.$refs[`block/${blockUuid}`] as Vue[]// it returns array as we loop blocks inside v-for
     if (!blockElementRef) {
-      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition?.uuid}`)
+      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${blockUuid}`)
       return 150 // temporary dummy height for UI scroll purpose
     }
     return (<HTMLElement> (<Vue> blockElementRef[0].$refs['draggable']).$el).offsetHeight
   }
 
-  get blockWidth() {
-    const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
+  getBlockWidthFromDom(blockUuid) {
+    const blockElementRef = this.$refs[`block/${blockUuid}`] as Vue[]// it returns array as we loop blocks inside v-for
 
     if (!blockElementRef) {
-      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition?.uuid}`)
+      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${blockUuid}`)
       return 110 // temporary dummy width for UI scroll purpose
     }
 
     return (<HTMLElement> (<Vue> blockElementRef[0].$refs['draggable']).$el).offsetWidth
+  }
+
+  get blocksOnActiveFlowForWatcher() {
+    return cloneDeep(this.activeFlow.blocks) // needed to make comparison between new & old values on watcher
+  }
+
+  get activeBlockHeight() {
+    return this.getBlockHeightFromDom(this.blockAtTheLowestPosition?.uuid)
+  }
+
+  get activeBlockWidth() {
+    return this.getBlockWidthFromDom(this.blockAtTheFurthestRightPosition?.uuid)
   }
 
   get blockAtTheLowestPosition() {
@@ -229,7 +262,7 @@ export default class BuilderCanvas extends Vue {
     }
 
     const yPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.yPosition')
-    const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
+    const scrollHeight = yPosition + this.activeBlockHeight + MARGIN_HEIGHT
 
     if (scrollHeight < this.windowHeight) {
       return this.windowHeight
@@ -249,7 +282,7 @@ export default class BuilderCanvas extends Vue {
     }
 
     const xPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.xPosition')
-    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
+    const scrollWidth = xPosition + this.activeBlockWidth + MARGIN_WIDTH
 
     if (scrollWidth < this.windowWidth) {
       return this.windowWidth
@@ -258,32 +291,38 @@ export default class BuilderCanvas extends Vue {
     return scrollWidth
   }
 
-  get allSelectedBlocks() {
-    return filter(this.activeFlow.blocks, (block) => {
-      return includes(this.selectedBlockUuids, block.uuid)
-    })
-  }
-
-  get allNonSelectedBlocks() {
-    return filter(this.activeFlow.blocks, (block) => {
-      return !includes(this.selectedBlockUuids, block.uuid)
-    })
-  }
-
   get selectedBlocksOuterRectArea() {
+    console.log('selectedBlocksInnerRectArea', JSON.stringify(this.selectedBlocksInnerRectArea))
     const margin = 20
     const outerArea = cloneDeep(this.selectedBlocksInnerRectArea)
-    outerArea.height = outerArea.height + this.blockHeight + 2*margin
-    outerArea.width = outerArea.width + this.blockWidth + 2*margin
+    outerArea.height = outerArea.height + this.activeBlockHeight + 2*margin
+    outerArea.width = outerArea.width + this.activeBlockWidth + 2*margin
 
-    outerArea.x = outerArea.x - margin
-    outerArea.y = outerArea.y - margin
+    outerArea.x = outerArea.x - margin > 0 ? outerArea.x - margin : 0
+    outerArea.y = outerArea.y - margin > 0 ? outerArea.y - margin : 0
+    console.log('selectedBlocksOuterRectArea', JSON.stringify(outerArea))
     return outerArea
+  }
+
+  get areasForMultipleMove() {
+    const margin = 5
+    const self = this
+    let areas = []
+    forEach(self.selectedBlocks, function (block) {
+      areas.push({
+        left: block.vendor_metadata.io_viamo.uiData.xPosition - margin,
+        top: block.vendor_metadata.io_viamo.uiData.yPosition - margin,
+        width: self.getBlockWidthFromDom(block.uuid) + 2*margin,
+        height: self.getBlockHeightFromDom(block.uuid) + 2*margin,
+      })
+    })
+    return areas
   }
 
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.State selectedBlockUuids!: IBlock['uuid'][]
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Getter selectedBlocks!: IBlock[]
   @flowVuexNamespace.Getter selectedBlocksInnerRectArea!: object
 
   @builderVuexNamespace.State draggableForBlocksByUuid!: object
@@ -327,6 +366,12 @@ export { BuilderCanvas }
     pointer-events: none;
     cursor: none;
     /*background-color: #531944;*/
+    background-color: transparent;
+    border: medium dashed;
+  }
+
+  .selected-block-area {
+    position: absolute;
     background-color: transparent;
     border: medium dashed;
   }

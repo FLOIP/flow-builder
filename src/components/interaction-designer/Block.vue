@@ -558,12 +558,25 @@ export default {
       })
     },
 
-    handleDraggableEndedForBlock() {
+    handleDraggableEndedForBlock({ position: { left: x, top: y } }) {
       console.debug('Block', 'handleDraggableEndedForBlock')
       const self = this
       forEach(this.block.exits, function (exit) {
         delete self.draggableForExitsByUuid[exit.uuid]
       })
+
+      // this.$nextTick(() => {
+      //   this.setBlockPositionTo({ position: { x, y }, block: this.block })
+      //
+      //   forEach(this.draggableForExitsByUuid, (draggable, key) => {
+      //     try {
+      //       draggable.position()
+      //     } catch (e) {
+      //       console.warn('Block', 'onMoved', 'positioning draggable on', key, 'can\'t access property "initElm", props is undefined')
+      //     }
+      //   })
+      //   console.debug('Block', 'onMoved', 'positioned all of', this.draggableForExitsByUuid)
+      // })
     },
 
     handleDraggableDestroyedForBlock() {
