@@ -59,6 +59,7 @@ export interface IBuilderState {
   };
   draggableForExitsByUuid: object;
   draggableForBlocksByUuid: object;
+  draggableForMultipleMove: object;
   multiDragPositions: { start: IPosition; end: IPosition };
 }
 
@@ -79,6 +80,7 @@ export const stateFactory = (): IBuilderState => ({
   },
   draggableForExitsByUuid: {},
   draggableForBlocksByUuid: {},
+  draggableForMultipleMove: {},
   multiDragPositions: {} as { start: IPosition; end: IPosition }
 })
 

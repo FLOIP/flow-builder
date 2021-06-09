@@ -36,7 +36,7 @@
             :icon="['far', 'circle']"
             class="fa-btn"
             v-b-tooltip.hover="trans('flow-builder.select-block')"
-            @click="block_select({ blockId: block.uuid })"
+            @click="handleSelectBlock"
           />
         </div>
         <div class="header-actions-right d-flex">
@@ -259,6 +259,7 @@ export default {
       'activeConnectionsContext',
       'draggableForExitsByUuid',
       'draggableForBlocksByUuid',
+      'draggableForMultipleMove',
     ]),
     ...mapState({
       blockClasses: ({ trees: { ui } }) => ui.blockClasses,
@@ -339,6 +340,12 @@ export default {
       this.block_deselect({ blockId: this.block.uuid })
       this.flow_removeBlock({ blockId: this.block.uuid })
       this.isDeleting = false
+      this.$emit('deselecting-block', this.block)
+    },
+
+    handleSelectBlock() {
+      this.block_select({ blockId: this.block.uuid })
+      this.$emit('selecting-block', this.block)
     },
 
     handleDuplicateBlock() {

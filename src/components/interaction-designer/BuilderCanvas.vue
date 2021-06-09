@@ -21,15 +21,14 @@
         </div>
 
         <plain-draggable class="selected-block-area border-secondary"
-                         v-for="currentSelectedBlock in areasForMultipleMove"
-                         :start-x="currentSelectedBlock.left"
-                         :start-y="currentSelectedBlock.top"
+                         v-for="rectArea in areasForMultipleMove"
+                         :start-x="rectArea.left"
+                         :start-y="rectArea.top"
                          :style="{
-                           left: `${currentSelectedBlock.left}px`,
-                           top: `${currentSelectedBlock.top}px`,
-                           width: `${currentSelectedBlock.width}px`,
-                           height: `${currentSelectedBlock.height}px`,
-                         }">
+                           width: `${rectArea.width}px`,
+                           height: `${rectArea.height}px`,
+                         }"
+                         @initialized="onInitializedBlockSelectionDrag($event, rectArea.block)">
 
           <div class="draggable-handle">
             <p class="block-type text-muted">
@@ -49,7 +48,9 @@
            :id="`block/${block.uuid}`"
            :block="block"
            :x="block.vendor_metadata.io_viamo.uiData.xPosition"
-           :y="block.vendor_metadata.io_viamo.uiData.yPosition" />
+           :y="block.vendor_metadata.io_viamo.uiData.yPosition"
+           @selecting-block="onSelectingBlock"
+           @deselecting-block="onDeselectingBlock"/>
   </div>
 </template>
 
@@ -141,25 +142,15 @@ export default class BuilderCanvas extends mixins(Lang) {
   // ] ######## end canvas dynamic size watchers
 
   onInitializedMultiSelectionDrag({ draggable }) {
+    this.draggableForMultipleMove['main'] = draggable
+  }
 
+  onInitializedBlockSelectionDrag({ draggable }, block) {
+    this.draggableForMultipleMove[block.uuid] = draggable
   }
 
   onMovedMultiSelection({ position: { left: x, top: y } }) {
-    this.multiDragPositions.end = { x, y }
-    const delta = {
-      x: x - this.multiDragPositions.start.x,
-      y: y - this.multiDragPositions.start.y
-    }
-    this.$nextTick(() => {
-      forEach(this.draggableForBlocksByUuid, (draggable, blockId) => {
-        // const block = findBlockWith(blockId, this.activeFlow)
-        // this.setBlockPositionTo({ position: { x, y }, block })
-        // this.setBlockPositionFromDelta({delta, block})
-        // draggable.position()
-      })
 
-      console.debug('Multiple blocks', 'onMoved', 'positioned all of', this.draggableForBlocksByUuid)
-    })
   }
 
   onStartedMultiSelectionDrag({ draggable }) {
@@ -178,18 +169,49 @@ export default class BuilderCanvas extends mixins(Lang) {
 
     console.debug('checkRS', 'BuilderCanvas', 'move multiselection using delta', delta)
 
+    const self = this
     this.$nextTick(() => {
-      forEach(this.draggableForBlocksByUuid, (blockDraggable, blockId) => {
-        if (includes(this.selectedBlockUuids, blockId)) {
-          const block = findBlockWith(blockId, this.activeFlow);
-          const newPosition = this.setBlockPositionFromDelta({ delta, block })
-          // Object.assign(blockDraggable, { left: newPosition.x, top: newPosition.y })
-          blockDraggable.position()
-        }
+      forEach(self.selectedBlocks, (block) => {
+        const newPosition = self.setBlockPositionFromDelta({ delta, block })
+
+        console.debug('checkRS', 'BuilderCanvas', 'new position', block.uuid, newPosition)
+        // Update draggable position for each block move area
+        Object.assign(
+          self.draggableForMultipleMove[block.uuid],
+          { left: newPosition.x, top: newPosition.y }
+        )
       })
-      Object.assign(draggable, { left: this.selectedBlocksOuterRectArea.x, top: this.selectedBlocksOuterRectArea.y })
-      console.debug('Multiple blocks', 'ended drag', 'positioned all of', this.draggableForBlocksByUuid)
+      // Update draggable position for the whole multi-selection move area
+      Object.assign(draggable, { left: self.selectedBlocksOuterRectArea.x, top: self.selectedBlocksOuterRectArea.y })
+      console.debug('Multiple blocks', 'ended drag', 'positioned all of', self.draggableForBlocksByUuid)
     })
+  }
+
+  onSelectingBlock(block) {
+    const self = this
+    this.$nextTick(() => {
+      console.log('onSelectingBlock', self.draggableForMultipleMove)
+      const { vendor_metadata: {
+        io_viamo: {
+          uiData: {
+            xPosition: x,
+            yPosition: y
+          }
+        }
+      }} = block
+      // Update draggable position for the block move area
+      Object.assign(
+        self.draggableForMultipleMove[block.uuid],
+        { left: x, top: y }
+      )
+
+      // Update draggable position for the whole multi-selection move area
+      Object.assign(self.draggableForMultipleMove['main'], { left: self.selectedBlocksOuterRectArea.x, top: self.selectedBlocksOuterRectArea.y })
+    })
+  }
+
+  onDeselectingBlock(block) {
+    delete this.draggableForMultipleMove[block.uuid]
   }
 
   getBlockHeightFromDom(blockUuid) {
@@ -311,6 +333,7 @@ export default class BuilderCanvas extends mixins(Lang) {
         top: block.vendor_metadata.io_viamo.uiData.yPosition - margin,
         width: self.getBlockWidthFromDom(block.uuid) + 2*margin,
         height: self.getBlockHeightFromDom(block.uuid) + 2*margin,
+        block: block
       })
     })
     return areas
@@ -323,9 +346,10 @@ export default class BuilderCanvas extends mixins(Lang) {
   @flowVuexNamespace.Getter selectedBlocksInnerRectArea!: object
 
   @builderVuexNamespace.State draggableForBlocksByUuid!: object
+  @builderVuexNamespace.State draggableForMultipleMove!: object
   @builderVuexNamespace.State multiDragPositions!: { start: IPosition; end: IPosition }
   @builderVuexNamespace.Mutation setBlockPositionTo!: ({ position, block }: { position: any, block: IBlock }) => void
-  @builderVuexNamespace.Action setBlockPositionFromDelta!: () => void
+  @builderVuexNamespace.Action setBlockPositionFromDelta!: () => object
 
   @validationVuexNamespace.Action validate_flow!: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_block!: ({ block } : { block: IBlock }) => Promise<IValidationStatus>
