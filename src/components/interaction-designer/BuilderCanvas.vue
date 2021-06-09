@@ -11,10 +11,6 @@
                      @dragEnded="onEndedMultiSelectionDrag($event)"
                      :start-x="selectedBlocksOuterRectArea.x"
                      :start-y="selectedBlocksOuterRectArea.y"
-                     :style="{ // make position reactive, because startX/Y are not
-                       top: `${selectedBlocksOuterRectArea.y}px`,
-                       left: `${selectedBlocksOuterRectArea.x}px`,
-                     }"
     >
       <div class="draggable-handle drag-multiselect">
         <div class="drag-element border-primary rounder" :style="{
@@ -35,12 +31,14 @@
                            height: `${currentSelectedBlock.height}px`,
                          }">
 
-          <p class="block-type text-muted">
-            TYPE
-          </p>
-          <span>
+          <div class="draggable-handle">
+            <p class="block-type text-muted">
+              TYPE
+            </p>
+            <span>
             'Untitled block'
           </span>
+          </div>
         </plain-draggable>
       </div>
     </plain-draggable>
@@ -181,7 +179,6 @@ export default class BuilderCanvas extends mixins(Lang) {
     console.debug('checkRS', 'BuilderCanvas', 'move multiselection using delta', delta)
 
     this.$nextTick(() => {
-      Object.assign(draggable, { left: x, top: y })
       forEach(this.draggableForBlocksByUuid, (blockDraggable, blockId) => {
         if (includes(this.selectedBlockUuids, blockId)) {
           const block = findBlockWith(blockId, this.activeFlow);
@@ -190,7 +187,7 @@ export default class BuilderCanvas extends mixins(Lang) {
           blockDraggable.position()
         }
       })
-
+      Object.assign(draggable, { left: this.selectedBlocksOuterRectArea.x, top: this.selectedBlocksOuterRectArea.y })
       console.debug('Multiple blocks', 'ended drag', 'positioned all of', this.draggableForBlocksByUuid)
     })
   }
