@@ -185,6 +185,12 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('setFlowError', 'flow-builder.importer-currently-supports-single-flow-only')
       return
     }
+    const validationErrors = await dispatch('validation/validate_flow', { flow: flowContainer }, { root: true })
+    if (!validationErrors['isValid']) {
+      commit('setFlowError', 'flow-builder.flow-invalid')
+      return
+    }
+
     const oldFlowContainer = cloneDeep(state.flowContainer)
     const newFlowContainer = cloneDeep(flowContainer)
     commit('setFlowContainer', flowContainer)
