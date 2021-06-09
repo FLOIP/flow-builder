@@ -71,7 +71,7 @@ import { store } from '@/store'
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import { BuilderCanvas } from '@/components/interaction-designer/BuilderCanvas'
-import { scrollBehavior, scrollBlockIntoView } from '@/router';
+//import { scrollBehavior, scrollBlockIntoView } from '@/router';
 
 // import '../TreeDiffLogger'
 
@@ -220,10 +220,10 @@ export default {
       const { blockId, field } = this.$route.params
       if (blockId) {
         this.activateBlock({ blockId })
-        scrollBlockIntoView(blockId)
+        //scrollBlockIntoView(blockId)
       }
       if (field) {
-        scrollBehavior(this.$route)
+        //scrollBehavior(this.$route)
       }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
