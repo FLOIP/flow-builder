@@ -1,16 +1,15 @@
 {
   "specification_version": "flow spec version",
-  "uuid": "container uuid",
+  "uuid": "3666a05d-3792-482b-8f7f-9e2472e4f027",
   "name": "container name",
   "description": "container description",
   "vendor_metadata": {},
   "flows": [
     {
       "uuid": "463580a6-ff3a-4e43-a2be-4265cc33dd91",
-      "org_id": "",
-      "name": "",
-      "label": "",
-      "last_modified": "c",
+      "name": "Test",
+      "label": "Test",
+      "last_modified": "2021-06-10T11:19:05.790Z",
       "interaction_timeout": 30,
       "vendor_metadata": {},
       "supported_modes": [
@@ -18,7 +17,14 @@
         "USSD",
         "IVR"
       ],
-      "languages": [],
+      "languages": [
+        {
+          "id": "22",
+          "label": "English",
+          "iso_639_3": "eng"
+        }
+      ],
+      "first_block_id": "31570470-cb83-436a-97d6-5a0ce471280e",
       "blocks": [
         {
           "uuid": "31570470-cb83-436a-97d6-5a0ce471280e",
@@ -31,7 +37,7 @@
             }
           },
           "type": "Core.SetContactProperty",
-          "name": "",
+          "name": "abc",
           "label": "",
           "semantic_label": "",
           "config": {
@@ -61,9 +67,9 @@
             }
           },
           "type": "Core.SetGroupMembership",
-          "name": "",
+          "name": "def",
           "label": "",
-          "semantic_abel": "",
+          "semantic_label": "",
           "config": {
             "group_key": 988,
             "group_name": "Group 3",
