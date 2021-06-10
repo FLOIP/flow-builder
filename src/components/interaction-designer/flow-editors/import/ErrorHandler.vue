@@ -7,7 +7,7 @@
       </div>
     </div>
     <div v-if="flowError" class="alert alert-danger" role="alert">
-      {{flowError | trans}}
+      {{flowError | trans(flowErrorInterpolations)}}
     </div>
     <div v-if="hasUnsupportedBlockClasses" class="alert alert-danger" role="alert">
       {{ `${trans('flow-builder.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}` }}
@@ -104,6 +104,8 @@ class ErrorHandler extends Vue {
   @importVuexNamespace.Getter propertiesMissing!: boolean
 
   @importVuexNamespace.State flowError!: string
+
+  @importVuexNamespace.State flowErrorInterpolations!: object | null
 
   @importVuexNamespace.State flowContainer!: IContext
 

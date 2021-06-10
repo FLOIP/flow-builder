@@ -19,8 +19,8 @@ const createProxy = (name: string) => function () {
   },
 })
 class Lang extends Vue {
-  trans(translation: string) {
-    return thisGlobal.Lang.trans(translation)
+  trans(translation: string, interpolations?: object) {
+    return thisGlobal.Lang.trans(translation, interpolations)
   }
 
   /**

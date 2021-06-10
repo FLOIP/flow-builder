@@ -128,8 +128,13 @@ export const mutations: MutationTree<IImportState> = {
       set(state.flowContainer, 'flows[0].blocks', blocks)
     }
   },
+  setFlowErrorWithInterpolations(state, {text, interpolations}) {
+    state.flowError = text
+    state.flowErrorInterpolations = interpolations
+  },
   setFlowError(state, text) {
     state.flowError = text
+    state.flowErrorInterpolations = null
   },
   setGroupBlocks(state, groupBlocks) {
     state.groupBlocks = groupBlocks
@@ -184,7 +189,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     }
     const validationErrors = await dispatch('validation/validate_flowContainer', { flowContainer }, { root: true })
     if (!validationErrors['isValid']) {
-      commit('setFlowError', 'flow-builder.flow-invalid')
+      commit('setFlowErrorWithInterpolations', {text: 'flow-builder.flow-invalid', interpolations: {version: flowContainer.specification_version}})
       return
     }
 
@@ -354,6 +359,7 @@ export interface IImportState {
   flowContainer: IContext | null
   flowJsonText: string
   flowError: string
+  flowErrorInterpolations: null | object
   propertyBlocks: IBlock[]
   groupBlocks: IBlock[]
   updating: boolean
@@ -374,6 +380,7 @@ export const stateFactory = (): IImportState => ({
   flowContainer: null,
   flowJsonText: '',
   flowError: '',
+  flowErrorInterpolations: null,
   propertyBlocks: [],
   groupBlocks: [],
   updating: false,
