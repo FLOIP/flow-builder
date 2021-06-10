@@ -7,7 +7,7 @@ import Ajv, { ValidateFunction, ErrorObject } from 'ajv'
 import ajvFormat from 'ajv-formats'
 
 import { JSONSchema7 } from 'json-schema'
-import { IBlock, IFlow } from '@floip/flow-runner'
+import { IBlock, IFlow, IContainer } from '@floip/flow-runner'
 import { isEmpty, get, forIn } from 'lodash'
 
 const ajv = new Ajv({ allErrors:true })
@@ -96,6 +96,18 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
     debugValidationStatus(state.validationStatuses[index], `flow validation status`)
     return state.validationStatuses[index]
+  },
+
+  async validate_flowContainer({ state, commit }, { flowContainer } : { flowContainer: IContainer }): Promise<IValidationStatus> {
+    const validate = getOrCreateFlowContainerValidator()
+    const index = `flowContainer/${flowContainer.uuid}`
+    Vue.set(state.validationStatuses, index, {
+      isValid: validate(flowContainer),
+      ajvErrors: validate.errors,
+    })
+
+    debugValidationStatus(state.validationStatuses[index], `flow container validation status`)
+    return state.validationStatuses[index]
   }
 }
 
@@ -125,6 +137,14 @@ function getOrCreateFlowValidator(): ValidateFunction {
   }
   return validators.get(validationType)!
 }
+function getOrCreateFlowContainerValidator(): ValidateFunction {
+  const validationType = 'flowContainer'
+  if (isEmpty(validators) || !validators.has(validationType)) {
+    const flowContainerJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowContainerJsonSchema, '#/definitions/IContainer'))
+  }
+  return validators.get(validationType)!
+}
 
 /**
  * Create AJV Validator
@@ -140,8 +160,11 @@ export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchem
   if (subSchema === '') {
     return ajv.compile(jsonSchema)
   } else {
-    ajv.addSchema(jsonSchema)
-    const validate = ajv.getSchema(subSchema)
+    let validate = ajv.getSchema(subSchema)
+    if(!validate) {
+      ajv.addSchema(jsonSchema)
+      validate = ajv.getSchema(subSchema)
+    }
     if (!validate) {
       throw new Error(`Cannot find definition ${subSchema} in schema ${jsonSchema}`)
     }

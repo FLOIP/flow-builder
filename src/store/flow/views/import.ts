@@ -165,9 +165,6 @@ export const mutations: MutationTree<IImportState> = {
 
 export const actions: ActionTree<IImportState, IRootState> = {
   async setFlowJson({ commit, state, dispatch }, value: string) {
-
-    //@validationVuexNamespace.Action validate_flow!: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
-    //await this.validate_flow({ flow: newFlow })
     commit('setFlowError', '')
     commit('setFlowJsonText', value)
     let flowContainer
@@ -185,7 +182,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('setFlowError', 'flow-builder.importer-currently-supports-single-flow-only')
       return
     }
-    const validationErrors = await dispatch('validation/validate_flow', { flow: flowContainer }, { root: true })
+    const validationErrors = await dispatch('validation/validate_flowContainer', { flowContainer }, { root: true })
     if (!validationErrors['isValid']) {
       commit('setFlowError', 'flow-builder.flow-invalid')
       return

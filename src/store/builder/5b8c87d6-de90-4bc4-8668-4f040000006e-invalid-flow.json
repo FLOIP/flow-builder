@@ -1,0 +1,107 @@
+{
+  "specification_version": "flow spec version",
+  "uuid": "invalid uui",
+  "name": "container name",
+  "description": "container description",
+  "vendor_metadata": {},
+  "flows": [
+    {
+      "uuid": "hello",
+      "name": "Test",
+      "label": "Test",
+      "last_modified": "2021-06-10T11:19:05.790Z",
+      "interaction_timeout": 30,
+      "vendor_metadata": {},
+      "supported_modes": [
+        "SMS",
+        "USSD",
+        "IVR"
+      ],
+      "languages": [
+        {
+          "id": "22",
+          "label": "English",
+          "iso_639_3": "eng"
+        }
+      ],
+      "blocks": [
+        {
+          "uuid": "eb34ac1f-f27c-43f4-87c9-7f61309bc725",
+          "vendor_metadata": {
+            "io_viamo": {
+              "uiData": {
+                "xPosition": 164,
+                "yPosition": 197
+              }
+            }
+          },
+          "type": "Core.Log",
+          "name": "",
+          "label": "",
+          "semantic_label": "",
+          "exits": [
+            {
+              "uuid": "6324a107-3194-4c5a-8cae-36882074ca1a",
+              "tag": "Default",
+              "label": "Default",
+              "default": true,
+              "config": {}
+            }
+          ],
+          "config": {
+            "message": "3087a849-3f88-4fe4-8992-a8f5a8866124"
+          }
+        },
+        {
+          "uuid": "a5d6f811-7ba6-404d-890f-29d6c10e43b5",
+          "vendor_metadata": {
+            "io_viamo": {
+              "uiData": {
+                "xPosition": 380,
+                "yPosition": 227
+              }
+            }
+          },
+          "type": "MobilePrimitives.NumericResponse",
+          "name": "",
+          "label": "",
+          "semantic_label": "",
+          "exits": [
+            {
+              "uuid": "0638e873-a28c-4b7d-9578-5341de4e66bf",
+              "tag": "Default",
+              "label": "Default",
+              "default": true,
+              "config": {}
+            },
+            {
+              "uuid": "2c1a46ac-4c60-4750-96fa-aa56a36f3318",
+              "tag": "Error",
+              "label": "Error",
+              "config": {}
+            }
+          ],
+          "config": {
+            "prompt": "53d58537-2c26-44ca-b43a-474932548885",
+            "validation_minimum": 1,
+            "validation_maximum": 2,
+            "ivr": {
+              "max_digits": 1 
+            }
+          }
+        }
+      ],
+      "first_block_id": "eb34ac1f-f27c-43f4-87c9-7f61309bc725"
+    }
+  ],
+  "resources": [
+    {
+      "uuid": "3087a849-3f88-4fe4-8992-a8f5a8866124",
+      "values": []
+    },
+    {
+      "uuid": "5fe9f6b5-9cb2-4f3f-96f1-69ddb52cfd1e",
+      "values": []
+    }
+  ]
+}
