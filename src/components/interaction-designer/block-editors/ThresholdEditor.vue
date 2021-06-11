@@ -1,27 +1,34 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`" #input-control="{ isValid }">
-    <div class="form-group block-threshold" :id="`${block.uuid}.config.accuracyThresholdMeters`">
-      <float-editor v-model.number="threshold"
-          :min="0"
-          :regex-float-filtering="'[0-9.,]'"
-          :label="'flow-builder.accuracy-threshold-in-meters' | trans"
-          :placeholder="'flow-builder.enter-value' | trans"
-          :validState="isValid">
-      </float-editor>
+  <validation-message
+    #input-control="{ isValid }"
+    :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`"
+  >
+    <div
+      :id="`${block.uuid}.config.accuracyThresholdMeters`"
+      class="form-group block-threshold"
+    >
+      <float-editor
+        v-model.number="threshold"
+        :min="0"
+        :regex-float-filtering="'[0-9.,]'"
+        :label="'flow-builder.accuracy-threshold-in-meters' | trans"
+        :placeholder="'flow-builder.enter-value' | trans"
+        :valid-state="isValid"
+      />
     </div>
   </validation-message>
 </template>
 
 <script>
-import FloatEditor from '@/components/common/FloatEditor'
-import { get } from 'lodash'
-import { lang } from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage';
+import FloatEditor from '@/components/common/FloatEditor.vue'
+import {get} from 'lodash'
+import {lang} from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
 
 export default {
   components: {
     FloatEditor,
-    ValidationMessage
+    ValidationMessage,
   },
   mixins: [lang],
   props: {

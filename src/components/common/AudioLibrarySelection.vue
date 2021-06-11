@@ -1,52 +1,76 @@
 <template>
-  <div  class="well well-sm audio-library-selection"
-       :data-audio-file-container-language="langId"
-       :class="{
-           'tree-audio-control-text-container-selectable': selectable,
-           'tree-audio-control-text-container-selected': !selectable}">
-
-    <button @click.prevent="clear" class="audio-library-selection-clear-selection btn-ghost pull-right">
-      <i class="glyphicon glyphicon-remove"></i>
+  <div
+    class="well well-sm audio-library-selection"
+    :data-audio-file-container-language="langId"
+    :class="{
+      'tree-audio-control-text-container-selectable': selectable,
+      'tree-audio-control-text-container-selected': !selectable}"
+  >
+    <button
+      class="audio-library-selection-clear-selection btn-ghost pull-right"
+      @click.prevent="clear"
+    >
+      <i class="glyphicon glyphicon-remove" />
     </button>
 
     <div class="btn-group audio-library-selection-download-dropdown">
-      <button type="button" class="btn btn-ghost dropdown-toggle" data-toggle="dropdown">
-        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-        <span class="caret"></span>
+      <button
+        type="button"
+        class="btn btn-ghost dropdown-toggle"
+        data-toggle="dropdown"
+      >
+        <span
+          class="glyphicon glyphicon-download-alt"
+          aria-hidden="true"
+        />
+        <span class="caret" />
       </button>
 
       <ul class="dropdown-menu dropdown-menu-right">
-        <li><a :href="audioFileUrl" target="_blank" class="tree-block-audio-files-download-original">{{'flow-builder.original-file'|trans}}</a></li>
+        <li>
+          <a
+            :href="audioFileUrl"
+            target="_blank"
+            class="tree-block-audio-files-download-original"
+          >{{ 'flow-builder.original-file'|trans }}</a>
+        </li>
 
-        <!-- <li><a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">{{'flow-builder.download-X-format'|trans({kind: '.ogg'})}}</a></li>
-        <li><a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">{{'flow-builder.download-X-format'|trans({kind: '.ul'})}}</a></li> -->
+        <!-- <li><a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">
+        {{'flow-builder.download-X-format'|trans({kind: '.ogg'})}}</a></li>
+        <li><a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">
+        {{'flow-builder.download-X-format'|trans({kind: '.ul'})}}</a></li> -->
       </ul>
     </div>
 
-    <p class="audio-file-description" :title="audioFileUrl">
-      {{audioFileUrl}}
+    <p
+      class="audio-file-description"
+      :title="audioFileUrl"
+    >
+      {{ audioFileUrl }}
     </p>
 
     <div class="btn-toolbar">
-<!--      <vue-audio :file="audioFileUrl"></vue-audio>-->
+      <!--      <vue-audio :file="audioFileUrl"></vue-audio>-->
 
-      <button v-if="selectable"
-              @click.prevent="select"
-              class="btn btn-secondary btn-xs">
-        <i class="glyphicon glyphicon-ok"></i>
+      <button
+        v-if="selectable"
+        class="btn btn-secondary btn-xs"
+        @click.prevent="select"
+      >
+        <i class="glyphicon glyphicon-ok" />
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import { lang } from '@/lib/filters/lang'
+import {lang} from '@/lib/filters/lang'
 import momentFilters from '@/lib/filters/moment'
 
 export default {
-  props: ['audioFile', 'selected', 'selectable', 'langId'],
 
   mixins: [lang, momentFilters],
+  props: ['audioFile', 'selected', 'selectable', 'langId'],
 
   computed: {
     audioFileUrl() {

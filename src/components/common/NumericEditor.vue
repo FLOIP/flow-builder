@@ -1,20 +1,20 @@
 <template>
   <div class="number-editor">
-    <label>{{label}}</label>
+    <label>{{ label }}</label>
     <div>
       <input
-          type="number"
-          min="0"
-          class="form-control"
-          :class="{ 'is-invalid': isInvalid }"
-          :placeholder="placeholder"
-          :value="value"
-          @keypress="filterNumeric"
-          @keydown="$emit('keydown', $event)"
-          @input="$emit('input', $event.target.value)"
-      />
+        type="number"
+        min="0"
+        class="form-control"
+        :class="{ 'is-invalid': isInvalid }"
+        :placeholder="placeholder"
+        :value="value"
+        @keypress="filterNumeric"
+        @keydown="$emit('keydown', $event)"
+        @input="$emit('input', $event.target.value)"
+      >
     </div>
-    <slot/>
+    <slot />
   </div>
 </template>
 
@@ -41,14 +41,14 @@ export default {
     regexNumericFiltering: {
       type: String,
       required: false,
-      default: '[0-9\-]',
+      default: '[0-9-]',
     },
   },
   computed: {
     isInvalid() {
       // strict comparison, because `undefined` doesn't mean invalid
       return this.validState === false
-    }
+    },
   },
   methods: {
     filterNumeric(e) {

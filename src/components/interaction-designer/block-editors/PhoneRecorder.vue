@@ -1,15 +1,19 @@
 <template>
-  <div v-if="isFeatureCallToRecordEnabled" class="phone-recorder">
+  <div
+    v-if="isFeatureCallToRecordEnabled"
+    class="phone-recorder"
+  >
     <phone-recording-recorder-selector
-        v-model="callConfig"
-        @input="handleRecorderSelectionChanged"
-        :isModalVisible="isRecorderSelectorVisible"/>
+      v-model="callConfig"
+      :is-modal-visible="isRecorderSelectorVisible"
+      @input="handleRecorderSelectionChanged"
+    />
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
-import PhoneRecordingRecorderSelector from './PhoneRecordingRecorderSelector'
+import {mapState, mapGetters} from 'vuex'
+import PhoneRecordingRecorderSelector from './PhoneRecordingRecorderSelector.vue'
 
 export default {
   components: {
@@ -29,7 +33,7 @@ export default {
   computed: {
     ...mapState({
       // todo: deprecate (this + setAudioRecordingConfigVisibilityForSelectedBlock) in favor of modal + local state
-      isRecorderSelectorVisible: ({ audio: { recording: { isRecorderSelectorVisible } } }) => isRecorderSelectorVisible,
+      isRecorderSelectorVisible: ({audio: {recording: {isRecorderSelectorVisible}}}) => isRecorderSelectorVisible,
     }),
 
     ...mapGetters(['isFeatureCallToRecordEnabled']),
@@ -37,7 +41,7 @@ export default {
 
   methods: {
     handleRecorderSelectionChanged() {
-      this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', { isVisible: false })
+      this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', {isVisible: false})
 
       if (!this.callConfig.recorder) {
         return

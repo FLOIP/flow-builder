@@ -2,81 +2,136 @@
   <div class="audio-library-search-field dropdown">
     <div class="input-group">
       <span class="input-group-prepend">
-        <button :class="{active: isEntireLibraryModeEnabled}"
-                class="btn btn-outline-secondary dropdown-toggle"
-                @click.prevent="toggleAudioLibrary">
-          <i class="glyphicon glyphicon-search"></i>
+        <button
+          :class="{active: isEntireLibraryModeEnabled}"
+          class="btn btn-outline-secondary dropdown-toggle"
+          @click.prevent="toggleAudioLibrary"
+        >
+          <i class="glyphicon glyphicon-search" />
         </button>
       </span>
 
-      <input v-model="rawQuery"
-             @focus="activate"
-             @blur="deactivate"
-             @input="resetPagination"
-             type="text"
-             :placeholder="'flow-builder.search-audio-library' | trans"
-             :disabled="isEntireLibraryModeEnabled"
-             class="form-control">
+      <label>
+        <input
+          v-model="rawQuery"
+          type="text"
+          :placeholder="'flow-builder.search-audio-library' | trans"
+          :disabled="isEntireLibraryModeEnabled"
+          class="form-control"
+          @focus="activate"
+          @blur="deactivate"
+          @input="resetPagination"
+        >
+      </label>
     </div>
 
-    <div v-if="query || isAudioLibraryEmpty || isEntireLibraryModeEnabled" class="dropdown-menu">
+    <div
+      v-if="query || isAudioLibraryEmpty || isEntireLibraryModeEnabled"
+      class="dropdown-menu"
+    >
       <template v-if="isEntireLibraryModeEnabled">
-        <a @click.prevent="" href="#" class="disabled dropdown-item">
-          <button @click="toggleAudioLibrary" class="close active">x</button>
+        <a
+          href="#"
+          class="disabled dropdown-item"
+          @click.prevent=""
+        >
+          <button
+            class="close active"
+            @click="toggleAudioLibrary"
+          >x</button>
 
-          <i class="glyphicon glyphicon-info-sign"></i>
-          {{'flow-builder.showing-entire-audio-library'|trans}}&hellip;
+          <i class="glyphicon glyphicon-info-sign" />
+          {{ 'flow-builder.showing-entire-audio-library'|trans }}&hellip;
         </a>
-        <div role="separator" class="dropdown-divider"></div>
+        <div
+          role="separator"
+          class="dropdown-divider"
+        />
       </template>
 
       <template v-if="!isAudioLibraryEmpty">
-        <a class="dropdown-item"
-           v-for="audio in search(query).slice(offset * limit, (offset + 1) * limit)"
-           @click.prevent="select(audio)" href="#">
-          {{audio.description}}
+        <a
+          v-for="(audio, i) in search(query).slice(offset * limit, (offset + 1) * limit)"
+          :key="i"
+          class="dropdown-item"
+          href="#"
+          @click.prevent="select(audio)"
+        >
+          {{ audio.description }}
         </a>
-        <a v-if="query.length >= 3 && !search(query).length" class="disabled dropdown-item" @click.prevent="" href="#">
-          {{'flow-builder.no-audio-files-found-for-X' | trans}} "<em>{{query}}</em>".
+        <a
+          v-if="query.length >= 3 && !search(query).length"
+          class="disabled dropdown-item"
+          href="#"
+          @click.prevent=""
+        >
+          {{ 'flow-builder.no-audio-files-found-for-X' | trans }} "<em>{{ query }}</em>".
         </a>
-        <a v-if="query && query.length < 3" class="disabled dropdown-item" @click.prevent="" href="#">
-          {{'flow-builder.enter-at-least-three-chars' | trans}}
+        <a
+          v-if="query && query.length < 3"
+          class="disabled dropdown-item"
+          href="#"
+          @click.prevent=""
+        >
+          {{ 'flow-builder.enter-at-least-three-chars' | trans }}
         </a>
 
         <template v-if="hasPrevious || hasNext">
-          <div role="separator" class="dropdown-divider"></div>
+          <div
+            role="separator"
+            class="dropdown-divider"
+          />
 
           <div class="pagers dropdown-item">
-            <a @click.prevent="decrementPage" href="#" :class="{disabled: !hasPrevious}" class="col-md-6">
-              <i class="glyphicon glyphicon-chevron-left"></i>
-              {{'flow-builder.previous' | trans}}
+            <a
+              href="#"
+              :class="{disabled: !hasPrevious}"
+              class="col-md-6"
+              @click.prevent="decrementPage"
+            >
+              <i class="glyphicon glyphicon-chevron-left" />
+              {{ 'flow-builder.previous' | trans }}
             </a>
 
-            <a @click.prevent="incrementPage" href="#" :class="{disabled: !hasNext}" class="col-md-6 text-right">
-              {{'flow-builder.next' | trans}}
-              <i class="glyphicon glyphicon-chevron-right"></i>
+            <a
+              href="#"
+              :class="{disabled: !hasNext}"
+              class="col-md-6 text-right"
+              @click.prevent="incrementPage"
+            >
+              {{ 'flow-builder.next' | trans }}
+              <i class="glyphicon glyphicon-chevron-right" />
             </a>
           </div>
         </template>
       </template>
 
-      <a v-if="isAudioLibraryEmpty" class="disabled dropdown-item" @click.prevent="" href="#">
-        <i class="glyphicon glyphicon-warning-sign"></i>
-        {{'flow-builder.audio-lib-empty-for-this-org' | trans}}
+      <a
+        v-if="isAudioLibraryEmpty"
+        class="disabled dropdown-item"
+        href="#"
+        @click.prevent=""
+      >
+        <i class="glyphicon glyphicon-warning-sign" />
+        {{ 'flow-builder.audio-lib-empty-for-this-org' | trans }}
       </a>
     </div>
   </div>
 </template>
 
 <script>
-import fuse from 'fuse.js'
-import lodash from 'lodash'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Fuse from 'fuse.js'
+import {trim} from 'lodash'
 import VueFocus from 'vue-focus'
-import { lang } from '@/lib/filters/lang'
+import {lang} from '@/lib/filters/lang'
 
 export default {
-  props: ['langId', 'audioFiles'],
   mixins: [VueFocus.mixin, lang],
+  props: {
+    langId: String,
+    audioFiles: String,
+  },
 
   data() {
     return {
@@ -95,7 +150,7 @@ export default {
 
   computed: {
     query() {
-      return lodash.trim(this.rawQuery)
+      return trim(this.rawQuery)
     },
 
     isAudioLibraryEmpty() {
@@ -113,8 +168,8 @@ export default {
 
   methods: {
     search(query) {
-			  if (this.isEntireLibraryModeEnabled) {
-			    return this.audioFiles
+      if (this.isEntireLibraryModeEnabled) {
+        return this.audioFiles
       }
 
       if (query.length < 3) {
@@ -131,20 +186,25 @@ export default {
       console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
 
       const keys = ['filename', 'description']
-      return this.cache[query] = new fuse(this.audioFiles, { keys }).search(query)
+      this.cache[query] = new Fuse(this.audioFiles, {keys}).search(query)
+      return this.cache[query]
     },
 
     // todo: push pagination into isolated component
     incrementPage() {
-      this.hasNext && (this.offset += 1)
+      if (this.hasNext) {
+        this.offset += 1
+      }
     },
 
     decrementPage() {
-      this.hasPrevious && (this.offset -= 1)
+      if (this.hasPrevious) {
+        this.offset -= 1
+      }
     },
 
     resetPagination() {
-			  this.offset = 0
+      this.offset = 0
     },
 
     toggleAudioLibrary() {
@@ -153,7 +213,7 @@ export default {
     },
 
     select(audio) {
-      this.$emit('select', { value: audio, langId: this.langId })
+      this.$emit('select', {value: audio, langId: this.langId})
     },
 
     activate() {
