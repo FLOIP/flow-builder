@@ -146,6 +146,7 @@
     </div>
     <div class="tree-builder-toolbar-alerts w-100">
       <selection-banner @updated="handleHeightChangeFromDOM"/>
+      <error-notifications @updated="handleHeightChangeFromDOM"/>
     </div>
   </div>
 
@@ -169,15 +170,18 @@ import { Action, Getter, namespace, State, Mutation } from 'vuex-class'
 import { IBlock, IContext, IFlow, IResource } from '@floip/flow-runner'
 import { RawLocation } from 'vue-router'
 import SelectionBanner from "@/components/interaction-designer/toolbar/SelectionBanner.vue";
+import ErrorNotifications from '@/components/interaction-designer/toolbar/ErrorNotifications.vue'
 
 Vue.use(VBTooltipPlugin)
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
+const validationVuexNamespace = namespace('validation')
 
 @Component({
   components: {
     SelectionBanner,
+    ErrorNotifications,
     // Affix,
     // TreeUpdateConflictModal,
     // InteractionTotalsDateRangeConfiguration
@@ -404,6 +408,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @builderVuexNamespace.Getter activeBlock?: IBlock
   @builderVuexNamespace.Action importFlowsAndResources!: ({ flows, resources }: { flows: IFlow[]; resources: IResource[]}) => Promise<void>
   @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
+
+  @validationVuexNamespace.Action remove_block_validation!: ({ blockId }: { blockId: IBlock['uuid'] | undefined}) => void
 }
 </script>
 

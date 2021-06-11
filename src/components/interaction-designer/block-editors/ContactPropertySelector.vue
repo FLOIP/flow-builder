@@ -1,6 +1,6 @@
 <template>
   <validation-message :message-key="`block/${block.uuid}/config/set_contact_property/property_key`" #input-control="{ isValid }">
-    <div class="block-contact-property form-group">
+    <div class="block-contact-property">
       <label>{{'flow-builder.contact-property-label' | trans}}</label>
       <vue-multiselect v-model="selectedProperty"
                        track-by="id"
