@@ -1,28 +1,34 @@
 <template>
-  <div class="form-group flow-modes" :id="`${flow.uuid}.modes`">
-    <label>{{'flow-builder.modes' | trans}}</label>
-    <div v-for="mode in availableModes"
-        :key="mode"
-        class="checkbox">
+  <div
+    :id="`${flow.uuid}.modes`"
+    class="form-group flow-modes"
+  >
+    <label>{{ 'flow-builder.modes' | trans }}</label>
+    <div
+      v-for="mode in availableModes"
+      :key="mode"
+      class="checkbox"
+    >
       <label class="font-weight-normal">
         <input
-            v-model="flowSelectedModes"
-            :value="mode"
-            type="checkbox"
-            class="flow-mode-toggle-checkbox"/>
-        {{mode}}
+          v-model="flowSelectedModes"
+          :value="mode"
+          type="checkbox"
+          class="flow-mode-toggle-checkbox"
+        >
+        {{ mode }}
       </label>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
-import { IFlow, SupportedMode } from '@floip/flow-runner'
+import {Component, Prop} from 'vue-property-decorator'
+import {IFlow, SupportedMode} from '@floip/flow-runner'
 import NumericEditor from '@/components/common/NumericEditor.vue'
 
 import Lang from '@/lib/filters/lang'
-import { mixins } from "vue-class-component";
+import {mixins} from 'vue-class-component'
 
 @Component({
   components: {

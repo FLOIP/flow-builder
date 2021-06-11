@@ -100,7 +100,7 @@
 
         <h3
           class="block-label"
-          :style="{ maxWidth: `${this.labelContainerMaxWidth}px` }"
+          :style="{ maxWidth: `${labelContainerMaxWidth}px` }"
           :class="{'empty': !block.label}"
         >
           {{ block.label || 'Untitled block' }}
@@ -258,14 +258,6 @@ export default {
     }
   },
 
-  watch: {
-    blockExitsLength(newValue, oldValue) {
-      this.$nextTick(function () {
-        this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
-      })
-    },
-  },
-
   created() {
     this.initDraggableForExitsByUuid()
   },
@@ -323,6 +315,14 @@ export default {
     },
   },
 
+  watch: {
+    blockExitsLength(newValue, oldValue) {
+      this.$nextTick(function () {
+        this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
+      })
+    },
+  },
+
   methods: {
     // todo: how do we decide whether or not this should be an action or a vanilla domain function?
     ...{
@@ -377,14 +377,17 @@ export default {
       }
 
       // This allows us to shrink .block-exit into the min-width before extending the block label container
-      if (isRemoving) { // Removing exit
-        if (LABEL_CONTAINER_MAX_WIDTH < (blockExitsLength - 1) * blockExitElement.offsetWidth) { // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible
-          this.labelContainerMaxWidth = (blockExitsLength - 1) * blockExitElement.offsetWidth// but set with `n x {outer width}`
+      if (isRemoving) {
+        // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible
+        if (LABEL_CONTAINER_MAX_WIDTH < (blockExitsLength - 1) * blockExitElement.offsetWidth) {
+          // but set with `n x {outer width}`
+          this.labelContainerMaxWidth = (blockExitsLength - 1) * blockExitElement.offsetWidth
           return
         }
-      } else { // Adding new exit
-        if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) { // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible (especially when removing exits)
-          this.labelContainerMaxWidth = blockExitsLength * blockExitElement.offsetWidth// but set with `n x {outer width}`
+      } else {
+        // Adding new exit
+        if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) {
+          this.labelContainerMaxWidth = blockExitsLength * blockExitElement.offsetWidth
           return
         }
       }
@@ -399,7 +402,8 @@ export default {
         language_id: '22',
         mode: SupportedMode.SMS,
       }
-      const resource = new ResourceResolver(context)// as IContext) // this isn't ts
+      // as IContext) // this isn't ts
+      const resource = new ResourceResolver(context)
         .resolve(uuid)
 
       return resource.hasText()
@@ -448,13 +452,13 @@ export default {
     },
 
     // eslint-disable-next-line no-unused-vars
-    activateBlockAsDropZone(e) {
+    activateBlockAsDropZone() {
       const {block} = this
       this.setConnectionCreateTargetBlock({block})
     },
 
     // eslint-disable-next-line no-unused-vars
-    deactivateBlockAsDropZone(e) {
+    deactivateBlockAsDropZone() {
       const {block} = this
       this.setConnectionCreateTargetBlockToNullFrom({block})
     },
@@ -480,7 +484,8 @@ export default {
     removeConnectionFrom(exit) {
       const {block} = this
       this._removeConnectionFrom({block, exit})
-      this.labelContainerMaxWidth += 0 // force render, useful if the exit label is very short
+      // force render, useful if the exit label is very short
+      this.labelContainerMaxWidth += 0
     },
 
     handleDraggableInitializedFor({uuid}, {draggable}) {

@@ -1,28 +1,42 @@
 <template>
   <div>
     <label>{{ matchNotFoundText | trans }}</label>
-    <div v-for="missingMatch in missingMatches" :key="`${getIdentifier(missingMatch)}-missing`">
+    <div
+      v-for="missingMatch in missingMatches"
+      :key="`${getIdentifier(missingMatch)}-missing`"
+    >
       <div class="form-check form-check-inline full-width">
         <div class="row full-width ml-1">
           <div class="col-xl-2 col-md-3">
-            <label class="form-check-label full-width mt-2 mb-2">{{getLabel(missingMatch)}}</label>
+            <label class="form-check-label full-width mt-2 mb-2">{{ getLabel(missingMatch) }}</label>
           </div>
           <div class="col-xl-8 col-md-6">
-            <select class="form-control full-width" @change="updateMappings(missingMatch, $event)">
-              <option value="" :selected="mappingsEmpty" key="default">
+            <select
+              class="form-control full-width"
+              @change="updateMappings(missingMatch, $event)"
+            >
+              <option
+                key="default"
+                value=""
+                :selected="mappingsEmpty"
+              >
                 {{ 'flow-builder.none-selected' | trans }}
               </option>
-              <option v-for="option in existingOptionsWithoutMatch"
+              <option
+                v-for="option in existingOptionsWithoutMatch"
+                :key="`${getIdentifier(option)}-option`"
                 :value="JSON.stringify(option)"
-                :key="`${getIdentifier(option)}-option`">
-                  {{ option }}
+              >
+                {{ option }}
               </option>
             </select>
           </div>
           <div class="col-xl-2 col-md-3">
-            <button class="btn btn-primary full-width"
-              @click="handleMatch(missingMatch)">
-              {{'flow-builder.update' | trans}}
+            <button
+              class="btn btn-primary full-width"
+              @click="handleMatch(missingMatch)"
+            >
+              {{ 'flow-builder.update' | trans }}
             </button>
           </div>
         </div>
@@ -35,7 +49,7 @@
 
 import lang from '@/lib/filters/lang'
 import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import {Component, Prop} from 'vue-property-decorator'
 import {
   omit,
   isEmpty,
@@ -46,15 +60,15 @@ import {
   mixins: [lang],
 })
 class ImportMatcher extends Vue {
-  @Prop({ default: '' }) readonly matchNotFoundText!: string
+  @Prop({default: ''}) readonly matchNotFoundText!: string
 
-  @Prop({ required: true }) readonly typeId!: string
+  @Prop({required: true}) readonly typeId!: string
 
-  @Prop({ required: true }) readonly typeLabel!: string
+  @Prop({required: true}) readonly typeLabel!: string
 
-  @Prop({ required: true }) readonly missingMatches!: any[]
+  @Prop({required: true}) readonly missingMatches!: any[]
 
-  @Prop({ required: true }) readonly existingOptionsWithoutMatch!: any[]
+  @Prop({required: true}) readonly existingOptionsWithoutMatch!: any[]
 
   mappings: {[key: string]: string} = {}
 

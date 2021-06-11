@@ -1,29 +1,35 @@
 <template>
-  <div class="form-group flow-languages" :id="`${flow.uuid}.languages`">
-    <label>{{'flow-builder.languages' | trans}}</label>
-    <div v-for="language in languages"
-        :key="language.id"
-        class="checkbox">
+  <div
+    :id="`${flow.uuid}.languages`"
+    class="form-group flow-languages"
+  >
+    <label>{{ 'flow-builder.languages' | trans }}</label>
+    <div
+      v-for="language in languages"
+      :key="language.id"
+      class="checkbox"
+    >
       <label class="font-weight-normal">
         <input
-            v-model="flowSelectedLanguages"
-            :value="language"
-            type="checkbox"
-            class="flow-language-toggle-checkbox"/>
+          v-model="flowSelectedLanguages"
+          :value="language"
+          type="checkbox"
+          class="flow-language-toggle-checkbox"
+        >
 
-        {{language.label}}
+        {{ language.label }}
       </label>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
-import { IFlow } from '@floip/flow-runner'
+import {Component, Prop} from 'vue-property-decorator'
+import {IFlow} from '@floip/flow-runner'
 import NumericEditor from '@/components/common/NumericEditor.vue'
-import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage'
+import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import Lang from '@/lib/filters/lang'
-import { mixins } from "vue-class-component";
+import {mixins} from 'vue-class-component'
 
 @Component({
   components: {

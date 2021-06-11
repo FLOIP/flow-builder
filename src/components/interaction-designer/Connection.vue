@@ -102,8 +102,9 @@ export default {
         return null
       }
 
-      // @note - intentional side-effect; todo: move this into vuex responding to data changes
-      this.$nextTick(this.reposition) // todo: we only want this called if something changes.
+      // @note - intentional side-effect;
+      // todo: move this into vuex responding to data changes. We only want this called if something changes.
+      this.$nextTick(this.reposition)
 
       // generate drafts while 'between exits' or 'source/destination unknown'
       // todo: push these out into ?block?
@@ -120,62 +121,6 @@ export default {
       return this.repaintCacheKeyGenerator(source, target)
         .join('\n')
     },
-  },
-
-  methods: {
-    ...mapMutations('builder', ['activateConnection', 'deactivateConnection', 'activateBlock']),
-    reposition() {
-      if (!this.line) {
-        return
-      }
-
-      const position = this.line.position()
-
-      console.debug('connection', 'repositioning', {
-        sourceId: this.source?.uuid,
-        targetId: this.target?.uuid,
-        position,
-        x: this.line.top,
-        y: this.line.left,
-      })
-    },
-    mouseOverHandler() {
-      this.line.setOptions(this.prominentOptions)
-      this.activateConnection({connectionContext: this.connectionContext})
-    },
-    mouseOutHandler() {
-      if (!this.isPermanentlyActive) {
-        this.line.setOptions(this.options)
-        this.deactivateConnection({connectionContext: this.connectionContext})
-      }
-    },
-    clickHandler() {
-      this.isPermanentlyActive = true
-      this.line.setOptions(this.prominentOptions)
-      this.activateConnection({connectionContext: this.connectionContext})
-      this.activateBlock({blockId: null})
-    },
-    clickAwayHandler(connectionElement) {
-      document.addEventListener('click', (event) => {
-        try { // Do not listen if the connection was not fully set
-          const checkExistingEnd = this.line.end
-        } catch (e) {
-          return
-        }
-
-        const isClickInside = connectionElement.contains(event.target)
-
-        if (!isClickInside) {
-          this.isPermanentlyActive = false
-          this.line.setOptions(this.options)
-          this.deactivateConnection({connectionContext: this.connectionContext})
-        }
-      }, false)
-    },
-  },
-
-  beforeDestroy() {
-    this.line.remove()
   },
 
   mounted() {
@@ -217,6 +162,63 @@ export default {
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false
     // this.line.positionByWindowResize = false
+  },
+
+  beforeDestroy() {
+    this.line.remove()
+  },
+
+  methods: {
+    ...mapMutations('builder', ['activateConnection', 'deactivateConnection', 'activateBlock']),
+    reposition() {
+      if (!this.line) {
+        return
+      }
+
+      const position = this.line.position()
+
+      console.debug('connection', 'repositioning', {
+        sourceId: this.source?.uuid,
+        targetId: this.target?.uuid,
+        position,
+        x: this.line.top,
+        y: this.line.left,
+      })
+    },
+    mouseOverHandler() {
+      this.line.setOptions(this.prominentOptions)
+      this.activateConnection({connectionContext: this.connectionContext})
+    },
+    mouseOutHandler() {
+      if (!this.isPermanentlyActive) {
+        this.line.setOptions(this.options)
+        this.deactivateConnection({connectionContext: this.connectionContext})
+      }
+    },
+    clickHandler() {
+      this.isPermanentlyActive = true
+      this.line.setOptions(this.prominentOptions)
+      this.activateConnection({connectionContext: this.connectionContext})
+      this.activateBlock({blockId: null})
+    },
+    clickAwayHandler(connectionElement) {
+      document.addEventListener('click', (event) => {
+        // Do not listen if the connection was not fully set
+        try {
+          this.line.end
+        } catch (e) {
+          return
+        }
+
+        const isClickInside = connectionElement.contains(event.target)
+
+        if (!isClickInside) {
+          this.isPermanentlyActive = false
+          this.line.setOptions(this.options)
+          this.deactivateConnection({connectionContext: this.connectionContext})
+        }
+      }, false)
+    },
   },
 }
 </script>

@@ -12,27 +12,29 @@
   <div class="block-content-editor block-content-editor-unsupported">
     <ul class="list-inline pull-right h4">
       <li v-for="tag in block.customData.tags">
-        <span class="badge badge-default">{{tag}}</span>
+        <span class="badge badge-default">{{ tag }}</span>
       </li>
       <li>
-        <span class="badge badge-info">{{'flow-builder.block-type-unsupported-in-resource-view' | trans}}</span>
+        <span class="badge badge-info">{{ 'flow-builder.block-type-unsupported-in-resource-view' | trans }}</span>
       </li>
     </ul>
 
-    <h4 :class="{'text-muted': !block.customData.title}"
-        :title="'Block ID - ' + block.jsKey">
-      <span v-if="block.customData.label">{{block.customData.label}} - </span>
-      {{block.customData.title || $options.filters.trans('flow-builder.untitled-block')}}
-      <small>{{`flow-builder.${block.type}` | trans}}</small>
+    <h4
+      :class="{'text-muted': !block.customData.title}"
+      :title="'Block ID - ' + block.jsKey"
+    >
+      <span v-if="block.customData.label">{{ block.customData.label }} - </span>
+      {{ block.customData.title || $options.filters.trans('flow-builder.untitled-block') }}
+      <small>{{ `flow-builder.${block.type}` | trans }}</small>
     </h4>
   </div>
 </template>
 
 <script>
-import { lang } from '@/lib/filters/lang'
+import {lang} from '@/lib/filters/lang'
 
 export default {
-  	props: ['block', 'blockTypes'],
   mixins: [lang],
+  props: ['block', 'blockTypes'],
 }
 </script>

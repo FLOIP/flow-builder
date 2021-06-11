@@ -128,10 +128,7 @@ import {lang} from '@/lib/filters/lang'
 
 export default {
   mixins: [VueFocus.mixin, lang],
-  props: {
-    langId: String,
-    audioFiles: String,
-  },
+  props: ['langId', 'audioFiles'],
 
   data() {
     return {
