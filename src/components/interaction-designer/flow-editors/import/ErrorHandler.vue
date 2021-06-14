@@ -3,7 +3,7 @@
     <div v-if="updating">
       <br>
       <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
+        <span class="sr-only">{{'flow-builder.loading' | trans}}</span>
       </div>
     </div>
     <div v-if="flowError" class="alert alert-danger" role="alert">
