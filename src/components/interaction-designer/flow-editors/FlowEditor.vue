@@ -8,14 +8,13 @@
       <div class="row">
         <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
           <flow-label-editor :flow="flow" />
-          <validation-message
-            #input-control="{ isValid }"
-            :message-key="`flow/${flow.uuid}/interaction_timeout`"
-          >
-            <flow-interaction-timeout-editor
-              :flow="flow"
-              :valid-state="isValid"
-            />
+          <validation-message :message-key="`flow/${flow.uuid}/interaction_timeout`">
+            <template #input-control="{ isValid }">
+              <flow-interaction-timeout-editor
+                :flow="flow"
+                :valid-state="isValid"
+              />
+            </template>
           </validation-message>
         </div>
         <div :class="{'col-12': sidebar, 'col-6': !sidebar}">

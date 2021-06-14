@@ -1,16 +1,16 @@
 <template>
-  <validation-message
-    #input-control="{ isValid }"
-    :message-key="`block/${block.uuid}/config/format_string`"
-  >
-    <div class="block-format-string">
+  <validation-message :message-key="`block/${block.uuid}/config/format_string`">
+    <template
+      #input-control="{ isValid }"
+      class="block-format-string"
+    >
       <text-editor
         v-model="formatString"
         :label="'flow-builder.format-string' | trans"
         :placeholder="'flow-builder.enter-format-string' | trans"
         :valid-state="isValid"
       />
-    </div>
+    </template>
   </validation-message>
 </template>
 

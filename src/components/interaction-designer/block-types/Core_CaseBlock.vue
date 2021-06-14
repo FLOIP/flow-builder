@@ -14,18 +14,17 @@
         :key="i"
         class="form-group form-inline"
       >
-        <validation-message
-          #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/exits/${i}/tag`"
-        >
-          <expression-editor
-            :label="i+1"
-            :placeholder="'flow-builder.edit-expression' | trans"
-            :valid-state="isValid"
-            :current-expression="exit.test"
-            :expression-identifier="exit.uuid"
-            @commitExpressionChange="editCaseBlockExit"
-          />
+        <validation-message :message-key="`block/${block.uuid}/exits/${i}/tag`">
+          <template #input-control="{ isValid }">
+            <expression-editor
+              :label="i+1"
+              :placeholder="'flow-builder.edit-expression' | trans"
+              :valid-state="isValid"
+              :current-expression="exit.test"
+              :expression-identifier="exit.uuid"
+              @commitExpressionChange="editCaseBlockExit"
+            />
+          </template>
         </validation-message>
       </div>
       <slot name="extras" />

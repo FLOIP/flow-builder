@@ -1,9 +1,11 @@
 <template>
   <validation-message
-    #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/set_contact_property/property_key`"
   >
-    <div class="block-contact-property form-group">
+    <template
+      #input-control="{ isValid }"
+      class="block-contact-property form-group"
+    >
       <label>{{ 'flow-builder.contact-property-label' | trans }}</label>
       <vue-multiselect
         v-model="selectedProperty"
@@ -16,7 +18,7 @@
         :show-labels="false"
         :searchable="true"
       />
-    </div>
+    </template>
   </validation-message>
 </template>
 
@@ -29,7 +31,7 @@ import Lang from '@/lib/filters/lang'
 import {find} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
-import {IContactPropertyOption} from '../../../store/flow/block-types/Core_SetContactPropertyStore'
+import {IContactPropertyOption} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 
 const flowVuexNamespace = namespace('flow')
 

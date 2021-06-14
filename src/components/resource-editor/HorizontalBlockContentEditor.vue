@@ -1,32 +1,9 @@
-<style lang="scss" scoped>
-  .block-content-editor {
-    transition: all 200ms ease-in-out;
-    background: #fff;
-    border-top: 1px solid #eee;
-    padding: 0.5em;
-    padding-top: 1em;
-
-    > .list-group > .list-group-item {
-      transition: all 200ms ease-in-out;
-
-      &:not(.list-group-item-success) {
-        background: #f6f6f6;
-      }
-    }
-
-    & &-reviewed {
-      text-align: center;
-      font-size: 3em;
-      cursor: pointer;
-    }
-  }
-</style>
-
 <template>
   <div class="block-content-editor">
     <div class="list-group">
       <div
-        v-for="langId in enabledLanguages"
+        v-for="(langId, i) in enabledLanguages"
+        :key="i"
         class="list-group-item"
         :class="{
           'list-group-item-success': block.customData.reviewed[langId],
@@ -103,10 +80,10 @@
 
 <script>
 import {lang} from '@/lib/filters/lang'
-import lodash from 'lodash'
+import {debounce, get} from 'lodash'
 import {mapGetters, mapState} from 'vuex'
 import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
-import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType'
+import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType.vue'
 
 export default {
 
@@ -132,7 +109,7 @@ export default {
   },
 
   methods: {
-    debouncedSaveTree: lodash.debounce(function () {
+    debouncedSaveTree: debounce(function () {
       this.$store.dispatch('attemptSaveTree')
     }, 500),
 
@@ -144,10 +121,34 @@ export default {
     },
 
     toggleReviewedStateFor(langId) {
-      const previousVal = !!lodash.get(this.block.customData.reviewed, langId, false)
+      const previousVal = !!get(this.block.customData.reviewed, langId, false)
       this.$store.commit('updateReviewedStateFor', {jsKey: this.block.jsKey, langId, value: !previousVal})
       this.debouncedSaveTree()
     },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.block-content-editor {
+  transition: all 200ms ease-in-out;
+  background: #fff;
+  border-top: 1px solid #eee;
+  padding: 0.5em;
+  padding-top: 1em;
+
+  > .list-group > .list-group-item {
+    transition: all 200ms ease-in-out;
+
+    &:not(.list-group-item-success) {
+      background: #f6f6f6;
+    }
+  }
+
+  & &-reviewed {
+    text-align: center;
+    font-size: 3em;
+    cursor: pointer;
+  }
+}
+</style>

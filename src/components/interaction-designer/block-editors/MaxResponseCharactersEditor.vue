@@ -1,11 +1,9 @@
 <template>
-  <validation-message
-    #input-control="{ isValid }"
-    :message-key="`block/${block.uuid}/config/text/max_response_characters`"
-  >
-    <div
+  <validation-message :message-key="`block/${block.uuid}/config/text/max_response_characters`">
+    <template
       v-if="hasText"
       :id="`${block.uuid}.config.text.maxResponseCharacters`"
+      #input-control="{ isValid }"
       class="form-group block-max-response-characters"
     >
       <numeric-editor
@@ -18,7 +16,7 @@
       <small class="text-muted">
         {{ 'flow-builder.unlimited-if-not-defined-or-set-as-zero' | trans }}
       </small>
-    </div>
+    </template>
   </validation-message>
 </template>
 

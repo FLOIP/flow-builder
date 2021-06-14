@@ -1,10 +1,8 @@
 <template>
-  <validation-message
-    #input-control="{ isValid }"
-    :message-key="`block/${block.uuid}/label`"
-  >
-    <div
+  <validation-message :message-key="`block/${block.uuid}/label`">
+    <template
       :id="`${block.uuid}.label`"
+      #input-control="{ isValid }"
       class="block-label"
     >
       <text-editor
@@ -13,7 +11,7 @@
         :placeholder="'flow-builder.enter-block-label' | trans"
         :valid-state="isValid"
       />
-    </div>
+    </template>
   </validation-message>
 </template>
 

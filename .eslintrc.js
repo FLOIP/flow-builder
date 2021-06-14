@@ -45,6 +45,10 @@ module.exports = {
   ],
 
   rules: {
+    // To be removed when all components are class based components
+    'vue/require-prop-types': 0,
+    'vue/require-default-prop': 0,
+
     /********************
      * Typescript rules *
      ********************/

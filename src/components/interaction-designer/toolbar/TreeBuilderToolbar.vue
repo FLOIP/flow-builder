@@ -361,9 +361,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       console.debug('Interaction Designer', 'Unable to find DOM element corresponding to builder-toolbar')
     }
 
-    forEach(elementRef.childNodes, function(child) {
-      height = height + (<HTMLElement> child).offsetHeight
-    })
+    forEach(elementRef.childNodes, (child) => height = height + (<HTMLElement> child).offsetHeight)
 
     if (height > 0) {
       this.height = height

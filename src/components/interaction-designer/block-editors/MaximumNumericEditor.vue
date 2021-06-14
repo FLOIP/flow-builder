@@ -1,10 +1,8 @@
 <template>
-  <validation-message
-    #input-control="{ isValid }"
-    :message-key="`block/${block.uuid}/config/validation_maximum`"
-  >
-    <div
+  <validation-message :message-key="`block/${block.uuid}/config/validation_maximum`">
+    <template
       :id="`${block.uuid}.config.validationMaximum`"
+      #input-control="{ isValid }"
       class="form-group block-validation-max"
     >
       <numeric-editor
@@ -14,7 +12,7 @@
         :placeholder="'flow-builder.enter-value' | trans"
         :valid-state="isValid"
       />
-    </div>
+    </template>
   </validation-message>
 </template>
 

@@ -1,10 +1,8 @@
 <template>
-  <validation-message
-    #input-control="{ isValid }"
-    :message-key="`block/${block.uuid}/config/accuracy_timeout_seconds`"
-  >
-    <div
+  <validation-message :message-key="`block/${block.uuid}/config/accuracy_timeout_seconds`">
+    <template
       :id="`${block.uuid}.config.accuracyTimeoutSeconds`"
+      #input-control="{ isValid }"
       class="form-group block-timeout"
     >
       <numeric-editor
@@ -14,7 +12,7 @@
         :placeholder="'flow-builder.enter-value' | trans"
         :valid-state="isValid"
       />
-    </div>
+    </template>
   </validation-message>
 </template>
 

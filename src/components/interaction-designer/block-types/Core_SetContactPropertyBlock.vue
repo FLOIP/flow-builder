@@ -10,17 +10,16 @@
       <block-semantic-label-editor :block="block" />
 
       <contact-property-selector :block="block" />
-      <validation-message
-        #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/set_contact_property/property_value`"
-      >
-        <expression-editor
-          :label="'flow-builder.contact-property-expression' | trans"
-          :placeholder="'flow-builder.edit-expression' | trans"
-          :current-expression="propertyValue"
-          :valid-state="isValid"
-          @commitExpressionChange="commitExpressionChange"
-        />
+      <validation-message :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
+        <template #input-control="{ isValid }">
+          <expression-editor
+            :label="'flow-builder.contact-property-expression' | trans"
+            :placeholder="'flow-builder.edit-expression' | trans"
+            :current-expression="propertyValue"
+            :valid-state="isValid"
+            @commitExpressionChange="commitExpressionChange"
+          />
+        </template>
       </validation-message>
 
       <slot name="extras" />

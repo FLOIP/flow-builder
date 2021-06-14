@@ -57,7 +57,6 @@
         v-model="description"
         type="text"
         class="form-control"
-        rows="2"
         :placeholder="'flow-builder.optional-description'|trans"
       >
 

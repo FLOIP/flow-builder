@@ -16,7 +16,7 @@
               @change="updateMappings(missingMatch, $event)"
             >
               <option
-                key="default"
+                :key="'default'"
                 value=""
                 :selected="mappingsEmpty"
               >

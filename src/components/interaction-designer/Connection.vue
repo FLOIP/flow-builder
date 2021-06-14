@@ -148,16 +148,16 @@ export default {
     this.line = new LeaderLine(start, end, this.options)
 
     // Add event listeners
-    const self = this
-    const connectionElement = document.querySelector('body>.leader-line:last-of-type') // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
+    // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
+    const connectionElement = document.querySelector('body>.leader-line:last-of-type')
 
-    connectionElement.addEventListener('click', self.clickHandler, false)
+    connectionElement.addEventListener('click', this.clickHandler, false)
 
-    connectionElement.addEventListener('click', self.clickAwayHandler(connectionElement), false)
+    connectionElement.addEventListener('click', this.clickAwayHandler(connectionElement), false)
 
-    connectionElement.addEventListener('mouseover', self.mouseOverHandler, false)
+    connectionElement.addEventListener('mouseover', this.mouseOverHandler, false)
 
-    connectionElement.addEventListener('mouseout', self.mouseOutHandler, false)
+    connectionElement.addEventListener('mouseout', this.mouseOutHandler, false)
 
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false

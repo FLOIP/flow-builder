@@ -1,10 +1,8 @@
 <template>
-  <validation-message
-    #input-control="{ isValid }"
-    :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`"
-  >
-    <div
+  <validation-message :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`">
+    <template
       :id="`${block.uuid}.config.accuracyThresholdMeters`"
+      #input-control="{ isValid }"
       class="form-group block-threshold"
     >
       <float-editor
@@ -15,7 +13,7 @@
         :placeholder="'flow-builder.enter-value' | trans"
         :valid-state="isValid"
       />
-    </div>
+    </template>
   </validation-message>
 </template>
 

@@ -12,35 +12,31 @@
         <hr>
 
         <h4>Log Message</h4>
-        <template>
-          <div
-            v-for="{id: languageId, label: language} in flow.languages"
-            :key="languageId"
-          >
-            <div class="block-content-editor-lang">
-              <h5 class="badge badge-info">
-                {{ language || 'flow-builder.unknown-language' | trans }}
-              </h5>
-            </div>
-
-            <template>
-              <div
-                v-for="(mode, i) in flow.supported_modes"
-                :key="i"
-              >
-                <h6>{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
-                <resource-variant-text-editor
-                  :resource-id="messageResource.uuid"
-                  :resource-variant="findOrGenerateStubbedVariantOn(
-                    messageResource,
-                    {language_id: languageId, content_type: ['text'], modes: [mode]})"
-                  :mode="mode"
-                  :enable-autogen-button="true || enableAutogenButton"
-                />
-              </div>
-            </template>
+        <div
+          v-for="{id: languageId, label: language} in flow.languages"
+          :key="languageId"
+        >
+          <div class="block-content-editor-lang">
+            <h5 class="badge badge-info">
+              {{ language || 'flow-builder.unknown-language' | trans }}
+            </h5>
           </div>
-        </template>
+
+          <div
+            v-for="(mode, i) in flow.supported_modes"
+            :key="i"
+          >
+            <h6>{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
+            <resource-variant-text-editor
+              :resource-id="messageResource.uuid"
+              :resource-variant="findOrGenerateStubbedVariantOn(
+                messageResource,
+                {language_id: languageId, content_type: ['text'], modes: [mode]})"
+              :mode="mode"
+              :enable-autogen-button="true || enableAutogenButton"
+            />
+          </div>
+        </div>
       </div>
       <slot name="extras" />
       <first-block-editor-button

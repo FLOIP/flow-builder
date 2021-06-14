@@ -8,11 +8,11 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <validation-message
-        #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/flow_id`"
-      >
-        <div class="form-group">
+      <validation-message :message-key="`block/${block.uuid}/config/flow_id`">
+        <template
+          #input-control="{ isValid }"
+          class="form-group"
+        >
           <label>{{ 'flow-builder.destination-flow' | trans }}</label>
           <select
             v-model="destinationFlowId"
@@ -30,7 +30,7 @@
               {{ flow.name }}
             </option>
           </select>
-        </div>
+        </template>
       </validation-message>
 
       <slot name="extras" />

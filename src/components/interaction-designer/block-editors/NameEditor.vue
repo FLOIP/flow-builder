@@ -1,10 +1,8 @@
 <template>
-  <validation-message
-    #input-control="{ isValid }"
-    :message-key="`block/${block.uuid}/name`"
-  >
-    <div
+  <validation-message :message-key="`block/${block.uuid}/name`">
+    <template
       :id="`${block.uuid}.name`"
+      #input-control="{ isValid }"
       class="block-name"
     >
       <text-editor
@@ -18,7 +16,7 @@
           {{ 'flow-builder.only-accepts-word-characters' | trans }}
         </small>
       </text-editor>
-    </div>
+    </template>
   </validation-message>
 </template>
 

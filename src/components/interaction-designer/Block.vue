@@ -369,7 +369,8 @@ export default {
     },
 
     updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
-      const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`) // one exit
+      // one exit
+      const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`)
 
       if (!blockExitElement) {
         console.debug('blockExitWidth', 'DOM not ready yet on', `#block\\/${this.block.uuid} .block-exit`)
@@ -384,12 +385,9 @@ export default {
           this.labelContainerMaxWidth = (blockExitsLength - 1) * blockExitElement.offsetWidth
           return
         }
-      } else {
-        // Adding new exit
-        if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) {
-          this.labelContainerMaxWidth = blockExitsLength * blockExitElement.offsetWidth
-          return
-        }
+      } else if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) {
+        this.labelContainerMaxWidth = blockExitsLength * blockExitElement.offsetWidth
+        return
       }
 
       this.labelContainerMaxWidth = LABEL_CONTAINER_MAX_WIDTH
@@ -580,17 +578,15 @@ export default {
 
     handleDraggableEndedForBlock() {
       console.debug('Block', 'handleDraggableEndedForBlock')
-      const self = this
       forEach(this.block.exits, (exit) => {
-        delete self.draggableForExitsByUuid[exit.uuid]
+        delete this.draggableForExitsByUuid[exit.uuid]
       })
     },
 
     handleDraggableDestroyedForBlock() {
       console.debug('Block', 'handleDraggableDestroyedForBlock')
-      const self = this
       forEach(this.block.exits, (exit) => {
-        delete self.draggableForExitsByUuid[exit.uuid]
+        delete this.draggableForExitsByUuid[exit.uuid]
       })
     },
   },
@@ -668,7 +664,7 @@ export default {
     .block-exits {
       white-space: nowrap;
       position: relative;
-      top: 0em;
+      top: 0;
       margin-top: 0.25em;
 
       .block-exit {

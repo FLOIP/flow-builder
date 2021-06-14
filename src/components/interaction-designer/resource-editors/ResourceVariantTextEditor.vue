@@ -191,7 +191,7 @@ export default {
     },
 
     doesContentContainExpressionError() {
-      return !!(this.contentExpressionAST instanceof Error)
+      return (this.contentExpressionAST instanceof Error)
     },
 
     characterCounter() {

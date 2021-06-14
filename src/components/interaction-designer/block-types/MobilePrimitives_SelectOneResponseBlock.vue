@@ -38,26 +38,24 @@
       </div>
       <div class="form-group">
         <!--Show non empty choices-->
-        <template>
-          <div
-            v-for="(choiceKey, i) in Object.keys(inflatedChoices)"
-            :key="i"
-          >
-            <hr>
-            <h4>{{ `Choice ${choiceKey}` }}</h4>
-            <block-exit-semantic-label-editor
-              v-if="inflatedChoices[choiceKey].exit"
-              :exit="inflatedChoices[choiceKey].exit"
-              :block="block"
-            />
+        <div
+          v-for="(choiceKey, i) in Object.keys(inflatedChoices)"
+          :key="i"
+        >
+          <hr>
+          <h4>{{ `Choice ${choiceKey}` }}</h4>
+          <block-exit-semantic-label-editor
+            v-if="inflatedChoices[choiceKey].exit"
+            :exit="inflatedChoices[choiceKey].exit"
+            :block="block"
+          />
 
-            <resource-editor
-              :resource="inflatedChoices[choiceKey].resource"
-              :block="block"
-              :flow="flow"
-            />
-          </div>
-        </template>
+          <resource-editor
+            :resource="inflatedChoices[choiceKey].resource"
+            :block="block"
+            :flow="flow"
+          />
+        </div>
         <!--Show empty choice-->
         <hr>
         <h4>{{ `Choice ${Object.keys(inflatedChoices).length + 1}` }}</h4>

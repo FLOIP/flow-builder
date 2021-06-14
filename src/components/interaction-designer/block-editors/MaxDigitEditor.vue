@@ -1,11 +1,9 @@
 <template>
-  <validation-message
-    #input-control="{ isValid }"
-    :message-key="`block/${block.uuid}/config/ivr/max_digits`"
-  >
-    <div
+  <validation-message :message-key="`block/${block.uuid}/config/ivr/max_digits`">
+    <template
       v-if="hasIvr"
       :id="`${block.uuid}.config.ivr.maxDigits`"
+      #input-control="{ isValid }"
       class="form-group block-max-digits"
     >
       <numeric-editor
@@ -15,7 +13,7 @@
         :placeholder="'flow-builder.enter-value' | trans"
         :valid-state="isValid"
       />
-    </div>
+    </template>
   </validation-message>
 </template>
 

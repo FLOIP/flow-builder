@@ -9,17 +9,16 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <validation-message
-        #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/value`"
-      >
-        <expression-editor
-          :label="'flow-builder.output-expression' | trans"
-          :placeholder="'flow-builder.edit-expression' | trans"
-          :current-expression="value"
-          :valid-state="isValid === false"
-          @commitExpressionChange="commitExpressionChange"
-        />
+      <validation-message :message-key="`block/${block.uuid}/config/value`">
+        <template #input-control="{ isValid }">
+          <expression-editor
+            :label="'flow-builder.output-expression' | trans"
+            :placeholder="'flow-builder.edit-expression' | trans"
+            :current-expression="value"
+            :valid-state="isValid === false"
+            @commitExpressionChange="commitExpressionChange"
+          />
+        </template>
       </validation-message>
 
       <slot name="extras" />

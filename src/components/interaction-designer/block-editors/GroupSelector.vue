@@ -1,9 +1,9 @@
 <template>
-  <validation-message
-    #input-control="{ isValid }"
-    :message-key="`block/${block.uuid}/config/group_key`"
-  >
-    <div class="block-group form-group">
+  <validation-message :message-key="`block/${block.uuid}/config/group_key`">
+    <template
+      #input-control="{ isValid }"
+      class="block-group form-group"
+    >
       <label>{{ 'flow-builder.group-label' | trans }}</label>
       <vue-multiselect
         v-model="selectedGroup"
@@ -16,7 +16,7 @@
         :show-labels="false"
         :searchable="true"
       />
-    </div>
+    </template>
   </validation-message>
 </template>
 
@@ -29,8 +29,7 @@ import Lang from '@/lib/filters/lang'
 import {find} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
-
-import {IGroupOption} from '../../../store/flow/block-types/Core_SetGroupMembershipStore'
+import {IGroupOption} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 
 const flowVuexNamespace = namespace('flow')
 

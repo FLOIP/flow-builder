@@ -1,15 +1,3 @@
-<style lang="scss" scoped>
-  .batch-match-audio-files-prompt {
-    > p, > ul {
-      margin-bottom: 10px;
-    }
-
-    table {
-      background: white;
-    }
-  }
-</style>
-
 <template>
   <form class="batch-match-audio-files-prompt alert alert-info form-horizontal">
     <h4>{{ 'flow-builder.auto-link-audio-files' | trans }}</h4>
@@ -28,7 +16,8 @@
     >
       <strong><i class="glyphicon glyphicon-exclamation-sign" /> {{ 'flow-builder.empty-audio-library' | trans }}</strong>
       {{ 'flow-builder.we-need-audio-files-previously-uploaded-to-audio-lib-to-match-to-blocks' | trans }}
-      {{ 'flow-builder.upload-audio-files-to-X' | trans }} <a href="/audiofiles/new/multi">{{ 'flow-builder.your-orgs-audio-library' | trans }}</a>.
+      {{ 'flow-builder.upload-audio-files-to-X' | trans }}
+      <a href="/audiofiles/new/multi">{{ 'flow-builder.your-orgs-audio-library' | trans }}</a>.
     </p>
 
     <fieldset :disabled="disabled">
@@ -127,7 +116,8 @@
       </table>
 
       <p>
-        [label] {{ 'flow-builder.and' | trans }} [language] {{ 'flow-builder.X-are-required-placeholder-components-for-rule-but-additional-designation-optional' | trans({placeholders: ''}) }}
+        [label] {{ 'flow-builder.and' | trans }} [language]
+        {{ 'flow-builder.X-are-required-placeholder-components-for-rule-but-additional-designation-optional' | trans({placeholders: ''}) }}
         {{ 'flow-builder.order-of-components-dont-matter-but-must-be-adjacent-one-another' | trans }}
         {{ 'flow-builder.components-can-be-separated-by-symbols-but-not-required' | trans }}
         {{ 'flow-builder.if-symbols-are-used-then-reflect-in-filename' | trans }}
@@ -219,3 +209,15 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.batch-match-audio-files-prompt {
+  > p, > ul {
+    margin-bottom: 10px;
+  }
+
+  table {
+    background: white;
+  }
+}
+</style>

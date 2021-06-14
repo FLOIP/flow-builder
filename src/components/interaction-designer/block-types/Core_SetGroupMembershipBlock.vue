@@ -9,11 +9,11 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <validation-message
-        #input-control="{ isValid: isValid }"
-        :message-key="`block/${block.uuid}/config/is_member`"
-      >
-        <div class="form-group">
+      <validation-message :message-key="`block/${block.uuid}/config/is_member`">
+        <template
+          #input-control="{ isValid: isValid }"
+          class="form-group"
+        >
           <label>{{ 'flow-builder.action-label' | trans }}</label>
           <vue-multiselect
             v-model="selectedAction"
@@ -26,7 +26,7 @@
             :show-labels="false"
             :searchable="false"
           />
-        </div>
+        </template>
       </validation-message>
 
       <group-selector :block="block" />

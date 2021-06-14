@@ -6,94 +6,111 @@
       {{ label }}
     </h4>
 
-    <template v-for="{id: languageId, label: language} in flow.languages">
-      <div class="block-content-editor-lang">
-        <h5 class="badge badge-info">
-          {{ language || 'flow-builder.unknown-language' | trans }}
-        </h5>
-      </div>
+    <template>
+      <div
+        v-for="{id: languageId, label: language} in flow.languages"
+        :key="languageId"
+      >
+        <div class="block-content-editor-lang">
+          <h5 class="badge badge-info">
+            {{ language || 'flow-builder.unknown-language' | trans }}
+          </h5>
+        </div>
 
-      <template v-for="mode in flow.supported_modes">
-        <h6>{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
-
-        <template v-for="contentType in discoverContentTypesFor(mode)">
-          <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
-
-          <resource-variant-text-editor
-            v-if="contentType === SupportedContentType.TEXT"
-            :id="`${block.uuid}.config.prompt.${language}.${mode}`"
-            :resource-id="resource.uuid"
-
-            :resource-variant="findOrGenerateStubbedVariantOn(
-              resource,
-              {language_id: languageId, content_type: contentType, modes: [mode]})"
-            :mode="mode"
-            :enable-autogen-button="true || enableAutogenButton"
-          />
-
+        <template>
           <div
-            v-if="contentType === SupportedContentType.AUDIO"
-            :id="`${block.uuid}.config.prompt.${language}.${mode}`"
+            v-for="(mode, i) in flow.supported_modes"
+            :key="i"
           >
-            <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
-              <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
+            <h6>{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
 
-              <ul class="nav nav-tabs">
-                <li class="nav-item">
-                  <a
-                    class="nav-link px-2 py-1 active"
-                    href="#"
-                    @click.prevent=""
-                  >{{ 'flow-builder.library' | trans }}</a>
-                </li>
-                <li
-                  v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
-                  class="nav-item"
-                >
-                  <a
-                    href="#"
-                    class="nav-link px-2 py-1"
-                    @click.prevent="triggerRecordViaPhoneFor(languageId)"
-                  >{{ 'flow-builder.phone-recording' | trans }}</a>
-                </li>
+            <template>
+              <div
+                v-for="(contentType, j) in discoverContentTypesFor(mode)"
+                :key="j"
+              >
+                <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
 
-                <li
-                  v-if="isEditable"
-                  class="nav-item"
+                <resource-variant-text-editor
+                  v-if="contentType === SupportedContentType.TEXT"
+                  :id="`${block.uuid}.config.prompt.${language}.${mode}`"
+                  :resource-id="resource.uuid"
+
+                  :resource-variant="findOrGenerateStubbedVariantOn(
+                    resource,
+                    {language_id: languageId, content_type: contentType, modes: [mode]})"
+                  :mode="mode"
+                  :enable-autogen-button="true || enableAutogenButton"
+                />
+
+                <div
+                  v-if="contentType === SupportedContentType.AUDIO"
+                  :id="`${block.uuid}.config.prompt.${language}.${mode}`"
                 >
-                  <a
-                    v-if="isFeatureAudioUploadEnabled"
-                    v-flow-uploader="{
-                      target: route('trees.resumeableAudioUpload'),
-                      token: `${block.uuid}${languageId}`,
-                      accept: 'audio/*'}"
-                    class="nav-link px-2 py-1"
-                    href="#"
-                    @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
-                    @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
+                  <template
+                    v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})"
                   >
-                    {{ 'flow-builder.upload' | trans }}
-                  </a>
-                </li>
-              </ul>
+                    <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
+
+                    <ul class="nav nav-tabs">
+                      <li class="nav-item">
+                        <a
+                          class="nav-link px-2 py-1 active"
+                          href="#"
+                          @click.prevent=""
+                        >{{ 'flow-builder.library' | trans }}</a>
+                      </li>
+                      <li
+                        v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
+                        class="nav-item"
+                      >
+                        <a
+                          href="#"
+                          class="nav-link px-2 py-1"
+                          @click.prevent="triggerRecordViaPhoneFor(languageId)"
+                        >{{ 'flow-builder.phone-recording' | trans }}</a>
+                      </li>
+
+                      <li
+                        v-if="isEditable"
+                        class="nav-item"
+                      >
+                        <a
+                          v-if="isFeatureAudioUploadEnabled"
+                          v-flow-uploader="{
+                            target: route('trees.resumeableAudioUpload'),
+                            token: `${block.uuid}${languageId}`,
+                            accept: 'audio/*'}"
+                          class="nav-link px-2 py-1"
+                          href="#"
+                          @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
+                          @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
+                        >
+                          {{ 'flow-builder.upload' | trans }}
+                        </a>
+                      </li>
+                    </ul>
+                  </template>
+
+                  <audio-library-selector
+                    :audio-files="availableAudio"
+                    :lang-id="languageId"
+                    :resource-id="resource.uuid"
+                    :selected-audio-file="findOrGenerateStubbedVariantOn(
+                      resource,
+                      {language_id: languageId, content_type: contentType, modes: [mode]}).value"
+                  />
+
+                  <phone-recorder
+                    v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [mode]}).value"
+                    :recording-key="`${block.uuid}:${languageId}`"
+                  />
+                </div>
+              </div>
             </template>
-
-            <audio-library-selector
-              :audio-files="availableAudio"
-              :lang-id="languageId"
-              :resource-id="resource.uuid"
-              :selected-audio-file="findOrGenerateStubbedVariantOn(
-                resource,
-                {language_id: languageId, content_type: contentType, modes: [mode]}).value"
-            />
-
-            <phone-recorder
-              v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [mode]}).value"
-              :recording-key="`${block.uuid}:${languageId}`"
-            />
           </div>
         </template>
-      </template>
+      </div>
     </template>
   </div>
 </template>
@@ -208,7 +225,8 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
         filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
         value: description,
       })
-      event.target.blur() // remove the focus from the `upload` Tab
+      // remove the focus from the `upload` Tab
+      event.target.blur()
       this.pushAudioIntoLibrary(uploadedAudio)
     }
 
@@ -230,7 +248,8 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 
     @Mutation pushAudioIntoLibrary!: (audio: IAudioFile) => void
 
-    @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!: ({resourceId, filter, value}: { resourceId: IResource['uuid']; filter: IResourceDefinitionVariantOverModesWithOptionalValue; value: string }) => void
+    @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!:
+      ({resourceId, filter, value}: { resourceId: IResource['uuid']; filter: IResourceDefinitionVariantOverModesWithOptionalValue; value: string }) => void
 
     @builderVuexNamespace.Getter isEditable !: boolean
 }

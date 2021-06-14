@@ -20,18 +20,17 @@
         :key="i"
         class="form-group form-inline"
       >
-        <validation-message
-          #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/config/destination_variables/${i}`"
-        >
-          <text-editor
-            :label="i+1"
-            :placeholder="'flow-builder.edit-variable' | trans"
-            :valid-state="isValid"
-            value=""
-            @keydown="filterVariableName"
-            @input="updatedestinationVariables($event, i)"
-          />
+        <validation-message :message-key="`block/${block.uuid}/config/destination_variables/${i}`">
+          <template #input-control="{ isValid }">
+            <text-editor
+              :label="i+1"
+              :placeholder="'flow-builder.edit-variable' | trans"
+              :valid-state="isValid"
+              value=""
+              @keydown="filterVariableName"
+              @input="updatedestinationVariables($event, i)"
+            />
+          </template>
         </validation-message>
       </div>
 
