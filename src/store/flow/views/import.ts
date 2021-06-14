@@ -33,27 +33,13 @@ import {
 } from '../utils/importHelpers'
 
 export const getters: GetterTree<IImportState, IRootState> = {
-  languagesMissing: (state) => {
-    return !isEmpty(state.missingLanguages)
-  },
-  propertiesMissing: (state) => {
-    return !isEmpty(state.missingProperties)
-  },
-  groupsMissing: (state) => {
-    return !isEmpty(state.missingGroups)
-  },
-  hasUnsupportedBlockClasses: (state, getters) => {
-    return !isEmpty(getters.unsupportedBlockClasses)
-  },
-  unsupportedBlockClasses: (state, getters, rootState, rootGetters) => {
-    return difference(getters.uploadedBlockTypes, rootGetters.blockClasses)
-  },
-  unsupportedBlockClassesList: (state, getters) => {
-    return join(getters.unsupportedBlockClasses, ', ')
-  },
-  uploadedBlockTypes: (state) => {
-    return uniq(get(state.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type))
-  }
+  languagesMissing: (state) => !isEmpty(state.missingLanguages),
+  propertiesMissing: (state) => !isEmpty(state.missingProperties),
+  groupsMissing: (state) => !isEmpty(state.missingGroups),
+  hasUnsupportedBlockClasses: (state, getters) => !isEmpty(getters.unsupportedBlockClasses),
+  unsupportedBlockClasses: (state, getters, rootState, rootGetters) => difference(getters.uploadedBlockTypes, rootGetters.blockClasses),
+  unsupportedBlockClassesList: (state, getters) => join(getters.unsupportedBlockClasses, ', '),
+  uploadedBlockTypes: (state) => uniq(get(state.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type)),
 }
 
 export const mutations: MutationTree<IImportState> = {
@@ -128,7 +114,7 @@ export const mutations: MutationTree<IImportState> = {
       set(state.flowContainer, 'flows[0].blocks', blocks)
     }
   },
-  setFlowErrorWithInterpolations(state, {text, interpolations}) {
+  setFlowErrorWithInterpolations(state, { text, interpolations }) {
     state.flowError = text
     state.flowErrorInterpolations = interpolations
   },
@@ -188,8 +174,8 @@ export const actions: ActionTree<IImportState, IRootState> = {
       return
     }
     const validationErrors = await dispatch('validation/validate_flowContainer', { flowContainer }, { root: true })
-    if (!validationErrors['isValid']) {
-      commit('setFlowErrorWithInterpolations', {text: 'flow-builder.flow-invalid', interpolations: {version: flowContainer.specification_version}})
+    if (!validationErrors.isValid) {
+      commit('setFlowErrorWithInterpolations', { text: 'flow-builder.flow-invalid', interpolations: { version: flowContainer.specification_version } })
       return
     }
 
@@ -345,24 +331,24 @@ export const actions: ActionTree<IImportState, IRootState> = {
 }
 
 export interface IImportState {
-  matchingLanguages: ILanguage[]
-  missingLanguages: ILanguage[]
-  existingLanguagesWithoutMatch: ILanguage[]
-  blocksMissingProperties: {[key: string]: string[]}
-  missingProperties: {name: string; blockIds: string[]}[]
-  matchingProperties: IContactPropertyOption[]
-  existingPropertiesWithoutMatch: IContactPropertyOption[]
-  blocksMissingGroups: {[key: string]: {group_name: string; blockIds: string[]}}
-  missingGroups: {id: string; group_name: string; blockIds: string[]}[]
-  matchingGroups: IGroupOption[]
-  existingGroupsWithoutMatch: IGroupOption[]
-  flowContainer: IContext | null
-  flowJsonText: string
-  flowError: string
-  flowErrorInterpolations: null | object
-  propertyBlocks: IBlock[]
-  groupBlocks: IBlock[]
-  updating: boolean
+  matchingLanguages: ILanguage[];
+  missingLanguages: ILanguage[];
+  existingLanguagesWithoutMatch: ILanguage[];
+  blocksMissingProperties: {[key: string]: string[]};
+  missingProperties: {name: string; blockIds: string[]}[];
+  matchingProperties: IContactPropertyOption[];
+  existingPropertiesWithoutMatch: IContactPropertyOption[];
+  blocksMissingGroups: {[key: string]: {group_name: string; blockIds: string[]}};
+  missingGroups: {id: string; group_name: string; blockIds: string[]}[];
+  matchingGroups: IGroupOption[];
+  existingGroupsWithoutMatch: IGroupOption[];
+  flowContainer: IContext | null;
+  flowJsonText: string;
+  flowError: string;
+  flowErrorInterpolations: null | object;
+  propertyBlocks: IBlock[];
+  groupBlocks: IBlock[];
+  updating: boolean;
 }
 
 export const stateFactory = (): IImportState => ({

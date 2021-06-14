@@ -10,17 +10,17 @@ import { JSONSchema7 } from 'json-schema'
 import { IBlock, IFlow, IContainer } from '@floip/flow-runner'
 import { isEmpty, get, forIn } from 'lodash'
 
-const ajv = new Ajv({ allErrors:true })
+const ajv = new Ajv({ allErrors: true })
 
 // we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
 ajvFormat(ajv)
 
 const DEV_ERROR_KEYWORDS = [
   'additionalProperties', // unwanted extra props
-  'required' // missing props
+  'required', // missing props
 ]
 
-let validators = new Map<string, ValidateFunction>() //AJV validators, keys are types
+const validators = new Map<string, ValidateFunction>() // AJV validators, keys are types
 
 export interface IIndexedString { [key: string]: string }
 
@@ -30,11 +30,11 @@ export interface IValidationStatus {
 }
 
 export interface IValidationState {
-  validationStatuses: { [key: string]: IValidationStatus }; //important context for future debug or testing, keys are index like `flow/flowId
+  validationStatuses: { [key: string]: IValidationStatus }; // important context for future debug or testing, keys are index like `flow/flowId
 }
 
 export const stateFactory = (): IValidationState => ({
-  validationStatuses: {} as { [key:string]: IValidationStatus },
+  validationStatuses: {} as { [key: string]: IValidationStatus },
 })
 
 export const getters: GetterTree<IValidationState, IRootState> = {
@@ -54,16 +54,16 @@ export const getters: GetterTree<IValidationState, IRootState> = {
    * Note that indexedErrors has more elements than validationStatuses.
    */
   flattenErrorMessages(state): IIndexedString {
-    let accumulator: IIndexedString = {}
-    forIn(state.validationStatuses, function (validationStatus: IValidationStatus, index: string) {
+    const accumulator: IIndexedString = {}
+    forIn(state.validationStatuses, (validationStatus: IValidationStatus, index: string) => {
       flatValidationStatuses({
         keyPrefix: index,
         errors: validationStatus.ajvErrors,
-        accumulator
+        accumulator,
       })
     })
     return accumulator
-  }
+  },
 }
 
 export const mutations: MutationTree<IValidationState> = {
@@ -71,7 +71,7 @@ export const mutations: MutationTree<IValidationState> = {
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
-  async validate_block({ state, commit }, { block } : { block: IBlock }): Promise<IValidationStatus> {
+  async validate_block({ state, commit }, { block }: { block: IBlock }): Promise<IValidationStatus> {
     const { uuid: blockId, type: blockType } = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
@@ -86,7 +86,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     return state.validationStatuses[index]
   },
 
-  async validate_flow({ state, commit }, { flow } : { flow: IFlow }): Promise<IValidationStatus> {
+  async validate_flow({ state, commit }, { flow }: { flow: IFlow }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator()
     const index = `flow/${flow.uuid}`
     Vue.set(state.validationStatuses, index, {
@@ -94,11 +94,11 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       ajvErrors: validate.errors,
     })
 
-    debugValidationStatus(state.validationStatuses[index], `flow validation status`)
+    debugValidationStatus(state.validationStatuses[index], 'flow validation status')
     return state.validationStatuses[index]
   },
 
-  async validate_flowContainer({ state, commit }, { flowContainer } : { flowContainer: IContainer }): Promise<IValidationStatus> {
+  async validate_flowContainer({ state, commit }, { flowContainer }: { flowContainer: IContainer }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowContainerValidator()
     const index = `flowContainer/${flowContainer.uuid}`
     Vue.set(state.validationStatuses, index, {
@@ -106,9 +106,9 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       ajvErrors: validate.errors,
     })
 
-    debugValidationStatus(state.validationStatuses[index], `flow container validation status`)
+    debugValidationStatus(state.validationStatuses[index], 'flow container validation status')
     return state.validationStatuses[index]
-  }
+  },
 }
 
 export const store: Module<IValidationState, IRootState> = {
@@ -156,20 +156,19 @@ function getOrCreateFlowContainerValidator(): ValidateFunction {
  * @param jsonSchema
  * @param subSchema, Specify it if we want to pick a sub definition eg: pick `#/definitions/IFlow` under IContainer
  */
-export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchema7, subSchema: string = ''): ValidateFunction {
+export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchema7, subSchema = ''): ValidateFunction {
   if (subSchema === '') {
     return ajv.compile(jsonSchema)
-  } else {
-    let validate = ajv.getSchema(subSchema)
-    if(!validate) {
-      ajv.addSchema(jsonSchema)
-      validate = ajv.getSchema(subSchema)
-    }
-    if (!validate) {
-      throw new Error(`Cannot find definition ${subSchema} in schema ${jsonSchema}`)
-    }
-    return validate as ValidateFunction
   }
+  let validate = ajv.getSchema(subSchema)
+  if (!validate) {
+    ajv.addSchema(jsonSchema)
+    validate = ajv.getSchema(subSchema)
+  }
+  if (!validate) {
+    throw new Error(`Cannot find definition ${subSchema} in schema ${jsonSchema}`)
+  }
+  return validate as ValidateFunction
 }
 
 function debugValidationStatus(status: IValidationStatus, customMessage: string) {
@@ -178,18 +177,19 @@ function debugValidationStatus(status: IValidationStatus, customMessage: string)
       'store/validation:',
       customMessage,
       ' | isValid:', status.isValid,
-      ' | error dataPaths:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'dataPath', 'undefined')).join(';') : 'undefined'}`,
-      ' | error messages:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map(item => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
-      ' | error details:', status
+      ' | error dataPaths:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map((item) => get(item, 'dataPath', 'undefined')).join(';') : 'undefined'}`,
+      ' | error messages:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map((item) => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
+      ' | error details:', status,
     )
   } else {
-    console.debug('store/validation:','the status in debugValidationStatus was undefined')
+    console.debug('store/validation:', 'the status in debugValidationStatus was undefined')
   }
 }
 
-function flatValidationStatuses({ keyPrefix, errors, accumulator }: { keyPrefix: string, errors: undefined | null | Array<ErrorObject>, accumulator: IIndexedString }) {
+function flatValidationStatuses({ keyPrefix, errors, accumulator }: { keyPrefix: string; errors: undefined | null | Array<ErrorObject>; accumulator: IIndexedString }) {
   errors?.forEach((error, key) => {
-    let index = '', message = ''
+    let index = ''; let
+      message = ''
     if (DEV_ERROR_KEYWORDS.includes(error.keyword)) {
       // this is more likely a dev issue than user error
       // error.dataPath could be empty or not for such errors
