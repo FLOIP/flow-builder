@@ -24,7 +24,8 @@ import {
   cloneDeep,
   get,
   has,
-  omit
+  omit,
+  filter
 } from 'lodash'
 import { discoverContentTypesFor } from '@/store/flow/resource'
 import { computeBlockUiData } from '@/store/builder'
@@ -58,6 +59,11 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   },
   hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supported_modes || [], mode)),
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
+  selectedBlocks: (state, getters) => {
+    return filter(getters.activeFlow.blocks, (block) => {
+      return includes(state.selectedBlockUuids, block.uuid)
+    })
+  }
 }
 
 export const mutations: MutationTree<IFlowsState> = {

@@ -1,5 +1,5 @@
 import {
-  flatMap, isEqual, keyBy, map, mapValues, get, filter, union, includes,
+  flatMap, isEqual, keyBy, map, mapValues, get, filter, union, includes, clone, forEach
 } from 'lodash'
 import Vue from 'vue'
 import {
@@ -57,8 +57,8 @@ export interface IBuilderState {
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation;
     [OperationKind.BLOCK_RELOCATE]: null;
   };
-  draggableForExitsByUuid: object;
-  draggableForBlocksByUuid: object;
+  draggableForExitsByUuid: {[key: string]: object};
+  draggableForBlocksByUuid: {[key: string]: object};
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -121,25 +121,70 @@ export const mutations: MutationTree<IBuilderState> = {
 
   initDraggableForExitsByUuid(state) {
     state.draggableForExitsByUuid = {}
+  },
+
+  updateBlockDraggablePosition(state, { uuid, position }: { uuid: IBlock['uuid'], position: IPosition }) {
+    Object.assign(state.draggableForBlocksByUuid[uuid], { left: position.x, top: position.y })
   }
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
-  setBlockPositionTo({ rootState }, { position: { x, y }, block }) {
+  setBlockPositionTo({ state, commit, dispatch, rootState, rootGetters }, { position: { x, y }, block }) {
     // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder // uiData props
     // if (!block.vendor_metadata.io_viamo.uiData) {
     //   defaultsDeep(block, {vendor_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
     //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
     // }
 
-    // UI Position
+    // Store UI Position
+    const initialPosition = {
+      x: clone(block.vendor_metadata.io_viamo.uiData.xPosition),
+      y: clone(block.vendor_metadata.io_viamo.uiData.yPosition),
+    } as IPosition
     block.vendor_metadata.io_viamo.uiData.xPosition = x
     block.vendor_metadata.io_viamo.uiData.yPosition = y
 
-    // If block is selected, then update other selected blocks
+    // If the block is selected, then translate other selected blocks
     if (includes(rootState.flow.selectedBlockUuids, block.uuid)) {
-      // TODO: implement vmo-3944 here
+      const translationDelta: IPosition = {
+        x: x - initialPosition.x,
+        y: y - initialPosition.y
+      }
+
+      const otherSelectedBlocks = filter(rootGetters['flow/selectedBlocks'], currentBlock => currentBlock.uuid !== block.uuid)
+
+      forEach(otherSelectedBlocks, async (currentBlock: IBlock) => {
+        let newPosition = {} as IPosition
+        await dispatch('setBlockPositionFromDelta', { delta: translationDelta, block: currentBlock }).then(
+          response => {
+            newPosition = response
+          }
+        )
+
+        commit('updateBlockDraggablePosition', { uuid: currentBlock.uuid, position: newPosition })
+      })
     }
+  },
+
+  setBlockPositionFromDelta({ dispatch }, { delta: { x, y }, block }) {
+    const { vendor_metadata: {
+      io_viamo: {
+        uiData: {
+          xPosition: initialXPosition,
+          yPosition: initialYPosition
+        }
+      }
+    }} = block
+
+    const newPosition = {
+      x: initialXPosition + x,
+      y: initialYPosition + y
+    }
+
+    block.vendor_metadata.io_viamo.uiData.xPosition = newPosition.x
+    block.vendor_metadata.io_viamo.uiData.yPosition = newPosition.y
+
+    return newPosition
   },
 
   removeConnectionFrom({ commit }, { block: { uuid: blockId }, exit: { uuid: exitId } }) {
