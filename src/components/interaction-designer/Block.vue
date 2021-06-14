@@ -246,7 +246,7 @@ export default {
   computed: {
     ...mapState('flow', [
       'resources',
-      'selectedBlocks',
+      'selectedBlockUuids',
     ]),
     ...mapState('builder',
       ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid']
@@ -271,7 +271,7 @@ export default {
     },
 
     isBlockSelected() {
-      return includes(this.selectedBlocks, this.block.uuid)
+      return includes(this.selectedBlockUuids, this.block.uuid)
     },
 
     // todo: does this component know too much, what out of the above mapped state can be mapped?

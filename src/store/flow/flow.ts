@@ -345,26 +345,26 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_clearMultiSelection({ state, dispatch }) {
-    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
+    forEach(state.selectedBlockUuids, (blockId: IBlock['uuid']) => {
       dispatch('block_deselect', { blockId })
     })
   },
 
   async flow_removeAllSelectedBlocks({ state, dispatch }) {
-    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
+    forEach(state.selectedBlockUuids, (blockId: IBlock['uuid']) => {
       dispatch('flow_removeBlock', { blockId })
     })
 
-    state.selectedBlocks = []
+    state.selectedBlockUuids = []
   },
 
   async flow_duplicateAllSelectedBlocks({ state, dispatch }) {
-    let newBlocksUuid: string[] = []
-    forEach(state.selectedBlocks, async (blockId: IBlock['uuid']) => {
+    let newBlocksUuids: string[] = []
+    forEach(state.selectedBlockUuids, async (blockId: IBlock['uuid']) => {
       const duplicatedBlock: IBlock = await dispatch('flow_duplicateBlock', { blockId })
-      newBlocksUuid.push(duplicatedBlock.uuid)
+      newBlocksUuids.push(duplicatedBlock.uuid)
     })
-    state.selectedBlocks = newBlocksUuid
+    state.selectedBlockUuids = newBlocksUuids
   },
 }
 
