@@ -1,9 +1,13 @@
 <template>
   <div v-if="activeFlow" class="interaction-designer-contents">
-    <tree-builder-toolbar/>
+    <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate"/>
 
-    <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}" :key="activeBlock && activeBlock.uuid">
-      <div class="sidebar-cue" :class="{'sidebar-close': $route.meta.isSidebarShown}" @click="showOrHideSidebar">
+    <div class="tree-sidebar-container"
+         :class="{ 'slide-out': !$route.meta.isSidebarShown,}"
+         :key="activeBlock && activeBlock.uuid">
+      <div class="sidebar-cue"
+           :class="{'sidebar-close': $route.meta.isSidebarShown}"
+           @click="showOrHideSidebar">
         <i class="glyphicon"
            :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
                   'glyphicon-resize-small': $route.meta.isSidebarShown}">
@@ -42,7 +46,10 @@
     </div>
 
     <div class="tree-contents"
-         :x-style="{'min-height': `${designerWorkspaceHeight}px`}">
+         :style="{
+            'min-height': `${designerWorkspaceHeight}px`,
+            'padding-top': `${toolbarHeight + 5}px`
+         }">
       <builder-canvas @click.native="handleCanvasSelected" />
     </div>
   </div>
@@ -71,7 +78,7 @@ import { store } from '@/store'
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import { BuilderCanvas } from '@/components/interaction-designer/BuilderCanvas'
-import { scrollBehavior, scrollBlockIntoView } from '@/router';
+import { scrollBehavior, scrollBlockIntoView } from '@/router'
 
 // import '../TreeDiffLogger'
 
@@ -109,6 +116,7 @@ export default {
 
   data() {
     return {
+      toolbarHeight: 60,
       pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
         'CallBackWithCallCenterBlock',
         'CollaborativeFilteringQuestionBlock',
@@ -315,6 +323,10 @@ export default {
       })
     },
 
+    handleToolBarHeightUpdate(height) {
+      this.toolbarHeight = height
+    }
+
   },
 }
 </script>
@@ -342,14 +354,14 @@ export default {
   .tree-sidebar-container {
     position: fixed;
     right: 0;
-    z-index: 2*10;
+    z-index: 3*10;
 
     height: 100vh;
     width: $sidebar-width;
     overflow-y: scroll;
 
     padding: 1em;
-    padding-top: $toolbar-height;
+    margin-top: 3em;
     transition: right 200ms ease-in-out;
 
     .tree-sidebar {
@@ -372,9 +384,9 @@ export default {
     }
   }
 
-  .tree-builder-toolbar {
+  .tree-builder-toolbar-main-menu {
     position: fixed;
-    z-index: 3*10;
+    z-index: 4*10;
 
     width: 100vw;
 
@@ -468,9 +480,9 @@ export default {
     background-color: #eee;
     padding: 5px;
     position: fixed;
+    margin-top: 1em;
     right: 0;
-    top: 70px;
-    z-index: 50;
+    z-index: 5*10;
   }
 
   .sidebar-close {

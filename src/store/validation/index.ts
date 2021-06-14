@@ -27,6 +27,7 @@ export interface IIndexedString { [key: string]: string }
 export interface IValidationStatus {
   isValid: boolean | PromiseLike<any>;
   ajvErrors?: null | Array<ErrorObject>;
+  type: string;
 }
 
 export interface IValidationState {
@@ -71,7 +72,7 @@ export const mutations: MutationTree<IValidationState> = {
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
-  async validate_block({ state, commit }, { block }: { block: IBlock }): Promise<IValidationStatus> {
+  async validate_block({ state, commit, dispatch }, { block }: { block: IBlock }): Promise<IValidationStatus> {
     const { uuid: blockId, type: blockType } = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
@@ -80,18 +81,26 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     Vue.set(state.validationStatuses, index, {
       isValid: validate(block),
       ajvErrors: validate.errors,
+      type: block.type,
     })
-
+    if (validate.errors === null) {
+      dispatch('remove_block_validation', { blockId })
+    }
     debugValidationStatus(state.validationStatuses[index], `validation status for ${index}`)
     return state.validationStatuses[index]
   },
 
+  remove_block_validation({ state }, { blockId }: { blockId: IBlock['uuid']}): void {
+    const index = `block/${blockId}`
+    Vue.delete(state.validationStatuses, index)
+  },
   async validate_flow({ state, commit }, { flow }: { flow: IFlow }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator()
     const index = `flow/${flow.uuid}`
     Vue.set(state.validationStatuses, index, {
       isValid: validate(flow),
       ajvErrors: validate.errors,
+      type: 'flow',
     })
 
     debugValidationStatus(state.validationStatuses[index], 'flow validation status')

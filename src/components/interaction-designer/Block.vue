@@ -12,10 +12,27 @@
         :startY="y"
         :is-editable="isEditable"
         @dragged="onMoved"
-        @dragStarted="selectBlock">
+        @dragStarted="selectBlock"
+        @dragEnded="handleDraggableEndedForBlock"
+        @destroyed="handleDraggableDestroyedForBlock">
 
       <div class="d-flex justify-content-between">
         <div class="header-actions-left">
+          <!--Selection-->
+          <font-awesome-icon
+            v-if="isBlockSelected"
+            :icon="['fas', 'check-circle']"
+            class="fa-btn text-primary"
+            v-b-tooltip.hover="trans('flow-builder.deselect-block')"
+            @click="block_deselect({ blockId: block.uuid })"
+          />
+          <font-awesome-icon
+            v-if="!isBlockSelected"
+            :icon="['far', 'circle']"
+            class="fa-btn"
+            v-b-tooltip.hover="trans('flow-builder.select-block')"
+            @click="block_select({ blockId: block.uuid })"
+          />
         </div>
         <div class="header-actions-right d-flex">
           <!--Delete-->
@@ -43,7 +60,7 @@
               :icon="['far', 'clone']"
               class="fa-btn"
               v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-              @click.prevent="flow_duplicateBlock({ blockId: block.uuid })"
+              @click.prevent="handleDuplicateBlock"
             />
           </div>
         </div>
@@ -173,12 +190,12 @@
 
 <script>
 import Vue from 'vue'
-import { isNumber, forEach, filter } from 'lodash'
+import {isNumber, forEach, filter, includes} from 'lodash'
 import {
   mapActions, mapGetters, mapMutations, mapState,
 } from 'vuex'
 import PlainDraggable from '@/components/common/PlainDraggable.vue'
-import { ResourceResolver, SupportedMode } from '@floip/flow-runner'
+import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
 import { OperationKind, generateConnectionLayoutKeyFor } from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import { lang } from '@/lib/filters/lang'
@@ -201,7 +218,7 @@ export default {
   },
 
   created() {
-    this.draggablesByExitId = {} // todo: these need to be (better) lifecycle-managed (eg. mcq add/remove exit).
+    this.initDraggableForExitsByUuid()
   },
 
   mounted() {
@@ -215,7 +232,6 @@ export default {
       isDeleting: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
-      // draggablesByExitId: {}, // no need to vuejs-observe these
     }
   },
 
@@ -228,8 +244,13 @@ export default {
   },
 
   computed: {
-    ...mapState('flow', ['resources']),
-    ...mapState('builder', ['activeBlockId', 'operations', 'activeConnectionsContext']),
+    ...mapState('flow', [
+      'resources',
+      'selectedBlocks',
+    ]),
+    ...mapState('builder',
+      ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid']
+    ),
     ...mapState({
       blockClasses: ({ trees: { ui } }) => ui.blockClasses,
     }),
@@ -247,6 +268,10 @@ export default {
 
     isAssociatedWithActiveConnection({ block, activeConnectionsContext }) {
       return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid || context.targetId === block.uuid).length
+    },
+
+    isBlockSelected() {
+      return includes(this.selectedBlocks, this.block.uuid)
     },
 
     // todo: does this component know too much, what out of the above mapped state can be mapped?
@@ -272,7 +297,7 @@ export default {
       generateConnectionLayoutKeyFor,
     },
 
-    ...mapMutations('builder', ['setBlockPositionTo']),
+    ...mapMutations('builder', ['setBlockPositionTo', 'initDraggableForExitsByUuid']),
 
     ...mapActions('builder', {
       _removeConnectionFrom: 'removeConnectionFrom',
@@ -295,13 +320,20 @@ export default {
     ...mapActions('flow', [
       'flow_duplicateBlock',
       'flow_removeBlock',
+      'block_select',
+      'block_deselect',
     ]),
 
     ...mapMutations('builder', ['activateBlock']),
 
     handleDeleteBlock() {
+      this.block_deselect({ blockId: this.block.uuid })
       this.flow_removeBlock({ blockId: this.block.uuid })
       this.isDeleting = false
+    },
+
+    handleDuplicateBlock() {
+      this.flow_duplicateBlock({ blockId: this.block.uuid })
     },
 
     updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
@@ -402,9 +434,14 @@ export default {
       this.$nextTick(() => {
         this.setBlockPositionTo({ position: { x, y }, block })
 
-        forEach(this.draggablesByExitId, (draggable) => draggable.position())
-
-        console.debug('Block', 'onMoved', 'positioned all of', this.draggablesByExitId)
+        forEach(this.draggableForExitsByUuid, (draggable, key) => {
+          try {
+            draggable.position()
+          } catch (e) {
+            console.warn('Block', 'onMoved', 'positioning draggable on', key, 'can\'t access property "initElm", props is undefined')
+          }
+        })
+        console.debug('Block', 'onMoved', 'positioned all of', this.draggableForExitsByUuid)
       })
     },
 
@@ -415,7 +452,7 @@ export default {
     },
 
     handleDraggableInitializedFor({ uuid }, { draggable }) {
-      this.draggablesByExitId[uuid] = draggable
+      this.draggableForExitsByUuid[uuid] = draggable
 
       const { left, top } = draggable
       const { uuid: blockId } = this.block
@@ -424,7 +461,7 @@ export default {
     },
 
     handleDraggableDestroyedFor({ uuid }) {
-      delete this.draggablesByExitId[uuid]
+      delete this.draggableForExitsByUuid[uuid]
     },
 
     onCreateExitDragStarted({ draggable }, exit) {
@@ -503,6 +540,22 @@ export default {
         params: { blockId },
       })
     },
+
+    handleDraggableEndedForBlock() {
+      console.debug('Block', 'handleDraggableEndedForBlock')
+      const self = this
+      forEach(this.block.exits, function (exit) {
+        delete self.draggableForExitsByUuid[exit.uuid]
+      })
+    },
+
+    handleDraggableDestroyedForBlock() {
+      console.debug('Block', 'handleDraggableDestroyedForBlock')
+      const self = this
+      forEach(this.block.exits, function (exit) {
+        delete self.draggableForExitsByUuid[exit.uuid]
+      })
+    }
   },
 }
 </script>
