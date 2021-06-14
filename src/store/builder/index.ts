@@ -1,5 +1,5 @@
 import {
-  flatMap, isEqual, keyBy, map, mapValues, get, filter, union
+  flatMap, isEqual, keyBy, map, mapValues, get, filter, union, includes,
 } from 'lodash'
 import Vue from 'vue'
 import {
@@ -57,7 +57,8 @@ export interface IBuilderState {
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation;
     [OperationKind.BLOCK_RELOCATE]: null;
   };
-  draggableForExitsByUuid: object
+  draggableForExitsByUuid: object;
+  draggableForBlocksByUuid: object;
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -75,7 +76,8 @@ export const stateFactory = (): IBuilderState => ({
     },
     [OperationKind.BLOCK_RELOCATE]: null,
   },
-  draggableForExitsByUuid: {}
+  draggableForExitsByUuid: {},
+  draggableForBlocksByUuid: {},
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
@@ -113,17 +115,6 @@ export const mutations: MutationTree<IBuilderState> = {
     operations[operation.kind] = operation
   },
 
-  setBlockPositionTo(state, { position: { x, y }, block }) {
-    // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder // uiData props
-    // if (!block.vendor_metadata.io_viamo.uiData) {
-    //   defaultsDeep(block, {vendor_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
-    //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
-    // }
-
-    block.vendor_metadata.io_viamo.uiData.xPosition = x
-    block.vendor_metadata.io_viamo.uiData.yPosition = y
-  },
-
   setIsEditable(state, value) {
     state.isEditable = value
   },
@@ -134,6 +125,23 @@ export const mutations: MutationTree<IBuilderState> = {
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
+  setBlockPositionTo({ rootState }, { position: { x, y }, block }) {
+    // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder // uiData props
+    // if (!block.vendor_metadata.io_viamo.uiData) {
+    //   defaultsDeep(block, {vendor_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
+    //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
+    // }
+
+    // UI Position
+    block.vendor_metadata.io_viamo.uiData.xPosition = x
+    block.vendor_metadata.io_viamo.uiData.yPosition = y
+
+    // If block is selected, then update other selected blocks
+    if (includes(rootState.flow.selectedBlockUuids, block.uuid)) {
+      // TODO: implement vmo-3944 here
+    }
+  },
+
   removeConnectionFrom({ commit }, { block: { uuid: blockId }, exit: { uuid: exitId } }) {
     commit('flow/block_setBlockExitDestinationBlockId', {
       blockId,

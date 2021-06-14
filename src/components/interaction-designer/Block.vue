@@ -11,6 +11,7 @@
         :startX="x"
         :startY="y"
         :is-editable="isEditable"
+        @initialized="handleDraggableInitializedForBlock(block, $event)"
         @dragged="onMoved"
         @dragStarted="selectBlock"
         @dragEnded="handleDraggableEndedForBlock"
@@ -122,11 +123,11 @@
                              :key="`exit/${exit.uuid}/pseudo-block-handle`"
                              :is-editable="isEditable"
                              v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
-                             @initialized="handleDraggableInitializedFor(exit, $event)"
+                             @initialized="handleDraggableInitializedForExit(exit, $event)"
                              @dragStarted="onCreateExitDragStarted($event, exit)"
                              @dragged="onCreateExitDragged($event)"
                              @dragEnded="onCreateExitDragEnded($event, exit)"
-                             @destroyed="handleDraggableDestroyedFor(exit)">
+                             @destroyed="handleDraggableDestroyedForExit(exit)">
               <i class="glyphicon glyphicon-move"></i>
             </plain-draggable>
 
@@ -158,11 +159,11 @@
                              :key="`exit/${exit.uuid}/handle`"
                              :is-editable="isEditable"
                              v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-relocate-connection')"
-                             @initialized="handleDraggableInitializedFor(exit, $event)"
+                             @initialized="handleDraggableInitializedForExit(exit, $event)"
                              @dragStarted="onMoveExitDragStarted($event, exit)"
                              @dragged="onMoveExitDragged($event)"
                              @dragEnded="onMoveExitDragEnded($event, exit)"
-                             @destroyed="handleDraggableDestroyedFor(exit)">
+                             @destroyed="handleDraggableDestroyedForExit(exit)">
               <i class="glyphicon glyphicon-move"></i>
             </plain-draggable>
 
@@ -248,9 +249,13 @@ export default {
       'resources',
       'selectedBlockUuids',
     ]),
-    ...mapState('builder',
-      ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid']
-    ),
+    ...mapState('builder', [
+      'activeBlockId',
+      'operations',
+      'activeConnectionsContext',
+      'draggableForExitsByUuid',
+      'draggableForBlocksByUuid',
+    ]),
     ...mapState({
       blockClasses: ({ trees: { ui } }) => ui.blockClasses,
     }),
@@ -297,13 +302,14 @@ export default {
       generateConnectionLayoutKeyFor,
     },
 
-    ...mapMutations('builder', ['setBlockPositionTo', 'initDraggableForExitsByUuid']),
+    ...mapMutations('builder', ['initDraggableForExitsByUuid']),
 
     ...mapActions('builder', {
       _removeConnectionFrom: 'removeConnectionFrom',
     }),
 
     ...mapActions('builder', [
+      'setBlockPositionTo',
       // ConnectionSourceRelocate
       'initializeConnectionSourceRelocateWith',
       'setConnectionSourceRelocateValue',
@@ -427,16 +433,16 @@ export default {
       this.setConnectionCreateTargetBlockToNullFrom({ block })
     },
 
-    onMoved({ position: { left: x, top: y } }) {
+    onMoved({ draggable, position }) {
       // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
-
+      const { left: x, top: y } = position
       const { block } = this
       this.$nextTick(() => {
         this.setBlockPositionTo({ position: { x, y }, block })
 
-        forEach(this.draggableForExitsByUuid, (draggable, key) => {
+        forEach(this.draggableForExitsByUuid, (exitDraggable, key) => {
           try {
-            draggable.position()
+            exitDraggable.position()
           } catch (e) {
             console.warn('Block', 'onMoved', 'positioning draggable on', key, 'can\'t access property "initElm", props is undefined')
           }
@@ -451,16 +457,24 @@ export default {
       this.labelContainerMaxWidth = this.labelContainerMaxWidth + 0 // force render, useful if the exit label is very short
     },
 
-    handleDraggableInitializedFor({ uuid }, { draggable }) {
+    handleDraggableInitializedForBlock(block, { draggable }) {
+      this.draggableForBlocksByUuid[block.uuid] = draggable
+
+      const { left, top } = draggable
+
+      console.debug('Block', 'handleDraggableInitializedForBlock', { blockId: block.uuid, coords: { left, top } })
+    },
+
+    handleDraggableInitializedForExit({ uuid }, { draggable }) {
       this.draggableForExitsByUuid[uuid] = draggable
 
       const { left, top } = draggable
       const { uuid: blockId } = this.block
 
-      console.debug('Block', 'handleDraggableInitializedFor', { blockId, exitId: uuid, coords: { left, top } })
+      console.debug('Block', 'handleDraggableInitializedForExit', { blockId, exitId: uuid, coords: { left, top } })
     },
 
-    handleDraggableDestroyedFor({ uuid }) {
+    handleDraggableDestroyedForExit({ uuid }) {
       delete this.draggableForExitsByUuid[uuid]
     },
 
