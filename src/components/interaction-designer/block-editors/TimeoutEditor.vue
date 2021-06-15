@@ -1,6 +1,6 @@
 <template>
   <validation-message :message-key="`block/${block.uuid}/config/accuracy_timeout_seconds`" #input-control="{ isValid }">
-    <div class="form-group block-timeout" :id="`${block.uuid}.config.accuracyTimeoutSeconds`">
+    <div class="block-timeout">
       <numeric-editor v-model.number="timeout"
           :regex-numeric-filtering="'[0-9]'"
           :label="'flow-builder.accuracy-timeout-in-seconds' | trans"

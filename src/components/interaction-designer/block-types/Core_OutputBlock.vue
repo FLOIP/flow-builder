@@ -13,7 +13,7 @@
         <expression-editor :label="'flow-builder.output-expression' | trans"
           :placeholder="'flow-builder.edit-expression' | trans"
           :current-expression="value"
-          :validState="isValid === false"
+          :validState="isValid"
           @commitExpressionChange="commitExpressionChange"/>
       </validation-message>
 
