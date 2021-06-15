@@ -142,10 +142,16 @@ function getOrCreateFlowValidator(): ValidateFunction {
   const validationType = 'flow'
   if (isEmpty(validators) || !validators.has(validationType)) {
     const flowJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
+
+    // remove `blocks` property from IFlow schema to avoid double validations
+    flowJsonSchema['definitions']['IFlow']['additionalProperties'] = true
+    delete flowJsonSchema['definitions']['IFlow']['properties']['blocks']
+
     validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IFlow'))
   }
   return validators.get(validationType)!
 }
+
 function getOrCreateFlowContainerValidator(): ValidateFunction {
   const validationType = 'flowContainer'
   if (isEmpty(validators) || !validators.has(validationType)) {
