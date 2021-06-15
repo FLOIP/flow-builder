@@ -15,9 +15,14 @@
             </validation-message>
           </div>
           <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
-            <flow-languages-editor
-              :flow="flow"
-              @commitFlowLanguagesChange="updateFlowLanguages"/>
+            <validation-message
+              :message-key="`flow/${flow.uuid}/languages`"
+              #input-control="{ isValid }">
+              <flow-languages-editor
+                :flow="flow"
+                @commitFlowLanguagesChange="updateFlowLanguages"/>
+            </validation-message>
+
             <flow-modes-editor
               :flow="flow"
               @commitFlowModesChange="updateFlowModes"/>
