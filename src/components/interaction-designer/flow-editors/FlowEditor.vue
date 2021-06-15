@@ -7,7 +7,13 @@
     <fieldset :disabled="!isEditable && sidebar">
       <div class="row">
           <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
-            <flow-label-editor :flow="flow" />
+
+            <validation-message
+              :message-key="`flow/${flow.uuid}/name` /* `label` is optional, but `name` is required */"
+              #input-control="{ isValid }">
+              <flow-label-editor :flow="flow" :validState="isValid"/>
+            </validation-message>
+
             <validation-message
               :message-key="`flow/${flow.uuid}/interaction_timeout`"
               #input-control="{ isValid }">
