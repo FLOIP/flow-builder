@@ -366,7 +366,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     }
 
     forEach(elementRef.childNodes, function(child) {
-      height = height + (<HTMLElement> child).offsetHeight
+      height += (child as HTMLElement).offsetHeight
     })
 
     if (height > 0) {
