@@ -297,7 +297,7 @@ export default {
       generateConnectionLayoutKeyFor,
     },
 
-    ...mapMutations('builder', ['setBlockPositionTo', 'initDraggableForExitsByUuid']),
+    ...mapMutations('builder', ['activateBlock', 'setBlockPositionTo', 'initDraggableForExitsByUuid']),
 
     ...mapActions('builder', {
       _removeConnectionFrom: 'removeConnectionFrom',
@@ -324,11 +324,12 @@ export default {
       'block_deselect',
     ]),
 
-    ...mapMutations('builder', ['activateBlock']),
+    ...mapMutations('validation', ['removeValidationStatusesForBlock']),
 
     handleDeleteBlock() {
       this.block_deselect({ blockId: this.block.uuid })
       this.flow_removeBlock({ blockId: this.block.uuid })
+      this.removeValidationStatusesForBlock({ blockId: this.block.uuid })
       this.isDeleting = false
     },
 

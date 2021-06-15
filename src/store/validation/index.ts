@@ -68,7 +68,9 @@ export const getters: GetterTree<IValidationState, IRootState> = {
 }
 
 export const mutations: MutationTree<IValidationState> = {
-
+  removeValidationStatusesForBlock(state, { blockId }) {
+    delete state.validationStatuses[`block/${blockId}`]
+  }
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
