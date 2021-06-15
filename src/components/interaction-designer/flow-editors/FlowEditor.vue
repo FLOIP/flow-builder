@@ -23,9 +23,14 @@
                 @commitFlowLanguagesChange="updateFlowLanguages"/>
             </validation-message>
 
-            <flow-modes-editor
-              :flow="flow"
-              @commitFlowModesChange="updateFlowModes"/>
+            <validation-message
+              :message-key="`flow/${flow.uuid}/supported_modes`"
+              #input-control="{ isValid }">
+              <flow-modes-editor
+                :flow="flow"
+                @commitFlowModesChange="updateFlowModes"/>
+            </validation-message>
+
           </div>
       </div>
     </fieldset>
