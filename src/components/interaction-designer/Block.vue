@@ -258,16 +258,6 @@ export default {
     }
   },
 
-  created() {
-    this.initDraggableForExitsByUuid()
-  },
-
-  mounted() {
-    this.$nextTick(function () {
-      this.updateLabelContainerMaxWidth()
-    })
-  },
-
   computed: {
     ...mapState('flow', [
       'resources',
@@ -317,10 +307,20 @@ export default {
 
   watch: {
     blockExitsLength(newValue, oldValue) {
-      this.$nextTick(function () {
+      this.$nextTick(() => {
         this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
       })
     },
+  },
+
+  created() {
+    this.initDraggableForExitsByUuid()
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      this.updateLabelContainerMaxWidth()
+    })
   },
 
   methods: {
@@ -332,7 +332,7 @@ export default {
     ...mapMutations('builder', ['setBlockPositionTo', 'initDraggableForExitsByUuid']),
 
     ...mapActions('builder', {
-      _removeConnectionFrom: 'removeConnectionFrom',
+      builder_removeConnectionFrom: 'removeConnectionFrom',
     }),
 
     ...mapActions('builder', [
@@ -481,7 +481,7 @@ export default {
 
     removeConnectionFrom(exit) {
       const {block} = this
-      this._removeConnectionFrom({block, exit})
+      this.builder_removeConnectionFrom({block, exit})
       // force render, useful if the exit label is very short
       this.labelContainerMaxWidth += 0
     },

@@ -123,7 +123,8 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
 
   @builderVuexNamespace.Getter isEditable!: boolean
 
-  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({blockId, path, value}: { blockId: string; path: string; value: object | string }) => void
+  @flowVuexNamespace.Mutation block_updateConfigByPath!:
+    ({blockId, path, value}: { blockId: string; path: string; value: object | string }) => void
 }
 
 export default Core_SetGroupMembershipBlock

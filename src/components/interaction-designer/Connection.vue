@@ -205,6 +205,7 @@ export default {
       document.addEventListener('click', (event) => {
         // Do not listen if the connection was not fully set
         try {
+          // eslint-disable-next-line no-unused-expressions
           this.line.end
         } catch (e) {
           return
