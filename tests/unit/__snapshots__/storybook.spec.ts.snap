@@ -168,11 +168,8 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                             >
                               <div
                                 class="form-group flow-label"
-                                id="fake-uuid-8.label"
                               >
-                                <div
-                                  class="form-group"
-                                >
+                                <div>
                                   <label>
                                     Flow label
                                   </label>
@@ -186,11 +183,11 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               </div>
                                
                               <div
-                                class="validation-message"
+                                class="validation-message form-group"
+                                id="flow/fake-uuid-8/interaction_timeout"
                               >
                                 <div
                                   class="form-group flow-interaction-timeout"
-                                  id="fake-uuid-8.interactionTimeout"
                                 >
                                   <div
                                     class="number-editor"
@@ -211,7 +208,11 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   </div>
                                 </div>
                                  
-                                <!---->
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
                               </div>
                             </div>
                              
@@ -220,7 +221,6 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                             >
                               <div
                                 class="form-group flow-languages"
-                                id="fake-uuid-8.languages"
                               >
                                 <label>
                                   Languages
@@ -264,7 +264,6 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                
                               <div
                                 class="form-group flow-modes"
-                                id="fake-uuid-8.modes"
                               >
                                 <label>
                                   Modes
@@ -488,6 +487,12 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
+                   
+                  <main
+                    class="error-notifications-wrapper"
+                  >
+                    <!---->
+                  </main>
                 </div>
               </div>
             </div>
@@ -832,6 +837,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
+                   
+                  <main
+                    class="error-notifications-wrapper"
+                  >
+                    <!---->
+                  </main>
                 </div>
               </div>
             </div>
@@ -1175,6 +1186,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
+                   
+                  <main
+                    class="error-notifications-wrapper"
+                  >
+                    <!---->
+                  </main>
                 </div>
               </div>
             </div>
@@ -1490,6 +1507,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
+                   
+                  <main
+                    class="error-notifications-wrapper"
+                  >
+                    <!---->
+                  </main>
                 </div>
               </div>
             </div>
@@ -1619,6 +1642,12 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
+                   
+                  <main
+                    class="error-notifications-wrapper"
+                  >
+                    <!---->
+                  </main>
                 </div>
               </div>
             </div>
@@ -1716,15 +1745,13 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                          
                         <fieldset>
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/name"
                           >
                             <div
                               class="block-name"
-                              id="fake-uuid-80.name"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block name
                                 </label>
@@ -1744,19 +1771,21 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/label"
                           >
                             <div
                               class="block-label"
-                              id="fake-uuid-80.label"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block label
                                 </label>
@@ -1769,19 +1798,21 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/semantic_label"
                           >
                             <div
                               class="block-semantic-label"
-                              id="fake-uuid-80.semanticLabel"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block semantic label
                                 </label>
@@ -1794,15 +1825,19 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/config/validation_minimum"
                           >
                             <div
-                              class="form-group block-validation-min"
-                              id="fake-uuid-80.config.validationMinimum"
+                              class="block-validation-min"
                             >
                               <div
                                 class="number-editor"
@@ -1823,15 +1858,19 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/config/validation_maximum"
                           >
                             <div
-                              class="form-group block-validation-max"
-                              id="fake-uuid-80.config.validationMaximum"
+                              class="block-validation-max"
                             >
                               <div
                                 class="number-editor"
@@ -1852,15 +1891,19 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/config/ivr/max_digits"
                           >
                             <div
-                              class="form-group block-max-digits"
-                              id="fake-uuid-80.config.ivr.maxDigits"
+                              class="block-max-digits"
                             >
                               <div
                                 class="number-editor"
@@ -1881,7 +1924,11 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
@@ -1907,7 +1954,6 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                              
                             <div
                               class="resource-variant-text-editor"
-                              id="fake-uuid-80.config.prompt.English.SMS"
                             >
                               <div
                                 class="content-editor"
@@ -1936,7 +1982,6 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                              
                             <div
                               class="resource-variant-text-editor"
-                              id="fake-uuid-80.config.prompt.English.USSD"
                             >
                               <div
                                 class="content-editor"
@@ -1965,9 +2010,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                              
                             <!---->
                              
-                            <div
-                              id="fake-uuid-80.config.prompt.English.IVR"
-                            >
+                            <div>
                               <div
                                 class="upload-monitor"
                               >
@@ -2161,15 +2204,13 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                          
                         <fieldset>
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/name"
                           >
                             <div
                               class="block-name"
-                              id="fake-uuid-86.name"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block name
                                 </label>
@@ -2189,19 +2230,21 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/label"
                           >
                             <div
                               class="block-label"
-                              id="fake-uuid-86.label"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block label
                                 </label>
@@ -2214,19 +2257,21 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/semantic_label"
                           >
                             <div
                               class="block-semantic-label"
-                              id="fake-uuid-86.semanticLabel"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block semantic label
                                 </label>
@@ -2239,15 +2284,19 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/config/validation_minimum"
                           >
                             <div
-                              class="form-group block-validation-min"
-                              id="fake-uuid-86.config.validationMinimum"
+                              class="block-validation-min"
                             >
                               <div
                                 class="number-editor"
@@ -2268,15 +2317,19 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/config/validation_maximum"
                           >
                             <div
-                              class="form-group block-validation-max"
-                              id="fake-uuid-86.config.validationMaximum"
+                              class="block-validation-max"
                             >
                               <div
                                 class="number-editor"
@@ -2297,15 +2350,19 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/config/ivr/max_digits"
                           >
                             <div
-                              class="form-group block-max-digits"
-                              id="fake-uuid-86.config.ivr.maxDigits"
+                              class="block-max-digits"
                             >
                               <div
                                 class="number-editor"
@@ -2326,7 +2383,11 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
@@ -2352,7 +2413,6 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                              
                             <div
                               class="resource-variant-text-editor"
-                              id="fake-uuid-86.config.prompt.English.SMS"
                             >
                               <div
                                 class="content-editor"
@@ -2381,7 +2441,6 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                              
                             <div
                               class="resource-variant-text-editor"
-                              id="fake-uuid-86.config.prompt.English.USSD"
                             >
                               <div
                                 class="content-editor"
@@ -2410,9 +2469,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                              
                             <!---->
                              
-                            <div
-                              id="fake-uuid-86.config.prompt.English.IVR"
-                            >
+                            <div>
                               <div
                                 class="upload-monitor"
                               >
@@ -2624,15 +2681,13 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                          
                         <fieldset>
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-115/name"
                           >
                             <div
                               class="block-name"
-                              id="fake-uuid-115.name"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block name
                                 </label>
@@ -2652,19 +2707,21 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-115/label"
                           >
                             <div
                               class="block-label"
-                              id="fake-uuid-115.label"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block label
                                 </label>
@@ -2677,19 +2734,21 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-115/semantic_label"
                           >
                             <div
                               class="block-semantic-label"
-                              id="fake-uuid-115.semanticLabel"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block semantic label
                                 </label>
@@ -2702,15 +2761,19 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-115/config/ivr/max_duration_seconds"
                           >
                             <div
-                              class="form-group block-max-duration-seconds"
-                              id="fake-uuid-115.config.ivr.maxDurationSeconds"
+                              class="block-max-duration-seconds"
                             >
                               <div
                                 class="number-editor"
@@ -2731,15 +2794,19 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-115/config/text/max_response_characters"
                           >
                             <div
-                              class="form-group block-max-response-characters"
-                              id="fake-uuid-115.config.text.maxResponseCharacters"
+                              class="block-max-response-characters"
                             >
                               <div
                                 class="number-editor"
@@ -2768,7 +2835,11 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               </small>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
@@ -2794,7 +2865,6 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                              
                             <div
                               class="resource-variant-text-editor"
-                              id="fake-uuid-115.config.prompt.English.SMS"
                             >
                               <div
                                 class="content-editor"
@@ -2823,7 +2893,6 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                              
                             <div
                               class="resource-variant-text-editor"
-                              id="fake-uuid-115.config.prompt.English.USSD"
                             >
                               <div
                                 class="content-editor"
@@ -2852,9 +2921,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                              
                             <!---->
                              
-                            <div
-                              id="fake-uuid-115.config.prompt.English.IVR"
-                            >
+                            <div>
                               <div
                                 class="upload-monitor"
                               >
@@ -3048,15 +3115,13 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                          
                         <fieldset>
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-124/name"
                           >
                             <div
                               class="block-name"
-                              id="fake-uuid-124.name"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block name
                                 </label>
@@ -3076,19 +3141,21 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-124/label"
                           >
                             <div
                               class="block-label"
-                              id="fake-uuid-124.label"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block label
                                 </label>
@@ -3101,19 +3168,21 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-124/semantic_label"
                           >
                             <div
                               class="block-semantic-label"
-                              id="fake-uuid-124.semanticLabel"
                             >
-                              <div
-                                class="form-group"
-                              >
+                              <div>
                                 <label>
                                   Block semantic label
                                 </label>
@@ -3126,15 +3195,19 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-124/config/ivr/max_duration_seconds"
                           >
                             <div
-                              class="form-group block-max-duration-seconds"
-                              id="fake-uuid-124.config.ivr.maxDurationSeconds"
+                              class="block-max-duration-seconds"
                             >
                               <div
                                 class="number-editor"
@@ -3155,15 +3228,19 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               </div>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="validation-message"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-124/config/text/max_response_characters"
                           >
                             <div
-                              class="form-group block-max-response-characters"
-                              id="fake-uuid-124.config.text.maxResponseCharacters"
+                              class="block-max-response-characters"
                             >
                               <div
                                 class="number-editor"
@@ -3192,7 +3269,11 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               </small>
                             </div>
                              
-                            <!---->
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
@@ -3218,7 +3299,6 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                              
                             <div
                               class="resource-variant-text-editor"
-                              id="fake-uuid-124.config.prompt.English.SMS"
                             >
                               <div
                                 class="content-editor"
@@ -3247,7 +3327,6 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                              
                             <div
                               class="resource-variant-text-editor"
-                              id="fake-uuid-124.config.prompt.English.USSD"
                             >
                               <div
                                 class="content-editor"
@@ -3276,9 +3355,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                              
                             <!---->
                              
-                            <div
-                              id="fake-uuid-124.config.prompt.English.IVR"
-                            >
+                            <div>
                               <div
                                 class="upload-monitor"
                               >
