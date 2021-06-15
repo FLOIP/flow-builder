@@ -25,7 +25,8 @@ import {
   get,
   has,
   omit,
-  filter
+  filter,
+  minBy,
 } from 'lodash'
 import { discoverContentTypesFor } from '@/store/flow/resource'
 import { computeBlockUiData } from '@/store/builder'
@@ -63,6 +64,14 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     return filter(getters.activeFlow.blocks, (block) => {
       return includes(state.selectedBlockUuids, block.uuid)
     })
+  },
+
+  selectedBlockAtTheTopPosition: (state, getters) => {
+    return minBy(getters.selectedBlocks, 'vendor_metadata.io_viamo.uiData.yPosition')
+  },
+
+  selectedBlockAtTheFurthestLeftPosition: (state, getters) => {
+    return minBy(getters.selectedBlocks, 'vendor_metadata.io_viamo.uiData.xPosition')
   }
 }
 

@@ -48,7 +48,7 @@
     <div class="tree-contents"
          :style="{
             'min-height': `${designerWorkspaceHeight}px`,
-            'padding-top': `${toolbarHeight + 5}px`
+            'padding-top': `${toolbarHeight}px`
          }">
       <builder-canvas @click.native="handleCanvasSelected" />
     </div>
@@ -116,7 +116,6 @@ export default {
 
   data() {
     return {
-      toolbarHeight: 60,
       pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
         'CallBackWithCallCenterBlock',
         'CollaborativeFilteringQuestionBlock',
@@ -165,6 +164,8 @@ export default {
     }),
 
     ...mapGetters('flow', ['activeFlow']),
+
+    ...mapState('builder', ['toolbarHeight']),
     ...mapGetters('builder', ['activeBlock', 'isEditable']),
 
     jsKey() {
@@ -247,7 +248,7 @@ export default {
   },
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
-    ...mapMutations('builder', ['activateBlock']),
+    ...mapMutations('builder', ['activateBlock', 'updateToolBarHeight']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
 
@@ -324,7 +325,7 @@ export default {
     },
 
     handleToolBarHeightUpdate(height) {
-      this.toolbarHeight = height
+      this.updateToolBarHeight(height)
     }
 
   },
