@@ -58,7 +58,7 @@
 <script>
 import { lang } from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import lodash, { forEach, invoke, isEmpty } from 'lodash'
+import lodash, { forEach, invoke, isEmpty, get } from 'lodash'
 import Vue from 'vue'
 import {
   mapActions, mapGetters, mapMutations, mapState,

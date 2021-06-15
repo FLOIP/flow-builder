@@ -324,12 +324,12 @@ export default {
       'block_deselect',
     ]),
 
-    ...mapMutations('validation', ['removeValidationStatusesForBlock']),
+    ...mapMutations('validation', ['removeValidationStatusesFor']),
 
     handleDeleteBlock() {
       this.block_deselect({ blockId: this.block.uuid })
       this.flow_removeBlock({ blockId: this.block.uuid })
-      this.removeValidationStatusesForBlock({ blockId: this.block.uuid })
+      this.removeValidationStatusesFor({ index: `block/${this.block.uuid}` })
       this.isDeleting = false
     },
 

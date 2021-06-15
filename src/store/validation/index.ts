@@ -68,9 +68,9 @@ export const getters: GetterTree<IValidationState, IRootState> = {
 }
 
 export const mutations: MutationTree<IValidationState> = {
-  removeValidationStatusesForBlock(state, { blockId }) {
-    delete state.validationStatuses[`block/${blockId}`]
-  }
+  removeValidationStatusesFor(state, { index }) {
+    delete state.validationStatuses[`${index}`]
+  },
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
@@ -86,16 +86,12 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       type: block.type,
     })
     if (validate.errors === null) {
-      dispatch('remove_block_validation', { blockId })
+      commit('removeValidationStatusesFor', { index })
     }
     debugValidationStatus(state.validationStatuses[index], `validation status for ${index}`)
     return state.validationStatuses[index]
   },
 
-  remove_block_validation({ state }, { blockId }: { blockId: IBlock['uuid']}): void {
-    const index = `block/${blockId}`
-    Vue.delete(state.validationStatuses, index)
-  },
   async validate_flow({ state, commit }, { flow }: { flow: IFlow }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator()
     const index = `flow/${flow.uuid}`

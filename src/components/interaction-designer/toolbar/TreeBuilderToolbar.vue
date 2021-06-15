@@ -408,8 +408,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @builderVuexNamespace.Getter activeBlock?: IBlock
   @builderVuexNamespace.Action importFlowsAndResources!: ({ flows, resources }: { flows: IFlow[]; resources: IResource[]}) => Promise<void>
   @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
-
-  @validationVuexNamespace.Action remove_block_validation!: ({ blockId }: { blockId: IBlock['uuid'] | undefined}) => void
 }
 </script>
 
