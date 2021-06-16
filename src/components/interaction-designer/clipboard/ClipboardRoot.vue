@@ -100,19 +100,8 @@ export default class ClipboardRoot extends mixins(Lang) {
     }
   }
 
-  getUpdatedFlowState(): IFlowsState {
-    const flowState: IFlowsState = this.currentFlowsState
-    // TODO: There is an error with exits for Select one and Select Many blocks.
-    // Clicking next on these blocks throws an error. Added the below code as a work around until a better solution is available
-    flowState.flows[0].blocks.map(({ exits }) => exits.map((e) => {
-      e.test = e.test || 'true'
-      return e
-    }))
-    return flowState
-  }
-
   async initializeFlowRunner() {
-    const flowState = this.getUpdatedFlowState()
+    const flowState = this.currentFlowsState
     const contact = { id: '1' } as IContact
     const groups: IGroup[] = []
     const userId = 'user-1234' // TODO: fix this value when user details are available
