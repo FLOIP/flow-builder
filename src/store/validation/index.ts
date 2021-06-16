@@ -72,7 +72,7 @@ export const mutations: MutationTree<IValidationState> = {
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
-  async validate_block({ state, commit, dispatch }, { block }: { block: IBlock }): Promise<IValidationStatus> {
+  async validate_block({ state, dispatch }, { block }: { block: IBlock }): Promise<IValidationStatus> {
     const { uuid: blockId, type: blockType } = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
@@ -94,7 +94,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     const index = `block/${blockId}`
     Vue.delete(state.validationStatuses, index)
   },
-  async validate_flow({ state, commit }, { flow }: { flow: IFlow }): Promise<IValidationStatus> {
+  async validate_flow({ state }, { flow }: { flow: IFlow }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator()
     const index = `flow/${flow.uuid}`
     Vue.set(state.validationStatuses, index, {
@@ -107,7 +107,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     return state.validationStatuses[index]
   },
 
-  async validate_flowContainer({ state, commit }, { flowContainer }: { flowContainer: IContainer }): Promise<IValidationStatus> {
+  async validate_flowContainer({ state }, { flowContainer }: { flowContainer: IContainer }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowContainerValidator()
     const index = `flowContainer/${flowContainer.uuid}`
     Vue.set(state.validationStatuses, index, {
@@ -150,7 +150,7 @@ function getOrCreateFlowContainerValidator(): ValidateFunction {
   const validationType = 'flowContainer'
   if (isEmpty(validators) || !validators.has(validationType)) {
     const flowContainerJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
-    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowContainerJsonSchema, '#/definitions/IContainer'))
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowContainerJsonSchema))
   }
   return validators.get(validationType)!
 }
