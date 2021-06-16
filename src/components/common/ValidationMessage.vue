@@ -1,13 +1,7 @@
 <template>
-  <div class="validation-message">
+  <div class="validation-message form-group" :id="messageKey">
     <slot name="input-control" :isValid="isValid"></slot>
-    <b-alert
-      variant="warning"
-      fade
-      :show="!isValid"
-    >
-      {{ errorMessage }} <a :href="messageKey" class="alert-link float-right" v-if="showFixAction">{{ trans('flow-builder.fix-it') }}</a>
-    </b-alert>
+    <small class="text-danger">{{ errorMessage }}</small>
   </div>
 </template>
 
@@ -28,7 +22,6 @@ const validationVuexNamespace = namespace('validation')
 })
 class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
-  @Prop( { default: false } ) showFixAction?: boolean
 
   get errorMessage() {
     // get value by property (not by path like with lodash.get()), as the messageKey can contain `.` chars

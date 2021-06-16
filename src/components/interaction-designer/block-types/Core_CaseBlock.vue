@@ -9,13 +9,14 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <div v-for="(exit,i) in exits" class="form-group form-inline">
+      <div v-for="(exit,i) in exits" class="form-group">
         <validation-message :message-key="`block/${block.uuid}/exits/${i}/tag`" #input-control="{ isValid }">
           <expression-editor :label="i+1"
               :placeholder="'flow-builder.edit-expression' | trans"
               :validState="isValid"
               :current-expression="exit.test"
               :expression-identifier="exit.uuid"
+              class="d-flex"
               @commitExpressionChange="editCaseBlockExit"/>
         </validation-message>
       </div>

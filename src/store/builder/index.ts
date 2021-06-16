@@ -1,5 +1,5 @@
 import {
-  cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get, filter, union,
+  flatMap, isEqual, keyBy, map, mapValues, get, filter, union
 } from 'lodash'
 import Vue from 'vue'
 import {
@@ -10,8 +10,6 @@ import {
   IBlockExit, IBlock, IFlow, IResource, SupportedMode, ValidationException,
 } from '@floip/flow-runner'
 import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block'
-import { createFormattedDate } from '@floip/flow-runner/dist/domain/DateFormat'
-import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 export enum OperationKind { // todo migrate these to flight-monitor
   CONNECTION_SOURCE_RELOCATE = 'CONNECTION_SOURCE_RELOCATE',
@@ -59,6 +57,7 @@ export interface IBuilderState {
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation;
     [OperationKind.BLOCK_RELOCATE]: null;
   };
+  draggableForExitsByUuid: object
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -76,6 +75,7 @@ export const stateFactory = (): IBuilderState => ({
     },
     [OperationKind.BLOCK_RELOCATE]: null,
   },
+  draggableForExitsByUuid: {}
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
@@ -127,6 +127,10 @@ export const mutations: MutationTree<IBuilderState> = {
   setIsEditable(state, value) {
     state.isEditable = value
   },
+
+  initDraggableForExitsByUuid(state) {
+    state.draggableForExitsByUuid = {}
+  }
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
@@ -369,9 +373,9 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   ]
 }
 
-export function computeBlockPositionsFrom(block?: IBlock | null) {
-  const xDelta = 80; const
-    yDelta = 80
+export function computeBlockUiData(block?: IBlock | null) {
+  const xDelta = 160
+  const yDelta = 180
 
   let xPosition = get(block, 'vendor_metadata.io_viamo.uiData.xPosition')
   let yPosition = get(block, 'vendor_metadata.io_viamo.uiData.yPosition')
@@ -382,7 +386,11 @@ export function computeBlockPositionsFrom(block?: IBlock | null) {
     yPosition = viewPortCenter.y
   }
 
-  return { xPosition: xPosition + xDelta, yPosition: yPosition + yDelta }
+  return {
+    xPosition: xPosition + xDelta,
+    yPosition: yPosition + yDelta,
+    isSelected: false,
+  }
 }
 
 export function getViewportCenter() {

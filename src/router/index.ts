@@ -12,7 +12,7 @@ export const routes: Array<RouteConfig> = [
 
 export const scrollBehavior = (to: Route) => {
   if (to.params.field) {
-    const anchor = `${to.params.blockId}.${to.params.field}`
+    const anchor = `block/${to.params.blockId}${to.params.field}`
     const domElement = document.getElementById(anchor)
     if (domElement) {
       domElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
