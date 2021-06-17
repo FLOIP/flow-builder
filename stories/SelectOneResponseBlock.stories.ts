@@ -1,18 +1,12 @@
 import {Component, Vue} from 'vue-property-decorator'
-import {
-  BaseMountedVueClass,
-  BaseMountedVueClassWithResourceAndMode,
-  IBaseOptions
-} from './story-utils/storeSetup'
 import SelectOneResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import selectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 
-import {
-  SupportedMode,
-} from '@floip/flow-runner'
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import {SupportedMode} from '@floip/flow-runner'
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+import {BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode, IBaseOptions} from './story-utils/storeSetup'
 
 Vue.use(Vuex)
 
@@ -46,6 +40,7 @@ class InFlowBuilderClass extends BaseMountedVueClass {
     await this.baseMounted(BLOCK_TYPE, selectOneStore)
   }
 }
+
 export const InFlowBuilder = () => InFlowBuilderClass
 
 @Component({
@@ -57,6 +52,7 @@ class IvrOnlyClass extends BaseMountedVueClass {
     flow.supported_modes = [SupportedMode.IVR]
   }
 }
+
 export const IvrOnly = () => IvrOnlyClass
 
 @Component({
@@ -65,9 +61,11 @@ export const IvrOnly = () => IvrOnlyClass
 class MoreLanguagesClass extends BaseMountedVueClass {
   async mounted() {
     const {block, flow} = await this.baseMounted(BLOCK_TYPE, selectOneStore)
-    flow.languages = [{id: '1', label: 'English'}, {id: '2', label: 'French'}] // mutation
+    // mutation
+    flow.languages = [{id: '1', label: 'English'}, {id: '2', label: 'French'}]
   }
 }
+
 export const MoreLanguages = () => MoreLanguagesClass
 
 @Component({
@@ -79,8 +77,9 @@ class ExistingDataClass extends BaseMountedVueClassWithResourceAndMode {
     this.setDescription(blockId)
     this.setResourceData({
       shouldSetChoices: true,
-      configPath: 'config.prompt'
+      configPath: 'config.prompt',
     })
   }
 }
+
 export const ExistingData = () => ExistingDataClass

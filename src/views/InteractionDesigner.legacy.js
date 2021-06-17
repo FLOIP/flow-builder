@@ -33,11 +33,12 @@ export default {
 
     // Bind a handler to watch for page exits when the page is unsaved
     // window.onbeforeunload = function () {
-    $(window).on('beforeunload', () => {
-      if (builder.$store.getters.isEditable && builder.$store.getters.hasChanges) {
-        return 'You have unsaved changes. Are you sure you want to leave this page?'
-      }
-    })
+    $(window)
+      .on('beforeunload', () => {
+        if (builder.$store.getters.isEditable && builder.$store.getters.hasChanges) {
+          return 'You have unsaved changes. Are you sure you want to leave this page?'
+        }
+      })
 
     console.log('InteractionDesigner.legacy initialized')
   },
@@ -50,51 +51,53 @@ export default {
     },
 
     bindBlockDeleteOnKeydown() {
-      const { window, $, app } = global
+      const {window, $, app} = global
 
-      $(window).keydown((e) => {
-        if (!app.ui.isEditable) {
-          return
-        }
+      $(window)
+        .keydown((e) => {
+          if (!app.ui.isEditable) {
+            return
+          }
 
-        const tag = e.target.tagName.toLowerCase()
+          const tag = e.target.tagName.toLowerCase()
 
-        // If we select a block and press either ctrl-delete, ctrl key-backspace, cmd-delete or cmd-backspace
-        if ((e.metaKey || e.ctrlKey) && (e.keyCode === 46 || e.keyCode === 8)
+          // If we select a block and press either ctrl-delete, ctrl key-backspace, cmd-delete or cmd-backspace
+          if ((e.metaKey || e.ctrlKey) && (e.keyCode === 46 || e.keyCode === 8)
             && $('.tree-selected-block').length
             // Make sure we do not delete a selected block when
             // deleting text in an input or textbox.
             && tag !== 'input'
             && tag !== 'textarea') {
-          e.preventDefault()
-          this.deleteBlock()
-        }
-      })
+            e.preventDefault()
+            this.deleteBlock()
+          }
+        })
     },
 
     bindUndoBlockDeleteOnKeydown() {
-      const { window, $, app } = global
+      const {window, $, app} = global
 
-      $(window).keydown((e) => {
-        if (!app.ui.isEditable) {
-          return
-        }
+      $(window)
+        .keydown((e) => {
+          if (!app.ui.isEditable) {
+            return
+          }
 
-        // Save name of element.
-        const tag = e.target.tagName.toLowerCase()
+          // Save name of element.
+          const tag = e.target.tagName.toLowerCase()
 
-        // We allow undo only if we have a mostRecentlyDeletedBlock.
-        // This limits undo to just one level.
-        // Also make sure we're not undoing delete block when we're
-        // editing some text.
-        if (e.keyCode === 90
+          // We allow undo only if we have a mostRecentlyDeletedBlock.
+          // This limits undo to just one level.
+          // Also make sure we're not undoing delete block when we're
+          // editing some text.
+          if (e.keyCode === 90
             && e.ctrlKey
             && app.ui.mostRecentlyDeletedBlock
             && tag !== 'input'
             && tag !== 'textarea') {
-          this.undoDeleteBlock()
-        }
-      })
+            this.undoDeleteBlock()
+          }
+        })
     },
 
     // initializeJsPlumb() {
@@ -131,8 +134,10 @@ export default {
 
       // Thanks to
       // http://stackoverflow.com/a/5683169
-      const type = $(e.currentTarget).data('block-type')
-      const numConnections = $(e.currentTarget).data('default-num-connections')
+      const type = $(e.currentTarget)
+        .data('block-type')
+      const numConnections = $(e.currentTarget)
+        .data('default-num-connections')
 
       blockData = _.extend({}, _.get(this.$store.state.trees.ui.blockDefaults, type, {}))
 
@@ -169,7 +174,7 @@ export default {
       app.tree.addBlock(blockData)
       // this.resetJsPlumbBindings(false)
 
-      this.$store.dispatch('discoverTallestBlockForDesignerWorkspaceHeight', { aboveTallest: true })
+      this.$store.dispatch('discoverTallestBlockForDesignerWorkspaceHeight', {aboveTallest: true})
 
       app.ui.change('New block added.')
     },
@@ -205,7 +210,8 @@ export default {
       if (app.tree.get('details').hasSocial) {
         numConnections += 1
         outputTypes.push(10)
-        outputTypes.push(15) // Todo how can we push all social content types without needing to add a new number for each social network?
+        // Todo how can we push all social content types without needing to add a new number for each social network?
+        outputTypes.push(15)
         outputNames.push('trees.output-social')
       }
 
@@ -233,7 +239,7 @@ export default {
     // with the configuration of other webhook blocks in the tree.
     setWebhookConfigIfPossible(blockData) {
       const webhookBlockWithUrl = _.find(app.tree.get('blocks'), (b) => (b.type === 'WebhookBlock' && b.customData.url)
-          || (b.type === 'WebhookContentBlock' && b.customData.url))
+        || (b.type === 'WebhookContentBlock' && b.customData.url))
 
       if (!webhookBlockWithUrl) {
         return
@@ -256,11 +262,11 @@ export default {
 
       // Get array of block's own connections - both connections
       // going out of the block and connections coming into the block.
-      // 	Loop through all connections and check if selectedBlockKey
+      //     Loop through all connections and check if selectedBlockKey
       // can be found in any of the connections' startBlockKey or endBlockKey.
       _.each(allConnections, (connection) => {
         if (connection.endBlockKey == selectedBlockKey
-            || connection.startBlockKey == selectedBlockKey) {
+          || connection.startBlockKey == selectedBlockKey) {
           app.ui.mostRecentlyDeletedBlockConnections.push(connection)
         }
       })
@@ -269,7 +275,8 @@ export default {
     // Bring back most recently deleted block and redraw connections
     undoDeleteBlock() {
       // Add the most recently deleted block back into the blocks model.
-      app.tree.get('blocks').push(app.ui.mostRecentlyDeletedBlock)
+      app.tree.get('blocks')
+        .push(app.ui.mostRecentlyDeletedBlock)
 
       // Loop through most recently deleted connections and
       // see if any of them are already in current connections.
@@ -278,7 +285,8 @@ export default {
         if (_.includes(app.tree.get('connections'), connection)) {
           console.log('Ignoring duplicate connection...')
         } else {
-          app.tree.get('connections').push(connection)
+          app.tree.get('connections')
+            .push(connection)
         }
       })
 
@@ -298,7 +306,7 @@ export default {
       // Save copy of block and connections before deleting.
       this.saveCopyOfBlockBeforeDelete(selectedBlockKey)
 
-      const { numConnections } = selectedBlock.uiData
+      const {numConnections} = selectedBlock.uiData
 
       // Remove the connections from each of the nodes at the bottom of the block
       _.each(_.range(1, numConnections + 1), (index) => {
@@ -313,7 +321,8 @@ export default {
       // app.jsPlumb.detachAllConnections(selectedBlockKey + '_target');
 
       // Remove the block element from the DOM via jQuery
-      $(selectedBlockElement).remove()
+      $(selectedBlockElement)
+        .remove()
 
       // Remove the actual entry from the model's blocks array
       app.tree.deleteBlock(selectedBlockKey)
@@ -346,7 +355,8 @@ export default {
       duplicateBlock.uiData.yPosition += 60
 
       // Add the new block into the data model
-      app.tree.get('blocks').push(duplicateBlock)
+      app.tree.get('blocks')
+        .push(duplicateBlock)
 
       // Select the new block
       this.selectBlock(duplicateBlock.jsKey)
@@ -382,7 +392,7 @@ export default {
     },
 
     makeEditable() {
-      this.$store.commit('updateIsEditable', { value: 1 })
+      this.$store.commit('updateIsEditable', {value: 1})
       // this.deselectBlocks()
       this.initializeAll(1)
     },
@@ -391,7 +401,7 @@ export default {
       // By default, save before un-editing.
       this.saveTree()
 
-      this.$store.commit('updateIsEditable', { value: 0 })
+      this.$store.commit('updateIsEditable', {value: 0})
       // this.deselectBlocks()
       this.initializeAll(1)
     },
@@ -407,8 +417,10 @@ export default {
     handleSelectBlock(e) {
       e.stopPropagation()
 
-      const block = $(e.currentTarget).parent()
-      const blockKey = $(block).attr('id')
+      const block = $(e.currentTarget)
+        .parent()
+      const blockKey = $(block)
+        .attr('id')
 
       this.selectBlock(blockKey)
     },

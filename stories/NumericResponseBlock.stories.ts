@@ -1,15 +1,12 @@
 import NumericResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import numericResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
 import {SupportedMode} from '@floip/flow-runner'
-import {
-  BaseMountedVueClass,
-  BaseMountedVueClassWithResourceAndMode, IBaseOptions,
-} from './story-utils/storeSetup'
 import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
+import {BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode, IBaseOptions} from './story-utils/storeSetup'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 Vue.use(Vuex)
 
@@ -39,13 +36,14 @@ const BaseOptions: IBaseOptions = {
 @Component(
   {
     ...BaseOptions,
-  }
+  },
 )
 class CurrentClass1 extends BaseMountedVueClass {
   async mounted() {
     await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
   }
 }
+
 export const Default = () => (CurrentClass1)
 
 // ExistingDataForAllModes
@@ -59,17 +57,18 @@ class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
     this.setDescription(blockId)
     this.setResourceData({
       shouldSetChoices: false,
-      configPath: 'config.prompt'
+      configPath: 'config.prompt',
     })
-    this.setValidationMinimum({blockId, value:0})
-    this.setValidationMaximum({blockId, value:99})
-    this.setMaxDigits({blockId, value:2})
+    this.setValidationMinimum({blockId, value: 0})
+    this.setValidationMaximum({blockId, value: 99})
+    this.setMaxDigits({blockId, value: 2})
   }
 
-  @blockVuexNamespace.Action setValidationMinimum:any
-  @blockVuexNamespace.Action setValidationMaximum:any
-  @blockVuexNamespace.Action setMaxDigits:any
+  @blockVuexNamespace.Action setValidationMinimum: any
+  @blockVuexNamespace.Action setValidationMaximum: any
+  @blockVuexNamespace.Action setMaxDigits: any
 }
+
 export const ExistingDataForAllModes = () => (CurrentClass2)
 
 // ExistingDataForIvrOnly
@@ -81,20 +80,21 @@ class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: SupportedMode.IVR})
-    this.setValidationMinimum({blockId, value:0})
-    this.setValidationMaximum({blockId, value:99})
-    this.setMaxDigits({blockId, value:2})
+    this.setValidationMinimum({blockId, value: 0})
+    this.setValidationMaximum({blockId, value: 99})
+    this.setMaxDigits({blockId, value: 2})
     this.setDescription(blockId)
     this.setResourceData({
       shouldSetChoices: false,
-      configPath: 'config.prompt'
+      configPath: 'config.prompt',
     })
   }
 
-  @blockVuexNamespace.Action setValidationMinimum:any
-  @blockVuexNamespace.Action setValidationMaximum:any
-  @blockVuexNamespace.Action setMaxDigits:any
+  @blockVuexNamespace.Action setValidationMinimum: any
+  @blockVuexNamespace.Action setValidationMaximum: any
+  @blockVuexNamespace.Action setMaxDigits: any
 }
+
 export const ExistingDataForIvrOnly = () => (CurrentClass3)
 
 //ExistingDataForTextOnly
@@ -106,25 +106,26 @@ class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: [SupportedMode.SMS, SupportedMode.USSD]})
-    this.setValidationMinimum({blockId, value:0})
-    this.setValidationMaximum({blockId, value:99})
+    this.setValidationMinimum({blockId, value: 0})
+    this.setValidationMaximum({blockId, value: 99})
     this.setDescription(blockId)
     this.setResourceData({
       shouldSetChoices: false,
-      configPath: 'config.prompt'
+      configPath: 'config.prompt',
     })
   }
 
-  @blockVuexNamespace.Action setValidationMinimum:any
-  @blockVuexNamespace.Action setValidationMaximum:any
+  @blockVuexNamespace.Action setValidationMinimum: any
+  @blockVuexNamespace.Action setValidationMaximum: any
 }
+
 export const ExistingDataForTextOnly = () => (CurrentClass4)
 
 //NonStartingBlock
 @Component(
-    {
-      ...BaseOptions,
-    }
+  {
+    ...BaseOptions,
+  },
 )
 class CurrentClass5 extends BaseMountedVueClass {
   async mounted() {
@@ -134,4 +135,5 @@ class CurrentClass5 extends BaseMountedVueClass {
     await this.fakeCaseBlockAsFirstBlock(flowId)
   }
 }
+
 export const NonStartingBlock = () => (CurrentClass5)

@@ -26,7 +26,7 @@
     "paths": {
       "@/*": [
         "src/*"
-      ]
+      ],
     },
     "lib": [
       "esnext",
@@ -38,11 +38,16 @@
   "include": [
     ".eslintrc.js",
     "src/**/*.ts",
+    "src/**/*.js",
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
+    "tests/**/*.js",
     "tests/**/*.tsx",
-    "stories/**/*.ts"
+    "stories/.eslintrc.js",
+    "stories/**/*.ts",
+    "stories/**/*.js",
+    "stories/**/*.vue",
   ],
   "exclude": [
     "node_modules",

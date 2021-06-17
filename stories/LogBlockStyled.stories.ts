@@ -1,10 +1,10 @@
 import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
+import {Component, Vue} from 'vue-property-decorator'
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
-import {Component, Vue} from "vue-property-decorator";
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 Vue.use(Vuex)
 
@@ -36,6 +36,7 @@ class DefaultClass extends BaseMountedVueClass {
     await this.baseMounted(BLOCK_TYPE, logBlockStore)
   }
 }
+
 export const Default = () => (DefaultClass)
 
 @Component({
@@ -48,6 +49,7 @@ class CurrentClass2 extends BaseMountedVueClass {
     this.setDescription(blockId)
   }
 }
+
 export const ExistingDataBlock = () => (CurrentClass2)
 
 @Component({
@@ -61,4 +63,5 @@ class CurrentClass3 extends BaseMountedVueClass {
     await this.fakeCaseBlockAsFirstBlock(flowId)
   }
 }
+
 export const ExistingDataNonStartingBlock = () => (CurrentClass3)

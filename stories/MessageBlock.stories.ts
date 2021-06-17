@@ -1,14 +1,11 @@
 import MessageBlock from '@/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import messageBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
-import {
-  BaseMountedVueClass,
-  BaseMountedVueClassWithResourceAndMode, IBaseOptions,
-} from './story-utils/storeSetup'
 
 import {Component, Vue} from 'vue-property-decorator'
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
+import {BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode, IBaseOptions} from './story-utils/storeSetup'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 Vue.use(Vuex)
 
@@ -39,13 +36,14 @@ class DefaultClass extends BaseMountedVueClass {
     await this.baseMounted(BLOCK_TYPE, messageBlockStore)
   }
 }
+
 // default log block state
 export const Default = () => (DefaultClass)
 
 @Component(
   {
     ...BaseOptions,
-  }
+  },
 )
 class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
@@ -54,16 +52,17 @@ class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
     this.setDescription(blockId)
     this.setResourceData({
       shouldSetChoices: false,
-      configPath: 'config.prompt'
+      configPath: 'config.prompt',
     })
   }
 }
+
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
 
 @Component(
   {
     ...BaseOptions,
-  }
+  },
 )
 class NonStartingBlockClass extends BaseMountedVueClass {
   async mounted() {
@@ -71,4 +70,5 @@ class NonStartingBlockClass extends BaseMountedVueClass {
     await this.fakeCaseBlockAsFirstBlock(flowId)
   }
 }
+
 export const NonStartingBlock = () => (NonStartingBlockClass)

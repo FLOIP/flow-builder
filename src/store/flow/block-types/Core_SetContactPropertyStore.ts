@@ -1,17 +1,14 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {
-  IBlockExit,
-  ISetContactPropertyBlockConfig
-} from '@floip/flow-runner'
+import {IBlockExit, ISetContactPropertyBlockConfig} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {defaultsDeep} from 'lodash'
 import {IFlowsState} from '../index'
 
 export interface IContactPropertyOption {
-  id: string
-  name: string
-  displayLabel: string
+  id: string,
+  name: string,
+  displayLabel: string,
 }
 
 export const BLOCK_TYPE = 'Core.SetContactProperty'
@@ -21,11 +18,11 @@ export const getters: GetterTree<IFlowsState, IRootState> = {}
 export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async editSetContactPropertyExpression({commit}, {blockId, value}: { blockId: string; value: string }): Promise<string> {
+  async editSetContactPropertyExpression({commit}, {blockId, value}: { blockId: string, value: string }): Promise<string> {
     commit('flow/block_updateConfigByPath', {
-      blockId: blockId,
+      blockId,
       path: 'set_contact_property.property_value',
-      value
+      value,
     }, {root: true})
 
     return value
@@ -49,7 +46,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       config: {
         set_contact_property: {
           property_key: '',
-          property_value: ''
+          property_value: '',
         },
       },
       exits,

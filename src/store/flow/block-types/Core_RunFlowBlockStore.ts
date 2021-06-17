@@ -1,33 +1,30 @@
-import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import { IRootState } from '@/store'
-import {
-  IBlockExit,
-  IFlow,
-} from '@floip/flow-runner'
-import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock'
-import { defaultsDeep } from 'lodash'
-import { IFlowsState } from '../index'
+import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {IRootState} from '@/store'
+import {IBlockExit, IFlow} from '@floip/flow-runner'
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
+import {defaultsDeep} from 'lodash'
+import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'Core.RunFlow'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  otherFlows: (state, getters, rootState, rootGetters): IFlow[] => {
-    return rootState.flow.flows.filter((flow: IFlow) => {
-      return flow.uuid !== rootGetters['flow/activeFlow'].uuid
-    })
-  },
+  otherFlows: (
+    _state,
+    _getters,
+    rootState,
+    rootGetters,
+  ): IFlow[] => rootState.flow.flows.filter((flow: IFlow) => flow.uuid !== rootGetters['flow/activeFlow'].uuid),
 }
 
-export const mutations: MutationTree<IFlowsState> = {
-}
+export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async setDestinationFlowId({ commit }, { blockId, newDestinationFlowId }: {blockId: string; newDestinationFlowId: string}) {
-    commit('flow/block_updateConfig', { blockId, newConfig: { flow_id: newDestinationFlowId } }, { root: true })
+  async setDestinationFlowId({commit}, {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string }) {
+    commit('flow/block_updateConfig', {blockId, newConfig: {flow_id: newDestinationFlowId}}, {root: true})
     return newDestinationFlowId
   },
-  async createWith({ dispatch }, { props }: {props: {uuid: string} & Partial<IRunFlowBlock>}) {
+  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IRunFlowBlock> }) {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
@@ -35,14 +32,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
-      }, { root: true }),
+      }, {root: true}),
       await dispatch('flow/block_createBlockExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: 'Error',
           label: 'Error',
         }) as IBlockExit,
-      }, { root: true }),
+      }, {root: true}),
     ]
 
     return defaultsDeep(props, {

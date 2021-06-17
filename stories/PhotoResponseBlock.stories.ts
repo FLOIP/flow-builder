@@ -1,10 +1,10 @@
 import PhotoResponseBlock from '@/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import photoResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
-import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import {Component, Vue} from 'vue-property-decorator'
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 Vue.use(Vuex)
 
@@ -30,20 +30,21 @@ const BaseOptions: IBaseOptions = {
 
 // default photo-response block state
 @Component(
-    {
-        ...BaseOptions,
-    }
+  {
+    ...BaseOptions,
+  },
 )
 class CurrentClass1 extends BaseMountedVueClass {
   async mounted() {
     await this.baseMounted(BLOCK_TYPE, photoResponseBlockStore)
   }
 }
+
 export const Default = () => (CurrentClass1)
 
 //ExistingDataPreFilled
 @Component({
-    ...BaseOptions,
+  ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClass {
   async mounted() {
@@ -52,13 +53,14 @@ class CurrentClass2 extends BaseMountedVueClass {
     this.setDescription(blockId)
   }
 }
+
 export const ExistingDataPreFilled = () => (CurrentClass2)
 
 //NonStartingBlock
 @Component(
-    {
-        ...BaseOptions,
-    }
+  {
+    ...BaseOptions,
+  },
 )
 class CurrentClass3 extends BaseMountedVueClass {
   async mounted() {
@@ -68,4 +70,5 @@ class CurrentClass3 extends BaseMountedVueClass {
     await this.fakeCaseBlockAsFirstBlock(flowId)
   }
 }
+
 export const NonStartingBlock = () => (CurrentClass3)
