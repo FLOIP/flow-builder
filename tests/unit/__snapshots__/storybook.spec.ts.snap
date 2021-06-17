@@ -169,9 +169,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               <div
                                 class="form-group flow-label"
                               >
-                                <div
-                                  class="form-group"
-                                >
+                                <div>
                                   <label>
                                     Flow label
                                   </label>
@@ -185,25 +183,36 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               </div>
                                
                               <div
-                                class="form-group flow-interaction-timeout"
+                                class="validation-message form-group"
+                                id="flow/fake-uuid-8/interaction_timeout"
                               >
                                 <div
-                                  class="number-editor"
+                                  class="form-group flow-interaction-timeout"
                                 >
-                                  <label>
-                                    Interaction timeout
-                                  </label>
-                                   
-                                  <div>
-                                    <input
-                                      class="form-control"
-                                      min="0"
-                                      placeholder="Enter value"
-                                      type="number"
-                                    />
+                                  <div
+                                    class="number-editor"
+                                  >
+                                    <label>
+                                      Interaction timeout
+                                    </label>
+                                     
+                                    <div>
+                                      <input
+                                        class="form-control"
+                                        min="0"
+                                        placeholder="Enter value"
+                                        type="number"
+                                      />
+                                    </div>
+                                     
                                   </div>
-                                   
                                 </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
                               </div>
                             </div>
                              
@@ -260,6 +269,22 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   Modes
                                 </label>
                                  
+                                <div
+                                  class="checkbox"
+                                >
+                                  <label
+                                    class="font-weight-normal"
+                                  >
+                                    <input
+                                      class="flow-mode-toggle-checkbox"
+                                      type="checkbox"
+                                      value="TEXT"
+                                    />
+                                    
+      TEXT
+    
+                                  </label>
+                                </div>
                                 <div
                                   class="checkbox"
                                 >
@@ -389,73 +414,85 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
               <div
                 class="tree-builder-toolbar"
               >
-                <!---->
-                 
                 <div
-                  class="tree-workspace-panel-heading panel-heading"
+                  class="tree-builder-toolbar-main-menu"
                 >
+                  <!---->
+                   
                   <div
-                    class="tree-workspace-panel-heading-contents"
+                    class="tree-workspace-panel-heading panel-heading"
                   >
                     <div
-                      class="btn-toolbar"
+                      class="tree-workspace-panel-heading-contents"
                     >
-                      <button
-                        class="btn btn-outline-secondary mr-2"
-                      >
-                        <i
-                          class="glyphicon glyphicon-chevron-up"
-                        />
-                        
-          Import / Export
-        
-                      </button>
-                       
-                      <!---->
-                       
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="#/trees/1/interaction-designer/edit"
-                        title="Click to toggle editing"
-                      >
-                        
-            Edit Flow
-          
-                      </a>
-                       
-                      <!---->
-                       
-                      <!---->
-                       
-                      <!---->
-                       
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="#/flows/new"
-                      >
-                        
-          New Flow
-        
-                      </a>
-                       
-                      <a
-                        aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
-                        href="#/"
-                      >
-                        
-          Home
-        
-                      </a>
-                        
                       <div
-                        class="btn-group pull-right mr-2"
+                        class="btn-toolbar"
                       >
+                        <button
+                          class="btn btn-secondary mr-2"
+                        >
+                          <i
+                            class="glyphicon glyphicon-chevron-up"
+                          />
+                          
+            Import / Export
+          
+                        </button>
+                         
                         <!---->
                          
+                        <a
+                          class="btn btn-secondary mr-2"
+                          href="#/trees/1/interaction-designer/edit"
+                          title="Click to toggle editing"
+                        >
+                          
+            Edit Flow
+          
+                        </a>
+                         
+                        <!---->
+                         
+                        <a
+                          class="btn btn-secondary mr-2"
+                          href="#/flows/new"
+                        >
+                          
+            New Flow
+          
+                        </a>
+                         
+                        <a
+                          aria-current="page"
+                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
+                          href="#/"
+                        >
+                          
+            Home
+          
+                        </a>
+                          
+                        <div
+                          class="btn-group ml-auto mr-2"
+                        >
+                          <!---->
+                           
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div>
+                 
+                <div
+                  class="tree-builder-toolbar-alerts w-100"
+                >
+                  <!---->
+                   
+                  <main
+                    class="error-notifications-wrapper"
+                  >
+                    <!---->
+                  </main>
                 </div>
               </div>
             </div>
@@ -492,324 +529,320 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
               <div
                 class="tree-builder-toolbar"
               >
-                <!---->
-                 
                 <div
-                  class="tree-workspace-panel-heading panel-heading"
+                  class="tree-builder-toolbar-main-menu"
                 >
+                  <!---->
+                   
                   <div
-                    class="tree-workspace-panel-heading-contents"
+                    class="tree-workspace-panel-heading panel-heading"
                   >
                     <div
-                      class="btn-toolbar"
+                      class="tree-workspace-panel-heading-contents"
                     >
-                      <button
-                        class="btn btn-outline-secondary mr-2"
-                      >
-                        <i
-                          class="glyphicon glyphicon-chevron-up"
-                        />
-                        
-          Import / Export
-        
-                      </button>
-                       
                       <div
-                        class="btn-group mr-2"
-                      >
-                        <a
-                          class="btn btn-outline-secondary active"
-                          href="#/trees/1/interaction-designer"
-                        >
-                          
-            Flow view
-          
-                        </a>
-                         
-                        <a
-                          class="btn btn-secondary"
-                          href="#/trees/1/resource-viewer"
-                        >
-                          
-            Resources view
-          
-                        </a>
-                      </div>
-                       
-                      <a
-                        class="btn btn-outline-secondary mr-2 active"
-                        href="#/trees/1/interaction-designer/view"
-                        title="Click to toggle editing"
-                      >
-                        
-            View Flow
-          
-                      </a>
-                       
-                      <div
-                        class="dropdown mr-2"
+                        class="btn-toolbar"
                       >
                         <button
-                          class="btn btn-outline-secondary dropdown-toggle"
-                          data-toggle="dropdown"
-                          type="button"
+                          class="btn btn-secondary mr-2"
                         >
+                          <i
+                            class="glyphicon glyphicon-chevron-up"
+                          />
                           
-            Add Block
+            Import / Export
           
                         </button>
                          
                         <div
-                          class="dropdown-menu"
+                          class="btn-group mr-2"
                         >
-                          <!---->
-                           
                           <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO.Print"
-                            href="#"
+                            class="btn btn-secondary active"
+                            href="#/trees/1/interaction-designer"
                           >
                             
-                Print
-              
+              Flow view
+            
                           </a>
-                          <!---->
                            
                           <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO.Read"
-                            href="#"
+                            class="btn btn-secondary"
+                            href="#/trees/1/resource-viewer"
                           >
                             
-                Read
-              
+              Resources view
+            
                           </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.Case"
-                            href="#"
-                          >
-                            
-                Case
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.Log"
-                            href="#"
-                          >
-                            
-                Log
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.Output"
-                            href="#"
-                          >
-                            
-                Output
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.RunFlow"
-                            href="#"
-                          >
-                            
-                Run Flow
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.SetContactProperty"
-                            href="#"
-                          >
-                            
-                Set Contact Property
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.SetGroupMembership"
-                            href="#"
-                          >
-                            
-                Set Group Membership
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.Message"
-                            href="#"
-                          >
-                            
-                Message
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.NumericResponse"
-                            href="#"
-                          >
-                            
-                Numeric Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.OpenResponse"
-                            href="#"
-                          >
-                            
-                Open Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.SelectOneResponse"
-                            href="#"
-                          >
-                            
-                Select One Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.SelectManyResponse"
-                            href="#"
-                          >
-                            
-                Select Many Responses
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices.LocationResponse"
-                            href="#"
-                          >
-                            
-                Location Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices.PhotoResponse"
-                            href="#"
-                          >
-                            
-                Photo Response
-              
-                          </a>
-                           
-                          <!---->
-                           
-                          <!---->
                         </div>
-                      </div>
-                       
-                      <button
-                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
-                        disabled="disabled"
-                        type="button"
-                      >
-                        
-          Duplicate
-        
-                      </button>
-                       
-                      <button
-                        class="btn btn-outline-secondary tree-delete-block mr-2"
-                        disabled="disabled"
-                        type="button"
-                      >
-                        
-          Delete
-        
-                      </button>
-                       
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="#/flows/new"
-                      >
-                        
-          New Flow
-        
-                      </a>
-                       
-                      <a
-                        aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
-                        href="#/"
-                      >
-                        
-          Home
-        
-                      </a>
-                       
-                      <a
-                        class="btn btn-success"
-                        disabled="disabled"
-                        href="#"
-                        title="another grouped button"
-                      >
-                        
-           Action X
-        
-                      </a>
-                       
-                      <a
-                        class="btn btn-warning"
-                        href="#"
-                        title="another grouped button"
-                      >
-                        
-           Action Y
-        
-                      </a>
-                       
-                      <div
-                        class="btn-group pull-right mr-2"
-                      >
-                        <button
-                          class="btn btn-primary tree-save-tree"
-                          title="Save changes to the flow"
-                          type="button"
+                         
+                        <a
+                          class="btn btn-secondary mr-2 active"
+                          href="#/trees/1/interaction-designer/view"
+                          title="Click to toggle editing"
                         >
                           
-            Save
+            View Flow
           
-                        </button>
+                        </a>
                          
+                        <div
+                          class="dropdown mr-2"
+                        >
+                          <button
+                            class="btn btn-secondary dropdown-toggle"
+                            data-toggle="dropdown"
+                            type="button"
+                          >
+                            
+              Add Block
+            
+                          </button>
+                           
+                          <div
+                            class="dropdown-menu"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="ConsoleIO.Print"
+                              href="#"
+                            >
+                              
+                  Print
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="ConsoleIO.Read"
+                              href="#"
+                            >
+                              
+                  Read
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.Case"
+                              href="#"
+                            >
+                              
+                  Case
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.Log"
+                              href="#"
+                            >
+                              
+                  Log
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.Output"
+                              href="#"
+                            >
+                              
+                  Output
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.RunFlow"
+                              href="#"
+                            >
+                              
+                  Run Flow
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.SetContactProperty"
+                              href="#"
+                            >
+                              
+                  Set Contact Property
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.SetGroupMembership"
+                              href="#"
+                            >
+                              
+                  Set Group Membership
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.Message"
+                              href="#"
+                            >
+                              
+                  Message
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.NumericResponse"
+                              href="#"
+                            >
+                              
+                  Numeric Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.OpenResponse"
+                              href="#"
+                            >
+                              
+                  Open Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.SelectOneResponse"
+                              href="#"
+                            >
+                              
+                  Select One Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.SelectManyResponse"
+                              href="#"
+                            >
+                              
+                  Select Many Responses
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="SmartDevices.LocationResponse"
+                              href="#"
+                            >
+                              
+                  Location Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="SmartDevices.PhotoResponse"
+                              href="#"
+                            >
+                              
+                  Photo Response
+                
+                            </a>
+                             
+                            <!---->
+                             
+                            <!---->
+                          </div>
+                        </div>
+                         
+                        <a
+                          class="btn btn-secondary mr-2"
+                          href="#/flows/new"
+                        >
+                          
+            New Flow
+          
+                        </a>
+                         
+                        <a
+                          aria-current="page"
+                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
+                          href="#/"
+                        >
+                          
+            Home
+          
+                        </a>
+                         
+                        <a
+                          class="btn btn-success"
+                          disabled="disabled"
+                          href="#"
+                          title="another grouped button"
+                        >
+                          
+           Action X
+        
+                        </a>
+                         
+                        <a
+                          class="btn btn-warning"
+                          href="#"
+                          title="another grouped button"
+                        >
+                          
+           Action Y
+        
+                        </a>
+                         
+                        <div
+                          class="btn-group ml-auto mr-2"
+                        >
+                          <button
+                            class="btn btn-primary tree-save-tree"
+                            title="Save changes to the flow"
+                            type="button"
+                          >
+                            
+              Save
+            
+                          </button>
+                           
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div>
+                 
+                <div
+                  class="tree-builder-toolbar-alerts w-100"
+                >
+                  <!---->
+                   
+                  <main
+                    class="error-notifications-wrapper"
+                  >
+                    <!---->
+                  </main>
                 </div>
               </div>
             </div>
@@ -846,323 +879,319 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
               <div
                 class="tree-builder-toolbar"
               >
-                <!---->
-                 
                 <div
-                  class="tree-workspace-panel-heading panel-heading"
+                  class="tree-builder-toolbar-main-menu"
                 >
+                  <!---->
+                   
                   <div
-                    class="tree-workspace-panel-heading-contents"
+                    class="tree-workspace-panel-heading panel-heading"
                   >
                     <div
-                      class="btn-toolbar"
+                      class="tree-workspace-panel-heading-contents"
                     >
-                      <button
-                        class="btn btn-outline-secondary mr-2"
-                      >
-                        <i
-                          class="glyphicon glyphicon-chevron-up"
-                        />
-                        
-          Import / Export
-        
-                      </button>
-                       
                       <div
-                        class="btn-group mr-2"
-                      >
-                        <a
-                          class="btn btn-outline-secondary active"
-                          href="#/trees/1/interaction-designer"
-                        >
-                          
-            Flow view
-          
-                        </a>
-                         
-                        <a
-                          class="btn btn-secondary"
-                          href="#/trees/1/resource-viewer"
-                        >
-                          
-            Resources view
-          
-                        </a>
-                      </div>
-                       
-                      <a
-                        class="btn btn-outline-secondary mr-2 active"
-                        href="#/trees/1/interaction-designer/view"
-                        title="Click to toggle editing"
-                      >
-                        
-            View Flow
-          
-                      </a>
-                       
-                      <div
-                        class="dropdown mr-2"
+                        class="btn-toolbar"
                       >
                         <button
-                          class="btn btn-outline-secondary dropdown-toggle"
-                          data-toggle="dropdown"
-                          type="button"
+                          class="btn btn-secondary mr-2"
                         >
+                          <i
+                            class="glyphicon glyphicon-chevron-up"
+                          />
                           
-            Add Block
+            Import / Export
           
                         </button>
                          
                         <div
-                          class="dropdown-menu"
+                          class="btn-group mr-2"
                         >
-                          <!---->
-                           
                           <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO.Print"
-                            href="#"
+                            class="btn btn-secondary active"
+                            href="#/trees/1/interaction-designer"
                           >
                             
-                Print
-              
+              Flow view
+            
                           </a>
-                          <!---->
                            
                           <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO.Read"
-                            href="#"
+                            class="btn btn-secondary"
+                            href="#/trees/1/resource-viewer"
                           >
                             
-                Read
-              
+              Resources view
+            
                           </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.Case"
-                            href="#"
-                          >
-                            
-                Case
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.Log"
-                            href="#"
-                          >
-                            
-                Log
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.Output"
-                            href="#"
-                          >
-                            
-                Output
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.RunFlow"
-                            href="#"
-                          >
-                            
-                Run Flow
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.SetContactProperty"
-                            href="#"
-                          >
-                            
-                Set Contact Property
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.SetGroupMembership"
-                            href="#"
-                          >
-                            
-                Set Group Membership
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.Message"
-                            href="#"
-                          >
-                            
-                Message
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.NumericResponse"
-                            href="#"
-                          >
-                            
-                Numeric Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.OpenResponse"
-                            href="#"
-                          >
-                            
-                Open Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.SelectOneResponse"
-                            href="#"
-                          >
-                            
-                Select One Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.SelectManyResponse"
-                            href="#"
-                          >
-                            
-                Select Many Responses
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices.LocationResponse"
-                            href="#"
-                          >
-                            
-                Location Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices.PhotoResponse"
-                            href="#"
-                          >
-                            
-                Photo Response
-              
-                          </a>
-                           
-                          <!---->
-                           
-                          <!---->
                         </div>
-                      </div>
-                       
-                      <button
-                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
-                        disabled="disabled"
-                        type="button"
-                      >
-                        
-          Duplicate
-        
-                      </button>
-                       
-                      <button
-                        class="btn btn-outline-secondary tree-delete-block mr-2"
-                        disabled="disabled"
-                        type="button"
-                      >
-                        
-          Delete
-        
-                      </button>
-                       
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="#/flows/new"
-                      >
-                        
-          New Flow
-        
-                      </a>
-                       
-                      <a
-                        aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
-                        href="#/"
-                      >
-                        
-          Home
-        
-                      </a>
-                        
-                      <div
-                        class="btn-group pull-right mr-2"
-                      >
-                        <button
-                          class="btn btn-primary tree-save-tree"
-                          title="Save changes to the flow"
-                          type="button"
-                        >
-                          
-            Save
-          
-                        </button>
                          
                         <a
-                          class="btn btn-success"
-                          disabled="disabled"
-                          href="#"
-                          title="another grouped button"
+                          class="btn btn-secondary mr-2 active"
+                          href="#/trees/1/interaction-designer/view"
+                          title="Click to toggle editing"
                         >
                           
+            View Flow
+          
+                        </a>
+                         
+                        <div
+                          class="dropdown mr-2"
+                        >
+                          <button
+                            class="btn btn-secondary dropdown-toggle"
+                            data-toggle="dropdown"
+                            type="button"
+                          >
+                            
+              Add Block
+            
+                          </button>
+                           
+                          <div
+                            class="dropdown-menu"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="ConsoleIO.Print"
+                              href="#"
+                            >
+                              
+                  Print
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="ConsoleIO.Read"
+                              href="#"
+                            >
+                              
+                  Read
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.Case"
+                              href="#"
+                            >
+                              
+                  Case
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.Log"
+                              href="#"
+                            >
+                              
+                  Log
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.Output"
+                              href="#"
+                            >
+                              
+                  Output
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.RunFlow"
+                              href="#"
+                            >
+                              
+                  Run Flow
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.SetContactProperty"
+                              href="#"
+                            >
+                              
+                  Set Contact Property
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.SetGroupMembership"
+                              href="#"
+                            >
+                              
+                  Set Group Membership
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.Message"
+                              href="#"
+                            >
+                              
+                  Message
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.NumericResponse"
+                              href="#"
+                            >
+                              
+                  Numeric Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.OpenResponse"
+                              href="#"
+                            >
+                              
+                  Open Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.SelectOneResponse"
+                              href="#"
+                            >
+                              
+                  Select One Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.SelectManyResponse"
+                              href="#"
+                            >
+                              
+                  Select Many Responses
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="SmartDevices.LocationResponse"
+                              href="#"
+                            >
+                              
+                  Location Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="SmartDevices.PhotoResponse"
+                              href="#"
+                            >
+                              
+                  Photo Response
+                
+                            </a>
+                             
+                            <!---->
+                             
+                            <!---->
+                          </div>
+                        </div>
+                         
+                        <a
+                          class="btn btn-secondary mr-2"
+                          href="#/flows/new"
+                        >
+                          
+            New Flow
+          
+                        </a>
+                         
+                        <a
+                          aria-current="page"
+                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
+                          href="#/"
+                        >
+                          
+            Home
+          
+                        </a>
+                          
+                        <div
+                          class="btn-group ml-auto mr-2"
+                        >
+                          <button
+                            class="btn btn-primary tree-save-tree"
+                            title="Save changes to the flow"
+                            type="button"
+                          >
+                            
+              Save
+            
+                          </button>
+                           
+                          <a
+                            class="btn btn-success"
+                            disabled="disabled"
+                            href="#"
+                            title="another grouped button"
+                          >
+                            
            Action X
         
-                        </a>
-                         
-                        <a
-                          class="btn btn-warning"
-                          href="#"
-                          title="another grouped button"
-                        >
-                          
+                          </a>
+                           
+                          <a
+                            class="btn btn-warning"
+                            href="#"
+                            title="another grouped button"
+                          >
+                            
            Action Y
         
-                        </a>
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div>
+                 
+                <div
+                  class="tree-builder-toolbar-alerts w-100"
+                >
+                  <!---->
+                   
+                  <main
+                    class="error-notifications-wrapper"
+                  >
+                    <!---->
+                  </main>
                 </div>
               </div>
             </div>
@@ -1199,295 +1228,291 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
               <div
                 class="tree-builder-toolbar"
               >
-                <!---->
-                 
                 <div
-                  class="tree-workspace-panel-heading panel-heading"
+                  class="tree-builder-toolbar-main-menu"
                 >
+                  <!---->
+                   
                   <div
-                    class="tree-workspace-panel-heading-contents"
+                    class="tree-workspace-panel-heading panel-heading"
                   >
                     <div
-                      class="btn-toolbar"
+                      class="tree-workspace-panel-heading-contents"
                     >
-                      <button
-                        class="btn btn-outline-secondary mr-2"
-                      >
-                        <i
-                          class="glyphicon glyphicon-chevron-up"
-                        />
-                        
-          Import / Export
-        
-                      </button>
-                       
                       <div
-                        class="btn-group mr-2"
-                      >
-                        <a
-                          class="btn btn-outline-secondary active"
-                          href="#/trees/1/interaction-designer"
-                        >
-                          
-            Flow view
-          
-                        </a>
-                         
-                        <a
-                          class="btn btn-secondary"
-                          href="#/trees/1/resource-viewer"
-                        >
-                          
-            Resources view
-          
-                        </a>
-                      </div>
-                       
-                      <a
-                        class="btn btn-outline-secondary mr-2 active"
-                        href="#/trees/1/interaction-designer/view"
-                        title="Click to toggle editing"
-                      >
-                        
-            View Flow
-          
-                      </a>
-                       
-                      <div
-                        class="dropdown mr-2"
+                        class="btn-toolbar"
                       >
                         <button
-                          class="btn btn-outline-secondary dropdown-toggle"
-                          data-toggle="dropdown"
-                          type="button"
+                          class="btn btn-secondary mr-2"
                         >
+                          <i
+                            class="glyphicon glyphicon-chevron-up"
+                          />
                           
-            Add Block
+            Import / Export
           
                         </button>
                          
                         <div
-                          class="dropdown-menu"
+                          class="btn-group mr-2"
+                        >
+                          <a
+                            class="btn btn-secondary active"
+                            href="#/trees/1/interaction-designer"
+                          >
+                            
+              Flow view
+            
+                          </a>
+                           
+                          <a
+                            class="btn btn-secondary"
+                            href="#/trees/1/resource-viewer"
+                          >
+                            
+              Resources view
+            
+                          </a>
+                        </div>
+                         
+                        <a
+                          class="btn btn-secondary mr-2 active"
+                          href="#/trees/1/interaction-designer/view"
+                          title="Click to toggle editing"
+                        >
+                          
+            View Flow
+          
+                        </a>
+                         
+                        <div
+                          class="dropdown mr-2"
+                        >
+                          <button
+                            class="btn btn-secondary dropdown-toggle"
+                            data-toggle="dropdown"
+                            type="button"
+                          >
+                            
+              Add Block
+            
+                          </button>
+                           
+                          <div
+                            class="dropdown-menu"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="ConsoleIO.Print"
+                              href="#"
+                            >
+                              
+                  Print
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="ConsoleIO.Read"
+                              href="#"
+                            >
+                              
+                  Read
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.Case"
+                              href="#"
+                            >
+                              
+                  Case
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.Log"
+                              href="#"
+                            >
+                              
+                  Log
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.Output"
+                              href="#"
+                            >
+                              
+                  Output
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.RunFlow"
+                              href="#"
+                            >
+                              
+                  Run Flow
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.SetContactProperty"
+                              href="#"
+                            >
+                              
+                  Set Contact Property
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="Core.SetGroupMembership"
+                              href="#"
+                            >
+                              
+                  Set Group Membership
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.Message"
+                              href="#"
+                            >
+                              
+                  Message
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.NumericResponse"
+                              href="#"
+                            >
+                              
+                  Numeric Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.OpenResponse"
+                              href="#"
+                            >
+                              
+                  Open Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.SelectOneResponse"
+                              href="#"
+                            >
+                              
+                  Select One Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="MobilePrimitives.SelectManyResponse"
+                              href="#"
+                            >
+                              
+                  Select Many Responses
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="SmartDevices.LocationResponse"
+                              href="#"
+                            >
+                              
+                  Location Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item tree-add-block"
+                              data-block-type="SmartDevices.PhotoResponse"
+                              href="#"
+                            >
+                              
+                  Photo Response
+                
+                            </a>
+                             
+                            <!---->
+                             
+                            <!---->
+                          </div>
+                        </div>
+                         
+                        <a
+                          class="btn btn-secondary mr-2"
+                          href="#/flows/new"
+                        >
+                          
+            New Flow
+          
+                        </a>
+                         
+                        <a
+                          aria-current="page"
+                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
+                          href="#/"
+                        >
+                          
+            Home
+          
+                        </a>
+                          
+                        <div
+                          class="btn-group ml-auto mr-2"
                         >
                           <!---->
                            
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO.Print"
-                            href="#"
-                          >
-                            
-                Print
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="ConsoleIO.Read"
-                            href="#"
-                          >
-                            
-                Read
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.Case"
-                            href="#"
-                          >
-                            
-                Case
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.Log"
-                            href="#"
-                          >
-                            
-                Log
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.Output"
-                            href="#"
-                          >
-                            
-                Output
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.RunFlow"
-                            href="#"
-                          >
-                            
-                Run Flow
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.SetContactProperty"
-                            href="#"
-                          >
-                            
-                Set Contact Property
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="Core.SetGroupMembership"
-                            href="#"
-                          >
-                            
-                Set Group Membership
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.Message"
-                            href="#"
-                          >
-                            
-                Message
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.NumericResponse"
-                            href="#"
-                          >
-                            
-                Numeric Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.OpenResponse"
-                            href="#"
-                          >
-                            
-                Open Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.SelectOneResponse"
-                            href="#"
-                          >
-                            
-                Select One Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="MobilePrimitives.SelectManyResponse"
-                            href="#"
-                          >
-                            
-                Select Many Responses
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices.LocationResponse"
-                            href="#"
-                          >
-                            
-                Location Response
-              
-                          </a>
-                          <!---->
-                           
-                          <a
-                            class="dropdown-item tree-add-block"
-                            data-block-type="SmartDevices.PhotoResponse"
-                            href="#"
-                          >
-                            
-                Photo Response
-              
-                          </a>
-                           
-                          <!---->
-                           
-                          <!---->
                         </div>
-                      </div>
-                       
-                      <button
-                        class="btn btn-outline-secondary tree-duplicate-block mr-2"
-                        disabled="disabled"
-                        type="button"
-                      >
-                        
-          Duplicate
-        
-                      </button>
-                       
-                      <button
-                        class="btn btn-outline-secondary tree-delete-block mr-2"
-                        disabled="disabled"
-                        type="button"
-                      >
-                        
-          Delete
-        
-                      </button>
-                       
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="#/flows/new"
-                      >
-                        
-          New Flow
-        
-                      </a>
-                       
-                      <a
-                        aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
-                        href="#/"
-                      >
-                        
-          Home
-        
-                      </a>
-                        
-                      <div
-                        class="btn-group pull-right mr-2"
-                      >
-                        <!---->
-                         
                       </div>
                     </div>
                   </div>
+                </div>
+                 
+                <div
+                  class="tree-builder-toolbar-alerts w-100"
+                >
+                  <!---->
+                   
+                  <main
+                    class="error-notifications-wrapper"
+                  >
+                    <!---->
+                  </main>
                 </div>
               </div>
             </div>
@@ -1524,93 +1549,105 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
               <div
                 class="tree-builder-toolbar"
               >
-                <!---->
-                 
                 <div
-                  class="tree-workspace-panel-heading panel-heading"
+                  class="tree-builder-toolbar-main-menu"
                 >
+                  <!---->
+                   
                   <div
-                    class="tree-workspace-panel-heading-contents"
+                    class="tree-workspace-panel-heading panel-heading"
                   >
                     <div
-                      class="btn-toolbar"
+                      class="tree-workspace-panel-heading-contents"
                     >
-                      <button
-                        class="btn btn-outline-secondary mr-2"
-                      >
-                        <i
-                          class="glyphicon glyphicon-chevron-up"
-                        />
-                        
-          Import / Export
-        
-                      </button>
-                       
                       <div
-                        class="btn-group mr-2"
+                        class="btn-toolbar"
                       >
-                        <a
-                          class="btn btn-outline-secondary active"
-                          href="#/trees/1/interaction-designer"
+                        <button
+                          class="btn btn-secondary mr-2"
                         >
+                          <i
+                            class="glyphicon glyphicon-chevron-up"
+                          />
                           
-            Flow view
+            Import / Export
           
-                        </a>
+                        </button>
+                         
+                        <div
+                          class="btn-group mr-2"
+                        >
+                          <a
+                            class="btn btn-secondary active"
+                            href="#/trees/1/interaction-designer"
+                          >
+                            
+              Flow view
+            
+                          </a>
+                           
+                          <a
+                            class="btn btn-secondary"
+                            href="#/trees/1/resource-viewer"
+                          >
+                            
+              Resources view
+            
+                          </a>
+                        </div>
                          
                         <a
-                          class="btn btn-secondary"
-                          href="#/trees/1/resource-viewer"
+                          class="btn btn-secondary mr-2"
+                          href="#/trees/1/interaction-designer/edit"
+                          title="Click to toggle editing"
                         >
                           
-            Resources view
-          
-                        </a>
-                      </div>
-                       
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="#/trees/1/interaction-designer/edit"
-                        title="Click to toggle editing"
-                      >
-                        
             Edit Flow
           
-                      </a>
-                       
-                      <!---->
-                       
-                      <!---->
-                       
-                      <!---->
-                       
-                      <a
-                        class="btn btn-outline-secondary mr-2"
-                        href="#/flows/new"
-                      >
-                        
-          New Flow
-        
-                      </a>
-                       
-                      <a
-                        aria-current="page"
-                        class="btn btn-outline-secondary mr-2 router-link-exact-active router-link-active"
-                        href="#/"
-                      >
-                        
-          Home
-        
-                      </a>
-                        
-                      <div
-                        class="btn-group pull-right mr-2"
-                      >
+                        </a>
+                         
                         <!---->
                          
+                        <a
+                          class="btn btn-secondary mr-2"
+                          href="#/flows/new"
+                        >
+                          
+            New Flow
+          
+                        </a>
+                         
+                        <a
+                          aria-current="page"
+                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
+                          href="#/"
+                        >
+                          
+            Home
+          
+                        </a>
+                          
+                        <div
+                          class="btn-group ml-auto mr-2"
+                        >
+                          <!---->
+                           
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div>
+                 
+                <div
+                  class="tree-builder-toolbar-alerts w-100"
+                >
+                  <!---->
+                   
+                  <main
+                    class="error-notifications-wrapper"
+                  >
+                    <!---->
+                  </main>
                 </div>
               </div>
             </div>
@@ -1708,130 +1745,190 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                          
                         <fieldset>
                           <div
-                            class="block-name"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/name"
                           >
                             <div
-                              class="form-group"
+                              class="block-name"
                             >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
-                               
-                              <small
-                                class="text-muted"
+                              <div>
+                                <label>
+                                  Block name
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block name"
+                                />
+                                 
+                                <small
+                                  class="text-muted"
+                                >
+                                  
+        Only accepts word characters
+      
+                                </small>
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/label"
+                          >
+                            <div
+                              class="block-label"
+                            >
+                              <div>
+                                <label>
+                                  Block label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/semantic_label"
+                          >
+                            <div
+                              class="block-semantic-label"
+                            >
+                              <div>
+                                <label>
+                                  Block semantic label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block semantic label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/config/validation_minimum"
+                          >
+                            <div
+                              class="block-validation-min"
+                            >
+                              <div
+                                class="number-editor"
                               >
-                                
-      Only accepts word characters
-    
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-validation-min"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Minimum value (inclusive)
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
+                                <label>
+                                  Minimum value (inclusive)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
                               </div>
-                               
                             </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="form-group block-validation-max"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/config/validation_maximum"
                           >
                             <div
-                              class="number-editor"
+                              class="block-validation-max"
                             >
-                              <label>
-                                Maximum value (inclusive)
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum value (inclusive)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
                               </div>
-                               
                             </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="form-group block-max-digits"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-80/config/ivr/max_digits"
                           >
                             <div
-                              class="number-editor"
+                              class="block-max-digits"
                             >
-                              <label>
-                                Maximum digits
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum digits
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
                               </div>
-                               
                             </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
@@ -2107,130 +2204,190 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                          
                         <fieldset>
                           <div
-                            class="block-name"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/name"
                           >
                             <div
-                              class="form-group"
+                              class="block-name"
                             >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
-                               
-                              <small
-                                class="text-muted"
+                              <div>
+                                <label>
+                                  Block name
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block name"
+                                />
+                                 
+                                <small
+                                  class="text-muted"
+                                >
+                                  
+        Only accepts word characters
+      
+                                </small>
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/label"
+                          >
+                            <div
+                              class="block-label"
+                            >
+                              <div>
+                                <label>
+                                  Block label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/semantic_label"
+                          >
+                            <div
+                              class="block-semantic-label"
+                            >
+                              <div>
+                                <label>
+                                  Block semantic label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block semantic label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/config/validation_minimum"
+                          >
+                            <div
+                              class="block-validation-min"
+                            >
+                              <div
+                                class="number-editor"
                               >
-                                
-      Only accepts word characters
-    
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-validation-min"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Minimum value (inclusive)
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
+                                <label>
+                                  Minimum value (inclusive)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
                               </div>
-                               
                             </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="form-group block-validation-max"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/config/validation_maximum"
                           >
                             <div
-                              class="number-editor"
+                              class="block-validation-max"
                             >
-                              <label>
-                                Maximum value (inclusive)
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum value (inclusive)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
                               </div>
-                               
                             </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
-                            class="form-group block-max-digits"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-86/config/ivr/max_digits"
                           >
                             <div
-                              class="number-editor"
+                              class="block-max-digits"
                             >
-                              <label>
-                                Maximum digits
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum digits
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
                               </div>
-                               
                             </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
                           </div>
                            
                           <div
@@ -2524,115 +2681,164 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                          
                         <fieldset>
                           <div
-                            class="block-name"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-115/name"
                           >
                             <div
-                              class="form-group"
+                              class="block-name"
                             >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
+                              <div>
+                                <label>
+                                  Block name
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block name"
+                                />
+                                 
+                                <small
+                                  class="text-muted"
+                                >
+                                  
+        Only accepts word characters
+      
+                                </small>
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-115/label"
+                          >
+                            <div
+                              class="block-label"
+                            >
+                              <div>
+                                <label>
+                                  Block label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-115/semantic_label"
+                          >
+                            <div
+                              class="block-semantic-label"
+                            >
+                              <div>
+                                <label>
+                                  Block semantic label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block semantic label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-115/config/ivr/max_duration_seconds"
+                          >
+                            <div
+                              class="block-max-duration-seconds"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum Duration (seconds)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-115/config/text/max_response_characters"
+                          >
+                            <div
+                              class="block-max-response-characters"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum Response Characters
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
                                
                               <small
                                 class="text-muted"
                               >
                                 
-      Only accepts word characters
+      Unlimited if not defined or set as zero
     
                               </small>
                             </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-max-duration-seconds"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Maximum Duration (seconds)
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
-                              </div>
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-max-response-characters"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Maximum Response Characters
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
-                              </div>
-                               
-                            </div>
                              
                             <small
-                              class="text-muted"
+                              class="text-danger"
                             >
                               
-    Unlimited if not defined or set as zero
-  
                             </small>
                           </div>
                            
@@ -2909,115 +3115,164 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                          
                         <fieldset>
                           <div
-                            class="block-name"
+                            class="validation-message form-group"
+                            id="block/fake-uuid-124/name"
                           >
                             <div
-                              class="form-group"
+                              class="block-name"
                             >
-                              <label>
-                                Block name
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block name"
-                              />
+                              <div>
+                                <label>
+                                  Block name
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block name"
+                                />
+                                 
+                                <small
+                                  class="text-muted"
+                                >
+                                  
+        Only accepts word characters
+      
+                                </small>
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-124/label"
+                          >
+                            <div
+                              class="block-label"
+                            >
+                              <div>
+                                <label>
+                                  Block label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-124/semantic_label"
+                          >
+                            <div
+                              class="block-semantic-label"
+                            >
+                              <div>
+                                <label>
+                                  Block semantic label
+                                </label>
+                                 
+                                <textarea
+                                  class="form-control"
+                                  placeholder="Enter a block semantic label"
+                                />
+                                 
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-124/config/ivr/max_duration_seconds"
+                          >
+                            <div
+                              class="block-max-duration-seconds"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum Duration (seconds)
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
+                            </div>
+                             
+                            <small
+                              class="text-danger"
+                            >
+                              
+                            </small>
+                          </div>
+                           
+                          <div
+                            class="validation-message form-group"
+                            id="block/fake-uuid-124/config/text/max_response_characters"
+                          >
+                            <div
+                              class="block-max-response-characters"
+                            >
+                              <div
+                                class="number-editor"
+                              >
+                                <label>
+                                  Maximum Response Characters
+                                </label>
+                                 
+                                <div>
+                                  <input
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter value"
+                                    type="number"
+                                  />
+                                </div>
+                                 
+                              </div>
                                
                               <small
                                 class="text-muted"
                               >
                                 
-      Only accepts word characters
+      Unlimited if not defined or set as zero
     
                               </small>
                             </div>
-                          </div>
-                           
-                          <div
-                            class="block-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="block-semantic-label"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label>
-                                Block semantic label
-                              </label>
-                               
-                              <textarea
-                                class="form-control"
-                                placeholder="Enter a block semantic label"
-                              />
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-max-duration-seconds"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Maximum Duration (seconds)
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
-                              </div>
-                               
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="form-group block-max-response-characters"
-                          >
-                            <div
-                              class="number-editor"
-                            >
-                              <label>
-                                Maximum Response Characters
-                              </label>
-                               
-                              <div>
-                                <input
-                                  class="form-control"
-                                  min="0"
-                                  placeholder="Enter value"
-                                  type="number"
-                                />
-                              </div>
-                               
-                            </div>
                              
                             <small
-                              class="text-muted"
+                              class="text-danger"
                             >
                               
-    Unlimited if not defined or set as zero
-  
                             </small>
                           </div>
                            

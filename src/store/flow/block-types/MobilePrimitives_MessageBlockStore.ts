@@ -39,7 +39,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits,
       config: {
         prompt: blankMessageResource.uuid,
-        messageAudio: '', // TODO: remove this once flow-runner doesn't require it anymore
+        message_audio: '', // TODO: remove this once flow-runner doesn't require it anymore
       },
     })
   },

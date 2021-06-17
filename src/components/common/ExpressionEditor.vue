@@ -2,7 +2,8 @@
   <text-editor class="expression-editor"
       v-model="expression"
       :label="label"
-      :placeholder="placeholder"/>
+      :placeholder="placeholder"
+      :validState="validState" />
 </template>
 
 <script>
@@ -28,6 +29,11 @@ export default {
     expressionIdentifier: {
       type: [String, Number],
       default: null,
+    },
+    validState: {
+      type: Boolean,
+      default: null,
+      required: false,
     },
   },
 

@@ -9,10 +9,14 @@
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
 
-      <expression-editor :label="'flow-builder.output-expression' | trans"
+      <validation-message :message-key="`block/${block.uuid}/config/value`" #input-control="{ isValid }">
+        <expression-editor :label="'flow-builder.output-expression' | trans"
           :placeholder="'flow-builder.edit-expression' | trans"
           :current-expression="value"
+          :validState="isValid"
           @commitExpressionChange="commitExpressionChange"/>
+      </validation-message>
+
       <slot name="extras"></slot>
       <first-block-editor-button
           :flow="flow"
@@ -38,6 +42,7 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -50,6 +55,7 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    ValidationMessage
   },
 })
 class Core_OutputBlock extends mixins(Lang) {

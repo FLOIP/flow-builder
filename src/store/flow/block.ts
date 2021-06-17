@@ -2,14 +2,14 @@ import {
   IContext,
   IBlock,
   IBlockExit,
-  IResourceDefinition,
+  IResource,
   findBlockExitWith,
   ValidationException,
   findBlockOnActiveFlowWith,
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { defaults, set } from 'lodash'
+import { defaults, set, forEach } from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
@@ -62,12 +62,15 @@ export const mutations: MutationTree<IFlowsState> = {
       .config = newConfig
   },
   block_updateConfigByKey(state, { blockId, key, value }: {blockId: string; key: string; value: object}) { // note that the {key} could be undefined inside `config` at block creation (eg: optional config)
-    const currentConfig: {[key: string]: any} = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
+    const currentConfig: {[key: string]: any} = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = { ...currentConfig }
   },
   block_updateConfigByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
-    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config, path, value);
+    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, path, value);
+  },
+  block_updateVendorMetadataByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
+    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).vendor_metadata!, path, value);
   },
   block_setBlockExitDestinationBlockId(state, { blockId, exitId, destinationBlockId }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -87,7 +90,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async block_createBlockExitWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IBlockExit>}): Promise<IBlockExit> {
-    const resource: IResourceDefinition = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
+    const resource: IResource = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
 
     commit('resource_add', { resource })
 
@@ -112,7 +115,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     { first, second }: {first: IDeepBlockExitIdWithinFlow; second: IDeepBlockExitIdWithinFlow},
   ) {
     if (!first || !second) {
-      throw new ValidationException(`Unable to swap destinationBlockId on null: ${JSON.stringify({ first, second })}`)
+      console.warn(`Unable to swap destinationBlockId on null: ${JSON.stringify({ first, second })}`)
+      return
     }
 
     const firstBlock = findBlockOnActiveFlowWith(first.blockId, state as unknown as IContext)
@@ -136,6 +140,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exitId: first.exitId,
       destinationBlockId: secondDestinationBlockId,
     })
+  },
+
+  async block_select({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
+    state.selectedBlocks.push(blockId)
+  },
+
+  async block_deselect({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
+    state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId) // remove it
   },
 }
 

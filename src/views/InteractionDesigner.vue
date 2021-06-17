@@ -1,8 +1,19 @@
 <template>
   <div v-if="activeFlow" class="interaction-designer-contents">
-    <tree-builder-toolbar/>
+    <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate"/>
 
-    <div class="tree-sidebar-container">
+    <div class="tree-sidebar-container"
+         :class="{ 'slide-out': !$route.meta.isSidebarShown,}"
+         :key="activeBlock && activeBlock.uuid">
+      <div class="sidebar-cue"
+           :class="{'sidebar-close': $route.meta.isSidebarShown}"
+           @click="showOrHideSidebar">
+        <i class="glyphicon"
+           :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
+                  'glyphicon-resize-small': $route.meta.isSidebarShown}">
+        </i>
+      </div>
+
       <div v-if="activeBlock" class="tree-sidebar"
            :class="[`category-${blockClasses[activeBlock.type].category}`]">
         <div class="tree-sidebar-edit-block"
@@ -35,7 +46,10 @@
     </div>
 
     <div class="tree-contents"
-         :x-style="{'min-height': `${designerWorkspaceHeight}px`}">
+         :style="{
+            'min-height': `${designerWorkspaceHeight}px`,
+            'padding-top': `${toolbarHeight + 5}px`
+         }">
       <builder-canvas @click.native="handleCanvasSelected" />
     </div>
   </div>
@@ -64,6 +78,7 @@ import { store } from '@/store'
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import { BuilderCanvas } from '@/components/interaction-designer/BuilderCanvas'
+import { scrollBehavior, scrollBlockIntoView } from '@/router'
 
 // import '../TreeDiffLogger'
 
@@ -101,6 +116,7 @@ export default {
 
   data() {
     return {
+      toolbarHeight: 60,
       pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
         'CallBackWithCallCenterBlock',
         'CollaborativeFilteringQuestionBlock',
@@ -208,7 +224,21 @@ export default {
     this.deselectBlocks()
     this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
 
+    setTimeout(() => {
+      const { blockId, field } = this.$route.params
+      if (blockId) {
+        this.activateBlock({ blockId })
+        scrollBlockIntoView(blockId)
+      }
+      if (field) {
+        scrollBehavior(this.$route)
+      }
+    }, 500)
     console.debug('Vuej tree interaction designer mounted!')
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.activateBlock({ blockId: to.params.blockId || null })
+    next()
   },
   watch: {
     mode(newMode) {
@@ -245,7 +275,10 @@ export default {
         return
       }
 
-      this.activateBlock({ blockId: null })
+      const routeName = this.$route.meta.isSidebarShown ? 'flow-details' : 'flow-canvas'
+      this.$router.history.replace({
+        name: routeName,
+      })
     },
 
     updateIsEditableFromParams(mode) {
@@ -270,13 +303,30 @@ export default {
       return !isEditableLocked && mode === 'edit' || !mode && lodash.endsWith(hash, '/edit')
     },
 
-		  hoistResourceViewerToPushState(hash) {
+    hoistResourceViewerToPushState(hash) {
       if (!_.endsWith(hash, '/resource-viewer')) {
         return
       }
 
       this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
     },
+
+    showOrHideSidebar() {
+      let routeName = ''
+      if (this.$route.name.includes('block')) {
+        routeName = this.$route.meta.isSidebarShown ? 'block-selected' : 'block-selected-details'
+      } else {
+        routeName = this.$route.meta.isSidebarShown ? 'flow-canvas' : 'flow-details'
+      }
+      this.$router.history.replace({
+        name: routeName,
+      })
+    },
+
+    handleToolBarHeightUpdate(height) {
+      this.toolbarHeight = height
+    }
+
   },
 }
 </script>
@@ -304,14 +354,14 @@ export default {
   .tree-sidebar-container {
     position: fixed;
     right: 0;
-    z-index: 2*10;
+    z-index: 3*10;
 
     height: 100vh;
     width: $sidebar-width;
     overflow-y: scroll;
 
     padding: 1em;
-    padding-top: $toolbar-height;
+    margin-top: 3em;
     transition: right 200ms ease-in-out;
 
     .tree-sidebar {
@@ -334,9 +384,9 @@ export default {
     }
   }
 
-  .tree-builder-toolbar {
+  .tree-builder-toolbar-main-menu {
     position: fixed;
-    z-index: 3*10;
+    z-index: 4*10;
 
     width: 100vw;
 
@@ -423,6 +473,20 @@ export default {
     @include block-category(0, $category-0-faint, $category-0-light, $category-0-dark);
     @include block-category(1, $category-1-faint, $category-1-light, $category-1-dark);
     @include block-category(2, $category-2-faint, $category-2-light, $category-2-dark);
+  }
+
+  .sidebar-cue {
+    cursor: pointer;
+    background-color: #eee;
+    padding: 5px;
+    position: fixed;
+    margin-top: 1em;
+    right: 0;
+    z-index: 5*10;
+  }
+
+  .sidebar-close {
+    right: 350px;
   }
 
   // @note - these styles have been extracted so the output can be reused between storybook and voto5

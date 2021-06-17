@@ -10,17 +10,23 @@
       <block-semantic-label-editor :block="block" />
 
       <!--Specific config-->
-      <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString"/>
+      <block-format-string-editor :block="block" @commitFormatStringChange="setFormatString" />
 
       <div v-for="(variableStringFormat,i) in destinationVariablesFields"
            class="form-group form-inline">
-        <text-editor :label="i+1"
-            :placeholder="'flow-builder.edit-variable' | trans"
-            value=""
-            @keydown="filterVariableName"
-            @input="updatedestinationVariables($event, i)"/>
+        <validation-message :message-key="`block/${block.uuid}/config/destination_variables/${i}`" #input-control="{ isValid }">
+          <text-editor :label="i+1"
+              :placeholder="'flow-builder.edit-variable' | trans"
+              :validState="isValid"
+              value=""
+              @keydown="filterVariableName"
+              @input="updatedestinationVariables($event, i)"/>
+        </validation-message>
       </div>
+
+
       <slot name="extras"></slot>
+
       <first-block-editor-button
           :flow="flow"
           :block-id="block.uuid" />
@@ -48,6 +54,7 @@ import BlockFormatStringEditor from '../block-editors/FormatStringEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -62,6 +69,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     TextEditor,
     BlockId,
+    ValidationMessage
   },
 })
 class ConsoleIO_ReadBlock extends mixins(Lang) {
