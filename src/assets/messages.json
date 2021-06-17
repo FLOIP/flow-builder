@@ -1,5 +1,6 @@
 {
   "en.flow-builder": {
+    "add-language": "Add Language +",
     "import-flow": "Import/Paste a JSON File",
     "import-explanation": "Use this option to import a flow by importing or pasting JSON",
     "import-note": "Note: If you have flows or resources with the same uuids as the ones you are importing they will be replaced and all previous data will be lost",
@@ -1587,6 +1588,7 @@
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
   },
   "fr.flow-builder": {
+    "add-language": "Ajouter une Langue +",
     "import-flow": "Importer/Coller un fichier JSON",
     "import-explanation": "Utilisez cette option pour importer un flux en important ou en collant JSON",
     "import-note": "Remarque: si vous avez des flux ou des ressources avec les mêmes uuids que ceux que vous importez, ils seront remplacés et toutes les données précédentes seront perdues",

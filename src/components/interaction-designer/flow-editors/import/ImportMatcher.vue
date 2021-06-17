@@ -2,8 +2,8 @@
   <div>
     <label>{{ matchNotFoundText | trans }}</label>
     <div v-for="missingMatch in missingMatches" :key="`${getIdentifier(missingMatch)}-missing`">
-      <div class="form-check form-check-inline full-width">
-        <div class="row full-width ml-1">
+      <div class="row full-width ml-1">
+        <div class="form-check form-check-inline full-width">
           <div class="col-xl-2 col-md-3">
             <label class="form-check-label full-width mt-2 mb-2">{{getLabel(missingMatch)}}</label>
           </div>
@@ -27,12 +27,26 @@
           </div>
         </div>
       </div>
+      <div class="row full-width mt-2">
+        <div class="col-12">
+          <button class="btn btn-primary"
+            @click="showAddLanguageModal">
+            {{'flow-builder.add-language' | trans}}
+          </button>
+        </div>
+      </div>
     </div>
+
+    <b-modal ref="add-language-modal" title="Add Language">
+      <language-adder ref="add-language-modal"/>
+    </b-modal>
   </div>
 </template>
 
 <script lang="ts">
 
+import { BModal } from 'bootstrap-vue'
+import LanguageAdder from './LanguageAdder.vue'
 import lang from '@/lib/filters/lang'
 import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
@@ -44,6 +58,7 @@ import {
 
 @Component({
   mixins: [lang],
+  components: { LanguageAdder, BModal },
 })
 class ImportMatcher extends Vue {
   @Prop({ default: '' }) readonly matchNotFoundText!: string
@@ -73,7 +88,10 @@ class ImportMatcher extends Vue {
   get mappingsEmpty() {
     return isEmpty(this.mappings)
   }
-
+  showAddLanguageModal() {
+    const languageModal: any = this.$refs['add-language-modal']
+    languageModal.show()
+  }
   handleMatch(missingMatch: {[key: string]: string}) {
     const matchingJson = get(this.mappings, this.getIdentifier(missingMatch))
     if (matchingJson) {
