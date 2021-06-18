@@ -329,7 +329,7 @@ export default {
     handleDeleteBlock() {
       this.block_deselect({ blockId: this.block.uuid })
       this.flow_removeBlock({ blockId: this.block.uuid })
-      this.removeValidationStatusesFor({ index: `block/${this.block.uuid}` })
+      this.removeValidationStatusesFor({ key: `block/${this.block.uuid}` })
       this.isDeleting = false
     },
 

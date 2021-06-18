@@ -68,8 +68,8 @@ export const getters: GetterTree<IValidationState, IRootState> = {
 }
 
 export const mutations: MutationTree<IValidationState> = {
-  removeValidationStatusesFor(state, { index }) {
-    delete state.validationStatuses[`${index}`]
+  removeValidationStatusesFor(state, { key }) {
+    delete state.validationStatuses[key]
   },
 }
 
@@ -78,43 +78,43 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     const { uuid: blockId, type: blockType } = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
-    const index = `block/${blockId}`
+    const key = `block/${blockId}`
 
-    Vue.set(state.validationStatuses, index, {
+    Vue.set(state.validationStatuses, key, {
       isValid: validate(block),
       ajvErrors: validate.errors,
       type: block.type,
     })
     if (validate.errors === null) {
-      commit('removeValidationStatusesFor', { index })
+      commit('removeValidationStatusesFor', { key })
     }
-    debugValidationStatus(state.validationStatuses[index], `validation status for ${index}`)
-    return state.validationStatuses[index]
+    debugValidationStatus(state.validationStatuses[key], `validation status for ${key}`)
+    return state.validationStatuses[key]
   },
 
   async validate_flow({ state }, { flow }: { flow: IFlow }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator()
-    const index = `flow/${flow.uuid}`
-    Vue.set(state.validationStatuses, index, {
+    const key = `flow/${flow.uuid}`
+    Vue.set(state.validationStatuses, key, {
       isValid: validate(flow),
       ajvErrors: validate.errors,
       type: 'flow',
     })
 
-    debugValidationStatus(state.validationStatuses[index], 'flow validation status')
-    return state.validationStatuses[index]
+    debugValidationStatus(state.validationStatuses[key], 'flow validation status')
+    return state.validationStatuses[key]
   },
 
   async validate_flowContainer({ state }, { flowContainer }: { flowContainer: IContainer }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowContainerValidator()
-    const index = `flowContainer/${flowContainer.uuid}`
-    Vue.set(state.validationStatuses, index, {
+    const key = `flowContainer/${flowContainer.uuid}`
+    Vue.set(state.validationStatuses, key, {
       isValid: validate(flowContainer),
       ajvErrors: validate.errors,
     })
 
-    debugValidationStatus(state.validationStatuses[index], 'flow container validation status')
-    return state.validationStatuses[index]
+    debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
+    return state.validationStatuses[key]
   },
 }
 
