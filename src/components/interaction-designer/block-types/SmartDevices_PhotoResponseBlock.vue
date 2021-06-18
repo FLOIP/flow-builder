@@ -19,11 +19,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { namespace } from 'vuex-class'
 import { Component, Prop } from 'vue-property-decorator'
 
-import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner'
+import { IBlock, IFlow } from '@floip/flow-runner'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
 import { IResource } from '@floip/flow-runner'
 

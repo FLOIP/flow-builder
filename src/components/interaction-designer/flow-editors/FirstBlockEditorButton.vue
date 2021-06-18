@@ -40,6 +40,7 @@ class FirstBlockEditorButton extends mixins(Lang) {
       return this.blockId === this.flow.first_block_id
     }
 
+    // @ts-ignore
     setStartBlock(event: any) {
       const { flow: { uuid: flowId }, blockId } = this
       this.flow_setFirstBlockId({ flowId, blockId })

@@ -8,12 +8,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import TextEditor from '@/components/common/TextEditor.vue'
 import { Component, Prop } from 'vue-property-decorator'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import { namespace } from 'vuex-class'
-import Lang, { lang } from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import {mixins} from "vue-class-component";
 
 const flowVuexNamespace = namespace('flow')

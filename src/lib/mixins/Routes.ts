@@ -22,7 +22,7 @@ export function interpolateRouteWith(context: any, route?: any) {
     return path
   }
 
-  return path.replace(PATH_PARAM_DISCOVERER, (m: any, prefix = '', captured: string, isOptional: boolean) => {
+  return path.replace(PATH_PARAM_DISCOVERER, (_m: any, prefix = '', captured: string, isOptional: boolean) => {
     const param = captured.trim()
     const absent = !(param in context)
 
