@@ -1,5 +1,7 @@
 <template>
   <div @click="selectBlock">
+    <block-editor v-if="openBlockEditor" class="block-editor" :style="{transform: blockEditorPosition}"></block-editor>
+
     <plain-draggable
         v-if="hasLayout"
         ref="draggable"
@@ -62,6 +64,15 @@
               v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
               @click.prevent="handleDuplicateBlock"
             />
+          </div>
+          <!--Expand block editor-->
+          <div class="mr-1 ml-2">
+            <i
+              v-if="isEditable"
+              class="glyphicon glyphicon-resize-small"
+              v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
+              @click.prevent="handleExpandBlockEditor"
+            ></i>
           </div>
         </div>
       </div>
@@ -204,6 +215,7 @@ import {BLOCK_TYPE as BLOCK_TYPE__SELECT_ONE_BLOCK} from '@/store/flow/block-typ
 import {BLOCK_TYPE as BLOCK_TYPE__SELECT_MANY_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 
 import { BTooltip } from 'bootstrap-vue'
+import BlockEditor from '@/components/interaction-designer/block-editors/BlockEditor'
 
 Vue.component('b-tooltip', BTooltip)
 
@@ -215,6 +227,7 @@ export default {
   components: {
     Connection,
     PlainDraggable,
+    BlockEditor,
   },
 
   created() {
@@ -232,6 +245,7 @@ export default {
       isDeleting: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
+      openBlockEditor: false,
     }
   },
 
@@ -288,6 +302,10 @@ export default {
 
       const { data } = operations[OperationKind.CONNECTION_CREATE]
       return data && data.targetId === block.uuid
+    },
+
+    blockEditorPosition() {
+      return `translate(${this.x + 322}px, ${this.y - 175}px)`
     },
   },
 
@@ -534,7 +552,7 @@ export default {
 
     selectBlock() {
       const { block: { uuid: blockId } } = this
-      const routerName = this.$route.meta.isSidebarShown ? 'block-selected-details' : 'block-selected'
+      const routerName = this.openBlockEditor ? 'block-selected-details' : 'block-selected'
       this.$router.history.replace({
         name: routerName,
         params: { blockId },
@@ -555,6 +573,16 @@ export default {
       forEach(this.block.exits, function (exit) {
         delete self.draggableForExitsByUuid[exit.uuid]
       })
+    },
+
+    handleExpandBlockEditor() {
+      this.openBlockEditor = !this.openBlockEditor
+      const { block: { uuid: blockId } } = this
+      const routerName = this.openBlockEditor ? 'block-selected-details' : 'block-selected'
+      this.$router.history.replace({
+        name: routerName,
+        params: { blockId },
+      })
     }
   },
 }
@@ -568,6 +596,11 @@ export default {
   .btn-secondary.btn-flat {
     @extend .btn-secondary;
     background: transparent;
+  }
+
+  .block-editor {
+    will-change: transform;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .block {

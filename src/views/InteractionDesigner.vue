@@ -3,8 +3,7 @@
     <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate"/>
 
     <div class="tree-sidebar-container"
-         :class="{ 'slide-out': !$route.meta.isSidebarShown,}"
-         :key="activeBlock && activeBlock.uuid">
+         :class="{ 'slide-out': !$route.meta.isSidebarShown,}">
       <div class="sidebar-cue"
            :class="{'sidebar-close': $route.meta.isSidebarShown}"
            @click="showOrHideSidebar">
@@ -14,31 +13,7 @@
         </i>
       </div>
 
-      <div v-if="activeBlock" class="tree-sidebar"
-           :class="[`category-${blockClasses[activeBlock.type].category}`]">
-        <div class="tree-sidebar-edit-block"
-             :data-block-type="activeBlock && activeBlock.type"
-             :data-for-block-id="activeBlock && activeBlock.uuid">
-          <component v-if="activeBlock"
-                     :is="`Flow${activeBlock.type.replace('.', '')}`"
-                     :block="activeBlock"
-                     :flow="activeFlow">
-          </component>
-        </div>
-
-<!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
-<!--                     :jsonValidationResults="jsonValidationResults"-->
-<!--                     :isTreeValid="isTreeValid"/>-->
-
-<!--        <tree-viewer v-if="sidebarType === 'TreeViewer'"/>-->
-
-<!--        <block-viewer-->
-<!--          :key="jsKey"-->
-<!--          v-if="sidebarType === 'BlockViewer'"-->
-<!--          :data-for-block-id="jsKey" />-->
-
-      </div>
-      <div v-else class="tree-sidebar">
+      <div class="tree-sidebar">
         <div class="tree-sidebar-edit-block">
           <flow-editor :flow="activeFlow" />
         </div>
@@ -165,7 +140,7 @@ export default {
     }),
 
     ...mapGetters('flow', ['activeFlow']),
-    ...mapGetters('builder', ['activeBlock', 'isEditable']),
+    ...mapGetters('builder', ['isEditable']),
 
     jsKey() {
       return lodash.get(this.selectedBlock, 'jsKey')
@@ -173,16 +148,6 @@ export default {
 
     isPureVueBlock() { // pure vuejs block types handle readonly mode on their own
       return _.includes(this.pureVuejsBlocks, lodash.get(this.selectedBlock, 'type'))
-    },
-
-    sidebarType() {
-      const
-        blockType = lodash.get(this.selectedBlock, 'type')
-      const blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
-
-      return this.isEditable
-        ? blockType || 'TreeEditor'
-        : blockViewerType || 'TreeViewer'
     },
   },
 
