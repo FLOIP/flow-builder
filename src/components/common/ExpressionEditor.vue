@@ -1,9 +1,10 @@
 <template>
-  <text-editor class="expression-editor"
-      v-model="expression"
-      :label="label"
-      :placeholder="placeholder"
-      :validState="validState" />
+  <text-editor
+    v-model="expression"
+    class="expression-editor"
+    :label="label"
+    :placeholder="placeholder"
+    :valid-state="validState" />
 </template>
 
 <script>

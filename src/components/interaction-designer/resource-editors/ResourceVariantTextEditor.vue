@@ -206,8 +206,12 @@ export default {
   methods: {
     ...mapActions('flow', ['resource_setOrCreateValueModeSpecific']),
 
-    select() { this.isSelected = true },
-    deselect() { this.isSelected = false },
+    select() {
+      this.isSelected = true
+    },
+    deselect() {
+      this.isSelected = false
+    },
 
     // debouncedSaveTree: debounce(function () {
     //   this.$store.dispatch('attemptSaveTree')
@@ -216,49 +220,49 @@ export default {
 }
 </script>
 
-<x-style lang="scss" scoped>
-  .block-text-content-editor-for-lang-and-type {
-    margin-bottom: 0.5em;
+<style lang="scss" scoped>
+.block-text-content-editor-for-lang-and-type {
+  margin-bottom: 0.5em;
 
-    .content-editor {
-      position: relative;
+  .content-editor {
+    position: relative;
 
-      textarea {
-        height: 56px;
-      }
+    textarea {
+      height: 56px;
+    }
 
-      textarea, input[type="text"] {
-        &:not(:focus) {
-          + button {
-            opacity: 1;
-          }
-        }
-
+    textarea, input[type="text"] {
+      &:not(:focus) {
         + button {
-          position: absolute;
-          bottom: 7px;
-          // 15px padding => parent, 8px padding => textarea
-          right: 10px; //15px + 7px;
-
-          transition: opacity 200ms ease-in-out;
-          opacity: 0;
+          opacity: 1;
         }
       }
 
-      &-selected {
-        textarea, input[type="text"] {
-          background-color: #F8F8F8;
-          //border-color: #DDDDDD;
-        }
+      + button {
+        position: absolute;
+        bottom: 7px;
+        // 15px padding => parent, 8px padding => textarea
+        right: 10px; //15px + 7px;
+
+        transition: opacity 200ms ease-in-out;
+        opacity: 0;
       }
     }
 
-    .content-toolbar {
-      margin-top: 1px;
+    &-selected {
+      textarea, input[type="text"] {
+        background-color: #F8F8F8;
+        //border-color: #DDDDDD;
+      }
     }
   }
 
-  .invisible {
-    opacity: 0;
+  .content-toolbar {
+    margin-top: 1px;
   }
-</x-style>
+}
+
+.invisible {
+  opacity: 0;
+}
+</style>

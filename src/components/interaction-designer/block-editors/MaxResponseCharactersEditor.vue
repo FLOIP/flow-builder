@@ -1,14 +1,18 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/config/text/max_response_characters`" #input-control="{ isValid }">
-    <div v-if="hasText" class="block-max-response-characters">
-      <numeric-editor v-model.number="maxResponse"
-          :regex-numeric-filtering="'[0-9]'"
-          :label="'flow-builder.max-response-characters' | trans"
-          :placeholder="'flow-builder.enter-value' | trans"
-          :validState="isValid">
-      </numeric-editor>
+  <validation-message
+    #input-control="{ isValid }"
+    :message-key="`block/${block.uuid}/config/text/max_response_characters`">
+    <div
+      v-if="hasText"
+      class="block-max-response-characters">
+      <numeric-editor
+        v-model.number="maxResponse"
+        :regex-numeric-filtering="'[0-9]'"
+        :label="'flow-builder.max-response-characters' | trans"
+        :placeholder="'flow-builder.enter-value' | trans"
+        :valid-state="isValid" />
       <small class="text-muted">
-        {{'flow-builder.unlimited-if-not-defined-or-set-as-zero' | trans}}
+        {{ 'flow-builder.unlimited-if-not-defined-or-set-as-zero' | trans }}
       </small>
     </div>
   </validation-message>
@@ -16,14 +20,14 @@
 
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
-import { get } from 'lodash'
-import { lang } from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage';
+import {get} from 'lodash'
+import {lang} from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage'
 
 export default {
   components: {
     NumericEditor,
-    ValidationMessage
+    ValidationMessage,
   },
   mixins: [lang],
   props: {

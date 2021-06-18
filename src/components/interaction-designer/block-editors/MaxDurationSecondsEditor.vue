@@ -1,26 +1,30 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/config/ivr/max_duration_seconds`" #input-control="{ isValid }">
-    <div v-if="hasIvr" class="block-max-duration-seconds">
-      <numeric-editor v-model.number="duration"
-          :regex-numeric-filtering="'[0-9]'"
-          :label="'flow-builder.max-duration-in-seconds' | trans"
-          :placeholder="'flow-builder.enter-value' | trans"
-          :validState="isValid">
-      </numeric-editor>
+  <validation-message
+    #input-control="{ isValid }"
+    :message-key="`block/${block.uuid}/config/ivr/max_duration_seconds`">
+    <div
+      v-if="hasIvr"
+      class="block-max-duration-seconds">
+      <numeric-editor
+        v-model.number="duration"
+        :regex-numeric-filtering="'[0-9]'"
+        :label="'flow-builder.max-duration-in-seconds' | trans"
+        :placeholder="'flow-builder.enter-value' | trans"
+        :valid-state="isValid" />
     </div>
   </validation-message>
 </template>
 
 <script>
 import NumericEditor from '@/components/common/NumericEditor'
-import { get } from 'lodash'
-import { lang } from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage';
+import {get} from 'lodash'
+import {lang} from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage'
 
 export default {
   components: {
     NumericEditor,
-    ValidationMessage
+    ValidationMessage,
   },
   mixins: [lang],
   props: {

@@ -64,9 +64,9 @@ class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
     this.setMaxDigits({blockId, value: 2})
   }
 
-  @blockVuexNamespace.Action setValidationMinimum: any
-  @blockVuexNamespace.Action setValidationMaximum: any
-  @blockVuexNamespace.Action setMaxDigits: any
+  @blockVuexNamespace.Action declare setValidationMinimum: any
+  @blockVuexNamespace.Action declare setValidationMaximum: any
+  @blockVuexNamespace.Action declare setMaxDigits: any
 }
 
 export const ExistingDataForAllModes = () => (CurrentClass2)
@@ -90,9 +90,9 @@ class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
     })
   }
 
-  @blockVuexNamespace.Action setValidationMinimum: any
-  @blockVuexNamespace.Action setValidationMaximum: any
-  @blockVuexNamespace.Action setMaxDigits: any
+  @blockVuexNamespace.Action declare setValidationMinimum: any
+  @blockVuexNamespace.Action declare setValidationMaximum: any
+  @blockVuexNamespace.Action declare setMaxDigits: any
 }
 
 export const ExistingDataForIvrOnly = () => (CurrentClass3)
@@ -115,8 +115,8 @@ class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
     })
   }
 
-  @blockVuexNamespace.Action setValidationMinimum: any
-  @blockVuexNamespace.Action setValidationMaximum: any
+  @blockVuexNamespace.Action declare setValidationMinimum: any
+  @blockVuexNamespace.Action declare setValidationMaximum: any
 }
 
 export const ExistingDataForTextOnly = () => (CurrentClass4)

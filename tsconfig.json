@@ -17,7 +17,9 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "plugins": [
-      {"name": "ts-vue-plugin"}
+      {
+        "name": "ts-vue-plugin"
+      }
     ],
     "types": [
       "webpack-env",
@@ -26,7 +28,7 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
+      ]
     },
     "lib": [
       "esnext",
@@ -47,7 +49,7 @@
     "stories/.eslintrc.js",
     "stories/**/*.ts",
     "stories/**/*.js",
-    "stories/**/*.vue",
+    "stories/**/*.vue"
   ],
   "exclude": [
     "node_modules",

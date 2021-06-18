@@ -87,18 +87,14 @@
 </template>
 
 <script lang="ts">
-import {
-  Getter,
-  Mutation,
-  namespace,
-} from 'vuex-class'
+import {Getter, Mutation, namespace} from 'vuex-class'
 import {
   IBlock,
   IFlow,
   IResource,
+  IResourceValue as IResourceDefinitionVariantOverModes,
   SupportedContentType,
   SupportedMode,
-  IResourceValue as IResourceDefinitionVariantOverModes,
 } from '@floip/flow-runner'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
@@ -108,7 +104,8 @@ import {Component, Prop} from 'vue-property-decorator'
 import {
   discoverContentTypesFor,
   findOrGenerateStubbedVariantOn,
-  findResourceVariantOverModesOn, IResourceDefinitionVariantOverModesFilter,
+  findResourceVariantOverModesOn,
+  IResourceDefinitionVariantOverModesFilter,
 } from '@/store/flow/resource'
 import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
@@ -121,28 +118,28 @@ import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-  interface IAudioFile {
-    id: string,
-    filename: string,
-    description: string,
-    language_id: string,
-    duration_seconds: string,
-    original_extension: string,
-    created_at: string,
-  }
+interface IAudioFile {
+  id: string,
+  filename: string,
+  description: string,
+  language_id: string,
+  duration_seconds: string,
+  original_extension: string,
+  created_at: string,
+}
 
-  interface IResourceDefinitionVariantOverModesWithOptionalValue extends Partial<IResourceDefinitionVariantOverModes> {
-    value?: IResourceDefinitionVariantOverModes['value'],
-  }
+interface IResourceDefinitionVariantOverModesWithOptionalValue extends Partial<IResourceDefinitionVariantOverModes> {
+  value?: IResourceDefinitionVariantOverModes['value'],
+}
 
-  @Component({
-    components: {
-      AudioLibrarySelector,
-      ResourceVariantTextEditor,
-      UploadMonitor,
-      PhoneRecorder,
-    },
-  })
+@Component({
+  components: {
+    AudioLibrarySelector,
+    ResourceVariantTextEditor,
+    UploadMonitor,
+    PhoneRecorder,
+  },
+})
 export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
 
@@ -152,76 +149,80 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 
   @Prop() label?: string | number
 
-    discoverContentTypesFor = discoverContentTypesFor
+  discoverContentTypesFor = discoverContentTypesFor
 
-    findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
+  findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
-    findResourceVariantOverModesOn = findResourceVariantOverModesOn
+  findResourceVariantOverModesOn = findResourceVariantOverModesOn
 
-    SupportedMode = SupportedMode
+  SupportedMode = SupportedMode
 
-    SupportedContentType = SupportedContentType
+  SupportedContentType = SupportedContentType
 
-    triggerRecordViaPhoneFor(langId: ILanguage['id']) {
-      this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', {langId, isVisible: true})
+  triggerRecordViaPhoneFor(langId: ILanguage['id']) {
+    this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', {langId, isVisible: true})
+  }
+
+  handleFilesSubmittedFor(key: string, {data}: { data: any }) {
+    console.debug('call handleFilesSubmittedFor')
+    this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
+  }
+
+  handleFileSuccessFor(key: string, langId: ILanguage['id'], event: any) {
+    const {data: {json}} = event
+    const {
+      audio_file_id: id,
+      audio_uuid: filename,
+      created_at: {date: created_at},
+      description,
+      duration_seconds,
+    } = JSON.parse(json)
+    const extension = description.split('.')[description.split('.').length - 1]
+    const uploadedAudio: IAudioFile = {
+      id,
+      filename,
+      description,
+      language_id: langId,
+      duration_seconds,
+      original_extension: extension,
+      created_at,
     }
 
-    handleFilesSubmittedFor(key: string, {data}: { data: any }) {
-      console.debug('call handleFilesSubmittedFor')
-      this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
-    }
+    this.resource_setOrCreateValueModeSpecific({
+      resourceId: this.resource.uuid,
+      filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
+      value: description,
+    })
+    // remove the focus from the `upload` Tab
+    event.target.blur()
+    this.pushAudioIntoLibrary(uploadedAudio)
+  }
 
-    handleFileSuccessFor(key: string, langId: ILanguage['id'], event: any) {
-      const {data: {json}} = event
-      const {
-        audio_file_id: id,
-        audio_uuid: filename,
-        created_at: {date: created_at},
-        description,
-        duration_seconds,
-      } = JSON.parse(json)
-      const extension = description.split('.')[description.split('.').length - 1]
-      const uploadedAudio: IAudioFile = {
-        id,
-        filename,
-        description,
-        language_id: langId,
-        duration_seconds,
-        original_extension: extension,
-        created_at,
+  findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter) {
+    try {
+      return findResourceVariantOverModesOn(resource, filter).value
+    } catch (e) {
+      if (!(e instanceof ValidationException)) {
+        throw e
       }
 
-      this.resource_setOrCreateValueModeSpecific({
-        resourceId: this.resource.uuid,
-        filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
-        value: description,
-      })
-      // remove the focus from the `upload` Tab
-      event.target.blur()
-      this.pushAudioIntoLibrary(uploadedAudio)
+      return null
     }
+  }
 
-    findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter) {
-      try {
-        return findResourceVariantOverModesOn(resource, filter).value
-      } catch (e) {
-        if (!(e instanceof ValidationException)) {
-          throw e
-        }
+  @Getter availableAudio!: IAudioFile[]
 
-        return null
-      }
-    }
+  @Getter isFeatureAudioUploadEnabled!: boolean
 
-    @Getter availableAudio!: IAudioFile[]
+  @Mutation pushAudioIntoLibrary!: (audio: IAudioFile) => void
 
-    @Getter isFeatureAudioUploadEnabled!: boolean
+  @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!: ({
+    resourceId,
+    filter,
+    value,
+  }: { resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesWithOptionalValue, value: string }) => void
 
-    @Mutation pushAudioIntoLibrary!: (audio: IAudioFile) => void
-
-    @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!: ({resourceId, filter, value}: { resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesWithOptionalValue, value: string }) => void
-
-    @builderVuexNamespace.Getter isEditable !: boolean
+  @builderVuexNamespace.Getter isEditable !: boolean
 }
 
 export default ResourceEditor

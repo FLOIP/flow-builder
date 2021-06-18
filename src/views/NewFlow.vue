@@ -15,16 +15,15 @@
             <flow-editor
               :flow="activeFlow"
               flow-header="flow-builder.create-flow"
-              :sidebar="false">
-              <div class="float-right">
-                <a
-                  :href="route('trees.editTree', {treeId: activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})"
-                  class="btn btn-primary"
-                  @click.prevent="handlePersistFlow(route('trees.editTree', {treeId: activeFlow.uuid, component: 'interaction-designer', mode: 'edit'}))">
-                  {{ 'flow-builder.save-and-continue' | trans }}
-                </a>
-              </div>
-            </flow-editor>
+              :sidebar="false" />
+            <div class="float-right">
+              <a
+                :href="route('trees.editTree', {treeId: activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})"
+                class="btn btn-primary"
+                @click.prevent="handlePersistFlow(route('trees.editTree', {treeId: activeFlow.uuid, component: 'interaction-designer', mode: 'edit'}))">
+                {{ 'flow-builder.save-and-continue' | trans }}
+              </a>
+            </div>
           </div>
         </div>
       </div>

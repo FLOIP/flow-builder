@@ -68,7 +68,11 @@ class ContactPropertySelector extends mixins(Lang) {
     })
   }
 
-  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({blockId, path, value}: { blockId: string, path: string, value: object | string }) => void
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({
+    blockId,
+    path,
+    value,
+  }: { blockId: string, path: string, value: object | string }) => void
   @Getter subscriberPropertyFields!: object[]
 }
 

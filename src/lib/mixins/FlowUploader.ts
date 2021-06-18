@@ -55,7 +55,7 @@ const dispatch = (el: any, name: string, data: any) => {
         uploader.on('filesSubmitted', (files: any, e: any) => dispatch(el, 'filesSubmitted', {
           files,
           uploader,
-        // uploader.upload()
+          // uploader.upload()
         }))
         uploader.on('fileProgress', (file: any, e: any) => dispatch(el, 'fileProgress', {
           file,
@@ -65,13 +65,13 @@ const dispatch = (el: any, name: string, data: any) => {
           file,
           uploader,
           json,
-        // uploader.cancel()
+          // uploader.cancel()
         }))
         uploader.on('error', (message: string, file: any) => dispatch(el, 'fileSuccess', {
           file,
           uploader,
           message,
-        // uploader.cancel()
+          // uploader.cancel()
         }))
       },
 

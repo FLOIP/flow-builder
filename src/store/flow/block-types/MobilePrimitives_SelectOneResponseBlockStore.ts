@@ -54,7 +54,7 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
     'value',
   ) && !get(state.inflatedEmptyChoice, 'exit.semantic_label'),
   allChoicesHaveContent: (
-      state,
+    state,
     getters,
   ): boolean => Object.keys(getters.inflatedChoices).every((key: string) => !getters.isInflatedChoiceBlankOnKey(key)),
   twoChoicesBlank: (state, getters): boolean => {

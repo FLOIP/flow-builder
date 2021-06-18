@@ -7,7 +7,7 @@
 <script>
 // import LeaderLine from 'leader-line'
 import {set} from 'lodash'
-import {mapState, mapGetters, mapMutations} from 'vuex'
+import {mapGetters, mapMutations, mapState} from 'vuex'
 
 const {LeaderLine} = window
 
@@ -227,9 +227,10 @@ export default {
 svg.leader-line {
   cursor: pointer;
 }
+
 // Considering the parent svg.leader-line has `pointer-events: none;`,
 // this is important to listen SVG mouse events on shape only
-svg.leader-line *{
+svg.leader-line * {
   pointer-events: auto !important;
 }
 </style>

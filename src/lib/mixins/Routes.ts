@@ -4,7 +4,9 @@ import Component from 'vue-class-component'
 import {State} from 'vuex-class'
 
 const PATH_PARAM_DISCOVERER = /(\/){(.*?)(\?)?}/g
-const raiseFor = (p: any) => { throw new Error(`InvalidContextError - Missing param: ${p}`) }
+const raiseFor = (p: any) => {
+  throw new Error(`InvalidContextError - Missing param: ${p}`)
+}
 
 export function interpolateRouteWith(context: any, route?: any) {
   if (!route) {

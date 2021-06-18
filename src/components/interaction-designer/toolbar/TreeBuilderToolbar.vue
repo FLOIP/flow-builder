@@ -182,7 +182,7 @@ import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
-import lodash, {isEmpty, forEach} from 'lodash'
+import lodash, {forEach, isEmpty} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
@@ -191,7 +191,7 @@ import pickBy from 'lodash/fp/pickBy'
 import {computeBlockUiData} from '@/store/builder'
 import {VBTooltipPlugin} from 'bootstrap-vue'
 import Component, {mixins} from 'vue-class-component'
-import {Action, Getter, namespace, State, Mutation} from 'vuex-class'
+import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
 import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import SelectionBanner from '@/components/interaction-designer/toolbar/SelectionBanner.vue'
@@ -235,12 +235,13 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       },
       null,
       2,
-)
+    )
   }
 
   set flow(value: string) {
-    this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[], resources: IResource[]})
+    this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[], resources: IResource[] })
   }
+
   get treeViewUrl() {
     return this.editTreeRoute({
       component: 'interaction-designer',
@@ -273,8 +274,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   get saveButtonText() {
-  //TODO - once we can detect changes again we will change this text when saved
-  return this.trans('flow-builder.save')
+    //TODO - once we can detect changes again we will change this text when saved
+    return this.trans('flow-builder.save')
   }
 
   get rootBlockClassesToDisplay() {
@@ -305,7 +306,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   // Methods #####################
 
-  async handleAddBlockByTypeSelected({type} : { type: IBlock['type']}) {
+  async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }) {
     const {uuid: blockId} = await this.flow_addBlankBlockByType({
       type,
       // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
@@ -314,7 +315,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
           uiData: computeBlockUiData(this.activeBlock),
         },
       },
-    // todo push out to intx-designer
+      // todo push out to intx-designer
     })
     this.activateBlock({blockId})
     this.$router.push({
@@ -426,31 +427,37 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @flowVuexNamespace.State resources?: IResource[]
   @flowVuexNamespace.Action flow_removeBlock!: ({flowId, blockId}: { flowId?: string, blockId: IBlock['uuid'] | undefined }) => void
   @flowVuexNamespace.Action flow_addBlankBlockByType!: ({type, ...props}: Partial<IBlock>) => Promise<IBlock>
-  @flowVuexNamespace.Action flow_duplicateBlock!: ({flowId, blockId}: { flowId?: string, blockId: IBlock['uuid'] | undefined }) => Promise<IBlock>
-  @flowVuexNamespace.Action flow_persist!: ({persistRoute, flowContainer}: { persistRoute: any, flowContainer?: IContext }) => Promise<IContext | null>
+  @flowVuexNamespace.Action flow_duplicateBlock!: ({
+    flowId,
+    blockId,
+  }: { flowId?: string, blockId: IBlock['uuid'] | undefined }) => Promise<IBlock>
+  @flowVuexNamespace.Action flow_persist!: ({
+    persistRoute,
+    flowContainer,
+  }: { persistRoute: any, flowContainer?: IContext }) => Promise<IContext | null>
 
   // Builder
   @builderVuexNamespace.Getter isEditable!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
   @builderVuexNamespace.Getter activeBlock?: IBlock
-  @builderVuexNamespace.Action importFlowsAndResources!: ({flows, resources}: { flows: IFlow[], resources: IResource[]}) => Promise<void>
-  @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void
+  @builderVuexNamespace.Action importFlowsAndResources!: ({flows, resources}: { flows: IFlow[], resources: IResource[] }) => Promise<void>
+  @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null }) => void
 
-  @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined}) => void
+  @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined }) => void
 }
 </script>
 
 <style lang="scss">
-  .tree-builder-toolbar {
-    .flows-importer textarea {
-      display: block;
-      width: 100%;
-    }
+.tree-builder-toolbar {
+  .flows-importer textarea {
+    display: block;
+    width: 100%;
   }
+}
 
-  .tree-builder-toolbar-alerts {
-    position: fixed;
-    margin-top: 60px;
-    z-index: 3*10;
-  }
+.tree-builder-toolbar-alerts {
+  position: fixed;
+  margin-top: 60px;
+  z-index: 3*10;
+}
 </style>

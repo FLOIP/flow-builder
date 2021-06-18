@@ -68,7 +68,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import lodash, {forEach, invoke, isEmpty} from 'lodash'
+import {endsWith, forEach, get, invoke, isEmpty} from 'lodash'
 import Vue from 'vue'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 // import {affix as Affix} from 'vue-strap'
@@ -176,18 +176,18 @@ export default {
     ...mapGetters('builder', ['activeBlock', 'isEditable']),
 
     jsKey() {
-      return lodash.get(this.selectedBlock, 'jsKey')
+      return get(this.selectedBlock, 'jsKey')
     },
 
     // pure vuejs block types handle readonly mode on their own
 
     isPureVueBlock() {
-      return _.includes(this.pureVuejsBlocks, lodash.get(this.selectedBlock, 'type'))
+      return _.includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
     },
 
     sidebarType() {
       const
-        blockType = lodash.get(this.selectedBlock, 'type')
+        blockType = get(this.selectedBlock, 'type')
       const blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
 
       return this.isEditable
@@ -314,11 +314,9 @@ export default {
      | mode-is-edit+view-url-suffix     |        0 (r=>view)  |     1               |
      ------------------------------------------------------------------------------ */
     discoverIsEditableFrom(mode, hash, isEditableLocked) {
-      if (isEditableLocked) {
-        return false
-      }
-
-      return !isEditableLocked && mode === 'edit' || !mode && lodash.endsWith(hash, '/edit')
+      return !isEditableLocked && (
+        mode === 'edit' || (!mode && endsWith(hash, '/edit'))
+      )
     },
 
     hoistResourceViewerToPushState(hash) {

@@ -1,36 +1,46 @@
 <template>
   <div class="upload-monitor">
-    <div v-if="hasProgress" class="upload-monitor-progress">
+    <div
+      v-if="hasProgress"
+      class="upload-monitor-progress">
       <h6>{{ 'trees.uploading' | trans }}&hellip; {{ upload.file.name }}</h6>
 
       <div class="progress">
-        <b-progress :value="progress * 1" show-value animated class="mb-3"/>
+        <b-progress
+          :value="progress * 1"
+          show-value
+          animated
+          class="mb-3" />
       </div>
     </div>
 
-    <p v-if="isFailure" class="text-danger small">
+    <p
+      v-if="isFailure"
+      class="text-danger small">
       {{ 'trees.error-uploading-file-try-again'|trans }}
-      <span v-if="upload.message" class="details">({{ upload.message }})</span>
+      <span
+        v-if="upload.message"
+        class="details">({{ upload.message }})</span>
     </p>
 
-    <slot v-if="!hasProgress"/>
+    <slot v-if="!hasProgress" />
   </div>
 </template>
 
 <script>
-import { lang } from '@/lib/filters/lang'
-import lodash, { forEach } from 'lodash'
+import {lang} from '@/lib/filters/lang'
+import lodash, {forEach} from 'lodash'
 
-import { mapState } from 'vuex'
-import { BProgress } from 'bootstrap-vue'
-import multimediaUpload, { Statuses as UploadStatuses } from '@/store/trees/multimediaUpload'
+import {mapState} from 'vuex'
+import {BProgress} from 'bootstrap-vue'
+import multimediaUpload, {Statuses as UploadStatuses} from '@/store/trees/multimediaUpload'
 
 export default {
-  props: ['uploadKey'],
+
+  components: {BProgress},
 
   mixins: [lang],
-
-  components: { BProgress },
+  props: ['uploadKey'],
 
   computed: {
     ...mapState('multimediaUpload', ['uploadsById', 'uploadIdsByKey']),
@@ -41,8 +51,8 @@ export default {
 
     hasProgress() {
       return this.upload
-          && this.upload.status !== UploadStatuses.SUCCESS
-          && this.upload.status !== UploadStatuses.FAILURE
+        && this.upload.status !== UploadStatuses.SUCCESS
+        && this.upload.status !== UploadStatuses.FAILURE
     },
 
     isFailure() {
@@ -55,7 +65,7 @@ export default {
   },
 
   created() {
-    const { $store } = this
+    const {$store} = this
     const modules = {
       multimediaUpload,
     }

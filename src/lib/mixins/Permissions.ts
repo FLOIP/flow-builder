@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import lodash from 'lodash'
 import Component from 'vue-class-component'
-import { State } from 'vuex-class'
+import {State} from 'vuex-class'
 
 export function can(userPermissions: { [key: string]: any }, permissionOrPermissions: string[] | string, requireAll = false) {
   if (lodash.isArray(permissionOrPermissions)) {

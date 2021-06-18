@@ -1,14 +1,14 @@
 <template>
   <div>
-    <label v-if="label">{{label}}</label>
+    <label v-if="label">{{ label }}</label>
     <textarea
-        class="form-control"
-        :class="{ 'is-invalid': isInvalid }"
-        :placeholder="placeholder"
-        :value="value"
-        @keydown="$emit('keydown', $event)"
-        @input="$emit('input', $event.target.value)"/>
-    <slot/>
+      class="form-control"
+      :class="{ 'is-invalid': isInvalid }"
+      :placeholder="placeholder"
+      :value="value"
+      @keydown="$emit('keydown', $event)"
+      @input="$emit('input', $event.target.value)" />
+    <slot />
   </div>
 </template>
 
@@ -36,7 +36,7 @@ export default {
   computed: {
     isInvalid() {
       return this.validState === false
-    }
-  }
+    },
+  },
 }
 </script>

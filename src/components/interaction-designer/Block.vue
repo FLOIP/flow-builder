@@ -204,13 +204,11 @@
 
 <script>
 import Vue from 'vue'
-import {isNumber, forEach, filter, includes} from 'lodash'
-import {
-  mapActions, mapGetters, mapMutations, mapState,
-} from 'vuex'
+import {filter, forEach, includes, isNumber} from 'lodash'
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 import PlainDraggable from '@/components/common/PlainDraggable.vue'
 import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
-import {OperationKind, generateConnectionLayoutKeyFor} from '@/store/builder'
+import {generateConnectionLayoutKeyFor, OperationKind} from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import {lang} from '@/lib/filters/lang'
 import {BLOCK_TYPE as BLOCK_TYPE__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
@@ -262,8 +260,10 @@ export default {
       'resources',
       'selectedBlocks',
     ]),
-    ...mapState('builder',
-      ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid']),
+    ...mapState(
+      'builder',
+      ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid'],
+    ),
     ...mapState({
       blockClasses: ({trees: {ui}}) => ui.blockClasses,
     }),
@@ -293,8 +293,8 @@ export default {
     isConnectionSourceRelocateActive: ({operations}) => !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
     isConnectionCreateActive: ({operations}) => !!operations[OperationKind.CONNECTION_CREATE].data,
     isBlockActivated: ({
-      activeBlockId, isAssociatedWithActiveConnection, block, operations,
-    }) => {
+                         activeBlockId, isAssociatedWithActiveConnection, block, operations,
+                       }) => {
       if ((activeBlockId && activeBlockId === block.uuid) || isAssociatedWithActiveConnection) {
         return true
       }
@@ -367,7 +367,7 @@ export default {
           this.labelContainerMaxWidth = (blockExitsLength - 1) * blockExitElement.offsetWidth
           return
         }
-      // Adding new exit
+        // Adding new exit
       } else {
         // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible (especially when removing exits)
         if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) {
@@ -415,15 +415,15 @@ export default {
     isExitActivatedForRelocate(exit) {
       const {data} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
       return data
-            && data.to
-            && data.to.exitId === exit.uuid
+        && data.to
+        && data.to.exitId === exit.uuid
     },
 
     isExitActivatedForCreate(exit) {
       const {data} = this.operations[OperationKind.CONNECTION_CREATE]
       return data
-            && data.source
-            && data.source.exitId === exit.uuid
+        && data.source
+        && data.source.exitId === exit.uuid
     },
 
     activateExitAsDropZone(e, exit) {
@@ -583,142 +583,141 @@ export default {
 </script>
 
 <style lang="scss">
-  .fa-btn {
-    cursor: pointer;
-  }
+.fa-btn {
+  cursor: pointer;
+}
 
-  .btn-secondary.btn-flat {
-    @extend .btn-secondary;
-    background: transparent;
-  }
+.btn-secondary.btn-flat {
+  @extend .btn-secondary;
+  background: transparent;
+}
 
-  .block {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 1*10;
+.block {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1*10;
 
+  min-width: 300px;
+  padding: 0.4em;
+  padding-bottom: 0.25em;
+  scroll-margin: 35px;
+  scroll-margin-top: 100px;
+
+  background-color: white;
+  color: #575757;
+  border: 1px solid #5b5b5b;
+
+  border-radius: 0.3em;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  opacity: 0.9;
+
+  transition: opacity 200ms ease-in-out,
+  background-color 200ms ease-in-out;
+
+  .block-label {
+    font-size: 14px;
+    font-weight: normal;
     min-width: 300px;
-    padding: 0.4em;
-    padding-bottom: 0.25em;
-    scroll-margin: 35px;
-    scroll-margin-top: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-    background-color: white;
-    color: #575757;
-    border: 1px solid #5b5b5b;
-
-    border-radius: 0.3em;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    opacity: 0.9;
-
-    transition:
-      opacity 200ms ease-in-out,
-      background-color 200ms ease-in-out;
-
-    .block-label {
-      font-size: 14px;
-      font-weight: normal;
-      min-width: 300px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
-      &.empty {
-        color: #aaa;
-      }
+    &.empty {
+      color: #aaa;
     }
+  }
 
-    .block-type {
-      font-size: 11px;
-      font-weight: bolder;
-      margin-right: 1em;
-      margin-bottom: 0.4em;
+  .block-type {
+    font-size: 11px;
+    font-weight: bolder;
+    margin-right: 1em;
+    margin-bottom: 0.4em;
+  }
+
+  .block-target {
+    min-height: 4em;
+    border: 1px dashed transparent;
+    border-bottom: 1px solid #eee;
+    padding: 0.1em;
+
+    transition: border-radius 200ms ease-in-out;
+
+    &:hover {
+      border-radius: 0.3em;
+      border-color: #5b5b5b;
     }
+  }
 
-    .block-target {
-      min-height: 4em;
+  .block-exits {
+    white-space: nowrap;
+    position: relative;
+    top: 0em;
+    margin-top: 0.25em;
+
+    .block-exit {
+      display: inline-block;
       border: 1px dashed transparent;
-      border-bottom: 1px solid #eee;
-      padding: 0.1em;
-
       transition: border-radius 200ms ease-in-out;
 
-      &:hover {
-        border-radius: 0.3em;
-        border-color: #5b5b5b;
-      }
-    }
+      min-width: 25px;
+      max-width: 100px;
 
-    .block-exits {
-      white-space: nowrap;
-      position: relative;
-      top: 0em;
-      margin-top: 0.25em;
+      text-align: center;
 
-      .block-exit {
-        display: inline-block;
-        border: 1px dashed transparent;
-        transition: border-radius 200ms ease-in-out;
+      .block-exit-tag {
+        display: block;
 
         min-width: 25px;
-        max-width: 100px;
 
-        text-align: center;
+        margin: 0 0 0.5em 0;
+        padding: 0.4em;
 
-        .block-exit-tag  {
-          display: block;
+        background-color: #5b5b5b;
+        border: none;
 
-          min-width: 25px;
+        font-weight: normal;
+        font-size: 12px;
 
-          margin: 0 0 0.5em 0;
-          padding: 0.4em;
-
-          background-color: #5b5b5b;
-          border: none;
-
-          font-weight: normal;
-          font-size: 12px;
-
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-        }
-
-        .block-exit-move-handle {
-          margin-right: 0.5em;
-        }
-
-        .block-exit-remove {
-          background-image: none;
-          opacity: 0;
-          transition: opacity 200ms ease-in-out;
-        }
-
-        &.activated {
-          border-radius: 0.3em;
-          border-color: #333333;
-        }
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
 
+      .block-exit-move-handle {
+        margin-right: 0.5em;
+      }
+
+      .block-exit-remove {
+        background-image: none;
+        opacity: 0;
+        transition: opacity 200ms ease-in-out;
+      }
+
+      &.activated {
+        border-radius: 0.3em;
+        border-color: #333333;
+      }
     }
 
-    // state mutations
+  }
 
-    &.active {
-      border-width: 2px;
-      box-shadow: 0 3px 6px #CACACA;
-    }
+  // state mutations
 
-    &:hover {
+  &.active {
+    border-width: 2px;
+    box-shadow: 0 3px 6px #CACACA;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &.active,
+  &:hover {
+    .block-exit .block-exit-remove {
       opacity: 1;
     }
-
-    &.active,
-    &:hover {
-      .block-exit .block-exit-remove {
-        opacity: 1;
-      }
-    }
   }
+}
 </style>

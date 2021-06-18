@@ -15,9 +15,9 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch, Prop} from 'vue-property-decorator'
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import {find, isEqual, cloneDeep, debounce, maxBy, get} from 'lodash'
+import {cloneDeep, debounce, find, get, isEqual, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {IValidationStatus} from '@/store/validation'
@@ -63,6 +63,7 @@ export default class BuilderCanvas extends Vue {
       await this.validate_block({block: currentNewBlock})
     }
   }
+
   // ] ######### end Validation API Watchers
 
   // ##### Canvas dynamic size watchers [
@@ -105,11 +106,15 @@ export default class BuilderCanvas extends Vue {
     // it returns array as we loop blocks inside v-for
     const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition?.uuid}`] as Vue[]
     if (!blockElementRef) {
-      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition?.uuid}`)
+      console.debug(
+        'Interaction Designer',
+        'Unable to find DOM element corresponding to lowest block id: ',
+        `block/${this.blockAtTheLowestPosition?.uuid}`,
+      )
       // temporary dummy height for UI scroll purpose
       return 150
     }
-    return (<HTMLElement> (<Vue> blockElementRef[0].$refs.draggable).$el).offsetHeight
+    return (<HTMLElement>(<Vue>blockElementRef[0].$refs.draggable).$el).offsetHeight
   }
 
   get blockWidth() {
@@ -117,12 +122,16 @@ export default class BuilderCanvas extends Vue {
     const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition?.uuid}`] as Vue[]
 
     if (!blockElementRef) {
-      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition?.uuid}`)
+      console.debug(
+        'Interaction Designer',
+        'Unable to find DOM element corresponding to furthest right block id: ',
+        `block/${this.blockAtTheFurthestRightPosition?.uuid}`,
+      )
       // temporary dummy width for UI scroll purpose
       return 110
     }
 
-    return (<HTMLElement> (<Vue> blockElementRef[0].$refs.draggable).$el).offsetWidth
+    return ((blockElementRef[0].$refs.draggable as Vue).$el as HTMLElement).offsetWidth
   }
 
   get blockAtTheLowestPosition() {
@@ -184,26 +193,26 @@ export default class BuilderCanvas extends Vue {
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
 
-  @validationVuexNamespace.Action validate_flow!: ({flow} : { flow: IFlow }) => Promise<IValidationStatus>
-  @validationVuexNamespace.Action validate_block!: ({block} : { block: IBlock }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_block!: ({block}: { block: IBlock }) => Promise<IValidationStatus>
 }
 
 export {BuilderCanvas}
 </script>
 
 <style scoped>
-  .noselect * {
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Old versions of Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
-  }
+.noselect * {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+}
 
-  .builder-canvas {
-    /*standard proportion min-width and min-height here so that initial render on slower machines*/
-    min-width: 1024px;
-    min-height: 768px;
-  }
+.builder-canvas {
+  /*standard proportion min-width and min-height here so that initial render on slower machines*/
+  min-width: 1024px;
+  min-height: 768px;
+}
 </style>

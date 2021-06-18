@@ -78,28 +78,31 @@ const builderVuexNamespace = namespace('builder')
   },
 })
 class ConsoleIO_ReadBlock extends mixins(Lang) {
-    @Prop()readonly declare block: IReadBlock
+  @Prop() readonly declare block: IReadBlock
 
-    @Prop()readonly declare flow: IFlow
+  @Prop() readonly declare flow: IFlow
 
-    filterVariableName(e: any) {
-      if (e.key.match(/\W+|Enter/g)) {
-        e.preventDefault()
-      }
+  filterVariableName(e: any) {
+    if (e.key.match(/\W+|Enter/g)) {
+      e.preventDefault()
     }
-
-    updatedestinationVariables(value: string, i: number) {
-      this.editDestinationVariable({variableName: value, keyIndex: i})
-    }
-
-    @blockVuexNamespace.Action declare setFormatString: (newFormatString: string) => Promise<string>
-
-    @blockVuexNamespace.Action declare editDestinationVariable: ({variableName, keyIndex}: { variableName: string, keyIndex: number}) => Promise<string[]>
-
-    @blockVuexNamespace.Getter declare destinationVariablesFields: () => Promise<string[]>
-
-    @builderVuexNamespace.Getter declare isEditable : boolean
   }
+
+  updatedestinationVariables(value: string, i: number) {
+    this.editDestinationVariable({variableName: value, keyIndex: i})
+  }
+
+  @blockVuexNamespace.Action declare setFormatString: (newFormatString: string) => Promise<string>
+
+  @blockVuexNamespace.Action declare editDestinationVariable: ({
+    variableName,
+    keyIndex,
+  }: { variableName: string, keyIndex: number }) => Promise<string[]>
+
+  @blockVuexNamespace.Getter declare destinationVariablesFields: () => Promise<string[]>
+
+  @builderVuexNamespace.Getter declare isEditable: boolean
+}
 
 export default ConsoleIO_ReadBlock
 export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, ReadStore)

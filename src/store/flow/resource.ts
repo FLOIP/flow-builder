@@ -1,6 +1,7 @@
 import {
   IContext,
-  IResource, IResourceValue,
+  IResource,
+  IResourceValue,
   IResourceValue as IResourceDefinitionVariantOverModes,
   SupportedContentType,
   SupportedMode,
