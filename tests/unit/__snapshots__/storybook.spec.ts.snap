@@ -167,19 +167,32 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               class="col-12"
                             >
                               <div
-                                class="form-group flow-label"
+                                class="validation-message form-group"
+                                id="flow/fake-uuid-8/name"
                               >
-                                <div>
-                                  <label>
-                                    Flow label
-                                  </label>
-                                   
-                                  <textarea
-                                    class="form-control"
-                                    placeholder="Enter flow label"
-                                  />
-                                   
+                                <div
+                                  class="form-group flow-label"
+                                >
+                                  <div
+                                    class=""
+                                  >
+                                    <label>
+                                      Flow label
+                                    </label>
+                                     
+                                    <textarea
+                                      class="form-control"
+                                      placeholder="Enter flow label"
+                                    />
+                                     
+                                  </div>
                                 </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
                               </div>
                                
                               <div
@@ -220,151 +233,173 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               class="col-12"
                             >
                               <div
-                                class="form-group flow-languages"
+                                class="validation-message form-group"
+                                id="flow/fake-uuid-8/languages"
                               >
-                                <label>
-                                  Languages
-                                </label>
-                                 
                                 <div
-                                  class="checkbox"
+                                  class="form-group flow-languages"
                                 >
-                                  <label
-                                    class="font-weight-normal"
+                                  <label>
+                                    Languages
+                                  </label>
+                                   
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-language-toggle-checkbox"
-                                      type="checkbox"
-                                      value="[object Object]"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-language-toggle-checkbox"
+                                        type="checkbox"
+                                        value="[object Object]"
+                                      />
+                                      
 
       English
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-language-toggle-checkbox"
-                                      type="checkbox"
-                                      value="[object Object]"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-language-toggle-checkbox"
+                                        type="checkbox"
+                                        value="[object Object]"
+                                      />
+                                      
 
       French
     
-                                  </label>
+                                    </label>
+                                  </div>
                                 </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
                               </div>
                                
                               <div
-                                class="form-group flow-modes"
+                                class="validation-message form-group"
+                                id="flow/fake-uuid-8/supported_modes"
                               >
-                                <label>
-                                  Modes
-                                </label>
-                                 
                                 <div
-                                  class="checkbox"
+                                  class="form-group flow-modes"
                                 >
-                                  <label
-                                    class="font-weight-normal"
+                                  <label>
+                                    Modes
+                                  </label>
+                                   
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="TEXT"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="TEXT"
+                                      />
+                                      
       TEXT
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="SMS"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="SMS"
+                                      />
+                                      
       SMS
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="USSD"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="USSD"
+                                      />
+                                      
       USSD
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="IVR"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="IVR"
+                                      />
+                                      
       IVR
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="RICH_MESSAGING"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="RICH_MESSAGING"
+                                      />
+                                      
       RICH_MESSAGING
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="OFFLINE"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="OFFLINE"
+                                      />
+                                      
       OFFLINE
     
-                                  </label>
+                                    </label>
+                                  </div>
                                 </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
                               </div>
                             </div>
                           </div>
@@ -491,6 +526,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                   <main
                     class="error-notifications-wrapper"
                   >
+                    <!---->
+                     
                     <!---->
                   </main>
                 </div>
@@ -842,6 +879,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                     class="error-notifications-wrapper"
                   >
                     <!---->
+                     
+                    <!---->
                   </main>
                 </div>
               </div>
@@ -1191,6 +1230,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                     class="error-notifications-wrapper"
                   >
                     <!---->
+                     
+                    <!---->
                   </main>
                 </div>
               </div>
@@ -1512,6 +1553,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                     class="error-notifications-wrapper"
                   >
                     <!---->
+                     
+                    <!---->
                   </main>
                 </div>
               </div>
@@ -1646,6 +1689,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                   <main
                     class="error-notifications-wrapper"
                   >
+                    <!---->
+                     
                     <!---->
                   </main>
                 </div>
