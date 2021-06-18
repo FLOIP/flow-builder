@@ -8,8 +8,11 @@
       <div class="row">
           <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
 
+            <!-- We have `name` required according to IFlow, but it is auto-gen from `label`, therefore:
+            - name refers to validation message-key
+            - the UI field will be for label -->
             <validation-message
-              :message-key="`flow/${flow.uuid}/name` /* `label` is optional, but `name` is required */"
+              :message-key="`flow/${flow.uuid}/name`"
               #input-control="{ isValid }">
               <flow-label-editor :flow="flow" :validState="isValid"/>
             </validation-message>

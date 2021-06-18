@@ -157,7 +157,7 @@ import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
-import lodash, { isEmpty, forEach } from 'lodash'
+import lodash, { isEmpty, reduce } from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
@@ -359,15 +359,15 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
    * We have to make sure this is called using $nextTick() because we play with DOM
    */
   handleHeightChangeFromDOM() {
-    let height = 0
     const elementRef = this.$refs['builder-toolbar'] as Element
     if (!elementRef) {
       console.debug('Interaction Designer', 'Unable to find DOM element corresponding to builder-toolbar')
     }
 
-    forEach(elementRef.childNodes, function(child) {
-      height += (child as HTMLElement).offsetHeight
-    })
+    const height = reduce(
+      elementRef.childNodes,
+      (sum, child) => sum + (child as HTMLElement).offsetHeight,
+      0)
 
     if (height > 0) {
       this.height = height

@@ -24,7 +24,8 @@ import {
   cloneDeep,
   get,
   has,
-  omit
+  omit,
+  every
 } from 'lodash'
 import { discoverContentTypesFor } from '@/store/flow/resource'
 import { computeBlockUiData } from '@/store/builder'
@@ -49,15 +50,10 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       return false
     }
 
-    // check corresponding blocks validation
-    for(let i = 0; i < getters.activeFlow.blocks; i++) {
-      const currentBlockValidationResult = get(rootState.validation.validationStatuses, `block/${getters.activeFlow.blocks[i].uuid}`)
-      if (currentBlockValidationResult && !currentBlockValidationResult.isValid) {
-        return false
-      }
-    }
-
-    return true
+    // check if all blocks are valid
+    return every(
+      getters.activeFlow.blocks,
+      (block) => get(rootState.validation.validationStatuses, `block/${block.uuid}`)?.isValid)
   },
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: state => {
