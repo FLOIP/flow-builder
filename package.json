@@ -19,7 +19,7 @@
     "deploy": "yarn clean && yarn build && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD"
   },
   "dependencies": {
-    "@floip/flow-runner": "^1.0.9",
+    "@floip/flow-runner": "^1.0.11",
     "@flowjs/flow.js": "^2.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
