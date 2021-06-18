@@ -26,7 +26,7 @@ export const stateFactory = (): ICustomFlowState => ({
 })
 
 export const getters: GetterTree<ICustomFlowState, IRootState> = {
-  inflatedChoices: (_state, getters, _rootState, rootGetters): object => {
+  inflatedChoices: (state, getters, _rootState, rootGetters): object => {
     const currentBlock = rootGetters['builder/activeBlock']
     const choices: { [key: string]: IInflatedChoicesInterface } = {}
 
@@ -39,13 +39,13 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
       return memo
     }, choices)
   },
-  blockExitFromResourceUuid: (_state, _getters, _rootState, rootGetters) => (resourceUuid: string): IBlockExit => {
+  blockExitFromResourceUuid: (state, _getters, _rootState, rootGetters) => (resourceUuid: string): IBlockExit => {
     const currentBlock = rootGetters['builder/activeBlock']
     return first(filter(currentBlock.exits, {
       label: resourceUuid,
     })) as IBlockExit
   },
-  isInflatedChoiceBlankOnKey: (_state, getters) => (key: any): boolean => !someItemsHaveValue(
+  isInflatedChoiceBlankOnKey: (state, getters) => (key: any): boolean => !someItemsHaveValue(
     getters.inflatedChoices[key].resource.values,
     'value',
   ) && !get(getters.inflatedChoices[key], 'exit.semantic_label'),
@@ -54,10 +54,10 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
     'value',
   ) && !get(state.inflatedEmptyChoice, 'exit.semantic_label'),
   allChoicesHaveContent: (
-    _state,
+      state,
     getters,
   ): boolean => Object.keys(getters.inflatedChoices).every((key: string) => !getters.isInflatedChoiceBlankOnKey(key)),
-  twoChoicesBlank: (_state, getters): boolean => {
+  twoChoicesBlank: (state, getters): boolean => {
     let blankNumber = 0
     return Object.keys(getters.inflatedChoices).some((key: string) => {
       if (!someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value')) {

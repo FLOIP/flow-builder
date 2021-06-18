@@ -20,9 +20,9 @@ export const getters: GetterTree<IImportState, IRootState> = {
   languagesMissing: (state) => !isEmpty(state.missingLanguages),
   propertiesMissing: (state) => !isEmpty(state.missingProperties),
   groupsMissing: (state) => !isEmpty(state.missingGroups),
-  hasUnsupportedBlockClasses: (_state, getters) => !isEmpty(getters.unsupportedBlockClasses),
-  unsupportedBlockClasses: (_state, getters, _rootState, rootGetters) => difference(getters.uploadedBlockTypes, rootGetters.blockClasses),
-  unsupportedBlockClassesList: (_state, getters) => join(getters.unsupportedBlockClasses, ', '),
+  hasUnsupportedBlockClasses: (state, getters) => !isEmpty(getters.unsupportedBlockClasses),
+  unsupportedBlockClasses: (state, getters, _rootState, rootGetters) => difference(getters.uploadedBlockTypes, rootGetters.blockClasses),
+  unsupportedBlockClassesList: (state, getters) => join(getters.unsupportedBlockClasses, ', '),
   uploadedBlockTypes: (state) => uniq(get(state.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type)),
 }
 

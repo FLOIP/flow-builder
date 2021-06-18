@@ -79,14 +79,14 @@ export const stateFactory = (): IBuilderState => ({
 export const getters: GetterTree<IBuilderState, IRootState> = {
   activeBlock: ({activeBlockId}, {blocksById}) => (activeBlockId ? blocksById[activeBlockId] : null),
 
-  blocksById: (state, getters, rootState, rootGetters) => {
+  blocksById: (state, _getters, _rootState, rootGetters) => {
     const {blocks} = rootGetters['flow/activeFlow'] ? rootGetters['flow/activeFlow'] : {blocks: []}
     return keyBy(blocks, 'uuid')
   },
 
-  nodeLabelsById: (state, getters, {flow: {flows}}) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
+  nodeLabelsById: (state, _getters, {flow: {flows}}) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
 
-  exitLabelsById: (state, getters, {flow: {flows}}, rootGetters) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
+  exitLabelsById: (state, _getters, {flow: {flows}}) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
 }
@@ -266,7 +266,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     commit('setOperation', {operation})
   },
 
-  applyConnectionCreate({dispatch, commit, state: {operations}}) {
+  applyConnectionCreate({commit, state: {operations}}) {
     const {data} = operations[OperationKind.CONNECTION_CREATE]
     if (!data) {
       throw new ValidationException(`Unable to complete uninitialized operation: ${JSON.stringify(data)}`)

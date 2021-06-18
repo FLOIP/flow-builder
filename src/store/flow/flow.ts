@@ -45,11 +45,11 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     flows: state.flows,
     resources: state.resources,
   } as unknown as IContext),
-  hasTextMode: (_state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(
+  hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(
     getters.activeFlow.supported_modes || [],
     mode,
   )),
-  hasVoiceMode: (_state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
+  hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
 }
 
 export const mutations: MutationTree<IFlowsState> = {

@@ -9,7 +9,7 @@ import {IFlowsState} from '../index'
 export const BLOCK_TYPE = 'ConsoleIO.Read'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  destinationVariablesFields: (_state, _getters, _rootState, rootGetters): string[] => {
+  destinationVariablesFields: (state, _getters, _rootState, rootGetters): string[] => {
     const activeBlock = rootGetters['builder/activeBlock']
     // TODO: correct the destination variables array according to scanf library we're using, and think about consecutive % or other error we should avoid
     return new Array(split(activeBlock.config.format_string || '', '%').length - 1)
@@ -32,7 +32,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return newConfig
   },
   async editDestinationVariable({
-    commit, dispatch, getters, rootGetters,
+    commit, rootGetters,
   }, {variableName, keyIndex}: { variableName: string, keyIndex: number }) {
     const activeBlock = rootGetters['builder/activeBlock']
     const newDestinationVariables = activeBlock.config.destination_variables || []

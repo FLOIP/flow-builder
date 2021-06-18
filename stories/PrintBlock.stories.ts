@@ -45,7 +45,7 @@ export const Default = () => DefaultClass
 })
 class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
+    const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
 
     this.setDescription(blockId)
     this.setResourceData({

@@ -122,7 +122,7 @@ export default class BuilderCanvas extends Vue {
       return 110
     }
 
-    return (<HTMLElement> (<Vue> blockElementRe[0].refs.draggable).$el)ffsetWidth
+    return (<HTMLElement> (<Vue> blockElementRef[0].$refs.draggable).$el).offsetWidth
   }
 
   get blockAtTheLowestPosition() {
@@ -142,12 +142,12 @@ export default class BuilderCanvas extends Vue {
   }
 
   get canvasHeight() {
-    if (!this.activeFlow.blocks && this.activeFlow.blocks!.length) {
+    if (this.activeFlow.blocks.length == 0) {
       return this.windowHeight
     }
 
-    if (!this.blockAtTheLowetPositin) {
-      console.dug('Interaction Designer', 'Unable to find block at the lowest position')
+    if (!this.blockAtTheLowestPosition) {
+      console.debug('Interaction Designer', 'Unable to find block at the lowest position')
       return this.windowHeight
     }
 
@@ -162,7 +162,7 @@ export default class BuilderCanvas extends Vue {
   }
 
   get canvasWidth(): number {
-    if (!this.activeFlow.blocks && this.activeFlow.blocks!.length) {
+    if (this.activeFlow.blocks.length == 0) {
       return this.windowWidth
     }
 

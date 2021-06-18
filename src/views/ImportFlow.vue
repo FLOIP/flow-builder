@@ -215,7 +215,7 @@ class ImportFlow extends Vue {
       this.flowJson = readEvent.target.result.toString()
     }
 
-    const contents = reader.readAsText(selectedFile, 'UTF-8')
+    reader.readAsText(selectedFile, 'UTF-8')
   }
 
   async handleImportFlow(route: string) {

@@ -52,7 +52,7 @@ export const Default = () => (DefaultClass)
 )
 class ExistingDataClass extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
+    const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
 
     this.setDescription(blockId)
     this.setFormatString('%s lorem ipsum %d [...]')

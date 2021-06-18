@@ -45,7 +45,7 @@ export const Default = () => (DefaultClass)
 })
 class CurrentClass2 extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
+    const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
     this.setDescription(blockId)
   }

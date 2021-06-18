@@ -52,7 +52,7 @@ export const Default = () => (CurrentClass1)
 })
 class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
+    const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, numericResponseBlockStore)
 
     this.setDescription(blockId)
     this.setResourceData({

@@ -11,11 +11,11 @@ import {allItemsHaveValue, twoItemsBlank} from '../utils/listBuilder'
 export const BLOCK_TYPE = 'Core.Case'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  allExitsHaveTests: (_state, _getters, _rootState, rootGetters): boolean => allItemsHaveValue(
+  allExitsHaveTests: (state, _getters, _rootState, rootGetters): boolean => allItemsHaveValue(
     rootGetters['builder/activeBlock'].exits,
     'test',
   ),
-  twoExitsBlank: (_state, _getters, _rootState, rootGetters): boolean => twoItemsBlank(rootGetters['builder/activeBlock'].exits, 'test'),
+  twoExitsBlank: (state, _getters, _rootState, rootGetters): boolean => twoItemsBlank(rootGetters['builder/activeBlock'].exits, 'test'),
 
 }
 

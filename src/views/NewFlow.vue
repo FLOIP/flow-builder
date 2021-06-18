@@ -76,7 +76,8 @@ class NewFlow extends Vue {
   async handlePersistFlow(route: RawLocation): Promise<void> {
     this.flowError = null
     const flowContainer = await this.flow_persist({
-      // Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore TODO: Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
       persistRoute: this.route('flows.persistFlow', {flowId: this.activeFlow.uuid}),
       flowContainer: this.activeFlowContainer,
     })

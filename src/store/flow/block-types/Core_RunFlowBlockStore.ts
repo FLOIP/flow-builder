@@ -10,7 +10,7 @@ export const BLOCK_TYPE = 'Core.RunFlow'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   otherFlows: (
-    _state,
+      state,
     _getters,
     rootState,
     rootGetters,
