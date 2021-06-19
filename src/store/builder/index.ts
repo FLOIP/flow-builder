@@ -79,14 +79,14 @@ export const stateFactory = (): IBuilderState => ({
 export const getters: GetterTree<IBuilderState, IRootState> = {
   activeBlock: ({activeBlockId}, {blocksById}) => (activeBlockId ? blocksById[activeBlockId] : null),
 
-  blocksById: (state, _getters, _rootState, rootGetters) => {
+  blocksById: (_state, _getters, _rootState, rootGetters) => {
     const {blocks} = rootGetters['flow/activeFlow'] ? rootGetters['flow/activeFlow'] : {blocks: []}
     return keyBy(blocks, 'uuid')
   },
 
-  nodeLabelsById: (state, _getters, {flow: {flows}}) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
+  nodeLabelsById: (_state, _getters, {flow: {flows}}) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
 
-  exitLabelsById: (state, _getters, {flow: {flows}}) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
+  exitLabelsById: (_state, _getters, {flow: {flows}}) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
 }
@@ -111,6 +111,7 @@ export const mutations: MutationTree<IBuilderState> = {
     operations[operation.kind] = operation
   },
 
+  // @ts-ignore
   setBlockPositionTo(state, {position: {x, y}, block}) {
     // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder uiData props
     // if (!block.vendor_metadata.io_viamo.uiData) {
@@ -306,7 +307,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    * @param flows
    */
   async importFlowsAndResources({
-    dispatch, commit, state, rootState,
+    rootState,
   }, {flows, resources}: { flows: IFlow[], resources: IResource[] }) {
     console.debug('importing flows & resources ...')
     console.log({flows, resources})

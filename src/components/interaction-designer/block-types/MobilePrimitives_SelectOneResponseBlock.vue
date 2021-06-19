@@ -120,7 +120,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
   @Watch('inflatedChoices', {deep: true})
   onChoicesChanged(newChoices: object) {
-    console.debug('Watched inflatedChoices')
+    console.debug('Watched inflatedChoices', newChoices)
     this.editSelectOneResponseBlockChoice()
   }
 
