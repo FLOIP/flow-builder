@@ -28,7 +28,7 @@ class FlowLabelEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
 
   get label(): IBlock['label'] {
-    return this.flow.label || ''
+    return this.flow.label ?? ''
   }
 
   set label(label: IBlock['label']) {

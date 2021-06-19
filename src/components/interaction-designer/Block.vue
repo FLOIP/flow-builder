@@ -202,7 +202,8 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import Vue from 'vue'
 import {filter, forEach, includes, isNumber} from 'lodash'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'

@@ -31,7 +31,8 @@
           @click.prevent="">
           <button
             class="close active"
-            @click="toggleAudioLibrary">x</button>
+            @click="toggleAudioLibrary">x
+          </button>
 
           <i class="glyphicon glyphicon-info-sign" />
           {{ 'flow-builder.showing-entire-audio-library'|trans }}&hellip;
@@ -103,9 +104,10 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import fuse from 'fuse.js'
-import lodash from 'lodash'
+import {trim} from 'lodash'
 import VueFocus from 'vue-focus'
 import {lang} from '@/lib/filters/lang'
 
@@ -130,7 +132,7 @@ export default {
 
   computed: {
     query() {
-      return lodash.trim(this.rawQuery)
+      return trim(this.rawQuery)
     },
 
     isAudioLibraryEmpty() {
@@ -166,16 +168,21 @@ export default {
       console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
 
       const keys = ['filename', 'description']
-      return this.cache[query] = new fuse(this.audioFiles, {keys}).search(query)
+      this.cache[query] = new fuse(this.audioFiles, {keys}).search(query)
+      return this.cache[query]
     },
 
     // todo: push pagination into isolated component
     incrementPage() {
-      this.hasNext && (this.offset += 1)
+      if (this.hasNext) {
+        this.offset += 1
+      }
     },
 
     decrementPage() {
-      this.hasPrevious && (this.offset -= 1)
+      if (this.hasPrevious) {
+        (this.offset -= 1)
+      }
     },
 
     resetPagination() {

@@ -27,7 +27,8 @@ import Lang from '@/lib/filters/lang'
 import {find} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
-import {IContactPropertyOption} from '../../../store/flow/block-types/Core_SetContactPropertyStore'
+import {IContactPropertyOption} from '@/store/flow/block-types/Core_SetContactPropertyStore'
+import {isSetContactProperty} from '@floip/flow-runner/src/model/block/IBlockConfig'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -40,7 +41,7 @@ const flowVuexNamespace = namespace('flow')
 class ContactPropertySelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
-  get selectedProperty() {
+  get selectedProperty(): IContactPropertyOption {
     const {
       set_contact_property: {
         // TODO: weird issue, the prop exists but TS is still popping an error > Property 'property_key' does not exist on type 'SetContactProperty | SetContactProperty[]'

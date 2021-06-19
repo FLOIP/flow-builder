@@ -162,9 +162,8 @@ export function findResourceVariantOverModesOn(
   resource: IResource,
   filter: IResourceDefinitionVariantOverModesFilter,
 ): IResourceValue {
-  const
-    // b/c we do explicit partial matching on modes
-    keysForComparison = without(Object.keys(filter), 'modes')
+  // b/c we do explicit partial matching on modes
+  const keysForComparison = without(Object.keys(filter), 'modes')
   const filterWithComparatorKeys = pick(filter, keysForComparison)
   const variant = find<IResourceDefinitionVariantOverModes>(
     resource.values,

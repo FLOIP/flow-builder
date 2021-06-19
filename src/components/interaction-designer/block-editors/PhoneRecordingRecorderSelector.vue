@@ -89,9 +89,10 @@
   </b-modal>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {lang} from '@/lib/filters/lang'
-import lodash from 'lodash'
+import {clone} from 'lodash'
 import {mapState} from 'vuex'
 import {BModal} from 'bootstrap-vue'
 
@@ -145,7 +146,7 @@ export default {
     handleModalClosed() {
       const
         {description} = this
-      const value = lodash.clone(this.selectedRecorder)
+      const value = clone(this.selectedRecorder)
 
       this.reset()
       this.$emit('input', {
@@ -160,7 +161,7 @@ export default {
 
       const
         {description} = this
-      const value = lodash.clone(this.selectedRecorder)
+      const value = clone(this.selectedRecorder)
 
       this.$emit('input', {
         value,

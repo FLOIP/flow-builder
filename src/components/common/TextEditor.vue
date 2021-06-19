@@ -12,7 +12,8 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 export default {
   props: {
     label: {

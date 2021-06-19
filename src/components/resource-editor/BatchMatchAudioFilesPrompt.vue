@@ -162,9 +162,10 @@
   </form>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {lang} from '@/lib/filters/lang'
-import lodash from 'lodash'
+import {includes} from 'lodash'
 import VueFocus from 'vue-focus'
 
 export default {
@@ -185,8 +186,8 @@ export default {
     },
 
     isValid() {
-      return lodash.includes(this.pattern, '[label]')
-        && lodash.includes(this.pattern, '[language]')
+      return includes(this.pattern, '[label]')
+        && includes(this.pattern, '[language]')
     },
   },
 

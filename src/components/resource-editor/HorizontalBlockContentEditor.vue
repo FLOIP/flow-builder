@@ -93,9 +93,11 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
+
 import {lang} from '@/lib/filters/lang'
-import lodash from 'lodash'
+import {debounce, get} from 'lodash'
 import {mapGetters, mapState} from 'vuex'
 import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
 import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType'
@@ -125,7 +127,7 @@ export default {
   },
 
   methods: {
-    debouncedSaveTree: lodash.debounce(function () {
+    debouncedSaveTree: debounce(function () {
       this.$store.dispatch('attemptSaveTree')
     }, 500),
 
@@ -137,7 +139,7 @@ export default {
     },
 
     toggleReviewedStateFor(langId) {
-      const previousVal = !!lodash.get(this.block.customData.reviewed, langId, false)
+      const previousVal = get(this.block.customData.reviewed, langId, false)
       this.$store.commit('updateReviewedStateFor', {jsKey: this.block.jsKey, langId, value: !previousVal})
       this.debouncedSaveTree()
     },

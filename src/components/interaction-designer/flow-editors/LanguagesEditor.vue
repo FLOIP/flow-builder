@@ -39,7 +39,7 @@ class LanguagesEditor extends mixins(Lang) {
   }
 
   get flowSelectedLanguages(): ILanguage[] {
-    return this.flow.languages || []
+    return this.flow.languages ?? []
   }
 
   set flowSelectedLanguages(value: ILanguage[]) {

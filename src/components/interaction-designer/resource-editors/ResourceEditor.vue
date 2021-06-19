@@ -159,16 +159,16 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 
   SupportedContentType = SupportedContentType
 
-  triggerRecordViaPhoneFor(langId: ILanguage['id']) {
+  triggerRecordViaPhoneFor(langId: ILanguage['id']): void {
     this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', {langId, isVisible: true})
   }
 
-  handleFilesSubmittedFor(key: string, {data}: { data: any }) {
+  handleFilesSubmittedFor(key: string, {data}: { data: any }): void {
     console.debug('call handleFilesSubmittedFor')
     this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
   }
 
-  handleFileSuccessFor(key: string, langId: ILanguage['id'], event: any) {
+  handleFileSuccessFor(key: string, langId: ILanguage['id'], event: any): void {
     const {data: {json}} = event
     const {
       audio_file_id: id,
@@ -198,7 +198,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     this.pushAudioIntoLibrary(uploadedAudio)
   }
 
-  findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter) {
+  findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter): string | null {
     try {
       return findResourceVariantOverModesOn(resource, filter).value
     } catch (e) {

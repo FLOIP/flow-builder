@@ -19,7 +19,8 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {mapMutations} from 'vuex'
 import {lang} from '@/lib/filters/lang'
 

@@ -4,7 +4,8 @@
     :reposition-hook="repositionHook" />
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 // import LeaderLine from 'leader-line'
 import {set} from 'lodash'
 import {mapGetters, mapMutations, mapState} from 'vuex'
@@ -123,6 +124,52 @@ export default {
     },
   },
 
+  mounted() {
+    // todo: add an invisible centered dot on a node header
+    // if (!this.datum.source || !this.datum.target) {
+    //   return
+    // }
+
+    // todo: I think we can do something like this instead; will this prevent all the hairy business if we use pointAnchors?
+    //       See: https://github.com/anseki/leader-line#element
+    //       What I'm thinking is that we can just leverage these x/y's? How do we then update them?
+    // new LeaderLine(element1, LeaderLine.pointAnchor(element3, {x: 10, y: 30}));
+
+    // const {sourcePosition, targetPosition} = this
+    // this.line = new LeaderLine(
+    //     LeaderLine.pointAnchor(document.body, sourcePosition),
+    //     LeaderLine.pointAnchor(document.body, targetPosition), options)
+
+    const blockPaddingOffset = {x: 34, y: -7}
+    const start = document.getElementById(this.sourceElementId)
+    const end = this.position
+      ? document.getElementById(this.targetElementId)
+      : LeaderLine.pointAnchor(document.getElementById(this.targetElementId), blockPaddingOffset)
+
+    this.line = new LeaderLine(start, end, this.options)
+
+    // Add event listeners
+    const self = this
+    // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
+    const connectionElement = document.querySelector('body>.leader-line:last-of-type')
+
+    connectionElement.addEventListener('click', self.clickHandler, false)
+
+    connectionElement.addEventListener('click', self.clickAwayHandler(connectionElement), false)
+
+    connectionElement.addEventListener('mouseover', self.mouseOverHandler, false)
+
+    connectionElement.addEventListener('mouseout', self.mouseOutHandler, false)
+
+    // stop listening to scroll and window resize hooks
+    // LeaderLine.positionByWindowResize = false
+    // this.line.positionByWindowResize = false
+  },
+
+  beforeDestroy() {
+    this.line.remove()
+  },
+
   methods: {
     ...mapMutations('builder', ['activateConnection', 'deactivateConnection', 'activateBlock']),
     reposition() {
@@ -174,52 +221,6 @@ export default {
         }
       }, false)
     },
-  },
-
-  beforeDestroy() {
-    this.line.remove()
-  },
-
-  mounted() {
-    // todo: add an invisible centered dot on a node header
-    // if (!this.datum.source || !this.datum.target) {
-    //   return
-    // }
-
-    // todo: I think we can do something like this instead; will this prevent all the hairy business if we use pointAnchors?
-    //       See: https://github.com/anseki/leader-line#element
-    //       What I'm thinking is that we can just leverage these x/y's? How do we then update them?
-    // new LeaderLine(element1, LeaderLine.pointAnchor(element3, {x: 10, y: 30}));
-
-    // const {sourcePosition, targetPosition} = this
-    // this.line = new LeaderLine(
-    //     LeaderLine.pointAnchor(document.body, sourcePosition),
-    //     LeaderLine.pointAnchor(document.body, targetPosition), options)
-
-    const blockPaddingOffset = {x: 34, y: -7}
-    const start = document.getElementById(this.sourceElementId)
-    const end = this.position
-      ? document.getElementById(this.targetElementId)
-      : LeaderLine.pointAnchor(document.getElementById(this.targetElementId), blockPaddingOffset)
-
-    this.line = new LeaderLine(start, end, this.options)
-
-    // Add event listeners
-    const self = this
-    // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
-    const connectionElement = document.querySelector('body>.leader-line:last-of-type')
-
-    connectionElement.addEventListener('click', self.clickHandler, false)
-
-    connectionElement.addEventListener('click', self.clickAwayHandler(connectionElement), false)
-
-    connectionElement.addEventListener('mouseover', self.mouseOverHandler, false)
-
-    connectionElement.addEventListener('mouseout', self.mouseOutHandler, false)
-
-    // stop listening to scroll and window resize hooks
-    // LeaderLine.positionByWindowResize = false
-    // this.line.positionByWindowResize = false
   },
 }
 </script>

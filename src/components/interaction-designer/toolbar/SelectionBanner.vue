@@ -65,15 +65,15 @@ const flowVuexNamespace = namespace('flow')
 export default class SelectionBanner extends mixins(Lang) {
   deleting = false
 
-  updated() {
+  updated(): void {
     this.$emit('updated')
   }
 
-  get countSelectedBlocks() {
+  get countSelectedBlocks(): number {
     return size(this.selectedBlocks)
   }
 
-  async confirmMultipleDeletion() {
+  async confirmMultipleDeletion(): Promise<void> {
     await this.flow_removeAllSelectedBlocks()
     this.deleting = false
   }
@@ -84,8 +84,8 @@ export default class SelectionBanner extends mixins(Lang) {
   }
 
   @flowVuexNamespace.State selectedBlocks!: IBlock['uuid'][]
-  @flowVuexNamespace.Action flow_clearMultiSelection!: () => void
-  @flowVuexNamespace.Action flow_removeAllSelectedBlocks!: () => void
-  @flowVuexNamespace.Action flow_duplicateAllSelectedBlocks!: () => void
+  @flowVuexNamespace.Action flow_clearMultiSelection!: () => Promise<void>
+  @flowVuexNamespace.Action flow_removeAllSelectedBlocks!: () => Promise<void>
+  @flowVuexNamespace.Action flow_duplicateAllSelectedBlocks!: () => Promise<void>
 }
 </script>

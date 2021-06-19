@@ -18,7 +18,8 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 export default {
   props: {
     label: {
@@ -46,7 +47,7 @@ export default {
     regexFloatFiltering: {
       type: String,
       required: false,
-      default: '[0-9\-.,]',
+      default: '[0-9-.,]',
     },
     validState: {
       type: Boolean,

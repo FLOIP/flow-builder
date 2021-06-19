@@ -182,7 +182,7 @@ import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
-import lodash, {forEach, isEmpty} from 'lodash'
+import {forEach, identity, isEmpty, isNil, pickBy as _pickBy} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
@@ -196,6 +196,7 @@ import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import SelectionBanner from '@/components/interaction-designer/toolbar/SelectionBanner.vue'
 import ErrorNotifications from '@/components/interaction-designer/toolbar/ErrorNotifications.vue'
+import {Dictionary} from 'vue-router/types/router'
 
 Vue.use(VBTooltipPlugin)
 
@@ -223,7 +224,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return isEmpty(value)
   }
 
-  get flow() {
+  get flow(): string {
     const {
       flows,
       resources,
@@ -242,25 +243,25 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[], resources: IResource[] })
   }
 
-  get treeViewUrl() {
+  get treeViewUrl(): any {
     return this.editTreeRoute({
       component: 'interaction-designer',
     })
   }
 
-  get resourceViewUrl() {
+  get resourceViewUrl(): any {
     return this.editTreeRoute({
       component: 'resource-viewer',
     })
   }
 
-  get downloadAudioUrl() {
+  get downloadAudioUrl(): any {
     return this.editTreeRoute({
       component: 'downloadaudio',
     })
   }
 
-  get editOrViewTreeJsUrl() {
+  get editOrViewTreeJsUrl(): any {
     if (this.isEditable) {
       return this.editTreeRoute({
         component: 'interaction-designer',
@@ -273,12 +274,12 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     })
   }
 
-  get saveButtonText() {
+  get saveButtonText(): any {
     //TODO - once we can detect changes again we will change this text when saved
     return this.trans('flow-builder.save')
   }
 
-  get rootBlockClassesToDisplay() {
+  get rootBlockClassesToDisplay(): any {
     return flow(
       pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
       pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'advancedMenu')),
@@ -286,27 +287,27 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     )(this.ui.blockClasses)
   }
 
-  get rootDropdownClassesToDisplay() {
+  get rootDropdownClassesToDisplay(): any {
     return flow(
       pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
       pickBy((classDetails: { [key: string]: any }) => this.hasClassDetail(classDetails, 'branchingMenu')),
     )(this.ui.blockClasses)
   }
 
-  get advancedDropdownClassesToDisplay() {
+  get advancedDropdownClassesToDisplay(): any {
     return flow(
       pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
       pickBy((classDetails: { [key: string]: any }) => this.hasClassDetail(classDetails, 'advancedMenu')),
     )(this.ui.blockClasses)
   }
 
-  get canViewResultsTotals() {
+  get canViewResultsTotals(): any {
     return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
   }
 
   // Methods #####################
 
-  async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }) {
+  async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }): Promise<void> {
     const {uuid: blockId} = await this.flow_addBlankBlockByType({
       type,
       // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
@@ -324,7 +325,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     })
   }
 
-  async handlePersistFlow(route: RawLocation) {
+  async handlePersistFlow(route: RawLocation): Promise<void> {
     //TODO - hook into validation system when we have it - block the logic here if invalid.
 
     //If we aren't in edit mode there should be nothing to persist
@@ -345,11 +346,11 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     }
   }
 
-  toggleImportExport() {
+  toggleImportExport(): void {
     this.isImporterVisible = !this.isImporterVisible
   }
 
-  editTreeRoute({component = null, mode = null}: { component?: any, mode?: string | null } = {}) {
+  editTreeRoute({component = null, mode = null}: { component?: any, mode?: string | null } = {}): any {
     const context = this.removeNilValues({
       treeId: this.activeFlow?.uuid,
       component,
@@ -358,35 +359,35 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return this.route('trees.editTree', context)
   }
 
-  hasClassDetail(classDetails: { [key: string]: any }, attribute: string) {
-    return !lodash.isNil(classDetails[attribute]) && classDetails[attribute]
+  hasClassDetail(classDetails: { [key: string]: any }, attribute: string): any {
+    return !isNil(classDetails[attribute]) && classDetails[attribute]
   }
 
-  translateTreeClassName(className: string) {
+  translateTreeClassName(className: string): any {
     return this.trans(`flow-builder.${className}`)
   }
 
-  shouldDisplayDividerBefore(blockClasses: { [key: string]: any }, className: string) {
-    const shouldShowDividerBeforeBlock = lodash.pickBy(
+  shouldDisplayDividerBefore(blockClasses: { [key: string]: any }, className: string): any {
+    const shouldShowDividerBeforeBlock = _pickBy(
       blockClasses,
       (classDetails) => this.hasClassDetail(classDetails, 'dividerBefore'),
     )[className]
     return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
   }
 
-  handleResourceViewerSelected() {
+  handleResourceViewerSelected(): void {
     this.$el.scrollIntoView(true)
   }
 
   // This could be extracted to a helper mixin of some sort so it can be used in other places
-  removeNilValues(obj: any) {
-    return lodash.pickBy(obj, lodash.identity)
+  removeNilValues(obj: any): Dictionary<unknown> {
+    return _pickBy(obj, identity)
   }
 
   /**
    * We have to make sure this is called using $nextTick() because we play with DOM
    */
-  handleHeightChangeFromDOM() {
+  handleHeightChangeFromDOM(): void {
     let height = 0
     const elementRef = this.$refs['builder-toolbar'] as Element
     if (!elementRef) {

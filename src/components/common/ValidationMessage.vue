@@ -27,15 +27,15 @@ const validationVuexNamespace = namespace('validation')
 class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
 
-  get errorMessage() {
+  get errorMessage(): string {
     // get value by property (not by path like with lodash.get()), as the messageKey can contain `.` chars
-    if (!this.flattenErrorMessages.hasOwnProperty(this.messageKey)) {
+    if (!Object.prototype.hasOwnProperty.call(this.flattenErrorMessages, this.messageKey)) {
       return ''
     }
     return this.flattenErrorMessages[this.messageKey]
   }
 
-  get isValid() {
+  get isValid(): boolean {
     return !this.errorMessage
   }
 

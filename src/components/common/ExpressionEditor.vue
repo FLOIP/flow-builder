@@ -7,7 +7,8 @@
     :valid-state="validState" />
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import TextEditor from '@/components/common/TextEditor'
 
 export default {

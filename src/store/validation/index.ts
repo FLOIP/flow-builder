@@ -161,20 +161,20 @@ export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchem
 }
 
 function debugValidationStatus(status: IValidationStatus, customMessage: string) {
-  if (status) {
+  if (status != null) {
     console.debug(
       'store/validation:',
       customMessage,
       ' | isValid:',
       status.isValid,
       ' | error dataPaths:',
-      `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors).map((item) => get(
+      `${Object.prototype.hasOwnProperty.call(status, 'ajvErrors') && status.ajvErrors ? (status.ajvErrors).map((item) => get(
         item,
         'dataPath',
         'undefined',
       )).join(';') : 'undefined'}`,
       ' | error messages:',
-      `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors).map((item) => get(
+      `${Object.prototype.hasOwnProperty.call(status, 'ajvErrors') && status.ajvErrors ? (status.ajvErrors).map((item) => get(
         item,
         'message',
         'undefined',

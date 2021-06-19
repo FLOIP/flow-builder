@@ -95,7 +95,8 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import Vue from 'vue'
 import {lang} from '@/lib/filters/lang'
 import {parse as floipExpressionParser} from '@floip/expression-parser'

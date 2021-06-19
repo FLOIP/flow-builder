@@ -27,9 +27,10 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions,@typescript-eslint/unbound-method */
 import {lang} from '@/lib/filters/lang'
-import lodash, {forEach} from 'lodash'
+import {forEach, get} from 'lodash'
 
 import {mapState} from 'vuex'
 import {BProgress} from 'bootstrap-vue'
@@ -60,7 +61,7 @@ export default {
     },
 
     progress() {
-      return lodash.get(this.upload, 'progress', 0) * 100
+      return get(this.upload, 'progress', 0) * 100
     },
   },
 

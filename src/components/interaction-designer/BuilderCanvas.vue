@@ -25,9 +25,14 @@ import {IValidationStatus} from '@/store/validation'
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
-const MARGIN_HEIGHT = 100 //px
-const MARGIN_WIDTH = 100 //px
-const DEBOUNCE_SCROLL_TIMER = 100 //ms
+//px
+const MARGIN_HEIGHT = 100
+
+//px
+const MARGIN_WIDTH = 100
+
+//ms
+const DEBOUNCE_SCROLL_TIMER = 100
 
 @Component({
   components: {
@@ -51,30 +56,28 @@ export default class BuilderCanvas extends Vue {
     }
 
     console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed, validating ...')
-    for (let i = 0; i < newBlocks.length; i++) {
-      const currentNewBlock = newBlocks[i]
-      const currentOldBlock = find(oldBlocks, {uuid: currentNewBlock.uuid})
 
-      if (isEqual(currentNewBlock, currentOldBlock)) {
-        // no changes found
-        continue
-      }
-
-      await this.validate_block({block: currentNewBlock})
-    }
+    await Promise.all(
+      newBlocks.map(async (currentNewBlock) => {
+        const currentOldBlock = find(oldBlocks, {uuid: currentNewBlock.uuid})
+        if (!isEqual(currentNewBlock, currentOldBlock)) {
+          await this.validate_block({block: currentNewBlock})
+        }
+      }),
+    )
   }
 
   // ] ######### end Validation API Watchers
 
   // ##### Canvas dynamic size watchers [
   @Watch('canvasHeight')
-  onCanvasHeightChanged(newValue: number) {
+  onCanvasHeightChanged(newValue: number): void {
     console.debug('canvas height changed to', newValue)
     this.debounceVerticalScroll()
   }
 
   @Watch('canvasWidth')
-  onCanvasWidthChanged(newValue: number) {
+  onCanvasWidthChanged(newValue: number): void {
     console.debug('canvas width changed to', newValue)
     this.debounceHorizontalScroll()
   }
@@ -97,12 +100,12 @@ export default class BuilderCanvas extends Vue {
 
   // ] ######## end canvas dynamic size watchers
 
-  get blocksOnActiveFlowForWatcher() {
+  get blocksOnActiveFlowForWatcher(): IBlock[] {
     // needed to make comparison between new & old values on watcher
     return cloneDeep(this.activeFlow.blocks)
   }
 
-  get blockHeight() {
+  get blockHeight(): number {
     // it returns array as we loop blocks inside v-for
     const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition?.uuid}`] as Vue[]
     if (!blockElementRef) {
@@ -117,7 +120,7 @@ export default class BuilderCanvas extends Vue {
     return (<HTMLElement>(<Vue>blockElementRef[0].$refs.draggable).$el).offsetHeight
   }
 
-  get blockWidth() {
+  get blockWidth(): number {
     // it returns array as we loop blocks inside v-for
     const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition?.uuid}`] as Vue[]
 
@@ -134,23 +137,23 @@ export default class BuilderCanvas extends Vue {
     return ((blockElementRef[0].$refs.draggable as Vue).$el as HTMLElement).offsetWidth
   }
 
-  get blockAtTheLowestPosition() {
+  get blockAtTheLowestPosition(): any {
     return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.yPosition')
   }
 
-  get blockAtTheFurthestRightPosition() {
+  get blockAtTheFurthestRightPosition(): any {
     return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
   }
 
-  get windowHeight() {
+  get windowHeight(): number {
     return window.screen.availHeight
   }
 
-  get windowWidth() {
+  get windowWidth(): number {
     return window.screen.availWidth
   }
 
-  get canvasHeight() {
+  get canvasHeight(): any {
     if (this.activeFlow.blocks.length == 0) {
       return this.windowHeight
     }

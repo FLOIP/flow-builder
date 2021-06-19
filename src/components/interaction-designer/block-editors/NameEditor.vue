@@ -17,7 +17,8 @@
   </validation-message>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {mapMutations} from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
 import {lang} from '@/lib/filters/lang'

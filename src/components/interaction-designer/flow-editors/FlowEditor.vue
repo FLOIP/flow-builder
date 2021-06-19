@@ -59,11 +59,11 @@ class FlowEditor extends mixins(Lang) {
   @Prop({default: 'flow-builder.edit-flow'}) readonly flowHeader!: string
   @Prop({default: true}) readonly sidebar!: boolean
 
-  updateFlowLanguages(value: ILanguage[] | ILanguage) {
+  updateFlowLanguages(value: ILanguage[] | ILanguage): void {
     this.flow_setLanguages({flowId: this.flow.uuid, value})
   }
 
-  updateFlowModes(value: SupportedMode[] | SupportedMode) {
+  updateFlowModes(value: SupportedMode[] | SupportedMode): void {
     this.flow_setSupportedMode({flowId: this.flow.uuid, value})
   }
 

@@ -46,12 +46,12 @@ class GroupSelector extends mixins(Lang) {
       return {} as IGroupOption
     }
 
-    const groupOption = find(this.groups, {id: group_key}) as IGroupOption
-    if (!groupOption) {
+    const groupOption = find<IGroupOption>(this.groups, {id: group_key})
+    if (groupOption) {
+      return groupOption
+    } else {
       return {} as IGroupOption
     }
-
-    return groupOption
   }
 
   set selectedGroup(value: IGroupOption) {
@@ -72,7 +72,7 @@ class GroupSelector extends mixins(Lang) {
     path,
     value,
   }: { blockId: string, path: string, value: object | string }) => void
-  @Getter groups!: object[]
+  @Getter groups!: IGroupOption[]
 }
 
 export default GroupSelector

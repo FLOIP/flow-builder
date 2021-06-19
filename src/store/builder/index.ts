@@ -318,11 +318,11 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     ]
 
     // add default activated modes if not set yet
-    for (const key in flows) {
-      if (!flows[key].hasOwnProperty('supported_modes') || !flows[key].supported_modes.length) {
+    flows.forEach((_flow, key) => {
+      if (!Object.prototype.hasOwnProperty.call([key], 'supported_modes') || !flows[key].supported_modes.length) {
         flows[key].supported_modes = defaultSupportedMode
       }
-    }
+    })
 
     // Update flow state
     flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flows)

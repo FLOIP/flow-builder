@@ -17,7 +17,8 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 export default {
   props: {
     validState: {
@@ -40,7 +41,7 @@ export default {
     regexNumericFiltering: {
       type: String,
       required: false,
-      default: '[0-9\-]',
+      default: '[0-9-]',
     },
   },
   computed: {

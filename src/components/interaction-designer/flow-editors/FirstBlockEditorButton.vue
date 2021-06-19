@@ -37,11 +37,11 @@ class FirstBlockEditorButton extends mixins(Lang) {
 
   @Prop() readonly flow!: IFlow
 
-  get isStartBlock() {
+  get isStartBlock(): boolean {
     return this.blockId === this.flow.first_block_id
   }
 
-  setStartBlock(event: any) {
+  setStartBlock(event: any): void {
     const {flow: {uuid: flowId}, blockId} = this
     this.flow_setFirstBlockId({flowId, blockId})
   }

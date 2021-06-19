@@ -62,18 +62,19 @@ import Routes from '@/lib/mixins/Routes'
 import Component, {mixins} from 'vue-class-component'
 import {namespace} from 'vuex-class'
 import {IFlow} from '@floip/flow-runner'
+import {ErrorObject} from 'ajv'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
 @Component({})
 export default class ErrorNotifications extends mixins(Routes, Lang) {
-  updated() {
+  updated(): void {
     this.$emit('updated')
   }
 
   // TODO: Need to test the below function - https://viamoinc.atlassian.net/browse/VMO-3905
-  get flowValidationErrors() {
+  get flowValidationErrors(): ErrorObject[] {
     const flowKey = `flow/${this.activeFlow?.uuid}`
     return this.validationStatuses[flowKey]?.ajvErrors || []
   }
@@ -89,17 +90,17 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
     return pickBy(this.validationStatuses, (value: IValidationStatus, key) => value.type !== 'flow' && blocksMap[key])
   }
 
-  get numberOfBlocksWithErrors() {
+  get numberOfBlocksWithErrors(): number {
     return size(this.blockValidationStatuses)
   }
 
-  fixFlowError() {
+  fixFlowError(): void {
     this.$router.push({
       name: 'flow-details',
     })
   }
 
-  fixBlockError(key: string, dataPath: string) {
+  fixBlockError(key: string, dataPath: string): void {
     const blockId = key.replace('block/', '')
     this.$router.push({
       name: 'block-scroll-to-anchor',
