@@ -2313,7 +2313,7 @@
     regenerator-runtime "^0.13.7"
     ts-dedent "^2.0.0"
 
-"@storybook/addon-notes@6.2.9":
+"@storybook/addon-notes@6.0.0-alpha.6":
   version "6.0.0-alpha.6"
   resolved "https://registry.yarnpkg.com/@storybook/addon-notes/-/addon-notes-6.0.0-alpha.6.tgz#7ecadb0085bab28e004ea6af8f51ffc6875ac1cc"
   integrity sha512-sY6Qpx9V+RJBQOtlyOMGoV5g3OwNbqW8sX11gDyHOBi7766m6/G3VaDc4lRDeMRgsuCXoMiBnnUbVsi4f/9HkQ==
@@ -18276,10 +18276,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-violation-comments-to-github-command-line@^1.19.0:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/violation-comments-to-github-command-line/-/violation-comments-to-github-command-line-1.19.0.tgz#9223300df879ed291497ba4fbb9e47bf0796acd4"
-  integrity sha512-4pB1t2I+kJyACZjqHHqseRbIYCZoG4anV6DRWBd8bK9G2pIlnImdEHSNRwF0v3kVDUL9wRvjiJz1ZoIiPx+N2w==
+violation-comments-to-github-command-line@^1.20.0:
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/violation-comments-to-github-command-line/-/violation-comments-to-github-command-line-1.20.0.tgz#9e9e7ddb7f5c0a328206a765cab15fe7215e1b77"
+  integrity sha512-YLSGxzW1okchW8kC3N6hlbGa9zmOWeRU5rIUBl4sRvZRbTlxBNDZPA9wKBQRwTHMWqowh22tGFz7hdmCX/oUPw==
   dependencies:
     shelljs "^0.7.5"
 
