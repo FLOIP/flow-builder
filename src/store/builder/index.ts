@@ -117,6 +117,21 @@ export const mutations: MutationTree<IBuilderState> = {
     operations[operation.kind] = operation
   },
 
+  setBlockPositionTo(state, { position: { x, y }, block }) {
+    // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder // uiData props
+    // if (!block.vendor_metadata.io_viamo.uiData) {
+    //   defaultsDeep(block, {vendor_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
+    //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
+    // }
+
+    if (x !== undefined) {
+      block.vendor_metadata.io_viamo.uiData.xPosition = x
+    }
+    if (y !== undefined) {
+      block.vendor_metadata.io_viamo.uiData.yPosition = y
+    }
+  },
+
   setIsEditable(state, value) {
     state.isEditable = value
   },
@@ -135,16 +150,12 @@ export const mutations: MutationTree<IBuilderState> = {
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
-  setBlockPositionTo({ state, commit, getters, dispatch, rootState, rootGetters }, { position: { x, y }, block }) {
-    // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder // uiData props
-    // if (!block.vendor_metadata.io_viamo.uiData) {
-    //   defaultsDeep(block, {vendor_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
-    //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
-    // }
+  changeBlockPositionTo(
+    { state, commit, dispatch, rootState, rootGetters },
+    { position: { x, y }, block }) {
 
     if (!includes(rootState.flow.selectedBlockUuids, block.uuid)) {
-      block.vendor_metadata.io_viamo.uiData.xPosition = x
-      block.vendor_metadata.io_viamo.uiData.yPosition = y
+      commit('setBlockPositionTo', { position: { x, y }, block })
     } else { // the block is selected
       // Store UI Position
       const initialPosition = {
@@ -155,25 +166,25 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
       // Prepare translation
       const translationDelta: IPosition = {
         x: x - initialPosition.x,
-        y: y - initialPosition.y
+        y: y - initialPosition.y,
       }
 
-      let shouldReversePosition = false;
-      if (translationDelta.x > 0 /* moving to the right */ ||
-        rootGetters['flow/selectedBlockAtTheFurthestLeftPosition'].vendor_metadata.io_viamo.uiData.xPosition > 0 /* left space still available */) {
-        block.vendor_metadata.io_viamo.uiData.xPosition = x
+      let shouldReversePosition = false
+      if (translationDelta.x > 0 /* moving to the right */
+        || rootGetters['flow/selectedBlockAtTheFurthestLeftPosition'].vendor_metadata.io_viamo.uiData.xPosition > 0 /* left space still available */) {
+        commit('setBlockPositionTo', { position: { x }, block })
       } else {
         translationDelta.x = 0
-        block.vendor_metadata.io_viamo.uiData.xPosition = initialPosition.x
+        commit('setBlockPositionTo', { position: { x: initialPosition.x }, block })
         shouldReversePosition = true
       }
 
-      if(translationDelta.y > 0 /* moving to the top */ ||
-        rootGetters['flow/selectedBlockAtTheTopPosition'].vendor_metadata.io_viamo.uiData.yPosition - state.toolbarHeight > 0 /* top space still available */) {
-        block.vendor_metadata.io_viamo.uiData.yPosition = y
+      if (translationDelta.y > 0 /* moving to the top */
+        || rootGetters['flow/selectedBlockAtTheTopPosition'].vendor_metadata.io_viamo.uiData.yPosition - state.toolbarHeight > 0 /* top space still available */) {
+        commit('setBlockPositionTo', { position: { y }, block })
       } else {
         translationDelta.y = 0
-        block.vendor_metadata.io_viamo.uiData.yPosition = initialPosition.y
+        commit('setBlockPositionTo', { position: { y: initialPosition.y }, block })
         shouldReversePosition = true
       }
 
@@ -184,16 +195,16 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
           position: {
             x: block.vendor_metadata.io_viamo.uiData.xPosition,
             y: block.vendor_metadata.io_viamo.uiData.yPosition,
-          }
+          },
         })
       }
 
       // Translate other selected blocks
-      const otherSelectedBlocks = filter(rootGetters['flow/selectedBlocks'], currentBlock => currentBlock.uuid !== block.uuid);
+      const otherSelectedBlocks = filter(rootGetters['flow/selectedBlocks'], (currentBlock) => currentBlock.uuid !== block.uuid)
       forEach(otherSelectedBlocks, async (currentBlock: IBlock) => {
         let newPosition = {} as IPosition
         await dispatch('setBlockPositionFromDelta', { delta: translationDelta, block: currentBlock }).then(
-          response => {
+          (response) => {
             newPosition = response
           }
         )
@@ -203,23 +214,24 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     }
   },
 
-  setBlockPositionFromDelta({ dispatch }, { delta: { x, y }, block }) {
-    const { vendor_metadata: {
-      io_viamo: {
-        uiData: {
-          xPosition: initialXPosition,
-          yPosition: initialYPosition
-        }
+  setBlockPositionFromDelta({ commit }, { delta: { x, y }, block }) {
+    const {
+      vendor_metadata: {
+        io_viamo: {
+          uiData: {
+            xPosition: initialXPosition,
+            yPosition: initialYPosition,
+          },
+        },
       }
-    }} = block
+    } = block
 
     const newPosition = {
       x: initialXPosition + x,
-      y: initialYPosition + y
+      y: initialYPosition + y,
     }
 
-    block.vendor_metadata.io_viamo.uiData.xPosition = newPosition.x
-    block.vendor_metadata.io_viamo.uiData.yPosition = newPosition.y
+    commit('setBlockPositionTo', { position: newPosition, block })
 
     return newPosition
   },

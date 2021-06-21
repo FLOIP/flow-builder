@@ -309,7 +309,7 @@ export default {
     }),
 
     ...mapActions('builder', [
-      'setBlockPositionTo',
+      'changeBlockPositionTo',
       // ConnectionSourceRelocate
       'initializeConnectionSourceRelocateWith',
       'setConnectionSourceRelocateValue',
@@ -433,12 +433,12 @@ export default {
       this.setConnectionCreateTargetBlockToNullFrom({ block })
     },
 
-    onMoved({ draggable, position }) {
+    onMoved({ position }) {
       // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
       const { left: x, top: y } = position
       const { block } = this
       this.$nextTick(() => {
-        this.setBlockPositionTo({ position: { x, y }, block })
+        this.changeBlockPositionTo({ position: { x, y }, block })
 
         forEach(this.draggableForExitsByUuid, (exitDraggable, key) => {
           try {
