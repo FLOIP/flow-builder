@@ -29,23 +29,16 @@
       </div>
       <div class="row full-width mt-2">
         <div class="col-12">
-          <button class="btn btn-primary"
-            @click="showAddLanguageModal">
-            {{'flow-builder.add-language' | trans}}
-          </button>
+          <language-adder/>
         </div>
       </div>
     </div>
 
-    <b-modal ref="add-language-modal" title="Add Language">
-      <language-adder ref="add-language-modal"/>
-    </b-modal>
   </div>
 </template>
 
 <script lang="ts">
 
-import { BModal } from 'bootstrap-vue'
 import LanguageAdder from './LanguageAdder.vue'
 import lang from '@/lib/filters/lang'
 import Vue from 'vue'
@@ -58,7 +51,7 @@ import {
 
 @Component({
   mixins: [lang],
-  components: { LanguageAdder, BModal },
+  components: { LanguageAdder },
 })
 class ImportMatcher extends Vue {
   @Prop({ default: '' }) readonly matchNotFoundText!: string
@@ -87,10 +80,6 @@ class ImportMatcher extends Vue {
 
   get mappingsEmpty() {
     return isEmpty(this.mappings)
-  }
-  showAddLanguageModal() {
-    const languageModal: any = this.$refs['add-language-modal']
-    languageModal.show()
   }
   handleMatch(missingMatch: {[key: string]: string}) {
     const matchingJson = get(this.mappings, this.getIdentifier(missingMatch))
