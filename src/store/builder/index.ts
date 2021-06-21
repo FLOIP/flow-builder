@@ -223,20 +223,14 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     }
 
     // Translate other selected blocks
-    const otherSelectedBlocks = filter(getters.selectedBlocks, (currentBlock) => currentBlock.uuid !== block.uuid)
-    forEach(otherSelectedBlocks, async (currentBlock: IBlock) => {
-      let newPosition = {} as IPosition
-      await dispatch('setBlockPositionFromDelta', { delta: translationDelta, block: currentBlock }).then(
-        (response) => {
-          newPosition = response
-        }
-      )
-
-      commit('updateBlockDraggablePosition', { uuid: currentBlock.uuid, position: newPosition })
+    forEach(getters.selectedBlocks,  (currentBlock: IBlock) => {
+      if (currentBlock.uuid !== block.uuid) {
+        dispatch('setBlockAndSyncDraggablePositionFromDelta', { delta: translationDelta, block: currentBlock })
+      }
     })
   },
 
-  setBlockPositionFromDelta({ commit }, { delta: { x, y }, block }) {
+  setBlockAndSyncDraggablePositionFromDelta({ commit }, { delta: { x, y }, block }) {
     const {
       vendor_metadata: {
         io_viamo: {
@@ -248,14 +242,13 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
       }
     } = block
 
-    const newPosition = {
+    const newPosition: IPosition = {
       x: initialXPosition + x,
       y: initialYPosition + y,
     }
 
     commit('setBlockPositionTo', { position: newPosition, block })
-
-    return newPosition
+    commit('updateBlockDraggablePosition', { uuid: block.uuid, position: newPosition })
   },
 
   removeConnectionFrom({ commit }, { block: { uuid: blockId }, exit: { uuid: exitId } }) {
