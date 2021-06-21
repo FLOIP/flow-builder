@@ -1,5 +1,5 @@
 import {
-  flatMap, isEqual, keyBy, map, mapValues, get, filter, union, includes, clone, forEach
+  flatMap, isEqual, keyBy, map, mapValues, get, filter, union, includes, clone, forEach, minBy
 } from 'lodash'
 import Vue from 'vue'
 import {
@@ -95,6 +95,26 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
   exitLabelsById: (state, getters, { flow: { flows } }, rootGetters) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
+
+  selectedBlocks: (_state, _getters, _rootState, rootGetters) => {
+    return rootGetters['flow/selectedBlocks']
+  },
+
+  selectedBlockAtTheTopPosition: (_state, getters) => {
+    return minBy(getters.selectedBlocks, 'vendor_metadata.io_viamo.uiData.yPosition')
+  },
+
+  selectedBlockAtTheFurthestLeftPosition: (_state, getters) => {
+    return minBy(getters.selectedBlocks, 'vendor_metadata.io_viamo.uiData.xPosition')
+  },
+
+  isAnyLeftSpaceAvailable: (_state, getters) => {
+    return getters.selectedBlockAtTheFurthestLeftPosition.vendor_metadata.io_viamo.uiData.xPosition > 0
+  },
+
+  isAnyTopSpaceAvailable: (state, getters) => {
+    return getters.selectedBlockAtTheTopPosition.vendor_metadata.io_viamo.uiData.yPosition - state.toolbarHeight > 0
+  }
 }
 
 export const mutations: MutationTree<IBuilderState> = {
@@ -151,67 +171,69 @@ export const mutations: MutationTree<IBuilderState> = {
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
   changeBlockPositionTo(
-    { state, commit, dispatch, rootState, rootGetters },
+    { state, commit, getters, dispatch, rootState },
     { position: { x, y }, block }) {
 
     if (!includes(rootState.flow.selectedBlockUuids, block.uuid)) {
       commit('setBlockPositionTo', { position: { x, y }, block })
-    } else { // the block is selected
-      // Store UI Position
-      const initialPosition = {
-        x: clone(block.vendor_metadata.io_viamo.uiData.xPosition),
-        y: clone(block.vendor_metadata.io_viamo.uiData.yPosition),
-      } as IPosition
-
-      // Prepare translation
-      const translationDelta: IPosition = {
-        x: x - initialPosition.x,
-        y: y - initialPosition.y,
-      }
-
-      let shouldReversePosition = false
-      if (translationDelta.x > 0 /* moving to the right */
-        || rootGetters['flow/selectedBlockAtTheFurthestLeftPosition'].vendor_metadata.io_viamo.uiData.xPosition > 0 /* left space still available */) {
-        commit('setBlockPositionTo', { position: { x }, block })
-      } else {
-        translationDelta.x = 0
-        commit('setBlockPositionTo', { position: { x: initialPosition.x }, block })
-        shouldReversePosition = true
-      }
-
-      if (translationDelta.y > 0 /* moving to the top */
-        || rootGetters['flow/selectedBlockAtTheTopPosition'].vendor_metadata.io_viamo.uiData.yPosition - state.toolbarHeight > 0 /* top space still available */) {
-        commit('setBlockPositionTo', { position: { y }, block })
-      } else {
-        translationDelta.y = 0
-        commit('setBlockPositionTo', { position: { y: initialPosition.y }, block })
-        shouldReversePosition = true
-      }
-
-      // Reverse the draggable position
-      if (shouldReversePosition) {
-        commit('updateBlockDraggablePosition', {
-          uuid: block.uuid,
-          position: {
-            x: block.vendor_metadata.io_viamo.uiData.xPosition,
-            y: block.vendor_metadata.io_viamo.uiData.yPosition,
-          },
-        })
-      }
-
-      // Translate other selected blocks
-      const otherSelectedBlocks = filter(rootGetters['flow/selectedBlocks'], (currentBlock) => currentBlock.uuid !== block.uuid)
-      forEach(otherSelectedBlocks, async (currentBlock: IBlock) => {
-        let newPosition = {} as IPosition
-        await dispatch('setBlockPositionFromDelta', { delta: translationDelta, block: currentBlock }).then(
-          (response) => {
-            newPosition = response
-          }
-        )
-
-        commit('updateBlockDraggablePosition', { uuid: currentBlock.uuid, position: newPosition })
-      });
+      return
     }
+
+    // The block is selected
+    // Store UI Position
+    const initialPosition = {
+      x: clone(block.vendor_metadata.io_viamo.uiData.xPosition),
+      y: clone(block.vendor_metadata.io_viamo.uiData.yPosition),
+    } as IPosition
+
+    // Prepare translation
+    const translationDelta: IPosition = {
+      x: x - initialPosition.x,
+      y: y - initialPosition.y,
+    }
+
+    let shouldReversePosition = false
+    const isMovingToTheRight = translationDelta.x > 0
+    if (isMovingToTheRight || getters.isAnyLeftSpaceAvailable) {
+      commit('setBlockPositionTo', { position: { x }, block })
+    } else {
+      translationDelta.x = 0
+      commit('setBlockPositionTo', { position: { x: initialPosition.x }, block })
+      shouldReversePosition = true
+    }
+
+    const isMovingToTheTop = translationDelta.y > 0
+    if (isMovingToTheTop || getters.isAnyTopSpaceAvailable) {
+      commit('setBlockPositionTo', { position: { y }, block })
+    } else {
+      translationDelta.y = 0
+      commit('setBlockPositionTo', { position: { y: initialPosition.y }, block })
+      shouldReversePosition = true
+    }
+
+    // Reverse the draggable position
+    if (shouldReversePosition) {
+      commit('updateBlockDraggablePosition', {
+        uuid: block.uuid,
+        position: {
+          x: block.vendor_metadata.io_viamo.uiData.xPosition,
+          y: block.vendor_metadata.io_viamo.uiData.yPosition,
+        },
+      })
+    }
+
+    // Translate other selected blocks
+    const otherSelectedBlocks = filter(getters.selectedBlocks, (currentBlock) => currentBlock.uuid !== block.uuid)
+    forEach(otherSelectedBlocks, async (currentBlock: IBlock) => {
+      let newPosition = {} as IPosition
+      await dispatch('setBlockPositionFromDelta', { delta: translationDelta, block: currentBlock }).then(
+        (response) => {
+          newPosition = response
+        }
+      )
+
+      commit('updateBlockDraggablePosition', { uuid: currentBlock.uuid, position: newPosition })
+    })
   },
 
   setBlockPositionFromDelta({ commit }, { delta: { x, y }, block }) {

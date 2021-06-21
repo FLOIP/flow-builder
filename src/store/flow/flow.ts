@@ -65,14 +65,6 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       return includes(state.selectedBlockUuids, block.uuid)
     })
   },
-
-  selectedBlockAtTheTopPosition: (state, getters) => {
-    return minBy(getters.selectedBlocks, 'vendor_metadata.io_viamo.uiData.yPosition')
-  },
-
-  selectedBlockAtTheFurthestLeftPosition: (state, getters) => {
-    return minBy(getters.selectedBlocks, 'vendor_metadata.io_viamo.uiData.xPosition')
-  }
 }
 
 export const mutations: MutationTree<IFlowsState> = {
