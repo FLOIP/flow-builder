@@ -1,5 +1,5 @@
 <template>
-  <main class="error-notifications-wrapper">
+  <main class="error-notifications">
 <!--    TODO: Need to uncomment the below piece once validation messages are added for a flow - https://viamoinc.atlassian.net/browse/VMO-3905-->
 <!--    <section class="alert alert-danger d-flex mb-0 py-sm-1 px-2" role="alert" v-if="flowValidationErrors.length > 0">-->
 <!--      <span class="align-self-center ml-2">-->
@@ -103,10 +103,6 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
 </script>
 
 <style scoped lang="scss">
-.error-notifications-wrapper {
-  z-index: 2 * 10;
-}
-
 .notification {
   width: 500px;
   padding: 0;

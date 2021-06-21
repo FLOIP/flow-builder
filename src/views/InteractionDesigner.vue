@@ -385,12 +385,13 @@ export default {
     }
   }
 
-  .tree-builder-toolbar-main-menu {
+  .tree-builder-toolbar {
     position: fixed;
-    z-index: 4*10;
-
+    z-index: 3*10;
     width: 100vw;
+  }
 
+  .tree-builder-toolbar-main-menu {
     border-bottom: 1px solid darkgrey;
     background: #eee;
 
