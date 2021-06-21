@@ -1,5 +1,5 @@
 import {
-  flatMap, isEqual, keyBy, map, mapValues, get, filter, union, includes, clone, forEach, minBy
+  flatMap, isEqual, keyBy, map, mapValues, get, filter, union, includes, clone, forEach, minBy,
 } from 'lodash'
 import Vue from 'vue'
 import {
@@ -96,25 +96,25 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 
   isEditable: (state) => state.isEditable,
 
-  selectedBlocks: (_state, _getters, _rootState, rootGetters) => {
+  selectedBlocks(_state, _getters, _rootState, rootGetters) {
     return rootGetters['flow/selectedBlocks']
   },
 
-  selectedBlockAtTheTopPosition: (_state, getters) => {
+  selectedBlockAtTheTopPosition(_state, getters) {
     return minBy(getters.selectedBlocks, 'vendor_metadata.io_viamo.uiData.yPosition')
   },
 
-  selectedBlockAtTheFurthestLeftPosition: (_state, getters) => {
+  selectedBlockAtTheFurthestLeftPosition(_state, getters) {
     return minBy(getters.selectedBlocks, 'vendor_metadata.io_viamo.uiData.xPosition')
   },
 
-  isAnyLeftSpaceAvailable: (_state, getters) => {
+  isAnyLeftSpaceAvailable(_state, getters) {
     return getters.selectedBlockAtTheFurthestLeftPosition.vendor_metadata.io_viamo.uiData.xPosition > 0
   },
 
-  isAnyTopSpaceAvailable: (state, getters) => {
+  isAnyTopSpaceAvailable(state, getters) {
     return getters.selectedBlockAtTheTopPosition.vendor_metadata.io_viamo.uiData.yPosition - state.toolbarHeight > 0
-  }
+  },
 }
 
 export const mutations: MutationTree<IBuilderState> = {
@@ -145,9 +145,11 @@ export const mutations: MutationTree<IBuilderState> = {
     // }
 
     if (x !== undefined) {
+      // eslint-disable-next-line no-param-reassign
       block.vendor_metadata.io_viamo.uiData.xPosition = x
     }
     if (y !== undefined) {
+      // eslint-disable-next-line no-param-reassign
       block.vendor_metadata.io_viamo.uiData.yPosition = y
     }
   },
@@ -166,14 +168,11 @@ export const mutations: MutationTree<IBuilderState> = {
 
   updateToolBarHeight(state, height) {
     state.toolbarHeight = height
-  }
+  },
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
-  changeBlockPositionTo(
-    { state, commit, getters, dispatch, rootState },
-    { position: { x, y }, block }) {
-
+  changeBlockPositionTo({ commit, getters, dispatch, rootState }, { position: { x, y }, block }) {
     if (!includes(rootState.flow.selectedBlockUuids, block.uuid)) {
       commit('setBlockPositionTo', { position: { x, y }, block })
       return
@@ -223,7 +222,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     }
 
     // Translate other selected blocks
-    forEach(getters.selectedBlocks,  (currentBlock: IBlock) => {
+    forEach(getters.selectedBlocks, (currentBlock: IBlock) => {
       if (currentBlock.uuid !== block.uuid) {
         dispatch('setBlockAndSyncDraggablePositionFromDelta', { delta: translationDelta, block: currentBlock })
       }
@@ -239,7 +238,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
             yPosition: initialYPosition,
           },
         },
-      }
+      },
     } = block
 
     const newPosition: IPosition = {

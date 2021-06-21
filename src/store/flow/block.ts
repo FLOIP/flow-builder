@@ -147,7 +147,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async block_deselect({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
-    state.selectedBlockUuids = state.selectedBlockUuids.filter((item) => item !== blockId) // remove it
+    // remove it
+    state.selectedBlockUuids = state.selectedBlockUuids.filter((item) => item !== blockId)
   },
 }
 

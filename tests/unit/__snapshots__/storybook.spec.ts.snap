@@ -412,7 +412,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
                   class="tree-builder-toolbar-main-menu"
@@ -484,12 +484,12 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                 </div>
                  
                 <div
-                  class="tree-builder-toolbar-alerts w-100"
+                  class="tree-builder-toolbar-alerts w-100 d-flex flex-column"
                 >
                   <!---->
                    
                   <main
-                    class="error-notifications-wrapper"
+                    class="error-notifications"
                   >
                     <!---->
                   </main>
@@ -527,7 +527,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
                   class="tree-builder-toolbar-main-menu"
@@ -834,12 +834,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                 </div>
                  
                 <div
-                  class="tree-builder-toolbar-alerts w-100"
+                  class="tree-builder-toolbar-alerts w-100 d-flex flex-column"
                 >
                   <!---->
                    
                   <main
-                    class="error-notifications-wrapper"
+                    class="error-notifications"
                   >
                     <!---->
                   </main>
@@ -877,7 +877,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
                   class="tree-builder-toolbar-main-menu"
@@ -1183,12 +1183,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                 </div>
                  
                 <div
-                  class="tree-builder-toolbar-alerts w-100"
+                  class="tree-builder-toolbar-alerts w-100 d-flex flex-column"
                 >
                   <!---->
                    
                   <main
-                    class="error-notifications-wrapper"
+                    class="error-notifications"
                   >
                     <!---->
                   </main>
@@ -1226,7 +1226,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
                   class="tree-builder-toolbar-main-menu"
@@ -1504,12 +1504,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                 </div>
                  
                 <div
-                  class="tree-builder-toolbar-alerts w-100"
+                  class="tree-builder-toolbar-alerts w-100 d-flex flex-column"
                 >
                   <!---->
                    
                   <main
-                    class="error-notifications-wrapper"
+                    class="error-notifications"
                   >
                     <!---->
                   </main>
@@ -1547,7 +1547,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
                   class="tree-builder-toolbar-main-menu"
@@ -1639,12 +1639,12 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                 </div>
                  
                 <div
-                  class="tree-builder-toolbar-alerts w-100"
+                  class="tree-builder-toolbar-alerts w-100 d-flex flex-column"
                 >
                   <!---->
                    
                   <main
-                    class="error-notifications-wrapper"
+                    class="error-notifications"
                   >
                     <!---->
                   </main>

@@ -60,11 +60,9 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   },
   hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supported_modes || [], mode)),
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
-  selectedBlocks: (state, getters) => {
-    return filter(getters.activeFlow.blocks, (block) => {
-      return includes(state.selectedBlockUuids, block.uuid)
-    })
-  },
+  selectedBlocks: (state, getters) => filter(getters.activeFlow.blocks, (block) => {
+    return includes(state.selectedBlockUuids, block.uuid)
+  }),
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -366,7 +364,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_duplicateAllSelectedBlocks({ state, dispatch }) {
-    let newBlocksUuids: string[] = []
+    const newBlocksUuids: string[] = []
     forEach(state.selectedBlockUuids, async (blockId: IBlock['uuid']) => {
       const duplicatedBlock: IBlock = await dispatch('flow_duplicateBlock', { blockId })
       newBlocksUuids.push(duplicatedBlock.uuid)
