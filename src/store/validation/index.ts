@@ -7,7 +7,7 @@ import Ajv, { ValidateFunction, ErrorObject } from 'ajv'
 import ajvFormat from 'ajv-formats'
 
 import { JSONSchema7 } from 'json-schema'
-import { IBlock, IFlow, IContainer } from '@floip/flow-runner'
+import { IBlock, IFlow, IContainer, ILanguage } from '@floip/flow-runner'
 import { isEmpty, get, forIn } from 'lodash'
 
 const ajv = new Ajv({ allErrors: true })
@@ -118,6 +118,18 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     debugValidationStatus(state.validationStatuses[index], 'flow container validation status')
     return state.validationStatuses[index]
   },
+
+  async validate_new_language({ state }, { language }: { language: ILanguage }): Promise<IValidationStatus> {
+    const validate = getOrCreateLanguageValidator()
+    const index = `language/new_language`
+    Vue.set(state.validationStatuses, index, {
+      isValid: validate(language),
+      ajvErrors: validate.errors,
+    })
+
+    debugValidationStatus(state.validationStatuses[index], 'language validation status')
+    return state.validationStatuses[index]
+  },
 }
 
 export const store: Module<IValidationState, IRootState> = {
@@ -146,11 +158,21 @@ function getOrCreateFlowValidator(): ValidateFunction {
   }
   return validators.get(validationType)!
 }
+
 function getOrCreateFlowContainerValidator(): ValidateFunction {
   const validationType = 'flowContainer'
   if (isEmpty(validators) || !validators.has(validationType)) {
     const flowContainerJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
     validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowContainerJsonSchema))
+  }
+  return validators.get(validationType)!
+}
+
+function getOrCreateLanguageValidator(): ValidateFunction {
+  const validationType = 'language'
+  if (isEmpty(validators) || !validators.has(validationType)) {
+    const flowContainerJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowContainerJsonSchema, '#/definitions/ILanguage'))
   }
   return validators.get(validationType)!
 }

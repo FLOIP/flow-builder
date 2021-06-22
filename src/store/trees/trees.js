@@ -165,10 +165,8 @@ export default {
 
   mutations: {
     addOrgLanguage({ ui }, language) {
-      //TODO - validate lang
       const newLanguage = { ...language }
       ui.languages.push(newLanguage)
-      console.log(ui)
     },
 
     setTreeSaving(state, isSaving) {
@@ -382,6 +380,17 @@ export default {
   },
 
   actions: {
+    async validateAndAddOrgLanguage({ dispatch, commit }, language) {
+      const validationErrors = await dispatch('validation/validate_new_language', { language }, { root: true })
+      if (!validationErrors.isValid) {
+        console.log(validationErrors)
+        // commit('setFlowErrorWithInterpolations', { text: 'flow-builder.flow-invalid', interpolations: { version: flowContainer.specification_version } })
+        return false
+      }
+      commit('addOrgLanguage', language)
+      // TODO - returned lang should be echoed from a backend
+      return language
+    },
     initializeTreeModel({ dispatch, state: { ui: { isTreeImport } } }) {
       require('./10-trees-model')
       // todo: this is also included via `../public/dist/js/legacy/trees` on tree-builder

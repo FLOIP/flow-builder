@@ -5,15 +5,18 @@
       {{'flow-builder.add-language' | trans}}
     </button>
     <b-modal title="Add Language"
-      @ok="handleCreateLanguage"
+      @ok.prevent="handleCreateLanguage"
       ref="add-language-modal">
       <div class="form-group form-inline full-width">
         <label class="form-check-label mt-2 mb-2 mr-2">Label</label>
         <input name="label" type="text" class="form-control" v-model="newLanguage.label">
       </div>
       <div class="form-group form-inline full-width">
-        <label class="form-check-label mt-2 mb-2 mr-2">ISO 639 3 Code</label>
-        <input name="iso_639_3" type="text" class="form-control" v-model="newLanguage.iso_639_3">
+  <!-- From https://www.npmjs.com/package/iso-639-3 and use search input from resource editor -->
+        <validation-message message-key="language/new_language/iso_639_3" #input-control="{ isValid }">
+          <label class="form-check-label mt-2 mb-2 mr-2">ISO 639 3 Code</label>
+          <input name="iso_639_3" type="text" class="form-control" v-model="newLanguage.iso_639_3">
+        </validation-message>
       </div>
       <div class="form-group form-inline full-width">
         <label class="form-check-label mt-2 mb-2 mr-2">Language Variant</label>
@@ -38,13 +41,15 @@ import {
   ILanguage,
   IContext,
 } from '@floip/flow-runner'
-import { Mutation, namespace } from 'vuex-class'
+import { Action, namespace } from 'vuex-class'
 const importVuexNamespace = namespace('flow/import')
 
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
+import ValidationMessage from '@/components/common/ValidationMessage.vue';
+
 @Component({
-  components: { BModal },
+  components: { BModal, ValidationMessage },
 })
 class LanguageAdder extends mixins(Lang) {
   newLanguage = {
@@ -70,12 +75,20 @@ class LanguageAdder extends mixins(Lang) {
   }
   async handleCreateLanguage() {
     this.newLanguage.id = await (new IdGeneratorUuidV4()).generate()
-    this.addOrgLanguage(this.newLanguage)
+    const valid = await this.validateAndAddOrgLanguage(this.newLanguage)
+    if(!valid) {
+      return;
+    }
+    //TODO - This is an non single responsibility way of updating the list of org languages to choose from
+    //it might have some side effects
+    //Figure this out and make a better named function
     await this.validateLanguages(this.flowContainer)
+    const languageModal: any = this.$refs['add-language-modal']
+    languageModal.hide()
   }
-  @Mutation addOrgLanguage!: (newLanguage: ILanguage) => void
+  @Action validateAndAddOrgLanguage!: (newLanguage: ILanguage) => Promise<any>
 
-  @importVuexNamespace.Action validateLanguages!: (value: string) => Promise<void>
+  @importVuexNamespace.Action validateLanguages!: (flowContainer: IContext) => Promise<void>
 
   @importVuexNamespace.State flowContainer!: IContext
 }
