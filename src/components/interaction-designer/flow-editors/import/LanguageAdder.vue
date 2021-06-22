@@ -6,25 +6,37 @@
     </button>
     <b-modal title="Add Language"
       @ok.prevent="handleCreateLanguage"
+      :ok-title="'flow-builder.create' | trans"
+      :cancel-title="'flow-builder.cancel' | trans"
       ref="add-language-modal">
-      <div class="form-group form-inline full-width">
+      <div class="form-group">
         <label class="form-check-label mt-2 mb-2 mr-2">Label</label>
-        <input name="label" type="text" class="form-control" v-model="newLanguage.label">
+        <validation-message message-key="language/new_language/label" #input-control="{ isValid }">
+          <text-editor v-model="newLanguage.label"
+                       :placeholder="'flow-builder.enter-label' | trans"
+                       :validState="isValid"/>
+        </validation-message>
       </div>
-      <div class="form-group form-inline full-width">
+      <div class="form-group">
   <!-- From https://www.npmjs.com/package/iso-639-3 and use search input from resource editor -->
         <validation-message message-key="language/new_language/iso_639_3" #input-control="{ isValid }">
           <label class="form-check-label mt-2 mb-2 mr-2">ISO 639 3 Code</label>
-          <input name="iso_639_3" type="text" class="form-control" v-model="newLanguage.iso_639_3">
+          <input name="iso_639_3" type="text" class="form-control full-width" v-model="newLanguage.iso_639_3">
         </validation-message>
       </div>
-      <div class="form-group form-inline full-width">
+      <div class="form-group">
         <label class="form-check-label mt-2 mb-2 mr-2">Language Variant</label>
-        <input name="variant" type="text" class="form-control" v-model="newLanguage.variant">
+        <validation-message message-key="language/new_language/variant" #input-control="{ isValid }">
+          <text-editor v-model="newLanguage.variant"
+                       :placeholder="'flow-builder.enter-variant' | trans"
+                       :validState="isValid"/>
+        </validation-message>
       </div>
-      <div class="form-group form-inline full-width">
+      <div class="form-group">
         <label class="form-check-label mt-2 mb-2 mr-2">BCP 47</label>
-        <input name="bcp_47" type="text" class="form-control" v-model="newLanguage.bcp_47">
+        <validation-message message-key="language/new_language/bcp_47" #input-control="{ isValid }">
+          <input name="bcp_47" type="text" class="form-control" v-model="newLanguage.bcp_47">
+        </validation-message>
       </div>
     </b-modal>
   </div>
@@ -47,9 +59,14 @@ const importVuexNamespace = namespace('flow/import')
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 import ValidationMessage from '@/components/common/ValidationMessage.vue';
+import TextEditor from '@/components/common/TextEditor.vue'
 
 @Component({
-  components: { BModal, ValidationMessage },
+  components: {
+    BModal,
+    ValidationMessage,
+    TextEditor
+  },
 })
 class LanguageAdder extends mixins(Lang) {
   newLanguage = {
