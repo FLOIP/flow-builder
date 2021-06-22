@@ -57,7 +57,8 @@ export interface IBuilderState {
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation;
     [OperationKind.BLOCK_RELOCATE]: null;
   };
-  draggableForExitsByUuid: object
+  draggableForExitsByUuid: object;
+  openBlockEditor: boolean;
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -75,7 +76,8 @@ export const stateFactory = (): IBuilderState => ({
     },
     [OperationKind.BLOCK_RELOCATE]: null,
   },
-  draggableForExitsByUuid: {}
+  draggableForExitsByUuid: {},
+  openBlockEditor: false,
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
@@ -130,6 +132,10 @@ export const mutations: MutationTree<IBuilderState> = {
 
   initDraggableForExitsByUuid(state) {
     state.draggableForExitsByUuid = {}
+  },
+
+  setOpenBlockEditor(state, value) {
+    state.openBlockEditor = value
   }
 }
 

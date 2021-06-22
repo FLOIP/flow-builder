@@ -1,6 +1,6 @@
 <template>
   <div @click="selectBlock">
-    <block-editor v-if="openBlockEditor" class="block-editor" :style="{transform: blockEditorPosition}"></block-editor>
+    <block-editor v-if="showBlockEditor" class="block-editor" :style="{transform: blockEditorPosition}"></block-editor>
 
     <plain-draggable
         v-if="hasLayout"
@@ -69,8 +69,9 @@
           <div class="mr-1 ml-2">
             <i
               v-if="isEditable"
-              class="glyphicon glyphicon-resize-small"
-              v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
+              class="glyphicon"
+              :class="{'glyphicon-resize-small': showBlockEditor, 'glyphicon-resize-full': !showBlockEditor}"
+              v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
               @click.prevent="handleExpandBlockEditor"
             ></i>
           </div>
@@ -245,7 +246,6 @@ export default {
       isDeleting: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
-      openBlockEditor: false,
     }
   },
 
@@ -263,7 +263,7 @@ export default {
       'selectedBlocks',
     ]),
     ...mapState('builder',
-      ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid']
+      ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid', 'openBlockEditor']
     ),
     ...mapState({
       blockClasses: ({ trees: { ui } }) => ui.blockClasses,
@@ -305,8 +305,13 @@ export default {
     },
 
     blockEditorPosition() {
-      return `translate(${this.x + 322}px, ${this.y - 175}px)`
+      const blockWidth = this.$refs.draggable?.$el.clientWidth
+      return `translate(${this.x + blockWidth + 5}px, ${this.y - 130}px)`
     },
+
+    showBlockEditor() {
+      return this.openBlockEditor && this.activeBlockId === this.block.uuid
+    }
   },
 
   methods: {
@@ -315,7 +320,7 @@ export default {
       generateConnectionLayoutKeyFor,
     },
 
-    ...mapMutations('builder', ['setBlockPositionTo', 'initDraggableForExitsByUuid']),
+    ...mapMutations('builder', ['setBlockPositionTo', 'initDraggableForExitsByUuid', 'setOpenBlockEditor']),
 
     ...mapActions('builder', {
       _removeConnectionFrom: 'removeConnectionFrom',
@@ -576,7 +581,7 @@ export default {
     },
 
     handleExpandBlockEditor() {
-      this.openBlockEditor = !this.openBlockEditor
+      this.setOpenBlockEditor(!this.openBlockEditor)
       const { block: { uuid: blockId } } = this
       const routerName = this.openBlockEditor ? 'block-selected-details' : 'block-selected'
       this.$router.history.replace({
