@@ -22,6 +22,10 @@
         <validation-message message-key="language/new_language/iso_639_3" #input-control="{ isValid }">
           <label class="form-check-label mt-2 mb-2 mr-2">ISO 639 3 Code</label>
           <input name="iso_639_3" type="text" class="form-control full-width" v-model="newLanguage.iso_639_3">
+
+          <language-tag-selector
+              :audioFiles="availableAudio"
+              selectedAudioFile=""/>
         </validation-message>
       </div>
       <div class="form-group">
@@ -60,11 +64,13 @@ import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUui
 
 import ValidationMessage from '@/components/common/ValidationMessage.vue';
 import TextEditor from '@/components/common/TextEditor.vue'
+import LanguageTagSelector from '@/components/common/AudioLibrarySelector.vue'
 
 @Component({
   components: {
     BModal,
     ValidationMessage,
+    LanguageTagSelector,
     TextEditor
   },
 })
