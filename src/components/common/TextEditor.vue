@@ -6,7 +6,6 @@
         :class="{ 'is-invalid': isInvalid }"
         :placeholder="placeholder"
         :value="value"
-        :disabled="disabled"
         @keydown="$emit('keydown', $event)"
         @input="$emit('input', $event.target.value)"/>
     <slot/>
@@ -31,11 +30,6 @@ export default {
     validState: {
       type: Boolean,
       default: null,
-      required: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
       required: false,
     },
   },

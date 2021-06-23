@@ -43,13 +43,13 @@
       </validation-message>
 
       <validation-message
+        v-if="propertyAction === PROPERTY_ACTION.SET"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`"
         #input-control="{ isValid }">
         <expression-editor
           :label="'flow-builder.contact-property-expression' | trans"
           :placeholder="'flow-builder.edit-expression' | trans"
           :current-expression="propertyValue"
-          :disabled="propertyAction === PROPERTY_ACTION.CLEAR"
           :valid-state="isValid"
           @commitExpressionChange="updatePropertyValue"/>
       </validation-message>
