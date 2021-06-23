@@ -26,7 +26,7 @@
                            :placeholder="'flow-builder.language-tag-selector-placeholder' | trans"
                            :options="iso_639_3Tags"
                            :allow-empty="false"
-                           label="iso6393"
+                           :custom-label="customLanguageLabel"
                            track-by="iso6393"
                            :searchable="true">
           </vue-multiselect>
@@ -58,6 +58,7 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
 import { iso6393 } from 'iso-639-3'
+
 import {
   isEmpty
 } from 'lodash'
@@ -94,6 +95,10 @@ class LanguageAdder extends mixins(Lang) {
   }
   selected_iso_639_3: any = {}
   iso_639_3Tags: any[] = iso6393
+  // There is no obvious way to narrow down ISO 3166-1 from iso 639 languages:
+  // https://www.rfc-editor.org/rfc/rfc5646.html#section-4.2
+  // As a result, we don't attempt to filter this list depending on the iso 639 selection
+  iso_3166_1Locales: any[] = ['UK'] 
   async resetLanguage() {
     this.newLanguage = {
       id: "",
@@ -109,6 +114,19 @@ class LanguageAdder extends mixins(Lang) {
     this.resetLanguage()
     const languageModal: any = this.$refs['add-language-modal']
     languageModal.show()
+  }
+  customLanguageLabel(option) {
+    if(!isEmpty(option)) {
+      return `${option.name} - ${option.iso6393}`
+    }
+  }
+  // For now, we aren't allowing the use of 'script' or other elements in BCP 47 Construction - though the spec allows this.
+  // We only use iso 639 + ISO 3166-1 (and not UN M.49)
+  // https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1
+  customBCP47Code(option) {
+    if(!isEmpty(option)) {
+      return `${this.selected_iso_639_3.iso6393}-${option}`
+    }
   }
   set iso_639_3(selection: any) {
     if(!isEmpty(selection)) {
