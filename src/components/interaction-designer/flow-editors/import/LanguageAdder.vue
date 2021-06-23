@@ -10,10 +10,10 @@
       :cancel-title="'flow-builder.cancel' | trans"
       ref="add-language-modal">
       <div class="form-group">
-        <label class="form-check-label mt-2 mb-2 mr-2">Label</label>
         <validation-message message-key="language/new_language/label" #input-control="{ isValid }">
           <text-editor v-model="newLanguage.label"
                        :placeholder="'flow-builder.enter-label' | trans"
+                       :label="'flow-builder.label' | trans"
                        :validState="isValid"/>
         </validation-message>
       </div>
@@ -21,15 +21,21 @@
   <!-- From https://www.npmjs.com/package/iso-639-3 and use search input from resource editor -->
         <validation-message message-key="language/new_language/iso_639_3" #input-control="{ isValid }">
           <label class="form-check-label mt-2 mb-2 mr-2">ISO 639 3 Code</label>
-          <input name="iso_639_3" type="text" class="form-control full-width" v-model="newLanguage.iso_639_3">
-          <language-tag-selector/>
+          <vue-multiselect v-model="newLanguage.iso_639_3"
+                           :class="{invalid: isValid === false}"
+                           :placeholder="'flow-builder.language-tag-selector-placeholder' | trans"
+                           :options="iso_639_3Tags()"
+                           :allow-empty="false"
+                           :show-labels="false"
+                           :searchable="true">
+          </vue-multiselect>
         </validation-message>
       </div>
       <div class="form-group">
-        <label class="form-check-label mt-2 mb-2 mr-2">Language Variant</label>
         <validation-message message-key="language/new_language/variant" #input-control="{ isValid }">
           <text-editor v-model="newLanguage.variant"
                        :placeholder="'flow-builder.enter-variant' | trans"
+                       :label="'flow-builder.language-variant' | trans"
                        :validState="isValid"/>
         </validation-message>
       </div>
@@ -56,18 +62,19 @@ import {
 } from '@floip/flow-runner'
 import { Action, namespace } from 'vuex-class'
 const importVuexNamespace = namespace('flow/import')
+const validationVuexNamespace = namespace('validation')
 
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 import ValidationMessage from '@/components/common/ValidationMessage.vue';
 import TextEditor from '@/components/common/TextEditor.vue'
-import LanguageTagSelector from '@/components/interaction-designer/flow-editors/import/LanguageTagSelector.vue'
+import VueMultiselect from 'vue-multiselect';
 
 @Component({
   components: {
     BModal,
     ValidationMessage,
-    LanguageTagSelector,
+    VueMultiselect,
     TextEditor
   },
 })
@@ -79,7 +86,7 @@ class LanguageAdder extends mixins(Lang) {
     variant: "",
     bcp_47: ""
   }
-  resetLanguage() {
+  async resetLanguage() {
     this.newLanguage = {
       id: "",
       label: "",
@@ -87,11 +94,15 @@ class LanguageAdder extends mixins(Lang) {
       variant: "",
       bcp_47: ""
     }
+    this.validation_removeNewLanguageValidation()
   }
   showAddLanguageModal() {
     this.resetLanguage()
     const languageModal: any = this.$refs['add-language-modal']
     languageModal.show()
+  }
+  iso_639_3Tags() {
+    return [1, "def"]
   }
   async handleCreateLanguage() {
     this.newLanguage.id = await (new IdGeneratorUuidV4()).generate()
@@ -111,6 +122,8 @@ class LanguageAdder extends mixins(Lang) {
   @importVuexNamespace.Action validateLanguages!: (flowContainer: IContext) => Promise<void>
 
   @importVuexNamespace.State flowContainer!: IContext
+
+  @validationVuexNamespace.Action validation_removeNewLanguageValidation!: () => Promise<void>
 }
 
 export default LanguageAdder
