@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import {
   IContext,
   IBlock,
@@ -67,10 +68,10 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = { ...currentConfig }
   },
   block_updateConfigByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
-    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, path, value);
+    Vue.set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, path, value);
   },
   block_updateVendorMetadataByPath(state, { blockId, path, value }: { blockId: string, path: string, value: object | string }) {
-    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).vendor_metadata!, path, value);
+    Vue.set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).vendor_metadata!, path, value);
   },
   block_setBlockExitDestinationBlockId(state, { blockId, exitId, destinationBlockId }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
