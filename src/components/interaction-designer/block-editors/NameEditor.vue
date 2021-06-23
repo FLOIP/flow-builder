@@ -1,29 +1,33 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/name`" #input-control="{ isValid }">
+  <validation-message
+    #input-control="{ isValid }"
+    :message-key="`block/${block.uuid}/name`">
     <div class="block-name">
-      <text-editor v-model="name"
-                   :label="'flow-builder.block-name' | trans"
-                   :placeholder="'flow-builder.enter-block-name' | trans"
-                   :validState="isValid"
-                   @keydown="filterName">
+      <text-editor
+        v-model="name"
+        :label="'flow-builder.block-name' | trans"
+        :placeholder="'flow-builder.enter-block-name' | trans"
+        :valid-state="isValid"
+        @keydown="filterName">
         <small class="text-muted">
-          {{'flow-builder.only-accepts-word-characters' | trans}}
+          {{ 'flow-builder.only-accepts-word-characters' | trans }}
         </small>
       </text-editor>
     </div>
   </validation-message>
 </template>
 
-<script>
-import { mapMutations } from 'vuex'
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
+import {mapMutations} from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
-import { lang } from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage';
+import {lang} from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage'
 
 export default {
   components: {
     TextEditor,
-    ValidationMessage
+    ValidationMessage,
   },
   mixins: [lang],
   props: {
@@ -38,7 +42,7 @@ export default {
         return this.block.name
       },
       set(value) {
-        this.block_setName({ blockId: this.block.uuid, value })
+        this.block_setName({blockId: this.block.uuid, value})
       },
     },
   },

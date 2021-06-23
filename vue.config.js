@@ -122,7 +122,8 @@ module.exports = {
           created_at: `${now[0]} ${now[1].split('.')[0]}`,
         }
         if (req.cookies[req.body.uuid] !== 'new') {
-          res.cookie(result.uuid, 'new') // `new` status tells the UI we had successful `recorded` audio
+          // `new` status tells the UI we had successful `recorded` audio
+          res.cookie(result.uuid, 'new')
         }
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(result))

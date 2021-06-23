@@ -1,11 +1,11 @@
 import ReadBlock from '@/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import readBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
-import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 Vue.use(Vuex)
 
@@ -35,46 +35,49 @@ const BaseOptions: IBaseOptions = {
 @Component(
   {
     ...BaseOptions,
-  }
+  },
 )
 class DefaultClass extends BaseMountedVueClass {
   async mounted() {
     await this.baseMounted(BLOCK_TYPE, readBlockStore)
   }
 }
+
 export const Default = () => (DefaultClass)
 
 @Component(
   {
     ...BaseOptions,
-  }
+  },
 )
 class ExistingDataClass extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
+    const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
 
     this.setDescription(blockId)
-    this.setFormatString("%s lorem ipsum %d [...]")
+    this.setFormatString('%s lorem ipsum %d [...]')
   }
 
   @blockVuexNamespace.Action setFormatString!: (newFormatString: string) => void
 }
+
 export const ExistingDataBlock = () => (ExistingDataClass)
 
 @Component(
   {
     ...BaseOptions,
-  }
+  },
 )
 class ExistingDataNonStartingClass extends BaseMountedVueClass {
   async mounted() {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, readBlockStore)
 
     this.setDescription(blockId)
-    this.setFormatString("%s lorem ipsum %d [...]")
+    this.setFormatString('%s lorem ipsum %d [...]')
     await this.fakeCaseBlockAsFirstBlock(flowId)
   }
 
   @blockVuexNamespace.Action setFormatString!: (newFormatString: string) => void
 }
+
 export const ExistingDataNonStartingBlock = () => (ExistingDataNonStartingClass)
