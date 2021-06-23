@@ -24,7 +24,7 @@
           <vue-multiselect v-model="iso_639_3"
                            :class="{invalid: isValid === false}"
                            :placeholder="'flow-builder.language-tag-selector-placeholder' | trans"
-                           :options="iso_639_3Tags()"
+                           :options="iso_639_3Tags"
                            :allow-empty="false"
                            label="iso6393"
                            track-by="iso6393"
@@ -93,6 +93,7 @@ class LanguageAdder extends mixins(Lang) {
     bcp_47: ""
   }
   selected_iso_639_3: any = {}
+  iso_639_3Tags: any[] = iso6393
   async resetLanguage() {
     this.newLanguage = {
       id: "",
@@ -108,9 +109,6 @@ class LanguageAdder extends mixins(Lang) {
     this.resetLanguage()
     const languageModal: any = this.$refs['add-language-modal']
     languageModal.show()
-  }
-  iso_639_3Tags() {
-    return iso6393
   }
   set iso_639_3(selection: any) {
     if(!isEmpty(selection)) {
