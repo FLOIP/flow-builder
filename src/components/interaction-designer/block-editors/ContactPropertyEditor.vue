@@ -11,8 +11,7 @@
             name="contactPropAction"
             :value="PROPERTY_ACTION.SET"
             class="custom-control-input"
-            :checked="propertyAction === PROPERTY_ACTION.SET"
-            @change="updatePropertyAction($event)">
+            v-model="propertyAction">
           <label class="custom-control-label font-weight-normal" for="setProp">
             {{'flow-builder.set-contact-property' | trans}}
           </label>
@@ -24,8 +23,7 @@
             name="contactPropAction"
             :value="PROPERTY_ACTION.CLEAR"
             class="custom-control-input"
-            :checked="propertyAction === PROPERTY_ACTION.CLEAR"
-            @change="updatePropertyAction($event)">
+            v-model="propertyAction">
           <label class="custom-control-label font-weight-normal" for="clearProp">
             {{'flow-builder.clear-contact-property' | trans}}
           </label>
@@ -90,14 +88,15 @@ class ContactPropertyEditor extends mixins(Lang) {
   get propertyAction() {
     // TODO: decide where we should persist this,
     // thread: https://votomobile.slack.com/archives/CMQDVRDN3/p1624041356067900
-    // once this is resolved:
-    // - The action updatePropertyAction should be reactive
-    // - All validation errors  related to set_contact_property should be gone
-    return get(this.block, 'config.set_contact_property.action', this.PROPERTY_ACTION.SET)
+    return get(this.block, 'vendor_metadata.set_contact_property.action', this.PROPERTY_ACTION.SET)
   }
 
-  updatePropertyAction({ target: { value }}: { target: HTMLInputElement }) {
-    this.editSetContactPropertyAction({ blockId: this.block.uuid, value })
+  set propertyAction(value) {
+    this.block_updateVendorMetadataByPath({
+      blockId: this.block.uuid,
+      path: 'set_contact_property.action',
+      value
+    })
   }
 
   get propertyKey() {
@@ -105,7 +104,11 @@ class ContactPropertyEditor extends mixins(Lang) {
   }
 
   set propertyKey(value: string) {
-    this.editSetContactPropertyKey({ blockId: this.block.uuid, value })
+    this.block_updateConfigByPath({
+      blockId: this.block.uuid,
+      path: 'set_contact_property.property_key',
+      value
+    })
   }
 
   get propertyValue() {
@@ -113,12 +116,15 @@ class ContactPropertyEditor extends mixins(Lang) {
   }
 
   updatePropertyValue(value: string) {
-    this.editSetContactPropertyExpression({ blockId: this.block.uuid, value })
+    this.block_updateConfigByPath({
+      blockId: this.block.uuid,
+      path: 'set_contact_property.property_value',
+      value
+    })
   }
 
-  @flowVuexNamespace.Action editSetContactPropertyExpression!: (params: { blockId: string, value: string }) => void
-  @flowVuexNamespace.Action editSetContactPropertyKey!: (params: { blockId: string, value: string }) => void
-  @flowVuexNamespace.Action editSetContactPropertyAction!: (params: { blockId: string, value: string }) => void
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
+  @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
 }
 
 export default ContactPropertyEditor

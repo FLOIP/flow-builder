@@ -145,34 +145,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   async block_select({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
     state.selectedBlocks.push(blockId)
   },
-
-  async block_deselect({ state, commit }, { blockId }: { blockId: IBlock['uuid']}) {
-    state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId) // remove it
-  },
-
-  editSetContactPropertyAction({commit}, {blockId, value}: { blockId: string; value: string }) {
-    commit('block_updateConfigByPath', {
-      blockId: blockId,
-      path: 'set_contact_property.action',
-      value
-    })
-  },
-
-  editSetContactPropertyKey({commit}, {blockId, value}: { blockId: string; value: string }) {
-    commit('block_updateConfigByPath', {
-      blockId: blockId,
-      path: 'set_contact_property.property_key',
-      value
-    })
-  },
-
-  editSetContactPropertyExpression({commit}, {blockId, value}: { blockId: string; value: string }) {
-    commit('block_updateConfigByPath', {
-      blockId: blockId,
-      path: 'set_contact_property.property_value',
-      value
-    })
-  },
 }
 
 export interface IDeepBlockExitIdWithinFlow {
