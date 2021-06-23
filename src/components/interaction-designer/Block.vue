@@ -241,11 +241,16 @@ export default {
     })
   },
 
+  updated() {
+    this.blockWidth = this.$refs.draggable.$el.clientWidth
+  },
+
   data() {
     return {
       isDeleting: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
+      blockWidth: 0,
     }
   },
 
@@ -305,13 +310,12 @@ export default {
     },
 
     blockEditorPosition() {
-      const blockWidth = this.$refs.draggable?.$el.clientWidth
-      return `translate(${this.x + blockWidth + 5}px, ${this.y - 130}px)`
+      return `translate(${this.x + this.blockWidth + 5}px, ${this.y - 130}px)`
     },
 
     showBlockEditor() {
       return this.openBlockEditor && this.activeBlockId === this.block.uuid
-    }
+    },
   },
 
   methods: {
