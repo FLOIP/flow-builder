@@ -97,7 +97,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
 import {lang} from '@/lib/filters/lang'
-import {debounce, get} from 'lodash'
+import {debounce} from 'lodash'
 import {mapGetters, mapState} from 'vuex'
 import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
 import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType'
@@ -139,7 +139,7 @@ export default {
     },
 
     toggleReviewedStateFor(langId) {
-      const previousVal = get(this.block.customData.reviewed, langId, false)
+      const previousVal = !!this.block.customData.reviewed?.langId ?? false
       this.$store.commit('updateReviewedStateFor', {jsKey: this.block.jsKey, langId, value: !previousVal})
       this.debouncedSaveTree()
     },
