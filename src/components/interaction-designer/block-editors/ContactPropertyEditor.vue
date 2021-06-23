@@ -70,6 +70,9 @@ import TextEditor from '@/components/common/TextEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 
+const NULL_STRING_EXPRESSION = '@(null)'
+const EMPTY_STRING_EXPRESSION = ''
+
 @Component<any>({
   components: {
     TextEditor,
@@ -86,22 +89,22 @@ class ContactPropertyEditor extends mixins(Lang) {
   }
 
   get propertyAction() {
-    // TODO: decide where we should persist this,
-    // thread: https://votomobile.slack.com/archives/CMQDVRDN3/p1624041356067900
-    console.log('propertyAction', get(this.block, 'vendor_metadata.set_contact_property.action'))
-    return get(this.block.vendor_metadata, 'set_contact_property.action', this.PROPERTY_ACTION.SET)
+    if (this.propertyValue === NULL_STRING_EXPRESSION) {
+      return this.PROPERTY_ACTION.CLEAR
+    }
+    return this.PROPERTY_ACTION.SET
   }
 
   set propertyAction(value) {
-    this.block_updateVendorMetadataByPath({
-      blockId: this.block.uuid,
-      path: 'set_contact_property.action',
-      value
-    })
+    if (value === this.PROPERTY_ACTION.CLEAR) {
+      this.updatePropertyValue(NULL_STRING_EXPRESSION)
+    } else {
+      this.updatePropertyValue(EMPTY_STRING_EXPRESSION)
+    }
   }
 
   get propertyKey() {
-    return get(this.block.config, 'set_contact_property.property_key', '')
+    return get(this.block.config, 'set_contact_property.property_key')
   }
 
   set propertyKey(value: string) {
@@ -113,7 +116,7 @@ class ContactPropertyEditor extends mixins(Lang) {
   }
 
   get propertyValue() {
-    return get(this.block.config, 'set_contact_property.property_value', '')
+    return get(this.block.config, 'set_contact_property.property_value', EMPTY_STRING_EXPRESSION)
   }
 
   updatePropertyValue(value: string) {
