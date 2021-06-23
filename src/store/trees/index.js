@@ -6,6 +6,7 @@ export default {
   modules: {
     // audio,
     // multimediaUpload,
-    trees, // actions isolated to vuej app
+    // actions isolated to vuej app
+    trees,
   },
 }

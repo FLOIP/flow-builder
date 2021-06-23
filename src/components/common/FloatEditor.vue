@@ -1,25 +1,25 @@
 <template>
   <div class="float-editor">
-    <label>{{label}}</label>
+    <label>{{ label }}</label>
     <div>
       <input
-          type="number"
-          :min="min"
-          class="form-control"
-          :class="{ 'is-invalid': isInvalid }"
-          :placeholder="placeholder"
-          :value="value"
-          :step="step"
-          @keypress="filterFloat"
-          @keydown="$emit('keydown', $event)"
-          @input="$emit('input', $event.target.value)"
-      />
+        type="number"
+        :min="min"
+        class="form-control"
+        :class="{ 'is-invalid': isInvalid }"
+        :placeholder="placeholder"
+        :value="value"
+        :step="step"
+        @keypress="filterFloat"
+        @keydown="$emit('keydown', $event)"
+        @input="$emit('input', $event.target.value)">
     </div>
-    <slot/>
+    <slot />
   </div>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 export default {
   props: {
     label: {
@@ -41,12 +41,13 @@ export default {
     min: {
       type: [String, Number],
       required: false,
-      default: '', // Meaning it's accepting negative by default
+      // Meaning it's accepting negative by default
+      default: '',
     },
     regexFloatFiltering: {
       type: String,
       required: false,
-      default: '[0-9\-.,]',
+      default: '[0-9-.,]',
     },
     validState: {
       type: Boolean,
@@ -57,7 +58,7 @@ export default {
   computed: {
     isInvalid() {
       return this.validState === false
-    }
+    },
   },
   methods: {
     filterFloat(e) {
