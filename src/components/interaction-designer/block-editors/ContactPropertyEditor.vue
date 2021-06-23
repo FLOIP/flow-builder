@@ -1,70 +1,74 @@
 <template>
   <div class="contact-property-editor">
     <div class="form-group">
-      <label>{{'flow-builder.action-label' | trans}}</label>
-      <p>{{'flow-builder.contact-property-action-hint' | trans}}</p>
+      <label>{{ 'flow-builder.action-label' | trans }}</label>
+      <p>{{ 'flow-builder.contact-property-action-hint' | trans }}</p>
       <div class="form-group">
         <div class="custom-control custom-radio">
           <input
-            type="radio"
             id="setProp"
+            v-model="propertyAction"
+            type="radio"
             name="contactPropAction"
             :value="PROPERTY_ACTION.SET"
-            class="custom-control-input"
-            v-model="propertyAction">
-          <label class="custom-control-label font-weight-normal" for="setProp">
-            {{'flow-builder.set-contact-property' | trans}}
+            class="custom-control-input">
+          <label
+            class="custom-control-label font-weight-normal"
+            for="setProp">
+            {{ 'flow-builder.set-contact-property' | trans }}
           </label>
         </div>
         <div class="custom-control custom-radio">
           <input
-            type="radio"
             id="clearProp"
+            v-model="propertyAction"
+            type="radio"
             name="contactPropAction"
             :value="PROPERTY_ACTION.CLEAR"
-            class="custom-control-input"
-            v-model="propertyAction">
-          <label class="custom-control-label font-weight-normal" for="clearProp">
-            {{'flow-builder.clear-contact-property' | trans}}
+            class="custom-control-input">
+          <label
+            class="custom-control-label font-weight-normal"
+            for="clearProp">
+            {{ 'flow-builder.clear-contact-property' | trans }}
           </label>
         </div>
       </div>
 
       <validation-message
-        :message-key="`block/${block.uuid}/config/set_contact_property/property_key`"
-        #input-control="{ isValid }">
+        #input-control="{ isValid }"
+        :message-key="`block/${block.uuid}/config/set_contact_property/property_key`">
         <div class="block-contact-property-key">
           <text-editor
             v-model="propertyKey"
             :label="'flow-builder.contact-property-label' | trans"
             :placeholder="'flow-builder.enter-contact-property-label' | trans"
-            :valid-state="isValid"/>
+            :valid-state="isValid" />
         </div>
       </validation-message>
 
       <validation-message
         v-if="propertyAction === PROPERTY_ACTION.SET"
-        :message-key="`block/${block.uuid}/config/set_contact_property/property_value`"
-        #input-control="{ isValid }">
+        #input-control="{ isValid }"
+        :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-editor
           :label="'flow-builder.contact-property-expression' | trans"
           :placeholder="'flow-builder.edit-expression' | trans"
           :current-expression="propertyValue"
           :valid-state="isValid"
-          @commitExpressionChange="updatePropertyValue"/>
+          @commitExpressionChange="updatePropertyValue" />
       </validation-message>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { IBlock } from '@floip/flow-runner';
-import { Component, Prop } from 'vue-property-decorator';
-import { namespace } from 'vuex-class'
-import Lang from '@/lib/filters/lang';
-import { get } from 'lodash'
-import { mixins } from "vue-class-component";
-import ValidationMessage from '@/components/common/ValidationMessage.vue';
+import {IBlock} from '@floip/flow-runner'
+import {Component, Prop} from 'vue-property-decorator'
+import {namespace} from 'vuex-class'
+import Lang from '@/lib/filters/lang'
+import {get} from 'lodash'
+import {mixins} from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 import TextEditor from '@/components/common/TextEditor.vue'
 
@@ -73,7 +77,7 @@ const flowVuexNamespace = namespace('flow')
 const NULL_STRING_EXPRESSION = '@(null)'
 const EMPTY_STRING_EXPRESSION = ''
 
-@Component<any>({
+@Component({
   components: {
     TextEditor,
     ExpressionEditor,
@@ -111,7 +115,7 @@ class ContactPropertyEditor extends mixins(Lang) {
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
       path: 'set_contact_property.property_key',
-      value
+      value,
     })
   }
 
@@ -123,12 +127,16 @@ class ContactPropertyEditor extends mixins(Lang) {
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
       path: 'set_contact_property.property_value',
-      value
+      value,
     })
   }
 
-  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
-  @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: (
+    {blockId, path, value}: { blockId: string, path: string, value: object | string }
+  ) => void
+  @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (
+    {blockId, path, value}: { blockId: string, path: string, value: object | string }
+  ) => void
 }
 
 export default ContactPropertyEditor
