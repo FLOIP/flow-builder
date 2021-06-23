@@ -2,6 +2,7 @@
   <text-editor class="expression-editor"
       v-model="expression"
       :label="label"
+      :disabled="disabled"
       :placeholder="placeholder"
       :validState="validState" />
 </template>
@@ -33,6 +34,11 @@ export default {
     validState: {
       type: Boolean,
       default: null,
+      required: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
       required: false,
     },
   },
