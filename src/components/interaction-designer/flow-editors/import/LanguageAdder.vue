@@ -21,12 +21,13 @@
   <!-- From https://www.npmjs.com/package/iso-639-3 and use search input from resource editor -->
         <validation-message message-key="language/new_language/iso_639_3" #input-control="{ isValid }">
           <label class="form-check-label mt-2 mb-2 mr-2">ISO 639 3 Code</label>
-          <vue-multiselect v-model="newLanguage.iso_639_3"
+          <vue-multiselect v-model="iso_639_3"
                            :class="{invalid: isValid === false}"
                            :placeholder="'flow-builder.language-tag-selector-placeholder' | trans"
                            :options="iso_639_3Tags()"
                            :allow-empty="false"
-                           :show-labels="false"
+                           label="iso6393"
+                           track-by="iso6393"
                            :searchable="true">
           </vue-multiselect>
         </validation-message>
@@ -56,6 +57,11 @@ import Lang from '@/lib/filters/lang'
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
+import { iso6393 } from 'iso-639-3'
+import {
+  isEmpty
+} from 'lodash'
+
 import {
   ILanguage,
   IContext,
@@ -86,6 +92,7 @@ class LanguageAdder extends mixins(Lang) {
     variant: "",
     bcp_47: ""
   }
+  selected_iso_639_3: any = {}
   async resetLanguage() {
     this.newLanguage = {
       id: "",
@@ -94,6 +101,7 @@ class LanguageAdder extends mixins(Lang) {
       variant: "",
       bcp_47: ""
     }
+    this.selected_iso_639_3 = {}
     this.validation_removeNewLanguageValidation()
   }
   showAddLanguageModal() {
@@ -102,7 +110,16 @@ class LanguageAdder extends mixins(Lang) {
     languageModal.show()
   }
   iso_639_3Tags() {
-    return [1, "def"]
+    return iso6393
+  }
+  set iso_639_3(selection: any) {
+    if(!isEmpty(selection)) {
+      this.newLanguage.iso_639_3 = selection.iso6393
+    }
+    this.selected_iso_639_3 = selection
+  }
+  get iso_639_3() {
+    return this.selected_iso_639_3
   }
   async handleCreateLanguage() {
     this.newLanguage.id = await (new IdGeneratorUuidV4()).generate()

@@ -43,6 +43,7 @@
     "bootstrap-vue": "^2.21.1",
     "core-js": "^3.6.5",
     "cssprefix": "^2.0.16",
+    "iso-639-3": "^3.0.0",
     "jquery": "^3.5.1",
     "json-schema": "0.2.3",
     "lang.js": "^1.1.14",
