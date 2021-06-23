@@ -92,14 +92,14 @@ class ContactPropertyEditor extends mixins(Lang) {
     CLEAR: 'clear',
   }
 
-  get propertyAction() {
+  get propertyAction(): string {
     if (this.propertyValue === NULL_STRING_EXPRESSION) {
       return this.PROPERTY_ACTION.CLEAR
     }
     return this.PROPERTY_ACTION.SET
   }
 
-  set propertyAction(value) {
+  set propertyAction(value: string) {
     if (value === this.PROPERTY_ACTION.CLEAR) {
       this.updatePropertyValue(NULL_STRING_EXPRESSION)
     } else {
@@ -107,7 +107,7 @@ class ContactPropertyEditor extends mixins(Lang) {
     }
   }
 
-  get propertyKey() {
+  get propertyKey(): string {
     return get(this.block.config, 'set_contact_property.property_key')
   }
 
@@ -119,11 +119,11 @@ class ContactPropertyEditor extends mixins(Lang) {
     })
   }
 
-  get propertyValue() {
+  get propertyValue(): string {
     return get(this.block.config, 'set_contact_property.property_value', EMPTY_STRING_EXPRESSION)
   }
 
-  updatePropertyValue(value: string) {
+  updatePropertyValue(value: string): void {
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
       path: 'set_contact_property.property_value',
