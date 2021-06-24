@@ -34,16 +34,27 @@
       </div>
       <div class="form-group">
         <validation-message message-key="language/new_language/variant" #input-control="{ isValid }">
-          <text-editor v-model="newLanguage.variant"
+          <text-editor v-model="variant"
                        :placeholder="'flow-builder.enter-variant' | trans"
                        :label="'flow-builder.language-variant' | trans"
                        :validState="isValid"/>
         </validation-message>
       </div>
       <div class="form-group">
-        <label class="form-check-label mt-2 mb-2 mr-2">BCP 47</label>
+        <label class="form-check-label mt-2 mb-2 mr-2">ISO 3166 1 Locale</label>
+        <vue-multiselect v-model="iso_3166_1"
+                         :placeholder="'flow-builder.language-locale-selector-placeholder' | trans"
+                         :options="iso_3166_1Locales()"
+                         :allow-empty="false"
+                         track-by="locale"
+                         :custom-label="customLocaleLabel"
+                         :searchable="true">
+        </vue-multiselect>
+      </div>
+      <div class="form-group">
+        <label class="form-check-label mt-2 mb-2 mr-2">BCP 47 - Generated from ISO 639 3, Locale, and Variant</label>
         <validation-message message-key="language/new_language/bcp_47" #input-control="{ isValid }">
-          <input name="bcp_47" type="text" class="form-control" v-model="newLanguage.bcp_47">
+          <input name="bcp_47" type="text" class="form-control" v-model="newLanguage.bcp_47" disabled>
         </validation-message>
       </div>
     </b-modal>
@@ -59,8 +70,12 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
 import { iso6393 } from 'iso-639-3'
+const countries = require("i18n-iso-countries")
+countries.registerLocale(require("i18n-iso-countries/langs/en.json"))
 
 import {
+  map,
+  keys,
   isEmpty
 } from 'lodash'
 
@@ -96,11 +111,13 @@ class LanguageAdder extends mixins(Lang, Routes) {
     bcp_47: ""
   }
   selected_iso_639_3: any = {}
+  selected_iso_3166_1: any = {}
   iso_639_3Tags: any[] = iso6393
   // There is no obvious way to narrow down ISO 3166-1 from iso 639 languages:
   // https://www.rfc-editor.org/rfc/rfc5646.html#section-4.2
   // As a result, we don't attempt to filter this list depending on the iso 639 selection
-  iso_3166_1Locales: any[] = ['UK']
+  // We use Alpha-2 Codes as apparently they are "the most widely used"
+  // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
   async resetLanguage() {
     this.newLanguage = {
       id: "",
@@ -122,6 +139,18 @@ class LanguageAdder extends mixins(Lang, Routes) {
       return `${option.name} - ${option.iso6393}`
     }
   }
+  customLocaleLabel(option) {
+    if(!isEmpty(option)) {
+      return `${option.country} - ${option.locale}`
+    }
+  }
+  iso_3166_1Locales() {
+    //TODO - this gives you the english names of the locales. This library also supports FR. Should we allow searching in both languages?
+    const countriesByLocaleCode = countries.getNames("en", {select: "official"})
+    return map(keys(countriesByLocaleCode), (localeCode) => {
+      return {locale: localeCode, country: countriesByLocaleCode[localeCode]}
+    })
+  }
   // For now, we aren't allowing the use of 'script' or other elements in BCP 47 Construction - though the spec allows this.
   // We only use iso 639 + ISO 3166-1 (and not UN M.49)
   // https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1
@@ -131,13 +160,44 @@ class LanguageAdder extends mixins(Lang, Routes) {
     }
   }
   set iso_639_3(selection: any) {
+    this.selected_iso_639_3 = selection
     if(!isEmpty(selection)) {
       this.newLanguage.iso_639_3 = selection.iso6393
+      this.updateBCP47()
     }
-    this.selected_iso_639_3 = selection
   }
   get iso_639_3() {
     return this.selected_iso_639_3
+  }
+  set iso_3166_1(selection: any) {
+    this.selected_iso_3166_1 = selection
+    if(!isEmpty(selection)) {
+      this.updateBCP47()
+    }
+  }
+  get iso_3166_1() {
+    return this.selected_iso_3166_1
+  }
+  set variant(value: string) {
+    this.newLanguage.variant = value
+    if(!isEmpty(value)) {
+      this.updateBCP47()
+    }
+  }
+  get variant() {
+    return this.newLanguage.variant
+  }
+  updateBCP47() {
+    if(!isEmpty(this.selected_iso_639_3)) {
+      let bcp_47 = `${this.newLanguage.iso_639_3}`
+      if(!isEmpty(this.selected_iso_3166_1)) {
+        bcp_47 = bcp_47+`-${this.selected_iso_3166_1.locale}`
+      }
+      if(this.newLanguage.variant) {
+        bcp_47 = bcp_47+`-${this.newLanguage.variant}`
+      }
+      this.newLanguage.bcp_47 = bcp_47
+    }
   }
   async handleCreateLanguage() {
     this.newLanguage.id = await (new IdGeneratorUuidV4()).generate()
