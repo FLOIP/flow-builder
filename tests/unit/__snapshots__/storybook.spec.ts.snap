@@ -472,6 +472,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -814,6 +816,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
         
                         </a>
                          
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1143,6 +1147,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1492,6 +1498,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1627,6 +1635,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >

@@ -5,7 +5,7 @@
     <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate" />
 
     <div
-      :key="activeBlock && activeBlock.uuid"
+      :key="isSimulatorActive || (activeBlock && activeBlock.uuid)"
       class="tree-sidebar-container"
       :class="{ 'slide-out': !$route.meta.isSidebarShown,}">
       <div
@@ -19,7 +19,13 @@
       </div>
 
       <div
-        v-if="activeBlock"
+        v-if="isSimulatorActive"
+        class="tree-sidebar">
+        <clipboard-root />
+      </div>
+
+      <div
+        v-else-if="activeBlock"
         class="tree-sidebar"
         :class="[`category-${blockClasses[activeBlock.type].category}`]">
         <div
@@ -44,6 +50,7 @@
         <!--          v-if="sidebarType === 'BlockViewer'"-->
         <!--          :data-for-block-id="jsKey" />-->
       </div>
+
       <div
         v-else
         class="tree-sidebar">
@@ -64,8 +71,7 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
+<script>
 import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {endsWith, forEach, get, invoke, isEmpty} from 'lodash'
@@ -73,8 +79,10 @@ import Vue from 'vue'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 // import {affix as Affix} from 'vue-strap'
 // import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
+
 // import * as BlockTypes from './block-types'
 // import JsPlumbBlock from './JsPlumbBlock'
+
 import {store} from '@/store'
 
 // import TreeEditor from './TreeEditor'
@@ -83,7 +91,8 @@ import {store} from '@/store'
 // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
-import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
+import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
+import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
 import {scrollBehavior, scrollBlockIntoView} from '@/router'
 
 // import '../TreeDiffLogger'
@@ -99,6 +108,7 @@ export default {
     TreeBuilderToolbar,
     BuilderCanvas,
     FlowEditor,
+    ClipboardRoot,
     // TreeUpdateConflictModal,
   },
 
@@ -123,8 +133,7 @@ export default {
   data() {
     return {
       toolbarHeight: 60,
-      // an inversion can be "legacy types"
-      // todo: move this to BlockClassDetails spec
+      // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
       pureVuejsBlocks: [
         'CallBackWithCallCenterBlock',
         'CollaborativeFilteringQuestionBlock',
@@ -145,6 +154,7 @@ export default {
         'RecordGroupMessageBlock',
         'PlayGroupMessageBlock',
       ],
+      simulateClipboard: true,
     }
   },
   computed: {
@@ -174,13 +184,13 @@ export default {
 
     ...mapGetters('flow', ['activeFlow']),
     ...mapGetters('builder', ['activeBlock', 'isEditable']),
+    ...mapGetters('clipboard', ['isSimulatorActive']),
 
     jsKey() {
       return get(this.selectedBlock, 'jsKey')
     },
 
     // pure vuejs block types handle readonly mode on their own
-
     isPureVueBlock() {
       return _.includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
     },
@@ -196,8 +206,8 @@ export default {
     },
   },
   watch: {
+    // `this.mode` comes from captured param in js-routes
     mode(newMode) {
-      // `this.mode` comes from captured param in js-routes
       this.updateIsEditableFromParams(newMode)
     },
   },
@@ -212,7 +222,6 @@ export default {
     }
 
     // initialize global reference for legacy + debugging
-
     global.builder = this
 
     this.registerBlockTypes()
@@ -236,9 +245,9 @@ export default {
       this.flow_setActiveFlowId({flowId: null})
       this.$router.replace(
         {
-          path: this.route('flows.fetchFlow', {flowId: this.id}),
+ path: this.route('flows.fetchFlow', {flowId: this.id}),
           query: {nextUrl: this.$route.path},
-        },
+},
       )
     }
 
@@ -271,8 +280,7 @@ export default {
     ...mapActions([
       'attemptSaveTree',
       'discoverTallestBlockForDesignerWorkspaceHeight',
-      'initializeTreeModel',
-    ]),
+      'initializeTreeModel']),
 
     async registerBlockTypes() {
       const {blockClasses} = this
@@ -281,7 +289,6 @@ export default {
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')
         const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
-
         invoke(exported, 'install', this)
         Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
       })
@@ -305,14 +312,14 @@ export default {
     },
 
     /** --------------------------------| has-editable-locked | not-editable-locked |
-     | mode-is-absent+view-url-suffix   |        0            |     0               |
-     | mode-is-absent+edit-url-suffix   |        0 (r=>view)  |     1               |
-     | mode-is-absent+absent-url-suffix |        0 (r=>view)  |     0 (r=>view)     | <- Equivalent to /view
-     | mode-is-view                     |        0            |     0               |
-     | mode-is-view+edit-url-suffix     |        0            |     0               |
-     | mode-is-edit                     |        0 (r=>view)  |     1               |
-     | mode-is-edit+view-url-suffix     |        0 (r=>view)  |     1               |
-     ------------------------------------------------------------------------------ */
+       | mode-is-absent+view-url-suffix   |        0            |     0               |
+       | mode-is-absent+edit-url-suffix   |        0 (r=>view)  |     1               |
+       | mode-is-absent+absent-url-suffix |        0 (r=>view)  |     0 (r=>view)     | <- Equivalent to /view
+       | mode-is-view                     |        0            |     0               |
+       | mode-is-view+edit-url-suffix     |        0            |     0               |
+       | mode-is-edit                     |        0 (r=>view)  |     1               |
+       | mode-is-edit+view-url-suffix     |        0 (r=>view)  |     1               |
+       ------------------------------------------------------------------------------ */
     discoverIsEditableFrom(mode, hash, isEditableLocked) {
       return !isEditableLocked && (
         mode === 'edit' || (!mode && endsWith(hash, '/edit'))
@@ -351,158 +358,160 @@ export default {
 <!--<style src="../css/InteractionDesigner.css"></style>-->
 
 <style lang="scss">
-// Colors + dimensions
-$dot-size: 1px;
-$dot-space: 22px;
-$dot-color: #333;
-$bg-color: #fcfcfc;
+  // Colors + dimensions
+  $dot-size: 1px;
+  $dot-space: 22px;
+  $dot-color: #333;
+  $bg-color: #fcfcfc;
 
-$toolbar-height: 56px;
-$sidebar-width: 365px;
+  $toolbar-height: 56px;
+  $sidebar-width: 365px;
 
-.interaction-designer-contents {
-  background: linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
-  linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center, $dot-color;
-  background-size: $dot-space $dot-space;
-}
+  .interaction-designer-contents {
+    background:
+      linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
+      linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center, $dot-color;
+    background-size: $dot-space $dot-space;
+  }
 
-.tree-sidebar-container {
-  position: fixed;
-  right: 0;
-  z-index: 3*10;
+  .tree-sidebar-container {
+    position: fixed;
+    right: 0;
+    z-index: 3*10;
 
-  height: 100vh;
-  width: $sidebar-width;
-  overflow-y: scroll;
-
-  padding: 1em;
-  margin-top: 3em;
-  transition: right 200ms ease-in-out;
-
-  .tree-sidebar {
-    background-color: #eee;
-    border: 1px solid lightgray;
-    border-radius: 0;
-    box-shadow: 0 3px 6px #CACACA;
+    height: 100vh;
+    width: $sidebar-width;
+    overflow-y: scroll;
 
     padding: 1em;
+    margin-top: 3em;
+    transition: right 200ms ease-in-out;
+
+    .tree-sidebar {
+      background-color: #eee;
+      border: 1px solid lightgray;
+      border-radius: 0;
+      box-shadow: 0 3px 6px #CACACA;
+
+      padding: 1em;
+      margin-top: 1em;
+
+      transition:
+        200ms background-color ease-in-out,
+        200ms border-color ease-in-out,
+        200ms border-radius ease-in-out;
+    }
+
+    &.slide-out {
+      right: -$sidebar-width;
+    }
+  }
+
+  .tree-builder-toolbar-main-menu {
+    position: fixed;
+    z-index: 4*10;
+
+    width: 100vw;
+
+    border-bottom: 1px solid darkgrey;
+    background: #eee;
+
+    box-shadow: 0 3px 6px #CACACA;
+  }
+
+  // color categorizations
+  $category-0-faint: #fbfdfb;
+  $category-0-light: #97BD8A;
+  $category-0-dark: #38542f;
+  $category-1-faint: #fdfdfe;
+  $category-1-light: #6897BB;
+  $category-1-dark: #30516a;
+  $category-2-faint: #fdfbf8;
+  $category-2-light: #C69557;
+  $category-2-dark: #6e4e25;
+
+  .tree-sidebar-container {
+    .tree-sidebar {
+      &.category-0 {
+        border-color: $category-0-light;
+        background-color: $category-0-faint;
+        border-radius: 0.3em;
+
+        h3 {
+          color: $category-0-dark;
+        }
+      }
+
+      &.category-1 {
+        border-color: $category-1-light;
+        background-color: $category-1-faint;
+        border-radius: 0.3em;
+
+        h3 {
+          color: $category-1-dark;
+        }
+      }
+
+      &.category-2 {
+        border-color: $category-2-light;
+        background-color: $category-2-faint;
+        border-radius: 0.3em;
+
+        h3 {
+          color: $category-2-dark;
+        }
+      }
+    }
+  }
+
+  .block {
+    @mixin block-category($i, $faint, $light, $dark) {
+      &.category-#{$i} {
+        border-color: $light;
+
+        .block-type {
+          color: $light;
+        }
+
+        .block-exits .block-exit {
+          .block-exit-tag {
+            background-color: $light;
+          }
+
+          &.activated {
+            border-color: $light;
+          }
+        }
+
+        .block-target:hover {
+          border: 1px dashed $light;
+        }
+
+        &.active {
+          background-color: $faint;
+        }
+      }
+    }
+
+    @include block-category(0, $category-0-faint, $category-0-light, $category-0-dark);
+    @include block-category(1, $category-1-faint, $category-1-light, $category-1-dark);
+    @include block-category(2, $category-2-faint, $category-2-light, $category-2-dark);
+  }
+
+  .sidebar-cue {
+    cursor: pointer;
+    background-color: #eee;
+    padding: 5px;
+    position: fixed;
     margin-top: 1em;
-
-    transition: 200ms background-color ease-in-out,
-    200ms border-color ease-in-out,
-    200ms border-radius ease-in-out;
+    right: 0;
+    z-index: 5*10;
   }
 
-  &.slide-out {
-    right: -$sidebar-width;
-  }
-}
-
-.tree-builder-toolbar-main-menu {
-  position: fixed;
-  z-index: 4*10;
-
-  width: 100vw;
-
-  border-bottom: 1px solid darkgrey;
-  background: #eee;
-
-  box-shadow: 0 3px 6px #CACACA;
-}
-
-// color categorizations
-$category-0-faint: #fbfdfb;
-$category-0-light: #97BD8A;
-$category-0-dark: #38542f;
-$category-1-faint: #fdfdfe;
-$category-1-light: #6897BB;
-$category-1-dark: #30516a;
-$category-2-faint: #fdfbf8;
-$category-2-light: #C69557;
-$category-2-dark: #6e4e25;
-
-.tree-sidebar-container {
-  .tree-sidebar {
-    &.category-0 {
-      border-color: $category-0-light;
-      background-color: $category-0-faint;
-      border-radius: 0.3em;
-
-      h3 {
-        color: $category-0-dark;
-      }
-    }
-
-    &.category-1 {
-      border-color: $category-1-light;
-      background-color: $category-1-faint;
-      border-radius: 0.3em;
-
-      h3 {
-        color: $category-1-dark;
-      }
-    }
-
-    &.category-2 {
-      border-color: $category-2-light;
-      background-color: $category-2-faint;
-      border-radius: 0.3em;
-
-      h3 {
-        color: $category-2-dark;
-      }
-    }
-  }
-}
-
-.block {
-  @mixin block-category($i, $faint, $light, $dark) {
-    &.category-#{$i} {
-      border-color: $light;
-
-      .block-type {
-        color: $light;
-      }
-
-      .block-exits .block-exit {
-        .block-exit-tag {
-          background-color: $light;
-        }
-
-        &.activated {
-          border-color: $light;
-        }
-      }
-
-      .block-target:hover {
-        border: 1px dashed $light;
-      }
-
-      &.active {
-        background-color: $faint;
-      }
-    }
+  .sidebar-close {
+    right: 350px;
   }
 
-  @include block-category(0, $category-0-faint, $category-0-light, $category-0-dark);
-  @include block-category(1, $category-1-faint, $category-1-light, $category-1-dark);
-  @include block-category(2, $category-2-faint, $category-2-light, $category-2-dark);
-}
-
-.sidebar-cue {
-  cursor: pointer;
-  background-color: #eee;
-  padding: 5px;
-  position: fixed;
-  margin-top: 1em;
-  right: 0;
-  z-index: 5*10;
-}
-
-.sidebar-close {
-  right: 350px;
-}
-
-// @note - these styles have been extracted so the output can be reused between storybook and voto5
-/*@import "resources/assets/js/trees/components/InteractionDesigner.scss";*/
+  // @note - these styles have been extracted so the output can be reused between storybook and voto5
+  /*@import "resources/assets/js/trees/components/InteractionDesigner.scss";*/
 </style>

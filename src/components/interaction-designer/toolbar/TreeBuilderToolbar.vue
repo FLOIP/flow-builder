@@ -154,6 +154,17 @@
 
             <slot name="extra-buttons" />
 
+            <div
+              v-if="hasSimulator"
+              class="btn-group pull-right mr-2">
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="setSimulatorActive(true)">
+                {{ trans('flow-builder.show-clipboard-simulator') }}
+              </button>
+            </div>
+
             <!--TODO - do disable if no changes logic-->
             <div class="btn-group ml-auto mr-2">
               <button
@@ -202,6 +213,7 @@ Vue.use(VBTooltipPlugin)
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
+const clipboardVuexNamespace = namespace('clipboard')
 const validationVuexNamespace = namespace('validation')
 
 @Component({
@@ -303,6 +315,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   get canViewResultsTotals(): any {
     return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
+  }
+
+  get hasSimulator() {
+    return this.hasOfflineMode && this.isFeatureSimulatorEnabled
   }
 
   // Methods #####################
@@ -416,6 +432,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @Getter isFeatureTreeSendEnabled!: boolean
   @Getter isFeatureTreeDuplicateEnabled!: boolean
   @Getter isFeatureViewResultsEnabled!: boolean
+  @Getter isFeatureSimulatorEnabled!: boolean
   @Getter isFeatureUpdateInteractionTotalsEnabled!: boolean
   @Getter isResourceEditorEnabled!: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
@@ -424,6 +441,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   // Flow
   @flowVuexNamespace.Getter activeFlow?: IFlow
   @flowVuexNamespace.Getter activeFlowContainer?: IContext
+  @flowVuexNamespace.Getter hasOfflineMode?: boolean
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.State resources?: IResource[]
   @flowVuexNamespace.Action flow_removeBlock!: ({flowId, blockId}: { flowId?: string, blockId: IBlock['uuid'] | undefined }) => void
@@ -444,7 +462,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @builderVuexNamespace.Action importFlowsAndResources!: ({flows, resources}: { flows: IFlow[], resources: IResource[] }) => Promise<void>
   @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null }) => void
 
-  @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined }) => void
+  // Clipboard
+  @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
+
+  @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined}) => void
 }
 </script>
 
