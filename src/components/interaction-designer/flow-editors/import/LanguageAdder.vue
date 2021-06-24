@@ -134,12 +134,12 @@ class LanguageAdder extends mixins(Lang, Routes) {
     const languageModal: any = this.$refs['add-language-modal']
     languageModal.show()
   }
-  customLanguageLabel(option) {
+  customLanguageLabel(option: any) {
     if(!isEmpty(option)) {
       return `${option.name} - ${option.iso6393}`
     }
   }
-  customLocaleLabel(option) {
+  customLocaleLabel(option: any) {
     if(!isEmpty(option)) {
       return `${option.country} - ${option.locale}`
     }
@@ -150,14 +150,6 @@ class LanguageAdder extends mixins(Lang, Routes) {
     return map(keys(countriesByLocaleCode), (localeCode) => {
       return {locale: localeCode, country: countriesByLocaleCode[localeCode]}
     })
-  }
-  // For now, we aren't allowing the use of 'script' or other elements in BCP 47 Construction - though the spec allows this.
-  // We only use iso 639 + ISO 3166-1 (and not UN M.49)
-  // https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1
-  customBCP47Code(option) {
-    if(!isEmpty(option)) {
-      return `${this.selected_iso_639_3.iso6393}-${option}`
-    }
   }
   set iso_639_3(selection: any) {
     this.selected_iso_639_3 = selection
@@ -187,6 +179,9 @@ class LanguageAdder extends mixins(Lang, Routes) {
   get variant() {
     return this.newLanguage.variant
   }
+  // For now, we aren't allowing the use of 'script' or other elements in BCP 47 Construction - though the spec allows this.
+  // We only use iso 639 + ISO 3166-1 (and not UN M.49)
+  // https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1
   updateBCP47() {
     if(!isEmpty(this.selected_iso_639_3)) {
       let bcp_47 = `${this.newLanguage.iso_639_3}`
@@ -202,7 +197,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
   async handleCreateLanguage() {
     this.newLanguage.id = await (new IdGeneratorUuidV4()).generate()
 
-    const persistRoute = this.route('languages.persistLanguage')
+    const persistRoute = this.route('languages.persistLanguage', {})
     const valid = await this.validateAndAddOrgLanguage({ language: this.newLanguage, persistRoute })
     if(!valid) {
       return;
