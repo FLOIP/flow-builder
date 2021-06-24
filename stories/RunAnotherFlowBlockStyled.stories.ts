@@ -1,11 +1,11 @@
 import RunAnotherFlowBlock from '@/components/interaction-designer/block-types/Core_RunFlowBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import runAnotherFlowBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
-import {Component, Vue} from "vue-property-decorator";
+import {Component, Vue} from 'vue-property-decorator'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 Vue.use(Vuex)
 
@@ -37,14 +37,15 @@ class DefaultClass extends BaseMountedVueClass {
     await this.baseMounted(BLOCK_TYPE, runAnotherFlowBlockStore)
     const baseFlowId = this.activeFlow.uuid
     const flowOne = await this.flow_createWith({
-      props: {uuid: await (new IdGeneratorUuidV4()).generate(), name: 'My other flow'}
+      props: {uuid: await (new IdGeneratorUuidV4()).generate(), name: 'My other flow'},
     })
-    await this.flow_add({flow:flowOne})
+    await this.flow_add({flow: flowOne})
     const flowTwo = await this.flow_createWith({
-      props: {uuid: await (new IdGeneratorUuidV4()).generate(), name: 'My third flow'}
+      props: {uuid: await (new IdGeneratorUuidV4()).generate(), name: 'My third flow'},
     })
-    await this.flow_add({flow:flowTwo})
+    await this.flow_add({flow: flowTwo})
     this.flow_setActiveFlowId({flowId: baseFlowId})
   }
 }
+
 export const Default = () => (DefaultClass)

@@ -472,6 +472,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -814,6 +816,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
         
                         </a>
                          
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1143,6 +1147,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1492,6 +1498,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1627,6 +1635,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1944,7 +1954,9 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               <h5
                                 class="badge badge-info"
                               >
-                                English
+                                
+        English
+      
                               </h5>
                             </div>
                              
@@ -2403,7 +2415,9 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               <h5
                                 class="badge badge-info"
                               >
-                                English
+                                
+        English
+      
                               </h5>
                             </div>
                              
@@ -2832,7 +2846,9 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               <h5
                                 class="badge badge-info"
                               >
-                                English
+                                
+        English
+      
                               </h5>
                             </div>
                              
@@ -3266,7 +3282,9 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               <h5
                                 class="badge badge-info"
                               >
-                                English
+                                
+        English
+      
                               </h5>
                             </div>
                              

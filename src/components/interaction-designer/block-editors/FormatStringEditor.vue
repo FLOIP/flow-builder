@@ -1,18 +1,22 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/config/format_string`" #input-control="{ isValid }">
+  <validation-message
+    #input-control="{ isValid }"
+    :message-key="`block/${block.uuid}/config/format_string`">
     <div class="block-format-string">
-      <text-editor v-model="formatString"
-          :label="'flow-builder.format-string' | trans"
-          :placeholder="'flow-builder.enter-format-string' | trans"
-          :validState="isValid" />
+      <text-editor
+        v-model="formatString"
+        :label="'flow-builder.format-string' | trans"
+        :placeholder="'flow-builder.enter-format-string' | trans"
+        :valid-state="isValid" />
     </div>
   </validation-message>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import TextEditor from '@/components/common/TextEditor'
-import { lang } from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage';
+import {lang} from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage'
 
 export default {
   components: {

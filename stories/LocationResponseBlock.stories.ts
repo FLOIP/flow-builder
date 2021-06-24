@@ -1,11 +1,11 @@
 import LocationResponseBlock from '@/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import locationResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
-import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 Vue.use(Vuex)
 
@@ -40,6 +40,7 @@ class CurrentClass1 extends BaseMountedVueClass {
     await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)
   }
 }
+
 export const Default = () => (CurrentClass1)
 
 //ExistingDataPreFilled
@@ -48,16 +49,17 @@ export const Default = () => (CurrentClass1)
 })
 class CurrentClass2 extends BaseMountedVueClass {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)
+    const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, locationResponseBlockStore)
 
     this.setDescription(blockId)
-    this.setAccuracyThreshold({blockId, value:10.3})
-    this.setAccuracyTimeout({blockId, value:145})
+    this.setAccuracyThreshold({blockId, value: 10.3})
+    this.setAccuracyTimeout({blockId, value: 145})
   }
 
-  @blockVuexNamespace.Action setAccuracyThreshold:any
-  @blockVuexNamespace.Action setAccuracyTimeout:any
+  @blockVuexNamespace.Action setAccuracyThreshold: any
+  @blockVuexNamespace.Action setAccuracyTimeout: any
 }
+
 export const ExistingDataPreFilled = () => (CurrentClass2)
 
 //NonStartingBlock
@@ -72,4 +74,5 @@ class CurrentClass3 extends BaseMountedVueClass {
     await this.fakeCaseBlockAsFirstBlock(flowId)
   }
 }
+
 export const NonStartingBlock = () => (CurrentClass3)

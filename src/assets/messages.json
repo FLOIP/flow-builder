@@ -1583,7 +1583,8 @@
     "your-open-ended-audio-download-for": "Your open-ended audio download for",
     "your-orgs-audio-library": "your organization's audio library",
     "your-prompt": "<your prompt>",
-    "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
+    "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!",
+    "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit."
   },
   "fr.flow-builder": {
     "import-flow": "Importer/Coller un fichier JSON",
@@ -3166,7 +3167,8 @@
     "your-open-ended-audio-download-for": "Votre téléchargement audio pour la question ouverte",
     "your-orgs-audio-library": "bibliothèque audio de votre organisation",
     "your-prompt": "<votre message>",
-    "youre-using-floip-expressions": "On dirait que vous utilisez des expressions FLOIP, nice!"
+    "youre-using-floip-expressions": "On dirait que vous utilisez des expressions FLOIP, nice!",
+    "simulator-unsupported-block": "bloc est pas pris en charge en ce moment. Vous ne serez pas en mesure de procéder. S'il vous plaît quitter."
   }
 }
 
