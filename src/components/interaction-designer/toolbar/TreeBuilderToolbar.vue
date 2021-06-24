@@ -291,7 +291,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     }) // todo push out to intx-designer
     this.activateBlock({ blockId })
     this.$router.push({
-      name: 'block-selected-details',
+      name: 'block-selected',
       params: { blockId },
     })
   }

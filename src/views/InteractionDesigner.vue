@@ -206,6 +206,9 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     this.activateBlock({ blockId: to.params.blockId || null })
+    if (to.meta?.isBlockEditorShown) {
+      this.setOpenBlockEditor(true)
+    }
     next()
   },
   watch: {
