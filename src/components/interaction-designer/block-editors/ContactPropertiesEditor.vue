@@ -23,11 +23,15 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator'
+import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import {IBlock, ISetContactPropertyBlockConfig, SetContactProperty} from '@floip/flow-runner'
+import {IBlock, ISetContactPropertyBlockConfig} from '@floip/flow-runner'
+import {map} from 'lodash'
+import {namespace} from 'vuex-class'
 import ContactPropertyEditor from './ContactPropertyEditor.vue'
+
+const flowVuexNamespace = namespace('flow')
 
 @Component({
   components: {
@@ -44,19 +48,27 @@ class ContactPropertiesEditor extends mixins(Lang) {
   set shouldSetContactProperty(value: boolean) {
     console.log('shouldSetContactProperty', value)
     if (!value) {
-      Vue.delete(this.block.config, 'set_contact_property')
+      this.block_removeConfigByKey({blockId: this.block.uuid, key: 'set_contact_property'})
     } else {
       this.initConfigForContactProperty()
     }
   }
 
   initConfigForContactProperty() {
-    Vue.set(
-      this.block.config!,
-      'set_contact_property',
-      [{} as ISetContactPropertyBlockConfig],
-    )
+    this.block_updateConfigByPath({
+      blockId: this.block.uuid,
+      path: 'set_contact_property',
+      value: map(this.block.exits, (_exit) => ({
+        property_key: '',
+        property_value: '',
+      } as ISetContactPropertyBlockConfig)),
+    })
   }
+
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: (
+    {blockId, path, value}: { blockId: string, path: string, value: string | object }
+  ) => void
+  @flowVuexNamespace.Mutation block_removeConfigByKey!: ({blockId, key}: { blockId: string, key: string}) => void
 }
 export default ContactPropertiesEditor
 </script>
