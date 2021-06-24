@@ -1954,7 +1954,9 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               <h5
                                 class="badge badge-info"
                               >
-                                English
+                                
+        English
+      
                               </h5>
                             </div>
                              
@@ -2413,7 +2415,9 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               <h5
                                 class="badge badge-info"
                               >
-                                English
+                                
+        English
+      
                               </h5>
                             </div>
                              
@@ -2865,7 +2869,9 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               <h5
                                 class="badge badge-info"
                               >
-                                English
+                                
+        English
+      
                               </h5>
                             </div>
                              
@@ -3299,7 +3305,9 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               <h5
                                 class="badge badge-info"
                               >
-                                English
+                                
+        English
+      
                               </h5>
                             </div>
                              

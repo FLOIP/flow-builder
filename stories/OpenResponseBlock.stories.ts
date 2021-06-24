@@ -1,16 +1,13 @@
 import OpenResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_OpenResponseBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import openResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
 import {SupportedMode} from '@floip/flow-runner'
 
-import {
-  BaseMountedVueClass,
-  BaseMountedVueClassWithResourceAndMode, IBaseOptions,
-} from './story-utils/storeSetup'
 import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
+import {BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode, IBaseOptions} from './story-utils/storeSetup'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 Vue.use(Vuex)
 
@@ -38,15 +35,16 @@ const BaseOptions: IBaseOptions = {
 
 // default open-response block state
 @Component(
-    {
-      ...BaseOptions,
-    }
+  {
+    ...BaseOptions,
+  },
 )
 class CurrentClass1 extends BaseMountedVueClass {
   async mounted() {
     await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
   }
 }
+
 export const Default = () => (CurrentClass1)
 
 //ExistingDataForAllModes
@@ -55,20 +53,21 @@ export const Default = () => (CurrentClass1)
 })
 class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
-    const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
+    const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
     this.setDescription(blockId)
     this.setResourceData({
       shouldSetChoices: false,
-      configPath: 'config.prompt'
+      configPath: 'config.prompt',
     })
-    this.setMaxDurationSeconds(3*60)
+    this.setMaxDurationSeconds(3 * 60)
     this.setMaxResponseCharacters(160)
   }
 
-  @blockVuexNamespace.Action setMaxDurationSeconds:any
-  @blockVuexNamespace.Action setMaxResponseCharacters:any
+  @blockVuexNamespace.Action setMaxDurationSeconds: any
+  @blockVuexNamespace.Action setMaxResponseCharacters: any
 }
+
 export const ExistingDataForAllModes = () => (CurrentClass2)
 
 //ExistingDataForIvrOnly
@@ -80,16 +79,17 @@ class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
     const {block: {uuid: blockId}, flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, openResponseBlockStore)
 
     this.flow_setSupportedMode({flowId, value: SupportedMode.IVR})
-    this.setMaxDurationSeconds(3*60)
+    this.setMaxDurationSeconds(3 * 60)
     this.setDescription(blockId)
     this.setResourceData({
       shouldSetChoices: false,
-      configPath: 'config.prompt'
+      configPath: 'config.prompt',
     })
   }
 
-  @blockVuexNamespace.Action setMaxDurationSeconds:any
+  @blockVuexNamespace.Action setMaxDurationSeconds: any
 }
+
 export const ExistingDataForIvrOnly = () => (CurrentClass3)
 
 //ExistingDataForTextOnly
@@ -105,19 +105,20 @@ class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
     this.setDescription(blockId)
     this.setResourceData({
       shouldSetChoices: false,
-      configPath: 'config.prompt'
+      configPath: 'config.prompt',
     })
   }
 
-  @blockVuexNamespace.Action setMaxResponseCharacters:any
+  @blockVuexNamespace.Action setMaxResponseCharacters: any
 }
+
 export const ExistingDataForTextOnly = () => (CurrentClass4)
 
 //NonStartingBlock
 @Component(
-    {
-      ...BaseOptions,
-    }
+  {
+    ...BaseOptions,
+  },
 )
 class CurrentClass5 extends BaseMountedVueClass {
   async mounted() {
@@ -127,4 +128,5 @@ class CurrentClass5 extends BaseMountedVueClass {
     await this.fakeCaseBlockAsFirstBlock(flowId)
   }
 }
+
 export const NonStartingBlock = () => (CurrentClass5)

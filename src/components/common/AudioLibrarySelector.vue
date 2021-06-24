@@ -1,9 +1,10 @@
 <template>
   <div class="audio-library-selector">
-    <audio-library-selection v-if="selectedAudioFile"
-                             :audioFile="selectedAudioFile"
-                             :langId="langId"
-                             @clear="clearSelection" />
+    <audio-library-selection
+      v-if="selectedAudioFile"
+      :audio-file="selectedAudioFile"
+      :lang-id="langId"
+      @clear="clearSelection" />
 
     <template v-else>
       <!-- todo: refactor audio-library-selection to use v-model's @input + :value -->
@@ -16,24 +17,27 @@
 
       <!-- todo: refactor audio-library-search-field to use v-model's @input + :value -->
       <audio-library-search-field
-          :langId="langId"
-          :audioFiles="audioFiles"
-          @select="selectAudioFile" />
+        :lang-id="langId"
+        :audio-files="audioFiles"
+        @select="selectAudioFile" />
     </template>
   </div>
 </template>
 
-<script>
-import lodash from 'lodash'
-import { mapActions } from 'vuex'
-import {
-  SupportedContentType,
-  SupportedMode,
-} from '@floip/flow-runner'
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
+import {isEmpty} from 'lodash'
+import {mapActions} from 'vuex'
+import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import AudioLibrarySearchField from './AudioLibrarySearchField'
 import AudioLibrarySelection from './AudioLibrarySelection'
 
 export default {
+
+  components: {
+    AudioLibrarySearchField,
+    AudioLibrarySelection,
+  },
   props: [
     'alternateSelections',
     'selectedAudioFile',
@@ -44,14 +48,9 @@ export default {
     'resourceId',
   ],
 
-  components: {
-    AudioLibrarySearchField,
-    AudioLibrarySelection,
-  },
-
   computed: {
     selectable() {
-      return !lodash.isEmpty(this.alternateSelections)
+      return !isEmpty(this.alternateSelections)
     },
   },
 
@@ -60,14 +59,14 @@ export default {
     clearSelection() {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
-        filter: { language_id: this.langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
+        filter: {language_id: this.langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
         value: '',
       })
     },
-    selectAudioFile({ value, langId }) {
+    selectAudioFile({value, langId}) {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
-        filter: { language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR] },
+        filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
         value: value.description,
       })
     },

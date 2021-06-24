@@ -6,17 +6,21 @@ export default {
       if (!date) {
         return ''
       }
-      return moment.utc(date).format(format)
+      return moment.utc(date)
+        .format(format)
     },
 
     fromNow(date, withoutSuffix) {
-      return moment.utc(date).fromNow(withoutSuffix)
+      return moment.utc(date)
+        .fromNow(withoutSuffix)
     },
 
     formatDuration(duration, unit = 'seconds', withSuffix) {
       const currentLocale = moment.locale()
-      moment.locale('en') // this function only gets used in english.
-      const result = moment.duration(duration, unit).humanize(withSuffix)
+      // this function only gets used in english.
+      moment.locale('en')
+      const result = moment.duration(duration, unit)
+        .humanize(withSuffix)
       moment.locale(currentLocale)
       return result
     },
@@ -24,7 +28,8 @@ export default {
     formatDurationLocalized(duration, locale, unit = 'seconds', withSuffix) {
       const currentLocale = moment.locale()
       moment.locale(locale)
-      const result = moment.duration(duration, unit).humanize(withSuffix)
+      const result = moment.duration(duration, unit)
+        .humanize(withSuffix)
       moment.locale(currentLocale)
       return result
     },

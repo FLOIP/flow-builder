@@ -1,26 +1,21 @@
 import Vue from 'vue'
-import {
-  Action, Mutation, namespace
-} from 'vuex-class'
-import FlowBuilderContainer from './story-utils/FlowBuilderContainer.vue'
+import {Action, Mutation, namespace} from 'vuex-class'
 import {Component} from 'vue-property-decorator'
 import {IRootState, store} from '@/store'
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import StoryRouter from 'storybook-vue-router'
-import { routes } from './story-utils/router'
-import {
-  findFlowWith,
-  IContext, IFlow,
-} from '@floip/flow-runner'
+import {findFlowWith, IContext, IFlow} from '@floip/flow-runner'
+import Vuex from 'vuex'
+import {routes} from './story-utils/router'
 import {IBaseOptions} from './story-utils/storeSetup'
-import Vuex from "vuex";
+import FlowBuilderContainer from './story-utils/FlowBuilderContainer.vue'
 
 Vue.use(Vuex)
 
 // Allow story to load components which use <router-link>
-const decorators = [() => ({ template: '<div><story/></div>' })];
+const decorators = [() => ({template: '<div><story/></div>'})]
 decorators.push(StoryRouter({}, {
-  routes
+  routes,
 }))
 
 const builderVuexNamespace = namespace('builder')
@@ -30,7 +25,7 @@ export default {
   title: 'InteractionDesigner/Toolbar',
   // Our exports that end in "Data" are not stories.
   excludeStories: /.*Data$/,
-  decorators
+  decorators,
 }
 
 const ToolbarTemplate = `
@@ -39,7 +34,7 @@ const ToolbarTemplate = `
   </flow-builder-container>`
 
 // @ts-ignore: Custom store shim for stories only
-store.modules.flow.mutations.flow_setActiveFlowUUID = function flow_setActiveFlowUUID(state, { flowId, newUUID }) {
+store.modules.flow.mutations.flow_setActiveFlowUUID = function flow_setActiveFlowUUID(state, {flowId, newUUID}) {
   const flow = findFlowWith(flowId, state as unknown as IContext)
   flow.uuid = newUUID
   state.first_flow_id = newUUID
@@ -56,11 +51,12 @@ const BaseOptions: IBaseOptions = {
 })
 class BaseMountedClass extends Vue {
   async created() {
-    this.configure({appConfig: {}, builderConfig: {}});
-    this.initializeTreeModel() // from trees store
+    this.configure({appConfig: {}, builderConfig: {}})
+    // from trees store
+    this.initializeTreeModel()
     await this.flow_addBlankFlow()
     //Force all the links to have a static flow id
-    this.flow_setActiveFlowUUID({ flowId: this.activeFlow.uuid, newUUID: "1" })
+    this.flow_setActiveFlowUUID({flowId: this.activeFlow.uuid, newUUID: '1'})
   }
 
   @Action initializeTreeModel: any
@@ -76,9 +72,9 @@ class BaseMountedClass extends Vue {
 
 // Default
 @Component(
-    {
-        ...BaseOptions,
-    }
+  {
+    ...BaseOptions,
+  },
 )
 class DefaultClass extends BaseMountedClass {
   async mounted() {
@@ -86,13 +82,14 @@ class DefaultClass extends BaseMountedClass {
     this.addEnabledFeature({value: 'resourceEditor'})
   }
 }
+
 export const Default = () => (DefaultClass)
 
 // Without Resource Editor toggle
 @Component(
   {
     ...BaseOptions,
-  }
+  },
 )
 class ResourceEditorClass extends BaseMountedClass {
   async mounted() {
@@ -100,13 +97,14 @@ class ResourceEditorClass extends BaseMountedClass {
     this.removeEnabledFeature({value: 'resourceEditor'})
   }
 }
+
 export const WithoutResourceEditorToggle = () => (ResourceEditorClass)
 
 // Edit flow
 @Component(
   {
     ...BaseOptions,
-  }
+  },
 )
 class EditFlowClass extends BaseMountedClass {
   async mounted() {
@@ -115,13 +113,14 @@ class EditFlowClass extends BaseMountedClass {
     this.removeEnabledFeature({value: 'treeSave'})
   }
 }
+
 export const EditFlow = () => (EditFlowClass)
 
 // With Save button
 @Component(
   {
     ...BaseOptions,
-  }
+  },
 )
 class SaveClass extends BaseMountedClass {
   async mounted() {
@@ -130,10 +129,11 @@ class SaveClass extends BaseMountedClass {
     this.addEnabledFeature({value: 'treeSave'})
   }
 }
+
 export const WithSaveButton = () => (SaveClass)
 
 // With Extra right grouped button
-let BaseOptions2 = BaseOptions
+const BaseOptions2 = BaseOptions
 BaseOptions2.template = `
   <flow-builder-container v-if="activeFlow">
     <tree-builder-toolbar>
@@ -153,10 +153,11 @@ BaseOptions2.template = `
       </template>
     </tree-builder-toolbar>
   </flow-builder-container>`
+
 @Component(
   {
     ...BaseOptions,
-  }
+  },
 )
 class GroupButtonsSlotClass extends BaseMountedClass {
   async mounted() {
@@ -165,10 +166,11 @@ class GroupButtonsSlotClass extends BaseMountedClass {
     this.addEnabledFeature({value: 'treeSave'})
   }
 }
+
 export const WithGroupedButtonsSlot = () => (GroupButtonsSlotClass)
 
 // With Extra buttons
-let BaseOptions3 = BaseOptions
+const BaseOptions3 = BaseOptions
 BaseOptions3.template = `
   <flow-builder-container v-if="activeFlow">
     <tree-builder-toolbar>
@@ -188,10 +190,11 @@ BaseOptions3.template = `
       </template>
     </tree-builder-toolbar>
   </flow-builder-container>`
+
 @Component(
   {
     ...BaseOptions,
-  }
+  },
 )
 class ExtraButtonsSlotClass extends BaseMountedClass {
   async mounted() {
@@ -200,4 +203,5 @@ class ExtraButtonsSlotClass extends BaseMountedClass {
     this.addEnabledFeature({value: 'treeSave'})
   }
 }
+
 export const WithExtraButtonsSlot = () => (ExtraButtonsSlotClass)

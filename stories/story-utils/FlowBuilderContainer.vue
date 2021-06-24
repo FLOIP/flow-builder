@@ -1,12 +1,15 @@
 <template>
-  <div id="viamo-app"
-       class="viamo-app-container flow-builder-sidebar-editor-container">
+  <div
+    id="viamo-app"
+    class="viamo-app-container flow-builder-sidebar-editor-container">
     <div class="container-full">
       <div class="main-content-container">
         <section id="tree-app">
-          <div id="tree-interaction-designer" class="edit-tree">
+          <div
+            id="tree-interaction-designer"
+            class="edit-tree">
             <div class="interaction-designer-contents panel panel-default">
-              <slot/>
+              <slot />
             </div>
           </div>
         </section>
@@ -24,7 +27,7 @@ import 'vue-multiselect/dist/vue-multiselect.min.css'
 import '@/scss/main.scss'
 
 import Vue from 'vue'
-import {Component, Prop} from 'vue-property-decorator'
+import {Component} from 'vue-property-decorator'
 
 @Component({})
 export class FlowBuilderContainer extends Vue {

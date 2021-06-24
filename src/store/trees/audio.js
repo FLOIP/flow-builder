@@ -1,11 +1,8 @@
 import lodash from 'lodash'
 import axios from 'axios'
 import Vue from 'vue'
-import {
-  SupportedContentType,
-  SupportedMode,
-} from '@floip/flow-runner'
-import { routeFrom } from '@/lib/mixins/Routes'
+import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {routeFrom} from '@/lib/mixins/Routes'
 
 export default {
   state: lodash.chain(global)
@@ -13,7 +10,8 @@ export default {
     .defaultsDeep({
       library: [],
       recording: {
-        isCalling: {}, // keyed by `{jsKey}:{langId}`
+        // keyed by `{jsKey}:{langId}`
+        isCalling: {},
         isRecorderSelectorVisible: false,
         recorders: [],
       },
@@ -25,74 +23,77 @@ export default {
   },
 
   mutations: {
-    addRecorder({ recording }, recorder) {
+    addRecorder({recording}, recorder) {
       recording.recorders = lodash.uniqBy(lodash.union(recording.recorders, [recorder]), 'id')
     },
 
-    pushAudioIntoLibrary({ library, recording }, audio) {
+    pushAudioIntoLibrary({library, recording}, audio) {
       library.push(audio)
     },
 
-    setRecordingStatusFor({ recording: { isCalling } }, { key, value: status }) {
+    setRecordingStatusFor({recording: {isCalling}}, {key, value: status}) {
       Vue.set(isCalling, key, status)
     },
 
-    setAudioRecordingConfigVisibilityForSelectedBlock({ recording }, { langId, isVisible }) {
+    setAudioRecordingConfigVisibilityForSelectedBlock({recording}, {langId, isVisible}) {
       recording.isRecorderSelectorVisible = isVisible
     },
 
-    setAudioRecordingConfigVisibilityFor({ recording }, { key, isVisible }) {
+    setAudioRecordingConfigVisibilityFor({recording}, {key, isVisible}) {
       recording.isRecorderSelectorVisible = isVisible
     },
   },
 
   actions: {
     startAudioRecordingFor({
-      commit, dispatch, state, rootState,
-    }, {
-      key,
-      description,
-      name: recorder_name,
-      phone: recorder_phonenumber,
-      isNew: is_new_recorder,
-    }) {
-      commit('setAudioRecordingConfigVisibilityFor', { key, isVisible: false })
+                             commit, dispatch, state, rootState,
+                           }, {
+                             key,
+                             description,
+                             name: recorder_name,
+                             phone: recorder_phonenumber,
+                             isNew: is_new_recorder,
+                           }) {
+      commit('setAudioRecordingConfigVisibilityFor', {key, isVisible: false})
       // TODO: enable showAppMessageFor once available
       // dispatch('showAppMessageFor', {message: 'Atempting to call...'})
 
-      return axios.post(routeFrom('trees.calltorecordStart', null, rootState.trees.ui.routes),
+      return axios.post(
+        routeFrom('trees.calltorecordStart', null, rootState.trees.ui.routes),
         {
           recorder_phonenumber, recorder_name, is_new_recorder, description,
         },
-        { headers: { 'Content-Type': 'application/json' } }).then(({
-        data: {
-          uuid, queue_id: queueId, status, status_description, description, recorder_id,
-        },
-      }) => {
-        commit('addRecorder', {
-          id: recorder_id,
-          name: recorder_name,
-          phone: recorder_phonenumber,
-        })
+        {headers: {'Content-Type': 'application/json'}},
+      )
+        .then(({
+                 data: {
+                   uuid, queue_id: queueId, status, status_description, description, recorder_id,
+                 },
+               }) => {
+          commit('addRecorder', {
+            id: recorder_id,
+            name: recorder_name,
+            phone: recorder_phonenumber,
+          })
 
-        // TODO: enable showAppMessageFor once available
-        // if (status_description === 'error') {
-        //   const message = status === 'no_credit_error' ? description : 'Error dialing number'
-        // dispatch('showAppMessageFor', {message, isComplete: true})
-        // return
-        // }
+          // TODO: enable showAppMessageFor once available
+          // if (status_description === 'error') {
+          //   const message = status === 'no_credit_error' ? description : 'Error dialing number'
+          // dispatch('showAppMessageFor', {message, isComplete: true})
+          // return
+          // }
 
-        // status_description is 'sending_to_dn'
-        // TODO: enable showAppMessageFor once available
-        // dispatch('showAppMessageFor', {message: 'Sending out call...'})
-        commit('setRecordingStatusFor', {
-          key, uuid, queueId, value: 'initiating_call',
+          // status_description is 'sending_to_dn'
+          // TODO: enable showAppMessageFor once available
+          // dispatch('showAppMessageFor', {message: 'Sending out call...'})
+          commit('setRecordingStatusFor', {
+            key, uuid, queueId, value: 'initiating_call',
+          })
+          setTimeout(() => dispatch('fetchAudioRecordingStatusFor', {key, uuid, queueId}), 3000)
         })
-        setTimeout(() => dispatch('fetchAudioRecordingStatusFor', { key, uuid, queueId }), 3000)
-      })
         .catch((error) => {
           if (error.response) {
-          // Request made and server responded
+            // Request made and server responded
             console.error('Audio', error.response.data)
           } else if (error.request) {
             console.log('Audio', 'The request was made but no response was received', error)
@@ -115,28 +116,32 @@ export default {
      * @returns {Promise<AxiosResponse<any>>}
      */
     fetchAudioRecordingStatusFor({
-      commit, dispatch, state, rootState,
-    }, { key, uuid, queueId }) {
-      return axios.post(routeFrom('trees.calltorecordStatus', null, rootState.trees.ui.routes),
-        { uuid, queue_id: queueId },
-        { headers: { 'Content-Type': 'application/json' } }).then(({ data }) => {
-        console.debug('Call recording status', data.status)
-        dispatch('checkAudioRecordingStatusFor', {
-          ...data, key, uuid, queueId,
+                                   commit, dispatch, state, rootState,
+                                 }, {key, uuid, queueId}) {
+      return axios.post(
+        routeFrom('trees.calltorecordStatus', null, rootState.trees.ui.routes),
+        {uuid, queue_id: queueId},
+        {headers: {'Content-Type': 'application/json'}},
+      )
+        .then(({data}) => {
+          console.debug('Call recording status', data.status)
+          dispatch('checkAudioRecordingStatusFor', {
+            ...data, key, uuid, queueId,
+          })
         })
-      }).catch((error) => {
-        if (error.response) {
-          // Request made and server responded
-          console.error('Audio', error.response.data)
-        } else if (error.request) {
-          console.log('Audio', 'The request was made but no response was received', error)
-        } else {
-          console.log('Audio', 'Something happened in setting up the request that triggered an Error', error)
-        }
-      })
+        .catch((error) => {
+          if (error.response) {
+            // Request made and server responded
+            console.error('Audio', error.response.data)
+          } else if (error.request) {
+            console.log('Audio', 'The request was made but no response was received', error)
+          } else {
+            console.log('Audio', 'Something happened in setting up the request that triggered an Error', error)
+          }
+        })
     },
 
-    async checkAudioRecordingStatusFor({ commit, dispatch, state }, data) {
+    async checkAudioRecordingStatusFor({commit, dispatch, state}, data) {
       const {
         key, uuid, audio_file_id, queueId, status, description, created_at, duration_seconds,
       } = data
@@ -170,10 +175,12 @@ export default {
           },
         })
 
-        commit('flow/resource_add', { resource })
+        commit('flow/resource_add', {resource})
         commit('pushAudioIntoLibrary', uploadedAudio)
 
-        // commit('updateReviewedStateFor', {jsKey, langId, value: false}) // TODO: what should be the equivalence of this in flow-builder
+        // TODO: what should be the equivalence of this in flow-builder
+
+        // commit('updateReviewedStateFor', {jsKey, langId, value: false})
         // dispatch('attemptSaveTree')
 
         // todo: refactor @jory's audio file stuff so that we can reuse everywhere
@@ -182,9 +189,12 @@ export default {
       const isComplete = status === 'error' || status === 'new'
       // TODO: enable showAppMessageFor once available
       // const fetchStatusMessageMap = {
-      //   error: 'Error dialing number', // + hide
-      //   new: 'Call recorded successfully', // + hide
-      //   in_progress: 'Dialing...', // sending_to_dn
+      // + hide
+      //   error: 'Error dialing number',
+      // + hide
+      //   new: 'Call recorded successfully',
+      // sending_to_dn
+      //   in_progress: 'Dialing...',
       //   queued: 'Dialing...',
       //   recording: 'Recording...',
       //   listen_to_recording: 'Listening to recording...',
@@ -209,7 +219,7 @@ export default {
         discard_and_record: 3000,
       }
 
-      setTimeout((_) => dispatch('fetchAudioRecordingStatusFor', { key, uuid, queueId }), fetchStatusDelayMap[status])
+      setTimeout((_) => dispatch('fetchAudioRecordingStatusFor', {key, uuid, queueId}), fetchStatusDelayMap[status])
     },
   },
 }
