@@ -15,10 +15,33 @@
         {{ 'flow-builder.set-contact-properties' | trans }}
       </label>
     </div>
-    <contact-property-editor
-      v-if="shouldSetContactProperty"
-      :block="block"
-      :should-show-action="false" />
+
+    <div
+      v-for="(exit, index) in block.exits"
+      :key="index">
+      <validation-message
+        #input-control="{ isValid }"
+        :message-key="`block/${block.uuid}/config/set_contact_property/${index}/property_key`">
+        <div class="block-contact-property-key">
+          <text-editor
+            :value="block.config.set_contact_property[index].property_key"
+            :label="'flow-builder.contact-property-label' | trans"
+            :placeholder="'flow-builder.enter-contact-property-label' | trans"
+            :valid-state="isValid" />
+        </div>
+      </validation-message>
+
+      <validation-message
+        #input-control="{ isValid }"
+        :message-key="`block/${block.uuid}/config/set_contact_property/${index}/property_value`">
+        <expression-editor
+          :label="'flow-builder.contact-property-expression' | trans"
+          :placeholder="'flow-builder.edit-expression' | trans"
+          :current-expression="block.config.set_contact_property[index].property_value"
+          :valid-state="isValid"
+          @commitExpressionChange="updatePropertyValue" />
+      </validation-message>
+    </div>
   </div>
 </template>
 
@@ -29,13 +52,17 @@ import Lang from '@/lib/filters/lang'
 import {IBlock, ISetContactPropertyBlockConfig} from '@floip/flow-runner'
 import {map} from 'lodash'
 import {namespace} from 'vuex-class'
-import ContactPropertyEditor from './ContactPropertyEditor.vue'
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import TextEditor from '@/components/common/TextEditor.vue'
+import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 
 @Component({
   components: {
-    ContactPropertyEditor,
+    TextEditor,
+    ExpressionEditor,
+    ValidationMessage,
   },
 })
 class ContactPropertiesEditor extends mixins(Lang) {

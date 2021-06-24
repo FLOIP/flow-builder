@@ -58,6 +58,9 @@
           :block="block"
           :flow="flow" />
       </div>
+
+      <contact-properties-editor :block="block" />
+
       <slot name="extras" />
       <first-block-editor-button
         :flow="flow"
@@ -85,6 +88,7 @@ import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEdit
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import ContactPropertiesEditor from '@/components/interaction-designer/block-editors/ContactPropertiesEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -92,6 +96,7 @@ const builderVuexNamespace = namespace('builder')
 
 @Component<any>({
   components: {
+    ContactPropertiesEditor,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
