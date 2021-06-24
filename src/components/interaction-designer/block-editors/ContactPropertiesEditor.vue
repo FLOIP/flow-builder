@@ -5,42 +5,46 @@
     <div class="custom-control custom-checkbox">
       <input
         id="setContactProperty"
-        v-model="shouldSetContactProperty"
+        :value="shouldSetContactProperty"
+        :checked="shouldSetContactProperty"
         type="checkbox"
         name="setContactProperty"
-        class="custom-control-input">
+        class="custom-control-input"
+        @change="toggleSetContactProperty" />
       <label
         class="custom-control-label font-weight-normal"
         for="setContactProperty">
         {{ 'flow-builder.set-contact-properties' | trans }}
       </label>
 
-      <div
-        v-for="(exit, index) in block.exits"
-        :key="index">
-        <validation-message
-          #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/config/set_contact_property/${index}/property_key`">
-          <div class="block-contact-property-key">
-            <text-editor
-              :value="block.config.set_contact_property[index].property_key"
-              :label="'flow-builder.contact-property-label' | trans"
-              :placeholder="'flow-builder.enter-contact-property-label' | trans"
-              :valid-state="isValid"
-              @input="(value) => updatePropertyKey(index, value)"/>
-          </div>
-        </validation-message>
+      <div v-if="shouldSetContactProperty">
+        <div
+          v-for="(exit, index) in block.exits"
+          :key="index">
+          <validation-message
+            #input-control="{ isValid }"
+            :message-key="`block/${block.uuid}/config/set_contact_property/${index}/property_key`">
+            <div class="block-contact-property-key">
+              <text-editor
+                :value="block.config.set_contact_property[index].property_key"
+                :label="'flow-builder.contact-property-label' | trans"
+                :placeholder="'flow-builder.enter-contact-property-label' | trans"
+                :valid-state="isValid"
+                @input="(value) => updatePropertyKey(index, value)"/>
+            </div>
+          </validation-message>
 
-        <validation-message
-          #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/config/set_contact_property/${index}/property_value`">
-          <expression-editor
-            :label="'flow-builder.contact-property-expression' | trans"
-            :placeholder="'flow-builder.edit-expression' | trans"
-            :current-expression="block.config.set_contact_property[index].property_value"
-            :valid-state="isValid"
-            @commitExpressionChange="(value) => updatePropertyValue(index, value)" />
-        </validation-message>
+          <validation-message
+            #input-control="{ isValid }"
+            :message-key="`block/${block.uuid}/config/set_contact_property/${index}/property_value`">
+            <expression-editor
+              :label="'flow-builder.contact-property-expression' | trans"
+              :placeholder="'flow-builder.edit-expression' | trans"
+              :current-expression="block.config.set_contact_property[index].property_value"
+              :valid-state="isValid"
+              @commitExpressionChange="(value) => updatePropertyValue(index, value)" />
+          </validation-message>
+        </div>
       </div>
     </div>
   </div>
@@ -51,7 +55,7 @@ import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock, ISetContactPropertyBlockConfig} from '@floip/flow-runner'
-import {map} from 'lodash'
+import {map, has} from 'lodash'
 import {namespace} from 'vuex-class'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import TextEditor from '@/components/common/TextEditor.vue'
@@ -69,13 +73,15 @@ const flowVuexNamespace = namespace('flow')
 class ContactPropertiesEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
-  get shouldSetContactProperty(): boolean {
-    return Object.prototype.hasOwnProperty.call(this.block.config, 'set_contact_property')
+  shouldSetContactProperty = false
+
+  created() {
+    this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')
   }
 
-  set shouldSetContactProperty(value: boolean) {
-    console.log('shouldSetContactProperty', value)
-    if (!value) {
+  toggleSetContactProperty() {
+    this.shouldSetContactProperty = !this.shouldSetContactProperty
+    if (!this.shouldSetContactProperty) {
       this.block_removeConfigByKey({blockId: this.block.uuid, key: 'set_contact_property'})
     } else {
       this.initConfigForContactProperty()
