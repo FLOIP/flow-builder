@@ -5,7 +5,6 @@
     <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate" />
 
     <div
-      :key="isSimulatorActive || (activeBlock && activeBlock.uuid)"
       class="tree-sidebar-container"
       :class="{ 'slide-out': !$route.meta.isSidebarShown,}">
       <div
@@ -22,33 +21,6 @@
         v-if="isSimulatorActive"
         class="tree-sidebar">
         <clipboard-root />
-      </div>
-
-      <div
-        v-else-if="activeBlock"
-        class="tree-sidebar"
-        :class="[`category-${blockClasses[activeBlock.type].category}`]">
-        <div
-          class="tree-sidebar-edit-block"
-          :data-block-type="activeBlock && activeBlock.type"
-          :data-for-block-id="activeBlock && activeBlock.uuid">
-          <component
-            :is="`Flow${activeBlock.type.replace('.', '')}`"
-            v-if="activeBlock"
-            :block="activeBlock"
-            :flow="activeFlow" />
-        </div>
-
-        <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
-        <!--                     :jsonValidationResults="jsonValidationResults"-->
-        <!--                     :isTreeValid="isTreeValid"/>-->
-
-        <!--        <tree-viewer v-if="sidebarType === 'TreeViewer'"/>-->
-
-        <!--        <block-viewer-->
-        <!--          :key="jsKey"-->
-        <!--          v-if="sidebarType === 'BlockViewer'"-->
-        <!--          :data-for-block-id="jsKey" />-->
       </div>
 
       <div
@@ -194,16 +166,6 @@ export default {
     isPureVueBlock() {
       return _.includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
     },
-
-    sidebarType() {
-      const
-        blockType = get(this.selectedBlock, 'type')
-      const blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
-
-      return this.isEditable
-        ? blockType || 'TreeEditor'
-        : blockViewerType || 'TreeViewer'
-    },
   },
   watch: {
     // `this.mode` comes from captured param in js-routes
@@ -264,16 +226,23 @@ export default {
       if (field) {
         scrollBehavior(this.$route)
       }
+      if (this.$route.meta?.isBlockEditorShown) {
+        this.setOpenBlockEditor(true)
+      }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
   },
   beforeRouteUpdate(to, from, next) {
     this.activateBlock({blockId: to.params.blockId || null})
+    if (to.meta?.isBlockEditorShown) {
+      scrollBlockIntoView(to.params.blockId)
+      this.setOpenBlockEditor(true)
+    }
     next()
   },
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
-    ...mapMutations('builder', ['activateBlock']),
+    ...mapMutations('builder', ['activateBlock', 'setOpenBlockEditor']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
 
@@ -299,7 +268,7 @@ export default {
         console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
         return
       }
-
+      this.setOpenBlockEditor(false)
       const routeName = this.$route.meta.isSidebarShown ? 'flow-details' : 'flow-canvas'
       this.$router.history.replace({
         name: routeName,
@@ -335,14 +304,8 @@ export default {
     },
 
     showOrHideSidebar() {
-      let routeName = ''
-      if (this.$route.name.includes('block')) {
-        routeName = this.$route.meta.isSidebarShown ? 'block-selected' : 'block-selected-details'
-      } else {
-        routeName = this.$route.meta.isSidebarShown ? 'flow-canvas' : 'flow-details'
-      }
       this.$router.history.replace({
-        name: routeName,
+        name: this.$route.meta.isSidebarShown ? 'flow-canvas' : 'flow-details',
       })
     },
 
@@ -429,40 +392,6 @@ export default {
   $category-2-faint: #fdfbf8;
   $category-2-light: #C69557;
   $category-2-dark: #6e4e25;
-
-  .tree-sidebar-container {
-    .tree-sidebar {
-      &.category-0 {
-        border-color: $category-0-light;
-        background-color: $category-0-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-0-dark;
-        }
-      }
-
-      &.category-1 {
-        border-color: $category-1-light;
-        background-color: $category-1-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-1-dark;
-        }
-      }
-
-      &.category-2 {
-        border-color: $category-2-light;
-        background-color: $category-2-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-2-dark;
-        }
-      }
-    }
-  }
 
   .block {
     @mixin block-category($i, $faint, $light, $dark) {

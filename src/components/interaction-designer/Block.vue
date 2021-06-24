@@ -1,5 +1,7 @@
 <template>
   <div @click="selectBlock">
+    <block-editor v-if="showBlockEditor" class="block-editor" :style="{transform: blockEditorPosition}"></block-editor>
+
     <plain-draggable
       v-if="hasLayout"
       ref="draggable"
@@ -63,6 +65,16 @@
               :icon="['far', 'clone']"
               class="fa-btn"
               @click.prevent="handleDuplicateBlock" />
+          </div>
+          <!--Expand block editor-->
+          <div class="mr-1 ml-2">
+            <i
+              v-if="isEditable"
+              class="glyphicon"
+              :class="{'glyphicon-resize-small': showBlockEditor, 'glyphicon-resize-full': !showBlockEditor}"
+              v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
+              @click.prevent="handleExpandBlockEditor"
+            ></i>
           </div>
         </div>
       </div>
@@ -215,8 +227,8 @@ import {lang} from '@/lib/filters/lang'
 import {BLOCK_TYPE as BLOCK_TYPE__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
 import {BLOCK_TYPE as BLOCK_TYPE__SELECT_ONE_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {BLOCK_TYPE as BLOCK_TYPE__SELECT_MANY_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
-
 import {BTooltip} from 'bootstrap-vue'
+import BlockEditor from '@/components/interaction-designer/block-editors/BlockEditor'
 
 Vue.component('BTooltip', BTooltip)
 
@@ -226,15 +238,21 @@ export default {
   components: {
     Connection,
     PlainDraggable,
+    BlockEditor,
   },
   mixins: [lang],
   props: ['block', 'x', 'y'],
+
+  updated() {
+    this.blockWidth = this.$refs.draggable.$el.clientWidth
+  },
 
   data() {
     return {
       isDeleting: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
+      blockWidth: 0,
     }
   },
 
@@ -263,7 +281,7 @@ export default {
     ]),
     ...mapState(
       'builder',
-      ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid'],
+      ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid', 'openBlockEditor']
     ),
     ...mapState({
       blockClasses: ({trees: {ui}}) => ui.blockClasses,
@@ -303,6 +321,14 @@ export default {
       const {data} = operations[OperationKind.CONNECTION_CREATE]
       return data && data.targetId === block.uuid
     },
+
+    blockEditorPosition() {
+      return `translate(${this.x + this.blockWidth + 5}px, ${this.y - 130}px)`
+    },
+
+    showBlockEditor() {
+      return this.openBlockEditor && this.activeBlockId === this.block.uuid
+    },
   },
 
   methods: {
@@ -311,7 +337,7 @@ export default {
       generateConnectionLayoutKeyFor,
     },
 
-    ...mapMutations('builder', ['setBlockPositionTo', 'initDraggableForExitsByUuid']),
+    ...mapMutations('builder', ['setBlockPositionTo', 'initDraggableForExitsByUuid', 'setOpenBlockEditor']),
 
     ...mapActions('builder', {
       _removeConnectionFrom: 'removeConnectionFrom',
@@ -557,7 +583,7 @@ export default {
 
     selectBlock() {
       const {block: {uuid: blockId}} = this
-      const routerName = this.$route.meta.isSidebarShown ? 'block-selected-details' : 'block-selected'
+      const routerName = this.openBlockEditor ? 'block-selected-details' : 'block-selected'
       this.$router.history.replace({
         name: routerName,
         params: {blockId},
@@ -579,6 +605,16 @@ export default {
         delete self.draggableForExitsByUuid[exit.uuid]
       })
     },
+
+    handleExpandBlockEditor() {
+      this.setOpenBlockEditor(!this.openBlockEditor)
+      const { block: { uuid: blockId } } = this
+      const routerName = this.openBlockEditor ? 'block-selected-details' : 'block-selected'
+      this.$router.history.replace({
+        name: routerName,
+        params: { blockId },
+      })
+    }
   },
 }
 </script>
@@ -593,12 +629,17 @@ export default {
   background: transparent;
 }
 
+
+.block-editor {
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .block {
   position: absolute;
   left: 0;
   top: 0;
   z-index: 1*10;
-
   min-width: 300px;
   padding: 0.4em;
   padding-bottom: 0.25em;
