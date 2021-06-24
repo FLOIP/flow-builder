@@ -207,6 +207,7 @@ export default {
   beforeRouteUpdate(to, from, next) {
     this.activateBlock({ blockId: to.params.blockId || null })
     if (to.meta?.isBlockEditorShown) {
+      scrollBlockIntoView(to.params.blockId)
       this.setOpenBlockEditor(true)
     }
     next()

@@ -25,7 +25,7 @@ export const scrollBehavior = (to: Route) => {
 export const scrollBlockIntoView = (blockId: string) => {
   const blockElement = document.querySelector(`#block\\/${blockId} .plain-draggable`)
   if (blockElement) {
-    blockElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    blockElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
   } else {
     console.debug('Deep linking: cannot scroll block ', blockElement, 'as block is not found in the DOM')
   }
