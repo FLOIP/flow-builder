@@ -1,6 +1,13 @@
 {
   "ui": {
     "routes": {
+      "languages": {
+        "persistLanguage": {
+          "name": "persistLanguage",
+          "path": "\/backend\/languages",
+          "methods": ["POST"]
+        }
+      },
       "flows": {
         "persistFlow": {
           "name": "persistFlow",

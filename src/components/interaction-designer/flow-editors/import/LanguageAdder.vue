@@ -54,6 +54,7 @@
 
 import { BModal } from 'bootstrap-vue'
 import Lang from '@/lib/filters/lang'
+import Routes from '@/lib/mixins/Routes'
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { mixins } from 'vue-class-component'
@@ -85,7 +86,8 @@ import VueMultiselect from 'vue-multiselect';
     TextEditor
   },
 })
-class LanguageAdder extends mixins(Lang) {
+class LanguageAdder extends mixins(Lang, Routes) {
+  addLanguageError = ""
   newLanguage = {
     id: "",
     label: "",
@@ -98,7 +100,7 @@ class LanguageAdder extends mixins(Lang) {
   // There is no obvious way to narrow down ISO 3166-1 from iso 639 languages:
   // https://www.rfc-editor.org/rfc/rfc5646.html#section-4.2
   // As a result, we don't attempt to filter this list depending on the iso 639 selection
-  iso_3166_1Locales: any[] = ['UK'] 
+  iso_3166_1Locales: any[] = ['UK']
   async resetLanguage() {
     this.newLanguage = {
       id: "",
@@ -139,18 +141,17 @@ class LanguageAdder extends mixins(Lang) {
   }
   async handleCreateLanguage() {
     this.newLanguage.id = await (new IdGeneratorUuidV4()).generate()
-    const valid = await this.validateAndAddOrgLanguage(this.newLanguage)
+
+    const persistRoute = this.route('languages.persistLanguage')
+    const valid = await this.validateAndAddOrgLanguage({ language: this.newLanguage, persistRoute })
     if(!valid) {
       return;
     }
-    //TODO - This is an non single responsibility way of updating the list of org languages to choose from
-    //it might have some side effects
-    //Figure this out and make a better named function
     await this.validateLanguages(this.flowContainer)
     const languageModal: any = this.$refs['add-language-modal']
     languageModal.hide()
   }
-  @Action validateAndAddOrgLanguage!: (newLanguage: ILanguage) => Promise<any>
+  @Action validateAndAddOrgLanguage!: ({language, persistRoute}: { language: ILanguage, persistRoute: string }) => Promise<any>
 
   @importVuexNamespace.Action validateLanguages!: (flowContainer: IContext) => Promise<void>
 

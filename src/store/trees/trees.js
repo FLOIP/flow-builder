@@ -380,16 +380,26 @@ export default {
   },
 
   actions: {
-    async validateAndAddOrgLanguage({ dispatch, commit }, language) {
+    async validateAndAddOrgLanguage({ dispatch, commit }, { persistRoute, language }) {
       const validationErrors = await dispatch('validation/validate_new_language', { language }, { root: true })
       if (!validationErrors.isValid) {
-        console.log(validationErrors)
-        // commit('setFlowErrorWithInterpolations', { text: 'flow-builder.flow-invalid', interpolations: { version: flowContainer.specification_version } })
         return false
       }
-      commit('addOrgLanguage', language)
-      // TODO - returned lang should be echoed from a backend
-      return language
+
+      if(!persistRoute) {
+        console.info("Language persistence route not configured correctly in builder.config.json. Falling back to vuex store")
+        commit('addOrgLanguage', language)
+        return language
+      }
+      try {
+        const { data } = await axios['post'](persistRoute, language)
+        commit('addOrgLanguage', data)
+        return language
+      } catch (error) {
+        console.info(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
+        commit('flow/import/setFlowError', "flow-builder.error-persisting-language", {root: true})
+        return false
+      }
     },
     initializeTreeModel({ dispatch, state: { ui: { isTreeImport } } }) {
       require('./10-trees-model')
