@@ -1,36 +1,38 @@
 <template>
   <div class="contact-property-editor">
     <div class="form-group">
-      <label>{{ 'flow-builder.action-label' | trans }}</label>
-      <p>{{ 'flow-builder.contact-property-action-hint' | trans }}</p>
-      <div class="form-group">
-        <div class="custom-control custom-radio">
-          <input
-            id="setProp"
-            v-model="propertyAction"
-            type="radio"
-            name="contactPropAction"
-            :value="PROPERTY_ACTION.SET"
-            class="custom-control-input">
-          <label
-            class="custom-control-label font-weight-normal"
-            for="setProp">
-            {{ 'flow-builder.set-contact-property' | trans }}
-          </label>
-        </div>
-        <div class="custom-control custom-radio">
-          <input
-            id="clearProp"
-            v-model="propertyAction"
-            type="radio"
-            name="contactPropAction"
-            :value="PROPERTY_ACTION.CLEAR"
-            class="custom-control-input">
-          <label
-            class="custom-control-label font-weight-normal"
-            for="clearProp">
-            {{ 'flow-builder.clear-contact-property' | trans }}
-          </label>
+      <div v-if="shouldShowAction">
+        <label>{{ 'flow-builder.action-label' | trans }}</label>
+        <p>{{ 'flow-builder.contact-property-action-hint' | trans }}</p>
+        <div class="form-group">
+          <div class="custom-control custom-radio">
+            <input
+              id="setProp"
+              v-model="propertyAction"
+              type="radio"
+              name="contactPropAction"
+              :value="PROPERTY_ACTION.SET"
+              class="custom-control-input">
+            <label
+              class="custom-control-label font-weight-normal"
+              for="setProp">
+              {{ 'flow-builder.set-contact-property' | trans }}
+            </label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input
+              id="clearProp"
+              v-model="propertyAction"
+              type="radio"
+              name="contactPropAction"
+              :value="PROPERTY_ACTION.CLEAR"
+              class="custom-control-input">
+            <label
+              class="custom-control-label font-weight-normal"
+              for="clearProp">
+              {{ 'flow-builder.clear-contact-property' | trans }}
+            </label>
+          </div>
         </div>
       </div>
 
@@ -47,7 +49,7 @@
       </validation-message>
 
       <validation-message
-        v-if="propertyAction === PROPERTY_ACTION.SET"
+        v-if="!shouldShowAction || propertyAction === PROPERTY_ACTION.SET"
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-editor
@@ -86,6 +88,7 @@ const EMPTY_STRING_EXPRESSION = ''
 })
 class ContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
+  @Prop({default: true}) readonly shouldShowAction!: boolean
 
   PROPERTY_ACTION = {
     SET: 'set',
