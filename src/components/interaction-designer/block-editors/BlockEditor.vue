@@ -10,6 +10,16 @@
                    :flow="activeFlow">
         </component>
       </div>
+      <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
+      <!--                     :jsonValidationResults="jsonValidationResults"-->
+      <!--                     :isTreeValid="isTreeValid"/>-->
+
+      <!--        <tree-viewer v-if="sidebarType === 'TreeViewer'"/>-->
+
+      <!--        <block-viewer-->
+      <!--          :key="jsKey"-->
+      <!--          v-if="sidebarType === 'BlockViewer'"-->
+      <!--          :data-for-block-id="jsKey" />-->
     </div>
   </div>
 </template>

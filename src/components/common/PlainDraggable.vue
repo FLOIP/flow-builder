@@ -1,15 +1,13 @@
 <template>
-  <div class="plain-draggable"><slot></slot></div>
+  <div class="plain-draggable">
+    <slot />
+  </div>
 </template>
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import PlainDraggable from 'plain-draggable'
 
 export default {
-  data() {
-    return {
-      // draggable: null // no need to set up observers over these
-    }
-  },
 
   props: {
     startX: Number,
@@ -17,41 +15,16 @@ export default {
     handleDomId: String,
     isEditable: Boolean,
   },
+  data() {
+    return {
+      // no need to set up observers over these
+      // draggable: null
+    }
+  },
 
   watch: {
     isEditable(value) {
       this.draggable.disabled = !value
-    },
-  },
-
-  // todo: also set `handle` from props onPropsChanged()
-
-  methods: {
-    handleInitialized() {
-      const { draggable } = this
-      // `draggable` reference to reposition if changed externally like:
-      // https://www.npmjs.com/package/plain-draggable#position
-      this.$emit('initialized', { draggable })
-    },
-
-    handleDragged(position) {
-      const { draggable } = this
-      this.$emit('dragged', { draggable, position })
-    },
-
-    handleDragStarted(position) {
-      const { draggable } = this
-      this.$emit('dragStarted', { draggable, position })
-    },
-
-    handleDragEnded(position) {
-      const { draggable } = this
-      this.$emit('dragEnded', { draggable, position })
-    },
-
-    handleMoved(position) {
-      const { draggable } = this
-      this.$emit('moved', { draggable, position })
     },
   },
 
@@ -69,7 +42,8 @@ export default {
       // prevent css translate() animations for move
       // they don't seem to be throttled enough for leaderline to follow tightly
       leftTop: false,
-      disabled: false, // synced with src/store/builder/index.ts:isEditable=true
+      // synced with src/store/builder/index.ts:isEditable=true
+      disabled: false,
       onDrag: this.handleDragged,
       onDragStart: this.handleDragStarted,
       onDragEnd: this.handleDragEnded,
@@ -82,7 +56,9 @@ export default {
     })
     // draggable.rect.{left,top,x,y,...}
 
-    // this.draggable.snap = {x: 50, y: 50, width: 50, height: 50} // todo: why this doesn't work?
+    // todo: why this doesn't work?
+
+    // this.draggable.snap = {x: 50, y: 50, width: 50, height: 50}
     // this.draggable.snap = {step: 21}
 
     this.handleInitialized()
@@ -90,9 +66,40 @@ export default {
   },
 
   destroyed() {
-    const { draggable } = this
-    this.$emit('destroyed', { draggable })
+    const {draggable} = this
+    this.$emit('destroyed', {draggable})
     this.draggable.remove()
+  },
+
+  // todo: also set `handle` from props onPropsChanged()
+
+  methods: {
+    handleInitialized() {
+      const {draggable} = this
+      // `draggable` reference to reposition if changed externally like:
+      // https://www.npmjs.com/package/plain-draggable#position
+      this.$emit('initialized', {draggable})
+    },
+
+    handleDragged(position) {
+      const {draggable} = this
+      this.$emit('dragged', {draggable, position})
+    },
+
+    handleDragStarted(position) {
+      const {draggable} = this
+      this.$emit('dragStarted', {draggable, position})
+    },
+
+    handleDragEnded(position) {
+      const {draggable} = this
+      this.$emit('dragEnded', {draggable, position})
+    },
+
+    handleMoved(position) {
+      const {draggable} = this
+      this.$emit('moved', {draggable, position})
+    },
   },
 }
 </script>

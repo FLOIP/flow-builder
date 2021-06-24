@@ -1,6 +1,6 @@
 <template>
   <div v-if="block">
-    <slot/>
+    <slot />
   </div>
 </template>
 
@@ -16,14 +16,14 @@ import Vue from 'vue'
 import {Component, Prop} from 'vue-property-decorator'
 
 import {IBlock} from '@floip/flow-runner'
-import {Mutation} from "vuex-class";
+import {Mutation} from 'vuex-class'
 
 @Component({})
 export class PlainFlowBuilderBlockEditorContainer extends Vue {
   @Prop({default: null}) readonly block!: IBlock
 
   created() {
-    this.configure({appConfig: {}, builderConfig: {}});
+    this.configure({appConfig: {}, builderConfig: {}})
   }
 
   @Mutation configure: any

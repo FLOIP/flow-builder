@@ -1,16 +1,6 @@
-import {
-  IResource,
-  IContext,
-  IBlock,
-} from '@floip/flow-runner'
+import {IBlock, IContext, IResource} from '@floip/flow-runner'
 
-import {
-  get,
-  findIndex,
-  isEqual,
-  filter,
-  cloneDeep,
-} from 'lodash'
+import {cloneDeep, filter, findIndex, get, isEqual} from 'lodash'
 
 export function updateResourcesForLanguageMatch(
   resources: IResource[], oldId: string, newId: string,
@@ -20,7 +10,7 @@ export function updateResourcesForLanguageMatch(
     newResource.values = resource.values.map((value) => {
       const newValue = cloneDeep(value)
       if (value.language_id === oldId) {
-        newValue.language_id = newId // eslint-disable-line @typescript-eslint/camelcase
+        newValue.language_id = newId
       }
       return newValue
     })
@@ -78,34 +68,33 @@ export function mergeFlowContainer(
   return newExistingFlowContainer
 }
 
-export function checkSingleFlowOnly(flowContainer: IContext) {
-  if (get(flowContainer, 'flows', []).length !== 1) {
-    return false
-  }
-  return true
+export function checkSingleFlowOnly(flowContainer: IContext): boolean {
+  return get(flowContainer, 'flows', []).length === 1
 }
 
 export function detectedLanguageChanges(
-  { flowContainer, oldFlowContainer }:
-  { flowContainer: IContext; oldFlowContainer: IContext | null},
-) {
+  {flowContainer, oldFlowContainer}:
+    { flowContainer: IContext, oldFlowContainer: IContext | null },
+): boolean {
   return !isEqual(get(flowContainer, 'flows[0].languages'), get(oldFlowContainer, 'flows[0].languages'))
 }
+
 export function detectedPropertyChanges(
-  { newPropertyBlocks, oldPropertyBlocks }:
-  { newPropertyBlocks: IBlock[]; oldPropertyBlocks: IBlock[] },
-) {
+  {newPropertyBlocks, oldPropertyBlocks}: { newPropertyBlocks: IBlock[], oldPropertyBlocks: IBlock[] },
+): boolean {
   return !isEqual(newPropertyBlocks, oldPropertyBlocks)
 }
+
 export function detectedGroupChanges(
-  { newGroupBlocks, oldGroupBlocks }: { newGroupBlocks: IBlock[]; oldGroupBlocks: IBlock[] },
-) {
+  {newGroupBlocks, oldGroupBlocks}: { newGroupBlocks: IBlock[], oldGroupBlocks: IBlock[] },
+): boolean {
   return !isEqual(newGroupBlocks, oldGroupBlocks)
 }
 
-export function getPropertyBlocks(flowContainer: IContext) {
+export function getPropertyBlocks(flowContainer: IContext): IBlock[] {
   return filter(get(flowContainer, 'flows[0].blocks'), (block) => block.type === 'Core.SetContactProperty')
 }
-export function getGroupBlocks(flowContainer: IContext) {
+
+export function getGroupBlocks(flowContainer: IContext): IBlock[] {
   return filter(get(flowContainer, 'flows[0].blocks'), (block) => block.type === 'Core.SetGroupMembership')
 }

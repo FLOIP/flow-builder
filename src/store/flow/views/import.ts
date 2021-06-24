@@ -1,59 +1,29 @@
-import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage'
-import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import { IRootState } from '@/store'
-import { IContext, IBlock } from '@floip/flow-runner'
-import {
-  join,
-  isEmpty,
-  difference,
-  uniq,
-  get,
-  set,
-  find,
-  findIndex,
-  reject,
-  keys,
-  differenceWith,
-  isEqual,
-  cloneDeep,
-} from 'lodash'
-import { IContactPropertyOption } from '../block-types/Core_SetContactPropertyStore'
-import { IGroupOption } from '../block-types/Core_SetGroupMembershipStore'
-
-import { IFlowsState } from '../index'
+import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
+import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {IRootState} from '@/store'
+import {IBlock, IContext} from '@floip/flow-runner'
+import {cloneDeep, difference, differenceWith, find, findIndex, get, isEmpty, isEqual, join, keys, reject, set, uniq} from 'lodash'
+import {IContactPropertyOption} from '../block-types/Core_SetContactPropertyStore'
+import {IGroupOption} from '../block-types/Core_SetGroupMembershipStore'
 
 import {
-  updateResourcesForLanguageMatch,
   checkSingleFlowOnly,
-  detectedLanguageChanges,
   detectedGroupChanges,
+  detectedLanguageChanges,
   detectedPropertyChanges,
   getGroupBlocks,
   getPropertyBlocks,
+  updateResourcesForLanguageMatch,
 } from '../utils/importHelpers'
 
 export const getters: GetterTree<IImportState, IRootState> = {
-  languagesMissing: (state) => {
-    return !isEmpty(state.missingLanguages)
-  },
-  propertiesMissing: (state) => {
-    return !isEmpty(state.missingProperties)
-  },
-  groupsMissing: (state) => {
-    return !isEmpty(state.missingGroups)
-  },
-  hasUnsupportedBlockClasses: (state, getters) => {
-    return !isEmpty(getters.unsupportedBlockClasses)
-  },
-  unsupportedBlockClasses: (state, getters, rootState, rootGetters) => {
-    return difference(getters.uploadedBlockTypes, rootGetters.blockClasses)
-  },
-  unsupportedBlockClassesList: (state, getters) => {
-    return join(getters.unsupportedBlockClasses, ', ')
-  },
-  uploadedBlockTypes: (state) => {
-    return uniq(get(state.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type))
-  }
+  languagesMissing: (state) => !isEmpty(state.missingLanguages),
+  propertiesMissing: (state) => !isEmpty(state.missingProperties),
+  groupsMissing: (state) => !isEmpty(state.missingGroups),
+  hasUnsupportedBlockClasses: (state, getters) => !isEmpty(getters.unsupportedBlockClasses),
+  unsupportedBlockClasses: (state, getters, _rootState, rootGetters) => difference(getters.uploadedBlockTypes, rootGetters.blockClasses),
+  unsupportedBlockClassesList: (state, getters) => join(getters.unsupportedBlockClasses, ', '),
+  uploadedBlockTypes: (state) => uniq(get(state.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type)),
 }
 
 export const mutations: MutationTree<IImportState> = {
@@ -100,21 +70,21 @@ export const mutations: MutationTree<IImportState> = {
     if (state.flowContainer) {
       state.flowContainer.flows[0].languages = languages
     } else {
-      throw ('flowContainer is not set')
+      throw new Error('flowContainer is not set')
     }
   },
   setFlowResources(state, resources) {
     if (state.flowContainer) {
       state.flowContainer.resources = resources
     } else {
-      throw ('flowContainer is not set')
+      throw new Error('flowContainer is not set')
     }
   },
   addFlowLanguage(state, language) {
     if (state.flowContainer) {
       state.flowContainer.flows[0].languages.push(language)
     } else {
-      throw ('flowContainer is not set')
+      throw new Error('flowContainer is not set')
     }
   },
   setFlowJsonText(state, text) {
@@ -164,7 +134,7 @@ export const mutations: MutationTree<IImportState> = {
 }
 
 export const actions: ActionTree<IImportState, IRootState> = {
-  async setFlowJson({ commit, state, dispatch }, value: string) {
+  async setFlowJson({commit, state, dispatch}, value: string) {
     commit('setFlowError', '')
     commit('setFlowJsonText', value)
     let flowContainer
@@ -187,24 +157,24 @@ export const actions: ActionTree<IImportState, IRootState> = {
     const newFlowContainer = cloneDeep(flowContainer)
     commit('setFlowContainer', flowContainer)
 
-    if (detectedLanguageChanges({ flowContainer: newFlowContainer, oldFlowContainer })) {
+    if (detectedLanguageChanges({flowContainer: newFlowContainer, oldFlowContainer})) {
       await dispatch('validateLanguages', state.flowContainer)
     }
     // matching on "property_key" == "name" in builder.config.json
     const newPropertyBlocks = getPropertyBlocks(flowContainer)
-    if (detectedPropertyChanges({ newPropertyBlocks, oldPropertyBlocks: state.propertyBlocks })) {
+    if (detectedPropertyChanges({newPropertyBlocks, oldPropertyBlocks: state.propertyBlocks})) {
       commit('setPropertyBlocks', newPropertyBlocks)
       await dispatch('validateProperties', state.propertyBlocks)
     }
     // matching on "group_key" == "id" in builder.config.json
     const newGroupBlocks = getGroupBlocks(flowContainer)
-    if (detectedGroupChanges({ newGroupBlocks, oldGroupBlocks: state.groupBlocks })) {
+    if (detectedGroupChanges({newGroupBlocks, oldGroupBlocks: state.groupBlocks})) {
       commit('setGroupBlocks', newGroupBlocks)
       await dispatch('validateGroups', state.groupBlocks)
     }
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
   },
-  async validateLanguages({ state, commit, rootGetters }, flowContainer: IContext) {
+  async validateLanguages({state, commit, rootGetters}, flowContainer: IContext) {
     const uploadLanguages: ILanguage[] = get(flowContainer, 'flows[0].languages', [])
     const matchingLanguages: ILanguage[] = []
     if (uploadLanguages) {
@@ -224,7 +194,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('setExistingLanguagesWithoutMatch', differenceWith(rootGetters.languages, state.matchingLanguages, isEqual))
     }
   },
-  async validateProperties({ rootGetters, state, commit }, newPropertyBlocks: IBlock[]) {
+  async validateProperties({rootGetters, state, commit}, newPropertyBlocks: IBlock[]) {
     const matchingProperties: IContactPropertyOption[] = []
     const blocksMissingProperties = cloneDeep(state.blocksMissingProperties)
     newPropertyBlocks.forEach((propertyBlock) => {
@@ -248,13 +218,19 @@ export const actions: ActionTree<IImportState, IRootState> = {
     })
     commit('setBlocksMissingProperties', blocksMissingProperties)
 
-    commit('setMissingProperties', keys(state.blocksMissingProperties).map((propertyIdentifier) => ({ name: propertyIdentifier, blockIds: state.blocksMissingProperties[propertyIdentifier] })))
+    commit(
+      'setMissingProperties',
+      keys(state.blocksMissingProperties).map((propertyIdentifier) => ({
+        name: propertyIdentifier,
+        blockIds: state.blocksMissingProperties[propertyIdentifier],
+      })),
+    )
     commit('setMatchingProperties', matchingProperties)
     // Update the languages so we use the org settings for things like id and orgId
     commit('setExistingPropertiesWithoutMatch', differenceWith(rootGetters.subscriberPropertyFields, state.matchingProperties, isEqual))
   },
 
-  async validateGroups({ rootGetters, state, commit }, newGroupBlocks: IBlock[]) {
+  async validateGroups({rootGetters, state, commit}, newGroupBlocks: IBlock[]) {
     const matchingGroups: IGroupOption[] = []
     const blocksMissingGroups = cloneDeep(state.blocksMissingGroups)
     newGroupBlocks.forEach((groupBlock) => {
@@ -262,12 +238,12 @@ export const actions: ActionTree<IImportState, IRootState> = {
       const groupName = get(groupBlock, 'config.group_name')
       if (groupIdentifier) {
         const matchingGroup = find(rootGetters.groups, (orgGroup) => (isEqual(orgGroup.id, groupIdentifier)
-            && isEqual(orgGroup.name, groupName)))
+          && isEqual(orgGroup.name, groupName)))
         if (!matchingGroup) {
           // Unlike the others we don't reset this.
           // A previously unmatched group can only be fixed by updating or adding a language
           if (!get(blocksMissingGroups, groupIdentifier)) {
-            blocksMissingGroups[groupIdentifier] = { group_name: groupName, blockIds: [] }
+            blocksMissingGroups[groupIdentifier] = {group_name: groupName, blockIds: []}
           }
           blocksMissingGroups[groupIdentifier].blockIds.push(groupBlock.uuid)
         } else {
@@ -277,30 +253,40 @@ export const actions: ActionTree<IImportState, IRootState> = {
     })
     commit('setBlocksMissingGroups', blocksMissingGroups)
 
-    commit('setMissingGroups', keys(state.blocksMissingGroups).map((groupIdentifier) => ({ id: groupIdentifier, ...state.blocksMissingGroups[groupIdentifier] })))
+    commit(
+      'setMissingGroups',
+      keys(state.blocksMissingGroups).map((groupIdentifier) => ({id: groupIdentifier, ...state.blocksMissingGroups[groupIdentifier]})),
+    )
     commit('setMatchingGroups', matchingGroups)
     // Update the languages so we use the org settings for things like id and orgId
     commit('setExistingGroupsWithoutMatch', differenceWith(rootGetters.groups, state.matchingGroups, isEqual))
   },
-  matchLanguage({ commit, state, dispatch }, { oldLanguage, matchingNewLanguage }) {
+  matchLanguage({commit, state, dispatch}, {oldLanguage, matchingNewLanguage}) {
     commit('addFlowLanguage', matchingNewLanguage)
-    commit('setFlowResources', updateResourcesForLanguageMatch(get(state.flowContainer, 'resources', []), oldLanguage.id, matchingNewLanguage.id))
+    commit(
+      'setFlowResources',
+      updateResourcesForLanguageMatch(get(state.flowContainer, 'resources', []), oldLanguage.id, matchingNewLanguage.id),
+    )
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
     commit('setMissingLanguages', reject(state.missingLanguages, (language) => isEqual(language, oldLanguage)))
     dispatch('validateLanguages', state.flowContainer)
   },
-  matchProperty({ commit, state, dispatch }, { oldProperty, matchingNewProperty }) {
+  matchProperty({commit, state, dispatch}, {oldProperty, matchingNewProperty}) {
     const blocks = cloneDeep(get(state.flowContainer, 'flows[0].blocks'))
-    if (!blocks) return
+    if (!blocks) {
+      return
+    }
     oldProperty.blockIds.forEach((blockId: string) => {
       const blockIndex = findIndex(blocks, (block: IBlock) => block.uuid === blockId)
-      if (blockIndex < 0) return
+      if (blockIndex < 0) {
+        return
+      }
       set(blocks, `${blockIndex}.config.set_contact_property.property_key`, matchingNewProperty.name)
     })
     commit('setFlowContainerBlocks', blocks)
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
     // missingProperties gets updated again when we validate below
-    const newBlocksMissingProperties: {[key: string]: string[]} = {}
+    const newBlocksMissingProperties: { [key: string]: string[] } = {}
     commit('setBlocksMissingProperties', keys(state.blocksMissingProperties).reduce((newBlocksMissingProperties, propertyIdentifier) => {
       if (oldProperty.name !== propertyIdentifier) {
         newBlocksMissingProperties[propertyIdentifier] = state.blocksMissingProperties[propertyIdentifier]
@@ -310,19 +296,23 @@ export const actions: ActionTree<IImportState, IRootState> = {
     commit('setPropertyBlocks', getPropertyBlocks(state.flowContainer as IContext))
     dispatch('validateProperties', state.propertyBlocks)
   },
-  matchGroup({ commit, state, dispatch }, { oldGroup, matchingNewGroup }) {
+  matchGroup({commit, state, dispatch}, {oldGroup, matchingNewGroup}) {
     const blocks = cloneDeep(get(state.flowContainer, 'flows[0].blocks'))
-    if (!blocks) return
+    if (!blocks) {
+      return
+    }
     oldGroup.blockIds.forEach((blockId: string) => {
       const blockIndex = findIndex(blocks, (block: IBlock) => block.uuid === blockId)
-      if (blockIndex < 0) return
+      if (blockIndex < 0) {
+        return
+      }
       set(blocks, `${blockIndex}.config.group_key`, matchingNewGroup.id)
       set(blocks, `${blockIndex}.config.group_name`, matchingNewGroup.name)
     })
     commit('setFlowContainerBlocks', blocks)
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
     // missingGroups gets updated again when we validate below
-    const newBlocksMissingGroups: {[key: string]: {group_name: string; blockIds: string[]}} = {}
+    const newBlocksMissingGroups: { [key: string]: { group_name: string, blockIds: string[] } } = {}
     commit('setBlocksMissingGroups', keys(state.blocksMissingGroups).reduce((newBlocksMissingGroups, groupIdentifier) => {
       if (oldGroup.id !== groupIdentifier) {
         newBlocksMissingGroups[groupIdentifier] = state.blocksMissingGroups[groupIdentifier]
@@ -335,23 +325,23 @@ export const actions: ActionTree<IImportState, IRootState> = {
 }
 
 export interface IImportState {
-  matchingLanguages: ILanguage[]
-  missingLanguages: ILanguage[]
-  existingLanguagesWithoutMatch: ILanguage[]
-  blocksMissingProperties: {[key: string]: string[]}
-  missingProperties: {name: string; blockIds: string[]}[]
-  matchingProperties: IContactPropertyOption[]
-  existingPropertiesWithoutMatch: IContactPropertyOption[]
-  blocksMissingGroups: {[key: string]: {group_name: string; blockIds: string[]}}
-  missingGroups: {id: string; group_name: string; blockIds: string[]}[]
-  matchingGroups: IGroupOption[]
-  existingGroupsWithoutMatch: IGroupOption[]
-  flowContainer: IContext | null
-  flowJsonText: string
-  flowError: string
-  propertyBlocks: IBlock[]
-  groupBlocks: IBlock[]
-  updating: boolean
+  matchingLanguages: ILanguage[],
+  missingLanguages: ILanguage[],
+  existingLanguagesWithoutMatch: ILanguage[],
+  blocksMissingProperties: { [key: string]: string[] },
+  missingProperties: { name: string, blockIds: string[] }[],
+  matchingProperties: IContactPropertyOption[],
+  existingPropertiesWithoutMatch: IContactPropertyOption[],
+  blocksMissingGroups: { [key: string]: { group_name: string, blockIds: string[] } },
+  missingGroups: { id: string, group_name: string, blockIds: string[] }[],
+  matchingGroups: IGroupOption[],
+  existingGroupsWithoutMatch: IGroupOption[],
+  flowContainer: IContext | null,
+  flowJsonText: string,
+  flowError: string,
+  propertyBlocks: IBlock[],
+  groupBlocks: IBlock[],
+  updating: boolean,
 }
 
 export const stateFactory = (): IImportState => ({

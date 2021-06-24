@@ -1,11 +1,11 @@
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {Component, Vue} from 'vue-property-decorator'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import {namespace} from 'vuex-class'
-import { ILanguage, SupportedMode } from '@floip/flow-runner'
-import {BaseMountedVueClass, IBaseOptions} from "./story-utils/storeSetup";
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import {ILanguage, SupportedMode} from '@floip/flow-runner'
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
+import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -41,11 +41,12 @@ class CurrentClass extends BaseMountedVueClass {
 
   @flowVuexNamespace.Mutation flow_setSupportedMode: any
 }
+
 export const Default = () => (CurrentClass)
 
 //ExistingDataPreFilled
 @Component({
-  ...BaseOptions
+  ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClass {
   async mounted() {
@@ -54,27 +55,28 @@ class CurrentClass2 extends BaseMountedVueClass {
       {
         id: '22',
         label: 'English',
-        iso_639_3: "EN"
-      }
+        iso_639_3: 'EN',
+      },
     ]
 
     const sampleModes = [
       SupportedMode.SMS,
       SupportedMode.IVR,
-      SupportedMode.RICH_MESSAGING
+      SupportedMode.RICH_MESSAGING,
     ]
 
-    this.flow_setLabel({flowId, label: "A flow label"})
-    this.flow_setNameFromLabel({flowId, label: "A flow label"})
+    this.flow_setLabel({flowId, label: 'A flow label'})
+    this.flow_setNameFromLabel({flowId, label: 'A flow label'})
     this.flow_setInteractionTimeout({flowId, value: 20})
     this.flow_setSupportedMode({flowId, value: sampleModes})
     this.flow_setLanguages({flowId, value: sampleLanguages})
   }
 
-  @flowVuexNamespace.Mutation flow_setNameFromLabel:any
-  @flowVuexNamespace.Mutation flow_setLabel:any
-  @flowVuexNamespace.Mutation flow_setInteractionTimeout:any
-  @flowVuexNamespace.Mutation flow_setSupportedMode:any
-  @flowVuexNamespace.Mutation flow_setLanguages:any
+  @flowVuexNamespace.Mutation flow_setNameFromLabel: any
+  @flowVuexNamespace.Mutation flow_setLabel: any
+  @flowVuexNamespace.Mutation flow_setInteractionTimeout: any
+  @flowVuexNamespace.Mutation flow_setSupportedMode: any
+  @flowVuexNamespace.Mutation flow_setLanguages: any
 }
+
 export const ExistingDataPreFilled = () => (CurrentClass2)
