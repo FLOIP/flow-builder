@@ -14,33 +14,34 @@
         for="setContactProperty">
         {{ 'flow-builder.set-contact-properties' | trans }}
       </label>
-    </div>
 
-    <div
-      v-for="(exit, index) in block.exits"
-      :key="index">
-      <validation-message
-        #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/set_contact_property/${index}/property_key`">
-        <div class="block-contact-property-key">
-          <text-editor
-            :value="block.config.set_contact_property[index].property_key"
-            :label="'flow-builder.contact-property-label' | trans"
-            :placeholder="'flow-builder.enter-contact-property-label' | trans"
-            :valid-state="isValid" />
-        </div>
-      </validation-message>
+      <div
+        v-for="(exit, index) in block.exits"
+        :key="index">
+        <validation-message
+          #input-control="{ isValid }"
+          :message-key="`block/${block.uuid}/config/set_contact_property/${index}/property_key`">
+          <div class="block-contact-property-key">
+            <text-editor
+              :value="block.config.set_contact_property[index].property_key"
+              :label="'flow-builder.contact-property-label' | trans"
+              :placeholder="'flow-builder.enter-contact-property-label' | trans"
+              :valid-state="isValid"
+              @input="(value) => updatePropertyKey(index, value)"/>
+          </div>
+        </validation-message>
 
-      <validation-message
-        #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/set_contact_property/${index}/property_value`">
-        <expression-editor
-          :label="'flow-builder.contact-property-expression' | trans"
-          :placeholder="'flow-builder.edit-expression' | trans"
-          :current-expression="block.config.set_contact_property[index].property_value"
-          :valid-state="isValid"
-          @commitExpressionChange="updatePropertyValue" />
-      </validation-message>
+        <validation-message
+          #input-control="{ isValid }"
+          :message-key="`block/${block.uuid}/config/set_contact_property/${index}/property_value`">
+          <expression-editor
+            :label="'flow-builder.contact-property-expression' | trans"
+            :placeholder="'flow-builder.edit-expression' | trans"
+            :current-expression="block.config.set_contact_property[index].property_value"
+            :valid-state="isValid"
+            @commitExpressionChange="(value) => updatePropertyValue(index, value)" />
+        </validation-message>
+      </div>
     </div>
   </div>
 </template>
@@ -89,6 +90,22 @@ class ContactPropertiesEditor extends mixins(Lang) {
         property_key: '',
         property_value: '',
       } as ISetContactPropertyBlockConfig)),
+    })
+  }
+
+  updatePropertyKey(index, value: string): void {
+    this.block_updateConfigByPath({
+      blockId: this.block.uuid,
+      path: `set_contact_property.[${index}].property_key`,
+      value,
+    })
+  }
+
+  updatePropertyValue(index, value: string): void {
+    this.block_updateConfigByPath({
+      blockId: this.block.uuid,
+      path: `set_contact_property.[${index}].property_value`,
+      value,
     })
   }
 
