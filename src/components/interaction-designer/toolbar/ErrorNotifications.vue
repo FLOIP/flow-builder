@@ -4,10 +4,28 @@
       <span class="align-self-center ml-2">
         {{ 'flow-builder.flow-error-message' | trans }}
       </span>
-      <button type="button" class="btn btn-link" @click="fixFlowError()">
-        {{ 'flow-builder.fix-issue' | trans }}
-      </button>
+      <div class="dropdown">
+        <button class="btn btn-link dropdown-toggle" type="button" id="flowErrorsDropdown" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="true">
+          {{ 'flow-builder.locate-block-issue' | trans }}
+          <span class="caret"></span>
+        </button>
+        <ul class="notification dropdown-menu" aria-labelledby="flowErrorsDropdown">
+          <li v-for="error in flowValidationErrors">
+            <div class="d-flex justify-content-between px-2 py-0">
+              <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
+              <div v-if="error.dataPath === '/first_block_id'">
+                {{ 'flow-builder.add-at-least-one-block' | trans }}
+              </div>
+              <button v-else type="button" class="btn btn-link" @click="fixFlowError(error)">
+                {{ 'flow-builder.fix-issue' | trans }}
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
     </section>
+
     <section class="alert alert-danger d-flex py-sm-1 px-2" role="alert" v-if="numberOfBlocksWithErrors > 0">
       <span class="align-self-center ml-2">
         {{ 'flow-builder.block-error-message' | trans({block_count: numberOfBlocksWithErrors}) }}

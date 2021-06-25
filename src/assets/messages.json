@@ -1,5 +1,6 @@
 {
   "en.flow-builder": {
+    "add-at-least-one-block": "Add at least one block",
     "import-flow": "Import/Paste a JSON File",
     "import-explanation": "Use this option to import a flow by importing or pasting JSON",
     "import-note": "Note: If you have flows or resources with the same uuids as the ones you are importing they will be replaced and all previous data will be lost",
@@ -19,7 +20,7 @@
     "group-selector-placeholder": "Select a group",
     "fix-issue": "Fix Issue",
     "locate-block-issue": "Locate blocks to fix issue",
-    "flow-error-message": "You have a validation issue with your flow",
+    "flow-error-message": "You have validation issues with your flow",
     "block-error-message": "You have :block_count block(s) that has validation issue.",
     "accuracy-threshold-in-meters": "Accuracy threshold in meters",
     "accuracy-timeout-in-seconds":"Accuracy timout in seconds",
@@ -1587,6 +1588,7 @@
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
   },
   "fr.flow-builder": {
+    "add-at-least-one-block": "Ajouter au moins un bloc",
     "import-flow": "Importer/Coller un fichier JSON",
     "import-explanation": "Utilisez cette option pour importer un flux en important ou en collant JSON",
     "import-note": "Remarque: si vous avez des flux ou des ressources avec les mêmes uuids que ceux que vous importez, ils seront remplacés et toutes les données précédentes seront perdues",
@@ -1606,7 +1608,7 @@
     "group-selector-placeholder": "Sélectionnez un groupe",
     "fix-issue": "Resoudre le probleme",
     "locate-block-issue": "Repérez blocs à numéro fixe",
-    "flow-error-message": "Vous avez un problème de validation avec votre flux",
+    "flow-error-message": "Vous avez des problèmes de validation avec votre flux",
     "block-error-message": "Vous avez bloc(s) :block_count qui a problème de validation.",
     "accuracy-threshold-in-meters": "Seuil de précision en mètres",
     "accuracy-timeout-in-seconds":"Précision timout en quelques secondes",
