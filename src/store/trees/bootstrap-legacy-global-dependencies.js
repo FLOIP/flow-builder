@@ -1,7 +1,7 @@
 import ImportedLang from 'lang.js'
 import ImportedMoment from 'moment'
 import ImportedJquery from 'jquery'
-import { merge, isEmpty } from 'lodash'
+import {isEmpty, merge} from 'lodash'
 
 export function bootstrapLegacyGlobalDependencies(appConfig = {}, builderConfig = {}) {
   // initialize configuration sources

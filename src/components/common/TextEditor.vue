@@ -1,18 +1,19 @@
 <template>
-  <div class="form-group">
-    <label v-if="label">{{label}}</label>
+  <div>
+    <label v-if="label">{{ label }}</label>
     <textarea
-        class="form-control"
-        :class="{ 'is-invalid': isInvalid }"
-        :placeholder="placeholder"
-        :value="value"
-        @keydown="$emit('keydown', $event)"
-        @input="$emit('input', $event.target.value)"/>
-    <slot/>
+      class="form-control"
+      :class="{ 'is-invalid': isInvalid }"
+      :placeholder="placeholder"
+      :value="value"
+      @keydown="$emit('keydown', $event)"
+      @input="$emit('input', $event.target.value)" />
+    <slot />
   </div>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 export default {
   props: {
     label: {
@@ -36,7 +37,7 @@ export default {
   computed: {
     isInvalid() {
       return this.validState === false
-    }
-  }
+    },
+  },
 }
 </script>

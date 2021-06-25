@@ -68,7 +68,7 @@ Edits using the builder will then be reflected in the flow JSON in this panel an
 
 ### Export flow
 
-To export, simply copy the json in this panel to a file. 
+To export, simply copy the json in this panel to a file.
 
 ## Storybook
 

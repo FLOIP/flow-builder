@@ -7,61 +7,86 @@
           <div class="card-body">
             <div>
               <h2>
-                {{'flow-builder.import-flow' | trans}}
+                {{ 'flow-builder.import-flow' | trans }}
               </h2>
-              <p>{{'flow-builder.create-flow-from-json' | trans}}</p>
-              <div class="alert alert-danger" role="alert">
-                {{'flow-builder.import-note'| trans}}
+              <p>{{ 'flow-builder.create-flow-from-json' | trans }}</p>
+              <div
+                class="alert alert-danger"
+                role="alert">
+                {{ 'flow-builder.import-note'| trans }}
               </div>
             </div>
             <div>
               <label class="mt-2 no-weight">
-                <input type="radio" value="upload" v-model="uploadOrPaste"> {{'flow-builder.import-json-file' | trans}}
+                <input
+                  v-model="uploadOrPaste"
+                  type="radio"
+                  value="upload"> {{ 'flow-builder.import-json-file' | trans }}
               </label>
-              <div class="ml-3 mr-3" v-if="uploadOrPaste === 'upload'">
+              <div
+                v-if="uploadOrPaste === 'upload'"
+                class="ml-3 mr-3">
                 <div class="form-inline mb-2">
                   <span class="one-line">
-                    <a class="btn btn-outline-secondary" @click="chooseFile">
-                      {{'flow-builder.import-file' | trans}}
+                    <a
+                      class="btn btn-outline-secondary"
+                      @click="chooseFile">
+                      {{ 'flow-builder.import-file' | trans }}
                     </a>
-                    <input type="file" id="flowUpload" @change="handleFileUpload" ref="file" hidden/>
-                    <strong v-if="fileName" class="ml-1">{{'flow-builder.uploaded-file' | trans}}</strong> {{fileName}}
+                    <input
+                      id="flowUpload"
+                      ref="file"
+                      type="file"
+                      hidden
+                      @change="handleFileUpload">
+                    <strong
+                      v-if="fileName"
+                      class="ml-1">{{ 'flow-builder.uploaded-file' | trans }}</strong> {{ fileName }}
                   </span>
                 </div>
-                <text-editor :value="flowJson"
-                  @input="setUpdatingAndHandleFlowJsonTextChange"
+                <text-editor
                   v-if="flowJsonText"
+                  :value="flowJson"
                   label=""
                   class="tall-text"
-                  :placeholder="'flow-builder.edit-flow-json' | trans">
-                </text-editor>
-                <error-handler/>
+                  :placeholder="'flow-builder.edit-flow-json' | trans"
+                  @input="setUpdatingAndHandleFlowJsonTextChange" />
+                <error-handler />
               </div>
             </div>
             <div class="mt-2">
               <label class="mt-2 no-weight">
-                <input type="radio" value="paste" v-model="uploadOrPaste"> {{'flow-builder.paste-json-directly' | trans}}
+                <input
+                  v-model="uploadOrPaste"
+                  type="radio"
+                  value="paste"> {{ 'flow-builder.paste-json-directly' | trans }}
               </label>
-              <div class="ml-3 mr-3" v-if="uploadOrPaste === 'paste'">
-                <text-editor :value="flowJson"
-                  @input="setUpdatingAndHandleFlowJsonTextChange"
+              <div
+                v-if="uploadOrPaste === 'paste'"
+                class="ml-3 mr-3">
+                <text-editor
+                  :value="flowJson"
                   label=""
                   class="tall-text"
-                  :placeholder="'flow-builder.paste-flow-json' | trans">
-                </text-editor>
-                <error-handler/>
+                  :placeholder="'flow-builder.paste-flow-json' | trans"
+                  @input="setUpdatingAndHandleFlowJsonTextChange" />
+                <error-handler />
               </div>
             </div>
 
             <div class="float-right mt-3">
-              <router-link :to="route('flows.cancelImport')" class="btn btn-outline-secondary mr-2">
-                {{trans('flow-builder.cancel')}}
+              <router-link
+                :to="route('flows.cancelImport')"
+                class="btn btn-outline-secondary mr-2">
+                {{ trans('flow-builder.cancel') }}
               </router-link>
-              <a :href="route('flows.editTree', {flowId: flowUUID, component: 'designer', mode: 'edit'})"
+
+              <a
+                :href="route('flows.editTree', {flowId: flowUUID, component: 'designer', mode: 'edit'})"
                 class="btn btn-primary"
                 :class="{'disabled': disableContinue}"
                 @click.prevent="handleImportFlow(route('flows.editTree', {flowId: flowUUID, component: 'designer', mode: 'edit'}))">
-                {{'flow-builder.create-flow' | trans}}
+                {{ 'flow-builder.create-flow' | trans }}
               </a>
             </div>
           </div>
@@ -75,17 +100,12 @@
 
 import lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import { Component, Prop } from 'vue-property-decorator'
+import {Component, Prop} from 'vue-property-decorator'
 import Vue from 'vue'
-import { Getter, Mutation, namespace } from 'vuex-class'
-import {
-  forEach,
-  isEmpty,
-  get,
-  debounce,
-} from 'lodash'
-import { store } from '@/store'
-import { IContext } from '@floip/flow-runner'
+import {Getter, Mutation, namespace} from 'vuex-class'
+import {debounce, forEach, get, isEmpty} from 'lodash'
+import {store} from '@/store'
+import {IContext} from '@floip/flow-runner'
 
 import TextEditor from '@/components/common/TextEditor.vue'
 import ErrorHandler from '@/components/interaction-designer/flow-editors/import/ErrorHandler.vue'
@@ -104,24 +124,24 @@ const importVuexNamespace = namespace('flow/import')
   },
 )
 class ImportFlow extends Vue {
-  @Prop({ default: () => ({}) }) readonly appConfig!: object
+  @Prop({default: () => ({})}) readonly appConfig!: object
 
-  @Prop({ default: () => ({}) }) readonly builderConfig!: object
+  @Prop({default: () => ({})}) readonly builderConfig!: object
 
   uploadOrPasteSetting = 'upload'
 
   fileName = ''
 
   async created() {
-    const { $store } = this
+    const {$store} = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
     $store.hasModule(['flow', 'import'])
-      || $store.registerModule(['flow', 'import'], ImportStore)
+    || $store.registerModule(['flow', 'import'], ImportStore)
 
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
   }
 
@@ -196,13 +216,13 @@ class ImportFlow extends Vue {
       this.flowJson = readEvent.target.result.toString()
     }
 
-    const contents = reader.readAsText(selectedFile, 'UTF-8')
+    reader.readAsText(selectedFile, 'UTF-8')
   }
 
   async handleImportFlow(route: string) {
     const flowContainer = await this.flow_import({
       // @ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
-      persistRoute: this.route('flows.persistFlow', { flowId: this.flowContainer.uuid }),
+      persistRoute: this.route('flows.persistFlow', {flowId: this.flowContainer.uuid}),
       flowContainer: this.flowContainer,
     })
     if (flowContainer) {
@@ -214,9 +234,12 @@ class ImportFlow extends Vue {
     }
   }
 
-  @flowVuexNamespace.Action flow_import!: ({ persistRoute, flowContainer }: { persistRoute: string; flowContainer: IContext }) => Promise<IContext>
+  @flowVuexNamespace.Action flow_import!: ({
+    persistRoute,
+    flowContainer,
+  }: { persistRoute: string, flowContainer: IContext }) => Promise<IContext>
 
-  @Mutation configure!: ({ appConfig, builderConfig }: { appConfig: object; builderConfig: object }) => void
+  @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
 
   @Getter isConfigured!: boolean
 
@@ -254,12 +277,13 @@ export default ImportFlow
 </script>
 
 <style lang="scss">
-  .tall-text textarea {
-    min-height: 200px
-  }
-  .one-line {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
+.tall-text textarea {
+  min-height: 200px
+}
+
+.one-line {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 </style>

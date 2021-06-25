@@ -1,14 +1,16 @@
 <template>
-  <span class="connection"
-        :reposition-hook="repositionHook" />
+  <span
+    class="connection"
+    :reposition-hook="repositionHook" />
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 // import LeaderLine from 'leader-line'
-import { set } from 'lodash'
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import {set} from 'lodash'
+import {mapGetters, mapMutations, mapState} from 'vuex'
 
-const { LeaderLine } = window
+const {LeaderLine} = window
 
 const categoryColorMappings = {
   'category-0-faint': '#fbfdfb',
@@ -36,7 +38,8 @@ export default {
 
   data() {
     return {
-      // line: null, // no need to set up observers over this
+      // no need to set up observers over this
+      // line: null,
       isPermanentlyActive: false,
     }
   },
@@ -88,8 +91,8 @@ export default {
       }
     },
 
-    sourceElementId: ({ exit }) => `exit/${exit.uuid}/handle`,
-    targetElementId: ({ exit }) => (exit.destination_block
+    sourceElementId: ({exit}) => `exit/${exit.uuid}/handle`,
+    targetElementId: ({exit}) => (exit.destination_block
       ? `block/${exit.destination_block}/handle`
       : `exit/${exit.uuid}/pseudo-block-handle`),
 
@@ -101,7 +104,8 @@ export default {
       }
 
       // @note - intentional side-effect; todo: move this into vuex responding to data changes
-      this.$nextTick(this.reposition) // todo: we only want this called if something changes.
+      // todo: we only want this called if something changes.
+      this.$nextTick(this.reposition)
 
       // generate drafts while 'between exits' or 'source/destination unknown'
       // todo: push these out into ?block?
@@ -118,6 +122,52 @@ export default {
       return this.repaintCacheKeyGenerator(source, target)
         .join('\n')
     },
+  },
+
+  mounted() {
+    // todo: add an invisible centered dot on a node header
+    // if (!this.datum.source || !this.datum.target) {
+    //   return
+    // }
+
+    // todo: I think we can do something like this instead; will this prevent all the hairy business if we use pointAnchors?
+    //       See: https://github.com/anseki/leader-line#element
+    //       What I'm thinking is that we can just leverage these x/y's? How do we then update them?
+    // new LeaderLine(element1, LeaderLine.pointAnchor(element3, {x: 10, y: 30}));
+
+    // const {sourcePosition, targetPosition} = this
+    // this.line = new LeaderLine(
+    //     LeaderLine.pointAnchor(document.body, sourcePosition),
+    //     LeaderLine.pointAnchor(document.body, targetPosition), options)
+
+    const blockPaddingOffset = {x: 34, y: -7}
+    const start = document.getElementById(this.sourceElementId)
+    const end = this.position
+      ? document.getElementById(this.targetElementId)
+      : LeaderLine.pointAnchor(document.getElementById(this.targetElementId), blockPaddingOffset)
+
+    this.line = new LeaderLine(start, end, this.options)
+
+    // Add event listeners
+    const self = this
+    // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
+    const connectionElement = document.querySelector('body>.leader-line:last-of-type')
+
+    connectionElement.addEventListener('click', self.clickHandler, false)
+
+    connectionElement.addEventListener('click', self.clickAwayHandler(connectionElement), false)
+
+    connectionElement.addEventListener('mouseover', self.mouseOverHandler, false)
+
+    connectionElement.addEventListener('mouseout', self.mouseOutHandler, false)
+
+    // stop listening to scroll and window resize hooks
+    // LeaderLine.positionByWindowResize = false
+    // this.line.positionByWindowResize = false
+  },
+
+  beforeDestroy() {
+    this.line.remove()
   },
 
   methods: {
@@ -139,23 +189,24 @@ export default {
     },
     mouseOverHandler() {
       this.line.setOptions(this.prominentOptions)
-      this.activateConnection({ connectionContext: this.connectionContext })
+      this.activateConnection({connectionContext: this.connectionContext})
     },
     mouseOutHandler() {
       if (!this.isPermanentlyActive) {
         this.line.setOptions(this.options)
-        this.deactivateConnection({ connectionContext: this.connectionContext })
+        this.deactivateConnection({connectionContext: this.connectionContext})
       }
     },
     clickHandler() {
       this.isPermanentlyActive = true
       this.line.setOptions(this.prominentOptions)
-      this.activateConnection({ connectionContext: this.connectionContext })
-      this.activateBlock({ blockId: null })
+      this.activateConnection({connectionContext: this.connectionContext})
+      this.activateBlock({blockId: null})
     },
     clickAwayHandler(connectionElement) {
       document.addEventListener('click', (event) => {
-        try { // Do not listen if the connection was not fully set
+        // Do not listen if the connection was not fully set
+        try {
           const checkExistingEnd = this.line.end
         } catch (e) {
           return
@@ -166,55 +217,10 @@ export default {
         if (!isClickInside) {
           this.isPermanentlyActive = false
           this.line.setOptions(this.options)
-          this.deactivateConnection({ connectionContext: this.connectionContext })
+          this.deactivateConnection({connectionContext: this.connectionContext})
         }
       }, false)
     },
-  },
-
-  beforeDestroy() {
-    this.line.remove()
-  },
-
-  mounted() {
-    // todo: add an invisible centered dot on a node header
-    // if (!this.datum.source || !this.datum.target) {
-    //   return
-    // }
-
-    // todo: I think we can do something like this instead; will this prevent all the hairy business if we use pointAnchors?
-    //       See: https://github.com/anseki/leader-line#element
-    //       What I'm thinking is that we can just leverage these x/y's? How do we then update them?
-    // new LeaderLine(element1, LeaderLine.pointAnchor(element3, {x: 10, y: 30}));
-
-    // const {sourcePosition, targetPosition} = this
-    // this.line = new LeaderLine(
-    //     LeaderLine.pointAnchor(document.body, sourcePosition),
-    //     LeaderLine.pointAnchor(document.body, targetPosition), options)
-
-    const blockPaddingOffset = { x: 34, y: -7 }
-    const start = document.getElementById(this.sourceElementId)
-    const end = this.position
-      ? document.getElementById(this.targetElementId)
-      : LeaderLine.pointAnchor(document.getElementById(this.targetElementId), blockPaddingOffset)
-
-    this.line = new LeaderLine(start, end, this.options)
-
-    // Add event listeners
-    const self = this
-    const connectionElement = document.querySelector('body>.leader-line:last-of-type') // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
-
-    connectionElement.addEventListener('click', self.clickHandler, false)
-
-    connectionElement.addEventListener('click', self.clickAwayHandler(connectionElement), false)
-
-    connectionElement.addEventListener('mouseover', self.mouseOverHandler, false)
-
-    connectionElement.addEventListener('mouseout', self.mouseOutHandler, false)
-
-    // stop listening to scroll and window resize hooks
-    // LeaderLine.positionByWindowResize = false
-    // this.line.positionByWindowResize = false
   },
 }
 </script>
@@ -222,9 +228,10 @@ export default {
 svg.leader-line {
   cursor: pointer;
 }
+
 // Considering the parent svg.leader-line has `pointer-events: none;`,
 // this is important to listen SVG mouse events on shape only
-svg.leader-line *{
+svg.leader-line * {
   pointer-events: auto !important;
 }
 </style>
