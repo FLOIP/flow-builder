@@ -18,23 +18,59 @@
       </label>
     </div>
 
+    <!--Contact property fields-->
     <div
       v-if="shouldSetContactProperty"
       class="form-group">
-      <!--Contact property fields-->
       <validation-message
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_key`">
         <div class="block-contact-property-key">
           <text-editor
             v-model="propertyKey"
-            :label="'flow-builder.contact-property-label' | trans"
+            :label="'flow-builder.property' | trans"
             :placeholder="'flow-builder.enter-contact-property-label' | trans"
             :valid-state="isValid" />
         </div>
       </validation-message>
 
+      <!--Contact property value editor with actions-->
+      <label>{{ 'flow-builder.value' | trans }}</label>
+      <div class="form-group">
+        <div class="custom-control custom-radio">
+          <input
+            id="setProp"
+            @change="updatePropertyValueAction"
+            type="radio"
+            name="contactPropAction"
+            :checked="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
+            :value="PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
+            class="custom-control-input">
+          <label
+            class="custom-control-label font-weight-normal"
+            for="setProp">
+            {{ 'flow-builder.from-current-block-response' | trans }}
+          </label>
+        </div>
+        <div class="custom-control custom-radio">
+          <input
+            id="clearProp"
+            @change="updatePropertyValueAction"
+            type="radio"
+            name="contactPropAction"
+            :checked="propertyValueAction === PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
+            :value="PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
+            class="custom-control-input">
+          <label
+            class="custom-control-label font-weight-normal"
+            for="clearProp">
+            {{ 'flow-builder.expression' | trans }}
+          </label>
+        </div>
+      </div>
+
       <validation-message
+        v-if="shouldUseOpenExpression"
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-editor
@@ -61,7 +97,6 @@ import TextEditor from '@/components/common/TextEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 
-const NULL_STRING_EXPRESSION = '@(null)'
 const EMPTY_STRING_EXPRESSION = ''
 
 @Component({
@@ -75,11 +110,26 @@ class GenericContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   shouldSetContactProperty = false
+  PROPERTY_VALUE_ACTION = {
+    OPEN_EXPRESSION: 'openExpression',
+    FROM_CURRENT_BLOCK_RESPONSE: 'fromCurrentBlockResponse',
+  }
+  propertyValueAction = ''
 
   created() {
     this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')
+    this.initPropertyValueAction()
   }
 
+  get expressionForCurrentBlockResponse() {
+    return `@(flow.${this.block.uuid})`
+  }
+
+  get shouldUseOpenExpression() {
+    return this.propertyValueAction === this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
+  }
+
+  // for checkbox
   toggleSetContactProperty() {
     this.shouldSetContactProperty = !this.shouldSetContactProperty
     if (!this.shouldSetContactProperty) {
@@ -90,12 +140,31 @@ class GenericContactPropertyEditor extends mixins(Lang) {
         path: 'set_contact_property',
         value: {
           property_key: '',
-          property_value: '',
+          property_value: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : this.expressionForCurrentBlockResponse,
         } as ISetContactPropertyBlockConfig,
       })
     }
   }
 
+  // for radio buttons
+  initPropertyValueAction(): string {
+    if (this.propertyValue === this.expressionForCurrentBlockResponse) {
+      this.propertyValueAction = this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE
+    } else {
+      this.propertyValueAction = this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
+    }
+  }
+
+  updatePropertyValueAction({target: {value}}) {
+    this.propertyValueAction = value
+    if (value === this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE) {
+      this.updatePropertyValue(this.expressionForCurrentBlockResponse)
+    } else {
+      this.updatePropertyValue(EMPTY_STRING_EXPRESSION)
+    }
+  }
+
+  // property_key field
   get propertyKey(): string {
     return get(this.block.config, 'set_contact_property.property_key')
   }
@@ -108,6 +177,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     })
   }
 
+  // property_value field
   get propertyValue(): string {
     return get(this.block.config, 'set_contact_property.property_value', EMPTY_STRING_EXPRESSION)
   }
