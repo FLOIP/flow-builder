@@ -1,64 +1,61 @@
-import {
-  cloneDeep, flatMap, isEqual, keyBy, map, mapValues, get, filter, union,
-} from 'lodash'
+import {filter, flatMap, get, isEqual, keyBy, map, mapValues, union} from 'lodash'
 import Vue from 'vue'
-import {
-  ActionTree, GetterTree, Module, MutationTree,
-} from 'vuex'
-import { IRootState } from '@/store'
-import {
-  IBlockExit, IBlock, IFlow, IResource, SupportedMode, ValidationException,
-} from '@floip/flow-runner'
-import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block'
-import { createFormattedDate } from '@floip/flow-runner/dist/domain/DateFormat'
-import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
+import {IRootState} from '@/store'
+import {IBlock, IBlockExit, IFlow, IResource, SupportedMode, ValidationException} from '@floip/flow-runner'
+import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 
-export enum OperationKind { // todo migrate these to flight-monitor
+// todo migrate these to flight-monitor
+export enum OperationKind {
   CONNECTION_SOURCE_RELOCATE = 'CONNECTION_SOURCE_RELOCATE',
   CONNECTION_CREATE = 'CONNECTION_CREATE',
-  BLOCK_RELOCATE = 'BLOCK_RELOCATE', // todo: we can now skip updating vuex on-the-fly and rather await a drop
+  // todo: we can now skip updating vuex on-the-fly and rather await a drop
+  BLOCK_RELOCATE = 'BLOCK_RELOCATE',
 }
 
 export interface IConnectionSourceRelocateOperation {
-  kind: OperationKind.CONNECTION_SOURCE_RELOCATE;
+  kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
   data: null | {
-    from: IDeepBlockExitIdWithinFlow;
-    position: IPosition; // todo: rename to startingPosition
-    to: IDeepBlockExitIdWithinFlow | null;
-  };
+    from: IDeepBlockExitIdWithinFlow,
+    // todo: rename to startingPosition
+    position: IPosition,
+    to: IDeepBlockExitIdWithinFlow | null,
+  },
 }
 
 export interface IConnectionCreateOperation {
-  kind: OperationKind.CONNECTION_CREATE;
+  kind: OperationKind.CONNECTION_CREATE,
   data: null | {
-    source: IDeepBlockExitIdWithinFlow;
-    position: IPosition; // todo: rename to startingPosition
-    targetId: IBlock['uuid'] | null;
-  };
+    source: IDeepBlockExitIdWithinFlow,
+    // todo: rename to startingPosition
+    position: IPosition,
+    targetId: IBlock['uuid'] | null,
+  },
 }
 
 export interface IConnectionContext {
-  sourceId: IBlock['uuid'];
-  targetId: IBlock['uuid'];
-  exitId: IBlockExit['uuid'];
+  sourceId: IBlock['uuid'],
+  targetId: IBlock['uuid'],
+  exitId: IBlockExit['uuid'],
 }
 
 export type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation
 
 interface IPosition {
-  x: number;
-  y: number;
+  x: number,
+  y: number,
 }
 
 export interface IBuilderState {
-  activeBlockId: IBlock['uuid'] | null;
-  isEditable: boolean;
-  activeConnectionsContext: IConnectionContext[];
+  activeBlockId: IBlock['uuid'] | null,
+  isEditable: boolean,
+  activeConnectionsContext: IConnectionContext[],
   operations: {
-    [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation;
-    [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation;
-    [OperationKind.BLOCK_RELOCATE]: null;
-  };
+    [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation,
+    [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation,
+    [OperationKind.BLOCK_RELOCATE]: null,
+  },
+  draggableForExitsByUuid: object,
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -76,45 +73,47 @@ export const stateFactory = (): IBuilderState => ({
     },
     [OperationKind.BLOCK_RELOCATE]: null,
   },
+  draggableForExitsByUuid: {},
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
-  activeBlock: ({ activeBlockId }, { blocksById }) => (activeBlockId ? blocksById[activeBlockId] : null),
+  activeBlock: ({activeBlockId}, {blocksById}) => (activeBlockId ? blocksById[activeBlockId] : null),
 
-  blocksById: (state, getters, rootState, rootGetters) => {
-    const { blocks } = rootGetters['flow/activeFlow'] ? rootGetters['flow/activeFlow'] : { blocks: [] }
+  blocksById: (_state, _getters, _rootState, rootGetters) => {
+    const {blocks} = rootGetters['flow/activeFlow'] ? rootGetters['flow/activeFlow'] : {blocks: []}
     return keyBy(blocks, 'uuid')
   },
 
-  nodeLabelsById: (state, getters, { flow: { flows } }, rootGetters) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
+  nodeLabelsById: (_state, _getters, {flow: {flows}}) => mapValues(keyBy(flows[0].blocks, 'uuid'), 'label'),
 
-  exitLabelsById: (state, getters, { flow: { flows } }, rootGetters) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
+  exitLabelsById: (_state, _getters, {flow: {flows}}) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
 }
 
 export const mutations: MutationTree<IBuilderState> = {
-  activateBlock(state, { blockId }: {blockId: IBlock['uuid']}) {
+  activateBlock(state, {blockId}: { blockId: IBlock['uuid'] }) {
     state.activeBlockId = blockId
 
     // simulate engaging with specified block
     // FlowRunner.prototype.navigateTo(block, state as unknown as IContext)
   },
 
-  activateConnection(state, { connectionContext }) {
+  activateConnection(state, {connectionContext}) {
     state.activeConnectionsContext = union([connectionContext], state.activeConnectionsContext)
   },
 
-  deactivateConnection(state, { connectionContext }) {
+  deactivateConnection(state, {connectionContext}) {
     state.activeConnectionsContext = filter(state.activeConnectionsContext, (context) => context !== connectionContext)
   },
 
-  setOperation({ operations }: { operations: any }, { operation }: { operation: SupportedOperation }) {
+  setOperation({operations}: { operations: any }, {operation}: { operation: SupportedOperation }) {
     operations[operation.kind] = operation
   },
 
-  setBlockPositionTo(state, { position: { x, y }, block }) {
-    // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder // uiData props
+  // @ts-ignore
+  setBlockPositionTo(state, {position: {x, y}, block}) {
+    // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder uiData props
     // if (!block.vendor_metadata.io_viamo.uiData) {
     //   defaultsDeep(block, {vendor_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
     //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
@@ -127,15 +126,19 @@ export const mutations: MutationTree<IBuilderState> = {
   setIsEditable(state, value) {
     state.isEditable = value
   },
+
+  initDraggableForExitsByUuid(state) {
+    state.draggableForExitsByUuid = {}
+  },
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
-  removeConnectionFrom({ commit }, { block: { uuid: blockId }, exit: { uuid: exitId } }) {
+  removeConnectionFrom({commit}, {block: {uuid: blockId}, exit: {uuid: exitId}}) {
     commit('flow/block_setBlockExitDestinationBlockId', {
       blockId,
       exitId,
       destinationBlockId: undefined,
-    }, { root: true })
+    }, {root: true})
   },
 
   // @note: multiple connections can lead to same node, so it doesn't make sense to do a swap here; we'll be "appending"
@@ -146,137 +149,139 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
   // todo: do operations warrant their own store? Maybe a generic store that handles a common behaviour
 
-  initializeConnectionSourceRelocateWith({ commit }, {
-    block: { uuid: blockId },
-    exit: { uuid: exitId },
+  initializeConnectionSourceRelocateWith({commit}, {
+    block: {uuid: blockId},
+    exit: {uuid: exitId},
     position,
   }) {
     // this would be a flight-monitor create(key)
     const operation: IConnectionSourceRelocateOperation = {
       kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
-      data: { from: { blockId, exitId }, position, to: { blockId, exitId } },
+      data: {from: {blockId, exitId}, position, to: {blockId, exitId}},
     }
-    commit('setOperation', { operation })
+    commit('setOperation', {operation})
   },
 
-  setConnectionSourceRelocateValue({ commit, state }, { block: { uuid: blockId }, exit: { uuid: exitId } }) {
-    const { data } = state.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
+  setConnectionSourceRelocateValue({commit, state}, {block: {uuid: blockId}, exit: {uuid: exitId}}) {
+    const {data} = state.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
     if (!data) {
       throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
     }
 
-    const { from, position } = data
+    const {from, position} = data
     const operation: IConnectionSourceRelocateOperation = {
       kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
-      data: { from, position, to: { blockId, exitId } },
+      data: {from, position, to: {blockId, exitId}},
     }
-    commit('setOperation', { operation })
+    commit('setOperation', {operation})
   },
 
-  setConnectionSourceRelocateValueToNullFrom({ commit, state }, { block: { uuid: blockId }, exit: { uuid: exitId } }) {
-    const { data } = state.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
+  setConnectionSourceRelocateValueToNullFrom({commit, state}, {block: {uuid: blockId}, exit: {uuid: exitId}}) {
+    const {data} = state.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
     if (!data) {
       throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
     }
 
-    const { from, to, position } = data
-    if (!isEqual(to, { blockId, exitId })) {
+    const {from, to, position} = data
+    if (!isEqual(to, {blockId, exitId})) {
       throw new ValidationException('Unable to nullify exit relocation from different exit.')
     }
 
     const operation: IConnectionSourceRelocateOperation = {
       kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
-      data: { from, position, to: null },
+      data: {from, position, to: null},
     }
-    commit('setOperation', { operation })
+    commit('setOperation', {operation})
   },
 
-  applyConnectionSourceRelocate({ dispatch, commit, state: { operations } }) {
-    const { data } = operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
+  applyConnectionSourceRelocate({dispatch, commit, state: {operations}}) {
+    const {data} = operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
     if (!data) {
       throw new ValidationException(`Unable to complete uninitialized operation: ${JSON.stringify(data)}`)
     }
 
-    const { from: first, to: second } = data
-    dispatch('flow/block_swapBlockExitDestinationBlockIds', { first, second }, { root: true })
+    const {from: first, to: second} = data
+    dispatch('flow/block_swapBlockExitDestinationBlockIds', {first, second}, {root: true})
 
     const operation: IConnectionSourceRelocateOperation = {
       kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
       data: null,
     }
-    commit('setOperation', { operation })
+    commit('setOperation', {operation})
   },
 
   /// ////////////////////////////////////////////////////////////////////////////////////////////////
   // [OperationKind.CONNECTION_CREATE] //////////////////////////////////////////////////////////////
   /// ////////////////////////////////////////////////////////////////////////////////////////////////
 
-  initializeConnectionCreateWith({ commit }, {
-    block: { uuid: blockId },
-    exit: { uuid: exitId },
+  initializeConnectionCreateWith({commit}, {
+    block: {uuid: blockId},
+    exit: {uuid: exitId},
     position,
   }) {
     if (!blockId || !exitId) {
-      throw new ValidationException(`Unable to create connection without source: ${JSON.stringify({ blockId, exitId })}`)
+      throw new ValidationException(`Unable to create connection without source: ${JSON.stringify({blockId, exitId})}`)
     }
 
     const operation: IConnectionCreateOperation = {
       kind: OperationKind.CONNECTION_CREATE,
-      data: { source: { blockId, exitId }, position, targetId: null },
+      data: {source: {blockId, exitId}, position, targetId: null},
     }
 
-    commit('setOperation', { operation }) // this would be a flight-monitor create(key)
+    // this would be a flight-monitor create(key)
+
+    commit('setOperation', {operation})
   },
 
-  setConnectionCreateTargetBlock({ commit, state }, { block }) {
-    const { data } = state.operations[OperationKind.CONNECTION_CREATE]
+  setConnectionCreateTargetBlock({commit, state}, {block}) {
+    const {data} = state.operations[OperationKind.CONNECTION_CREATE]
     if (!data) {
       throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
     }
 
-    const { source, position } = data
+    const {source, position} = data
     const operation: IConnectionCreateOperation = {
       kind: OperationKind.CONNECTION_CREATE,
-      data: { source, position, targetId: block.uuid },
+      data: {source, position, targetId: block.uuid},
     }
 
-    commit('setOperation', { operation })
+    commit('setOperation', {operation})
   },
 
-  setConnectionCreateTargetBlockToNullFrom({ commit, state }, { block }) {
-    const { data } = state.operations[OperationKind.CONNECTION_CREATE]
+  setConnectionCreateTargetBlockToNullFrom({commit, state}, {block}) {
+    const {data} = state.operations[OperationKind.CONNECTION_CREATE]
     if (!data) {
       throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
     }
 
-    const { source, targetId, position } = data
+    const {source, targetId, position} = data
     if (!isEqual(targetId, block.uuid)) {
       throw new ValidationException('Unable to nullify exit relocation from different exit.')
     }
 
     const operation: IConnectionCreateOperation = {
       kind: OperationKind.CONNECTION_CREATE,
-      data: { source, position, targetId: null },
+      data: {source, position, targetId: null},
     }
 
-    commit('setOperation', { operation })
+    commit('setOperation', {operation})
   },
 
-  applyConnectionCreate({ dispatch, commit, state: { operations } }) {
-    const { data } = operations[OperationKind.CONNECTION_CREATE]
+  applyConnectionCreate({commit, state: {operations}}) {
+    const {data} = operations[OperationKind.CONNECTION_CREATE]
     if (!data) {
       throw new ValidationException(`Unable to complete uninitialized operation: ${JSON.stringify(data)}`)
     }
 
     const {
-      source: { blockId, exitId },
+      source: {blockId, exitId},
       targetId: destinationBlockId,
     } = data
 
-    commit('flow/block_setBlockExitDestinationBlockId', { blockId, exitId, destinationBlockId }, { root: true })
+    commit('flow/block_setBlockExitDestinationBlockId', {blockId, exitId, destinationBlockId}, {root: true})
 
-    const operation: IConnectionCreateOperation = { kind: OperationKind.CONNECTION_CREATE, data: null }
-    commit('setOperation', { operation })
+    const operation: IConnectionCreateOperation = {kind: OperationKind.CONNECTION_CREATE, data: null}
+    commit('setOperation', {operation})
   },
 
   /**
@@ -302,11 +307,11 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    * @param flows
    */
   async importFlowsAndResources({
-    dispatch, commit, state, rootState,
-  }, { flows, resources }: { flows: IFlow[]; resources: IResource[]}) {
+    rootState,
+  }, {flows, resources}: { flows: IFlow[], resources: IResource[] }) {
     console.debug('importing flows & resources ...')
-    console.log({ flows, resources })
-    const { flow: flowState } = rootState
+    console.log({flows, resources})
+    const {flow: flowState} = rootState
     const defaultSupportedMode = [
       SupportedMode.IVR,
       SupportedMode.SMS,
@@ -314,11 +319,11 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     ]
 
     // add default activated modes if not set yet
-    for (const key in flows) {
-      if (!flows[key].hasOwnProperty('supported_modes') || !flows[key].supported_modes.length) {
+    flows.forEach((_flow, key) => {
+      if (!Object.prototype.hasOwnProperty.call([key], 'supported_modes') || !flows[key].supported_modes.length) {
         flows[key].supported_modes = defaultSupportedMode
       }
-    }
+    })
 
     // Update flow state
     flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flows)
@@ -328,7 +333,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     // make sure we use the same languages ids on both UI & Flows
     rootState.trees.ui.languages = flows[0].languages
   },
-  setIsEditable({ commit }, value) {
+  setIsEditable({commit}, value) {
     const boolVal = Boolean(value)
     commit('setIsEditable', boolVal)
   },
@@ -363,15 +368,17 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
     source.label,
     target.label,
 
-    // other exit titles // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
+    // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
+
+    // other exit titles
     ...map(source.exits, 'tag'),
     ...map(target.exits, 'tag'),
   ]
 }
 
-export function computeBlockPositionsFrom(block?: IBlock | null) {
-  const xDelta = 80; const
-    yDelta = 80
+export function computeBlockUiData(block?: IBlock | null) {
+  const xDelta = 160
+  const yDelta = 180
 
   let xPosition = get(block, 'vendor_metadata.io_viamo.uiData.xPosition')
   let yPosition = get(block, 'vendor_metadata.io_viamo.uiData.yPosition')
@@ -382,7 +389,11 @@ export function computeBlockPositionsFrom(block?: IBlock | null) {
     yPosition = viewPortCenter.y
   }
 
-  return { xPosition: xPosition + xDelta, yPosition: yPosition + yDelta }
+  return {
+    xPosition: xPosition + xDelta,
+    yPosition: yPosition + yDelta,
+    isSelected: false,
+  }
 }
 
 export function getViewportCenter() {

@@ -1,26 +1,29 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/config/validation_maximum`" #input-control="{ isValid }">
-    <div class="form-group block-validation-max">
-      <numeric-editor v-model.number="maxValue"
-          :regex-numeric-filtering="'[0-9]'"
-          :label="'flow-builder.maximum-value-(inclusive)' | trans"
-          :placeholder="'flow-builder.enter-value' | trans"
-          :validState="isValid">
-      </numeric-editor>
+  <validation-message
+    #input-control="{ isValid }"
+    :message-key="`block/${block.uuid}/config/validation_maximum`">
+    <div class="block-validation-max">
+      <numeric-editor
+        v-model.number="maxValue"
+        :regex-numeric-filtering="'[0-9]'"
+        :label="'flow-builder.maximum-value-(inclusive)' | trans"
+        :placeholder="'flow-builder.enter-value' | trans"
+        :valid-state="isValid" />
     </div>
   </validation-message>
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import NumericEditor from '@/components/common/NumericEditor'
-import { get } from 'lodash'
-import { lang } from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage';
+import {get} from 'lodash'
+import {lang} from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage'
 
 export default {
   components: {
     NumericEditor,
-    ValidationMessage
+    ValidationMessage,
   },
   mixins: [lang],
   props: {

@@ -1,12 +1,14 @@
 <template>
-  <text-editor class="expression-editor"
-      v-model="expression"
-      :label="label"
-      :placeholder="placeholder"
-      :validState="validState" />
+  <text-editor
+    v-model="expression"
+    class="expression-editor"
+    :label="label"
+    :placeholder="placeholder"
+    :valid-state="validState" />
 </template>
 
-<script>
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import TextEditor from '@/components/common/TextEditor'
 
 export default {
