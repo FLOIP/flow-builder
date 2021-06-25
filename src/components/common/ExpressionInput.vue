@@ -6,8 +6,7 @@
       :placeholder="placeholder"
       @input="$emit('input', $event.target.value)"
       ref="input"
-      v-model="expression"
-    />
+      v-model="expression"/>
     <slot/>
   </div>
 </template>
@@ -15,10 +14,9 @@
 <script>
 import AutoSuggest from '@avcs/autosuggest'
 import '@avcs/autosuggest/dropdown.css'
-import { mapGetters } from 'vuex';
-import {debounce} from 'lodash'
-import { MethodNodeEvaluatorFactory } from '@floip/expression-evaluator/dist/Evaluator/NodeEvaluator/MethodNodeEvaluator/Factory'
-import Lang from 'lib/filters/lang';
+import {mapGetters} from 'vuex'
+import {MethodNodeEvaluatorFactory} from '@floip/expression-evaluator/dist/Evaluator/NodeEvaluator/MethodNodeEvaluator/Factory'
+import Lang from 'lib/filters/lang'
 
 const defaultContactPropertyFields = [
   'phone',
@@ -56,7 +54,6 @@ export default {
   data() {
     return {
       suggest: {},
-      debounceScroll: () => undefined,
     }
   },
 
@@ -139,12 +136,9 @@ export default {
       return methods
     },
     suggestions() {
-      const suggestions = [
+      return [
         ...this.contextSuggestions,
         ...this.methodSuggestions,
-      ]
-      return [
-        ...suggestions,
         this.topLevelSuggestions,
       ]
     }
@@ -157,14 +151,6 @@ export default {
       suggestions: this.suggestions,
       onChange: () => input.dispatchEvent(new Event('input')),
     }, input)
-
-    this.debounceScroll = debounce(() => { this.didScroll = true }, 100)
-
-    window.addEventListener('scroll', this.debounceScroll)
-  },
-
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.debounceScroll)
   },
 }
 </script>
