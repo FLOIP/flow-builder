@@ -27,10 +27,11 @@
         :message-key="`block/${block.uuid}/config/set_contact_property/property_key`">
         <div class="block-contact-property-key">
           <text-editor
-            v-model="propertyKey"
+            :value="propertyKey"
             :label="'flow-builder.property' | trans"
             :placeholder="'flow-builder.enter-contact-property-label' | trans"
-            :valid-state="isValid" />
+            :valid-state="isValid"
+            @input="updatePropertyKey" />
         </div>
       </validation-message>
 
@@ -115,21 +116,17 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     FROM_CURRENT_BLOCK_RESPONSE: 'fromCurrentBlockResponse',
   }
   propertyValueAction = ''
+  propertyKey = ''
+  propertyValue = ''
 
   created() {
     this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')
+    this.propertyKey = get(this.block.config, 'set_contact_property.property_key', '')
+    this.propertyValue = get(this.block.config, 'set_contact_property.property_value', EMPTY_STRING_EXPRESSION)
     this.initPropertyValueAction()
   }
 
-  get expressionForCurrentBlockResponse() {
-    return `@(flow.${this.block.uuid})`
-  }
-
-  get shouldUseOpenExpression() {
-    return this.propertyValueAction === this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
-  }
-
-  // for checkbox
+  // for checkbox ######################
   toggleSetContactProperty() {
     this.shouldSetContactProperty = !this.shouldSetContactProperty
     if (!this.shouldSetContactProperty) {
@@ -146,7 +143,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     }
   }
 
-  // for radio buttons
+  // for radio buttons ######################
   initPropertyValueAction(): string {
     if (this.propertyValue === this.expressionForCurrentBlockResponse) {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE
@@ -164,12 +161,17 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     }
   }
 
-  // property_key field
-  get propertyKey(): string {
-    return get(this.block.config, 'set_contact_property.property_key')
+  get shouldUseOpenExpression() {
+    return this.propertyValueAction === this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
   }
 
-  set propertyKey(value: string) {
+  // for input fields ######################
+  get expressionForCurrentBlockResponse() {
+    return `@(flow.${this.block.uuid})`
+  }
+
+  updatePropertyKey(value: string): void {
+    this.propertyKey = value
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
       path: 'set_contact_property.property_key',
@@ -177,12 +179,8 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     })
   }
 
-  // property_value field
-  get propertyValue(): string {
-    return get(this.block.config, 'set_contact_property.property_value', EMPTY_STRING_EXPRESSION)
-  }
-
   updatePropertyValue(value: string): void {
+    this.propertyValue = value
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
       path: 'set_contact_property.property_value',
