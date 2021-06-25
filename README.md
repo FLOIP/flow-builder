@@ -6,7 +6,7 @@ flow-builder provides an open source frontend for authoring [flow interoperabili
 
 ## What are flows
 
-Flows are a modern paradign for describing the logic of digital information systems that interact with individuals,
+Flows are a modern paradigm for describing the logic of digital information systems that interact with individuals,
 often for the purpose of (a) collecting data or (b) providing information through interactive requests. Some common examples of this are in mobile services using voice-based or SMS-based conversations over basic mobile phones. Flows follow the "flowchart" paradigm, consisting of actions (nodes) and connections between actions, which can incorporate decision-making logic.
 
 ## Project setup - Testing and Developing
@@ -21,7 +21,7 @@ yarn install
 yarn serve
 ```
 
-And visit [localhost:8080/trees/create](http://localhost:8080/trees/create) to create a new flow or [localhost:8080/trees/1/edit](http://localhost:8080/trees/1/edit) to edit an example flow.
+And visit [localhost:8080/flows/new](http://localhost:8080/flows/new) to create a new flow.
 
 Note, `yarn serve` will also hot reload for development.
 
@@ -52,11 +52,13 @@ This is related to `Flow.js` library which is providing multiple simultaneous, s
 
 ### Create new flow
 
-To begin, you can create a new flow by visiting [localhost:8080/trees/create](http://localhost:8080/trees/create). From there, you can start with a blank flow (a flow without blocks) and get editing:
+To begin, you can create a new flow by visiting [localhost:8080/flows/new](http://localhost:8080/flows/new). From there, you can start with a blank flow (a flow without blocks) and get editing:
 
 ![Flow without blocks](./docs/images/screenshot-no-blocks.png)
 
 ### Import existing flow
+
+You can import a flow using a JSON file or paste it directly by visiting [localhost:8080/flows/import](http://localhost:8080/flows/import)
 
 Or you can use the Import/Export panel and text field to copy in an existing flow:
 
