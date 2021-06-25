@@ -7,7 +7,7 @@
       <div class="dropdown">
         <button class="btn btn-link dropdown-toggle" type="button" id="flowErrorsDropdown" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="true">
-          {{ 'flow-builder.locate-block-issue' | trans }}
+          {{ 'flow-builder.show-issues' | trans }}
           <span class="caret"></span>
         </button>
         <ul class="notification dropdown-menu" aria-labelledby="flowErrorsDropdown">
