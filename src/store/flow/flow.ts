@@ -4,60 +4,54 @@ import {
   findBlockWith,
   findFlowWith,
   getActiveFlowFrom,
-  SupportedMode,
-  SupportedContentType,
   IBlock,
   IContext,
   IFlow,
   IResource,
-  ValidationException, IResourceValue,
+  IResourceValue,
+  SupportedMode,
+  ValidationException,
 } from '@floip/flow-runner'
-import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import moment from 'moment'
-import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import { IRootState } from '@/store'
-import {
-  defaults,
-  defaultsDeep,
-  includes,
-  forEach,
-  cloneDeep,
-  get,
-  has,
-  omit
-} from 'lodash'
-import { discoverContentTypesFor } from '@/store/flow/resource'
-import { computeBlockUiData } from '@/store/builder'
-import { router } from '@/router'
-import { IFlowsState } from '.'
-import { mergeFlowContainer } from './utils/importHelpers'
+import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {IRootState} from '@/store'
+import {cloneDeep, defaults, forEach, get, has, includes, omit} from 'lodash'
+import {discoverContentTypesFor} from '@/store/flow/resource'
+import {computeBlockUiData} from '@/store/builder'
+import {router} from '@/router'
+import {IFlowsState} from '.'
+import {mergeFlowContainer} from './utils/importHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
   activeFlow: (state) => {
-    if(state.flows.length) {
+    if (state.flows.length) {
       try {
         return getActiveFlowFrom(state as unknown as IContext)
-      } catch(err) {
-        return null
+      } catch (err) {
+        return undefined
       }
     }
   },
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
-  activeFlowContainer: state => {
-    return {
-      isCreated: state.isCreated,
-      specification_version: "TODO",
-      uuid: "TODO",
-      name: "TODO",
-      description: "TODO",
-      vendor_metadata: {},
-      flows: state.flows,
-      resources: state.resources
-    } as unknown as IContext
-  },
-  hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(getters.activeFlow.supported_modes || [], mode)),
+  activeFlowContainer: (state) => ({
+    isCreated: state.isCreated,
+    specification_version: 'TODO',
+    uuid: 'TODO',
+    name: 'TODO',
+    description: 'TODO',
+    vendor_metadata: {},
+    flows: state.flows,
+    resources: state.resources,
+  } as unknown as IContext),
+  hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(
+    getters.activeFlow.supported_modes || [],
+    mode,
+  )),
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
+  hasOfflineMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.OFFLINE),
+  currentFlowsState: (state) => state,
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -74,10 +68,10 @@ export const mutations: MutationTree<IFlowsState> = {
   flow_updateCreatedState(state, createdState) {
     state.isCreated = createdState
   },
-  flow_setActiveFlowId(state, {flowId}: {flowId: string}) {
+  flow_setActiveFlowId(state, {flowId}: { flowId: string }) {
     state.first_flow_id = flowId
   },
-  flow_addBlock(state, { flowId, block }: {flowId: string; block: IBlock}) {
+  flow_addBlock(state, {flowId, block}: { flowId: string, block: IBlock }) {
     if (block == null) {
       throw new ValidationException('Unable to add null block to flow')
     }
@@ -90,35 +84,37 @@ export const mutations: MutationTree<IFlowsState> = {
     }
   },
 
-  flow_setExitBlockId(state, { flowId, blockId }) {
+  flow_setExitBlockId(state, {flowId, blockId}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
+    // @throws ValidationException when block absent
+    const block: IBlock = findBlockWith(blockId, flow)
     flow.exit_block_id = block.uuid
   },
 
-  flow_setFirstBlockId(state, { flowId, blockId }) {
+  flow_setFirstBlockId(state, {flowId, blockId}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
+    // @throws ValidationException when block absent
+    const block: IBlock = findBlockWith(blockId, flow)
     Vue.set(flow, 'first_block_id', block.uuid)
   },
   flow_setNameFromLabel(state, {flowId, label}) {
     findFlowWith(flowId, state as unknown as IContext).name = label.replace(/\W+/g, '')
   },
 
-  flow_setLabel(state, { flowId, label }) {
+  flow_setLabel(state, {flowId, label}) {
     findFlowWith(flowId, state as unknown as IContext).label = label
   },
 
-  flow_setInteractionTimeout(state, { flowId, value }) {
+  flow_setInteractionTimeout(state, {flowId, value}) {
     findFlowWith(flowId, state as unknown as IContext).interaction_timeout = value
   },
 
-  flow_setSupportedMode(state, { flowId, value }) {
+  flow_setSupportedMode(state, {flowId, value}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
     flow.supported_modes = Array.isArray(value) ? value : [value]
   },
 
-  flow_setLanguages(state, { flowId, value }) {
+  flow_setLanguages(state, {flowId, value}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
     flow.languages = Array.isArray(value) ? value : [value]
   },
@@ -126,24 +122,24 @@ export const mutations: MutationTree<IFlowsState> = {
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
 
-  async flow_import({ state, getters, dispatch }, { persistRoute, flowContainer }): Promise<IContext | null> {
+  async flow_import({getters, dispatch}, {persistRoute, flowContainer}): Promise<IContext | null> {
     flowContainer = mergeFlowContainer(cloneDeep(getters.activeFlowContainer), flowContainer)
-    return await dispatch('flow_persist', { persistRoute, flowContainer })
+    return dispatch('flow_persist', {persistRoute, flowContainer})
   },
-  async flow_persist({ state, getters, commit }, { persistRoute, flowContainer }): Promise<IContext | null> {
+  async flow_persist({getters, commit}, {persistRoute, flowContainer}): Promise<IContext | null> {
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
-    if(!persistRoute) {
-      console.info("Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store")
+    if (!persistRoute) {
+      console.info('Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store')
       commit('flow_setFlowContainer', flowContainer)
       return getters.activeFlowContainer
     }
     try {
-      const { data } = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
+      const {data} = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
       return getters.activeFlowContainer
-    } catch(error) {
+    } catch (error) {
       commit('flow_updateCreatedState', oldCreatedState)
       console.info(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
@@ -151,49 +147,52 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
   //TODO - In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
   //see comment on flow_setFlowContainer
-  async flow_fetch({ state, getters, commit }, { fetchRoute }): Promise<IFlow | null> {
-    if(!fetchRoute) {
-      console.info("Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store")
+  async flow_fetch({getters, commit}, {fetchRoute}): Promise<IFlow | null> {
+    if (!fetchRoute) {
+      console.info('Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store')
       return getters.activeFlow
     }
     try {
-      const { data } = await axios.get(fetchRoute)
+      const {data} = await axios.get(fetchRoute)
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
       return data
-    } catch(error) {
+    } catch (error) {
       console.info(`Server error fetching flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
     }
   },
   // todo: this `flow_` prefix doesn't follow suit
-  //       because it's actually a method on the root state // IContext-ish type
+  // IContext-ish type
+  //       because it's actually a method on the root state
   //       (same as mutation: `flow_activateBlock` and `flow_add`
-  async flow_addBlankFlow({ dispatch, commit, state }): Promise<IFlow> {
-    const flow = await dispatch('flow_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
+  async flow_addBlankFlow({dispatch}): Promise<IFlow> {
+    const flow = await dispatch('flow_createWith', {props: {uuid: await (new IdGeneratorUuidV4()).generate()}})
 
-    return await dispatch('flow_add', { flow })
+    return dispatch('flow_add', {flow})
   },
 
-  async flow_add({ state }, { flow }): Promise<IFlow> {
-    const length = state.flows.push(flow) // mutating here, because we need to define a root-level scope for this type of action
+  async flow_add({state}, {flow}): Promise<IFlow> {
+    // mutating here, because we need to define a root-level scope for this type of action
+    state.flows.push(flow)
     //TODO - understand why this was here? Surely we can have an active flow that isn't the first and only one?
     //if (length === 1) {
-      state.first_flow_id = flow.uuid
+    state.first_flow_id = flow.uuid
     //}
 
     return flow
   },
 
-  flow_removeBlock({ state, commit }, { flowId, blockId }: {flowId: string; blockId: IBlock['uuid']}) {
+  flow_removeBlock({state, commit}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }) {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
-    const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
+    // @throws ValidationException when block absent
+    const block: IBlock = findBlockWith(blockId, flow)
 
     if (block == null) {
       throw new ValidationException('Unable to delete block absent from flow')
     }
 
-    const { blocks } = flow
+    const {blocks} = flow
     blocks.splice(
       blocks.indexOf(block),
       1,
@@ -208,22 +207,25 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // todo: convert this whole operation to an ActionTree member
     // todo: use mutations for these:
     if (flow.first_block_id === blockId) {
-      flow.first_block_id = '' // todo: make this optional for builder
+      // todo: make this optional for builder
+      flow.first_block_id = ''
     }
 
     if (flow.exit_block_id === blockId) {
       flow.exit_block_id = undefined
     }
 
-    forEach(blocks, ({ exits }) => {
-      const exitsTowardUs = exits.filter((e) => e.destination_block === blockId)
-      forEach(exitsTowardUs, (e) => e.destination_block = undefined)
+    forEach(blocks, ({exits}) => {
+      const exitsTowardUs = exits.filter((exit) => exit.destination_block === blockId)
+      forEach(exitsTowardUs, (exit) => {
+        exit.destination_block = undefined
+      })
     })
 
-    commit('builder/activateBlock', { blockId: null }, { root: true })
+    commit('builder/activateBlock', {blockId: null}, {root: true})
   },
 
-  async flow_addBlankBlockByType({ commit, dispatch, state }, { type, ...props }: Partial<IBlock>): Promise<IBlock> {
+  async flow_addBlankBlockByType({commit, dispatch}, {type, ...props}: Partial<IBlock>): Promise<IBlock> {
     // if (!state[type]) {
     // todo: for some reason {snakeCase} from 'lodash' doesn't work?
     // todo: for some reason dynamic imports aren't working w/ storybook build
@@ -233,44 +235,50 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // this.registerModule(['flow', BLOCK_TYPE], store)
     // }
 
-    const block = await dispatch(`flow/${type}/createWith`, { // todo: standardize this for each block type
+    // todo: standardize this for each block type
+
+    const block = await dispatch(`flow/${type}/createWith`, {
       props: {
         uuid: await (new IdGeneratorUuidV4()).generate(),
         ...props,
       },
-    }, { root: true })
+    }, {root: true})
 
-    defaults(block, { // a key is prerequisite for reactivity, even optional params
+    // a key is prerequisite for reactivity, even optional params
+
+    defaults(block, {
       label: undefined,
       semantic_label: undefined,
     })
 
-    commit('flow_addBlock', { block })
+    commit('flow_addBlock', {block})
 
     return block
   },
 
-  async flow_addBlankResource({ dispatch, commit }): Promise<IResource> {
-    const resource = await dispatch('resource_createWith', { props: { uuid: await (new IdGeneratorUuidV4()).generate() } })
+  async flow_addBlankResource({dispatch, commit}): Promise<IResource> {
+    const resource = await dispatch('resource_createWith', {props: {uuid: await (new IdGeneratorUuidV4()).generate()}})
 
-    commit('resource_add', { resource })
+    commit('resource_add', {resource})
 
     return resource
   },
-  async flow_addBlankResourceForEnabledModesAndLangs({ getters, dispatch, commit }): Promise<IResource> {
+  async flow_addBlankResourceForEnabledModesAndLangs({getters, dispatch, commit}): Promise<IResource> {
     // TODO - figure out of there should only be one value here at first? How would the resource editor change this?
     // TODO - is this right for setup of languages?
     // TODO - How will we add more blank values as supported languages are changed in the flow? We should probably also do this for modes rather than doing all possible modes here.
-    const values: IResourceValue = getters.activeFlow.languages.reduce((memo: object[], language: {id: string; name: string}) => {
+    const values: IResourceValue = getters.activeFlow.languages.reduce((memo: object[], language: { id: string, name: string }) => {
       // Let's just create all the modes. We might need them but if they are switched off they just don't get used
       Object.values(SupportedMode).forEach((mode: SupportedMode) => {
-        memo.push({
-          language_id: language.id,
-          value: '',
-          content_type: discoverContentTypesFor(mode),
-          modes: [
-            mode,
-          ],
+        discoverContentTypesFor(mode)?.forEach((contentType) => {
+          memo.push({
+            language_id: language.id,
+            value: '',
+            content_type: contentType,
+            modes: [
+              mode,
+            ],
+          })
         })
       })
 
@@ -284,16 +292,17 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       },
     })
 
-    commit('resource_add', { resource: blankResource })
+    commit('resource_add', {resource: blankResource})
 
     return blankResource
   },
 
-  async flow_createWith({ dispatch, commit, state }, { props }: {props: {uuid: string} & Partial<IFlow>}): Promise<IFlow> {
+  async flow_createWith(_context, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {
     return {
       ...defaults(props, {
         name: '',
-        label: '', // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
+        // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
+        label: '',
         last_modified: moment().toISOString(),
         interaction_timeout: 30,
         vendor_metadata: {},
@@ -307,61 +316,64 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
   },
 
-  async flow_duplicateBlock({ dispatch, commit, state }, { flowId, blockId }: {flowId: string; blockId: IBlock['uuid']}): Promise<IBlock> {
+  async flow_duplicateBlock({commit, state}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }): Promise<IBlock> {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
-    const block: IBlock = findBlockWith(blockId, flow) // @throws ValidationException when block absent
+    // @throws ValidationException when block absent
+    const block: IBlock = findBlockWith(blockId, flow)
 
     // Deep clone
-    const duplicatedBlock: IBlock = cloneDeep(block) as IBlock
+    const duplicatedBlock: IBlock = cloneDeep(block)
 
     // Set UUIDs, and remove non relevant props
     duplicatedBlock.uuid = await (new IdGeneratorUuidV4()).generate()
 
-    duplicatedBlock.exits.forEach(async (item, index, arr) => {
-      item.uuid = await (new IdGeneratorUuidV4()).generate()
-      delete item.destination_block
-    })
+    await Promise.all(
+      duplicatedBlock.exits.map(async (item) => {
+        item.uuid = await (new IdGeneratorUuidV4()).generate()
+        delete item.destination_block
+      }),
+    )
 
     if (has(duplicatedBlock.config, 'prompt')) {
       Vue.set(duplicatedBlock.config!, 'prompt', await (new IdGeneratorUuidV4()).generate())
     }
 
     // Set UI positions
-    // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
+    // TODO: remove this once IBlock has vendor_metadata key
     duplicatedBlock.vendor_metadata = {
       io_viamo: {
         uiData: computeBlockUiData(block),
       },
     }
 
-    commit('flow_addBlock', { block: duplicatedBlock })
+    commit('flow_addBlock', {block: duplicatedBlock})
 
-    router.replace({
+    await router.replace({
       name: 'block-selected-details',
-      params: { blockId: duplicatedBlock.uuid },
+      params: {blockId: duplicatedBlock.uuid},
     })
 
     return duplicatedBlock
   },
 
-  async flow_clearMultiSelection({ state, dispatch }) {
+  async flow_clearMultiSelection({state, dispatch}) {
     forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
-      dispatch('block_deselect', { blockId })
+      dispatch('block_deselect', {blockId})
     })
   },
 
-  async flow_removeAllSelectedBlocks({ state, dispatch }) {
+  async flow_removeAllSelectedBlocks({state, dispatch}) {
     forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
-      dispatch('flow_removeBlock', { blockId })
+      dispatch('flow_removeBlock', {blockId})
     })
 
     state.selectedBlocks = []
   },
 
-  async flow_duplicateAllSelectedBlocks({ state, dispatch }) {
-    let newBlocksUuid: string[] = []
+  async flow_duplicateAllSelectedBlocks({state, dispatch}) {
+    const newBlocksUuid: string[] = []
     forEach(state.selectedBlocks, async (blockId: IBlock['uuid']) => {
-      const duplicatedBlock: IBlock = await dispatch('flow_duplicateBlock', { blockId })
+      const duplicatedBlock: IBlock = await dispatch('flow_duplicateBlock', {blockId})
       newBlocksUuid.push(duplicatedBlock.uuid)
     })
     state.selectedBlocks = newBlocksUuid
@@ -371,4 +383,5 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 export const DEFAULT_MODES = [
   SupportedMode.SMS,
   SupportedMode.USSD,
-  SupportedMode.IVR]
+  SupportedMode.IVR,
+]

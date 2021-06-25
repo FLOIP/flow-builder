@@ -1,34 +1,35 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/config/group_key`" #input-control="{ isValid }">
+  <validation-message
+    #input-control="{ isValid }"
+    :message-key="`block/${block.uuid}/config/group_key`">
     <div class="block-group">
-      <label>{{'flow-builder.group-label' | trans}}</label>
-      <vue-multiselect v-model="selectedGroup"
-                       track-by="id"
-                       label="name"
-                       :class="{invalid: isValid === false}"
-                       :placeholder="'flow-builder.group-selector-placeholder' | trans"
-                       :options="groups"
-                       :allow-empty="false"
-                       :show-labels="false"
-                       :searchable="true">
-      </vue-multiselect>
+      <label>{{ 'flow-builder.group-label' | trans }}</label>
+      <vue-multiselect
+        v-model="selectedGroup"
+        track-by="id"
+        label="name"
+        :class="{invalid: isValid === false}"
+        :placeholder="'flow-builder.group-selector-placeholder' | trans"
+        :options="groups"
+        :allow-empty="false"
+        :show-labels="false"
+        :searchable="true" />
     </div>
   </validation-message>
 </template>
 
 <script lang="ts">
 import VueMultiselect from 'vue-multiselect'
-import { IBlock, ISetGroupMembershipBlockConfig } from '@floip/flow-runner'
-import { Component, Prop } from 'vue-property-decorator'
-import { namespace, Getter } from 'vuex-class'
+import {IBlock, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
+import {Component, Prop} from 'vue-property-decorator'
+import {Getter, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import { find } from 'lodash'
-import { mixins } from "vue-class-component";
-import ValidationMessage from '@/components/common/ValidationMessage.vue';
+import {find} from 'lodash'
+import {mixins} from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import {IGroupOption} from '../../../store/flow/block-types/Core_SetGroupMembershipStore'
 
 const flowVuexNamespace = namespace('flow')
-
-import { IGroupOption } from '../../../store/flow/block-types/Core_SetGroupMembershipStore'
 
 @Component<any>({
   components: {
@@ -40,17 +41,17 @@ class GroupSelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   get selectedGroup() {
-    const { group_key } = this.block.config as ISetGroupMembershipBlockConfig
+    const {group_key} = this.block.config as ISetGroupMembershipBlockConfig
     if (!group_key) {
       return {} as IGroupOption
     }
 
-    const groupOption = find(this.groups, { id: group_key }) as IGroupOption
-    if (!groupOption) {
+    const groupOption = find<IGroupOption>(this.groups, {id: group_key})
+    if (groupOption) {
+      return groupOption
+    } else {
       return {} as IGroupOption
     }
-
-    return groupOption
   }
 
   set selectedGroup(value: IGroupOption) {
@@ -66,8 +67,12 @@ class GroupSelector extends mixins(Lang) {
     })
   }
 
-  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
-  @Getter groups!: object[]
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({
+    blockId,
+    path,
+    value,
+  }: { blockId: string, path: string, value: object | string }) => void
+  @Getter groups!: IGroupOption[]
 }
 
 export default GroupSelector

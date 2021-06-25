@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import App from './App.vue'
-import router from './router'
 
 /**
  * This import modifies the jquery that should already be on the page globally at global.$
@@ -18,13 +16,15 @@ import 'scss/main.scss'
  * more details: https://www.npmjs.com/package/@fortawesome/vue-fontawesome#the-icon-property
  *
  */
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
-import { faCircle, faClone, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {faCheckCircle} from '@fortawesome/free-solid-svg-icons'
+import {faCircle, faClone, faTrashAlt} from '@fortawesome/free-regular-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import router from './router'
+import App from './App.vue'
 
 library.add(faCircle, faCheckCircle, faClone, faTrashAlt)
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('FontAwesomeIcon', FontAwesomeIcon)
 
 Vue.use(Vuex)
 

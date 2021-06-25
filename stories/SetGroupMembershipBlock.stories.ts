@@ -2,15 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import SetGroupMembershipBlock from '@/components/interaction-designer/block-types/Core_SetGroupMembershipBlock.vue'
+
+import {IRootState, store} from '@/store'
+import SetGroupMembershipStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
+import {Component} from 'vue-property-decorator'
+import {Mutation} from 'vuex-class'
+import {BaseMountedVueClass} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-import { BaseMountedVueClass } from './story-utils/storeSetup'
-
-import { IRootState, store } from '@/store'
-import SetGroupMembershipStore, { BLOCK_TYPE } from '@/store/flow/block-types/Core_SetGroupMembershipStore'
-import { Component } from "vue-property-decorator";
-import SetContactPropertyStore from "../src/store/flow/block-types/Core_SetContactPropertyStore";
-import {Mutation} from "vuex-class";
 
 Vue.use(Vuex)
 
@@ -27,7 +25,7 @@ const SetGroupMembershipBlockTemplate = `
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-let baseOptions = {
+const baseOptions = {
   components: {SetGroupMembershipBlock, FlowBuilderSidebarEditorContainer},
   template: SetGroupMembershipBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
@@ -41,7 +39,9 @@ let baseOptions = {
   },
 
 })
-class DefaultClass extends BaseMountedVueClass {}
+class DefaultClass extends BaseMountedVueClass {
+}
+
 export const Default = () => (DefaultClass)
 
 @Component<any>({
@@ -53,18 +53,19 @@ export const Default = () => (DefaultClass)
     this.addContactGroup({
       group: {
         id: 987,
-        name: "Group 1"
+        name: 'Group 1',
       },
     })
     this.addContactGroup({
       group: {
         id: 988,
-        name: "Group 2"
-      }
+        name: 'Group 2',
+      },
     })
   },
 })
 class ExistingDataBlockClass extends BaseMountedVueClass {
-  @Mutation addContactGroup!: ({ group }: { group: any }) => void
+  @Mutation addContactGroup!: ({group}: { group: any }) => void
 }
+
 export const ExistingDataBlock = () => (ExistingDataBlockClass)

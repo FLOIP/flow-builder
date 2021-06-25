@@ -34,10 +34,10 @@ label {
 
 /* =====================================================================================================================
  Pagination markup is modified in Bootstrap v4, but Laravel is pretty sticky about how it renders the pagination links
- using the ->render() function. This scss is copied from BS3. 
+ using the ->render() function. This scss is copied from BS3.
  Note: this only considers pagination classes that are wrapped in a .bs3-pagination-wrapper div since we don't want
- to affect BSv4 pagination components. 
-===================================================================================================================== */ 
+ to affect BSv4 pagination components.
+===================================================================================================================== */
 .bs3-pagination-wrapper {
   .pagination {
     display: inline-block;
@@ -46,11 +46,13 @@ label {
     border-radius: 4px;
 
     > li {
-      display: inline; // Remove list-style and block-level defaults
+      // Remove list-style and block-level defaults
+      display: inline;
       > a,
       > span {
         position: relative;
-        float: left; // Collapse white-space
+        // Collapse white-space
+        float: left;
         padding: 6px 12px;
         margin-left: -1px;
         line-height: $line-height-base;
@@ -137,7 +139,9 @@ $panel-heading-padding:       10px 15px !default;
 $panel-footer-padding:        $panel-heading-padding !default;
 $panel-border-radius:         $border-radius-base !default;
 
-$line-height-computed:    floor(($font-size-base * $line-height-base)) !default; // ~20px
+// ~20px
+
+$line-height-computed:    floor(($font-size-base * $line-height-base)) !default;
 
 //** Border color for elements within panels
 $panel-inner-border:          #ddd !default;

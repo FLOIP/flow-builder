@@ -306,6 +306,7 @@
     "treeSets": [],
     "enabledFeatures": [
       "audioUpload",
+      "simulator",
       "treeSave",
       "callToRecord"
     ]

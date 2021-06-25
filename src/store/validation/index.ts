@@ -1,37 +1,40 @@
 import Vue from 'vue'
-import {
-  ActionTree, GetterTree, Module, MutationTree,
-} from 'vuex'
-import { IRootState } from '@/store'
-import Ajv, { ValidateFunction, ErrorObject } from 'ajv'
+import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
+import {IRootState} from '@/store'
+import Ajv, {ErrorObject, ValidateFunction} from 'ajv'
 import ajvFormat from 'ajv-formats'
 
-import { JSONSchema7 } from 'json-schema'
-import { IBlock, IFlow, IContainer } from '@floip/flow-runner'
-import { isEmpty, get, forIn } from 'lodash'
+import {JSONSchema7} from 'json-schema'
+import {IBlock, IContainer, IFlow} from '@floip/flow-runner'
+import {forIn, get, isEmpty} from 'lodash'
 
-const ajv = new Ajv({ allErrors: true })
+const ajv = new Ajv({allErrors: true})
 
 // we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
 ajvFormat(ajv)
 
 const DEV_ERROR_KEYWORDS = [
-  'additionalProperties', // unwanted extra props
-  'required', // missing props
+  // unwanted extra props
+  'additionalProperties',
+  // missing props
+  'required',
 ]
+// AJV validators, keys are types
+const validators = new Map<string, ValidateFunction>()
 
-const validators = new Map<string, ValidateFunction>() // AJV validators, keys are types
-
-export interface IIndexedString { [key: string]: string }
+export interface IIndexedString {
+  [key: string]: string,
+}
 
 export interface IValidationStatus {
-  isValid: boolean | PromiseLike<any>;
-  ajvErrors?: null | Array<ErrorObject>;
-  type: string;
+  isValid: boolean | PromiseLike<any>,
+  ajvErrors?: null | Array<ErrorObject>,
+  type: string,
 }
 
 export interface IValidationState {
-  validationStatuses: { [key: string]: IValidationStatus }; // important context for future debug or testing, keys are index like `flow/flowId
+  // important context for future debug or testing, keys are index like `flow/flowId
+  validationStatuses: { [key: string]: IValidationStatus },
 }
 
 export const stateFactory = (): IValidationState => ({
@@ -67,13 +70,11 @@ export const getters: GetterTree<IValidationState, IRootState> = {
   },
 }
 
-export const mutations: MutationTree<IValidationState> = {
-
-}
+export const mutations: MutationTree<IValidationState> = {}
 
 export const actions: ActionTree<IValidationState, IRootState> = {
-  async validate_block({ state, dispatch }, { block }: { block: IBlock }): Promise<IValidationStatus> {
-    const { uuid: blockId, type: blockType } = block
+  async validate_block({state, dispatch}, {block}: { block: IBlock }): Promise<IValidationStatus> {
+    const {uuid: blockId, type: blockType} = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
     const index = `block/${blockId}`
@@ -84,17 +85,18 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       type: block.type,
     })
     if (validate.errors === null) {
-      dispatch('remove_block_validation', { blockId })
+      dispatch('remove_block_validation', {blockId})
     }
     debugValidationStatus(state.validationStatuses[index], `validation status for ${index}`)
     return state.validationStatuses[index]
   },
 
-  remove_block_validation({ state }, { blockId }: { blockId: IBlock['uuid']}): void {
+  remove_block_validation({state}, {blockId}: { blockId: IBlock['uuid'] }): void {
     const index = `block/${blockId}`
     Vue.delete(state.validationStatuses, index)
   },
-  async validate_flow({ state }, { flow }: { flow: IFlow }): Promise<IValidationStatus> {
+
+  async validate_flow({state}, {flow}: { flow: IFlow }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator()
     const index = `flow/${flow.uuid}`
     Vue.set(state.validationStatuses, index, {
@@ -181,24 +183,40 @@ export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchem
 }
 
 function debugValidationStatus(status: IValidationStatus, customMessage: string) {
-  if (status) {
+  if (status != null) {
     console.debug(
       'store/validation:',
       customMessage,
-      ' | isValid:', status.isValid,
-      ' | error dataPaths:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map((item) => get(item, 'dataPath', 'undefined')).join(';') : 'undefined'}`,
-      ' | error messages:', `${status.hasOwnProperty('ajvErrors') && !!status.ajvErrors! ? (status.ajvErrors!).map((item) => get(item, 'message', 'undefined')).join(';') : 'undefined'}`,
-      ' | error details:', status,
+      ' | isValid:',
+      status.isValid,
+      ' | error dataPaths:',
+      `${Object.prototype.hasOwnProperty.call(status, 'ajvErrors') && status.ajvErrors ? (status.ajvErrors).map((item) => get(
+        item,
+        'dataPath',
+        'undefined',
+      )).join(';') : 'undefined'}`,
+      ' | error messages:',
+      `${Object.prototype.hasOwnProperty.call(status, 'ajvErrors') && status.ajvErrors ? (status.ajvErrors).map((item) => get(
+        item,
+        'message',
+        'undefined',
+      )).join(';') : 'undefined'}`,
+      ' | error details:',
+      status,
     )
   } else {
     console.debug('store/validation:', 'the status in debugValidationStatus was undefined')
   }
 }
 
-function flatValidationStatuses({ keyPrefix, errors, accumulator }: { keyPrefix: string; errors: undefined | null | Array<ErrorObject>; accumulator: IIndexedString }) {
-  errors?.forEach((error, key) => {
-    let index = ''; let
-      message = ''
+function flatValidationStatuses({
+  keyPrefix,
+  errors,
+  accumulator,
+}: { keyPrefix: string, errors: undefined | null | Array<ErrorObject>, accumulator: IIndexedString }) {
+  errors?.forEach((error) => {
+    let index = ''
+    let message = ''
     if (DEV_ERROR_KEYWORDS.includes(error.keyword)) {
       // this is more likely a dev issue than user error
       // error.dataPath could be empty or not for such errors
@@ -209,6 +227,6 @@ function flatValidationStatuses({ keyPrefix, errors, accumulator }: { keyPrefix:
       index = `${keyPrefix}${error.dataPath}`
       message = error.message as string
     }
-    accumulator[index] = message as string
+    accumulator[index] = message
   })
 }
