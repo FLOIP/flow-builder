@@ -1,22 +1,24 @@
 <template>
   <div class="form-group flow-label">
-    <text-editor v-model="label"
-        :label="'flow-builder.flow-label' | trans"
-        :placeholder="'flow-builder.enter-flow-label' | trans"
-        :class="{ 'is-invalid': isInvalid }">
+    <text-editor
+      v-model="label"
+      :label="'flow-builder.flow-label' | trans"
+      :placeholder="'flow-builder.enter-flow-label' | trans"
+      :class="{ 'is-invalid': isInvalid }">
     </text-editor>
   </div>
 </template>
 
 <script lang="ts">
 import TextEditor from '@/components/common/TextEditor.vue'
-import { Component, Prop } from 'vue-property-decorator'
+import {Component, Prop} from 'vue-property-decorator'
 import {IBlock, IFlow} from '@floip/flow-runner'
-import { namespace } from 'vuex-class'
+import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import {mixins} from "vue-class-component";
+import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
+
 @Component(
   {
     components: {
@@ -34,17 +36,17 @@ class FlowLabelEditor extends mixins(Lang) {
   }
 
   get label(): IBlock['label'] {
-    return this.flow.label || ''
+    return this.flow.label ?? ''
   }
 
   set label(label: IBlock['label']) {
-    this.flow_setLabel({ flowId: this.flow.uuid, label })
+    this.flow_setLabel({flowId: this.flow.uuid, label})
     //Also set the name
-    this.flow_setNameFromLabel({ flowId: this.flow.uuid, label })
+    this.flow_setNameFromLabel({flowId: this.flow.uuid, label})
   }
 
-  @flowVuexNamespace.Mutation flow_setLabel!: ({ flowId, label }: { flowId: IFlow['uuid']; label: IFlow['label']}) => void
-  @flowVuexNamespace.Mutation flow_setNameFromLabel!: ({ flowId, label }: { flowId: IFlow['uuid']; label: IFlow['label'] }) => void
+  @flowVuexNamespace.Mutation flow_setLabel!: ({flowId, label}: {flowId: IFlow['uuid']; label: IFlow['label']}) => void
+  @flowVuexNamespace.Mutation flow_setNameFromLabel!: ({flowId, label}: {flowId: IFlow['uuid']; label: IFlow['label']}) => void
 }
 
 export default FlowLabelEditor

@@ -1,10 +1,12 @@
 import Vue from 'vue'
-import { get, isEmpty } from 'lodash'
+import {get, isEmpty} from 'lodash'
 import Component from 'vue-class-component'
-import { State } from 'vuex-class'
+import {State} from 'vuex-class'
 
 const PATH_PARAM_DISCOVERER = /(\/){(.*?)(\?)?}/g
-const raiseFor = (p: any) => { throw new Error(`InvalidContextError - Missing param: ${p}`) }
+const raiseFor = (p: any) => {
+  throw new Error(`InvalidContextError - Missing param: ${p}`)
+}
 
 export function interpolateRouteWith(context: any, route?: any) {
   if (!route) {
@@ -14,7 +16,7 @@ export function interpolateRouteWith(context: any, route?: any) {
   context = context || {}
 
   const {
-    id, path, params, methods,
+    path, params,
   } = route
   const isPathComplete = isEmpty(params)
 
@@ -22,7 +24,7 @@ export function interpolateRouteWith(context: any, route?: any) {
     return path
   }
 
-  return path.replace(PATH_PARAM_DISCOVERER, (m: any, prefix = '', captured: string, isOptional: boolean) => {
+  return path.replace(PATH_PARAM_DISCOVERER, (_m: any, prefix = '', captured: string, isOptional: boolean) => {
     const param = captured.trim()
     const absent = !(param in context)
 

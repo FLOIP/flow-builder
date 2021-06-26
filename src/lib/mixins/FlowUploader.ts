@@ -7,7 +7,7 @@ const dispatch = (el: any, name: string, data: any) => {
   el.dispatchEvent(lodash.extend(new Event(name, {
     bubbles: true,
     cancelable: true,
-  }), { data }))
+  }), {data}))
 }
 
 @Component({
@@ -25,8 +25,9 @@ const dispatch = (el: any, name: string, data: any) => {
         const uploader = new Flow({
           target,
           singleFile: true,
-          chunkSize: 1024 * 512, // kbytes, chunked?  ¯\_(ツ)_/¯
-          query: { upload_token },
+          // kbytes, chunked?  ¯\_(ツ)_/¯
+          chunkSize: 1024 * 512,
+          query: {upload_token},
         })
 
         if (!uploader.support) {
@@ -34,7 +35,7 @@ const dispatch = (el: any, name: string, data: any) => {
           return
         }
 
-        lodash.extend(el.style, { overflow: 'hidden' })
+        lodash.extend(el.style, {overflow: 'hidden'})
         uploader.assignBrowse(el)
 
         lodash.chain(el.children)
@@ -42,18 +43,22 @@ const dispatch = (el: any, name: string, data: any) => {
             tagName: 'INPUT',
             type: 'file',
           } as any)
-          .assign({ accept })
+          .assign({accept})
           .value()
 
         // todo: migrate to proxied catch-all handler (voto5 legacy todo)
         // uploader.on('catchAll', (name, file/*or files*/, e) => console.debug(name))
 
         // todo: when do we call upload on a multiselect-upload and file-added triggered multiple times? (voto5 legacy todo)
-        // uploader.on('fileAdded', (file, e) => dispatch(el, 'filesSubmitted', {file, uploader})) // uploader.upload()
+        // uploader.upload()
+        // uploader.on('fileAdded', (file, e) => dispatch(el, 'filesSubmitted', {file, uploader}))
+        // @ts-ignore
         uploader.on('filesSubmitted', (files: any, e: any) => dispatch(el, 'filesSubmitted', {
           files,
           uploader,
-        })) // uploader.upload()
+          // uploader.upload()
+        }))
+        // @ts-ignore
         uploader.on('fileProgress', (file: any, e: any) => dispatch(el, 'fileProgress', {
           file,
           uploader,
@@ -62,14 +67,17 @@ const dispatch = (el: any, name: string, data: any) => {
           file,
           uploader,
           json,
-        })) // uploader.cancel()
+          // uploader.cancel()
+        }))
         uploader.on('error', (message: string, file: any) => dispatch(el, 'fileSuccess', {
           file,
           uploader,
           message,
-        })) // uploader.cancel()
+          // uploader.cancel()
+        }))
       },
 
+      // @ts-ignore
       unbind(el, binding) {
       },
     },

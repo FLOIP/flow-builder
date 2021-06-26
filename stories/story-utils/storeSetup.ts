@@ -1,29 +1,24 @@
 import Vue from 'vue'
 import {namespace} from 'vuex-class'
-const flowVuexNamespace = namespace('flow')
-const builderVuexNamespace = namespace('builder')
-import {
-  IBlock,
-  IFlow,
-  ILanguage,
-  SupportedContentType,
-  SupportedMode
-} from '@floip/flow-runner'
-import {get, isEmpty, cloneDeep} from 'lodash'
-import { IResourceDefinitionVariantOverModesFilter } from "../../src/store/flow/resource";
+import {IBlock, IFlow, ILanguage, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {cloneDeep, get, isEmpty} from 'lodash'
 import Component from 'vue-class-component'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
+import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
+
+const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 
 let storyInitState: any = {}
 
 Vue.use(Vuex)
 
 export interface IBaseOptions {
-  components: any;
-  template: string;
-  store?: any;
+  components: any,
+  template: string,
+  store?: any,
 }
 
 /**
@@ -36,23 +31,23 @@ export class BaseMountedVueClass extends Vue {
   @builderVuexNamespace.Getter activeBlock!: IBlock
   @flowVuexNamespace.Getter activeFlow!: IFlow
 
-  @builderVuexNamespace.Mutation activateBlock!: ({ blockId }: { blockId: IBlock['uuid'] | null}) => void
+  @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null }) => void
 
   @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
-  @flowVuexNamespace.Action flow_addBlankBlockByType!: ({ type, ...props }: Partial<IBlock>) => Promise<IBlock>
-  @flowVuexNamespace.Action flow_add!: ({ flow } : { flow: IFlow}) => Promise<IFlow>
-  @flowVuexNamespace.Action flow_createWith!: ({ props }: {props: {uuid: string} & Partial<IFlow>}) => Promise<IFlow>
+  @flowVuexNamespace.Action flow_addBlankBlockByType!: ({type, ...props}: Partial<IBlock>) => Promise<IBlock>
+  @flowVuexNamespace.Action flow_add!: ({flow}: { flow: IFlow }) => Promise<IFlow>
+  @flowVuexNamespace.Action flow_createWith!: ({props}: { props: { uuid: string } & Partial<IFlow> }) => Promise<IFlow>
 
-  @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({ flowId }: { flowId: IFlow['uuid'] }) => void
+  @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({flowId}: { flowId: IFlow['uuid'] }) => void
   @flowVuexNamespace.Mutation block_setName: any
   @flowVuexNamespace.Mutation block_setLabel: any
   @flowVuexNamespace.Mutation block_setSemanticLabel: any
   @flowVuexNamespace.Mutation flow_setFirstBlockId: any
 
   setDescription(blockId: string) {
-    this.block_setName({blockId: blockId, value: "A Name"})
-    this.block_setLabel({blockId: blockId, value: "A Label"})
-    this.block_setSemanticLabel({blockId: blockId, value: "A Semantic Label"})
+    this.block_setName({blockId, value: 'A Name'})
+    this.block_setLabel({blockId, value: 'A Label'})
+    this.block_setSemanticLabel({blockId, value: 'A Semantic Label'})
   }
 
   /**
@@ -62,7 +57,7 @@ export class BaseMountedVueClass extends Vue {
     await this.safeRegisterBlockModule(CASE_BLOCK_TYPE, caseBlockStore)
     const caseBlock = await this.flow_addBlankBlockByType({type: CASE_BLOCK_TYPE})
     const {uuid: caseBlockId} = caseBlock
-    this.flow_setFirstBlockId({blockId: caseBlockId, flowId: flowId})
+    this.flow_setFirstBlockId({blockId: caseBlockId, flowId})
   }
 
   /**
@@ -88,19 +83,20 @@ export class BaseMountedVueClass extends Vue {
       Object.assign(this.$store.state, cloneDeep(storyInitState))
     }
 
-    await this.safeRegisterBlockModule(BLOCK_TYPE, blockTypeStore);
+    await this.safeRegisterBlockModule(BLOCK_TYPE, blockTypeStore)
 
-    let flow = await this.flow_addBlankFlow();
+    const flow = await this.flow_addBlankFlow()
     flow.languages = [
-      { id: '1', label: 'English' } as ILanguage
-      ] // mutation
+      {id: '1', label: 'English'} as ILanguage,
+      // mutation
+    ]
 
-    const block =  await this.flow_addBlankBlockByType({type: BLOCK_TYPE})
+    const block = await this.flow_addBlankBlockByType({type: BLOCK_TYPE})
     const {uuid: blockId} = block
 
     this.activateBlock({blockId})
 
-    return { block, flow }
+    return {block, flow}
   }
 }
 
@@ -111,26 +107,34 @@ export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass 
   @flowVuexNamespace.Mutation resource_setValue: any
   @flowVuexNamespace.Mutation flow_setSupportedMode: any
 
-  setResourceData({ shouldSetChoices, configPath }: { shouldSetChoices: boolean, configPath: string }) {
+  setResourceData({shouldSetChoices, configPath}: { shouldSetChoices: boolean, configPath: string }) {
     const {
       languages: {
-        0: {id: languageId}
+        0: {id: languageId},
       },
     }: IFlow = this.activeFlow
     const resourceId = get(this.activeBlock, configPath, '')
 
     // Set values on resource editor
-    // TODO: find better way to do this once the resource editor is fully implemented, the goal is to set resources' value correctly. The implementation below is just an
-    // @ts-ignore: // TODO: fix it in https://viamoinc.atlassian.net/browse/VMO-3679
-    const variantSms: IResourceDefinitionVariantOverModesFilter = { language_id: languageId, modes: [SupportedMode.SMS], content_type: [SupportedContentType.TEXT] }
-    // @ts-ignore: // TODO: fix it in https://viamoinc.atlassian.net/browse/VMO-3679
-    const variantUssd: IResourceDefinitionVariantOverModesFilter = { language_id: languageId, modes: [SupportedMode.USSD], content_type: [SupportedContentType.TEXT] }
-    // @ts-ignore: // TODO: fix it in https://viamoinc.atlassian.net/browse/VMO-3679
-    const variantIvr: IResourceDefinitionVariantOverModesFilter = { language_id: languageId, modes: [SupportedMode.IVR], content_type: [SupportedContentType.AUDIO] }
+    const variantSms: IResourceDefinitionVariantOverModesFilter = {
+      language_id: languageId,
+      modes: [SupportedMode.SMS],
+      content_type: SupportedContentType.TEXT,
+    }
+    const variantUssd: IResourceDefinitionVariantOverModesFilter = {
+      language_id: languageId,
+      modes: [SupportedMode.USSD],
+      content_type: SupportedContentType.TEXT,
+    }
+    const variantIvr: IResourceDefinitionVariantOverModesFilter = {
+      language_id: languageId,
+      modes: [SupportedMode.IVR],
+      content_type: SupportedContentType.AUDIO,
+    }
     // we're assuming this pseudo-variants exist
-    this.resource_setValue({resourceId, filter: variantSms, value: "text for SMS"})
-    this.resource_setValue({resourceId, filter: variantUssd, value: "text for USSD"})
-    this.resource_setValue({resourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
+    this.resource_setValue({resourceId, filter: variantSms, value: 'text for SMS'})
+    this.resource_setValue({resourceId, filter: variantUssd, value: 'text for USSD'})
+    this.resource_setValue({resourceId, filter: variantIvr, value: 'path/to/ivr audio.mp3'})
 
     if (shouldSetChoices) {
       // TODO: uncomment these if needed, when we found a solution for the above todo. This is not working for now.
