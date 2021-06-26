@@ -17,7 +17,7 @@
               <div v-if="error.dataPath === '/first_block_id'">
                 {{ 'flow-builder.add-at-least-one-block' | trans }}
               </div>
-              <button v-else type="button" class="btn btn-link" @click="fixFlowError(error)">
+              <button v-else type="button" class="btn btn-link" @click="fixFlowError()">
                 {{ 'flow-builder.fix-issue' | trans }}
               </button>
             </div>
@@ -47,7 +47,7 @@
         <ul
           class="notification dropdown-menu"
           aria-labelledby="blockErrorsDropdown">
-          <li v-for="(status, key) in blockValidationStatuses">
+          <li v-for="(status, key) in blockValidationStatuses" :key="key">
             <div class="card">
               <div class="card-title m-0 px-2 pt-1">
                 {{ trans(`flow-builder.${status.type}`) }}

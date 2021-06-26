@@ -78,7 +78,7 @@ export const mutations: MutationTree<IValidationState> = {
 
 export const actions: ActionTree<IValidationState, IRootState> = {
   async validate_block({state, commit}, {block}: {block: IBlock}): Promise<IValidationStatus> {
-    const { uuid: blockId, type: blockType } = block
+    const {uuid: blockId, type: blockType} = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
     const key = `block/${blockId}`
@@ -108,7 +108,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     return state.validationStatuses[key]
   },
 
-  async validate_flowContainer({ state }, { flowContainer }: { flowContainer: IContainer }): Promise<IValidationStatus> {
+  async validate_flowContainer({state}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
     const validate = getOrCreateFlowContainerValidator()
     const key = `flowContainer/${flowContainer.uuid}`
     Vue.set(state.validationStatuses, key, {
@@ -145,8 +145,8 @@ function getOrCreateFlowValidator(): ValidateFunction {
     const flowJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
 
     // remove `blocks` property from IFlow schema to avoid double validations
-    flowJsonSchema['definitions']['IFlow']['additionalProperties'] = true
-    delete flowJsonSchema['definitions']['IFlow']['properties']['blocks']
+    flowJsonSchema.definitions.IFlow.additionalProperties = true
+    delete flowJsonSchema.definitions.IFlow.properties.blocks
 
     validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IFlow'))
   }

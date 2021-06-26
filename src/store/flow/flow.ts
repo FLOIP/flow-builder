@@ -16,7 +16,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, forEach, get, has, includes, omit} from 'lodash'
+import {cloneDeep, defaults, every, forEach, get, has, includes, omit} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockUiData} from '@/store/builder'
 import {router} from '@/router'
@@ -43,7 +43,8 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     // check if all blocks are valid
     return every(
       getters.activeFlow.blocks,
-      (block) => get(rootState.validation.validationStatuses, `block/${block.uuid}`)?.isValid)
+      (block) => get(rootState.validation.validationStatuses, `block/${block.uuid}`)?.isValid,
+)
   },
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: (state) => ({
