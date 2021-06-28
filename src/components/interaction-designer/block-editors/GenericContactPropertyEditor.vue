@@ -99,6 +99,7 @@ import TextEditor from '@/components/common/TextEditor.vue'
 const flowVuexNamespace = namespace('flow')
 
 const EMPTY_STRING_EXPRESSION = ''
+const BLOCK_RESPONSE_EXPRESSION = '@block.value'
 
 @Component({
   components: {
@@ -137,7 +138,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
         path: 'set_contact_property',
         value: {
           property_key: '',
-          property_value: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : this.expressionForCurrentBlockResponse,
+          property_value: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : BLOCK_RESPONSE_EXPRESSION,
         } as ISetContactPropertyBlockConfig,
       })
     }
@@ -145,7 +146,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
 
   // for radio buttons ######################
   initPropertyValueAction(): string {
-    if (this.propertyValue === this.expressionForCurrentBlockResponse) {
+    if (this.propertyValue === BLOCK_RESPONSE_EXPRESSION) {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE
     } else {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
@@ -155,7 +156,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
   updatePropertyValueAction({target: {value}}) {
     this.propertyValueAction = value
     if (value === this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE) {
-      this.updatePropertyValue(this.expressionForCurrentBlockResponse)
+      this.updatePropertyValue(BLOCK_RESPONSE_EXPRESSION)
     } else {
       this.updatePropertyValue(EMPTY_STRING_EXPRESSION)
     }
@@ -166,10 +167,6 @@ class GenericContactPropertyEditor extends mixins(Lang) {
   }
 
   // for input fields ######################
-  get expressionForCurrentBlockResponse() {
-    return `@(flow.${this.block.uuid})`
-  }
-
   updatePropertyKey(value: string): void {
     this.propertyKey = value
     this.block_updateConfigByPath({
