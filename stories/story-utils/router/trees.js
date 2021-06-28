@@ -1,4 +1,3 @@
-export const routes = [
-]
+export const routes = []
 
 export default routes

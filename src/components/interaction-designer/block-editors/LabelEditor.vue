@@ -1,10 +1,13 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/label`" #input-control="{ isValid }">
-    <div class="block-label" :id="`${block.uuid}.label`">
-      <text-editor v-model="label"
-                   :label="'flow-builder.block-label' | trans"
-                   :placeholder="'flow-builder.enter-block-label' | trans"
-                   :validState="isValid"/>
+  <validation-message
+    #input-control="{ isValid }"
+    :message-key="`block/${block.uuid}/label`">
+    <div class="block-label">
+      <text-editor
+        v-model="label"
+        :label="'flow-builder.block-label' | trans"
+        :placeholder="'flow-builder.enter-block-label' | trans"
+        :valid-state="isValid" />
     </div>
   </validation-message>
 </template>
@@ -12,18 +15,18 @@
 <script lang="ts">
 import TextEditor from '@/components/common/TextEditor.vue'
 import Lang from '@/lib/filters/lang'
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import { IBlock } from '@floip/flow-runner'
-import { namespace } from 'vuex-class'
-import { mixins } from "vue-class-component";
-import ValidationMessage from '@/components/common/ValidationMessage.vue';
+import {Component, Prop} from 'vue-property-decorator'
+import {IBlock} from '@floip/flow-runner'
+import {namespace} from 'vuex-class'
+import {mixins} from 'vue-class-component'
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')
 
 @Component({
   components: {
     TextEditor,
-    ValidationMessage
+    ValidationMessage,
   },
 })
 export default class LabelEditor extends mixins(Lang) {
@@ -34,9 +37,9 @@ export default class LabelEditor extends mixins(Lang) {
   }
 
   set label(value: IBlock['label']) {
-    this.block_setLabel({ blockId: this.block.uuid, value })
+    this.block_setLabel({blockId: this.block.uuid, value})
   }
 
-  @flowVuexNamespace.Mutation block_setLabel!: ({ blockId, value }: { blockId: IBlock['uuid'], value: IBlock['label'] }) => void
+  @flowVuexNamespace.Mutation block_setLabel!: ({blockId, value}: { blockId: IBlock['uuid'], value: IBlock['label'] }) => void
 }
 </script>

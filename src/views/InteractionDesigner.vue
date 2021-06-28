@@ -1,73 +1,87 @@
 <template>
-  <div v-if="activeFlow" class="interaction-designer-contents">
-    <tree-builder-toolbar/>
+  <div
+    v-if="activeFlow"
+    class="interaction-designer-contents">
+    <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate" />
 
-    <div class="tree-sidebar-container" :class="{'slide-out': !$route.meta.isSidebarShown}" :key="activeBlock && activeBlock.uuid">
-      <div class="sidebar-cue" :class="{'sidebar-close': $route.meta.isSidebarShown}" @click="showOrHideSidebar">
-        <i class="glyphicon"
-           :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
-                  'glyphicon-resize-small': $route.meta.isSidebarShown}">
-        </i>
+    <div
+      :key="isSimulatorActive || (activeBlock && activeBlock.uuid)"
+      class="tree-sidebar-container"
+      :class="{ 'slide-out': !$route.meta.isSidebarShown,}">
+      <div
+        class="sidebar-cue"
+        :class="{'sidebar-close': $route.meta.isSidebarShown}"
+        @click="showOrHideSidebar">
+        <i
+          class="glyphicon"
+          :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
+                   'glyphicon-resize-small': $route.meta.isSidebarShown}" />
       </div>
 
-      <div v-if="$route.name === 'flow-simulator'" class="tree-sidebar">
+      <div v-if="$route.name === 'flow-simulator' && hasSimulator" class="tree-sidebar">
         <clipboard-root />
       </div>
 
-      <div v-else-if="activeBlock" class="tree-sidebar"
-           :class="[`category-${blockClasses[activeBlock.type].category}`]">
-        <div class="tree-sidebar-edit-block"
-             :data-block-type="activeBlock && activeBlock.type"
-             :data-for-block-id="activeBlock && activeBlock.uuid">
-          <component v-if="activeBlock"
-                     :is="`Flow${activeBlock.type.replace('.', '')}`"
-                     :block="activeBlock"
-                     :flow="activeFlow">
-          </component>
+      <div
+        v-else-if="activeBlock"
+        class="tree-sidebar"
+        :class="[`category-${blockClasses[activeBlock.type].category}`]">
+        <div
+          class="tree-sidebar-edit-block"
+          :data-block-type="activeBlock && activeBlock.type"
+          :data-for-block-id="activeBlock && activeBlock.uuid">
+          <component
+            :is="`Flow${activeBlock.type.replace('.', '')}`"
+            v-if="activeBlock"
+            :block="activeBlock"
+            :flow="activeFlow" />
         </div>
 
-<!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
-<!--                     :jsonValidationResults="jsonValidationResults"-->
-<!--                     :isTreeValid="isTreeValid"/>-->
+        <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
+        <!--                     :jsonValidationResults="jsonValidationResults"-->
+        <!--                     :isTreeValid="isTreeValid"/>-->
 
-<!--        <tree-viewer v-if="sidebarType === 'TreeViewer'"/>-->
+        <!--        <tree-viewer v-if="sidebarType === 'TreeViewer'"/>-->
 
-<!--        <block-viewer-->
-<!--          :key="jsKey"-->
-<!--          v-if="sidebarType === 'BlockViewer'"-->
-<!--          :data-for-block-id="jsKey" />-->
-
+        <!--        <block-viewer-->
+        <!--          :key="jsKey"-->
+        <!--          v-if="sidebarType === 'BlockViewer'"-->
+        <!--          :data-for-block-id="jsKey" />-->
       </div>
 
-      <div v-else class="tree-sidebar">
+      <div
+        v-else
+        class="tree-sidebar">
         <div class="tree-sidebar-edit-block">
           <flow-editor :flow="activeFlow" />
         </div>
       </div>
     </div>
 
-    <div class="tree-contents"
-         :x-style="{'min-height': `${designerWorkspaceHeight}px`}">
+    <div
+      class="tree-contents"
+      :style="{
+        'min-height': `${designerWorkspaceHeight}px`,
+        'padding-top': `${toolbarHeight + 5}px`
+      }">
       <builder-canvas @click.native="handleCanvasSelected" />
     </div>
   </div>
 </template>
 
 <script>
-import { lang } from '@/lib/filters/lang'
+import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import lodash, { forEach, invoke, isEmpty } from 'lodash'
+import {endsWith, forEach, get, invoke, isEmpty} from 'lodash'
 import Vue from 'vue'
-import {
-  mapActions, mapGetters, mapMutations, mapState,
-} from 'vuex'
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 // import {affix as Affix} from 'vue-strap'
 // import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
 
 // import * as BlockTypes from './block-types'
 // import JsPlumbBlock from './JsPlumbBlock'
 
-import { store } from '@/store'
+import {store} from '@/store'
 
 // import TreeEditor from './TreeEditor'
 // import TreeViewer from './TreeViewer'
@@ -77,29 +91,11 @@ import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBu
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
-import { scrollBehavior, scrollBlockIntoView } from '@/router'
+import {scrollBehavior, scrollBlockIntoView} from '@/router'
 
 // import '../TreeDiffLogger'
 
 export default {
-  props: {
-    id: { type: String },
-    mode: { type: String },
-    appConfig: {
-      type: Object,
-      default() {
-        return {}
-      },
-    },
-    builderConfig: {
-      type: Object,
-      default() {
-        return {}
-      },
-    },
-  },
-
-  mixins: [lang, Routes],
 
   components: {
     // ...BlockTypes,
@@ -114,9 +110,29 @@ export default {
     // TreeUpdateConflictModal,
   },
 
+  mixins: [lang, Routes],
+  props: {
+    id: {type: String},
+    mode: {type: String},
+    appConfig: {
+      type: Object,
+      default() {
+        return {}
+      },
+    },
+    builderConfig: {
+      type: Object,
+      default() {
+        return {}
+      },
+    },
+  },
+
   data() {
     return {
-      pureVuejsBlocks: [ // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
+      toolbarHeight: 60,
+      // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
+      pureVuejsBlocks: [
         'CallBackWithCallCenterBlock',
         'CollaborativeFilteringQuestionBlock',
         'CollaborativeFilteringRatingBlock',
@@ -153,32 +169,33 @@ export default {
     ...mapState({
 
       // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
-      designerWorkspaceHeight: ({ trees: { tree, ui } }) => ui.designerWorkspaceHeight,
-      tree: ({ trees: { tree, ui } }) => tree,
-      validationResultsEmptyTree: ({ trees: { tree, ui } }) => !tree.blocks.length,
-      hasVoice: ({ trees: { tree } }) => tree.details.hasVoice,
-      hasSms: ({ trees: { tree } }) => tree.details.hasSms,
-      hasUssd: ({ trees: { tree } }) => tree.details.hasUssd,
-      hasSocial: ({ trees: { tree } }) => tree.details.hasSocial,
-      hasClipboard: ({ trees: { tree } }) => tree.details.hasClipboard,
-      blockClasses: ({ trees: { ui } }) => ui.blockClasses,
+      designerWorkspaceHeight: ({trees: {tree, ui}}) => ui.designerWorkspaceHeight,
+      tree: ({trees: {tree, ui}}) => tree,
+      validationResultsEmptyTree: ({trees: {tree, ui}}) => !tree.blocks.length,
+      hasVoice: ({trees: {tree}}) => tree.details.hasVoice,
+      hasSms: ({trees: {tree}}) => tree.details.hasSms,
+      hasUssd: ({trees: {tree}}) => tree.details.hasUssd,
+      hasSocial: ({trees: {tree}}) => tree.details.hasSocial,
+      hasClipboard: ({trees: {tree}}) => tree.details.hasClipboard,
+      blockClasses: ({trees: {ui}}) => ui.blockClasses,
     }),
 
     ...mapGetters('flow', ['activeFlow']),
     ...mapGetters('builder', ['activeBlock', 'isEditable']),
-    ...mapGetters('clipboard', ['hasSimulator']),
+    ...mapGetters('clipboard', ['hasSimulator', 'isSimulatorActive']),
 
     jsKey() {
-      return lodash.get(this.selectedBlock, 'jsKey')
+      return get(this.selectedBlock, 'jsKey')
     },
 
-    isPureVueBlock() { // pure vuejs block types handle readonly mode on their own
-      return _.includes(this.pureVuejsBlocks, lodash.get(this.selectedBlock, 'type'))
+    // pure vuejs block types handle readonly mode on their own
+    isPureVueBlock() {
+      return _.includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
     },
 
     sidebarType() {
       const
-        blockType = lodash.get(this.selectedBlock, 'type')
+        blockType = get(this.selectedBlock, 'type')
       const blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
 
       return this.isEditable
@@ -186,49 +203,60 @@ export default {
         : blockViewerType || 'TreeViewer'
     },
   },
+  watch: {
+    // `this.mode` comes from captured param in js-routes
+    mode(newMode) {
+      this.updateIsEditableFromParams(newMode)
+    },
+  },
 
   created() {
-    const { $store } = this
+    const {$store} = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-      this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig })
+      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
 
-    global.builder = this // initialize global reference for legacy + debugging
+    // initialize global reference for legacy + debugging
+    global.builder = this
 
     this.registerBlockTypes()
 
     this.initializeTreeModel()
-    this.updateIsEditableFromParams(this.mode) // `this.mode` comes from captured param in js-routes
+    // `this.mode` comes from captured param in js-routes
+    this.updateIsEditableFromParams(this.mode)
   },
 
   activated() {
-    this.deselectBlocks() // todo: remove once we have jsKey in our js-route
+    // todo: remove once we have jsKey in our js-route
+    this.deselectBlocks()
   },
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   mounted() {
-    this.flow_setActiveFlowId({ flowId: this.id })
+    this.flow_setActiveFlowId({flowId: this.id})
 
     // if nothing was found for the flow Id
     if (!this.activeFlow) {
-      this.flow_setActiveFlowId({ flowId: null })
+      this.flow_setActiveFlowId({flowId: null})
       this.$router.replace(
-        { path: this.route('flows.fetchFlow', { flowId: this.id }),
-          query: { nextUrl: this.$route.path } },
+        {
+                  path: this.route('flows.fetchFlow', {flowId: this.id}),
+                          query: {nextUrl: this.$route.path},
+                },
       )
     }
 
     this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
     this.deselectBlocks()
-    this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
+    this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
 
     setTimeout(() => {
-      const { blockId, field } = this.$route.params
+      const {blockId, field} = this.$route.params
       if (blockId) {
-        this.activateBlock({ blockId })
+        this.activateBlock({blockId})
         scrollBlockIntoView(blockId)
       }
       if (field) {
@@ -241,13 +269,8 @@ export default {
     console.debug('Vuej tree interaction designer mounted!')
   },
   beforeRouteUpdate(to, from, next) {
-    this.activateBlock({ blockId: to.params.blockId || null })
+    this.activateBlock({blockId: to.params.blockId || null})
     next()
-  },
-  watch: {
-    mode(newMode) {
-      this.updateIsEditableFromParams(newMode) // `this.mode` comes from captured param in js-routes
-    },
   },
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
@@ -262,9 +285,9 @@ export default {
       'initializeTreeModel']),
 
     async registerBlockTypes() {
-      const { blockClasses } = this
+      const {blockClasses} = this
 
-      forEach(blockClasses, async ({ type }) => {
+      forEach(blockClasses, async ({type}) => {
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')
         const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
@@ -273,7 +296,7 @@ export default {
       })
     },
 
-    handleCanvasSelected({ target }) {
+    handleCanvasSelected({target}) {
       if (!target.classList.contains('builder-canvas')) {
         console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
         return
@@ -300,11 +323,9 @@ export default {
        | mode-is-edit+view-url-suffix     |        0 (r=>view)  |     1               |
        ------------------------------------------------------------------------------ */
     discoverIsEditableFrom(mode, hash, isEditableLocked) {
-      if (isEditableLocked) {
-        return false
-      }
-
-      return !isEditableLocked && mode === 'edit' || !mode && lodash.endsWith(hash, '/edit')
+      return !isEditableLocked && (
+        mode === 'edit' || (!mode && endsWith(hash, '/edit'))
+      )
     },
 
     hoistResourceViewerToPushState(hash) {
@@ -325,6 +346,10 @@ export default {
       this.$router.history.replace({
         name: routeName,
       })
+    },
+
+    handleToolBarHeightUpdate(height) {
+      this.toolbarHeight = height
     },
 
   },
@@ -354,14 +379,14 @@ export default {
   .tree-sidebar-container {
     position: fixed;
     right: 0;
-    z-index: 2*10;
+    z-index: 3*10;
 
     height: 100vh;
     width: $sidebar-width;
     overflow-y: scroll;
 
     padding: 1em;
-    padding-top: $toolbar-height;
+    margin-top: 3em;
     transition: right 200ms ease-in-out;
 
     .tree-sidebar {
@@ -384,9 +409,9 @@ export default {
     }
   }
 
-  .tree-builder-toolbar {
+  .tree-builder-toolbar-main-menu {
     position: fixed;
-    z-index: 3*10;
+    z-index: 4*10;
 
     width: 100vw;
 
@@ -480,9 +505,9 @@ export default {
     background-color: #eee;
     padding: 5px;
     position: fixed;
+    margin-top: 1em;
     right: 0;
-    top: 70px;
-    z-index: 50;
+    z-index: 5*10;
   }
 
   .sidebar-close {

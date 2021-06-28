@@ -43,8 +43,8 @@
       "uuid": "29841127-3247-461e-829a-89c000000000",
       "values": [
         {
-          "languageId": "23",
-          "contentType": "text",
+          "language_id": "23",
+          "content_type": "text",
           "modes": [
             "ivr",
             "sms",
@@ -60,8 +60,8 @@
       "uuid": "29841127-3247-461e-829a-94d800000000",
       "values": [
         {
-          "languageId": "22",
-          "contentType": "text",
+          "language_id": "22",
+          "content_type": "text",
           "modes": [
             "ivr",
             "sms",
@@ -77,8 +77,8 @@
       "uuid": "29841127-3247-4610-8037-cdc5199dc271",
       "values": [
         {
-          "languageId": "22",
-          "contentType": "text",
+          "language_id": "22",
+          "content_type": "text",
           "modes": [
             "ivr",
             "sms",

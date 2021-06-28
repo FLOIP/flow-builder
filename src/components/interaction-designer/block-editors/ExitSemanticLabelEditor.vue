@@ -1,16 +1,18 @@
 <template>
   <div>
-    <text-editor v-model="semanticLabel"
-                 :is-editable="isEditable"
-                 :label="'flow-builder.block-exit-semantic-label' | trans"
-                 :placeholder="'flow-builder.enter-block-exit-semantic-label' | trans"/>
+    <text-editor
+      v-model="semanticLabel"
+      :is-editable="isEditable"
+      :label="'flow-builder.block-exit-semantic-label' | trans"
+      :placeholder="'flow-builder.enter-block-exit-semantic-label' | trans" />
   </div>
 </template>
 
-<script>
-import { mapMutations } from 'vuex'
+<script lang="js">
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
+import {mapMutations} from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
-import { lang } from '@/lib/filters/lang'
+import {lang} from '@/lib/filters/lang'
 
 export default {
   components: {
