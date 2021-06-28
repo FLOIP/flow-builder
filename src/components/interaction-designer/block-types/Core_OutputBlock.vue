@@ -14,7 +14,7 @@
         :message-key="`block/${block.uuid}/config/value`">
         <expression-editor
           :label="'flow-builder.output-expression' | trans"
-          :placeholder="'flow-builder.edit-expression' | trans"
+          :placeholder="'flow-builder.enter-expression' | trans"
           :current-expression="value"
           :valid-state="isValid"
           @commitExpressionChange="commitExpressionChange" />

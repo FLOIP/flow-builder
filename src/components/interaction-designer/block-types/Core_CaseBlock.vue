@@ -17,7 +17,7 @@
           :message-key="`block/${block.uuid}/exits/${i}/tag`">
           <expression-editor
             :label="i+1"
-            :placeholder="'flow-builder.edit-expression' | trans"
+            :placeholder="'flow-builder.enter-expression' | trans"
             :valid-state="isValid"
             :current-expression="exit.test"
             :expression-identifier="exit.uuid"

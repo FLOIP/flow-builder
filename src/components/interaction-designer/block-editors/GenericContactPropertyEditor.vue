@@ -1,7 +1,7 @@
 <template>
   <!--Contact property editor for all block types-->
   <div class="generic-contact-property-editor">
-    <label>{{ 'flow-builder.contact-properties-label' | trans }}</label>
+    <label>{{ 'flow-builder.contact-properties' | trans }}</label>
     <div class="custom-control custom-checkbox">
       <input
         id="setContactProperty"
@@ -14,7 +14,7 @@
       <label
         class="custom-control-label font-weight-normal"
         for="setContactProperty">
-        {{ 'flow-builder.set-contact-properties' | trans }}
+        {{ 'flow-builder.set-contact-property-with-response' | trans }}
       </label>
     </div>
 
@@ -50,7 +50,7 @@
           <label
             class="custom-control-label font-weight-normal"
             for="setProp">
-            {{ 'flow-builder.from-current-block-response' | trans }}
+            {{ 'flow-builder.entry-from-this-block' | trans }}
           </label>
         </div>
         <div class="custom-control custom-radio">
@@ -76,7 +76,7 @@
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-editor
           :label="'flow-builder.contact-property-expression' | trans"
-          :placeholder="'flow-builder.edit-expression' | trans"
+          :placeholder="'flow-builder.enter-expression' | trans"
           :current-expression="propertyValue"
           :valid-state="isValid"
           @commitExpressionChange="updatePropertyValue" />

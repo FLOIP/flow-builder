@@ -54,7 +54,7 @@
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-editor
           :label="'flow-builder.contact-property-expression' | trans"
-          :placeholder="'flow-builder.edit-expression' | trans"
+          :placeholder="'flow-builder.enter-expression' | trans"
           :current-expression="propertyValue"
           :valid-state="isValid"
           @commitExpressionChange="updatePropertyValue" />
