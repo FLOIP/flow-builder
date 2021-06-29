@@ -183,7 +183,7 @@ export interface IDeepBlockExitIdWithinFlow {
  * Another meaning: will the user get response when interacting with it?
  * @param block
  */
-export function isBlockInteractive(block: IBlock) {
+export function isBlockInteractive(block: IBlock): boolean {
   const interactiveBlockTypesWithoutPrompt = [PHOTO_RESPONSE_BLOCK_TYPE, LOCATION_RESPONSE_BLOCK_TYPE]
   return has(block.config, 'prompt') || includes(interactiveBlockTypesWithoutPrompt, block.type)
 }

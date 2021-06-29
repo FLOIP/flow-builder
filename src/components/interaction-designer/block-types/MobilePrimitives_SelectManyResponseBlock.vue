@@ -89,7 +89,7 @@ import GenericContactPropertyEditor from '../block-editors/GenericContactPropert
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
+@Component({
   components: {
     GenericContactPropertyEditor,
     BlockNameEditor,

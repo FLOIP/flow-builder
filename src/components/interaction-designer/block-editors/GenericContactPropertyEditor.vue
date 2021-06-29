@@ -92,7 +92,7 @@ import {IBlock, ISetContactPropertyBlockConfig} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import {get, has, map} from 'lodash'
+import {get, has} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
@@ -123,19 +123,19 @@ class GenericContactPropertyEditor extends mixins(Lang) {
   propertyKey = ''
   propertyValue = ''
 
-  created() {
+  created(): void {
     this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')
     this.propertyKey = get(this.block.config, 'set_contact_property.property_key', '')
     this.propertyValue = get(this.block.config, 'set_contact_property.property_value', EMPTY_STRING_EXPRESSION)
     this.initPropertyValueAction()
   }
 
-  isBlockInteractive(block: IBlock) {
+  isBlockInteractive(block: IBlock): boolean {
     return isBlockInteractive(block)
   }
 
   // for checkbox ######################
-  toggleSetContactProperty() {
+  toggleSetContactProperty(): void {
     this.shouldSetContactProperty = !this.shouldSetContactProperty
     if (!this.shouldSetContactProperty) {
       this.block_removeConfigByKey({blockId: this.block.uuid, key: 'set_contact_property'})
@@ -160,7 +160,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     }
   }
 
-  updatePropertyValueAction({target: {value}}: {target: {value: string}}) {
+  updatePropertyValueAction({target: {value}}: {target: {value: string}}): void {
     this.propertyValueAction = value
     if (value === this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE) {
       this.updatePropertyValue(BLOCK_RESPONSE_EXPRESSION)
@@ -169,7 +169,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     }
   }
 
-  get shouldUseOpenExpression() {
+  get shouldUseOpenExpression(): boolean {
     return this.propertyValueAction === this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
   }
 
