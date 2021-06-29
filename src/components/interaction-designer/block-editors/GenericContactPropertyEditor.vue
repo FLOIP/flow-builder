@@ -37,7 +37,9 @@
 
       <!--Contact property value editor with actions-->
       <label>{{ 'flow-builder.value' | trans }}</label>
-      <div class="form-group">
+      <div
+        v-if="isBlockInteractive(block)"
+        class="form-group">
         <div class="custom-control custom-radio">
           <input
             id="setProp"
@@ -75,7 +77,7 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-editor
-          :label="'flow-builder.contact-property-expression' | trans"
+          :label="isBlockInteractive(block) ? ('flow-builder.contact-property-expression' | trans) : ''"
           :placeholder="'flow-builder.enter-expression' | trans"
           :current-expression="propertyValue"
           :valid-state="isValid"
@@ -95,6 +97,7 @@ import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 import TextEditor from '@/components/common/TextEditor.vue'
+import {isBlockInteractive} from '@/store/flow/block.ts'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -125,6 +128,10 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     this.propertyKey = get(this.block.config, 'set_contact_property.property_key', '')
     this.propertyValue = get(this.block.config, 'set_contact_property.property_value', EMPTY_STRING_EXPRESSION)
     this.initPropertyValueAction()
+  }
+
+  isBlockInteractive(block: IBlock) {
+    return isBlockInteractive(block)
   }
 
   // for checkbox ######################
