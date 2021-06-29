@@ -15,9 +15,10 @@
         :block="block"
         :flow="flow" />
 
+      <slot name="extras" />
+
       <generic-contact-property-editor :block="block" />
 
-      <slot name="extras" />
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />

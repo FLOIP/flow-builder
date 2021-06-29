@@ -10,7 +10,7 @@
         type="checkbox"
         name="setContactProperty"
         class="custom-control-input"
-        @change="toggleSetContactProperty" />
+        @change="toggleSetContactProperty">
       <label
         class="custom-control-label font-weight-normal"
         for="setContactProperty">
@@ -43,12 +43,12 @@
         <div class="custom-control custom-radio">
           <input
             id="setProp"
-            @change="updatePropertyValueAction"
             type="radio"
             name="contactPropAction"
             :checked="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
             :value="PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
-            class="custom-control-input">
+            class="custom-control-input"
+            @change="updatePropertyValueAction">
           <label
             class="custom-control-label font-weight-normal"
             for="setProp">
@@ -58,12 +58,12 @@
         <div class="custom-control custom-radio">
           <input
             id="clearProp"
-            @change="updatePropertyValueAction"
             type="radio"
             name="contactPropAction"
             :checked="propertyValueAction === PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
             :value="PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
-            class="custom-control-input">
+            class="custom-control-input"
+            @change="updatePropertyValueAction">
           <label
             class="custom-control-label font-weight-normal"
             for="clearProp">
@@ -77,7 +77,7 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-editor
-          :label="isBlockInteractive(block) ? ('flow-builder.contact-property-expression' | trans) : ''"
+          :label="''"
           :placeholder="'flow-builder.enter-expression' | trans"
           :current-expression="propertyValue"
           :valid-state="isValid"

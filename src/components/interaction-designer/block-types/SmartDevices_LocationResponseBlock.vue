@@ -17,6 +17,9 @@
         @commitAccuracyTimeoutSecondsChange="updateTimeout" />
 
       <slot name="extras" />
+
+      <generic-contact-property-editor :block="block" />
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
@@ -43,6 +46,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import BlockThresholdEditor from '../block-editors/ThresholdEditor.vue'
 import BlockTimeoutEditor from '../block-editors/TimeoutEditor.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -50,6 +54,7 @@ const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
+    GenericContactPropertyEditor,
     ResourceEditor,
     BlockNameEditor,
     BlockLabelEditor,

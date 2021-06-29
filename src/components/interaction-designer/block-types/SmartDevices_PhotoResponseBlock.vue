@@ -9,6 +9,9 @@
       <block-semantic-label-editor :block="block" />
 
       <slot name="extras" />
+
+      <generic-contact-property-editor :block="block" />
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
@@ -21,7 +24,7 @@
 <script lang="ts">
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
-
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
 import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 
@@ -40,6 +43,7 @@ const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
+    GenericContactPropertyEditor,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
