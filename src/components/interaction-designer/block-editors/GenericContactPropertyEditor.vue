@@ -152,7 +152,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
   }
 
   // for radio buttons ######################
-  initPropertyValueAction(): string {
+  initPropertyValueAction(): void {
     if (this.propertyValue === BLOCK_RESPONSE_EXPRESSION) {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE
     } else {
@@ -160,7 +160,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     }
   }
 
-  updatePropertyValueAction({target: {value}}) {
+  updatePropertyValueAction({target: {value}}: {target: {value: string}}) {
     this.propertyValueAction = value
     if (value === this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE) {
       this.updatePropertyValue(BLOCK_RESPONSE_EXPRESSION)
@@ -193,7 +193,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value: string }
+    {blockId, path, value}: { blockId: string, path: string, value: string | object }
   ) => void
   @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (
     {blockId, path, value}: { blockId: string, path: string, value: string }
