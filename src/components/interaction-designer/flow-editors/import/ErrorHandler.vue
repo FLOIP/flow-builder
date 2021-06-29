@@ -5,14 +5,14 @@
       <div
         class="spinner-border"
         role="status">
-        <span class="sr-only">{{'flow-builder.loading' | trans}}</span>
+        <span class="sr-only">{{ 'flow-builder.loading' | trans }}</span>
       </div>
     </div>
     <div
       v-if="flowError"
       class="alert alert-danger mt-3"
       role="alert">
-      {{flowError | trans(flowErrorInterpolations)}}
+      {{ flowError | trans(flowErrorInterpolations) }}
     </div>
     <div
       v-if="hasUnsupportedBlockClasses"

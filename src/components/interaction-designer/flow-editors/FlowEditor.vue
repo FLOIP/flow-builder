@@ -7,7 +7,17 @@
     <fieldset :disabled="!isEditable && sidebar">
       <div class="row">
         <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
-          <flow-label-editor :flow="flow" />
+          <!-- We have `name` required according to IFlow, but it is auto-gen from `label`, therefore:
+            - name refers to validation message-key
+            - the UI field will be for label -->
+          <validation-message
+            #input-control="{ isValid }"
+            :message-key="`flow/${flow.uuid}/name`">
+            <flow-label-editor
+              :flow="flow"
+              :valid-state="isValid" />
+          </validation-message>
+
           <validation-message
             #input-control="{ isValid }"
             :message-key="`flow/${flow.uuid}/interaction_timeout`">
@@ -17,12 +27,21 @@
           </validation-message>
         </div>
         <div :class="{'col-12': sidebar, 'col-6': !sidebar}">
-          <flow-languages-editor
-            :flow="flow"
-            @commitFlowLanguagesChange="updateFlowLanguages" />
-          <flow-modes-editor
-            :flow="flow"
-            @commitFlowModesChange="updateFlowModes" />
+          <validation-message
+            #input-control="{ isValid }"
+            :message-key="`flow/${flow.uuid}/languages`">
+            <flow-languages-editor
+              :flow="flow"
+              @commitFlowLanguagesChange="updateFlowLanguages" />
+          </validation-message>
+
+          <validation-message
+            #input-control="{ isValid }"
+            :message-key="`flow/${flow.uuid}/supported_modes`">
+            <flow-modes-editor
+              :flow="flow"
+              @commitFlowModesChange="updateFlowModes" />
+          </validation-message>
         </div>
       </div>
     </fieldset>
