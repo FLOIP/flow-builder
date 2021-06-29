@@ -5,7 +5,7 @@ import Ajv, {ErrorObject, ValidateFunction} from 'ajv'
 import ajvFormat from 'ajv-formats'
 
 import {JSONSchema7} from 'json-schema'
-import {IBlock, IFlow} from '@floip/flow-runner'
+import {IBlock, IContainer, IFlow} from '@floip/flow-runner'
 import {forIn, get, isEmpty} from 'lodash'
 
 const ajv = new Ajv({allErrors: true})
@@ -108,6 +108,18 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     debugValidationStatus(state.validationStatuses[index], 'flow validation status')
     return state.validationStatuses[index]
   },
+
+  async validate_flowContainer({ state }, { flowContainer }: { flowContainer: IContainer }): Promise<IValidationStatus> {
+    const validate = getOrCreateFlowContainerValidator()
+    const index = `flowContainer/${flowContainer.uuid}`
+    Vue.set(state.validationStatuses, index, {
+      isValid: validate(flowContainer),
+      ajvErrors: validate.errors,
+    })
+
+    debugValidationStatus(state.validationStatuses[index], 'flow container validation status')
+    return state.validationStatuses[index]
+  },
 }
 
 export const store: Module<IValidationState, IRootState> = {
@@ -136,6 +148,14 @@ function getOrCreateFlowValidator(): ValidateFunction {
   }
   return validators.get(validationType)!
 }
+function getOrCreateFlowContainerValidator(): ValidateFunction {
+  const validationType = 'flowContainer'
+  if (isEmpty(validators) || !validators.has(validationType)) {
+    const flowContainerJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowContainerJsonSchema))
+  }
+  return validators.get(validationType)!
+}
 
 /**
  * Create AJV Validator
@@ -150,14 +170,16 @@ function getOrCreateFlowValidator(): ValidateFunction {
 export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchema7, subSchema = ''): ValidateFunction {
   if (subSchema === '') {
     return ajv.compile(jsonSchema)
-  } else {
-    ajv.addSchema(jsonSchema)
-    const validate = ajv.getSchema(subSchema)
-    if (!validate) {
-      throw new Error(`Cannot find definition ${subSchema} in schema ${jsonSchema}`)
-    }
-    return validate as ValidateFunction
   }
+  let validate = ajv.getSchema(subSchema)
+  if (!validate) {
+    ajv.addSchema(jsonSchema)
+    validate = ajv.getSchema(subSchema)
+  }
+  if (!validate) {
+    throw new Error(`Cannot find definition ${subSchema} in schema ${jsonSchema}`)
+  }
+  return validate as ValidateFunction
 }
 
 function debugValidationStatus(status: IValidationStatus, customMessage: string) {
@@ -194,8 +216,7 @@ function flatValidationStatuses({
 }: { keyPrefix: string, errors: undefined | null | Array<ErrorObject>, accumulator: IIndexedString }) {
   errors?.forEach((error) => {
     let index = ''
-    let
-      message = ''
+    let message = ''
     if (DEV_ERROR_KEYWORDS.includes(error.keyword)) {
       // this is more likely a dev issue than user error
       // error.dataPath could be empty or not for such errors

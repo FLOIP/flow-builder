@@ -98,8 +98,13 @@ export const mutations: MutationTree<IImportState> = {
       set(state.flowContainer, 'flows[0].blocks', blocks)
     }
   },
+  setFlowErrorWithInterpolations(state, { text, interpolations }) {
+    state.flowError = text
+    state.flowErrorInterpolations = interpolations
+  },
   setFlowError(state, text) {
     state.flowError = text
+    state.flowErrorInterpolations = null
   },
   setGroupBlocks(state, groupBlocks) {
     state.groupBlocks = groupBlocks
@@ -148,11 +153,16 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('setFlowError', 'flow-builder.invalid-json-provided')
       return
     }
-    // await dispatch('checkIfValidFlow'. flowContainer) //TODO - waiting for validation work
     if (!checkSingleFlowOnly(flowContainer)) {
       commit('setFlowError', 'flow-builder.importer-currently-supports-single-flow-only')
       return
     }
+    const validationErrors = await dispatch('validation/validate_flowContainer', { flowContainer }, { root: true })
+    if (!validationErrors.isValid) {
+      commit('setFlowErrorWithInterpolations', { text: 'flow-builder.flow-invalid', interpolations: { version: flowContainer.specification_version } })
+      return
+    }
+
     const oldFlowContainer = cloneDeep(state.flowContainer)
     const newFlowContainer = cloneDeep(flowContainer)
     commit('setFlowContainer', flowContainer)
@@ -339,6 +349,7 @@ export interface IImportState {
   flowContainer: IContext | null,
   flowJsonText: string,
   flowError: string,
+  flowErrorInterpolations: null | object,
   propertyBlocks: IBlock[],
   groupBlocks: IBlock[],
   updating: boolean,
@@ -359,6 +370,7 @@ export const stateFactory = (): IImportState => ({
   flowContainer: null,
   flowJsonText: '',
   flowError: '',
+  flowErrorInterpolations: null,
   propertyBlocks: [],
   groupBlocks: [],
   updating: false,

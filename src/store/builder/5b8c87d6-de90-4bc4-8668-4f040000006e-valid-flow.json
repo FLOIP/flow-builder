@@ -35,7 +35,7 @@
               }
             }
           },
-          "type": "Core.SetFooMembership",
+          "type": "Core.Log",
           "name": "abc",
           "label": "",
           "semantic_label": "",
@@ -50,6 +50,44 @@
           ],
           "config": {
             "message": "3087a849-3f88-4fe4-8992-a8f5a8866124"
+          }
+        },
+        {
+          "uuid": "a5d6f811-7ba6-404d-890f-29d6c10e43b5",
+          "vendor_metadata": {
+            "io_viamo": {
+              "uiData": {
+                "xPosition": 380,
+                "yPosition": 227
+              }
+            }
+          },
+          "type": "MobilePrimitives.NumericResponse",
+          "name": "def",
+          "label": "",
+          "semantic_label": "",
+          "exits": [
+            {
+              "uuid": "0638e873-a28c-4b7d-9578-5341de4e66bf",
+              "tag": "Default",
+              "label": "Default",
+              "default": true,
+              "config": {}
+            },
+            {
+              "uuid": "2c1a46ac-4c60-4750-96fa-aa56a36f3318",
+              "tag": "Error",
+              "label": "Error",
+              "config": {}
+            }
+          ],
+          "config": {
+            "prompt": "53d58537-2c26-44ca-b43a-474932548885",
+            "validation_minimum": 0,
+            "validation_maximum": 0,
+            "ivr": {
+              "max_digits": -1 
+            }
           }
         }
       ],
