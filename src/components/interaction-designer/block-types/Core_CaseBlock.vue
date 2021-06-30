@@ -14,7 +14,7 @@
         class="form-group">
         <validation-message
           #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/exits/${i}/tag`">
+          :message-key="`block/${block.uuid}/exits/${i}/test`">
           <expression-input
             class="d-flex m-0"
             :label="i+1"
