@@ -5,6 +5,7 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <title-editor :block="block" />
       <block-name-editor :block="block" />
       <block-label-editor :block="block" />
       <block-semantic-label-editor :block="block" />
@@ -36,6 +37,7 @@ import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
+import TitleEditor from '../block-editors/TitleEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
@@ -52,6 +54,7 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    TitleEditor,
   },
 })
 class MobilePrimitives_MessageBlock extends mixins(Lang) {
