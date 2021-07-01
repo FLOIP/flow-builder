@@ -73,6 +73,17 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
+  block_setLabel({commit}, {blockId, value}) {
+    const snakeCase = (value: string) => value?.trim()
+      .replace(/[^\w\s]+/g, '')
+      .split(' ')
+      .map((word) => word.toLowerCase())
+      .join('_')
+
+    commit('block_setLabel', {blockId, value})
+    commit('block_setName', {blockId, value: snakeCase(value)})
+  },
+
   async block_createBlockDefaultExitWith(
     {dispatch},
     {props}: { props: { uuid: string } & Partial<IBlockExit> },

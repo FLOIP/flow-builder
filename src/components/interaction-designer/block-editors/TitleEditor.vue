@@ -1,26 +1,47 @@
 <template>
   <section class="mb-3">
     <label class="title">Title</label>
-    <div class="d-flex">
-      <input
-        v-model="name"
-        type="text"
-        class="w-100">
-      <span class="btn btn-outline-dark" @click="editCode = !editCode">
-        <i class="glyphicon glyphicon-cog" />
-      </span>
-    </div>
-    <div v-if="editCode">
-      <label>Edit Block Code</label>
+    <validation-message
+      #input-control="{ isValid: isLabelValid }"
+      :message-key="`block/${block.uuid}/label`">
       <div class="d-flex">
-        <input type="text" class="form-control w-100" v-model="autoCode" />
-        <span class="btn btn-outline-dark" @click="editCode = false">
-          <i class="glyphicon glyphicon-check" />
+        <input
+          v-model="blockLabel"
+          type="text"
+          class="form-control w-100"
+          :class="{ 'is-invalid': isLabelValid === false }">
+        <span
+          class="btn btn-outline-secondary"
+          @click="editBlockName = true">
+          <i class="glyphicon glyphicon-cog" />
         </span>
       </div>
-    </div>
-    <div v-else>
-      <strong>Code:</strong> {{ autoCode }}
+    </validation-message>
+    <div class="mt-3">
+      <validation-message
+        #input-control="{ isValid: isNameValid }"
+        :message-key="`block/${block.uuid}/name`">
+        <div v-if="editBlockName || isNameValid === false">
+          <label>Edit Block Code</label>
+          <div class="d-flex">
+            <input
+              v-model="blockName"
+              type="text"
+              class="form-control w-100"
+              :class="{ 'is-invalid': isNameValid === false }"
+              @keydown="filterName">
+            <span
+              class="btn btn-outline-dark"
+              @click="editBlockName = false">
+              <i class="glyphicon glyphicon-check" />
+            </span>
+          </div>
+        </div>
+        <div v-else>
+          <strong>Code:</strong>
+          <span class="block-code"> {{ blockName }} </span>
+        </div>
+      </validation-message>
     </div>
   </section>
 </template>
@@ -43,24 +64,33 @@ const flowVuexNamespace = namespace('flow')
   },
 })
 class TitleEditor extends mixins(Lang) {
-  autoCode = ''
-  editCode = false
+  editBlockName = false
 
   @Prop() readonly block!: IBlock
 
-  snakeCase = (value: string) => value.trim()
-    .split(' ')
-    .map((word) => word.toLowerCase())
-    .join('_')
+  get blockLabel(): string {
+    return this.block.label ?? ''
+  }
 
-  get name(): string {
+  set blockLabel(value: string) {
+    this.block_setLabel({blockId: this.block.uuid, value})
+  }
+
+  get blockName(): string {
     return this.block.name
   }
-  set name(value: string) {
+
+  set blockName(value: string) {
     this.block_setName({blockId: this.block.uuid, value})
-    this.autoCode = this.snakeCase(value)
   }
 
+  filterName(e: KeyboardEvent): void {
+    if (e.key.match(/\W+|Enter/g)) {
+      e.preventDefault()
+    }
+  }
+
+  @flowVuexNamespace.Action block_setLabel!: ({blockId, value}: {blockId: string, value: string}) => void
   @flowVuexNamespace.Mutation block_setName!: ({blockId, value}: {blockId: string, value: string}) => void
 }
 export default TitleEditor
@@ -70,5 +100,7 @@ export default TitleEditor
 .title {
   color: #531944;
 }
+.block-code {
+  word-wrap: break-word;
+}
 </style>
-
