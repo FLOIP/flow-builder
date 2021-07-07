@@ -466,7 +466,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                          
                         <a
                           class="btn btn-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
+                          href="#/flows/1/designer/edit"
                           title="Click to toggle editing"
                         >
                           
@@ -586,7 +586,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         >
                           <a
                             class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
+                            href="#/flows/1/designer"
                           >
                             
               Flow view
@@ -595,7 +595,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                            
                           <a
                             class="btn btn-secondary"
-                            href="#/trees/1/resource-viewer"
+                            href="#/flows/1/resource-viewer"
                           >
                             
               Resources view
@@ -605,7 +605,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                          
                         <a
                           class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
+                          href="#/flows/1/designer/view"
                           title="Click to toggle editing"
                         >
                           
@@ -940,7 +940,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                         >
                           <a
                             class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
+                            href="#/flows/1/designer"
                           >
                             
               Flow view
@@ -949,7 +949,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                            
                           <a
                             class="btn btn-secondary"
-                            href="#/trees/1/resource-viewer"
+                            href="#/flows/1/resource-viewer"
                           >
                             
               Resources view
@@ -959,7 +959,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                          
                         <a
                           class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
+                          href="#/flows/1/designer/view"
                           title="Click to toggle editing"
                         >
                           
@@ -1293,7 +1293,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         >
                           <a
                             class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
+                            href="#/flows/1/designer"
                           >
                             
               Flow view
@@ -1302,7 +1302,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                            
                           <a
                             class="btn btn-secondary"
-                            href="#/trees/1/resource-viewer"
+                            href="#/flows/1/resource-viewer"
                           >
                             
               Resources view
@@ -1312,7 +1312,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                          
                         <a
                           class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
+                          href="#/flows/1/designer/view"
                           title="Click to toggle editing"
                         >
                           
@@ -1618,7 +1618,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                         >
                           <a
                             class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
+                            href="#/flows/1/designer"
                           >
                             
               Flow view
@@ -1627,7 +1627,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                            
                           <a
                             class="btn btn-secondary"
-                            href="#/trees/1/resource-viewer"
+                            href="#/flows/1/resource-viewer"
                           >
                             
               Resources view
@@ -1637,7 +1637,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                          
                         <a
                           class="btn btn-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
+                          href="#/flows/1/designer/edit"
                           title="Click to toggle editing"
                         >
                           

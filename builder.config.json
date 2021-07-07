@@ -39,15 +39,15 @@
           "name": "home",
           "path": "\/",
           "methods": ["GET"]
+        },
+        "editTree": {
+          "name": "editTree",
+          "path": "\/flows\/{flowId}\/{component?}\/{mode?}",
+          "params": ["flowId", "component", "mode"],
+          "methods": ["GET", "HEAD"]
         }
       },
       "trees": {
-        "editTree": {
-          "name": "editTree",
-          "path": "\/trees\/{treeId}\/{component?}\/{mode?}",
-          "params": ["treeId", "component", "mode"],
-          "methods": ["GET", "HEAD"]
-        },
         "resumeableAudioUpload": {
           "name": "resumeableAudioUpload",
           "path": "\/audiofiles\/upload",

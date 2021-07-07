@@ -257,7 +257,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   get treeViewUrl(): any {
     return this.editTreeRoute({
-      component: 'interaction-designer',
+      component: 'designer',
     })
   }
 
@@ -276,12 +276,12 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   get editOrViewTreeJsUrl(): any {
     if (this.isEditable) {
       return this.editTreeRoute({
-        component: 'interaction-designer',
+        component: 'designer',
         mode: 'view',
       })
     }
     return this.editTreeRoute({
-      component: 'interaction-designer',
+      component: 'designer',
       mode: 'edit',
     })
   }
@@ -368,11 +368,11 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   editTreeRoute({component = null, mode = null}: { component?: any, mode?: string | null } = {}): any {
     const context = this.removeNilValues({
-      treeId: this.activeFlow?.uuid,
+      flowId: this.activeFlow?.uuid,
       component,
       mode,
     })
-    return this.route('trees.editTree', context)
+    return this.route('flows.editTree', context)
   }
 
   hasClassDetail(classDetails: { [key: string]: any }, attribute: string): any {
