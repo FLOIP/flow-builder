@@ -6,9 +6,6 @@
 
     <fieldset :disabled="!isEditable">
       <title-editor :block="block" />
-      <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"

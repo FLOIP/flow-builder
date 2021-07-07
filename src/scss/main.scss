@@ -1,4 +1,4 @@
-@import './node_modules/bootstrap/scss/_functions.scss';
-@import './node_modules/bootstrap/scss/_variables.scss';
-@import './node_modules/bootstrap/scss/_mixins.scss';
+@import 'custom_variables.scss';
+@import './node_modules/bootstrap/scss/bootstrap';
+@import './node_modules/bootstrap-vue/src/index.scss';
 @import 'bootstrap3_compatibility.scss';
