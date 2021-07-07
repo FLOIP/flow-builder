@@ -224,7 +224,6 @@ const validationVuexNamespace = namespace('validation')
     // TreeUpdateConflictModal,
     // InteractionTotalsDateRangeConfiguration
   },
-
 })
 export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isImporterVisible = false
@@ -274,16 +273,12 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   get editOrViewTreeJsUrl(): any {
-    if (this.isEditable) {
-      return this.editTreeRoute({
-        component: 'interaction-designer',
-        mode: 'view',
-      })
+    return {
+      params: {
+        id: this.activeFlow?.uuid,
+        mode: this.isEditable ? 'view' : 'edit',
+      },
     }
-    return this.editTreeRoute({
-      component: 'interaction-designer',
-      mode: 'edit',
-    })
   }
 
   get saveButtonText(): any {
@@ -317,12 +312,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
   }
 
-  get hasSimulator() {
-    return this.hasOfflineMode && this.isFeatureSimulatorEnabled
-  }
-
   // Methods #####################
-
   async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }): Promise<void> {
     const {uuid: blockId} = await this.flow_addBlankBlockByType({
       type,
@@ -465,6 +455,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   // Clipboard
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
+  @clipboardVuexNamespace.Getter hasSimulator!: boolean
 
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined}) => void
 }

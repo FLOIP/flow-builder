@@ -18,9 +18,7 @@
                    'glyphicon-resize-small': $route.meta.isSidebarShown}" />
       </div>
 
-      <div
-        v-if="isSimulatorActive"
-        class="tree-sidebar">
+      <div v-if="$route.name === 'flow-simulator' && hasSimulator" class="tree-sidebar">
         <clipboard-root />
       </div>
 
@@ -184,7 +182,7 @@ export default {
 
     ...mapGetters('flow', ['activeFlow']),
     ...mapGetters('builder', ['activeBlock', 'isEditable']),
-    ...mapGetters('clipboard', ['isSimulatorActive']),
+    ...mapGetters('clipboard', ['hasSimulator', 'isSimulatorActive']),
 
     jsKey() {
       return get(this.selectedBlock, 'jsKey')
@@ -245,9 +243,9 @@ export default {
       this.flow_setActiveFlowId({flowId: null})
       this.$router.replace(
         {
- path: this.route('flows.fetchFlow', {flowId: this.id}),
-          query: {nextUrl: this.$route.path},
-},
+                  path: this.route('flows.fetchFlow', {flowId: this.id}),
+                          query: {nextUrl: this.$route.path},
+                },
       )
     }
 
@@ -264,6 +262,9 @@ export default {
       if (field) {
         scrollBehavior(this.$route)
       }
+      if (this.$route.name === 'flow-simulator' && this.hasSimulator()) {
+        this.setSimulatorActive(true)
+      }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
   },
@@ -276,6 +277,7 @@ export default {
     ...mapMutations('builder', ['activateBlock']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
+    ...mapActions('clipboard', ['setSimulatorActive']),
 
     ...mapActions([
       'attemptSaveTree',

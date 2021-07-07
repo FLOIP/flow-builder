@@ -465,8 +465,9 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                         <!---->
                          
                         <a
-                          class="btn btn-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
+                          aria-current="page"
+                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
+                          href="#/"
                           title="Click to toggle editing"
                         >
                           
@@ -604,8 +605,9 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                         </div>
                          
                         <a
-                          class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
+                          aria-current="page"
+                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active active"
+                          href="#/"
                           title="Click to toggle editing"
                         >
                           
@@ -958,8 +960,9 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                         </div>
                          
                         <a
-                          class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
+                          aria-current="page"
+                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active active"
+                          href="#/"
                           title="Click to toggle editing"
                         >
                           
@@ -1311,8 +1314,9 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                         </div>
                          
                         <a
-                          class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
+                          aria-current="page"
+                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active active"
+                          href="#/"
                           title="Click to toggle editing"
                         >
                           
@@ -1636,8 +1640,9 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                         </div>
                          
                         <a
-                          class="btn btn-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
+                          aria-current="page"
+                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
+                          href="#/"
                           title="Click to toggle editing"
                         >
                           
