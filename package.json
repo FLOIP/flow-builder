@@ -1,6 +1,6 @@
 {
   "name": "@floip/flow-builder",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "flow-builder provides an open source frontend for authoring flow interoperability project specification compliant flows.",
   "main": "./dist/flow-builder.common.js",
   "files": [
@@ -16,7 +16,7 @@
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
     "md-docs": "./node_modules/widdershins/widdershins.js docs/routes/openapi/routes.yaml docs/routes/markdown/routes.md --language_tabs 'javascript:Javascript' --omitHeader",
     "clean": "rm -rf dist/",
-    "deploy": "yarn clean && yarn build && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD"
+    "deploy": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD"
   },
   "dependencies": {
     "@floip/flow-runner": "^1.0.11",
