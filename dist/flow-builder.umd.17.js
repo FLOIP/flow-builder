@@ -10,12 +10,12 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"217eaa8b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=template&id=4f5a4d38&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mobile-primitive-numeric-response-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('block-minimum-numeric-editor',{attrs:{"block":_vm.block},on:{"commitValidationMinimumChange":_vm.updateValidationMin}}),_c('block-maximum-numeric-editor',{attrs:{"block":_vm.block},on:{"commitValidationMaximumChange":_vm.updateValidationMax}}),_c('block-max-digit-editor',{attrs:{"block":_vm.block,"hasIvr":_vm.hasVoiceMode},on:{"commitMaxDigitsChange":_vm.updateMaxDigits}}),(_vm.promptResource)?_c('resource-editor',{attrs:{"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e(),_vm._t("extras"),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5d79dff5-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=template&id=165a0a5a&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mobile-primitive-numeric-response-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_c('block-minimum-numeric-editor',{attrs:{"block":_vm.block},on:{"commitValidationMinimumChange":_vm.updateValidationMin}}),_c('block-maximum-numeric-editor',{attrs:{"block":_vm.block},on:{"commitValidationMaximumChange":_vm.updateValidationMax}}),_c('block-max-digit-editor',{attrs:{"block":_vm.block,"has-ivr":_vm.hasVoiceMode},on:{"commitMaxDigitsChange":_vm.updateMaxDigits}}),(_vm.promptResource)?_c('resource-editor',{attrs:{"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e(),_vm._t("extras"),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=template&id=4f5a4d38&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=template&id=165a0a5a&
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("d4ec");
@@ -61,12 +61,12 @@ var mutations = {};
 var actions = {
   setValidationMinimum: function setValidationMinimum(_ref, _ref2) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var commit, rootGetters, blockId, value;
+      var commit, blockId, value;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref.commit, rootGetters = _ref.rootGetters;
+              commit = _ref.commit;
               blockId = _ref2.blockId, value = _ref2.value;
               commit('flow/block_updateConfigByKey', {
                 blockId: blockId,
@@ -87,12 +87,12 @@ var actions = {
   },
   setValidationMaximum: function setValidationMaximum(_ref3, _ref4) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var commit, rootGetters, blockId, value;
+      var commit, blockId, value;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref3.commit, rootGetters = _ref3.rootGetters;
+              commit = _ref3.commit;
               blockId = _ref4.blockId, value = _ref4.value;
               commit('flow/block_updateConfigByKey', {
                 blockId: blockId,
@@ -113,12 +113,12 @@ var actions = {
   },
   setMaxDigits: function setMaxDigits(_ref5, _ref6) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-      var commit, rootGetters, blockId, value;
+      var commit, blockId, value;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref5.commit, rootGetters = _ref5.rootGetters;
+              commit = _ref5.commit;
               blockId = _ref6.blockId, value = _ref6.value;
               commit('flow/block_updateConfigByKey', {
                 blockId: blockId,
@@ -141,12 +141,12 @@ var actions = {
   },
   createWith: function createWith(_ref7, _ref8) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-      var rootGetters, dispatch, commit, props, exits, blankResource;
+      var dispatch, commit, props, exits, blankResource;
       return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
-              rootGetters = _ref7.rootGetters, dispatch = _ref7.dispatch, commit = _ref7.commit;
+              dispatch = _ref7.dispatch, commit = _ref7.commit;
               props = _ref8.props;
               _context4.t0 = dispatch;
               _context4.next = 5;
@@ -242,6 +242,9 @@ var lang = __webpack_require__("4a51");
 // EXTERNAL MODULE: ./src/store/builder/index.ts
 var builder = __webpack_require__("af98");
 
+// EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
+var vue_class_component_esm = __webpack_require__("2fe1");
+
 // EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceEditor.vue + 37 modules
 var ResourceEditor = __webpack_require__("510a");
 
@@ -260,14 +263,14 @@ var FirstBlockEditorButton = __webpack_require__("192b");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
 var BlockId = __webpack_require__("792f");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"217eaa8b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=template&id=0d55c45a&
-var MinimumNumericEditorvue_type_template_id_0d55c45a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/validation_minimum")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5d79dff5-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=template&id=8434906c&
+var MinimumNumericEditorvue_type_template_id_8434906c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/validation_minimum")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
-return [_c('div',{staticClass:"block-validation-min"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.minimum-value-(inclusive)'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"validState":isValid},model:{value:(_vm.minValue),callback:function ($$v) {_vm.minValue=_vm._n($$v)},expression:"minValue"}})],1)]}}])})}
-var MinimumNumericEditorvue_type_template_id_0d55c45a_staticRenderFns = []
+return [_c('div',{staticClass:"block-validation-min"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.minimum-value-(inclusive)'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"valid-state":isValid},model:{value:(_vm.minValue),callback:function ($$v) {_vm.minValue=_vm._n($$v)},expression:"minValue"}})],1)]}}])})}
+var MinimumNumericEditorvue_type_template_id_8434906c_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=template&id=0d55c45a&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=template&id=8434906c&
 
 // EXTERNAL MODULE: ./src/components/common/NumericEditor.vue + 4 modules
 var NumericEditor = __webpack_require__("2f00");
@@ -276,19 +279,7 @@ var NumericEditor = __webpack_require__("2f00");
 var ValidationMessage = __webpack_require__("21e9");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
 
 
@@ -336,8 +327,8 @@ var componentNormalizer = __webpack_require__("2877");
 
 var component = Object(componentNormalizer["a" /* default */])(
   block_editors_MinimumNumericEditorvue_type_script_lang_js_,
-  MinimumNumericEditorvue_type_template_id_0d55c45a_render,
-  MinimumNumericEditorvue_type_template_id_0d55c45a_staticRenderFns,
+  MinimumNumericEditorvue_type_template_id_8434906c_render,
+  MinimumNumericEditorvue_type_template_id_8434906c_staticRenderFns,
   false,
   null,
   null,
@@ -346,29 +337,17 @@ var component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var MinimumNumericEditor = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"217eaa8b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=template&id=05ae4d39&
-var MaximumNumericEditorvue_type_template_id_05ae4d39_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/validation_maximum")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5d79dff5-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=template&id=2e2de412&
+var MaximumNumericEditorvue_type_template_id_2e2de412_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/validation_maximum")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
-return [_c('div',{staticClass:"block-validation-max"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.maximum-value-(inclusive)'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"validState":isValid},model:{value:(_vm.maxValue),callback:function ($$v) {_vm.maxValue=_vm._n($$v)},expression:"maxValue"}})],1)]}}])})}
-var MaximumNumericEditorvue_type_template_id_05ae4d39_staticRenderFns = []
+return [_c('div',{staticClass:"block-validation-max"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.maximum-value-(inclusive)'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"valid-state":isValid},model:{value:(_vm.maxValue),callback:function ($$v) {_vm.maxValue=_vm._n($$v)},expression:"maxValue"}})],1)]}}])})}
+var MaximumNumericEditorvue_type_template_id_2e2de412_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=template&id=05ae4d39&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=template&id=2e2de412&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
 
 
@@ -413,8 +392,8 @@ var MaximumNumericEditorvue_type_template_id_05ae4d39_staticRenderFns = []
 
 var MaximumNumericEditor_component = Object(componentNormalizer["a" /* default */])(
   block_editors_MaximumNumericEditorvue_type_script_lang_js_,
-  MaximumNumericEditorvue_type_template_id_05ae4d39_render,
-  MaximumNumericEditorvue_type_template_id_05ae4d39_staticRenderFns,
+  MaximumNumericEditorvue_type_template_id_2e2de412_render,
+  MaximumNumericEditorvue_type_template_id_2e2de412_staticRenderFns,
   false,
   null,
   null,
@@ -423,29 +402,17 @@ var MaximumNumericEditor_component = Object(componentNormalizer["a" /* default *
 )
 
 /* harmony default export */ var MaximumNumericEditor = (MaximumNumericEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"217eaa8b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=4b47b68a&
-var MaxDigitEditorvue_type_template_id_4b47b68a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/ivr/max_digits")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5d79dff5-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=1b612991&
+var MaxDigitEditorvue_type_template_id_1b612991_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/ivr/max_digits")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
-return [(_vm.hasIvr)?_c('div',{staticClass:"block-max-digits"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.maximum-digits'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"validState":isValid},model:{value:(_vm.maxDigits),callback:function ($$v) {_vm.maxDigits=_vm._n($$v)},expression:"maxDigits"}})],1):_vm._e()]}}])})}
-var MaxDigitEditorvue_type_template_id_4b47b68a_staticRenderFns = []
+return [(_vm.hasIvr)?_c('div',{staticClass:"block-max-digits"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.maximum-digits'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"valid-state":isValid},model:{value:(_vm.maxDigits),callback:function ($$v) {_vm.maxDigits=_vm._n($$v)},expression:"maxDigits"}})],1):_vm._e()]}}])})}
+var MaxDigitEditorvue_type_template_id_1b612991_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=4b47b68a&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=1b612991&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
 
 
@@ -489,8 +456,8 @@ var MaxDigitEditorvue_type_template_id_4b47b68a_staticRenderFns = []
 
 var MaxDigitEditor_component = Object(componentNormalizer["a" /* default */])(
   block_editors_MaxDigitEditorvue_type_script_lang_js_,
-  MaxDigitEditorvue_type_template_id_4b47b68a_render,
-  MaxDigitEditorvue_type_template_id_4b47b68a_staticRenderFns,
+  MaxDigitEditorvue_type_template_id_1b612991_render,
+  MaxDigitEditorvue_type_template_id_1b612991_staticRenderFns,
   false,
   null,
   null,
@@ -499,9 +466,6 @@ var MaxDigitEditor_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var MaxDigitEditor = (MaxDigitEditor_component.exports);
-// EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
-var vue_class_component_esm = __webpack_require__("2fe1");
-
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=script&lang=ts&
 
 
