@@ -1,6 +1,6 @@
 {
   "name": "@floip/flow-builder",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "flow-builder provides an open source frontend for authoring flow interoperability project specification compliant flows.",
   "main": "./dist/flow-builder.common.js",
   "files": [
@@ -16,12 +16,12 @@
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
     "md-docs": "./node_modules/widdershins/widdershins.js docs/routes/openapi/routes.yaml docs/routes/markdown/routes.md --language_tabs 'javascript:Javascript' --omitHeader",
     "clean": "rm -rf dist/",
-    "deploy": "yarn clean && yarn build && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD"
+    "deploy": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD"
   },
   "dependencies": {
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
-    "@floip/flow-runner": "^1.0.9",
+    "@floip/flow-runner": "^1.0.11",
     "@flowjs/flow.js": "^2.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
@@ -31,6 +31,7 @@
     "@types/lodash": "^4.14.157",
     "@types/uuid": "^8.0.0",
     "ajv": "^7.2.1",
+    "ajv-formats": "^1.5.1",
     "anim-event": "^1.0.16",
     "axios": "^0.19.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -45,6 +46,7 @@
     "core-js": "^3.6.5",
     "cssprefix": "^2.0.16",
     "jquery": "^3.5.1",
+    "json-schema": "0.2.3",
     "lang.js": "^1.1.14",
     "leader-line": "^1.0.5",
     "lodash": "^4.17.19",

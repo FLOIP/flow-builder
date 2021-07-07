@@ -55,8 +55,8 @@ class CurrentClass2 extends BaseMountedVueClass {
       {
         id: '22',
         label: 'English',
-        iso_639_3: 'EN',
-      },
+        iso_639_3: 'eng',
+      }
     ]
 
     const sampleModes = [

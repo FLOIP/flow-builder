@@ -155,19 +155,32 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               class="col-12"
                             >
                               <div
-                                class="form-group flow-label"
+                                class="validation-message form-group"
+                                id="flow/fake-uuid-8/name"
                               >
-                                <div>
-                                  <label>
-                                    Flow label
-                                  </label>
-                                   
-                                  <textarea
-                                    class="form-control"
-                                    placeholder="Enter flow label"
-                                  />
-                                   
+                                <div
+                                  class="form-group flow-label"
+                                >
+                                  <div
+                                    class=""
+                                  >
+                                    <label>
+                                      Flow label
+                                    </label>
+                                     
+                                    <textarea
+                                      class="form-control"
+                                      placeholder="Enter flow label"
+                                    />
+                                     
+                                  </div>
                                 </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
                               </div>
                                
                               <div
@@ -208,151 +221,173 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               class="col-12"
                             >
                               <div
-                                class="form-group flow-languages"
+                                class="validation-message form-group"
+                                id="flow/fake-uuid-8/languages"
                               >
-                                <label>
-                                  Languages
-                                </label>
-                                 
                                 <div
-                                  class="checkbox"
+                                  class="form-group flow-languages"
                                 >
-                                  <label
-                                    class="font-weight-normal"
+                                  <label>
+                                    Languages
+                                  </label>
+                                   
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-language-toggle-checkbox"
-                                      type="checkbox"
-                                      value="[object Object]"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-language-toggle-checkbox"
+                                        type="checkbox"
+                                        value="[object Object]"
+                                      />
+                                      
 
       English
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-language-toggle-checkbox"
-                                      type="checkbox"
-                                      value="[object Object]"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-language-toggle-checkbox"
+                                        type="checkbox"
+                                        value="[object Object]"
+                                      />
+                                      
 
-      Spanish
+      French
     
-                                  </label>
+                                    </label>
+                                  </div>
                                 </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
                               </div>
                                
                               <div
-                                class="form-group flow-modes"
+                                class="validation-message form-group"
+                                id="flow/fake-uuid-8/supported_modes"
                               >
-                                <label>
-                                  Modes
-                                </label>
-                                 
                                 <div
-                                  class="checkbox"
+                                  class="form-group flow-modes"
                                 >
-                                  <label
-                                    class="font-weight-normal"
+                                  <label>
+                                    Modes
+                                  </label>
+                                   
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="TEXT"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="TEXT"
+                                      />
+                                      
       TEXT
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="SMS"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="SMS"
+                                      />
+                                      
       SMS
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="USSD"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="USSD"
+                                      />
+                                      
       USSD
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="IVR"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="IVR"
+                                      />
+                                      
       IVR
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="RICH_MESSAGING"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="RICH_MESSAGING"
+                                      />
+                                      
       RICH_MESSAGING
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="OFFLINE"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="OFFLINE"
+                                      />
+                                      
       OFFLINE
     
-                                  </label>
+                                    </label>
+                                  </div>
                                 </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
                               </div>
                             </div>
                           </div>
@@ -481,6 +516,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                   <main
                     class="error-notifications-wrapper"
                   >
+                    <!---->
+                     
                     <!---->
                   </main>
                 </div>
@@ -834,6 +871,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                     class="error-notifications-wrapper"
                   >
                     <!---->
+                     
+                    <!---->
                   </main>
                 </div>
               </div>
@@ -1185,6 +1224,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                     class="error-notifications-wrapper"
                   >
                     <!---->
+                     
+                    <!---->
                   </main>
                 </div>
               </div>
@@ -1508,6 +1549,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                     class="error-notifications-wrapper"
                   >
                     <!---->
+                     
+                    <!---->
                   </main>
                 </div>
               </div>
@@ -1644,6 +1687,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                   <main
                     class="error-notifications-wrapper"
                   >
+                    <!---->
+                     
                     <!---->
                   </main>
                 </div>
@@ -2417,7 +2462,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -2445,7 +2490,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -2472,97 +2517,74 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                             <!---->
                              
                             <div>
-                              <div
-                                class="upload-monitor"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
+                              <!---->
                                
                               <div
                                 class="audio-library-selector"
                               >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
+                                  data-audio-file-container-language="1"
                                 >
-                                  <div
-                                    class="input-group"
+                                  <button
+                                    class="audio-library-selection-clear-selection btn-ghost pull-right"
                                   >
-                                    <span
-                                      class="input-group-prepend"
-                                    >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
-                                      >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
+                                    <i
+                                      class="glyphicon glyphicon-remove"
                                     />
+                                  </button>
+                                   
+                                  <div
+                                    class="btn-group audio-library-selection-download-dropdown"
+                                  >
+                                    <button
+                                      class="btn btn-ghost dropdown-toggle"
+                                      data-toggle="dropdown"
+                                      type="button"
+                                    >
+                                      <span
+                                        aria-hidden="true"
+                                        class="glyphicon glyphicon-download-alt"
+                                      />
+                                       
+                                      <span
+                                        class="caret"
+                                      />
+                                    </button>
+                                     
+                                    <ul
+                                      class="dropdown-menu dropdown-menu-right"
+                                    >
+                                      <li>
+                                        <a
+                                          class="tree-block-audio-files-download-original"
+                                          href="path/to/ivr audio.mp3"
+                                          target="_blank"
+                                        >
+                                          Original file
+                                        </a>
+                                      </li>
+                                    </ul>
                                   </div>
                                    
-                                  <!---->
+                                  <p
+                                    class="audio-file-description"
+                                    title="path/to/ivr audio.mp3"
+                                  >
+                                    
+    path/to/ivr audio.mp3
+  
+                                  </p>
+                                   
+                                  <div
+                                    class="btn-toolbar"
+                                  >
+                                    <!---->
+                                  </div>
                                 </div>
                               </div>
                                
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
-                              </div>
+                              <!---->
                             </div>
                           </div>
                             
@@ -3307,7 +3329,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -3335,7 +3357,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -3362,97 +3384,74 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                             <!---->
                              
                             <div>
-                              <div
-                                class="upload-monitor"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
+                              <!---->
                                
                               <div
                                 class="audio-library-selector"
                               >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
+                                  data-audio-file-container-language="1"
                                 >
-                                  <div
-                                    class="input-group"
+                                  <button
+                                    class="audio-library-selection-clear-selection btn-ghost pull-right"
                                   >
-                                    <span
-                                      class="input-group-prepend"
-                                    >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
-                                      >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
+                                    <i
+                                      class="glyphicon glyphicon-remove"
                                     />
+                                  </button>
+                                   
+                                  <div
+                                    class="btn-group audio-library-selection-download-dropdown"
+                                  >
+                                    <button
+                                      class="btn btn-ghost dropdown-toggle"
+                                      data-toggle="dropdown"
+                                      type="button"
+                                    >
+                                      <span
+                                        aria-hidden="true"
+                                        class="glyphicon glyphicon-download-alt"
+                                      />
+                                       
+                                      <span
+                                        class="caret"
+                                      />
+                                    </button>
+                                     
+                                    <ul
+                                      class="dropdown-menu dropdown-menu-right"
+                                    >
+                                      <li>
+                                        <a
+                                          class="tree-block-audio-files-download-original"
+                                          href="path/to/ivr audio.mp3"
+                                          target="_blank"
+                                        >
+                                          Original file
+                                        </a>
+                                      </li>
+                                    </ul>
                                   </div>
                                    
-                                  <!---->
+                                  <p
+                                    class="audio-file-description"
+                                    title="path/to/ivr audio.mp3"
+                                  >
+                                    
+    path/to/ivr audio.mp3
+  
+                                  </p>
+                                   
+                                  <div
+                                    class="btn-toolbar"
+                                  >
+                                    <!---->
+                                  </div>
                                 </div>
                               </div>
                                
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
-                              </div>
+                              <!---->
                             </div>
                           </div>
                             
