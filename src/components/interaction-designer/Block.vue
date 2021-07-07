@@ -348,7 +348,12 @@ export default {
     },
 
     handleDuplicateBlock() {
-      this.flow_duplicateBlock({blockId: this.block.uuid})
+      this.flow_duplicateBlock({blockId: this.block.uuid}).then((duplicatedBlock) => {
+        this.$router.replace({
+          name: 'block-selected-details',
+          params: {blockId: duplicatedBlock.uuid},
+        })
+      })
     },
 
     updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
