@@ -156,7 +156,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                             >
                               <div
                                 class="validation-message form-group"
-                                id="flow/fake-uuid-8/name"
+                                id="flow/fake-uuid-0/name"
                               >
                                 <div
                                   class="form-group flow-label"
@@ -222,7 +222,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                             >
                               <div
                                 class="validation-message form-group"
-                                id="flow/fake-uuid-8/languages"
+                                id="flow/fake-uuid-0/languages"
                               >
                                 <div
                                   class="form-group flow-languages"
@@ -276,7 +276,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                
                               <div
                                 class="validation-message form-group"
-                                id="flow/fake-uuid-8/supported_modes"
+                                id="flow/fake-uuid-0/supported_modes"
                               >
                                 <div
                                   class="form-group flow-modes"
