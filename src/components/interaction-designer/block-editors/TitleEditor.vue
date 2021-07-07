@@ -11,9 +11,9 @@
           class="form-control w-100"
           :class="{ 'is-invalid': isLabelValid === false }">
         <span
-          class="btn btn-outline-secondary"
+          class="btn btn-outline-primary"
           @click="editBlockName = true">
-          <i class="glyphicon glyphicon-cog" />
+          <svg-icon icon="settings" />
         </span>
       </div>
     </validation-message>
@@ -31,9 +31,9 @@
               :class="{ 'is-invalid': isNameValid === false }"
               @keydown="filterName">
             <span
-              class="btn btn-outline-dark"
+              class="btn btn-primary"
               @click="editBlockName = false">
-              <i class="glyphicon glyphicon-check" />
+              <svg-icon icon="check" />
             </span>
           </div>
         </div>
@@ -54,6 +54,7 @@ import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
+import SvgIcon from '@/components/common/SvgIcon.vue'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -61,6 +62,7 @@ const flowVuexNamespace = namespace('flow')
   components: {
     TextEditor,
     ValidationMessage,
+    SvgIcon,
   },
 })
 class TitleEditor extends mixins(Lang) {
