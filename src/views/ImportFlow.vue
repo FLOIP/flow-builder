@@ -1,6 +1,5 @@
 <template>
   <div class="new-contents">
-    <!-- TODO Take a look at login style for an example of how this well could look -->
     <div class="row">
       <div class="col-sm-8 offset-sm-2">
         <div class="card">
@@ -11,6 +10,7 @@
               </h2>
               <p>{{ 'flow-builder.create-flow-from-json' | trans }}</p>
               <div
+                v-if="trans('flow-builder.import-note')"
                 class="alert alert-danger"
                 role="alert">
                 {{ 'flow-builder.import-note'| trans }}

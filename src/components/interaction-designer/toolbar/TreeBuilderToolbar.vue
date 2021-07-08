@@ -10,7 +10,8 @@
         <textarea
           v-model="flow"
           class="flow-importer"
-          rows="15" />
+          rows="15"
+          disabled />
       </div>
 
       <div class="tree-workspace-panel-heading panel-heading">
