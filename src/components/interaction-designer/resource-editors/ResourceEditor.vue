@@ -13,7 +13,10 @@
           :key="languageId"
           :title="language || 'flow-builder.unknown-language' | trans"
           active>
-          <div v-for="(mode, i) in flow.supported_modes" :key="i" class="tab-content-style">
+          <div
+            v-for="(mode, i) in flow.supported_modes"
+            :key="i"
+            class="tab-content-style">
             <h6>{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
 
             <template v-for="contentType in discoverContentTypesFor(mode)">
@@ -30,44 +33,6 @@
                 :enable-autogen-button="true || enableAutogenButton" />
 
               <div v-if="contentType === SupportedContentType.AUDIO">
-                <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
-                  <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
-
-                  <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                      <a
-                        class="nav-link px-2 py-1 active"
-                        href="#"
-                        @click.prevent="">{{ 'flow-builder.library' | trans }}</a>
-                    </li>
-                    <li
-                      v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
-                      class="nav-item">
-                      <a
-                        href="#"
-                        class="nav-link px-2 py-1"
-                        @click.prevent="triggerRecordViaPhoneFor(languageId)">{{ 'flow-builder.phone-recording' | trans }}</a>
-                    </li>
-
-                    <li
-                      v-if="isEditable"
-                      class="nav-item">
-                      <a
-                        v-if="isFeatureAudioUploadEnabled"
-                        v-flow-uploader="{
-                          target: route('trees.resumeableAudioUpload'),
-                          token: `${block.uuid}${languageId}`,
-                          accept: 'audio/*'}"
-                        class="nav-link px-2 py-1"
-                        href="#"
-                        @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
-                        @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)">
-                        {{ 'flow-builder.upload' | trans }}
-                      </a>
-                    </li>
-                  </ul>
-                </template>
-
                 <audio-library-selector
                   :audio-files="availableAudio"
                   :lang-id="languageId"
@@ -79,6 +44,30 @@
                 <phone-recorder
                   v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [mode]}).value"
                   :recording-key="`${block.uuid}:${languageId}`" />
+
+                <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
+                  <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
+
+                  <div class="d-flex mt-2">
+                    <button
+                      v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
+                      class="btn btn-primary"
+                      @click.prevent="triggerRecordViaPhoneFor(languageId)">
+                      {{ 'flow-builder.phone-recording' | trans }}
+                    </button>
+                    <button
+                      v-if="isEditable && isFeatureAudioUploadEnabled"
+                      v-flow-uploader="{
+                        target: route('trees.resumeableAudioUpload'),
+                        token: `${block.uuid}${languageId}`,
+                        accept: 'audio/*'}"
+                      class="btn btn-primary ml-2"
+                      @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
+                      @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)">
+                      {{ 'flow-builder.upload' | trans }}
+                    </button>
+                  </div>
+                </template>
               </div>
             </template>
           </div>
