@@ -20,4 +20,3 @@ export const scrollBlockIntoView = (blockId: string) => {
     console.debug('Deep linking: cannot scroll block ', blockElement, 'as block is not found in the DOM')
   }
 }
-
