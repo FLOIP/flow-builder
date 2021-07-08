@@ -19,7 +19,6 @@ import {IRootState} from '@/store'
 import {cloneDeep, defaults, every, forEach, get, has, includes, omit} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockUiData} from '@/store/builder'
-import {router} from '@/router'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
 
@@ -359,11 +358,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
 
     commit('flow_addBlock', {block: duplicatedBlock})
-
-    await router.replace({
-      name: 'block-selected-details',
-      params: {blockId: duplicatedBlock.uuid},
-    })
 
     return duplicatedBlock
   },
