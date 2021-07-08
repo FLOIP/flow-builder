@@ -1,6 +1,6 @@
 <template>
-  <div class="resource-editor">
-    <hr v-if="label">
+  <div class="resource-editor" v-if="flow.languages.length > 0">
+    <hr>
 
     <h4 v-if="label">
       {{ label }}

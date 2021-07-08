@@ -6,7 +6,7 @@
 
     <fieldset :disabled="!isEditable">
       <title-editor :block="block" />
-
+      <hr>
       <block-minimum-numeric-editor
         :block="block"
         @commitValidationMinimumChange="updateValidationMin" />
