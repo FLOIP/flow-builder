@@ -5,9 +5,10 @@
       <div class="form-group">
         <button
           type="button"
-          class="btn btn-secondary btn-sm"
+          class="btn btn-outline-primary btn-sm w-100"
           :disabled="isStartBlock"
           @click="setStartBlock($event)">
+          <svg-icon icon="enter" />
           <template v-if="isStartBlock">
             {{ 'flow-builder.currently-set-as-starting-block' | trans }}
           </template>
@@ -26,10 +27,15 @@ import {IBlock, IFlow} from '@floip/flow-runner'
 import Lang from '@/lib/filters/lang'
 import {namespace} from 'vuex-class'
 import {mixins} from 'vue-class-component'
+import SvgIcon from '@/components/common/SvgIcon.vue'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({})
+@Component({
+  components: {
+    SvgIcon,
+  },
+})
 class FirstBlockEditorButton extends mixins(Lang) {
   @Prop({default: true}) readonly isEditable!: boolean
 

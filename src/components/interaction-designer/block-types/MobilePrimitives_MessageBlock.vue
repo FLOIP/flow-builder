@@ -1,6 +1,6 @@
 <template>
   <div class="mobile-primitive-message-block">
-    <h3 class="no-room-above">
+    <h3 class="no-room-above text-primary">
       {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
     </h3>
 
