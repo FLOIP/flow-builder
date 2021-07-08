@@ -1,6 +1,6 @@
 <template>
   <section class="mb-3">
-    <label class="title">Title</label>
+    <label class="text-primary">Title</label>
     <validation-message
       #input-control="{ isValid: isLabelValid }"
       :message-key="`block/${block.uuid}/label`">
@@ -99,9 +99,6 @@ export default TitleEditor
 </script>
 
 <style scoped>
-.title {
-  color: #531944;
-}
 .block-code {
   word-wrap: break-word;
 }

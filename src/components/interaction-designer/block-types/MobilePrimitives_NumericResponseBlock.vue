@@ -1,13 +1,11 @@
 <template>
   <div class="mobile-primitive-numeric-response-block">
-    <h3 class="no-room-above">
+    <h3 class="no-room-above text-primary">
       {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
+      <title-editor :block="block" />
 
       <block-minimum-numeric-editor
         :block="block"
@@ -55,6 +53,7 @@ import BlockId from '../block-editors/BlockId.vue'
 import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue'
 import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
 import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
+import TitleEditor from '@/components/interaction-designer/block-editors/TitleEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -71,6 +70,7 @@ const builderVuexNamespace = namespace('builder')
     BlockMinimumNumericEditor,
     BlockMaximumNumericEditor,
     BlockMaxDigitEditor,
+    TitleEditor,
   },
 })
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
