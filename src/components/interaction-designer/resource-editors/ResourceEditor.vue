@@ -17,7 +17,10 @@
             v-for="(mode, i) in flow.supported_modes"
             :key="i"
             class="tab-content-style">
-            <h6>{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
+            <header class="d-flex">
+              <svg-icon :style="{marginTop: '2px'}" :icon="iconsMap.get(mode)" />
+              <h6 class="ml-1">{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
+            </header>
 
             <template v-for="contentType in discoverContentTypesFor(mode)">
               <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
@@ -51,9 +54,10 @@
                   <div class="d-flex mt-2">
                     <button
                       v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
-                      class="btn btn-primary"
+                      class="btn btn-primary ivr-buttons"
                       @click.prevent="triggerRecordViaPhoneFor(languageId)">
-                      {{ 'flow-builder.phone-recording' | trans }}
+                      <svg-icon icon="record-audio" />
+                      {{ 'flow-builder.record-audio' | trans }}
                     </button>
                     <button
                       v-if="isEditable && isFeatureAudioUploadEnabled"
@@ -61,10 +65,11 @@
                         target: route('trees.resumeableAudioUpload'),
                         token: `${block.uuid}${languageId}`,
                         accept: 'audio/*'}"
-                      class="btn btn-primary ml-2"
+                      class="btn btn-primary ivr-buttons ml-2"
                       @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
                       @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)">
-                      {{ 'flow-builder.upload' | trans }}
+                      <svg-icon icon="upload" />
+                      {{ 'flow-builder.upload-audio' | trans }}
                     </button>
                   </div>
                 </template>
@@ -107,6 +112,7 @@ import {mixins} from 'vue-class-component'
 import {TabsPlugin} from 'bootstrap-vue'
 import UploadMonitor from '../block-editors/UploadMonitor.vue'
 import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
+import SvgIcon from '@/components/common/SvgIcon.vue'
 
 Vue.use(TabsPlugin)
 
@@ -133,6 +139,7 @@ interface IResourceDefinitionVariantOverModesWithOptionalValue extends Partial<I
     ResourceVariantTextEditor,
     UploadMonitor,
     PhoneRecorder,
+    SvgIcon,
   },
 })
 export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
@@ -153,6 +160,16 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
   SupportedMode = SupportedMode
 
   SupportedContentType = SupportedContentType
+
+  iconsMap = new Map<string, string>()
+
+  created() {
+    this.iconsMap.set(SupportedMode.SMS, 'message')
+    this.iconsMap.set(SupportedMode.USSD, 'ussd')
+    this.iconsMap.set(SupportedMode.IVR, 'audio')
+    this.iconsMap.set(SupportedMode.RICH_MESSAGING, 'rich-messaging')
+    this.iconsMap.set(SupportedMode.OFFLINE, 'phone')
+  }
 
   triggerRecordViaPhoneFor(langId: ILanguage['id']): void {
     this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', {langId, isVisible: true})
@@ -227,5 +244,9 @@ export default ResourceEditor
 .tab-content-style {
   background: #F4F4F4;
   padding: 10px;
+}
+.ivr-buttons {
+  font-size: small;
+  flex-grow: 1;
 }
 </style>
