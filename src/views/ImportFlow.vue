@@ -221,7 +221,7 @@ class ImportFlow extends Vue {
   async handleImportFlow(route: string) {
     const flowContainer = await this.flow_import({
       // @ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
-      persistRoute: this.route('flows.persistFlow', {flowId: this.flowContainer.uuid}),
+      persistRoute: this.route('flows.persistFlow', {}),
       flowContainer: this.flowContainer,
     })
     if (flowContainer) {

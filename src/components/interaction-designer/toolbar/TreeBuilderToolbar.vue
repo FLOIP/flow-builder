@@ -348,7 +348,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     if (this.isEditable) {
       this.setTreeSaving(true)
       const flowContainer = await this.flow_persist({
-        persistRoute: this.route('flows.persistFlow', {flowId: this.activeFlow?.uuid}),
+        persistRoute: this.route('flows.persistFlow', {}),
         flowContainer: this.activeFlowContainer,
       })
       this.setTreeSaving(false)
