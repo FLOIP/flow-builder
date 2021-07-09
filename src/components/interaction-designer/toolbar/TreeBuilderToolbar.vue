@@ -193,7 +193,7 @@ import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
-import {forEach, identity, isEmpty, isNil, pickBy as _pickBy} from 'lodash'
+import {identity, isEmpty, isNil, pickBy as _pickBy, reduce} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
@@ -403,16 +403,17 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   /**
    * We have to make sure this is called using $nextTick() because we play with DOM
    */
-  handleHeightChangeFromDOM(): void {
-    let height = 0
+  handleHeightChangeFromDOM() {
     const elementRef = this.$refs['builder-toolbar'] as Element
     if (!elementRef) {
       console.debug('Interaction Designer', 'Unable to find DOM element corresponding to builder-toolbar')
     }
 
-    forEach(elementRef.childNodes, (child) => {
-      height += (child as HTMLElement).offsetHeight
-    })
+    const height = reduce(
+      elementRef.childNodes,
+      (sum, child) => sum + (child as HTMLElement).offsetHeight,
+      0,
+)
 
     if (height > 0) {
       this.height = height
@@ -459,8 +460,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @builderVuexNamespace.Getter isEditable!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
   @builderVuexNamespace.Getter activeBlock?: IBlock
-  @builderVuexNamespace.Action importFlowsAndResources!: ({flows, resources}: { flows: IFlow[], resources: IResource[] }) => Promise<void>
-  @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null }) => void
+  @builderVuexNamespace.Action importFlowsAndResources!: ({flows, resources}: { flows: IFlow[], resources: IResource[]}) => Promise<void>
+  @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void
 
   // Clipboard
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void

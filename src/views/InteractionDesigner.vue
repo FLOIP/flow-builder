@@ -93,7 +93,7 @@ import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBu
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
-import {scrollBehavior, scrollBlockIntoView} from '@/router'
+import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
 
 // import '../TreeDiffLogger'
 

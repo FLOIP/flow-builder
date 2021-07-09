@@ -1,6 +1,6 @@
 <template>
   <section class="mb-3">
-    <label class="text-primary">Title</label>
+    <label class="text-primary">{{'flow-builder.title' | trans}}</label>
     <validation-message
       #input-control="{ isValid: isLabelValid }"
       :message-key="`block/${block.uuid}/label`">
@@ -22,7 +22,7 @@
         #input-control="{ isValid: isNameValid }"
         :message-key="`block/${block.uuid}/name`">
         <div v-if="editBlockName || isNameValid === false">
-          <label>Edit Block Code</label>
+          <label>{{ 'flow-builder.edit-block-code' | trans }}</label>
           <div class="d-flex">
             <input
               v-model="blockName"
@@ -38,7 +38,7 @@
           </div>
         </div>
         <div v-else>
-          <strong>Code:</strong>
+          <strong>{{'flow-builder.code' | trans}}:</strong>
           <span class="block-code"> {{ blockName }} </span>
         </div>
       </validation-message>

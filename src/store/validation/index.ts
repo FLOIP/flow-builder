@@ -5,7 +5,7 @@ import Ajv, {ErrorObject, ValidateFunction} from 'ajv'
 import ajvFormat from 'ajv-formats'
 
 import {JSONSchema7} from 'json-schema'
-import {IBlock, IFlow} from '@floip/flow-runner'
+import {IBlock, IContainer, IFlow} from '@floip/flow-runner'
 import {forIn, get, isEmpty} from 'lodash'
 
 const ajv = new Ajv({allErrors: true})
@@ -70,43 +70,54 @@ export const getters: GetterTree<IValidationState, IRootState> = {
   },
 }
 
-export const mutations: MutationTree<IValidationState> = {}
+export const mutations: MutationTree<IValidationState> = {
+  removeValidationStatusesFor(state, {key}) {
+    delete state.validationStatuses[key]
+  },
+}
 
 export const actions: ActionTree<IValidationState, IRootState> = {
-  async validate_block({state, dispatch}, {block}: { block: IBlock }): Promise<IValidationStatus> {
+  async validate_block({state, commit}, {block}: {block: IBlock}): Promise<IValidationStatus> {
     const {uuid: blockId, type: blockType} = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
     const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
-    const index = `block/${blockId}`
+    const key = `block/${blockId}`
 
-    Vue.set(state.validationStatuses, index, {
+    Vue.set(state.validationStatuses, key, {
       isValid: validate(block),
       ajvErrors: validate.errors,
       type: block.type,
     })
     if (validate.errors === null) {
-      dispatch('remove_block_validation', {blockId})
+      commit('removeValidationStatusesFor', {key})
     }
-    debugValidationStatus(state.validationStatuses[index], `validation status for ${index}`)
-    return state.validationStatuses[index]
+    debugValidationStatus(state.validationStatuses[key], `validation status for ${key}`)
+    return state.validationStatuses[key]
   },
 
-  remove_block_validation({state}, {blockId}: { blockId: IBlock['uuid'] }): void {
-    const index = `block/${blockId}`
-    Vue.delete(state.validationStatuses, index)
-  },
-
-  async validate_flow({state}, {flow}: { flow: IFlow }): Promise<IValidationStatus> {
+  async validate_flow({state}, {flow}: {flow: IFlow}): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator()
-    const index = `flow/${flow.uuid}`
-    Vue.set(state.validationStatuses, index, {
+    const key = `flow/${flow.uuid}`
+    Vue.set(state.validationStatuses, key, {
       isValid: validate(flow),
       ajvErrors: validate.errors,
       type: 'flow',
     })
 
-    debugValidationStatus(state.validationStatuses[index], 'flow validation status')
-    return state.validationStatuses[index]
+    debugValidationStatus(state.validationStatuses[key], 'flow validation status')
+    return state.validationStatuses[key]
+  },
+
+  async validate_flowContainer({state}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
+    const validate = getOrCreateFlowContainerValidator()
+    const key = `flowContainer/${flowContainer.uuid}`
+    Vue.set(state.validationStatuses, key, {
+      isValid: validate(flowContainer),
+      ajvErrors: validate.errors,
+    })
+
+    debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
+    return state.validationStatuses[key]
   },
 }
 
@@ -132,7 +143,21 @@ function getOrCreateFlowValidator(): ValidateFunction {
   const validationType = 'flow'
   if (isEmpty(validators) || !validators.has(validationType)) {
     const flowJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
+
+    // remove `blocks` property from IFlow schema to avoid double validations
+    flowJsonSchema.definitions.IFlow.additionalProperties = true
+    delete flowJsonSchema.definitions.IFlow.properties.blocks
+
     validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IFlow'))
+  }
+  return validators.get(validationType)!
+}
+
+function getOrCreateFlowContainerValidator(): ValidateFunction {
+  const validationType = 'flowContainer'
+  if (isEmpty(validators) || !validators.has(validationType)) {
+    const flowContainerJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowContainerJsonSchema))
   }
   return validators.get(validationType)!
 }
@@ -150,14 +175,16 @@ function getOrCreateFlowValidator(): ValidateFunction {
 export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchema7, subSchema = ''): ValidateFunction {
   if (subSchema === '') {
     return ajv.compile(jsonSchema)
-  } else {
-    ajv.addSchema(jsonSchema)
-    const validate = ajv.getSchema(subSchema)
-    if (!validate) {
-      throw new Error(`Cannot find definition ${subSchema} in schema ${jsonSchema}`)
-    }
-    return validate as ValidateFunction
   }
+  let validate = ajv.getSchema(subSchema)
+  if (!validate) {
+    ajv.addSchema(jsonSchema)
+    validate = ajv.getSchema(subSchema)
+  }
+  if (!validate) {
+    throw new Error(`Cannot find definition ${subSchema} in schema ${jsonSchema}`)
+  }
+  return validate as ValidateFunction
 }
 
 function debugValidationStatus(status: IValidationStatus, customMessage: string) {
@@ -194,8 +221,7 @@ function flatValidationStatuses({
 }: { keyPrefix: string, errors: undefined | null | Array<ErrorObject>, accumulator: IIndexedString }) {
   errors?.forEach((error) => {
     let index = ''
-    let
-      message = ''
+    let message = ''
     if (DEV_ERROR_KEYWORDS.includes(error.keyword)) {
       // this is more likely a dev issue than user error
       // error.dataPath could be empty or not for such errors
