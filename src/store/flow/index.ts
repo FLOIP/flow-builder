@@ -28,7 +28,7 @@ export const stateFactory = (): IFlowsState => ({
   specification_version: '1.0.0-rc1',
   //For now we'll hard code this as it doesn't yet have a function
   //Even import shouldn't override it I think even though a container is required
-  container_uuid: "3666a05d-3792-482b-8f7f-9e2472e4f027",
+  container_uuid: '3666a05d-3792-482b-8f7f-9e2472e4f027',
   flows: [],
   resources: [],
 
