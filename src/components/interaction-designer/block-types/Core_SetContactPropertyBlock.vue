@@ -13,7 +13,7 @@
       <validation-message
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
-        <expression-editor
+        <expression-input
           :label="'flow-builder.contact-property-expression' | trans"
           :placeholder="'flow-builder.edit-expression' | trans"
           :current-expression="propertyValue"
@@ -34,16 +34,14 @@
 <script lang="ts">
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
-
 import {IBlock, IFlow} from '@floip/flow-runner'
-import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 import ContactPropertySelector from '@/components/interaction-designer/block-editors/ContactPropertySelector.vue'
-
 import SetContactPropertyStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {get} from 'lodash'
 import {mixins} from 'vue-class-component'
+import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
@@ -56,7 +54,7 @@ const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
-    ExpressionEditor,
+    ExpressionInput,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
