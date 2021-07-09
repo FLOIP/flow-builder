@@ -1,5 +1,7 @@
 <template>
-  <div @click="selectBlock">
+  <div @click="selectBlock"
+       @mouseover="showToolbar = true"
+       @mouseleave="showToolbar = false">
     <plain-draggable
       v-if="hasLayout"
       ref="draggable"
@@ -15,7 +17,7 @@
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
       @destroyed="handleDraggableDestroyedForBlock">
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between" v-if="showToolbar">
         <div class="header-actions-left">
           <!--Selection-->
           <font-awesome-icon
@@ -233,6 +235,7 @@ export default {
   data() {
     return {
       isDeleting: false,
+      showToolbar: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
     }
