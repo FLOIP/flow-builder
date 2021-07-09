@@ -1944,175 +1944,244 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           <div
                             class="resource-editor"
                           >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
+                            <hr />
                              
                             <!---->
                              
                             <div>
                               <div
-                                class="upload-monitor"
+                                class="tabs"
                               >
                                 <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
-                               
-                              <div
-                                class="audio-library-selector"
-                              >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class=""
+                                >
+                                  <ul
+                                    class="nav nav-tabs"
+                                    role="tablist"
+                                  >
+                                    <!---->
+                                    <!---->
+                                  </ul>
+                                </div>
+                                <div
+                                  class="tab-content"
                                 >
                                   <div
-                                    class="input-group"
+                                    aria-hidden="false"
+                                    class="tab-pane active"
+                                    role="tabpanel"
                                   >
-                                    <span
-                                      class="input-group-prepend"
+                                    <div
+                                      class="tab-content-style"
                                     >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
+                                      <header
+                                        class="d-flex"
                                       >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
-                                    />
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#message"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          SMS Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <textarea
+                                            class="form-control"
+                                            placeholder="Enter Text content"
+                                          />
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#ussd"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          USSD Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <textarea
+                                            class="form-control"
+                                            placeholder="Enter Text content"
+                                          />
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#audio"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          IVR Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <!---->
+                                       
+                                      <div>
+                                        <div
+                                          class="audio-library-selector"
+                                        >
+                                          <div
+                                            class="audio-library-search-field dropdown"
+                                          >
+                                            <div
+                                              class="input-group"
+                                            >
+                                              <input
+                                                class="form-control"
+                                                placeholder="Search audio library…"
+                                                type="text"
+                                              />
+                                               
+                                              <span
+                                                class="input-group-prepend"
+                                              >
+                                                <button
+                                                  class="btn btn-primary dropdown-toggle"
+                                                >
+                                                  <i
+                                                    class="glyphicon glyphicon-search"
+                                                  />
+                                                </button>
+                                              </span>
+                                            </div>
+                                             
+                                            <!---->
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="phone-recorder"
+                                        >
+                                          <!---->
+                                        </div>
+                                         
+                                        <div
+                                          class="upload-monitor"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                        </div>
+                                         
+                                        <div
+                                          class="d-flex mt-2"
+                                        >
+                                          <button
+                                            class="btn btn-primary ivr-buttons"
+                                          >
+                                            <svg
+                                              class="icon"
+                                            >
+                                              <use
+                                                xlink:href="#record-audio"
+                                              />
+                                            </svg>
+                                            
+                    Record Audio
+                  
+                                          </button>
+                                           
+                                          <button
+                                            class="btn btn-primary ivr-buttons ml-2"
+                                            style="overflow: hidden;"
+                                          >
+                                            <svg
+                                              class="icon"
+                                            >
+                                              <use
+                                                xlink:href="#upload"
+                                              />
+                                            </svg>
+                                            
+                    Upload Audio
+                  
+                                            <input
+                                              accept="audio/*"
+                                              style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                              type="file"
+                                            />
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                   
                                   <!---->
                                 </div>
-                              </div>
-                               
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
                               </div>
                             </div>
                           </div>
@@ -2120,6 +2189,8 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           <div
                             class="starting-block-button"
                           >
+                            <hr />
+                             
                             <h4>
                               Options
                             </h4>
@@ -2128,11 +2199,18 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               class="form-group"
                             >
                               <button
-                                class="btn btn-secondary btn-sm"
+                                class="btn btn-outline-primary btn-sm w-100"
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+                                <svg
+                                  class="icon"
+                                >
+                                  <use
+                                    xlink:href="#enter"
+                                  />
+                                </svg>
+                                 
           Currently set as starting block
         
                               </button>
@@ -2405,175 +2483,244 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           <div
                             class="resource-editor"
                           >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
+                            <hr />
                              
                             <!---->
                              
                             <div>
                               <div
-                                class="upload-monitor"
+                                class="tabs"
                               >
                                 <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
-                               
-                              <div
-                                class="audio-library-selector"
-                              >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class=""
+                                >
+                                  <ul
+                                    class="nav nav-tabs"
+                                    role="tablist"
+                                  >
+                                    <!---->
+                                    <!---->
+                                  </ul>
+                                </div>
+                                <div
+                                  class="tab-content"
                                 >
                                   <div
-                                    class="input-group"
+                                    aria-hidden="false"
+                                    class="tab-pane active"
+                                    role="tabpanel"
                                   >
-                                    <span
-                                      class="input-group-prepend"
+                                    <div
+                                      class="tab-content-style"
                                     >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
+                                      <header
+                                        class="d-flex"
                                       >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
-                                    />
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#message"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          SMS Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <textarea
+                                            class="form-control"
+                                            placeholder="Enter Text content"
+                                          />
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#ussd"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          USSD Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <textarea
+                                            class="form-control"
+                                            placeholder="Enter Text content"
+                                          />
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#audio"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          IVR Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <!---->
+                                       
+                                      <div>
+                                        <div
+                                          class="audio-library-selector"
+                                        >
+                                          <div
+                                            class="audio-library-search-field dropdown"
+                                          >
+                                            <div
+                                              class="input-group"
+                                            >
+                                              <input
+                                                class="form-control"
+                                                placeholder="Search audio library…"
+                                                type="text"
+                                              />
+                                               
+                                              <span
+                                                class="input-group-prepend"
+                                              >
+                                                <button
+                                                  class="btn btn-primary dropdown-toggle"
+                                                >
+                                                  <i
+                                                    class="glyphicon glyphicon-search"
+                                                  />
+                                                </button>
+                                              </span>
+                                            </div>
+                                             
+                                            <!---->
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="phone-recorder"
+                                        >
+                                          <!---->
+                                        </div>
+                                         
+                                        <div
+                                          class="upload-monitor"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                        </div>
+                                         
+                                        <div
+                                          class="d-flex mt-2"
+                                        >
+                                          <button
+                                            class="btn btn-primary ivr-buttons"
+                                          >
+                                            <svg
+                                              class="icon"
+                                            >
+                                              <use
+                                                xlink:href="#record-audio"
+                                              />
+                                            </svg>
+                                            
+                    Record Audio
+                  
+                                          </button>
+                                           
+                                          <button
+                                            class="btn btn-primary ivr-buttons ml-2"
+                                            style="overflow: hidden;"
+                                          >
+                                            <svg
+                                              class="icon"
+                                            >
+                                              <use
+                                                xlink:href="#upload"
+                                              />
+                                            </svg>
+                                            
+                    Upload Audio
+                  
+                                            <input
+                                              accept="audio/*"
+                                              style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                              type="file"
+                                            />
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                   
                                   <!---->
                                 </div>
-                              </div>
-                               
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
                               </div>
                             </div>
                           </div>
@@ -2581,6 +2728,8 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           <div
                             class="starting-block-button"
                           >
+                            <hr />
+                             
                             <h4>
                               Options
                             </h4>
@@ -2589,11 +2738,18 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               class="form-group"
                             >
                               <button
-                                class="btn btn-secondary btn-sm"
+                                class="btn btn-outline-primary btn-sm w-100"
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+                                <svg
+                                  class="icon"
+                                >
+                                  <use
+                                    xlink:href="#enter"
+                                  />
+                                </svg>
+                                 
           Currently set as starting block
         
                               </button>
@@ -2859,175 +3015,244 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           <div
                             class="resource-editor"
                           >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
+                            <hr />
                              
                             <!---->
                              
                             <div>
                               <div
-                                class="upload-monitor"
+                                class="tabs"
                               >
                                 <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
-                               
-                              <div
-                                class="audio-library-selector"
-                              >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class=""
+                                >
+                                  <ul
+                                    class="nav nav-tabs"
+                                    role="tablist"
+                                  >
+                                    <!---->
+                                    <!---->
+                                  </ul>
+                                </div>
+                                <div
+                                  class="tab-content"
                                 >
                                   <div
-                                    class="input-group"
+                                    aria-hidden="false"
+                                    class="tab-pane active"
+                                    role="tabpanel"
                                   >
-                                    <span
-                                      class="input-group-prepend"
+                                    <div
+                                      class="tab-content-style"
                                     >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
+                                      <header
+                                        class="d-flex"
                                       >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
-                                    />
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#message"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          SMS Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <textarea
+                                            class="form-control"
+                                            placeholder="Enter Text content"
+                                          />
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#ussd"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          USSD Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <textarea
+                                            class="form-control"
+                                            placeholder="Enter Text content"
+                                          />
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#audio"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          IVR Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <!---->
+                                       
+                                      <div>
+                                        <div
+                                          class="audio-library-selector"
+                                        >
+                                          <div
+                                            class="audio-library-search-field dropdown"
+                                          >
+                                            <div
+                                              class="input-group"
+                                            >
+                                              <input
+                                                class="form-control"
+                                                placeholder="Search audio library…"
+                                                type="text"
+                                              />
+                                               
+                                              <span
+                                                class="input-group-prepend"
+                                              >
+                                                <button
+                                                  class="btn btn-primary dropdown-toggle"
+                                                >
+                                                  <i
+                                                    class="glyphicon glyphicon-search"
+                                                  />
+                                                </button>
+                                              </span>
+                                            </div>
+                                             
+                                            <!---->
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="phone-recorder"
+                                        >
+                                          <!---->
+                                        </div>
+                                         
+                                        <div
+                                          class="upload-monitor"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                        </div>
+                                         
+                                        <div
+                                          class="d-flex mt-2"
+                                        >
+                                          <button
+                                            class="btn btn-primary ivr-buttons"
+                                          >
+                                            <svg
+                                              class="icon"
+                                            >
+                                              <use
+                                                xlink:href="#record-audio"
+                                              />
+                                            </svg>
+                                            
+                    Record Audio
+                  
+                                          </button>
+                                           
+                                          <button
+                                            class="btn btn-primary ivr-buttons ml-2"
+                                            style="overflow: hidden;"
+                                          >
+                                            <svg
+                                              class="icon"
+                                            >
+                                              <use
+                                                xlink:href="#upload"
+                                              />
+                                            </svg>
+                                            
+                    Upload Audio
+                  
+                                            <input
+                                              accept="audio/*"
+                                              style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                              type="file"
+                                            />
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                   
                                   <!---->
                                 </div>
-                              </div>
-                               
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
                               </div>
                             </div>
                           </div>
@@ -3035,6 +3260,8 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           <div
                             class="starting-block-button"
                           >
+                            <hr />
+                             
                             <h4>
                               Options
                             </h4>
@@ -3043,11 +3270,18 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               class="form-group"
                             >
                               <button
-                                class="btn btn-secondary btn-sm"
+                                class="btn btn-outline-primary btn-sm w-100"
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+                                <svg
+                                  class="icon"
+                                >
+                                  <use
+                                    xlink:href="#enter"
+                                  />
+                                </svg>
+                                 
           Currently set as starting block
         
                               </button>
@@ -3295,175 +3529,244 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                           <div
                             class="resource-editor"
                           >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
+                            <hr />
                              
                             <!---->
                              
                             <div>
                               <div
-                                class="upload-monitor"
+                                class="tabs"
                               >
                                 <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
-                               
-                              <div
-                                class="audio-library-selector"
-                              >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class=""
+                                >
+                                  <ul
+                                    class="nav nav-tabs"
+                                    role="tablist"
+                                  >
+                                    <!---->
+                                    <!---->
+                                  </ul>
+                                </div>
+                                <div
+                                  class="tab-content"
                                 >
                                   <div
-                                    class="input-group"
+                                    aria-hidden="false"
+                                    class="tab-pane active"
+                                    role="tabpanel"
                                   >
-                                    <span
-                                      class="input-group-prepend"
+                                    <div
+                                      class="tab-content-style"
                                     >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
+                                      <header
+                                        class="d-flex"
                                       >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
-                                    />
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#message"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          SMS Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <textarea
+                                            class="form-control"
+                                            placeholder="Enter Text content"
+                                          />
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#ussd"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          USSD Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <textarea
+                                            class="form-control"
+                                            placeholder="Enter Text content"
+                                          />
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <svg
+                                          class="icon"
+                                          style="margin-top: 2px;"
+                                        >
+                                          <use
+                                            xlink:href="#audio"
+                                          />
+                                        </svg>
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          IVR Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <!---->
+                                       
+                                      <div>
+                                        <div
+                                          class="audio-library-selector"
+                                        >
+                                          <div
+                                            class="audio-library-search-field dropdown"
+                                          >
+                                            <div
+                                              class="input-group"
+                                            >
+                                              <input
+                                                class="form-control"
+                                                placeholder="Search audio library…"
+                                                type="text"
+                                              />
+                                               
+                                              <span
+                                                class="input-group-prepend"
+                                              >
+                                                <button
+                                                  class="btn btn-primary dropdown-toggle"
+                                                >
+                                                  <i
+                                                    class="glyphicon glyphicon-search"
+                                                  />
+                                                </button>
+                                              </span>
+                                            </div>
+                                             
+                                            <!---->
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="phone-recorder"
+                                        >
+                                          <!---->
+                                        </div>
+                                         
+                                        <div
+                                          class="upload-monitor"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                        </div>
+                                         
+                                        <div
+                                          class="d-flex mt-2"
+                                        >
+                                          <button
+                                            class="btn btn-primary ivr-buttons"
+                                          >
+                                            <svg
+                                              class="icon"
+                                            >
+                                              <use
+                                                xlink:href="#record-audio"
+                                              />
+                                            </svg>
+                                            
+                    Record Audio
+                  
+                                          </button>
+                                           
+                                          <button
+                                            class="btn btn-primary ivr-buttons ml-2"
+                                            style="overflow: hidden;"
+                                          >
+                                            <svg
+                                              class="icon"
+                                            >
+                                              <use
+                                                xlink:href="#upload"
+                                              />
+                                            </svg>
+                                            
+                    Upload Audio
+                  
+                                            <input
+                                              accept="audio/*"
+                                              style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                              type="file"
+                                            />
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                   
                                   <!---->
                                 </div>
-                              </div>
-                               
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
                               </div>
                             </div>
                           </div>
@@ -3471,6 +3774,8 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                           <div
                             class="starting-block-button"
                           >
+                            <hr />
+                             
                             <h4>
                               Options
                             </h4>
@@ -3479,11 +3784,18 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               class="form-group"
                             >
                               <button
-                                class="btn btn-secondary btn-sm"
+                                class="btn btn-outline-primary btn-sm w-100"
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+                                <svg
+                                  class="icon"
+                                >
+                                  <use
+                                    xlink:href="#enter"
+                                  />
+                                </svg>
+                                 
           Currently set as starting block
         
                               </button>
