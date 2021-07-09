@@ -13,6 +13,7 @@ export const FetchFlow = FetchFlowComponent
 export const NewFlow = NewFlowComponent
 export const ImportFlow = ImportFlowComponent
 export const Home = HomeComponent
+export const defaultLocalisations = require('./assets/messages.json')
 
 const Components: { [key: string]: any } = {
   InteractionDesignerComponent,
