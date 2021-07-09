@@ -285,4 +285,9 @@ export default ImportFlow
   overflow: hidden;
   white-space: nowrap;
 }
+
+.card {
+  display: flex;
+}
+
 </style>
