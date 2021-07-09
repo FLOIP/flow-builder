@@ -193,9 +193,17 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <div
                                     class="number-editor"
                                   >
-                                    <label>
+                                    <label
+                                      class="text-primary mb-0"
+                                    >
                                       Interaction timeout
                                     </label>
+                                     
+                                    <div
+                                      class="small mb-2"
+                                    >
+                                      
+                                    </div>
                                      
                                     <div>
                                       <input
@@ -1779,7 +1787,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                         class="mobile-primitive-numeric-response-block"
                       >
                         <h3
-                          class="no-room-above"
+                          class="no-room-above text-primary"
                         >
                           
     Edit Numeric Response block
@@ -1787,93 +1795,76 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-70/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <input
+                                  class="form-control w-100"
+                                  type="text"
                                 />
                                  
+                                <span
+                                  class="btn btn-outline-primary"
+                                >
+                                  <svg
+                                    class="icon"
+                                  >
+                                    <use
+                                      xlink:href="#settings"
+                                    />
+                                  </svg>
+                                </span>
+                              </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
+                            </div>
+                             
+                            <div
+                              class="mt-3"
+                            >
+                              <div
+                                class="validation-message form-group"
+                                id="block/fake-uuid-70/name"
+                              >
+                                <div>
+                                  <strong>
+                                    Code:
+                                  </strong>
+                                   
+                                  <span
+                                    class="block-code"
+                                  >
+                                      
+                                  </span>
+                                </div>
+                                 
                                 <small
-                                  class="text-muted"
+                                  class="text-danger"
                                 >
                                   
-        Only accepts word characters
-      
                                 </small>
                               </div>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
                            
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/label"
-                          >
-                            <div
-                              class="block-label"
-                            >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Block semantic label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block semantic label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          <hr />
                            
                           <div
                             class="validation-message form-group"
@@ -1885,9 +1876,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Minimum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -1918,9 +1917,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -1951,9 +1958,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               <div
                                 class="number-editor"
                               >
-                                <label>
-                                  Maximum digits
+                                <label
+                                  class="text-primary mb-0"
+                                >
+                                  Maximum Response digits
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  Set maximum value will always override maximum response digit except when maximum value is empty
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2318,7 +2333,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                         class="mobile-primitive-numeric-response-block"
                       >
                         <h3
-                          class="no-room-above"
+                          class="no-room-above text-primary"
                         >
                           
     Edit Numeric Response block
@@ -2326,93 +2341,76 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-76/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <input
+                                  class="form-control w-100"
+                                  type="text"
                                 />
                                  
+                                <span
+                                  class="btn btn-outline-primary"
+                                >
+                                  <svg
+                                    class="icon"
+                                  >
+                                    <use
+                                      xlink:href="#settings"
+                                    />
+                                  </svg>
+                                </span>
+                              </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
+                            </div>
+                             
+                            <div
+                              class="mt-3"
+                            >
+                              <div
+                                class="validation-message form-group"
+                                id="block/fake-uuid-76/name"
+                              >
+                                <div>
+                                  <strong>
+                                    Code:
+                                  </strong>
+                                   
+                                  <span
+                                    class="block-code"
+                                  >
+                                     A Name 
+                                  </span>
+                                </div>
+                                 
                                 <small
-                                  class="text-muted"
+                                  class="text-danger"
                                 >
                                   
-        Only accepts word characters
-      
                                 </small>
                               </div>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
                            
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/label"
-                          >
-                            <div
-                              class="block-label"
-                            >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Block semantic label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block semantic label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          <hr />
                            
                           <div
                             class="validation-message form-group"
@@ -2424,9 +2422,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Minimum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2457,9 +2463,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2490,9 +2504,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               <div
                                 class="number-editor"
                               >
-                                <label>
-                                  Maximum digits
+                                <label
+                                  class="text-primary mb-0"
+                                >
+                                  Maximum Response digits
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  Set maximum value will always override maximum response digit except when maximum value is empty
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2963,9 +2985,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Duration (seconds)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2996,9 +3026,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Response Characters
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -3477,9 +3515,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Duration (seconds)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -3510,9 +3556,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Response Characters
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
