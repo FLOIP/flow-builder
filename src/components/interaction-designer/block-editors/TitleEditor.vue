@@ -1,6 +1,6 @@
 <template>
   <section class="mb-3">
-    <label class="title">{{'flow-builder.title' | trans}}</label>
+    <label class="text-primary">{{'flow-builder.title' | trans}}</label>
     <validation-message
       #input-control="{ isValid: isLabelValid }"
       :message-key="`block/${block.uuid}/label`">
@@ -10,39 +10,11 @@
           type="text"
           class="form-control w-100"
           :class="{ 'is-invalid': isLabelValid === false }">
-        <span
-          class="btn btn-outline-primary"
-          @click="editBlockName = true">
+        <span class="btn btn-outline-primary btn-xs align-self-center ml-2">
           <svg-icon icon="settings" />
         </span>
       </div>
     </validation-message>
-    <div class="mt-3">
-      <validation-message
-        #input-control="{ isValid: isNameValid }"
-        :message-key="`block/${block.uuid}/name`">
-        <div v-if="editBlockName || isNameValid === false">
-          <label>{{ 'flow-builder.edit-block-code' | trans }}</label>
-          <div class="d-flex">
-            <input
-              v-model="blockName"
-              type="text"
-              class="form-control w-100"
-              :class="{ 'is-invalid': isNameValid === false }"
-              @keydown="filterName">
-            <span
-              class="btn btn-primary"
-              @click="editBlockName = false">
-              <svg-icon icon="check" />
-            </span>
-          </div>
-        </div>
-        <div v-else>
-          <strong>{{'flow-builder.code' | trans}}:</strong>
-          <span class="block-code"> {{ blockName }} </span>
-        </div>
-      </validation-message>
-    </div>
   </section>
 </template>
 
@@ -66,8 +38,6 @@ const flowVuexNamespace = namespace('flow')
   },
 })
 class TitleEditor extends mixins(Lang) {
-  editBlockName = false
-
   @Prop() readonly block!: IBlock
 
   get blockLabel(): string {
@@ -78,31 +48,7 @@ class TitleEditor extends mixins(Lang) {
     this.block_setLabel({blockId: this.block.uuid, value})
   }
 
-  get blockName(): string {
-    return this.block.name
-  }
-
-  set blockName(value: string) {
-    this.block_setName({blockId: this.block.uuid, value})
-  }
-
-  filterName(e: KeyboardEvent): void {
-    if (e.key.match(/\W+|Enter/g)) {
-      e.preventDefault()
-    }
-  }
-
   @flowVuexNamespace.Action block_setLabel!: ({blockId, value}: {blockId: string, value: string}) => void
-  @flowVuexNamespace.Mutation block_setName!: ({blockId, value}: {blockId: string, value: string}) => void
 }
 export default TitleEditor
 </script>
-
-<style scoped>
-.title {
-  color: #531944;
-}
-.block-code {
-  word-wrap: break-word;
-}
-</style>
