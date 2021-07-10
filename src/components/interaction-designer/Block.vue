@@ -17,7 +17,7 @@
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
       @destroyed="handleDraggableDestroyedForBlock">
-      <div class="d-flex justify-content-between" v-if="showToolbar">
+      <div class="d-flex justify-content-between" v-if="isBlockSelected || showToolbar">
         <div class="header-actions-left">
           <!--Selection-->
           <font-awesome-icon
