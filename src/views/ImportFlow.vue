@@ -2,7 +2,7 @@
   <div class="new-contents">
     <div class="row">
       <div class="col-sm-8 offset-sm-2">
-        <div class="card">
+        <div class="card d-flex">
           <div class="card-body">
             <div>
               <h2>
@@ -284,10 +284,6 @@ export default ImportFlow
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-}
-
-.card {
-  display: flex;
 }
 
 </style>
