@@ -33,32 +33,40 @@
           :block="block"
           :flow="flow" />
       </div>
+
+      <hr>
+
       <div class="form-group">
         <!--Show non empty choices-->
         <template v-for="(choiceKey) in Object.keys(inflatedChoices)">
-          <hr>
-          <h4>{{ `Choice ${choiceKey}` }}</h4>
-          <block-exit-semantic-label-editor
-            v-if="inflatedChoices[choiceKey].exit"
-            :exit="inflatedChoices[choiceKey].exit"
-            :block="block" />
+          <!-- we're just making a best guess as to which variant to use
+               based on how this instance of flow-builder works -->
+          <resource-variant-text-editor
+            :label="choiceKey"
+            :placeholder="'Enter choice...'"
+            :resource-id="inflatedChoices[choiceKey].resource.uuid"
+            :resource-variant="findOrGenerateStubbedVariantOn(
+              inflatedChoices[choiceKey].resource,
+              {language_id: flow.languages[0].id, content_type: SupportedMode.TEXT, modes: [SupportedContentType.TEXT]})"
+            :mode="'TEXT'" />
 
-          <resource-editor
-            :resource="inflatedChoices[choiceKey].resource"
-            :block="block"
-            :flow="flow" />
         </template>
-        <!--Show empty choice-->
-        <hr>
-        <h4>{{ `Choice ${Object.keys(inflatedChoices).length + 1}` }}</h4>
-        <block-exit-semantic-label-editor :exit="inflatedEmptyChoice.exit" />
 
-        <resource-editor
-          :resource="inflatedEmptyChoice.resource"
-          :block="block"
-          :flow="flow" />
+        <!--Show empty choice-->
+        <resource-variant-text-editor
+          :label="Object.keys(inflatedChoices).length + 1"
+          :placeholder="'Enter choice...'"
+          :resource-id="inflatedEmptyChoice.resource.uuid"
+          :resource-variant="findOrGenerateStubbedVariantOn(
+              inflatedEmptyChoice.resource,
+              {language_id: flow.languages[0].id, content_type: SupportedMode.TEXT, modes: [SupportedContentType.TEXT]})"
+          :mode="'TEXT'" />
       </div>
+
+      <hr>
+
       <slot name="extras" />
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
@@ -69,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import {IFlow, IResource} from '@floip/flow-runner'
+import {IFlow, IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {namespace} from 'vuex-class'
 import {Component, Prop, Watch} from 'vue-property-decorator'
@@ -78,6 +86,8 @@ import SelectOneStore, {BLOCK_TYPE, IInflatedChoicesInterface} from '@/store/flo
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
+import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -92,6 +102,7 @@ const builderVuexNamespace = namespace('builder')
 
 @Component<any>({
   components: {
+    ResourceVariantTextEditor,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
@@ -105,6 +116,10 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
 
   @Prop() readonly flow!: IFlow
+
+  SupportedContentType = SupportedContentType
+  SupportedMode = SupportedMode
+  findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
   get promptResource(): IResource {
     return this.resourcesByUuid[this.block.config.prompt]

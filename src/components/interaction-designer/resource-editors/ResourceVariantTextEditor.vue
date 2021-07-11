@@ -3,13 +3,21 @@
     <div
       class="content-editor"
       :class="{'content-editor-selected': !!content}">
-      <textarea
-        v-model="content"
-        v-focus="isSelected"
-        :placeholder="`flow-builder.enter-${resourceVariant.content_type.toString().toLowerCase()}-content` | trans"
-        class="form-control"
-        @focus="select"
-        @blur="deselect" />
+
+      <div class="input-group">
+        <div v-if="label" class="input-group-prepend">
+          <span class="input-group-text">{{label}}</span>
+        </div>
+
+        <textarea
+          v-model="content"
+          v-focus="isSelected"
+          :placeholder="placeholder || `flow-builder.enter-${resourceVariant.content_type.toString().toLowerCase()}-content` | trans"
+          class="form-control"
+          rows="1"
+          @focus="select"
+          @blur="deselect" />
+      </div>
 
       <!-- <button @click="select"
               class="btn btn-xs btn-secondary">
@@ -117,6 +125,17 @@ export default {
 
   props: {
     isEditable: Boolean,
+
+    label: {
+      type: String,
+      default: null,
+    },
+
+    placeholder: {
+      type: String,
+      default: null,
+    },
+
     resourceId: {
       type: String,
       default: null,
