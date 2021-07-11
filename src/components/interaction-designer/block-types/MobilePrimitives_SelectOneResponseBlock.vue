@@ -1,7 +1,7 @@
 <template>
   <div class="mobile-primitive-select-one-response-block">
     <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -37,12 +37,14 @@
       <hr>
 
       <div class="form-group">
+        <h4>{{'flow-builder.choices' | trans}}</h4>
+
         <!--Show non empty choices-->
         <template v-for="(choiceKey) in Object.keys(inflatedChoices)">
           <!-- we're just making a best guess as to which variant to use
                based on how this instance of flow-builder works -->
           <resource-variant-text-editor
-            :label="choiceKey"
+            :label="choiceKey.toString()"
             :placeholder="'Enter choice...'"
             :resource-id="inflatedChoices[choiceKey].resource.uuid"
             :resource-variant="findOrGenerateStubbedVariantOn(
@@ -54,7 +56,7 @@
 
         <!--Show empty choice-->
         <resource-variant-text-editor
-          :label="Object.keys(inflatedChoices).length + 1"
+          :label="(Object.keys(inflatedChoices).length + 1).toString()"
           :placeholder="'Enter choice...'"
           :resource-id="inflatedEmptyChoice.resource.uuid"
           :resource-variant="findOrGenerateStubbedVariantOn(
@@ -70,9 +72,11 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />
+    
   </div>
 </template>
 

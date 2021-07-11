@@ -241,6 +241,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.resource-variant-text-editor {
+  margin-bottom: 10px;
+}
+
 .block-text-content-editor-for-lang-and-type {
   margin-bottom: 0.5em;
 
