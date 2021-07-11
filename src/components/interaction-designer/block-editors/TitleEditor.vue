@@ -1,16 +1,16 @@
 <template>
   <section class="mb-3">
-    <label class="text-primary">{{'flow-builder.title' | trans}}</label>
+    <label class="text-primary">{{ 'flow-builder.title' | trans }}</label>
     <validation-message
-      #input-control="{ isValid: isLabelValid }"
+      #input-control="{ isValid }"
       :message-key="`block/${block.uuid}/label`">
       <div class="d-flex">
-        <input
+        <small-text-editor
+          class="w-100"
           v-model="blockLabel"
-          type="text"
-          class="form-control w-100"
-          :class="{ 'is-invalid': isLabelValid === false }">
-        <span class="btn btn-outline-primary btn-xs align-self-center ml-2">
+          :placeholder="'flow-builder.enter-title' | trans"
+          :valid-state="isValid"/>
+        <span class="btn btn-outline-primary btn-xs align-self-center ml-2" @click="emitGearClickedEvent">
           <svg-icon icon="settings" />
         </span>
       </div>
@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import {Component, Prop} from 'vue-property-decorator'
-import TextEditor from '@/components/common/TextEditor.vue'
+import SmallTextEditor from '@/components/common/SmallTextEditor.vue'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
@@ -32,7 +32,7 @@ const flowVuexNamespace = namespace('flow')
 
 @Component({
   components: {
-    TextEditor,
+    SmallTextEditor,
     ValidationMessage,
     SvgIcon,
   },
@@ -46,6 +46,10 @@ class TitleEditor extends mixins(Lang) {
 
   set blockLabel(value: string) {
     this.block_setLabel({blockId: this.block.uuid, value})
+  }
+
+  emitGearClickedEvent() {
+    this.$emit('gearClicked')
   }
 
   @flowVuexNamespace.Action block_setLabel!: ({blockId, value}: {blockId: string, value: string}) => void

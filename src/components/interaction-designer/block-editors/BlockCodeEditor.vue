@@ -1,19 +1,19 @@
 <template>
   <div class="mt-3">
     <validation-message
-      #input-control="{ isValid: isNameValid }"
+      #input-control="{ isValid }"
       :message-key="`block/${block.uuid}/name`">
-      <div v-if="editBlockName || isNameValid === false">
+      <div v-if="editBlockName || isValid === false">
         <label>{{ 'flow-builder.edit-block-code' | trans }}</label>
         <div class="d-flex">
-          <input
+          <small-text-editor
             v-model="blockName"
-            type="text"
-            class="form-control w-100"
-            :class="{ 'is-invalid': isNameValid === false }"
-            @keydown="filterName">
+            class="w-100"
+            :placeholder="'flow-builder.enter-block-code' | trans"
+            :valid-state="isValid"
+            @keydown="filterName" />
           <span
-            class="btn btn-primary"
+            class="btn btn-primary btn-xs align-self-center ml-2"
             @click="editBlockName = false">
             <svg-icon icon="check" />
           </span>
@@ -34,19 +34,19 @@
 
 <script lang="ts">
 import {Component, Prop} from 'vue-property-decorator'
-import TextEditor from '@/components/common/TextEditor.vue'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import SvgIcon from '@/components/common/SvgIcon.vue'
+import SmallTextEditor from '@/components/common/SmallTextEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 
 @Component({
   components: {
-    TextEditor,
+    SmallTextEditor,
     ValidationMessage,
     SvgIcon,
   },
