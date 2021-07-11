@@ -1860,9 +1860,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                   Block semantic label
                                 </label>
                                  
-                                <textarea
-                                  class="form-control"
+                                <input
+                                  class="form-control w-100"
                                   placeholder="Enter a block semantic label"
+                                  type="text"
                                 />
                                  
                               </div>
@@ -2140,7 +2141,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                               />
                                                
                                               <span
-                                                class="input-group-prepend"
+                                                class="input-group-append"
                                               >
                                                 <button
                                                   class="btn btn-primary dropdown-toggle"
@@ -2176,21 +2177,6 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                         >
                                           <button
                                             class="btn btn-primary ivr-buttons"
-                                          >
-                                            <svg
-                                              class="icon"
-                                            >
-                                              <use
-                                                xlink:href="#record-audio"
-                                              />
-                                            </svg>
-                                            
-                    Record Audio
-                  
-                                          </button>
-                                           
-                                          <button
-                                            class="btn btn-primary ivr-buttons ml-2"
                                             style="overflow: hidden;"
                                           >
                                             <svg
@@ -2208,6 +2194,21 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                               style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
                                               type="file"
                                             />
+                                          </button>
+                                           
+                                          <button
+                                            class="btn btn-primary ivr-buttons ml-2"
+                                          >
+                                            <svg
+                                              class="icon"
+                                            >
+                                              <use
+                                                xlink:href="#record-audio"
+                                              />
+                                            </svg>
+                                            
+                    Record Audio
+                  
                                           </button>
                                         </div>
                                       </div>
@@ -2399,9 +2400,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                   Block semantic label
                                 </label>
                                  
-                                <textarea
-                                  class="form-control"
+                                <input
+                                  class="form-control w-100"
                                   placeholder="Enter a block semantic label"
+                                  type="text"
                                 />
                                  
                               </div>
@@ -2938,9 +2940,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                   Block semantic label
                                 </label>
                                  
-                                <textarea
-                                  class="form-control"
+                                <input
+                                  class="form-control w-100"
                                   placeholder="Enter a block semantic label"
+                                  type="text"
                                 />
                                  
                               </div>
@@ -3193,7 +3196,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                               />
                                                
                                               <span
-                                                class="input-group-prepend"
+                                                class="input-group-append"
                                               >
                                                 <button
                                                   class="btn btn-primary dropdown-toggle"
@@ -3229,21 +3232,6 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                         >
                                           <button
                                             class="btn btn-primary ivr-buttons"
-                                          >
-                                            <svg
-                                              class="icon"
-                                            >
-                                              <use
-                                                xlink:href="#record-audio"
-                                              />
-                                            </svg>
-                                            
-                    Record Audio
-                  
-                                          </button>
-                                           
-                                          <button
-                                            class="btn btn-primary ivr-buttons ml-2"
                                             style="overflow: hidden;"
                                           >
                                             <svg
@@ -3261,6 +3249,21 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                               style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
                                               type="file"
                                             />
+                                          </button>
+                                           
+                                          <button
+                                            class="btn btn-primary ivr-buttons ml-2"
+                                          >
+                                            <svg
+                                              class="icon"
+                                            >
+                                              <use
+                                                xlink:href="#record-audio"
+                                              />
+                                            </svg>
+                                            
+                    Record Audio
+                  
                                           </button>
                                         </div>
                                       </div>
@@ -3452,9 +3455,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                   Block semantic label
                                 </label>
                                  
-                                <textarea
-                                  class="form-control"
+                                <input
+                                  class="form-control w-100"
                                   placeholder="Enter a block semantic label"
+                                  type="text"
                                 />
                                  
                               </div>

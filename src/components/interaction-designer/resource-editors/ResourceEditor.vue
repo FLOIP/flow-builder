@@ -53,23 +53,23 @@
 
                   <div class="d-flex mt-2">
                     <button
-                      v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
-                      class="btn btn-primary ivr-buttons"
-                      @click.prevent="triggerRecordViaPhoneFor(languageId)">
-                      <svg-icon icon="record-audio" />
-                      {{ 'flow-builder.record-audio' | trans }}
-                    </button>
-                    <button
                       v-if="isEditable && isFeatureAudioUploadEnabled"
                       v-flow-uploader="{
                         target: route('trees.resumeableAudioUpload'),
                         token: `${block.uuid}${languageId}`,
                         accept: 'audio/*'}"
-                      class="btn btn-primary ivr-buttons ml-2"
+                      class="btn btn-primary ivr-buttons"
                       @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
                       @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)">
                       <svg-icon icon="upload" />
                       {{ 'flow-builder.upload-audio' | trans }}
+                    </button>
+                    <button
+                      v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
+                      class="btn btn-primary ivr-buttons ml-2"
+                      @click.prevent="triggerRecordViaPhoneFor(languageId)">
+                      <svg-icon icon="record-audio" />
+                      {{ 'flow-builder.record-audio' | trans }}
                     </button>
                   </div>
                 </template>
@@ -161,15 +161,13 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 
   SupportedContentType = SupportedContentType
 
-  iconsMap = new Map<string, string>()
-
-  created() {
-    this.iconsMap.set(SupportedMode.SMS, 'message')
-    this.iconsMap.set(SupportedMode.USSD, 'ussd')
-    this.iconsMap.set(SupportedMode.IVR, 'audio')
-    this.iconsMap.set(SupportedMode.RICH_MESSAGING, 'rich-messaging')
-    this.iconsMap.set(SupportedMode.OFFLINE, 'phone')
-  }
+  iconsMap = new Map<string, string>([
+    [SupportedMode.SMS, 'message'],
+    [SupportedMode.USSD, 'ussd'],
+    [SupportedMode.IVR, 'audio'],
+    [SupportedMode.RICH_MESSAGING, 'rich-messaging'],
+    [SupportedMode.OFFLINE, 'phone'],
+  ])
 
   triggerRecordViaPhoneFor(langId: ILanguage['id']): void {
     this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', {langId, isVisible: true})

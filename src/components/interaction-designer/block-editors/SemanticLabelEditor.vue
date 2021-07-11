@@ -5,7 +5,7 @@
     <div class="block-semantic-label">
       <small-text-editor
         v-model="semanticLabel"
-        :label="'flow-builder.block-semantic-label' | trans"
+        :label="'flow-builder.block-exit-semantic-label' | trans"
         :placeholder="'flow-builder.enter-block-semantic-label' | trans"
         :valid-state="isValid" />
     </div>
