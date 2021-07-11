@@ -458,7 +458,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                             class="glyphicon glyphicon-chevron-up"
                           />
                           
-            Import / Export
+            Export
           
                         </button>
                          
@@ -577,7 +577,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             class="glyphicon glyphicon-chevron-up"
                           />
                           
-            Import / Export
+            Export
           
                         </button>
                          
@@ -931,7 +931,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             class="glyphicon glyphicon-chevron-up"
                           />
                           
-            Import / Export
+            Export
           
                         </button>
                          
@@ -1284,7 +1284,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             class="glyphicon glyphicon-chevron-up"
                           />
                           
-            Import / Export
+            Export
           
                         </button>
                          
@@ -1609,7 +1609,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                             class="glyphicon glyphicon-chevron-up"
                           />
                           
-            Import / Export
+            Export
           
                         </button>
                          

@@ -106,7 +106,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('/flows/{id}',
+fetch('/flows',
 {
   method: 'POST',
   body: inputBody,
@@ -120,7 +120,7 @@ fetch('/flows/{id}',
 
 ```
 
-`POST /flows/{id}`
+`POST /flows`
 
 *Create a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we need to track whether the flow is created on the server or not in this builder with an attribute on the container - `created` - rather than with whether or not the flow has a uuid yet. `created` is not sent to the server. This route is used when `created` === false*
 
@@ -130,7 +130,6 @@ fetch('/flows/{id}',
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|id|path|uuid|true|Creates a flow and it's associated resources|
 |body|body|[FlowContainer](#schemaflowcontainer)|true|none|
 
 > Example responses
@@ -187,7 +186,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('/flows/{id}',
+fetch('/flows',
 {
   method: 'PUT',
   body: inputBody,
@@ -201,7 +200,7 @@ fetch('/flows/{id}',
 
 ```
 
-`PUT /flows/{id}`
+`PUT /flows`
 
 *Update a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we need to track whether the flow is created on the server or not in this builder with an attribute on the container - `created` - rather than with whether or not the flow has a uuid yet. `created` is not sent to the server. This route is used when `created` === true*
 
@@ -211,7 +210,6 @@ fetch('/flows/{id}',
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|id|path|uuid|true|Updates a flow and it's associated resources by ID|
 |body|body|[FlowContainer](#schemaflowcontainer)|true|none|
 
 > Example responses
@@ -240,47 +238,6 @@ fetch('/flows/{id}',
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Error in flow update including validation errors (the builder should prevent these client side before we get to that point though)|None|
 
 <h3 id="update-flow-responseschema">Response Schema</h3>
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
-## Persist Block
-
-<a id="opIdPersist Block"></a>
-
-> Code samples
-
-```javascript
-
-fetch('/blocks/{id}',
-{
-  method: 'POST'
-
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-`POST /blocks/{id}`
-
-WIP
-
-<h3 id="persist-block-parameters">Parameters</h3>
-
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|id|path|uuid|true|ID of the block.|
-
-<h3 id="persist-block-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|WIP|None|
 
 <aside class="success">
 This operation does not require authentication
