@@ -246,7 +246,7 @@ export default {
       this.$router.replace(
         {
           path: this.route('flows.fetchFlow', {flowId: this.id}),
-          query: {nextUrl: this.$route.path},
+          query: {nextUrl: this.$route.fullPath},
         },
       )
     }
