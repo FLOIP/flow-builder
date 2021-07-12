@@ -48,8 +48,8 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: (state) => ({
     isCreated: state.isCreated,
-    specification_version: 'TODO',
-    uuid: 'TODO',
+    specification_version: state.specification_version,
+    uuid: state.container_uuid,
     name: 'TODO',
     description: 'TODO',
     vendor_metadata: {},
