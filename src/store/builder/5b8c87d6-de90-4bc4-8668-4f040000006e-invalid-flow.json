@@ -1,5 +1,5 @@
 {
-  "specification_version": "1.0.10",
+  "specification_version": "1.0.0-rc2",
   "uuid": "invalid uui",
   "name": "container name",
   "description": "container description",
@@ -86,7 +86,7 @@
             "validation_minimum": 1,
             "validation_maximum": 2,
             "ivr": {
-              "max_digits": 1 
+              "max_digits": 1
             }
           }
         }
