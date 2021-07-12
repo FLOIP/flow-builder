@@ -18,7 +18,7 @@
             :key="i"
             class="tab-content-style">
             <header class="d-flex">
-              <svg-icon :style="{marginTop: '2px'}" :icon="iconsMap.get(mode)" />
+              <svg-icon class="resource-icons" :icon="iconsMap.get(mode)" />
               <h6 class="ml-1">{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
             </header>
 
@@ -246,5 +246,9 @@ export default ResourceEditor
 .ivr-buttons {
   font-size: small;
   flex-grow: 1;
+}
+.resource-icons {
+  height: 1.25em;
+  width: 1.25em;
 }
 </style>
