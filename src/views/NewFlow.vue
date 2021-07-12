@@ -77,7 +77,7 @@ class NewFlow extends Vue {
     const flowContainer = await this.flow_persist({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore TODO: Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
-      persistRoute: this.route('flows.persistFlow', {flowId: this.activeFlow.uuid}),
+      persistRoute: this.route('flows.persistFlow', {}),
       flowContainer: this.activeFlowContainer,
     })
     if (flowContainer) {
