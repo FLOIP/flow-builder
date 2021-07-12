@@ -6,7 +6,8 @@
       <div class="form-group">
         <button
           type="button"
-          class="btn btn-outline-primary btn-sm w-100"
+          class="btn btn-sm w-100"
+          :class="{'btn-outline-primary': !isStartBlock, 'btn-primary': isStartBlock}"
           :disabled="isStartBlock"
           @click="setStartBlock($event)">
           <svg-icon icon="enter" />

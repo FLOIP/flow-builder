@@ -3,9 +3,9 @@
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/semantic_label`">
     <div class="block-semantic-label">
-      <text-editor
+      <small-text-editor
         v-model="semanticLabel"
-        :label="'flow-builder.block-semantic-label' | trans"
+        :label="'flow-builder.block-exit-semantic-label' | trans"
         :placeholder="'flow-builder.enter-block-semantic-label' | trans"
         :valid-state="isValid" />
     </div>
@@ -18,10 +18,11 @@ import {mapMutations} from 'vuex'
 import TextEditor from '@/components/common/TextEditor'
 import {lang} from '@/lib/filters/lang'
 import ValidationMessage from '@/components/common/ValidationMessage'
+import SmallTextEditor from '@/components/common/SmallTextEditor'
 
 export default {
   components: {
-    TextEditor,
+    SmallTextEditor,
     ValidationMessage,
   },
   mixins: [lang],

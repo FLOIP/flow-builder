@@ -11,7 +11,7 @@
         @blur="deactivate"
         @input="resetPagination">
 
-      <span class="input-group-prepend">
+      <span class="input-group-append">
         <button
           :class="{active: isEntireLibraryModeEnabled}"
           class="btn btn-primary dropdown-toggle"

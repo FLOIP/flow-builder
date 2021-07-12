@@ -1,7 +1,7 @@
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, set} from 'lodash'
+import {defaults, set, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {popFirstEmptyItem} from './utils/listBuilder'
@@ -74,12 +74,6 @@ export const mutations: MutationTree<IFlowsState> = {
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   block_setLabel({commit}, {blockId, value}) {
-    const snakeCase = (value: string) => value?.trim()
-      .replace(/[^\w\s]+/g, '')
-      .split(' ')
-      .map((word) => word.toLowerCase())
-      .join('_')
-
     commit('block_setLabel', {blockId, value})
     commit('block_setName', {blockId, value: snakeCase(value)})
   },

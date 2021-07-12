@@ -5,7 +5,10 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <title-editor :block="block" />
+      <title-editor :block="block" @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor v-if="showSemanticLabel" :block="block" />
+      <block-code-editor :block="block" />
+
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"
@@ -35,6 +38,7 @@ import {mixins} from 'vue-class-component'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import TitleEditor from '../block-editors/TitleEditor.vue'
+import BlockCodeEditor from '../block-editors/BlockCodeEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
@@ -52,12 +56,15 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
     TitleEditor,
+    BlockCodeEditor,
   },
 })
 class MobilePrimitives_MessageBlock extends mixins(Lang) {
   @Prop() readonly block!: IMessageBlock
 
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   get promptResource(): IResource {
     return this.resourcesByUuid[this.block.config.prompt]

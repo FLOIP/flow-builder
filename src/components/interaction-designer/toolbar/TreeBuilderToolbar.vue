@@ -10,7 +10,8 @@
         <textarea
           v-model="flow"
           class="flow-importer"
-          rows="15" />
+          rows="15"
+          disabled />
       </div>
 
       <div class="tree-workspace-panel-heading panel-heading">
@@ -193,7 +194,7 @@ import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
-import {identity, isEmpty, isNil, pickBy as _pickBy, reduce} from 'lodash'
+import {identity, isEmpty, isNil, pickBy as _pickBy, reduce, omit} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
@@ -237,15 +238,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   get flow(): string {
-    const {
-      flows,
-      resources,
-    } = this as { flows: IFlow[], resources: IResource[] }
     return JSON.stringify(
-      {
-        flows,
-        resources,
-      },
+      omit(this.activeFlowContainer, 'isCreated'),
       null,
       2,
     )
@@ -348,7 +342,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     if (this.isEditable) {
       this.setTreeSaving(true)
       const flowContainer = await this.flow_persist({
-        persistRoute: this.route('flows.persistFlow', {flowId: this.activeFlow?.uuid}),
+        persistRoute: this.route('flows.persistFlow', {}),
         flowContainer: this.activeFlowContainer,
       })
       this.setTreeSaving(false)
