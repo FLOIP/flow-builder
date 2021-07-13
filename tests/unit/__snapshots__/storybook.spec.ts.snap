@@ -70,6 +70,12 @@ exports[`Storyshots Core/Run Another Flow Block Styled Default 1`] = `
 </div>
 `;
 
+exports[`Storyshots Core/Set Contact Property Clear Action 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
 exports[`Storyshots Core/Set Contact Property Default 1`] = `
 <div>
   <!---->
