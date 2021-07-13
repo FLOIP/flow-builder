@@ -24,7 +24,6 @@
 <script lang="ts">
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
-
 import {IBlock, IFlow} from '@floip/flow-runner'
 import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 import ContactPropertyEditor from '@/components/interaction-designer/block-editors/ContactPropertyEditor.vue'
@@ -32,7 +31,6 @@ import ContactPropertyEditor from '@/components/interaction-designer/block-edito
 import SetContactPropertyStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import {get} from 'lodash'
 import {mixins} from 'vue-class-component'
 import BlockId from '../block-editors/BlockId.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'

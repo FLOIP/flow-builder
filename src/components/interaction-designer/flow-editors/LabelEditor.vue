@@ -3,7 +3,8 @@
     <text-editor
       v-model="label"
       :label="'flow-builder.flow-label' | trans"
-      :placeholder="'flow-builder.enter-flow-label' | trans" />
+      :placeholder="'flow-builder.enter-flow-label' | trans"
+      :class="{ 'is-invalid': isInvalid }" />
   </div>
 </template>
 
@@ -26,6 +27,12 @@ const flowVuexNamespace = namespace('flow')
 )
 class FlowLabelEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
+  @Prop() validState?: boolean
+
+  get isInvalid() {
+    // strict comparison, because `undefined` doesn't mean invalid
+    return this.validState === false
+  }
 
   get label(): IBlock['label'] {
     return this.flow.label ?? ''
@@ -37,8 +44,8 @@ class FlowLabelEditor extends mixins(Lang) {
     this.flow_setNameFromLabel({flowId: this.flow.uuid, label})
   }
 
-  @flowVuexNamespace.Mutation flow_setLabel!: ({flowId, label}: { flowId: IFlow['uuid'], label: IFlow['label'] }) => void
-  @flowVuexNamespace.Mutation flow_setNameFromLabel!: ({flowId, label}: { flowId: IFlow['uuid'], label: IFlow['label'] }) => void
+  @flowVuexNamespace.Mutation flow_setLabel!: ({flowId, label}: {flowId: IFlow['uuid'], label: IFlow['label']}) => void
+  @flowVuexNamespace.Mutation flow_setNameFromLabel!: ({flowId, label}: {flowId: IFlow['uuid'], label: IFlow['label']}) => void
 }
 
 export default FlowLabelEditor

@@ -36,18 +36,6 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
 </div>
 `;
 
-exports[`Storyshots Core/Case Block Styled Default 1`] = `
-<div>
-  <!---->
-</div>
-`;
-
-exports[`Storyshots Core/Case Block Styled Existing Data Block 1`] = `
-<div>
-  <!---->
-</div>
-`;
-
 exports[`Storyshots Core/Log Block Plain Default 1`] = `<!---->`;
 
 exports[`Storyshots Core/Log Block Plain Existing Data Block 1`] = `<!---->`;
@@ -152,7 +140,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                   >
                     <div
                       class="tree-sidebar-edit-flow"
-                      data-for-flow-id="fake-uuid-8"
+                      data-for-flow-id="fake-uuid-0"
                     >
                       <div
                         class="flow-editor"
@@ -173,24 +161,37 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               class="col-12"
                             >
                               <div
-                                class="form-group flow-label"
+                                class="validation-message form-group"
+                                id="flow/fake-uuid-0/name"
                               >
-                                <div>
-                                  <label>
-                                    Flow label
-                                  </label>
-                                   
-                                  <textarea
-                                    class="form-control"
-                                    placeholder="Enter flow label"
-                                  />
-                                   
+                                <div
+                                  class="form-group flow-label"
+                                >
+                                  <div
+                                    class=""
+                                  >
+                                    <label>
+                                      Flow label
+                                    </label>
+                                     
+                                    <textarea
+                                      class="form-control"
+                                      placeholder="Enter flow label"
+                                    />
+                                     
+                                  </div>
                                 </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
                               </div>
                                
                               <div
                                 class="validation-message form-group"
-                                id="flow/fake-uuid-8/interaction_timeout"
+                                id="flow/fake-uuid-0/interaction_timeout"
                               >
                                 <div
                                   class="form-group flow-interaction-timeout"
@@ -226,151 +227,173 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                               class="col-12"
                             >
                               <div
-                                class="form-group flow-languages"
+                                class="validation-message form-group"
+                                id="flow/fake-uuid-0/languages"
                               >
-                                <label>
-                                  Languages
-                                </label>
-                                 
                                 <div
-                                  class="checkbox"
+                                  class="form-group flow-languages"
                                 >
-                                  <label
-                                    class="font-weight-normal"
+                                  <label>
+                                    Languages
+                                  </label>
+                                   
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-language-toggle-checkbox"
-                                      type="checkbox"
-                                      value="[object Object]"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-language-toggle-checkbox"
+                                        type="checkbox"
+                                        value="[object Object]"
+                                      />
+                                      
 
       English
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-language-toggle-checkbox"
-                                      type="checkbox"
-                                      value="[object Object]"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-language-toggle-checkbox"
+                                        type="checkbox"
+                                        value="[object Object]"
+                                      />
+                                      
 
-      Spanish
+      French
     
-                                  </label>
+                                    </label>
+                                  </div>
                                 </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
                               </div>
                                
                               <div
-                                class="form-group flow-modes"
+                                class="validation-message form-group"
+                                id="flow/fake-uuid-0/supported_modes"
                               >
-                                <label>
-                                  Modes
-                                </label>
-                                 
                                 <div
-                                  class="checkbox"
+                                  class="form-group flow-modes"
                                 >
-                                  <label
-                                    class="font-weight-normal"
+                                  <label>
+                                    Modes
+                                  </label>
+                                   
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="TEXT"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="TEXT"
+                                      />
+                                      
       TEXT
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="SMS"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="SMS"
+                                      />
+                                      
       SMS
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="USSD"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="USSD"
+                                      />
+                                      
       USSD
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="IVR"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="IVR"
+                                      />
+                                      
       IVR
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="RICH_MESSAGING"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="RICH_MESSAGING"
+                                      />
+                                      
       RICH_MESSAGING
     
-                                  </label>
-                                </div>
-                                <div
-                                  class="checkbox"
-                                >
-                                  <label
-                                    class="font-weight-normal"
+                                    </label>
+                                  </div>
+                                  <div
+                                    class="checkbox"
                                   >
-                                    <input
-                                      class="flow-mode-toggle-checkbox"
-                                      type="checkbox"
-                                      value="OFFLINE"
-                                    />
-                                    
+                                    <label
+                                      class="font-weight-normal"
+                                    >
+                                      <input
+                                        class="flow-mode-toggle-checkbox"
+                                        type="checkbox"
+                                        value="OFFLINE"
+                                      />
+                                      
       OFFLINE
     
-                                  </label>
+                                    </label>
+                                  </div>
                                 </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
                               </div>
                             </div>
                           </div>
@@ -441,7 +464,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                             class="glyphicon glyphicon-chevron-up"
                           />
                           
-            Import / Export
+            Export
           
                         </button>
                          
@@ -478,6 +501,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -497,6 +522,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                   <main
                     class="error-notifications-wrapper"
                   >
+                    <!---->
+                     
                     <!---->
                   </main>
                 </div>
@@ -556,7 +583,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             class="glyphicon glyphicon-chevron-up"
                           />
                           
-            Import / Export
+            Export
           
                         </button>
                          
@@ -820,6 +847,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
         
                         </a>
                          
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -847,6 +876,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                   <main
                     class="error-notifications-wrapper"
                   >
+                    <!---->
+                     
                     <!---->
                   </main>
                 </div>
@@ -906,7 +937,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             class="glyphicon glyphicon-chevron-up"
                           />
                           
-            Import / Export
+            Export
           
                         </button>
                          
@@ -1149,6 +1180,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1196,6 +1229,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                   <main
                     class="error-notifications-wrapper"
                   >
+                    <!---->
+                     
                     <!---->
                   </main>
                 </div>
@@ -1255,7 +1290,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             class="glyphicon glyphicon-chevron-up"
                           />
                           
-            Import / Export
+            Export
           
                         </button>
                          
@@ -1498,6 +1533,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1517,6 +1554,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                   <main
                     class="error-notifications-wrapper"
                   >
+                    <!---->
+                     
                     <!---->
                   </main>
                 </div>
@@ -1576,7 +1615,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                             class="glyphicon glyphicon-chevron-up"
                           />
                           
-            Import / Export
+            Export
           
                         </button>
                          
@@ -1633,6 +1672,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
           
                         </a>
                           
+                        <!---->
+                         
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1652,6 +1693,8 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                   <main
                     class="error-notifications-wrapper"
                   >
+                    <!---->
+                     
                     <!---->
                   </main>
                 </div>
@@ -1736,7 +1779,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="MobilePrimitives.NumericResponse"
-                      data-for-block-id="fake-uuid-80"
+                      data-for-block-id="fake-uuid-70"
                     >
                       <div
                         class="mobile-primitive-numeric-response-block"
@@ -1752,7 +1795,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                         <fieldset>
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-80/name"
+                            id="block/fake-uuid-70/name"
                           >
                             <div
                               class="block-name"
@@ -1786,7 +1829,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-80/label"
+                            id="block/fake-uuid-70/label"
                           >
                             <div
                               class="block-label"
@@ -1813,7 +1856,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-80/semantic_label"
+                            id="block/fake-uuid-70/semantic_label"
                           >
                             <div
                               class="block-semantic-label"
@@ -1840,7 +1883,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-80/config/validation_minimum"
+                            id="block/fake-uuid-70/config/validation_minimum"
                           >
                             <div
                               class="block-validation-min"
@@ -1873,7 +1916,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-80/config/validation_maximum"
+                            id="block/fake-uuid-70/config/validation_maximum"
                           >
                             <div
                               class="block-validation-max"
@@ -1906,7 +1949,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-80/config/ivr/max_digits"
+                            id="block/fake-uuid-70/config/ivr/max_digits"
                           >
                             <div
                               class="block-max-digits"
@@ -2144,7 +2187,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-80
+                              fake-uuid-70
                             </em>
                           </small>
                         </div>
@@ -2197,7 +2240,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="MobilePrimitives.NumericResponse"
-                      data-for-block-id="fake-uuid-86"
+                      data-for-block-id="fake-uuid-76"
                     >
                       <div
                         class="mobile-primitive-numeric-response-block"
@@ -2213,7 +2256,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                         <fieldset>
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-86/name"
+                            id="block/fake-uuid-76/name"
                           >
                             <div
                               class="block-name"
@@ -2247,7 +2290,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-86/label"
+                            id="block/fake-uuid-76/label"
                           >
                             <div
                               class="block-label"
@@ -2274,7 +2317,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-86/semantic_label"
+                            id="block/fake-uuid-76/semantic_label"
                           >
                             <div
                               class="block-semantic-label"
@@ -2301,7 +2344,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-86/config/validation_minimum"
+                            id="block/fake-uuid-76/config/validation_minimum"
                           >
                             <div
                               class="block-validation-min"
@@ -2334,7 +2377,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-86/config/validation_maximum"
+                            id="block/fake-uuid-76/config/validation_maximum"
                           >
                             <div
                               class="block-validation-max"
@@ -2367,7 +2410,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-86/config/ivr/max_digits"
+                            id="block/fake-uuid-76/config/ivr/max_digits"
                           >
                             <div
                               class="block-max-digits"
@@ -2425,7 +2468,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -2453,7 +2496,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -2480,97 +2523,74 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                             <!---->
                              
                             <div>
-                              <div
-                                class="upload-monitor"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
+                              <!---->
                                
                               <div
                                 class="audio-library-selector"
                               >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
+                                  data-audio-file-container-language="1"
                                 >
-                                  <div
-                                    class="input-group"
+                                  <button
+                                    class="audio-library-selection-clear-selection btn-ghost pull-right"
                                   >
-                                    <span
-                                      class="input-group-prepend"
-                                    >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
-                                      >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
+                                    <i
+                                      class="glyphicon glyphicon-remove"
                                     />
+                                  </button>
+                                   
+                                  <div
+                                    class="btn-group audio-library-selection-download-dropdown"
+                                  >
+                                    <button
+                                      class="btn btn-ghost dropdown-toggle"
+                                      data-toggle="dropdown"
+                                      type="button"
+                                    >
+                                      <span
+                                        aria-hidden="true"
+                                        class="glyphicon glyphicon-download-alt"
+                                      />
+                                       
+                                      <span
+                                        class="caret"
+                                      />
+                                    </button>
+                                     
+                                    <ul
+                                      class="dropdown-menu dropdown-menu-right"
+                                    >
+                                      <li>
+                                        <a
+                                          class="tree-block-audio-files-download-original"
+                                          href="path/to/ivr audio.mp3"
+                                          target="_blank"
+                                        >
+                                          Original file
+                                        </a>
+                                      </li>
+                                    </ul>
                                   </div>
                                    
-                                  <!---->
+                                  <p
+                                    class="audio-file-description"
+                                    title="path/to/ivr audio.mp3"
+                                  >
+                                    
+    path/to/ivr audio.mp3
+  
+                                  </p>
+                                   
+                                  <div
+                                    class="btn-toolbar"
+                                  >
+                                    <!---->
+                                  </div>
                                 </div>
                               </div>
                                
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
-                              </div>
+                              <!---->
                             </div>
                           </div>
                             
@@ -2605,7 +2625,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-86
+                              fake-uuid-76
                             </em>
                           </small>
                         </div>
@@ -2676,7 +2696,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="MobilePrimitives.OpenResponse"
-                      data-for-block-id="fake-uuid-115"
+                      data-for-block-id="fake-uuid-105"
                     >
                       <div
                         class="mobile-primitive-open-response-block"
@@ -2692,7 +2712,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                         <fieldset>
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-115/name"
+                            id="block/fake-uuid-105/name"
                           >
                             <div
                               class="block-name"
@@ -2726,7 +2746,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-115/label"
+                            id="block/fake-uuid-105/label"
                           >
                             <div
                               class="block-label"
@@ -2753,7 +2773,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-115/semantic_label"
+                            id="block/fake-uuid-105/semantic_label"
                           >
                             <div
                               class="block-semantic-label"
@@ -2780,7 +2800,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-115/config/ivr/max_duration_seconds"
+                            id="block/fake-uuid-105/config/ivr/max_duration_seconds"
                           >
                             <div
                               class="block-max-duration-seconds"
@@ -2813,7 +2833,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-115/config/text/max_response_characters"
+                            id="block/fake-uuid-105/config/text/max_response_characters"
                           >
                             <div
                               class="block-max-response-characters"
@@ -3059,7 +3079,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-115
+                              fake-uuid-105
                             </em>
                           </small>
                         </div>
@@ -3112,7 +3132,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="MobilePrimitives.OpenResponse"
-                      data-for-block-id="fake-uuid-124"
+                      data-for-block-id="fake-uuid-114"
                     >
                       <div
                         class="mobile-primitive-open-response-block"
@@ -3128,7 +3148,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                         <fieldset>
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-124/name"
+                            id="block/fake-uuid-114/name"
                           >
                             <div
                               class="block-name"
@@ -3162,7 +3182,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-124/label"
+                            id="block/fake-uuid-114/label"
                           >
                             <div
                               class="block-label"
@@ -3189,7 +3209,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-124/semantic_label"
+                            id="block/fake-uuid-114/semantic_label"
                           >
                             <div
                               class="block-semantic-label"
@@ -3216,7 +3236,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-124/config/ivr/max_duration_seconds"
+                            id="block/fake-uuid-114/config/ivr/max_duration_seconds"
                           >
                             <div
                               class="block-max-duration-seconds"
@@ -3249,7 +3269,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-124/config/text/max_response_characters"
+                            id="block/fake-uuid-114/config/text/max_response_characters"
                           >
                             <div
                               class="block-max-response-characters"
@@ -3315,7 +3335,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -3343,7 +3363,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               class="resource-variant-text-editor"
                             >
                               <div
-                                class="content-editor"
+                                class="content-editor content-editor-selected"
                               >
                                 <textarea
                                   class="form-control"
@@ -3370,97 +3390,74 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                             <!---->
                              
                             <div>
-                              <div
-                                class="upload-monitor"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
+                              <!---->
                                
                               <div
                                 class="audio-library-selector"
                               >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
+                                  data-audio-file-container-language="1"
                                 >
-                                  <div
-                                    class="input-group"
+                                  <button
+                                    class="audio-library-selection-clear-selection btn-ghost pull-right"
                                   >
-                                    <span
-                                      class="input-group-prepend"
-                                    >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
-                                      >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
+                                    <i
+                                      class="glyphicon glyphicon-remove"
                                     />
+                                  </button>
+                                   
+                                  <div
+                                    class="btn-group audio-library-selection-download-dropdown"
+                                  >
+                                    <button
+                                      class="btn btn-ghost dropdown-toggle"
+                                      data-toggle="dropdown"
+                                      type="button"
+                                    >
+                                      <span
+                                        aria-hidden="true"
+                                        class="glyphicon glyphicon-download-alt"
+                                      />
+                                       
+                                      <span
+                                        class="caret"
+                                      />
+                                    </button>
+                                     
+                                    <ul
+                                      class="dropdown-menu dropdown-menu-right"
+                                    >
+                                      <li>
+                                        <a
+                                          class="tree-block-audio-files-download-original"
+                                          href="path/to/ivr audio.mp3"
+                                          target="_blank"
+                                        >
+                                          Original file
+                                        </a>
+                                      </li>
+                                    </ul>
                                   </div>
                                    
-                                  <!---->
+                                  <p
+                                    class="audio-file-description"
+                                    title="path/to/ivr audio.mp3"
+                                  >
+                                    
+    path/to/ivr audio.mp3
+  
+                                  </p>
+                                   
+                                  <div
+                                    class="btn-toolbar"
+                                  >
+                                    <!---->
+                                  </div>
                                 </div>
                               </div>
                                
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
-                              </div>
+                              <!---->
                             </div>
                           </div>
                             
@@ -3495,7 +3492,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-124
+                              fake-uuid-114
                             </em>
                           </small>
                         </div>
