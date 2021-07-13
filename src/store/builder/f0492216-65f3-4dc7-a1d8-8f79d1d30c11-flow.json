@@ -1,5 +1,5 @@
 {
-  "specification_version": "1.0.10",
+  "specification_version": "1.0.0-rc2",
   "uuid": "3666a05d-3792-482b-8f7f-9e2472e4f027",
   "name": "container name",
   "description": "container description",
@@ -27,6 +27,7 @@
       "blocks": [
         {
           "uuid": "eb34ac1f-f27c-43f4-87c9-7f61309bc725",
+          "ui_metadata": {"canvas_coordinates": {"x": 164, "y": 197}},
           "vendor_metadata": {
             "io_viamo": {
               "uiData": {
@@ -42,8 +43,7 @@
           "exits": [
             {
               "uuid": "6324a107-3194-4c5a-8cae-36882074ca1a",
-              "tag": "Default",
-              "label": "Default",
+              "name": "Default",
               "default": true,
               "config": {}
             }
@@ -54,6 +54,7 @@
         },
         {
           "uuid": "a5d6f811-7ba6-404d-890f-29d6c10e43b5",
+          "ui_metadata": {"canvas_coordinates": {"x": 380, "y": 227}},
           "vendor_metadata": {
             "io_viamo": {
               "uiData": {
@@ -69,24 +70,22 @@
           "exits": [
             {
               "uuid": "0638e873-a28c-4b7d-9578-5341de4e66bf",
-              "tag": "Default",
-              "label": "Default",
+              "name": "Default",
               "default": true,
               "config": {}
             },
             {
               "uuid": "2c1a46ac-4c60-4750-96fa-aa56a36f3318",
-              "tag": "Error",
-              "label": "Error",
+              "name": "Error",
               "config": {}
             }
           ],
           "config": {
-            "prompt": "53d58537-2c26-44ca-b43a-474932548885",
+            "prompt": "3087a849-3f88-4fe4-8992-a8f5a8866124",
             "validation_minimum": 0,
             "validation_maximum": 0,
             "ivr": {
-              "max_digits": -1 
+              "max_digits": -1
             }
           }
         }
