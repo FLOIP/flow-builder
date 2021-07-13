@@ -63,9 +63,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
   hasOfflineMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.OFFLINE),
   currentFlowsState: (state) => state,
-  selectedBlocks: (state, getters) => filter(getters.activeFlow.blocks, (block) => {
-    return includes(state.selectedBlockUuids, block.uuid)
-  }),
+  selectedBlocks: (state, getters) => filter(getters.activeFlow.blocks, (block) => includes(state.selectedBlockUuids, block.uuid)),
 }
 
 export const mutations: MutationTree<IFlowsState> = {

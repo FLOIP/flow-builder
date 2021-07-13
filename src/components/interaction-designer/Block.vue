@@ -11,6 +11,7 @@
       :start-x="x"
       :start-y="y"
       :is-editable="isEditable"
+      @initialized="handleDraggableInitializedForBlock(block, $event)"
       @dragged="onMoved"
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
@@ -131,11 +132,11 @@
                 'btn-info': exit.destination_block != null,
               }"
               :is-editable="isEditable"
-              @initialized="handleDraggableInitializedFor(exit, $event)"
+              @initialized="handleDraggableInitializedForExit(exit, $event)"
               @dragStarted="onCreateExitDragStarted($event, exit)"
               @dragged="onCreateExitDragged($event)"
               @dragEnded="onCreateExitDragEnded($event, exit)"
-              @destroyed="handleDraggableDestroyedFor(exit)">
+              @destroyed="handleDraggableDestroyedForExit(exit)">
               <i class="glyphicon glyphicon-move" />
             </plain-draggable>
 
@@ -501,7 +502,7 @@ export default {
       const {left, top} = draggable
       const {uuid: blockId} = this.block
 
-      console.debug('Block', 'handleDraggableInitializedFor', {blockId, exitId: uuid, coords: {left, top}})
+      console.debug('Block', 'handleDraggableInitializedForExit', {blockId, exitId: uuid, coords: {left, top}})
     },
 
     handleDraggableDestroyedForExit({uuid}) {

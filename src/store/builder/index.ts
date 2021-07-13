@@ -163,8 +163,9 @@ export const mutations: MutationTree<IBuilderState> = {
     state.draggableForExitsByUuid = {}
   },
 
-  updateBlockDraggablePosition(state, { uuid, position }: { uuid: IBlock['uuid'], position: IPosition }) {
-    Object.assign(state.draggableForBlocksByUuid[uuid], { left: position.x, top: position.y })
+  updateBlockDraggablePosition(state, {uuid, position}: { uuid: IBlock['uuid'], position: IPosition }) {
+    console.debug('Builder', 'updateBlockDraggablePosition for ', state.draggableForBlocksByUuid[uuid], 'to ', position)
+    Object.assign(state.draggableForBlocksByUuid[uuid], {left: position.x, top: position.y})
   },
 
   updateToolBarHeight(state, height) {
@@ -173,9 +174,9 @@ export const mutations: MutationTree<IBuilderState> = {
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
-  changeBlockPositionTo({ commit, getters, dispatch, rootState }, { position: { x, y }, block }) {
+  changeBlockPositionTo({commit, getters, dispatch, rootState}, {position: {x, y}, block}) {
     if (!includes(rootState.flow.selectedBlockUuids, block.uuid)) {
-      commit('setBlockPositionTo', { position: { x, y }, block })
+      commit('setBlockPositionTo', {position: {x, y}, block})
       return
     }
 
@@ -195,19 +196,19 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     let shouldReversePosition = false
     const isMovingToTheRight = translationDelta.x > 0
     if (isMovingToTheRight || getters.isAnyLeftSpaceAvailable) {
-      commit('setBlockPositionTo', { position: { x }, block })
+      commit('setBlockPositionTo', {position: {x}, block})
     } else {
       translationDelta.x = 0
-      commit('setBlockPositionTo', { position: { x: initialPosition.x }, block })
+      commit('setBlockPositionTo', {position: {x: initialPosition.x}, block})
       shouldReversePosition = true
     }
 
     const isMovingToTheTop = translationDelta.y > 0
     if (isMovingToTheTop || getters.isAnyTopSpaceAvailable) {
-      commit('setBlockPositionTo', { position: { y }, block })
+      commit('setBlockPositionTo', {position: {y}, block})
     } else {
       translationDelta.y = 0
-      commit('setBlockPositionTo', { position: { y: initialPosition.y }, block })
+      commit('setBlockPositionTo', {position: {y: initialPosition.y}, block})
       shouldReversePosition = true
     }
 
@@ -225,12 +226,12 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     // Translate other selected blocks
     forEach(getters.selectedBlocks, (currentBlock: IBlock) => {
       if (currentBlock.uuid !== block.uuid) {
-        dispatch('setBlockAndSyncDraggablePositionFromDelta', { delta: translationDelta, block: currentBlock })
+        dispatch('setBlockAndSyncDraggablePositionFromDelta', {delta: translationDelta, block: currentBlock})
       }
     })
   },
 
-  setBlockAndSyncDraggablePositionFromDelta({ commit }, { delta: { x, y }, block }) {
+  setBlockAndSyncDraggablePositionFromDelta({commit}, {delta: {x, y}, block}) {
     const {
       vendor_metadata: {
         io_viamo: {
@@ -247,11 +248,11 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
       y: initialYPosition + y,
     }
 
-    commit('setBlockPositionTo', { position: newPosition, block })
-    commit('updateBlockDraggablePosition', { uuid: block.uuid, position: newPosition })
+    commit('setBlockPositionTo', {position: newPosition, block})
+    commit('updateBlockDraggablePosition', {uuid: block.uuid, position: newPosition})
   },
 
-  removeConnectionFrom({ commit }, { block: { uuid: blockId }, exit: { uuid: exitId } }) {
+  removeConnectionFrom({commit}, {block: {uuid: blockId}, exit: {uuid: exitId}}) {
     commit('flow/block_setBlockExitDestinationBlockId', {
       blockId,
       exitId,
