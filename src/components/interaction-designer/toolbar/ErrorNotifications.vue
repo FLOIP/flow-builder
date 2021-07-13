@@ -133,10 +133,6 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
 </script>
 
 <style scoped lang="scss">
-.error-notifications-wrapper {
-  z-index: 2 * 10;
-}
-
 .notification {
   width: 500px;
   padding: 0;

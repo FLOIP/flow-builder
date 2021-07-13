@@ -150,12 +150,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async block_select({state}, {blockId}: { blockId: IBlock['uuid'] }) {
-    state.selectedBlocks.push(blockId)
+    state.selectedBlockUuids.push(blockId)
   },
 
   async block_deselect({state}, {blockId}: { blockId: IBlock['uuid'] }) {
     // remove it
-    state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId)
+    state.selectedBlockUuids = state.selectedBlockUuids.filter((item) => item !== blockId)
   },
 }
 

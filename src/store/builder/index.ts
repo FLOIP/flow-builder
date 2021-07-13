@@ -1,4 +1,6 @@
-import {filter, flatMap, get, isEqual, keyBy, map, mapValues, union} from 'lodash'
+import {
+  flatMap, isEqual, keyBy, map, mapValues, get, filter, union, includes, clone, forEach, minBy,
+} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
@@ -55,7 +57,9 @@ export interface IBuilderState {
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation,
     [OperationKind.BLOCK_RELOCATE]: null,
   },
-  draggableForExitsByUuid: object,
+  toolbarHeight: number,
+  draggableForExitsByUuid: {[key: string]: object},
+  draggableForBlocksByUuid: {[key: string]: object},
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -73,7 +77,9 @@ export const stateFactory = (): IBuilderState => ({
     },
     [OperationKind.BLOCK_RELOCATE]: null,
   },
+  toolbarHeight: 60,
   draggableForExitsByUuid: {},
+  draggableForBlocksByUuid: {},
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
@@ -89,6 +95,26 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
   exitLabelsById: (_state, _getters, {flow: {flows}}) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
+
+  selectedBlocks(_state, _getters, _rootState, rootGetters) {
+    return rootGetters['flow/selectedBlocks']
+  },
+
+  selectedBlockAtTheTopPosition(_state, getters) {
+    return minBy(getters.selectedBlocks, 'vendor_metadata.io_viamo.uiData.yPosition')
+  },
+
+  selectedBlockAtTheFurthestLeftPosition(_state, getters) {
+    return minBy(getters.selectedBlocks, 'vendor_metadata.io_viamo.uiData.xPosition')
+  },
+
+  isAnyLeftSpaceAvailable(_state, getters) {
+    return getters.selectedBlockAtTheFurthestLeftPosition.vendor_metadata.io_viamo.uiData.xPosition > 0
+  },
+
+  isAnyTopSpaceAvailable(state, getters) {
+    return getters.selectedBlockAtTheTopPosition.vendor_metadata.io_viamo.uiData.yPosition - state.toolbarHeight > 0
+  },
 }
 
 export const mutations: MutationTree<IBuilderState> = {
@@ -119,8 +145,14 @@ export const mutations: MutationTree<IBuilderState> = {
     //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
     // }
 
-    block.vendor_metadata.io_viamo.uiData.xPosition = x
-    block.vendor_metadata.io_viamo.uiData.yPosition = y
+    if (x !== undefined) {
+      // eslint-disable-next-line no-param-reassign
+      block.vendor_metadata.io_viamo.uiData.xPosition = x
+    }
+    if (y !== undefined) {
+      // eslint-disable-next-line no-param-reassign
+      block.vendor_metadata.io_viamo.uiData.yPosition = y
+    }
   },
 
   setIsEditable(state, value) {
@@ -130,9 +162,96 @@ export const mutations: MutationTree<IBuilderState> = {
   initDraggableForExitsByUuid(state) {
     state.draggableForExitsByUuid = {}
   },
+
+  updateBlockDraggablePosition(state, {uuid, position}: { uuid: IBlock['uuid'], position: IPosition }) {
+    console.debug('Builder', 'updateBlockDraggablePosition for ', state.draggableForBlocksByUuid[uuid], 'to ', position)
+    Object.assign(state.draggableForBlocksByUuid[uuid], {left: position.x, top: position.y})
+  },
+
+  updateToolBarHeight(state, height) {
+    state.toolbarHeight = height
+  },
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
+  changeBlockPositionTo({commit, getters, dispatch, rootState}, {position: {x, y}, block}) {
+    if (!includes(rootState.flow.selectedBlockUuids, block.uuid)) {
+      commit('setBlockPositionTo', {position: {x, y}, block})
+      return
+    }
+
+    // The block is selected
+    // Store UI Position
+    const initialPosition = {
+      x: clone(block.vendor_metadata.io_viamo.uiData.xPosition),
+      y: clone(block.vendor_metadata.io_viamo.uiData.yPosition),
+    } as IPosition
+
+    // Prepare translation
+    const translationDelta: IPosition = {
+      x: x - initialPosition.x,
+      y: y - initialPosition.y,
+    }
+
+    let shouldReversePosition = false
+    const isMovingToTheRight = translationDelta.x > 0
+    if (isMovingToTheRight || getters.isAnyLeftSpaceAvailable) {
+      commit('setBlockPositionTo', {position: {x}, block})
+    } else {
+      translationDelta.x = 0
+      commit('setBlockPositionTo', {position: {x: initialPosition.x}, block})
+      shouldReversePosition = true
+    }
+
+    const isMovingToTheTop = translationDelta.y > 0
+    if (isMovingToTheTop || getters.isAnyTopSpaceAvailable) {
+      commit('setBlockPositionTo', {position: {y}, block})
+    } else {
+      translationDelta.y = 0
+      commit('setBlockPositionTo', {position: {y: initialPosition.y}, block})
+      shouldReversePosition = true
+    }
+
+    // Reverse the draggable position
+    if (shouldReversePosition) {
+      commit('updateBlockDraggablePosition', {
+        uuid: block.uuid,
+        position: {
+          x: block.vendor_metadata.io_viamo.uiData.xPosition,
+          y: block.vendor_metadata.io_viamo.uiData.yPosition,
+        },
+      })
+    }
+
+    // Translate other selected blocks
+    forEach(getters.selectedBlocks, (currentBlock: IBlock) => {
+      if (currentBlock.uuid !== block.uuid) {
+        dispatch('setBlockAndSyncDraggablePositionFromDelta', {delta: translationDelta, block: currentBlock})
+      }
+    })
+  },
+
+  setBlockAndSyncDraggablePositionFromDelta({commit}, {delta: {x, y}, block}) {
+    const {
+      vendor_metadata: {
+        io_viamo: {
+          uiData: {
+            xPosition: initialXPosition,
+            yPosition: initialYPosition,
+          },
+        },
+      },
+    } = block
+
+    const newPosition: IPosition = {
+      x: initialXPosition + x,
+      y: initialYPosition + y,
+    }
+
+    commit('setBlockPositionTo', {position: newPosition, block})
+    commit('updateBlockDraggablePosition', {uuid: block.uuid, position: newPosition})
+  },
+
   removeConnectionFrom({commit}, {block: {uuid: blockId}, exit: {uuid: exitId}}) {
     commit('flow/block_setBlockExitDestinationBlockId', {
       blockId,

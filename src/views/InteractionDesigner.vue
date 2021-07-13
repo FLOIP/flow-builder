@@ -64,7 +64,7 @@
       class="tree-contents"
       :style="{
         'min-height': `${designerWorkspaceHeight}px`,
-        'padding-top': `${toolbarHeight + 5}px`
+        'padding-top': `${toolbarHeight}px`
       }">
       <builder-canvas @click.native="handleCanvasSelected" />
     </div>
@@ -132,7 +132,6 @@ export default {
 
   data() {
     return {
-      toolbarHeight: 60,
       // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
       pureVuejsBlocks: [
         'CallBackWithCallCenterBlock',
@@ -183,6 +182,8 @@ export default {
     }),
 
     ...mapGetters('flow', ['activeFlow']),
+
+    ...mapState('builder', ['toolbarHeight']),
     ...mapGetters('builder', ['activeBlock', 'isEditable']),
     ...mapGetters('clipboard', ['isSimulatorActive']),
 
@@ -273,7 +274,7 @@ export default {
   },
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
-    ...mapMutations('builder', ['activateBlock']),
+    ...mapMutations('builder', ['activateBlock', 'updateToolBarHeight']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
 
@@ -347,7 +348,7 @@ export default {
     },
 
     handleToolBarHeightUpdate(height) {
-      this.toolbarHeight = height
+      this.updateToolBarHeight(height)
     },
 
   },
@@ -407,12 +408,13 @@ export default {
     }
   }
 
-  .tree-builder-toolbar-main-menu {
+  .tree-builder-toolbar {
     position: fixed;
-    z-index: 4*10;
-
+    z-index: 3*10;
     width: 100vw;
+  }
 
+  .tree-builder-toolbar-main-menu {
     border-bottom: 1px solid darkgrey;
     background: #eee;
 
