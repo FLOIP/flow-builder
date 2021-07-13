@@ -1,13 +1,12 @@
 <template>
-  <div @click="selectBlock"
-       @mouseover="showToolbar = true"
-       @mouseleave="showToolbar = false">
+  <div @click="selectBlock">
     <plain-draggable
       v-if="hasLayout"
       ref="draggable"
       class="block"
       :class="{
         active: isBlockActivated,
+        'has-toolbar': isBlockSelected,
         [`category-${blockClasses[block.type].category}`]: true,
       }"
       :start-x="x"
@@ -17,7 +16,7 @@
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
       @destroyed="handleDraggableDestroyedForBlock">
-      <div class="d-flex justify-content-between" v-if="isBlockSelected || showToolbar">
+      <div class="block-toolbar d-flex justify-content-between">
         <div class="header-actions-left">
           <!--Selection-->
           <font-awesome-icon
@@ -235,7 +234,6 @@ export default {
   data() {
     return {
       isDeleting: false,
-      showToolbar: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
     }
@@ -625,6 +623,23 @@ export default {
   transition: opacity 200ms ease-in-out,
   background-color 200ms ease-in-out;
 
+  .block-toolbar {
+    transition: opacity 200ms ease-in-out;
+    background: white;
+    opacity: 0; // default state of hidden
+
+    margin-top: -39.75px;
+    margin-right: -8px;
+    margin-left: -8px;
+    padding: 8px;
+
+    border-top: inherit;
+    border-right: inherit;
+    border-left: inherit;
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+  }
+
   .block-label {
     font-size: 14px;
     font-weight: normal;
@@ -726,6 +741,13 @@ export default {
   &.active,
   &:hover {
     .block-exit .block-exit-remove {
+      opacity: 1;
+    }
+  }
+
+  &.has-toolbar,
+  &:hover {
+    .block-toolbar {
       opacity: 1;
     }
   }
