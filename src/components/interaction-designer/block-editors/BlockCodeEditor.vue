@@ -15,7 +15,9 @@
           <span
             class="btn btn-primary btn-xs align-self-center ml-2"
             @click="editBlockName = false">
-            <svg-icon icon="check" />
+            <font-awesome-icon
+              :icon="['fas', 'check']"
+              class="fa-btn" />
           </span>
         </div>
       </div>
@@ -25,7 +27,9 @@
           <span class=""> {{ blockName }} </span>
         </div>
         <span class="btn btn-primary btn-xs align-self-baseline ml-2" @click="editBlockName = true">
-          <svg-icon icon="edit" @click="editBlockName = true" />
+          <font-awesome-icon
+            :icon="['far', 'edit']"
+            class="fa-btn" />
         </span>
       </div>
     </validation-message>
@@ -39,7 +43,6 @@ import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import SvgIcon from '@/components/common/SvgIcon.vue'
 import SmallTextEditor from '@/components/common/SmallTextEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
@@ -48,7 +51,6 @@ const flowVuexNamespace = namespace('flow')
   components: {
     SmallTextEditor,
     ValidationMessage,
-    SvgIcon,
   },
 })
 class BlockCodeEditor extends mixins(Lang) {
