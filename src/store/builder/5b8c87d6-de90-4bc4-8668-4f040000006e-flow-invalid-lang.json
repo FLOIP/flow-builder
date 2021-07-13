@@ -37,6 +37,7 @@
       "blocks": [
         {
           "uuid": "eb34ac1f-f27c-43f4-87c9-7f61309bc725",
+          "ui_metadata": {"canvas_coordinates": {"x": 164, "y": 197}},
           "vendor_metadata": {
             "io_viamo": {
               "uiData": {
@@ -52,8 +53,7 @@
           "exits": [
             {
               "uuid": "6324a107-3194-4c5a-8cae-36882074ca1a",
-              "tag": "Default",
-              "label": "Default",
+              "name": "Default",
               "default": true,
               "config": {}
             }

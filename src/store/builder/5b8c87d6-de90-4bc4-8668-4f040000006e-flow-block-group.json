@@ -28,6 +28,7 @@
       "blocks": [
         {
           "uuid": "31570470-cb83-436a-97d6-5a0ce471280e",
+          "ui_metadata": {"canvas_coordinates": {"x": 390, "y": 275}},
           "vendor_metadata": {
             "io_viamo": {
               "uiData": {
@@ -49,8 +50,7 @@
           "exits": [
             {
               "uuid": "e41f9b81-165f-4fa7-9c93-7870d93ae5c4",
-              "tag": "Default",
-              "label": "Default",
+              "name": "Default",
               "default": true,
               "config": {}
             }
@@ -58,6 +58,7 @@
         },
         {
           "uuid": "bc3da62c-f036-4ec6-b157-5c43ac44b3db",
+          "ui_metadata": {"canvas_coordinates": {"x": 844, "y": 250}},
           "vendor_metadata": {
             "io_viamo": {
               "uiData": {
@@ -78,8 +79,7 @@
           "exits": [
             {
               "uuid": "c0152ecc-bd8b-465a-9fd7-58c8039cca96",
-              "tag": "Default",
-              "label": "Default",
+              "name": "Default",
               "default": true,
               "config": {}
             }
