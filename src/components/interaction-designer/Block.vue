@@ -624,7 +624,7 @@ export default {
   background-color 200ms ease-in-out;
 
   .block-toolbar {
-    transition: opacity 200ms ease-in-out;
+    transition: opacity 100ms ease-in-out;
     background: white;
     opacity: 0; // default state of hidden
 
