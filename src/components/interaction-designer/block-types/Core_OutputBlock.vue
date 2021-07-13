@@ -12,7 +12,7 @@
       <validation-message
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/value`">
-        <expression-editor
+        <expression-input
           :label="'flow-builder.output-expression' | trans"
           :placeholder="'flow-builder.enter-expression' | trans"
           :current-expression="value"
@@ -35,14 +35,13 @@
 <script lang="ts">
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
-
 import {IOutputBlock} from '@floip/flow-runner/src/model/block/IOutputBlock'
 import {IFlow} from '@floip/flow-runner'
-import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 import OutputStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -57,7 +56,7 @@ const builderVuexNamespace = namespace('builder')
 @Component({
   components: {
     GenericContactPropertyEditor,
-    ExpressionEditor,
+    ExpressionInput,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,

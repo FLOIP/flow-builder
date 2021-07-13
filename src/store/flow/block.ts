@@ -74,15 +74,6 @@ export const mutations: MutationTree<IFlowsState> = {
       (nestedValue, key, nestedObject) => Vue.set(nestedObject, key, nestedValue),
     )
   },
-  block_updateVendorMetadataByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string}) {
-    // Make nested assignment reactive
-    setWith(
-      findBlockOnActiveFlowWith(blockId, state as unknown as IContext).vendor_metadata!,
-      path,
-      value,
-      (nestedValue, key, nestedObject) => Vue.set(nestedObject, key, nestedValue),
-    )
-  },
   block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block)

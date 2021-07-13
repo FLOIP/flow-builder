@@ -116,27 +116,20 @@ export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass 
     const resourceId = get(this.activeBlock, configPath, '')
 
     // Set values on resource editor
-    // TODO: find better way to do this once the resource editor is fully implemented, the goal is to set resources' value correctly. The implementation below is just an
-    // @ts-ignore TODO: fix it in https://viamoinc.atlassian.net/browse/VMO-3679
     const variantSms: IResourceDefinitionVariantOverModesFilter = {
       language_id: languageId,
       modes: [SupportedMode.SMS],
-      // @ts-ignore
-      content_type: [SupportedContentType.TEXT],
+      content_type: SupportedContentType.TEXT,
     }
-    // @ts-ignore TODO: fix it in https://viamoinc.atlassian.net/browse/VMO-3679
     const variantUssd: IResourceDefinitionVariantOverModesFilter = {
       language_id: languageId,
       modes: [SupportedMode.USSD],
-      // @ts-ignore
-      content_type: [SupportedContentType.TEXT],
+      content_type: SupportedContentType.TEXT,
     }
-    // @ts-ignore TODO: fix it in https://viamoinc.atlassian.net/browse/VMO-3679
     const variantIvr: IResourceDefinitionVariantOverModesFilter = {
       language_id: languageId,
       modes: [SupportedMode.IVR],
-      // @ts-ignore
-      content_type: [SupportedContentType.AUDIO],
+      content_type: SupportedContentType.AUDIO,
     }
     // we're assuming this pseudo-variants exist
     this.resource_setValue({resourceId, filter: variantSms, value: 'text for SMS'})

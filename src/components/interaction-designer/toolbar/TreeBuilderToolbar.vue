@@ -10,7 +10,8 @@
         <textarea
           v-model="flow"
           class="flow-importer"
-          rows="15" />
+          rows="15"
+          disabled />
       </div>
 
       <div class="tree-workspace-panel-heading panel-heading">
@@ -154,6 +155,17 @@
 
             <slot name="extra-buttons" />
 
+            <div
+              v-if="hasSimulator"
+              class="btn-group pull-right mr-2">
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="setSimulatorActive(true)">
+                {{ trans('flow-builder.show-clipboard-simulator') }}
+              </button>
+            </div>
+
             <!--TODO - do disable if no changes logic-->
             <div class="btn-group ml-auto mr-2">
               <button
@@ -182,7 +194,7 @@ import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
-import {forEach, identity, isEmpty, isNil, pickBy as _pickBy} from 'lodash'
+import {identity, isEmpty, isNil, pickBy as _pickBy, reduce, omit} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
@@ -202,6 +214,7 @@ Vue.use(VBTooltipPlugin)
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
+const clipboardVuexNamespace = namespace('clipboard')
 const validationVuexNamespace = namespace('validation')
 
 @Component({
@@ -225,15 +238,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   get flow(): string {
-    const {
-      flows,
-      resources,
-    } = this as { flows: IFlow[], resources: IResource[] }
     return JSON.stringify(
-      {
-        flows,
-        resources,
-      },
+      omit(this.activeFlowContainer, 'isCreated'),
       null,
       2,
     )
@@ -305,6 +311,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
   }
 
+  get hasSimulator() {
+    return this.hasOfflineMode && this.isFeatureSimulatorEnabled
+  }
+
   // Methods #####################
 
   async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }): Promise<void> {
@@ -332,7 +342,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     if (this.isEditable) {
       this.setTreeSaving(true)
       const flowContainer = await this.flow_persist({
-        persistRoute: this.route('flows.persistFlow', {flowId: this.activeFlow?.uuid}),
+        persistRoute: this.route('flows.persistFlow', {}),
         flowContainer: this.activeFlowContainer,
       })
       this.setTreeSaving(false)
@@ -387,16 +397,17 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   /**
    * We have to make sure this is called using $nextTick() because we play with DOM
    */
-  handleHeightChangeFromDOM(): void {
-    let height = 0
+  handleHeightChangeFromDOM() {
     const elementRef = this.$refs['builder-toolbar'] as Element
     if (!elementRef) {
       console.debug('Interaction Designer', 'Unable to find DOM element corresponding to builder-toolbar')
     }
 
-    forEach(elementRef.childNodes, (child) => {
-      height += (child as HTMLElement).offsetHeight
-    })
+    const height = reduce(
+      elementRef.childNodes,
+      (sum, child) => sum + (child as HTMLElement).offsetHeight,
+      0,
+)
 
     if (height > 0) {
       this.height = height
@@ -416,6 +427,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @Getter isFeatureTreeSendEnabled!: boolean
   @Getter isFeatureTreeDuplicateEnabled!: boolean
   @Getter isFeatureViewResultsEnabled!: boolean
+  @Getter isFeatureSimulatorEnabled!: boolean
   @Getter isFeatureUpdateInteractionTotalsEnabled!: boolean
   @Getter isResourceEditorEnabled!: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
@@ -424,6 +436,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   // Flow
   @flowVuexNamespace.Getter activeFlow?: IFlow
   @flowVuexNamespace.Getter activeFlowContainer?: IContext
+  @flowVuexNamespace.Getter hasOfflineMode?: boolean
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.State resources?: IResource[]
   @flowVuexNamespace.Action flow_removeBlock!: ({flowId, blockId}: { flowId?: string, blockId: IBlock['uuid'] | undefined }) => void
@@ -441,10 +454,13 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @builderVuexNamespace.Getter isEditable!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
   @builderVuexNamespace.Getter activeBlock?: IBlock
-  @builderVuexNamespace.Action importFlowsAndResources!: ({flows, resources}: { flows: IFlow[], resources: IResource[] }) => Promise<void>
-  @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null }) => void
+  @builderVuexNamespace.Action importFlowsAndResources!: ({flows, resources}: { flows: IFlow[], resources: IResource[]}) => Promise<void>
+  @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void
 
-  @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined }) => void
+  // Clipboard
+  @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
+
+  @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined}) => void
 }
 </script>
 

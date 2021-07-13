@@ -60,7 +60,6 @@ class ExistingDataBlockClass extends BaseMountedVueClass {
     this.block_updateConfigByPath({blockId, path: 'set_contact_property.property_value', value: 'M'})
   }
 
-  @Mutation addSubscriberPropertyField!: ({property}: { property: any }) => void
   @flowVuexNamespace.Mutation block_updateConfigByPath!: ({blockId, path, value}: {blockId: string, path: string, value: string}) => void
 }
 
@@ -80,7 +79,6 @@ class ClearActionClass extends BaseMountedVueClass {
     this.block_updateConfigByPath({blockId, path: 'set_contact_property.property_value', value: '@(null)'})
   }
 
-  @Mutation addSubscriberPropertyField!: ({property}: { property: any }) => void
   @flowVuexNamespace.Mutation block_updateConfigByPath!: ({blockId, path, value}: {blockId: string, path: string, value: string}) => void
 }
 

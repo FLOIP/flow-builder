@@ -50,7 +50,7 @@
         v-if="propertyAction === PROPERTY_ACTION.SET"
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
-        <expression-editor
+        <expression-input
           :label="'flow-builder.contact-property-expression' | trans"
           :placeholder="'flow-builder.enter-expression' | trans"
           :current-expression="propertyValue"
@@ -69,7 +69,7 @@ import Lang from '@/lib/filters/lang'
 import {get} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
-import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
+import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import TextEditor from '@/components/common/TextEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
@@ -80,7 +80,7 @@ const EMPTY_STRING_EXPRESSION = ''
 @Component({
   components: {
     TextEditor,
-    ExpressionEditor,
+    ExpressionInput,
     ValidationMessage,
   },
 })
@@ -132,9 +132,6 @@ class ContactPropertyEditor extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value: string }
-  ) => void
-  @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (
     {blockId, path, value}: { blockId: string, path: string, value: string }
   ) => void
 }
