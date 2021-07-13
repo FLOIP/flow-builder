@@ -1,16 +1,13 @@
-import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import { IRootState } from '@/store'
-import {
-  IBlockExit,
-  ISetGroupMembershipBlockConfig,
-} from '@floip/flow-runner'
-import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import { defaultsDeep } from 'lodash'
-import { IFlowsState } from '../index'
+import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {IRootState} from '@/store'
+import {IBlockExit, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {defaultsDeep} from 'lodash'
+import {IFlowsState} from '../index'
 
 export interface IGroupOption {
-  id: string;
-  name: string;
+  id: string,
+  name: string,
 }
 
 export const ADD_KEY = 'add'
@@ -23,7 +20,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {}
 export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async createWith({ dispatch }, { props }: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
+  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
@@ -31,7 +28,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
           tag: 'Default',
           label: 'Default',
         }) as IBlockExit,
-      }, { root: true }),
+      }, {root: true}),
     ]
 
     return defaultsDeep(props, {
@@ -48,10 +45,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  async setIsMember({ commit, rootGetters }, action) {
+  async setIsMember({commit, rootGetters}, action) {
     const activeBlock = rootGetters['builder/activeBlock']
     let isMember = false
-    if(action) {
+    if (action) {
       isMember = action.id === ADD_KEY
     }
 
@@ -59,7 +56,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId: activeBlock.uuid,
       path: 'is_member',
       value: isMember,
-    }, { root: true })
+    }, {root: true})
   },
 }
 

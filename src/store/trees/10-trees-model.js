@@ -111,25 +111,29 @@ window.app = window.app || {};
 
     inflateDefaultReviewedStateOnAll() {
       this.cacheDefaultReviewedState()
-      this.get('blocks').forEach(this.inflateDefaultReviewedStateOnto.bind(this))
+      this.get('blocks')
+        .forEach(this.inflateDefaultReviewedStateOnto.bind(this))
     },
 
     inflateDefaultReviewedStateOnto(block) {
       block.customData.reviewed = block.customData.reviewed || block.customData.approved || {}
-      delete block.customData.approved // todo: remove these two references to `approved` once deployed
+      // todo: remove these two references to `approved` once deployed
+      delete block.customData.approved
       _.defaults(block.customData.reviewed, this._defaultReviewedState)
     },
 
     inflateDefaultTagsOnAll() {
-      this.get('blocks').forEach((block) => {
-        !block.customData.tags && (block.customData.tags = [])
-      })
+      this.get('blocks')
+        .forEach((block) => {
+          !block.customData.tags && (block.customData.tags = [])
+        })
     },
 
     inflateDefaultLabelOnAll() {
-      this.get('blocks').forEach((block) => {
-        !block.customData.label && (block.customData.label = '')
-      })
+      this.get('blocks')
+        .forEach((block) => {
+          !block.customData.label && (block.customData.label = '')
+        })
     },
 
     upgradeLanguageSelectorBlocks() {
@@ -143,24 +147,27 @@ window.app = window.app || {};
     },
 
     inflateDefaultSocialContentOnAll() {
-      this.get('blocks').forEach((block) => {
-        !block.socialContent && (block.socialContent = {})
-      })
+      this.get('blocks')
+        .forEach((block) => {
+          !block.socialContent && (block.socialContent = {})
+        })
     },
 
     inflateDefaultClipboardContentOnAll() {
-      this.get('blocks').forEach((block) => {
-        !block.clipboardContent && (block.clipboardContent = {})
-      })
+      this.get('blocks')
+        .forEach((block) => {
+          !block.clipboardContent && (block.clipboardContent = {})
+        })
     },
 
     upgradeSubscriberPropertyFieldSelections() {
-      this.get('blocks').forEach((block) => {
-        if (!block.customData.propertyFieldId) {
-          const property = app.ui.findSubscriberPropertyField({ display_label: block.customData.customDataCategory })
-          block.customData.propertyFieldId = _.get(property, 'id', null)
-        }
-      })
+      this.get('blocks')
+        .forEach((block) => {
+          if (!block.customData.propertyFieldId) {
+            const property = app.ui.findSubscriberPropertyField({display_label: block.customData.customDataCategory})
+            block.customData.propertyFieldId = _.get(property, 'id', null)
+          }
+        })
     },
 
     upgradeMsmcqBranchingToFalse() {
@@ -168,8 +175,8 @@ window.app = window.app || {};
         .filter((block) => block.type === 'MultipleSelectMultipleChoiceQuestionBlock')
         .filter((block) => block.customData.branching === 1)
         .forEach((block) => {
-          const { customData } = block
-          const { uiData } = block
+          const {customData} = block
+          const {uiData} = block
 
           customData.branching = false
           customData.numChoices = 1
@@ -183,25 +190,25 @@ window.app = window.app || {};
     },
 
     /**
-		 * For existing blocks that have their action set to startDate, set the action to customData instead,
-		 * preserving all settings that calculate the date, and attempting to pre-select the "start_date" property for the
-		 * user.
-		 *
-		 * This is because we are removing the startDate action and rather switching to using subscriber properties
-		 */
+     * For existing blocks that have their action set to startDate, set the action to customData instead,
+     * preserving all settings that calculate the date, and attempting to pre-select the "start_date" property for the
+     * user.
+     *
+     * This is because we are removing the startDate action and rather switching to using subscriber properties
+     */
     upgradeSubscriberPropertyBlocks() {
       this.get('blocks')
         .filter((block) => block.type === 'SubscriberPropertyBlock')
         .filter((block) => block.customData.action === 'startDate')
         .forEach((block) => {
-          const { customData } = block
+          const {customData} = block
           customData.action = 'customData'
           customData.propertyDateMethod = customData.startDateMethod
           customData.propertyDateAbsoluteDate = customData.startDateAbsoluteDate
           customData.propertyDateRelativeNumber = customData.startDateRelativeNumber
           customData.propertyDateTimespanType = customData.startDateTimespanType
           customData.propertyDateNumericBlockKey = customData.startDateNumericBlockKey
-          const propertyField = app.ui.findSubscriberPropertyField({ name: 'start_date' })
+          const propertyField = app.ui.findSubscriberPropertyField({name: 'start_date'})
           if (propertyField) {
             customData.propertyFieldId = propertyField.id
           } else {
@@ -212,12 +219,12 @@ window.app = window.app || {};
     },
 
     /**
-		 * For existing blocks that have their criteria set to startDate, set the criteria to customData instead,
-		 * preserving all settings, and attempting to pre-select the "start_date" property for the
-		 * user.
-		 *
-		 * This is because we are removing the startDate action and rather switching to using subscriber properties
-		 */
+     * For existing blocks that have their criteria set to startDate, set the criteria to customData instead,
+     * preserving all settings, and attempting to pre-select the "start_date" property for the
+     * user.
+     *
+     * This is because we are removing the startDate action and rather switching to using subscriber properties
+     */
     upgradeSubscriberBranchBlocks() {
       this.get('blocks')
         .filter((block) => block.type === 'SubscriberBranchBlock')
@@ -227,7 +234,7 @@ window.app = window.app || {};
           builder.$set(block.customData, 'customDataMethod', block.customData.startDateMethod)
           builder.$set(block.customData, 'customDataValue', block.customData.startDateReference)
 
-          const propertyField = app.ui.findSubscriberPropertyField({ name: 'start_date' })
+          const propertyField = app.ui.findSubscriberPropertyField({name: 'start_date'})
 
           // $set won't work on something that is already a property
           // make sure it does not exist on the object before $set-ing it
@@ -260,7 +267,8 @@ window.app = window.app || {};
           'smsContent',
           'ussdContent',
           'socialContent',
-          'clipboardContent']
+          'clipboardContent',
+        ]
 
         _.each(arrayKeys, (key) => {
           if (_.isArray(block[key])) {
@@ -280,17 +288,19 @@ window.app = window.app || {};
         app.ui.change('Array issue blocks fixed.')
       }
       // else {
-      // 	console.log('All blocks loaded without array issues.');
+      // console.log('All blocks loaded without array issues.');
       // }
     },
 
     // Block-related functions
     doesBlockLabelExist(label, comparatorKey) {
-      if (!label) { return }
+      if (!label) {
+        return
+      }
 
-      return !!_(this.get('blocks')).chain()
+      return !!_(this.get('blocks'))
+        .chain()
         .find((block) => block.jsKey !== comparatorKey && block.customData.label === label)
-        .value()
     },
 
     addBlock(blockData) {
@@ -301,7 +311,8 @@ window.app = window.app || {};
 
       this.inflateDefaultReviewedStateOnto(blockData)
 
-      this.get('blocks').push(blockData)
+      this.get('blocks')
+        .push(blockData)
 
       if (this.get('blocks').length == 1) {
         // Only one block, eg. the first one,
@@ -348,7 +359,7 @@ window.app = window.app || {};
 
     getBlock(blockKey) {
       // Passes back the block *by reference* which allows for direct editing.
-      return _.findWhere(this.get('blocks'), { jsKey: blockKey })
+      return _.findWhere(this.get('blocks'), {jsKey: blockKey})
     },
 
     editBlock(blockKey, blockData, arrayKey) {
@@ -411,7 +422,7 @@ window.app = window.app || {};
 
       const maxConnections = thisBlock.uiData.numConnections
 
-      _.each(_.where(connections, { startBlockKey: blockKey }), (e) => {
+      _.each(_.where(connections, {startBlockKey: blockKey}), (e) => {
         const nodeNumber = e.outputKey.slice(-1)
 
         if (nodeNumber > maxConnections) {
@@ -424,11 +435,11 @@ window.app = window.app || {};
       const thisBlock = this.getBlock(blockKey)
 
       // audioData = {
-      // 	id: 75,
-      // 	filename: '536105d15bbd94.30453403',
-      // 	description: 'Uploaded file: survey-c.wav',
-      // 	duration_seconds: 2.12,
-      // 	created_at: '2013-04-12 16:32'
+      //   id: 75,
+      //   filename: '536105d15bbd94.30453403',
+      //   description: 'Uploaded file: survey-c.wav',
+      //   duration_seconds: 2.12,
+      //   created_at: '2013-04-12 16:32'
       // };
 
       // console.log('blockKey', blockKey);
@@ -474,7 +485,7 @@ window.app = window.app || {};
     deleteBlock(blockKey) {
       let blocks
       blocks = this.get('blocks')
-      blocks = _.without(blocks, _.findWhere(blocks, { jsKey: blockKey }))
+      blocks = _.without(blocks, _.findWhere(blocks, {jsKey: blockKey}))
 
       this.set('blocks', blocks)
 
@@ -488,15 +499,16 @@ window.app = window.app || {};
 
     handleDeleteNumericQuestionBlockAssociations(selectedBlockKey) {
       this.set({
-        blocks: this.get('blocks').map((block) => {
-          let newBlock = block
-          if (block.type == 'NumericBranchBlock') {
-            newBlock = { ...block, customData: this._getAmendmentsForNumericBranchBlock(block.customData, selectedBlockKey) }
-          } else if (block.type == 'IdValidationBlock') {
-            newBlock = { ...block, customData: this._getAmendmentsForIdValidationBlock(block.customData, selectedBlockKey) }
-          }
-          return newBlock
-        }),
+        blocks: this.get('blocks')
+          .map((block) => {
+            let newBlock = block
+            if (block.type == 'NumericBranchBlock') {
+              newBlock = {...block, customData: this._getAmendmentsForNumericBranchBlock(block.customData, selectedBlockKey)}
+            } else if (block.type == 'IdValidationBlock') {
+              newBlock = {...block, customData: this._getAmendmentsForIdValidationBlock(block.customData, selectedBlockKey)}
+            }
+            return newBlock
+          }),
       })
     },
     // works but must save twice to trigger validation and disable send
@@ -504,28 +516,28 @@ window.app = window.app || {};
       return {
         ...customData,
         outputs: _.reduce(customData.outputs, (newOutputs, output) => {
-          const newConditions = _.reduce(output.conditions, (newConditions, condition) => {
-            const newCondition = { ...condition }
-            if (condition.jsKey == selectedBlockKey) {
-              newCondition.jsKey = ''
+            const newConditions = _.reduce(output.conditions, (newConditions, condition) => {
+              const newCondition = {...condition}
+              if (condition.jsKey == selectedBlockKey) {
+                newCondition.jsKey = ''
+              }
+              newConditions.push(newCondition)
+              return newConditions
+            }, [])
+
+            // I think this will never be the case but just to be sure
+            if (newConditions) {
+              newOutputs.push({...output, conditions: newConditions})
             }
-            newConditions.push(newCondition)
-            return newConditions
-          }, [])
 
-          // I think this will never be the case but just to be sure
-          if (newConditions) {
-            newOutputs.push({ ...output, conditions: newConditions })
-          }
-
-          return newOutputs
-        },
-        []),
+            return newOutputs
+          },
+          []),
       }
     },
     _getAmendmentsForIdValidationBlock(customData, selectedBlockKey) {
       if (customData.numericQuestionBlockJsKey == selectedBlockKey) {
-        customData = { ...customData, numericQuestionBlockJsKey: '' }
+        customData = {...customData, numericQuestionBlockJsKey: ''}
       }
       return customData
     },
@@ -571,11 +583,15 @@ window.app = window.app || {};
         }
       } else if (type === 'GroupSizeBranchBlock') {
         if (_.get(customData, 'groupId')) {
-          output = `${Lang.trans('trees.if')} "${_.get(app.ui.groupNames, customData.groupId)}" ${Lang.trans('trees.exceeds')} ${_.get(customData, 'quotaThreshold', 100)}`
+          output = `${Lang.trans('trees.if')} "${_.get(app.ui.groupNames, customData.groupId)}" ${Lang.trans('trees.exceeds')} ${_.get(
+            customData,
+            'quotaThreshold',
+            100,
+          )}`
         }
       } else if (type === 'SubscriberBranchBlock') {
         if (_.get(customData, 'action') == 'customData') {
-					  const property = app.ui.findSubscriberPropertyField({ id: _.get(customData, 'propertyFieldId') })
+          const property = app.ui.findSubscriberPropertyField({id: _.get(customData, 'propertyFieldId')})
           const displayLabel = _.get(property, 'display_label', '')
           const comparator = _.get(customData, 'customDataMethod', 'Equal')
 
@@ -588,20 +604,25 @@ window.app = window.app || {};
             comparatorString = '>'
           }
 
-          output = `${Lang.trans('trees.if-subscriber-custom-data')} "${displayLabel}" ${Lang.trans('trees.is')} ${comparatorString} "${_.get(customData, 'customDataValue', '')}"`
+          output = `${Lang.trans('trees.if-subscriber-custom-data')} "${displayLabel}" ${Lang.trans('trees.is')} ${comparatorString} "${_.get(
+            customData,
+            'customDataValue',
+            '',
+          )}"`
         } else if (_.get(customData, 'action') == 'language') {
           if (_.get(customData, 'languageValue') == '') {
             output = Lang.trans('trees.if-subscriber-language-is-unknown')
           } else {
             output = `${Lang.trans('trees.if-subscriber-language-is')} "${_.get(app.ui.languageNames, customData.languageValue)}"`
-					        }
+          }
         }
       } else {
         output = _.get(customData, 'title')
       }
 
       if (output && output.length > 0 && limit > 0) {
-        output = S(output).truncate(limit).s
+        output = S(output)
+          .truncate(limit).s
       }
       return output
     },
@@ -638,10 +659,10 @@ window.app = window.app || {};
       if (startBlockKey && typeof outputKey !== 'undefined') {
         // Massive thanks to
         // http://stackoverflow.com/a/16994286
-        connections = _.without(connections, _.findWhere(connections, { startBlockKey, outputKey }))
+        connections = _.without(connections, _.findWhere(connections, {startBlockKey, outputKey}))
       } else if (startBlockKey) {
         // Filter literally everything with that starting block key
-        connections = _.difference(connections, _.where(connections, { startBlockKey }))
+        connections = _.difference(connections, _.where(connections, {startBlockKey}))
       }
 
       this.set('connections', connections)
@@ -650,7 +671,7 @@ window.app = window.app || {};
     },
 
     addEnabledLanguage(languageKey) {
-      const { enabledLanguages } = app.tree.get('details')
+      const {enabledLanguages} = app.tree.get('details')
 
       let newEnabledLanguages = []
 
@@ -665,7 +686,7 @@ window.app = window.app || {};
     },
 
     removeEnabledLanguage(languageKey) {
-      let { enabledLanguages } = app.tree.get('details')
+      let {enabledLanguages} = app.tree.get('details')
 
       languageKey = languageKey.toString()
 
@@ -749,19 +770,39 @@ window.app = window.app || {};
           }
 
           if (app.tree.get('details').hasSms && _.keys(block.smsContent).length < tree.enabledLanguages.length) {
-            if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') missingLanguageIdsSmsContent = _.difference(tree.enabledLanguages, _.keys(block.smsContent))
+            if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') {
+              missingLanguageIdsSmsContent = _.difference(
+                tree.enabledLanguages,
+                _.keys(block.smsContent),
+              )
+            }
           }
 
           if (app.tree.get('details').hasUssd && _.keys(block.ussdContent).length < tree.enabledLanguages.length) {
-            if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') missingLanguageIdsUssdContent = _.difference(tree.enabledLanguages, _.keys(block.ussdContent))
+            if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') {
+              missingLanguageIdsUssdContent = _.difference(
+                tree.enabledLanguages,
+                _.keys(block.ussdContent),
+              )
+            }
           }
 
           if (app.tree.get('details').hasSocial && _.keys(block.socialContent).length < tree.enabledLanguages.length) {
-            if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') missingLanguageIdsSocialContent = _.difference(tree.enabledLanguages, _.keys(block.socialContent))
+            if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') {
+              missingLanguageIdsSocialContent = _.difference(
+                tree.enabledLanguages,
+                _.keys(block.socialContent),
+              )
+            }
           }
 
           if (app.tree.get('details').hasClipboard && _.keys(block.clipboardContent).length < tree.enabledLanguages.length) {
-            if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') missingLanguageIdsClipboardContent = _.difference(tree.enabledLanguages, _.keys(block.clipboardContent))
+            if (block.type !== 'RandomOrderMultipleChoiceQuestionBlock') {
+              missingLanguageIdsClipboardContent = _.difference(
+                tree.enabledLanguages,
+                _.keys(block.clipboardContent),
+              )
+            }
           }
 
           if (missingLanguageIdsAudioFiles.length || missingLanguageIdsSmsContent.length || missingLanguageIdsUssdContent.length || missingLanguageIdsSocialContent.length || missingLanguageIdsClipboardContent.length) {
@@ -776,70 +817,71 @@ window.app = window.app || {};
         }
 
         /*
-				//if block is a multiple choice question, check if user has set multiple digit options
-				if (block.type === "MultipleChoiceQuestionBlock"){
-					var choiceKeyPresses = block.customData.choiceKeypresses;
-					//check if there are any duplicate in the choices
+        //if block is a multiple choice question, check if user has set multiple digit options
+        if (block.type === "MultipleChoiceQuestionBlock"){
+          var choiceKeyPresses = block.customData.choiceKeypresses;
+          //check if there are any duplicate in the choices
 
-					if ((new Set(_.values(choiceKeyPresses))).size !== (_.values(choiceKeyPresses).length)){
-						var uniqN = [];
-						var duplicates = [];
-						$.each(choiceKeyPresses, function(i, el){
-							if (uniqN.lastIndexOf(el) === -1) {
-								uniqN.push(el);
-							}else{
-								duplicates.push(el);
-							}
-						});
+          if ((new Set(_.values(choiceKeyPresses))).size !== (_.values(choiceKeyPresses).length)){
+            var uniqN = [];
+            var duplicates = [];
+            $.each(choiceKeyPresses, function(i, el){
+              if (uniqN.lastIndexOf(el) === -1) {
+                uniqN.push(el);
+              }else{
+                duplicates.push(el);
+              }
+            });
 
-						jsKey[block.jsKey]['duplicateChoicePresses'] = duplicates;
-					}else{
-						jsKey[block.jsKey]['duplicateChoicePresses'] = [];
-					}
+            jsKey[block.jsKey]['duplicateChoicePresses'] = duplicates;
+          }else{
+            jsKey[block.jsKey]['duplicateChoicePresses'] = [];
+          }
 
-				}
+        }
 
-				if (block.type === "GroupBranchBlock"){
-					//check if this block has a group set
-					if (!block.customData.hasOwnProperty('groupId') || (block.customData.groupId === "")) {
-						jsKey[block.jsKey] = {'noGroup' : "NoGroupSelected"};
-					}
-				}
+        if (block.type === "GroupBranchBlock"){
+          //check if this block has a group set
+          if (!block.customData.hasOwnProperty('groupId') || (block.customData.groupId === "")) {
+            jsKey[block.jsKey] = {'noGroup' : "NoGroupSelected"};
+          }
+        }
 
-				if (block.type === "RunTreeBlock"){
+        if (block.type === "RunTreeBlock"){
 
-					if (!block.customData.hasOwnProperty('destinationTreeSetId') || (block.customData.destinationTreeSetId === "")) {
-						jsKey[block.jsKey] = {'noRunTree':'NoTreeSelected'};
-					}
-				}
+          if (!block.customData.hasOwnProperty('destinationTreeSetId') || (block.customData.destinationTreeSetId === "")) {
+            jsKey[block.jsKey] = {'noRunTree':'NoTreeSelected'};
+          }
+        }
 
-				if (block.type === "GroupSizeBranchBlock") {
+        if (block.type === "GroupSizeBranchBlock") {
 
-					if (!block.customData.hasOwnProperty('groupId') || (block.customData.groupId === "")){
-						jsKey[block.jsKey] = {
-												'noGroup':"NoGroupSelected"
-											 };
-					}
+          if (!block.customData.hasOwnProperty('groupId') || (block.customData.groupId === "")){
+            jsKey[block.jsKey] = {
+                        'noGroup':"NoGroupSelected"
+                       };
+          }
 
-				}
+        }
 
-				if (block.type === "LanguageSelectorBlock"){
-					if (!block.customData.hasOwnProperty('languageSelectorId') || (block.customData.languageSelectorId === "")){
-						jsKey[block.jsKey] = {
-											'noLanguageSelector' : 'NoLanguageSelectorSelected'
-										};
-					}
+        if (block.type === "LanguageSelectorBlock"){
+          if (!block.customData.hasOwnProperty('languageSelectorId') || (block.customData.languageSelectorId === "")){
+            jsKey[block.jsKey] = {
+                      'noLanguageSelector' : 'NoLanguageSelectorSelected'
+                    };
+          }
 
-				}
+        }
 
-				*/
+        */
       })
 
       return jsKey
     },
 
     validateContent() {
-      const tree = this.get('details'); const
+      const tree = this.get('details')
+      const
         blocks = this.get('blocks')
 
       return this.validateLanguageAndContentTypes(tree, blocks)
@@ -847,9 +889,12 @@ window.app = window.app || {};
 
     updateFloipAlert() {
       if (app.tree.floipSyncedAt) {
-        $('.push-flow-package-alert-message').html(`<div class="alert alert-success">${Lang.trans('trees.floip-sync-success')}</div>`)
-      } else if ($('.floip-push-url-input').val()) {
-        $('.push-flow-package-alert-message').html(`<div class="alert alert-warning">${Lang.trans('trees.floip-sync-warning')}</div>`)
+        $('.push-flow-package-alert-message')
+          .html(`<div class="alert alert-success">${Lang.trans('trees.floip-sync-success')}</div>`)
+      } else if ($('.floip-push-url-input')
+        .val()) {
+        $('.push-flow-package-alert-message')
+          .html(`<div class="alert alert-warning">${Lang.trans('trees.floip-sync-warning')}</div>`)
       }
     },
 
@@ -910,7 +955,9 @@ window.app = window.app || {};
 
   }
 
-  app.Tree._blockIdPrefixMatcher = /^(block_\d+_\d+).*/ // eg. "block_1492643090294_28_node_3"
+  // eg. "block_1492643090294_28_node_3"
+
+  app.Tree._blockIdPrefixMatcher = /^(block_\d+_\d+).*/
   app.Tree._validateNonExistentBlockReferences = function (blocks, connections) {
     // todo: also validate .blocks.items.properties.customData.outputs.conditions.jsKey === "block_1450273012962_38"
     // todo: also validate .details.startingBlockKey === "block_1450273012962_38"
@@ -936,7 +983,8 @@ window.app = window.app || {};
 
   app.Tree._mergeAndSanitizeImportedInto = function (treeJson, importJson) {
     if (!importJson) {
-      return // validator handles `null`ed json in a particular way
+      // validator handles `null`ed json in a particular way
+      return
     }
 
     // 1- Remove contents - based on selected channels
@@ -985,10 +1033,14 @@ window.app = window.app || {};
         _.forEach(blockContentsToReview, (contentPath, i) => {
           const content = _.get(block, contentPath, {})
           let sanitizedContent = []
-          if (_.isArray(content)) { // AutogenLangs
-            sanitizedContent = _.difference(content, invalidLanguages)// remove by value
-          } else { // Contents & others
-            sanitizedContent = _.omit(content, invalidLanguages)// remove by prop
+          // AutogenLangs
+          if (_.isArray(content)) {
+            // remove by value
+            sanitizedContent = _.difference(content, invalidLanguages)
+            // Contents & others
+          } else {
+            // remove by prop
+            sanitizedContent = _.omit(content, invalidLanguages)
           }
           _.set(block, contentPath, sanitizedContent)
         })
@@ -998,15 +1050,35 @@ window.app = window.app || {};
     // 3- Fix non object contents & Strip out customData from some block types
     // Block Type KeyValues to strip out
     const orgContentBlockTypeKeys = {
-		  SubscriberBranchBlock: ['customDataCategory', 'customDataValue', 'propertyFieldId'],
-		  GroupBranchBlock: ['groupId'],
-		  GroupSizeBranchBlock: ['groupId'],
-		  SubscriberPropertyBlock: ['customDataCategory', 'customDataValue', 'newLanguage', 'propertyFieldId'],
-		  GroupPropertyBlock: ['groupId'],
-		  BillSubscriberBlock: ['apiUrlDestination', 'apiUsername', 'apiPassword', 'apiProductCode', 'apiStockCode', 'apiDeductionAmount', 'apiOperationId', 'apiOperationType'],
-		  TriggerOutgoingCallBlock: ['recipientType', 'scheduleType', 'messageVersionSetId', 'messageId', 'surveyVersionSetId', 'surveyId', 'treeVersionSetId', 'treeId', 'languageSelectorId', 'subscribers'],
-		  LanguageSelectorBlock: ['languageSelectorId'],
-		  CallHistoryBranchBlock: ['mode', 'rangeDays', 'rangeStartDate', 'rangeEndDate'],
+      SubscriberBranchBlock: ['customDataCategory', 'customDataValue', 'propertyFieldId'],
+      GroupBranchBlock: ['groupId'],
+      GroupSizeBranchBlock: ['groupId'],
+      SubscriberPropertyBlock: ['customDataCategory', 'customDataValue', 'newLanguage', 'propertyFieldId'],
+      GroupPropertyBlock: ['groupId'],
+      BillSubscriberBlock: [
+        'apiUrlDestination',
+        'apiUsername',
+        'apiPassword',
+        'apiProductCode',
+        'apiStockCode',
+        'apiDeductionAmount',
+        'apiOperationId',
+        'apiOperationType',
+      ],
+      TriggerOutgoingCallBlock: [
+        'recipientType',
+        'scheduleType',
+        'messageVersionSetId',
+        'messageId',
+        'surveyVersionSetId',
+        'surveyId',
+        'treeVersionSetId',
+        'treeId',
+        'languageSelectorId',
+        'subscribers',
+      ],
+      LanguageSelectorBlock: ['languageSelectorId'],
+      CallHistoryBranchBlock: ['mode', 'rangeDays', 'rangeStartDate', 'rangeEndDate'],
       DirectorySelectionBlock: ['setSubscriberPropertyConfiguration'],
       OpenQuestionBlock: ['setSubscriberPropertyConfiguration'],
       RandomOrderMultipleChoiceQuestionBlock: ['setSubscriberPropertyConfiguration'],
@@ -1046,27 +1118,31 @@ window.app = window.app || {};
     //    _.keys(app.ui.blockClasses))
     // app.tree = app.Tree.validateAndCreateFrom(json, schema)
 
-    if (!json) { // json was invalid at some point along the way
-      throw _.extend(new Ajv.ValidationError([]), { message: 'Tree validation failed!' })
+    // json was invalid at some point along the way
+
+    if (!json) {
+      throw _.extend(new Ajv.ValidationError([]), {message: 'Tree validation failed!'})
     }
 
-    const validate = new Ajv({ coerceTypes: true }).compile(schema)
+    const validate = new Ajv({coerceTypes: true}).compile(schema)
 
     if (!validate(json)) {
       // validate.errors are a list like:
       // [{"keyword":"type","dataPath":".details.title","schemaPath":"#/properties/details/properties/title/type","params":{"type":"string"},"message":"should be string"}]
       throw _.extend(
         new Ajv.ValidationError(validate.errors),
-        { message: 'Tree validation failed!' },
+        {message: 'Tree validation failed!'},
       )
     }
 
     if (this._validateNonExistentBlockReferences(json.blocks, json.connections)) {
-      throw _.extend(new Ajv.ValidationError([{
-        keyword: 'reference',
-        dataPath: '.connections.items.properties',
-        message: 'should reference existing jsKey properties',
-      }]), { message: 'Tree validation failed!' })
+      throw _.extend(new Ajv.ValidationError([
+        {
+          keyword: 'reference',
+          dataPath: '.connections.items.properties',
+          message: 'should reference existing jsKey properties',
+        },
+      ]), {message: 'Tree validation failed!'})
     }
   }
 
@@ -1080,13 +1156,13 @@ window.app = window.app || {};
     // Reference: http://epoberezkin.github.io/ajv/keywords.html
     return {
       properties: {
-        id: { type: 'integer' },
+        id: {type: 'integer'},
         details: {
           type: 'object',
           properties: {
-            title: { type: 'string' },
-            description: { type: 'string' },
-            hasVoice: { type: 'boolean' },
+            title: {type: 'string'},
+            description: {type: 'string'},
+            hasVoice: {type: 'boolean'},
             enabledLanguages: {
               type: 'array',
               items: {
@@ -1094,10 +1170,10 @@ window.app = window.app || {};
                 enum: languages,
               },
             },
-            hasSms: { type: 'boolean' },
-            hasUssd: { type: 'boolean' },
-            hasSocial: { type: 'boolean' },
-            startingBlockKey: { type: 'string' },
+            hasSms: {type: 'boolean'},
+            hasUssd: {type: 'boolean'},
+            hasSocial: {type: 'boolean'},
+            startingBlockKey: {type: 'string'},
           },
         },
         blocks: {
@@ -1112,31 +1188,31 @@ window.app = window.app || {};
               customData: {
                 type: 'object',
                 properties: {
-                  title: { type: 'string' },
-                  repeatKey: { type: 'integer' },
-                  repeatMax: { type: 'integer' },
-                  repeatDelay: { type: 'integer' },
-                  repeat: { type: 'boolean' },
+                  title: {type: 'string'},
+                  repeatKey: {type: 'integer'},
+                  repeatMax: {type: 'integer'},
+                  repeatDelay: {type: 'integer'},
+                  repeat: {type: 'boolean'},
                 },
               },
               uiData: {
                 type: 'object',
                 properties: {
-                  xPosition: { type: 'integer' },
-                  yPosition: { type: 'integer' },
-                  numConnections: { type: 'integer' },
+                  xPosition: {type: 'integer'},
+                  yPosition: {type: 'integer'},
+                  numConnections: {type: 'integer'},
                 },
               },
-              audioFiles: { type: 'object' },
-              smsContent: { type: 'object' },
-              ussdContent: { type: 'object' },
-              socialContent: { type: 'object' },
-              clipboardContent: { type: 'object' },
-              smsAutogenLangs: { type: 'array' },
-              ussdAutogenLangs: { type: 'array' },
-              socialAutogenLangs: { type: 'array' },
-              clipboardAutogenLangs: { type: 'array' },
-              jsKey: { type: 'string' },
+              audioFiles: {type: 'object'},
+              smsContent: {type: 'object'},
+              ussdContent: {type: 'object'},
+              socialContent: {type: 'object'},
+              clipboardContent: {type: 'object'},
+              smsAutogenLangs: {type: 'array'},
+              ussdAutogenLangs: {type: 'array'},
+              socialAutogenLangs: {type: 'array'},
+              clipboardAutogenLangs: {type: 'array'},
+              jsKey: {type: 'string'},
             },
           },
         },
@@ -1145,9 +1221,9 @@ window.app = window.app || {};
           items: {
             type: 'object',
             properties: {
-              startBlockKey: { type: 'string' },
-              outputKey: { type: 'string' },
-              endBlockKey: { type: 'string' },
+              startBlockKey: {type: 'string'},
+              outputKey: {type: 'string'},
+              endBlockKey: {type: 'string'},
             },
           },
         },

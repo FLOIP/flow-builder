@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import {Component} from 'vue-property-decorator'
 
 type globalType = typeof global & {
-  Lang: any;
+  Lang: any,
 }
 const thisGlobal: globalType = global as globalType
 
@@ -19,14 +19,14 @@ const createProxy = (name: string) => function () {
   },
 })
 class Lang extends Vue {
-  trans(translation: string) {
-    return thisGlobal.Lang.trans(translation)
+  trans(translation: string, interpolations?: object) {
+    return thisGlobal.Lang.trans(translation, interpolations)
   }
 
   /**
-  * `transIf(condition, ...)` should only be used when we encounter an issue with `:disabled="!condition"` approach
-  * eg: for v-b-tooltip, we may need to remove completely the tooltip on block view mode
-  */
+   * `transIf(condition, ...)` should only be used when we encounter an issue with `:disabled="!condition"` approach
+   * eg: for v-b-tooltip, we may need to remove completely the tooltip on block view mode
+   */
   transIf(condition: boolean, translation: string) {
     if (condition) {
       return this.trans(translation)
