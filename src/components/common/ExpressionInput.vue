@@ -1,8 +1,8 @@
 <template>
-  <div class="form-group">
+  <div class="expression-input form-group">
     <label>{{label}}</label>
     <textarea
-      class="form-control"
+      :class="['form-control', {'is-invalid': isInvalid}]"
       :placeholder="placeholder"
       @input="$emit('input', $event.target.value)"
       ref="input"
@@ -49,6 +49,11 @@ export default {
       type: [String, Number],
       default: null,
     },
+    validState: {
+      type: Boolean,
+      default: null,
+      required: false,
+    },
   },
 
   data() {
@@ -61,6 +66,9 @@ export default {
     ...mapGetters(['subscriberPropertyFields']),
     ...mapGetters('flow', ['activeFlow']),
 
+    isInvalid() {
+      return this.validState === false
+    },
     expression: {
       get() {
         return this.currentExpression
