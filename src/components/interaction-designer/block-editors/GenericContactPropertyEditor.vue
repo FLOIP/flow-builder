@@ -76,7 +76,7 @@
         v-if="shouldUseOpenExpression"
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
-        <expression-editor
+        <expression-input
           :label="''"
           :placeholder="'flow-builder.enter-expression' | trans"
           :current-expression="propertyValue"
@@ -95,7 +95,7 @@ import Lang from '@/lib/filters/lang'
 import {get, has} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
-import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
+import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import TextEditor from '@/components/common/TextEditor.vue'
 import {isBlockInteractive} from '@/store/flow/block.ts'
 
@@ -107,7 +107,7 @@ const BLOCK_RESPONSE_EXPRESSION = '@block.value'
 @Component({
   components: {
     TextEditor,
-    ExpressionEditor,
+    ExpressionInput,
     ValidationMessage,
   },
 })
