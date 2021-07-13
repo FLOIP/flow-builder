@@ -4,7 +4,7 @@
       #input-control="{ isValid }"
       :message-key="`block/${block.uuid}/name`">
       <div v-if="editBlockName || isValid === false">
-        <label>{{ 'flow-builder.edit-block-code' | trans }}</label>
+        <h6>{{ 'flow-builder.edit-block-code' | trans }}</h6>
         <div class="d-flex">
           <small-text-editor
             v-model="blockName"
@@ -23,8 +23,8 @@
       </div>
       <div v-else class="d-flex justify-content-between">
         <div class="block-code align-self-center">
-          <strong>{{'flow-builder.code' | trans}}:</strong>
-          <span class=""> {{ blockName }} </span>
+          <h6 class="d-inline">{{'flow-builder.code' | trans}}:</h6>
+          <span> {{ blockName }} </span>
         </div>
         <span class="btn btn-primary btn-xs align-self-baseline ml-2" @click="editBlockName = true">
           <font-awesome-icon
