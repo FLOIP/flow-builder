@@ -520,7 +520,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                   <!---->
                    
                   <main
-                    class="error-notifications"
+                    class="error-notifications-wrapper"
                   >
                     <!---->
                      
@@ -874,7 +874,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                   <!---->
                    
                   <main
-                    class="error-notifications"
+                    class="error-notifications-wrapper"
                   >
                     <!---->
                      
@@ -1227,7 +1227,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                   <!---->
                    
                   <main
-                    class="error-notifications"
+                    class="error-notifications-wrapper"
                   >
                     <!---->
                      
@@ -1552,7 +1552,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                   <!---->
                    
                   <main
-                    class="error-notifications"
+                    class="error-notifications-wrapper"
                   >
                     <!---->
                      
@@ -1691,7 +1691,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                   <!---->
                    
                   <main
-                    class="error-notifications"
+                    class="error-notifications-wrapper"
                   >
                     <!---->
                      
