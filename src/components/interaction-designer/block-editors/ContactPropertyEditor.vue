@@ -134,9 +134,6 @@ class ContactPropertyEditor extends mixins(Lang) {
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
     {blockId, path, value}: { blockId: string, path: string, value: string }
   ) => void
-  @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value: string }
-  ) => void
 }
 
 export default ContactPropertyEditor
