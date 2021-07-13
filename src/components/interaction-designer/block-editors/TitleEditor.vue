@@ -11,7 +11,9 @@
           :placeholder="'flow-builder.enter-title' | trans"
           :valid-state="isValid"/>
         <span class="btn btn-outline-primary btn-xs align-self-center ml-2" @click="emitGearClickedEvent">
-          <svg-icon icon="settings" />
+          <font-awesome-icon
+            :icon="['fac', 'settings']"
+            class="fa-btn text-primary" />
         </span>
       </div>
     </validation-message>
@@ -26,7 +28,6 @@ import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import SvgIcon from '@/components/common/SvgIcon.vue'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -34,7 +35,6 @@ const flowVuexNamespace = namespace('flow')
   components: {
     SmallTextEditor,
     ValidationMessage,
-    SvgIcon,
   },
 })
 class TitleEditor extends mixins(Lang) {
