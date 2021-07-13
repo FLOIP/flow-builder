@@ -1,13 +1,13 @@
 <template>
   <div class="expression-input form-group">
-    <label>{{label}}</label>
+    <label>{{ label }}</label>
     <textarea
+      ref="input"
+      v-model="expression"
       :class="['form-control', {'is-invalid': isInvalid}]"
       :placeholder="placeholder"
-      @input="$emit('input', $event.target.value)"
-      ref="input"
-      v-model="expression"/>
-    <slot/>
+      @input="$emit('input', $event.target.value)" />
+    <slot />
   </div>
 </template>
 
@@ -84,8 +84,8 @@ export default {
       },
     },
     expressionContext() {
-      const contactFields = this.subscriberPropertyFields.map(prop => prop.name).concat(defaultContactPropertyFields)
-      const blocks = this.activeFlow.blocks.flatMap(b => [b.name, b.uuid])
+      const contactFields = this.subscriberPropertyFields.map((prop) => prop.name).concat(defaultContactPropertyFields)
+      const blocks = this.activeFlow.blocks.flatMap((b) => [b.name, b.uuid])
       return {
         contact: contactFields,
         flow: blocks,
@@ -100,7 +100,7 @@ export default {
             value: '@()',
             focusText: [-1, -1],
           },
-          ...Array.from(Object.entries(this.expressionContext)).map(item => `@${item[0]}`),
+          ...Array.from(Object.entries(this.expressionContext)).map((item) => `@${item[0]}`),
         ],
       }
     },
@@ -109,14 +109,14 @@ export default {
         const name = item[0]
         return {
           trigger: `${name}.`,
-          values: item[1].map(val => `${name}.${val}`),
+          values: item[1].map((val) => `${name}.${val}`),
         }
       })
     },
     methodSuggestions() {
-      return Array.from(this.evaluatorMethods.entries()).map(item => ({
+      return Array.from(this.evaluatorMethods.entries()).map((item) => ({
         trigger: item[0],
-        values: item[1].map(i => ({
+        values: item[1].map((i) => ({
           value: `${i}()`,
           focusText: [-1, -1],
         })),
@@ -149,7 +149,7 @@ export default {
         ...this.methodSuggestions,
         this.topLevelSuggestions,
       ]
-    }
+    },
   },
 
   mounted() {
