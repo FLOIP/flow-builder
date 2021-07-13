@@ -4,28 +4,35 @@
       {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
     </h3>
     <fieldset :disabled="!isEditable">
-      <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
+      <title-editor :block="block" @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor v-if="showSemanticLabel" :block="block" />
 
       <validation-message
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/flow_id`">
         <div class="form-group">
-          <label>{{ 'flow-builder.destination-flow' | trans }}</label>
-          <select
+          <!--
+            <label>{{ 'flow-builder.destination-flow' | trans }}</label>
+            <select
+              v-model="destinationFlowId"
+              class="form-control"
+              :class="{ 'is-invalid': isValid === false }">
+              <option value="">
+                {{ 'flow-builder.none-selected' | trans }}
+              </option>
+              <option
+                v-for="(flow, i) in otherFlows"
+                :value="flow.uuid">
+                {{ flow.name }}
+              </option>
+            </select>
+            //TODO - add back in when we can load org uuids - not enough to just pull those loaded in vuex
+          -->
+          <text-editor
             v-model="destinationFlowId"
-            class="form-control"
-            :class="{ 'is-invalid': isValid === false }">
-            <option value="">
-              {{ 'flow-builder.none-selected' | trans }}
-            </option>
-            <option
-              v-for="(flow, i) in otherFlows"
-              :value="flow.uuid">
-              {{ flow.name }}
-            </option>
-          </select>
+            :label="'flow-builder.destination-flow' | trans"
+            :placeholder="'flow-builder.enter-destination-flow-id' | trans"
+            :valid-state="isValid" />
         </div>
       </validation-message>
 
@@ -50,19 +57,19 @@ import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
-import BlockNameEditor from '../block-editors/NameEditor.vue'
-import BlockLabelEditor from '../block-editors/LabelEditor.vue'
+import TitleEditor from '../block-editors/TitleEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import TextEditor from '@/components/common/TextEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
-    BlockNameEditor,
-    BlockLabelEditor,
+    TitleEditor,
+    TextEditor,
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
@@ -73,6 +80,8 @@ class Core_RunAnotherFlowBlock extends mixins(Lang) {
   @Prop() readonly block!: IRunFlowBlock
 
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   get destinationFlowId(): string {
     return this.block.config.flow_id
