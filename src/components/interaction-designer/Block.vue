@@ -60,7 +60,7 @@
             <font-awesome-icon
               v-if="isEditable"
               v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-              :icon="['far', 'clone']"
+              :icon="['fac', 'duplicate']"
               class="fa-btn"
               @click.prevent="handleDuplicateBlock" />
           </div>
