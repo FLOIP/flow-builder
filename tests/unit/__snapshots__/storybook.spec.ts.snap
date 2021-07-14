@@ -2157,6 +2157,37 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           </div>
                             
                           <div
+                            class="generic-contact-property-editor"
+                          >
+                            <label>
+                              Contact Properties
+                            </label>
+                             
+                            <div
+                              class="custom-control custom-checkbox"
+                            >
+                              <input
+                                class="custom-control-input"
+                                id="setContactProperty"
+                                name="setContactProperty"
+                                type="checkbox"
+                                value="false"
+                              />
+                               
+                              <label
+                                class="custom-control-label font-weight-normal"
+                                for="setContactProperty"
+                              >
+                                
+      Set a contact property with the Contact’s response
+    
+                              </label>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
                             class="starting-block-button"
                           >
                             <h4>
@@ -2594,6 +2625,37 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                             </div>
                           </div>
                             
+                          <div
+                            class="generic-contact-property-editor"
+                          >
+                            <label>
+                              Contact Properties
+                            </label>
+                             
+                            <div
+                              class="custom-control custom-checkbox"
+                            >
+                              <input
+                                class="custom-control-input"
+                                id="setContactProperty"
+                                name="setContactProperty"
+                                type="checkbox"
+                                value="false"
+                              />
+                               
+                              <label
+                                class="custom-control-label font-weight-normal"
+                                for="setContactProperty"
+                              >
+                                
+      Set a contact property with the Contact’s response
+    
+                              </label>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
                           <div
                             class="starting-block-button"
                           >
@@ -3049,6 +3111,37 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           </div>
                             
                           <div
+                            class="generic-contact-property-editor"
+                          >
+                            <label>
+                              Contact Properties
+                            </label>
+                             
+                            <div
+                              class="custom-control custom-checkbox"
+                            >
+                              <input
+                                class="custom-control-input"
+                                id="setContactProperty"
+                                name="setContactProperty"
+                                type="checkbox"
+                                value="false"
+                              />
+                               
+                              <label
+                                class="custom-control-label font-weight-normal"
+                                for="setContactProperty"
+                              >
+                                
+      Set a contact property with the Contact’s response
+    
+                              </label>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <div
                             class="starting-block-button"
                           >
                             <h4>
@@ -3461,6 +3554,37 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                             </div>
                           </div>
                             
+                          <div
+                            class="generic-contact-property-editor"
+                          >
+                            <label>
+                              Contact Properties
+                            </label>
+                             
+                            <div
+                              class="custom-control custom-checkbox"
+                            >
+                              <input
+                                class="custom-control-input"
+                                id="setContactProperty"
+                                name="setContactProperty"
+                                type="checkbox"
+                                value="false"
+                              />
+                               
+                              <label
+                                class="custom-control-label font-weight-normal"
+                                for="setContactProperty"
+                              >
+                                
+      Set a contact property with the Contact’s response
+    
+                              </label>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
                           <div
                             class="starting-block-button"
                           >

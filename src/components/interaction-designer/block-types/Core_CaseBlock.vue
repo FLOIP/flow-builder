@@ -18,7 +18,7 @@
           <expression-input
             class="d-flex m-0"
             :label="i+1"
-            :placeholder="'flow-builder.edit-expression' | trans"
+            :placeholder="'flow-builder.enter-expression' | trans"
             :valid-state="isValid"
             :current-expression="exit.test"
             :expression-identifier="exit.uuid"
@@ -26,6 +26,9 @@
         </validation-message>
       </div>
       <slot name="extras" />
+
+      <generic-contact-property-editor :block="block" />
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
@@ -51,12 +54,14 @@ import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
+    GenericContactPropertyEditor,
     ExpressionInput,
     BlockNameEditor,
     BlockLabelEditor,
