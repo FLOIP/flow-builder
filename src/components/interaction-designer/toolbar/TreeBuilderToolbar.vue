@@ -18,8 +18,24 @@
         <!--    <tree-update-conflict-modal/>-->
         <div class="tree-workspace-panel-heading-contents">
           <div class="btn-toolbar">
-            <h3 class="text-primary mr-1">{{activeFlow.label}}</h3>
+            <h4 class="text-primary mr-4 flow-label" :title="activeFlow.label">
+              {{activeFlow.label}}
+            </h4>
             <div>
+              <router-link
+                :to="route('flows.home')"
+                :title="trans('flow-builder.home')"
+                class="mr-2">
+                <font-awesome-icon
+                  :icon="['fac', 'home']"
+                  class="fa-btn" />
+              </router-link>
+              <router-link
+                :to="route('flows.newFlow')"
+                class="btn btn-secondary btn-sm mr-2">
+                {{ trans('flow-builder.new-flow') }}
+              </router-link>
+
               <router-link
                 v-if="isResourceEditorEnabled"
                 :to="resourceViewUrl"
@@ -27,6 +43,7 @@
                 @click.native="handleResourceViewerSelected">
                 {{ trans('flow-builder.resource-view') }}
               </router-link>
+
               <router-link
                 v-if="!ui.isEditableLocked"
                 :to="editOrViewTreeJsUrl"
@@ -35,17 +52,6 @@
                 class="btn btn-outline-primary btn-sm mr-1"
                 @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
                 {{ isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow') }}
-              </router-link>
-
-              <router-link
-                :to="route('flows.newFlow')"
-                class="btn btn-secondary btn-sm mr-2">
-                {{ trans('flow-builder.new-flow') }}
-              </router-link>
-              <router-link
-                :to="route('flows.home')"
-                class="btn btn-secondary btn-sm mr-2">
-                {{ trans('flow-builder.home') }}
               </router-link>
 
               <slot name="extra-buttons" />
@@ -471,5 +477,12 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   position: fixed;
   margin-top: 60px;
   z-index: 3*10;
+}
+
+.btn-toolbar > .flow-label {
+  max-width: 25%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
