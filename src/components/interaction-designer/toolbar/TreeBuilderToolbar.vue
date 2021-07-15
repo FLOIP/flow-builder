@@ -105,98 +105,125 @@
         </div>
       </div>
 
-      <div class="tree-workspace-panel-heading panel-heading w-100 bg-white">
+      <div v-if="isEditable" class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-center">
         <div class="tree-workspace-panel-heading-contents">
-          <div class="btn-toolbar">
-            <div
-              v-if="isEditable"
-              class="dropdown mr-2">
-              <button
-                type="button"
-                class="btn btn-secondary dropdown-toggle"
-                data-toggle="dropdown">
-                {{ trans('flow-builder.add-block') }}
-              </button>
-
+          <ul class="nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Content
+              </a>
               <div class="dropdown-menu">
-                <template v-for="(classDetails, className) in rootBlockClassesToDisplay">
-                  <a
-                    v-if="shouldDisplayDividerBefore(rootBlockClassesToDisplay, className)"
-                    :key="className + 'divider'"
-                    class="dropdown-divider" />
+                <template v-for="(classDetails, className) in blockClassesForContentCategory">
+                  <div
+                    v-if="shouldDisplayDividerBefore(blockClassesForContentCategory, className)"
+                    :key="`${className}divider`"
+                    class="dropdown-divider"></div>
                   <a
                     v-if="isBlockAvailableByBlockClass[className]"
                     :key="className + 'item'"
                     href="#"
-                    class="dropdown-item tree-add-block"
+                    class="dropdown-item"
                     :data-block-type="className"
                     :data-default-num-connections="classDetails['defaultConnections']"
                     @click.prevent="handleAddBlockByTypeSelected(classDetails)">
                     {{ translateTreeClassName(className) }}
                   </a>
                 </template>
-
-                <template v-if="!isEmpty(rootDropdownClassesToDisplay)">
-                  <a class="dropdown-divider" />
-
-                  <a class="menu-item dropdown dropdown-submenu">
-                    <a
-                      href="#"
-                      class="dropdown-toggle"
-                      data-toggle="dropdown">
-                      {{ trans('flow-builder.branching') }}
-                    </a>
-                    <div class="dropdown-menu">
-                      <template v-for="(classDetails, className) in rootDropdownClassesToDisplay">
-                        <a
-                          v-if="shouldDisplayDividerBefore(rootDropdownClassesToDisplay, className)"
-                          :key="className + 'divider'"
-                          class="dropdown-divider" />
-                        <a
-                          v-if="isBlockAvailableByBlockClass[className]"
-                          :key="className + 'item'"
-                          href="#"
-                          class="dropdown-item tree-add-block"
-                          :data-block-type="className"
-                          :data-default-num-connections="classDetails['defaultConnections']">
-                          {{ translateTreeClassName(className) }}
-                        </a>
-                      </template>
-                    </div>
-                  </a>
-                </template>
-
-                <template v-if="!isEmpty(advancedDropdownClassesToDisplay)">
-                  <a class="dropdown-divider" />
-
-                  <a class="menu-item dropdown dropdown-submenu">
-                    <a
-                      href="#"
-                      class="dropdown-toggle"
-                      data-toggle="dropdown">{{ 'flow-builder.advanced' | trans }}
-                    </a>
-                    <div class="dropdown-menu">
-                      <template v-for="(classDetails, className) in advancedDropdownClassesToDisplay">
-                        <a
-                          v-if="shouldDisplayDividerBefore(advancedDropdownClassesToDisplay, className)"
-                          :key="className + 'divider'"
-                          class="dropdown-divider" />
-                        <a
-                          v-if="isBlockAvailableByBlockClass[className]"
-                          :key="className + 'item'"
-                          href="#"
-                          class="dropdown-item tree-add-block"
-                          :data-block-type="className"
-                          :data-default-num-connections="classDetails['defaultConnections']">
-                          {{ translateTreeClassName(className) }}
-                        </a>
-                      </template>
-                    </div>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Contact
+              </a>
+              <div class="dropdown-menu">
+                <template v-for="(classDetails, className) in blockClassesForContactCategory">
+                  <div
+                    v-if="shouldDisplayDividerBefore(blockClassesForContactCategory, className)"
+                    :key="`${className}divider`"
+                    class="dropdown-divider"></div>
+                  <a
+                    v-if="isBlockAvailableByBlockClass[className]"
+                    :key="className + 'item'"
+                    href="#"
+                    class="dropdown-item"
+                    :data-block-type="className"
+                    :data-default-num-connections="classDetails['defaultConnections']"
+                    @click.prevent="handleAddBlockByTypeSelected(classDetails)">
+                    {{ translateTreeClassName(className) }}
                   </a>
                 </template>
               </div>
-            </div>
-          </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Branching
+              </a>
+              <div class="dropdown-menu">
+                <template v-for="(classDetails, className) in blockClassesForBranchingCategory">
+                  <div
+                    v-if="shouldDisplayDividerBefore(blockClassesForBranchingCategory, className)"
+                    :key="`${className}divider`"
+                    class="dropdown-divider"></div>
+                  <a
+                    v-if="isBlockAvailableByBlockClass[className]"
+                    :key="className + 'item'"
+                    href="#"
+                    class="dropdown-item"
+                    :data-block-type="className"
+                    :data-default-num-connections="classDetails['defaultConnections']"
+                    @click.prevent="handleAddBlockByTypeSelected(classDetails)">
+                    {{ translateTreeClassName(className) }}
+                  </a>
+                </template>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Weather
+              </a>
+              <div class="dropdown-menu">
+                <template v-for="(classDetails, className) in blockClassesForWeatherCategory">
+                  <div
+                    v-if="shouldDisplayDividerBefore(blockClassesForWeatherCategory, className)"
+                    :key="`${className}divider`"
+                    class="dropdown-divider"></div>
+                  <a
+                    v-if="isBlockAvailableByBlockClass[className]"
+                    :key="className + 'item'"
+                    href="#"
+                    class="dropdown-item"
+                    :data-block-type="className"
+                    :data-default-num-connections="classDetails['defaultConnections']"
+                    @click.prevent="handleAddBlockByTypeSelected(classDetails)">
+                    {{ translateTreeClassName(className) }}
+                  </a>
+                </template>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Developer
+              </a>
+              <div class="dropdown-menu">
+                <template v-for="(classDetails, className) in blockClassesForDeveloperCategory">
+                  <div
+                    v-if="shouldDisplayDividerBefore(blockClassesForDeveloperCategory, className)"
+                    :key="`${className}divider`"
+                    class="dropdown-divider"></div>
+                  <a
+                    v-if="isBlockAvailableByBlockClass[className]"
+                    :key="className + 'item'"
+                    href="#"
+                    class="dropdown-item"
+                    :data-block-type="className"
+                    :data-default-num-connections="classDetails['defaultConnections']"
+                    @click.prevent="handleAddBlockByTypeSelected(classDetails)">
+                    {{ translateTreeClassName(className) }}
+                  </a>
+                </template>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -297,25 +324,40 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return this.trans('flow-builder.save')
   }
 
-  get rootBlockClassesToDisplay(): any {
+  get blockClassesForContentCategory(): any {
     return flow(
-      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'advancedMenu')),
-      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'branchingMenu')),
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hidden_in_menu')),
+      pickBy((classDetails: { [key: string]: any }) => this.hasMenuCategory(classDetails, 1)),
     )(this.ui.blockClasses)
   }
 
-  get rootDropdownClassesToDisplay(): any {
+  get blockClassesForContactCategory(): any {
     return flow(
-      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-      pickBy((classDetails: { [key: string]: any }) => this.hasClassDetail(classDetails, 'branchingMenu')),
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hidden_in_menu')),
+      pickBy((classDetails: { [key: string]: any }) => this.hasMenuCategory(classDetails, 2)),
     )(this.ui.blockClasses)
   }
 
-  get advancedDropdownClassesToDisplay(): any {
+  get blockClassesForBranchingCategory(): any {
     return flow(
-      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hiddenInMenu')),
-      pickBy((classDetails: { [key: string]: any }) => this.hasClassDetail(classDetails, 'advancedMenu')),
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hidden_in_menu')),
+      pickBy((classDetails: { [key: string]: any }) => {
+        return this.hasMenuCategory(classDetails, 3) || this.hasClassDetail(classDetails, 'branchingMenu')
+      }),
+    )(this.ui.blockClasses)
+  }
+
+  get blockClassesForWeatherCategory(): any {
+    return flow(
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hidden_in_menu')),
+      pickBy((classDetails: { [key: string]: any }) => this.hasMenuCategory(classDetails, 4)),
+    )(this.ui.blockClasses)
+  }
+
+  get blockClassesForDeveloperCategory(): any {
+    return flow(
+      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hidden_in_menu')),
+      pickBy((classDetails: { [key: string]: any }) => this.hasMenuCategory(classDetails, 5)),
     )(this.ui.blockClasses)
   }
 
@@ -385,6 +427,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return !isNil(classDetails[attribute]) && classDetails[attribute]
   }
 
+  hasMenuCategory(classDetails: { [key: string]: any }, category: number): any {
+    return this.hasClassDetail(classDetails, 'menu_category') && classDetails['menu_category'] === category
+  }
+
   translateTreeClassName(className: string): any {
     return this.trans(`flow-builder.${className}`)
   }
@@ -392,7 +438,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   shouldDisplayDividerBefore(blockClasses: { [key: string]: any }, className: string): any {
     const shouldShowDividerBeforeBlock = _pickBy(
       blockClasses,
-      (classDetails) => this.hasClassDetail(classDetails, 'dividerBefore'),
+      (classDetails) => this.hasClassDetail(classDetails, 'divider_before'),
     )[className]
     return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
   }
