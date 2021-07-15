@@ -629,8 +629,8 @@ export default {
     opacity: 0; // default state of hidden
 
     margin-top: -39.75px;
-    margin-right: -8px;
-    margin-left: -8px;
+    margin-right: -7px;
+    margin-left: -7px;
     padding: 8px;
 
     border-top: inherit;
@@ -738,6 +738,7 @@ export default {
     opacity: 1;
   }
 
+  // block exit states
   &.active,
   &:hover {
     .block-exit .block-exit-remove {
@@ -745,10 +746,18 @@ export default {
     }
   }
 
+  // toolbar states
   &.has-toolbar,
   &:hover {
     .block-toolbar {
       opacity: 1;
+    }
+  }
+
+  &.active {
+    .block-toolbar {
+      margin-left: -8px;
+      margin-right: -8px;
     }
   }
 }
