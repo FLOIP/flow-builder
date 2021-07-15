@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label v-if="label">{{ label }}</label>
+    <h6 v-if="label">{{ label }}</h6>
     <input
       type="text"
       class="form-control w-100"
