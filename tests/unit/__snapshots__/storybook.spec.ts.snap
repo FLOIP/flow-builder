@@ -70,6 +70,12 @@ exports[`Storyshots Core/Run Another Flow Block Styled Default 1`] = `
 </div>
 `;
 
+exports[`Storyshots Core/Set Contact Property Clear Action 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
 exports[`Storyshots Core/Set Contact Property Default 1`] = `
 <div>
   <!---->
@@ -164,13 +170,14 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <div
                                     class=""
                                   >
-                                    <label>
+                                    <h6>
                                       Flow label
-                                    </label>
+                                    </h6>
                                      
                                     <textarea
                                       class="form-control"
                                       placeholder="Enter flow label"
+                                      rows="1"
                                     />
                                      
                                   </div>
@@ -1816,10 +1823,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                 >
                                   <!---->
                                    
-                                  <input
-                                    class="form-control w-100"
+                                  <textarea
+                                    class="form-control"
                                     placeholder="Enter title"
-                                    type="text"
+                                    rows="1"
                                   />
                                    
                                 </div>
@@ -1827,13 +1834,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                 <span
                                   class="btn btn-outline-primary btn-xs align-self-center ml-2"
                                 >
-                                  <svg
-                                    class="icon"
-                                  >
-                                    <use
-                                      xlink:href="#settings"
-                                    />
-                                  </svg>
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
                                 </span>
                               </div>
                                
@@ -1845,7 +1849,49 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                             </div>
                           </section>
                            
-                          <hr />
+                          <!---->
+                           
+                          <div
+                            class="mt-3"
+                          >
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-70/name"
+                            >
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                      
+                                  </span>
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
+                              </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
+                            </div>
+                          </div>
                            
                           <div
                             class="validation-message form-group"
@@ -2007,13 +2053,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#message"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2053,13 +2096,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#ussd"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2099,13 +2139,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#audio"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2171,13 +2208,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                             class="btn btn-primary ivr-buttons"
                                             style="overflow: hidden;"
                                           >
-                                            <svg
-                                              class="icon"
-                                            >
-                                              <use
-                                                xlink:href="#upload"
-                                              />
-                                            </svg>
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,upload"
+                                            />
                                             
                     Upload Audio
                   
@@ -2191,13 +2225,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                           <button
                                             class="btn btn-primary ivr-buttons ml-2"
                                           >
-                                            <svg
-                                              class="icon"
-                                            >
-                                              <use
-                                                xlink:href="#record-audio"
-                                              />
-                                            </svg>
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,record-audio"
+                                            />
                                             
                     Record Audio
                   
@@ -2229,13 +2260,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                 disabled="disabled"
                                 type="button"
                               >
-                                <svg
-                                  class="icon"
-                                >
-                                  <use
-                                    xlink:href="#enter"
-                                  />
-                                </svg>
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
                                  
           Currently set as starting block
         
@@ -2340,10 +2368,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                 >
                                   <!---->
                                    
-                                  <input
-                                    class="form-control w-100"
+                                  <textarea
+                                    class="form-control"
                                     placeholder="Enter title"
-                                    type="text"
+                                    rows="1"
                                   />
                                    
                                 </div>
@@ -2351,13 +2379,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                 <span
                                   class="btn btn-outline-primary btn-xs align-self-center ml-2"
                                 >
-                                  <svg
-                                    class="icon"
-                                  >
-                                    <use
-                                      xlink:href="#settings"
-                                    />
-                                  </svg>
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
                                 </span>
                               </div>
                                
@@ -2369,7 +2394,49 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                             </div>
                           </section>
                            
-                          <hr />
+                          <!---->
+                           
+                          <div
+                            class="mt-3"
+                          >
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-76/name"
+                            >
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                     A Name 
+                                  </span>
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
+                              </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
+                            </div>
+                          </div>
                            
                           <div
                             class="validation-message form-group"
@@ -2531,13 +2598,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#message"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2577,13 +2641,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#ussd"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2623,13 +2684,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#audio"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2735,13 +2793,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                 disabled="disabled"
                                 type="button"
                               >
-                                <svg
-                                  class="icon"
-                                >
-                                  <use
-                                    xlink:href="#enter"
-                                  />
-                                </svg>
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
                                  
           Currently set as starting block
         
@@ -2843,93 +2898,95 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-105/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+                                   
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+                                   
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
+                           
+                          <!---->
                            
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-105/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                      
+                                  </span>
+                                </div>
                                  
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Semantic label
-                                </label>
-                                 
-                                <input
-                                  class="form-control w-100"
-                                  placeholder="Enter a block semantic label"
-                                  type="text"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
                            
                           <div
@@ -3059,13 +3116,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#message"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3105,13 +3159,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#ussd"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3151,13 +3202,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#audio"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3223,13 +3271,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                             class="btn btn-primary ivr-buttons"
                                             style="overflow: hidden;"
                                           >
-                                            <svg
-                                              class="icon"
-                                            >
-                                              <use
-                                                xlink:href="#upload"
-                                              />
-                                            </svg>
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,upload"
+                                            />
                                             
                     Upload Audio
                   
@@ -3243,13 +3288,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                           <button
                                             class="btn btn-primary ivr-buttons ml-2"
                                           >
-                                            <svg
-                                              class="icon"
-                                            >
-                                              <use
-                                                xlink:href="#record-audio"
-                                              />
-                                            </svg>
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,record-audio"
+                                            />
                                             
                     Record Audio
                   
@@ -3281,13 +3323,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                 disabled="disabled"
                                 type="button"
                               >
-                                <svg
-                                  class="icon"
-                                >
-                                  <use
-                                    xlink:href="#enter"
-                                  />
-                                </svg>
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
                                  
           Currently set as starting block
         
@@ -3371,93 +3410,95 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-114/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+                                   
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+                                   
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
+                           
+                          <!---->
                            
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-114/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                     A Name 
+                                  </span>
+                                </div>
                                  
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Semantic label
-                                </label>
-                                 
-                                <input
-                                  class="form-control w-100"
-                                  placeholder="Enter a block semantic label"
-                                  type="text"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
                            
                           <div
@@ -3587,13 +3628,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#message"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3633,13 +3671,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#ussd"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3679,13 +3714,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon resource-icons"
-                                        >
-                                          <use
-                                            xlink:href="#audio"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3791,13 +3823,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                 disabled="disabled"
                                 type="button"
                               >
-                                <svg
-                                  class="icon"
-                                >
-                                  <use
-                                    xlink:href="#enter"
-                                  />
-                                </svg>
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
                                  
           Currently set as starting block
         

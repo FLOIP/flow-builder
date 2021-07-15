@@ -5,8 +5,14 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <title-editor :block="block" />
-      <hr>
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
+      <block-name-editor :block="block" />
+
       <block-minimum-numeric-editor
         :block="block"
         @commitValidationMinimumChange="updateValidationMin" />
@@ -53,7 +59,6 @@ import BlockId from '../block-editors/BlockId.vue'
 import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue'
 import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
 import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
-import TitleEditor from '@/components/interaction-designer/block-editors/TitleEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -70,13 +75,14 @@ const builderVuexNamespace = namespace('builder')
     BlockMinimumNumericEditor,
     BlockMaximumNumericEditor,
     BlockMaxDigitEditor,
-    TitleEditor,
   },
 })
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: INumericResponseBlock
 
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   get promptResource(): IResource {
     return this.resourcesByUuid[this.block.config.prompt]

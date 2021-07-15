@@ -5,9 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
 
       <validation-message
         #input-control="{ isValid }"
@@ -64,6 +68,8 @@ class Core_OutputBlock extends mixins(Lang) {
   @Prop() readonly block!: IOutputBlock
 
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   get value(): string {
     return this.block.config.value || ''
