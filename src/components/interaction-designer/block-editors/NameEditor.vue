@@ -59,11 +59,11 @@ class NameEditor extends mixins(Lang) {
 
   @Prop() readonly block!: IBlock
 
-  get blockName(): string {
+  get blockName(): IBlock['name'] {
     return this.block.name
   }
 
-  set blockName(value: string) {
+  set blockName(value: IBlock['name']) {
     this.block_setName({blockId: this.block.uuid, value})
   }
 
@@ -73,7 +73,7 @@ class NameEditor extends mixins(Lang) {
     }
   }
 
-  @flowVuexNamespace.Mutation block_setName!: ({blockId, value}: {blockId: string, value: string}) => void
+  @flowVuexNamespace.Mutation block_setName!: ({blockId, value}: {blockId: IBlock['uuid'], value: IBlock['name']}) => void
 }
 export default NameEditor
 </script>

@@ -43,11 +43,11 @@ const flowVuexNamespace = namespace('flow')
 class LabelEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
-  get blockLabel(): string {
-    return this.block.label ?? ''
+  get blockLabel(): IBlock['label'] {
+    return this.block.label
   }
 
-  set blockLabel(value: string) {
+  set blockLabel(value: IBlock['label']) {
     this.block_setLabel({blockId: this.block.uuid, value})
   }
 
@@ -55,7 +55,7 @@ class LabelEditor extends mixins(Lang) {
     this.$emit('gearClicked')
   }
 
-  @flowVuexNamespace.Action block_setLabel!: ({blockId, value}: {blockId: string, value: string}) => void
+  @flowVuexNamespace.Action block_setLabel!: ({blockId, value}: { blockId: IBlock['uuid'], value: IBlock['label'] }) => void
 }
 export default LabelEditor
 </script>
