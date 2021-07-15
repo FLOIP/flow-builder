@@ -5,9 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-label-editor :block="block" @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor v-if="showSemanticLabel" :block="block" />
-      <block-name-editor :block="block"  />
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
+      <block-name-editor :block="block" />
 
       <resource-editor
         v-if="promptResource"

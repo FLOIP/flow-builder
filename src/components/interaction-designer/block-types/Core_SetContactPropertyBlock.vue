@@ -5,9 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
 
       <contact-property-selector :block="block" />
       <validation-message
@@ -67,6 +71,8 @@ const builderVuexNamespace = namespace('builder')
 class Core_SetContactPropertyBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   get propertyValue(): string {
     return get(this.block, 'config.set_contact_property.property_value', '')
