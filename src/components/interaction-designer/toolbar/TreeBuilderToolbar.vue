@@ -32,7 +32,7 @@
               </router-link>
               <router-link
                 :to="route('flows.newFlow')"
-                class="btn btn-secondary btn-sm mr-2">
+                class="btn btn-primary btn-sm mr-2">
                 {{ trans('flow-builder.new-flow') }}
               </router-link>
 
@@ -44,37 +44,47 @@
                 {{ trans('flow-builder.resource-view') }}
               </router-link>
 
-              <router-link
+              <div
                 v-if="!ui.isEditableLocked"
-                :to="editOrViewTreeJsUrl"
-                event=""
-                :title="trans('flow-builder.click-to-toggle-editing')"
-                class="btn btn-outline-primary btn-sm mr-1"
-                @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
-                {{ isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow') }}
-              </router-link>
+                class="btn-group">
+                <router-link
+                  :to="viewTreeUrl"
+                  event=""
+                  :title="trans('flow-builder.click-to-toggle-editing')"
+                  class="btn btn-outline-primary btn-sm"
+                  :class="{active: !isEditable}"
+                  @click.native.prevent="handlePersistFlow(viewTreeUrl)">
+                  {{ trans('flow-builder.view-flow') }}
+                </router-link>
+                <router-link
+                  :to="editTreeUrl"
+                  event=""
+                  :title="trans('flow-builder.click-to-toggle-editing')"
+                  class="btn btn-outline-primary btn-sm"
+                  :class="{active: isEditable}"
+                  @click.native.prevent="handlePersistFlow(editTreeUrl)">
+                  {{ trans('flow-builder.edit-flow') }}
+                </router-link>
+              </div>
 
               <slot name="extra-buttons" />
             </div>
 
-            <div
-              v-if="hasSimulator"
-              class="btn-group pull-right mr-2">
+            <div class="ml-auto mr-2">
               <button
+                v-if="hasSimulator"
                 type="button"
-                class="btn btn-primary btn-sm"
+                class="btn btn-outline-primary btn-sm"
                 @click="setSimulatorActive(true)">
                 {{ trans('flow-builder.show-clipboard-simulator') }}
               </button>
-            </div>
 
-            <div class="ml-auto mr-2">
               <div class="btn-group mr-2">
                 <slot name="right-grouped-buttons" />
               </div>
 
               <button
-                class="btn btn-outline-primary btn-sm mr-4"
+                class="btn btn-outline-primary btn-sm"
                 :class="{active: isImporterVisible}"
                 @click="toggleImportExport">
                 {{ trans('flow-builder.import-export') }}
@@ -84,7 +94,7 @@
               <button
                 v-if="isEditable && isFeatureTreeSaveEnabled"
                 type="button"
-                class="btn btn-info btn-sm tree-save-tree"
+                class="btn btn-info btn-sm tree-save-tree ml-4"
                 :title="trans('flow-builder.save-changes-to-the-flow')"
                 :disabled="!!isTreeSaving"
                 @click="handlePersistFlow()">
@@ -268,16 +278,17 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     })
   }
 
-  get editOrViewTreeJsUrl(): any {
-    if (this.isEditable) {
-      return this.editTreeRoute({
-        component: 'interaction-designer',
-        mode: 'view',
-      })
-    }
+  get editTreeUrl(): any {
     return this.editTreeRoute({
       component: 'interaction-designer',
       mode: 'edit',
+    })
+  }
+
+  get viewTreeUrl(): any {
+    return this.editTreeRoute({
+      component: 'interaction-designer',
+      mode: 'view',
     })
   }
 
