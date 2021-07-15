@@ -34,10 +34,13 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Default',
       label: 'Default',
-      test: '',
+      default: true,
+      // test: '',
     }
 
     await dispatch('createVolatileEmptyChoice', {index: 1})
+    const defaultExit = await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true })
+    const errorExit = await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true })
 
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
@@ -45,7 +48,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       label: '',
       semantic_label: '',
       exits: [
-        await dispatch('flow/block_createBlockDefaultExitWith', {props: defaultExitProps}, {root: true}),
+        errorExit,
       ],
       config: {
         prompt: blankPromptResource.uuid,
@@ -53,6 +56,20 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
         choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
       },
+      vendor_metadata: {
+        io_viamo: {
+          cache: { // cache outputs when creating to facilitate future logic
+            outputBranching: {
+              segregatedExits: [
+                errorExit
+              ],
+              unifiedExits: [
+                defaultExit, errorExit
+              ]
+            }
+          }
+        }
+      }
     })
   },
 }

@@ -118,7 +118,7 @@
           </div>
 
           <h3 class="block-exit-tag badge badge-warning">
-            {{ visibleExitTag(key, exit) }}
+            {{ exitTagText(key, exit) }}
           </h3>
 
           <template v-if="exit.destination_block == null">
@@ -403,7 +403,7 @@ export default {
         : uuid
     },
 
-    visibleExitTag(key, exit) {
+    exitTagText(key, exit) {
       if (!exit.tag && !exit.semantic_label) {
         return '—'
       }

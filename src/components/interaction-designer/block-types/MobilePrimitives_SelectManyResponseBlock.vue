@@ -60,7 +60,9 @@
 
       <hr>
 
-      <slot name="extras" />
+      <block-output-branching-config :block="block" @commitIsSegregatedBranching="handleBranchingTypeChange"/>
+
+      <slot name="extras"></slot>
 
       <first-block-editor-button
         :flow="flow"
@@ -74,37 +76,22 @@
 
 <script lang="ts">
 import {Component} from 'vue-property-decorator'
-import {IResource} from '@floip/flow-runner'
-import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
+import  SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {namespace} from 'vuex-class'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import BlockNameEditor from '../block-editors/NameEditor.vue'
-import BlockLabelEditor from '../block-editors/LabelEditor.vue'
-import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor.vue'
-import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-import ResourceEditor from '../resource-editors/ResourceEditor.vue'
-import BlockId from '../block-editors/BlockId.vue'
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
+import {IInflatedChoicesInterface} from "@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore";
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
-  components: {
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
-    BlockExitSemanticLabelEditor,
-    FirstBlockEditorButton,
-    ResourceEditor,
-    BlockId,
-  },
-})
+@Component({})
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
   //Important: Even we extends from SelectOneResponseBlock, to avoid conflict we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation
-  @blockVuexNamespace.Getter declare inflatedChoices?: { [key: string]: IResource }
-  @blockVuexNamespace.State declare inflatedEmptyChoice?: { [key: string]: IResource }
+  @blockVuexNamespace.Getter declare inflatedChoices?: { [key: string]: IInflatedChoicesInterface }
+  @blockVuexNamespace.State declare inflatedEmptyChoice?: IInflatedChoicesInterface
+
+  @blockVuexNamespace.Mutation updateInflatedEmptyChoiceVisibility!: ({ value }: { value: boolean }) => void
 
   @blockVuexNamespace.Action declare editSelectOneResponseBlockChoice: () => Promise<object>
   @blockVuexNamespace.Action declare editEmptyChoice: () => Promise<object>
