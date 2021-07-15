@@ -2,7 +2,7 @@
   <div
     ref="builder-toolbar"
     class="tree-builder-toolbar">
-    <div class="tree-builder-toolbar-main-menu">
+    <div class="tree-builder-toolbar-main-menu d-flex flex-column">
       <div
         v-if="isImporterVisible"
         class="flows-importer alert alert-info">
@@ -14,45 +14,84 @@
           disabled />
       </div>
 
-      <div class="tree-workspace-panel-heading panel-heading">
+      <div class="tree-workspace-panel-heading panel-heading w-100">
         <!--    <tree-update-conflict-modal/>-->
         <div class="tree-workspace-panel-heading-contents">
           <div class="btn-toolbar">
-            <button
-              class="btn btn-secondary mr-2"
-              :class="{active: isImporterVisible}"
-              @click="toggleImportExport">
-              <i class="glyphicon glyphicon-chevron-up" />
-              {{ trans('flow-builder.import-export') }}
-            </button>
-
-            <div
-              v-if="isResourceEditorEnabled"
-              class="btn-group mr-2">
+            <h3 class="text-primary mr-1">{{activeFlow.label}}</h3>
+            <div>
               <router-link
-                :to="treeViewUrl"
-                class="btn btn-secondary active">
-                {{ trans('flow-builder.flow-view') }}
-              </router-link>
-              <router-link
+                v-if="isResourceEditorEnabled"
                 :to="resourceViewUrl"
-                class="btn btn-secondary"
+                class="btn btn-outline-primary btn-sm mr-2"
                 @click.native="handleResourceViewerSelected">
                 {{ trans('flow-builder.resource-view') }}
               </router-link>
+              <router-link
+                v-if="!ui.isEditableLocked"
+                :to="editOrViewTreeJsUrl"
+                event=""
+                :title="trans('flow-builder.click-to-toggle-editing')"
+                class="btn btn-outline-primary btn-sm mr-1"
+                @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
+                {{ isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow') }}
+              </router-link>
+
+              <router-link
+                :to="route('flows.newFlow')"
+                class="btn btn-secondary btn-sm mr-2">
+                {{ trans('flow-builder.new-flow') }}
+              </router-link>
+              <router-link
+                :to="route('flows.home')"
+                class="btn btn-secondary btn-sm mr-2">
+                {{ trans('flow-builder.home') }}
+              </router-link>
+
+              <slot name="extra-buttons" />
             </div>
 
-            <router-link
-              v-if="!ui.isEditableLocked"
-              :to="editOrViewTreeJsUrl"
-              event=""
-              :title="trans('flow-builder.click-to-toggle-editing')"
-              class="btn btn-secondary mr-2"
-              :class="{active: isEditable}"
-              @click.native.prevent="handlePersistFlow(editOrViewTreeJsUrl)">
-              {{ isEditable ? trans('flow-builder.view-flow') : trans('flow-builder.edit-flow') }}
-            </router-link>
+            <div
+              v-if="hasSimulator"
+              class="btn-group pull-right mr-2">
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                @click="setSimulatorActive(true)">
+                {{ trans('flow-builder.show-clipboard-simulator') }}
+              </button>
+            </div>
 
+            <div class="ml-auto mr-2">
+              <div class="btn-group mr-2">
+                <slot name="right-grouped-buttons" />
+              </div>
+
+              <button
+                class="btn btn-outline-primary btn-sm mr-4"
+                :class="{active: isImporterVisible}"
+                @click="toggleImportExport">
+                {{ trans('flow-builder.import-export') }}
+              </button>
+
+              <!--TODO - do disable if no changes logic-->
+              <button
+                v-if="isEditable && isFeatureTreeSaveEnabled"
+                type="button"
+                class="btn btn-info btn-sm tree-save-tree"
+                :title="trans('flow-builder.save-changes-to-the-flow')"
+                :disabled="!!isTreeSaving"
+                @click="handlePersistFlow()">
+                {{ saveButtonText }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tree-workspace-panel-heading panel-heading w-100 bg-white">
+        <div class="tree-workspace-panel-heading-contents">
+          <div class="btn-toolbar">
             <div
               v-if="isEditable"
               class="dropdown mr-2">
@@ -141,44 +180,6 @@
                 </template>
               </div>
             </div>
-
-            <router-link
-              :to="route('flows.newFlow')"
-              class="btn btn-secondary mr-2">
-              {{ trans('flow-builder.new-flow') }}
-            </router-link>
-            <router-link
-              :to="route('flows.home')"
-              class="btn btn-secondary mr-2">
-              {{ trans('flow-builder.home') }}
-            </router-link>
-
-            <slot name="extra-buttons" />
-
-            <div
-              v-if="hasSimulator"
-              class="btn-group pull-right mr-2">
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="setSimulatorActive(true)">
-                {{ trans('flow-builder.show-clipboard-simulator') }}
-              </button>
-            </div>
-
-            <!--TODO - do disable if no changes logic-->
-            <div class="btn-group ml-auto mr-2">
-              <button
-                v-if="isEditable && isFeatureTreeSaveEnabled"
-                type="button"
-                class="btn btn-primary tree-save-tree"
-                :title="trans('flow-builder.save-changes-to-the-flow')"
-                :disabled="!!isTreeSaving"
-                @click="handlePersistFlow()">
-                {{ saveButtonText }}
-              </button>
-              <slot name="right-grouped-buttons" />
-            </div>
           </div>
         </div>
       </div>
@@ -247,12 +248,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   set flow(value: string) {
     this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[], resources: IResource[] })
-  }
-
-  get treeViewUrl(): any {
-    return this.editTreeRoute({
-      component: 'interaction-designer',
-    })
   }
 
   get resourceViewUrl(): any {
