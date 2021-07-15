@@ -1857,7 +1857,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                             >
                               <div>
                                 <label>
-                                  Block semantic label
+                                  Semantic label
                                 </label>
                                  
                                 <input
@@ -2012,14 +2012,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#message"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2059,14 +2055,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#ussd"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2106,14 +2098,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#audio"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2179,13 +2167,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                             class="btn btn-primary ivr-buttons"
                                             style="overflow: hidden;"
                                           >
-                                            <svg
-                                              class="icon"
-                                            >
-                                              <use
-                                                xlink:href="#upload"
-                                              />
-                                            </svg>
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,upload"
+                                            />
                                             
                     Upload Audio
                   
@@ -2199,13 +2184,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                           <button
                                             class="btn btn-primary ivr-buttons ml-2"
                                           >
-                                            <svg
-                                              class="icon"
-                                            >
-                                              <use
-                                                xlink:href="#record-audio"
-                                              />
-                                            </svg>
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,record-audio"
+                                            />
                                             
                     Record Audio
                   
@@ -2233,17 +2215,14 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               class="form-group"
                             >
                               <button
-                                class="btn btn-outline-primary btn-sm w-100"
+                                class="btn btn-sm w-100 btn-primary"
                                 disabled="disabled"
                                 type="button"
                               >
-                                <svg
-                                  class="icon"
-                                >
-                                  <use
-                                    xlink:href="#enter"
-                                  />
-                                </svg>
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
                                  
           Currently set as starting block
         
@@ -2397,7 +2376,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                             >
                               <div>
                                 <label>
-                                  Block semantic label
+                                  Semantic label
                                 </label>
                                  
                                 <input
@@ -2552,14 +2531,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#message"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2599,14 +2574,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#ussd"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2646,14 +2617,10 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#audio"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -2755,17 +2722,14 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               class="form-group"
                             >
                               <button
-                                class="btn btn-outline-primary btn-sm w-100"
+                                class="btn btn-sm w-100 btn-primary"
                                 disabled="disabled"
                                 type="button"
                               >
-                                <svg
-                                  class="icon"
-                                >
-                                  <use
-                                    xlink:href="#enter"
-                                  />
-                                </svg>
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
                                  
           Currently set as starting block
         
@@ -2937,7 +2901,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                             >
                               <div>
                                 <label>
-                                  Block semantic label
+                                  Semantic label
                                 </label>
                                  
                                 <input
@@ -3067,14 +3031,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#message"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3114,14 +3074,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#ussd"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3161,14 +3117,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#audio"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3234,13 +3186,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                             class="btn btn-primary ivr-buttons"
                                             style="overflow: hidden;"
                                           >
-                                            <svg
-                                              class="icon"
-                                            >
-                                              <use
-                                                xlink:href="#upload"
-                                              />
-                                            </svg>
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,upload"
+                                            />
                                             
                     Upload Audio
                   
@@ -3254,13 +3203,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                           <button
                                             class="btn btn-primary ivr-buttons ml-2"
                                           >
-                                            <svg
-                                              class="icon"
-                                            >
-                                              <use
-                                                xlink:href="#record-audio"
-                                              />
-                                            </svg>
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,record-audio"
+                                            />
                                             
                     Record Audio
                   
@@ -3288,17 +3234,14 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               class="form-group"
                             >
                               <button
-                                class="btn btn-outline-primary btn-sm w-100"
+                                class="btn btn-sm w-100 btn-primary"
                                 disabled="disabled"
                                 type="button"
                               >
-                                <svg
-                                  class="icon"
-                                >
-                                  <use
-                                    xlink:href="#enter"
-                                  />
-                                </svg>
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
                                  
           Currently set as starting block
         
@@ -3452,7 +3395,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                             >
                               <div>
                                 <label>
-                                  Block semantic label
+                                  Semantic label
                                 </label>
                                  
                                 <input
@@ -3582,14 +3525,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#message"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3629,14 +3568,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#ussd"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3676,14 +3611,10 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                       <header
                                         class="d-flex"
                                       >
-                                        <svg
-                                          class="icon"
-                                          style="margin-top: 2px;"
-                                        >
-                                          <use
-                                            xlink:href="#audio"
-                                          />
-                                        </svg>
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
                                          
                                         <h6
                                           class="ml-1"
@@ -3785,17 +3716,14 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               class="form-group"
                             >
                               <button
-                                class="btn btn-outline-primary btn-sm w-100"
+                                class="btn btn-sm w-100 btn-primary"
                                 disabled="disabled"
                                 type="button"
                               >
-                                <svg
-                                  class="icon"
-                                >
-                                  <use
-                                    xlink:href="#enter"
-                                  />
-                                </svg>
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
                                  
           Currently set as starting block
         

@@ -21,7 +21,7 @@
           <font-awesome-icon
             v-if="isBlockSelected"
             v-b-tooltip.hover="trans('flow-builder.deselect-block')"
-            :icon="['fas', 'check-circle']"
+            :icon="['far', 'check-circle']"
             class="fa-btn text-primary"
             @click="block_deselect({ blockId: block.uuid })" />
           <font-awesome-icon
@@ -60,7 +60,7 @@
             <font-awesome-icon
               v-if="isEditable"
               v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-              :icon="['far', 'clone']"
+              :icon="['fac', 'copy']"
               class="fa-btn"
               @click.prevent="handleDuplicateBlock" />
           </div>
