@@ -128,6 +128,71 @@ const home: IconDefinition = {
   ],
 }
 
+const content: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'content' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e011',
+    // eslint-disable-next-line max-len
+    'M9 6l2.8 17H23L20.2 6H9zm1.178 1l2.47 15h9.174l-2.47-15h-9.174zM18 27a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4z M5 3l4.5 27h18L23 3H5zm1.18 1l4.167 25H26.32L22.153 4H6.18z',
+  ],
+}
+
+const contact: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'contact' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e012',
+    // eslint-disable-next-line max-len
+    'M16 13a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 1a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM11 15.889a4 4 0 0 0-4 4v8.444h18V19.89a4 4 0 0 0-4-4H11zm15 4a5 5 0 0 0-5-5H11a5 5 0 0 0-5 5v9.444h20V19.89z',
+  ],
+}
+
+const branching: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'branching' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e012',
+    // eslint-disable-next-line max-len
+    'M12 4H2v4h10V4zM1 3v6h12V3H1zM26 4H16v4h10V4zM15 3v6h12V3H15zM20 14H10v4h10v-4zM9 13v6h12v-6H9zM30 24H20v4h10v-4zm-11-1v6h12v-6H19z M15 6.5h-2.5v-1H15v1zM28.5 6.5h-2v-1h3V17H21v-1h7.5V6.5zM14.5 19h1v7H19v1h-4.5v-8z',
+  ],
+}
+
+const weather: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'weather' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e013',
+    // eslint-disable-next-line max-len
+    'M11.2713 5.82178C10.4937 5.0199 9.45849 4.51286 8.30954 4.46999C5.79353 4.3761 3.68471 6.54358 3.59936 9.31119C3.56148 10.5396 3.92856 11.6797 4.56858 12.5761 M7.5 22.9698H8V22.5269L7.56035 22.4734L7.5 22.9698ZM8.50006 13.1302L8.4397 13.6266L9.00121 13.6948L9.00006 13.1292L8.50006 13.1302ZM8.5 13.1H8L8 13.101L8.5 13.1ZM19.9801 10.4086L19.5169 10.5968L19.722 11.1013L20.2072 10.854L19.9801 10.4086ZM7.5 23H7V23.5H7.5V23ZM7.56035 22.4734C5.59461 22.2344 4 20.3801 4 18.05H3C3 20.8157 4.90544 23.158 7.43965 23.4661L7.56035 22.4734ZM4 18.05C4 15.5464 5.83464 13.6 8 13.6V12.6C5.1948 12.6 3 15.086 3 18.05H4ZM8 13.6C8.14879 13.6 8.29548 13.609 8.4397 13.6266L8.56042 12.6339C8.37627 12.6115 8.18927 12.6 8 12.6V13.6ZM9.00006 13.1292L9 13.099L8 13.101L8.00006 13.1312L9.00006 13.1292ZM9 13.1C9 9.68515 11.5062 7 14.5 7V6C10.8664 6 8 9.22469 8 13.1H9ZM14.5 7C16.7103 7 18.6458 8.45397 19.5169 10.5968L20.4433 10.2203C19.4416 7.75618 17.1742 6 14.5 6V7ZM20.2072 10.854C20.9058 10.4979 21.682 10.3 22.5 10.3V9.3C21.518 9.3 20.5867 9.5381 19.753 9.9631L20.2072 10.854ZM22.5 10.3C25.4938 10.3 28 12.9852 28 16.4H29C29 12.5247 26.1336 9.3 22.5 9.3V10.3ZM28 16.4C28 19.8148 25.4938 22.5 22.5 22.5V23.5C26.1336 23.5 29 20.2753 29 16.4H28ZM22.5 22.5H8V23.5H22.5V22.5ZM8 22.5H7.5V23.5H8V22.5ZM8 23V22.9698H7V23H8Z M11.5 4.29999L12.5 2.64999 M6.5 3.2L6 1M3 7.05L1 5.95M3 12.55L1.5 14.2',
+  ],
+}
+
+const developer: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'developer' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e014',
+    // eslint-disable-next-line max-len
+    'M2 11l2.333 13H8L5.667 11H2zm1.195 1L5.17 23h1.635L4.83 12H3.195zM1 7l.77 3h3.5L4.5 7H1zm1.289 1l.256 1H3.98l-.256-1H2.29zM20 2L9.309 30H6L16.691 2H20zm-1.452 1L8.62 29H7.452L17.38 3h1.168zM17 11l3.06 13H30l-3.48-13H17zm1.263 1l2.59 11h7.844l-2.944-11h-7.49z M20 13l2.247 9H27l-2.16-9H20zm1.28 1l1.748 7h2.704l-1.68-7H21.28z',
+  ],
+}
+
 export default [
   audio,
   enter,
@@ -139,4 +204,9 @@ export default [
   expand,
   minimize,
   home,
+  content,
+  contact,
+  branching,
+  weather,
+  developer,
 ]

@@ -110,6 +110,9 @@
           <ul class="nav">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <font-awesome-icon
+                  :icon="['fac', 'content']"
+                  class="fa-btn" />
                 Content
               </a>
               <div class="dropdown-menu">
@@ -133,6 +136,9 @@
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <font-awesome-icon
+                  :icon="['fac', 'contact']"
+                  class="fa-btn" />
                 Contact
               </a>
               <div class="dropdown-menu">
@@ -156,6 +162,9 @@
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <font-awesome-icon
+                  :icon="['fac', 'branching']"
+                  class="fa-btn" />
                 Branching
               </a>
               <div class="dropdown-menu">
@@ -179,6 +188,9 @@
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <font-awesome-icon
+                  :icon="['fac', 'weather']"
+                  class="fa-btn" />
                 Weather
               </a>
               <div class="dropdown-menu">
@@ -202,6 +214,9 @@
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <font-awesome-icon
+                  :icon="['fac', 'developer']"
+                  class="fa-btn" />
                 Developer
               </a>
               <div class="dropdown-menu">
@@ -541,5 +556,9 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.tree-workspace-panel-heading-contents .nav .nav-item a {
+  color: black;
 }
 </style>
