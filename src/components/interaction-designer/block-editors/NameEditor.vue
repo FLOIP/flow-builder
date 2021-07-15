@@ -6,9 +6,10 @@
       <div v-if="editBlockName || isValid === false">
         <h6>{{ 'flow-builder.edit-block-code' | trans }}</h6>
         <div class="d-flex">
-          <small-text-editor
+          <text-editor
             v-model="blockName"
             class="w-100"
+            :label="''"
             :placeholder="'flow-builder.enter-block-code' | trans"
             :valid-state="isValid"
             @keydown="filterName" />
@@ -43,13 +44,13 @@ import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import SmallTextEditor from '@/components/common/SmallTextEditor.vue'
+import TextEditor from '@/components/common/TextEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 
 @Component({
   components: {
-    SmallTextEditor,
+    TextEditor,
     ValidationMessage,
   },
 })

@@ -5,9 +5,10 @@
       #input-control="{ isValid }"
       :message-key="`block/${block.uuid}/label`">
       <div class="d-flex">
-        <small-text-editor
+        <text-editor
           v-model="blockLabel"
           class="w-100"
+          :label="''"
           :placeholder="'flow-builder.enter-title' | trans"
           :valid-state="isValid" />
         <span
@@ -24,7 +25,7 @@
 
 <script lang="ts">
 import {Component, Prop} from 'vue-property-decorator'
-import SmallTextEditor from '@/components/common/SmallTextEditor.vue'
+import TextEditor from '@/components/common/TextEditor.vue'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
@@ -35,7 +36,7 @@ const flowVuexNamespace = namespace('flow')
 
 @Component({
   components: {
-    SmallTextEditor,
+    TextEditor,
     ValidationMessage,
   },
 })
