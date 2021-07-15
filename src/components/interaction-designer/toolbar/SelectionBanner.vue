@@ -21,7 +21,7 @@
         <button
           class="btn btn-outline-dark btn-sm mr-2"
           @click.prevent="handleMultipleDuplicate">
-          <font-awesome-icon :icon="['fac', 'duplicate']" />
+          <font-awesome-icon :icon="['fac', 'copy']" />
           {{ 'flow-builder.duplicate' | trans }}
         </button>
 

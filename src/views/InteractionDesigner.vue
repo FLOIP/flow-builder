@@ -14,11 +14,11 @@
         @click="showOrHideSidebar">
         <font-awesome-icon
           v-if="$route.meta.isSidebarShown"
-          :icon="['fac', 'resize-small']"
+          :icon="['fac', 'minimize']"
           class="fa-btn" />
         <font-awesome-icon
           v-else
-          :icon="['fac', 'resize-full']"
+          :icon="['fac', 'expand']"
           class="fa-btn" />
       </div>
 
