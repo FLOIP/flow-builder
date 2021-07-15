@@ -105,15 +105,15 @@
         </div>
       </div>
 
-      <div v-if="isEditable" class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-center">
+      <div v-if="isEditable" class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-center pt-0 pb-0">
         <div class="tree-workspace-panel-heading-contents">
           <ul class="nav">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <font-awesome-icon
                   :icon="['fac', 'content']"
-                  class="fa-btn" />
-                Content
+                  class="fa-btn big-icon" />
+                <span class="nav-link-text">Content</span>
               </a>
               <div class="dropdown-menu">
                 <template v-for="(classDetails, className) in blockClassesForContentCategory">
@@ -138,8 +138,8 @@
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <font-awesome-icon
                   :icon="['fac', 'contact']"
-                  class="fa-btn" />
-                Contact
+                  class="fa-btn big-icon" />
+                <span class="nav-link-text">Contact</span>
               </a>
               <div class="dropdown-menu">
                 <template v-for="(classDetails, className) in blockClassesForContactCategory">
@@ -164,8 +164,8 @@
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <font-awesome-icon
                   :icon="['fac', 'branching']"
-                  class="fa-btn" />
-                Branching
+                  class="fa-btn big-icon" />
+                <span class="nav-link-text">Branching</span>
               </a>
               <div class="dropdown-menu">
                 <template v-for="(classDetails, className) in blockClassesForBranchingCategory">
@@ -190,8 +190,8 @@
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <font-awesome-icon
                   :icon="['fac', 'weather']"
-                  class="fa-btn" />
-                Weather
+                  class="fa-btn big-icon" />
+                <span class="nav-link-text">Weather</span>
               </a>
               <div class="dropdown-menu">
                 <template v-for="(classDetails, className) in blockClassesForWeatherCategory">
@@ -216,8 +216,8 @@
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <font-awesome-icon
                   :icon="['fac', 'developer']"
-                  class="fa-btn" />
-                Developer
+                  class="fa-btn big-icon" />
+                <span class="nav-link-text">Developer</span>
               </a>
               <div class="dropdown-menu">
                 <template v-for="(classDetails, className) in blockClassesForDeveloperCategory">
@@ -560,5 +560,15 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
 .tree-workspace-panel-heading-contents .nav .nav-item a {
   color: black;
+}
+
+.tree-workspace-panel-heading-contents .big-icon {
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+}
+
+.tree-workspace-panel-heading-contents .nav-link-text {
+  vertical-align: middle;
 }
 </style>
