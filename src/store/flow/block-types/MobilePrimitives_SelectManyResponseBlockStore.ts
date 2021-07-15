@@ -38,7 +38,15 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       // test: '',
     }
 
+    const errorExitProps: Partial<IBlockExit> = {
+      uuid: await (new IdGeneratorUuidV4()).generate(),
+      tag: 'Error',
+      label: 'Error',
+      test: '',
+    }
+
     await dispatch('createVolatileEmptyChoice', {index: 1})
+
     const defaultExit = await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true })
     const errorExit = await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true })
 
