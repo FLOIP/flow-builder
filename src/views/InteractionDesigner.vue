@@ -12,10 +12,14 @@
         class="sidebar-cue"
         :class="{'sidebar-close': $route.meta.isSidebarShown}"
         @click="showOrHideSidebar">
-        <i
-          class="glyphicon"
-          :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
-                   'glyphicon-resize-small': $route.meta.isSidebarShown}" />
+        <font-awesome-icon
+          v-if="$route.meta.isSidebarShown"
+          :icon="['fac', 'minimize']"
+          class="fa-btn" />
+        <font-awesome-icon
+          v-else
+          :icon="['fac', 'expand']"
+          class="fa-btn" />
       </div>
 
       <div
