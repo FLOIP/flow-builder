@@ -4,6 +4,14 @@ import {
   IconPrefix,
 } from '@fortawesome/fontawesome-common-types'
 
+/**
+ * Note for devs:
+ * in case merged paths don't work correctly (eg: icons became filled), we can try to :
+ * - re-import SVG in https://icomoon.io/app/,
+ * - then re-download it
+ * - copy paths into one single path
+ */
+
 const audio: IconDefinition = {
   prefix: 'fac' as IconPrefix,
   iconName: 'audio' as IconName,
@@ -137,7 +145,7 @@ const content: IconDefinition = {
     [],
     'e011',
     // eslint-disable-next-line max-len
-    'M9 6l2.8 17H23L20.2 6H9zm1.178 1l2.47 15h9.174l-2.47-15h-9.174zM18 27a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4z M5 3l4.5 27h18L23 3H5zm1.18 1l4.167 25H26.32L22.153 4H6.18z',
+    'M5 3h18l4.5 27h-18l-4.5-27zM6.18 4l4.167 25h15.973l-4.167-25h-15.973z M9 6h11.2l2.8 17h-11.2l-2.8-17zM10.178 7l2.47 15h9.174l-2.47-15h-9.174zM18 27v0c-0.552 0-1-0.448-1-1s0.448-1 1-1v0c0.552 0 1 0.448 1 1s-0.448 1-1 1zM18 28c1.105 0 2-0.895 2-2s-0.895-2-2-2v0c-1.105 0-2 0.895-2 2s0.895 2 2 2v0z',
   ],
 }
 
@@ -150,7 +158,7 @@ const contact: IconDefinition = {
     [],
     'e012',
     // eslint-disable-next-line max-len
-    'M16 13a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 1a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM11 15.889a4 4 0 0 0-4 4v8.444h18V19.89a4 4 0 0 0-4-4H11zm15 4a5 5 0 0 0-5-5H11a5 5 0 0 0-5 5v9.444h20V19.89z',
+    'M16 13v0c-2.761 0-5-2.239-5-5s2.239-5 5-5v0c2.761 0 5 2.239 5 5s-2.239 5-5 5zM16 14c3.314 0 6-2.686 6-6s-2.686-6-6-6v0c-3.314 0-6 2.686-6 6s2.686 6 6 6v0zM11 15.89h10c2.209 0 4 1.791 4 4v8.443h-18v-8.444c0-2.209 1.791-4 4-4zM26 19.889c0-2.761-2.239-5-5-5v0h-10c-2.761 0-5 2.239-5 5v0 9.444h20v-9.443z',
   ],
 }
 
@@ -163,7 +171,7 @@ const branching: IconDefinition = {
     [],
     'e012',
     // eslint-disable-next-line max-len
-    'M12 4H2v4h10V4zM1 3v6h12V3H1zM26 4H16v4h10V4zM15 3v6h12V3H15zM20 14H10v4h10v-4zM9 13v6h12v-6H9zM30 24H20v4h10v-4zm-11-1v6h12v-6H19z M15 6.5h-2.5v-1H15v1zM28.5 6.5h-2v-1h3V17H21v-1h7.5V6.5zM14.5 19h1v7H19v1h-4.5v-8z',
+    'M12 4v4h-10v-4h10zM1 3v6h12v-6h-12zM26 4v4h-10v-4h10zM15 3v6h12v-6h-12zM20 14v4h-10v-4h10zM9 13v6h12v-6h-12zM30 24v4h-10v-4h10zM19 23v6h12v-6h-12z M15 6.5h-2.5v-1h2.5v1zM28.5 6.5h-2v-1h3v11.5h-8.5v-1h7.5v-9.5zM14.5 19h1v7h3.5v1h-4.5v-8z',
   ],
 }
 
@@ -189,7 +197,7 @@ const developer: IconDefinition = {
     [],
     'e014',
     // eslint-disable-next-line max-len
-    'M2 11l2.333 13H8L5.667 11H2zm1.195 1L5.17 23h1.635L4.83 12H3.195zM1 7l.77 3h3.5L4.5 7H1zm1.289 1l.256 1H3.98l-.256-1H2.29zM20 2L9.309 30H6L16.691 2H20zm-1.452 1L8.62 29H7.452L17.38 3h1.168zM17 11l3.06 13H30l-3.48-13H17zm1.263 1l2.59 11h7.844l-2.944-11h-7.49z M20 13l2.247 9H27l-2.16-9H20zm1.28 1l1.748 7h2.704l-1.68-7H21.28z',
+    'M2 11h3.667l2.333 13h-3.667l-2.333-13zM3.195 12l1.975 11h1.635l-1.975-11h-1.635zM1 7h3.5l0.77 3h-3.5l-0.77-3zM2.289 8l0.256 1h1.435l-0.256-1h-1.434zM20 2h-3.309l-10.691 28h3.309l10.691-28zM18.548 3l-9.928 26h-1.168l9.928-26h1.168zM17 11h9.52l3.48 13h-9.94l-3.060-13zM18.263 12l2.59 11h7.844l-2.944-11h-7.49z M20 13h4.84l2.16 9h-4.753l-2.247-9zM21.28 14l1.748 7h2.704l-1.68-7h-2.772z',
   ],
 }
 
