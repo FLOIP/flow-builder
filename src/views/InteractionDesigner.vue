@@ -136,7 +136,7 @@ export default {
 
   data() {
     return {
-      toolbarHeight: 60,
+      toolbarHeight: 102,
       // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
       pureVuejsBlocks: [
         'CallBackWithCallCenterBlock',
@@ -388,7 +388,7 @@ export default {
     overflow-y: scroll;
 
     padding: 1em;
-    margin-top: 3em;
+    margin-top: 4em;
     transition: right 200ms ease-in-out;
 
     .tree-sidebar {

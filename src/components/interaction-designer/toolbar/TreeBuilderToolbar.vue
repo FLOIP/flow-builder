@@ -547,7 +547,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
 .tree-builder-toolbar-alerts {
   position: fixed;
-  margin-top: 60px;
+  margin-top: 102px;
   z-index: 3*10;
 }
 
