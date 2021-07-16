@@ -5,9 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
 
       <div
         v-for="(exit,i) in exits"
@@ -70,6 +74,8 @@ class Core_CaseBlock extends mixins(Lang) {
   @Prop() readonly block!: ICaseBlock
 
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   get exits(): IBlockExitTestRequired[] {
     return this.block.exits
