@@ -200,9 +200,17 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <div
                                     class="number-editor"
                                   >
-                                    <label>
+                                    <label
+                                      class="text-primary mb-0"
+                                    >
                                       Interaction timeout
                                     </label>
+                                     
+                                    <div
+                                      class="small mb-2"
+                                    >
+                                      
+                                    </div>
                                      
                                     <div>
                                       <input
@@ -1786,7 +1794,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                         class="mobile-primitive-numeric-response-block"
                       >
                         <h3
-                          class="no-room-above"
+                          class="no-room-above text-primary"
                         >
                           
     Edit Numeric Response block
@@ -1895,9 +1903,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Minimum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -1928,9 +1944,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -1961,9 +1985,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               <div
                                 class="number-editor"
                               >
-                                <label>
-                                  Maximum digits
+                                <label
+                                  class="text-primary mb-0"
+                                >
+                                  Maximum Response digits
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  Set maximum value will always override maximum response digit except when maximum value is empty
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2307,7 +2339,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                         class="mobile-primitive-numeric-response-block"
                       >
                         <h3
-                          class="no-room-above"
+                          class="no-room-above text-primary"
                         >
                           
     Edit Numeric Response block
@@ -2416,9 +2448,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Minimum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2449,9 +2489,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2482,9 +2530,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               <div
                                 class="number-editor"
                               >
-                                <label>
-                                  Maximum digits
+                                <label
+                                  class="text-primary mb-0"
+                                >
+                                  Maximum Response digits
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  Set maximum value will always override maximum response digit except when maximum value is empty
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2943,9 +2999,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Duration (seconds)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2976,9 +3040,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Response Characters
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -3439,9 +3511,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Duration (seconds)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -3472,9 +3552,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Response Characters
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
