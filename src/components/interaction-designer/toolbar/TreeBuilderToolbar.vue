@@ -109,13 +109,20 @@
         <div class="tree-workspace-panel-heading-contents">
           <ul class="nav">
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              <a
+                class="nav-link dropdown-toggle"
+                @mouseover="openDropdownMenu($event.target)"
+                data-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false">
                 <font-awesome-icon
                   :icon="['fac', 'content']"
                   class="fa-btn big-icon" />
                 <span class="nav-link-text">Content</span>
               </a>
-              <div class="dropdown-menu">
+              <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForContentCategory">
                   <div
                     v-if="shouldDisplayDividerBefore(blockClassesForContentCategory, className)"
@@ -135,13 +142,20 @@
               </div>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              <a
+                class="nav-link dropdown-toggle"
+                @mouseover="openDropdownMenu($event.target)"
+                data-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false">
                 <font-awesome-icon
                   :icon="['fac', 'contact']"
                   class="fa-btn big-icon" />
                 <span class="nav-link-text">Contact</span>
               </a>
-              <div class="dropdown-menu">
+              <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForContactCategory">
                   <div
                     v-if="shouldDisplayDividerBefore(blockClassesForContactCategory, className)"
@@ -161,13 +175,20 @@
               </div>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              <a
+                class="nav-link dropdown-toggle"
+                @mouseover="openDropdownMenu($event.target)"
+                data-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false">
                 <font-awesome-icon
                   :icon="['fac', 'branching']"
                   class="fa-btn big-icon" />
                 <span class="nav-link-text">Branching</span>
               </a>
-              <div class="dropdown-menu">
+              <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForBranchingCategory">
                   <div
                     v-if="shouldDisplayDividerBefore(blockClassesForBranchingCategory, className)"
@@ -187,13 +208,20 @@
               </div>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              <a
+                class="nav-link dropdown-toggle"
+                @mouseover="openDropdownMenu($event.target)"
+                data-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false">
                 <font-awesome-icon
                   :icon="['fac', 'weather']"
                   class="fa-btn big-icon" />
                 <span class="nav-link-text">Weather</span>
               </a>
-              <div class="dropdown-menu">
+              <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForWeatherCategory">
                   <div
                     v-if="shouldDisplayDividerBefore(blockClassesForWeatherCategory, className)"
@@ -213,13 +241,20 @@
               </div>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              <a
+                class="nav-link dropdown-toggle"
+                @mouseover="openDropdownMenu($event.target)"
+                data-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false">
                 <font-awesome-icon
                   :icon="['fac', 'developer']"
                   class="fa-btn big-icon" />
                 <span class="nav-link-text">Developer</span>
               </a>
-              <div class="dropdown-menu">
+              <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForDeveloperCategory">
                   <div
                     v-if="shouldDisplayDividerBefore(blockClassesForDeveloperCategory, className)"
@@ -425,6 +460,18 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     }
   }
 
+  openDropdownMenu(targetElement: HTMLElement) {
+    if (!targetElement.hasAttribute('aria-expanded')) {
+      return
+    }
+
+    if (targetElement.getAttribute('aria-expanded') === 'true') {
+      return;
+    }
+
+    targetElement.click();
+  }
+
   toggleImportExport(): void {
     this.isImporterVisible = !this.isImporterVisible
   }
@@ -570,5 +617,17 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
 .tree-workspace-panel-heading-contents .nav-link-text {
   vertical-align: middle;
+}
+
+.tree-workspace-panel-heading-contents .nav .nav-item.show>a:hover,
+.tree-workspace-panel-heading-contents nav .nav-item.show>a:focus {
+  color: #ffffff;
+  background-color: #8C215C;
+}
+
+.tree-workspace-panel-heading-contents .dropdown-item:hover,
+.tree-workspace-panel-heading-contents .dropdown-item:focus {
+  color: #ffffff !important;
+  background-color: #8C215C;
 }
 </style>
