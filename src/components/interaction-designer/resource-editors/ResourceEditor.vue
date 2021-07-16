@@ -19,6 +19,7 @@
             class="tab-content-style">
             <header class="d-flex">
               <font-awesome-icon
+                v-if="iconsMap.get(mode)"
                 :icon="iconsMap.get(mode)"
                 :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}" />
               <h6 class="ml-1">{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>

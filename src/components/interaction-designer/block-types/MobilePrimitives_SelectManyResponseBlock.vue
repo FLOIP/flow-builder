@@ -4,9 +4,13 @@
       {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
     </h3>
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
 
       <div class="prompt-resource">
         <resource-editor
@@ -97,6 +101,8 @@ const builderVuexNamespace = namespace('builder')
   },
 })
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
+  showSemanticLabel = false
+
   //Important: Even we extends from SelectOneResponseBlock, to avoid conflict we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation
   @blockVuexNamespace.Getter declare inflatedChoices?: { [key: string]: IResource }
   @blockVuexNamespace.State declare inflatedEmptyChoice?: { [key: string]: IResource }

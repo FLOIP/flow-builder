@@ -70,6 +70,12 @@ exports[`Storyshots Core/Run Another Flow Block Styled Default 1`] = `
 </div>
 `;
 
+exports[`Storyshots Core/Set Contact Property Clear Action 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
 exports[`Storyshots Core/Set Contact Property Default 1`] = `
 <div>
   <!---->
@@ -164,13 +170,14 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <div
                                     class=""
                                   >
-                                    <label>
+                                    <h6>
                                       Flow label
-                                    </label>
+                                    </h6>
                                      
                                     <textarea
                                       class="form-control"
                                       placeholder="Enter flow label"
+                                      rows="1"
                                     />
                                      
                                   </div>
@@ -1787,93 +1794,95 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-70/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+                                   
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+                                   
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
+                           
+                          <!---->
                            
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-70/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                      
+                                  </span>
+                                </div>
                                  
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Semantic label
-                                </label>
-                                 
-                                <input
-                                  class="form-control w-100"
-                                  placeholder="Enter a block semantic label"
-                                  type="text"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
                            
                           <div
@@ -2306,93 +2315,95 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-76/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+                                   
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+                                   
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
+                           
+                          <!---->
                            
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-76/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                     A Name 
+                                  </span>
+                                </div>
                                  
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Semantic label
-                                </label>
-                                 
-                                <input
-                                  class="form-control w-100"
-                                  placeholder="Enter a block semantic label"
-                                  type="text"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
                            
                           <div
@@ -2831,93 +2842,95 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-105/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+                                   
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+                                   
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
+                           
+                          <!---->
                            
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-105/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                      
+                                  </span>
+                                </div>
                                  
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Semantic label
-                                </label>
-                                 
-                                <input
-                                  class="form-control w-100"
-                                  placeholder="Enter a block semantic label"
-                                  type="text"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
                            
                           <div
@@ -3325,93 +3338,95 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-114/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+                                   
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+                                   
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
+                           
+                          <!---->
                            
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-114/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                     A Name 
+                                  </span>
+                                </div>
                                  
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Semantic label
-                                </label>
-                                 
-                                <input
-                                  class="form-control w-100"
-                                  placeholder="Enter a block semantic label"
-                                  type="text"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
                            
                           <div
