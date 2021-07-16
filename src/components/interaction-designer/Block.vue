@@ -254,12 +254,6 @@ export default {
 
   created() {
     this.initDraggableForExitsByUuid()
-    this.$nextTick(function () {
-      this.block.exits.forEach((exit) => {
-        this.exitHovers[exit.uuid] = false
-      })
-      console.log('exit hovers = ', this.exitHovers)
-    })
   },
 
   mounted() {
@@ -353,17 +347,11 @@ export default {
     ...mapMutations('validation', ['removeValidationStatusesFor']),
 
     exitMouseEnter(exit) {
-      this.exitHovers[exit.uuid] = true
-      this.$nextTick(() => {
-        this.$set(this.exitHovers, exit.uuid, true)
-        console.log('exit mouse enter  ', this.exitHovers[exit.uuid])
-      })
+      this.$set(this.exitHovers, exit.uuid, true)
     },
 
     exitMouseLeave(exit) {
-      this.exitHovers[exit.uuid] = false
       this.$set(this.exitHovers, exit.uuid, false)
-      console.log('exit mouse leave  ', this.exitHovers)
     },
 
     handleDeleteBlock() {
