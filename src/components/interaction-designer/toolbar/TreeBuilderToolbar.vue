@@ -38,16 +38,16 @@
 
               <div class="vertical-divider"></div>
 
-              <div v-if="isResourceEditorEnabled">
+              <template v-if="isResourceEditorEnabled">
                 <router-link
                   :to="resourceViewUrl"
-                  class="btn btn-outline-primary btn-sm mr-2"
+                  class="btn btn-outline-primary btn-sm"
                   @click.native="handleResourceViewerSelected">
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>
 
                 <div class="vertical-divider"></div>
-              </div>
+              </template>
 
               <div
                 v-if="!ui.isEditableLocked"
@@ -71,6 +71,8 @@
                   {{ trans('flow-builder.edit-flow') }}
                 </router-link>
               </div>
+
+              <div class="vertical-divider"></div>
 
               <slot name="extra-buttons" />
             </div>
@@ -125,7 +127,7 @@
                 <font-awesome-icon
                   :icon="['fac', 'content']"
                   class="fa-btn big-icon" />
-                <span class="nav-link-text">Content</span>
+                <span class="nav-link-text">{{ 'flow-builder.content' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForContentCategory">
@@ -144,6 +146,7 @@
                     {{ translateTreeClassName(className) }}
                   </a>
                 </template>
+                <slot name="extra-dropdown-items-for-category1" />
               </div>
             </li>
             <li class="nav-item dropdown">
@@ -158,7 +161,7 @@
                 <font-awesome-icon
                   :icon="['fac', 'contact']"
                   class="fa-btn big-icon" />
-                <span class="nav-link-text">Contact</span>
+                <span class="nav-link-text">{{ 'flow-builder.contact' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForContactCategory">
@@ -177,6 +180,7 @@
                     {{ translateTreeClassName(className) }}
                   </a>
                 </template>
+                <slot name="extra-dropdown-items-for-category2" />
               </div>
             </li>
             <li class="nav-item dropdown">
@@ -191,7 +195,7 @@
                 <font-awesome-icon
                   :icon="['fac', 'branching']"
                   class="fa-btn big-icon" />
-                <span class="nav-link-text">Branching</span>
+                <span class="nav-link-text">{{ 'flow-builder.branching' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForBranchingCategory">
@@ -210,6 +214,7 @@
                     {{ translateTreeClassName(className) }}
                   </a>
                 </template>
+                <slot name="extra-dropdown-items-for-category3" />
               </div>
             </li>
             <li class="nav-item dropdown">
@@ -224,7 +229,7 @@
                 <font-awesome-icon
                   :icon="['fac', 'weather']"
                   class="fa-btn big-icon" />
-                <span class="nav-link-text">Weather</span>
+                <span class="nav-link-text">{{ 'flow-builder.weather' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForWeatherCategory">
@@ -243,6 +248,7 @@
                     {{ translateTreeClassName(className) }}
                   </a>
                 </template>
+                <slot name="extra-dropdown-items-for-category4" />
               </div>
             </li>
             <li class="nav-item dropdown">
@@ -257,7 +263,7 @@
                 <font-awesome-icon
                   :icon="['fac', 'developer']"
                   class="fa-btn big-icon" />
-                <span class="nav-link-text">Developer</span>
+                <span class="nav-link-text">{{ 'flow-builder.developer' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForDeveloperCategory">
@@ -276,6 +282,7 @@
                     {{ translateTreeClassName(className) }}
                   </a>
                 </template>
+                <slot name="extra-dropdown-items-for-category5" />
               </div>
             </li>
           </ul>
