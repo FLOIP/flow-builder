@@ -32,17 +32,22 @@
               </router-link>
               <router-link
                 :to="route('flows.newFlow')"
-                class="btn btn-primary btn-sm mr-2">
+                class="btn btn-primary btn-sm">
                 {{ trans('flow-builder.new-flow') }}
               </router-link>
 
-              <router-link
-                v-if="isResourceEditorEnabled"
-                :to="resourceViewUrl"
-                class="btn btn-outline-primary btn-sm mr-2"
-                @click.native="handleResourceViewerSelected">
-                {{ trans('flow-builder.resource-view') }}
-              </router-link>
+              <div class="vertical-divider"></div>
+
+              <div v-if="isResourceEditorEnabled">
+                <router-link
+                  :to="resourceViewUrl"
+                  class="btn btn-outline-primary btn-sm mr-2"
+                  @click.native="handleResourceViewerSelected">
+                  {{ trans('flow-builder.resource-view') }}
+                </router-link>
+
+                <div class="vertical-divider"></div>
+              </div>
 
               <div
                 v-if="!ui.isEditableLocked"
@@ -323,7 +328,7 @@ const validationVuexNamespace = namespace('validation')
 })
 export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isImporterVisible = false
-  height = 60
+  height = 102
 
   // Computed ####################
 
@@ -629,5 +634,12 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 .tree-workspace-panel-heading-contents .dropdown-item:focus {
   color: #ffffff !important;
   background-color: #8C215C;
+}
+
+.vertical-divider {
+  border-left: 1px solid gray;
+  display: inline;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 </style>
