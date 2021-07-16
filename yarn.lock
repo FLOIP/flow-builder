@@ -1646,18 +1646,18 @@
   resolved "https://registry.yarnpkg.com/@exodus/schemasafe/-/schemasafe-1.0.0-rc.3.tgz#dda2fbf3dafa5ad8c63dadff7e01d3fdf4736025"
   integrity sha512-GoXw0U2Qaa33m3eUcxuHnHpNvHjNlLo0gtV091XBpaRINaB4X6FGCG5XKxSFNFiPpugUDqNruHzaqpTdDm4AOg==
 
-"@floip/expression-evaluator@^2.1.3":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.4.tgz#ef4647f2d7140ac5841ab669945d7601588e43ab"
-  integrity sha512-WahhLzof0HcAldBbLswc9mMQZbnWxrqmZNOuUbQjwAbGNV8C9TihzescECtWsGcNvGAROVr5alIa434gSnqNGA==
-  dependencies:
-    "@floip/expression-parser" "^1.10.0"
-    moment "^2.24.0"
-
 "@floip/expression-evaluator@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.0.tgz#925d289ba4763df452f6e555005aa3fac117f6ca"
   integrity sha512-9t0Dw7/c8OrFkm8cT1m08r8CfHTsO5mm6373/cctz479EPmermt7KxQqRZtzesCMWh5yDVuxOC90kYHFaAlNZA==
+  dependencies:
+    "@floip/expression-parser" "^1.10.0"
+    moment "^2.24.0"
+
+"@floip/expression-evaluator@^2.1.3":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.4.tgz#ef4647f2d7140ac5841ab669945d7601588e43ab"
+  integrity sha512-WahhLzof0HcAldBbLswc9mMQZbnWxrqmZNOuUbQjwAbGNV8C9TihzescECtWsGcNvGAROVr5alIa434gSnqNGA==
   dependencies:
     "@floip/expression-parser" "^1.10.0"
     moment "^2.24.0"
@@ -16604,11 +16604,6 @@ signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
 
-simple-html-tokenizer@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/simple-html-tokenizer/-/simple-html-tokenizer-0.1.1.tgz#05c2eec579ffffe145a030ac26cfea61b980fabe"
-  integrity sha1-BcLuxXn//+FFoDCsJs/qYbmA+r4=
-
 simple-swizzle@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
@@ -17296,15 +17291,6 @@ supports-hyperlinks@^2.0.0:
   dependencies:
     has-flag "^4.0.0"
     supports-color "^7.0.0"
-
-svg-inline-loader@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/svg-inline-loader/-/svg-inline-loader-0.8.2.tgz#9872414f9e4141601e04eb80cda748c9a50dae71"
-  integrity sha512-kbrcEh5n5JkypaSC152eGfGcnT4lkR0eSfvefaUJkLqgGjRQJyKDvvEE/CCv5aTSdfXuc+N98w16iAojhShI3g==
-  dependencies:
-    loader-utils "^1.1.0"
-    object-assign "^4.0.1"
-    simple-html-tokenizer "^0.1.1"
 
 svg-tags@^1.0.0:
   version "1.0.0"

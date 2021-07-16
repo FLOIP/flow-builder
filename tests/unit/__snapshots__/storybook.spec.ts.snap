@@ -70,6 +70,12 @@ exports[`Storyshots Core/Run Another Flow Block Styled Default 1`] = `
 </div>
 `;
 
+exports[`Storyshots Core/Set Contact Property Clear Action 1`] = `
+<div>
+  <!---->
+</div>
+`;
+
 exports[`Storyshots Core/Set Contact Property Default 1`] = `
 <div>
   <!---->
@@ -142,11 +148,11 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Flow
-  
+
                         </h3>
-                         
+
                         <fieldset>
                           <div
                             class="row"
@@ -164,25 +170,26 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <div
                                     class=""
                                   >
-                                    <label>
+                                    <h6>
                                       Flow label
-                                    </label>
-                                     
+                                    </h6>
+
                                     <textarea
                                       class="form-control"
                                       placeholder="Enter flow label"
+                                      rows="1"
                                     />
-                                     
+
                                   </div>
                                 </div>
-                                 
+
                                 <small
                                   class="text-danger"
                                 >
-                                  
+
                                 </small>
                               </div>
-                               
+
                               <div
                                 class="validation-message form-group"
                                 id="flow/fake-uuid-0/interaction_timeout"
@@ -196,7 +203,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                     <label>
                                       Interaction timeout
                                     </label>
-                                     
+
                                     <div>
                                       <input
                                         class="form-control"
@@ -205,18 +212,18 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="number"
                                       />
                                     </div>
-                                     
+
                                   </div>
                                 </div>
-                                 
+
                                 <small
                                   class="text-danger"
                                 >
-                                  
+
                                 </small>
                               </div>
                             </div>
-                             
+
                             <div
                               class="col-12"
                             >
@@ -230,7 +237,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <label>
                                     Languages
                                   </label>
-                                   
+
                                   <div
                                     class="checkbox"
                                   >
@@ -242,10 +249,10 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="[object Object]"
                                       />
-                                      
+
 
       English
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -259,21 +266,21 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="[object Object]"
                                       />
-                                      
+
 
       French
-    
+
                                     </label>
                                   </div>
                                 </div>
-                                 
+
                                 <small
                                   class="text-danger"
                                 >
-                                  
+
                                 </small>
                               </div>
-                               
+
                               <div
                                 class="validation-message form-group"
                                 id="flow/fake-uuid-0/supported_modes"
@@ -284,7 +291,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <label>
                                     Modes
                                   </label>
-                                   
+
                                   <div
                                     class="checkbox"
                                   >
@@ -296,9 +303,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="TEXT"
                                       />
-                                      
+
       TEXT
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -312,9 +319,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="SMS"
                                       />
-                                      
+
       SMS
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -328,9 +335,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="USSD"
                                       />
-                                      
+
       USSD
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -344,9 +351,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="IVR"
                                       />
-                                      
+
       IVR
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -360,9 +367,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="RICH_MESSAGING"
                                       />
-                                      
+
       RICH_MESSAGING
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -376,17 +383,17 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="OFFLINE"
                                       />
-                                      
+
       OFFLINE
-    
+
                                     </label>
                                   </div>
                                 </div>
-                                 
+
                                 <small
                                   class="text-danger"
                                 >
-                                  
+
                                 </small>
                               </div>
                             </div>
@@ -441,7 +448,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                   class="tree-builder-toolbar-main-menu"
                 >
                   <!---->
-                   
+
                   <div
                     class="tree-workspace-panel-heading panel-heading"
                   >
@@ -457,67 +464,67 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                           <i
                             class="glyphicon glyphicon-chevron-up"
                           />
-                          
+
             Export
-          
+
                         </button>
-                         
+
                         <!---->
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/trees/1/interaction-designer/edit"
                           title="Click to toggle editing"
                         >
-                          
+
             Edit Flow
-          
+
                         </a>
-                         
+
                         <!---->
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/flows/new"
                         >
-                          
+
             New Flow
-          
+
                         </a>
-                         
+
                         <a
                           aria-current="page"
                           class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                           href="#/"
                         >
-                          
+
             Home
-          
+
                         </a>
-                          
+
                         <!---->
-                         
+
                         <div
                           class="btn-group ml-auto mr-2"
                         >
                           <!---->
-                           
+
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 
+
                 <div
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
-                   
+
                   <main
                     class="error-notifications-wrapper"
                   >
                     <!---->
-                     
+
                     <!---->
                   </main>
                 </div>
@@ -560,7 +567,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                   class="tree-builder-toolbar-main-menu"
                 >
                   <!---->
-                   
+
                   <div
                     class="tree-workspace-panel-heading panel-heading"
                   >
@@ -576,11 +583,11 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                           <i
                             class="glyphicon glyphicon-chevron-up"
                           />
-                          
+
             Export
-          
+
                         </button>
-                         
+
                         <div
                           class="btn-group mr-2"
                         >
@@ -588,31 +595,31 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             class="btn btn-secondary active"
                             href="#/trees/1/interaction-designer"
                           >
-                            
+
               Flow view
-            
+
                           </a>
-                           
+
                           <a
                             class="btn btn-secondary"
                             href="#/trees/1/resource-viewer"
                           >
-                            
+
               Resources view
-            
+
                           </a>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2 active"
                           href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
-                          
+
             View Flow
-          
+
                         </a>
-                         
+
                         <div
                           class="dropdown mr-2"
                         >
@@ -621,228 +628,228 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             data-toggle="dropdown"
                             type="button"
                           >
-                            
+
               Add Block
-            
+
                           </button>
-                           
+
                           <div
                             class="dropdown-menu"
                           >
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Print"
                               href="#"
                             >
-                              
+
                   Print
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Read"
                               href="#"
                             >
-                              
+
                   Read
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Case"
                               href="#"
                             >
-                              
+
                   Case
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Log"
                               href="#"
                             >
-                              
+
                   Log
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Output"
                               href="#"
                             >
-                              
+
                   Output
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.RunFlow"
                               href="#"
                             >
-                              
+
                   Run Flow
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetContactProperty"
                               href="#"
                             >
-                              
+
                   Set Contact Property
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetGroupMembership"
                               href="#"
                             >
-                              
+
                   Set Group Membership
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
-                              
+
                   Message
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.NumericResponse"
                               href="#"
                             >
-                              
+
                   Numeric Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.OpenResponse"
                               href="#"
                             >
-                              
+
                   Open Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
-                              
+
                   Select One Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
-                              
+
                   Select Many Responses
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.LocationResponse"
                               href="#"
                             >
-                              
+
                   Location Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
-                              
+
                   Photo Response
-                
+
                             </a>
-                             
+
                             <!---->
-                             
+
                             <!---->
                           </div>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/flows/new"
                         >
-                          
+
             New Flow
-          
+
                         </a>
-                         
+
                         <a
                           aria-current="page"
                           class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                           href="#/"
                         >
-                          
+
             Home
-          
+
                         </a>
-                         
+
                         <a
                           class="btn btn-success"
                           disabled="disabled"
                           href="#"
                           title="another grouped button"
                         >
-                          
+
            Action X
-        
+
                         </a>
-                         
+
                         <a
                           class="btn btn-warning"
                           href="#"
                           title="another grouped button"
                         >
-                          
+
            Action Y
-        
+
                         </a>
-                         
+
                         <!---->
-                         
+
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -851,27 +858,27 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             title="Save changes to the flow"
                             type="button"
                           >
-                            
+
               Save
-            
+
                           </button>
-                           
+
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 
+
                 <div
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
-                   
+
                   <main
                     class="error-notifications-wrapper"
                   >
                     <!---->
-                     
+
                     <!---->
                   </main>
                 </div>
@@ -914,7 +921,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                   class="tree-builder-toolbar-main-menu"
                 >
                   <!---->
-                   
+
                   <div
                     class="tree-workspace-panel-heading panel-heading"
                   >
@@ -930,11 +937,11 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                           <i
                             class="glyphicon glyphicon-chevron-up"
                           />
-                          
+
             Export
-          
+
                         </button>
-                         
+
                         <div
                           class="btn-group mr-2"
                         >
@@ -942,31 +949,31 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             class="btn btn-secondary active"
                             href="#/trees/1/interaction-designer"
                           >
-                            
+
               Flow view
-            
+
                           </a>
-                           
+
                           <a
                             class="btn btn-secondary"
                             href="#/trees/1/resource-viewer"
                           >
-                            
+
               Resources view
-            
+
                           </a>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2 active"
                           href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
-                          
+
             View Flow
-          
+
                         </a>
-                         
+
                         <div
                           class="dropdown mr-2"
                         >
@@ -975,207 +982,207 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             data-toggle="dropdown"
                             type="button"
                           >
-                            
+
               Add Block
-            
+
                           </button>
-                           
+
                           <div
                             class="dropdown-menu"
                           >
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Print"
                               href="#"
                             >
-                              
+
                   Print
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Read"
                               href="#"
                             >
-                              
+
                   Read
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Case"
                               href="#"
                             >
-                              
+
                   Case
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Log"
                               href="#"
                             >
-                              
+
                   Log
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Output"
                               href="#"
                             >
-                              
+
                   Output
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.RunFlow"
                               href="#"
                             >
-                              
+
                   Run Flow
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetContactProperty"
                               href="#"
                             >
-                              
+
                   Set Contact Property
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetGroupMembership"
                               href="#"
                             >
-                              
+
                   Set Group Membership
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
-                              
+
                   Message
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.NumericResponse"
                               href="#"
                             >
-                              
+
                   Numeric Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.OpenResponse"
                               href="#"
                             >
-                              
+
                   Open Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
-                              
+
                   Select One Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
-                              
+
                   Select Many Responses
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.LocationResponse"
                               href="#"
                             >
-                              
+
                   Location Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
-                              
+
                   Photo Response
-                
+
                             </a>
-                             
+
                             <!---->
-                             
+
                             <!---->
                           </div>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/flows/new"
                         >
-                          
+
             New Flow
-          
+
                         </a>
-                         
+
                         <a
                           aria-current="page"
                           class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                           href="#/"
                         >
-                          
+
             Home
-          
+
                         </a>
-                          
+
                         <!---->
-                         
+
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1184,47 +1191,47 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             title="Save changes to the flow"
                             type="button"
                           >
-                            
+
               Save
-            
+
                           </button>
-                           
+
                           <a
                             class="btn btn-success"
                             disabled="disabled"
                             href="#"
                             title="another grouped button"
                           >
-                            
+
            Action X
-        
+
                           </a>
-                           
+
                           <a
                             class="btn btn-warning"
                             href="#"
                             title="another grouped button"
                           >
-                            
+
            Action Y
-        
+
                           </a>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 
+
                 <div
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
-                   
+
                   <main
                     class="error-notifications-wrapper"
                   >
                     <!---->
-                     
+
                     <!---->
                   </main>
                 </div>
@@ -1267,7 +1274,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                   class="tree-builder-toolbar-main-menu"
                 >
                   <!---->
-                   
+
                   <div
                     class="tree-workspace-panel-heading panel-heading"
                   >
@@ -1283,11 +1290,11 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                           <i
                             class="glyphicon glyphicon-chevron-up"
                           />
-                          
+
             Export
-          
+
                         </button>
-                         
+
                         <div
                           class="btn-group mr-2"
                         >
@@ -1295,31 +1302,31 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             class="btn btn-secondary active"
                             href="#/trees/1/interaction-designer"
                           >
-                            
+
               Flow view
-            
+
                           </a>
-                           
+
                           <a
                             class="btn btn-secondary"
                             href="#/trees/1/resource-viewer"
                           >
-                            
+
               Resources view
-            
+
                           </a>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2 active"
                           href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
-                          
+
             View Flow
-          
+
                         </a>
-                         
+
                         <div
                           class="dropdown mr-2"
                         >
@@ -1328,228 +1335,228 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             data-toggle="dropdown"
                             type="button"
                           >
-                            
+
               Add Block
-            
+
                           </button>
-                           
+
                           <div
                             class="dropdown-menu"
                           >
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Print"
                               href="#"
                             >
-                              
+
                   Print
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Read"
                               href="#"
                             >
-                              
+
                   Read
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Case"
                               href="#"
                             >
-                              
+
                   Case
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Log"
                               href="#"
                             >
-                              
+
                   Log
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Output"
                               href="#"
                             >
-                              
+
                   Output
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.RunFlow"
                               href="#"
                             >
-                              
+
                   Run Flow
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetContactProperty"
                               href="#"
                             >
-                              
+
                   Set Contact Property
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetGroupMembership"
                               href="#"
                             >
-                              
+
                   Set Group Membership
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
-                              
+
                   Message
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.NumericResponse"
                               href="#"
                             >
-                              
+
                   Numeric Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.OpenResponse"
                               href="#"
                             >
-                              
+
                   Open Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
-                              
+
                   Select One Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
-                              
+
                   Select Many Responses
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.LocationResponse"
                               href="#"
                             >
-                              
+
                   Location Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
-                              
+
                   Photo Response
-                
+
                             </a>
-                             
+
                             <!---->
-                             
+
                             <!---->
                           </div>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/flows/new"
                         >
-                          
+
             New Flow
-          
+
                         </a>
-                         
+
                         <a
                           aria-current="page"
                           class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                           href="#/"
                         >
-                          
+
             Home
-          
+
                         </a>
-                          
+
                         <!---->
-                         
+
                         <div
                           class="btn-group ml-auto mr-2"
                         >
                           <!---->
-                           
+
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 
+
                 <div
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
-                   
+
                   <main
                     class="error-notifications-wrapper"
                   >
                     <!---->
-                     
+
                     <!---->
                   </main>
                 </div>
@@ -1592,7 +1599,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                   class="tree-builder-toolbar-main-menu"
                 >
                   <!---->
-                   
+
                   <div
                     class="tree-workspace-panel-heading panel-heading"
                   >
@@ -1608,11 +1615,11 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                           <i
                             class="glyphicon glyphicon-chevron-up"
                           />
-                          
+
             Export
-          
+
                         </button>
-                         
+
                         <div
                           class="btn-group mr-2"
                         >
@@ -1620,75 +1627,75 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                             class="btn btn-secondary active"
                             href="#/trees/1/interaction-designer"
                           >
-                            
+
               Flow view
-            
+
                           </a>
-                           
+
                           <a
                             class="btn btn-secondary"
                             href="#/trees/1/resource-viewer"
                           >
-                            
+
               Resources view
-            
+
                           </a>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/trees/1/interaction-designer/edit"
                           title="Click to toggle editing"
                         >
-                          
+
             Edit Flow
-          
+
                         </a>
-                         
+
                         <!---->
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/flows/new"
                         >
-                          
+
             New Flow
-          
+
                         </a>
-                         
+
                         <a
                           aria-current="page"
                           class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                           href="#/"
                         >
-                          
+
             Home
-          
+
                         </a>
-                          
+
                         <!---->
-                         
+
                         <div
                           class="btn-group ml-auto mr-2"
                         >
                           <!---->
-                           
+
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 
+
                 <div
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
-                   
+
                   <main
                     class="error-notifications-wrapper"
                   >
                     <!---->
-                     
+
                     <!---->
                   </main>
                 </div>
@@ -1781,101 +1788,103 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Numeric Response block
-  
+
                         </h3>
-                         
+
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-70/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+
+                                </div>
+
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+
+                              <small
+                                class="text-danger"
+                              >
+
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
+                          </section>
+
+                          <!---->
+
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-70/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+
+                                  <span>
+
+                                  </span>
+                                </div>
+
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+
+                              <small
+                                class="text-danger"
+                              >
+
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Semantic label
-                                </label>
-                                 
-                                <input
-                                  class="form-control w-100"
-                                  placeholder="Enter a block semantic label"
-                                  type="text"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-70/config/validation_minimum"
@@ -1889,7 +1898,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                 <label>
                                   Minimum value (inclusive)
                                 </label>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -1898,17 +1907,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-70/config/validation_maximum"
@@ -1922,7 +1931,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                 <label>
                                   Maximum value (inclusive)
                                 </label>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -1931,17 +1940,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-70/config/ivr/max_digits"
@@ -1955,7 +1964,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                 <label>
                                   Maximum digits
                                 </label>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -1964,24 +1973,24 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div
                             class="resource-editor"
                           >
                             <hr />
-                             
+
                             <!---->
-                             
+
                             <div>
                               <div
                                 class="tabs"
@@ -2016,14 +2025,14 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                           class="library-icons"
                                           icon="far,envelope"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           SMS Content
                                         </h6>
                                       </header>
-                                       
+
                                       <div
                                         class="resource-variant-text-editor"
                                       >
@@ -2035,18 +2044,18 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                             placeholder="Enter Text content"
                                           />
                                         </div>
-                                         
+
                                         <div
                                           class="content-toolbar"
                                         >
                                           <!---->
-                                           
+
                                           <!---->
-                                           
+
                                           <!---->
                                         </div>
                                       </div>
-                                       
+
                                       <!---->
                                     </div>
                                     <div
@@ -2059,14 +2068,14 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                           class="custom-icons"
                                           icon="fac,ussd"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           USSD Content
                                         </h6>
                                       </header>
-                                       
+
                                       <div
                                         class="resource-variant-text-editor"
                                       >
@@ -2078,18 +2087,18 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                             placeholder="Enter Text content"
                                           />
                                         </div>
-                                         
+
                                         <div
                                           class="content-toolbar"
                                         >
                                           <!---->
-                                           
+
                                           <!---->
-                                           
+
                                           <!---->
                                         </div>
                                       </div>
-                                       
+
                                       <!---->
                                     </div>
                                     <div
@@ -2102,16 +2111,16 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                           class="custom-icons"
                                           icon="fac,audio"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           IVR Content
                                         </h6>
                                       </header>
-                                       
+
                                       <!---->
-                                       
+
                                       <div>
                                         <div
                                           class="audio-library-selector"
@@ -2127,7 +2136,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                                 placeholder="Search audio library…"
                                                 type="text"
                                               />
-                                               
+
                                               <span
                                                 class="input-group-append"
                                               >
@@ -2140,26 +2149,26 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                                 </button>
                                               </span>
                                             </div>
-                                             
+
                                             <!---->
                                           </div>
                                         </div>
-                                         
+
                                         <div
                                           class="phone-recorder"
                                         >
                                           <!---->
                                         </div>
-                                         
+
                                         <div
                                           class="upload-monitor"
                                         >
                                           <!---->
-                                           
+
                                           <!---->
-                                           
+
                                         </div>
-                                         
+
                                         <div
                                           class="d-flex mt-2"
                                         >
@@ -2171,16 +2180,16 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                               class="fa-btn"
                                               icon="fac,upload"
                                             />
-                                            
+
                     Upload Audio
-                  
+
                                             <input
                                               accept="audio/*"
                                               style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
                                               type="file"
                                             />
                                           </button>
-                                           
+
                                           <button
                                             class="btn btn-primary ivr-buttons ml-2"
                                           >
@@ -2188,9 +2197,9 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                               class="fa-btn"
                                               icon="fac,record-audio"
                                             />
-                                            
+
                     Record Audio
-                  
+
                                           </button>
                                         </div>
                                       </div>
@@ -2201,16 +2210,16 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               </div>
                             </div>
                           </div>
-                            
+
                           <div
                             class="starting-block-button"
                           >
                             <hr />
-                             
+
                             <h4>
                               Options
                             </h4>
-                             
+
                             <div
                               class="form-group"
                             >
@@ -2223,21 +2232,21 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                   class="fa-btn"
                                   icon="fac,enter"
                                 />
-                                 
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="block-id text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
                               fake-uuid-70
                             </em>
@@ -2300,101 +2309,103 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Numeric Response block
-  
+
                         </h3>
-                         
+
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-76/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+
+                                </div>
+
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+
+                              <small
+                                class="text-danger"
+                              >
+
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
+                          </section>
+
+                          <!---->
+
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-76/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+
+                                  <span>
+                                     A Name
+                                  </span>
+                                </div>
+
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+
+                              <small
+                                class="text-danger"
+                              >
+
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Semantic label
-                                </label>
-                                 
-                                <input
-                                  class="form-control w-100"
-                                  placeholder="Enter a block semantic label"
-                                  type="text"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-76/config/validation_minimum"
@@ -2408,7 +2419,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                 <label>
                                   Minimum value (inclusive)
                                 </label>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -2417,17 +2428,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-76/config/validation_maximum"
@@ -2441,7 +2452,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                 <label>
                                   Maximum value (inclusive)
                                 </label>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -2450,17 +2461,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-76/config/ivr/max_digits"
@@ -2474,7 +2485,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                 <label>
                                   Maximum digits
                                 </label>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -2483,24 +2494,24 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div
                             class="resource-editor"
                           >
                             <hr />
-                             
+
                             <!---->
-                             
+
                             <div>
                               <div
                                 class="tabs"
@@ -2535,14 +2546,14 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                           class="library-icons"
                                           icon="far,envelope"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           SMS Content
                                         </h6>
                                       </header>
-                                       
+
                                       <div
                                         class="resource-variant-text-editor"
                                       >
@@ -2554,18 +2565,18 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                             placeholder="Enter Text content"
                                           />
                                         </div>
-                                         
+
                                         <div
                                           class="content-toolbar"
                                         >
                                           <!---->
-                                           
+
                                           <!---->
-                                           
+
                                           <!---->
                                         </div>
                                       </div>
-                                       
+
                                       <!---->
                                     </div>
                                     <div
@@ -2578,14 +2589,14 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                           class="custom-icons"
                                           icon="fac,ussd"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           USSD Content
                                         </h6>
                                       </header>
-                                       
+
                                       <div
                                         class="resource-variant-text-editor"
                                       >
@@ -2597,18 +2608,18 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                             placeholder="Enter Text content"
                                           />
                                         </div>
-                                         
+
                                         <div
                                           class="content-toolbar"
                                         >
                                           <!---->
-                                           
+
                                           <!---->
-                                           
+
                                           <!---->
                                         </div>
                                       </div>
-                                       
+
                                       <!---->
                                     </div>
                                     <div
@@ -2621,16 +2632,16 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                           class="custom-icons"
                                           icon="fac,audio"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           IVR Content
                                         </h6>
                                       </header>
-                                       
+
                                       <!---->
-                                       
+
                                       <div>
                                         <div
                                           class="audio-library-selector"
@@ -2646,7 +2657,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                                 class="glyphicon glyphicon-remove"
                                               />
                                             </button>
-                                             
+
                                             <div
                                               class="btn-group audio-library-selection-download-dropdown"
                                             >
@@ -2659,12 +2670,12 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                                   aria-hidden="true"
                                                   class="glyphicon glyphicon-download-alt"
                                                 />
-                                                 
+
                                                 <span
                                                   class="caret"
                                                 />
                                               </button>
-                                               
+
                                               <ul
                                                 class="dropdown-menu dropdown-menu-right"
                                               >
@@ -2679,16 +2690,16 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                                 </li>
                                               </ul>
                                             </div>
-                                             
+
                                             <p
                                               class="audio-file-description"
                                               title="path/to/ivr audio.mp3"
                                             >
-                                              
+
     path/to/ivr audio.mp3
-  
+
                                             </p>
-                                             
+
                                             <div
                                               class="btn-toolbar"
                                             >
@@ -2696,9 +2707,9 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                             </div>
                                           </div>
                                         </div>
-                                         
+
                                         <!---->
-                                         
+
                                         <!---->
                                       </div>
                                     </div>
@@ -2708,16 +2719,16 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               </div>
                             </div>
                           </div>
-                            
+
                           <div
                             class="starting-block-button"
                           >
                             <hr />
-                             
+
                             <h4>
                               Options
                             </h4>
-                             
+
                             <div
                               class="form-group"
                             >
@@ -2730,21 +2741,21 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                   class="fa-btn"
                                   icon="fac,enter"
                                 />
-                                 
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="block-id text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
                               fake-uuid-76
                             </em>
@@ -2825,101 +2836,103 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Open Response block
-  
+
                         </h3>
-                         
+
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-105/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+
+                                </div>
+
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+
+                              <small
+                                class="text-danger"
+                              >
+
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
+                          </section>
+
+                          <!---->
+
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-105/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+
+                                  <span>
+
+                                  </span>
+                                </div>
+
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+
+                              <small
+                                class="text-danger"
+                              >
+
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Semantic label
-                                </label>
-                                 
-                                <input
-                                  class="form-control w-100"
-                                  placeholder="Enter a block semantic label"
-                                  type="text"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-105/config/ivr/max_duration_seconds"
@@ -2933,7 +2946,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                 <label>
                                   Maximum Duration (seconds)
                                 </label>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -2942,17 +2955,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-105/config/text/max_response_characters"
@@ -2966,7 +2979,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                 <label>
                                   Maximum Response Characters
                                 </label>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -2975,32 +2988,32 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
-                               
+
                               <small
                                 class="text-muted"
                               >
-                                
+
       Unlimited if not defined or set as zero
-    
+
                               </small>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div
                             class="resource-editor"
                           >
                             <hr />
-                             
+
                             <!---->
-                             
+
                             <div>
                               <div
                                 class="tabs"
@@ -3035,14 +3048,14 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                           class="library-icons"
                                           icon="far,envelope"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           SMS Content
                                         </h6>
                                       </header>
-                                       
+
                                       <div
                                         class="resource-variant-text-editor"
                                       >
@@ -3054,18 +3067,18 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                             placeholder="Enter Text content"
                                           />
                                         </div>
-                                         
+
                                         <div
                                           class="content-toolbar"
                                         >
                                           <!---->
-                                           
+
                                           <!---->
-                                           
+
                                           <!---->
                                         </div>
                                       </div>
-                                       
+
                                       <!---->
                                     </div>
                                     <div
@@ -3078,14 +3091,14 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                           class="custom-icons"
                                           icon="fac,ussd"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           USSD Content
                                         </h6>
                                       </header>
-                                       
+
                                       <div
                                         class="resource-variant-text-editor"
                                       >
@@ -3097,18 +3110,18 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                             placeholder="Enter Text content"
                                           />
                                         </div>
-                                         
+
                                         <div
                                           class="content-toolbar"
                                         >
                                           <!---->
-                                           
+
                                           <!---->
-                                           
+
                                           <!---->
                                         </div>
                                       </div>
-                                       
+
                                       <!---->
                                     </div>
                                     <div
@@ -3121,16 +3134,16 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                           class="custom-icons"
                                           icon="fac,audio"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           IVR Content
                                         </h6>
                                       </header>
-                                       
+
                                       <!---->
-                                       
+
                                       <div>
                                         <div
                                           class="audio-library-selector"
@@ -3146,7 +3159,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                                 placeholder="Search audio library…"
                                                 type="text"
                                               />
-                                               
+
                                               <span
                                                 class="input-group-append"
                                               >
@@ -3159,26 +3172,26 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                                 </button>
                                               </span>
                                             </div>
-                                             
+
                                             <!---->
                                           </div>
                                         </div>
-                                         
+
                                         <div
                                           class="phone-recorder"
                                         >
                                           <!---->
                                         </div>
-                                         
+
                                         <div
                                           class="upload-monitor"
                                         >
                                           <!---->
-                                           
+
                                           <!---->
-                                           
+
                                         </div>
-                                         
+
                                         <div
                                           class="d-flex mt-2"
                                         >
@@ -3190,16 +3203,16 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                               class="fa-btn"
                                               icon="fac,upload"
                                             />
-                                            
+
                     Upload Audio
-                  
+
                                             <input
                                               accept="audio/*"
                                               style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
                                               type="file"
                                             />
                                           </button>
-                                           
+
                                           <button
                                             class="btn btn-primary ivr-buttons ml-2"
                                           >
@@ -3207,9 +3220,9 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                               class="fa-btn"
                                               icon="fac,record-audio"
                                             />
-                                            
+
                     Record Audio
-                  
+
                                           </button>
                                         </div>
                                       </div>
@@ -3220,16 +3233,16 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               </div>
                             </div>
                           </div>
-                            
+
                           <div
                             class="starting-block-button"
                           >
                             <hr />
-                             
+
                             <h4>
                               Options
                             </h4>
-                             
+
                             <div
                               class="form-group"
                             >
@@ -3242,21 +3255,21 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                   class="fa-btn"
                                   icon="fac,enter"
                                 />
-                                 
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="block-id text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
                               fake-uuid-105
                             </em>
@@ -3319,101 +3332,103 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Open Response block
-  
+
                         </h3>
-                         
+
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-114/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+
+                                </div>
+
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+
+                              <small
+                                class="text-danger"
+                              >
+
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
+                          </section>
+
+                          <!---->
+
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-114/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+
+                                  <span>
+                                     A Name
+                                  </span>
+                                </div>
+
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+
+                              <small
+                                class="text-danger"
+                              >
+
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Semantic label
-                                </label>
-                                 
-                                <input
-                                  class="form-control w-100"
-                                  placeholder="Enter a block semantic label"
-                                  type="text"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-114/config/ivr/max_duration_seconds"
@@ -3427,7 +3442,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                 <label>
                                   Maximum Duration (seconds)
                                 </label>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -3436,17 +3451,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-114/config/text/max_response_characters"
@@ -3460,7 +3475,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                 <label>
                                   Maximum Response Characters
                                 </label>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -3469,32 +3484,32 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
-                               
+
                               <small
                                 class="text-muted"
                               >
-                                
+
       Unlimited if not defined or set as zero
-    
+
                               </small>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div
                             class="resource-editor"
                           >
                             <hr />
-                             
+
                             <!---->
-                             
+
                             <div>
                               <div
                                 class="tabs"
@@ -3529,14 +3544,14 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                           class="library-icons"
                                           icon="far,envelope"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           SMS Content
                                         </h6>
                                       </header>
-                                       
+
                                       <div
                                         class="resource-variant-text-editor"
                                       >
@@ -3548,18 +3563,18 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                             placeholder="Enter Text content"
                                           />
                                         </div>
-                                         
+
                                         <div
                                           class="content-toolbar"
                                         >
                                           <!---->
-                                           
+
                                           <!---->
-                                           
+
                                           <!---->
                                         </div>
                                       </div>
-                                       
+
                                       <!---->
                                     </div>
                                     <div
@@ -3572,14 +3587,14 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                           class="custom-icons"
                                           icon="fac,ussd"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           USSD Content
                                         </h6>
                                       </header>
-                                       
+
                                       <div
                                         class="resource-variant-text-editor"
                                       >
@@ -3591,18 +3606,18 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                             placeholder="Enter Text content"
                                           />
                                         </div>
-                                         
+
                                         <div
                                           class="content-toolbar"
                                         >
                                           <!---->
-                                           
+
                                           <!---->
-                                           
+
                                           <!---->
                                         </div>
                                       </div>
-                                       
+
                                       <!---->
                                     </div>
                                     <div
@@ -3615,16 +3630,16 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                           class="custom-icons"
                                           icon="fac,audio"
                                         />
-                                         
+
                                         <h6
                                           class="ml-1"
                                         >
                                           IVR Content
                                         </h6>
                                       </header>
-                                       
+
                                       <!---->
-                                       
+
                                       <div>
                                         <div
                                           class="audio-library-selector"
@@ -3640,7 +3655,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                                 class="glyphicon glyphicon-remove"
                                               />
                                             </button>
-                                             
+
                                             <div
                                               class="btn-group audio-library-selection-download-dropdown"
                                             >
@@ -3653,12 +3668,12 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                                   aria-hidden="true"
                                                   class="glyphicon glyphicon-download-alt"
                                                 />
-                                                 
+
                                                 <span
                                                   class="caret"
                                                 />
                                               </button>
-                                               
+
                                               <ul
                                                 class="dropdown-menu dropdown-menu-right"
                                               >
@@ -3673,16 +3688,16 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                                 </li>
                                               </ul>
                                             </div>
-                                             
+
                                             <p
                                               class="audio-file-description"
                                               title="path/to/ivr audio.mp3"
                                             >
-                                              
+
     path/to/ivr audio.mp3
-  
+
                                             </p>
-                                             
+
                                             <div
                                               class="btn-toolbar"
                                             >
@@ -3690,9 +3705,9 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                             </div>
                                           </div>
                                         </div>
-                                         
+
                                         <!---->
-                                         
+
                                         <!---->
                                       </div>
                                     </div>
@@ -3702,16 +3717,16 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               </div>
                             </div>
                           </div>
-                            
+
                           <div
                             class="starting-block-button"
                           >
                             <hr />
-                             
+
                             <h4>
                               Options
                             </h4>
-                             
+
                             <div
                               class="form-group"
                             >
@@ -3724,21 +3739,21 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                   class="fa-btn"
                                   icon="fac,enter"
                                 />
-                                 
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="block-id text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
                               fake-uuid-114
                             </em>

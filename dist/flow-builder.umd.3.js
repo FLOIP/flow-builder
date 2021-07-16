@@ -399,12 +399,12 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4ad08327-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/ExpressionInput.vue?vue&type=template&id=05f0c6dc&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group"},[_c('label',[_vm._v(_vm._s(_vm.label))]),_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.expression),expression:"expression"}],ref:"input",staticClass:"form-control",attrs:{"placeholder":_vm.placeholder},domProps:{"value":(_vm.expression)},on:{"input":[function($event){if($event.target.composing){ return; }_vm.expression=$event.target.value},function($event){return _vm.$emit('input', $event.target.value)}]}}),_vm._v(" "),_vm._t("default")],2)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4ad08327-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/ExpressionInput.vue?vue&type=template&id=5b173190&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"expression-input form-group"},[_c('label',[_vm._v(_vm._s(_vm.label))]),_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.expression),expression:"expression"}],ref:"input",class:['form-control', {'is-invalid': _vm.isInvalid}],attrs:{"placeholder":_vm.placeholder},domProps:{"value":(_vm.expression)},on:{"input":[function($event){if($event.target.composing){ return; }_vm.expression=$event.target.value},function($event){return _vm.$emit('input', $event.target.value)}]}}),_vm._v(" "),_vm._t("default")],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/common/ExpressionInput.vue?vue&type=template&id=05f0c6dc&
+// CONCATENATED MODULE: ./src/components/common/ExpressionInput.vue?vue&type=template&id=5b173190&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/createForOfIteratorHelper.js
 var createForOfIteratorHelper = __webpack_require__("54f8");
@@ -525,6 +525,11 @@ var defaultDateFields = ['now', 'yesterday', 'today', 'tomorrow'];
     expressionIdentifier: {
       type: [String, Number],
       default: null
+    },
+    validState: {
+      type: Boolean,
+      default: null,
+      required: false
     }
   },
   data: function data() {
@@ -533,6 +538,9 @@ var defaultDateFields = ['now', 'yesterday', 'today', 'tomorrow'];
     };
   },
   computed: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["b" /* mapGetters */])(['subscriberPropertyFields'])), Object(vuex_esm["b" /* mapGetters */])('flow', ['activeFlow'])), {}, {
+    isInvalid: function isInvalid() {
+      return this.validState === false;
+    },
     expression: {
       get: function get() {
         return this.currentExpression;

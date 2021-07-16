@@ -1,11 +1,12 @@
 <template>
   <div>
-    <label v-if="label">{{ label }}</label>
+    <h6 v-if="label">{{ label }}</h6>
     <textarea
       class="form-control"
       :class="{ 'is-invalid': isInvalid }"
       :placeholder="placeholder"
       :value="value"
+      :rows="rows"
       @keydown="$emit('keydown', $event)"
       @input="$emit('input', $event.target.value)" />
     <slot />
@@ -32,6 +33,11 @@ export default {
       type: Boolean,
       default: null,
       required: false,
+    },
+    rows: {
+      type: Number,
+      required: false,
+      default: 1,
     },
   },
   computed: {
