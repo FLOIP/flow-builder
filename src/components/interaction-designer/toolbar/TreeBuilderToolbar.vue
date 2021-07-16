@@ -184,8 +184,10 @@
       </div>
     </div>
     <div class="tree-builder-toolbar-alerts w-100">
-      <selection-banner @updated="handleHeightChangeFromDOM" />
-      <error-notifications @updated="handleHeightChangeFromDOM" />
+<!--      <div style="{position: fixed}">-->
+        <selection-banner @updated="handleHeightChangeFromDOM" />
+        <error-notifications @updated="handleHeightChangeFromDOM" />
+<!--      </div>-->
     </div>
   </div>
 </template>
@@ -466,6 +468,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
 <style lang="scss">
 .tree-builder-toolbar {
+  position: relative;
   .flows-importer textarea {
     display: block;
     width: 100%;
@@ -473,8 +476,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 }
 
 .tree-builder-toolbar-alerts {
-  position: fixed;
-  margin-top: 60px;
+  position: relative;
+  padding-top: 60px;
   z-index: 3*10;
 }
 </style>

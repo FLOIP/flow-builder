@@ -18,12 +18,12 @@ import 'scss/main.scss'
  */
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faCheckCircle} from '@fortawesome/free-solid-svg-icons'
-import {faCircle, faClone, faTrashAlt} from '@fortawesome/free-regular-svg-icons'
+import {faCircle, faClone, faTrashAlt, faTimesCircle, faDotCircle} from '@fortawesome/free-regular-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import router from './router'
 import App from './App.vue'
 
-library.add(faCircle, faCheckCircle, faClone, faTrashAlt)
+library.add(faCircle, faCheckCircle, faClone, faTrashAlt, faTimesCircle, faDotCircle)
 Vue.component('FontAwesomeIcon', FontAwesomeIcon)
 
 Vue.use(Vuex)

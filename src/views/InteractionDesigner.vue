@@ -60,13 +60,8 @@
       </div>
     </div>
 
-    <div
-      class="tree-contents"
-      :style="{
-        'min-height': `${designerWorkspaceHeight}px`,
-        'padding-top': `${toolbarHeight + 5}px`
-      }">
-      <builder-canvas @click.native="handleCanvasSelected" />
+    <div class="tree-contents position-relative">
+      <builder-canvas  @click.native="handleCanvasSelected" />
     </div>
   </div>
 </template>
