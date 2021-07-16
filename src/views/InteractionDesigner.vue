@@ -412,9 +412,6 @@ export default {
   }
 
   .tree-builder-toolbar-main-menu {
-    position: fixed;
-    z-index: 4*10;
-
     width: 100vw;
 
     border-bottom: 1px solid darkgrey;

@@ -1,7 +1,7 @@
 <template>
   <div
     ref="builder-toolbar"
-    class="tree-builder-toolbar">
+    class="tree-builder-toolbar d-flex flex-column">
     <div class="tree-builder-toolbar-main-menu d-flex flex-column">
       <div
         v-if="isImporterVisible"
@@ -110,10 +110,10 @@
         </div>
       </div>
 
-      <div v-if="isEditable" class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-center pt-0 pb-0">
+      <div v-if="isEditable" class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0">
         <div class="tree-workspace-panel-heading-contents">
           <ul class="nav">
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown nav">
               <a
                 class="nav-link dropdown-toggle"
                 @mouseover="openDropdownMenu($event.target)"
@@ -591,16 +591,13 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
 <style lang="scss">
 .tree-builder-toolbar {
+  position: fixed;
+  z-index: 3*10;
+
   .flows-importer textarea {
     display: block;
     width: 100%;
   }
-}
-
-.tree-builder-toolbar-alerts {
-  position: fixed;
-  margin-top: 102px;
-  z-index: 3*10;
 }
 
 .btn-toolbar > .flow-label {
@@ -637,7 +634,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 }
 
 .vertical-divider {
-  border-left: 1px solid gray;
+  border-left: 1px solid #CCCCCC;
   display: inline;
   margin-left: 10px;
   margin-right: 10px;
