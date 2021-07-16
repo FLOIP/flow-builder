@@ -28,18 +28,21 @@ export default {
   },
 
   mutations: {
-    setErrorMessage({ errorMessageByKey }, { key, errorMessage }) {
+    setErrorMessage({errorMessageByKey}, {key, errorMessage}) {
       Vue.set(errorMessageByKey, key, errorMessage)
     },
 
-    setUploadProgress({ uploadProgressByKey }, { key, uploadProgress }) {
+    setUploadProgress({uploadProgressByKey}, {key, uploadProgress}) {
       Vue.set(uploadProgressByKey, key, uploadProgress)
     },
 
-    setUploadStatusFor({ uploadsById, uploadIdsByKey }, {
+    setUploadStatusFor({uploadsById, uploadIdsByKey}, {
       file: fileWithRefs, key, status, progress, message, cancel,
     }) {
-      const file = lodash.pick(fileWithRefs, ['averageSpeed', 'currentSpeed', 'error', 'name', 'paused', 'relativePath', 'size', 'uniqueIdentifier'])
+      const file = lodash.pick(
+        fileWithRefs,
+        ['averageSpeed', 'currentSpeed', 'error', 'name', 'paused', 'relativePath', 'size', 'uniqueIdentifier'],
+      )
       Vue.set(uploadsById, file.uniqueIdentifier, {
         key, status, progress, message, cancel, file,
       })
@@ -48,7 +51,7 @@ export default {
   },
 
   actions: {
-    uploadFile({ commit }, {
+    uploadFile({commit}, {
       key,
       uploadUrl,
       formDataFields,
@@ -56,7 +59,7 @@ export default {
       onError,
     }) {
       if (!uploadUrl) {
-        commit('setUploadProgress', { key, uploadProgress: null })
+        commit('setUploadProgress', {key, uploadProgress: null})
         onError(new Error(`url was ${uploadUrl}`))
         return
       }
@@ -77,11 +80,11 @@ export default {
 
       axios.post(uploadUrl, formData, config)
         .then((response) => {
-          commit('setUploadProgress', { key, uploadProgress: null })
+          commit('setUploadProgress', {key, uploadProgress: null})
           onSuccess(response)
         })
         .catch((error) => {
-          commit('setUploadProgress', { key, uploadProgress: null })
+          commit('setUploadProgress', {key, uploadProgress: null})
           onError(error)
         })
     },
@@ -89,7 +92,8 @@ export default {
     // todo: this is slightly different, because it implements chunked+resumable uploads; generify
     // todo: upgrade backend to use more recent composer package that's compatible w/ npm flow.js
     // https://github.com/flowjs/flow-php-server
-    uploadFiles({ commit, dispatch, state }, { key, files, uploader }) { // todo: handle multi-file-per-key
+    // todo: handle multi-file-per-key
+    uploadFiles({commit, dispatch, state}, {key, files, uploader}) {
       const cancel = (_) => uploader.cancel()
 
       files.forEach((file) => commit('setUploadStatusFor', {
@@ -122,11 +126,12 @@ export default {
           message: null,
           cancel,
         })
-        // uploader.cancel() // clear for next batch
+        // clear for next batch
+        // uploader.cancel()
       })
 
       uploader.on('error', (json, file) => {
-        const { status_description } = JSON.parse(json) || {}
+        const {status_description} = JSON.parse(json) || {}
         // TODO: enable showAppMessageFor and use it as follow
         // dispatch('showAppMessageFor', {message: status_description, isComplete: true}, {root: true})
         console.debug(`Upload has error ${status_description}`)
@@ -137,7 +142,8 @@ export default {
           message: status_description,
           cancel,
         })
-        // uploader.cancel() // clear for retry
+        // clear for retry
+        // uploader.cancel()
       })
 
       uploader.upload()

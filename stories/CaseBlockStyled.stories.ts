@@ -1,11 +1,12 @@
 import {Component, Vue} from 'vue-property-decorator'
 import CaseBlock from '@/components/interaction-designer/block-types/Core_CaseBlock.vue'
-import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import caseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
+import {namespace} from 'vuex-class'
+import Vuex from 'vuex'
+import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
-import {namespace} from "vuex-class";
-import Vuex from "vuex";
-import {IRootState, store} from "@/store";
+import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 Vue.use(Vuex)
@@ -39,6 +40,7 @@ class DefaultClass extends BaseMountedVueClass {
     await this.baseMounted(BLOCK_TYPE, caseBlockStore)
   }
 }
+
 export const Default = () => (DefaultClass)
 
 //ExistingDataBlock
@@ -47,13 +49,14 @@ export const Default = () => (DefaultClass)
 })
 class CurrentClass2 extends BaseMountedVueClass {
   async mounted() {
-    const { block } = await this.baseMounted(BLOCK_TYPE, caseBlockStore)
+    const {block} = await this.baseMounted(BLOCK_TYPE, caseBlockStore)
     const blockId = block.uuid
 
     this.setDescription(blockId)
-    this.editCaseBlockExit({identifier: block.exits[0].uuid, value: "A expression"})
+    this.editCaseBlockExit({identifier: block.exits[0].uuid, value: 'A expression'})
   }
 
-  @blockVuexNamespace.Action editCaseBlockExit:any
+  @blockVuexNamespace.Action editCaseBlockExit: any
 }
+
 export const ExistingDataBlock = () => (CurrentClass2)

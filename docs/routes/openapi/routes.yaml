@@ -39,6 +39,7 @@ paths:
         404:
           description: Flow not found
           content: {}
+  /flows:
     post:
       tags:
       - Flows
@@ -48,15 +49,8 @@ paths:
         That means we need to track whether the flow is created on the server or not in this builder
         with an attribute on the container - `created` - rather than with whether or not the flow
         has a uuid yet. `created` is not sent to the server.
-        This route is used when `created` === false.
-        Route can be anything and is configured in builder.config.json - the UUID, body and verb are what matters.
-      parameters:
-      - name: id
-        in: path
-        description: Creates a flow and it's associated resources
-        required: true
-        schema:
-          type: uuid
+        This route is used when `created` === false
+        Route can be anything and is configured in builder.config.json - the body and verb are what matters.
       requestBody:
         content:
           '*/*':
@@ -87,15 +81,8 @@ paths:
         That means we need to track whether the flow is created on the server or not in this builder
         with an attribute on the container - `created` - rather than with whether or not the flow
         has a uuid yet. `created` is not sent to the server.
-        This route is used when `created` === true.
-        Route can be anything and is configured in builder.config.json - the UUID, body and verb are what matters.
-      parameters:
-      - name: id
-        in: path
-        description: Updates a flow and it's associated resources by ID
-        required: true
-        schema:
-          type: uuid
+        This route is used when `created` === true
+        Route can be anything and is configured in builder.config.json - the body and verb are what matters.
       requestBody:
         content:
           '*/*':

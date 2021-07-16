@@ -1,33 +1,38 @@
 <template>
-  <div v-if="activeFlow"
-       class="builder-canvas no-select"
-       :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }"
-  >
-
-    <block v-for="block in activeFlow.blocks"
-           :key="block.uuid"
-           :ref="`block/${block.uuid}`"
-           :id="`block/${block.uuid}`"
-           :block="block"
-           :x="block.vendor_metadata.io_viamo.uiData.xPosition"
-           :y="block.vendor_metadata.io_viamo.uiData.yPosition" />
+  <div
+    v-if="activeFlow"
+    class="builder-canvas no-select"
+    :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }">
+    <block
+      v-for="block in activeFlow.blocks"
+      :id="`block/${block.uuid}`"
+      :key="block.uuid"
+      :ref="`block/${block.uuid}`"
+      :block="block"
+      :x="block.vendor_metadata.io_viamo.uiData.xPosition"
+      :y="block.vendor_metadata.io_viamo.uiData.yPosition" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import { find, isEqual, cloneDeep, debounce, maxBy, get } from 'lodash'
-import { namespace } from 'vuex-class'
-import { IBlock, IFlow } from '@floip/flow-runner'
-import { IValidationStatus } from '@/store/validation'
+import {cloneDeep, debounce, find, get, isEqual, maxBy} from 'lodash'
+import {namespace} from 'vuex-class'
+import {IBlock, IFlow} from '@floip/flow-runner'
+import {IValidationStatus} from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
-const MARGIN_HEIGHT = 100 //px
-const MARGIN_WIDTH = 100 //px
-const DEBOUNCE_SCROLL_TIMER = 100 //ms
+//px
+const MARGIN_HEIGHT = 100
+
+//px
+const MARGIN_WIDTH = 100
+
+//ms
+const DEBOUNCE_SCROLL_TIMER = 100
 
 @Component({
   components: {
@@ -36,54 +41,59 @@ const DEBOUNCE_SCROLL_TIMER = 100 //ms
 })
 export default class BuilderCanvas extends Vue {
   @Prop() block!: IBlock
+  @Prop({default: 0}) widthAdjustment!: number
 
   // ###### Validation API Watchers [
-  @Watch('activeFlow', { deep: true, immediate: true })
+  @Watch('activeFlow', {deep: true, immediate: true})
   async onActiveFlowChanged(newFlow: IFlow) {
     console.debug('watch/activeFlow:', 'active flow has changed, validating ...')
-    await this.validate_flow({ flow: newFlow })
+    await this.validate_flow({flow: newFlow})
   }
 
-  @Watch('blocksOnActiveFlowForWatcher', { deep: true, immediate: true })
+  @Watch('blocksOnActiveFlowForWatcher', {deep: true, immediate: true})
   async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]) {
     if (newBlocks.length === 0) {
       return
     }
 
     console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed, validating ...')
-    for (let i = 0;  i < newBlocks.length; i++) {
-      const currentNewBlock = newBlocks[i]
-      const currentOldBlock = find(oldBlocks, { 'uuid': currentNewBlock.uuid })
 
-      if (isEqual(currentNewBlock, currentOldBlock)) {
-        continue // no changes found
-      }
-
-      await this.validate_block({ block: currentNewBlock })
-    }
+    await Promise.all(
+      newBlocks.map(async (currentNewBlock) => {
+        const currentOldBlock = find(oldBlocks, {uuid: currentNewBlock.uuid})
+        if (!isEqual(currentNewBlock, currentOldBlock)) {
+          await this.validate_block({block: currentNewBlock})
+        }
+      }),
+    )
   }
+
   // ] ######### end Validation API Watchers
 
   // ##### Canvas dynamic size watchers [
   @Watch('canvasHeight')
-  onCanvasHeightChanged(newValue: number) {
+  onCanvasHeightChanged(newValue: number): void {
     console.debug('canvas height changed to', newValue)
     this.debounceVerticalScroll()
   }
 
   @Watch('canvasWidth')
-  onCanvasWidthChanged(newValue: number) {
+  onCanvasWidthChanged(newValue: number): void {
     console.debug('canvas width changed to', newValue)
     this.debounceHorizontalScroll()
   }
 
-  debounceVerticalScroll = debounce(function(this: any) { // !important: do not change to arrow function
+  // !important: do not change to arrow function
+
+  debounceVerticalScroll = debounce(function (this: any) {
     window.scrollTo({
       top: this.canvasHeight,
     })
   }, DEBOUNCE_SCROLL_TIMER)
 
-  debounceHorizontalScroll = debounce(function(this: any) { // !important: do not change to arrow function
+  // !important: do not change to arrow function
+
+  debounceHorizontalScroll = debounce(function (this: any) {
     window.scrollTo({
       left: this.canvasWidth,
     })
@@ -91,48 +101,61 @@ export default class BuilderCanvas extends Vue {
 
   // ] ######## end canvas dynamic size watchers
 
-  get blocksOnActiveFlowForWatcher() {
-    return cloneDeep(this.activeFlow.blocks) // needed to make comparison between new & old values on watcher
+  get blocksOnActiveFlowForWatcher(): IBlock[] {
+    // needed to make comparison between new & old values on watcher
+    return cloneDeep(this.activeFlow.blocks)
   }
 
-  get blockHeight() {
-    const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
+  get blockHeight(): number {
+    // it returns array as we loop blocks inside v-for
+    const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition?.uuid}`] as Vue[]
     if (!blockElementRef) {
-      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition?.uuid}`)
-      return 150 // temporary dummy height for UI scroll purpose
+      console.debug(
+        'Interaction Designer',
+        'Unable to find DOM element corresponding to lowest block id: ',
+        `block/${this.blockAtTheLowestPosition?.uuid}`,
+      )
+      // temporary dummy height for UI scroll purpose
+      return 150
     }
-    return (<HTMLElement> (<Vue> blockElementRef[0].$refs['draggable']).$el).offsetHeight
+    return (<HTMLElement>(<Vue>blockElementRef[0].$refs.draggable).$el).offsetHeight
   }
 
-  get blockWidth() {
-    const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
+  get blockWidth(): number {
+    // it returns array as we loop blocks inside v-for
+    const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition?.uuid}`] as Vue[]
 
     if (!blockElementRef) {
-      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition?.uuid}`)
-      return 110 // temporary dummy width for UI scroll purpose
+      console.debug(
+        'Interaction Designer',
+        'Unable to find DOM element corresponding to furthest right block id: ',
+        `block/${this.blockAtTheFurthestRightPosition?.uuid}`,
+      )
+      // temporary dummy width for UI scroll purpose
+      return 110
     }
 
-    return (<HTMLElement> (<Vue> blockElementRef[0].$refs['draggable']).$el).offsetWidth
+    return ((blockElementRef[0].$refs.draggable as Vue).$el as HTMLElement).offsetWidth
   }
 
-  get blockAtTheLowestPosition() {
+  get blockAtTheLowestPosition(): any {
     return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.yPosition')
   }
 
-  get blockAtTheFurthestRightPosition() {
+  get blockAtTheFurthestRightPosition(): any {
     return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
   }
 
-  get windowHeight() {
+  get windowHeight(): number {
     return window.screen.availHeight
   }
 
-  get windowWidth() {
+  get windowWidth(): number {
     return window.screen.availWidth
   }
 
-  get canvasHeight() {
-    if (!this.activeFlow.blocks && this.activeFlow.blocks!.length) {
+  get canvasHeight(): any {
+    if (this.activeFlow.blocks.length == 0) {
       return this.windowHeight
     }
 
@@ -152,48 +175,48 @@ export default class BuilderCanvas extends Vue {
   }
 
   get canvasWidth(): number {
-    if (!this.activeFlow.blocks && this.activeFlow.blocks!.length) {
-      return this.windowWidth
+    if (this.activeFlow.blocks.length == 0) {
+      return this.windowWidth - this.widthAdjustment
     }
 
     if (!this.blockAtTheFurthestRightPosition) {
       console.debug('Interaction Designer', 'Unable to find block at the furthest right position')
-      return this.windowWidth
+      return this.windowWidth - this.widthAdjustment
     }
 
     const xPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.xPosition')
     const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
 
     if (scrollWidth < this.windowWidth) {
-      return this.windowWidth
+      return this.windowWidth - this.widthAdjustment
     }
 
-    return scrollWidth
+    return scrollWidth - this.widthAdjustment
   }
 
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
 
-  @validationVuexNamespace.Action validate_flow!: ({ flow } : { flow: IFlow }) => Promise<IValidationStatus>
-  @validationVuexNamespace.Action validate_block!: ({ block } : { block: IBlock }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_block!: ({block}: { block: IBlock }) => Promise<IValidationStatus>
 }
 
-export { BuilderCanvas }
+export {BuilderCanvas}
 </script>
 
 <style scoped>
-  .noselect * {
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Old versions of Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
-  }
+.noselect * {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+}
 
-  .builder-canvas {
-    /*standard proportion min-width and min-height here so that initial render on slower machines*/
-    min-width: 1024px;
-    min-height: 768px;
-  }
+.builder-canvas {
+  /*standard proportion min-width and min-height here so that initial render on slower machines*/
+  min-width: 1024px;
+  min-height: 768px;
+}
 </style>

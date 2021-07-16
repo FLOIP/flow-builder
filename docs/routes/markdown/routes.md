@@ -106,7 +106,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('/flows/{id}',
+fetch('/flows',
 {
   method: 'POST',
   body: inputBody,
@@ -120,9 +120,9 @@ fetch('/flows/{id}',
 
 ```
 
-`POST /flows/{id}`
+`POST /flows`
 
-*Create a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we need to track whether the flow is created on the server or not in this builder with an attribute on the container - `created` - rather than with whether or not the flow has a uuid yet. `created` is not sent to the server. This route is used when `created` === false. Route can be anything and is configured in builder.config.json - the UUID, body and verb are what matters.*
+*Create a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we need to track whether the flow is created on the server or not in this builder with an attribute on the container - `created` - rather than with whether or not the flow has a uuid yet. `created` is not sent to the server. This route is used when `created` === false Route can be anything and is configured in builder.config.json - the body and verb are what matters.*
 
 > Body parameter
 
@@ -130,7 +130,6 @@ fetch('/flows/{id}',
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|id|path|uuid|true|Creates a flow and it's associated resources|
 |body|body|[FlowContainer](#schemaflowcontainer)|true|none|
 
 > Example responses
@@ -187,7 +186,7 @@ const headers = {
   'Accept':'application/json'
 };
 
-fetch('/flows/{id}',
+fetch('/flows',
 {
   method: 'PUT',
   body: inputBody,
@@ -201,9 +200,9 @@ fetch('/flows/{id}',
 
 ```
 
-`PUT /flows/{id}`
+`PUT /flows`
 
-*Update a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we need to track whether the flow is created on the server or not in this builder with an attribute on the container - `created` - rather than with whether or not the flow has a uuid yet. `created` is not sent to the server. This route is used when `created` === true. Route can be anything and is configured in builder.config.json - the UUID, body and verb are what matters.*
+*Update a Flow and associated Resources. UUIDs are generated client side so the builder can operate without a backend. That means we need to track whether the flow is created on the server or not in this builder with an attribute on the container - `created` - rather than with whether or not the flow has a uuid yet. `created` is not sent to the server. This route is used when `created` === true Route can be anything and is configured in builder.config.json - the body and verb are what matters.*
 
 > Body parameter
 
@@ -211,7 +210,6 @@ fetch('/flows/{id}',
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|id|path|uuid|true|Updates a flow and it's associated resources by ID|
 |body|body|[FlowContainer](#schemaflowcontainer)|true|none|
 
 > Example responses

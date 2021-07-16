@@ -11,8 +11,7 @@
       "flows": {
         "persistFlow": {
           "name": "persistFlow",
-          "path": "\/backend\/flows\/{flowId}",
-          "params": ["flowId"],
+          "path": "\/backend\/flows",
           "methods": ["POST", "PUT"]
         },
         "fetchFlowServer": {
@@ -313,6 +312,7 @@
     "treeSets": [],
     "enabledFeatures": [
       "audioUpload",
+      "simulator",
       "treeSave",
       "callToRecord"
     ]

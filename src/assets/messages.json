@@ -1,6 +1,7 @@
 {
   "en.flow-builder": {
     "add-language": "Add Language +",
+    "add-at-least-one-block": "Add at least one block",
     "import-flow": "Import/Paste a JSON File",
     "import-explanation": "Use this option to import a flow by importing or pasting JSON",
     "import-note": "Note: If you have flows or resources with the same uuids as the ones you are importing they will be replaced and all previous data will be lost",
@@ -19,10 +20,15 @@
     "contact-property-expression": "Contact property expression",
     "contact-property-label": "Contact property",
     "contact-property-selector-placeholder": "Select a property",
+    "contact-property-action-hint": "This action allows you to set contact property by adding a contact value and expression",
+    "set-contact-property": "Set contact property with an expression",
+    "clear-contact-property": "Clear contact property value",
+    "enter-contact-property-label": "Enter contact property",
     "group-selector-placeholder": "Select a group",
     "fix-issue": "Fix Issue",
     "locate-block-issue": "Locate blocks to fix issue",
-    "flow-error-message": "You have a validation issue with your flow",
+    "show-issues": "Show issues",
+    "flow-error-message": "You have validation issues with your flow",
     "block-error-message": "You have :block_count block(s) that has validation issue.",
     "accuracy-threshold-in-meters": "Accuracy threshold in meters",
     "accuracy-timeout-in-seconds":"Accuracy timout in seconds",
@@ -723,7 +729,7 @@
     "if-the-value-is": "If the value is",
     "if-youd-like-to-repeat-msg-press-2": "If you'd like to repeat this message, please press 2 now.",
     "import-done": "Import done",
-    "import-export": "Import / Export",
+    "import-export": "Export",
     "import-failed": "Import failed for",
     "import-file": "Import the file",
     "import-file-instruction": "Drag the file or click on the Upload CSV file button and select the saved template",
@@ -1587,10 +1593,12 @@
     "your-open-ended-audio-download-for": "Your open-ended audio download for",
     "your-orgs-audio-library": "your organization's audio library",
     "your-prompt": "<your prompt>",
-    "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!"
+    "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!",
+    "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit."
   },
   "fr.flow-builder": {
     "add-language": "Ajouter une Langue +",
+    "add-at-least-one-block": "Ajouter au moins un bloc",
     "import-flow": "Importer/Coller un fichier JSON",
     "import-explanation": "Utilisez cette option pour importer un flux en important ou en collant JSON",
     "import-note": "Remarque: si vous avez des flux ou des ressources avec les mêmes uuids que ceux que vous importez, ils seront remplacés et toutes les données précédentes seront perdues",
@@ -1609,10 +1617,15 @@
     "contact-property-expression": "Contacter l'expression de la propriété",
     "contact-property-label": "Contact propriété",
     "contact-property-selector-placeholder": "Sélectionnez une propriété",
+    "contact-property-action-hint": "Cette action vous permet de définir la propriété Contact en ajoutant une valeur de contact et une expression",
+    "set-contact-property": "Set Contact Propriété avec une expression",
+    "clear-contact-property": "Valeur de la propriété Clear Contact",
+    "enter-contact-property-label": "Entrez la propriété Contact",
     "group-selector-placeholder": "Sélectionnez un groupe",
     "fix-issue": "Resoudre le probleme",
     "locate-block-issue": "Repérez blocs à numéro fixe",
-    "flow-error-message": "Vous avez un problème de validation avec votre flux",
+    "show-issues": "Afficher les problèmes",
+    "flow-error-message": "Vous avez des problèmes de validation avec votre flux",
     "block-error-message": "Vous avez bloc(s) :block_count qui a problème de validation.",
     "accuracy-threshold-in-meters": "Seuil de précision en mètres",
     "accuracy-timeout-in-seconds":"Précision timout en quelques secondes",
@@ -2310,7 +2323,7 @@
     "if-the-value-is": "Si la valeur est",
     "if-youd-like-to-repeat-msg-press-2": "Si vous souhaitez répéter ce message, appuyez maintenant sur 2.",
     "import-done": "Importation effectuée",
-    "import-export": "Importer / Exporter",
+    "import-export": "Exporter",
     "import-failed": "Échec de l'importation pour",
     "import-file": "Importer le fichier",
     "import-file-instruction": "Faites glisser le fichier ou cliquez sur le bouton Fichier Importer un fichier CSV et sélectionnez le modèle enregistré",
@@ -3174,7 +3187,8 @@
     "your-open-ended-audio-download-for": "Votre téléchargement audio pour la question ouverte",
     "your-orgs-audio-library": "bibliothèque audio de votre organisation",
     "your-prompt": "<votre message>",
-    "youre-using-floip-expressions": "On dirait que vous utilisez des expressions FLOIP, nice!"
+    "youre-using-floip-expressions": "On dirait que vous utilisez des expressions FLOIP, nice!",
+    "simulator-unsupported-block": "bloc est pas pris en charge en ce moment. Vous ne serez pas en mesure de procéder. S'il vous plaît quitter."
   }
 }
 

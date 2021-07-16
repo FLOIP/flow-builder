@@ -79,13 +79,13 @@ module.exports = {
         }
       })
       //In the success case, just echo the flow back
-      app.post('/backend/flows/:id', bodyParser.json(), (req, res) => {
+      app.post('/backend/flows', bodyParser.json(), (req, res) => {
         const flow = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(flow))
       })
       //In the success case, just echo the flow back
-      app.put('/backend/flows/:id', bodyParser.json(), (req, res) => {
+      app.put('/backend/flows', bodyParser.json(), (req, res) => {
         const flow = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(flow))
@@ -129,7 +129,8 @@ module.exports = {
           created_at: `${now[0]} ${now[1].split('.')[0]}`,
         }
         if (req.cookies[req.body.uuid] !== 'new') {
-          res.cookie(result.uuid, 'new') // `new` status tells the UI we had successful `recorded` audio
+          // `new` status tells the UI we had successful `recorded` audio
+          res.cookie(result.uuid, 'new')
         }
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(result))
