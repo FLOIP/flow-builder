@@ -139,13 +139,13 @@ BaseOptions2.template = `
     <tree-builder-toolbar>
       <template slot="right-grouped-buttons">
         <a href="#"
-           class="btn btn-success"
+           class="btn btn-success btn-sm ml-4"
            :disabled="true"
            title="another grouped button">
            Action X
         </a>
         <a href="#"
-           class="btn btn-warning"
+           class="btn btn-warning btn-sm"
            :disabled="false"
            title="another grouped button">
            Action Y
@@ -176,13 +176,13 @@ BaseOptions3.template = `
     <tree-builder-toolbar>
       <template slot="extra-buttons">
         <a href="#"
-           class="btn btn-success"
+           class="btn btn-success btn-sm ml-4"
            :disabled="true"
            title="another grouped button">
            Action X
         </a>
         <a href="#"
-           class="btn btn-warning"
+           class="btn btn-warning btn-sm"
            :disabled="false"
            title="another grouped button">
            Action Y

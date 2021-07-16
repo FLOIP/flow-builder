@@ -4,6 +4,14 @@ import {
   IconPrefix,
 } from '@fortawesome/fontawesome-common-types'
 
+/**
+ * Note for devs:
+ * in case merged paths don't work correctly (eg: icons became filled), we can try to :
+ * - re-import SVG in https://icomoon.io/app/,
+ * - then re-download it
+ * - copy paths into one single path
+ */
+
 const audio: IconDefinition = {
   prefix: 'fac' as IconPrefix,
   iconName: 'audio' as IconName,
@@ -115,6 +123,84 @@ const minimize: IconDefinition = {
   ],
 }
 
+const home: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'home' as IconName,
+  icon: [
+    24,
+    24,
+    [],
+    'e010',
+    // eslint-disable-next-line max-len
+    'M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z',
+  ],
+}
+
+const content: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'content' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e011',
+    // eslint-disable-next-line max-len
+    'M5 3h18l4.5 27h-18l-4.5-27zM6.18 4l4.167 25h15.973l-4.167-25h-15.973z M9 6h11.2l2.8 17h-11.2l-2.8-17zM10.178 7l2.47 15h9.174l-2.47-15h-9.174zM18 27v0c-0.552 0-1-0.448-1-1s0.448-1 1-1v0c0.552 0 1 0.448 1 1s-0.448 1-1 1zM18 28c1.105 0 2-0.895 2-2s-0.895-2-2-2v0c-1.105 0-2 0.895-2 2s0.895 2 2 2v0z',
+  ],
+}
+
+const contact: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'contact' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e012',
+    // eslint-disable-next-line max-len
+    'M16 13v0c-2.761 0-5-2.239-5-5s2.239-5 5-5v0c2.761 0 5 2.239 5 5s-2.239 5-5 5zM16 14c3.314 0 6-2.686 6-6s-2.686-6-6-6v0c-3.314 0-6 2.686-6 6s2.686 6 6 6v0zM11 15.89h10c2.209 0 4 1.791 4 4v8.443h-18v-8.444c0-2.209 1.791-4 4-4zM26 19.889c0-2.761-2.239-5-5-5v0h-10c-2.761 0-5 2.239-5 5v0 9.444h20v-9.443z',
+  ],
+}
+
+const branching: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'branching' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e012',
+    // eslint-disable-next-line max-len
+    'M12 4v4h-10v-4h10zM1 3v6h12v-6h-12zM26 4v4h-10v-4h10zM15 3v6h12v-6h-12zM20 14v4h-10v-4h10zM9 13v6h12v-6h-12zM30 24v4h-10v-4h10zM19 23v6h12v-6h-12z M15 6.5h-2.5v-1h2.5v1zM28.5 6.5h-2v-1h3v11.5h-8.5v-1h7.5v-9.5zM14.5 19h1v7h3.5v1h-4.5v-8z',
+  ],
+}
+
+const weather: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'weather' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e013',
+    // eslint-disable-next-line max-len
+    'M11.2713 5.82178C10.4937 5.0199 9.45849 4.51286 8.30954 4.46999C5.79353 4.3761 3.68471 6.54358 3.59936 9.31119C3.56148 10.5396 3.92856 11.6797 4.56858 12.5761 M7.5 22.9698H8V22.5269L7.56035 22.4734L7.5 22.9698ZM8.50006 13.1302L8.4397 13.6266L9.00121 13.6948L9.00006 13.1292L8.50006 13.1302ZM8.5 13.1H8L8 13.101L8.5 13.1ZM19.9801 10.4086L19.5169 10.5968L19.722 11.1013L20.2072 10.854L19.9801 10.4086ZM7.5 23H7V23.5H7.5V23ZM7.56035 22.4734C5.59461 22.2344 4 20.3801 4 18.05H3C3 20.8157 4.90544 23.158 7.43965 23.4661L7.56035 22.4734ZM4 18.05C4 15.5464 5.83464 13.6 8 13.6V12.6C5.1948 12.6 3 15.086 3 18.05H4ZM8 13.6C8.14879 13.6 8.29548 13.609 8.4397 13.6266L8.56042 12.6339C8.37627 12.6115 8.18927 12.6 8 12.6V13.6ZM9.00006 13.1292L9 13.099L8 13.101L8.00006 13.1312L9.00006 13.1292ZM9 13.1C9 9.68515 11.5062 7 14.5 7V6C10.8664 6 8 9.22469 8 13.1H9ZM14.5 7C16.7103 7 18.6458 8.45397 19.5169 10.5968L20.4433 10.2203C19.4416 7.75618 17.1742 6 14.5 6V7ZM20.2072 10.854C20.9058 10.4979 21.682 10.3 22.5 10.3V9.3C21.518 9.3 20.5867 9.5381 19.753 9.9631L20.2072 10.854ZM22.5 10.3C25.4938 10.3 28 12.9852 28 16.4H29C29 12.5247 26.1336 9.3 22.5 9.3V10.3ZM28 16.4C28 19.8148 25.4938 22.5 22.5 22.5V23.5C26.1336 23.5 29 20.2753 29 16.4H28ZM22.5 22.5H8V23.5H22.5V22.5ZM8 22.5H7.5V23.5H8V22.5ZM8 23V22.9698H7V23H8Z M11.5 4.29999L12.5 2.64999 M6.5 3.2L6 1M3 7.05L1 5.95M3 12.55L1.5 14.2',
+  ],
+}
+
+const developer: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'developer' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e014',
+    // eslint-disable-next-line max-len
+    'M2 11h3.667l2.333 13h-3.667l-2.333-13zM3.195 12l1.975 11h1.635l-1.975-11h-1.635zM1 7h3.5l0.77 3h-3.5l-0.77-3zM2.289 8l0.256 1h1.435l-0.256-1h-1.434zM20 2h-3.309l-10.691 28h3.309l10.691-28zM18.548 3l-9.928 26h-1.168l9.928-26h1.168zM17 11h9.52l3.48 13h-9.94l-3.060-13zM18.263 12l2.59 11h7.844l-2.944-11h-7.49z M20 13h4.84l2.16 9h-4.753l-2.247-9zM21.28 14l1.748 7h2.704l-1.68-7h-2.772z',
+  ],
+}
+
 export default [
   audio,
   enter,
@@ -125,4 +211,10 @@ export default [
   copy,
   expand,
   minimize,
+  home,
+  content,
+  contact,
+  branching,
+  weather,
+  developer,
 ]
