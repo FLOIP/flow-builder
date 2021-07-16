@@ -72,8 +72,6 @@
                 </router-link>
               </div>
 
-              <div class="vertical-divider"></div>
-
               <slot name="extra-buttons" />
             </div>
 

@@ -531,10 +531,6 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                             </a>
                           </div>
                            
-                          <div
-                            class="vertical-divider"
-                          />
-                           
                         </div>
                          
                         <div
@@ -709,12 +705,8 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             </a>
                           </div>
                            
-                          <div
-                            class="vertical-divider"
-                          />
-                           
                           <a
-                            class="btn btn-success btn-sm"
+                            class="btn btn-success btn-sm ml-4"
                             disabled="disabled"
                             href="#"
                             title="another grouped button"
@@ -1304,10 +1296,6 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             </a>
                           </div>
                            
-                          <div
-                            class="vertical-divider"
-                          />
-                           
                         </div>
                          
                         <div
@@ -1319,7 +1307,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             class="btn-group mr-2"
                           >
                             <a
-                              class="btn btn-success btn-sm"
+                              class="btn btn-success btn-sm ml-4"
                               disabled="disabled"
                               href="#"
                               title="another grouped button"
@@ -1900,10 +1888,6 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             </a>
                           </div>
                            
-                          <div
-                            class="vertical-divider"
-                          />
-                           
                         </div>
                          
                         <div
@@ -2466,10 +2450,6 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
               
                             </a>
                           </div>
-                           
-                          <div
-                            class="vertical-divider"
-                          />
                            
                         </div>
                          
