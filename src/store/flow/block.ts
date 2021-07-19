@@ -1,7 +1,8 @@
+import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, set} from 'lodash'
+import {defaults, setWith, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {popFirstEmptyItem} from './utils/listBuilder'
@@ -59,8 +60,14 @@ export const mutations: MutationTree<IFlowsState> = {
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
   },
-  block_updateConfigByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
-    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, path, value)
+  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string}) {
+    // Make nested assignment reactive
+    setWith(
+      findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!,
+      path,
+      value,
+      (nestedValue, key, nestedObject) => Vue.set(nestedObject, key, nestedValue),
+    )
   },
   block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -70,6 +77,11 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
+  block_setLabel({commit}, {blockId, value}) {
+    commit('block_setLabel', {blockId, value})
+    commit('block_setName', {blockId, value: snakeCase(value)})
+  },
+
   async block_createBlockDefaultExitWith(
     {dispatch},
     {props}: { props: { uuid: string } & Partial<IBlockExit> },
