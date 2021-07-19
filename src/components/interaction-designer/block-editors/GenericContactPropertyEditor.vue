@@ -1,7 +1,7 @@
 <template>
   <!--Contact property editor for all block types-->
   <div class="generic-contact-property-editor">
-    <label>{{ 'flow-builder.contact-properties' | trans }}</label>
+    <label class="text-primary">{{ 'flow-builder.contact-properties' | trans }}</label>
     <div class="custom-control custom-checkbox">
       <input
         id="setContactProperty"
@@ -36,7 +36,7 @@
       </validation-message>
 
       <!--Contact property value editor with actions-->
-      <label>{{ 'flow-builder.value' | trans }}</label>
+      <h6>{{ 'flow-builder.value' | trans }}</h6>
       <div
         v-if="isBlockInteractive(block)"
         class="form-group">
@@ -125,8 +125,8 @@ class GenericContactPropertyEditor extends mixins(Lang) {
 
   created(): void {
     this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')
-    this.propertyKey = get(this.block.config, 'set_contact_property.property_key', '')
-    this.propertyValue = get(this.block.config, 'set_contact_property.property_value', EMPTY_STRING_EXPRESSION)
+    this.propertyKey = get(this.block.config.set_contact_property, 'property_key', '')
+    this.propertyValue = get(this.block.config.set_contact_property, 'property_value', EMPTY_STRING_EXPRESSION)
     this.initPropertyValueAction()
   }
 

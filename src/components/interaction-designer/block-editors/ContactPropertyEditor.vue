@@ -1,7 +1,7 @@
 <template>
   <div class="contact-property-editor">
     <div class="form-group">
-      <label>{{ 'flow-builder.action-label' | trans }}</label>
+      <label class="text-primary">{{ 'flow-builder.action-label' | trans }}</label>
       <p>{{ 'flow-builder.contact-property-action-hint' | trans }}</p>
       <div class="form-group">
         <div class="custom-control custom-radio">
