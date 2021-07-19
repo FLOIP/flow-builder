@@ -12,6 +12,7 @@
       :start-x="x"
       :start-y="y"
       :is-editable="isEditable"
+      @initialized="handleDraggableInitializedForBlock(block, $event)"
       @dragged="onMoved"
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
@@ -132,11 +133,11 @@
                 'btn-info': exit.destination_block != null,
               }"
               :is-editable="isEditable"
-              @initialized="handleDraggableInitializedFor(exit, $event)"
+              @initialized="handleDraggableInitializedForExit(exit, $event)"
               @dragStarted="onCreateExitDragStarted($event, exit)"
               @dragged="onCreateExitDragged($event)"
               @dragEnded="onCreateExitDragEnded($event, exit)"
-              @destroyed="handleDraggableDestroyedFor(exit)">
+              @destroyed="handleDraggableDestroyedForExit(exit)">
               <i class="glyphicon glyphicon-move" />
             </plain-draggable>
 
@@ -260,11 +261,17 @@ export default {
   computed: {
     ...mapState('flow', [
       'resources',
-      'selectedBlocks',
+      'selectedBlockUuids',
     ]),
     ...mapState(
       'builder',
-      ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid'],
+      [
+      'activeBlockId',
+      'operations',
+      'activeConnectionsContext',
+      'draggableForExitsByUuid',
+      'draggableForBlocksByUuid',
+      ],
     ),
     ...mapState({
       blockClasses: ({trees: {ui}}) => ui.blockClasses,
@@ -286,7 +293,7 @@ export default {
     },
 
     isBlockSelected() {
-      return includes(this.selectedBlocks, this.block.uuid)
+      return includes(this.selectedBlockUuids, this.block.uuid)
     },
 
     // todo: does this component know too much, what out of the above mapped state can be mapped?
@@ -319,6 +326,7 @@ export default {
     }),
 
     ...mapActions('builder', [
+      'changeBlockPositionTo',
       // ConnectionSourceRelocate
       'initializeConnectionSourceRelocateWith',
       'setConnectionSourceRelocateValue',
@@ -456,16 +464,16 @@ export default {
       this.setConnectionCreateTargetBlockToNullFrom({block})
     },
 
-    onMoved({position: {left: x, top: y}}) {
+    onMoved({position}) {
       // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
-
+      const {left: x, top: y} = position
       const {block} = this
       this.$nextTick(() => {
-        this.setBlockPositionTo({position: {x, y}, block})
+        this.changeBlockPositionTo({position: {x, y}, block})
 
-        forEach(this.draggableForExitsByUuid, (draggable, key) => {
+        forEach(this.draggableForExitsByUuid, (exitDraggable, key) => {
           try {
-            draggable.position()
+            exitDraggable.position()
           } catch (e) {
             console.warn('Block', 'onMoved', 'positioning draggable on', key, 'can\'t access property "initElm", props is undefined')
           }
@@ -481,16 +489,24 @@ export default {
       this.labelContainerMaxWidth += 0
     },
 
-    handleDraggableInitializedFor({uuid}, {draggable}) {
+    handleDraggableInitializedForBlock(block, {draggable}) {
+      this.draggableForBlocksByUuid[block.uuid] = draggable
+
+      const {left, top} = draggable
+
+      console.debug('Block', 'handleDraggableInitializedForBlock', {blockId: block.uuid, coords: {left, top}})
+    },
+
+    handleDraggableInitializedForExit({uuid}, {draggable}) {
       this.draggableForExitsByUuid[uuid] = draggable
 
       const {left, top} = draggable
       const {uuid: blockId} = this.block
 
-      console.debug('Block', 'handleDraggableInitializedFor', {blockId, exitId: uuid, coords: {left, top}})
+      console.debug('Block', 'handleDraggableInitializedForExit', {blockId, exitId: uuid, coords: {left, top}})
     },
 
-    handleDraggableDestroyedFor({uuid}) {
+    handleDraggableDestroyedForExit({uuid}) {
       delete this.draggableForExitsByUuid[uuid]
     },
 

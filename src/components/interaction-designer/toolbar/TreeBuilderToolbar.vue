@@ -1,7 +1,7 @@
 <template>
   <div
     ref="builder-toolbar"
-    class="tree-builder-toolbar">
+    class="tree-builder-toolbar d-flex flex-column">
     <div class="tree-builder-toolbar-main-menu">
       <div
         v-if="isImporterVisible"
@@ -183,7 +183,7 @@
         </div>
       </div>
     </div>
-    <div class="tree-builder-toolbar-alerts w-100">
+    <div class="tree-builder-toolbar-alerts w-100 d-flex flex-column">
       <selection-banner @updated="handleHeightChangeFromDOM" />
       <error-notifications @updated="handleHeightChangeFromDOM" />
     </div>

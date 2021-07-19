@@ -16,7 +16,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, every, forEach, get, has, includes, omit} from 'lodash'
+import {cloneDeep, defaults, every, forEach, filter, get, has, includes, minBy, omit} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockUiData} from '@/store/builder'
 import {IFlowsState} from '.'
@@ -63,6 +63,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
   hasOfflineMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.OFFLINE),
   currentFlowsState: (state) => state,
+  selectedBlocks: (state, getters) => filter(getters.activeFlow.blocks, (block) => includes(state.selectedBlockUuids, block.uuid)),
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -363,26 +364,26 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_clearMultiSelection({state, dispatch}) {
-    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
+    forEach(state.selectedBlockUuids, (blockId: IBlock['uuid']) => {
       dispatch('block_deselect', {blockId})
     })
   },
 
   async flow_removeAllSelectedBlocks({state, dispatch}) {
-    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
+    forEach(state.selectedBlockUuids, (blockId: IBlock['uuid']) => {
       dispatch('flow_removeBlock', {blockId})
     })
 
-    state.selectedBlocks = []
+    state.selectedBlockUuids = []
   },
 
   async flow_duplicateAllSelectedBlocks({state, dispatch}) {
-    const newBlocksUuid: string[] = []
-    forEach(state.selectedBlocks, async (blockId: IBlock['uuid']) => {
+    const newBlocksUuids: string[] = []
+    forEach(state.selectedBlockUuids, async (blockId: IBlock['uuid']) => {
       const duplicatedBlock: IBlock = await dispatch('flow_duplicateBlock', {blockId})
-      newBlocksUuid.push(duplicatedBlock.uuid)
+      newBlocksUuids.push(duplicatedBlock.uuid)
     })
-    state.selectedBlocks = newBlocksUuid
+    state.selectedBlockUuids = newBlocksUuids
   },
 }
 
