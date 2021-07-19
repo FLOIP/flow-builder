@@ -2246,7 +2246,9 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           <div
                             class="generic-contact-property-editor"
                           >
-                            <label>
+                            <label
+                              class="text-primary"
+                            >
                               Contact Properties
                             </label>
                              
@@ -2810,7 +2812,9 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           <div
                             class="generic-contact-property-editor"
                           >
-                            <label>
+                            <label
+                              class="text-primary"
+                            >
                               Contact Properties
                             </label>
                              
@@ -3371,7 +3375,9 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           <div
                             class="generic-contact-property-editor"
                           >
-                            <label>
+                            <label
+                              class="text-primary"
+                            >
                               Contact Properties
                             </label>
                              
@@ -3902,7 +3908,9 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                           <div
                             class="generic-contact-property-editor"
                           >
-                            <label>
+                            <label
+                              class="text-primary"
+                            >
                               Contact Properties
                             </label>
                              
