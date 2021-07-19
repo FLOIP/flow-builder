@@ -6,6 +6,7 @@
       class="block"
       :class="{
         active: isBlockActivated,
+        'has-toolbar': isBlockSelected,
         [`category-${blockClasses[block.type].category}`]: true,
       }"
       :start-x="x"
@@ -15,7 +16,7 @@
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
       @destroyed="handleDraggableDestroyedForBlock">
-      <div class="d-flex justify-content-between">
+      <div class="block-toolbar d-flex justify-content-between">
         <div class="header-actions-left">
           <!--Selection-->
           <font-awesome-icon
@@ -622,6 +623,23 @@ export default {
   transition: opacity 200ms ease-in-out,
   background-color 200ms ease-in-out;
 
+  .block-toolbar {
+    transition: opacity 100ms ease-in-out;
+    background: white;
+    opacity: 0; // default state of hidden
+
+    margin-top: -39.75px;
+    margin-right: -7px;
+    margin-left: -7px;
+    padding: 8px;
+
+    border-top: inherit;
+    border-right: inherit;
+    border-left: inherit;
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+  }
+
   .block-label {
     font-size: 14px;
     font-weight: normal;
@@ -720,10 +738,26 @@ export default {
     opacity: 1;
   }
 
+  // block exit states
   &.active,
   &:hover {
     .block-exit .block-exit-remove {
       opacity: 1;
+    }
+  }
+
+  // toolbar states
+  &.has-toolbar,
+  &:hover {
+    .block-toolbar {
+      opacity: 1;
+    }
+  }
+
+  &.active {
+    .block-toolbar {
+      margin-left: -8px;
+      margin-right: -8px;
     }
   }
 }

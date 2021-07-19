@@ -1,13 +1,18 @@
 <template>
   <div class="starting-block-button">
+    <hr>
     <template v-if="isEditable">
       <h4>{{ 'flow-builder.options' | trans }}</h4>
       <div class="form-group">
         <button
           type="button"
-          class="btn btn-secondary btn-sm"
+          class="btn btn-sm w-100"
+          :class="{'btn-outline-primary': !isStartBlock, 'btn-primary': isStartBlock}"
           :disabled="isStartBlock"
           @click="setStartBlock($event)">
+          <font-awesome-icon
+            :icon="['fac', 'enter']"
+            class="fa-btn" />
           <template v-if="isStartBlock">
             {{ 'flow-builder.currently-set-as-starting-block' | trans }}
           </template>

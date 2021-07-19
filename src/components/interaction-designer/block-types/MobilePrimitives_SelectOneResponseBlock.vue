@@ -5,9 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
 
       <div class="prompt-resource">
         <resource-editor
@@ -111,6 +115,8 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
 
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   get promptResource(): IResource {
     return this.resourcesByUuid[this.block.config.prompt]

@@ -9,8 +9,8 @@
       :key="block.uuid"
       :ref="`block/${block.uuid}`"
       :block="block"
-      :x="block.vendor_metadata.io_viamo.uiData.xPosition"
-      :y="block.vendor_metadata.io_viamo.uiData.yPosition" />
+      :x="block.ui_metadata.canvas_coordinates.x"
+      :y="block.ui_metadata.canvas_coordinates.y" />
   </div>
 </template>
 
@@ -41,6 +41,7 @@ const DEBOUNCE_SCROLL_TIMER = 100
 })
 export default class BuilderCanvas extends Vue {
   @Prop() block!: IBlock
+  @Prop({default: 0}) widthAdjustment!: number
 
   // ###### Validation API Watchers [
   @Watch('activeFlow', {deep: true, immediate: true})
@@ -138,11 +139,11 @@ export default class BuilderCanvas extends Vue {
   }
 
   get blockAtTheLowestPosition(): any {
-    return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.yPosition')
+    return maxBy(this.activeFlow.blocks, 'block.ui_metadata.canvas_coordinates.y')
   }
 
   get blockAtTheFurthestRightPosition(): any {
-    return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
+    return maxBy(this.activeFlow.blocks, 'block.ui_metadata.canvas_coordinates.x')
   }
 
   get windowHeight(): number {
@@ -163,7 +164,7 @@ export default class BuilderCanvas extends Vue {
       return this.windowHeight
     }
 
-    const yPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.yPosition')
+    const yPosition = get(this.blockAtTheLowestPosition, 'block.ui_metadata.canvas_coordinates.y')
     const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
 
     if (scrollHeight < this.windowHeight) {
@@ -175,22 +176,22 @@ export default class BuilderCanvas extends Vue {
 
   get canvasWidth(): number {
     if (this.activeFlow.blocks.length == 0) {
-      return this.windowWidth
+      return this.windowWidth - this.widthAdjustment
     }
 
     if (!this.blockAtTheFurthestRightPosition) {
       console.debug('Interaction Designer', 'Unable to find block at the furthest right position')
-      return this.windowWidth
+      return this.windowWidth - this.widthAdjustment
     }
 
-    const xPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.xPosition')
+    const xPosition = get(this.blockAtTheLowestPosition, 'block.ui_metadata.canvas_coordinates.x')
     const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
 
     if (scrollWidth < this.windowWidth) {
-      return this.windowWidth
+      return this.windowWidth - this.widthAdjustment
     }
 
-    return scrollWidth
+    return scrollWidth - this.widthAdjustment
   }
 
   @flowVuexNamespace.State flows?: IFlow[]

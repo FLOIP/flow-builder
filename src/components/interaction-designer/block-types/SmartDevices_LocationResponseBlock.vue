@@ -5,9 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
 
       <block-threshold-editor
         :block="block"
@@ -70,6 +74,8 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
 
   // @Prop()readonly block!: ILocationResponseBlock
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   updateThreshold(value: number) {
     this.setAccuracyThreshold({blockId: this.block.uuid, value})
