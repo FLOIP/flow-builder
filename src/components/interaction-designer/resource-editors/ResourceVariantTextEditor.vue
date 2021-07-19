@@ -9,6 +9,7 @@
           <span class="input-group-text">{{label}}</span>
         </div>
 
+        <!-- todo: make :rows dynamic! -->
         <textarea
           v-model="content"
           v-focus="isSelected"

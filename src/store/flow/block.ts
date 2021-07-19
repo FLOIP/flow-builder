@@ -10,7 +10,7 @@ import {
 } from '@floip/flow-runner'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
-import { defaults, set, get, isNil, find, filter, snakeCase } from 'lodash'
+import { defaults, set, get, isNil, find, filter, snakeCase, isEmpty } from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
@@ -46,7 +46,7 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).tag = value
   },
-  block_setExitTest(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
+  block_setExitTest(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: IBlockExit['test'] }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).test = value
   },
@@ -58,14 +58,14 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).semantic_label = value
   },
-  block_pushNewExit(state, {blockId, newExit, insertAtIndex = undefined, shouldUseCache = false}: { blockId: string, newExit: IBlockExit , insertAtIndex: number | undefined, shouldUseCache: boolean}) {
+  block_addExit(state, {blockId, exit, insertAtIndex = undefined, shouldUseCache = false}: { blockId: string, exit: IBlockExit, insertAtIndex: number | undefined, shouldUseCache: boolean}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     const blockExits = findBlockExitsRef(block, shouldUseCache)
 
     if (!isNil(insertAtIndex)) { // insertion, eg: case for block types having branching exits option (Segregated | Unified)
-      blockExits.splice(insertAtIndex, 0, newExit);
+      blockExits.splice(insertAtIndex, 0, exit)
     } else { // just push
-      blockExits.push(newExit);
+      blockExits.push(exit)
     }
   },
   block_updateExits(state, { block, newExits, shouldUseCache = false }: { block: IBlock; newExits: IBlockExit[]; shouldUseCache: boolean }) {
@@ -144,6 +144,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         config: {},
         // prerequisite for reactivity, even optional params
         destination_block: undefined,
+        test: undefined,
+        semantic_label: undefined,
       }),
     }
   },
@@ -155,6 +157,24 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     commit('block_setExitTag', {blockId, exitId, value: tag})
     commit('block_setExitTest', {blockId, exitId, value: test})
     commit('block_setExitSemanticLabel', {blockId, exitId, value: semantic_label})
+  },
+
+  block_setExitSemanticLabelAndSlugOntoTagIfPreviouslySlugged(
+    {commit, state},
+    {exitId, blockId, value}: {exitId: IBlockExit['uuid'], blockId: IBlock['uuid'], value: IBlockExit['semantic_label']},
+  ) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    const exit = findBlockExitWith(exitId, block)
+
+    const possiblePreviousSluggifiedTag = snakeCase(exit.semantic_label)
+    const wasTagPreviouslySluggified = possiblePreviousSluggifiedTag === exit.tag
+    const wasTagPreviouslyEmpty = isEmpty(exit.tag)
+
+    commit('block_setExitSemanticLabel', {blockId, exitId, value})
+
+    if (wasTagPreviouslyEmpty || wasTagPreviouslySluggified) {
+      commit('block_setExitTag', {blockId, exitId, value: snakeCase(value)})
+    }
   },
 
   async block_swapBlockExitDestinationBlockIds(

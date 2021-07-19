@@ -67,7 +67,9 @@
 
       <hr>
 
-      <block-output-branching-config :block="block" @commitIsSegregatedBranching="handleBranchingTypeChange"/>
+      <block-output-branching-config
+        :block="block"
+        @commitIsSegregatedBranching="handleBranchingTypeChange" />
 
       <slot name="extras"></slot>
 
@@ -160,7 +162,9 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
       this.cacheSegregatedExits()
       this.makeExitsUnified()
     }
-  }@flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  }
+
+  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @blockVuexNamespace.Getter inflatedChoices?: { [key: string]: IInflatedChoicesInterface }
   @blockVuexNamespace.State inflatedEmptyChoice?: IInflatedChoicesInterface

@@ -152,7 +152,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       const resourceUuid = state.inflatedEmptyChoice.resource.uuid
       const blockExit = findBlockExitsRef(activeBlock, !getters.isExitsBranchingSegregated)
       dispatch('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
-      commit('flow/block_pushNewExit', {
+      commit('flow/block_addExit', {
           blockId: activeBlock.uuid,
           newExit: state.inflatedEmptyChoice.exit,
           insertAtIndex: blockExit.length - 1, // insert before 'Error' exit
@@ -171,7 +171,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     commit('flow/block_updateVendorMetadataByPath', {
       blockId: activeBlock.uuid,
       path: 'io_viamo.cache.outputBranching.segregatedExits',
-      value: filter(activeBlock.exits,  (exit) => !exit.default)
+      value: filter(activeBlock.exits, (exit) => !exit.default)
     }, { root: true })
   },
 
@@ -214,6 +214,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
       tag: 'Error',
       label: 'Error',
+      test: '',
     }
 
     await dispatch('createVolatileEmptyChoice', {index: 0})
