@@ -1,6 +1,6 @@
 <template>
   <div class="expression-input form-group">
-    <label>{{ label }}</label>
+    <label :class="labelClass">{{ label }}</label>
     <textarea
       ref="input"
       v-model="expression"
@@ -36,6 +36,11 @@ export default {
     label: {
       type: [String, Number],
       required: true,
+    },
+    labelClass: {
+      type: String,
+      default: 'text-primary',
+      required: false,
     },
     placeholder: {
       type: String,
