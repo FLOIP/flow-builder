@@ -1800,7 +1800,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                         class="mobile-primitive-numeric-response-block"
                       >
                         <h3
-                          class="no-room-above text-primary"
+                          class="no-room-above"
                         >
                           
     Edit Numeric Response block
@@ -2355,7 +2355,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                         class="mobile-primitive-numeric-response-block"
                       >
                         <h3
-                          class="no-room-above text-primary"
+                          class="no-room-above"
                         >
                           
     Edit Numeric Response block
