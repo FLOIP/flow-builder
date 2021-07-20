@@ -5,9 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
 
       <!--Specific config-->
       <block-format-string-editor
@@ -84,6 +88,8 @@ class ConsoleIO_ReadBlock extends mixins(Lang) {
   @Prop() readonly declare block: IReadBlock
 
   @Prop() readonly declare flow: IFlow
+
+  showSemanticLabel = false
 
   filterVariableName(e: any) {
     if (e.key.match(/\W+|Enter/g)) {

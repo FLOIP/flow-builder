@@ -18,7 +18,10 @@
             :key="i"
             class="tab-content-style">
             <header class="d-flex">
-              <svg-icon :style="{marginTop: '2px'}" :icon="iconsMap.get(mode)" />
+              <font-awesome-icon
+                v-if="iconsMap.get(mode)"
+                :icon="iconsMap.get(mode)"
+                :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}" />
               <h6 class="ml-1">{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
             </header>
 
@@ -61,14 +64,18 @@
                       class="btn btn-primary ivr-buttons"
                       @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
                       @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)">
-                      <svg-icon icon="upload" />
+                      <font-awesome-icon
+                        :icon="['fac', 'upload']"
+                        class="fa-btn" />
                       {{ 'flow-builder.upload-audio' | trans }}
                     </button>
                     <button
                       v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
                       class="btn btn-primary ivr-buttons ml-2"
                       @click.prevent="triggerRecordViaPhoneFor(languageId)">
-                      <svg-icon icon="record-audio" />
+                      <font-awesome-icon
+                        :icon="['fac', 'record-audio']"
+                        class="fa-btn" />
                       {{ 'flow-builder.record-audio' | trans }}
                     </button>
                   </div>
@@ -112,7 +119,6 @@ import {mixins} from 'vue-class-component'
 import {TabsPlugin} from 'bootstrap-vue'
 import UploadMonitor from '../block-editors/UploadMonitor.vue'
 import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
-import SvgIcon from '@/components/common/SvgIcon.vue'
 
 Vue.use(TabsPlugin)
 
@@ -139,7 +145,6 @@ interface IResourceDefinitionVariantOverModesWithOptionalValue extends Partial<I
     ResourceVariantTextEditor,
     UploadMonitor,
     PhoneRecorder,
-    SvgIcon,
   },
 })
 export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
@@ -161,12 +166,12 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 
   SupportedContentType = SupportedContentType
 
-  iconsMap = new Map<string, string>([
-    [SupportedMode.SMS, 'message'],
-    [SupportedMode.USSD, 'ussd'],
-    [SupportedMode.IVR, 'audio'],
-    [SupportedMode.RICH_MESSAGING, 'rich-messaging'],
-    [SupportedMode.OFFLINE, 'phone'],
+  iconsMap = new Map<string, object>([
+    [SupportedMode.SMS, ['far', 'envelope']],
+    [SupportedMode.USSD, ['fac', 'ussd']],
+    [SupportedMode.IVR, ['fac', 'audio']],
+    [SupportedMode.RICH_MESSAGING, ['far', 'comment-dots']],
+    [SupportedMode.OFFLINE, ['fas', 'mobile-alt']],
   ])
 
   triggerRecordViaPhoneFor(langId: ILanguage['id']): void {
@@ -246,5 +251,12 @@ export default ResourceEditor
 .ivr-buttons {
   font-size: small;
   flex-grow: 1;
+}
+.custom-icons {
+  height: 1.25em;
+  width: 1.25em;
+}
+.library-icons {
+  margin-top: 2px;
 }
 </style>
