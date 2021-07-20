@@ -122,7 +122,10 @@
             class="block-exit-tag badge badge-warning"
             @mouseenter="exitMouseEnter(exit)"
             @mouseleave="exitMouseLeave(exit)">
-            <span class="block-exit-tag-text align-self-center">{{ visibleExitTag(key, exit) }}</span>
+            <span class="block-exit-tag-text align-self-center"
+                  v-b-tooltip.hover.top="exit.test">
+              {{ visibleExitTag(key, exit) }}
+            </span>
 
             <span
               v-if="isEditable"
