@@ -131,7 +131,7 @@ export default {
     //     LeaderLine.pointAnchor(document.body, sourcePosition),
     //     LeaderLine.pointAnchor(document.body, targetPosition), options)
 
-    const blockPaddingOffset = {x: 34, y: -7}
+    const blockPaddingOffset = {x: '50%', y: -7}
     const start = document.getElementById(this.sourceElementId)
     const end = this.position
       ? document.getElementById(this.targetElementId)
