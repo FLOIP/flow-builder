@@ -236,8 +236,7 @@ var actions = {
               _context.t1 = _context.sent;
               _context.t2 = {
                 uuid: _context.t1,
-                tag: 'Default',
-                label: 'Default'
+                name: 'Default'
               };
               _context.t3 = {
                 props: _context.t2

@@ -326,8 +326,7 @@ var actions = {
               _context.t1 = _context.sent;
               _context.t2 = {
                 uuid: _context.t1,
-                tag: 'Default',
-                label: 'Default'
+                name: 'Default'
               };
               _context.t3 = {
                 props: _context.t2
@@ -348,8 +347,7 @@ var actions = {
               _context.t7 = _context.sent;
               _context.t8 = {
                 uuid: _context.t7,
-                tag: 'Error',
-                label: 'Error'
+                name: 'Error'
               };
               _context.t9 = {
                 props: _context.t8
