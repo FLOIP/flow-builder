@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label class="text-primary" v-if="label">{{ label }}</label>
+    <label :class="labelClass" v-if="label">{{ label }}</label>
     <textarea
       class="form-control"
       :class="{ 'is-invalid': isInvalid }"
@@ -20,6 +20,11 @@ export default {
     label: {
       type: [String, Number],
       required: true,
+    },
+    labelClass: {
+      type: String,
+      default: 'text-primary',
+      required: false,
     },
     placeholder: {
       type: String,
