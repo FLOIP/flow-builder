@@ -23,7 +23,7 @@
             v-if="isBlockSelected"
             v-b-tooltip.hover="trans('flow-builder.deselect-block')"
             :icon="['far', 'check-circle']"
-            class="fa-btn text-primary"
+            class="fa-btn text-info"
             @click="block_deselect({ blockId: block.uuid })" />
           <font-awesome-icon
             v-if="!isBlockSelected"
