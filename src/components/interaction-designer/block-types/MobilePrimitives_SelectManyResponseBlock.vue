@@ -28,14 +28,6 @@
           :block="block"
           :flow="flow" />
       </div>
-      <div class="choices-prompt-resource">
-        <resource-editor
-          v-if="choicesPromptResource"
-          :label="'flow-builder.choices-prompt' | trans"
-          :resource="choicesPromptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
       <div class="form-group">
         <!--Show non empty choices-->
         <template v-for="(choiceKey) in Object.keys(inflatedChoices)">

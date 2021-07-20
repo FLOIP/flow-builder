@@ -125,10 +125,6 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     return this.resourcesByUuid[this.block.config.question_prompt || '']
   }
 
-  get choicesPromptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.choices_prompt || '']
-  }
-
   @Watch('inflatedChoices', {deep: true})
   onChoicesChanged(newChoices: object) {
     console.debug('Watched inflatedChoices', newChoices)
