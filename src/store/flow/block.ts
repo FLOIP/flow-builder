@@ -36,6 +36,10 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .semantic_label = value
   },
+  block_setTags(state, {blockId, value}) {
+    findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+      .tags = value
+  },
   block_setExitTag(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).tag = value

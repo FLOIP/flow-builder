@@ -19,9 +19,11 @@
         :block="block"
         :flow="flow" />
 
-      <slot name="extras" />
-
       <generic-contact-property-editor :block="block" />
+
+      <tag-selector :block="block" />
+
+      <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"
@@ -43,6 +45,7 @@ import PrintStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBl
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
+import TagSelector from '@/components/interaction-designer/block-editors/TagSelector.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -63,6 +66,7 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    TagSelector,
   },
 })
 class ConsoleIO_PrintBlock extends mixins(Lang) {

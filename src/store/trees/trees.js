@@ -87,6 +87,8 @@ export default {
 
     groups: ({ui}) => lodash.get(ui, 'groups', []),
 
+    blockTags: ({ui}) => lodash.get(ui, 'blockTags', []),
+
     interactiveBlockClasses: ({ui}) => lodash.pickBy(ui.blockClasses, (value) => value.is_interactive),
 
     blockClasses: ({ui}) => lodash.keys(ui.blockClasses),
