@@ -184,10 +184,8 @@
       </div>
     </div>
     <div class="tree-builder-toolbar-alerts w-100">
-<!--      <div style="{position: fixed}">-->
-        <selection-banner @updated="handleHeightChangeFromDOM" />
-        <error-notifications @updated="handleHeightChangeFromDOM" />
-<!--      </div>-->
+      <selection-banner @updated="handleHeightChangeFromDOM" />
+      <error-notifications @updated="handleHeightChangeFromDOM" />
     </div>
   </div>
 </template>

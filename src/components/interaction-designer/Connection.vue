@@ -14,6 +14,7 @@ const {LeaderLine} = window
 
 const lightColor = '#6897BB'
 const darkColor = '#30516a'
+const disconnectionColor = '#dc3545'
 
 export default {
   props: {
@@ -68,8 +69,8 @@ export default {
 
     prominentOptions() {
       return {
-        startPlugColor: '#dc3545',
-        endPlugColor: '#dc3545',
+        startPlugColor: disconnectionColor,
+        endPlugColor: disconnectionColor,
       }
     },
 
