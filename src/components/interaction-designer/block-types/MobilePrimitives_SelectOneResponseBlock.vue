@@ -33,6 +33,7 @@
                based on how this instance of flow-builder works -->
           <resource-variant-text-editor
             :label="choiceKey.toString()"
+            :rows="1"
             :placeholder="'Enter choice...'"
             :resource-id="inflatedChoices[choiceKey].resource.uuid"
             :resource-variant="findOrGenerateStubbedVariantOn(
@@ -45,6 +46,7 @@
         <!--Show empty choice-->
         <resource-variant-text-editor
           :label="(Object.keys(inflatedChoices).length + 1).toString()"
+          :rows="1"
           :placeholder="'Enter choice...'"
           :resource-id="inflatedEmptyChoice.resource.uuid"
           :resource-variant="findOrGenerateStubbedVariantOn(

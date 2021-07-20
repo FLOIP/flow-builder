@@ -14,7 +14,7 @@
           v-focus="isSelected"
           :placeholder="placeholder || `flow-builder.enter-${resourceVariant.content_type.toString().toLowerCase()}-content` | trans"
           class="form-control"
-          rows="1"
+          :rows="rows"
           @focus="select"
           @blur="deselect" />
       </div>
@@ -153,6 +153,11 @@ export default {
     enableAutogenButton: {
       type: Boolean,
       default: true,
+    },
+
+    rows: {
+      type: Number,
+      default: 2,
     },
 
     // maybe!?
