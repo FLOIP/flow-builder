@@ -392,9 +392,9 @@ export default {
     transition: right 200ms ease-in-out;
 
     .tree-sidebar {
-      background-color: #eee;
-      border: 1px solid lightgray;
-      border-radius: 0;
+      background-color: white;
+      border: 1px solid #D6D0D0;
+      border-radius: 0.3em;
       box-shadow: 0 3px 6px #CACACA;
 
       padding: 1em;
@@ -436,35 +436,35 @@ export default {
 
   .tree-sidebar-container {
     .tree-sidebar {
-      &.category-0 {
-        border-color: $category-0-light;
-        background-color: $category-0-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-0-dark;
-        }
-      }
-
-      &.category-1 {
-        border-color: $category-1-light;
-        background-color: $category-1-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-1-dark;
-        }
-      }
-
-      &.category-2 {
-        border-color: $category-2-light;
-        background-color: $category-2-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-2-dark;
-        }
-      }
+      //  &.category-0 {
+      //    border-color: $category-0-light;
+      //    background-color: $category-0-faint;
+      //    border-radius: 0.3em;
+      //
+      //    h3 {
+      //      color: $category-0-dark;
+      //    }
+      //  }
+      //
+      //  &.category-1 {
+      //    border-color: $category-1-light;
+      //    background-color: $category-1-faint;
+      //    border-radius: 0.3em;
+      //
+      //    h3 {
+      //      color: $category-1-dark;
+      //    }
+      //  }
+      //
+      //  &.category-2 {
+      //    border-color: $category-2-light;
+      //    background-color: $category-2-faint;
+      //    border-radius: 0.3em;
+      //
+      //    h3 {
+      //      color: $category-2-dark;
+      //    }
+      //  }
     }
   }
 

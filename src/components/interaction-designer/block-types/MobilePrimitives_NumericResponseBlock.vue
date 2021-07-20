@@ -1,6 +1,6 @@
 <template>
   <div class="mobile-primitive-numeric-response-block">
-    <h3 class="no-room-above">
+    <h3 class="no-room-above text-primary">
       {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
     </h3>
 
@@ -29,10 +29,15 @@
         :resource="promptResource"
         :block="block"
         :flow="flow" />
+
+      <hr>
+
       <slot name="extras" />
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />

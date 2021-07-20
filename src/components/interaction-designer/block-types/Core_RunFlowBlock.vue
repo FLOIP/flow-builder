@@ -33,10 +33,14 @@
         </div>
       </validation-message>
 
+      <hr>
+
       <slot name="extras" />
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />
