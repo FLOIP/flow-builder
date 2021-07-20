@@ -1,6 +1,7 @@
 <template>
   <!--Contact property editor for all block types-->
   <div class="generic-contact-property-editor">
+    <hr>
     <label class="text-primary">{{ 'flow-builder.contact-properties' | trans }}</label>
     <div class="custom-control custom-checkbox">
       <input

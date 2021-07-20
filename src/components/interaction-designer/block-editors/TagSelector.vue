@@ -1,19 +1,17 @@
 <template>
   <validation-message
     #input-control="{isValid}"
-    :message-key="`block/${block.uuid}/config/tags`">
+    :message-key="`block/${block.uuid}/tags`">
     <div class="block-group">
-      <label>{{ 'flow-builder.tag-label' | trans }}</label>
+      <label>{{ 'flow-builder.tags-label' | trans }}</label>
       <vue-multiselect
         v-model="selectedTags"
         track-by="name"
         label="name"
         :class="{invalid: isValid === false}"
         :multiple="true"
-        :placeholder="'flow-builder.tag-selector-placeholder' | trans"
+        :placeholder="'flow-builder.tags-selector-placeholder' | trans"
         :options="availableTagOptions"
-        :allow-empty="true"
-        :show-labels="false"
         :searchable="true"
         @tag="addTag" />
     </div>

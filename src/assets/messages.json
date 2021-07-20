@@ -1,5 +1,7 @@
 {
   "en.flow-builder": {
+    "tags-label": "Tags",
+    "tags-selector-placeholder": "Select or add a tag",
     "add-at-least-one-block": "Add at least one block",
     "import-flow": "Import/Paste a JSON File",
     "import-explanation": "Use this option to import a flow by importing or pasting JSON",
@@ -1605,6 +1607,8 @@
     "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit."
   },
   "fr.flow-builder": {
+    "tags-label": "Etiquettes",
+    "tags-selector-placeholder": "Sélectionnez ou ajoutez une étiquette",
     "add-at-least-one-block": "Ajouter au moins un bloc",
     "import-flow": "Importer/Coller un fichier JSON",
     "import-explanation": "Utilisez cette option pour importer un flux en important ou en collant JSON",
