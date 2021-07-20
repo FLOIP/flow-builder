@@ -5,9 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
 
       <resource-editor
         v-if="promptResource"
@@ -15,10 +19,14 @@
         :block="block"
         :flow="flow" />
 
+      <hr>
+
       <slot name="extras" />
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />
@@ -60,6 +68,8 @@ class ConsoleIO_PrintBlock extends mixins(Lang) {
   @Prop() readonly block!: IPrintBlock
 
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   get promptResource(): IResource {
     return this.resourcesByUuid[this.block.config.message]

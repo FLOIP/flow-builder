@@ -170,13 +170,14 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <div
                                     class=""
                                   >
-                                    <label>
+                                    <h6>
                                       Flow label
-                                    </label>
+                                    </h6>
                                      
                                     <textarea
                                       class="form-control"
                                       placeholder="Enter flow label"
+                                      rows="1"
                                     />
                                      
                                   </div>
@@ -199,9 +200,17 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <div
                                     class="number-editor"
                                   >
-                                    <label>
+                                    <label
+                                      class="text-primary mb-0"
+                                    >
                                       Interaction timeout
                                     </label>
+                                     
+                                    <div
+                                      class="small mb-2"
+                                    >
+                                      
+                                    </div>
                                      
                                     <div>
                                       <input
@@ -1785,7 +1794,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                         class="mobile-primitive-numeric-response-block"
                       >
                         <h3
-                          class="no-room-above"
+                          class="no-room-above text-primary"
                         >
                           
     Edit Numeric Response block
@@ -1793,92 +1802,95 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-70/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+                                   
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+                                   
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
+                           
+                          <!---->
                            
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-70/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                      
+                                  </span>
+                                </div>
                                  
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Block semantic label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block semantic label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
                            
                           <div
@@ -1891,9 +1903,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Minimum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -1924,9 +1944,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -1957,9 +1985,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               <div
                                 class="number-editor"
                               >
-                                <label>
-                                  Maximum digits
+                                <label
+                                  class="text-primary mb-0"
+                                >
+                                  Maximum Response digits
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  Set maximum value will always override maximum response digit except when maximum value is empty
+                                </div>
                                  
                                 <div>
                                   <input
@@ -1983,178 +2019,245 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           <div
                             class="resource-editor"
                           >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
+                            <hr />
                              
                             <!---->
                              
                             <div>
                               <div
-                                class="upload-monitor"
+                                class="tabs"
                               >
                                 <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
-                               
-                              <div
-                                class="audio-library-selector"
-                              >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class=""
+                                >
+                                  <ul
+                                    class="nav nav-tabs"
+                                    role="tablist"
+                                  >
+                                    <!---->
+                                    <!---->
+                                  </ul>
+                                </div>
+                                <div
+                                  class="tab-content"
                                 >
                                   <div
-                                    class="input-group"
+                                    aria-hidden="false"
+                                    class="tab-pane active"
+                                    role="tabpanel"
                                   >
-                                    <span
-                                      class="input-group-prepend"
+                                    <div
+                                      class="tab-content-style"
                                     >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
+                                      <header
+                                        class="d-flex"
                                       >
-                                        <i
-                                          class="glyphicon glyphicon-search"
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
                                         />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
-                                    />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          SMS Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          USSD Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          IVR Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <!---->
+                                       
+                                      <div>
+                                        <div
+                                          class="audio-library-selector"
+                                        >
+                                          <div
+                                            class="audio-library-search-field dropdown"
+                                          >
+                                            <div
+                                              class="input-group"
+                                            >
+                                              <input
+                                                class="form-control"
+                                                placeholder="Search audio library…"
+                                                type="text"
+                                              />
+                                               
+                                              <span
+                                                class="input-group-append"
+                                              >
+                                                <button
+                                                  class="btn btn-primary dropdown-toggle"
+                                                >
+                                                  <i
+                                                    class="glyphicon glyphicon-search"
+                                                  />
+                                                </button>
+                                              </span>
+                                            </div>
+                                             
+                                            <!---->
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="phone-recorder"
+                                        >
+                                          <!---->
+                                        </div>
+                                         
+                                        <div
+                                          class="upload-monitor"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                        </div>
+                                         
+                                        <div
+                                          class="d-flex mt-2"
+                                        >
+                                          <button
+                                            class="btn btn-primary ivr-buttons"
+                                            style="overflow: hidden;"
+                                          >
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,upload"
+                                            />
+                                            
+                    Upload Audio
+                  
+                                            <input
+                                              accept="audio/*"
+                                              style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                              type="file"
+                                            />
+                                          </button>
+                                           
+                                          <button
+                                            class="btn btn-primary ivr-buttons ml-2"
+                                          >
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,record-audio"
+                                            />
+                                            
+                    Record Audio
+                  
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                   
                                   <!---->
                                 </div>
                               </div>
-                               
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
-                              </div>
                             </div>
                           </div>
+                           
+                          <hr />
                             
                           <div
                             class="starting-block-button"
@@ -2167,11 +2270,15 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               class="form-group"
                             >
                               <button
-                                class="btn btn-secondary btn-sm"
+                                class="btn btn-sm w-100 btn-primary"
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
+                                 
           Currently set as starting block
         
                               </button>
@@ -2246,7 +2353,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                         class="mobile-primitive-numeric-response-block"
                       >
                         <h3
-                          class="no-room-above"
+                          class="no-room-above text-primary"
                         >
                           
     Edit Numeric Response block
@@ -2254,92 +2361,95 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-76/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+                                   
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+                                   
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
+                           
+                          <!---->
                            
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-76/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                     A Name 
+                                  </span>
+                                </div>
                                  
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Block semantic label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block semantic label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
                            
                           <div
@@ -2352,9 +2462,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Minimum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2385,9 +2503,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum value (inclusive)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2418,9 +2544,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               <div
                                 class="number-editor"
                               >
-                                <label>
-                                  Maximum digits
+                                <label
+                                  class="text-primary mb-0"
+                                >
+                                  Maximum Response digits
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  Set maximum value will always override maximum response digit except when maximum value is empty
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2444,155 +2578,233 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           <div
                             class="resource-editor"
                           >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor content-editor-selected"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor content-editor-selected"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
+                            <hr />
                              
                             <!---->
                              
                             <div>
-                              <!---->
-                               
                               <div
-                                class="audio-library-selector"
+                                class="tabs"
                               >
+                                <!---->
                                 <div
-                                  class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
-                                  data-audio-file-container-language="1"
+                                  class=""
                                 >
-                                  <button
-                                    class="audio-library-selection-clear-selection btn-ghost pull-right"
-                                  >
-                                    <i
-                                      class="glyphicon glyphicon-remove"
-                                    />
-                                  </button>
-                                   
-                                  <div
-                                    class="btn-group audio-library-selection-download-dropdown"
-                                  >
-                                    <button
-                                      class="btn btn-ghost dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      type="button"
-                                    >
-                                      <span
-                                        aria-hidden="true"
-                                        class="glyphicon glyphicon-download-alt"
-                                      />
-                                       
-                                      <span
-                                        class="caret"
-                                      />
-                                    </button>
-                                     
-                                    <ul
-                                      class="dropdown-menu dropdown-menu-right"
-                                    >
-                                      <li>
-                                        <a
-                                          class="tree-block-audio-files-download-original"
-                                          href="path/to/ivr audio.mp3"
-                                          target="_blank"
-                                        >
-                                          Original file
-                                        </a>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                   
-                                  <p
-                                    class="audio-file-description"
-                                    title="path/to/ivr audio.mp3"
-                                  >
-                                    
-    path/to/ivr audio.mp3
-  
-                                  </p>
-                                   
-                                  <div
-                                    class="btn-toolbar"
+                                  <ul
+                                    class="nav nav-tabs"
+                                    role="tablist"
                                   >
                                     <!---->
+                                    <!---->
+                                  </ul>
+                                </div>
+                                <div
+                                  class="tab-content"
+                                >
+                                  <div
+                                    aria-hidden="false"
+                                    class="tab-pane active"
+                                    role="tabpanel"
+                                  >
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
+                                        />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          SMS Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor content-editor-selected"
+                                        >
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          USSD Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor content-editor-selected"
+                                        >
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          IVR Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <!---->
+                                       
+                                      <div>
+                                        <div
+                                          class="audio-library-selector"
+                                        >
+                                          <div
+                                            class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
+                                            data-audio-file-container-language="1"
+                                          >
+                                            <button
+                                              class="audio-library-selection-clear-selection btn-ghost pull-right"
+                                            >
+                                              <i
+                                                class="glyphicon glyphicon-remove"
+                                              />
+                                            </button>
+                                             
+                                            <div
+                                              class="btn-group audio-library-selection-download-dropdown"
+                                            >
+                                              <button
+                                                class="btn btn-ghost dropdown-toggle"
+                                                data-toggle="dropdown"
+                                                type="button"
+                                              >
+                                                <span
+                                                  aria-hidden="true"
+                                                  class="glyphicon glyphicon-download-alt"
+                                                />
+                                                 
+                                                <span
+                                                  class="caret"
+                                                />
+                                              </button>
+                                               
+                                              <ul
+                                                class="dropdown-menu dropdown-menu-right"
+                                              >
+                                                <li>
+                                                  <a
+                                                    class="tree-block-audio-files-download-original"
+                                                    href="path/to/ivr audio.mp3"
+                                                    target="_blank"
+                                                  >
+                                                    Original file
+                                                  </a>
+                                                </li>
+                                              </ul>
+                                            </div>
+                                             
+                                            <p
+                                              class="audio-file-description"
+                                              title="path/to/ivr audio.mp3"
+                                            >
+                                              
+    path/to/ivr audio.mp3
+  
+                                            </p>
+                                             
+                                            <div
+                                              class="btn-toolbar"
+                                            >
+                                              <!---->
+                                            </div>
+                                          </div>
+                                        </div>
+                                         
+                                        <!---->
+                                         
+                                        <!---->
+                                      </div>
+                                    </div>
                                   </div>
+                                  <!---->
                                 </div>
                               </div>
-                               
-                              <!---->
                             </div>
                           </div>
+                           
+                          <hr />
                             
                           <div
                             class="starting-block-button"
@@ -2605,11 +2817,15 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               class="form-group"
                             >
                               <button
-                                class="btn btn-secondary btn-sm"
+                                class="btn btn-sm w-100 btn-primary"
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
+                                 
           Currently set as starting block
         
                               </button>
@@ -2710,92 +2926,95 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-105/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+                                   
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+                                   
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
+                           
+                          <!---->
                            
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-105/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                      
+                                  </span>
+                                </div>
                                  
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Block semantic label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block semantic label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
                            
                           <div
@@ -2808,9 +3027,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Duration (seconds)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2841,9 +3068,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Response Characters
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -2875,178 +3110,245 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           <div
                             class="resource-editor"
                           >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
+                            <hr />
                              
                             <!---->
                              
                             <div>
                               <div
-                                class="upload-monitor"
+                                class="tabs"
                               >
                                 <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
-                               
-                              <div
-                                class="audio-library-selector"
-                              >
                                 <div
-                                  class="audio-library-search-field dropdown"
+                                  class=""
+                                >
+                                  <ul
+                                    class="nav nav-tabs"
+                                    role="tablist"
+                                  >
+                                    <!---->
+                                    <!---->
+                                  </ul>
+                                </div>
+                                <div
+                                  class="tab-content"
                                 >
                                   <div
-                                    class="input-group"
+                                    aria-hidden="false"
+                                    class="tab-pane active"
+                                    role="tabpanel"
                                   >
-                                    <span
-                                      class="input-group-prepend"
+                                    <div
+                                      class="tab-content-style"
                                     >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
+                                      <header
+                                        class="d-flex"
                                       >
-                                        <i
-                                          class="glyphicon glyphicon-search"
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
                                         />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
-                                    />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          SMS Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          USSD Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor"
+                                        >
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          IVR Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <!---->
+                                       
+                                      <div>
+                                        <div
+                                          class="audio-library-selector"
+                                        >
+                                          <div
+                                            class="audio-library-search-field dropdown"
+                                          >
+                                            <div
+                                              class="input-group"
+                                            >
+                                              <input
+                                                class="form-control"
+                                                placeholder="Search audio library…"
+                                                type="text"
+                                              />
+                                               
+                                              <span
+                                                class="input-group-append"
+                                              >
+                                                <button
+                                                  class="btn btn-primary dropdown-toggle"
+                                                >
+                                                  <i
+                                                    class="glyphicon glyphicon-search"
+                                                  />
+                                                </button>
+                                              </span>
+                                            </div>
+                                             
+                                            <!---->
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="phone-recorder"
+                                        >
+                                          <!---->
+                                        </div>
+                                         
+                                        <div
+                                          class="upload-monitor"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                        </div>
+                                         
+                                        <div
+                                          class="d-flex mt-2"
+                                        >
+                                          <button
+                                            class="btn btn-primary ivr-buttons"
+                                            style="overflow: hidden;"
+                                          >
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,upload"
+                                            />
+                                            
+                    Upload Audio
+                  
+                                            <input
+                                              accept="audio/*"
+                                              style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
+                                              type="file"
+                                            />
+                                          </button>
+                                           
+                                          <button
+                                            class="btn btn-primary ivr-buttons ml-2"
+                                          >
+                                            <font-awesome-icon
+                                              class="fa-btn"
+                                              icon="fac,record-audio"
+                                            />
+                                            
+                    Record Audio
+                  
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                   
                                   <!---->
                                 </div>
                               </div>
-                               
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
-                              </div>
                             </div>
                           </div>
+                           
+                          <hr />
                             
                           <div
                             class="starting-block-button"
@@ -3059,11 +3361,15 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               class="form-group"
                             >
                               <button
-                                class="btn btn-secondary btn-sm"
+                                class="btn btn-sm w-100 btn-primary"
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
+                                 
           Currently set as starting block
         
                               </button>
@@ -3146,92 +3452,95 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                         </h3>
                          
                         <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/name"
+                          <section
+                            class="mb-3"
                           >
-                            <div
-                              class="block-name"
+                            <label
+                              class="text-primary"
                             >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
+                              Title
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-114/label"
+                            >
+                              <div
+                                class="d-flex"
+                              >
+                                <div
+                                  class="w-100"
                                 >
-                                  
-        Only accepts word characters
-      
-                                </small>
+                                  <!---->
+                                   
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter title"
+                                    rows="1"
+                                  />
+                                   
+                                </div>
+                                 
+                                <span
+                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn text-primary"
+                                    icon="fac,settings"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
+                          </section>
+                           
+                          <!---->
                            
                           <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/label"
+                            class="mt-3"
                           >
                             <div
-                              class="block-label"
+                              class="validation-message form-group"
+                              id="block/fake-uuid-114/name"
                             >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
+                              <div
+                                class="d-flex justify-content-between"
+                              >
+                                <div
+                                  class="block-code align-self-center"
+                                >
+                                  <h6
+                                    class="d-inline"
+                                  >
+                                    Code:
+                                  </h6>
+                                   
+                                  <span>
+                                     A Name 
+                                  </span>
+                                </div>
                                  
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
+                                <span
+                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
+                                >
+                                  <font-awesome-icon
+                                    class="fa-btn"
+                                    icon="far,edit"
+                                  />
+                                </span>
                               </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
                             </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Block semantic label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block semantic label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
                           </div>
                            
                           <div
@@ -3244,9 +3553,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Duration (seconds)
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -3277,9 +3594,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               <div
                                 class="number-editor"
                               >
-                                <label>
+                                <label
+                                  class="text-primary mb-0"
+                                >
                                   Maximum Response Characters
                                 </label>
+                                 
+                                <div
+                                  class="small mb-2"
+                                >
+                                  
+                                </div>
                                  
                                 <div>
                                   <input
@@ -3311,155 +3636,233 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                           <div
                             class="resource-editor"
                           >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor content-editor-selected"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor content-editor-selected"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
+                            <hr />
                              
                             <!---->
                              
                             <div>
-                              <!---->
-                               
                               <div
-                                class="audio-library-selector"
+                                class="tabs"
                               >
+                                <!---->
                                 <div
-                                  class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
-                                  data-audio-file-container-language="1"
+                                  class=""
                                 >
-                                  <button
-                                    class="audio-library-selection-clear-selection btn-ghost pull-right"
-                                  >
-                                    <i
-                                      class="glyphicon glyphicon-remove"
-                                    />
-                                  </button>
-                                   
-                                  <div
-                                    class="btn-group audio-library-selection-download-dropdown"
-                                  >
-                                    <button
-                                      class="btn btn-ghost dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      type="button"
-                                    >
-                                      <span
-                                        aria-hidden="true"
-                                        class="glyphicon glyphicon-download-alt"
-                                      />
-                                       
-                                      <span
-                                        class="caret"
-                                      />
-                                    </button>
-                                     
-                                    <ul
-                                      class="dropdown-menu dropdown-menu-right"
-                                    >
-                                      <li>
-                                        <a
-                                          class="tree-block-audio-files-download-original"
-                                          href="path/to/ivr audio.mp3"
-                                          target="_blank"
-                                        >
-                                          Original file
-                                        </a>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                   
-                                  <p
-                                    class="audio-file-description"
-                                    title="path/to/ivr audio.mp3"
-                                  >
-                                    
-    path/to/ivr audio.mp3
-  
-                                  </p>
-                                   
-                                  <div
-                                    class="btn-toolbar"
+                                  <ul
+                                    class="nav nav-tabs"
+                                    role="tablist"
                                   >
                                     <!---->
+                                    <!---->
+                                  </ul>
+                                </div>
+                                <div
+                                  class="tab-content"
+                                >
+                                  <div
+                                    aria-hidden="false"
+                                    class="tab-pane active"
+                                    role="tabpanel"
+                                  >
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <font-awesome-icon
+                                          class="library-icons"
+                                          icon="far,envelope"
+                                        />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          SMS Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor content-editor-selected"
+                                        >
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,ussd"
+                                        />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          USSD Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <div
+                                        class="resource-variant-text-editor"
+                                      >
+                                        <div
+                                          class="content-editor content-editor-selected"
+                                        >
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
+                                        </div>
+                                         
+                                        <div
+                                          class="content-toolbar"
+                                        >
+                                          <!---->
+                                           
+                                          <!---->
+                                           
+                                          <!---->
+                                        </div>
+                                      </div>
+                                       
+                                      <!---->
+                                    </div>
+                                    <div
+                                      class="tab-content-style"
+                                    >
+                                      <header
+                                        class="d-flex"
+                                      >
+                                        <font-awesome-icon
+                                          class="custom-icons"
+                                          icon="fac,audio"
+                                        />
+                                         
+                                        <h6
+                                          class="ml-1"
+                                        >
+                                          IVR Content
+                                        </h6>
+                                      </header>
+                                       
+                                      <!---->
+                                       
+                                      <div>
+                                        <div
+                                          class="audio-library-selector"
+                                        >
+                                          <div
+                                            class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
+                                            data-audio-file-container-language="1"
+                                          >
+                                            <button
+                                              class="audio-library-selection-clear-selection btn-ghost pull-right"
+                                            >
+                                              <i
+                                                class="glyphicon glyphicon-remove"
+                                              />
+                                            </button>
+                                             
+                                            <div
+                                              class="btn-group audio-library-selection-download-dropdown"
+                                            >
+                                              <button
+                                                class="btn btn-ghost dropdown-toggle"
+                                                data-toggle="dropdown"
+                                                type="button"
+                                              >
+                                                <span
+                                                  aria-hidden="true"
+                                                  class="glyphicon glyphicon-download-alt"
+                                                />
+                                                 
+                                                <span
+                                                  class="caret"
+                                                />
+                                              </button>
+                                               
+                                              <ul
+                                                class="dropdown-menu dropdown-menu-right"
+                                              >
+                                                <li>
+                                                  <a
+                                                    class="tree-block-audio-files-download-original"
+                                                    href="path/to/ivr audio.mp3"
+                                                    target="_blank"
+                                                  >
+                                                    Original file
+                                                  </a>
+                                                </li>
+                                              </ul>
+                                            </div>
+                                             
+                                            <p
+                                              class="audio-file-description"
+                                              title="path/to/ivr audio.mp3"
+                                            >
+                                              
+    path/to/ivr audio.mp3
+  
+                                            </p>
+                                             
+                                            <div
+                                              class="btn-toolbar"
+                                            >
+                                              <!---->
+                                            </div>
+                                          </div>
+                                        </div>
+                                         
+                                        <!---->
+                                         
+                                        <!---->
+                                      </div>
+                                    </div>
                                   </div>
+                                  <!---->
                                 </div>
                               </div>
-                               
-                              <!---->
                             </div>
                           </div>
+                           
+                          <hr />
                             
                           <div
                             class="starting-block-button"
@@ -3472,11 +3875,15 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               class="form-group"
                             >
                               <button
-                                class="btn btn-secondary btn-sm"
+                                class="btn btn-sm w-100 btn-primary"
                                 disabled="disabled"
                                 type="button"
                               >
-                                
+                                <font-awesome-icon
+                                  class="fa-btn"
+                                  icon="fac,enter"
+                                />
+                                 
           Currently set as starting block
         
                               </button>

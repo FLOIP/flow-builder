@@ -1,5 +1,103 @@
 ((typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] = (typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] || []).push([[1],{
 
+/***/ "47df":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return observeDom; });
+/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("906c");
+/* harmony import */ var _warn__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("686b");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+/**
+ * Observe a DOM element changes, falls back to eventListener mode
+ * @param {Element} el The DOM element to observe
+ * @param {Function} callback callback to be called on change
+ * @param {object} [options={childList: true, subtree: true}] observe options
+ * @see https://stackoverflow.com/questions/3219758
+ */
+
+var observeDom = function observeDom(el, callback, options)
+/* istanbul ignore next: difficult to test in JSDOM */
+{
+  // Handle cases where we might be passed a Vue instance
+  el = el ? el.$el || el : null; // Early exit when we have no element
+
+  /* istanbul ignore next: difficult to test in JSDOM */
+
+  if (!Object(_dom__WEBPACK_IMPORTED_MODULE_0__[/* isElement */ "q"])(el)) {
+    return null;
+  } // Exit and throw a warning when `MutationObserver` isn't available
+
+
+  if (Object(_warn__WEBPACK_IMPORTED_MODULE_1__[/* warnNoMutationObserverSupport */ "b"])('observeDom')) {
+    return null;
+  } // Define a new observer
+
+
+  var obs = new _dom__WEBPACK_IMPORTED_MODULE_0__[/* MutationObs */ "a"](function (mutations) {
+    var changed = false; // A mutation can contain several change records, so we loop
+    // through them to see what has changed
+    // We break out of the loop early if any "significant" change
+    // has been detected
+
+    for (var i = 0; i < mutations.length && !changed; i++) {
+      // The mutation record
+      var mutation = mutations[i]; // Mutation type
+
+      var type = mutation.type; // DOM node (could be any DOM node type - HTMLElement, Text, comment, etc.)
+
+      var target = mutation.target; // Detect whether a change happened based on type and target
+
+      if (type === 'characterData' && target.nodeType === Node.TEXT_NODE) {
+        // We ignore nodes that are not TEXT (i.e. comments, etc.)
+        // as they don't change layout
+        changed = true;
+      } else if (type === 'attributes') {
+        changed = true;
+      } else if (type === 'childList' && (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0)) {
+        // This includes HTMLElement and text nodes being
+        // added/removed/re-arranged
+        changed = true;
+      }
+    } // We only call the callback if a change that could affect
+    // layout/size truly happened
+
+
+    if (changed) {
+      callback();
+    }
+  }); // Have the observer observe foo for changes in children, etc
+
+  obs.observe(el, _objectSpread({
+    childList: true,
+    subtree: true
+  }, options)); // We return a reference to the observer so that `obs.disconnect()`
+  // can be called if necessary
+  // To reduce overhead when the root element is hidden
+
+  return obs;
+};
+
+/***/ }),
+
+/***/ "493b":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return attrsMixin; });
+/* harmony import */ var _utils_cache__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("8c4e");
+
+var attrsMixin = Object(_utils_cache__WEBPACK_IMPORTED_MODULE_0__[/* makePropCacheMixin */ "a"])('$attrs', 'bvAttrs');
+
+/***/ }),
+
 /***/ "49f5":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -57,20 +155,20 @@ var string = __webpack_require__("fa73");
 
 var progress_bar_props = Object(utils_props["b" /* makePropsConfigurable */])({
   animated: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], null),
-  label: Object(utils_props["a" /* makeProp */])(props["l" /* PROP_TYPE_STRING */]),
-  labelHtml: Object(utils_props["a" /* makeProp */])(props["l" /* PROP_TYPE_STRING */]),
-  max: Object(utils_props["a" /* makeProp */])(props["i" /* PROP_TYPE_NUMBER_STRING */], null),
-  precision: Object(utils_props["a" /* makeProp */])(props["i" /* PROP_TYPE_NUMBER_STRING */], null),
+  label: Object(utils_props["a" /* makeProp */])(props["m" /* PROP_TYPE_STRING */]),
+  labelHtml: Object(utils_props["a" /* makeProp */])(props["m" /* PROP_TYPE_STRING */]),
+  max: Object(utils_props["a" /* makeProp */])(props["j" /* PROP_TYPE_NUMBER_STRING */], null),
+  precision: Object(utils_props["a" /* makeProp */])(props["j" /* PROP_TYPE_NUMBER_STRING */], null),
   showProgress: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], null),
   showValue: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], null),
   striped: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], null),
-  value: Object(utils_props["a" /* makeProp */])(props["i" /* PROP_TYPE_NUMBER_STRING */], 0),
-  variant: Object(utils_props["a" /* makeProp */])(props["l" /* PROP_TYPE_STRING */])
-}, components["h" /* NAME_PROGRESS_BAR */]); // --- Main component ---
+  value: Object(utils_props["a" /* makeProp */])(props["j" /* PROP_TYPE_NUMBER_STRING */], 0),
+  variant: Object(utils_props["a" /* makeProp */])(props["m" /* PROP_TYPE_STRING */])
+}, components["i" /* NAME_PROGRESS_BAR */]); // --- Main component ---
 // @vue/component
 
 var BProgressBar = /*#__PURE__*/vue["b" /* Vue */].extend({
-  name: components["h" /* NAME_PROGRESS_BAR */],
+  name: components["i" /* NAME_PROGRESS_BAR */],
   mixins: [normalize_slot["a" /* normalizeSlotMixin */]],
   inject: {
     bvProgress: {
@@ -183,17 +281,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var progressBarProps = Object(object["i" /* omit */])(progress_bar_props, ['label', 'labelHtml']);
 var progress_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(_objectSpread(_objectSpread({}, progressBarProps), {}, {
   animated: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
-  height: Object(utils_props["a" /* makeProp */])(props["l" /* PROP_TYPE_STRING */]),
-  max: Object(utils_props["a" /* makeProp */])(props["i" /* PROP_TYPE_NUMBER_STRING */], 100),
-  precision: Object(utils_props["a" /* makeProp */])(props["i" /* PROP_TYPE_NUMBER_STRING */], 0),
+  height: Object(utils_props["a" /* makeProp */])(props["m" /* PROP_TYPE_STRING */]),
+  max: Object(utils_props["a" /* makeProp */])(props["j" /* PROP_TYPE_NUMBER_STRING */], 100),
+  precision: Object(utils_props["a" /* makeProp */])(props["j" /* PROP_TYPE_NUMBER_STRING */], 0),
   showProgress: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
   showValue: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
   striped: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false)
-})), components["g" /* NAME_PROGRESS */]); // --- Main component ---
+})), components["h" /* NAME_PROGRESS */]); // --- Main component ---
 // @vue/component
 
 var BProgress = /*#__PURE__*/vue["b" /* Vue */].extend({
-  name: components["g" /* NAME_PROGRESS */],
+  name: components["h" /* NAME_PROGRESS */],
   mixins: [normalize_slot["a" /* normalizeSlotMixin */]],
   provide: function provide() {
     return {
@@ -226,6 +324,174 @@ var BProgress = /*#__PURE__*/vue["b" /* Vue */].extend({
 
 /***/ }),
 
+/***/ "4a38":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export stringifyQueryObj */
+/* unused harmony export parseQuery */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return isRouterLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return computeTag; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return computeRel; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return computeHref; });
+/* harmony import */ var _constants_regex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("992e");
+/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("906c");
+/* harmony import */ var _inspect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("7b1e");
+/* harmony import */ var _object__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("d82f");
+/* harmony import */ var _string__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("fa73");
+
+
+
+
+
+var ANCHOR_TAG = 'a'; // Method to replace reserved chars
+
+var encodeReserveReplacer = function encodeReserveReplacer(c) {
+  return '%' + c.charCodeAt(0).toString(16);
+}; // Fixed encodeURIComponent which is more conformant to RFC3986:
+// - escapes [!'()*]
+// - preserve commas
+
+
+var encode = function encode(str) {
+  return encodeURIComponent(Object(_string__WEBPACK_IMPORTED_MODULE_4__[/* toString */ "c"])(str)).replace(_constants_regex__WEBPACK_IMPORTED_MODULE_0__[/* RX_ENCODE_REVERSE */ "d"], encodeReserveReplacer).replace(_constants_regex__WEBPACK_IMPORTED_MODULE_0__[/* RX_ENCODED_COMMA */ "c"], ',');
+};
+
+var decode = decodeURIComponent; // Stringifies an object of query parameters
+// See: https://github.com/vuejs/vue-router/blob/dev/src/util/query.js
+
+var stringifyQueryObj = function stringifyQueryObj(obj) {
+  if (!Object(_inspect__WEBPACK_IMPORTED_MODULE_2__[/* isPlainObject */ "j"])(obj)) {
+    return '';
+  }
+
+  var query = Object(_object__WEBPACK_IMPORTED_MODULE_3__[/* keys */ "h"])(obj).map(function (key) {
+    var value = obj[key];
+
+    if (Object(_inspect__WEBPACK_IMPORTED_MODULE_2__[/* isUndefined */ "l"])(value)) {
+      return '';
+    } else if (Object(_inspect__WEBPACK_IMPORTED_MODULE_2__[/* isNull */ "f"])(value)) {
+      return encode(key);
+    } else if (Object(_inspect__WEBPACK_IMPORTED_MODULE_2__[/* isArray */ "a"])(value)) {
+      return value.reduce(function (results, value2) {
+        if (Object(_inspect__WEBPACK_IMPORTED_MODULE_2__[/* isNull */ "f"])(value2)) {
+          results.push(encode(key));
+        } else if (!Object(_inspect__WEBPACK_IMPORTED_MODULE_2__[/* isUndefined */ "l"])(value2)) {
+          // Faster than string interpolation
+          results.push(encode(key) + '=' + encode(value2));
+        }
+
+        return results;
+      }, []).join('&');
+    } // Faster than string interpolation
+
+
+    return encode(key) + '=' + encode(value);
+  })
+  /* must check for length, as we only want to filter empty strings, not things that look falsey! */
+  .filter(function (x) {
+    return x.length > 0;
+  }).join('&');
+  return query ? "?".concat(query) : '';
+};
+var parseQuery = function parseQuery(query) {
+  var parsed = {};
+  query = Object(_string__WEBPACK_IMPORTED_MODULE_4__[/* toString */ "c"])(query).trim().replace(_constants_regex__WEBPACK_IMPORTED_MODULE_0__[/* RX_QUERY_START */ "j"], '');
+
+  if (!query) {
+    return parsed;
+  }
+
+  query.split('&').forEach(function (param) {
+    var parts = param.replace(_constants_regex__WEBPACK_IMPORTED_MODULE_0__[/* RX_PLUS */ "i"], ' ').split('=');
+    var key = decode(parts.shift());
+    var value = parts.length > 0 ? decode(parts.join('=')) : null;
+
+    if (Object(_inspect__WEBPACK_IMPORTED_MODULE_2__[/* isUndefined */ "l"])(parsed[key])) {
+      parsed[key] = value;
+    } else if (Object(_inspect__WEBPACK_IMPORTED_MODULE_2__[/* isArray */ "a"])(parsed[key])) {
+      parsed[key].push(value);
+    } else {
+      parsed[key] = [parsed[key], value];
+    }
+  });
+  return parsed;
+};
+var isLink = function isLink(props) {
+  return !!(props.href || props.to);
+};
+var isRouterLink = function isRouterLink(tag) {
+  return !!(tag && !Object(_dom__WEBPACK_IMPORTED_MODULE_1__[/* isTag */ "r"])(tag, 'a'));
+};
+var computeTag = function computeTag(_ref, thisOrParent) {
+  var to = _ref.to,
+      disabled = _ref.disabled,
+      routerComponentName = _ref.routerComponentName;
+  var hasRouter = !!thisOrParent.$router;
+
+  if (!hasRouter || hasRouter && (disabled || !to)) {
+    return ANCHOR_TAG;
+  } // TODO:
+  //   Check registered components for existence of user supplied router link component name
+  //   We would need to check PascalCase, kebab-case, and camelCase versions of name:
+  //   const name = routerComponentName
+  //   const names = [name, PascalCase(name), KebabCase(name), CamelCase(name)]
+  //   exists = names.some(name => !!thisOrParent.$options.components[name])
+  //   And may want to cache the result for performance or we just let the render fail
+  //   if the component is not registered
+
+
+  return routerComponentName || (thisOrParent.$nuxt ? 'nuxt-link' : 'router-link');
+};
+var computeRel = function computeRel() {
+  var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      target = _ref2.target,
+      rel = _ref2.rel;
+
+  return target === '_blank' && Object(_inspect__WEBPACK_IMPORTED_MODULE_2__[/* isNull */ "f"])(rel) ? 'noopener' : rel || null;
+};
+var computeHref = function computeHref() {
+  var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      href = _ref3.href,
+      to = _ref3.to;
+
+  var tag = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ANCHOR_TAG;
+  var fallback = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '#';
+  var toFallback = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '/';
+
+  // Return `href` when explicitly provided
+  if (href) {
+    return href;
+  } // We've checked for `$router` in `computeTag()`, so `isRouterLink()` indicates a live router
+  // When deferring to Vue Router's `<router-link>`, don't use the `href` attribute at all
+  // We return `null`, and then remove `href` from the attributes passed to `<router-link>`
+
+
+  if (isRouterLink(tag)) {
+    return null;
+  } // Fallback to `to` prop (if `to` is a string)
+
+
+  if (Object(_inspect__WEBPACK_IMPORTED_MODULE_2__[/* isString */ "k"])(to)) {
+    return to || toFallback;
+  } // Fallback to `to.path' + `to.query` + `to.hash` prop (if `to` is an object)
+
+
+  if (Object(_inspect__WEBPACK_IMPORTED_MODULE_2__[/* isPlainObject */ "j"])(to) && (to.path || to.query || to.hash)) {
+    var path = Object(_string__WEBPACK_IMPORTED_MODULE_4__[/* toString */ "c"])(to.path);
+    var query = stringifyQueryObj(to.query);
+    var hash = Object(_string__WEBPACK_IMPORTED_MODULE_4__[/* toString */ "c"])(to.hash);
+    hash = !hash || hash.charAt(0) === '#' ? hash : "#".concat(hash);
+    return "".concat(path).concat(query).concat(hash) || toFallback;
+  } // If nothing is provided return the fallback
+
+
+  return fallback;
+};
+
+/***/ }),
+
 /***/ "6aac":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -248,21 +514,9 @@ var env = __webpack_require__("e863");
 // EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/events.js
 var events = __webpack_require__("0056");
 
-// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/constants/key-codes.js
-var CODE_BACKSPACE = 8;
-var CODE_BREAK = 19;
-var CODE_DELETE = 46;
-var CODE_DOWN = 40;
-var CODE_END = 35;
-var CODE_ENTER = 13;
-var CODE_ESC = 27;
-var CODE_HOME = 36;
-var CODE_LEFT = 37;
-var CODE_PAGEDOWN = 34;
-var CODE_PAGEUP = 33;
-var CODE_RIGHT = 39;
-var CODE_SPACE = 32;
-var CODE_UP = 38;
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/key-codes.js
+var key_codes = __webpack_require__("9bfa");
+
 // EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/props.js
 var constants_props = __webpack_require__("a723");
 
@@ -296,194 +550,18 @@ var model = __webpack_require__("58f2");
 // EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/object.js
 var object = __webpack_require__("d82f");
 
-// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/warn.js
-var warn = __webpack_require__("686b");
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/observe-dom.js
+var observe_dom = __webpack_require__("47df");
 
-// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/utils/observe-dom.js
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-/**
- * Observe a DOM element changes, falls back to eventListener mode
- * @param {Element} el The DOM element to observe
- * @param {Function} callback callback to be called on change
- * @param {object} [options={childList: true, subtree: true}] observe options
- * @see https://stackoverflow.com/questions/3219758
- */
-
-var observe_dom_observeDom = function observeDom(el, callback, options)
-/* istanbul ignore next: difficult to test in JSDOM */
-{
-  // Handle cases where we might be passed a Vue instance
-  el = el ? el.$el || el : null; // Early exit when we have no element
-
-  /* istanbul ignore next: difficult to test in JSDOM */
-
-  if (!Object(dom["q" /* isElement */])(el)) {
-    return null;
-  } // Exit and throw a warning when `MutationObserver` isn't available
-
-
-  if (Object(warn["b" /* warnNoMutationObserverSupport */])('observeDom')) {
-    return null;
-  } // Define a new observer
-
-
-  var obs = new dom["a" /* MutationObs */](function (mutations) {
-    var changed = false; // A mutation can contain several change records, so we loop
-    // through them to see what has changed
-    // We break out of the loop early if any "significant" change
-    // has been detected
-
-    for (var i = 0; i < mutations.length && !changed; i++) {
-      // The mutation record
-      var mutation = mutations[i]; // Mutation type
-
-      var type = mutation.type; // DOM node (could be any DOM node type - HTMLElement, Text, comment, etc.)
-
-      var target = mutation.target; // Detect whether a change happened based on type and target
-
-      if (type === 'characterData' && target.nodeType === Node.TEXT_NODE) {
-        // We ignore nodes that are not TEXT (i.e. comments, etc.)
-        // as they don't change layout
-        changed = true;
-      } else if (type === 'attributes') {
-        changed = true;
-      } else if (type === 'childList' && (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0)) {
-        // This includes HTMLElement and text nodes being
-        // added/removed/re-arranged
-        changed = true;
-      }
-    } // We only call the callback if a change that could affect
-    // layout/size truly happened
-
-
-    if (changed) {
-      callback();
-    }
-  }); // Have the observer observe foo for changes in children, etc
-
-  obs.observe(el, _objectSpread({
-    childList: true,
-    subtree: true
-  }, options)); // We return a reference to the observer so that `obs.disconnect()`
-  // can be called if necessary
-  // To reduce overhead when the root element is hidden
-
-  return obs;
-};
 // EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/props.js
 var utils_props = __webpack_require__("cf75");
 
-// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/clone-deep.js
-var clone_deep = __webpack_require__("c9a9");
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/mixins/attrs.js
+var attrs = __webpack_require__("493b");
 
-// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/loose-equal.js
-var loose_equal = __webpack_require__("3c21");
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/mixins/id.js
+var id = __webpack_require__("90ef");
 
-// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/utils/cache.js
-function cache_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-var cache_isEmpty = function isEmpty(value) {
-  return !value || Object(object["h" /* keys */])(value).length === 0;
-};
-
-var cache_makePropWatcher = function makePropWatcher(propName) {
-  return {
-    handler: function handler(newValue, oldValue) {
-      if (Object(loose_equal["a" /* looseEqual */])(newValue, oldValue)) {
-        return;
-      }
-
-      if (cache_isEmpty(newValue) || cache_isEmpty(oldValue)) {
-        this[propName] = Object(clone_deep["a" /* cloneDeep */])(newValue);
-        return;
-      }
-
-      for (var key in oldValue) {
-        if (!Object(object["g" /* hasOwnProperty */])(newValue, key)) {
-          this.$delete(this.$data[propName], key);
-        }
-      }
-
-      for (var _key in newValue) {
-        this.$set(this.$data[propName], _key, newValue[_key]);
-      }
-    }
-  };
-};
-var cache_makePropCacheMixin = function makePropCacheMixin(propName, proxyPropName) {
-  return vue["b" /* Vue */].extend({
-    data: function data() {
-      return cache_defineProperty({}, proxyPropName, Object(clone_deep["a" /* cloneDeep */])(this[propName]));
-    },
-    watch: cache_defineProperty({}, propName, cache_makePropWatcher(proxyPropName))
-  });
-};
-// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/mixins/attrs.js
-
-var attrsMixin = cache_makePropCacheMixin('$attrs', 'bvAttrs');
-// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/mixins/id.js
-// SSR safe client-side ID attribute generation
-// ID's can only be generated client-side, after mount
-// `this._uid` is not synched between server and client
-
-
- // --- Props ---
-
-var id_props = {
-  id: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */])
-}; // --- Mixin ---
-// @vue/component
-
-var idMixin = vue["b" /* Vue */].extend({
-  props: id_props,
-  data: function data() {
-    return {
-      localId_: null
-    };
-  },
-  computed: {
-    safeId: function safeId() {
-      // Computed property that returns a dynamic function for creating the ID
-      // Reacts to changes in both `.id` and `.localId_` and regenerates a new function
-      var id = this.id || this.localId_; // We return a function that accepts an optional suffix string
-      // So this computed prop looks and works like a method
-      // but benefits from Vue's computed prop caching
-
-      var fn = function fn(suffix) {
-        if (!id) {
-          return null;
-        }
-
-        suffix = String(suffix || '').replace(/\s+/g, '_');
-        return suffix ? id + '_' + suffix : id;
-      };
-
-      return fn;
-    }
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    // `mounted()` only occurs client-side
-    this.$nextTick(function () {
-      // Update DOM with auto-generated ID after mount
-      // to prevent SSR hydration errors
-      _this.localId_ = "__BVID__".concat(_this[vue["a" /* COMPONENT_UID_KEY */]]);
-    });
-  }
-});
 // CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/mixins/listen-on-document.js
 
 
@@ -511,7 +589,7 @@ var listenOnDocumentMixin = vue["b" /* Vue */].extend({
 
     this[PROP] = {}; // Set up our beforeDestroy handler (client only)
 
-    this.$once(events["x" /* HOOK_EVENT_NAME_BEFORE_DESTROY */], function () {
+    this.$once(events["D" /* HOOK_EVENT_NAME_BEFORE_DESTROY */], function () {
       var items = _this[PROP] || {}; // Immediately delete this[PROP] to prevent the
       // listenOn/Off methods from running (which may occur
       // due to requestAnimationFrame/transition delays)
@@ -521,7 +599,7 @@ var listenOnDocumentMixin = vue["b" /* Vue */].extend({
       Object(object["h" /* keys */])(items).forEach(function (eventName) {
         var handlers = items[eventName] || [];
         handlers.forEach(function (handler) {
-          return Object(utils_events["a" /* eventOff */])(document, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
+          return Object(utils_events["a" /* eventOff */])(document, eventName, handler, events["C" /* EVENT_OPTIONS_NO_CAPTURE */]);
         });
       });
     });
@@ -536,13 +614,13 @@ var listenOnDocumentMixin = vue["b" /* Vue */].extend({
 
         if (!Object(array["a" /* arrayIncludes */])(this[PROP][eventName], handler)) {
           this[PROP][eventName].push(handler);
-          Object(utils_events["b" /* eventOn */])(document, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
+          Object(utils_events["b" /* eventOn */])(document, eventName, handler, events["C" /* EVENT_OPTIONS_NO_CAPTURE */]);
         }
       }
     },
     listenOffDocument: function listenOffDocument(eventName, handler) {
       if (this[PROP] && Object(inspect["k" /* isString */])(eventName) && Object(inspect["e" /* isFunction */])(handler)) {
-        Object(utils_events["a" /* eventOff */])(document, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
+        Object(utils_events["a" /* eventOff */])(document, eventName, handler, events["C" /* EVENT_OPTIONS_NO_CAPTURE */]);
         this[PROP][eventName] = (this[PROP][eventName] || []).filter(function (h) {
           return h !== handler;
         });
@@ -583,7 +661,7 @@ var listenOnWindowMixin = vue["b" /* Vue */].extend({
       Object(object["h" /* keys */])(items).forEach(function (eventName) {
         var handlers = items[eventName] || [];
         handlers.forEach(function (handler) {
-          return Object(utils_events["a" /* eventOff */])(window, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
+          return Object(utils_events["a" /* eventOff */])(window, eventName, handler, events["C" /* EVENT_OPTIONS_NO_CAPTURE */]);
         });
       });
     }
@@ -598,13 +676,13 @@ var listenOnWindowMixin = vue["b" /* Vue */].extend({
 
         if (!Object(array["a" /* arrayIncludes */])(this[listen_on_window_PROP][eventName], handler)) {
           this[listen_on_window_PROP][eventName].push(handler);
-          Object(utils_events["b" /* eventOn */])(window, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
+          Object(utils_events["b" /* eventOn */])(window, eventName, handler, events["C" /* EVENT_OPTIONS_NO_CAPTURE */]);
         }
       }
     },
     listenOffWindow: function listenOffWindow(eventName, handler) {
       if (env["f" /* IS_BROWSER */] && this[listen_on_window_PROP] && Object(inspect["k" /* isString */])(eventName) && Object(inspect["e" /* isFunction */])(handler)) {
-        Object(utils_events["a" /* eventOff */])(window, eventName, handler, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
+        Object(utils_events["a" /* eventOff */])(window, eventName, handler, events["C" /* EVENT_OPTIONS_NO_CAPTURE */]);
         this[listen_on_window_PROP][eventName] = (this[listen_on_window_PROP][eventName] || []).filter(function (h) {
           return h !== handler;
         });
@@ -621,382 +699,18 @@ var scoped_style = __webpack_require__("8d32");
 // EXTERNAL MODULE: ./node_modules/vue-functional-data-merge/dist/lib.esm.js
 var lib_esm = __webpack_require__("b42e");
 
-// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/regex.js
-var regex = __webpack_require__("992e");
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/router.js
+var router = __webpack_require__("4a38");
 
-// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/string.js
-var string = __webpack_require__("fa73");
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/components/link/link.js + 1 modules
+var link_link = __webpack_require__("aa59");
 
-// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/utils/router.js
-
-
-
-
-
-var ANCHOR_TAG = 'a'; // Method to replace reserved chars
-
-var encodeReserveReplacer = function encodeReserveReplacer(c) {
-  return '%' + c.charCodeAt(0).toString(16);
-}; // Fixed encodeURIComponent which is more conformant to RFC3986:
-// - escapes [!'()*]
-// - preserve commas
-
-
-var router_encode = function encode(str) {
-  return encodeURIComponent(Object(string["c" /* toString */])(str)).replace(regex["d" /* RX_ENCODE_REVERSE */], encodeReserveReplacer).replace(regex["c" /* RX_ENCODED_COMMA */], ',');
-};
-
-var decode = decodeURIComponent; // Stringifies an object of query parameters
-// See: https://github.com/vuejs/vue-router/blob/dev/src/util/query.js
-
-var router_stringifyQueryObj = function stringifyQueryObj(obj) {
-  if (!Object(inspect["j" /* isPlainObject */])(obj)) {
-    return '';
-  }
-
-  var query = Object(object["h" /* keys */])(obj).map(function (key) {
-    var value = obj[key];
-
-    if (Object(inspect["l" /* isUndefined */])(value)) {
-      return '';
-    } else if (Object(inspect["f" /* isNull */])(value)) {
-      return router_encode(key);
-    } else if (Object(inspect["a" /* isArray */])(value)) {
-      return value.reduce(function (results, value2) {
-        if (Object(inspect["f" /* isNull */])(value2)) {
-          results.push(router_encode(key));
-        } else if (!Object(inspect["l" /* isUndefined */])(value2)) {
-          // Faster than string interpolation
-          results.push(router_encode(key) + '=' + router_encode(value2));
-        }
-
-        return results;
-      }, []).join('&');
-    } // Faster than string interpolation
-
-
-    return router_encode(key) + '=' + router_encode(value);
-  })
-  /* must check for length, as we only want to filter empty strings, not things that look falsey! */
-  .filter(function (x) {
-    return x.length > 0;
-  }).join('&');
-  return query ? "?".concat(query) : '';
-};
-var router_parseQuery = function parseQuery(query) {
-  var parsed = {};
-  query = Object(string["c" /* toString */])(query).trim().replace(regex["j" /* RX_QUERY_START */], '');
-
-  if (!query) {
-    return parsed;
-  }
-
-  query.split('&').forEach(function (param) {
-    var parts = param.replace(regex["i" /* RX_PLUS */], ' ').split('=');
-    var key = decode(parts.shift());
-    var value = parts.length > 0 ? decode(parts.join('=')) : null;
-
-    if (Object(inspect["l" /* isUndefined */])(parsed[key])) {
-      parsed[key] = value;
-    } else if (Object(inspect["a" /* isArray */])(parsed[key])) {
-      parsed[key].push(value);
-    } else {
-      parsed[key] = [parsed[key], value];
-    }
-  });
-  return parsed;
-};
-var router_isLink = function isLink(props) {
-  return !!(props.href || props.to);
-};
-var router_isRouterLink = function isRouterLink(tag) {
-  return !!(tag && !Object(dom["r" /* isTag */])(tag, 'a'));
-};
-var computeTag = function computeTag(_ref, thisOrParent) {
-  var to = _ref.to,
-      disabled = _ref.disabled,
-      routerComponentName = _ref.routerComponentName;
-  var hasRouter = !!thisOrParent.$router;
-
-  if (!hasRouter || hasRouter && (disabled || !to)) {
-    return ANCHOR_TAG;
-  } // TODO:
-  //   Check registered components for existence of user supplied router link component name
-  //   We would need to check PascalCase, kebab-case, and camelCase versions of name:
-  //   const name = routerComponentName
-  //   const names = [name, PascalCase(name), KebabCase(name), CamelCase(name)]
-  //   exists = names.some(name => !!thisOrParent.$options.components[name])
-  //   And may want to cache the result for performance or we just let the render fail
-  //   if the component is not registered
-
-
-  return routerComponentName || (thisOrParent.$nuxt ? 'nuxt-link' : 'router-link');
-};
-var router_computeRel = function computeRel() {
-  var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-      target = _ref2.target,
-      rel = _ref2.rel;
-
-  return target === '_blank' && Object(inspect["f" /* isNull */])(rel) ? 'noopener' : rel || null;
-};
-var router_computeHref = function computeHref() {
-  var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-      href = _ref3.href,
-      to = _ref3.to;
-
-  var tag = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ANCHOR_TAG;
-  var fallback = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '#';
-  var toFallback = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '/';
-
-  // Return `href` when explicitly provided
-  if (href) {
-    return href;
-  } // We've checked for `$router` in `computeTag()`, so `isRouterLink()` indicates a live router
-  // When deferring to Vue Router's `<router-link>`, don't use the `href` attribute at all
-  // We return `null`, and then remove `href` from the attributes passed to `<router-link>`
-
-
-  if (router_isRouterLink(tag)) {
-    return null;
-  } // Fallback to `to` prop (if `to` is a string)
-
-
-  if (Object(inspect["k" /* isString */])(to)) {
-    return to || toFallback;
-  } // Fallback to `to.path' + `to.query` + `to.hash` prop (if `to` is an object)
-
-
-  if (Object(inspect["j" /* isPlainObject */])(to) && (to.path || to.query || to.hash)) {
-    var path = Object(string["c" /* toString */])(to.path);
-    var query = router_stringifyQueryObj(to.query);
-    var hash = Object(string["c" /* toString */])(to.hash);
-    hash = !hash || hash.charAt(0) === '#' ? hash : "#".concat(hash);
-    return "".concat(path).concat(query).concat(hash) || toFallback;
-  } // If nothing is provided return the fallback
-
-
-  return fallback;
-};
-// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/mixins/listeners.js
-
-var listenersMixin = cache_makePropCacheMixin('$listeners', 'bvListeners');
-// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/components/link/link.js
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function link_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function link_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { link_ownKeys(Object(source), true).forEach(function (key) { link_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { link_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function link_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- // --- Constants ---
-
-var ROOT_EVENT_NAME_CLICKED = Object(utils_events["e" /* getRootEventName */])(components["d" /* NAME_LINK */], 'clicked'); // --- Props ---
-// `<router-link>` specific props
-
-var routerLinkProps = {
-  activeClass: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
-  append: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  event: Object(utils_props["a" /* makeProp */])(constants_props["d" /* PROP_TYPE_ARRAY_STRING */], events["c" /* EVENT_NAME_CLICK */]),
-  exact: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  exactActiveClass: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
-  replace: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  routerTag: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'a'),
-  to: Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_OBJECT_STRING */])
-}; // `<nuxt-link>` specific props
-
-var nuxtLinkProps = {
-  noPrefetch: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  // Must be `null` to fall back to the value defined in the
-  // `nuxt.config.js` configuration file for `router.prefetchLinks`
-  // We convert `null` to `undefined`, so that Nuxt.js will use the
-  // compiled default
-  // Vue treats `undefined` as default of `false` for Boolean props,
-  // so we must set it as `null` here to be a true tri-state prop
-  prefetch: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], null)
-}; // All `<b-link>` props
-
-var link_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(link_objectSpread(link_objectSpread(link_objectSpread({}, nuxtLinkProps), routerLinkProps), {}, {
-  active: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  disabled: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  href: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
-  // Must be `null` if no value provided
-  rel: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], null),
-  // To support 3rd party router links based on `<router-link>` (i.e. `g-link` for Gridsome)
-  // Default is to auto choose between `<router-link>` and `<nuxt-link>`
-  // Gridsome doesn't provide a mechanism to auto detect and has caveats
-  // such as not supporting FQDN URLs or hash only URLs
-  routerComponentName: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
-  target: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], '_self')
-})), components["d" /* NAME_LINK */]); // --- Main component ---
-// @vue/component
-
-var BLink = /*#__PURE__*/vue["b" /* Vue */].extend({
-  name: components["d" /* NAME_LINK */],
-  // Mixin order is important!
-  mixins: [attrsMixin, listenersMixin, listen_on_root["a" /* listenOnRootMixin */], normalize_slot["a" /* normalizeSlotMixin */]],
-  inheritAttrs: false,
-  props: link_props,
-  computed: {
-    computedTag: function computedTag() {
-      // We don't pass `this` as the first arg as we need reactivity of the props
-      var to = this.to,
-          disabled = this.disabled,
-          routerComponentName = this.routerComponentName;
-      return computeTag({
-        to: to,
-        disabled: disabled,
-        routerComponentName: routerComponentName
-      }, this);
-    },
-    isRouterLink: function isRouterLink() {
-      return router_isRouterLink(this.computedTag);
-    },
-    computedRel: function computedRel() {
-      // We don't pass `this` as the first arg as we need reactivity of the props
-      var target = this.target,
-          rel = this.rel;
-      return router_computeRel({
-        target: target,
-        rel: rel
-      });
-    },
-    computedHref: function computedHref() {
-      // We don't pass `this` as the first arg as we need reactivity of the props
-      var to = this.to,
-          href = this.href;
-      return router_computeHref({
-        to: to,
-        href: href
-      }, this.computedTag);
-    },
-    computedProps: function computedProps() {
-      var prefetch = this.prefetch;
-      return this.isRouterLink ? link_objectSpread(link_objectSpread({}, Object(utils_props["c" /* pluckProps */])(link_objectSpread(link_objectSpread({}, routerLinkProps), nuxtLinkProps), this)), {}, {
-        // Coerce `prefetch` value `null` to be `undefined`
-        prefetch: Object(inspect["b" /* isBoolean */])(prefetch) ? prefetch : undefined,
-        // Pass `router-tag` as `tag` prop
-        tag: this.routerTag
-      }) : {};
-    },
-    computedAttrs: function computedAttrs() {
-      var bvAttrs = this.bvAttrs,
-          href = this.computedHref,
-          rel = this.computedRel,
-          disabled = this.disabled,
-          target = this.target,
-          routerTag = this.routerTag,
-          isRouterLink = this.isRouterLink;
-      return link_objectSpread(link_objectSpread(link_objectSpread(link_objectSpread({}, bvAttrs), href ? {
-        href: href
-      } : {}), isRouterLink && !Object(dom["r" /* isTag */])(routerTag, 'a') ? {} : {
-        rel: rel,
-        target: target
-      }), {}, {
-        tabindex: disabled ? '-1' : Object(inspect["l" /* isUndefined */])(bvAttrs.tabindex) ? null : bvAttrs.tabindex,
-        'aria-disabled': disabled ? 'true' : null
-      });
-    },
-    computedListeners: function computedListeners() {
-      return link_objectSpread(link_objectSpread({}, this.bvListeners), {}, {
-        // We want to overwrite any click handler since our callback
-        // will invoke the user supplied handler(s) if `!this.disabled`
-        click: this.onClick
-      });
-    }
-  },
-  methods: {
-    onClick: function onClick(event) {
-      var _arguments = arguments;
-      var eventIsEvent = Object(inspect["d" /* isEvent */])(event);
-      var isRouterLink = this.isRouterLink;
-      var suppliedHandler = this.bvListeners.click;
-
-      if (eventIsEvent && this.disabled) {
-        // Stop event from bubbling up
-        // Kill the event loop attached to this specific `EventTarget`
-        // Needed to prevent `vue-router` for doing its thing
-        Object(utils_events["f" /* stopEvent */])(event, {
-          immediatePropagation: true
-        });
-      } else {
-        /* istanbul ignore next: difficult to test, but we know it works */
-        if (isRouterLink && event.currentTarget.__vue__) {
-          // Router links do not emit instance `click` events, so we
-          // add in an `$emit('click', event)` on its Vue instance
-          event.currentTarget.__vue__.$emit(events["c" /* EVENT_NAME_CLICK */], event);
-        } // Call the suppliedHandler(s), if any provided
-
-
-        Object(array["b" /* concat */])(suppliedHandler).filter(function (h) {
-          return Object(inspect["e" /* isFunction */])(h);
-        }).forEach(function (handler) {
-          handler.apply(void 0, _toConsumableArray(_arguments));
-        }); // Emit the global `$root` click event
-
-        this.emitOnRoot(ROOT_EVENT_NAME_CLICKED, event); // TODO: Remove deprecated 'clicked::link' event with next major release
-
-        this.emitOnRoot('clicked::link', event);
-      } // Stop scroll-to-top behavior or navigation on
-      // regular links when href is just '#'
-
-
-      if (eventIsEvent && !isRouterLink && this.computedHref === '#') {
-        Object(utils_events["f" /* stopEvent */])(event, {
-          propagation: false
-        });
-      }
-    },
-    focus: function focus() {
-      Object(dom["d" /* attemptFocus */])(this.$el);
-    },
-    blur: function blur() {
-      Object(dom["c" /* attemptBlur */])(this.$el);
-    }
-  },
-  render: function render(h) {
-    var active = this.active,
-        disabled = this.disabled;
-    return h(this.computedTag, link_defineProperty({
-      class: {
-        active: active,
-        disabled: disabled
-      },
-      attrs: this.computedAttrs,
-      props: this.computedProps
-    }, this.isRouterLink ? 'nativeOn' : 'on', this.computedListeners), this.normalizeSlot());
-  }
-});
 // CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/components/button/button.js
-function button_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function button_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { button_ownKeys(Object(source), true).forEach(function (key) { button_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { button_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function button_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -1011,21 +725,21 @@ function button_defineProperty(obj, key, value) { if (key in obj) { Object.defin
 
  // --- Props ---
 
-var linkProps = Object(object["i" /* omit */])(link_props, ['event', 'routerTag']);
+var linkProps = Object(object["i" /* omit */])(link_link["b" /* props */], ['event', 'routerTag']);
 delete linkProps.href.default;
 delete linkProps.to.default;
-var button_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(button_objectSpread(button_objectSpread({}, linkProps), {}, {
+var button_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(_objectSpread(_objectSpread({}, linkProps), {}, {
   block: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   disabled: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   pill: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   // Tri-state: `true`, `false` or `null`
   // => On, off, not a toggle
   pressed: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], null),
-  size: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  size: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
   squared: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  tag: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'button'),
-  type: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'button'),
-  variant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'secondary')
+  tag: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'button'),
+  type: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'button'),
+  variant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'secondary')
 })), components["b" /* NAME_BUTTON */]); // --- Helper methods ---
 // Focus handler for toggle buttons
 // Needs class of 'focus' when focused
@@ -1041,7 +755,7 @@ var button_handleFocus = function handleFocus(event) {
 
 
 var button_isLink = function isLink(props) {
-  return router_isLink(props) || Object(dom["r" /* isTag */])(props.tag, 'a');
+  return Object(router["d" /* isLink */])(props) || Object(dom["r" /* isTag */])(props.tag, 'a');
 }; // Is the button to be a toggle button?
 
 
@@ -1063,7 +777,7 @@ var isNonStandardTag = function isNonStandardTag(props) {
 var computeClass = function computeClass(props) {
   var _ref;
 
-  return ["btn-".concat(props.variant || 'secondary'), (_ref = {}, button_defineProperty(_ref, "btn-".concat(props.size), props.size), button_defineProperty(_ref, 'btn-block', props.block), button_defineProperty(_ref, 'rounded-pill', props.pill), button_defineProperty(_ref, 'rounded-0', props.squared && !props.pill), button_defineProperty(_ref, "disabled", props.disabled), button_defineProperty(_ref, "active", props.pressed), _ref)];
+  return ["btn-".concat(props.variant || 'secondary'), (_ref = {}, _defineProperty(_ref, "btn-".concat(props.size), props.size), _defineProperty(_ref, 'btn-block', props.block), _defineProperty(_ref, 'rounded-pill', props.pill), _defineProperty(_ref, 'rounded-0', props.squared && !props.pill), _defineProperty(_ref, "disabled", props.disabled), _defineProperty(_ref, "active", props.pressed), _ref)];
 }; // Compute the link props to pass to b-link (if required)
 
 
@@ -1136,7 +850,7 @@ var BButton = /*#__PURE__*/vue["b" /* Vue */].extend({
 
         var keyCode = event.keyCode; // Add CODE_SPACE handler for `href="#"` and CODE_ENTER handler for non-standard tags
 
-        if (keyCode === CODE_SPACE || keyCode === CODE_ENTER && nonStandardTag) {
+        if (keyCode === key_codes["h" /* CODE_SPACE */] || keyCode === key_codes["c" /* CODE_ENTER */] && nonStandardTag) {
           var target = event.currentTarget || event.target;
           Object(utils_events["f" /* stopEvent */])(event, {
             propagation: false
@@ -1173,7 +887,7 @@ var BButton = /*#__PURE__*/vue["b" /* Vue */].extend({
       attrs: computeAttrs(props, data),
       on: on
     };
-    return h(link ? BLink : props.tag, Object(lib_esm["a" /* mergeData */])(data, componentData), children);
+    return h(link ? link_link["a" /* BLink */] : props.tag, Object(lib_esm["a" /* mergeData */])(data, componentData), children);
   }
 });
 // EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/components/button/button-close.js
@@ -1213,7 +927,7 @@ var BVTransporterTarget = /*#__PURE__*/vue["b" /* Vue */].extend({
   // components, which means the next parent of any component rendered inside
   // of this one will be the parent from which is was portal'd
   abstract: true,
-  name: components["n" /* NAME_TRANSPORTER_TARGET */],
+  name: components["r" /* NAME_TRANSPORTER_TARGET */],
   props: {
     // Even though we only support a single root element,
     // VNodes are always passed as an array
@@ -1246,15 +960,15 @@ var transporter_props = {
   // String: CSS selector,
   // HTMLElement: Element reference
   // Mainly needed for tooltips/popovers inside modals
-  container: Object(utils_props["a" /* makeProp */])([safe_types["c" /* HTMLElement */], constants_props["l" /* PROP_TYPE_STRING */]], 'body'),
+  container: Object(utils_props["a" /* makeProp */])([safe_types["c" /* HTMLElement */], constants_props["m" /* PROP_TYPE_STRING */]], 'body'),
   disabled: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   // This should be set to match the root element type
-  tag: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'div')
+  tag: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'div')
 }; // --- Main component ---
 // @vue/component
 
 var BVTransporter = /*#__PURE__*/vue["b" /* Vue */].extend({
-  name: components["m" /* NAME_TRANSPORTER */],
+  name: components["q" /* NAME_TRANSPORTER */],
   mixins: [normalize_slot["a" /* normalizeSlotMixin */]],
   props: transporter_props,
   watch: {
@@ -1507,7 +1221,7 @@ var ModalManager = /*#__PURE__*/vue["b" /* Vue */].extend({
       if (modal && this.modals.indexOf(modal) === -1) {
         // Add modal to modals array
         this.modals.push(modal);
-        modal.$once(events["x" /* HOOK_EVENT_NAME_BEFORE_DESTROY */], function () {
+        modal.$once(events["D" /* HOOK_EVENT_NAME_BEFORE_DESTROY */], function () {
           _this2.unregisterModal(modal);
         });
       }
@@ -1708,7 +1422,7 @@ function modal_defineProperty(obj, key, value) { if (key in obj) { Object.define
 var _makeModelMixin = Object(model["a" /* makeModelMixin */])('visible', {
   type: constants_props["e" /* PROP_TYPE_BOOLEAN */],
   defaultValue: false,
-  event: events["b" /* EVENT_NAME_CHANGE */]
+  event: events["c" /* EVENT_NAME_CHANGE */]
 }),
     modelMixin = _makeModelMixin.mixin,
     modelProps = _makeModelMixin.props,
@@ -1734,36 +1448,36 @@ var OBSERVER_CONFIG = {
   attributeFilter: ['style', 'class']
 }; // --- Props ---
 
-var modal_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(modal_objectSpread(modal_objectSpread(modal_objectSpread({}, id_props), modelProps), {}, {
-  ariaLabel: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
-  autoFocusButton: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], null,
+var modal_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(modal_objectSpread(modal_objectSpread(modal_objectSpread({}, id["b" /* props */]), modelProps), {}, {
+  ariaLabel: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
+  autoFocusButton: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], null,
   /* istanbul ignore next */
   function (value) {
     return Object(inspect["m" /* isUndefinedOrNull */])(value) || Object(array["a" /* arrayIncludes */])(BUTTONS, value);
   }),
-  bodyBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  bodyBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
   bodyClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
-  bodyTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  bodyTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
   busy: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  buttonSize: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  buttonSize: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
   cancelDisabled: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  cancelTitle: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'Cancel'),
-  cancelTitleHtml: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
-  cancelVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'secondary'),
+  cancelTitle: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'Cancel'),
+  cancelTitleHtml: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
+  cancelVariant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'secondary'),
   centered: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   contentClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
   dialogClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
-  footerBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
-  footerBorderVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  footerBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
+  footerBorderVariant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
   footerClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
-  footerTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
-  headerBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
-  headerBorderVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  footerTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
+  headerBgVariant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
+  headerBorderVariant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
   headerClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
-  headerCloseContent: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], '&times;'),
-  headerCloseLabel: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'Close'),
-  headerCloseVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
-  headerTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  headerCloseContent: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], '&times;'),
+  headerCloseLabel: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'Close'),
+  headerCloseVariant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
+  headerTextVariant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
   // TODO: Rename to `noBackdrop` and deprecate `hideBackdrop`
   hideBackdrop: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   // TODO: Rename to `noFooter` and deprecate `hideFooter`
@@ -1782,25 +1496,25 @@ var modal_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(ob
   noStacking: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   okDisabled: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
   okOnly: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  okTitle: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'OK'),
-  okTitleHtml: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
-  okVariant: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'primary'),
+  okTitle: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'OK'),
+  okTitleHtml: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
+  okVariant: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'primary'),
   // HTML Element, CSS selector string or Vue component instance
-  returnFocus: Object(utils_props["a" /* makeProp */])([safe_types["c" /* HTMLElement */], constants_props["j" /* PROP_TYPE_OBJECT */], constants_props["l" /* PROP_TYPE_STRING */]]),
+  returnFocus: Object(utils_props["a" /* makeProp */])([safe_types["c" /* HTMLElement */], constants_props["k" /* PROP_TYPE_OBJECT */], constants_props["m" /* PROP_TYPE_STRING */]]),
   scrollable: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  size: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'md'),
+  size: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'md'),
   static: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  title: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  title: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
   titleClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
-  titleHtml: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */]),
+  titleHtml: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
   titleSrOnly: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
-  titleTag: Object(utils_props["a" /* makeProp */])(constants_props["l" /* PROP_TYPE_STRING */], 'h5')
+  titleTag: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'h5')
 })), components["e" /* NAME_MODAL */]); // --- Main component ---
 // @vue/component
 
 var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
   name: components["e" /* NAME_MODAL */],
-  mixins: [attrsMixin, idMixin, modelMixin, listenOnDocumentMixin, listen_on_root["a" /* listenOnRootMixin */], listenOnWindowMixin, normalize_slot["a" /* normalizeSlotMixin */], scoped_style["a" /* scopedStyleMixin */]],
+  mixins: [attrs["a" /* attrsMixin */], id["a" /* idMixin */], modelMixin, listenOnDocumentMixin, listen_on_root["a" /* listenOnRootMixin */], listenOnWindowMixin, normalize_slot["a" /* normalizeSlotMixin */], scoped_style["a" /* scopedStyleMixin */]],
   inheritAttrs: false,
   props: modal_props,
   data: function data() {
@@ -1933,7 +1647,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
         'aria-modal': isVisible ? 'true' : null,
         'aria-label': ariaLabel,
         'aria-labelledby': this.hideHeader || ariaLabel || // TODO: Rename slot to `title` and deprecate `modal-title`
-        !(this.hasNormalizedSlot(slots["i" /* SLOT_NAME_MODAL_TITLE */]) || this.titleHtml || this.title) ? null : this.modalTitleId,
+        !(this.hasNormalizedSlot(slots["j" /* SLOT_NAME_MODAL_TITLE */]) || this.titleHtml || this.title) ? null : this.modalTitleId,
         'aria-describedby': this.modalBodyId
       };
     }
@@ -1953,12 +1667,12 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
     this.zIndex = modalManager.getBaseZIndex(); // Listen for events from others to either open or close ourselves
     // and listen to all modals to enable/disable enforce focus
 
-    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["e" /* NAME_MODAL */], events["t" /* EVENT_NAME_SHOW */]), this.showHandler);
-    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["e" /* NAME_MODAL */], events["n" /* EVENT_NAME_HIDE */]), this.hideHandler);
-    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["e" /* NAME_MODAL */], events["v" /* EVENT_NAME_TOGGLE */]), this.toggleHandler); // Listen for `bv:modal::show events`, and close ourselves if the
+    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["e" /* NAME_MODAL */], events["z" /* EVENT_NAME_SHOW */]), this.showHandler);
+    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["e" /* NAME_MODAL */], events["q" /* EVENT_NAME_HIDE */]), this.hideHandler);
+    this.listenOnRoot(Object(utils_events["d" /* getRootActionEventName */])(components["e" /* NAME_MODAL */], events["B" /* EVENT_NAME_TOGGLE */]), this.toggleHandler); // Listen for `bv:modal::show events`, and close ourselves if the
     // opening modal not us
 
-    this.listenOnRoot(Object(utils_events["e" /* getRootEventName */])(components["e" /* NAME_MODAL */], events["t" /* EVENT_NAME_SHOW */]), this.modalListener); // Initially show modal?
+    this.listenOnRoot(Object(utils_events["e" /* getRootEventName */])(components["e" /* NAME_MODAL */], events["z" /* EVENT_NAME_SHOW */]), this.modalListener); // Initially show modal?
 
     if (this[MODEL_PROP_NAME] === true) {
       this.$nextTick(this.show);
@@ -1981,7 +1695,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       this.$_observer = null;
 
       if (on) {
-        this.$_observer = observe_dom_observeDom(this.$refs.content, this.checkModalOverflow.bind(this), OBSERVER_CONFIG);
+        this.$_observer = Object(observe_dom["a" /* observeDom */])(this.$refs.content, this.checkModalOverflow.bind(this), OBSERVER_CONFIG);
       }
     },
     // Private method to update the v-model
@@ -2020,7 +1734,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
         // If we are in the process of closing, wait until hidden before re-opening
 
         /* istanbul ignore next */
-        this.$once(events["m" /* EVENT_NAME_HIDDEN */], this.show);
+        this.$once(events["p" /* EVENT_NAME_HIDDEN */], this.show);
         /* istanbul ignore next */
 
         return;
@@ -2029,7 +1743,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       this.isOpening = true; // Set the element to return focus to when closed
 
       this.$_returnFocus = this.$_returnFocus || this.getActiveElement();
-      var showEvt = this.buildEvent(events["t" /* EVENT_NAME_SHOW */], {
+      var showEvt = this.buildEvent(events["z" /* EVENT_NAME_SHOW */], {
         cancelable: true
       });
       this.emitEvent(showEvt); // Don't show if canceled
@@ -2054,17 +1768,17 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       }
 
       this.isClosing = true;
-      var hideEvt = this.buildEvent(events["n" /* EVENT_NAME_HIDE */], {
+      var hideEvt = this.buildEvent(events["q" /* EVENT_NAME_HIDE */], {
         cancelable: trigger !== TRIGGER_FORCE,
         trigger: trigger || null
       }); // We emit specific event for one of the three built-in buttons
 
       if (trigger === BUTTON_OK) {
-        this.$emit(events["r" /* EVENT_NAME_OK */], hideEvt);
+        this.$emit(events["w" /* EVENT_NAME_OK */], hideEvt);
       } else if (trigger === BUTTON_CANCEL) {
-        this.$emit(events["a" /* EVENT_NAME_CANCEL */], hideEvt);
+        this.$emit(events["b" /* EVENT_NAME_CANCEL */], hideEvt);
       } else if (trigger === BUTTON_CLOSE) {
-        this.$emit(events["d" /* EVENT_NAME_CLOSE */], hideEvt);
+        this.$emit(events["f" /* EVENT_NAME_CLOSE */], hideEvt);
       }
 
       this.emitEvent(hideEvt); // Hide if not canceled
@@ -2117,7 +1831,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       /* istanbul ignore next: commenting out for now until we can test stacking */
       if (modalManager.modalsAreOpen && this.noStacking) {
         // If another modal(s) is already open, wait for it(them) to close
-        this.listenOnRootOnce(Object(utils_events["e" /* getRootEventName */])(components["e" /* NAME_MODAL */], events["m" /* EVENT_NAME_HIDDEN */]), this.doShow);
+        this.listenOnRootOnce(Object(utils_events["e" /* getRootEventName */])(components["e" /* NAME_MODAL */], events["p" /* EVENT_NAME_HIDDEN */]), this.doShow);
         return;
       }
 
@@ -2167,7 +1881,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       // when trying to pre-focus an element
 
       Object(dom["w" /* requestAF */])(function () {
-        _this3.emitEvent(_this3.buildEvent(events["u" /* EVENT_NAME_SHOWN */]));
+        _this3.emitEvent(_this3.buildEvent(events["A" /* EVENT_NAME_SHOWN */]));
 
         _this3.setEnforceFocus(true);
 
@@ -2202,7 +1916,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
         //       to the `hidden` event, not just only the `hide` event
 
 
-        _this4.emitEvent(_this4.buildEvent(events["m" /* EVENT_NAME_HIDDEN */]));
+        _this4.emitEvent(_this4.buildEvent(events["p" /* EVENT_NAME_HIDDEN */]));
       });
     },
     emitEvent: function emitEvent(bvEvent) {
@@ -2221,14 +1935,14 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
       var modal = this.$refs.modal;
 
       var onceModalMouseup = function onceModalMouseup(event) {
-        Object(utils_events["a" /* eventOff */])(modal, 'mouseup', onceModalMouseup, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
+        Object(utils_events["a" /* eventOff */])(modal, 'mouseup', onceModalMouseup, events["C" /* EVENT_OPTIONS_NO_CAPTURE */]);
 
         if (event.target === modal) {
           _this5.ignoreBackdropClick = true;
         }
       };
 
-      Object(utils_events["b" /* eventOn */])(modal, 'mouseup', onceModalMouseup, events["w" /* EVENT_OPTIONS_NO_CAPTURE */]);
+      Object(utils_events["b" /* eventOn */])(modal, 'mouseup', onceModalMouseup, events["C" /* EVENT_OPTIONS_NO_CAPTURE */]);
     },
     onClickOut: function onClickOut(event) {
       if (this.ignoreBackdropClick) {
@@ -2260,7 +1974,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
     },
     onEsc: function onEsc(event) {
       // If ESC pressed, hide modal
-      if (event.keyCode === CODE_ESC && this.isVisible && !this.noCloseOnEsc) {
+      if (event.keyCode === key_codes["d" /* CODE_ESC */] && this.isVisible && !this.noCloseOnEsc) {
         this.hide(TRIGGER_ESC);
       }
     },
@@ -2394,7 +2108,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
 
       if (!this.hideHeader) {
         // TODO: Rename slot to `header` and deprecate `modal-header`
-        var $modalHeader = this.normalizeSlot(slots["f" /* SLOT_NAME_MODAL_HEADER */], this.slotScope);
+        var $modalHeader = this.normalizeSlot(slots["g" /* SLOT_NAME_MODAL_HEADER */], this.slotScope);
 
         if (!$modalHeader) {
           var $closeButton = h();
@@ -2412,7 +2126,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
               },
               ref: 'close-button'
             }, // TODO: Rename slot to `header-close` and deprecate `modal-header-close`
-            [this.normalizeSlot(slots["g" /* SLOT_NAME_MODAL_HEADER_CLOSE */])]);
+            [this.normalizeSlot(slots["h" /* SLOT_NAME_MODAL_HEADER_CLOSE */])]);
           }
 
           $modalHeader = [h(this.titleTag, {
@@ -2422,9 +2136,9 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
               id: this.modalTitleId
             },
             // TODO: Rename slot to `title` and deprecate `modal-title`
-            domProps: this.hasNormalizedSlot(slots["i" /* SLOT_NAME_MODAL_TITLE */]) ? {} : Object(html["a" /* htmlOrText */])(this.titleHtml, this.title)
+            domProps: this.hasNormalizedSlot(slots["j" /* SLOT_NAME_MODAL_TITLE */]) ? {} : Object(html["a" /* htmlOrText */])(this.titleHtml, this.title)
           }, // TODO: Rename slot to `title` and deprecate `modal-title`
-          this.normalizeSlot(slots["i" /* SLOT_NAME_MODAL_TITLE */], this.slotScope)), $closeButton];
+          this.normalizeSlot(slots["j" /* SLOT_NAME_MODAL_TITLE */], this.slotScope)), $closeButton];
         }
 
         $header = h('header', {
@@ -2451,7 +2165,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
 
       if (!this.hideFooter) {
         // TODO: Rename slot to `footer` and deprecate `modal-footer`
-        var $modalFooter = this.normalizeSlot(slots["e" /* SLOT_NAME_MODAL_FOOTER */], this.slotScope);
+        var $modalFooter = this.normalizeSlot(slots["f" /* SLOT_NAME_MODAL_FOOTER */], this.slotScope);
 
         if (!$modalFooter) {
           var $cancelButton = h();
@@ -2464,13 +2178,13 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
                 disabled: this.cancelDisabled || this.busy || this.isTransitioning
               },
               // TODO: Rename slot to `cancel-button` and deprecate `modal-cancel`
-              domProps: this.hasNormalizedSlot(slots["d" /* SLOT_NAME_MODAL_CANCEL */]) ? {} : Object(html["a" /* htmlOrText */])(this.cancelTitleHtml, this.cancelTitle),
+              domProps: this.hasNormalizedSlot(slots["e" /* SLOT_NAME_MODAL_CANCEL */]) ? {} : Object(html["a" /* htmlOrText */])(this.cancelTitleHtml, this.cancelTitle),
               on: {
                 click: this.onCancel
               },
               ref: 'cancel-button'
             }, // TODO: Rename slot to `cancel-button` and deprecate `modal-cancel`
-            this.normalizeSlot(slots["d" /* SLOT_NAME_MODAL_CANCEL */]));
+            this.normalizeSlot(slots["e" /* SLOT_NAME_MODAL_CANCEL */]));
           }
 
           var $okButton = h(BButton, {
@@ -2480,13 +2194,13 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
               disabled: this.okDisabled || this.busy || this.isTransitioning
             },
             // TODO: Rename slot to `ok-button` and deprecate `modal-ok`
-            domProps: this.hasNormalizedSlot(slots["h" /* SLOT_NAME_MODAL_OK */]) ? {} : Object(html["a" /* htmlOrText */])(this.okTitleHtml, this.okTitle),
+            domProps: this.hasNormalizedSlot(slots["i" /* SLOT_NAME_MODAL_OK */]) ? {} : Object(html["a" /* htmlOrText */])(this.okTitleHtml, this.okTitle),
             on: {
               click: this.onOk
             },
             ref: 'ok-button'
           }, // TODO: Rename slot to `ok-button` and deprecate `modal-ok`
-          this.normalizeSlot(slots["h" /* SLOT_NAME_MODAL_OK */]));
+          this.normalizeSlot(slots["i" /* SLOT_NAME_MODAL_OK */]));
           $modalFooter = [$cancelButton, $okButton];
         }
 
@@ -2587,7 +2301,7 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
             id: this.modalBackdropId
           }
         }, // TODO: Rename slot to `backdrop` and deprecate `modal-backdrop`
-        this.normalizeSlot(slots["c" /* SLOT_NAME_MODAL_BACKDROP */]));
+        this.normalizeSlot(slots["d" /* SLOT_NAME_MODAL_BACKDROP */]));
       }
 
       $backdrop = h(bv_transition["a" /* BVTransition */], {
@@ -2614,6 +2328,995 @@ var BModal = /*#__PURE__*/vue["b" /* Vue */].extend({
 
 /***/ }),
 
+/***/ "700c":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ TabsPlugin; });
+
+// UNUSED EXPORTS: BTabs, BTab
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/vue.js
+var vue = __webpack_require__("2f79");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/components.js
+var components = __webpack_require__("c637");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/env.js
+var env = __webpack_require__("e863");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/events.js
+var events = __webpack_require__("0056");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/key-codes.js
+var key_codes = __webpack_require__("9bfa");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/props.js
+var constants_props = __webpack_require__("a723");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/slots.js
+var slots = __webpack_require__("9b76");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/array.js
+var array = __webpack_require__("2326");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/bv-event.class.js
+var bv_event_class = __webpack_require__("6d40");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/dom.js
+var dom = __webpack_require__("906c");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/events.js
+var utils_events = __webpack_require__("6b77");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/identity.js
+var identity = __webpack_require__("6c06");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/inspect.js
+var inspect = __webpack_require__("7b1e");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/loose-equal.js
+var loose_equal = __webpack_require__("3c21");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/math.js
+var math = __webpack_require__("a8c8");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/model.js
+var model = __webpack_require__("58f2");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/number.js
+var number = __webpack_require__("3a58");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/object.js
+var object = __webpack_require__("d82f");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/observe-dom.js
+var observe_dom = __webpack_require__("47df");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/props.js
+var utils_props = __webpack_require__("cf75");
+
+// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/utils/stable-sort.js
+/*
+ * Consistent and stable sort function across JavaScript platforms
+ *
+ * Inconsistent sorts can cause SSR problems between client and server
+ * such as in <b-table> if sortBy is applied to the data on server side render.
+ * Chrome and V8 native sorts are inconsistent/unstable
+ *
+ * This function uses native sort with fallback to index compare when the a and b
+ * compare returns 0
+ *
+ * Algorithm based on:
+ * https://stackoverflow.com/questions/1427608/fast-stable-sorting-algorithm-implementation-in-javascript/45422645#45422645
+ *
+ * @param {array} array to sort
+ * @param {function} sort compare function
+ * @return {array}
+ */
+var stableSort = function stableSort(array, compareFn) {
+  // Using `.bind(compareFn)` on the wrapped anonymous function improves
+  // performance by avoiding the function call setup. We don't use an arrow
+  // function here as it binds `this` to the `stableSort` context rather than
+  // the `compareFn` context, which wouldn't give us the performance increase.
+  return array.map(function (a, index) {
+    return [index, a];
+  }).sort(function (a, b) {
+    return this(a[1], b[1]) || a[0] - b[0];
+  }.bind(compareFn)).map(function (e) {
+    return e[1];
+  });
+};
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/mixins/id.js
+var mixins_id = __webpack_require__("90ef");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/mixins/normalize-slot.js
+var normalize_slot = __webpack_require__("8c18");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/components/link/link.js + 1 modules
+var link_link = __webpack_require__("aa59");
+
+// EXTERNAL MODULE: ./node_modules/vue-functional-data-merge/dist/lib.esm.js
+var lib_esm = __webpack_require__("b42e");
+
+// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/components/nav/nav.js
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+ // --- Helper methods ---
+
+var computeJustifyContent = function computeJustifyContent(value) {
+  value = value === 'left' ? 'start' : value === 'right' ? 'end' : value;
+  return "justify-content-".concat(value);
+}; // --- Props ---
+
+
+var nav_props = Object(utils_props["b" /* makePropsConfigurable */])({
+  align: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
+  // Set to `true` if placing in a card header
+  cardHeader: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  fill: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  justified: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  pills: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  small: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  tabs: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  tag: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'ul'),
+  vertical: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false)
+}, components["f" /* NAME_NAV */]); // --- Main component ---
+// @vue/component
+
+var BNav = /*#__PURE__*/vue["b" /* Vue */].extend({
+  name: components["f" /* NAME_NAV */],
+  functional: true,
+  props: nav_props,
+  render: function render(h, _ref) {
+    var _class;
+
+    var props = _ref.props,
+        data = _ref.data,
+        children = _ref.children;
+    var tabs = props.tabs,
+        pills = props.pills,
+        vertical = props.vertical,
+        align = props.align,
+        cardHeader = props.cardHeader;
+    return h(props.tag, Object(lib_esm["a" /* mergeData */])(data, {
+      staticClass: 'nav',
+      class: (_class = {
+        'nav-tabs': tabs,
+        'nav-pills': pills && !tabs,
+        'card-header-tabs': !vertical && cardHeader && tabs,
+        'card-header-pills': !vertical && cardHeader && pills && !tabs,
+        'flex-column': vertical,
+        'nav-fill': !vertical && props.fill,
+        'nav-justified': !vertical && props.justified
+      }, _defineProperty(_class, computeJustifyContent(align), !vertical && align), _defineProperty(_class, "small", props.small), _class)
+    }), children);
+  }
+});
+// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/components/tabs/tabs.js
+var _watch;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { tabs_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function tabs_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // --- Constants ---
+
+var _makeModelMixin = Object(model["a" /* makeModelMixin */])('value', {
+  type: constants_props["h" /* PROP_TYPE_NUMBER */]
+}),
+    modelMixin = _makeModelMixin.mixin,
+    modelProps = _makeModelMixin.props,
+    MODEL_PROP_NAME = _makeModelMixin.prop,
+    MODEL_EVENT_NAME = _makeModelMixin.event; // --- Helper methods ---
+// Filter function to filter out disabled tabs
+
+
+var notDisabled = function notDisabled(tab) {
+  return !tab.disabled;
+}; // --- Helper components ---
+// @vue/component
+
+
+var BVTabButton = /*#__PURE__*/vue["b" /* Vue */].extend({
+  name: components["l" /* NAME_TAB_BUTTON_HELPER */],
+  inject: {
+    bvTabs: {
+      default:
+      /* istanbul ignore next */
+      function _default() {
+        return {};
+      }
+    }
+  },
+  props: {
+    controls: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
+    id: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */]),
+    noKeyNav: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+    posInSet: Object(utils_props["a" /* makeProp */])(constants_props["h" /* PROP_TYPE_NUMBER */]),
+    setSize: Object(utils_props["a" /* makeProp */])(constants_props["h" /* PROP_TYPE_NUMBER */]),
+    // Reference to the child <b-tab> instance
+    tab: Object(utils_props["a" /* makeProp */])(),
+    tabIndex: Object(utils_props["a" /* makeProp */])(constants_props["h" /* PROP_TYPE_NUMBER */])
+  },
+  methods: {
+    focus: function focus() {
+      Object(dom["d" /* attemptFocus */])(this.$refs.link);
+    },
+    handleEvt: function handleEvt(event) {
+      /* istanbul ignore next */
+      if (this.tab.disabled) {
+        return;
+      }
+
+      var type = event.type,
+          keyCode = event.keyCode,
+          shiftKey = event.shiftKey;
+
+      if (type === 'click') {
+        Object(utils_events["f" /* stopEvent */])(event);
+        this.$emit(events["e" /* EVENT_NAME_CLICK */], event);
+      } else if (type === 'keydown' && keyCode === key_codes["h" /* CODE_SPACE */]) {
+        // For ARIA tabs the SPACE key will also trigger a click/select
+        // Even with keyboard navigation disabled, SPACE should "click" the button
+        // See: https://github.com/bootstrap-vue/bootstrap-vue/issues/4323
+        Object(utils_events["f" /* stopEvent */])(event);
+        this.$emit(events["e" /* EVENT_NAME_CLICK */], event);
+      } else if (type === 'keydown' && !this.noKeyNav) {
+        // For keyboard navigation
+        if ([key_codes["i" /* CODE_UP */], key_codes["f" /* CODE_LEFT */], key_codes["e" /* CODE_HOME */]].indexOf(keyCode) !== -1) {
+          Object(utils_events["f" /* stopEvent */])(event);
+
+          if (shiftKey || keyCode === key_codes["e" /* CODE_HOME */]) {
+            this.$emit(events["m" /* EVENT_NAME_FIRST */], event);
+          } else {
+            this.$emit(events["y" /* EVENT_NAME_PREV */], event);
+          }
+        } else if ([key_codes["a" /* CODE_DOWN */], key_codes["g" /* CODE_RIGHT */], key_codes["b" /* CODE_END */]].indexOf(keyCode) !== -1) {
+          Object(utils_events["f" /* stopEvent */])(event);
+
+          if (shiftKey || keyCode === key_codes["b" /* CODE_END */]) {
+            this.$emit(events["s" /* EVENT_NAME_LAST */], event);
+          } else {
+            this.$emit(events["v" /* EVENT_NAME_NEXT */], event);
+          }
+        }
+      }
+    }
+  },
+  render: function render(h) {
+    var id = this.id,
+        tabIndex = this.tabIndex,
+        setSize = this.setSize,
+        posInSet = this.posInSet,
+        controls = this.controls,
+        handleEvt = this.handleEvt;
+    var _this$tab = this.tab,
+        title = _this$tab.title,
+        localActive = _this$tab.localActive,
+        disabled = _this$tab.disabled,
+        titleItemClass = _this$tab.titleItemClass,
+        titleLinkClass = _this$tab.titleLinkClass,
+        titleLinkAttributes = _this$tab.titleLinkAttributes;
+    var $link = h(link_link["a" /* BLink */], {
+      staticClass: 'nav-link',
+      class: [{
+        active: localActive && !disabled,
+        disabled: disabled
+      }, titleLinkClass, // Apply <b-tabs> `activeNavItemClass` styles when the tab is active
+      localActive ? this.bvTabs.activeNavItemClass : null],
+      props: {
+        disabled: disabled
+      },
+      attrs: _objectSpread(_objectSpread({}, titleLinkAttributes), {}, {
+        id: id,
+        role: 'tab',
+        // Roving tab index when keynav enabled
+        tabindex: tabIndex,
+        'aria-selected': localActive && !disabled ? 'true' : 'false',
+        'aria-setsize': setSize,
+        'aria-posinset': posInSet,
+        'aria-controls': controls
+      }),
+      on: {
+        click: handleEvt,
+        keydown: handleEvt
+      },
+      ref: 'link'
+    }, [this.tab.normalizeSlot(slots["m" /* SLOT_NAME_TITLE */]) || title]);
+    return h('li', {
+      staticClass: 'nav-item',
+      class: [titleItemClass],
+      attrs: {
+        role: 'presentation'
+      }
+    }, [$link]);
+  }
+}); // --- Props ---
+
+var navProps = Object(object["i" /* omit */])(nav_props, ['tabs', 'isNavBar', 'cardHeader']);
+var tabs_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(_objectSpread(_objectSpread(_objectSpread(_objectSpread({}, mixins_id["b" /* props */]), modelProps), navProps), {}, {
+  // Only applied to the currently active `<b-nav-item>`
+  activeNavItemClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
+  // Only applied to the currently active `<b-tab>`
+  // This prop is sniffed by the `<b-tab>` child
+  activeTabClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
+  card: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  contentClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
+  // Synonym for 'bottom'
+  end: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  // This prop is sniffed by the `<b-tab>` child
+  lazy: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  navClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
+  navWrapperClass: Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */]),
+  noFade: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  noKeyNav: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  noNavStyle: Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false),
+  tag: Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'div')
+})), components["k" /* NAME_TABS */]); // --- Main component ---
+// @vue/component
+
+var BTabs = /*#__PURE__*/vue["b" /* Vue */].extend({
+  name: components["k" /* NAME_TABS */],
+  mixins: [mixins_id["a" /* idMixin */], modelMixin, normalize_slot["a" /* normalizeSlotMixin */]],
+  provide: function provide() {
+    return {
+      bvTabs: this
+    };
+  },
+  props: tabs_props,
+  data: function data() {
+    return {
+      // Index of current tab
+      currentTab: Object(number["c" /* toInteger */])(this[MODEL_PROP_NAME], -1),
+      // Array of direct child `<b-tab>` instances, in DOM order
+      tabs: [],
+      // Array of child instances registered (for triggering reactive updates)
+      registeredTabs: []
+    };
+  },
+  computed: {
+    fade: function fade() {
+      // This computed prop is sniffed by the tab child
+      return !this.noFade;
+    },
+    localNavClass: function localNavClass() {
+      var classes = [];
+
+      if (this.card && this.vertical) {
+        classes.push('card-header', 'h-100', 'border-bottom-0', 'rounded-0');
+      }
+
+      return [].concat(classes, [this.navClass]);
+    }
+  },
+  watch: (_watch = {}, tabs_defineProperty(_watch, MODEL_PROP_NAME, function (newValue, oldValue) {
+    if (newValue !== oldValue) {
+      newValue = Object(number["c" /* toInteger */])(newValue, -1);
+      oldValue = Object(number["c" /* toInteger */])(oldValue, 0);
+      var $tab = this.tabs[newValue];
+
+      if ($tab && !$tab.disabled) {
+        this.activateTab($tab);
+      } else {
+        // Try next or prev tabs
+        if (newValue < oldValue) {
+          this.previousTab();
+        } else {
+          this.nextTab();
+        }
+      }
+    }
+  }), tabs_defineProperty(_watch, "currentTab", function currentTab(newValue) {
+    var index = -1; // Ensure only one tab is active at most
+
+    this.tabs.forEach(function ($tab, i) {
+      if (i === newValue && !$tab.disabled) {
+        $tab.localActive = true;
+        index = i;
+      } else {
+        $tab.localActive = false;
+      }
+    }); // Update the v-model
+
+    this.$emit(MODEL_EVENT_NAME, index);
+  }), tabs_defineProperty(_watch, "tabs", function tabs(newValue, oldValue) {
+    var _this = this;
+
+    // We use `_uid` instead of `safeId()`, as the later is changed in a `$nextTick()`
+    // if no explicit ID is provided, causing duplicate emits
+    if (!Object(loose_equal["a" /* looseEqual */])(newValue.map(function ($tab) {
+      return $tab[vue["a" /* COMPONENT_UID_KEY */]];
+    }), oldValue.map(function ($tab) {
+      return $tab[vue["a" /* COMPONENT_UID_KEY */]];
+    }))) {
+      // In a `$nextTick()` to ensure `currentTab` has been set first
+      this.$nextTick(function () {
+        // We emit shallow copies of the new and old arrays of tabs,
+        // to prevent users from potentially mutating the internal arrays
+        _this.$emit(events["d" /* EVENT_NAME_CHANGED */], newValue.slice(), oldValue.slice());
+      });
+    }
+  }), tabs_defineProperty(_watch, "registeredTabs", function registeredTabs() {
+    this.updateTabs();
+  }), _watch),
+  created: function created() {
+    // Create private non-reactive props
+    this.$_observer = null;
+  },
+  mounted: function mounted() {
+    this.setObserver(true);
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.setObserver(false); // Ensure no references to child instances exist
+
+    this.tabs = [];
+  },
+  methods: {
+    registerTab: function registerTab($tab) {
+      if (!Object(array["a" /* arrayIncludes */])(this.registeredTabs, $tab)) {
+        this.registeredTabs.push($tab);
+      }
+    },
+    unregisterTab: function unregisterTab($tab) {
+      this.registeredTabs = this.registeredTabs.slice().filter(function ($t) {
+        return $t !== $tab;
+      });
+    },
+    // DOM observer is needed to detect changes in order of tabs
+    setObserver: function setObserver() {
+      var _this2 = this;
+
+      var on = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      this.$_observer && this.$_observer.disconnect();
+      this.$_observer = null;
+
+      if (on) {
+        /* istanbul ignore next: difficult to test mutation observer in JSDOM */
+        var handler = function handler() {
+          _this2.$nextTick(function () {
+            Object(dom["w" /* requestAF */])(function () {
+              _this2.updateTabs();
+            });
+          });
+        }; // Watch for changes to `<b-tab>` sub components
+
+
+        this.$_observer = Object(observe_dom["a" /* observeDom */])(this.$refs.content, handler, {
+          childList: true,
+          subtree: false,
+          attributes: true,
+          attributeFilter: ['id']
+        });
+      }
+    },
+    getTabs: function getTabs() {
+      var $tabs = this.registeredTabs.filter(function ($tab) {
+        return $tab.$children.filter(function ($t) {
+          return $t._isTab;
+        }).length === 0;
+      }); // DOM Order of Tabs
+
+      var order = [];
+      /* istanbul ignore next: too difficult to test */
+
+      if (env["f" /* IS_BROWSER */] && $tabs.length > 0) {
+        // We rely on the DOM when mounted to get the "true" order of the `<b-tab>` children
+        // `querySelectorAll()` always returns elements in document order, regardless of
+        // order specified in the selector
+        var selector = $tabs.map(function ($tab) {
+          return "#".concat($tab.safeId());
+        }).join(', ');
+        order = Object(dom["y" /* selectAll */])(selector, this.$el).map(function ($el) {
+          return $el.id;
+        }).filter(identity["a" /* identity */]);
+      } // Stable sort keeps the original order if not found in the `order` array,
+      // which will be an empty array before mount
+
+
+      return stableSort($tabs, function (a, b) {
+        return order.indexOf(a.safeId()) - order.indexOf(b.safeId());
+      });
+    },
+    updateTabs: function updateTabs() {
+      var $tabs = this.getTabs(); // Find last active non-disabled tab in current tabs
+      // We trust tab state over `currentTab`, in case tabs were added/removed/re-ordered
+
+      var tabIndex = $tabs.indexOf($tabs.slice().reverse().find(function ($tab) {
+        return $tab.localActive && !$tab.disabled;
+      })); // Else try setting to `currentTab`
+
+      if (tabIndex < 0) {
+        var currentTab = this.currentTab;
+
+        if (currentTab >= $tabs.length) {
+          // Handle last tab being removed, so find the last non-disabled tab
+          tabIndex = $tabs.indexOf($tabs.slice().reverse().find(notDisabled));
+        } else if ($tabs[currentTab] && !$tabs[currentTab].disabled) {
+          // Current tab is not disabled
+          tabIndex = currentTab;
+        }
+      } // Else find first non-disabled tab in current tabs
+
+
+      if (tabIndex < 0) {
+        tabIndex = $tabs.indexOf($tabs.find(notDisabled));
+      } // Ensure only one tab is active at a time
+
+
+      $tabs.forEach(function ($tab, index) {
+        $tab.localActive = index === tabIndex;
+      });
+      this.tabs = $tabs;
+      this.currentTab = tabIndex;
+    },
+    // Find a button that controls a tab, given the tab reference
+    // Returns the button vm instance
+    getButtonForTab: function getButtonForTab($tab) {
+      return (this.$refs.buttons || []).find(function ($btn) {
+        return $btn.tab === $tab;
+      });
+    },
+    // Force a button to re-render its content, given a `<b-tab>` instance
+    // Called by `<b-tab>` on `update()`
+    updateButton: function updateButton($tab) {
+      var $button = this.getButtonForTab($tab);
+
+      if ($button && $button.$forceUpdate) {
+        $button.$forceUpdate();
+      }
+    },
+    // Activate a tab given a `<b-tab>` instance
+    // Also accessed by `<b-tab>`
+    activateTab: function activateTab($tab) {
+      var currentTab = this.currentTab,
+          $tabs = this.tabs;
+      var result = false;
+
+      if ($tab) {
+        var index = $tabs.indexOf($tab);
+
+        if (index !== currentTab && index > -1 && !$tab.disabled) {
+          var tabEvent = new bv_event_class["a" /* BvEvent */](events["a" /* EVENT_NAME_ACTIVATE_TAB */], {
+            cancelable: true,
+            vueTarget: this,
+            componentId: this.safeId()
+          });
+          this.$emit(tabEvent.type, index, currentTab, tabEvent);
+
+          if (!tabEvent.defaultPrevented) {
+            this.currentTab = index;
+            result = true;
+          }
+        }
+      } // Couldn't set tab, so ensure v-model is up to date
+
+      /* istanbul ignore next: should rarely happen */
+
+
+      if (!result && this[MODEL_PROP_NAME] !== currentTab) {
+        this.$emit(MODEL_EVENT_NAME, currentTab);
+      }
+
+      return result;
+    },
+    // Deactivate a tab given a `<b-tab>` instance
+    // Accessed by `<b-tab>`
+    deactivateTab: function deactivateTab($tab) {
+      if ($tab) {
+        // Find first non-disabled tab that isn't the one being deactivated
+        // If no tabs are available, then don't deactivate current tab
+        return this.activateTab(this.tabs.filter(function ($t) {
+          return $t !== $tab;
+        }).find(notDisabled));
+      }
+      /* istanbul ignore next: should never/rarely happen */
+
+
+      return false;
+    },
+    // Focus a tab button given its `<b-tab>` instance
+    focusButton: function focusButton($tab) {
+      var _this3 = this;
+
+      // Wrap in `$nextTick()` to ensure DOM has completed rendering
+      this.$nextTick(function () {
+        Object(dom["d" /* attemptFocus */])(_this3.getButtonForTab($tab));
+      });
+    },
+    // Emit a click event on a specified `<b-tab>` component instance
+    emitTabClick: function emitTabClick(tab, event) {
+      if (Object(inspect["d" /* isEvent */])(event) && tab && tab.$emit && !tab.disabled) {
+        tab.$emit(events["e" /* EVENT_NAME_CLICK */], event);
+      }
+    },
+    // Click handler
+    clickTab: function clickTab($tab, event) {
+      this.activateTab($tab);
+      this.emitTabClick($tab, event);
+    },
+    // Move to first non-disabled tab
+    firstTab: function firstTab(focus) {
+      var $tab = this.tabs.find(notDisabled);
+
+      if (this.activateTab($tab) && focus) {
+        this.focusButton($tab);
+        this.emitTabClick($tab, focus);
+      }
+    },
+    // Move to previous non-disabled tab
+    previousTab: function previousTab(focus) {
+      var currentIndex = Object(math["a" /* mathMax */])(this.currentTab, 0);
+      var $tab = this.tabs.slice(0, currentIndex).reverse().find(notDisabled);
+
+      if (this.activateTab($tab) && focus) {
+        this.focusButton($tab);
+        this.emitTabClick($tab, focus);
+      }
+    },
+    // Move to next non-disabled tab
+    nextTab: function nextTab(focus) {
+      var currentIndex = Object(math["a" /* mathMax */])(this.currentTab, -1);
+      var $tab = this.tabs.slice(currentIndex + 1).find(notDisabled);
+
+      if (this.activateTab($tab) && focus) {
+        this.focusButton($tab);
+        this.emitTabClick($tab, focus);
+      }
+    },
+    // Move to last non-disabled tab
+    lastTab: function lastTab(focus) {
+      var $tab = this.tabs.slice().reverse().find(notDisabled);
+
+      if (this.activateTab($tab) && focus) {
+        this.focusButton($tab);
+        this.emitTabClick($tab, focus);
+      }
+    }
+  },
+  render: function render(h) {
+    var _this4 = this;
+
+    var align = this.align,
+        card = this.card,
+        end = this.end,
+        fill = this.fill,
+        firstTab = this.firstTab,
+        justified = this.justified,
+        lastTab = this.lastTab,
+        nextTab = this.nextTab,
+        noKeyNav = this.noKeyNav,
+        noNavStyle = this.noNavStyle,
+        pills = this.pills,
+        previousTab = this.previousTab,
+        small = this.small,
+        $tabs = this.tabs,
+        vertical = this.vertical; // Currently active tab
+
+    var $activeTab = $tabs.find(function ($tab) {
+      return $tab.localActive && !$tab.disabled;
+    }); // Tab button to allow focusing when no active tab found (keynav only)
+
+    var $fallbackTab = $tabs.find(function ($tab) {
+      return !$tab.disabled;
+    }); // For each `<b-tab>` found create the tab buttons
+
+    var $buttons = $tabs.map(function ($tab, index) {
+      var _on;
+
+      var safeId = $tab.safeId; // Ensure at least one tab button is focusable when keynav enabled (if possible)
+
+      var tabIndex = null;
+
+      if (!noKeyNav) {
+        // Buttons are not in tab index unless active, or a fallback tab
+        tabIndex = -1;
+
+        if ($tab === $activeTab || !$activeTab && $tab === $fallbackTab) {
+          // Place tab button in tab sequence
+          tabIndex = null;
+        }
+      }
+
+      return h(BVTabButton, {
+        props: {
+          controls: safeId ? safeId() : null,
+          id: $tab.controlledBy || (safeId ? safeId("_BV_tab_button_") : null),
+          noKeyNav: noKeyNav,
+          posInSet: index + 1,
+          setSize: $tabs.length,
+          tab: $tab,
+          tabIndex: tabIndex
+        },
+        on: (_on = {}, tabs_defineProperty(_on, events["e" /* EVENT_NAME_CLICK */], function (event) {
+          _this4.clickTab($tab, event);
+        }), tabs_defineProperty(_on, events["m" /* EVENT_NAME_FIRST */], firstTab), tabs_defineProperty(_on, events["y" /* EVENT_NAME_PREV */], previousTab), tabs_defineProperty(_on, events["v" /* EVENT_NAME_NEXT */], nextTab), tabs_defineProperty(_on, events["s" /* EVENT_NAME_LAST */], lastTab), _on),
+        key: $tab[vue["a" /* COMPONENT_UID_KEY */]] || index,
+        ref: 'buttons',
+        // Needed to make `this.$refs.buttons` an array
+        refInFor: true
+      });
+    });
+    var $nav = h(BNav, {
+      class: this.localNavClass,
+      attrs: {
+        role: 'tablist',
+        id: this.safeId('_BV_tab_controls_')
+      },
+      props: {
+        fill: fill,
+        justified: justified,
+        align: align,
+        tabs: !noNavStyle && !pills,
+        pills: !noNavStyle && pills,
+        vertical: vertical,
+        small: small,
+        cardHeader: card && !vertical
+      },
+      ref: 'nav'
+    }, [this.normalizeSlot(slots["l" /* SLOT_NAME_TABS_START */]) || h(), $buttons, this.normalizeSlot(slots["k" /* SLOT_NAME_TABS_END */]) || h()]);
+    $nav = h('div', {
+      class: [{
+        'card-header': card && !vertical && !end,
+        'card-footer': card && !vertical && end,
+        'col-auto': vertical
+      }, this.navWrapperClass],
+      key: 'bv-tabs-nav'
+    }, [$nav]);
+    var $children = this.normalizeSlot() || [];
+    var $empty = h();
+
+    if ($children.length === 0) {
+      $empty = h('div', {
+        class: ['tab-pane', 'active', {
+          'card-body': card
+        }],
+        key: 'bv-empty-tab'
+      }, this.normalizeSlot(slots["c" /* SLOT_NAME_EMPTY */]));
+    }
+
+    var $content = h('div', {
+      staticClass: 'tab-content',
+      class: [{
+        col: vertical
+      }, this.contentClass],
+      attrs: {
+        id: this.safeId('_BV_tab_container_')
+      },
+      key: 'bv-content',
+      ref: 'content'
+    }, [$children, $empty]); // Render final output
+
+    return h(this.tag, {
+      staticClass: 'tabs',
+      class: {
+        row: vertical,
+        'no-gutters': vertical && card
+      },
+      attrs: {
+        id: this.safeId()
+      }
+    }, [end ? $content : h(), $nav, end ? h() : $content]);
+  }
+});
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/components/transition/bv-transition.js
+var bv_transition = __webpack_require__("ce2a");
+
+// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/components/tabs/tab.js
+var _objectSpread2, tab_watch;
+
+function tab_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function tab_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { tab_ownKeys(Object(source), true).forEach(function (key) { tab_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { tab_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function tab_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+
+
+
+ // --- Constants ---
+
+var MODEL_PROP_NAME_ACTIVE = 'active';
+var MODEL_EVENT_NAME_ACTIVE = events["F" /* MODEL_EVENT_NAME_PREFIX */] + MODEL_PROP_NAME_ACTIVE; // --- Props ---
+
+var tab_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(tab_objectSpread(tab_objectSpread({}, mixins_id["b" /* props */]), {}, (_objectSpread2 = {}, tab_defineProperty(_objectSpread2, MODEL_PROP_NAME_ACTIVE, Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false)), tab_defineProperty(_objectSpread2, "buttonId", Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */])), tab_defineProperty(_objectSpread2, "disabled", Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false)), tab_defineProperty(_objectSpread2, "lazy", Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false)), tab_defineProperty(_objectSpread2, "noBody", Object(utils_props["a" /* makeProp */])(constants_props["e" /* PROP_TYPE_BOOLEAN */], false)), tab_defineProperty(_objectSpread2, "tag", Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */], 'div')), tab_defineProperty(_objectSpread2, "title", Object(utils_props["a" /* makeProp */])(constants_props["m" /* PROP_TYPE_STRING */])), tab_defineProperty(_objectSpread2, "titleItemClass", Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */])), tab_defineProperty(_objectSpread2, "titleLinkAttributes", Object(utils_props["a" /* makeProp */])(constants_props["k" /* PROP_TYPE_OBJECT */])), tab_defineProperty(_objectSpread2, "titleLinkClass", Object(utils_props["a" /* makeProp */])(constants_props["c" /* PROP_TYPE_ARRAY_OBJECT_STRING */])), _objectSpread2))), components["j" /* NAME_TAB */]); // --- Main component ---
+// @vue/component
+
+var BTab = /*#__PURE__*/vue["b" /* Vue */].extend({
+  name: components["j" /* NAME_TAB */],
+  mixins: [mixins_id["a" /* idMixin */], normalize_slot["a" /* normalizeSlotMixin */]],
+  inject: {
+    bvTabs: {
+      default: function _default() {
+        return {};
+      }
+    }
+  },
+  props: tab_props,
+  data: function data() {
+    return {
+      localActive: this[MODEL_PROP_NAME_ACTIVE] && !this.disabled
+    };
+  },
+  computed: {
+    // For parent sniffing of child
+    _isTab: function _isTab() {
+      return true;
+    },
+    tabClasses: function tabClasses() {
+      var active = this.localActive,
+          disabled = this.disabled;
+      return [{
+        active: active,
+        disabled: disabled,
+        'card-body': this.bvTabs.card && !this.noBody
+      }, // Apply <b-tabs> `activeTabClass` styles when this tab is active
+      active ? this.bvTabs.activeTabClass : null];
+    },
+    controlledBy: function controlledBy() {
+      return this.buttonId || this.safeId('__BV_tab_button__');
+    },
+    computedNoFade: function computedNoFade() {
+      return !(this.bvTabs.fade || false);
+    },
+    computedLazy: function computedLazy() {
+      return this.bvTabs.lazy || this.lazy;
+    }
+  },
+  watch: (tab_watch = {}, tab_defineProperty(tab_watch, MODEL_PROP_NAME_ACTIVE, function (newValue, oldValue) {
+    if (newValue !== oldValue) {
+      if (newValue) {
+        // If activated post mount
+        this.activate();
+      } else {
+        /* istanbul ignore next */
+        if (!this.deactivate()) {
+          // Tab couldn't be deactivated, so we reset the synced active prop
+          // Deactivation will fail if no other tabs to activate
+          this.$emit(MODEL_EVENT_NAME_ACTIVE, this.localActive);
+        }
+      }
+    }
+  }), tab_defineProperty(tab_watch, "disabled", function disabled(newValue, oldValue) {
+    if (newValue !== oldValue) {
+      var firstTab = this.bvTabs.firstTab;
+
+      if (newValue && this.localActive && firstTab) {
+        this.localActive = false;
+        firstTab();
+      }
+    }
+  }), tab_defineProperty(tab_watch, "localActive", function localActive(newValue) {
+    // Make `active` prop work with `.sync` modifier
+    this.$emit(MODEL_EVENT_NAME_ACTIVE, newValue);
+  }), tab_watch),
+  mounted: function mounted() {
+    // Inform `<b-tabs>` of our presence
+    this.registerTab();
+  },
+  updated: function updated() {
+    // Force the tab button content to update (since slots are not reactive)
+    // Only done if we have a title slot, as the title prop is reactive
+    var updateButton = this.bvTabs.updateButton;
+
+    if (updateButton && this.hasNormalizedSlot(slots["m" /* SLOT_NAME_TITLE */])) {
+      updateButton(this);
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    // Inform `<b-tabs>` of our departure
+    this.unregisterTab();
+  },
+  methods: {
+    // Private methods
+    registerTab: function registerTab() {
+      // Inform `<b-tabs>` of our presence
+      var registerTab = this.bvTabs.registerTab;
+
+      if (registerTab) {
+        registerTab(this);
+      }
+    },
+    unregisterTab: function unregisterTab() {
+      // Inform `<b-tabs>` of our departure
+      var unregisterTab = this.bvTabs.unregisterTab;
+
+      if (unregisterTab) {
+        unregisterTab(this);
+      }
+    },
+    // Public methods
+    activate: function activate() {
+      // Not inside a `<b-tabs>` component or tab is disabled
+      var activateTab = this.bvTabs.activateTab;
+      return activateTab && !this.disabled ? activateTab(this) : false;
+    },
+    deactivate: function deactivate() {
+      // Not inside a `<b-tabs>` component or not active to begin with
+      var deactivateTab = this.bvTabs.deactivateTab;
+      return deactivateTab && this.localActive ? deactivateTab(this) : false;
+    }
+  },
+  render: function render(h) {
+    var localActive = this.localActive;
+    var $content = h(this.tag, {
+      staticClass: 'tab-pane',
+      class: this.tabClasses,
+      directives: [{
+        name: 'show',
+        value: localActive
+      }],
+      attrs: {
+        role: 'tabpanel',
+        id: this.safeId(),
+        'aria-hidden': localActive ? 'false' : 'true',
+        'aria-labelledby': this.controlledBy || null
+      },
+      ref: 'panel'
+    }, // Render content lazily if requested
+    [localActive || !this.computedLazy ? this.normalizeSlot() : h()]);
+    return h(bv_transition["a" /* BVTransition */], {
+      props: {
+        mode: 'out-in',
+        noFade: this.computedNoFade
+      }
+    }, [$content]);
+  }
+});
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/plugins.js + 2 modules
+var plugins = __webpack_require__("3790");
+
+// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/components/tabs/index.js
+
+
+
+var TabsPlugin = /*#__PURE__*/Object(plugins["a" /* pluginFactory */])({
+  components: {
+    BTabs: BTabs,
+    BTab: BTab
+  }
+});
+
+
+/***/ }),
+
 /***/ "8690":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2635,6 +3338,432 @@ var htmlOrText = function htmlOrText(innerHTML, textContent) {
     textContent: textContent
   } : {};
 };
+
+/***/ }),
+
+/***/ "8c4e":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export makePropWatcher */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return makePropCacheMixin; });
+/* harmony import */ var _vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("2f79");
+/* harmony import */ var _clone_deep__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("c9a9");
+/* harmony import */ var _loose_equal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("3c21");
+/* harmony import */ var _object__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("d82f");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+var isEmpty = function isEmpty(value) {
+  return !value || Object(_object__WEBPACK_IMPORTED_MODULE_3__[/* keys */ "h"])(value).length === 0;
+};
+
+var makePropWatcher = function makePropWatcher(propName) {
+  return {
+    handler: function handler(newValue, oldValue) {
+      if (Object(_loose_equal__WEBPACK_IMPORTED_MODULE_2__[/* looseEqual */ "a"])(newValue, oldValue)) {
+        return;
+      }
+
+      if (isEmpty(newValue) || isEmpty(oldValue)) {
+        this[propName] = Object(_clone_deep__WEBPACK_IMPORTED_MODULE_1__[/* cloneDeep */ "a"])(newValue);
+        return;
+      }
+
+      for (var key in oldValue) {
+        if (!Object(_object__WEBPACK_IMPORTED_MODULE_3__[/* hasOwnProperty */ "g"])(newValue, key)) {
+          this.$delete(this.$data[propName], key);
+        }
+      }
+
+      for (var _key in newValue) {
+        this.$set(this.$data[propName], _key, newValue[_key]);
+      }
+    }
+  };
+};
+var makePropCacheMixin = function makePropCacheMixin(propName, proxyPropName) {
+  return _vue__WEBPACK_IMPORTED_MODULE_0__[/* Vue */ "b"].extend({
+    data: function data() {
+      return _defineProperty({}, proxyPropName, Object(_clone_deep__WEBPACK_IMPORTED_MODULE_1__[/* cloneDeep */ "a"])(this[propName]));
+    },
+    watch: _defineProperty({}, propName, makePropWatcher(proxyPropName))
+  });
+};
+
+/***/ }),
+
+/***/ "90ef":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return props; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return idMixin; });
+/* harmony import */ var _vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("2f79");
+/* harmony import */ var _constants_props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("a723");
+/* harmony import */ var _utils_props__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("cf75");
+// SSR safe client-side ID attribute generation
+// ID's can only be generated client-side, after mount
+// `this._uid` is not synched between server and client
+
+
+ // --- Props ---
+
+var props = {
+  id: Object(_utils_props__WEBPACK_IMPORTED_MODULE_2__[/* makeProp */ "a"])(_constants_props__WEBPACK_IMPORTED_MODULE_1__[/* PROP_TYPE_STRING */ "m"])
+}; // --- Mixin ---
+// @vue/component
+
+var idMixin = _vue__WEBPACK_IMPORTED_MODULE_0__[/* Vue */ "b"].extend({
+  props: props,
+  data: function data() {
+    return {
+      localId_: null
+    };
+  },
+  computed: {
+    safeId: function safeId() {
+      // Computed property that returns a dynamic function for creating the ID
+      // Reacts to changes in both `.id` and `.localId_` and regenerates a new function
+      var id = this.id || this.localId_; // We return a function that accepts an optional suffix string
+      // So this computed prop looks and works like a method
+      // but benefits from Vue's computed prop caching
+
+      var fn = function fn(suffix) {
+        if (!id) {
+          return null;
+        }
+
+        suffix = String(suffix || '').replace(/\s+/g, '_');
+        return suffix ? id + '_' + suffix : id;
+      };
+
+      return fn;
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    // `mounted()` only occurs client-side
+    this.$nextTick(function () {
+      // Update DOM with auto-generated ID after mount
+      // to prevent SSR hydration errors
+      _this.localId_ = "__BVID__".concat(_this[_vue__WEBPACK_IMPORTED_MODULE_0__[/* COMPONENT_UID_KEY */ "a"]]);
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "9bfa":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export CODE_BACKSPACE */
+/* unused harmony export CODE_BREAK */
+/* unused harmony export CODE_DELETE */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CODE_DOWN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CODE_END; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CODE_ENTER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return CODE_ESC; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return CODE_HOME; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return CODE_LEFT; });
+/* unused harmony export CODE_PAGEDOWN */
+/* unused harmony export CODE_PAGEUP */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return CODE_RIGHT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return CODE_SPACE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return CODE_UP; });
+var CODE_BACKSPACE = 8;
+var CODE_BREAK = 19;
+var CODE_DELETE = 46;
+var CODE_DOWN = 40;
+var CODE_END = 35;
+var CODE_ENTER = 13;
+var CODE_ESC = 27;
+var CODE_HOME = 36;
+var CODE_LEFT = 37;
+var CODE_PAGEDOWN = 34;
+var CODE_PAGEUP = 33;
+var CODE_RIGHT = 39;
+var CODE_SPACE = 32;
+var CODE_UP = 38;
+
+/***/ }),
+
+/***/ "aa59":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ link_props; });
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ BLink; });
+
+// UNUSED EXPORTS: routerLinkProps, nuxtLinkProps
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/vue.js
+var vue = __webpack_require__("2f79");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/components.js
+var components = __webpack_require__("c637");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/events.js
+var events = __webpack_require__("0056");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/constants/props.js
+var props = __webpack_require__("a723");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/array.js
+var array = __webpack_require__("2326");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/dom.js
+var dom = __webpack_require__("906c");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/events.js
+var utils_events = __webpack_require__("6b77");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/inspect.js
+var inspect = __webpack_require__("7b1e");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/object.js
+var object = __webpack_require__("d82f");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/props.js
+var utils_props = __webpack_require__("cf75");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/router.js
+var router = __webpack_require__("4a38");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/mixins/attrs.js
+var attrs = __webpack_require__("493b");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/mixins/listen-on-root.js
+var listen_on_root = __webpack_require__("602d");
+
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/utils/cache.js
+var cache = __webpack_require__("8c4e");
+
+// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/mixins/listeners.js
+
+var listenersMixin = Object(cache["a" /* makePropCacheMixin */])('$listeners', 'bvListeners');
+// EXTERNAL MODULE: ./node_modules/bootstrap-vue/esm/mixins/normalize-slot.js
+var normalize_slot = __webpack_require__("8c18");
+
+// CONCATENATED MODULE: ./node_modules/bootstrap-vue/esm/components/link/link.js
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // --- Constants ---
+
+var ROOT_EVENT_NAME_CLICKED = Object(utils_events["e" /* getRootEventName */])(components["d" /* NAME_LINK */], 'clicked'); // --- Props ---
+// `<router-link>` specific props
+
+var routerLinkProps = {
+  activeClass: Object(utils_props["a" /* makeProp */])(props["m" /* PROP_TYPE_STRING */]),
+  append: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
+  event: Object(utils_props["a" /* makeProp */])(props["d" /* PROP_TYPE_ARRAY_STRING */], events["e" /* EVENT_NAME_CLICK */]),
+  exact: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
+  exactActiveClass: Object(utils_props["a" /* makeProp */])(props["m" /* PROP_TYPE_STRING */]),
+  replace: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
+  routerTag: Object(utils_props["a" /* makeProp */])(props["m" /* PROP_TYPE_STRING */], 'a'),
+  to: Object(utils_props["a" /* makeProp */])(props["l" /* PROP_TYPE_OBJECT_STRING */])
+}; // `<nuxt-link>` specific props
+
+var nuxtLinkProps = {
+  noPrefetch: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
+  // Must be `null` to fall back to the value defined in the
+  // `nuxt.config.js` configuration file for `router.prefetchLinks`
+  // We convert `null` to `undefined`, so that Nuxt.js will use the
+  // compiled default
+  // Vue treats `undefined` as default of `false` for Boolean props,
+  // so we must set it as `null` here to be a true tri-state prop
+  prefetch: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], null)
+}; // All `<b-link>` props
+
+var link_props = Object(utils_props["b" /* makePropsConfigurable */])(Object(object["l" /* sortKeys */])(_objectSpread(_objectSpread(_objectSpread({}, nuxtLinkProps), routerLinkProps), {}, {
+  active: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
+  disabled: Object(utils_props["a" /* makeProp */])(props["e" /* PROP_TYPE_BOOLEAN */], false),
+  href: Object(utils_props["a" /* makeProp */])(props["m" /* PROP_TYPE_STRING */]),
+  // Must be `null` if no value provided
+  rel: Object(utils_props["a" /* makeProp */])(props["m" /* PROP_TYPE_STRING */], null),
+  // To support 3rd party router links based on `<router-link>` (i.e. `g-link` for Gridsome)
+  // Default is to auto choose between `<router-link>` and `<nuxt-link>`
+  // Gridsome doesn't provide a mechanism to auto detect and has caveats
+  // such as not supporting FQDN URLs or hash only URLs
+  routerComponentName: Object(utils_props["a" /* makeProp */])(props["m" /* PROP_TYPE_STRING */]),
+  target: Object(utils_props["a" /* makeProp */])(props["m" /* PROP_TYPE_STRING */], '_self')
+})), components["d" /* NAME_LINK */]); // --- Main component ---
+// @vue/component
+
+var BLink = /*#__PURE__*/vue["b" /* Vue */].extend({
+  name: components["d" /* NAME_LINK */],
+  // Mixin order is important!
+  mixins: [attrs["a" /* attrsMixin */], listenersMixin, listen_on_root["a" /* listenOnRootMixin */], normalize_slot["a" /* normalizeSlotMixin */]],
+  inheritAttrs: false,
+  props: link_props,
+  computed: {
+    computedTag: function computedTag() {
+      // We don't pass `this` as the first arg as we need reactivity of the props
+      var to = this.to,
+          disabled = this.disabled,
+          routerComponentName = this.routerComponentName;
+      return Object(router["c" /* computeTag */])({
+        to: to,
+        disabled: disabled,
+        routerComponentName: routerComponentName
+      }, this);
+    },
+    isRouterLink: function isRouterLink() {
+      return Object(router["e" /* isRouterLink */])(this.computedTag);
+    },
+    computedRel: function computedRel() {
+      // We don't pass `this` as the first arg as we need reactivity of the props
+      var target = this.target,
+          rel = this.rel;
+      return Object(router["b" /* computeRel */])({
+        target: target,
+        rel: rel
+      });
+    },
+    computedHref: function computedHref() {
+      // We don't pass `this` as the first arg as we need reactivity of the props
+      var to = this.to,
+          href = this.href;
+      return Object(router["a" /* computeHref */])({
+        to: to,
+        href: href
+      }, this.computedTag);
+    },
+    computedProps: function computedProps() {
+      var prefetch = this.prefetch;
+      return this.isRouterLink ? _objectSpread(_objectSpread({}, Object(utils_props["c" /* pluckProps */])(_objectSpread(_objectSpread({}, routerLinkProps), nuxtLinkProps), this)), {}, {
+        // Coerce `prefetch` value `null` to be `undefined`
+        prefetch: Object(inspect["b" /* isBoolean */])(prefetch) ? prefetch : undefined,
+        // Pass `router-tag` as `tag` prop
+        tag: this.routerTag
+      }) : {};
+    },
+    computedAttrs: function computedAttrs() {
+      var bvAttrs = this.bvAttrs,
+          href = this.computedHref,
+          rel = this.computedRel,
+          disabled = this.disabled,
+          target = this.target,
+          routerTag = this.routerTag,
+          isRouterLink = this.isRouterLink;
+      return _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, bvAttrs), href ? {
+        href: href
+      } : {}), isRouterLink && !Object(dom["r" /* isTag */])(routerTag, 'a') ? {} : {
+        rel: rel,
+        target: target
+      }), {}, {
+        tabindex: disabled ? '-1' : Object(inspect["l" /* isUndefined */])(bvAttrs.tabindex) ? null : bvAttrs.tabindex,
+        'aria-disabled': disabled ? 'true' : null
+      });
+    },
+    computedListeners: function computedListeners() {
+      return _objectSpread(_objectSpread({}, this.bvListeners), {}, {
+        // We want to overwrite any click handler since our callback
+        // will invoke the user supplied handler(s) if `!this.disabled`
+        click: this.onClick
+      });
+    }
+  },
+  methods: {
+    onClick: function onClick(event) {
+      var _arguments = arguments;
+      var eventIsEvent = Object(inspect["d" /* isEvent */])(event);
+      var isRouterLink = this.isRouterLink;
+      var suppliedHandler = this.bvListeners.click;
+
+      if (eventIsEvent && this.disabled) {
+        // Stop event from bubbling up
+        // Kill the event loop attached to this specific `EventTarget`
+        // Needed to prevent `vue-router` for doing its thing
+        Object(utils_events["f" /* stopEvent */])(event, {
+          immediatePropagation: true
+        });
+      } else {
+        /* istanbul ignore next: difficult to test, but we know it works */
+        if (isRouterLink && event.currentTarget.__vue__) {
+          // Router links do not emit instance `click` events, so we
+          // add in an `$emit('click', event)` on its Vue instance
+          event.currentTarget.__vue__.$emit(events["e" /* EVENT_NAME_CLICK */], event);
+        } // Call the suppliedHandler(s), if any provided
+
+
+        Object(array["b" /* concat */])(suppliedHandler).filter(function (h) {
+          return Object(inspect["e" /* isFunction */])(h);
+        }).forEach(function (handler) {
+          handler.apply(void 0, _toConsumableArray(_arguments));
+        }); // Emit the global `$root` click event
+
+        this.emitOnRoot(ROOT_EVENT_NAME_CLICKED, event); // TODO: Remove deprecated 'clicked::link' event with next major release
+
+        this.emitOnRoot('clicked::link', event);
+      } // Stop scroll-to-top behavior or navigation on
+      // regular links when href is just '#'
+
+
+      if (eventIsEvent && !isRouterLink && this.computedHref === '#') {
+        Object(utils_events["f" /* stopEvent */])(event, {
+          propagation: false
+        });
+      }
+    },
+    focus: function focus() {
+      Object(dom["d" /* attemptFocus */])(this.$el);
+    },
+    blur: function blur() {
+      Object(dom["c" /* attemptBlur */])(this.$el);
+    }
+  },
+  render: function render(h) {
+    var active = this.active,
+        disabled = this.disabled;
+    return h(this.computedTag, _defineProperty({
+      class: {
+        active: active,
+        disabled: disabled
+      },
+      attrs: this.computedAttrs,
+      props: this.computedProps
+    }, this.isRouterLink ? 'nativeOn' : 'on', this.computedListeners), this.normalizeSlot());
+  }
+});
 
 /***/ }),
 

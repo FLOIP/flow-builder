@@ -1,13 +1,17 @@
 <template>
   <div class="mobile-primitive-numeric-response-block">
-    <h3 class="no-room-above">
+    <h3 class="no-room-above text-primary">
       {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
 
       <block-minimum-numeric-editor
         :block="block"
@@ -25,10 +29,15 @@
         :resource="promptResource"
         :block="block"
         :flow="flow" />
+
+      <hr>
+
       <slot name="extras" />
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />
@@ -77,6 +86,8 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: INumericResponseBlock
 
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   get promptResource(): IResource {
     return this.resourcesByUuid[this.block.config.prompt]
