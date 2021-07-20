@@ -12,17 +12,8 @@ import {mapGetters, mapMutations, mapState} from 'vuex'
 
 const {LeaderLine} = window
 
-const categoryColorMappings = {
-  'category-0-faint': '#fbfdfb',
-  'category-0-light': '#97BD8A',
-  'category-0-dark': '#38542f',
-  'category-1-faint': '#fdfdfe',
-  'category-1-light': '#6897BB',
-  'category-1-dark': '#30516a',
-  'category-2-faint': '#fdfbf8',
-  'category-2-light': '#C69557',
-  'category-2-dark': '#6e4e25',
-}
+const lightColor = '#6897BB'
+const darkColor = '#30516a'
 
 export default {
   props: {
@@ -32,8 +23,6 @@ export default {
     source: Object,
     target: Object,
     position: Object,
-
-    colorCategory: Number,
   },
 
   data() {
@@ -52,8 +41,8 @@ export default {
       return {
         startPlug: 'square',
 
-        startPlugColor: categoryColorMappings[`category-${this.colorCategory}-light`],
-        endPlugColor: categoryColorMappings[`category-${this.colorCategory}-dark`],
+        startPlugColor: lightColor,
+        endPlugColor: darkColor,
         gradient: true,
 
         startSocket: 'bottom',
@@ -70,7 +59,7 @@ export default {
         // path: 'magnet',
 
         middleLabel: LeaderLine.captionLabel(this.exit.tag, {
-          color: categoryColorMappings[`category-${this.colorCategory}-dark`],
+          color: darkColor,
           fontSize: 12,
           // lineOffset: 65,
         }),
@@ -79,7 +68,8 @@ export default {
 
     prominentOptions() {
       return {
-        size: this.options.size + 3,
+        startPlugColor: '#dc3545',
+        endPlugColor: '#dc3545',
       }
     },
 

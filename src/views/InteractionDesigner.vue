@@ -372,6 +372,7 @@ export default {
   .tree-sidebar-container {
     position: fixed;
     right: 0;
+    top: 62px;
     z-index: 3*10;
 
     height: 100vh;
@@ -379,7 +380,6 @@ export default {
     overflow-y: scroll;
 
     padding: 1em;
-    margin-top: 3em;
     transition: right 200ms ease-in-out;
 
     .tree-sidebar {
@@ -457,40 +457,6 @@ export default {
         }
       }
     }
-  }
-
-  .block {
-    @mixin block-category($i, $faint, $light, $dark) {
-      &.category-#{$i} {
-        border-color: $light;
-
-        .block-type {
-          color: $light;
-        }
-
-        .block-exits .block-exit {
-          .block-exit-tag {
-            background-color: $light;
-          }
-
-          &.activated {
-            border-color: $light;
-          }
-        }
-
-        .block-target:hover {
-          border: 1px dashed $light;
-        }
-
-        &.active {
-          background-color: $faint;
-        }
-      }
-    }
-
-    @include block-category(0, $category-0-faint, $category-0-light, $category-0-dark);
-    @include block-category(1, $category-1-faint, $category-1-light, $category-1-dark);
-    @include block-category(2, $category-2-faint, $category-2-light, $category-2-dark);
   }
 
   .sidebar-cue {

@@ -100,11 +100,11 @@
       <footer
         :id="`block/${block.uuid}/exits`"
         :ref="`block/${block.uuid}/exits`"
-        class="block-exits d-flex">
+        class="block-exits d-flex mt-1">
         <div
           v-for="(exit, key) in block.exits"
           :key="exit.uuid"
-          class="block-exit col flex-shrink-1 pb-1 pt-1 pl-3 pr-3"
+          class="block-exit mr-2 flex-shrink-1"
           :class="{
             'initial': false,
             'pending': isConnectionSourceRelocateActive,
@@ -122,7 +122,7 @@
             class="block-exit-tag badge badge-warning"
             @mouseenter="exitMouseEnter(exit)"
             @mouseleave="exitMouseLeave(exit)">
-            <span class="align-self-center">{{ visibleExitTag(key, exit) }}</span>
+            <span class="block-exit-tag-text align-self-center">{{ visibleExitTag(key, exit) }}</span>
 
             <span
               v-if="isEditable"
@@ -132,7 +132,7 @@
                   :id="`exit/${exit.uuid}/pseudo-block-handle`"
                   :key="`exit/${exit.uuid}/pseudo-block-handle`"
                   v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
-                  class="handle-create-link btn btn-xs btn-flat"
+                  class="btn btn-xs"
                   :is-editable="isEditable"
                   @initialized="handleDraggableInitializedFor(exit, $event)"
                   @dragStarted="onCreateExitDragStarted($event, exit)"
@@ -144,17 +144,14 @@
                     class="glyphicon glyphicon-move" />
                   <font-awesome-icon
                     v-else
-                    style="color: #ff0000"
+                    class="text-danger"
                     :icon="['far', 'dot-circle']" />
                 </plain-draggable>
 
                 <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
                   <div
                     :id="`exit/${exit.uuid}/handle`"
-                    class="handle-move-link btn btn-secondary btn-xs"
-                    :class="{
-                      'btn-info': exit.destination_block != null,
-                    }">
+                    class="block-handle-move btn btn-xs">
                     <i class="glyphicon glyphicon-move" />
                   </div>
                   <connection
@@ -163,8 +160,7 @@
                     :source="block"
                     :target="blocksById[exit.destination_block]"
                     :exit="exit"
-                    :position="livePosition"
-                    :color-category="blockClasses[block.type].category" />
+                    :position="livePosition" />
                 </template>
               </template>
 
@@ -176,14 +172,14 @@
                   <font-awesome-icon
                     v-if="exitHovers[exit.uuid]"
                     v-b-tooltip.hover.top="trans('flow-builder.tooltip-remove-connection')"
-                    class="block-exit-remove d-inline-flex btn btn-danger btn-xs"
+                    class="text-danger"
                     title="Click to remove this connection"
                     style="color: green"
                     :icon="['far', 'times-circle']"
                     @click="removeConnectionFrom(exit)" />
                   <font-awesome-icon
                     v-else
-                    style="color: green"
+                    class="text-success"
                     :icon="['far', 'dot-circle']" />
                 </div>
 
@@ -193,8 +189,7 @@
                   :source="livePosition ? null : block"
                   :target="blocksById[exit.destination_block]"
                   :exit="exit"
-                  :position="livePosition"
-                  :color-category="blockClasses[block.type].category" />
+                  :position="livePosition" />
               </template>
             </span>
           </div>
@@ -246,9 +241,6 @@ export default {
       this.$nextTick(function () {
         this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
       })
-    },
-    exitHovers(newValue, oldValue) {
-      console.log('exit hover watched ', newValue, oldValue)
     },
   },
 
@@ -619,7 +611,7 @@ export default {
   top: 0;
   z-index: 1*10;
 
-  min-width: 300px;
+  min-width: 200px;
   padding: 0.4em;
   padding-bottom: 0.25em;
   scroll-margin: 35px;
@@ -644,7 +636,7 @@ export default {
     margin-top: -39.75px;
     margin-right: -7px;
     margin-left: -7px;
-    padding: 8px;
+    padding: 5px;
 
     border-top: inherit;
     border-right: inherit;
@@ -656,7 +648,7 @@ export default {
   .block-label {
     font-size: 14px;
     font-weight: normal;
-    min-width: 300px;
+    min-width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -674,9 +666,8 @@ export default {
   }
 
   .block-target {
-    min-height: 4em;
+    min-height: 3em;
     border: 1px dashed transparent;
-    border-bottom: 1px solid #eee;
     padding: 0.1em;
 
     transition: border-radius 200ms ease-in-out;
@@ -691,46 +682,35 @@ export default {
     white-space: nowrap;
     position: relative;
     top: 0em;
-    margin-top: 0.25em;
 
     .block-exit {
       display: inline-block;
       border: 1px dashed transparent;
       transition: border-radius 200ms ease-in-out;
 
-      min-width: 25px;
-      max-width: 100px;
-
-      text-align: center;
-
       .block-exit-tag {
-        display: inline-table;
-
+        display: inline-flex;
         min-width: 25px;
+        max-width: 100%;
+        width: 100px;
 
-        margin: 0 0 0.5em 0;
         padding: 0.4em;
 
-        background-color: #5b5b5b;
+        background: #E9FFD8;
+
         border: none;
 
         font-weight: normal;
         font-size: 12px;
 
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
+        .block-exit-tag-text {
+          width: 75%;
+          max-width: 75px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
       }
-
-      .block-exit-move-handle {
-        margin-right: 0.5em;
-      }
-
-      //.block-exit-remove {
-      //  background-image: none;
-      //  opacity: 0;
-      //  transition: opacity 200ms ease-in-out;
-      //}
 
       &.activated {
         border-radius: 0.3em;
@@ -769,5 +749,9 @@ export default {
       margin-right: -8px;
     }
   }
+}
+
+.block-handle-move {
+  margin-left: -1.75rem!important;
 }
 </style>
