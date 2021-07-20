@@ -39,6 +39,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       config: {
         message: blankLogResource.uuid,
       },
+      tags: [],
     })
   },
 

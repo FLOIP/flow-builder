@@ -51,6 +51,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         flow_id: '',
       },
       exits,
+      tags: [],
     })
   },
 

@@ -35,6 +35,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       config: {
         message: blankPrintResource.uuid,
       },
+      tags: [],
     })
   },
 

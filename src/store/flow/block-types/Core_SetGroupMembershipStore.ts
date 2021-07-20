@@ -42,6 +42,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         is_member: null,
       },
       exits,
+      tags: [],
     })
   },
 

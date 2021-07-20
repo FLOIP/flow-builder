@@ -37,6 +37,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         // TODO: remove this once flow-runner doesn't require it anymore
         message_audio: '',
       },
+      tags: [],
     })
   },
 

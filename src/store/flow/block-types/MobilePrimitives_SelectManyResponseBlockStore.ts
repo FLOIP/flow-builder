@@ -53,6 +53,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
         choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
       },
+      tags: [],
     })
   },
 }

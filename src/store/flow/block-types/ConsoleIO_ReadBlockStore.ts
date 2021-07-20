@@ -74,6 +74,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         destination_variables: [],
       },
       exits,
+      tags: [],
     })
   },
 
