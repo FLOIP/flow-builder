@@ -1561,7 +1561,7 @@ var ResourceEditorvue_type_script_lang_ts_ResourceEditor = /*#__PURE__*/function
       try {
         return Object(flow_resource["d" /* findResourceVariantOverModesOn */])(resource, filter).value;
       } catch (e) {
-        if (!(e instanceof ValidationException["a" /* ValidationException */])) {
+        if (!(e instanceof ValidationException["ValidationException"])) {
           throw e;
         }
 
