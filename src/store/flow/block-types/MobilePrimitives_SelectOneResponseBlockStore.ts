@@ -36,28 +36,32 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
     const currentBlock = rootGetters['builder/activeBlock']
     const choices: { [key: string]: IInflatedChoicesInterface } = {}
 
-    return Object.keys(currentBlock.config.choices).reduce((memo, choiceKey): { [key: string]: IInflatedChoicesInterface } => {
-      const resourceUuid = currentBlock.config.choices[choiceKey]
-      const exit = findExitFromResourceUuid(resourceUuid, currentBlock, !getters.isExitsBranchingSegregated)
-      memo[choiceKey] = {
-        exit,
-        resource: rootGetters['flow/resourcesByUuid'][resourceUuid],
-      }
-      return memo
-    }, choices)
+    return Object.keys(currentBlock.config.choices)
+      .reduce((memo, choiceKey): { [key: string]: IInflatedChoicesInterface } => {
+        const resourceUuid = currentBlock.config.choices[choiceKey]
+        const exit = findExitFromResourceUuid(resourceUuid, currentBlock, !getters.isExitsBranchingSegregated)
+        memo[choiceKey] = {
+          exit,
+          resource: rootGetters['flow/resourcesByUuid'][resourceUuid],
+        }
+        return memo
+      }, choices)
   },
   isInflatedChoiceBlankOnKey: (state, getters) => (key: any): boolean => !someItemsHaveValue(
     getters.inflatedChoices[key].resource.values,
     'value',
   ) && !get(getters.inflatedChoices[key], 'exit.semantic_label'),
+
   isInflatedEmptyChoiceBlank: (state): boolean => !someItemsHaveValue(
     state.inflatedEmptyChoice.resource.values || [],
     'value',
   ) && !get(state.inflatedEmptyChoice, 'exit.semantic_label'),
+
   allChoicesHaveContent: (
     state,
     getters,
   ): boolean => Object.keys(getters.inflatedChoices).every((key: string) => !getters.isInflatedChoiceBlankOnKey(key)),
+
   twoChoicesBlank: (state, getters): boolean => {
     let blankNumber = 0
     return Object.keys(getters.inflatedChoices).some((key: string) => {
@@ -68,7 +72,13 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
       return blankNumber > 1
     })
   },
+
   isExitsBranchingSegregated: (state, getters, rootState, rootGetters): boolean => {
+
+    // one-exit-per-choice: exit tests match what we would reflow from choices
+    // unified: single exit (second exit w/ default: true when proceed through Default present) --- we'll always have the second one though
+    // advanced: none of the above?
+
     const currentBlock = rootGetters['builder/activeBlock']
     if(!currentBlock) { // eg: on the way to create the block
       return true
@@ -171,7 +181,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     commit('flow/block_updateVendorMetadataByPath', {
       blockId: activeBlock.uuid,
       path: 'io_viamo.cache.outputBranching.segregatedExits',
-      value: filter(activeBlock.exits, (exit) => !exit.default)
+      value: filter(activeBlock.exits, (exit) => !exit.default) // accidentally(?) maintains exit references within session, but not on reload
     }, { root: true })
   },
 
@@ -202,55 +212,30 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     const blankQuestionPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     const blankChoicesPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
 
-    const defaultExitProps: Partial<IBlockExit> = {
-      uuid: await (new IdGeneratorUuidV4()).generate(),
-      tag: 'Default',
-      label: 'Default',
-      default: true,
-      test: '', // todo: fix flow-runner's handling of ".test"-less exits
-    }
-
-    const errorExitProps: Partial<IBlockExit> = {
-      uuid: await (new IdGeneratorUuidV4()).generate(),
-      tag: 'Error',
-      label: 'Error',
-      test: '',
-    }
+    const defaultExit = await dispatch('flow/block_createBlockDefaultExitWith', {
+      props: {
+        uuid: await (new IdGeneratorUuidV4()).generate(),
+        tag: 'Default',
+        label: 'Default',
+      },
+    }, {root: true})
 
     await dispatch('createVolatileEmptyChoice', {index: 0})
-    const defaultExit = await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true })
-    const errorExit = await dispatch('flow/block_createBlockExitWith', { props: errorExitProps }, { root: true })
+
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',
       semantic_label: '',
-      exits: [
-        errorExit,
-      ],
       config: {
         prompt: blankPromptResource.uuid,
         question_prompt: blankQuestionPromptResource.uuid,
         choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
       },
-      vendor_metadata: {
-        io_viamo: {
-          cache: { // cache outputs when creating to facilitate future logic
-            outputBranching: {
-              segregatedExits: [
-                errorExit
-              ],
-              unifiedExits: [
-                defaultExit, errorExit
-              ]
-            }
-          }
-        }
-      }
+      exits: [defaultExit],
     })
   },
-
 }
 
 export default {

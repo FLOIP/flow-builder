@@ -1,19 +1,12 @@
+import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
 import Vue from 'vue'
-import {
-  IContext,
-  IBlock,
-  IBlockExit,
-  IResource,
-  findBlockExitWith,
-  ValidationException,
-  findBlockOnActiveFlowWith,
-} from '@floip/flow-runner'
-import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import { IRootState } from '@/store'
-import { defaults, set, get, isNil, find, filter, snakeCase, isEmpty } from 'lodash'
-import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import { IFlowsState } from '.'
-import { popFirstEmptyItem } from './utils/listBuilder'
+import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {IRootState} from '@/store'
+import {defaults, find, get, isEmpty, isNil, set, toPath, reduce, snakeCase} from 'lodash'
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {IFlowsState} from '.'
+import {popFirstEmptyItem} from './utils/listBuilder'
+import next from 'ajv/dist/vocabularies/next'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
@@ -21,6 +14,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   // blocksByUuid: ({flows}) => map(resources, 'uuid')
 }
 
+// @ts-ignore
 export const mutations: MutationTree<IFlowsState> = {
   block_popFirstExitWithoutTest(state, {blockId}: { blockId: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -52,6 +46,7 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   block_setExitConfigByPath(state, { exitId, blockId, path, value }: {exitId: string; blockId: string; path: string; value: object | string}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    // todo: this will break reactivity
     set(findBlockExitWith(exitId, block).config, path, value)
   },
   block_setExitSemanticLabel(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
@@ -71,6 +66,7 @@ export const mutations: MutationTree<IFlowsState> = {
   block_updateExits(state, { block, newExits, shouldUseCache = false }: { block: IBlock; newExits: IBlockExit[]; shouldUseCache: boolean }) {
     if (shouldUseCache) {
       // @ts-ignore: TODO: remove this once IBlock has vendor_metadata key
+      // todo: this will break reactivity
       set(block.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits', newExits);
     } else {
       block.exits = newExits
@@ -87,6 +83,7 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
   },
   block_updateConfigByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
+    // todo: this will break reactivity
     set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, path, value)
   },
   block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
@@ -95,8 +92,19 @@ export const mutations: MutationTree<IFlowsState> = {
       .destination_block = destinationBlockId
   },
   block_updateVendorMetadataByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
-    // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
-    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).vendor_metadata!, path, value)
+    // ensure reactivity
+    const metadata = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).vendor_metadata
+    const pathAsList = toPath(path)
+
+    // todo: I have no idea what TS is complaining about here --- "No matching method overload"
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // eslint-disable-next-line lodash/collection-method-value
+    reduce(pathAsList, (accumulator, pathKey, i) => {
+      const nextValue = i === pathAsList.length - 1 ? value : get(accumulator, pathKey, {})
+      Vue.set(accumulator, pathKey, nextValue)
+      return nextValue
+    }, metadata!)
   },
 }
 
@@ -125,6 +133,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       props: {
         ...props,
         default: true,
+
+        // todo: fix flow-runner's handling of ".test"-less exits
+        test: '',
       },
     })
   },
@@ -144,7 +155,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         config: {},
         // prerequisite for reactivity, even optional params
         destination_block: undefined,
-        test: undefined,
+        test: '',
         semantic_label: undefined,
       }),
     }
@@ -226,17 +237,16 @@ export interface IDeepBlockExitIdWithinFlow {
 
 export function findBlockExitsRef(block: IBlock, shouldUseCache = false): IBlockExit[] {
   if (shouldUseCache) {
-    console.debug('Using block exits from cache')
+    console.debug('store/flow/block', 'Using block exits from cache')
     // @ts-ignore: TODO: remove this once IBlock has vendor_metadata key
     return get(block.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits') as IBlockExit[]
   } else {
-    console.debug('Not using block exits from cache')
+    console.debug('store/flow/block', 'Not using block exits from cache')
     return block.exits
   }
 }
 
 export function findExitFromResourceUuid(resourceUuid: string, block: IBlock, shouldUseCache = false): IBlockExit {
   const blockExits = findBlockExitsRef(block, shouldUseCache)
-  const blockExit = find(blockExits, { label: resourceUuid }) as IBlockExit
-  return blockExit
+  return find(blockExits, {label: resourceUuid}) as IBlockExit
 }
