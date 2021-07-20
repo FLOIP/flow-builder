@@ -34,9 +34,11 @@
         </validation-message>
       </div>
 
-      <slot name="extras" />
+      <categorization :block="block" />
 
       <generic-contact-property-editor :block="block" />
+
+      <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"
@@ -56,6 +58,7 @@ import {IReadBlock} from '@floip/flow-runner/src/model/block/IReadBlock'
 import TextEditor from '@/components/common/TextEditor.vue'
 import ReadStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
@@ -83,6 +86,7 @@ const builderVuexNamespace = namespace('builder')
     TextEditor,
     BlockId,
     ValidationMessage,
+    Categorization,
   },
 })
 class ConsoleIO_ReadBlock extends mixins(Lang) {

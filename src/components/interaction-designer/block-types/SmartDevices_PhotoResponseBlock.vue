@@ -12,9 +12,11 @@
         :block="block" />
       <block-name-editor :block="block" />
 
-      <slot name="extras" />
+      <categorization :block="block" />
 
       <generic-contact-property-editor :block="block" />
+
+      <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"
@@ -33,6 +35,7 @@ import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 
 import PhotoStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
@@ -53,6 +56,7 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    Categorization,
   },
 })
 class SmartDevices_PhotoResponseBlock extends mixins(Lang) {

@@ -40,12 +40,10 @@ class TagSelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   get selectedTags() {
-    console.log('get selectedTags', this.block.tags)
     return this.stringListToOptions(this.block.tags)
   }
 
   set selectedTags(value) {
-    console.log('set selectedTags', value)
     this.block_setTags({
       blockId: this.block.uuid,
       value: map(value, 'name'),
