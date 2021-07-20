@@ -17,22 +17,6 @@
           :block="block"
           :flow="flow" />
       </div>
-      <div class="question-prompt-resource">
-        <resource-editor
-          v-if="questionPromptResource"
-          :label="'flow-builder.question-prompt' | trans"
-          :resource="questionPromptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
-      <div class="choices-prompt-resource">
-        <resource-editor
-          v-if="choicesPromptResource"
-          :label="'flow-builder.choices-prompt' | trans"
-          :resource="choicesPromptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
 
       <hr>
 
@@ -76,7 +60,7 @@
     </fieldset>
 
     <block-id :block="block" />
-    
+
   </div>
 </template>
 
