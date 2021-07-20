@@ -5,34 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
-
-      <div class="prompt-resource">
-        <resource-editor
-          v-if="promptResource"
-          :label="'flow-builder.prompt' | trans"
-          :resource="promptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
-      <div class="question-prompt-resource">
-        <resource-editor
-          v-if="questionPromptResource"
-          :label="'flow-builder.question-prompt' | trans"
-          :resource="questionPromptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
-      <div class="choices-prompt-resource">
-        <resource-editor
-          v-if="choicesPromptResource"
-          :label="'flow-builder.choices-prompt' | trans"
-          :resource="choicesPromptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
 
       <hr>
 
@@ -45,6 +24,7 @@
                based on how this instance of flow-builder works -->
           <resource-variant-text-editor
             :label="choiceKey.toString()"
+            :rows="1"
             :placeholder="'Enter choice...'"
             :resource-id="inflatedChoices[choiceKey].resource.uuid"
             :resource-variant="findOrGenerateStubbedVariantOn(
@@ -57,6 +37,7 @@
         <!--Show empty choice-->
         <resource-variant-text-editor
           :label="(Object.keys(inflatedChoices).length + 1).toString()"
+          :rows="1"
           :placeholder="'Enter choice...'"
           :resource-id="inflatedEmptyChoice.resource.uuid"
           :resource-variant="findOrGenerateStubbedVariantOn(
@@ -65,11 +46,22 @@
           :mode="'TEXT'" />
       </div>
 
-      <hr>
-
       <block-output-branching-config :block="block" />
 
-      <slot name="extras"></slot>
+      <hr>
+
+      <div class="prompt-resource">
+        <resource-editor
+          v-if="promptResource"
+          :label="'flow-builder.prompt' | trans"
+          :resource="promptResource"
+          :block="block"
+          :flow="flow" />
+      </div>
+
+      <hr>
+
+      <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"
@@ -124,6 +116,8 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
 
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   SupportedContentType = SupportedContentType
   SupportedMode = SupportedMode

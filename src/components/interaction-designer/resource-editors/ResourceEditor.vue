@@ -18,10 +18,10 @@
             :key="i"
             class="tab-content-style">
             <header class="d-flex">
-<!--              <svg-icon class="resource-icons" :icon="iconsMap.get(mode)" />-->
               <font-awesome-icon
+                v-if="iconsMap.get(mode)"
                 :icon="iconsMap.get(mode)"
-                class="fa-btn resource-icons" />
+                :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}" />
               <h6 class="ml-1">{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
             </header>
 
@@ -252,8 +252,11 @@ export default ResourceEditor
   font-size: small;
   flex-grow: 1;
 }
-.resource-icons {
+.custom-icons {
   height: 1.25em;
   width: 1.25em;
+}
+.library-icons {
+  margin-top: 2px;
 }
 </style>

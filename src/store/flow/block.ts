@@ -1,8 +1,9 @@
+import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
 import Vue from 'vue'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, find, get, isEmpty, isNil, set, toPath, reduce, snakeCase} from 'lodash'
+import {defaults, find, get, isEmpty, isNil, set, setWith, toPath, reduce, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {popFirstEmptyItem} from './utils/listBuilder'
@@ -82,9 +83,15 @@ export const mutations: MutationTree<IFlowsState> = {
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
   },
-  block_updateConfigByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
+  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string}) {
     // todo: this will break reactivity
-    set(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, path, value)
+    // Make nested assignment reactive
+    setWith(
+      findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!,
+      path,
+      value,
+      (nestedValue, key, nestedObject) => Vue.set(nestedObject, key, nestedValue),
+    )
   },
   block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
