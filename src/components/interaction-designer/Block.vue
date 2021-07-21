@@ -69,13 +69,12 @@
           </div>
           <!--Expand block editor-->
           <div class="mr-1 ml-2">
-            <i
+            <font-awesome-icon
               v-if="isEditable"
-              class="glyphicon"
-              :class="{'glyphicon-resize-small': showBlockEditor, 'glyphicon-resize-full': !showBlockEditor}"
+              :icon="showBlockEditor ? ['fac', 'minimize'] : ['fac', 'expand']"
+              class="fa-btn"
               v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
-              @click.prevent="handleExpandBlockEditor"
-            />
+              @click.prevent="handleExpandBlockEditor" />
           </div>
         </div>
       </div>
@@ -328,7 +327,7 @@ export default {
 
     translatedBlockEditorPosition() {
       const xOffset = 5
-      const yOffset = 130
+      const yOffset = 178
       return `translate(${this.x + this.blockWidth + xOffset}px, ${this.y - yOffset}px)`
     },
 
