@@ -1,7 +1,7 @@
 import {Component, Vue} from 'vue-property-decorator'
 import CaseBlock from '@/components/interaction-designer/block-types/Core_CaseBlock.vue'
 import caseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
-import {namespace} from 'vuex-class'
+import {namespace, State} from 'vuex-class'
 import Vuex from 'vuex'
 import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
@@ -54,6 +54,7 @@ class CurrentClass2 extends BaseMountedVueClass {
 
     this.setDescription(blockId)
     this.editCaseBlockExit({identifier: block.exits[0].uuid, value: 'A expression'})
+    this.setTags(blockId)
   }
 
   @blockVuexNamespace.Action editCaseBlockExit: any
