@@ -10,7 +10,6 @@ import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUui
 import { ISelectOneResponseBlock } from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
 import {defaultsDeep, filter, find, findKey, first, get, isEmpty, omit, snakeCase} from 'lodash'
-import {findBlockExitsRef, findExitFromResourceUuid } from '../block'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'

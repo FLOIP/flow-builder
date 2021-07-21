@@ -49,25 +49,11 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).semantic_label = value
   },
-  block_addExit(state, {blockId, exit, insertAtIndex = undefined, shouldUseCache = false}: { blockId: string, exit: IBlockExit, insertAtIndex: number | undefined, shouldUseCache: boolean}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    const blockExits = findBlockExitsRef(block, shouldUseCache)
-
-    if (!isNil(insertAtIndex)) { // insertion, eg: case for block types having branching exits option (Segregated | Unified)
-      blockExits.splice(insertAtIndex, 0, exit)
-    } else { // just push
-      blockExits.push(exit)
-    }
+  block_addExit(state, {blockId, exit}: {blockId: string, exit: IBlockExit}) {
+    findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+      .exits
+      .push(exit)
   },
-  // block_updateExits(state, { block, newExits, shouldUseCache = false }: { block: IBlock; newExits: IBlockExit[]; shouldUseCache: boolean }) {
-  //   if (shouldUseCache) {
-  //     // @ts-ignore: TODO: remove this once IBlock has vendor_metadata key
-  //     // todo: this will break reactivity
-  //     set(block.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits', newExits);
-  //   } else {
-  //     block.exits = newExits
-  //   }
-  // },
   block_updateConfig(state, {blockId, newConfig}: { blockId: string, newConfig: object }) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .config = newConfig
@@ -219,20 +205,4 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 export interface IDeepBlockExitIdWithinFlow {
   blockId: IBlock['uuid'],
   exitId: IBlockExit['uuid'],
-}
-
-export function findBlockExitsRef(block: IBlock, shouldUseCache = false): IBlockExit[] {
-  if (shouldUseCache) {
-    console.debug('store/flow/block', 'Using block exits from cache')
-    // @ts-ignore: TODO: remove this once IBlock has vendor_metadata key
-    return get(block.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits') as IBlockExit[]
-  } else {
-    console.debug('store/flow/block', 'Not using block exits from cache')
-    return block.exits
-  }
-}
-
-export function findExitFromResourceUuid(resourceUuid: string, block: IBlock, shouldUseCache = false): IBlockExit {
-  const blockExits = findBlockExitsRef(block, shouldUseCache)
-  return find(blockExits, {label: resourceUuid}) as IBlockExit
 }
