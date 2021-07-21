@@ -69,8 +69,7 @@
                         class="fa-btn" />
                       {{ 'flow-builder.upload-audio' | trans }}
                     </button>
-                    <!-- TODO - VMO-4321 - leaving this here for moving over to embedding app when we are ready -->
-                    <!--<button
+                    <button
                       v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
                       class="btn btn-primary ivr-buttons ml-2"
                       @click.prevent="triggerRecordViaPhoneFor(languageId)">
@@ -78,7 +77,7 @@
                         :icon="['fac', 'record-audio']"
                         class="fa-btn" />
                       {{ 'flow-builder.record-audio' | trans }}
-                    </button>-->
+                    </button>
                   </div>
                 </template>
               </div>

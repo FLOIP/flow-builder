@@ -8,7 +8,7 @@
       "export-collabofiltering-submissions": true,
       "export-result-details": true,
       "moderate-collabofiltering-candidates": true,
-      "send-call-to-records": true,
+      "send-call-to-records": false,
       "view-personal-info": true
     },
     "constants": null
