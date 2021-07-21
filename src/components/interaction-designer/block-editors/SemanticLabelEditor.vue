@@ -5,7 +5,7 @@
     <div class="block-semantic-label">
       <text-editor
         v-model="semanticLabel"
-        :label="'flow-builder.block-semantic-label' | trans"
+        :label="'flow-builder.block-exit-semantic-label' | trans"
         :placeholder="'flow-builder.enter-block-semantic-label' | trans"
         :valid-state="isValid" />
     </div>
@@ -15,9 +15,9 @@
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {mapMutations} from 'vuex'
-import TextEditor from '@/components/common/TextEditor'
 import {lang} from '@/lib/filters/lang'
 import ValidationMessage from '@/components/common/ValidationMessage'
+import TextEditor from '@/components/common/TextEditor'
 
 export default {
   components: {

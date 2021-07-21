@@ -4,8 +4,7 @@
       "flows": {
         "persistFlow": {
           "name": "persistFlow",
-          "path": "\/backend\/flows\/{flowId}",
-          "params": ["flowId"],
+          "path": "\/backend\/flows",
           "methods": ["POST", "PUT"]
         },
         "fetchFlowServer": {
@@ -72,12 +71,12 @@
       {
         "id": "22",
         "label": "English",
-        "iso_639_3": "EN"
+        "iso_639_3": "eng"
       },
       {
         "id": "23",
-        "label": "Spanish",
-        "iso_639_3": "ES"
+        "label": "French",
+        "iso_639_3": "fra"
       }
     ],
     "blockClasses": {

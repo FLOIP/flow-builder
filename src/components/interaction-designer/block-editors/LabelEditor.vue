@@ -1,25 +1,36 @@
 <template>
-  <validation-message
-    #input-control="{ isValid }"
-    :message-key="`block/${block.uuid}/label`">
-    <div class="block-label">
-      <text-editor
-        v-model="label"
-        :label="'flow-builder.block-label' | trans"
-        :placeholder="'flow-builder.enter-block-label' | trans"
-        :valid-state="isValid" />
-    </div>
-  </validation-message>
+  <section class="mb-3">
+    <label class="text-primary">{{ 'flow-builder.title' | trans }}</label>
+    <validation-message
+      #input-control="{ isValid }"
+      :message-key="`block/${block.uuid}/label`">
+      <div class="d-flex">
+        <text-editor
+          v-model="blockLabel"
+          class="w-100"
+          :label="''"
+          :placeholder="'flow-builder.enter-title' | trans"
+          :valid-state="isValid" />
+        <span
+          class="btn btn-outline-primary btn-xs align-self-center ml-2"
+          @click="emitGearClickedEvent">
+          <font-awesome-icon
+            :icon="['fac', 'settings']"
+            class="fa-btn" />
+        </span>
+      </div>
+    </validation-message>
+  </section>
 </template>
 
 <script lang="ts">
-import TextEditor from '@/components/common/TextEditor.vue'
-import Lang from '@/lib/filters/lang'
 import {Component, Prop} from 'vue-property-decorator'
+import TextEditor from '@/components/common/TextEditor.vue'
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import {mixins} from 'vue-class-component'
+import Lang from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import {mixins} from 'vue-class-component'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -29,17 +40,22 @@ const flowVuexNamespace = namespace('flow')
     ValidationMessage,
   },
 })
-export default class LabelEditor extends mixins(Lang) {
-  @Prop() block!: IBlock
+class LabelEditor extends mixins(Lang) {
+  @Prop() readonly block!: IBlock
 
-  get label(): IBlock['label'] {
+  get blockLabel(): IBlock['label'] {
     return this.block.label
   }
 
-  set label(value: IBlock['label']) {
+  set blockLabel(value: IBlock['label']) {
     this.block_setLabel({blockId: this.block.uuid, value})
   }
 
-  @flowVuexNamespace.Mutation block_setLabel!: ({blockId, value}: { blockId: IBlock['uuid'], value: IBlock['label'] }) => void
+  emitGearClickedEvent(): void {
+    this.$emit('gearClicked')
+  }
+
+  @flowVuexNamespace.Action block_setLabel!: ({blockId, value}: { blockId: IBlock['uuid'], value: IBlock['label'] }) => void
 }
+export default LabelEditor
 </script>

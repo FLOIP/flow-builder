@@ -5,14 +5,14 @@
       <div
         class="spinner-border"
         role="status">
-        <span class="sr-only">Loading...</span>
+        <span class="sr-only">{{ 'flow-builder.loading' | trans }}</span>
       </div>
     </div>
     <div
       v-if="flowError"
-      class="alert alert-danger"
+      class="alert alert-danger mt-3"
       role="alert">
-      {{ flowError | trans }}
+      {{ flowError | trans(flowErrorInterpolations) }}
     </div>
     <div
       v-if="hasUnsupportedBlockClasses"
@@ -115,6 +115,8 @@ class ErrorHandler extends Vue {
   @importVuexNamespace.Getter propertiesMissing!: boolean
 
   @importVuexNamespace.State flowError!: string
+
+  @importVuexNamespace.State flowErrorInterpolations!: object | null
 
   @importVuexNamespace.State flowContainer!: IContext
 

@@ -16,10 +16,9 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, forEach, get, has, includes, omit} from 'lodash'
+import {cloneDeep, defaults, every, forEach, get, has, includes, omit} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockUiData} from '@/store/builder'
-import {router} from '@/router'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
 
@@ -34,11 +33,23 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       }
     }
   },
+  isActiveFlowValid: (state, getters, rootState) => {
+    const flowValidationResult = get(rootState.validation.validationStatuses, `flow/${getters.activeFlow.uuid}`)
+    if (flowValidationResult && !flowValidationResult.isValid) {
+      return false
+    }
+
+    // check if all blocks are valid
+    return every(
+      getters.activeFlow.blocks,
+      (block) => get(rootState.validation.validationStatuses, `block/${block.uuid}`)?.isValid,
+)
+  },
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: (state) => ({
     isCreated: state.isCreated,
-    specification_version: 'TODO',
-    uuid: 'TODO',
+    specification_version: state.specification_version,
+    uuid: state.container_uuid,
     name: 'TODO',
     description: 'TODO',
     vendor_metadata: {},
@@ -270,13 +281,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const values: IResourceValue = getters.activeFlow.languages.reduce((memo: object[], language: { id: string, name: string }) => {
       // Let's just create all the modes. We might need them but if they are switched off they just don't get used
       Object.values(SupportedMode).forEach((mode: SupportedMode) => {
-        memo.push({
-          language_id: language.id,
-          value: '',
-          content_type: discoverContentTypesFor(mode),
-          modes: [
-            mode,
-          ],
+        discoverContentTypesFor(mode)?.forEach((contentType) => {
+          memo.push({
+            language_id: language.id,
+            value: '',
+            content_type: contentType,
+            modes: [
+              mode,
+            ],
+          })
         })
       })
 
@@ -345,11 +358,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
 
     commit('flow_addBlock', {block: duplicatedBlock})
-
-    await router.replace({
-      name: 'block-selected-details',
-      params: {blockId: duplicatedBlock.uuid},
-    })
 
     return duplicatedBlock
   },

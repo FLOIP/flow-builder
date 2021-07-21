@@ -5,15 +5,19 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
 
       <validation-message
         #input-control="{ isValid: isValid }"
         :message-key="`block/${block.uuid}/config/is_member`">
         <div class="form-group">
-          <label>{{ 'flow-builder.action-label' | trans }}</label>
+          <label class="text-primary">{{ 'flow-builder.action-label' | trans }}</label>
           <vue-multiselect
             v-model="selectedAction"
             track-by="id"
@@ -29,10 +33,14 @@
 
       <group-selector :block="block" />
 
+      <hr>
+
       <slot name="extras" />
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />
@@ -83,6 +91,8 @@ interface IGroupActionOption {
 class Core_SetGroupMembershipBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   actionsList: IGroupActionOption[] = [
     {

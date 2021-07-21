@@ -8,6 +8,7 @@
       class="block"
       :class="{
         active: isBlockActivated,
+        'has-toolbar': isBlockSelected,
         [`category-${blockClasses[block.type].category}`]: true,
       }"
       :start-x="x"
@@ -17,21 +18,21 @@
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
       @destroyed="handleDraggableDestroyedForBlock">
-      <div class="d-flex justify-content-between">
+      <div class="block-toolbar d-flex justify-content-between">
         <div class="header-actions-left">
           <!--Selection-->
           <font-awesome-icon
             v-if="isBlockSelected"
             v-b-tooltip.hover="trans('flow-builder.deselect-block')"
-            :icon="['fas', 'check-circle']"
-            class="fa-btn text-primary"
-            @click="block_deselect({ blockId: block.uuid })" />
+            :icon="['far', 'check-circle']"
+            class="fa-btn text-info"
+            @click="isEditable && block_deselect({ blockId: block.uuid })" />
           <font-awesome-icon
             v-if="!isBlockSelected"
             v-b-tooltip.hover="trans('flow-builder.select-block')"
             :icon="['far', 'circle']"
             class="fa-btn"
-            @click="block_select({ blockId: block.uuid })" />
+            @click="isEditable && block_select({ blockId: block.uuid })" />
         </div>
         <div class="header-actions-right d-flex">
           <!--Delete-->
@@ -62,7 +63,7 @@
             <font-awesome-icon
               v-if="isEditable"
               v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-              :icon="['far', 'clone']"
+              :icon="['fac', 'copy']"
               class="fa-btn"
               @click.prevent="handleDuplicateBlock" />
           </div>
@@ -342,8 +343,7 @@ export default {
       generateConnectionLayoutKeyFor,
     },
 
-    ...mapMutations('builder', ['setBlockPositionTo', 'initDraggableForExitsByUuid', 'setIsBlockEditorOpen']),
-
+    ...mapMutations('builder', ['activateBlock', 'setBlockPositionTo', 'initDraggableForExitsByUuid', 'setIsBlockEditorOpen']),
     ...mapActions('builder', {
       _removeConnectionFrom: 'removeConnectionFrom',
     }),
@@ -369,16 +369,22 @@ export default {
       'block_deselect',
     ]),
 
-    ...mapMutations('builder', ['activateBlock']),
+    ...mapMutations('validation', ['removeValidationStatusesFor']),
 
     handleDeleteBlock() {
       this.block_deselect({blockId: this.block.uuid})
       this.flow_removeBlock({blockId: this.block.uuid})
+      this.removeValidationStatusesFor({key: `block/${this.block.uuid}`})
       this.isDeleting = false
     },
 
     handleDuplicateBlock() {
-      this.flow_duplicateBlock({blockId: this.block.uuid})
+      this.flow_duplicateBlock({blockId: this.block.uuid}).then((duplicatedBlock) => {
+        this.$router.replace({
+          name: 'block-selected-details',
+          params: {blockId: duplicatedBlock.uuid},
+        })
+      })
     },
 
     updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
@@ -662,6 +668,23 @@ export default {
   transition: opacity 200ms ease-in-out,
   background-color 200ms ease-in-out;
 
+  .block-toolbar {
+    transition: opacity 100ms ease-in-out;
+    background: white;
+    opacity: 0; // default state of hidden
+
+    margin-top: -39.75px;
+    margin-right: -7px;
+    margin-left: -7px;
+    padding: 8px;
+
+    border-top: inherit;
+    border-right: inherit;
+    border-left: inherit;
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+  }
+
   .block-label {
     font-size: 14px;
     font-weight: normal;
@@ -760,10 +783,26 @@ export default {
     opacity: 1;
   }
 
+  // block exit states
   &.active,
   &:hover {
     .block-exit .block-exit-remove {
       opacity: 1;
+    }
+  }
+
+  // toolbar states
+  &.has-toolbar,
+  &:hover {
+    .block-toolbar {
+      opacity: 1;
+    }
+  }
+
+  &.active {
+    .block-toolbar {
+      margin-left: -8px;
+      margin-right: -8px;
     }
   }
 }
