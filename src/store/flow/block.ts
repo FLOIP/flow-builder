@@ -20,9 +20,9 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     block.exits = popFirstEmptyItem(block.exits, 'test')
   },
-  block_popExitsByLabel(state, {blockId, exitLabel}: { blockId: string, exitLabel: string }) {
+  block_popExitsByName(state, {blockId, exitName}: { blockId: string, exitName: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    block.exits = block.exits.filter((item: IBlockExit) => item.label !== exitLabel)
+    block.exits = block.exits.filter((item: IBlockExit) => item.name !== exitName)
   },
   block_setName(state, {blockId, value}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)

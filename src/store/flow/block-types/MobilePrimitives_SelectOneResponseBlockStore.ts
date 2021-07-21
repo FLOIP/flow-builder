@@ -1,6 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExit, IBlockExitTestRequired, IResource} from '@floip/flow-runner'
+import {IBlockExit, IResource} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
@@ -94,13 +94,13 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
   },
   async createVolatileEmptyChoice({state, dispatch, rootGetters}, {index}) {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-    const blankExit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
+    const blankExit: IBlockExit = await dispatch('flow/block_createBlockExitWith', {
       props: {
         uuid: await (new IdGeneratorUuidV4()).generate(),
         test: `block.value = ${index}`,
-        label: blankResource.uuid,
+        name: blankResource.uuid,
         semantic_label: '',
-      } as IBlockExitTestRequired,
+      } as IBlockExit,
     }, {root: true})
     state.inflatedEmptyChoice = {
       exit: blankExit,
@@ -122,9 +122,9 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     const activeBlock = rootGetters['builder/activeBlock']
     // then remove the 1st blank exit
     if (!getters.allChoicesHaveContent) {
-      const exitLabel = await dispatch('popFirstEmptyChoice', {blockId: activeBlock.uuid})
-      if (exitLabel) {
-        commit('flow/block_popExitsByLabel', {blockId: activeBlock.uuid, exitLabel}, {root: true})
+      const exitName = await dispatch('popFirstEmptyChoice', {blockId: activeBlock.uuid})
+      if (exitName) {
+        commit('flow/block_popExitsByName', {blockId: activeBlock.uuid, exitName}, {root: true})
       }
     }
     return activeBlock.config.choices
@@ -154,8 +154,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
     const defaultExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
-      tag: 'Default',
-      label: 'Default',
+      name: 'Default',
       test: '',
     }
 

@@ -32,8 +32,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
     const defaultExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
-      tag: 'Default',
-      label: 'Default',
+      name: 'Default',
       test: '',
     }
 
