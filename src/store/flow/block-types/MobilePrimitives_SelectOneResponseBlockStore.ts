@@ -53,7 +53,10 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
     // defaulted to `resourceId` to mitigate empty keys and associated error handling altogether
     const desiredChoiceKey = snakeCase(get(resource.values[0], 'value')) || resource.uuid
-    Vue.set(block.config.choices, desiredChoiceKey, resource.uuid)
+    const doesChoiceKeyAlreadyExist = desiredChoiceKey in block.config.choices
+    // apply suffix as resourceId when duplicated to prevent overwriting as input is received
+    const suffix = doesChoiceKeyAlreadyExist ? `-${resource.uuid}` : ''
+    Vue.set(block.config.choices, `${desiredChoiceKey}${suffix}`, resource.uuid)
   },
 
   deleteChoiceByResourceIdFrom({rootGetters}, {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) {
