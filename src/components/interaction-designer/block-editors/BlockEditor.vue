@@ -7,8 +7,7 @@
         <component v-if="activeBlock"
                    :is="`Flow${activeBlock.type.replace('.', '')}`"
                    :block="activeBlock"
-                   :flow="activeFlow">
-        </component>
+                   :flow="activeFlow" />
       </div>
       <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
       <!--                     :jsonValidationResults="jsonValidationResults"-->
@@ -25,28 +24,25 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
-import lodash from 'lodash'
+import {mapGetters, mapState} from 'vuex'
+import {get} from 'lodash'
 
 export default {
   computed: {
     ...mapGetters('builder', ['activeBlock']),
     ...mapState({
-      blockClasses: ({ trees: { ui } }) => ui.blockClasses,
+      blockClasses: ({trees: {ui}}) => ui.blockClasses,
     }),
     ...mapGetters('flow', ['activeFlow']),
   },
   methods: {
     sidebarType() {
-      const
-        blockType = lodash.get(this.selectedBlock, 'type')
-      const blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
-
+      const blockType = get(this.selectedBlock, 'type')
       return this.isEditable
         ? blockType || 'TreeEditor'
-        : blockViewerType || 'TreeViewer'
+        : blockType || 'TreeViewer'
     },
-  }
+  },
 }
 </script>
 

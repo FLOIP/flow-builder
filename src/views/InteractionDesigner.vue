@@ -227,7 +227,7 @@ export default {
         scrollBehavior(this.$route)
       }
       if (this.$route.meta?.isBlockEditorShown) {
-        this.setOpenBlockEditor(true)
+        this.setIsBlockEditorOpen(true)
       }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
@@ -236,13 +236,13 @@ export default {
     this.activateBlock({blockId: to.params.blockId || null})
     if (to.meta?.isBlockEditorShown) {
       scrollBlockIntoView(to.params.blockId)
-      this.setOpenBlockEditor(true)
+      this.setIsBlockEditorOpen(true)
     }
     next()
   },
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
-    ...mapMutations('builder', ['activateBlock', 'setOpenBlockEditor']),
+    ...mapMutations('builder', ['activateBlock', 'setIsBlockEditorOpen']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
 
@@ -268,7 +268,7 @@ export default {
         console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
         return
       }
-      this.setOpenBlockEditor(false)
+      this.setIsBlockEditorOpen(false)
       const routeName = this.$route.meta.isSidebarShown ? 'flow-details' : 'flow-canvas'
       this.$router.history.replace({
         name: routeName,
