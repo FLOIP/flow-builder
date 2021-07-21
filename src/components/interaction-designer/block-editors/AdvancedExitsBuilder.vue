@@ -1,6 +1,6 @@
 <template>
   <div class="advanced-exits-builder">
-    <label class="d-block">Set advanced exit configurations using test expressions</label>
+    <h6>Set advanced exit configurations using test expressions</h6>
 
     <advanced-exit-editor
       v-for="(exit, i) in block.exits"
@@ -8,7 +8,7 @@
       :block="block"
       :exit="exit"
       :label="i + 1"
-      class="advanced-block-exit-builder-item" />
+      class="advanced-block-exit-builder-item mb-3" />
 
     <advanced-exit-editor
       v-if="draftExit"
@@ -16,7 +16,7 @@
       :block="block"
       :exit="draftExit"
       :label="block.exits.length + 1"
-      class="advanced-block-exit-builder-item"
+      class="advanced-block-exit-builder-item mb-3"
       @beforeExitTestChanged="addDraftExitToBlock"
       @beforeExitNameChanged="addDraftExitToBlock" />
   </div>

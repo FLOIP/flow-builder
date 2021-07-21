@@ -8,7 +8,7 @@
           :class="{
             active: isBranchingTypeExitPerChoice,
             'btn-primary': isBranchingTypeExitPerChoice,
-            'btn-secondary': !isBranchingTypeExitPerChoice,
+            'btn-outline-primary': !isBranchingTypeExitPerChoice,
           }"
           :title="'flow-builder.separate-output-for-each-choice' | trans"
           class="btn btn-sm"
@@ -23,7 +23,7 @@
           :class="{
             active: isBranchingTypeUnified,
             'btn-primary': isBranchingTypeUnified,
-            'btn-secondary': !isBranchingTypeUnified,
+            'btn-outline-primary': !isBranchingTypeUnified,
           }"
           :title="'flow-builder.one-output-for-all-choices' | trans"
           class="btn btn-sm"
@@ -38,7 +38,7 @@
           :class="{
             active: isBranchingTypeAdvanced,
             'btn-primary': isBranchingTypeAdvanced,
-            'btn-secondary': !isBranchingTypeAdvanced,
+            'btn-outline-primary': !isBranchingTypeAdvanced,
           }"
           :title="'flow-builder.advanced-configuration-of-outputs' | trans"
           class="btn btn-sm"
@@ -56,7 +56,7 @@
       :block="block" />
 
     <div class="form-group">
-      <label>When no valid response/all exit expressions evaluate to false</label>
+      <h6>When no valid response/all exit expressions evaluate to false</h6>
 
       <div class="form-check">
         <input

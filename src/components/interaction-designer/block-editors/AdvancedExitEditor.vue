@@ -22,7 +22,7 @@
         rows="1" />
     </div>
 
-    <label>Exit name</label>
+    <h6 class="mt-2">Exit name</h6>
     <textarea
       v-model="name"
       :placeholder="`Enter name for exit`"
