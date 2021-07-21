@@ -321,7 +321,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     const {uuid: blockId} = await this.flow_addBlankBlockByType({
       type,
       ui_metadata: {
-        canvas_coordinates: computeBlockUiData(this.activeBlock)
+        canvas_coordinates: computeBlockUiData(this.activeBlock),
       },
       vendor_metadata: {
         io_viamo: {
