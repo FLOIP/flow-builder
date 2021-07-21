@@ -377,13 +377,12 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
 }
 
 export function computeBlockUiData(block?: IBlock | null) {
-  const xDelta = 160
-  const yDelta = 180
+  const xDelta = 120
+  const yDelta = 110
+  let xPosition = block ? block.ui_metadata.canvas_coordinates.x : null
+  let yPosition = block ? block.ui_metadata.canvas_coordinates.y : null
 
-  let xPosition = get(block, 'block.ui_metadata.canvas_coordinates.x')
-  let yPosition = get(block, 'block.ui_metadata.canvas_coordinates.y')
-
-  if (!xPosition || !yPosition) {
+  if (xPosition === null || yPosition === null) {
     const viewPortCenter = getViewportCenter()
     xPosition = viewPortCenter.x
     yPosition = viewPortCenter.y
@@ -394,6 +393,7 @@ export function computeBlockUiData(block?: IBlock | null) {
     y: yPosition + yDelta,
   }
 }
+
 export function computeBlockVendorUiData(block?: IBlock | null) {
   return {
     isSelected: false,
