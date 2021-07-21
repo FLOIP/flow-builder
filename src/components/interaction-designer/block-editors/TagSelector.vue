@@ -13,6 +13,10 @@
         :placeholder="'flow-builder.tags-selector-placeholder' | trans"
         :options="availableTagOptions"
         :searchable="true"
+        :show-labels="false"
+        :close-on-select="false"
+        :taggable="taggable"
+        :tag-placeholder="taggable ? trans('flow-builder.create-a-tag-prompt') : ''"
         @tag="addTag" />
     </div>
   </validation-message>
@@ -30,7 +34,7 @@ import ValidationMessage from '@/components/common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component<any>({
+@Component({
   components: {
     VueMultiselect,
     ValidationMessage,
@@ -38,6 +42,7 @@ const flowVuexNamespace = namespace('flow')
 })
 class TagSelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
+  @Prop({default: true}) readonly taggable!: boolean
 
   get selectedTags() {
     return this.stringListToOptions(this.block.tags)
@@ -66,7 +71,6 @@ class TagSelector extends mixins(Lang) {
   @flowVuexNamespace.Mutation block_setTags!: ({blockId, value}: {blockId: IBlock['uuid'], value: string[]}) => void
   @Getter blockTags!: string[]
 }
-
 
 // TODO: reset /Users/rs/Documents/Voto/floip/flow-builder/builder.config.json:blockTags from master to remove tags sample
 export default TagSelector
