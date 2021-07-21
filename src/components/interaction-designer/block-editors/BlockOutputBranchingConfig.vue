@@ -16,7 +16,8 @@
           data-toggle="tooltip"
           @click="selectedBranchingType = OutputBranchingType.EXIT_PER_CHOICE">
 
-          <i class="v5icon-branching-on v5icon-2x" />
+          <font-awesome-icon :icon="['fac', 'one-exit-per-choice']"
+                             class="exit-type-icons"/>
         </button>
 
         <button
@@ -31,7 +32,8 @@
           data-toggle="tooltip"
           @click="selectedBranchingType = OutputBranchingType.UNIFIED">
 
-          <i class="v5icon-branching-off v5icon-2x" />
+          <font-awesome-icon :icon="['fac', 'single-exit']"
+                             class="exit-type-icons"/>
         </button>
 
         <button
@@ -46,7 +48,8 @@
           data-toggle="tooltip"
           @click="selectedBranchingType = OutputBranchingType.ADVANCED">
 
-          <i class="v5icon-branching-off v5icon-2x" />
+          <font-awesome-icon :icon="['fac', 'advanced-exit']"
+                             class="exit-type-icons"/>
         </button>
       </div>
     </div>
@@ -201,3 +204,9 @@
       ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
   }
 </script>
+
+<style scoped>
+.exit-type-icons {
+  font-size: 1.5rem;
+}
+</style>

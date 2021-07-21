@@ -115,6 +115,45 @@ const minimize: IconDefinition = {
   ],
 }
 
+const singleExit: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'single-exit' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e010',
+    'M21 8H11V14H21V8ZM10 7V15H15.5V19H12V25H20V19H16.5V15H22V7H10ZM13 20H19V24H13V20Z',
+  ],
+}
+
+const advancedExit: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'advanced-exit' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e009',
+    // eslint-disable-next-line max-len
+    'M11 8H21V14H11V8ZM10 7H22V15H16.5V19H25V25H7V19H15.5V15H10V7ZM24 20H8V24H24V20ZM13 22C13 22.5523 12.5523 23 12 23C11.4477 23 11 22.5523 11 22C11 21.4477 11.4477 21 12 21C12.5523 21 13 21.4477 13 22ZM16 23C16.5523 23 17 22.5523 17 22C17 21.4477 16.5523 21 16 21C15.4477 21 15 21.4477 15 22C15 22.5523 15.4477 23 16 23ZM21 22C21 22.5523 20.5523 23 20 23C19.4477 23 19 22.5523 19 22C19 21.4477 19.4477 21 20 21C20.5523 21 21 21.4477 21 22Z',
+  ],
+}
+
+const oneExitPerChoice: IconDefinition = {
+  prefix: 'fac' as IconPrefix,
+  iconName: 'one-exit-per-choice' as IconName,
+  icon: [
+    32,
+    32,
+    [],
+    'e009',
+    // eslint-disable-next-line max-len
+    'M21 8H11V14H21V8ZM10 7V15H15.5V18.5H11.5V21H9V25H14V21H12.5V19.5H19.5V21H18V25H23V21H20.5V18.5H16.5V15H22V7H10ZM10 24V22H13V24H10ZM22 24V22H19V24H22Z',
+  ],
+}
+
+
 export default [
   audio,
   enter,
@@ -125,4 +164,7 @@ export default [
   copy,
   expand,
   minimize,
+  singleExit,
+  advancedExit,
+  oneExitPerChoice,
 ]
