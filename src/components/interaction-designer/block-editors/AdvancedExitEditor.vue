@@ -1,31 +1,17 @@
 <template>
   <div class="advanced-exit-editor">
+    <expression-input
+      label=""
+      :placeholder="'flow-builder.advanced-exit-expression-placeholder' | trans"
+      :current-expression="test"
+      :rows="1"
+      :prepend-text="label"
+      @commitExpressionChange="commitExpressionChange" />
 
-    <!--
-         <expression-input
-          label=""
-          :placeholder="'Enter test expression for exit'"
-          :rows="1"
-          :prepend-text="label"
-     -->
-
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text">{{label}}</span>
-      </div>
-
-      <!-- todo: this needs to be an expression editor instead -->
-      <textarea
-        v-model="test"
-        :placeholder="`Enter test expression for exit`"
-        class="form-control"
-        rows="1" />
-    </div>
-
-    <h6 class="mt-2">Exit name</h6>
+    <h6 class="mt-2">{{ 'flow-builder.advanced-exit-name' | trans }}</h6>
     <textarea
       v-model="name"
-      :placeholder="`Enter name for exit`"
+      :placeholder="'flow-builder.advanced-exit-name-placeholder' | trans"
       class="form-control"
       rows="1" />
   </div>
@@ -53,11 +39,6 @@ class AdvancedExitEditor extends mixins(Lang) {
     return this.exit.test
   }
 
-  set test(value: IBlockExit['test']) {
-    this.$emit('beforeExitTestChanged', {exitId: this.exit.uuid, blockId: this.block.uuid, value})
-    this.block_setExitTest({exitId: this.exit.uuid, blockId: this.block.uuid, value})
-  }
-
   get name(): IBlockExit['name'] {
     return this.exit.name
   }
@@ -68,6 +49,11 @@ class AdvancedExitEditor extends mixins(Lang) {
 
     this.$emit('beforeExitNameChanged', {blockId, exitId, value})
     this.block_setExitName({blockId, exitId, value})
+  }
+
+  commitExpressionChange(value: IBlockExit['test']): Promise<string> {
+    this.$emit('beforeExitTestChanged', {exitId: this.exit.uuid, blockId: this.block.uuid, value})
+    this.block_setExitTest({exitId: this.exit.uuid, blockId: this.block.uuid, value})
   }
 
   @flowVuexNamespace.Mutation block_setExitTest!:
