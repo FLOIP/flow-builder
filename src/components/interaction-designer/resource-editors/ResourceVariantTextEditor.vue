@@ -10,6 +10,7 @@
         </div>
 
         <textarea
+          ref="input"
           v-model="content"
           v-focus="isSelected"
           :placeholder="placeholder || `flow-builder.enter-${resourceVariant.content_type.toString().toLowerCase()}-content` | trans"
