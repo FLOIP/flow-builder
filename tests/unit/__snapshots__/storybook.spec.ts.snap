@@ -170,9 +170,11 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <div
                                     class=""
                                   >
-                                    <h6>
+                                    <label
+                                      class="text-primary"
+                                    >
                                       Flow label
-                                    </h6>
+                                    </label>
                                      
                                     <textarea
                                       class="form-control"
@@ -242,7 +244,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                 <div
                                   class="form-group flow-languages"
                                 >
-                                  <label>
+                                  <label
+                                    class="text-primary"
+                                  >
                                     Languages
                                   </label>
                                    
@@ -296,7 +300,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                 <div
                                   class="form-group flow-modes"
                                 >
-                                  <label>
+                                  <label
+                                    class="text-primary"
+                                  >
                                     Modes
                                   </label>
                                    
@@ -312,7 +318,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         value="TEXT"
                                       />
                                       
-      TEXT
+      Text
     
                                     </label>
                                   </div>
@@ -376,7 +382,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         value="RICH_MESSAGING"
                                       />
                                       
-      RICH_MESSAGING
+      Rich messaging
     
                                     </label>
                                   </div>
@@ -392,7 +398,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         value="OFFLINE"
                                       />
                                       
-      OFFLINE
+      Offline
     
                                     </label>
                                   </div>
@@ -1794,7 +1800,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                         class="mobile-primitive-numeric-response-block"
                       >
                         <h3
-                          class="no-room-above text-primary"
+                          class="no-room-above"
                         >
                           
     Edit Numeric Response block
@@ -1835,7 +1841,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                   class="btn btn-outline-primary btn-xs align-self-center ml-2"
                                 >
                                   <font-awesome-icon
-                                    class="fa-btn text-primary"
+                                    class="fa-btn"
                                     icon="fac,settings"
                                   />
                                 </span>
@@ -2071,10 +2077,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                         <div
                                           class="content-editor"
                                         >
-                                          <textarea
-                                            class="form-control"
-                                            placeholder="Enter Text content"
-                                          />
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
                                         </div>
                                          
                                         <div
@@ -2114,10 +2127,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                         <div
                                           class="content-editor"
                                         >
-                                          <textarea
-                                            class="form-control"
-                                            placeholder="Enter Text content"
-                                          />
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
                                         </div>
                                          
                                         <div
@@ -2242,6 +2262,8 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               </div>
                             </div>
                           </div>
+                           
+                          <hr />
                             
                           <div
                             class="generic-contact-property-editor"
@@ -2279,12 +2301,6 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                           <div
                             class="starting-block-button"
                           >
-                            <hr />
-                             
-                            <h4>
-                              Options
-                            </h4>
-                             
                             <div
                               class="form-group"
                             >
@@ -2372,7 +2388,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                         class="mobile-primitive-numeric-response-block"
                       >
                         <h3
-                          class="no-room-above text-primary"
+                          class="no-room-above"
                         >
                           
     Edit Numeric Response block
@@ -2413,7 +2429,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                   class="btn btn-outline-primary btn-xs align-self-center ml-2"
                                 >
                                   <font-awesome-icon
-                                    class="fa-btn text-primary"
+                                    class="fa-btn"
                                     icon="fac,settings"
                                   />
                                 </span>
@@ -2649,10 +2665,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                         <div
                                           class="content-editor content-editor-selected"
                                         >
-                                          <textarea
-                                            class="form-control"
-                                            placeholder="Enter Text content"
-                                          />
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
                                         </div>
                                          
                                         <div
@@ -2692,10 +2715,17 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                                         <div
                                           class="content-editor content-editor-selected"
                                         >
-                                          <textarea
-                                            class="form-control"
-                                            placeholder="Enter Text content"
-                                          />
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
                                         </div>
                                          
                                         <div
@@ -2808,6 +2838,8 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               </div>
                             </div>
                           </div>
+                           
+                          <hr />
                             
                           <div
                             class="generic-contact-property-editor"
@@ -2845,12 +2877,6 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                           <div
                             class="starting-block-button"
                           >
-                            <hr />
-                             
-                            <h4>
-                              Options
-                            </h4>
-                             
                             <div
                               class="form-group"
                             >
@@ -2997,7 +3023,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                   class="btn btn-outline-primary btn-xs align-self-center ml-2"
                                 >
                                   <font-awesome-icon
-                                    class="fa-btn text-primary"
+                                    class="fa-btn"
                                     icon="fac,settings"
                                   />
                                 </span>
@@ -3200,10 +3226,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                         <div
                                           class="content-editor"
                                         >
-                                          <textarea
-                                            class="form-control"
-                                            placeholder="Enter Text content"
-                                          />
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
                                         </div>
                                          
                                         <div
@@ -3243,10 +3276,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                         <div
                                           class="content-editor"
                                         >
-                                          <textarea
-                                            class="form-control"
-                                            placeholder="Enter Text content"
-                                          />
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
                                         </div>
                                          
                                         <div
@@ -3371,6 +3411,8 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               </div>
                             </div>
                           </div>
+                           
+                          <hr />
                             
                           <div
                             class="generic-contact-property-editor"
@@ -3408,12 +3450,6 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                           <div
                             class="starting-block-button"
                           >
-                            <hr />
-                             
-                            <h4>
-                              Options
-                            </h4>
-                             
                             <div
                               class="form-group"
                             >
@@ -3542,7 +3578,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                   class="btn btn-outline-primary btn-xs align-self-center ml-2"
                                 >
                                   <font-awesome-icon
-                                    class="fa-btn text-primary"
+                                    class="fa-btn"
                                     icon="fac,settings"
                                   />
                                 </span>
@@ -3745,10 +3781,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                         <div
                                           class="content-editor content-editor-selected"
                                         >
-                                          <textarea
-                                            class="form-control"
-                                            placeholder="Enter Text content"
-                                          />
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
                                         </div>
                                          
                                         <div
@@ -3788,10 +3831,17 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                                         <div
                                           class="content-editor content-editor-selected"
                                         >
-                                          <textarea
-                                            class="form-control"
-                                            placeholder="Enter Text content"
-                                          />
+                                          <div
+                                            class="input-group"
+                                          >
+                                            <!---->
+                                             
+                                            <textarea
+                                              class="form-control"
+                                              placeholder="Enter Text content"
+                                              rows="2"
+                                            />
+                                          </div>
                                         </div>
                                          
                                         <div
@@ -3904,6 +3954,8 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               </div>
                             </div>
                           </div>
+                           
+                          <hr />
                             
                           <div
                             class="generic-contact-property-editor"
@@ -3941,12 +3993,6 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                           <div
                             class="starting-block-button"
                           >
-                            <hr />
-                             
-                            <h4>
-                              Options
-                            </h4>
-                             
                             <div
                               class="form-group"
                             >

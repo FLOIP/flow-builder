@@ -41,6 +41,7 @@
           <text-editor
             v-model="propertyKey"
             :label="'flow-builder.contact-property-label' | trans"
+            :label-class="'font-weight-bold'"
             :placeholder="'flow-builder.enter-contact-property-label' | trans"
             :valid-state="isValid" />
         </div>
@@ -53,6 +54,7 @@
         <expression-input
           :label="'flow-builder.contact-property-expression' | trans"
           :placeholder="'flow-builder.enter-expression' | trans"
+          :label-class="'font-weight-bold'"
           :current-expression="propertyValue"
           :valid-state="isValid"
           @commitExpressionChange="updatePropertyValue" />

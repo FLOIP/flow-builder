@@ -35,6 +35,9 @@
           </template>
         </template>
       </div>
+
+      <hr>
+
       <slot name="extras" />
 
       <generic-contact-property-editor :block="block" />
@@ -42,6 +45,7 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />

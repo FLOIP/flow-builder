@@ -1,6 +1,6 @@
 <template>
   <div class="form-group flow-languages">
-    <label>{{ 'flow-builder.languages' | trans }}</label>
+    <label class="text-primary">{{ 'flow-builder.languages' | trans }}</label>
     <div
       v-for="language in languages"
       :key="language.id"

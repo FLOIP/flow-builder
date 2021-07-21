@@ -16,7 +16,7 @@
           @click="emitGearClickedEvent">
           <font-awesome-icon
             :icon="['fac', 'settings']"
-            class="fa-btn text-primary" />
+            class="fa-btn" />
         </span>
       </div>
     </validation-message>
