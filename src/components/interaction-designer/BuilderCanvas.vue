@@ -139,11 +139,11 @@ export default class BuilderCanvas extends Vue {
   }
 
   get blockAtTheLowestPosition(): any {
-    return maxBy(this.activeFlow.blocks, 'block.ui_metadata.canvas_coordinates.y')
+    return maxBy(this.activeFlow.blocks, 'ui_metadata.canvas_coordinates.y')
   }
 
   get blockAtTheFurthestRightPosition(): any {
-    return maxBy(this.activeFlow.blocks, 'block.ui_metadata.canvas_coordinates.x')
+    return maxBy(this.activeFlow.blocks, 'ui_metadata.canvas_coordinates.x')
   }
 
   get windowHeight(): number {
@@ -155,7 +155,7 @@ export default class BuilderCanvas extends Vue {
   }
 
   get canvasHeight(): any {
-    if (this.activeFlow.blocks.length == 0) {
+    if (this.activeFlow.blocks.length === 0) {
       return this.windowHeight
     }
 
@@ -164,7 +164,7 @@ export default class BuilderCanvas extends Vue {
       return this.windowHeight
     }
 
-    const yPosition = get(this.blockAtTheLowestPosition, 'block.ui_metadata.canvas_coordinates.y')
+    const yPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.y
     const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
 
     if (scrollHeight < this.windowHeight) {
@@ -175,7 +175,7 @@ export default class BuilderCanvas extends Vue {
   }
 
   get canvasWidth(): number {
-    if (this.activeFlow.blocks.length == 0) {
+    if (this.activeFlow.blocks.length === 0) {
       return this.windowWidth - this.widthAdjustment
     }
 
@@ -184,7 +184,7 @@ export default class BuilderCanvas extends Vue {
       return this.windowWidth - this.widthAdjustment
     }
 
-    const xPosition = get(this.blockAtTheLowestPosition, 'block.ui_metadata.canvas_coordinates.x')
+    const xPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.x
     const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
 
     if (scrollWidth < this.windowWidth) {
