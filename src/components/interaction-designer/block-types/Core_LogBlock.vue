@@ -38,6 +38,8 @@
 
       <slot name="extras" />
 
+      <categorization :block="block" />
+
       <generic-contact-property-editor :block="block" />
 
       <hr>
@@ -63,6 +65,7 @@ import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import LogStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {mixins} from 'vue-class-component'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue'
@@ -86,6 +89,7 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    Categorization,
   },
 })
 class Core_LogBlock extends mixins(Lang) {

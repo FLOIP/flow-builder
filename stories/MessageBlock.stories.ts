@@ -54,6 +54,7 @@ class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
       shouldSetChoices: false,
       configPath: 'config.prompt',
     })
+    this.setTags(blockId)
   }
 }
 

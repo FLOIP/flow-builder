@@ -1,5 +1,7 @@
 {
   "en.flow-builder": {
+    "tags-label": "Tags",
+    "tags-selector-placeholder": "Select or add a tag",
     "ivr": "IVR",
     "text": "Text",
     "rich_messaging": "Rich messaging",
@@ -1611,6 +1613,8 @@
     "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit."
   },
   "fr.flow-builder": {
+    "tags-label": "Etiquettes",
+    "tags-selector-placeholder": "Sélectionnez ou ajoutez une étiquette",
     "ivr": "IVR",
     "text": "Texte",
     "rich_messaging": "Messagerie riche",

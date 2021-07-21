@@ -21,6 +21,8 @@
 
       <slot name="extras" />
 
+      <categorization :block="block" />
+
       <generic-contact-property-editor :block="block" />
 
       <hr>
@@ -44,6 +46,7 @@ import {IMessageBlock} from '@floip/flow-runner/src/model/block/IMessageBlock'
 
 import MessageStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
@@ -66,6 +69,7 @@ const builderVuexNamespace = namespace('builder')
     ResourceEditor,
     FirstBlockEditorButton,
     BlockId,
+    Categorization,
   },
 })
 class MobilePrimitives_MessageBlock extends mixins(Lang) {

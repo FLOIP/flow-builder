@@ -32,6 +32,8 @@
 
       <slot name="extras" />
 
+      <categorization :block="block" />
+
       <generic-contact-property-editor :block="block" />
 
       <hr>
@@ -55,6 +57,7 @@ import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumeric
 
 import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
@@ -84,6 +87,7 @@ const builderVuexNamespace = namespace('builder')
     BlockMinimumNumericEditor,
     BlockMaximumNumericEditor,
     BlockMaxDigitEditor,
+    Categorization,
   },
 })
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {

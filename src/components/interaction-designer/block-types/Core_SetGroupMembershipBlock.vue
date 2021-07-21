@@ -35,6 +35,8 @@
 
       <slot name="extras" />
 
+      <categorization :block="block" />
+
       <generic-contact-property-editor :block="block" />
 
       <hr>
@@ -59,6 +61,7 @@ import VueMultiselect from 'vue-multiselect'
 
 import SetGroupMembershipStore, {ADD_KEY, BLOCK_TYPE, REMOVE_KEY} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {find} from 'lodash'
 import {mixins} from 'vue-class-component'
@@ -90,6 +93,7 @@ interface IGroupActionOption {
     GroupSelector,
     VueMultiselect,
     ValidationMessage,
+    Categorization,
   },
 })
 class Core_SetGroupMembershipBlock extends mixins(Lang) {

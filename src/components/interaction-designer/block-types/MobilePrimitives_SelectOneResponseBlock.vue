@@ -59,6 +59,8 @@
 
       <slot name="extras" />
 
+      <categorization :block="block" />
+
       <generic-contact-property-editor :block="block" />
 
       <hr>
@@ -82,6 +84,7 @@ import {Component, Prop, Watch} from 'vue-property-decorator'
 
 import SelectOneStore, {BLOCK_TYPE, IInflatedChoicesInterface} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
@@ -110,6 +113,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     ResourceEditor,
     BlockId,
+    Categorization,
   },
 })
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {

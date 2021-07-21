@@ -55,6 +55,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         accuracy_threshold_meters: 5.0,
         accuracy_timeout_seconds: 120,
       },
+      tags: [],
     })
   },
 }

@@ -56,6 +56,8 @@
 
       <slot name="extras" />
 
+      <categorization :block="block" />
+
       <generic-contact-property-editor :block="block" />
 
       <hr>
@@ -76,6 +78,7 @@ import {IResource} from '@floip/flow-runner'
 import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {namespace} from 'vuex-class'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -99,6 +102,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     ResourceEditor,
     BlockId,
+    Categorization,
   },
 })
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {

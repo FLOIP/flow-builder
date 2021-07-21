@@ -21,6 +21,8 @@
 
       <slot name="extras" />
 
+      <categorization :block="block" />
+
       <generic-contact-property-editor :block="block" />
 
       <hr>
@@ -46,6 +48,7 @@ import PrintStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBl
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -66,6 +69,7 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    Categorization,
   },
 })
 class ConsoleIO_PrintBlock extends mixins(Lang) {

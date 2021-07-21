@@ -46,8 +46,12 @@ export const Default = () => (DefaultClass)
 
 @Component<any>({
   ...baseOptions,
+})
+class ExistingDataBlockClass extends BaseMountedVueClass {
+  @Mutation addContactGroup!: ({group}: { group: any }) => void
+
   async mounted() {
-    await this.baseMounted(BLOCK_TYPE, SetGroupMembershipStore)
+    const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, SetGroupMembershipStore)
 
     // Add sample data
     this.addContactGroup({
@@ -62,10 +66,9 @@ export const Default = () => (DefaultClass)
         name: 'Group 2',
       },
     })
-  },
-})
-class ExistingDataBlockClass extends BaseMountedVueClass {
-  @Mutation addContactGroup!: ({group}: { group: any }) => void
+
+    this.setTags(blockId)
+  }
 }
 
 export const ExistingDataBlock = () => (ExistingDataBlockClass)

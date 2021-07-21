@@ -17,6 +17,8 @@
 
       <slot name="extras" />
 
+      <categorization :block="block" />
+
       <hr>
 
       <first-block-editor-button
@@ -38,6 +40,7 @@ import ContactPropertyEditor from '@/components/interaction-designer/block-edito
 
 import SetContactPropertyStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import BlockId from '../block-editors/BlockId.vue'
@@ -56,6 +59,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
     ContactPropertyEditor,
+    Categorization,
   },
 })
 class Core_SetContactPropertyBlock extends mixins(Lang) {

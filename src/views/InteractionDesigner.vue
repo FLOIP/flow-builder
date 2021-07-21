@@ -360,7 +360,7 @@ export default {
 
 <!--<style src="../css/voto3.css"></style>-->
 <!--<style src="../css/InteractionDesigner.css"></style>-->
-
+<style lang="scss"> @import '../css/customized/vue-multiselect.css';</style>
 <style lang="scss">
   // Colors + dimensions
   $dot-size: 1px;

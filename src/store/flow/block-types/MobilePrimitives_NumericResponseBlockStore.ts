@@ -72,6 +72,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
           max_digits: '',
         },
       },
+      tags: [],
     })
   },
 }

@@ -32,6 +32,8 @@
 
       <slot name="extras" />
 
+      <categorization :block="block" />
+
       <generic-contact-property-editor :block="block" />
 
       <hr>
@@ -54,6 +56,7 @@ import {IBlockExit, IFlow} from '@floip/flow-runner'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import CaseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
@@ -77,6 +80,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
     ValidationMessage,
+    Categorization,
   },
 })
 class Core_CaseBlock extends mixins(Lang) {
