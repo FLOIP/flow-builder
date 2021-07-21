@@ -121,8 +121,8 @@ export const mutations: MutationTree<IBuilderState> = {
     //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
     // }
 
-    block.vendor_metadata.io_viamo.uiData.xPosition = x
-    block.vendor_metadata.io_viamo.uiData.yPosition = y
+    block.ui_metadata.canvas_coordinates.x = x
+    block.ui_metadata.canvas_coordinates.y = y
   },
 
   setIsEditable(state, value) {
@@ -367,8 +367,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
-    [get(source, 'vendor_metadata.io_viamo.uiData.xPosition'), get(source, 'vendor_metadata.io_viamo.uiData.yPosition')],
-    [get(target, 'vendor_metadata.io_viamo.uiData.xPosition'), get(target, 'vendor_metadata.io_viamo.uiData.yPosition')],
+    [get(source, 'block.ui_metadata.canvas_coordinates.x'), get(source, 'block.ui_metadata.canvas_coordinates.y')],
+    [get(target, 'block.ui_metadata.canvas_coordinates.x'), get(target, 'block.ui_metadata.canvas_coordinates.y')],
 
     // block titles
     source.label,
@@ -386,8 +386,8 @@ export function computeBlockUiData(block?: IBlock | null) {
   const xDelta = 160
   const yDelta = 180
 
-  let xPosition = get(block, 'vendor_metadata.io_viamo.uiData.xPosition')
-  let yPosition = get(block, 'vendor_metadata.io_viamo.uiData.yPosition')
+  let xPosition = get(block, 'block.ui_metadata.canvas_coordinates.x')
+  let yPosition = get(block, 'block.ui_metadata.canvas_coordinates.y')
 
   if (!xPosition || !yPosition) {
     const viewPortCenter = getViewportCenter()
@@ -396,8 +396,12 @@ export function computeBlockUiData(block?: IBlock | null) {
   }
 
   return {
-    xPosition: xPosition + xDelta,
-    yPosition: yPosition + yDelta,
+    x: xPosition + xDelta,
+    y: yPosition + yDelta,
+  }
+}
+export function computeBlockVendorUiData(block?: IBlock | null) {
+  return {
     isSelected: false,
   }
 }

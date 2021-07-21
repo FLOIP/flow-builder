@@ -57,9 +57,13 @@
           :flow="flow" />
       </div>
 
-      <hr>
-
       <slot name="extras" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
 
       <first-block-editor-button
         :flow="flow"
@@ -80,6 +84,7 @@ import {Component, Prop, Watch} from 'vue-property-decorator'
 
 import SelectOneStore, {BLOCK_TYPE, IInflatedChoicesInterface} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
@@ -91,13 +96,15 @@ import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEdit
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
+@Component({
   components: {
+    GenericContactPropertyEditor,
     ResourceVariantTextEditor,
     BlockNameEditor,
     BlockLabelEditor,
@@ -106,6 +113,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     ResourceEditor,
     BlockId,
+    Categorization,
   },
 })
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
@@ -125,10 +133,6 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
   get questionPromptResource(): IResource {
     return this.resourcesByUuid[this.block.config.question_prompt || '']
-  }
-
-  get choicesPromptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.choices_prompt || '']
   }
 
   @Watch('inflatedChoices', {deep: true})

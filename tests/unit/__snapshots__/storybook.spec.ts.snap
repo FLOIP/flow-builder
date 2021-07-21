@@ -2262,9 +2262,153 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               </div>
                             </div>
                           </div>
+                            
+                          <div
+                            class="block-categorization"
+                          >
+                            <hr />
+                             
+                            <label
+                              class="text-primary"
+                            >
+                              Categorization
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-70/tags"
+                            >
+                              <div
+                                class="block-group"
+                              >
+                                <label>
+                                  Tags
+                                </label>
+                                 
+                                <div
+                                  class="multiselect"
+                                  tabindex="-1"
+                                >
+                                  <div
+                                    class="multiselect__select"
+                                  />
+                                    
+                                  <div
+                                    class="multiselect__tags"
+                                  >
+                                    <div
+                                      class="multiselect__tags-wrap"
+                                      style="display: none;"
+                                    />
+                                     
+                                    <!---->
+                                     
+                                    <div
+                                      class="multiselect__spinner"
+                                      style="display: none;"
+                                    />
+                                     
+                                    <input
+                                      autocomplete="nope"
+                                      class="multiselect__input"
+                                      name=""
+                                      placeholder="Select or add a tag"
+                                      style="width: 0px; position: absolute; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                    />
+                                     
+                                    <!---->
+                                     
+                                    <span
+                                      class="multiselect__placeholder"
+                                    >
+                                      
+          Select or add a tag
+        
+                                    </span>
+                                  </div>
+                                   
+                                  <div
+                                    class="multiselect__content-wrapper"
+                                    style="max-height: 300px; display: none;"
+                                    tabindex="-1"
+                                  >
+                                    <ul
+                                      class="multiselect__content"
+                                      style="display: block;"
+                                    >
+                                       
+                                      <!---->
+                                        
+                                      <li
+                                        style="display: none;"
+                                      >
+                                        <span
+                                          class="multiselect__option"
+                                        >
+                                          No elements found. Consider changing the search query.
+                                        </span>
+                                      </li>
+                                       
+                                      <li>
+                                        <span
+                                          class="multiselect__option"
+                                        >
+                                          List is empty.
+                                        </span>
+                                      </li>
+                                       
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="generic-contact-property-editor"
+                          >
+                            <hr />
+                             
+                            <label
+                              class="text-primary"
+                            >
+                              Contact Properties
+                            </label>
+                             
+                            <div
+                              class="custom-control custom-checkbox"
+                            >
+                              <input
+                                class="custom-control-input"
+                                id="setContactProperty"
+                                name="setContactProperty"
+                                type="checkbox"
+                                value="false"
+                              />
+                               
+                              <label
+                                class="custom-control-label font-weight-normal"
+                                for="setContactProperty"
+                              >
+                                
+      Set a contact property with the Contact’s response
+    
+                              </label>
+                            </div>
+                             
+                            <!---->
+                          </div>
                            
                           <hr />
-                            
+                           
                           <div
                             class="starting-block-button"
                           >
@@ -2805,9 +2949,195 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               </div>
                             </div>
                           </div>
+                            
+                          <div
+                            class="block-categorization"
+                          >
+                            <hr />
+                             
+                            <label
+                              class="text-primary"
+                            >
+                              Categorization
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-76/tags"
+                            >
+                              <div
+                                class="block-group"
+                              >
+                                <label>
+                                  Tags
+                                </label>
+                                 
+                                <div
+                                  class="multiselect"
+                                  tabindex="-1"
+                                >
+                                  <div
+                                    class="multiselect__select"
+                                  />
+                                    
+                                  <div
+                                    class="multiselect__tags"
+                                  >
+                                    <div
+                                      class="multiselect__tags-wrap"
+                                    >
+                                      <span
+                                        class="multiselect__tag"
+                                      >
+                                        <span>
+                                          tag1
+                                        </span>
+                                         
+                                        <i
+                                          aria-hidden="true"
+                                          class="multiselect__tag-icon"
+                                          tabindex="1"
+                                        />
+                                      </span>
+                                    </div>
+                                     
+                                    <!---->
+                                     
+                                    <div
+                                      class="multiselect__spinner"
+                                      style="display: none;"
+                                    />
+                                     
+                                    <input
+                                      autocomplete="nope"
+                                      class="multiselect__input"
+                                      name=""
+                                      placeholder="Select or add a tag"
+                                      style="width: 0px; position: absolute; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                    />
+                                     
+                                    <!---->
+                                     
+                                    <!---->
+                                  </div>
+                                   
+                                  <div
+                                    class="multiselect__content-wrapper"
+                                    style="max-height: 300px; display: none;"
+                                    tabindex="-1"
+                                  >
+                                    <ul
+                                      class="multiselect__content"
+                                      style="display: inline-block;"
+                                    >
+                                       
+                                      <!---->
+                                       
+                                      <li
+                                        class="multiselect__element"
+                                      >
+                                        <span
+                                          class="multiselect__option multiselect__option--highlight multiselect__option--selected"
+                                          data-deselect=""
+                                          data-select=""
+                                          data-selected=""
+                                        >
+                                          <span>
+                                            tag1
+                                          </span>
+                                        </span>
+                                         
+                                        <!---->
+                                      </li>
+                                      <li
+                                        class="multiselect__element"
+                                      >
+                                        <span
+                                          class="multiselect__option"
+                                          data-deselect=""
+                                          data-select=""
+                                          data-selected=""
+                                        >
+                                          <span>
+                                            tag2
+                                          </span>
+                                        </span>
+                                         
+                                        <!---->
+                                      </li>
+                                       
+                                      <li
+                                        style="display: none;"
+                                      >
+                                        <span
+                                          class="multiselect__option"
+                                        >
+                                          No elements found. Consider changing the search query.
+                                        </span>
+                                      </li>
+                                       
+                                      <li
+                                        style="display: none;"
+                                      >
+                                        <span
+                                          class="multiselect__option"
+                                        >
+                                          List is empty.
+                                        </span>
+                                      </li>
+                                       
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="generic-contact-property-editor"
+                          >
+                            <hr />
+                             
+                            <label
+                              class="text-primary"
+                            >
+                              Contact Properties
+                            </label>
+                             
+                            <div
+                              class="custom-control custom-checkbox"
+                            >
+                              <input
+                                class="custom-control-input"
+                                id="setContactProperty"
+                                name="setContactProperty"
+                                type="checkbox"
+                                value="false"
+                              />
+                               
+                              <label
+                                class="custom-control-label font-weight-normal"
+                                for="setContactProperty"
+                              >
+                                
+      Set a contact property with the Contact’s response
+    
+                              </label>
+                            </div>
+                             
+                            <!---->
+                          </div>
                            
                           <hr />
-                            
+                           
                           <div
                             class="starting-block-button"
                           >
@@ -3345,9 +3675,153 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               </div>
                             </div>
                           </div>
+                            
+                          <div
+                            class="block-categorization"
+                          >
+                            <hr />
+                             
+                            <label
+                              class="text-primary"
+                            >
+                              Categorization
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-105/tags"
+                            >
+                              <div
+                                class="block-group"
+                              >
+                                <label>
+                                  Tags
+                                </label>
+                                 
+                                <div
+                                  class="multiselect"
+                                  tabindex="-1"
+                                >
+                                  <div
+                                    class="multiselect__select"
+                                  />
+                                    
+                                  <div
+                                    class="multiselect__tags"
+                                  >
+                                    <div
+                                      class="multiselect__tags-wrap"
+                                      style="display: none;"
+                                    />
+                                     
+                                    <!---->
+                                     
+                                    <div
+                                      class="multiselect__spinner"
+                                      style="display: none;"
+                                    />
+                                     
+                                    <input
+                                      autocomplete="nope"
+                                      class="multiselect__input"
+                                      name=""
+                                      placeholder="Select or add a tag"
+                                      style="width: 0px; position: absolute; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                    />
+                                     
+                                    <!---->
+                                     
+                                    <span
+                                      class="multiselect__placeholder"
+                                    >
+                                      
+          Select or add a tag
+        
+                                    </span>
+                                  </div>
+                                   
+                                  <div
+                                    class="multiselect__content-wrapper"
+                                    style="max-height: 300px; display: none;"
+                                    tabindex="-1"
+                                  >
+                                    <ul
+                                      class="multiselect__content"
+                                      style="display: block;"
+                                    >
+                                       
+                                      <!---->
+                                        
+                                      <li
+                                        style="display: none;"
+                                      >
+                                        <span
+                                          class="multiselect__option"
+                                        >
+                                          No elements found. Consider changing the search query.
+                                        </span>
+                                      </li>
+                                       
+                                      <li>
+                                        <span
+                                          class="multiselect__option"
+                                        >
+                                          List is empty.
+                                        </span>
+                                      </li>
+                                       
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="generic-contact-property-editor"
+                          >
+                            <hr />
+                             
+                            <label
+                              class="text-primary"
+                            >
+                              Contact Properties
+                            </label>
+                             
+                            <div
+                              class="custom-control custom-checkbox"
+                            >
+                              <input
+                                class="custom-control-input"
+                                id="setContactProperty"
+                                name="setContactProperty"
+                                type="checkbox"
+                                value="false"
+                              />
+                               
+                              <label
+                                class="custom-control-label font-weight-normal"
+                                for="setContactProperty"
+                              >
+                                
+      Set a contact property with the Contact’s response
+    
+                              </label>
+                            </div>
+                             
+                            <!---->
+                          </div>
                            
                           <hr />
-                            
+                           
                           <div
                             class="starting-block-button"
                           >
@@ -3855,9 +4329,195 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               </div>
                             </div>
                           </div>
+                            
+                          <div
+                            class="block-categorization"
+                          >
+                            <hr />
+                             
+                            <label
+                              class="text-primary"
+                            >
+                              Categorization
+                            </label>
+                             
+                            <div
+                              class="validation-message form-group"
+                              id="block/fake-uuid-114/tags"
+                            >
+                              <div
+                                class="block-group"
+                              >
+                                <label>
+                                  Tags
+                                </label>
+                                 
+                                <div
+                                  class="multiselect"
+                                  tabindex="-1"
+                                >
+                                  <div
+                                    class="multiselect__select"
+                                  />
+                                    
+                                  <div
+                                    class="multiselect__tags"
+                                  >
+                                    <div
+                                      class="multiselect__tags-wrap"
+                                    >
+                                      <span
+                                        class="multiselect__tag"
+                                      >
+                                        <span>
+                                          tag1
+                                        </span>
+                                         
+                                        <i
+                                          aria-hidden="true"
+                                          class="multiselect__tag-icon"
+                                          tabindex="1"
+                                        />
+                                      </span>
+                                    </div>
+                                     
+                                    <!---->
+                                     
+                                    <div
+                                      class="multiselect__spinner"
+                                      style="display: none;"
+                                    />
+                                     
+                                    <input
+                                      autocomplete="nope"
+                                      class="multiselect__input"
+                                      name=""
+                                      placeholder="Select or add a tag"
+                                      style="width: 0px; position: absolute; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                    />
+                                     
+                                    <!---->
+                                     
+                                    <!---->
+                                  </div>
+                                   
+                                  <div
+                                    class="multiselect__content-wrapper"
+                                    style="max-height: 300px; display: none;"
+                                    tabindex="-1"
+                                  >
+                                    <ul
+                                      class="multiselect__content"
+                                      style="display: inline-block;"
+                                    >
+                                       
+                                      <!---->
+                                       
+                                      <li
+                                        class="multiselect__element"
+                                      >
+                                        <span
+                                          class="multiselect__option multiselect__option--highlight multiselect__option--selected"
+                                          data-deselect=""
+                                          data-select=""
+                                          data-selected=""
+                                        >
+                                          <span>
+                                            tag1
+                                          </span>
+                                        </span>
+                                         
+                                        <!---->
+                                      </li>
+                                      <li
+                                        class="multiselect__element"
+                                      >
+                                        <span
+                                          class="multiselect__option"
+                                          data-deselect=""
+                                          data-select=""
+                                          data-selected=""
+                                        >
+                                          <span>
+                                            tag2
+                                          </span>
+                                        </span>
+                                         
+                                        <!---->
+                                      </li>
+                                       
+                                      <li
+                                        style="display: none;"
+                                      >
+                                        <span
+                                          class="multiselect__option"
+                                        >
+                                          No elements found. Consider changing the search query.
+                                        </span>
+                                      </li>
+                                       
+                                      <li
+                                        style="display: none;"
+                                      >
+                                        <span
+                                          class="multiselect__option"
+                                        >
+                                          List is empty.
+                                        </span>
+                                      </li>
+                                       
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                               
+                              <small
+                                class="text-danger"
+                              >
+                                
+                              </small>
+                            </div>
+                          </div>
+                           
+                          <div
+                            class="generic-contact-property-editor"
+                          >
+                            <hr />
+                             
+                            <label
+                              class="text-primary"
+                            >
+                              Contact Properties
+                            </label>
+                             
+                            <div
+                              class="custom-control custom-checkbox"
+                            >
+                              <input
+                                class="custom-control-input"
+                                id="setContactProperty"
+                                name="setContactProperty"
+                                type="checkbox"
+                                value="false"
+                              />
+                               
+                              <label
+                                class="custom-control-label font-weight-normal"
+                                for="setContactProperty"
+                              >
+                                
+      Set a contact property with the Contact’s response
+    
+                              </label>
+                            </div>
+                             
+                            <!---->
+                          </div>
                            
                           <hr />
-                            
+                           
                           <div
                             class="starting-block-button"
                           >

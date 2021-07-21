@@ -6,6 +6,7 @@
       v-model="expression"
       :class="['form-control', {'is-invalid': isInvalid}]"
       :placeholder="placeholder"
+      :rows="rows"
       @input="$emit('input', $event.target.value)" />
     <slot />
   </div>
@@ -53,6 +54,11 @@ export default {
     expressionIdentifier: {
       type: [String, Number],
       default: null,
+    },
+    rows: {
+      type: Number,
+      required: false,
+      default: 1,
     },
     validState: {
       type: Boolean,

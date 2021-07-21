@@ -28,14 +28,6 @@
           :block="block"
           :flow="flow" />
       </div>
-      <div class="choices-prompt-resource">
-        <resource-editor
-          v-if="choicesPromptResource"
-          :label="'flow-builder.choices-prompt' | trans"
-          :resource="choicesPromptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
       <div class="form-group">
         <!--Show non empty choices-->
         <template v-for="(choiceKey) in Object.keys(inflatedChoices)">
@@ -62,9 +54,13 @@
           :flow="flow" />
       </div>
 
-      <hr>
-
       <slot name="extras" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
 
       <first-block-editor-button
         :flow="flow"
@@ -82,6 +78,7 @@ import {IResource} from '@floip/flow-runner'
 import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {namespace} from 'vuex-class'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -90,12 +87,14 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
+@Component({
   components: {
+    GenericContactPropertyEditor,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
@@ -103,6 +102,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     ResourceEditor,
     BlockId,
+    Categorization,
   },
 })
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {

@@ -1,6 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExitTestRequired} from '@floip/flow-runner'
+import {IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ICaseBlock} from '@floip/flow-runner/src/model/block/ICaseBlock'
 import {defaultsDeep} from 'lodash'
@@ -30,18 +30,18 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId: rootGetters['builder/activeBlock'].uuid,
       exitId: identifier,
       props: {
-        tag: value,
+        name: value,
         test: value,
       },
     }, {root: true})
 
     if (getters.allExitsHaveTests) {
-      const exit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
+      const exit: IBlockExit = await dispatch('flow/block_createBlockExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
-          tag: '',
+          name: '',
           test: '',
-        }) as IBlockExitTestRequired,
+        }) as IBlockExit,
       }, {root: true})
       commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: exit}, {root: true})
     } else if (getters.twoExitsBlank) {
@@ -49,13 +49,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
   },
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ICaseBlock> }) {
-    const exits: IBlockExitTestRequired[] = [
+    const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
-          tag: '',
+          name: '',
           test: '',
-        }) as IBlockExitTestRequired,
+        }) as IBlockExit,
       }, {root: true}),
     ]
 
@@ -66,6 +66,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       semantic_label: '',
       exits,
       config: {},
+      tags: [],
     })
   },
 

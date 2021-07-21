@@ -20,8 +20,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
-          tag: 'Default',
-          label: 'Default',
+          name: 'Default',
         }) as IBlockExit,
       }, {root: true}),
     ]
@@ -35,6 +34,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       config: {
         message: blankPrintResource.uuid,
       },
+      tags: [],
     })
   },
 

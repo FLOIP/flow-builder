@@ -20,8 +20,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
-          tag: 'Default',
-          label: 'Default',
+          name: 'Default',
         }) as IBlockExit,
       }, {root: true}),
     ]
@@ -34,9 +33,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits,
       config: {
         prompt: blankMessageResource.uuid,
-        // TODO: remove this once flow-runner doesn't require it anymore
-        message_audio: '',
       },
+      tags: [],
     })
   },
 

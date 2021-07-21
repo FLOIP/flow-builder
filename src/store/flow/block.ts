@@ -2,8 +2,10 @@ import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, setWith, snakeCase} from 'lodash'
+import {defaults, has, includes, setWith, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {BLOCK_TYPE as PHOTO_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
+import {BLOCK_TYPE as LOCATION_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 import {IFlowsState} from '.'
 import {popFirstEmptyItem} from './utils/listBuilder'
 
@@ -34,9 +36,17 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .semantic_label = value
   },
-  block_setExitTag(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
+  block_setTags(state, {blockId, value}) {
+    findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+      .tags = value
+  },
+  block_pushTag(state, {blockId, value}) {
+    findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+      .tags?.push(value)
+  },
+  block_setExitName(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    findBlockExitWith(exitId, block).tag = value
+    findBlockExitWith(exitId, block).name = value
   },
   block_setExitTest(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -59,6 +69,9 @@ export const mutations: MutationTree<IFlowsState> = {
     const currentConfig: { [key: string]: any } = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
+  },
+  block_removeConfigByKey(state, {blockId, key}: { blockId: string, key: string}) {
+    Vue.delete(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, key)
   },
   block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string}) {
     // Make nested assignment reactive
@@ -104,8 +117,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     return {
       ...defaults(props, {
-        label: resource.uuid,
-        tag: '',
+        name: '',
         config: {},
         // prerequisite for reactivity, even optional params
         destination_block: undefined,
@@ -114,10 +126,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
   async block_updateBlockExitWith(
     {commit},
-    {blockId, exitId, props: {test, tag, semantic_label}}: { blockId: string, exitId: string, props: Partial<IBlockExit> },
+    {blockId, exitId, props: {test, name, semantic_label}}: { blockId: string, exitId: string, props: Partial<IBlockExit> },
   ) {
     // TODO - handle other props apart from test
-    commit('block_setExitTag', {blockId, exitId, value: tag})
+    commit('block_setExitName', {blockId, exitId, value: name})
     commit('block_setExitTest', {blockId, exitId, value: test})
     commit('block_setExitSemanticLabel', {blockId, exitId, value: semantic_label})
   },
@@ -167,4 +179,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 export interface IDeepBlockExitIdWithinFlow {
   blockId: IBlock['uuid'],
   exitId: IBlockExit['uuid'],
+}
+
+/**
+ * Is the block interactive ?
+ * Another meaning: will the user get response when interacting with it?
+ * @param block
+ */
+export function isBlockInteractive(block: IBlock): boolean {
+  const interactiveBlockTypesWithoutPrompt = [PHOTO_RESPONSE_BLOCK_TYPE, LOCATION_RESPONSE_BLOCK_TYPE]
+  return has(block.config, 'prompt') || includes(interactiveBlockTypesWithoutPrompt, block.type)
 }

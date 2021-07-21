@@ -10,12 +10,12 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17599cae-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue?vue&type=template&id=5bf3e607&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mobile-primitive-message-block"},[_c('h3',{staticClass:"no-room-above text-primary"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),(_vm.promptResource)?_c('resource-editor',{attrs:{"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e(),_c('hr'),_vm._t("extras"),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"658979c1-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue?vue&type=template&id=eadbbc1c&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mobile-primitive-message-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),(_vm.promptResource)?_c('resource-editor',{attrs:{"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e(),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue?vue&type=template&id=5bf3e607&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue?vue&type=template&id=eadbbc1c&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -92,8 +92,7 @@ var actions = {
               _context.t1 = _context.sent;
               _context.t2 = {
                 uuid: _context.t1,
-                tag: 'Default',
-                label: 'Default'
+                name: 'Default'
               };
               _context.t3 = {
                 props: _context.t2
@@ -114,10 +113,9 @@ var actions = {
                 semantic_label: '',
                 exits: exits,
                 config: {
-                  prompt: blankMessageResource.uuid,
-                  // TODO: remove this once flow-runner doesn't require it anymore
-                  message_audio: ''
-                }
+                  prompt: blankMessageResource.uuid
+                },
+                tags: []
               }));
 
             case 17:
@@ -137,6 +135,9 @@ var actions = {
 });
 // EXTERNAL MODULE: ./src/lib/filters/lang.ts
 var lang = __webpack_require__("4a51");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/Categorization.vue + 9 modules
+var Categorization = __webpack_require__("8619");
 
 // EXTERNAL MODULE: ./src/store/builder/index.ts
 var builder = __webpack_require__("af98");
@@ -162,7 +163,12 @@ var FirstBlockEditorButton = __webpack_require__("192b");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
 var BlockId = __webpack_require__("792f");
 
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue + 4 modules
+var GenericContactPropertyEditor = __webpack_require__("b4ec");
+
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue?vue&type=script&lang=ts&
+
+
 
 
 
@@ -235,16 +241,18 @@ Object(tslib_es6["__decorate"])([builderVuexNamespace.Getter], MobilePrimitives_
 
 MobilePrimitives_MessageBlockvue_type_script_lang_ts_MobilePrimitives_MessageBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
   components: {
+    GenericContactPropertyEditor: GenericContactPropertyEditor["a" /* default */],
     BlockNameEditor: NameEditor["a" /* default */],
     BlockLabelEditor: LabelEditor["a" /* default */],
     BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
     ResourceEditor: ResourceEditor["a" /* default */],
     FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
-    BlockId: BlockId["a" /* default */]
+    BlockId: BlockId["a" /* default */],
+    Categorization: Categorization["a" /* default */]
   }
 })], MobilePrimitives_MessageBlockvue_type_script_lang_ts_MobilePrimitives_MessageBlock);
 /* harmony default export */ var MobilePrimitives_MessageBlockvue_type_script_lang_ts_ = (MobilePrimitives_MessageBlockvue_type_script_lang_ts_MobilePrimitives_MessageBlock);
-var install = Object(builder["c" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, MobilePrimitives_MessageBlockStore);
+var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, MobilePrimitives_MessageBlockStore);
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue?vue&type=script&lang=ts&
  /* harmony default export */ var block_types_MobilePrimitives_MessageBlockvue_type_script_lang_ts_ = (MobilePrimitives_MessageBlockvue_type_script_lang_ts_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js

@@ -18,7 +18,7 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {cloneDeep, defaults, every, forEach, get, has, includes, omit} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
-import {computeBlockUiData} from '@/store/builder'
+import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
 
@@ -353,8 +353,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // TODO: remove this once IBlock has vendor_metadata key
     duplicatedBlock.vendor_metadata = {
       io_viamo: {
-        uiData: computeBlockUiData(block),
+        uiData: computeBlockVendorUiData(block),
       },
+    }
+    duplicatedBlock.ui_metadata = {
+      canvas_coordinates: computeBlockUiData(block),
     }
 
     commit('flow_addBlock', {block: duplicatedBlock})

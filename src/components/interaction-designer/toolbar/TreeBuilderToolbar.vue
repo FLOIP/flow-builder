@@ -200,7 +200,7 @@ import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
-import {computeBlockUiData} from '@/store/builder'
+import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
 import {VBTooltipPlugin} from 'bootstrap-vue'
 import Component, {mixins} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
@@ -320,10 +320,12 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }): Promise<void> {
     const {uuid: blockId} = await this.flow_addBlankBlockByType({
       type,
-      // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
+      ui_metadata: {
+        canvas_coordinates: computeBlockUiData(this.activeBlock),
+      },
       vendor_metadata: {
         io_viamo: {
-          uiData: computeBlockUiData(this.activeBlock),
+          uiData: computeBlockVendorUiData(this.activeBlock),
         },
       },
       // todo push out to intx-designer
@@ -466,6 +468,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
 <style lang="scss">
 .tree-builder-toolbar {
+  position: relative;
   .flows-importer textarea {
     display: block;
     width: 100%;
@@ -473,8 +476,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 }
 
 .tree-builder-toolbar-alerts {
-  position: fixed;
-  margin-top: 60px;
+  position: relative;
+  padding-top: 60px;
   z-index: 3*10;
 }
 </style>
