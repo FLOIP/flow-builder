@@ -28,13 +28,13 @@
         :block="block"
         :flow="flow" />
 
+      <slot name="extras" />
+
       <categorization :block="block" />
 
       <generic-contact-property-editor :block="block" />
 
       <hr>
-
-      <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"

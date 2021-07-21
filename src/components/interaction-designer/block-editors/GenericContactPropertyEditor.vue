@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import {IBlock, ISetContactPropertyBlockConfig} from '@floip/flow-runner'
+import {IBlock, IBlockConfig} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
@@ -147,7 +147,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
         value: {
           property_key: '',
           property_value: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : BLOCK_RESPONSE_EXPRESSION,
-        } as ISetContactPropertyBlockConfig,
+        } as IBlockConfig,
       })
     }
   }

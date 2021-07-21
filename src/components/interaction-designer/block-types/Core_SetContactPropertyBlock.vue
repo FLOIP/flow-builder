@@ -15,11 +15,11 @@
 
       <contact-property-editor :block="block" />
 
+      <slot name="extras" />
+
       <categorization :block="block" />
 
       <hr>
-
-      <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"
