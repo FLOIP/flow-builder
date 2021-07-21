@@ -97,14 +97,14 @@
         </h3>
       </header>
 
-      <div
+      <footer
         :id="`block/${block.uuid}/exits`"
         :ref="`block/${block.uuid}/exits`"
-        class="block-exits d-flex">
+        class="block-exits d-flex mt-1">
         <div
           v-for="(exit, key) in block.exits"
           :key="exit.uuid"
-          class="block-exit col flex-shrink-1 pb-1 pt-1 pl-3 pr-3"
+          class="block-exit mr-2 flex-shrink-1"
           :class="{
             'initial': false,
             'pending': isConnectionSourceRelocateActive,
@@ -118,87 +118,86 @@
             <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1" />
           </div>
 
-          <h3 class="block-exit-tag badge badge-warning">
-            {{ visibleExitTag(key, exit) }}
-          </h3>
+          <div
+            class="block-exit-tag badge badge-warning"
+            @mouseenter="exitMouseEnter(exit)"
+            @mouseleave="exitMouseLeave(exit)">
+            <span class="block-exit-tag-text align-self-center"
+                  v-b-tooltip.hover.top="exit.test">
+              {{ visibleExitTag(key, exit) }}
+            </span>
 
-          <template v-if="exit.destination_block == null">
-            <plain-draggable
-              :id="`exit/${exit.uuid}/pseudo-block-handle`"
-              :key="`exit/${exit.uuid}/pseudo-block-handle`"
-              v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
-              class="handle-create-link btn btn-outline-secondary btn-xs btn-flat"
-              :class="{
-                'btn-info': exit.destination_block != null,
-              }"
-              :is-editable="isEditable"
-              @initialized="handleDraggableInitializedFor(exit, $event)"
-              @dragStarted="onCreateExitDragStarted($event, exit)"
-              @dragged="onCreateExitDragged($event)"
-              @dragEnded="onCreateExitDragEnded($event, exit)"
-              @destroyed="handleDraggableDestroyedFor(exit)">
-              <i class="glyphicon glyphicon-move" />
-            </plain-draggable>
-
-            <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
-              <div
-                :id="`exit/${exit.uuid}/handle`"
-                class="handle-move-link btn btn-secondary btn-xs"
-                :class="{
-                  'btn-info': exit.destination_block != null,
-                }">
-                <i class="glyphicon glyphicon-move" />
-              </div>
-
-              <connection
-                :key="`exit/${exit.uuid}/line-for-draft`"
-                :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
-                :source="block"
-                :target="blocksById[exit.destination_block]"
-                :exit="exit"
-                :position="livePosition"
-                :color-category="blockClasses[block.type].category" />
-            </template>
-          </template>
-
-          <template v-if="exit.destination_block != null">
-            <plain-draggable
-              :id="`exit/${exit.uuid}/handle`"
-              :key="`exit/${exit.uuid}/handle`"
-              v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-relocate-connection')"
-              class="block-exit-move-handle handle-move-link btn btn-outline-secondary btn-xs btn-flat"
-              :class="{
-                // 'btn-secondary': exit.destination_block != null,
-              }"
-              :is-editable="isEditable"
-              @initialized="handleDraggableInitializedFor(exit, $event)"
-              @dragStarted="onMoveExitDragStarted($event, exit)"
-              @dragged="onMoveExitDragged($event)"
-              @dragEnded="onMoveExitDragEnded($event, exit)"
-              @destroyed="handleDraggableDestroyedFor(exit)">
-              <i class="glyphicon glyphicon-move" />
-            </plain-draggable>
-
-            <div
+            <span
               v-if="isEditable"
-              v-b-tooltip.hover.top="trans('flow-builder.tooltip-remove-connection')"
-              class="block-exit-remove btn btn-danger btn-xs"
-              title="Click to remove this connection"
-              @click="removeConnectionFrom(exit)">
-              <span class="glyphicon glyphicon-remove" />
-            </div>
+              class="align-self-center">
+              <template v-if="exit.destination_block == null">
+                <plain-draggable
+                  :id="`exit/${exit.uuid}/pseudo-block-handle`"
+                  :key="`exit/${exit.uuid}/pseudo-block-handle`"
+                  v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
+                  class="btn btn-xs"
+                  :is-editable="isEditable"
+                  @initialized="handleDraggableInitializedFor(exit, $event)"
+                  @dragStarted="onCreateExitDragStarted($event, exit)"
+                  @dragged="onCreateExitDragged($event)"
+                  @dragEnded="onCreateExitDragEnded($event, exit)"
+                  @destroyed="handleDraggableDestroyedFor(exit)">
+                  <i
+                    v-if="exitHovers[exit.uuid]"
+                    class="glyphicon glyphicon-move" />
+                  <font-awesome-icon
+                    v-else
+                    class="text-danger"
+                    :icon="['far', 'dot-circle']" />
+                </plain-draggable>
 
-            <connection
-              :key="`exit/${exit.uuid}/line`"
-              :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
-              :source="livePosition ? null : block"
-              :target="blocksById[exit.destination_block]"
-              :exit="exit"
-              :position="livePosition"
-              :color-category="blockClasses[block.type].category" />
-          </template>
+                <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
+                  <div
+                    :id="`exit/${exit.uuid}/handle`"
+                    class="block-handle-move btn btn-xs">
+                    <i class="glyphicon glyphicon-move" />
+                  </div>
+                  <connection
+                    :key="`exit/${exit.uuid}/line-for-draft`"
+                    :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
+                    :source="block"
+                    :target="blocksById[exit.destination_block]"
+                    :exit="exit"
+                    :position="livePosition" />
+                </template>
+              </template>
+
+              <template v-if="exit.destination_block != null">
+                <div
+                  :id="`exit/${exit.uuid}/handle`"
+                  :key="`exit/${exit.uuid}/handle`"
+                  class="btn btn-xs btn-flat">
+                  <font-awesome-icon
+                    v-if="exitHovers[exit.uuid]"
+                    v-b-tooltip.hover.top="trans('flow-builder.tooltip-remove-connection')"
+                    class="text-danger"
+                    title="Click to remove this connection"
+                    style="color: green"
+                    :icon="['far', 'times-circle']"
+                    @click="removeConnectionFrom(exit)" />
+                  <font-awesome-icon
+                    v-else
+                    class="text-success"
+                    :icon="['far', 'dot-circle']" />
+                </div>
+
+                <connection
+                  :key="`exit/${exit.uuid}/line`"
+                  :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
+                  :source="livePosition ? null : block"
+                  :target="blocksById[exit.destination_block]"
+                  :exit="exit"
+                  :position="livePosition" />
+              </template>
+            </span>
+          </div>
         </div>
-      </div>
+      </footer>
     </plain-draggable>
   </div>
 </template>
@@ -236,6 +235,7 @@ export default {
       isDeleting: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
+      exitHovers: {},
     }
   },
 
@@ -340,6 +340,14 @@ export default {
     ]),
 
     ...mapMutations('validation', ['removeValidationStatusesFor']),
+
+    exitMouseEnter(exit) {
+      this.$set(this.exitHovers, exit.uuid, true)
+    },
+
+    exitMouseLeave(exit) {
+      this.$set(this.exitHovers, exit.uuid, false)
+    },
 
     handleDeleteBlock() {
       this.block_deselect({blockId: this.block.uuid})
@@ -606,9 +614,9 @@ export default {
   top: 0;
   z-index: 1*10;
 
-  min-width: 300px;
+  min-width: 200px;
   padding: 0.4em;
-  padding-bottom: 0.25em;
+  padding-bottom: 0;
   scroll-margin: 35px;
   scroll-margin-top: 100px;
 
@@ -631,7 +639,7 @@ export default {
     margin-top: -39.75px;
     margin-right: -7px;
     margin-left: -7px;
-    padding: 8px;
+    padding: 5px;
 
     border-top: inherit;
     border-right: inherit;
@@ -643,7 +651,7 @@ export default {
   .block-label {
     font-size: 14px;
     font-weight: normal;
-    min-width: 300px;
+    min-width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -661,12 +669,8 @@ export default {
   }
 
   .block-target {
-    min-height: 4em;
-    border: 1px dashed transparent;
-    border-bottom: 1px solid #eee;
+    min-height: 3em;
     padding: 0.1em;
-
-    transition: border-radius 200ms ease-in-out;
 
     &:hover {
       border-radius: 0.3em;
@@ -678,45 +682,34 @@ export default {
     white-space: nowrap;
     position: relative;
     top: 0em;
-    margin-top: 0.25em;
 
     .block-exit {
       display: inline-block;
       border: 1px dashed transparent;
       transition: border-radius 200ms ease-in-out;
 
-      min-width: 25px;
-      max-width: 100px;
-
-      text-align: center;
-
       .block-exit-tag {
-        display: block;
-
+        display: inline-flex;
         min-width: 25px;
+        max-width: 100%;
+        width: 100px;
 
-        margin: 0 0 0.5em 0;
         padding: 0.4em;
 
-        background-color: #5b5b5b;
+        background: #E9FFD8;
+
         border: none;
 
         font-weight: normal;
         font-size: 12px;
 
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-
-      .block-exit-move-handle {
-        margin-right: 0.5em;
-      }
-
-      .block-exit-remove {
-        background-image: none;
-        opacity: 0;
-        transition: opacity 200ms ease-in-out;
+        .block-exit-tag-text {
+          width: 75%;
+          max-width: 75px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
       }
 
       &.activated {
@@ -732,10 +725,6 @@ export default {
   &.active {
     border-width: 2px;
     box-shadow: 0 3px 6px #CACACA;
-  }
-
-  &:hover {
-    opacity: 1;
   }
 
   // block exit states
@@ -760,5 +749,9 @@ export default {
       margin-right: -8px;
     }
   }
+}
+
+.block-handle-move {
+  margin-left: -1.75rem!important;
 }
 </style>
