@@ -1,5 +1,8 @@
 {
   "en.flow-builder": {
+    "ivr": "IVR",
+    "text": "Text",
+    "rich_messaging": "Rich messaging",
     "add-at-least-one-block": "Add at least one block",
     "import-flow": "Import/Paste a JSON File",
     "import-explanation": "Use this option to import a flow by importing or pasting JSON",
@@ -13,7 +16,7 @@
     "importer-currently-supports-single-flow-only": "JSON must contain exactly one flow",
     "invalid-json-provided": "The JSON that has been imported is invalid or can not be parsed. Please review the JSON used in the import for completeness and validity",
     "uploaded-file": "File: ",
-    "action-label": "Action:",
+    "action-label": "Action",
     "action-placeholder": "Select an action",
     "add": "Add",
     "contact-property-expression": "Contact property expression",
@@ -32,6 +35,7 @@
     "accuracy-threshold-in-meters": "Accuracy threshold in meters",
     "accuracy-timeout-in-seconds":"Accuracy timout in seconds",
     "format-string": "Format String",
+    "enter-format-string": "Enter format string",
     "edit-variable": "Edit Variable",
     "go-to-flow": "Go To Flow",
     "problem-creating-flow": "There was a problem creating the flow. Please review the configuration and try again.",
@@ -1603,6 +1607,9 @@
     "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit."
   },
   "fr.flow-builder": {
+    "ivr": "IVR",
+    "text": "Texte",
+    "rich_messaging": "Messagerie riche",
     "add-at-least-one-block": "Ajouter au moins un bloc",
     "import-flow": "Importer/Coller un fichier JSON",
     "import-explanation": "Utilisez cette option pour importer un flux en important ou en collant JSON",
@@ -1616,7 +1623,7 @@
     "importer-currently-supports-single-flow-only": "JSON doit contenir exactement un flux",
     "invalid-json-provided": "Le JSON qui a été importé n'est pas valide ou ne peut pas être analysé. Veuillez vérifier le JSON utilisé dans l'importation pour en vérifier l'exhaustivité et la validité.",
     "uploaded-file": "Fichier: ",
-    "action-label": "Action:",
+    "action-label": "Action",
     "action-placeholder": "Sélectionnez une action",
     "add": "Retirer",
     "contact-property-expression": "Contacter l'expression de la propriété",
@@ -1635,6 +1642,7 @@
     "accuracy-threshold-in-meters": "Seuil de précision en mètres",
     "accuracy-timeout-in-seconds":"Précision timout en quelques secondes",
     "format-string": "Format Chaîne",
+    "enter-format-string": "Entrez la chaîne de format",
     "edit-variable": "Variable Modifier",
     "go-to-flow": "Aller à Flux",
     "problem-creating-flow": "Un problème est survenu lors de la création du flux. Veuillez revoir la configuration et réessayer.",

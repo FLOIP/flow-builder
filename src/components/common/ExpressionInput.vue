@@ -1,7 +1,6 @@
 <template>
   <div class="expression-input form-group">
-    <label>{{ label }}</label>
-
+    <label :class="labelClass">{{ label }}</label>
 
     <div class="input-group">
       <div
@@ -18,7 +17,6 @@
         :placeholder="placeholder"
         @input="$emit('input', $event.target.value)" />
     </div>
-
     <slot />
   </div>
 </template>
@@ -48,6 +46,11 @@ export default {
     label: {
       type: [String, Number],
       required: true,
+    },
+    labelClass: {
+      type: String,
+      default: 'text-primary',
+      required: false,
     },
     placeholder: {
       type: String,

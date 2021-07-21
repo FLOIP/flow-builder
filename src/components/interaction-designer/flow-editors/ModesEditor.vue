@@ -1,6 +1,6 @@
 <template>
   <div class="form-group flow-modes">
-    <label>{{ 'flow-builder.modes' | trans }}</label>
+    <label class="text-primary">{{ 'flow-builder.modes' | trans }}</label>
     <div
       v-for="mode in availableModes"
       :key="mode"
@@ -11,7 +11,7 @@
           :value="mode"
           type="checkbox"
           class="flow-mode-toggle-checkbox">
-        {{ mode }}
+        {{ trans(`flow-builder.${mode.toLowerCase()}`) }}
       </label>
     </div>
   </div>
