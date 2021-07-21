@@ -2,8 +2,10 @@ import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, setWith, snakeCase} from 'lodash'
+import {defaults, has, includes, setWith, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {BLOCK_TYPE as PHOTO_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
+import {BLOCK_TYPE as LOCATION_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 import {IFlowsState} from '.'
 import {popFirstEmptyItem} from './utils/listBuilder'
 
@@ -59,6 +61,9 @@ export const mutations: MutationTree<IFlowsState> = {
     const currentConfig: { [key: string]: any } = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
+  },
+  block_removeConfigByKey(state, {blockId, key}: { blockId: string, key: string}) {
+    Vue.delete(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, key)
   },
   block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string}) {
     // Make nested assignment reactive
@@ -166,4 +171,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 export interface IDeepBlockExitIdWithinFlow {
   blockId: IBlock['uuid'],
   exitId: IBlockExit['uuid'],
+}
+
+/**
+ * Is the block interactive ?
+ * Another meaning: will the user get response when interacting with it?
+ * @param block
+ */
+export function isBlockInteractive(block: IBlock): boolean {
+  const interactiveBlockTypesWithoutPrompt = [PHOTO_RESPONSE_BLOCK_TYPE, LOCATION_RESPONSE_BLOCK_TYPE]
+  return has(block.config, 'prompt') || includes(interactiveBlockTypesWithoutPrompt, block.type)
 }
