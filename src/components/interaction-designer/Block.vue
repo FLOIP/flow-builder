@@ -327,7 +327,7 @@ export default {
 
     translatedBlockEditorPosition() {
       const xOffset = 5
-      const yOffset = 178
+      const yOffset = 172
       return `translate(${this.x + this.blockWidth + xOffset}px, ${this.y - yOffset}px)`
     },
 
