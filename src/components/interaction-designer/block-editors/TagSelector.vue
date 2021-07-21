@@ -24,11 +24,11 @@
 
 <script lang="ts">
 import VueMultiselect from 'vue-multiselect'
-import {IBlock, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
+import {IBlock} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
-import {Getter, namespace} from 'vuex-class'
+import {State, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import {find, includes, map} from 'lodash'
+import {map} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
 
@@ -63,16 +63,20 @@ class TagSelector extends mixins(Lang) {
     return map(list, (value) => ({id: value, name: value}))
   }
 
-  addTag(event) {
-    //TODO: implement this from voto5/resources/assets/js/trees/components/block-editors/BlockLabelTagsInput.vue:addTag
-    this.$emit('add-tag', event)
+  addTag(newTag) {
+    this.blockTags.push(newTag)
+    this.block_pushTag({
+      blockId: this.block.uuid,
+      value: newTag,
+    })
   }
 
   @flowVuexNamespace.Mutation block_setTags!: ({blockId, value}: {blockId: IBlock['uuid'], value: string[]}) => void
-  @Getter blockTags!: string[]
+  @flowVuexNamespace.Mutation block_pushTag!: ({blockId, value}: {blockId: IBlock['uuid'], value: string}) => void
+
+  @State(({trees: {ui: {blockTags}}}) => blockTags) blockTags!: string[]
 }
 
-// TODO: reset /Users/rs/Documents/Voto/floip/flow-builder/builder.config.json:blockTags from master to remove tags sample
 export default TagSelector
 </script>
 

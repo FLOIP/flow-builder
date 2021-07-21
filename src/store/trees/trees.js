@@ -55,6 +55,7 @@ export default {
         isSaveCurrentlyInProgress: false,
         isEditable: true,
         subscriberPropertyFields: [],
+        blockTags: [],
       },
     }
   },
@@ -86,8 +87,6 @@ export default {
     subscriberPropertyFields: ({ui}) => lodash.get(ui, 'subscriberPropertyFields', []),
 
     groups: ({ui}) => lodash.get(ui, 'groups', []),
-
-    blockTags: ({ui}) => lodash.get(ui, 'blockTags', []),
 
     interactiveBlockClasses: ({ui}) => lodash.pickBy(ui.blockClasses, (value) => value.is_interactive),
 

@@ -186,7 +186,7 @@
         "category":  1
       }
     },
-    "blockTags": ["tag1", "tag2"],
+    "blockTags": [],
     "contentBlockTypes": [
       "MessageBlock",
       "MultipleChoiceQuestionBlock",
