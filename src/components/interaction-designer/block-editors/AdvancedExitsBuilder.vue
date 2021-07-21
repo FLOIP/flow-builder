@@ -48,11 +48,8 @@ class AdvancedExitsBuilder extends mixins(Lang) {
   }
 
   async generateDraftExit(): Promise<void> {
-    this.draftExit = await this.block_createBlockExitWith({
-      props: ({
-        uuid: await (new IdGeneratorUuidV4()).generate(),
-      }) as IBlockExit,
-    })
+    const uuid = await (new IdGeneratorUuidV4()).generate()
+    this.draftExit = await this.block_createBlockExitWith({props: {uuid} as IBlockExit})
   }
 
   addDraftExitToBlock(): void {

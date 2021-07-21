@@ -2,7 +2,7 @@ import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, find, get, isEmpty, isNil, set, setWith, toPath, reduce, snakeCase} from 'lodash'
+import {defaults, find, get, isEmpty, isNil, last, set, setWith, toPath, reduce, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {popFirstEmptyItem} from './utils/listBuilder'
@@ -63,15 +63,15 @@ export const mutations: MutationTree<IFlowsState> = {
       blockExits.push(exit)
     }
   },
-  block_updateExits(state, { block, newExits, shouldUseCache = false }: { block: IBlock; newExits: IBlockExit[]; shouldUseCache: boolean }) {
-    if (shouldUseCache) {
-      // @ts-ignore: TODO: remove this once IBlock has vendor_metadata key
-      // todo: this will break reactivity
-      set(block.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits', newExits);
-    } else {
-      block.exits = newExits
-    }
-  },
+  // block_updateExits(state, { block, newExits, shouldUseCache = false }: { block: IBlock; newExits: IBlockExit[]; shouldUseCache: boolean }) {
+  //   if (shouldUseCache) {
+  //     // @ts-ignore: TODO: remove this once IBlock has vendor_metadata key
+  //     // todo: this will break reactivity
+  //     set(block.vendor_metadata, 'io_viamo.cache.outputBranching.segregatedExits', newExits);
+  //   } else {
+  //     block.exits = newExits
+  //   }
+  // },
   block_updateConfig(state, {blockId, newConfig}: { blockId: string, newConfig: object }) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .config = newConfig
@@ -83,7 +83,7 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
   },
   block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string}) {
-    // todo: this will break reactivity
+    // todo: this might still break reactivity
     // Make nested assignment reactive
     setWith(
       findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!,
@@ -106,7 +106,7 @@ export const mutations: MutationTree<IFlowsState> = {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     // eslint-disable-next-line lodash/collection-method-value
-    reduce(pathAsList, (accumulator, pathKey, i) => {
+    reduce(pathAsList, (accumulator, pathKey, i): void => {
       const nextValue = i === pathAsList.length - 1 ? value : get(accumulator, pathKey, {})
       Vue.set(accumulator, pathKey, nextValue)
       return nextValue
@@ -224,6 +224,21 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exitId: first.exitId,
       destinationBlockId: secondDestinationBlockId,
     })
+  },
+
+  async block_convertExitFormationToUnified({state, dispatch}, {blockId}: {blockId: IBlock['uuid']}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    const primaryExitProps: Partial<IBlockExit> = {
+      uuid: await (new IdGeneratorUuidV4()).generate(),
+      tag: 'primary',
+      label: 'Primary',
+      test: 'true',
+    }
+
+    block.exits = [
+      await dispatch('block_createBlockExitWith', {props: primaryExitProps}),
+      last(block.exits),
+    ]
   },
 
   async block_select({state}, {blockId}: { blockId: IBlock['uuid'] }) {

@@ -6,15 +6,15 @@
       <div class="btn-group">
         <button
           :class="{
-            active: isBranchingTypeSegregated,
-            'btn-primary': isBranchingTypeSegregated,
-            'btn-secondary': !isBranchingTypeSegregated,
+            active: isBranchingTypeExitPerChoice,
+            'btn-primary': isBranchingTypeExitPerChoice,
+            'btn-secondary': !isBranchingTypeExitPerChoice,
           }"
           :title="'flow-builder.separate-output-for-each-choice' | trans"
           class="btn btn-sm"
           data-placement="bottom"
           data-toggle="tooltip"
-          @click="selectedBranchingType = OutputBranchingType.BRANCHING_TYPE_SEGREGATED">
+          @click="selectedBranchingType = OutputBranchingType.EXIT_PER_CHOICE">
 
           <i class="v5icon-branching-on v5icon-2x" />
         </button>
@@ -29,7 +29,7 @@
           class="btn btn-sm"
           data-placement="bottom"
           data-toggle="tooltip"
-          @click="selectedBranchingType = OutputBranchingType.BRANCHING_TYPE_UNIFIED">
+          @click="selectedBranchingType = OutputBranchingType.UNIFIED">
 
           <i class="v5icon-branching-off v5icon-2x" />
         </button>
@@ -44,7 +44,7 @@
           class="btn btn-sm"
           data-placement="bottom"
           data-toggle="tooltip"
-          @click="selectedBranchingType = OutputBranchingType.BRANCHING_TYPE_ADVANCED">
+          @click="selectedBranchingType = OutputBranchingType.ADVANCED">
 
           <i class="v5icon-branching-off v5icon-2x" />
         </button>
@@ -55,6 +55,39 @@
       v-if="isBranchingTypeAdvanced"
       :block="block" />
 
+    <div class="form-group">
+      <label>When no valid response/all exit expressions evaluate to false</label>
+
+      <div class="form-check">
+        <input
+          :id="NoValidResponseHandler.END_CALL"
+          v-model="noValidResponse"
+          class="form-check-input"
+          type="radio"
+          :value="NoValidResponseHandler.END_CALL" />
+
+        <label
+          class="form-check-label"
+          :for="NoValidResponseHandler.END_CALL">
+          End the call/session
+        </label>
+      </div>
+
+      <div class="form-check">
+        <input
+          :id="NoValidResponseHandler.CONTINUE_THRU_EXIT"
+          v-model="noValidResponse"
+          class="form-check-input"
+          type="radio"
+          :value="NoValidResponseHandler.CONTINUE_THRU_EXIT" />
+
+        <label
+          class="form-check-label"
+          :for="NoValidResponseHandler.CONTINUE_THRU_EXIT">
+          Continue through Default exit
+        </label>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -69,10 +102,25 @@
 
   const flowVuexNamespace = namespace('flow')
 
-  enum OutputBranchingType {
-    BRANCHING_TYPE_UNIFIED = 'unified',
-    BRANCHING_TYPE_SEGREGATED = 'segregated',
-    BRANCHING_TYPE_ADVANCED = 'advanced',
+  export enum OutputBranchingType {
+    UNIFIED = 'UNIFIED',
+    EXIT_PER_CHOICE = 'EXIT_PER_CHOICE',
+    ADVANCED = 'ADVANCED',
+  }
+
+  export enum NoValidResponseHandler {
+    END_CALL = 'END_CALL',
+    CONTINUE_THRU_EXIT = 'CONTINUE_THRU_EXIT',
+  }
+
+  export interface IVendorMetadataWithBranchingType {
+    io_viamo: {
+      branchingType: OutputBranchingType
+    }
+  }
+
+  export interface IBlockWithBranchingType extends IBlock {
+    vendor_metadata: IVendorMetadataWithBranchingType
   }
 
   @Component({
@@ -84,6 +132,18 @@
     @Prop() readonly block!: IBlock
 
     OutputBranchingType = OutputBranchingType
+    NoValidResponseHandler = NoValidResponseHandler
+
+    mounted(): void {
+      if (isEmpty(this.selectedBranchingType)) {
+        // todo: should this be EXIT_PER_CHOICE for SelectOne block?
+        this.selectedBranchingType = OutputBranchingType.UNIFIED
+      }
+
+      if (isEmpty(this.noValidResponse)) {
+        this.noValidResponse = NoValidResponseHandler.END_CALL
+      }
+    }
 
     get selectedBranchingType(): OutputBranchingType {
       return get(this.block.vendor_metadata, 'io_viamo.branchingType')
@@ -92,42 +152,52 @@
     set selectedBranchingType(value: OutputBranchingType) {
       const {uuid: blockId} = this.block
       this.block_updateVendorMetadataByPath({blockId, path: 'io_viamo.branchingType', value})
+
+      switch (value) {
+        case OutputBranchingType.UNIFIED:
+          this.block_convertExitFormationToUnified({blockId})
+          break
+        case OutputBranchingType.EXIT_PER_CHOICE:
+          // handled via change event from SelectOne; felt awkward importing SelectOne store here
+          // should likely make branching types extendable
+          //this.reflowExitsFromChoices({blockId})
+          break
+        case OutputBranchingType.ADVANCED:
+          // todo: restore from cache
+          break
+        default:
+          console.warn('block-editors/BlockOutputBranchingConfig',
+            'Unknown branching type received.',
+            {branchingType: value})
+      }
+
+      this.$emit('branchingTypeChanged', {branchingType: value})
     }
 
-    get isBranchingTypeSegregated(): boolean {
-      return this.selectedBranchingType === OutputBranchingType.BRANCHING_TYPE_SEGREGATED
+    get noValidResponse(): NoValidResponseHandler {
+      return get(this.block.vendor_metadata, 'io_viamo.noValidResponse')
+    }
+
+    set noValidResponse(value: NoValidResponseHandler) {
+      const {uuid: blockId} = this.block
+      this.block_updateVendorMetadataByPath({blockId, path: 'io_viamo.noValidResponse', value})
+    }
+
+    get isBranchingTypeExitPerChoice(): boolean {
+      return this.selectedBranchingType === OutputBranchingType.EXIT_PER_CHOICE
     }
 
     get isBranchingTypeUnified(): boolean {
-      return this.selectedBranchingType === OutputBranchingType.BRANCHING_TYPE_UNIFIED
+      return this.selectedBranchingType === OutputBranchingType.UNIFIED
     }
 
     get isBranchingTypeAdvanced(): boolean {
-      return this.selectedBranchingType === OutputBranchingType.BRANCHING_TYPE_ADVANCED
+      return this.selectedBranchingType === OutputBranchingType.ADVANCED
     }
-
-    mounted() {
-      if (!isEmpty(this.selectedBranchingType)) {
-        return
-      }
-
-      this.selectedBranchingType = OutputBranchingType.BRANCHING_TYPE_SEGREGATED
-    }
-
-    // setBranching(value: string) {
-    //   const willBranchingTypeSegregated = value === OutputBranchingType.BRANCHING_TYPE_SEGREGATED
-    //
-    //   if (willBranchingTypeSegregated) {
-    //     this.branchingType = OutputBranchingType.BRANCHING_TYPE_SEGREGATED
-    //   } else {
-    //     this.branchingType = OutputBranchingType.BRANCHING_TYPE_UNIFIED
-    //   }
-    //
-    //   this.block_updateVendorMetadataByPath({blockId: this.block.uuid, path: 'io_viamo.branchingType', value})
-    //   this.$emit('commitIsSegregatedBranching', willBranchingTypeSegregated)
-    // }
 
     @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!:
-      ({ blockId, path, value }: { blockId: string, path: string, value: object | string }) => void
+      ({blockId, path, value}: { blockId: string, path: string, value: object | string }) => void
+    @flowVuexNamespace.Action block_convertExitFormationToUnified!:
+      ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
   }
 </script>

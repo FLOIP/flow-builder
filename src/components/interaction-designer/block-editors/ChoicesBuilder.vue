@@ -110,12 +110,11 @@ class ChoicesBuilder extends mixins(Lang) {
     }
 
     this.rewriteChoiceKeyFor({resourceId: resource.uuid, blockId: this.block.uuid})
+    this.$emit('choiceChanged', {choiceKey, choiceIndex, resource})
   }
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
-  @flowVuexNamespace.Mutation block_addExit!: ({blockId, exit}: {blockId: string, exit: IBlockExit}) => void
   @flowVuexNamespace.Mutation resource_add!: ({resource}: {resource: IResource}) => void
-  @flowVuexNamespace.Action block_createBlockExitWith!: ({props}: { props: { uuid: string } & Partial<IBlockExit> }) => Promise<IBlockExit>
   @flowVuexNamespace.Action flow_createBlankResourceForEnabledModesAndLangs!: () => Promise<IResource>
   @blockVuexNamespace.Action deleteChoiceByResourceIdFrom!:
     ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void

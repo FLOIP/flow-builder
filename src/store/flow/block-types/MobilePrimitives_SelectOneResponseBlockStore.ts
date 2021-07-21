@@ -136,6 +136,33 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     Vue.delete(block.config.choices, choiceKey)
   },
 
+  async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: {blockId: IBlock['uuid']}) {
+    const block: ISelectOneResponseBlock = rootGetters['builder/blocksById'][blockId]
+    if (block == null) {
+      throw new ValidationException(`Unable to find block: ${blockId}`)
+    }
+
+    const {config: {choices}, exits}: ISelectOneResponseBlock = block
+    const choiceKeys = Object.keys(choices)
+    const exitsForChoices: IBlockExitTestRequired[] = exits.slice(0, -1) // non-default exits; default should always be last
+
+    // reflow exits based on choices
+    await Promise.all(choiceKeys.map(async (choiceKey, i) => {
+      if (exitsForChoices[i] == null) {
+        const uuid = await (new IdGeneratorUuidV4()).generate()
+        const exit = await dispatch('flow/block_createBlockExitWith', {props: {uuid} as IBlockExit}, {root: true})
+        exitsForChoices.push(exit)
+      }
+
+      Object.assign(exitsForChoices[i], {
+        tag: choiceKey,
+        test: `block.value = ${i}`,
+      })
+    }))
+
+    exits.splice(0, exits.length - 1, ...exitsForChoices)
+  },
+
   deleteChoiceByKey({rootGetters, commit}, {choiceKeyToRemove}) {
     const activeBlock = rootGetters['builder/activeBlock']
     delete activeBlock.config.choices[choiceKeyToRemove]
