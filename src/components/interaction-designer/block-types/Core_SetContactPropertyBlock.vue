@@ -15,9 +15,9 @@
 
       <contact-property-editor :block="block" />
 
-      <hr>
-
       <slot name="extras" />
+
+      <hr>
 
       <first-block-editor-button
         :flow="flow"

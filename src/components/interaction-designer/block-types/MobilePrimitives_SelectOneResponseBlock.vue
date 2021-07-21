@@ -57,11 +57,11 @@
           :flow="flow" />
       </div>
 
-      <hr>
-
       <slot name="extras" />
 
       <generic-contact-property-editor :block="block" />
+
+      <hr>
 
       <first-block-editor-button
         :flow="flow"

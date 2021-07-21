@@ -24,11 +24,11 @@
           @commitExpressionChange="commitExpressionChange" />
       </validation-message>
 
-      <hr>
-
       <slot name="extras" />
 
       <generic-contact-property-editor :block="block" />
+
+      <hr>
 
       <first-block-editor-button
         :flow="flow"
