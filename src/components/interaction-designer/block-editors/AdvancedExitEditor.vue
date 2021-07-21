@@ -1,5 +1,14 @@
 <template>
   <div class="advanced-exit-editor">
+
+    <!--
+         <expression-input
+          label=""
+          :placeholder="'Enter test expression for exit'"
+          :rows="1"
+          :prepend-text="label"
+     -->
+
     <div class="input-group">
       <div class="input-group-prepend">
         <span class="input-group-text">{{label}}</span>
@@ -15,7 +24,7 @@
 
     <label>Exit name</label>
     <textarea
-      v-model="semanticLabel"
+      v-model="name"
       :placeholder="`Enter name for exit`"
       class="form-control"
       rows="1" />
@@ -28,10 +37,13 @@ import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
+import ExpressionInput from '@/components/common/ExpressionInput.vue'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({})
+@Component({
+  components: {ExpressionInput},
+})
 class AdvancedExitEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly exit!: IBlockExit
@@ -46,22 +58,23 @@ class AdvancedExitEditor extends mixins(Lang) {
     this.block_setExitTest({exitId: this.exit.uuid, blockId: this.block.uuid, value})
   }
 
-  get semanticLabel(): IBlockExit['semantic_label'] {
-    return this.exit.semantic_label
+  get name(): IBlockExit['name'] {
+    return this.exit.name
   }
 
-  set semanticLabel(value: IBlockExit['semantic_label']) {
+  set name(value: IBlockExit['name']) {
     const {uuid: blockId} = this.block
     const {uuid: exitId} = this.exit
 
-    this.$emit('beforeExitSemanticLabelChanged', {blockId, exitId, value})
-    this.block_setExitSemanticLabelAndSlugOntoTagIfPreviouslySlugged({blockId, exitId, value})
+    this.$emit('beforeExitNameChanged', {blockId, exitId, value})
+    this.block_setExitName({blockId, exitId, value})
   }
 
   @flowVuexNamespace.Mutation block_setExitTest!:
     ({exitId, blockId, value}: { exitId: string, blockId: string, value: IBlockExit['test'] }) => void
-  @flowVuexNamespace.Action block_setExitSemanticLabelAndSlugOntoTagIfPreviouslySlugged!:
-    ({exitId, blockId, value}: {exitId: IBlockExit['uuid'], blockId: IBlock['uuid'], value: IBlockExit['semantic_label']}) => void
+  @flowVuexNamespace.Mutation block_setExitName!:
+    ({exitId, blockId, value}: {exitId: IBlockExit['uuid'], blockId: IBlock['uuid'], value: IBlockExit['name']}) => void
 }
+
 export default AdvancedExitEditor
 </script>

@@ -20,10 +20,6 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     block.exits = popFirstEmptyItem(block.exits, 'test')
   },
-  block_popExitsByLabel(state, {blockId, exitLabel}: { blockId: string, exitLabel: string }) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    block.exits = block.exits.filter((item: IBlockExit) => item.label !== exitLabel)
-  },
   block_setName(state, {blockId, value}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .name = value
@@ -36,7 +32,7 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .semantic_label = value
   },
-  block_setExitName(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
+  block_setExitName(state, {exitId, blockId, value}: { exitId: IBlockExit['uuid'], blockId: IBlock['uuid'], value: IBlockExit['name'] }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).name = value
   },
@@ -115,17 +111,6 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  block_popExitsByLabel({ dispatch, commit, state }, { blockId, exitLabel, shouldUseCache = false }: {blockId: string; exitLabel: string; shouldUseCache: boolean}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    const newBlockExits = findBlockExitsRef(block, shouldUseCache).filter((item: IBlockExit) => item.label !== exitLabel)
-
-    commit('block_updateExits', {
-      block,
-      newExits: newBlockExits,
-      shouldUseCache
-    })
-  },
-
   block_setLabel({commit}, {blockId, value}) {
     commit('block_setLabel', {blockId, value})
     commit('block_setName', {blockId, value: snakeCase(value)})
@@ -175,24 +160,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     commit('block_setExitSemanticLabel', {blockId, exitId, value: semantic_label})
   },
 
-  block_setExitSemanticLabelAndSlugOntoTagIfPreviouslySlugged(
-    {commit, state},
-    {exitId, blockId, value}: {exitId: IBlockExit['uuid'], blockId: IBlock['uuid'], value: IBlockExit['semantic_label']},
-  ) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    const exit = findBlockExitWith(exitId, block)
-
-    const possiblePreviousSluggifiedTag = snakeCase(exit.semantic_label)
-    const wasTagPreviouslySluggified = possiblePreviousSluggifiedTag === exit.tag
-    const wasTagPreviouslyEmpty = isEmpty(exit.tag)
-
-    commit('block_setExitSemanticLabel', {blockId, exitId, value})
-
-    if (wasTagPreviouslyEmpty || wasTagPreviouslySluggified) {
-      commit('block_setExitTag', {blockId, exitId, value: snakeCase(value)})
-    }
-  },
-
   async block_swapBlockExitDestinationBlockIds(
     {commit, state},
     {first, second}: { first: IDeepBlockExitIdWithinFlow, second: IDeepBlockExitIdWithinFlow },
@@ -229,8 +196,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     const primaryExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
-      tag: 'primary',
-      label: 'Primary',
+      name: 'primary',
       test: 'true',
     }
 

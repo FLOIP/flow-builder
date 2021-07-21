@@ -18,7 +18,7 @@
       :label="block.exits.length + 1"
       class="advanced-block-exit-builder-item"
       @beforeExitTestChanged="addDraftExitToBlock"
-      @beforeExitSemanticLabelChanged="addDraftExitToBlock" />
+      @beforeExitNameChanged="addDraftExitToBlock" />
   </div>
 </template>
 

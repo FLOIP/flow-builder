@@ -53,10 +53,7 @@ import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelec
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import SelectOneStore, {
-  BLOCK_TYPE,
-  IInflatedChoicesInterface
-} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
@@ -120,20 +117,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
   @flowVuexNamespace.Action block_createBlockExitWith!: ({props}: { props: { uuid: string } & Partial<IBlockExit> }) => Promise<IBlockExit>
-
-  @blockVuexNamespace.Getter inflatedChoices?: { [key: string]: IInflatedChoicesInterface }
-  @blockVuexNamespace.State inflatedEmptyChoice?: IInflatedChoicesInterface
-
-  @blockVuexNamespace.Getter isExitsBranchingSegregated!: boolean
-
-  @blockVuexNamespace.Action cacheSegregatedExits!: () => void
-  @blockVuexNamespace.Action makeExitsSegregated!: () => void
-  @blockVuexNamespace.Action makeExitsUnified!: () => void
-
-  @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
-  @blockVuexNamespace.Action editEmptyChoice!: ({choice}: { choice: IInflatedChoicesInterface }) => Promise<object>
   @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
-
   @builderVuexNamespace.Getter isEditable !: boolean
 }
 
