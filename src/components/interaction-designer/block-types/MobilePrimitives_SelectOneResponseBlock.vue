@@ -15,40 +15,9 @@
 
       <hr>
 
-      <div class="form-group">
-        <h4>{{'flow-builder.choices' | trans}}</h4>
-
-        <!--Show non empty choices-->
-        <template v-for="(choiceKey) in Object.keys(inflatedChoices)">
-          <!-- we're just making a best guess as to which variant to use
-               based on how this instance of flow-builder works -->
-          <resource-variant-text-editor
-            :label="choiceKey.toString()"
-            :rows="1"
-            :placeholder="'Enter choice...'"
-            :resource-id="inflatedChoices[choiceKey].resource.uuid"
-            :resource-variant="findOrGenerateStubbedVariantOn(
-              inflatedChoices[choiceKey].resource,
-              {language_id: flow.languages[0].id, content_type: SupportedMode.TEXT, modes: [SupportedContentType.TEXT]})"
-            :mode="'TEXT'" />
-
-        </template>
-
-        <!--Show empty choice-->
-        <resource-variant-text-editor
-          :label="(Object.keys(inflatedChoices).length + 1).toString()"
-          :rows="1"
-          :placeholder="'Enter choice...'"
-          :resource-id="inflatedEmptyChoice.resource.uuid"
-          :resource-variant="findOrGenerateStubbedVariantOn(
-              inflatedEmptyChoice.resource,
-              {language_id: flow.languages[0].id, content_type: SupportedMode.TEXT, modes: [SupportedContentType.TEXT]})"
-          :mode="'TEXT'" />
-      </div>
+      <choices-builder :block="block" />
 
       <block-output-branching-config :block="block" />
-
-      <hr>
 
       <div class="prompt-resource">
         <resource-editor
@@ -86,6 +55,7 @@ import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
 import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
+import ChoicesBuilder from '@/components/interaction-designer/block-editors/ChoicesBuilder.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -101,15 +71,16 @@ const builderVuexNamespace = namespace('builder')
 
 @Component<any>({
   components: {
-    ResourceVariantTextEditor,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
     BlockExitSemanticLabelEditor,
+    BlockId,
+    BlockLabelEditor,
+    BlockNameEditor,
+    BlockOutputBranchingConfig,
+    BlockSemanticLabelEditor,
+    ChoicesBuilder,
     FirstBlockEditorButton,
     ResourceEditor,
-    BlockOutputBranchingConfig,
-    BlockId,
+    ResourceVariantTextEditor,
   },
 })
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
@@ -137,12 +108,16 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
   @Watch('inflatedChoices', {deep: true})
   onChoicesChanged(newChoices: object) {
+    debugger
+
     console.debug('Watched inflatedChoices', newChoices)
     this.editSelectOneResponseBlockChoice()
   }
 
   @Watch('inflatedEmptyChoice', {deep: true})
   onEmptyChoiceChanged(newChoice: object, oldChoice: object) {
+    debugger
+
     console.debug('Watched inflatedEmptyChoice', newChoice, oldChoice)
     this.editEmptyChoice({choice: oldChoice as IInflatedChoicesInterface})
   }

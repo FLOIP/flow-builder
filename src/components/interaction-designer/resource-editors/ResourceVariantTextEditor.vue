@@ -9,7 +9,6 @@
           <span class="input-group-text">{{label}}</span>
         </div>
 
-        <!-- todo: make :rows dynamic! -->
         <textarea
           v-model="content"
           v-focus="isSelected"
@@ -181,11 +180,13 @@ export default {
         const {resourceId, mode} = this
         const {language_id: languageId, content_type: contentType} = this.resourceVariant
 
+        this.$emit('beforeResourceVariantChanged', {variant: this.resourceVariant, resourceId})
         this.resource_setOrCreateValueModeSpecific({
           resourceId,
           filter: {language_id: languageId, content_type: contentType, modes: [mode]},
           value,
         })
+        this.$emit('afterResourceVariantChanged', {variant: this.resourceVariant, resourceId})
       },
     },
 

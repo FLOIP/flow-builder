@@ -1,5 +1,5 @@
 <template>
-  <div class="advanced-exit-configuration">
+  <div class="advanced-exits-builder">
     <label class="d-block">Set advanced exit configurations using test expressions</label>
 
     <advanced-exit-editor

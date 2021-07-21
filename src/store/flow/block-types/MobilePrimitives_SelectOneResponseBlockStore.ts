@@ -4,12 +4,12 @@ import {
   IBlock,
   IBlockExitTestRequired,
   IBlockExit,
-  IResource
+  IResource, ValidationException,
 } from '@floip/flow-runner'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
-import {defaultsDeep, filter, find, first, get} from 'lodash'
+import {defaultsDeep, filter, find, findKey, first, get, isEmpty, omit, snakeCase} from 'lodash'
 import {findBlockExitsRef, findExitFromResourceUuid } from '../block'
 import {IFlowsState} from '../index'
 
@@ -93,6 +93,49 @@ export const getters: GetterTree<ICustomFlowState, IRootState> = {
 export const mutations: MutationTree<ICustomFlowState> = {}
 
 export const actions: ActionTree<ICustomFlowState, IRootState> = {
+  rewriteChoiceKeyFor({rootGetters, dispatch}, {resourceId, blockId}: {resourceId: IResource['uuid'], blockId: IBlock['uuid']}) {
+    const block: ISelectOneResponseBlock = rootGetters['builder/blocksById'][blockId]
+    if (block == null) {
+      throw new ValidationException(`Unable to find block: ${blockId}`)
+    }
+
+    const resource: IResource = rootGetters['flow/resourcesByUuid'][resourceId]
+    if (resource == null) {
+      throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
+    }
+
+    const choiceKey = String(findKey(resourceId))
+    // omit() will inadvertently but desirably remove an empty `choiceKey`
+    block.config.choices = omit(block.config.choices, choiceKey)
+    dispatch('addChoiceByResourceIdTo', {blockId, resourceId})
+  },
+
+  addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) {
+    const block: ISelectOneResponseBlock = rootGetters['builder/blocksById'][blockId]
+    if (block == null) {
+      throw new ValidationException(`Unable to find block: ${blockId}`)
+    }
+
+    const resource: IResource = rootGetters['flow/resourcesByUuid'][resourceId]
+    if (resource == null) {
+      throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
+    }
+
+    // defaulted to `resourceId` to mitigate empty keys and associated error handling altogether
+    const desiredChoiceKey = snakeCase(get(resource.values[0], 'value')) || resource.uuid
+    Vue.set(block.config.choices, desiredChoiceKey, resource.uuid)
+  },
+
+  deleteChoiceByResourceIdFrom({rootGetters}, {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) {
+    const block: ISelectOneResponseBlock = rootGetters['builder/blocksById'][blockId]
+    if (block == null) {
+      throw new ValidationException(`Unable to find block: ${blockId}`)
+    }
+
+    const choiceKey = String(findKey(block.config.choices, resourceId))
+    Vue.delete(block.config.choices, choiceKey)
+  },
+
   deleteChoiceByKey({rootGetters, commit}, {choiceKeyToRemove}) {
     const activeBlock = rootGetters['builder/activeBlock']
     delete activeBlock.config.choices[choiceKeyToRemove]
@@ -108,10 +151,12 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       }, choices),
     }, {root: true})
   },
-  pushNewChoice({rootGetters}, {choiceId, newIndex}) {
+
+  addChoice({rootGetters}, {choiceId, newIndex}) {
     const activeBlock = rootGetters['builder/activeBlock']
     Vue.set(activeBlock.config.choices, newIndex, choiceId)
   },
+
   async createVolatileEmptyChoice({state, dispatch, getters, rootGetters}, {index}) {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     const blankExit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
@@ -139,6 +184,8 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
   async editSelectOneResponseBlockChoice({
     commit, dispatch, getters, rootGetters,
   }) {
+    debugger
+
     const activeBlock = rootGetters['builder/activeBlock']
     // then remove the 1st blank exit
     if (!getters.allChoicesHaveContent) {
@@ -155,21 +202,25 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
   },
 
   async editEmptyChoice({state, commit, dispatch, getters, rootGetters}, {choice}: { choice: IInflatedChoicesInterface }) {
+    debugger
+
     if (choice === state.inflatedEmptyChoice && !getters.isInflatedEmptyChoiceBlank) {
       // push the current value into choices & exits
       const activeBlock = rootGetters['builder/activeBlock']
       const newIndex = Object.keys(activeBlock.config.choices || {}).length + 1
       const resourceUuid = state.inflatedEmptyChoice.resource.uuid
-      const blockExit = findBlockExitsRef(activeBlock, !getters.isExitsBranchingSegregated)
-      dispatch('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
-      commit('flow/block_addExit', {
-          blockId: activeBlock.uuid,
-          newExit: state.inflatedEmptyChoice.exit,
-          insertAtIndex: blockExit.length - 1, // insert before 'Error' exit
-          shouldUseCache: !getters.isExitsBranchingSegregated // use cache if unified branching
-        }, {
-        root: true
-      })
+
+      dispatch('addChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
+
+      // const blockExit = findBlockExitsRef(activeBlock, !getters.isExitsBranchingSegregated)
+      // commit('flow/block_addExit', {
+      //     blockId: activeBlock.uuid,
+      //     newExit: state.inflatedEmptyChoice.exit,
+      //     insertAtIndex: blockExit.length - 1, // insert before 'Error' exit
+      //     shouldUseCache: !getters.isExitsBranchingSegregated // use cache if unified branching
+      //   }, {
+      //   root: true
+      // })
 
       // associate new blank resource to the empty choice, this is important to stop endless watching
       await dispatch('createVolatileEmptyChoice', { index: newIndex })

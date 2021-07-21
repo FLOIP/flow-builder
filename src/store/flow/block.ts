@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
-import Vue from 'vue'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {defaults, find, get, isEmpty, isNil, set, setWith, toPath, reduce, snakeCase} from 'lodash'
