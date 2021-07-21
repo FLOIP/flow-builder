@@ -16,7 +16,7 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/flow_id`">
         <div class="form-group">
-          <label>{{ 'flow-builder.destination-flow' | trans }}</label>
+          <label class="text-primary">{{ 'flow-builder.destination-flow' | trans }}</label>
           <select
             v-model="destinationFlowId"
             class="form-control"

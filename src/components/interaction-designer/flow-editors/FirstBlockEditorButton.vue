@@ -1,7 +1,6 @@
 <template>
   <div class="starting-block-button">
     <template v-if="isEditable">
-      <h4>{{ 'flow-builder.options' | trans }}</h4>
       <div class="form-group">
         <button
           type="button"

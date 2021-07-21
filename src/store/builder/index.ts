@@ -391,7 +391,7 @@ export function computeBlockUiData(block?: IBlock | null) {
 
   return {
     x: xPosition + xDelta,
-    y: yPosition + yDelta
+    y: yPosition + yDelta,
   }
 }
 export function computeBlockVendorUiData(block?: IBlock | null) {
