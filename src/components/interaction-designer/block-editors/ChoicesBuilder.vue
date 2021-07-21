@@ -13,7 +13,7 @@
         :resource-id="block.config.choices[choiceKey]"
         :resource-variant="findOrGenerateStubbedVariantOn(
           resourcesByUuid[block.config.choices[choiceKey]],
-          {language_id: flow.languages[0].id,
+          {language_id: activeFlow.languages[0].id,
            content_type: resourcesByUuid[block.config.choices[choiceKey]].values[0].content_type,
            modes: resourcesByUuid[block.config.choices[choiceKey]].values[0].modes})"
         :mode="'TEXT'"
@@ -33,7 +33,7 @@
       :resource-id="draftResource.uuid"
       :resource-variant="findOrGenerateStubbedVariantOn(
         draftResource,
-        {language_id: flow.languages[0].id,
+        {language_id: activeFlow.languages[0].id,
          content_type: draftResource.values[0].content_type,
          modes: draftResource.values[0].modes})"
       :mode="'TEXT'"
@@ -48,7 +48,7 @@ import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import {IBlock, IBlockExit, IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IFlow, IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
@@ -114,6 +114,7 @@ class ChoicesBuilder extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Mutation resource_add!: ({resource}: {resource: IResource}) => void
   @flowVuexNamespace.Action flow_createBlankResourceForEnabledModesAndLangs!: () => Promise<IResource>
   @blockVuexNamespace.Action deleteChoiceByResourceIdFrom!:
