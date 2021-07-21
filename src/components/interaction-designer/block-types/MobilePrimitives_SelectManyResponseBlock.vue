@@ -21,13 +21,19 @@
           :flow="flow" />
       </div>
 
-      <choices-builder :block="block" />
-
       <hr>
+
+      <choices-builder :block="block" />
 
       <block-output-branching-config :block="block" />
 
       <slot name="extras"></slot>
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
 
       <first-block-editor-button
         :flow="flow"
@@ -44,12 +50,33 @@ import {Component} from 'vue-property-decorator'
 import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {namespace} from 'vuex-class'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
+import BlockNameEditor from '../block-editors/NameEditor.vue'
+import BlockLabelEditor from '../block-editors/LabelEditor.vue'
+import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
+import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor.vue'
+import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
+import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+import BlockId from '../block-editors/BlockId.vue'
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({})
+@Component({
+  components: {
+    GenericContactPropertyEditor,
+    BlockNameEditor,
+    BlockLabelEditor,
+    BlockSemanticLabelEditor,
+    BlockExitSemanticLabelEditor,
+    FirstBlockEditorButton,
+    ResourceEditor,
+    BlockId,
+    Categorization,
+  },
+})
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
   showSemanticLabel = false
 

@@ -64,14 +64,14 @@ export default {
       type: [String, Number],
       default: null,
     },
+    rows: {
+      type: Number,
+      required: false,
+      default: 1,
+    },
     validState: {
       type: Boolean,
       default: null,
-      required: false,
-    },
-    rows: {
-      type: Number,
-      default: 2,
       required: false,
     },
     prependText: {

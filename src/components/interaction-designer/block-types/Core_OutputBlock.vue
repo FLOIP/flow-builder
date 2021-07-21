@@ -18,15 +18,19 @@
         :message-key="`block/${block.uuid}/config/value`">
         <expression-input
           :label="'flow-builder.output-expression' | trans"
-          :placeholder="'flow-builder.edit-expression' | trans"
+          :placeholder="'flow-builder.enter-expression' | trans"
           :current-expression="value"
           :valid-state="isValid"
           @commitExpressionChange="commitExpressionChange" />
       </validation-message>
 
-      <hr>
-
       <slot name="extras" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
 
       <first-block-editor-button
         :flow="flow"
@@ -44,6 +48,7 @@ import {IOutputBlock} from '@floip/flow-runner/src/model/block/IOutputBlock'
 import {IFlow} from '@floip/flow-runner'
 import OutputStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
@@ -53,12 +58,14 @@ import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
+    GenericContactPropertyEditor,
     ExpressionInput,
     BlockNameEditor,
     BlockLabelEditor,
@@ -66,6 +73,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
     ValidationMessage,
+    Categorization,
   },
 })
 class Core_OutputBlock extends mixins(Lang) {

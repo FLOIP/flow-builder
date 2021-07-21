@@ -34,9 +34,13 @@
         </validation-message>
       </div>
 
-      <hr>
-
       <slot name="extras" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
 
       <first-block-editor-button
         :flow="flow"
@@ -57,6 +61,7 @@ import {IReadBlock} from '@floip/flow-runner/src/model/block/IReadBlock'
 import TextEditor from '@/components/common/TextEditor.vue'
 import ReadStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
@@ -67,12 +72,14 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import BlockFormatStringEditor from '../block-editors/FormatStringEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
+    GenericContactPropertyEditor,
     ResourceEditor,
     BlockNameEditor,
     BlockLabelEditor,
@@ -82,6 +89,7 @@ const builderVuexNamespace = namespace('builder')
     TextEditor,
     BlockId,
     ValidationMessage,
+    Categorization,
   },
 })
 class ConsoleIO_ReadBlock extends mixins(Lang) {

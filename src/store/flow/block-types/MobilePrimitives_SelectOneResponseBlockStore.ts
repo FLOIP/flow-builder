@@ -114,6 +114,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
         choices: {},
       },
       exits: [defaultExit],
+      tags: [],
     })
   },
 }

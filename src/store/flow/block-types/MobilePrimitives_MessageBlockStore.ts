@@ -34,6 +34,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       config: {
         prompt: blankMessageResource.uuid,
       },
+      tags: [],
     })
   },
 

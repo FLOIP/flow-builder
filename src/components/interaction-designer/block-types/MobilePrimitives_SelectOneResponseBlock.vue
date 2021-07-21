@@ -32,9 +32,13 @@
           :flow="flow" />
       </div>
 
-      <hr>
-
       <slot name="extras" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
 
       <first-block-editor-button
         :flow="flow"
@@ -55,6 +59,7 @@ import {Component, Prop} from 'vue-property-decorator'
 
 import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
@@ -71,13 +76,16 @@ import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEdit
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
+@Component({
   components: {
+    GenericContactPropertyEditor,
+    ResourceVariantTextEditor,
     BlockExitSemanticLabelEditor,
     BlockId,
     BlockLabelEditor,
@@ -87,7 +95,7 @@ const builderVuexNamespace = namespace('builder')
     ChoicesBuilder,
     FirstBlockEditorButton,
     ResourceEditor,
-    ResourceVariantTextEditor,
+    Categorization,
   },
 })
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {

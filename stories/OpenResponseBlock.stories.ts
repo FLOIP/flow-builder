@@ -62,6 +62,7 @@ class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
     })
     this.setMaxDurationSeconds(3 * 60)
     this.setMaxResponseCharacters(160)
+    this.setTags(blockId)
   }
 
   @blockVuexNamespace.Action setMaxDurationSeconds: any

@@ -49,6 +49,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
         choices: {},
       },
       vendor_metadata: {},
+      tags: [],
     })
   },
 }

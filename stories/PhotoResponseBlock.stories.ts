@@ -51,6 +51,7 @@ class CurrentClass2 extends BaseMountedVueClass {
     const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, photoResponseBlockStore)
 
     this.setDescription(blockId)
+    this.setTags(blockId)
   }
 }
 

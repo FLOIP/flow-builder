@@ -33,9 +33,13 @@
 
       <group-selector :block="block" />
 
-      <hr>
-
       <slot name="extras" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
 
       <first-block-editor-button
         :flow="flow"
@@ -57,6 +61,7 @@ import VueMultiselect from 'vue-multiselect'
 
 import SetGroupMembershipStore, {ADD_KEY, BLOCK_TYPE, REMOVE_KEY} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {find} from 'lodash'
 import {mixins} from 'vue-class-component'
@@ -66,6 +71,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
@@ -78,6 +84,7 @@ interface IGroupActionOption {
 
 @Component({
   components: {
+    GenericContactPropertyEditor,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
@@ -86,6 +93,7 @@ interface IGroupActionOption {
     GroupSelector,
     VueMultiselect,
     ValidationMessage,
+    Categorization,
   },
 })
 class Core_SetGroupMembershipBlock extends mixins(Lang) {
