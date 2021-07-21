@@ -10,12 +10,12 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"658979c1-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=template&id=2ed7d936&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"smart-devices-location-response-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-threshold-editor',{attrs:{"block":_vm.block},on:{"commitAccuracyThresholdMetersChange":_vm.updateThreshold}}),_c('block-timeout-editor',{attrs:{"block":_vm.block},on:{"commitAccuracyTimeoutSecondsChange":_vm.updateTimeout}}),_c('hr'),_vm._t("extras"),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"658979c1-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=template&id=335b7500&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"smart-devices-location-response-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-threshold-editor',{attrs:{"block":_vm.block},on:{"commitAccuracyThresholdMetersChange":_vm.updateThreshold}}),_c('block-timeout-editor',{attrs:{"block":_vm.block},on:{"commitAccuracyTimeoutSecondsChange":_vm.updateTimeout}}),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=template&id=2ed7d936&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=template&id=335b7500&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -47,161 +47,14 @@ var lib = __webpack_require__("4bb5");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/index.js + 14 modules
 var vue_property_decorator_lib = __webpack_require__("1b40");
 
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__("c964");
+// EXTERNAL MODULE: ./src/store/flow/block-types/SmartDevices_LocationResponseBlockStore.ts
+var SmartDevices_LocationResponseBlockStore = __webpack_require__("d771");
 
-// EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
-var runtime = __webpack_require__("96cf");
-
-// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
-var IdGeneratorUuidV4 = __webpack_require__("31aa");
-
-// EXTERNAL MODULE: ./node_modules/lodash/lodash.js
-var lodash = __webpack_require__("2ef0");
-
-// CONCATENATED MODULE: ./src/store/flow/block-types/SmartDevices_LocationResponseBlockStore.ts
-
-
- // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
-
-
-var BLOCK_TYPE = 'SmartDevices.LocationResponse';
-var getters = {};
-var mutations = {};
-var actions = {
-  setAccuracyThreshold: function setAccuracyThreshold(_ref, _ref2) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var commit, blockId, value;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              commit = _ref.commit;
-              blockId = _ref2.blockId, value = _ref2.value;
-              commit('flow/block_updateConfigByKey', {
-                blockId: blockId,
-                key: 'accuracy_threshold_meters',
-                value: value
-              }, {
-                root: true
-              });
-              return _context.abrupt("return", value);
-
-            case 4:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  },
-  setAccuracyTimeout: function setAccuracyTimeout(_ref3, _ref4) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var commit, blockId, value;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              commit = _ref3.commit;
-              blockId = _ref4.blockId, value = _ref4.value;
-              commit('flow/block_updateConfigByKey', {
-                blockId: blockId,
-                key: 'accuracy_timeout_seconds',
-                value: value
-              }, {
-                root: true
-              });
-              return _context2.abrupt("return", value);
-
-            case 4:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }))();
-  },
-  createWith: function createWith(_ref5, _ref6) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-      var dispatch, props, exits;
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              dispatch = _ref5.dispatch;
-              props = _ref6.props;
-              _context3.t0 = dispatch;
-              _context3.next = 5;
-              return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
-
-            case 5:
-              _context3.t1 = _context3.sent;
-              _context3.t2 = {
-                uuid: _context3.t1,
-                name: 'Default'
-              };
-              _context3.t3 = {
-                props: _context3.t2
-              };
-              _context3.t4 = {
-                root: true
-              };
-              _context3.next = 11;
-              return (0, _context3.t0)('flow/block_createBlockDefaultExitWith', _context3.t3, _context3.t4);
-
-            case 11:
-              _context3.t5 = _context3.sent;
-              _context3.t6 = dispatch;
-              _context3.next = 15;
-              return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
-
-            case 15:
-              _context3.t7 = _context3.sent;
-              _context3.t8 = {
-                uuid: _context3.t7,
-                name: 'Error'
-              };
-              _context3.t9 = {
-                props: _context3.t8
-              };
-              _context3.t10 = {
-                root: true
-              };
-              _context3.next = 21;
-              return (0, _context3.t6)('flow/block_createBlockExitWith', _context3.t9, _context3.t10);
-
-            case 21:
-              _context3.t11 = _context3.sent;
-              exits = [_context3.t5, _context3.t11];
-              return _context3.abrupt("return", Object(lodash["defaultsDeep"])(props, {
-                type: BLOCK_TYPE,
-                name: '',
-                label: '',
-                semantic_label: '',
-                exits: exits,
-                config: {
-                  accuracy_threshold_meters: 5.0,
-                  accuracy_timeout_seconds: 120
-                }
-              }));
-
-            case 24:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }))();
-  }
-};
-/* harmony default export */ var SmartDevices_LocationResponseBlockStore = ({
-  namespaced: true,
-  getters: getters,
-  mutations: mutations,
-  actions: actions
-});
 // EXTERNAL MODULE: ./src/lib/filters/lang.ts
 var lang = __webpack_require__("4a51");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/Categorization.vue + 9 modules
+var Categorization = __webpack_require__("8619");
 
 // EXTERNAL MODULE: ./src/store/builder/index.ts
 var builder = __webpack_require__("af98");
@@ -339,6 +192,9 @@ var component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var FloatEditor = (component.exports);
+// EXTERNAL MODULE: ./node_modules/lodash/lodash.js
+var lodash = __webpack_require__("2ef0");
+
 // EXTERNAL MODULE: ./src/components/common/ValidationMessage.vue + 5 modules
 var ValidationMessage = __webpack_require__("21e9");
 
@@ -472,6 +328,9 @@ var TimeoutEditor_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var TimeoutEditor = (TimeoutEditor_component.exports);
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue + 4 modules
+var GenericContactPropertyEditor = __webpack_require__("b4ec");
+
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=script&lang=ts&
 
 
@@ -495,8 +354,10 @@ var TimeoutEditor_component = Object(componentNormalizer["a" /* default */])(
 
 
 
+
+
 var flowVuexNamespace = Object(lib["e" /* namespace */])('flow');
-var blockVuexNamespace = Object(lib["e" /* namespace */])("flow/".concat(BLOCK_TYPE));
+var blockVuexNamespace = Object(lib["e" /* namespace */])("flow/".concat(SmartDevices_LocationResponseBlockStore["a" /* BLOCK_TYPE */]));
 var builderVuexNamespace = Object(lib["e" /* namespace */])('builder');
 
 var SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock = /*#__PURE__*/function (_mixins) {
@@ -567,6 +428,7 @@ Object(tslib_es6["__decorate"])([builderVuexNamespace.Getter], SmartDevices_Loca
 
 SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
   components: {
+    GenericContactPropertyEditor: GenericContactPropertyEditor["a" /* default */],
     ResourceEditor: ResourceEditor["a" /* default */],
     BlockNameEditor: NameEditor["a" /* default */],
     BlockLabelEditor: LabelEditor["a" /* default */],
@@ -574,11 +436,12 @@ SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationR
     FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
     BlockId: BlockId["a" /* default */],
     BlockThresholdEditor: ThresholdEditor,
-    BlockTimeoutEditor: TimeoutEditor
+    BlockTimeoutEditor: TimeoutEditor,
+    Categorization: Categorization["a" /* default */]
   }
 })], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock);
 /* harmony default export */ var SmartDevices_LocationResponseBlockvue_type_script_lang_ts_ = (SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock);
-var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, SmartDevices_LocationResponseBlockStore);
+var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(SmartDevices_LocationResponseBlockStore["a" /* BLOCK_TYPE */], SmartDevices_LocationResponseBlockStore["b" /* default */]);
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=script&lang=ts&
  /* harmony default export */ var block_types_SmartDevices_LocationResponseBlockvue_type_script_lang_ts_ = (SmartDevices_LocationResponseBlockvue_type_script_lang_ts_); 
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue
