@@ -2262,8 +2262,6 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                               </div>
                             </div>
                           </div>
-                           
-                          <hr />
                             
                           <div
                             class="generic-contact-property-editor"
@@ -2297,6 +2295,8 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                              
                             <!---->
                           </div>
+                           
+                          <hr />
                            
                           <div
                             class="starting-block-button"
@@ -2838,8 +2838,6 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                               </div>
                             </div>
                           </div>
-                           
-                          <hr />
                             
                           <div
                             class="generic-contact-property-editor"
@@ -2873,6 +2871,8 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1
                              
                             <!---->
                           </div>
+                           
+                          <hr />
                            
                           <div
                             class="starting-block-button"
@@ -3411,8 +3411,6 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                               </div>
                             </div>
                           </div>
-                           
-                          <hr />
                             
                           <div
                             class="generic-contact-property-editor"
@@ -3446,6 +3444,8 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                              
                             <!---->
                           </div>
+                           
+                          <hr />
                            
                           <div
                             class="starting-block-button"
@@ -3954,8 +3954,6 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                               </div>
                             </div>
                           </div>
-                           
-                          <hr />
                             
                           <div
                             class="generic-contact-property-editor"
@@ -3989,6 +3987,8 @@ exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] 
                              
                             <!---->
                           </div>
+                           
+                          <hr />
                            
                           <div
                             class="starting-block-button"
