@@ -36,9 +36,9 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .semantic_label = value
   },
-  block_setExitTag(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
+  block_setExitName(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    findBlockExitWith(exitId, block).tag = value
+    findBlockExitWith(exitId, block).name = value
   },
   block_setExitTest(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: IBlockExit['test'] }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -156,8 +156,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     return {
       ...defaults(props, {
-        label: resource.uuid,
-        tag: '',
+        name: '',
         config: {},
         // prerequisite for reactivity, even optional params
         destination_block: undefined,
@@ -168,10 +167,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
   async block_updateBlockExitWith(
     {commit},
-    {blockId, exitId, props: {test, tag, semantic_label}}: { blockId: string, exitId: string, props: Partial<IBlockExit> },
+    {blockId, exitId, props: {test, name, semantic_label}}: { blockId: string, exitId: string, props: Partial<IBlockExit> },
   ) {
     // TODO - handle other props apart from test
-    commit('block_setExitTag', {blockId, exitId, value: tag})
+    commit('block_setExitName', {blockId, exitId, value: name})
     commit('block_setExitTest', {blockId, exitId, value: test})
     commit('block_setExitSemanticLabel', {blockId, exitId, value: semantic_label})
   },

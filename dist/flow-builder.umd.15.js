@@ -10,12 +10,12 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17599cae-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue?vue&type=template&id=2f2b2f64&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"core-set-contact-property-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('contact-property-editor',{attrs:{"block":_vm.block}}),_vm._t("extras"),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"577f73ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue?vue&type=template&id=337f5e9a&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"core-set-contact-property-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_vm._t("extras"),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue?vue&type=template&id=2f2b2f64&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue?vue&type=template&id=337f5e9a&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -44,7 +44,7 @@ var lib = __webpack_require__("4bb5");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/index.js + 14 modules
 var vue_property_decorator_lib = __webpack_require__("1b40");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17599cae-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ContactPropertyEditor.vue?vue&type=template&id=60a79c1a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"577f73ce-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ContactPropertyEditor.vue?vue&type=template&id=60a79c1a&
 var ContactPropertyEditorvue_type_template_id_60a79c1a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"contact-property-editor"},[_c('div',{staticClass:"form-group"},[_c('label',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.action-label')))]),_c('p',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.contact-property-action-hint')))]),_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyAction),expression:"propertyAction"}],staticClass:"custom-control-input",attrs:{"id":"setProp","type":"radio","name":"contactPropAction"},domProps:{"value":_vm.PROPERTY_ACTION.SET,"checked":_vm._q(_vm.propertyAction,_vm.PROPERTY_ACTION.SET)},on:{"change":function($event){_vm.propertyAction=_vm.PROPERTY_ACTION.SET}}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"setProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.set-contact-property'))+" ")])]),_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyAction),expression:"propertyAction"}],staticClass:"custom-control-input",attrs:{"id":"clearProp","type":"radio","name":"contactPropAction"},domProps:{"value":_vm.PROPERTY_ACTION.CLEAR,"checked":_vm._q(_vm.propertyAction,_vm.PROPERTY_ACTION.CLEAR)},on:{"change":function($event){_vm.propertyAction=_vm.PROPERTY_ACTION.CLEAR}}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"clearProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.clear-contact-property'))+" ")])])]),_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/set_contact_property/property_key")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('div',{staticClass:"block-contact-property-key"},[_c('text-editor',{attrs:{"label":_vm._f("trans")('flow-builder.contact-property-label'),"placeholder":_vm._f("trans")('flow-builder.enter-contact-property-label'),"valid-state":isValid},model:{value:(_vm.propertyKey),callback:function ($$v) {_vm.propertyKey=$$v},expression:"propertyKey"}})],1)]}}])}),(_vm.propertyAction === _vm.PROPERTY_ACTION.SET)?_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/set_contact_property/property_value")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
@@ -244,8 +244,7 @@ var actions = {
               _context.t1 = _context.sent;
               _context.t2 = {
                 uuid: _context.t1,
-                tag: 'Default',
-                label: 'Default'
+                name: 'Default'
               };
               _context.t3 = {
                 props: _context.t2
@@ -375,7 +374,7 @@ Core_SetContactPropertyBlockvue_type_script_lang_ts_Core_SetContactPropertyBlock
   }
 })], Core_SetContactPropertyBlockvue_type_script_lang_ts_Core_SetContactPropertyBlock);
 /* harmony default export */ var Core_SetContactPropertyBlockvue_type_script_lang_ts_ = (Core_SetContactPropertyBlockvue_type_script_lang_ts_Core_SetContactPropertyBlock);
-var install = Object(builder["c" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, Core_SetContactPropertyStore);
+var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, Core_SetContactPropertyStore);
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue?vue&type=script&lang=ts&
  /* harmony default export */ var block_types_Core_SetContactPropertyBlockvue_type_script_lang_ts_ = (Core_SetContactPropertyBlockvue_type_script_lang_ts_); 
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue
