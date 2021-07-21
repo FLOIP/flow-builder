@@ -616,7 +616,7 @@ export default {
 
   min-width: 200px;
   padding: 0.4em;
-  padding-bottom: 0.25em;
+  padding-bottom: 0;
   scroll-margin: 35px;
   scroll-margin-top: 100px;
 
@@ -670,10 +670,7 @@ export default {
 
   .block-target {
     min-height: 3em;
-    border: 1px dashed transparent;
     padding: 0.1em;
-
-    transition: border-radius 200ms ease-in-out;
 
     &:hover {
       border-radius: 0.3em;

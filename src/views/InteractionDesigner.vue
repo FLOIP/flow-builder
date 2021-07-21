@@ -367,9 +367,7 @@ export default {
   $sidebar-width: 365px;
 
   .interaction-designer-contents {
-    background:
-      linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
-      linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center, $dot-color;
+    background: #F5F5F5;
     background-size: $dot-space $dot-space;
   }
 
