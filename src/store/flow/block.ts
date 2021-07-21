@@ -2,7 +2,7 @@ import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, has, includes, setWith, snakeCase} from 'lodash'
+import {defaults, has, includes, isArray, setWith, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {BLOCK_TYPE as PHOTO_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import {BLOCK_TYPE as LOCATION_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
@@ -40,9 +40,13 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .tags = value
   },
-  block_pushTag(state, {blockId, value}) {
-    findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-      .tags?.push(value)
+  block_addTag(state, {blockId, value}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    if (isArray(block.tags)) {
+      block.tags.push(value)
+    } else {
+      block.tags = [value]
+    }
   },
   block_setExitName(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
