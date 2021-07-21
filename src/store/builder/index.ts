@@ -361,8 +361,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
-    [get(source, 'block.ui_metadata.canvas_coordinates.x'), get(source, 'block.ui_metadata.canvas_coordinates.y')],
-    [get(target, 'block.ui_metadata.canvas_coordinates.x'), get(target, 'block.ui_metadata.canvas_coordinates.y')],
+    [source.ui_metadata.canvas_coordinates.x, source.ui_metadata.canvas_coordinates.y],
+    [target.ui_metadata.canvas_coordinates.x, target.ui_metadata.canvas_coordinates.y],
 
     // block titles
     source.label,
@@ -371,8 +371,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
     // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
 
     // other exit titles
-    ...map(source.exits, 'tag'),
-    ...map(target.exits, 'tag'),
+    ...map(source.exits, 'name'),
+    ...map(target.exits, 'name'),
   ]
 }
 
