@@ -1,7 +1,7 @@
 <template>
   <div class="mobile-primitive-select-one-response-block">
     <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -13,6 +13,41 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <hr>
+
+      <div class="form-group">
+        <h4>{{'flow-builder.choices' | trans}}</h4>
+
+        <!--Show non empty choices-->
+        <template v-for="(choiceKey) in Object.keys(inflatedChoices)">
+          <!-- we're just making a best guess as to which variant to use
+               based on how this instance of flow-builder works -->
+          <resource-variant-text-editor
+            :label="choiceKey.toString()"
+            :rows="1"
+            :placeholder="'Enter choice...'"
+            :resource-id="inflatedChoices[choiceKey].resource.uuid"
+            :resource-variant="findOrGenerateStubbedVariantOn(
+              inflatedChoices[choiceKey].resource,
+              {language_id: flow.languages[0].id, content_type: SupportedMode.TEXT, modes: [SupportedContentType.TEXT]})"
+            :mode="'TEXT'" />
+
+        </template>
+
+        <!--Show empty choice-->
+        <resource-variant-text-editor
+          :label="(Object.keys(inflatedChoices).length + 1).toString()"
+          :rows="1"
+          :placeholder="'Enter choice...'"
+          :resource-id="inflatedEmptyChoice.resource.uuid"
+          :resource-variant="findOrGenerateStubbedVariantOn(
+              inflatedEmptyChoice.resource,
+              {language_id: flow.languages[0].id, content_type: SupportedMode.TEXT, modes: [SupportedContentType.TEXT]})"
+          :mode="'TEXT'" />
+      </div>
+
+      <hr>
+
       <div class="prompt-resource">
         <resource-editor
           v-if="promptResource"
@@ -21,65 +56,28 @@
           :block="block"
           :flow="flow" />
       </div>
-      <div class="question-prompt-resource">
-        <resource-editor
-          v-if="questionPromptResource"
-          :label="'flow-builder.question-prompt' | trans"
-          :resource="questionPromptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
-      <div class="choices-prompt-resource">
-        <resource-editor
-          v-if="choicesPromptResource"
-          :label="'flow-builder.choices-prompt' | trans"
-          :resource="choicesPromptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
-      <div class="form-group">
-        <!--Show non empty choices-->
-        <template v-for="(choiceKey) in Object.keys(inflatedChoices)">
-          <hr>
-          <h4>{{ `Choice ${choiceKey}` }}</h4>
-          <block-exit-semantic-label-editor
-            v-if="inflatedChoices[choiceKey].exit"
-            :exit="inflatedChoices[choiceKey].exit"
-            :block="block" />
-
-          <resource-editor
-            :resource="inflatedChoices[choiceKey].resource"
-            :block="block"
-            :flow="flow" />
-        </template>
-        <!--Show empty choice-->
-        <hr>
-        <h4>{{ `Choice ${Object.keys(inflatedChoices).length + 1}` }}</h4>
-        <block-exit-semantic-label-editor :exit="inflatedEmptyChoice.exit" />
-
-        <resource-editor
-          :resource="inflatedEmptyChoice.resource"
-          :block="block"
-          :flow="flow" />
-      </div>
 
       <categorization :block="block" />
 
       <generic-contact-property-editor :block="block" />
+
+      <hr>
 
       <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />
+
   </div>
 </template>
 
 <script lang="ts">
-import {IFlow, IResource} from '@floip/flow-runner'
+import {IFlow, IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {namespace} from 'vuex-class'
 import {Component, Prop, Watch} from 'vue-property-decorator'
@@ -89,6 +87,8 @@ import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
+import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -105,6 +105,7 @@ const builderVuexNamespace = namespace('builder')
 @Component({
   components: {
     GenericContactPropertyEditor,
+    ResourceVariantTextEditor,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
@@ -122,16 +123,16 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
   showSemanticLabel = false
 
+  SupportedContentType = SupportedContentType
+  SupportedMode = SupportedMode
+  findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
+
   get promptResource(): IResource {
     return this.resourcesByUuid[this.block.config.prompt]
   }
 
   get questionPromptResource(): IResource {
     return this.resourcesByUuid[this.block.config.question_prompt || '']
-  }
-
-  get choicesPromptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.choices_prompt || '']
   }
 
   @Watch('inflatedChoices', {deep: true})

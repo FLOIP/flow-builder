@@ -16,7 +16,7 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/flow_id`">
         <div class="form-group">
-          <label>{{ 'flow-builder.destination-flow' | trans }}</label>
+          <label class="text-primary">{{ 'flow-builder.destination-flow' | trans }}</label>
           <select
             v-model="destinationFlowId"
             class="form-control"
@@ -37,11 +37,14 @@
 
       <generic-contact-property-editor :block="block" />
 
+      <hr>
+
       <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />

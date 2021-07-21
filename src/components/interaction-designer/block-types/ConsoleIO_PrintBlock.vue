@@ -23,11 +23,14 @@
 
       <generic-contact-property-editor :block="block" />
 
+      <hr>
+
       <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />

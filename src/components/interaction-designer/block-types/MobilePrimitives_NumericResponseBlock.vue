@@ -1,6 +1,6 @@
 <template>
   <div class="mobile-primitive-numeric-response-block">
-    <h3 class="no-room-above text-primary">
+    <h3 class="no-room-above">
       {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
     </h3>
 
@@ -34,11 +34,14 @@
 
       <generic-contact-property-editor :block="block" />
 
+      <hr>
+
       <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />

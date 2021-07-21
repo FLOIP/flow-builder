@@ -28,14 +28,6 @@
           :block="block"
           :flow="flow" />
       </div>
-      <div class="choices-prompt-resource">
-        <resource-editor
-          v-if="choicesPromptResource"
-          :label="'flow-builder.choices-prompt' | trans"
-          :resource="choicesPromptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
       <div class="form-group">
         <!--Show non empty choices-->
         <template v-for="(choiceKey) in Object.keys(inflatedChoices)">
@@ -66,11 +58,14 @@
 
       <generic-contact-property-editor :block="block" />
 
+      <hr>
+
       <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />

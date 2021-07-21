@@ -34,11 +34,14 @@
 
       <generic-contact-property-editor :block="block" />
 
+      <hr>
+
       <slot name="extras" />
 
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />
@@ -49,7 +52,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 import {ICaseBlock} from '@floip/flow-runner/src/model/block/ICaseBlock'
-import {IBlockExit, IBlockExitTestRequired, IFlow} from '@floip/flow-runner'
+import {IBlockExit, IFlow} from '@floip/flow-runner'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import CaseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import Lang from '@/lib/filters/lang'
@@ -87,7 +90,7 @@ class Core_CaseBlock extends mixins(Lang) {
 
   showSemanticLabel = false
 
-  get exits(): IBlockExitTestRequired[] {
+  get exits(): IBlockExit[] {
     return this.block.exits
   }
 
