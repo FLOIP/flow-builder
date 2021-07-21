@@ -3,28 +3,29 @@
     <h4>{{'flow-builder.choices' | trans}}</h4>
 
     <!-- Show non-empty choices -->
-    <template v-for="(choiceIndex, choiceKey) in choiceKeys">
+    <template v-for="(resourceId, choiceIndex) in choiceKeys">
       <resource-variant-text-editor
-        :key="block.config.choices[choiceKey]"
+        :key="resourceId"
         class="choices-builder-item"
-        :label="choiceIndex"
+        :label="(choiceIndex + 1).toString()"
         :rows="1"
         :placeholder="'Enter choice...'"
-        :resource-id="block.config.choices[choiceKey]"
+        :resource-id="resourceId"
         :resource-variant="findOrGenerateStubbedVariantOn(
-          resourcesByUuid[block.config.choices[choiceKey]],
+          resourcesByUuid[resourceId],
           {language_id: activeFlow.languages[0].id,
-           content_type: resourcesByUuid[block.config.choices[choiceKey]].values[0].content_type,
-           modes: resourcesByUuid[block.config.choices[choiceKey]].values[0].modes})"
+           content_type: resourcesByUuid[resourceId].values[0].content_type,
+           modes: resourcesByUuid[resourceId].values[0].modes})"
         :mode="'TEXT'"
         @afterResourceVariantChanged="handleExistingResourceVariantChangedFor(
-          choiceKey,
+          resourceId,
           choiceIndex,
-          resourcesByUuid[block.config.choices[choiceKey]])" />
+          resourcesByUuid[resourceId])" />
     </template>
 
     <!--Show empty choice-->
     <resource-variant-text-editor
+      v-if="draftResource"
       :key="draftResource.uuid"
       class="choices-builder-item"
       :label="(choiceKeys.length + 1).toString()"
@@ -98,19 +99,19 @@ class ChoicesBuilder extends mixins(Lang) {
     this.generateDraftResource()
   }
 
-  handleExistingResourceVariantChangedFor(choiceKey: string, choiceIndex: number, resource: IResource): void {
+  handleExistingResourceVariantChangedFor(resourceId: IResource['uuid'], choiceIndex: number, resource: IResource): void {
     const isLast = choiceIndex === this.choiceKeys.length - 1
     const hasEmptyValue = isEmpty(get(resource.values[0], 'value'))
 
     if (isLast && hasEmptyValue) {
       // todo: clean up resource, but should we first check for references?
       // this.resource_delete({resourceId: resource.uuid})
-      this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId: resource.uuid})
+      this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId})
       return
     }
 
-    this.rewriteChoiceKeyFor({resourceId: resource.uuid, blockId: this.block.uuid})
-    this.$emit('choiceChanged', {choiceKey, choiceIndex, resource})
+    this.rewriteChoiceKeyFor({resourceId, blockId: this.block.uuid})
+    this.$emit('choiceChanged', {resourceId, choiceIndex, resource})
   }
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }

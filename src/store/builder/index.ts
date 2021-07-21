@@ -371,8 +371,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
     // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
 
     // other exit titles
-    ...map(source.exits, 'tag'),
-    ...map(target.exits, 'tag'),
+    ...map(source.exits, 'name'),
+    ...map(target.exits, 'name'),
   ]
 }
 

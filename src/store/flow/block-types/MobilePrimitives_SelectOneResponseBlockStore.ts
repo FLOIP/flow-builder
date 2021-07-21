@@ -34,7 +34,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
     }
 
-    const choiceKey = String(findKey(resourceId))
+    const choiceKey = String(findKey(block.config.choices, (v) => v === resourceId))
     // omit() will inadvertently but desirably remove an empty `choiceKey`
     block.config.choices = omit(block.config.choices, choiceKey)
     dispatch('addChoiceByResourceIdTo', {blockId, resourceId})
@@ -62,7 +62,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       throw new ValidationException(`Unable to find block: ${blockId}`)
     }
 
-    const choiceKey = String(findKey(block.config.choices, resourceId))
+    const choiceKey = String(findKey(block.config.choices, (v) => v === resourceId))
     Vue.delete(block.config.choices, choiceKey)
   },
 
