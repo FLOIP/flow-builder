@@ -22,15 +22,15 @@
           <font-awesome-icon
             v-if="isBlockSelected"
             v-b-tooltip.hover="trans('flow-builder.deselect-block')"
-            :icon="['fas', 'check-circle']"
-            class="fa-btn text-primary"
-            @click="block_deselect({ blockId: block.uuid })" />
+            :icon="['far', 'check-circle']"
+            class="fa-btn text-info"
+            @click="isEditable && block_deselect({ blockId: block.uuid })" />
           <font-awesome-icon
             v-if="!isBlockSelected"
             v-b-tooltip.hover="trans('flow-builder.select-block')"
             :icon="['far', 'circle']"
             class="fa-btn"
-            @click="block_select({ blockId: block.uuid })" />
+            @click="isEditable && block_select({ blockId: block.uuid })" />
         </div>
         <div class="header-actions-right d-flex">
           <!--Delete-->
@@ -61,7 +61,7 @@
             <font-awesome-icon
               v-if="isEditable"
               v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-              :icon="['far', 'clone']"
+              :icon="['fac', 'copy']"
               class="fa-btn"
               @click.prevent="handleDuplicateBlock" />
           </div>

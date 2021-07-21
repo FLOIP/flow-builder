@@ -1,6 +1,6 @@
 <template>
   <div class="float-editor">
-    <label>{{ label }}</label>
+    <label class="text-primary">{{ label }}</label>
     <div>
       <input
         type="number"

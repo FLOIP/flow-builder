@@ -184,7 +184,7 @@
       </div>
     </div>
     <div class="tree-builder-toolbar-alerts w-100">
-      <selection-banner @updated="handleHeightChangeFromDOM" />
+      <selection-banner v-if="isEditable" @updated="handleHeightChangeFromDOM" />
       <error-notifications @updated="handleHeightChangeFromDOM" />
     </div>
   </div>

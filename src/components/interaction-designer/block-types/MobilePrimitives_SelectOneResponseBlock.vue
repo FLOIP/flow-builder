@@ -13,15 +13,6 @@
         :block="block" />
       <block-name-editor :block="block" />
 
-      <div class="prompt-resource">
-        <resource-editor
-          v-if="promptResource"
-          :label="'flow-builder.prompt' | trans"
-          :resource="promptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
-
       <hr>
 
       <div class="form-group">
@@ -53,6 +44,17 @@
               inflatedEmptyChoice.resource,
               {language_id: flow.languages[0].id, content_type: SupportedMode.TEXT, modes: [SupportedContentType.TEXT]})"
           :mode="'TEXT'" />
+      </div>
+
+      <hr>
+
+      <div class="prompt-resource">
+        <resource-editor
+          v-if="promptResource"
+          :label="'flow-builder.prompt' | trans"
+          :resource="promptResource"
+          :block="block"
+          :flow="flow" />
       </div>
 
       <hr>
