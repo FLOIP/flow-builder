@@ -45,7 +45,7 @@ class TagSelector extends mixins(Lang) {
   @Prop({default: true}) readonly taggable!: boolean
 
   get selectedTags() {
-    return this.stringListToOptions(this.block.tags)
+    return this.stringListToOptions(this.block.tags || [])
   }
 
   set selectedTags(value) {
@@ -63,7 +63,7 @@ class TagSelector extends mixins(Lang) {
     return map(list, (value) => ({id: value, name: value}))
   }
 
-  addTag(newTag) {
+  addTag(newTag: string) {
     this.blockTags.push(newTag)
     this.block_pushTag({
       blockId: this.block.uuid,
