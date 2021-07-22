@@ -101,13 +101,13 @@ export default {
       // generate drafts while 'between exits' or 'source/destination unknown'
       // todo: push these out into ?block?
       const source = this.source || {
-        ...set({}, 'block.ui_metadata.canvas_coordinates.x', this.position.x),
-        ...set({}, 'block.ui_metadata.canvas_coordinates.y', this.position.y),
+        ...set({}, 'ui_metadata.canvas_coordinates.x', this.position.x),
+        ...set({}, 'ui_metadata.canvas_coordinates.y', this.position.y),
       }
 
       const target = this.target || {
-        ...set({}, 'block.ui_metadata.canvas_coordinates.x', this.position.x),
-        ...set({}, 'block.ui_metadata.canvas_coordinates.y', this.position.y),
+        ...set({}, 'ui_metadata.canvas_coordinates.x', this.position.x),
+        ...set({}, 'ui_metadata.canvas_coordinates.y', this.position.y),
       }
 
       return this.repaintCacheKeyGenerator(source, target)
