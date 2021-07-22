@@ -110,7 +110,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
   async validate_flowContainer({state}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
     const key = `flowContainer/${flowContainer.uuid}`
-    const errors = getFlowStructureErrors(flowContainer)
+    const errors = getFlowStructureErrors(flowContainer, false)
     Vue.set(state.validationStatuses, key, {
       isValid: !errors,
       ajvErrors: errors,
