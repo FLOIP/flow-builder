@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      defaultValue: 0,
+      defaultValue: '',
     }
   },
 
