@@ -34,14 +34,14 @@ export default {
   },
   data() {
     return {
-      defaultValue: 0,
+      defaultValue: '',
     }
   },
 
   computed: {
     maxValue: {
       get() {
-        return get(this.block, 'config.validation_maximum', this.defaultValue)
+        return get(this.block, 'config.validation_maximum') ? get(this.block, 'config.validation_maximum') : this.defaultValue
       },
       set(value) {
         this.$emit('commitValidationMaximumChange', value)

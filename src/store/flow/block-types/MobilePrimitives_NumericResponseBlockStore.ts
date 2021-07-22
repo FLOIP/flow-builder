@@ -13,31 +13,34 @@ export const getters: GetterTree<IFlowsState, IRootState> = {}
 export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async setValidationMinimum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
+  async setValidationMinimum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string | null }) {
+    const valueAsNumberOrNull = value === "" ? null : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validation_minimum',
-      value,
+      value: valueAsNumberOrNull,
     }, {root: true})
-    return value
+    return valueAsNumberOrNull
   },
-  async setValidationMaximum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
+  async setValidationMaximum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string | null }) {
+    const valueAsNumberOrNull = value === "" ? null : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validation_maximum',
-      value,
+      value: valueAsNumberOrNull,
     }, {root: true})
-    return value
+    return valueAsNumberOrNull
   },
-  async setMaxDigits({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
+  async setMaxDigits({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string | null}) {
+    const valueAsNumberOrNull = value === "" ? null : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'ivr',
       value: {
-        max_digits: value,
+        max_digits: valueAsNumberOrNull,
       },
     }, {root: true})
-    return value
+    return valueAsNumberOrNull
   },
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<INumericResponseBlock> }) {
     const exits: IBlockExit[] = [
@@ -66,10 +69,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits,
       config: {
         prompt: blankResource.uuid,
-        validation_minimum: '',
-        validation_maximum: '',
+        validation_minimum: null,
+        validation_maximum: null,
         ivr: {
-          max_digits: '',
+          max_digits: null,
         },
       },
       tags: [],

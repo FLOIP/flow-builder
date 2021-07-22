@@ -101,15 +101,15 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
     return this.resourcesByUuid[this.block.config.prompt]
   }
 
-  updateValidationMin(value: number | string) {
+  updateValidationMin(value: number | string | null) {
     this.setValidationMinimum({blockId: this.block.uuid, value})
   }
 
-  updateValidationMax(value: number | string) {
+  updateValidationMax(value: number | string | null) {
     this.setValidationMaximum({blockId: this.block.uuid, value})
   }
 
-  updateMaxDigits(value: number | string) {
+  updateMaxDigits(value: number | string | null) {
     this.setMaxDigits({blockId: this.block.uuid, value})
   }
 
@@ -120,14 +120,14 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   @blockVuexNamespace.Action setValidationMinimum!: ({
     blockId,
     value,
-  }: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
+  }: { blockId: IBlock['uuid'], value: number | string | null }) => Promise<string>
 
   @blockVuexNamespace.Action setValidationMaximum!: ({
     blockId,
     value,
-  }: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
+  }: { blockId: IBlock['uuid'], value: number | string | null }) => Promise<string>
 
-  @blockVuexNamespace.Action setMaxDigits!: ({blockId, value}: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
+  @blockVuexNamespace.Action setMaxDigits!: ({blockId, value}: { blockId: IBlock['uuid'], value: number | string | null }) => Promise<string>
 
   @builderVuexNamespace.Getter isEditable !: boolean
 }

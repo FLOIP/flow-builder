@@ -41,7 +41,7 @@ export default {
   computed: {
     maxDigits: {
       get() {
-        return get(this.block, 'config.ivr.max_digits', '')
+        return get(this.block, 'config.ivr.max_digits') ? get(this.block, 'config.ivr.max_digits') : ''
       },
       set(value) {
         this.$emit('commitMaxDigitsChange', value)
