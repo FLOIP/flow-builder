@@ -5,6 +5,7 @@
 
       <div class="btn-group">
         <button
+          v-if="hasExitPerChoice"
           :class="{
             active: isBranchingTypeExitPerChoice,
             'btn-primary': isBranchingTypeExitPerChoice,
@@ -133,6 +134,7 @@
   })
   export default class BlockOutputBranchingConfig extends mixins(Lang) {
     @Prop() readonly block!: IBlock
+    @Prop() readonly hasExitPerChoice!: boolean
 
     OutputBranchingType = OutputBranchingType
     NoValidResponseHandler = NoValidResponseHandler

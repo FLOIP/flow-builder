@@ -24,6 +24,11 @@
         :has-ivr="hasVoiceMode"
         @commitMaxDigitsChange="updateMaxDigits" />
 
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false"
+        @branchingTypeChanged="reflowExitsWhenBranchingTypeNotUnified()" />
+
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"
@@ -70,6 +75,11 @@ import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue
 import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
 import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import BlockOutputBranchingConfig, {
+  IBlockWithBranchingType,
+  OutputBranchingType
+} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import { includes } from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -88,6 +98,7 @@ const builderVuexNamespace = namespace('builder')
     BlockMaximumNumericEditor,
     BlockMaxDigitEditor,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
@@ -113,6 +124,18 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
     this.setMaxDigits({blockId: this.block.uuid, value})
   }
 
+  reflowExitsWhenBranchingTypeNotUnified(): void {
+    const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
+    const {EXIT_PER_CHOICE, ADVANCED} = OutputBranchingType
+    const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
+
+    if (!isEnteringChoiceOrAdvancedBranchingType) {
+      return
+    }
+
+    this.reflowExitsFromChoices({blockId})
+  }
+
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
@@ -128,6 +151,8 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   }: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
 
   @blockVuexNamespace.Action setMaxDigits!: ({blockId, value}: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
+
+  @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean
 }

@@ -21,6 +21,7 @@
 
       <block-output-branching-config
         :block="block"
+        :has-exit-per-choice="true"
         @branchingTypeChanged="reflowExitsWhenBranchingTypeNotUnified()" />
 
       <div class="prompt-resource">

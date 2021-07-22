@@ -13,6 +13,11 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false"
+        @branchingTypeChanged="reflowExitsWhenBranchingTypeNotUnified()" />
+
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"
@@ -41,7 +46,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IFlow, IResource} from '@floip/flow-runner'
+import { IBlock, IFlow, IResource } from '@floip/flow-runner'
 import {IMessageBlock} from '@floip/flow-runner/src/model/block/IMessageBlock'
 
 import MessageStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
@@ -56,9 +61,15 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import BlockOutputBranchingConfig, {
+  IBlockWithBranchingType,
+  OutputBranchingType
+} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import { includes } from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
@@ -70,6 +81,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class MobilePrimitives_MessageBlock extends mixins(Lang) {
@@ -83,9 +95,23 @@ class MobilePrimitives_MessageBlock extends mixins(Lang) {
     return this.resourcesByUuid[this.block.config.prompt]
   }
 
+  reflowExitsWhenBranchingTypeNotUnified(): void {
+    const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
+    const {EXIT_PER_CHOICE, ADVANCED} = OutputBranchingType
+    const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
+
+    if (!isEnteringChoiceOrAdvancedBranchingType) {
+      return
+    }
+
+    this.reflowExitsFromChoices({blockId})
+  }
+
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @builderVuexNamespace.Getter isEditable !: boolean
+
+  @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
 }
 
 export default MobilePrimitives_MessageBlock
