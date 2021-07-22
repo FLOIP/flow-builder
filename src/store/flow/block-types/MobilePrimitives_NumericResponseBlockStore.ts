@@ -14,7 +14,7 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMinimum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
-    const valueAsNumberOrNull = value === "" ? undefined : value
+    const valueAsNumberOrNull = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validation_minimum',
@@ -23,7 +23,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return valueAsNumberOrNull
   },
   async setValidationMaximum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
-    const valueAsNumberOrNull = value === "" ? undefined : value
+    const valueAsNumberOrNull = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validation_maximum',
@@ -32,7 +32,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return valueAsNumberOrNull
   },
   async setMaxDigits({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
-    const valueAsNumberOrNull = value === "" ? undefined : value
+    const valueAsNumberOrNull = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'ivr',
