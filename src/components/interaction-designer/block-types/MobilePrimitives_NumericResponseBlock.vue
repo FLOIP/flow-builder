@@ -46,7 +46,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
@@ -65,6 +64,11 @@ import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import BlockOutputBranchingConfig, {
+  IBlockWithBranchingType,
+  OutputBranchingType,
+} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {includes} from 'lodash'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -75,7 +79,6 @@ import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue
 import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
 import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
-import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -110,16 +113,26 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
 
   updateValidationMin(value: number | string) {
     this.setValidationMinimum({blockId: this.block.uuid, value})
-    this.handleBranchingTypeChangedToUnified()
+    this.handleActionsAccordingToBranchingType()
   }
 
   updateValidationMax(value: number | string) {
     this.setValidationMaximum({blockId: this.block.uuid, value})
-    this.handleBranchingTypeChangedToUnified()
+    this.handleActionsAccordingToBranchingType()
   }
 
   updateMaxDigits(value: number | string) {
     this.setMaxDigits({blockId: this.block.uuid, value})
+  }
+
+  handleActionsAccordingToBranchingType(): void {
+    const {vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
+    const {EXIT_PER_CHOICE, ADVANCED} = OutputBranchingType
+    const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
+
+    if (!isEnteringChoiceOrAdvancedBranchingType) {
+      this.handleBranchingTypeChangedToUnified()
+    }
   }
 
   handleBranchingTypeChangedToUnified() {
@@ -144,7 +157,7 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
       return `AND(is_number(block.value), block.value <= ${this.block.config.validation_maximum})`
     }
 
-    console.warn('Exit test condition not found, providing `true` by default')
+    console.warn('Exit test condition not found for NumericBlock, providing `true` by default')
     return 'true'
   }
 

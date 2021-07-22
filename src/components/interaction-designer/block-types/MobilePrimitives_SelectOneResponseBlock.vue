@@ -58,7 +58,7 @@ import {IBlock, IBlockExit, IFlow, IResource, SupportedContentType, SupportedMod
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
-import {includes} from 'lodash'
+import {includes, map} from 'lodash'
 
 import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
@@ -122,6 +122,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
 
     if (!isEnteringChoiceOrAdvancedBranchingType) {
+      this.handleBranchingTypeChangedToUnified()
       return
     }
 
@@ -131,8 +132,17 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   handleBranchingTypeChangedToUnified() {
     this.block_convertExitFormationToUnified({
       blockId: this.block.uuid,
-      test: 'true',
+      test: this.formatTestValue(),
     })
+  }
+
+  formatTestValue() {
+    const blockChoicesKey = Object.keys(this.block.config.choices)
+    if (blockChoicesKey.length === 0) {
+      console.warn('Choices are empty for SelectOneBlock, providing `true` by default')
+      return true
+    }
+    return `OR(${map(blockChoicesKey, (choice) => `block.value = \\"${choice}\\"`).join(',')})`
   }
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
