@@ -24,8 +24,6 @@
         :has-one-exit-per-choice="false"
         @branchingTypeChanged="reflowExitsWhenBranchingTypeNotUnified()" />
 
-      <hr>
-
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"
