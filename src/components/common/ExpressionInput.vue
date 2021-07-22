@@ -1,13 +1,22 @@
 <template>
   <div class="expression-input form-group">
     <label :class="labelClass">{{ label }}</label>
-    <textarea
-      ref="input"
-      v-model="expression"
-      :class="['form-control', {'is-invalid': isInvalid}]"
-      :placeholder="placeholder"
-      :rows="rows"
-      @input="$emit('input', $event.target.value)" />
+
+    <div class="input-group">
+      <div
+        v-if="prependText"
+        class="input-group-prepend">
+        <span class="input-group-text">{{prependText}}</span>
+      </div>
+
+      <textarea
+        ref="input"
+        v-model="expression"
+        :class="['form-control', {'is-invalid': isInvalid}]"
+        :rows="rows"
+        :placeholder="placeholder"
+        @input="$emit('input', $event.target.value)" />
+    </div>
     <slot />
   </div>
 </template>
@@ -63,6 +72,11 @@ export default {
     validState: {
       type: Boolean,
       default: null,
+      required: false,
+    },
+    prependText: {
+      type: String,
+      default: '',
       required: false,
     },
   },

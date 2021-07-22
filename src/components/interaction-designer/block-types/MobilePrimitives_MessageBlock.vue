@@ -13,6 +13,10 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
+
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"
@@ -41,7 +45,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IFlow, IResource} from '@floip/flow-runner'
+import { IFlow, IResource } from '@floip/flow-runner'
 import {IMessageBlock} from '@floip/flow-runner/src/model/block/IMessageBlock'
 
 import MessageStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
@@ -56,9 +60,11 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
@@ -70,6 +76,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class MobilePrimitives_MessageBlock extends mixins(Lang) {

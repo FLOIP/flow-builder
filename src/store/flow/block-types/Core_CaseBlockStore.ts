@@ -43,7 +43,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
           test: '',
         }) as IBlockExit,
       }, {root: true})
-      commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: exit}, {root: true})
+      commit('flow/block_addExit', {blockId: activeBlock.uuid, newExit: exit}, {root: true})
     } else if (getters.twoExitsBlank) {
       commit('flow/block_popFirstExitWithoutTest', {blockId: activeBlock.uuid}, {root: true})
     }

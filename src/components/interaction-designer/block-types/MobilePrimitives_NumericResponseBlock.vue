@@ -24,6 +24,10 @@
         :has-ivr="hasVoiceMode"
         @commitMaxDigitsChange="updateMaxDigits" />
 
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
+
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"
@@ -70,6 +74,7 @@ import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue
 import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
 import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -88,6 +93,7 @@ const builderVuexNamespace = namespace('builder')
     BlockMaximumNumericEditor,
     BlockMaxDigitEditor,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {

@@ -10,6 +10,7 @@
         </div>
 
         <textarea
+          ref="input"
           v-model="content"
           v-focus="isSelected"
           :placeholder="placeholder || `flow-builder.enter-${resourceVariant.content_type.toString().toLowerCase()}-content` | trans"
@@ -180,11 +181,13 @@ export default {
         const {resourceId, mode} = this
         const {language_id: languageId, content_type: contentType} = this.resourceVariant
 
+        this.$emit('beforeResourceVariantChanged', {variant: this.resourceVariant, resourceId})
         this.resource_setOrCreateValueModeSpecific({
           resourceId,
           filter: {language_id: languageId, content_type: contentType, modes: [mode]},
           value,
         })
+        this.$emit('afterResourceVariantChanged', {variant: this.resourceVariant, resourceId})
       },
     },
 

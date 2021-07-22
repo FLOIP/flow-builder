@@ -125,6 +125,7 @@
           }"
           @mouseenter="isConnectionSourceRelocateActive && activateExitAsDropZone($event, exit)"
           @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)">
+          <div v-if="!(exit.default && block.vendor_metadata.io_viamo.noValidResponse === NoValidResponseHandler.END_CALL)">
           <div class="total-label-container">
             <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1" />
           </div>
@@ -135,7 +136,7 @@
             @mouseleave="exitMouseLeave(exit)">
             <span class="block-exit-tag-text align-self-center"
                   v-b-tooltip.hover.top="exit.test">
-              {{ visibleExitTag(key, exit) }}
+              {{exit.name || '(untitled)'}}
             </span>
 
             <span
@@ -207,6 +208,7 @@
               </template>
             </span>
           </div>
+          </div>
         </div>
       </footer>
     </plain-draggable>
@@ -223,9 +225,7 @@ import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
 import {generateConnectionLayoutKeyFor, OperationKind} from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import {lang} from '@/lib/filters/lang'
-import {BLOCK_TYPE as BLOCK_TYPE__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
-import {BLOCK_TYPE as BLOCK_TYPE__SELECT_ONE_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
-import {BLOCK_TYPE as BLOCK_TYPE__SELECT_MANY_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
+import {NoValidResponseHandler} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import {BTooltip} from 'bootstrap-vue'
 import BlockEditor from '@/components/interaction-designer/block-editors/BlockEditor'
 
@@ -253,6 +253,7 @@ export default {
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
       blockWidth: 0,
       exitHovers: {},
+      NoValidResponseHandler: NoValidResponseHandler,
     }
   },
 
@@ -439,21 +440,6 @@ export default {
       return resource.hasText()
         ? resource.getText()
         : uuid
-    },
-
-    visibleExitTag(key, exit) {
-      if (!exit.tag && !exit.semantic_label) {
-        return '—'
-      }
-
-      const {block} = this
-      if (block.type === BLOCK_TYPE__CASE_BLOCK) {
-        return `${key + 1}: ${exit.tag}`
-      } else if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semantic_label) {
-        return exit.semantic_label
-      }
-
-      return exit.tag
     },
 
     // todo: push NodeExit into it's own vue component

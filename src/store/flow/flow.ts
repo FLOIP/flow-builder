@@ -274,7 +274,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     return resource
   },
-  async flow_addBlankResourceForEnabledModesAndLangs({getters, dispatch, commit}): Promise<IResource> {
+  async flow_addBlankResourceForEnabledModesAndLangs({dispatch, commit}): Promise<IResource> {
+    const resource = await dispatch('flow_createBlankResourceForEnabledModesAndLangs')
+    commit('resource_add', {resource})
+    return resource
+  },
+
+  async flow_createBlankResourceForEnabledModesAndLangs({getters, dispatch, commit}): Promise<IResource> {
     // TODO - figure out of there should only be one value here at first? How would the resource editor change this?
     // TODO - is this right for setup of languages?
     // TODO - How will we add more blank values as supported languages are changed in the flow? We should probably also do this for modes rather than doing all possible modes here.
@@ -296,16 +302,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return memo
     }, [])
 
-    const blankResource = await dispatch('resource_createWith', {
+    return dispatch('resource_createWith', {
       props: {
         uuid: await (new IdGeneratorUuidV4()).generate(),
         values,
       },
     })
-
-    commit('resource_add', {resource: blankResource})
-
-    return blankResource
   },
 
   async flow_createWith(_context, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {
@@ -346,7 +348,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     )
 
     if (has(duplicatedBlock.config, 'prompt')) {
-      const sourceResourceUuid = duplicatedBlock.config.prompt
+      const sourceResourceUuid = duplicatedBlock.config!.prompt
       const targetResourceUuid = await (new IdGeneratorUuidV4()).generate()
       const duplicatedResource: IResource = cloneDeep(getters.resourcesByUuid[sourceResourceUuid])
 

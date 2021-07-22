@@ -2,12 +2,13 @@ import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, has, includes, isArray, setWith, snakeCase} from 'lodash'
+import {defaults, find, get, has, includes, isArray, last, reduce, set, setWith, snakeCase, toPath} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {BLOCK_TYPE as PHOTO_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import {BLOCK_TYPE as LOCATION_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 import {IFlowsState} from '.'
 import {popFirstEmptyItem} from './utils/listBuilder'
+import next from 'ajv/dist/vocabularies/next'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
@@ -15,14 +16,11 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   // blocksByUuid: ({flows}) => map(resources, 'uuid')
 }
 
+// @ts-ignore
 export const mutations: MutationTree<IFlowsState> = {
   block_popFirstExitWithoutTest(state, {blockId}: { blockId: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     block.exits = popFirstEmptyItem(block.exits, 'test')
-  },
-  block_popExitsByLabel(state, {blockId, exitLabel}: { blockId: string, exitLabel: string }) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    block.exits = block.exits.filter((item: IBlockExit) => item.label !== exitLabel)
   },
   block_setName(state, {blockId, value}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -48,21 +46,27 @@ export const mutations: MutationTree<IFlowsState> = {
       block.tags = [value]
     }
   },
-  block_setExitName(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
+  block_setExitName(state, {exitId, blockId, value}: { exitId: IBlockExit['uuid'], blockId: IBlock['uuid'], value: IBlockExit['name'] }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).name = value
   },
-  block_setExitTest(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
+  block_setExitTest(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: IBlockExit['test'] }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).test = value
+  },
+  block_setExitConfigByPath(state, { exitId, blockId, path, value }: {exitId: string; blockId: string; path: string; value: object | string}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    // todo: this will break reactivity
+    set(findBlockExitWith(exitId, block).config, path, value)
   },
   block_setExitSemanticLabel(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).semantic_label = value
   },
-  block_pushNewExit(state, {blockId, newExit}: { blockId: string, newExit: IBlockExit }) {
+  block_addExit(state, {blockId, exit}: {blockId: string, exit: IBlockExit}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    block.exits.push(newExit)
+    // insert before default exit
+    block.exits.splice(block.exits.length - 1, 0, exit)
   },
   block_updateConfig(state, {blockId, newConfig}: { blockId: string, newConfig: object }) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -78,6 +82,7 @@ export const mutations: MutationTree<IFlowsState> = {
     Vue.delete(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, key)
   },
   block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string}) {
+    // todo: this might still break reactivity
     // Make nested assignment reactive
     setWith(
       findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!,
@@ -91,6 +96,24 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockExitWith(exitId, block)
       .destination_block = destinationBlockId
   },
+  block_updateVendorMetadataByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
+    // ensure reactivity
+    const metadata = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).vendor_metadata
+    const pathAsList = toPath(path)
+
+    // todo: I have no idea what TS is complaining about here --- "No matching method overload"
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // eslint-disable-next-line lodash/collection-method-value
+    reduce(pathAsList, (accumulator, pathKey, i): void => {
+      const nextValue = i === pathAsList.length - 1 ? value : get(accumulator, pathKey, {})
+      Vue.set(accumulator, pathKey, nextValue)
+      return nextValue
+    }, metadata!)
+  },
+  block_exitClearDestinationBlockFor(_, {blockExit}) {
+    blockExit.destination_block = undefined
+  },
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
@@ -103,10 +126,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {dispatch},
     {props}: { props: { uuid: string } & Partial<IBlockExit> },
   ): Promise<IBlockExit> {
-    return dispatch('block_createBlockExitWith', {
+    return await dispatch('block_createBlockExitWith', {
       props: {
         ...props,
         default: true,
+
+        // todo: fix flow-runner's handling of ".test"-less exits
+        test: '',
       },
     })
   },
@@ -122,6 +148,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         config: {},
         // prerequisite for reactivity, even optional params
         destination_block: undefined,
+        test: '',
+        semantic_label: undefined,
       }),
     }
   },
@@ -165,6 +193,20 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exitId: first.exitId,
       destinationBlockId: secondDestinationBlockId,
     })
+  },
+
+  async block_convertExitFormationToUnified({state, dispatch}, {blockId}: {blockId: IBlock['uuid']}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    const primaryExitProps: Partial<IBlockExit> = {
+      uuid: await (new IdGeneratorUuidV4()).generate(),
+      name: '1',
+      test: 'true',
+    }
+
+    block.exits = [
+      await dispatch('block_createBlockExitWith', {props: primaryExitProps}),
+      last(block.exits),
+    ]
   },
 
   async block_select({state}, {blockId}: { blockId: IBlock['uuid'] }) {
