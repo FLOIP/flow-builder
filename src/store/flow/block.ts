@@ -115,9 +115,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {dispatch, commit},
     {props}: { props: { uuid: string } & Partial<IBlockExit> },
   ): Promise<IBlockExit> {
-    const resource: IResource = await dispatch('resource_createWith', {props: {uuid: await (new IdGeneratorUuidV4()).generate()}})
-
-    commit('resource_add', {resource})
 
     return {
       ...defaults(props, {
