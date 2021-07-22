@@ -14,338 +14,7 @@ exports[`Storyshots ConsoleIo/Print Block Existing Data Block 1`] = `
 
 exports[`Storyshots ConsoleIo/Print Block Non Starting Block 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="ConsoleIO.Print"
-                      data-for-block-id="fake-uuid-124"
-                    >
-                      <div
-                        class="console-io-print-block"
-                      >
-                        <h3
-                          class="no-room-above"
-                        >
-                          
-    Edit Print block
-  
-                        </h3>
-                         
-                        <fieldset>
-                          <section
-                            class="mb-3"
-                          >
-                            <label
-                              class="text-primary"
-                            >
-                              Title
-                            </label>
-                             
-                            <div
-                              class="validation-message form-group"
-                              id="block/fake-uuid-124/label"
-                            >
-                              <div
-                                class="d-flex"
-                              >
-                                <div
-                                  class="w-100"
-                                >
-                                  <!---->
-                                   
-                                  <textarea
-                                    class="form-control"
-                                    placeholder="Enter title"
-                                    rows="1"
-                                  />
-                                   
-                                </div>
-                                 
-                                <span
-                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
-                                >
-                                  <font-awesome-icon
-                                    class="fa-btn"
-                                    icon="fac,settings"
-                                  />
-                                </span>
-                              </div>
-                               
-                              <small
-                                class="text-danger"
-                              >
-                                
-                              </small>
-                            </div>
-                          </section>
-                           
-                          <!---->
-                           
-                          <div
-                            class="mt-3"
-                          >
-                            <div
-                              class="validation-message form-group"
-                              id="block/fake-uuid-124/name"
-                            >
-                              <div
-                                class="d-flex justify-content-between"
-                              >
-                                <div
-                                  class="block-code align-self-center"
-                                >
-                                  <h6
-                                    class="d-inline"
-                                  >
-                                    Code:
-                                  </h6>
-                                   
-                                  <span>
-                                      
-                                  </span>
-                                </div>
-                                 
-                                <span
-                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
-                                >
-                                  <font-awesome-icon
-                                    class="fa-btn"
-                                    icon="far,edit"
-                                  />
-                                </span>
-                              </div>
-                               
-                              <small
-                                class="text-danger"
-                              >
-                                
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <!---->
-                            
-                          <div
-                            class="block-categorization"
-                          >
-                            <hr />
-                             
-                            <label
-                              class="text-primary"
-                            >
-                              Categorization
-                            </label>
-                             
-                            <div
-                              class="validation-message form-group"
-                              id="block/fake-uuid-124/tags"
-                            >
-                              <div
-                                class="block-group"
-                              >
-                                <label>
-                                  Tags
-                                </label>
-                                 
-                                <div
-                                  class="multiselect"
-                                  tabindex="-1"
-                                >
-                                  <div
-                                    class="multiselect__select"
-                                  />
-                                    
-                                  <div
-                                    class="multiselect__tags"
-                                  >
-                                    <div
-                                      class="multiselect__tags-wrap"
-                                      style="display: none;"
-                                    />
-                                     
-                                    <!---->
-                                     
-                                    <div
-                                      class="multiselect__spinner"
-                                      style="display: none;"
-                                    />
-                                     
-                                    <input
-                                      autocomplete="nope"
-                                      class="multiselect__input"
-                                      name=""
-                                      placeholder="Select or add a tag"
-                                      style="width: 0px; position: absolute; padding: 0px;"
-                                      tabindex="0"
-                                      type="text"
-                                    />
-                                     
-                                    <!---->
-                                     
-                                    <span
-                                      class="multiselect__placeholder"
-                                    >
-                                      
-          Select or add a tag
-        
-                                    </span>
-                                  </div>
-                                   
-                                  <div
-                                    class="multiselect__content-wrapper"
-                                    style="max-height: 300px; display: none;"
-                                    tabindex="-1"
-                                  >
-                                    <ul
-                                      class="multiselect__content"
-                                      style="display: block;"
-                                    >
-                                       
-                                      <!---->
-                                        
-                                      <li
-                                        style="display: none;"
-                                      >
-                                        <span
-                                          class="multiselect__option"
-                                        >
-                                          No elements found. Consider changing the search query.
-                                        </span>
-                                      </li>
-                                       
-                                      <li>
-                                        <span
-                                          class="multiselect__option"
-                                        >
-                                          List is empty.
-                                        </span>
-                                      </li>
-                                       
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
-                               
-                              <small
-                                class="text-danger"
-                              >
-                                
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="generic-contact-property-editor"
-                          >
-                            <hr />
-                             
-                            <label
-                              class="text-primary"
-                            >
-                              Contact Properties
-                            </label>
-                             
-                            <div
-                              class="custom-control custom-checkbox"
-                            >
-                              <input
-                                class="custom-control-input"
-                                id="setContactProperty"
-                                name="setContactProperty"
-                                type="checkbox"
-                                value="false"
-                              />
-                               
-                              <label
-                                class="custom-control-label font-weight-normal"
-                                for="setContactProperty"
-                              >
-                                
-      Set a contact property with the Contact’s response
-    
-                              </label>
-                            </div>
-                             
-                            <!---->
-                          </div>
-                           
-                          <hr />
-                           
-                          <div
-                            class="starting-block-button"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <button
-                                class="btn btn-sm w-100 btn-primary"
-                                disabled="disabled"
-                                type="button"
-                              >
-                                <font-awesome-icon
-                                  class="fa-btn"
-                                  icon="fac,enter"
-                                />
-                                 
-          Currently set as starting block
-        
-                              </button>
-                            </div>
-                          </div>
-                        </fieldset>
-                         
-                        <div
-                          class="block-id text-right"
-                        >
-                          <small
-                            class="text-muted"
-                          >
-                            Block Id: 
-                            <em>
-                              fake-uuid-124
-                            </em>
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 
@@ -396,7 +65,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="ConsoleIO.Read"
-                      data-for-block-id="fake-uuid-138"
+                      data-for-block-id="fake-uuid-129"
                     >
                       <div
                         class="console-io-read-block"
@@ -421,7 +90,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-138/label"
+                              id="block/fake-uuid-129/label"
                             >
                               <div
                                 class="d-flex"
@@ -464,7 +133,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-138/name"
+                              id="block/fake-uuid-129/name"
                             >
                               <div
                                 class="d-flex justify-content-between"
@@ -503,7 +172,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-138/config/format_string"
+                            id="block/fake-uuid-129/config/format_string"
                           >
                             <div
                               class="block-format-string"
@@ -544,7 +213,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-138/tags"
+                              id="block/fake-uuid-129/tags"
                             >
                               <div
                                 class="block-group"
@@ -708,7 +377,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-138
+                              fake-uuid-129
                             </em>
                           </small>
                         </div>
@@ -2472,338 +2141,7 @@ exports[`Storyshots MobilePrimitives/Message Block Existing Data Block 1`] = `
 
 exports[`Storyshots MobilePrimitives/Message Block Non Starting Block 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="MobilePrimitives.Message"
-                      data-for-block-id="fake-uuid-39"
-                    >
-                      <div
-                        class="mobile-primitive-message-block"
-                      >
-                        <h3
-                          class="no-room-above"
-                        >
-                          
-    Edit Message block
-  
-                        </h3>
-                         
-                        <fieldset>
-                          <section
-                            class="mb-3"
-                          >
-                            <label
-                              class="text-primary"
-                            >
-                              Title
-                            </label>
-                             
-                            <div
-                              class="validation-message form-group"
-                              id="block/fake-uuid-39/label"
-                            >
-                              <div
-                                class="d-flex"
-                              >
-                                <div
-                                  class="w-100"
-                                >
-                                  <!---->
-                                   
-                                  <textarea
-                                    class="form-control"
-                                    placeholder="Enter title"
-                                    rows="1"
-                                  />
-                                   
-                                </div>
-                                 
-                                <span
-                                  class="btn btn-outline-primary btn-xs align-self-center ml-2"
-                                >
-                                  <font-awesome-icon
-                                    class="fa-btn"
-                                    icon="fac,settings"
-                                  />
-                                </span>
-                              </div>
-                               
-                              <small
-                                class="text-danger"
-                              >
-                                
-                              </small>
-                            </div>
-                          </section>
-                           
-                          <!---->
-                           
-                          <div
-                            class="mt-3"
-                          >
-                            <div
-                              class="validation-message form-group"
-                              id="block/fake-uuid-39/name"
-                            >
-                              <div
-                                class="d-flex justify-content-between"
-                              >
-                                <div
-                                  class="block-code align-self-center"
-                                >
-                                  <h6
-                                    class="d-inline"
-                                  >
-                                    Code:
-                                  </h6>
-                                   
-                                  <span>
-                                      
-                                  </span>
-                                </div>
-                                 
-                                <span
-                                  class="btn btn-primary btn-xs align-self-baseline ml-2"
-                                >
-                                  <font-awesome-icon
-                                    class="fa-btn"
-                                    icon="far,edit"
-                                  />
-                                </span>
-                              </div>
-                               
-                              <small
-                                class="text-danger"
-                              >
-                                
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <!---->
-                            
-                          <div
-                            class="block-categorization"
-                          >
-                            <hr />
-                             
-                            <label
-                              class="text-primary"
-                            >
-                              Categorization
-                            </label>
-                             
-                            <div
-                              class="validation-message form-group"
-                              id="block/fake-uuid-39/tags"
-                            >
-                              <div
-                                class="block-group"
-                              >
-                                <label>
-                                  Tags
-                                </label>
-                                 
-                                <div
-                                  class="multiselect"
-                                  tabindex="-1"
-                                >
-                                  <div
-                                    class="multiselect__select"
-                                  />
-                                    
-                                  <div
-                                    class="multiselect__tags"
-                                  >
-                                    <div
-                                      class="multiselect__tags-wrap"
-                                      style="display: none;"
-                                    />
-                                     
-                                    <!---->
-                                     
-                                    <div
-                                      class="multiselect__spinner"
-                                      style="display: none;"
-                                    />
-                                     
-                                    <input
-                                      autocomplete="nope"
-                                      class="multiselect__input"
-                                      name=""
-                                      placeholder="Select or add a tag"
-                                      style="width: 0px; position: absolute; padding: 0px;"
-                                      tabindex="0"
-                                      type="text"
-                                    />
-                                     
-                                    <!---->
-                                     
-                                    <span
-                                      class="multiselect__placeholder"
-                                    >
-                                      
-          Select or add a tag
-        
-                                    </span>
-                                  </div>
-                                   
-                                  <div
-                                    class="multiselect__content-wrapper"
-                                    style="max-height: 300px; display: none;"
-                                    tabindex="-1"
-                                  >
-                                    <ul
-                                      class="multiselect__content"
-                                      style="display: block;"
-                                    >
-                                       
-                                      <!---->
-                                        
-                                      <li
-                                        style="display: none;"
-                                      >
-                                        <span
-                                          class="multiselect__option"
-                                        >
-                                          No elements found. Consider changing the search query.
-                                        </span>
-                                      </li>
-                                       
-                                      <li>
-                                        <span
-                                          class="multiselect__option"
-                                        >
-                                          List is empty.
-                                        </span>
-                                      </li>
-                                       
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
-                               
-                              <small
-                                class="text-danger"
-                              >
-                                
-                              </small>
-                            </div>
-                          </div>
-                           
-                          <div
-                            class="generic-contact-property-editor"
-                          >
-                            <hr />
-                             
-                            <label
-                              class="text-primary"
-                            >
-                              Contact Properties
-                            </label>
-                             
-                            <div
-                              class="custom-control custom-checkbox"
-                            >
-                              <input
-                                class="custom-control-input"
-                                id="setContactProperty"
-                                name="setContactProperty"
-                                type="checkbox"
-                                value="false"
-                              />
-                               
-                              <label
-                                class="custom-control-label font-weight-normal"
-                                for="setContactProperty"
-                              >
-                                
-      Set a contact property with the Contact’s response
-    
-                              </label>
-                            </div>
-                             
-                            <!---->
-                          </div>
-                           
-                          <hr />
-                           
-                          <div
-                            class="starting-block-button"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <button
-                                class="btn btn-sm w-100 btn-primary"
-                                disabled="disabled"
-                                type="button"
-                              >
-                                <font-awesome-icon
-                                  class="fa-btn"
-                                  icon="fac,enter"
-                                />
-                                 
-          Currently set as starting block
-        
-                              </button>
-                            </div>
-                          </div>
-                        </fieldset>
-                         
-                        <div
-                          class="block-id text-right"
-                        >
-                          <small
-                            class="text-muted"
-                          >
-                            Block Id: 
-                            <em>
-                              fake-uuid-39
-                            </em>
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 
@@ -3386,7 +2724,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="SmartDevices.PhotoResponse"
-                      data-for-block-id="fake-uuid-110"
+                      data-for-block-id="fake-uuid-101"
                     >
                       <div
                         class="smart-devices-photo-response-block"
@@ -3411,7 +2749,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-110/label"
+                              id="block/fake-uuid-101/label"
                             >
                               <div
                                 class="d-flex"
@@ -3454,7 +2792,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                           >
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-110/name"
+                              id="block/fake-uuid-101/name"
                             >
                               <div
                                 class="d-flex justify-content-between"
@@ -3504,7 +2842,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-110/tags"
+                              id="block/fake-uuid-101/tags"
                             >
                               <div
                                 class="block-group"
@@ -3668,7 +3006,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-110
+                              fake-uuid-101
                             </em>
                           </small>
                         </div>
