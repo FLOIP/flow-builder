@@ -110,10 +110,12 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
 
   updateValidationMin(value: number | string) {
     this.setValidationMinimum({blockId: this.block.uuid, value})
+    this.handleBranchingTypeChangedToUnified()
   }
 
   updateValidationMax(value: number | string) {
     this.setValidationMaximum({blockId: this.block.uuid, value})
+    this.handleBranchingTypeChangedToUnified()
   }
 
   updateMaxDigits(value: number | string) {
@@ -123,8 +125,27 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   handleBranchingTypeChangedToUnified() {
     this.block_convertExitFormationToUnified({
       blockId: this.block.uuid,
-      test: 'true',
+      test: this.formatTestValue(),
     })
+  }
+
+  formatTestValue() {
+    if (!this.block.config.validation_minimum && !this.block.config.validation_maximum) {
+      return 'is_number(block.value)'
+    }
+    if (this.block.config.validation_minimum && this.block.config.validation_maximum) {
+      return `AND(is_number(block.value, block.value >= ${this.block.config.validation_minimum},
+        block.value <= ${this.block.config.validation_maximum})`
+    }
+    if (this.block.config.validation_minimum && !this.block.config.validation_maximum) {
+      return `AND(is_number(block.value), block.value >= ${this.block.config.validation_minimum})`
+    }
+    if (!this.block.config.validation_minimum && this.block.config.validation_maximum) {
+      return `AND(is_number(block.value), block.value <= ${this.block.config.validation_maximum})`
+    }
+
+    console.warn('Exit test condition not found, providing `true` by default')
+    return 'true'
   }
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
