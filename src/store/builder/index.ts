@@ -361,8 +361,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
-    [get(source, 'block.ui_metadata.canvas_coordinates.x'), get(source, 'block.ui_metadata.canvas_coordinates.y')],
-    [get(target, 'block.ui_metadata.canvas_coordinates.x'), get(target, 'block.ui_metadata.canvas_coordinates.y')],
+    [source.ui_metadata.canvas_coordinates.x, source.ui_metadata.canvas_coordinates.y],
+    [target.ui_metadata.canvas_coordinates.x, target.ui_metadata.canvas_coordinates.y],
 
     // block titles
     source.label,
@@ -371,19 +371,18 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
     // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
 
     // other exit titles
-    ...map(source.exits, 'tag'),
-    ...map(target.exits, 'tag'),
+    ...map(source.exits, 'name'),
+    ...map(target.exits, 'name'),
   ]
 }
 
 export function computeBlockUiData(block?: IBlock | null) {
-  const xDelta = 160
-  const yDelta = 180
+  const xDelta = 120
+  const yDelta = 110
+  let xPosition = block ? block.ui_metadata.canvas_coordinates.x : null
+  let yPosition = block ? block.ui_metadata.canvas_coordinates.y : null
 
-  let xPosition = get(block, 'block.ui_metadata.canvas_coordinates.x')
-  let yPosition = get(block, 'block.ui_metadata.canvas_coordinates.y')
-
-  if (!xPosition || !yPosition) {
+  if (xPosition === null || yPosition === null) {
     const viewPortCenter = getViewportCenter()
     xPosition = viewPortCenter.x
     yPosition = viewPortCenter.y
@@ -394,6 +393,7 @@ export function computeBlockUiData(block?: IBlock | null) {
     y: yPosition + yDelta,
   }
 }
+
 export function computeBlockVendorUiData(block?: IBlock | null) {
   return {
     isSelected: false,

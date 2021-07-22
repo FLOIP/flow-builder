@@ -413,14 +413,14 @@ var MaximumNumericEditor_component = Object(componentNormalizer["a" /* default *
 )
 
 /* harmony default export */ var MaximumNumericEditor = (MaximumNumericEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"658979c1-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=0b43b4ae&
-var MaxDigitEditorvue_type_template_id_0b43b4ae_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/ivr/max_digits")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"658979c1-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=d1168578&
+var MaxDigitEditorvue_type_template_id_d1168578_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.hasIvr)?_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/ivr/max_digits")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
-return [(_vm.hasIvr)?_c('div',{staticClass:"block-max-digits"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.maximum-digits'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"sub-title":_vm._f("trans")('flow-builder.max-digits-help-text'),"valid-state":isValid},model:{value:(_vm.maxDigits),callback:function ($$v) {_vm.maxDigits=_vm._n($$v)},expression:"maxDigits"}})],1):_vm._e()]}}])})}
-var MaxDigitEditorvue_type_template_id_0b43b4ae_staticRenderFns = []
+return [_c('div',{staticClass:"block-max-digits"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.maximum-digits'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"sub-title":_vm._f("trans")('flow-builder.max-digits-help-text'),"valid-state":isValid},model:{value:(_vm.maxDigits),callback:function ($$v) {_vm.maxDigits=_vm._n($$v)},expression:"maxDigits"}})],1)]}}],null,false,2439896574)}):_vm._e()}
+var MaxDigitEditorvue_type_template_id_d1168578_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=0b43b4ae&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=d1168578&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=script&lang=js&
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
@@ -467,8 +467,8 @@ var MaxDigitEditorvue_type_template_id_0b43b4ae_staticRenderFns = []
 
 var MaxDigitEditor_component = Object(componentNormalizer["a" /* default */])(
   block_editors_MaxDigitEditorvue_type_script_lang_js_,
-  MaxDigitEditorvue_type_template_id_0b43b4ae_render,
-  MaxDigitEditorvue_type_template_id_0b43b4ae_staticRenderFns,
+  MaxDigitEditorvue_type_template_id_d1168578_render,
+  MaxDigitEditorvue_type_template_id_d1168578_staticRenderFns,
   false,
   null,
   null,
