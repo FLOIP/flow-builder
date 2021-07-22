@@ -51,7 +51,7 @@ class AdvancedExitEditor extends mixins(Lang) {
     this.block_setExitName({blockId, exitId, value})
   }
 
-  commitExpressionChange(value: IBlockExit['test']): Promise<string> {
+  async commitExpressionChange(value: IBlockExit['test']): Promise<void> {
     this.$emit('beforeExitTestChanged', {exitId: this.exit.uuid, blockId: this.block.uuid, value})
     this.block_setExitTest({exitId: this.exit.uuid, blockId: this.block.uuid, value})
   }

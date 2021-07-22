@@ -348,7 +348,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     )
 
     if (has(duplicatedBlock.config, 'prompt')) {
-      const sourceResourceUuid = duplicatedBlock.config.prompt
+      const sourceResourceUuid = duplicatedBlock.config!.prompt
       const targetResourceUuid = await (new IdGeneratorUuidV4()).generate()
       const duplicatedResource: IResource = cloneDeep(getters.resourcesByUuid[sourceResourceUuid])
 

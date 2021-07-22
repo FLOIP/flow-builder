@@ -2,7 +2,6 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { IRootState } from '@/store'
 import {
   IBlock,
-  IBlockExitTestRequired,
   IBlockExit,
   IResource, ValidationException,
 } from '@floip/flow-runner'
@@ -77,7 +76,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
     const {config: {choices}, exits}: ISelectOneResponseBlock = block
     const choiceKeys = Object.keys(choices)
-    const exitsForChoices: IBlockExitTestRequired[] = exits.slice(0, -1) // non-default exits; default should always be last
+    const exitsForChoices: IBlockExit[] = exits.slice(0, -1) // non-default exits; default should always be last
 
     // reflow exits based on choices
     await Promise.all(choiceKeys.map(async (choiceKey, i) => {

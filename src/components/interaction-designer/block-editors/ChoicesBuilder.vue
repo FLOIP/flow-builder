@@ -53,7 +53,8 @@ import {namespace} from 'vuex-class'
 import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
-import {IdGeneratorUuidV4} from "@floip/flow-runner/dist/domain/IdGeneratorUuidV4";
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import Vue from 'vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -101,10 +102,13 @@ class ChoicesBuilder extends mixins(Lang) {
     this.addChoiceByResourceIdTo({blockId: this.block.uuid, resourceId: this.draftResource.uuid})
 
     this.$nextTick(() =>
-      last(this.$refs.choices)
-        ?.$refs.input.focus())
+      this.focusInputElFor(last(this.$refs.choices as Vue[])))
 
     await this.generateDraftResource()
+  }
+
+  focusInputElFor(editor?: Vue): void {
+    (editor?.$refs.input as HTMLInputElement).focus()
   }
 
   handleExistingResourceVariantChangedFor(resourceId: IResource['uuid'], choiceIndex: number, resource: IResource): void {
@@ -115,7 +119,7 @@ class ChoicesBuilder extends mixins(Lang) {
       // todo: clean up resource, but should we first check for references?
       // this.resource_delete({resourceId: resource.uuid})
       this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId})
-      this.$refs.draftChoice.$refs.input.focus()
+      this.focusInputElFor(this.$refs.draftChoice as Vue)
       return
     }
 
