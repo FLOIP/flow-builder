@@ -2,7 +2,7 @@ import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, find, get, has, includes, isEmpty, isNil, last, set, setWith, toPath, reduce, snakeCase} from 'lodash'
+import {defaults, find, get, has, includes, isArray, setWith, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {BLOCK_TYPE as PHOTO_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import {BLOCK_TYPE as LOCATION_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
@@ -38,9 +38,13 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .tags = value
   },
-  block_pushTag(state, {blockId, value}) {
-    findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-      .tags?.push(value)
+  block_addTag(state, {blockId, value}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    if (isArray(block.tags)) {
+      block.tags.push(value)
+    } else {
+      block.tags = [value]
+    }
   },
   block_setExitName(state, {exitId, blockId, value}: { exitId: IBlockExit['uuid'], blockId: IBlock['uuid'], value: IBlockExit['name'] }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -137,9 +141,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {dispatch, commit},
     {props}: { props: { uuid: string } & Partial<IBlockExit> },
   ): Promise<IBlockExit> {
-    const resource: IResource = await dispatch('resource_createWith', {props: {uuid: await (new IdGeneratorUuidV4()).generate()}})
-
-    commit('resource_add', {resource})
 
     return {
       ...defaults(props, {

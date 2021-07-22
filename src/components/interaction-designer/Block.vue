@@ -1,5 +1,7 @@
 <template>
   <div @click="selectBlock">
+    <block-editor v-if="showBlockEditor" class="block-editor" :style="{transform: translatedBlockEditorPosition}" />
+
     <plain-draggable
       v-if="hasLayout"
       ref="draggable"
@@ -64,6 +66,15 @@
               :icon="['fac', 'copy']"
               class="fa-btn"
               @click.prevent="handleDuplicateBlock" />
+          </div>
+          <!--Expand block editor-->
+          <div class="mr-1 ml-2">
+            <font-awesome-icon
+              v-if="isEditable"
+              :icon="showBlockEditor ? ['fac', 'minimize'] : ['fac', 'expand']"
+              class="fa-btn"
+              v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
+              @click.prevent="handleExpandBlockEditor" />
           </div>
         </div>
       </div>
@@ -215,8 +226,8 @@ import {generateConnectionLayoutKeyFor, OperationKind} from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import {lang} from '@/lib/filters/lang'
 import {NoValidResponseHandler} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-
 import {BTooltip} from 'bootstrap-vue'
+import BlockEditor from '@/components/interaction-designer/block-editors/BlockEditor'
 
 Vue.component('BTooltip', BTooltip)
 
@@ -226,15 +237,21 @@ export default {
   components: {
     Connection,
     PlainDraggable,
+    BlockEditor,
   },
   mixins: [lang],
   props: ['block', 'x', 'y'],
+
+  updated() {
+    this.blockWidth = this.$refs.draggable.$el.clientWidth
+  },
 
   data() {
     return {
       isDeleting: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
+      blockWidth: 0,
       exitHovers: {},
       NoValidResponseHandler: NoValidResponseHandler,
     }
@@ -263,10 +280,13 @@ export default {
       'resources',
       'selectedBlocks',
     ]),
-    ...mapState(
-      'builder',
-      ['activeBlockId', 'operations', 'activeConnectionsContext', 'draggableForExitsByUuid'],
-    ),
+    ...mapState('builder', [
+      'activeBlockId',
+      'operations',
+      'activeConnectionsContext',
+      'draggableForExitsByUuid',
+      'isBlockEditorOpen',
+    ]),
     ...mapState({
       blockClasses: ({trees: {ui}}) => ui.blockClasses,
     }),
@@ -305,6 +325,16 @@ export default {
       const {data} = operations[OperationKind.CONNECTION_CREATE]
       return data && data.targetId === block.uuid
     },
+
+    translatedBlockEditorPosition() {
+      const xOffset = 5
+      const yOffset = 172
+      return `translate(${this.x + this.blockWidth + xOffset}px, ${this.y - yOffset}px)`
+    },
+
+    showBlockEditor() {
+      return this.isBlockEditorOpen && this.activeBlockId === this.block.uuid
+    },
   },
 
   methods: {
@@ -313,8 +343,7 @@ export default {
       generateConnectionLayoutKeyFor,
     },
 
-    ...mapMutations('builder', ['activateBlock', 'setBlockPositionTo', 'initDraggableForExitsByUuid']),
-
+    ...mapMutations('builder', ['activateBlock', 'setBlockPositionTo', 'initDraggableForExitsByUuid', 'setIsBlockEditorOpen']),
     ...mapActions('builder', {
       _removeConnectionFrom: 'removeConnectionFrom',
     }),
@@ -558,7 +587,7 @@ export default {
 
     selectBlock() {
       const {block: {uuid: blockId}} = this
-      const routerName = this.$route.meta.isSidebarShown ? 'block-selected-details' : 'block-selected'
+      const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
       this.$router.history.replace({
         name: routerName,
         params: {blockId},
@@ -580,6 +609,16 @@ export default {
         delete self.draggableForExitsByUuid[exit.uuid]
       })
     },
+
+    handleExpandBlockEditor() {
+      this.setIsBlockEditorOpen(!this.isBlockEditorOpen)
+      const {block: {uuid: blockId}} = this
+      const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
+      this.$router.history.replace({
+        name: routerName,
+        params: {blockId},
+      })
+    },
   },
 }
 </script>
@@ -594,12 +633,17 @@ export default {
   background: transparent;
 }
 
+
+.block-editor {
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .block {
   position: absolute;
   left: 0;
   top: 0;
   z-index: 1*10;
-
   min-width: 200px;
   padding: 0.4em;
   padding-bottom: 0;
