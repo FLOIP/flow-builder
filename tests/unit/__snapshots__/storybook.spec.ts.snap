@@ -2206,11 +2206,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                           </div>
                                         </div>
                                          
-                                        <div
-                                          class="phone-recorder"
-                                        >
-                                          <!---->
-                                        </div>
+                                        <!---->
                                          
                                         <div
                                           class="upload-monitor"
@@ -2242,17 +2238,7 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Te
                                             />
                                           </button>
                                            
-                                          <button
-                                            class="btn btn-primary ivr-buttons ml-2"
-                                          >
-                                            <font-awesome-icon
-                                              class="fa-btn"
-                                              icon="fac,record-audio"
-                                            />
-                                            
-                    Record Audio
-                  
-                                          </button>
+                                          <!---->
                                         </div>
                                       </div>
                                     </div>
@@ -3619,11 +3605,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                           </div>
                                         </div>
                                          
-                                        <div
-                                          class="phone-recorder"
-                                        >
-                                          <!---->
-                                        </div>
+                                        <!---->
                                          
                                         <div
                                           class="upload-monitor"
@@ -3655,17 +3637,7 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text 
                                             />
                                           </button>
                                            
-                                          <button
-                                            class="btn btn-primary ivr-buttons ml-2"
-                                          >
-                                            <font-awesome-icon
-                                              class="fa-btn"
-                                              icon="fac,record-audio"
-                                            />
-                                            
-                    Record Audio
-                  
-                                          </button>
+                                          <!---->
                                         </div>
                                       </div>
                                     </div>

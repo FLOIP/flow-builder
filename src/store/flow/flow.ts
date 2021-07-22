@@ -329,7 +329,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
   },
 
-  async flow_duplicateBlock({commit, state}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }): Promise<IBlock> {
+  async flow_duplicateBlock({commit, state, getters}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }): Promise<IBlock> {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     // @throws ValidationException when block absent
     const block: IBlock = findBlockWith(blockId, flow)
@@ -348,7 +348,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     )
 
     if (has(duplicatedBlock.config, 'prompt')) {
-      Vue.set(duplicatedBlock.config!, 'prompt', await (new IdGeneratorUuidV4()).generate())
+      const sourceResourceUuid = duplicatedBlock.config.prompt
+      const targetResourceUuid = await (new IdGeneratorUuidV4()).generate()
+      const duplicatedResource: IResource = cloneDeep(getters.resourcesByUuid[sourceResourceUuid])
+
+      duplicatedResource.uuid = targetResourceUuid
+      commit('resource_add', {
+        resource: duplicatedResource
+      })
+      Vue.set(duplicatedBlock.config!, 'prompt', targetResourceUuid)
     }
 
     // Set UI positions
