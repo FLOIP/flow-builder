@@ -160,7 +160,7 @@
 
       switch (value) {
         case OutputBranchingType.UNIFIED:
-          this.block_convertExitFormationToUnified({blockId})
+          this.$emit('branchingTypeChangedToUnified')
           break
         case OutputBranchingType.EXIT_PER_CHOICE:
           // handled via change event from SelectOne; felt awkward importing SelectOne store here
@@ -209,8 +209,8 @@
 
     @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!:
       ({blockId, path, value}: { blockId: string, path: string, value: object | string }) => void
-    @flowVuexNamespace.Action block_convertExitFormationToUnified!:
-      ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
+    // @flowVuexNamespace.Action block_convertExitFormationToUnified!:
+    //   ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
     @flowVuexNamespace.Mutation block_exitClearDestinationBlockFor!:
       ({blockExit}: {blockExit: IBlockExit}) => void
   }

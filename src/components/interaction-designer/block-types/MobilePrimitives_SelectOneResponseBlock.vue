@@ -22,6 +22,7 @@
       <block-output-branching-config
         :block="block"
         :has-exit-per-choice="true"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified"
         @branchingTypeChanged="reflowExitsWhenBranchingTypeNotUnified()" />
 
       <div class="prompt-resource">
@@ -127,8 +128,17 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     this.reflowExitsFromChoices({blockId})
   }
 
+  handleBranchingTypeChangedToUnified() {
+    this.block_convertExitFormationToUnified({
+      blockId: this.block.uuid,
+      test: 'true',
+    })
+  }
+
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
   @flowVuexNamespace.Action block_createBlockExitWith!: ({props}: { props: { uuid: string } & Partial<IBlockExit> }) => Promise<IBlockExit>
+  @flowVuexNamespace.Action block_convertExitFormationToUnified!:
+    ({blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) => Promise<void>
   @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @builderVuexNamespace.Getter isEditable !: boolean
 }

@@ -26,7 +26,8 @@
 
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified" />
 
       <resource-editor
         v-if="promptResource"
@@ -56,7 +57,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IBlock, IFlow, IResource} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IFlow, IResource} from '@floip/flow-runner'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 
 import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
@@ -119,9 +120,19 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
     this.setMaxDigits({blockId: this.block.uuid, value})
   }
 
+  handleBranchingTypeChangedToUnified() {
+    this.block_convertExitFormationToUnified({
+      blockId: this.block.uuid,
+      test: 'true',
+    })
+  }
+
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
+
+  @flowVuexNamespace.Action block_convertExitFormationToUnified!:
+    ({blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) => Promise<void>
 
   @blockVuexNamespace.Action setValidationMinimum!: ({
     blockId,

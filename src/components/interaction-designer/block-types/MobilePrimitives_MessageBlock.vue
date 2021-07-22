@@ -15,7 +15,8 @@
 
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified" />
 
       <resource-editor
         v-if="promptResource"
@@ -45,7 +46,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import { IFlow, IResource } from '@floip/flow-runner'
+import {IBlock, IBlockExit, IFlow, IResource} from '@floip/flow-runner'
 import {IMessageBlock} from '@floip/flow-runner/src/model/block/IMessageBlock'
 
 import MessageStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
@@ -90,7 +91,17 @@ class MobilePrimitives_MessageBlock extends mixins(Lang) {
     return this.resourcesByUuid[this.block.config.prompt]
   }
 
+  handleBranchingTypeChangedToUnified() {
+    this.block_convertExitFormationToUnified({
+      blockId: this.block.uuid,
+      test: 'block.value > 1',
+    })
+  }
+
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+
+  @flowVuexNamespace.Action block_convertExitFormationToUnified!:
+    ({blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) => Promise<void>
 
   @builderVuexNamespace.Getter isEditable !: boolean
 }

@@ -195,12 +195,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  async block_convertExitFormationToUnified({state, dispatch}, {blockId}: {blockId: IBlock['uuid']}) {
+  async block_convertExitFormationToUnified({state, dispatch}, {blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     const primaryExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
       name: '1',
-      test: 'true',
+      test,
     }
 
     block.exits = [
