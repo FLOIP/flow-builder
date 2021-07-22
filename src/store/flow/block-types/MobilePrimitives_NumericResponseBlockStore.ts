@@ -14,33 +14,33 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMinimum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
-    const valueAsNumberOrNull = value === '' ? undefined : value
+    const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validation_minimum',
-      value: valueAsNumberOrNull,
+      value: valueAsNumberOrUnset,
     }, {root: true})
-    return valueAsNumberOrNull
+    return valueAsNumberOrUnset
   },
   async setValidationMaximum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
-    const valueAsNumberOrNull = value === '' ? undefined : value
+    const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validation_maximum',
-      value: valueAsNumberOrNull,
+      value: valueAsNumberOrUnset,
     }, {root: true})
-    return valueAsNumberOrNull
+    return valueAsNumberOrUnset
   },
   async setMaxDigits({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
-    const valueAsNumberOrNull = value === '' ? undefined : value
+    const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'ivr',
       value: {
-        max_digits: valueAsNumberOrNull,
+        max_digits: valueAsNumberOrUnset,
       },
     }, {root: true})
-    return valueAsNumberOrNull
+    return valueAsNumberOrUnset
   },
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<INumericResponseBlock> }) {
     const exits: IBlockExit[] = [
