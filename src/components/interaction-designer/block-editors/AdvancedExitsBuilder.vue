@@ -7,7 +7,7 @@
       :key="exit.uuid"
       :block="block"
       :exit="exit"
-      :label="i + 1"
+      :label="(i + 1).toString()"
       class="advanced-block-exit-builder-item mb-3" />
 
     <advanced-exit-editor
@@ -15,7 +15,7 @@
       :key="draftExit.uuid"
       :block="block"
       :exit="draftExit"
-      :label="block.exits.length + 1"
+      :label="(block.exits.length + 1).toString()"
       class="advanced-block-exit-builder-item mb-3"
       @beforeExitTestChanged="addDraftExitToBlock"
       @beforeExitNameChanged="addDraftExitToBlock" />
