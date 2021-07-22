@@ -65,14 +65,14 @@ class TagSelector extends mixins(Lang) {
 
   addTag(newTag: string) {
     this.blockTags.push(newTag)
-    this.block_pushTag({
+    this.block_addTag({
       blockId: this.block.uuid,
       value: newTag,
     })
   }
 
   @flowVuexNamespace.Mutation block_setTags!: ({blockId, value}: {blockId: IBlock['uuid'], value: string[]}) => void
-  @flowVuexNamespace.Mutation block_pushTag!: ({blockId, value}: {blockId: IBlock['uuid'], value: string}) => void
+  @flowVuexNamespace.Mutation block_addTag!: ({blockId, value}: {blockId: IBlock['uuid'], value: string}) => void
 
   @State(({trees: {ui: {blockTags}}}) => blockTags) blockTags!: string[]
 }
