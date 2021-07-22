@@ -195,7 +195,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     const primaryExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
-      name: 'primary',
+      name: '1',
       test: 'true',
     }
 

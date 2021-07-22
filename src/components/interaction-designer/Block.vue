@@ -124,7 +124,7 @@
             @mouseleave="exitMouseLeave(exit)">
             <span class="block-exit-tag-text align-self-center"
                   v-b-tooltip.hover.top="exit.test">
-              {{exit.tag || '(untitled)'}}
+              {{exit.name || '(untitled)'}}
             </span>
 
             <span

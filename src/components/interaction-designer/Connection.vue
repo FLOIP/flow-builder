@@ -59,7 +59,7 @@ export default {
         // path: 'arc',
         // path: 'magnet',
 
-        // middleLabel: LeaderLine.captionLabel(this.exit.tag, {
+        // middleLabel: LeaderLine.captionLabel(this.exit.name, {
         //   color: darkColor,
         //   fontSize: 12,
         //   // lineOffset: 65,
