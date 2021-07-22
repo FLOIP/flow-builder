@@ -114,6 +114,7 @@
           }"
           @mouseenter="isConnectionSourceRelocateActive && activateExitAsDropZone($event, exit)"
           @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)">
+          <div v-if="!(exit.default && block.vendor_metadata.io_viamo.noValidResponse === NoValidResponseHandler.END_CALL)">
           <div class="total-label-container">
             <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1" />
           </div>
@@ -196,6 +197,7 @@
               </template>
             </span>
           </div>
+          </div>
         </div>
       </footer>
     </plain-draggable>
@@ -212,6 +214,7 @@ import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
 import {generateConnectionLayoutKeyFor, OperationKind} from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import {lang} from '@/lib/filters/lang'
+import {NoValidResponseHandler} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 import {BTooltip} from 'bootstrap-vue'
 
@@ -233,6 +236,7 @@ export default {
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
       exitHovers: {},
+      NoValidResponseHandler: NoValidResponseHandler,
     }
   },
 

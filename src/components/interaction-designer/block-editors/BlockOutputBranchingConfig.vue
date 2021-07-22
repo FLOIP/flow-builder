@@ -95,9 +95,9 @@
 </template>
 
 <script lang="ts">
-  import {get, isEmpty, isNil} from 'lodash'
+  import {get, isEmpty, isNil, find} from 'lodash'
   import {Component, Prop} from 'vue-property-decorator'
-  import {IBlock} from '@floip/flow-runner'
+  import { IBlock, IBlockExit } from '@floip/flow-runner'
   import {mixins} from 'vue-class-component'
   import AdvancedExitsBuilder from '@/components/interaction-designer/block-editors/AdvancedExitsBuilder.vue'
   import Lang from '@/lib/filters/lang'
@@ -184,6 +184,8 @@
     set noValidResponse(value: NoValidResponseHandler) {
       const {uuid: blockId} = this.block
       this.block_updateVendorMetadataByPath({blockId, path: 'io_viamo.noValidResponse', value})
+      const defaultExit: IBlockExit = find(this.block.exits, 'default')
+      this.block_exitClearDestinationBlockFor({blockExit: defaultExit })
     }
 
     get isBranchingTypeExitPerChoice(): boolean {
@@ -202,6 +204,8 @@
       ({blockId, path, value}: { blockId: string, path: string, value: object | string }) => void
     @flowVuexNamespace.Action block_convertExitFormationToUnified!:
       ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
+    @flowVuexNamespace.Mutation block_exitClearDestinationBlockFor!:
+      ({blockExit}: {blockExit: IBlockExit}) => void
   }
 </script>
 

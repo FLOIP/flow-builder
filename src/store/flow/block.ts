@@ -107,6 +107,9 @@ export const mutations: MutationTree<IFlowsState> = {
       return nextValue
     }, metadata!)
   },
+  block_exitClearDestinationBlockFor(_, {blockExit}) {
+    blockExit.destination_block = undefined
+  },
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
