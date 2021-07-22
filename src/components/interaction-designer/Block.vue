@@ -124,7 +124,7 @@
             @mouseleave="exitMouseLeave(exit)">
             <span class="block-exit-tag-text align-self-center"
                   v-b-tooltip.hover.top="exit.test">
-              {{ visibleExitTag(key, exit) }}
+              {{ visibleExitText(key, exit) }}
             </span>
 
             <span
@@ -412,19 +412,19 @@ export default {
         : uuid
     },
 
-    visibleExitTag(key, exit) {
-      if (!exit.tag && !exit.semantic_label) {
+    visibleExitText(key, exit) {
+      if (!exit.name && !exit.semantic_label) {
         return '—'
       }
 
       const {block} = this
       if (block.type === BLOCK_TYPE__CASE_BLOCK) {
-        return `${key + 1}: ${exit.tag}`
+        return `${key + 1}: ${exit.name}`
       } else if ((block.type === BLOCK_TYPE__SELECT_ONE_BLOCK || block.type === BLOCK_TYPE__SELECT_MANY_BLOCK) && exit.semantic_label) {
         return exit.semantic_label
       }
 
-      return exit.tag
+      return exit.name
     },
 
     // todo: push NodeExit into it's own vue component
