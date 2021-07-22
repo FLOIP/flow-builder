@@ -623,7 +623,7 @@ export default {
     opacity: 0; // default state of hidden
 
     margin-top: -39.75px;
-    margin-right: -8px;
+    margin-right: -7px;
     margin-left: -7px;
     padding: 5px;
 
@@ -732,7 +732,7 @@ export default {
   &.active {
     .block-toolbar {
       margin-left: -8px;
-      margin-right: -9px;
+      margin-right: -8px;
     }
   }
 }
