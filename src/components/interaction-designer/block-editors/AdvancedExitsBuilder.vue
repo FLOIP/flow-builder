@@ -2,20 +2,22 @@
   <div class="advanced-exits-builder">
     <h6>Set advanced exit configurations using test expressions</h6>
 
-    <advanced-exit-editor
-      v-for="(exit, i) in block.exits"
-      :key="exit.uuid"
-      :block="block"
-      :exit="exit"
-      :label="(i + 1).toString()"
-      class="advanced-block-exit-builder-item mb-3" />
+    <template v-for="(exit, i) in block.exits">
+      <advanced-exit-editor
+        v-if="!exit.default"
+        :key="exit.uuid"
+        :block="block"
+        :exit="exit"
+        :label="(i + 1).toString()"
+        class="advanced-block-exit-builder-item mb-3" />
+    </template>
 
     <advanced-exit-editor
       v-if="draftExit"
       :key="draftExit.uuid"
       :block="block"
       :exit="draftExit"
-      :label="(block.exits.length + 1).toString()"
+      :label="block.exits.length.toString()"
       class="advanced-block-exit-builder-item mb-3"
       @beforeExitTestChanged="addDraftExitToBlock"
       @beforeExitNameChanged="addDraftExitToBlock" />

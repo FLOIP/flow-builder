@@ -89,7 +89,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
       Object.assign(exitsForChoices[i], {
         name: choiceKey,
-        test: `block.value = ${i}`,
+        test: `block.value = ${i + 1}`,
       })
     }))
 

@@ -56,6 +56,7 @@ import {IBlock, IBlockExit, IFlow, IResource, SupportedContentType, SupportedMod
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
+import {includes} from 'lodash'
 
 import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
@@ -115,8 +116,10 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
   reflowExitsWhenBranchingTypeNotUnified(): void {
     const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
-    if (metadata.io_viamo.branchingType !== OutputBranchingType.EXIT_PER_CHOICE
-      || metadata.io_viamo.branchingType !== OutputBranchingType.ADVANCED) {
+    const {EXIT_PER_CHOICE, ADVANCED} = OutputBranchingType
+    const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
+
+    if (!isEnteringChoiceOrAdvancedBranchingType) {
       return
     }
 
