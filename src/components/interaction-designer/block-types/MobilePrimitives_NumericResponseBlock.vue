@@ -13,6 +13,19 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <hr>
+
+      <choices-builder
+        :block="block"
+        @choiceChanged="reflowExitsWhenBranchingTypeNotUnified()" />
+
+      <block-output-branching-config
+        :block="block"
+        :has-one-exit-per-choice="false"
+        @branchingTypeChanged="reflowExitsWhenBranchingTypeNotUnified()" />
+
+      <hr>
+
       <block-minimum-numeric-editor
         :block="block"
         @commitValidationMinimumChange="updateValidationMin" />
@@ -41,7 +54,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
@@ -60,6 +72,11 @@ import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import ChoicesBuilder from '@/components/interaction-designer/block-editors/ChoicesBuilder.vue'
+import BlockOutputBranchingConfig, {
+  IBlockWithBranchingType,
+  OutputBranchingType,
+} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -88,6 +105,8 @@ const builderVuexNamespace = namespace('builder')
     BlockMaximumNumericEditor,
     BlockMaxDigitEditor,
     Categorization,
+    ChoicesBuilder,
+    BlockOutputBranchingConfig,
   },
 })
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
@@ -113,8 +132,17 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
     this.setMaxDigits({blockId: this.block.uuid, value})
   }
 
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  reflowExitsWhenBranchingTypeNotUnified(): void {
+    const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
+    if (metadata.io_viamo.branchingType !== OutputBranchingType.EXIT_PER_CHOICE
+      || metadata.io_viamo.branchingType !== OutputBranchingType.ADVANCED) {
+      return
+    }
 
+    this.reflowExitsFromChoices({blockId}) // TODO: check if we need this in NumericBlock store
+  }
+
+  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
 
   @blockVuexNamespace.Action setValidationMinimum!: ({
@@ -128,6 +156,7 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   }: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
 
   @blockVuexNamespace.Action setMaxDigits!: ({blockId, value}: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
+  @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean
 }

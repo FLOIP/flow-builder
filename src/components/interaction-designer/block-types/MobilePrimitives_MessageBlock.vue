@@ -13,6 +13,19 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <hr>
+
+      <choices-builder
+        :block="block"
+        @choiceChanged="reflowExitsWhenBranchingTypeNotUnified()" />
+
+      <block-output-branching-config
+        :block="block"
+        :has-one-exit-per-choice="false"
+        @branchingTypeChanged="reflowExitsWhenBranchingTypeNotUnified()" />
+
+      <hr>
+
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"
@@ -30,7 +43,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
@@ -41,7 +53,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IFlow, IResource} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import {IMessageBlock} from '@floip/flow-runner/src/model/block/IMessageBlock'
 
 import MessageStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
@@ -49,6 +61,11 @@ import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import ChoicesBuilder from '@/components/interaction-designer/block-editors/ChoicesBuilder.vue'
+import BlockOutputBranchingConfig, {
+  IBlockWithBranchingType,
+  OutputBranchingType,
+} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -59,6 +76,7 @@ import GenericContactPropertyEditor from '../block-editors/GenericContactPropert
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
@@ -70,6 +88,8 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
     Categorization,
+    ChoicesBuilder,
+    BlockOutputBranchingConfig,
   },
 })
 class MobilePrimitives_MessageBlock extends mixins(Lang) {
@@ -83,9 +103,21 @@ class MobilePrimitives_MessageBlock extends mixins(Lang) {
     return this.resourcesByUuid[this.block.config.prompt]
   }
 
+  reflowExitsWhenBranchingTypeNotUnified(): void {
+    const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
+    if (metadata.io_viamo.branchingType !== OutputBranchingType.EXIT_PER_CHOICE
+      || metadata.io_viamo.branchingType !== OutputBranchingType.ADVANCED) {
+      return
+    }
+
+    this.reflowExitsFromChoices({blockId}) // TODO: check if we need this in MessageBlock store
+  }
+
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @builderVuexNamespace.Getter isEditable !: boolean
+
+  @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
 }
 
 export default MobilePrimitives_MessageBlock
