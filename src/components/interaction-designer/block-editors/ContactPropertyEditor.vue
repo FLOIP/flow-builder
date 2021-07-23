@@ -52,7 +52,7 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-input
-          :label="'flow-builder.contact-property-expression' | trans"
+          :label="'flow-builder.value-expression' | trans"
           :placeholder="'flow-builder.enter-expression' | trans"
           :label-class="'font-weight-bold'"
           :current-expression="propertyValue"

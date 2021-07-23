@@ -7,7 +7,7 @@
       <div class="form-group">
         <div class="custom-control custom-radio">
           <input
-            id="setProp"
+            id="addGroup"
             v-model="membershipAction"
             type="radio"
             name="groupMembershipAction"
@@ -15,13 +15,27 @@
             class="custom-control-input">
           <label
             class="custom-control-label font-weight-normal"
-            for="setProp">
+            for="addGroup">
             {{ 'flow-builder.set-group-membership' | trans }}
           </label>
         </div>
         <div class="custom-control custom-radio">
           <input
-            id="clearProp"
+            id="setFromExpression"
+            v-model="membershipAction"
+            type="radio"
+            name="groupMembershipAction"
+            :value="MEMBERSHIP_ACTION.SET_FROM_EXPRESSION"
+            class="custom-control-input">
+          <label
+            class="custom-control-label font-weight-normal"
+            for="setFromExpression">
+            {{ 'flow-builder.set-group-membership-from-expression' | trans }}
+          </label>
+        </div>
+        <div class="custom-control custom-radio">
+          <input
+            id="clearGroup"
             v-model="membershipAction"
             type="radio"
             name="groupMembershipAction"
@@ -29,7 +43,7 @@
             class="custom-control-input">
           <label
             class="custom-control-label font-weight-normal"
-            for="clearProp">
+            for="clearGroup">
             {{ 'flow-builder.clear-group-membership' | trans }}
           </label>
         </div>
@@ -41,22 +55,19 @@
         <div class="block-group-key">
           <text-editor
             v-model="groupKey"
-            :label="'flow-builder.group-membership-label' | trans"
+            :label="'flow-builder.group-label' | trans"
             :label-class="'font-weight-bold'"
-            :placeholder="'flow-builder.enter-group-membership-label' | trans"
+            :placeholder="'flow-builder.enter-group-label' | trans"
             :valid-state="isValid" />
         </div>
       </validation-message>
 
-      <!--TODO: how about group_name, confirm with dsn/TPM ??-->
-      <!--Why do we need to add expression for is_member ?-->
-
       <validation-message
-        v-if="membershipAction === MEMBERSHIP_ACTION.ADD"
+        v-if="membershipAction === MEMBERSHIP_ACTION.SET_FROM_EXPRESSION"
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/is_member`">
         <expression-input
-          :label="'flow-builder.is-member-expression' | trans"
+          :label="'flow-builder.value-expression' | trans"
           :placeholder="'flow-builder.enter-expression' | trans"
           :label-class="'font-weight-bold'"
           :current-expression="isMember"
@@ -81,6 +92,7 @@ import TextEditor from '@/components/common/TextEditor.vue'
 const flowVuexNamespace = namespace('flow')
 
 const NULL_STRING_EXPRESSION = '@(null)'
+const TRUTHY_STRING_EXPRESSION = '@(true)'
 const EMPTY_STRING_EXPRESSION = ''
 
 @Component({
@@ -95,19 +107,25 @@ class GroupMembershipEditor extends mixins(Lang) {
 
   MEMBERSHIP_ACTION = {
     ADD: 'add',
+    SET_FROM_EXPRESSION: 'set_from_expression',
     REMOVE: 'remove',
   }
 
   get membershipAction(): string {
     if (this.isMember === NULL_STRING_EXPRESSION) {
       return this.MEMBERSHIP_ACTION.REMOVE
+    } else if (this.isMember === TRUTHY_STRING_EXPRESSION) {
+      return this.MEMBERSHIP_ACTION.ADD
     }
-    return this.MEMBERSHIP_ACTION.ADD
+    return this.MEMBERSHIP_ACTION.SET_FROM_EXPRESSION
   }
 
   set membershipAction(value: string) {
+    console.log('membershipAction', value)
     if (value === this.MEMBERSHIP_ACTION.REMOVE) {
       this.updateIsMemberExpression(NULL_STRING_EXPRESSION)
+    } else if (value === this.MEMBERSHIP_ACTION.ADD) {
+      this.updateIsMemberExpression(TRUTHY_STRING_EXPRESSION)
     } else {
       this.updateIsMemberExpression(EMPTY_STRING_EXPRESSION)
     }
