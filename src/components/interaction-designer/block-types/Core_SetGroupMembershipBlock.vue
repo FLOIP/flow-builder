@@ -15,6 +15,11 @@
 
       <group-membership-editor :block="block" />
 
+      <hr>
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
+
       <slot name="extras" />
 
       <categorization :block="block" />
@@ -26,7 +31,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
@@ -48,6 +52,7 @@ import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {find} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -77,6 +82,7 @@ interface IGroupActionOption {
     ValidationMessage,
     Categorization,
     GroupMembershipEditor,
+    BlockOutputBranchingConfig,
   },
 })
 class Core_SetGroupMembershipBlock extends mixins(Lang) {

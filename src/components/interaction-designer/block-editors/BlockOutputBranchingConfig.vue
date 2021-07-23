@@ -1,9 +1,9 @@
 <template>
   <div class="block-output-branching-config">
     <div class="form-group">
-      <label class="d-block">{{'flow-builder.output-branching' | trans}}</label>
+      <label :class="labelClass">{{'flow-builder.output-branching' | trans}}</label>
 
-      <div class="btn-group">
+      <div class="btn-group d-block">
         <button
           v-if="hasExitPerChoice"
           :class="{
@@ -135,6 +135,7 @@
   export default class BlockOutputBranchingConfig extends mixins(Lang) {
     @Prop() readonly block!: IBlock
     @Prop() readonly hasExitPerChoice!: boolean
+    @Prop({default: 'text-primary'}) readonly labelClass?: string
 
     OutputBranchingType = OutputBranchingType
     NoValidResponseHandler = NoValidResponseHandler
