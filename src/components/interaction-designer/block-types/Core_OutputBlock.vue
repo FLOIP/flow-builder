@@ -24,6 +24,11 @@
           @commitExpressionChange="commitExpressionChange" />
       </validation-message>
 
+      <hr>
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
+
       <slot name="extras" />
 
       <categorization :block="block" />
@@ -35,7 +40,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
     <block-id :block="block" />
   </div>
@@ -53,6 +57,7 @@ import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -74,6 +79,7 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     ValidationMessage,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class Core_OutputBlock extends mixins(Lang) {
