@@ -16,6 +16,7 @@
       <group-membership-editor :block="block" />
 
       <hr>
+      <!--TODO: confirm the test in advanced branching `true` or expression from Single Exit mode eg: `block.value = 1`-->
       <block-output-branching-config
         :block="block"
         :has-exit-per-choice="false" />
