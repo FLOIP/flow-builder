@@ -12,6 +12,11 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <hr>
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
+
       <slot name="extras" />
 
       <categorization :block="block" />
@@ -35,7 +40,7 @@ import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
 import {IBlock, IFlow, IResource} from '@floip/flow-runner'
-
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import PhotoStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
@@ -60,6 +65,7 @@ const builderVuexNamespace = namespace('builder')
     FirstBlockEditorButton,
     BlockId,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
