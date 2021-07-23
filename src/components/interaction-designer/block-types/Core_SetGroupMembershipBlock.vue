@@ -13,25 +13,7 @@
         :block="block" />
       <block-name-editor :block="block" />
 
-      <validation-message
-        #input-control="{ isValid: isValid }"
-        :message-key="`block/${block.uuid}/config/is_member`">
-        <div class="form-group">
-          <label class="text-primary">{{ 'flow-builder.action-label' | trans }}</label>
-          <vue-multiselect
-            v-model="selectedAction"
-            track-by="id"
-            label="name"
-            :class="{invalid: isValid === false}"
-            :placeholder="'flow-builder.action-placeholder' | trans"
-            :options="actionsList"
-            :allow-empty="true"
-            :show-labels="false"
-            :searchable="false" />
-        </div>
-      </validation-message>
-
-      <group-selector :block="block" />
+      <group-membership-editor :block="block" />
 
       <slot name="extras" />
 
@@ -58,7 +40,7 @@ import {Component, Prop} from 'vue-property-decorator'
 import {IBlock, IFlow, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
 import GroupSelector from '@/components/interaction-designer/block-editors/GroupSelector.vue'
 import VueMultiselect from 'vue-multiselect'
-
+import GroupMembershipEditor from '@/components/interaction-designer/block-editors/GroupMembershipEditor.vue'
 import SetGroupMembershipStore, {ADD_KEY, BLOCK_TYPE, REMOVE_KEY} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
@@ -94,6 +76,7 @@ interface IGroupActionOption {
     VueMultiselect,
     ValidationMessage,
     Categorization,
+    GroupMembershipEditor,
   },
 })
 class Core_SetGroupMembershipBlock extends mixins(Lang) {

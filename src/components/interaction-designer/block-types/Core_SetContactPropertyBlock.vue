@@ -24,7 +24,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
@@ -35,9 +34,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 import {IBlock, IFlow} from '@floip/flow-runner'
-import ExpressionEditor from '@/components/common/ExpressionEditor.vue'
 import ContactPropertyEditor from '@/components/interaction-designer/block-editors/ContactPropertyEditor.vue'
-
 import SetContactPropertyStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
