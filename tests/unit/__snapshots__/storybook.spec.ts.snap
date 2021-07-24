@@ -328,7 +328,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                 id="setContactProperty"
                                 name="setContactProperty"
                                 type="checkbox"
-                                value="false"
+                                value="true"
                               />
                                
                               <label
@@ -341,7 +341,47 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                               </label>
                             </div>
                              
-                            <!---->
+                            <div
+                              class="form-group"
+                            >
+                              <div
+                                class="validation-message form-group"
+                                id="block/fake-uuid-129/config/set_contact_property/property_key"
+                              >
+                                <div
+                                  class="block-contact-property-key"
+                                >
+                                  <div>
+                                    <label
+                                      class="text-primary"
+                                    >
+                                      Property
+                                    </label>
+                                     
+                                    <textarea
+                                      class="form-control"
+                                      placeholder="Enter contact property"
+                                      rows="1"
+                                    />
+                                     
+                                  </div>
+                                </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
+                              </div>
+                               
+                              <h6>
+                                Value
+                              </h6>
+                               
+                              <!---->
+                               
+                              <!---->
+                            </div>
                           </div>
                            
                           <hr />
@@ -2610,7 +2650,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                 id="setContactProperty"
                                 name="setContactProperty"
                                 type="checkbox"
-                                value="false"
+                                value="true"
                               />
                                
                               <label
@@ -2623,7 +2663,91 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                               </label>
                             </div>
                              
-                            <!---->
+                            <div
+                              class="form-group"
+                            >
+                              <div
+                                class="validation-message form-group"
+                                id="block/fake-uuid-3/config/set_contact_property/property_key"
+                              >
+                                <div
+                                  class="block-contact-property-key"
+                                >
+                                  <div>
+                                    <label
+                                      class="text-primary"
+                                    >
+                                      Property
+                                    </label>
+                                     
+                                    <textarea
+                                      class="form-control"
+                                      placeholder="Enter contact property"
+                                      rows="1"
+                                    />
+                                     
+                                  </div>
+                                </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
+                              </div>
+                               
+                              <h6>
+                                Value
+                              </h6>
+                               
+                              <div
+                                class="form-group"
+                              >
+                                <div
+                                  class="custom-control custom-radio"
+                                >
+                                  <input
+                                    class="custom-control-input"
+                                    id="setProp"
+                                    name="contactPropAction"
+                                    type="radio"
+                                    value="fromCurrentBlockResponse"
+                                  />
+                                   
+                                  <label
+                                    class="custom-control-label font-weight-normal"
+                                    for="setProp"
+                                  >
+                                    
+          Entry from this block
+        
+                                  </label>
+                                </div>
+                                 
+                                <div
+                                  class="custom-control custom-radio"
+                                >
+                                  <input
+                                    class="custom-control-input"
+                                    id="clearProp"
+                                    name="contactPropAction"
+                                    type="radio"
+                                    value="openExpression"
+                                  />
+                                   
+                                  <label
+                                    class="custom-control-label font-weight-normal"
+                                    for="clearProp"
+                                  >
+                                    
+          Expression
+        
+                                  </label>
+                                </div>
+                              </div>
+                               
+                              <!---->
+                            </div>
                           </div>
                            
                           <hr />
@@ -2957,7 +3081,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                 id="setContactProperty"
                                 name="setContactProperty"
                                 type="checkbox"
-                                value="false"
+                                value="true"
                               />
                                
                               <label
@@ -2970,7 +3094,91 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                               </label>
                             </div>
                              
-                            <!---->
+                            <div
+                              class="form-group"
+                            >
+                              <div
+                                class="validation-message form-group"
+                                id="block/fake-uuid-101/config/set_contact_property/property_key"
+                              >
+                                <div
+                                  class="block-contact-property-key"
+                                >
+                                  <div>
+                                    <label
+                                      class="text-primary"
+                                    >
+                                      Property
+                                    </label>
+                                     
+                                    <textarea
+                                      class="form-control"
+                                      placeholder="Enter contact property"
+                                      rows="1"
+                                    />
+                                     
+                                  </div>
+                                </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
+                              </div>
+                               
+                              <h6>
+                                Value
+                              </h6>
+                               
+                              <div
+                                class="form-group"
+                              >
+                                <div
+                                  class="custom-control custom-radio"
+                                >
+                                  <input
+                                    class="custom-control-input"
+                                    id="setProp"
+                                    name="contactPropAction"
+                                    type="radio"
+                                    value="fromCurrentBlockResponse"
+                                  />
+                                   
+                                  <label
+                                    class="custom-control-label font-weight-normal"
+                                    for="setProp"
+                                  >
+                                    
+          Entry from this block
+        
+                                  </label>
+                                </div>
+                                 
+                                <div
+                                  class="custom-control custom-radio"
+                                >
+                                  <input
+                                    class="custom-control-input"
+                                    id="clearProp"
+                                    name="contactPropAction"
+                                    type="radio"
+                                    value="openExpression"
+                                  />
+                                   
+                                  <label
+                                    class="custom-control-label font-weight-normal"
+                                    for="clearProp"
+                                  >
+                                    
+          Expression
+        
+                                  </label>
+                                </div>
+                              </div>
+                               
+                              <!---->
+                            </div>
                           </div>
                            
                           <hr />
