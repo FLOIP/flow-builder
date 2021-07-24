@@ -13,26 +13,37 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <hr>
+
       <!--Specific config-->
       <block-format-string-editor
         :block="block"
         @commitFormatStringChange="setFormatString" />
 
-      <div
-        v-for="(variableStringFormat,i) in destinationVariablesFields"
-        class="form-group form-inline">
-        <validation-message
-          #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/config/destination_variables/${i}`">
-          <text-editor
-            :label="i+1"
-            :placeholder="'flow-builder.edit-variable' | trans"
-            :valid-state="isValid"
-            value=""
-            @keydown="filterVariableName"
-            @input="updatedestinationVariables($event, i)" />
-        </validation-message>
+      <div>
+        <h6>Destination Variable</h6>
+        <div
+          v-for="(variableStringFormat,i) in destinationVariablesFields"
+          class="form-group">
+          <validation-message
+            #input-control="{ isValid }"
+            :message-key="`block/${block.uuid}/config/destination_variables/${i}`">
+            <text-editor
+              :label="''"
+              :placeholder="'Enter Destination Variable'"
+              :valid-state="isValid"
+              value=""
+              @keydown="filterVariableName"
+              @input="updatedestinationVariables($event, i)" />
+          </validation-message>
+        </div>
       </div>
+
+      <hr>
+
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
 
       <slot name="extras" />
 
@@ -73,6 +84,7 @@ import BlockFormatStringEditor from '../block-editors/FormatStringEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -90,6 +102,7 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     ValidationMessage,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class ConsoleIO_ReadBlock extends mixins(Lang) {

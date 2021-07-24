@@ -8,6 +8,9 @@
         :label="'flow-builder.format-string' | trans"
         :placeholder="'flow-builder.enter-format-string' | trans"
         :valid-state="isValid" />
+      <small class="text-muted">
+        Inputs should start with a % sign
+      </small>
     </div>
   </validation-message>
 </template>
