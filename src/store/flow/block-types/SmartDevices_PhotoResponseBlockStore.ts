@@ -14,8 +14,6 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlock> }) {
-    const blankMessageResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
@@ -38,7 +36,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       semantic_label: '',
       exits,
       config: {
-        prompt: blankMessageResource.uuid,
+        prompt: '', // will add resource if the user want it from the UI config
       },
       tags: [],
     })

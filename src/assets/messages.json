@@ -1,5 +1,7 @@
 {
   "en.flow-builder": {
+    "photo-response-prompt": "Photo response prompt",
+    "include-photo-response-prompt": "Include photo response prompt",
     "group-membership-action-hint": "This action allows you to add the contact to a group, by adding a group value and expression",
     "set-group-membership": "Add to group ",
     "clear-group-membership": "Remove from group",
@@ -1623,6 +1625,8 @@
     "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit."
   },
   "fr.flow-builder": {
+    "photo-response-prompt": "Invite de réponse photo",
+    "include-photo-response-prompt": "Inclure une invite de réponse photo",
     "group-membership-action-hint": "Cette action vous permet d'ajouter le contact à un groupe, en ajoutant une valeur et une expression de groupe",
     "set-group-membership": "Ajouter au groupe",
     "clear-group-membership": "Supprimer du groupe",
