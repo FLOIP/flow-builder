@@ -21,7 +21,7 @@
         @commitFormatStringChange="setFormatString" />
 
       <div>
-        <h6>Destination Variable</h6>
+        <h6>{{'flow-builder.destination-variable' | trans}}</h6>
         <div
           v-for="(variableStringFormat,i) in destinationVariablesFields"
           class="form-group">
@@ -30,7 +30,7 @@
             :message-key="`block/${block.uuid}/config/destination_variables/${i}`">
             <text-editor
               :label="''"
-              :placeholder="'Enter Destination Variable'"
+              :placeholder="'flow-builder.destination-variable-placeholder' | trans"
               :valid-state="isValid"
               value=""
               @keydown="filterVariableName"
