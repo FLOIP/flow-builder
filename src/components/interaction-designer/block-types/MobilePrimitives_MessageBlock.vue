@@ -13,6 +13,8 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <hr>
+
       <block-output-branching-config
         :block="block"
         :has-exit-per-choice="false" />

@@ -13,6 +13,8 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <hr>
+
       <block-max-duration-seconds-editor
         :block="block"
         :has-ivr="hasVoiceMode"
@@ -21,6 +23,12 @@
         :block="block"
         :has-text="hasTextMode"
         @commitMaxResponseCharactersChange="setMaxResponseCharacters" />
+
+      <hr>
+
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
 
       <resource-editor
         v-if="promptResource"
@@ -66,6 +74,7 @@ import BlockId from '../block-editors/BlockId.vue'
 import BlockMaxDurationSecondsEditor from '../block-editors/MaxDurationSecondsEditor.vue'
 import BlockMaxResponseCharactersEditor from '../block-editors/MaxResponseCharactersEditor.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -83,6 +92,7 @@ const builderVuexNamespace = namespace('builder')
     BlockMaxDurationSecondsEditor,
     BlockMaxResponseCharactersEditor,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
