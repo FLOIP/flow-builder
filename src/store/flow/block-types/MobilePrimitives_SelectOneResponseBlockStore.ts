@@ -117,6 +117,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       },
       exits: [defaultExit],
       tags: [],
+      vendor_metadata: {},
     })
   },
 }

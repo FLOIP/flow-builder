@@ -37,6 +37,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits,
       config: {},
       tags: [],
+      vendor_metadata: {},
     })
   },
 }

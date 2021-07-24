@@ -67,6 +67,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         },
       },
       tags: [],
+      vendor_metadata: {},
     })
   },
 }

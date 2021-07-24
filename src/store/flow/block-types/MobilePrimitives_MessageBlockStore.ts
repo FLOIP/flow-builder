@@ -35,6 +35,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         prompt: blankMessageResource.uuid,
       },
       tags: [],
+      vendor_metadata: {},
     })
   },
 

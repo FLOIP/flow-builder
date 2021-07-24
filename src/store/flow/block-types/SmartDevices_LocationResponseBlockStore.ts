@@ -56,6 +56,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         accuracy_timeout_seconds: 120,
       },
       tags: [],
+      vendor_metadata: {},
     })
   },
 }
