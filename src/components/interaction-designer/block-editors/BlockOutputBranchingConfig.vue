@@ -209,8 +209,6 @@
 
     @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!:
       ({blockId, path, value}: { blockId: string, path: string, value: object | string }) => void
-    // @flowVuexNamespace.Action block_convertExitFormationToUnified!:
-    //   ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
     @flowVuexNamespace.Mutation block_exitClearDestinationBlockFor!:
       ({blockExit}: {blockExit: IBlockExit}) => void
   }
