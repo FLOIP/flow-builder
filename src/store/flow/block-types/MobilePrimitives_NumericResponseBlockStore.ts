@@ -14,30 +14,33 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMinimum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
+    const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validation_minimum',
-      value,
+      value: valueAsNumberOrUnset,
     }, {root: true})
-    return value
+    return valueAsNumberOrUnset
   },
   async setValidationMaximum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
+    const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validation_maximum',
-      value,
+      value: valueAsNumberOrUnset,
     }, {root: true})
-    return value
+    return valueAsNumberOrUnset
   },
   async setMaxDigits({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
+    const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'ivr',
       value: {
-        max_digits: value,
+        max_digits: valueAsNumberOrUnset,
       },
     }, {root: true})
-    return value
+    return valueAsNumberOrUnset
   },
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<INumericResponseBlock> }) {
     const exits: IBlockExit[] = [
@@ -60,11 +63,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits,
       config: {
         prompt: blankResource.uuid,
-        validation_minimum: '',
-        validation_maximum: '',
-        ivr: {
-          max_digits: '',
-        },
       },
       tags: [],
       vendor_metadata: {},

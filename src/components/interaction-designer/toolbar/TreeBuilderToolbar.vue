@@ -332,7 +332,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     })
     this.activateBlock({blockId})
     this.$router.push({
-      name: 'block-selected',
+      name: 'block-selected-details',
       params: {blockId},
     })
   }

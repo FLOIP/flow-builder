@@ -5,7 +5,7 @@
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"658979c1-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue?vue&type=template&id=07753668&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5f4fbe28-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue?vue&type=template&id=07753668&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"generic-contact-property-editor"},[_c('hr'),_c('label',{staticClass:"text-primary"},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.contact-properties')))]),_c('div',{staticClass:"custom-control custom-checkbox"},[_c('input',{staticClass:"custom-control-input",attrs:{"id":"setContactProperty","type":"checkbox","name":"setContactProperty"},domProps:{"value":_vm.shouldSetContactProperty,"checked":_vm.shouldSetContactProperty},on:{"change":_vm.toggleSetContactProperty}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"setContactProperty"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.set-contact-property-with-response'))+" ")])]),(_vm.shouldSetContactProperty)?_c('div',{staticClass:"form-group"},[_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/set_contact_property/property_key")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('div',{staticClass:"block-contact-property-key"},[_c('text-editor',{attrs:{"value":_vm.propertyKey,"label":_vm._f("trans")('flow-builder.property'),"placeholder":_vm._f("trans")('flow-builder.enter-contact-property-label'),"valid-state":isValid},on:{"input":_vm.updatePropertyKey}})],1)]}}],null,false,1545571803)}),_c('h6',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.value')))]),(_vm.isBlockInteractive(_vm.block))?_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{staticClass:"custom-control-input",attrs:{"id":"setProp","type":"radio","name":"contactPropAction"},domProps:{"checked":_vm.propertyValueAction === _vm.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE,"value":_vm.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE},on:{"change":_vm.updatePropertyValueAction}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"setProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.entry-from-this-block'))+" ")])]),_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{staticClass:"custom-control-input",attrs:{"id":"clearProp","type":"radio","name":"contactPropAction"},domProps:{"checked":_vm.propertyValueAction === _vm.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION,"value":_vm.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION},on:{"change":_vm.updatePropertyValueAction}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"clearProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.expression'))+" ")])])]):_vm._e(),(_vm.shouldUseOpenExpression)?_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/set_contact_property/property_value")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
@@ -58,7 +58,7 @@ var vue_class_component_esm = __webpack_require__("2fe1");
 // EXTERNAL MODULE: ./src/components/common/ValidationMessage.vue + 5 modules
 var ValidationMessage = __webpack_require__("21e9");
 
-// EXTERNAL MODULE: ./src/components/common/ExpressionInput.vue + 4 modules
+// EXTERNAL MODULE: ./src/components/common/ExpressionInput.vue + 5 modules
 var ExpressionInput = __webpack_require__("6faa");
 
 // EXTERNAL MODULE: ./src/components/common/TextEditor.vue + 4 modules
@@ -271,7 +271,7 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"658979c1-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=template&id=4a9265b4&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5f4fbe28-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=template&id=4a9265b4&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"core-case-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_vm._l((_vm.exits),function(exit,i){return _c('div',{staticClass:"form-group"},[_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/exits/" + i + "/test")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('expression-input',{staticClass:"d-flex m-0",attrs:{"label":i+1,"placeholder":_vm._f("trans")('flow-builder.enter-expression'),"valid-state":isValid,"current-expression":exit.test,"expression-identifier":exit.uuid},on:{"commitExpressionChange":_vm.editCaseBlockExit}})]}}],null,true)})],1)}),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
@@ -310,12 +310,174 @@ var lib = __webpack_require__("4bb5");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/index.js + 14 modules
 var vue_property_decorator_lib = __webpack_require__("1b40");
 
-// EXTERNAL MODULE: ./src/components/common/ExpressionInput.vue + 4 modules
+// EXTERNAL MODULE: ./src/components/common/ExpressionInput.vue + 5 modules
 var ExpressionInput = __webpack_require__("6faa");
 
-// EXTERNAL MODULE: ./src/store/flow/block-types/Core_CaseBlockStore.ts
-var Core_CaseBlockStore = __webpack_require__("6689");
+// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
+var asyncToGenerator = __webpack_require__("c964");
 
+// EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
+var runtime = __webpack_require__("96cf");
+
+// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
+var IdGeneratorUuidV4 = __webpack_require__("31aa");
+
+// EXTERNAL MODULE: ./node_modules/lodash/lodash.js
+var lodash = __webpack_require__("2ef0");
+
+// EXTERNAL MODULE: ./src/store/flow/utils/listBuilder.ts
+var listBuilder = __webpack_require__("b199");
+
+// CONCATENATED MODULE: ./src/store/flow/block-types/Core_CaseBlockStore.ts
+
+
+
+
+
+var BLOCK_TYPE = 'Core.Case';
+var Core_CaseBlockStore_getters = {
+  allExitsHaveTests: function allExitsHaveTests(state, _getters, _rootState, rootGetters) {
+    return Object(listBuilder["a" /* allItemsHaveValue */])(rootGetters['builder/activeBlock'].exits, 'test');
+  },
+  twoExitsBlank: function twoExitsBlank(state, _getters, _rootState, rootGetters) {
+    return Object(listBuilder["c" /* twoItemsBlank */])(rootGetters['builder/activeBlock'].exits, 'test');
+  }
+};
+var mutations = {};
+var actions = {
+  editCaseBlockExit: function editCaseBlockExit(_ref, _ref2) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var commit, dispatch, getters, rootGetters, identifier, value, activeBlock, exit;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              commit = _ref.commit, dispatch = _ref.dispatch, getters = _ref.getters, rootGetters = _ref.rootGetters;
+              identifier = _ref2.identifier, value = _ref2.value;
+              activeBlock = rootGetters['builder/activeBlock'];
+              _context.next = 5;
+              return dispatch('flow/block_updateBlockExitWith', {
+                blockId: rootGetters['builder/activeBlock'].uuid,
+                exitId: identifier,
+                props: {
+                  name: value,
+                  test: value
+                }
+              }, {
+                root: true
+              });
+
+            case 5:
+              if (!getters.allExitsHaveTests) {
+                _context.next = 19;
+                break;
+              }
+
+              _context.t0 = dispatch;
+              _context.next = 9;
+              return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
+
+            case 9:
+              _context.t1 = _context.sent;
+              _context.t2 = {
+                uuid: _context.t1,
+                name: '',
+                test: ''
+              };
+              _context.t3 = {
+                props: _context.t2
+              };
+              _context.t4 = {
+                root: true
+              };
+              _context.next = 15;
+              return (0, _context.t0)('flow/block_createBlockExitWith', _context.t3, _context.t4);
+
+            case 15:
+              exit = _context.sent;
+              commit('flow/block_addExit', {
+                blockId: activeBlock.uuid,
+                newExit: exit
+              }, {
+                root: true
+              });
+              _context.next = 20;
+              break;
+
+            case 19:
+              if (getters.twoExitsBlank) {
+                commit('flow/block_popFirstExitWithoutTest', {
+                  blockId: activeBlock.uuid
+                }, {
+                  root: true
+                });
+              }
+
+            case 20:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  createWith: function createWith(_ref3, _ref4) {
+    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var dispatch, props, exits;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              dispatch = _ref3.dispatch;
+              props = _ref4.props;
+              _context2.t0 = dispatch;
+              _context2.next = 5;
+              return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
+
+            case 5:
+              _context2.t1 = _context2.sent;
+              _context2.t2 = {
+                uuid: _context2.t1,
+                name: '',
+                test: ''
+              };
+              _context2.t3 = {
+                props: _context2.t2
+              };
+              _context2.t4 = {
+                root: true
+              };
+              _context2.next = 11;
+              return (0, _context2.t0)('flow/block_createBlockDefaultExitWith', _context2.t3, _context2.t4);
+
+            case 11:
+              _context2.t5 = _context2.sent;
+              exits = [_context2.t5];
+              return _context2.abrupt("return", Object(lodash["defaultsDeep"])(props, {
+                type: BLOCK_TYPE,
+                name: '',
+                label: '',
+                semantic_label: '',
+                exits: exits,
+                config: {},
+                tags: []
+              }));
+
+            case 14:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  }
+};
+/* harmony default export */ var Core_CaseBlockStore = ({
+  namespaced: true,
+  getters: Core_CaseBlockStore_getters,
+  mutations: mutations,
+  actions: actions
+});
 // EXTERNAL MODULE: ./src/lib/filters/lang.ts
 var lang = __webpack_require__("4a51");
 
@@ -373,7 +535,7 @@ var GenericContactPropertyEditor = __webpack_require__("b4ec");
 
 
 
-var blockVuexNamespace = Object(lib["e" /* namespace */])("flow/".concat(Core_CaseBlockStore["a" /* BLOCK_TYPE */]));
+var blockVuexNamespace = Object(lib["e" /* namespace */])("flow/".concat(BLOCK_TYPE));
 var builderVuexNamespace = Object(lib["e" /* namespace */])('builder');
 
 var Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock = /*#__PURE__*/function (_mixins) {
@@ -437,7 +599,7 @@ Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock = Object(tslib_es6["__decor
   }
 })], Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock);
 /* harmony default export */ var Core_CaseBlockvue_type_script_lang_ts_ = (Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock);
-var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(Core_CaseBlockStore["a" /* BLOCK_TYPE */], Core_CaseBlockStore["b" /* default */]);
+var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, Core_CaseBlockStore);
 // CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=script&lang=ts&
  /* harmony default export */ var block_types_Core_CaseBlockvue_type_script_lang_ts_ = (Core_CaseBlockvue_type_script_lang_ts_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
