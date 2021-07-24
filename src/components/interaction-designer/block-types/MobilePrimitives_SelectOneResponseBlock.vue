@@ -140,7 +140,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     const blockChoicesKey = Object.keys(this.block.config.choices)
     if (blockChoicesKey.length === 0) {
       console.warn('Choices are empty for SelectOneBlock, providing `true` by default')
-      return true
+      return 'true'
     }
     return `OR(${map(blockChoicesKey, (choice) => `block.value = \\"${choice}\\"`).join(',')})`
   }

@@ -147,8 +147,8 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
       return 'is_number(block.value)'
     }
     if (this.block.config.validation_minimum && this.block.config.validation_maximum) {
-      return `AND(is_number(block.value, block.value >= ${this.block.config.validation_minimum},
-        block.value <= ${this.block.config.validation_maximum})`
+      return `AND(is_number(block.value, block.value >= ${this.block.config.validation_minimum},`
+        + ` block.value <= ${this.block.config.validation_maximum})`
     }
     if (this.block.config.validation_minimum && !this.block.config.validation_maximum) {
       return `AND(is_number(block.value), block.value >= ${this.block.config.validation_minimum})`
