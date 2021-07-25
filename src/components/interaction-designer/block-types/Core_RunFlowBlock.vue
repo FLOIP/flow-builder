@@ -43,6 +43,10 @@
 
       <slot name="extras" />
 
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
+
       <categorization :block="block" />
 
       <generic-contact-property-editor :block="block" />
@@ -78,6 +82,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import TextEditor from '@/components/common/TextEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -93,6 +98,7 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     ValidationMessage,
     Categorization,
+    BlockOutputBranchingConfig
   },
 })
 class Core_RunAnotherFlowBlock extends mixins(Lang) {
