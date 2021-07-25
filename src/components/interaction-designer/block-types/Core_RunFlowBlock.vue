@@ -16,6 +16,7 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/flow_id`">
         <div class="form-group">
+        <!--
           <label class="text-primary">{{ 'flow-builder.destination-flow' | trans }}</label>
           <select
             v-model="destinationFlowId"
@@ -30,6 +31,13 @@
               {{ flow.name }}
             </option>
           </select>
+          //TODO - add back in or move across to embedding app via slot when ready - pull flows from a backend
+        -->
+        <text-editor
+            v-model="destinationFlowId"
+            :label="'flow-builder.destination-flow' | trans"
+            :placeholder="'flow-builder.enter-destination-flow-id' | trans"
+            :valid-state="isValid" />
         </div>
       </validation-message>
 
@@ -67,6 +75,7 @@ import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
+import TextEditor from '@/components/common/TextEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
@@ -80,6 +89,7 @@ const builderVuexNamespace = namespace('builder')
     BlockLabelEditor,
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
+    TextEditor,
     BlockId,
     ValidationMessage,
     Categorization,
@@ -104,7 +114,8 @@ class Core_RunAnotherFlowBlock extends mixins(Lang) {
     {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string },
   ) => Promise<string>
 
-  @blockVuexNamespace.Getter declare otherFlows: IFlow[]
+  //TODO - add back in or move across to embedding app via slot when ready - pull flows from a backend
+  //@blockVuexNamespace.Getter declare otherFlows: IFlow[]
 
   @builderVuexNamespace.Getter declare isEditable: boolean
 }
