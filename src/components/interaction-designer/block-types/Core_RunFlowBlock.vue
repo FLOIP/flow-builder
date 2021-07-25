@@ -43,6 +43,8 @@
 
       <slot name="extras" />
 
+      <hr>
+
       <block-output-branching-config
         :block="block"
         :has-exit-per-choice="false" />
