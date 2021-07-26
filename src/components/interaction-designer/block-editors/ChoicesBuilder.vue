@@ -26,7 +26,7 @@
       ref="draftChoice"
       :key="draftResource.uuid"
       class="choices-builder-item"
-      :label="(choiceKeys.length + 1).toString()"
+      :label="(choiceResourcesOrderedByResourcesList.length + 1).toString()"
       :rows="1"
       :placeholder="'Enter choice...'"
       :resource-id="draftResource.uuid"
