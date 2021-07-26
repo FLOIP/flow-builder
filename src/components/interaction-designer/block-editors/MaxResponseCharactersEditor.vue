@@ -1,11 +1,14 @@
 <template>
   <div>
     <span class="d-flex mb-2">
-      <input type="checkbox" class="align-self-center" v-model="showMaxResponseCharField" />
-      <p class="m-0 ml-2">Include maximum characters to prompt for</p>
+      <input
+        v-model="shouldShowMaxResponseCharField"
+        type="checkbox"
+        class="align-self-center">
+      <p class="m-0 ml-2">{{ 'flow-builder.max-response-prompt' | trans }}</p>
     </span>
     <validation-message
-      v-if="showMaxResponseCharField"
+      v-if="shouldShowMaxResponseCharField"
       #input-control="{ isValid }"
       :message-key="`block/${block.uuid}/config/text/max_response_characters`">
       <div
@@ -51,7 +54,7 @@ export default {
   data() {
     return {
       defaultMaxLength: 0,
-      showMaxResponseCharField: false
+      shouldShowMaxResponseCharField: false,
     }
   },
 
