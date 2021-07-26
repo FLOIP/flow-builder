@@ -281,8 +281,12 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   get saveButtonText(): any {
-    //TODO - once we can detect changes again we will change this text when saved
-    return this.trans('flow-builder.save')
+    if(this.isTreeSaving) {
+      return this.trans('flow-builder.saving')
+    } else {
+      return this.trans('flow-builder.save')
+    }
+    //TODO - once we can detect changes again we will change this text to "Saved" when saved and keep it that way until there are further changes.
   }
 
   get rootBlockClassesToDisplay(): any {
@@ -479,5 +483,9 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   position: relative;
   padding-top: 60px;
   z-index: 3*10;
+}
+
+.tree-save-tree {
+  width: 5.5em;
 }
 </style>

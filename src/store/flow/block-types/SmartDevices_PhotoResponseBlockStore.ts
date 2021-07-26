@@ -35,7 +35,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       label: '',
       semantic_label: '',
       exits,
-      config: {},
+      config: {
+        prompt: '', // will add resource if the user want it from the UI config
+      },
       tags: [],
       vendor_metadata: {},
     })

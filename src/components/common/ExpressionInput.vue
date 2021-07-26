@@ -1,12 +1,14 @@
 <template>
   <div class="expression-input form-group">
-    <label :class="labelClass">{{ label }}</label>
+    <label
+      v-if="label"
+      :class="labelClass">{{ label }}</label>
 
     <div class="input-group">
       <div
         v-if="prependText"
         class="input-group-prepend">
-        <span class="input-group-text">{{prependText}}</span>
+        <span class="input-group-text">{{ prependText }}</span>
       </div>
 
       <textarea

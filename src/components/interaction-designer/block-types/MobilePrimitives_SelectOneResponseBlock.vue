@@ -22,6 +22,7 @@
       <block-output-branching-config
         :block="block"
         :has-exit-per-choice="true"
+        :label-class="''"
         @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified"
         @branchingTypeChanged="reflowExitsWhenBranchingTypeNotUnified()" />
 

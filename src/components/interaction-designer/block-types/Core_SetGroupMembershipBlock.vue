@@ -13,25 +13,13 @@
         :block="block" />
       <block-name-editor :block="block" />
 
-      <validation-message
-        #input-control="{ isValid: isValid }"
-        :message-key="`block/${block.uuid}/config/is_member`">
-        <div class="form-group">
-          <label class="text-primary">{{ 'flow-builder.action-label' | trans }}</label>
-          <vue-multiselect
-            v-model="selectedAction"
-            track-by="id"
-            label="name"
-            :class="{invalid: isValid === false}"
-            :placeholder="'flow-builder.action-placeholder' | trans"
-            :options="actionsList"
-            :allow-empty="true"
-            :show-labels="false"
-            :searchable="false" />
-        </div>
-      </validation-message>
+      <group-membership-editor :block="block" />
 
-      <group-selector :block="block" />
+      <hr>
+      <!--TODO: confirm the test in advanced branching `true` or expression from Single Exit mode eg: `block.value = 1`-->
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
 
       <slot name="extras" />
 
@@ -44,7 +32,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
@@ -58,7 +45,7 @@ import {Component, Prop} from 'vue-property-decorator'
 import {IBlock, IFlow, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
 import GroupSelector from '@/components/interaction-designer/block-editors/GroupSelector.vue'
 import VueMultiselect from 'vue-multiselect'
-
+import GroupMembershipEditor from '@/components/interaction-designer/block-editors/GroupMembershipEditor.vue'
 import SetGroupMembershipStore, {ADD_KEY, BLOCK_TYPE, REMOVE_KEY} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
@@ -66,6 +53,7 @@ import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {find} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -94,6 +82,8 @@ interface IGroupActionOption {
     VueMultiselect,
     ValidationMessage,
     Categorization,
+    GroupMembershipEditor,
+    BlockOutputBranchingConfig,
   },
 })
 class Core_SetGroupMembershipBlock extends mixins(Lang) {

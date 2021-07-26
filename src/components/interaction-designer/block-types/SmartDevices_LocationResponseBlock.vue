@@ -20,6 +20,11 @@
         :block="block"
         @commitAccuracyTimeoutSecondsChange="updateTimeout" />
 
+      <hr>
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
+
       <slot name="extras" />
 
       <categorization :block="block" />
@@ -31,7 +36,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
@@ -48,6 +52,7 @@ import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -74,6 +79,7 @@ const builderVuexNamespace = namespace('builder')
     BlockThresholdEditor,
     BlockTimeoutEditor,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class SmartDevices_LocationResponseBlock extends mixins(Lang) {
