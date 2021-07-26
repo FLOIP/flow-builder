@@ -1,9 +1,9 @@
 <template>
   <div class="block-output-branching-config">
     <div class="form-group">
-      <label class="d-block">{{'flow-builder.output-branching' | trans}}</label>
+      <label :class="labelClass">{{ 'flow-builder.output-branching' | trans }}</label>
 
-      <div class="btn-group">
+      <div class="btn-group d-block">
         <button
           v-if="hasExitPerChoice"
           :class="{
@@ -16,9 +16,9 @@
           data-placement="bottom"
           data-toggle="tooltip"
           @click="selectedBranchingType = OutputBranchingType.EXIT_PER_CHOICE">
-
-          <font-awesome-icon :icon="['fac', 'one-exit-per-choice']"
-                             class="exit-type-icons"/>
+          <font-awesome-icon
+            :icon="['fac', 'one-exit-per-choice']"
+            class="exit-type-icons" />
         </button>
 
         <button
@@ -32,9 +32,9 @@
           data-placement="bottom"
           data-toggle="tooltip"
           @click="selectedBranchingType = OutputBranchingType.UNIFIED">
-
-          <font-awesome-icon :icon="['fac', 'single-exit']"
-                             class="exit-type-icons"/>
+          <font-awesome-icon
+            :icon="['fac', 'single-exit']"
+            class="exit-type-icons" />
         </button>
 
         <button
@@ -48,9 +48,9 @@
           data-placement="bottom"
           data-toggle="tooltip"
           @click="selectedBranchingType = OutputBranchingType.ADVANCED">
-
-          <font-awesome-icon :icon="['fac', 'advanced-exit']"
-                             class="exit-type-icons"/>
+          <font-awesome-icon
+            :icon="['fac', 'advanced-exit']"
+            class="exit-type-icons" />
         </button>
       </div>
     </div>
@@ -68,7 +68,7 @@
           v-model="noValidResponse"
           class="form-check-input"
           type="radio"
-          :value="NoValidResponseHandler.END_CALL" />
+          :value="NoValidResponseHandler.END_CALL">
 
         <label
           class="form-check-label"
@@ -83,7 +83,7 @@
           v-model="noValidResponse"
           class="form-check-input"
           type="radio"
-          :value="NoValidResponseHandler.CONTINUE_THRU_EXIT" />
+          :value="NoValidResponseHandler.CONTINUE_THRU_EXIT">
 
         <label
           class="form-check-label"
@@ -119,12 +119,12 @@
 
   export interface IVendorMetadataWithBranchingType {
     io_viamo: {
-      branchingType: OutputBranchingType
-    }
+      branchingType: OutputBranchingType,
+    },
   }
 
   export interface IBlockWithBranchingType extends IBlock {
-    vendor_metadata: IVendorMetadataWithBranchingType
+    vendor_metadata: IVendorMetadataWithBranchingType,
   }
 
   @Component({
@@ -135,6 +135,7 @@
   export default class BlockOutputBranchingConfig extends mixins(Lang) {
     @Prop() readonly block!: IBlock
     @Prop() readonly hasExitPerChoice!: boolean
+    @Prop({default: 'text-primary'}) readonly labelClass?: string
 
     OutputBranchingType = OutputBranchingType
     NoValidResponseHandler = NoValidResponseHandler
