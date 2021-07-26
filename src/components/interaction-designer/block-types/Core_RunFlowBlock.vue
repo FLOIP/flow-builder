@@ -16,6 +16,7 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/flow_id`">
         <div class="form-group">
+        <!--
           <label class="text-primary">{{ 'flow-builder.destination-flow' | trans }}</label>
           <select
             v-model="destinationFlowId"
@@ -30,10 +31,23 @@
               {{ flow.name }}
             </option>
           </select>
+          //TODO - add back in or move across to embedding app via slot when ready - pull flows from a backend
+        -->
+          <text-editor
+            v-model="destinationFlowId"
+            :label="'flow-builder.destination-flow' | trans"
+            :placeholder="'flow-builder.enter-destination-flow-id' | trans"
+            :valid-state="isValid" />
         </div>
       </validation-message>
 
       <slot name="extras" />
+
+      <hr>
+
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
 
       <categorization :block="block" />
 
@@ -63,6 +77,8 @@ import Categorization from '@/components/interaction-designer/block-editors/Cate
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import TextEditor from '@/components/common/TextEditor.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -80,9 +96,11 @@ const builderVuexNamespace = namespace('builder')
     BlockLabelEditor,
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
+    TextEditor,
     BlockId,
     ValidationMessage,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class Core_RunAnotherFlowBlock extends mixins(Lang) {
@@ -104,7 +122,8 @@ class Core_RunAnotherFlowBlock extends mixins(Lang) {
     {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string },
   ) => Promise<string>
 
-  @blockVuexNamespace.Getter declare otherFlows: IFlow[]
+  //TODO - add back in or move across to embedding app via slot when ready - pull flows from a backend
+  //@blockVuexNamespace.Getter declare otherFlows: IFlow[]
 
   @builderVuexNamespace.Getter declare isEditable: boolean
 }

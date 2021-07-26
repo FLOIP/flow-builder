@@ -13,13 +13,24 @@
         :block="block" />
       <block-name-editor :block="block" />
 
-      <resource-editor
-        v-if="promptResource"
-        :resource="promptResource"
-        :block="block"
-        :flow="flow" />
+      <validation-message
+        #input-control="{ isValid }"
+        :message-key="`block/${block.uuid}/config/message`">
+        <expression-input
+          :label="'flow-builder.print-message' | trans"
+          :placeholder="'flow-builder.enter-message' | trans"
+          :current-expression="value"
+          :valid-state="isValid"
+          @commitExpressionChange="commitMessageChange" />
+      </validation-message>
 
       <slot name="extras" />
+
+      <hr>
+
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
 
       <categorization :block="block" />
 
@@ -48,8 +59,10 @@ import PrintStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBl
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
+import ExpressionInput from '@/components/common/ExpressionInput.vue'
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
-import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -57,19 +70,21 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
-const flowVuexNamespace = namespace('flow')
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
     GenericContactPropertyEditor,
-    ResourceEditor,
+    ExpressionInput,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    ValidationMessage,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class ConsoleIO_PrintBlock extends mixins(Lang) {
@@ -79,13 +94,17 @@ class ConsoleIO_PrintBlock extends mixins(Lang) {
 
   showSemanticLabel = false
 
-  get promptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.message]
+  get value(): string {
+    return this.block.config.message || ''
   }
 
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  @blockVuexNamespace.Action editMessage!: (params: { blockId: string, message: string }) => Promise<string>
 
   @builderVuexNamespace.Getter isEditable !: boolean
+
+  commitMessageChange(value: string): Promise<string> {
+    return this.editMessage({blockId: this.block.uuid, message: value})
+  }
 }
 
 export default ConsoleIO_PrintBlock

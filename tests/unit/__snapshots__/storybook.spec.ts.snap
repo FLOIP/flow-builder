@@ -65,7 +65,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="ConsoleIO.Read"
-                      data-for-block-id="fake-uuid-129"
+                      data-for-block-id="fake-uuid-126"
                     >
                       <div
                         class="console-io-read-block"
@@ -90,7 +90,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-129/label"
+                              id="block/fake-uuid-126/label"
                             >
                               <div
                                 class="d-flex"
@@ -133,7 +133,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-129/name"
+                              id="block/fake-uuid-126/name"
                             >
                               <div
                                 class="d-flex justify-content-between"
@@ -172,7 +172,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-129/config/format_string"
+                            id="block/fake-uuid-126/config/format_string"
                           >
                             <div
                               class="block-format-string"
@@ -213,7 +213,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-129/tags"
+                              id="block/fake-uuid-126/tags"
                             >
                               <div
                                 class="block-group"
@@ -328,7 +328,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                 id="setContactProperty"
                                 name="setContactProperty"
                                 type="checkbox"
-                                value="false"
+                                value="true"
                               />
                                
                               <label
@@ -341,7 +341,47 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                               </label>
                             </div>
                              
-                            <!---->
+                            <div
+                              class="form-group"
+                            >
+                              <div
+                                class="validation-message form-group"
+                                id="block/fake-uuid-126/config/set_contact_property/property_key"
+                              >
+                                <div
+                                  class="block-contact-property-key"
+                                >
+                                  <div>
+                                    <label
+                                      class="text-primary"
+                                    >
+                                      Property
+                                    </label>
+                                     
+                                    <textarea
+                                      class="form-control"
+                                      placeholder="Enter contact property"
+                                      rows="1"
+                                    />
+                                     
+                                  </div>
+                                </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
+                              </div>
+                               
+                              <h6>
+                                Value
+                              </h6>
+                               
+                              <!---->
+                               
+                              <!---->
+                            </div>
                           </div>
                            
                           <hr />
@@ -377,7 +417,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-129
+                              fake-uuid-126
                             </em>
                           </small>
                         </div>
@@ -2481,6 +2521,102 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                               
                             </small>
                           </div>
+                           
+                          <hr />
+                           
+                          <div
+                            class="block-output-branching-config"
+                          >
+                            <div
+                              class="form-group"
+                            >
+                              <label
+                                class="text-primary"
+                              >
+                                Output Branching
+                              </label>
+                               
+                              <div
+                                class="btn-group d-block"
+                              >
+                                <!---->
+                                 
+                                <button
+                                  class="btn btn-sm btn-outline-primary"
+                                  data-placement="bottom"
+                                  data-toggle="tooltip"
+                                  title="One output for all choices"
+                                >
+                                  <font-awesome-icon
+                                    class="exit-type-icons"
+                                    icon="fac,single-exit"
+                                  />
+                                </button>
+                                 
+                                <button
+                                  class="btn btn-sm btn-outline-primary"
+                                  data-placement="bottom"
+                                  data-toggle="tooltip"
+                                  title="flow-builder.advanced-configuration-of-outputs"
+                                >
+                                  <font-awesome-icon
+                                    class="exit-type-icons"
+                                    icon="fac,advanced-exit"
+                                  />
+                                </button>
+                              </div>
+                            </div>
+                             
+                            <!---->
+                             
+                            <div
+                              class="form-group"
+                            >
+                              <h6>
+                                When no valid response/all exit expressions evaluate to false
+                              </h6>
+                               
+                              <div
+                                class="form-check"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="END_CALL"
+                                  type="radio"
+                                  value="END_CALL"
+                                />
+                                 
+                                <label
+                                  class="form-check-label"
+                                  for="END_CALL"
+                                >
+                                  
+        End the call/session
+      
+                                </label>
+                              </div>
+                               
+                              <div
+                                class="form-check"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="CONTINUE_THRU_EXIT"
+                                  type="radio"
+                                  value="CONTINUE_THRU_EXIT"
+                                />
+                                 
+                                <label
+                                  class="form-check-label"
+                                  for="CONTINUE_THRU_EXIT"
+                                >
+                                  
+        Continue through Default exit
+      
+                                </label>
+                              </div>
+                            </div>
+                          </div>
                             
                           <div
                             class="block-categorization"
@@ -2610,7 +2746,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                 id="setContactProperty"
                                 name="setContactProperty"
                                 type="checkbox"
-                                value="false"
+                                value="true"
                               />
                                
                               <label
@@ -2623,7 +2759,91 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                               </label>
                             </div>
                              
-                            <!---->
+                            <div
+                              class="form-group"
+                            >
+                              <div
+                                class="validation-message form-group"
+                                id="block/fake-uuid-3/config/set_contact_property/property_key"
+                              >
+                                <div
+                                  class="block-contact-property-key"
+                                >
+                                  <div>
+                                    <label
+                                      class="text-primary"
+                                    >
+                                      Property
+                                    </label>
+                                     
+                                    <textarea
+                                      class="form-control"
+                                      placeholder="Enter contact property"
+                                      rows="1"
+                                    />
+                                     
+                                  </div>
+                                </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
+                              </div>
+                               
+                              <h6>
+                                Value
+                              </h6>
+                               
+                              <div
+                                class="form-group"
+                              >
+                                <div
+                                  class="custom-control custom-radio"
+                                >
+                                  <input
+                                    class="custom-control-input"
+                                    id="setProp"
+                                    name="contactPropAction"
+                                    type="radio"
+                                    value="fromCurrentBlockResponse"
+                                  />
+                                   
+                                  <label
+                                    class="custom-control-label font-weight-normal"
+                                    for="setProp"
+                                  >
+                                    
+          Entry from this block
+        
+                                  </label>
+                                </div>
+                                 
+                                <div
+                                  class="custom-control custom-radio"
+                                >
+                                  <input
+                                    class="custom-control-input"
+                                    id="clearProp"
+                                    name="contactPropAction"
+                                    type="radio"
+                                    value="openExpression"
+                                  />
+                                   
+                                  <label
+                                    class="custom-control-label font-weight-normal"
+                                    for="clearProp"
+                                  >
+                                    
+          Expression
+        
+                                  </label>
+                                </div>
+                              </div>
+                               
+                              <!---->
+                            </div>
                           </div>
                            
                           <hr />
@@ -2828,6 +3048,135 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                               </small>
                             </div>
                           </div>
+                           
+                          <div
+                            class="photo-prompt-editor"
+                          >
+                            <label
+                              class="text-primary"
+                            >
+                              Photo response prompt
+                            </label>
+                             
+                            <div
+                              class="custom-control custom-checkbox"
+                            >
+                              <input
+                                class="custom-control-input"
+                                id="shouldIncludePrompt"
+                                name="includePrompt"
+                                type="checkbox"
+                                value="false"
+                              />
+                               
+                              <label
+                                class="custom-control-label font-weight-normal"
+                                for="shouldIncludePrompt"
+                              >
+                                
+      Include photo response prompt
+    
+                              </label>
+                            </div>
+                             
+                            <!---->
+                          </div>
+                           
+                          <hr />
+                           
+                          <div
+                            class="block-output-branching-config"
+                          >
+                            <div
+                              class="form-group"
+                            >
+                              <label
+                                class="text-primary"
+                              >
+                                Output Branching
+                              </label>
+                               
+                              <div
+                                class="btn-group d-block"
+                              >
+                                <!---->
+                                 
+                                <button
+                                  class="btn btn-sm btn-outline-primary"
+                                  data-placement="bottom"
+                                  data-toggle="tooltip"
+                                  title="One output for all choices"
+                                >
+                                  <font-awesome-icon
+                                    class="exit-type-icons"
+                                    icon="fac,single-exit"
+                                  />
+                                </button>
+                                 
+                                <button
+                                  class="btn btn-sm btn-outline-primary"
+                                  data-placement="bottom"
+                                  data-toggle="tooltip"
+                                  title="flow-builder.advanced-configuration-of-outputs"
+                                >
+                                  <font-awesome-icon
+                                    class="exit-type-icons"
+                                    icon="fac,advanced-exit"
+                                  />
+                                </button>
+                              </div>
+                            </div>
+                             
+                            <!---->
+                             
+                            <div
+                              class="form-group"
+                            >
+                              <h6>
+                                When no valid response/all exit expressions evaluate to false
+                              </h6>
+                               
+                              <div
+                                class="form-check"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="END_CALL"
+                                  type="radio"
+                                  value="END_CALL"
+                                />
+                                 
+                                <label
+                                  class="form-check-label"
+                                  for="END_CALL"
+                                >
+                                  
+        End the call/session
+      
+                                </label>
+                              </div>
+                               
+                              <div
+                                class="form-check"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="CONTINUE_THRU_EXIT"
+                                  type="radio"
+                                  value="CONTINUE_THRU_EXIT"
+                                />
+                                 
+                                <label
+                                  class="form-check-label"
+                                  for="CONTINUE_THRU_EXIT"
+                                >
+                                  
+        Continue through Default exit
+      
+                                </label>
+                              </div>
+                            </div>
+                          </div>
                             
                           <div
                             class="block-categorization"
@@ -2957,7 +3306,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                 id="setContactProperty"
                                 name="setContactProperty"
                                 type="checkbox"
-                                value="false"
+                                value="true"
                               />
                                
                               <label
@@ -2970,7 +3319,91 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                               </label>
                             </div>
                              
-                            <!---->
+                            <div
+                              class="form-group"
+                            >
+                              <div
+                                class="validation-message form-group"
+                                id="block/fake-uuid-101/config/set_contact_property/property_key"
+                              >
+                                <div
+                                  class="block-contact-property-key"
+                                >
+                                  <div>
+                                    <label
+                                      class="text-primary"
+                                    >
+                                      Property
+                                    </label>
+                                     
+                                    <textarea
+                                      class="form-control"
+                                      placeholder="Enter contact property"
+                                      rows="1"
+                                    />
+                                     
+                                  </div>
+                                </div>
+                                 
+                                <small
+                                  class="text-danger"
+                                >
+                                  
+                                </small>
+                              </div>
+                               
+                              <h6>
+                                Value
+                              </h6>
+                               
+                              <div
+                                class="form-group"
+                              >
+                                <div
+                                  class="custom-control custom-radio"
+                                >
+                                  <input
+                                    class="custom-control-input"
+                                    id="setProp"
+                                    name="contactPropAction"
+                                    type="radio"
+                                    value="fromCurrentBlockResponse"
+                                  />
+                                   
+                                  <label
+                                    class="custom-control-label font-weight-normal"
+                                    for="setProp"
+                                  >
+                                    
+          Entry from this block
+        
+                                  </label>
+                                </div>
+                                 
+                                <div
+                                  class="custom-control custom-radio"
+                                >
+                                  <input
+                                    class="custom-control-input"
+                                    id="clearProp"
+                                    name="contactPropAction"
+                                    type="radio"
+                                    value="openExpression"
+                                  />
+                                   
+                                  <label
+                                    class="custom-control-label font-weight-normal"
+                                    for="clearProp"
+                                  >
+                                    
+          Expression
+        
+                                  </label>
+                                </div>
+                              </div>
+                               
+                              <!---->
+                            </div>
                           </div>
                            
                           <hr />

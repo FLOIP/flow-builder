@@ -12,10 +12,11 @@ export const getters: GetterTree<IFlowsState, IRootState> = {}
 
 export const mutations: MutationTree<IFlowsState> = {}
 export const actions: ActionTree<IFlowsState, IRootState> = {
-
+  async editMessage({commit}, {blockId, message}: { blockId: string, message: string }): Promise<string> {
+    commit('flow/block_updateConfig', {blockId, newConfig: {message}}, {root: true})
+    return message
+  },
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IPrintBlock> }) {
-    const blankPrintResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
@@ -32,7 +33,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       semantic_label: '',
       exits,
       config: {
-        message: blankPrintResource.uuid,
+        message: '',
       },
       tags: [],
     })
