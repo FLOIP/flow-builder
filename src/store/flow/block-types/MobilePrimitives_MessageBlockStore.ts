@@ -1,6 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExit} from '@floip/flow-runner'
+import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IMessageBlock} from '@floip/flow-runner/src/model/block/IMessageBlock'
 import {defaultsDeep} from 'lodash'
@@ -37,6 +37,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       tags: [],
       vendor_metadata: {},
     })
+  },
+
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: 'block.value > 1',
+    }, {root: true})
   },
 
 }

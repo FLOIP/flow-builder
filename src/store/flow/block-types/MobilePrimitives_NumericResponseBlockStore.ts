@@ -68,6 +68,36 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       vendor_metadata: {},
     })
   },
+
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: formatTestValueForUnifiedBranchingType(block as INumericResponseBlock),
+    }, {root: true})
+  },
+}
+
+function formatTestValueForUnifiedBranchingType(block: INumericResponseBlock): string {
+  if ((block.config.validation_minimum === null || block.config.validation_minimum === undefined)
+    && (block.config.validation_maximum === null || block.config.validation_maximum === undefined)) {
+    return 'is_number(block.value)'
+  }
+  if ((block.config.validation_minimum !== null && block.config.validation_minimum !== undefined)
+    && (block.config.validation_maximum !== null && block.config.validation_maximum !== undefined)) {
+    return `AND(is_number(block.value, block.value >= ${block.config.validation_minimum},`
+      + ` block.value <= ${block.config.validation_maximum})`
+  }
+  if ((block.config.validation_minimum !== null && block.config.validation_minimum !== undefined)
+    && (block.config.validation_maximum === null || block.config.validation_maximum === undefined)) {
+    return `AND(is_number(block.value), block.value >= ${block.config.validation_minimum})`
+  }
+  if ((block.config.validation_minimum === null || block.config.validation_minimum === undefined)
+    && (block.config.validation_maximum !== null && block.config.validation_maximum !== undefined)) {
+    return `AND(is_number(block.value), block.value <= ${block.config.validation_maximum})`
+  }
+
+  console.warn('Exit test condition not found for NumericBlock, providing `true` by default')
+  return 'true'
 }
 
 export default {

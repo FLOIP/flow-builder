@@ -16,7 +16,7 @@
       <block-output-branching-config
         :block="block"
         :has-exit-per-choice="false"
-        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified" />
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <resource-editor
         v-if="promptResource"
@@ -35,7 +35,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
@@ -54,6 +53,7 @@ import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -61,7 +61,6 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
-import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -91,19 +90,14 @@ class MobilePrimitives_MessageBlock extends mixins(Lang) {
     return this.resourcesByUuid[this.block.config.prompt]
   }
 
-  handleBranchingTypeChangedToUnified() {
-    this.block_convertExitFormationToUnified({
-      blockId: this.block.uuid,
-      test: 'block.value > 1',
-    })
-  }
-
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @flowVuexNamespace.Action block_convertExitFormationToUnified!:
     ({blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) => Promise<void>
 
   @builderVuexNamespace.Getter isEditable !: boolean
+
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 }
 
 export default MobilePrimitives_MessageBlock

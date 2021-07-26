@@ -27,7 +27,7 @@
       <block-output-branching-config
         :block="block"
         :has-exit-per-choice="false"
-        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified" />
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <resource-editor
         v-if="promptResource"
@@ -131,34 +131,8 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
     const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
 
     if (!isEnteringChoiceOrAdvancedBranchingType) {
-      this.handleBranchingTypeChangedToUnified()
+      this.handleBranchingTypeChangedToUnified({block: this.block})
     }
-  }
-
-  handleBranchingTypeChangedToUnified() {
-    this.block_convertExitFormationToUnified({
-      blockId: this.block.uuid,
-      test: this.formatTestValue(),
-    })
-  }
-
-  formatTestValue() {
-    if (!this.block.config.validation_minimum && !this.block.config.validation_maximum) {
-      return 'is_number(block.value)'
-    }
-    if (this.block.config.validation_minimum && this.block.config.validation_maximum) {
-      return `AND(is_number(block.value, block.value >= ${this.block.config.validation_minimum},`
-        + ` block.value <= ${this.block.config.validation_maximum})`
-    }
-    if (this.block.config.validation_minimum && !this.block.config.validation_maximum) {
-      return `AND(is_number(block.value), block.value >= ${this.block.config.validation_minimum})`
-    }
-    if (!this.block.config.validation_minimum && this.block.config.validation_maximum) {
-      return `AND(is_number(block.value), block.value <= ${this.block.config.validation_maximum})`
-    }
-
-    console.warn('Exit test condition not found for NumericBlock, providing `true` by default')
-    return 'true'
   }
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
@@ -179,6 +153,8 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   }: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
 
   @blockVuexNamespace.Action setMaxDigits!: ({blockId, value}: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
+
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean
 }

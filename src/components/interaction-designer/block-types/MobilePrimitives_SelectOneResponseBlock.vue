@@ -23,7 +23,6 @@
         :block="block"
         :has-exit-per-choice="true"
         :label-class="''"
-        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified"
         @branchingTypeChanged="reflowExitsWhenBranchingTypeNotUnified()" />
 
       <div class="prompt-resource">
@@ -46,11 +45,9 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
-
   </div>
 </template>
 
@@ -123,27 +120,11 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
 
     if (!isEnteringChoiceOrAdvancedBranchingType) {
-      this.handleBranchingTypeChangedToUnified()
+      this.handleBranchingTypeChangedToUnified({block: this.block})
       return
     }
 
     this.reflowExitsFromChoices({blockId})
-  }
-
-  handleBranchingTypeChangedToUnified() {
-    this.block_convertExitFormationToUnified({
-      blockId: this.block.uuid,
-      test: this.formatTestValue(),
-    })
-  }
-
-  formatTestValue() {
-    const blockChoicesKey = Object.keys(this.block.config.choices)
-    if (blockChoicesKey.length === 0) {
-      console.warn('Choices are empty for SelectOneBlock, providing `true` by default')
-      return 'true'
-    }
-    return `OR(${map(blockChoicesKey, (choice) => `block.value = \\"${choice}\\"`).join(',')})`
   }
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
@@ -151,6 +132,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @flowVuexNamespace.Action block_convertExitFormationToUnified!:
     ({blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) => Promise<void>
   @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable !: boolean
 }
 
