@@ -21,20 +21,6 @@
         </div>
         <div class="custom-control custom-radio">
           <input
-            id="setFromExpression"
-            v-model="membershipAction"
-            type="radio"
-            name="groupMembershipAction"
-            :value="MEMBERSHIP_ACTION.SET_FROM_EXPRESSION"
-            class="custom-control-input">
-          <label
-            class="custom-control-label font-weight-normal"
-            for="setFromExpression">
-            {{ 'flow-builder.set-group-membership-from-expression' | trans }}
-          </label>
-        </div>
-        <div class="custom-control custom-radio">
-          <input
             id="clearGroup"
             v-model="membershipAction"
             type="radio"
@@ -45,6 +31,20 @@
             class="custom-control-label font-weight-normal"
             for="clearGroup">
             {{ 'flow-builder.clear-group-membership' | trans }}
+          </label>
+        </div>
+        <div class="custom-control custom-radio">
+          <input
+            id="setFromExpression"
+            v-model="membershipAction"
+            type="radio"
+            name="groupMembershipAction"
+            :value="MEMBERSHIP_ACTION.SET_FROM_EXPRESSION"
+            class="custom-control-input">
+          <label
+            class="custom-control-label font-weight-normal"
+            for="setFromExpression">
+            {{ 'flow-builder.set-group-membership-from-expression' | trans }}
           </label>
         </div>
       </div>
