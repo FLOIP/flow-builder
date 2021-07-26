@@ -346,7 +346,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                             >
                               <div
                                 class="validation-message form-group"
-                                id="block/fake-uuid-129/config/set_contact_property/property_key"
+                                id="block/fake-uuid-126/config/set_contact_property/property_key"
                               >
                                 <div
                                   class="block-contact-property-key"
