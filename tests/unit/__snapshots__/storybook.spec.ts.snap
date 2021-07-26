@@ -65,7 +65,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="ConsoleIO.Read"
-                      data-for-block-id="fake-uuid-129"
+                      data-for-block-id="fake-uuid-126"
                     >
                       <div
                         class="console-io-read-block"
@@ -90,7 +90,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-129/label"
+                              id="block/fake-uuid-126/label"
                             >
                               <div
                                 class="d-flex"
@@ -133,7 +133,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-129/name"
+                              id="block/fake-uuid-126/name"
                             >
                               <div
                                 class="d-flex justify-content-between"
@@ -172,7 +172,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-129/config/format_string"
+                            id="block/fake-uuid-126/config/format_string"
                           >
                             <div
                               class="block-format-string"
@@ -213,7 +213,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-129/tags"
+                              id="block/fake-uuid-126/tags"
                             >
                               <div
                                 class="block-group"
@@ -377,7 +377,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-129
+                              fake-uuid-126
                             </em>
                           </small>
                         </div>
