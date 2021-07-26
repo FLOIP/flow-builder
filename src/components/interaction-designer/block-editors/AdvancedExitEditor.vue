@@ -1,6 +1,7 @@
 <template>
   <div class="advanced-exit-editor">
     <expression-input
+      ref="testExpressionInput"
       label=""
       :placeholder="'flow-builder.advanced-exit-expression-placeholder' | trans"
       :current-expression="test"
@@ -10,6 +11,7 @@
 
     <h6 class="mt-2">{{ 'flow-builder.advanced-exit-name' | trans }}</h6>
     <textarea
+      ref="name"
       v-model="name"
       :placeholder="'flow-builder.advanced-exit-name-placeholder' | trans"
       class="form-control"

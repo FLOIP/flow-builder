@@ -4,6 +4,7 @@
 
     <template v-for="(exit, i) in block.exits">
       <advanced-exit-editor
+        ref="exitEditors"
         v-if="!exit.default"
         :key="exit.uuid"
         :block="block"
@@ -32,6 +33,8 @@ import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import AdvancedExitEditor from '@/components/interaction-designer/block-editors/AdvancedExitEditor.vue'
+import {isEmpty, last} from 'lodash'
+import Vue from 'vue'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -64,7 +67,29 @@ class AdvancedExitsBuilder extends mixins(Lang) {
     }
 
     this.block_addExit({blockId: this.block.uuid, exit: this.draftExit})
+
+    this.$nextTick(() => {
+      const isNamePopulated = !isEmpty(this.draftExit?.name)
+      const lastExitEditor = last(this.$refs.exitEditors as Vue[])
+      // sadly defeats Demeter's law -- :/
+      this.focusInputEl(isNamePopulated
+        ? this.getNameInputFrom(lastExitEditor)
+        : this.getTestInputFrom(lastExitEditor))
+    })
+
     this.generateDraftExit()
+  }
+
+  focusInputEl(input?: HTMLInputElement): void {
+    input?.focus()
+  }
+
+  getNameInputFrom(exitEditor?: Vue): HTMLInputElement {
+    return exitEditor?.$refs.name as HTMLInputElement
+  }
+
+  getTestInputFrom(exitEditor?: Vue): HTMLInputElement {
+    return (exitEditor?.$refs.testExpressionInput as Vue).$refs.input as HTMLInputElement
   }
 
   @flowVuexNamespace.Mutation block_addExit!: ({blockId, exit}: {blockId: string, exit: IBlockExit}) => void
