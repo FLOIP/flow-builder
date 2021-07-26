@@ -122,12 +122,15 @@ class GenericContactPropertyEditor extends mixins(Lang) {
   }
   propertyValueAction = ''
   propertyKey = ''
-  propertyValue = ''
+  propertyValue: string | null = ''
 
   created(): void {
     this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')
     this.propertyKey = get(this.block.config.set_contact_property, 'property_key', '')
-    this.propertyValue = get(this.block.config.set_contact_property, 'property_value', EMPTY_STRING_EXPRESSION)
+    this.propertyValue = get(this.block.config.set_contact_property, 'property_value', null)
+    if (this.propertyValue === null) {
+      this.updatePropertyValue(BLOCK_RESPONSE_EXPRESSION)
+    }
     this.initPropertyValueAction()
   }
 
