@@ -4,8 +4,8 @@
     <div class="custom-control custom-checkbox">
       <input
         id="shouldIncludePrompt"
-        :value="shouldSetContactProperty"
-        :checked="shouldSetContactProperty"
+        :value="shouldIncludePrompt"
+        :checked="shouldIncludePrompt"
         type="checkbox"
         name="includePrompt"
         class="custom-control-input"
@@ -43,15 +43,15 @@ class LabelEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
 
-  shouldSetContactProperty = false
+  shouldIncludePrompt = false
 
   created(): void {
-    this.shouldSetContactProperty = this.block.config.prompt !== ''
+    this.shouldIncludePrompt = this.block.config.prompt !== ''
   }
 
   async toggleIncludePrompt(): Promise<void> {
-    this.shouldSetContactProperty = !this.shouldSetContactProperty
-    if (!this.shouldSetContactProperty) {
+    this.shouldIncludePrompt = !this.shouldIncludePrompt
+    if (!this.shouldIncludePrompt) {
       this.resource_delete({
         resourceId: this.block.config.prompt,
       })
