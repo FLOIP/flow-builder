@@ -33,7 +33,7 @@
           </select>
           //TODO - add back in or move across to embedding app via slot when ready - pull flows from a backend
         -->
-        <text-editor
+          <text-editor
             v-model="destinationFlowId"
             :label="'flow-builder.destination-flow' | trans"
             :placeholder="'flow-builder.enter-destination-flow-id' | trans"
@@ -77,14 +77,14 @@ import Categorization from '@/components/interaction-designer/block-editors/Cate
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import TextEditor from '@/components/common/TextEditor.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-import TextEditor from '@/components/common/TextEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
-import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -100,7 +100,7 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     ValidationMessage,
     Categorization,
-    BlockOutputBranchingConfig
+    BlockOutputBranchingConfig,
   },
 })
 class Core_RunAnotherFlowBlock extends mixins(Lang) {
