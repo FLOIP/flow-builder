@@ -121,7 +121,6 @@ class GroupMembershipEditor extends mixins(Lang) {
   }
 
   set membershipAction(value: string) {
-    console.log('membershipAction', value)
     if (value === this.MEMBERSHIP_ACTION.REMOVE) {
       this.updateIsMemberExpression(NULL_STRING_EXPRESSION)
     } else if (value === this.MEMBERSHIP_ACTION.ADD) {
