@@ -9,7 +9,7 @@
         :placeholder="'flow-builder.enter-format-string' | trans"
         :valid-state="isValid" />
       <small class="text-muted">
-        {{'flow-builder.format-string-hint' | trans}}
+        {{ 'flow-builder.format-string-hint' | trans }}
       </small>
     </div>
   </validation-message>

@@ -21,9 +21,10 @@
         @commitFormatStringChange="setFormatString" />
 
       <div>
-        <h6>{{'flow-builder.destination-variable' | trans}}</h6>
+        <h6>{{ 'flow-builder.destination-variable' | trans }}</h6>
         <div
           v-for="(variableStringFormat,i) in destinationVariablesFields"
+          :key="i"
           class="form-group">
           <validation-message
             #input-control="{ isValid }"
