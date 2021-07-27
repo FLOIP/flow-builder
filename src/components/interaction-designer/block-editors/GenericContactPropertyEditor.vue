@@ -30,6 +30,7 @@
           <text-editor
             :value="propertyKey"
             :label="'flow-builder.property' | trans"
+            :label-class="''"
             :placeholder="'flow-builder.enter-contact-property-label' | trans"
             :valid-state="isValid"
             @input="updatePropertyKey" />
@@ -37,7 +38,7 @@
       </validation-message>
 
       <!--Contact property value editor with actions-->
-      <h6>{{ 'flow-builder.value' | trans }}</h6>
+      <label>{{ 'flow-builder.value' | trans }}</label>
       <div
         v-if="isBlockInteractive(block)"
         class="form-group">
@@ -128,7 +129,7 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')
     this.propertyKey = get(this.block.config.set_contact_property, 'property_key', '')
     this.propertyValue = get(this.block.config.set_contact_property, 'property_value', null)
-    if (this.propertyValue === null) {
+    if (this.propertyValue === null && this.isBlockInteractive(this.block)) {
       this.updatePropertyValue(BLOCK_RESPONSE_EXPRESSION)
     }
     this.initPropertyValueAction()
