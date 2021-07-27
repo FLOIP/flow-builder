@@ -1,7 +1,7 @@
 <template>
   <div class="block-output-branching-config">
     <div class="form-group">
-      <label :class="labelClass">{{ 'flow-builder.output-branching' | trans }}</label>
+      <label :class="labelClass">{{ 'flow-builder.exit-branching' | trans }}</label>
 
       <div class="btn-group d-block">
         <button
