@@ -56,10 +56,6 @@ To begin, you can create a new flow by visiting [localhost:8080/flows/new](http:
 
 ![Flow Builder 01](https://user-images.githubusercontent.com/88047281/127215173-d2927606-f89d-4d85-a10a-6a6fd53965d9.gif)
 
-You then start with a blank canvas (a flow without blocks) and get editing:
-
-![image](https://user-images.githubusercontent.com/88047281/127185140-b9583be3-e141-46b6-bf3d-68efa1b9e9f7.png)
-
 ### Adding Blocks and Content
 
 Once you have the canvas open you can add blocks to create your flow
