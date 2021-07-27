@@ -13,6 +13,8 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <slot name="extras" />
+
       <validation-message
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/value`">
@@ -29,8 +31,6 @@
         :block="block"
         :has-exit-per-choice="false"
         @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
-
-      <slot name="extras" />
 
       <categorization :block="block" />
 

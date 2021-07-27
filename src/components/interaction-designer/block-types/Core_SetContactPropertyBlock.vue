@@ -13,14 +13,15 @@
         :block="block" />
       <block-name-editor :block="block" />
 
-      <contact-property-editor :block="block" />
-<!--TODO: add block-output-branching-config component once vmo-4142 is merged-->
       <slot name="extras" />
+
+      <contact-property-editor :block="block" />
 
       <hr>
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <categorization :block="block" />
 

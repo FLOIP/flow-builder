@@ -12,6 +12,8 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <slot name="extras" />
+
       <div class="text-only-resource-editor">
         <hr>
 
@@ -35,8 +37,6 @@
           </template>
         </template>
       </div>
-      <!--TODO: add block-output-branching-config component once vmo-4148 is merged-->
-      <slot name="extras" />
 
       <categorization :block="block" />
 
@@ -58,7 +58,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IBlock, IFlow, IResource} from '@floip/flow-runner'
+import {IFlow, IResource} from '@floip/flow-runner'
 import {ILogBlock} from '@floip/flow-runner/src/model/block/ILogBlock'
 
 import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
@@ -78,7 +78,6 @@ import GenericContactPropertyEditor from '../block-editors/GenericContactPropert
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
@@ -109,8 +108,6 @@ class Core_LogBlock extends mixins(Lang) {
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @builderVuexNamespace.Getter isEditable !: boolean
-
-  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 }
 
 export default Core_LogBlock

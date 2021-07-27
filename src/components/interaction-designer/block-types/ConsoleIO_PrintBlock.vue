@@ -13,6 +13,8 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <slot name="extras" />
+
       <validation-message
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/message`">
@@ -23,8 +25,6 @@
           :valid-state="isValid"
           @commitExpressionChange="commitMessageChange" />
       </validation-message>
-
-      <slot name="extras" />
 
       <hr>
 

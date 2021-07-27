@@ -13,6 +13,8 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <slot name="extras" />
+
       <group-membership-editor :block="block" />
 
       <hr>
@@ -21,8 +23,6 @@
         :block="block"
         :has-exit-per-choice="false"
         @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
-
-      <slot name="extras" />
 
       <categorization :block="block" />
 

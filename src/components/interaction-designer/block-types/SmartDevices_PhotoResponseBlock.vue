@@ -12,18 +12,19 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <slot name="extras" />
+
       <hr>
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"
         :block="block"
         :flow="flow" />
-
-      <slot name="extras" />
 
       <categorization :block="block" />
 
@@ -61,6 +62,7 @@ import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
@@ -90,6 +92,8 @@ class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @builderVuexNamespace.Getter isEditable !: boolean
+
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 }
 
 export default SmartDevices_PhotoResponseBlock

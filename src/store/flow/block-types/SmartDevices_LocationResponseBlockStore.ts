@@ -62,6 +62,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       vendor_metadata: {},
     })
   },
+
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: 'NOT(block.value = false)',
+    }, {root: true})
+  },
 }
 
 export default {
