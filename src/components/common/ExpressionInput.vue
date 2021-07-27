@@ -60,7 +60,7 @@ export default {
     },
     currentExpression: {
       type: String,
-      required: true,
+      required: false,
     },
     expressionIdentifier: {
       type: [String, Number],
