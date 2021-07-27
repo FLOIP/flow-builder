@@ -13,6 +13,8 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <slot name="extras" />
+
       <block-threshold-editor
         :block="block"
         @commitAccuracyThresholdMetersChange="updateThreshold" />
@@ -23,15 +25,14 @@
       <hr>
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"
         :block="block"
         :flow="flow" />
-
-      <slot name="extras" />
 
       <categorization :block="block" />
 
@@ -111,8 +112,8 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @blockVuexNamespace.Action setAccuracyThreshold!: ({blockId, value}: { blockId: string, value: number }) => Promise<string>
-
   @blockVuexNamespace.Action setAccuracyTimeout!: ({blockId, value}: { blockId: string, value: number }) => Promise<string>
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean
 }

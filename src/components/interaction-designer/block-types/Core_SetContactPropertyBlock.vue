@@ -13,14 +13,15 @@
         :block="block" />
       <block-name-editor :block="block" />
 
-      <contact-property-editor :block="block" />
-
       <slot name="extras" />
+
+      <contact-property-editor :block="block" />
 
       <hr>
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <categorization :block="block" />
 
@@ -53,6 +54,7 @@ import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 
 const builderVuexNamespace = namespace('builder')
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
@@ -73,6 +75,7 @@ class Core_SetContactPropertyBlock extends mixins(Lang) {
   showSemanticLabel = false
 
   @builderVuexNamespace.Getter isEditable !: boolean
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 }
 
 export default Core_SetContactPropertyBlock

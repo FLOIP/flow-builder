@@ -12,6 +12,8 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <slot name="extras" />
+
       <validation-message
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/flow_id`">
@@ -41,13 +43,12 @@
         </div>
       </validation-message>
 
-      <slot name="extras" />
-
       <hr>
 
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <categorization :block="block" />
 
@@ -70,7 +71,7 @@ import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
 import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
-import {IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow} from '@floip/flow-runner'
 import RunAnotherFlowStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
 import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
@@ -121,7 +122,7 @@ class Core_RunAnotherFlowBlock extends mixins(Lang) {
   @blockVuexNamespace.Action declare setDestinationFlowId: (
     {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string },
   ) => Promise<string>
-
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   //TODO - add back in or move across to embedding app via slot when ready - pull flows from a backend
   //@blockVuexNamespace.Getter declare otherFlows: IFlow[]
 

@@ -12,6 +12,8 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <slot name="extras" />
+
       <div class="text-only-resource-editor">
         <hr>
 
@@ -35,8 +37,6 @@
           </template>
         </template>
       </div>
-
-      <slot name="extras" />
 
       <categorization :block="block" />
 

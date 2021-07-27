@@ -135,7 +135,7 @@ function formatTestValueForUnifiedBranchingType(block: ISelectOneResponseBlock):
     console.warn('Choices are empty for SelectOneBlock, providing `true` by default')
     return 'true'
   }
-  return `OR(${map(blockChoicesKey, (choice) => `block.value = \\"${choice}\\"`).join(',')})`
+  return `OR(${map(blockChoicesKey, (choice) => `block.value = '${choice}'`).join(',')})`
 }
 
 export default {
