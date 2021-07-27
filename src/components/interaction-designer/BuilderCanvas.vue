@@ -204,7 +204,7 @@ export default class BuilderCanvas extends Vue {
 export {BuilderCanvas}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .noselect * {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */

@@ -91,5 +91,5 @@ export default FetchFlow
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 </style>

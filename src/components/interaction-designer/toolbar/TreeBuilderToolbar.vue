@@ -470,7 +470,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .tree-builder-toolbar {
   position: relative;
   .flows-importer textarea {

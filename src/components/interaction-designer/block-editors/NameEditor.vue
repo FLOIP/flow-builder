@@ -78,7 +78,7 @@ class NameEditor extends mixins(Lang) {
 export default NameEditor
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .block-code {
   word-break: break-all;
 }

@@ -243,7 +243,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 export default ResourceEditor
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .tab-content-style {
   background: #F4F4F4;
   padding: 10px;

@@ -175,7 +175,7 @@ export default class ClipboardRoot extends mixins(Lang) {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .clipboard-root-view {
   min-height: 80vh;
 }

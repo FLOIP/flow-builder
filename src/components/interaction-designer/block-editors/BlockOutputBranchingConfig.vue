@@ -217,7 +217,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .exit-type-icons {
   font-size: 1.5rem;
 }

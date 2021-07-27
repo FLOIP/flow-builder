@@ -215,7 +215,7 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 svg.leader-line {
   cursor: pointer;
 }

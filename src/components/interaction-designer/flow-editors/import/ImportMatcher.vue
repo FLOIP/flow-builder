@@ -93,7 +93,7 @@ export default ImportMatcher
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .full-width {
   width: 100%
 }

@@ -623,7 +623,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .fa-btn {
   cursor: pointer;
 }

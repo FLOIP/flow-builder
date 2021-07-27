@@ -46,7 +46,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .block-editor-wrapper {
   position: absolute;
   background: white;

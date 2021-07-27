@@ -75,5 +75,5 @@ class Home extends Vue {
 export default Home
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 </style>
