@@ -55,9 +55,19 @@ export default {
   width: 365px;
   overflow-y: scroll;
   padding: 1em;
+  padding-top: 0;
   border: 1px solid lightgray;
   border-radius: 0;
   box-shadow: 0 3px 6px #cacaca;
   transition: right 200ms ease-in-out, 200ms background-color ease-in-out, 200ms border-color ease-in-out, 200ms border-radius ease-in-out;
+}
+
+.block-editor-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  padding-top: 1rem;
+  padding-bottom: 0.25rem;
+  z-index: 15;
 }
 </style>
