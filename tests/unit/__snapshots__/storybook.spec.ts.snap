@@ -65,7 +65,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="ConsoleIO.Read"
-                      data-for-block-id="fake-uuid-128"
+                      data-for-block-id="fake-uuid-132"
                     >
                       <div
                         class="console-io-read-block"
@@ -73,11 +73,11 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Read block
-  
+
                         </h3>
-                         
+
                         <fieldset>
                           <section
                             class="mb-3"
@@ -87,10 +87,10 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                             >
                               Title
                             </label>
-                             
+
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-128/label"
+                              id="block/fake-uuid-132/label"
                             >
                               <div
                                 class="d-flex"
@@ -99,15 +99,15 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                   class="w-100"
                                 >
                                   <!---->
-                                   
+
                                   <textarea
                                     class="form-control"
                                     placeholder="Enter title"
                                     rows="1"
                                   />
-                                   
+
                                 </div>
-                                 
+
                                 <span
                                   class="btn btn-outline-primary btn-xs align-self-center ml-2"
                                 >
@@ -117,23 +117,23 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                   />
                                 </span>
                               </div>
-                               
+
                               <small
                                 class="text-danger"
                               >
-                                
+
                               </small>
                             </div>
                           </section>
-                           
+
                           <!---->
-                           
+
                           <div
                             class="mt-3"
                           >
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-128/name"
+                              id="block/fake-uuid-132/name"
                             >
                               <div
                                 class="d-flex justify-content-between"
@@ -146,12 +146,12 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                   >
                                     Code:
                                   </h6>
-                                   
+
                                   <span>
-                                      
+
                                   </span>
                                 </div>
-                                 
+
                                 <span
                                   class="btn btn-primary btn-xs align-self-baseline ml-2"
                                 >
@@ -161,20 +161,20 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                   />
                                 </span>
                               </div>
-                               
+
                               <small
                                 class="text-danger"
                               >
-                                
+
                               </small>
                             </div>
                           </div>
-                           
+
                           <hr />
-                           
+
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-128/config/format_string"
+                            id="block/fake-uuid-132/config/format_string"
                           >
                             <div
                               class="block-format-string"
@@ -185,40 +185,40 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                 >
                                   Format String
                                 </label>
-                                 
+
                                 <textarea
                                   class="form-control"
                                   placeholder="Enter format string"
                                   rows="1"
                                 />
-                                 
+
                               </div>
-                               
+
                               <small
                                 class="text-muted"
                               >
-                                
+
       Inputs should start with a % sign
-    
+
                               </small>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div>
                             <h6>
                               Destination Variable
                             </h6>
-                             
+
                           </div>
-                           
+
                           <hr />
-                           
+
                           <div
                             class="block-output-branching-config"
                           >
@@ -230,12 +230,12 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                               >
                                 Output Branching
                               </label>
-                               
+
                               <div
                                 class="btn-group d-block"
                               >
                                 <!---->
-                                 
+
                                 <button
                                   class="btn btn-sm btn-outline-primary"
                                   data-placement="bottom"
@@ -247,7 +247,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                     icon="fac,single-exit"
                                   />
                                 </button>
-                                 
+
                                 <button
                                   class="btn btn-sm btn-outline-primary"
                                   data-placement="bottom"
@@ -261,16 +261,16 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                 </button>
                               </div>
                             </div>
-                             
+
                             <!---->
-                             
+
                             <div
                               class="form-group"
                             >
                               <h6>
                                 When no valid response/all exit expressions evaluate to false
                               </h6>
-                               
+
                               <div
                                 class="form-check"
                               >
@@ -280,17 +280,17 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                   type="radio"
                                   value="END_CALL"
                                 />
-                                 
+
                                 <label
                                   class="form-check-label"
                                   for="END_CALL"
                                 >
-                                  
+
         End the call/session
-      
+
                                 </label>
                               </div>
-                               
+
                               <div
                                 class="form-check"
                               >
@@ -300,33 +300,33 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                   type="radio"
                                   value="CONTINUE_THRU_EXIT"
                                 />
-                                 
+
                                 <label
                                   class="form-check-label"
                                   for="CONTINUE_THRU_EXIT"
                                 >
-                                  
+
         Continue through Default exit
-      
+
                                 </label>
                               </div>
                             </div>
                           </div>
-                            
+
                           <div
                             class="block-categorization"
                           >
                             <hr />
-                             
+
                             <label
                               class="text-primary"
                             >
                               Categorization
                             </label>
-                             
+
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-128/tags"
+                              id="block/fake-uuid-132/tags"
                             >
                               <div
                                 class="block-group"
@@ -334,7 +334,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                 <label>
                                   Tags
                                 </label>
-                                 
+
                                 <div
                                   class="multiselect"
                                   tabindex="-1"
@@ -342,7 +342,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                   <div
                                     class="multiselect__select"
                                   />
-                                    
+
                                   <div
                                     class="multiselect__tags"
                                   >
@@ -350,14 +350,14 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                       class="multiselect__tags-wrap"
                                       style="display: none;"
                                     />
-                                     
+
                                     <!---->
-                                     
+
                                     <div
                                       class="multiselect__spinner"
                                       style="display: none;"
                                     />
-                                     
+
                                     <input
                                       autocomplete="nope"
                                       class="multiselect__input"
@@ -367,18 +367,18 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                       tabindex="0"
                                       type="text"
                                     />
-                                     
+
                                     <!---->
-                                     
+
                                     <span
                                       class="multiselect__placeholder"
                                     >
-                                      
+
           Select or add a tag
-        
+
                                     </span>
                                   </div>
-                                   
+
                                   <div
                                     class="multiselect__content-wrapper"
                                     style="max-height: 300px; display: none;"
@@ -388,9 +388,9 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                       class="multiselect__content"
                                       style="display: block;"
                                     >
-                                       
+
                                       <!---->
-                                        
+
                                       <li
                                         style="display: none;"
                                       >
@@ -400,7 +400,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                           No elements found. Consider changing the search query.
                                         </span>
                                       </li>
-                                       
+
                                       <li>
                                         <span
                                           class="multiselect__option"
@@ -408,31 +408,31 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                           List is empty.
                                         </span>
                                       </li>
-                                       
+
                                     </ul>
                                   </div>
                                 </div>
                               </div>
-                               
+
                               <small
                                 class="text-danger"
                               >
-                                
+
                               </small>
                             </div>
                           </div>
-                           
+
                           <div
                             class="generic-contact-property-editor"
                           >
                             <hr />
-                             
+
                             <label
                               class="text-primary"
                             >
                               Contact Properties
                             </label>
-                             
+
                             <div
                               class="custom-control custom-checkbox"
                             >
@@ -443,23 +443,23 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                 type="checkbox"
                                 value="true"
                               />
-                               
+
                               <label
                                 class="custom-control-label font-weight-normal"
                                 for="setContactProperty"
                               >
-                                
+
       Set a contact property with the Contact’s response
-    
+
                               </label>
                             </div>
-                             
+
                             <div
                               class="form-group"
                             >
                               <div
                                 class="validation-message form-group"
-                                id="block/fake-uuid-128/config/set_contact_property/property_key"
+                                id="block/fake-uuid-132/config/set_contact_property/property_key"
                               >
                                 <div
                                   class="block-contact-property-key"
@@ -470,35 +470,35 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                     >
                                       Property
                                     </label>
-                                     
+
                                     <textarea
                                       class="form-control"
                                       placeholder="Enter contact property"
                                       rows="1"
                                     />
-                                     
+
                                   </div>
                                 </div>
-                                 
+
                                 <small
                                   class="text-danger"
                                 >
-                                  
+
                                 </small>
                               </div>
-                               
+
                               <h6>
                                 Value
                               </h6>
-                               
+
                               <!---->
-                               
+
                               <!---->
                             </div>
                           </div>
-                           
+
                           <hr />
-                           
+
                           <div
                             class="starting-block-button"
                           >
@@ -514,23 +514,23 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                   class="fa-btn"
                                   icon="fac,enter"
                                 />
-                                 
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="block-id text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
-                              fake-uuid-128
+                              fake-uuid-132
                             </em>
                           </small>
                         </div>
@@ -599,7 +599,7 @@ exports[`Storyshots Core/Log Block Styled Existing Data Non Starting Block 1`] =
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="Core.Log"
-                      data-for-block-id="fake-uuid-25"
+                      data-for-block-id="fake-uuid-28"
                     >
                       <!---->
                     </div>
@@ -705,11 +705,11 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Flow
-  
+
                         </h3>
-                         
+
                         <fieldset>
                           <div
                             class="row"
@@ -732,23 +732,23 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                     >
                                       Flow label
                                     </label>
-                                     
+
                                     <textarea
                                       class="form-control"
                                       placeholder="Enter flow label"
                                       rows="1"
                                     />
-                                     
+
                                   </div>
                                 </div>
-                                 
+
                                 <small
                                   class="text-danger"
                                 >
-                                  
+
                                 </small>
                               </div>
-                               
+
                               <div
                                 class="validation-message form-group"
                                 id="flow/fake-uuid-0/interaction_timeout"
@@ -764,13 +764,13 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                     >
                                       Interaction timeout
                                     </label>
-                                     
+
                                     <div
                                       class="small mb-2"
                                     >
-                                      
+
                                     </div>
-                                     
+
                                     <div>
                                       <input
                                         class="form-control"
@@ -779,18 +779,18 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="number"
                                       />
                                     </div>
-                                     
+
                                   </div>
                                 </div>
-                                 
+
                                 <small
                                   class="text-danger"
                                 >
-                                  
+
                                 </small>
                               </div>
                             </div>
-                             
+
                             <div
                               class="col-12"
                             >
@@ -806,7 +806,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   >
                                     Languages
                                   </label>
-                                   
+
                                   <div
                                     class="checkbox"
                                   >
@@ -818,10 +818,10 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="[object Object]"
                                       />
-                                      
+
 
       English
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -835,21 +835,21 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="[object Object]"
                                       />
-                                      
+
 
       French
-    
+
                                     </label>
                                   </div>
                                 </div>
-                                 
+
                                 <small
                                   class="text-danger"
                                 >
-                                  
+
                                 </small>
                               </div>
-                               
+
                               <div
                                 class="validation-message form-group"
                                 id="flow/fake-uuid-0/supported_modes"
@@ -862,7 +862,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   >
                                     Modes
                                   </label>
-                                   
+
                                   <div
                                     class="checkbox"
                                   >
@@ -874,9 +874,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="TEXT"
                                       />
-                                      
+
       Text
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -890,9 +890,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="SMS"
                                       />
-                                      
+
       SMS
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -906,9 +906,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="USSD"
                                       />
-                                      
+
       USSD
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -922,9 +922,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="IVR"
                                       />
-                                      
+
       IVR
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -938,9 +938,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="RICH_MESSAGING"
                                       />
-                                      
+
       Rich messaging
-    
+
                                     </label>
                                   </div>
                                   <div
@@ -954,17 +954,17 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         type="checkbox"
                                         value="OFFLINE"
                                       />
-                                      
+
       Offline
-    
+
                                     </label>
                                   </div>
                                 </div>
-                                 
+
                                 <small
                                   class="text-danger"
                                 >
-                                  
+
                                 </small>
                               </div>
                             </div>
@@ -1019,7 +1019,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                   class="tree-builder-toolbar-main-menu"
                 >
                   <!---->
-                   
+
                   <div
                     class="tree-workspace-panel-heading panel-heading"
                   >
@@ -1035,67 +1035,67 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                           <i
                             class="glyphicon glyphicon-chevron-up"
                           />
-                          
+
             Export
-          
+
                         </button>
-                         
+
                         <!---->
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/trees/1/interaction-designer/edit"
                           title="Click to toggle editing"
                         >
-                          
+
             Edit Flow
-          
+
                         </a>
-                         
+
                         <!---->
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/flows/new"
                         >
-                          
+
             New Flow
-          
+
                         </a>
-                         
+
                         <a
                           aria-current="page"
                           class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                           href="#/"
                         >
-                          
+
             Home
-          
+
                         </a>
-                          
+
                         <!---->
-                         
+
                         <div
                           class="btn-group ml-auto mr-2"
                         >
                           <!---->
-                           
+
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 
+
                 <div
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
-                   
+
                   <main
                     class="error-notifications-wrapper"
                   >
                     <!---->
-                     
+
                     <!---->
                   </main>
                 </div>
@@ -1138,7 +1138,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                   class="tree-builder-toolbar-main-menu"
                 >
                   <!---->
-                   
+
                   <div
                     class="tree-workspace-panel-heading panel-heading"
                   >
@@ -1154,11 +1154,11 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                           <i
                             class="glyphicon glyphicon-chevron-up"
                           />
-                          
+
             Export
-          
+
                         </button>
-                         
+
                         <div
                           class="btn-group mr-2"
                         >
@@ -1166,31 +1166,31 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             class="btn btn-secondary active"
                             href="#/trees/1/interaction-designer"
                           >
-                            
+
               Flow view
-            
+
                           </a>
-                           
+
                           <a
                             class="btn btn-secondary"
                             href="#/trees/1/resource-viewer"
                           >
-                            
+
               Resources view
-            
+
                           </a>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2 active"
                           href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
-                          
+
             View Flow
-          
+
                         </a>
-                         
+
                         <div
                           class="dropdown mr-2"
                         >
@@ -1199,228 +1199,228 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             data-toggle="dropdown"
                             type="button"
                           >
-                            
+
               Add Block
-            
+
                           </button>
-                           
+
                           <div
                             class="dropdown-menu"
                           >
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Print"
                               href="#"
                             >
-                              
+
                   Print
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Read"
                               href="#"
                             >
-                              
+
                   Read
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Case"
                               href="#"
                             >
-                              
+
                   Case
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Log"
                               href="#"
                             >
-                              
+
                   Log
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Output"
                               href="#"
                             >
-                              
+
                   Output
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.RunFlow"
                               href="#"
                             >
-                              
+
                   Run Flow
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetContactProperty"
                               href="#"
                             >
-                              
+
                   Set Contact Property
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetGroupMembership"
                               href="#"
                             >
-                              
+
                   Set Group Membership
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
-                              
+
                   Message
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.NumericResponse"
                               href="#"
                             >
-                              
+
                   Numeric Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.OpenResponse"
                               href="#"
                             >
-                              
+
                   Open Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
-                              
+
                   Select One Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
-                              
+
                   Select Many Responses
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.LocationResponse"
                               href="#"
                             >
-                              
+
                   Location Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
-                              
+
                   Photo Response
-                
+
                             </a>
-                             
+
                             <!---->
-                             
+
                             <!---->
                           </div>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/flows/new"
                         >
-                          
+
             New Flow
-          
+
                         </a>
-                         
+
                         <a
                           aria-current="page"
                           class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                           href="#/"
                         >
-                          
+
             Home
-          
+
                         </a>
-                         
+
                         <a
                           class="btn btn-success"
                           disabled="disabled"
                           href="#"
                           title="another grouped button"
                         >
-                          
+
            Action X
-        
+
                         </a>
-                         
+
                         <a
                           class="btn btn-warning"
                           href="#"
                           title="another grouped button"
                         >
-                          
+
            Action Y
-        
+
                         </a>
-                         
+
                         <!---->
-                         
+
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1429,27 +1429,27 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             title="Save changes to the flow"
                             type="button"
                           >
-                            
+
               Save
-            
+
                           </button>
-                           
+
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 
+
                 <div
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
-                   
+
                   <main
                     class="error-notifications-wrapper"
                   >
                     <!---->
-                     
+
                     <!---->
                   </main>
                 </div>
@@ -1492,7 +1492,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                   class="tree-builder-toolbar-main-menu"
                 >
                   <!---->
-                   
+
                   <div
                     class="tree-workspace-panel-heading panel-heading"
                   >
@@ -1508,11 +1508,11 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                           <i
                             class="glyphicon glyphicon-chevron-up"
                           />
-                          
+
             Export
-          
+
                         </button>
-                         
+
                         <div
                           class="btn-group mr-2"
                         >
@@ -1520,31 +1520,31 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             class="btn btn-secondary active"
                             href="#/trees/1/interaction-designer"
                           >
-                            
+
               Flow view
-            
+
                           </a>
-                           
+
                           <a
                             class="btn btn-secondary"
                             href="#/trees/1/resource-viewer"
                           >
-                            
+
               Resources view
-            
+
                           </a>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2 active"
                           href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
-                          
+
             View Flow
-          
+
                         </a>
-                         
+
                         <div
                           class="dropdown mr-2"
                         >
@@ -1553,207 +1553,207 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             data-toggle="dropdown"
                             type="button"
                           >
-                            
+
               Add Block
-            
+
                           </button>
-                           
+
                           <div
                             class="dropdown-menu"
                           >
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Print"
                               href="#"
                             >
-                              
+
                   Print
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Read"
                               href="#"
                             >
-                              
+
                   Read
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Case"
                               href="#"
                             >
-                              
+
                   Case
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Log"
                               href="#"
                             >
-                              
+
                   Log
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Output"
                               href="#"
                             >
-                              
+
                   Output
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.RunFlow"
                               href="#"
                             >
-                              
+
                   Run Flow
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetContactProperty"
                               href="#"
                             >
-                              
+
                   Set Contact Property
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetGroupMembership"
                               href="#"
                             >
-                              
+
                   Set Group Membership
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
-                              
+
                   Message
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.NumericResponse"
                               href="#"
                             >
-                              
+
                   Numeric Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.OpenResponse"
                               href="#"
                             >
-                              
+
                   Open Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
-                              
+
                   Select One Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
-                              
+
                   Select Many Responses
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.LocationResponse"
                               href="#"
                             >
-                              
+
                   Location Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
-                              
+
                   Photo Response
-                
+
                             </a>
-                             
+
                             <!---->
-                             
+
                             <!---->
                           </div>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/flows/new"
                         >
-                          
+
             New Flow
-          
+
                         </a>
-                         
+
                         <a
                           aria-current="page"
                           class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                           href="#/"
                         >
-                          
+
             Home
-          
+
                         </a>
-                          
+
                         <!---->
-                         
+
                         <div
                           class="btn-group ml-auto mr-2"
                         >
@@ -1762,47 +1762,47 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             title="Save changes to the flow"
                             type="button"
                           >
-                            
+
               Save
-            
+
                           </button>
-                           
+
                           <a
                             class="btn btn-success"
                             disabled="disabled"
                             href="#"
                             title="another grouped button"
                           >
-                            
+
            Action X
-        
+
                           </a>
-                           
+
                           <a
                             class="btn btn-warning"
                             href="#"
                             title="another grouped button"
                           >
-                            
+
            Action Y
-        
+
                           </a>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 
+
                 <div
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
-                   
+
                   <main
                     class="error-notifications-wrapper"
                   >
                     <!---->
-                     
+
                     <!---->
                   </main>
                 </div>
@@ -1845,7 +1845,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                   class="tree-builder-toolbar-main-menu"
                 >
                   <!---->
-                   
+
                   <div
                     class="tree-workspace-panel-heading panel-heading"
                   >
@@ -1861,11 +1861,11 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                           <i
                             class="glyphicon glyphicon-chevron-up"
                           />
-                          
+
             Export
-          
+
                         </button>
-                         
+
                         <div
                           class="btn-group mr-2"
                         >
@@ -1873,31 +1873,31 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             class="btn btn-secondary active"
                             href="#/trees/1/interaction-designer"
                           >
-                            
+
               Flow view
-            
+
                           </a>
-                           
+
                           <a
                             class="btn btn-secondary"
                             href="#/trees/1/resource-viewer"
                           >
-                            
+
               Resources view
-            
+
                           </a>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2 active"
                           href="#/trees/1/interaction-designer/view"
                           title="Click to toggle editing"
                         >
-                          
+
             View Flow
-          
+
                         </a>
-                         
+
                         <div
                           class="dropdown mr-2"
                         >
@@ -1906,228 +1906,228 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             data-toggle="dropdown"
                             type="button"
                           >
-                            
+
               Add Block
-            
+
                           </button>
-                           
+
                           <div
                             class="dropdown-menu"
                           >
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Print"
                               href="#"
                             >
-                              
+
                   Print
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="ConsoleIO.Read"
                               href="#"
                             >
-                              
+
                   Read
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Case"
                               href="#"
                             >
-                              
+
                   Case
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Log"
                               href="#"
                             >
-                              
+
                   Log
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.Output"
                               href="#"
                             >
-                              
+
                   Output
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.RunFlow"
                               href="#"
                             >
-                              
+
                   Run Flow
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetContactProperty"
                               href="#"
                             >
-                              
+
                   Set Contact Property
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="Core.SetGroupMembership"
                               href="#"
                             >
-                              
+
                   Set Group Membership
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
-                              
+
                   Message
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.NumericResponse"
                               href="#"
                             >
-                              
+
                   Numeric Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.OpenResponse"
                               href="#"
                             >
-                              
+
                   Open Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
-                              
+
                   Select One Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
-                              
+
                   Select Many Responses
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.LocationResponse"
                               href="#"
                             >
-                              
+
                   Location Response
-                
+
                             </a>
                             <!---->
-                             
+
                             <a
                               class="dropdown-item tree-add-block"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
-                              
+
                   Photo Response
-                
+
                             </a>
-                             
+
                             <!---->
-                             
+
                             <!---->
                           </div>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/flows/new"
                         >
-                          
+
             New Flow
-          
+
                         </a>
-                         
+
                         <a
                           aria-current="page"
                           class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                           href="#/"
                         >
-                          
+
             Home
-          
+
                         </a>
-                          
+
                         <!---->
-                         
+
                         <div
                           class="btn-group ml-auto mr-2"
                         >
                           <!---->
-                           
+
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 
+
                 <div
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
-                   
+
                   <main
                     class="error-notifications-wrapper"
                   >
                     <!---->
-                     
+
                     <!---->
                   </main>
                 </div>
@@ -2170,7 +2170,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                   class="tree-builder-toolbar-main-menu"
                 >
                   <!---->
-                   
+
                   <div
                     class="tree-workspace-panel-heading panel-heading"
                   >
@@ -2186,11 +2186,11 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                           <i
                             class="glyphicon glyphicon-chevron-up"
                           />
-                          
+
             Export
-          
+
                         </button>
-                         
+
                         <div
                           class="btn-group mr-2"
                         >
@@ -2198,75 +2198,75 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                             class="btn btn-secondary active"
                             href="#/trees/1/interaction-designer"
                           >
-                            
+
               Flow view
-            
+
                           </a>
-                           
+
                           <a
                             class="btn btn-secondary"
                             href="#/trees/1/resource-viewer"
                           >
-                            
+
               Resources view
-            
+
                           </a>
                         </div>
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/trees/1/interaction-designer/edit"
                           title="Click to toggle editing"
                         >
-                          
+
             Edit Flow
-          
+
                         </a>
-                         
+
                         <!---->
-                         
+
                         <a
                           class="btn btn-secondary mr-2"
                           href="#/flows/new"
                         >
-                          
+
             New Flow
-          
+
                         </a>
-                         
+
                         <a
                           aria-current="page"
                           class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
                           href="#/"
                         >
-                          
+
             Home
-          
+
                         </a>
-                          
+
                         <!---->
-                         
+
                         <div
                           class="btn-group ml-auto mr-2"
                         >
                           <!---->
-                           
+
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 
+
                 <div
                   class="tree-builder-toolbar-alerts w-100"
                 >
                   <!---->
-                   
+
                   <main
                     class="error-notifications-wrapper"
                   >
                     <!---->
-                     
+
                     <!---->
                   </main>
                 </div>
@@ -2461,11 +2461,11 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Location Response block
-  
+
                         </h3>
-                         
+
                         <fieldset>
                           <section
                             class="mb-3"
@@ -2475,7 +2475,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                             >
                               Title
                             </label>
-                             
+
                             <div
                               class="validation-message form-group"
                               id="block/fake-uuid-3/label"
@@ -2487,15 +2487,15 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                   class="w-100"
                                 >
                                   <!---->
-                                   
+
                                   <textarea
                                     class="form-control"
                                     placeholder="Enter title"
                                     rows="1"
                                   />
-                                   
+
                                 </div>
-                                 
+
                                 <span
                                   class="btn btn-outline-primary btn-xs align-self-center ml-2"
                                 >
@@ -2505,17 +2505,17 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                   />
                                 </span>
                               </div>
-                               
+
                               <small
                                 class="text-danger"
                               >
-                                
+
                               </small>
                             </div>
                           </section>
-                           
+
                           <!---->
-                           
+
                           <div
                             class="mt-3"
                           >
@@ -2534,12 +2534,12 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                   >
                                     Code:
                                   </h6>
-                                   
+
                                   <span>
-                                      
+
                                   </span>
                                 </div>
-                                 
+
                                 <span
                                   class="btn btn-primary btn-xs align-self-baseline ml-2"
                                 >
@@ -2549,15 +2549,15 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                   />
                                 </span>
                               </div>
-                               
+
                               <small
                                 class="text-danger"
                               >
-                                
+
                               </small>
                             </div>
                           </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-3/config/accuracy_threshold_meters"
@@ -2573,7 +2573,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                 >
                                   Accuracy threshold in meters
                                 </label>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -2583,17 +2583,17 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <div
                             class="validation-message form-group"
                             id="block/fake-uuid-3/config/accuracy_timeout_seconds"
@@ -2609,13 +2609,13 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                 >
                                   Accuracy timout in seconds
                                 </label>
-                                 
+
                                 <div
                                   class="small mb-2"
                                 >
-                                  
+
                                 </div>
-                                 
+
                                 <div>
                                   <input
                                     class="form-control"
@@ -2624,19 +2624,19 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                     type="number"
                                   />
                                 </div>
-                                 
+
                               </div>
                             </div>
-                             
+
                             <small
                               class="text-danger"
                             >
-                              
+
                             </small>
                           </div>
-                           
+
                           <hr />
-                           
+
                           <div
                             class="block-output-branching-config"
                           >
@@ -2648,12 +2648,12 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                               >
                                 Output Branching
                               </label>
-                               
+
                               <div
                                 class="btn-group d-block"
                               >
                                 <!---->
-                                 
+
                                 <button
                                   class="btn btn-sm active btn-primary"
                                   data-placement="bottom"
@@ -2665,7 +2665,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                     icon="fac,single-exit"
                                   />
                                 </button>
-                                 
+
                                 <button
                                   class="btn btn-sm btn-outline-primary"
                                   data-placement="bottom"
@@ -2679,16 +2679,16 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                 </button>
                               </div>
                             </div>
-                             
+
                             <!---->
-                             
+
                             <div
                               class="form-group"
                             >
                               <h6>
                                 When no valid response/all exit expressions evaluate to false
                               </h6>
-                               
+
                               <div
                                 class="form-check"
                               >
@@ -2698,17 +2698,17 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                   type="radio"
                                   value="END_CALL"
                                 />
-                                 
+
                                 <label
                                   class="form-check-label"
                                   for="END_CALL"
                                 >
-                                  
+
         End the call/session
-      
+
                                 </label>
                               </div>
-                               
+
                               <div
                                 class="form-check"
                               >
@@ -2718,30 +2718,30 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                   type="radio"
                                   value="CONTINUE_THRU_EXIT"
                                 />
-                                 
+
                                 <label
                                   class="form-check-label"
                                   for="CONTINUE_THRU_EXIT"
                                 >
-                                  
+
         Continue through Default exit
-      
+
                                 </label>
                               </div>
                             </div>
                           </div>
-                            
+
                           <div
                             class="block-categorization"
                           >
                             <hr />
-                             
+
                             <label
                               class="text-primary"
                             >
                               Categorization
                             </label>
-                             
+
                             <div
                               class="validation-message form-group"
                               id="block/fake-uuid-3/tags"
@@ -2752,7 +2752,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                 <label>
                                   Tags
                                 </label>
-                                 
+
                                 <div
                                   class="multiselect"
                                   tabindex="-1"
@@ -2760,7 +2760,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                   <div
                                     class="multiselect__select"
                                   />
-                                    
+
                                   <div
                                     class="multiselect__tags"
                                   >
@@ -2768,14 +2768,14 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                       class="multiselect__tags-wrap"
                                       style="display: none;"
                                     />
-                                     
+
                                     <!---->
-                                     
+
                                     <div
                                       class="multiselect__spinner"
                                       style="display: none;"
                                     />
-                                     
+
                                     <input
                                       autocomplete="nope"
                                       class="multiselect__input"
@@ -2785,18 +2785,18 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                       tabindex="0"
                                       type="text"
                                     />
-                                     
+
                                     <!---->
-                                     
+
                                     <span
                                       class="multiselect__placeholder"
                                     >
-                                      
+
           Select or add a tag
-        
+
                                     </span>
                                   </div>
-                                   
+
                                   <div
                                     class="multiselect__content-wrapper"
                                     style="max-height: 300px; display: none;"
@@ -2806,9 +2806,9 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                       class="multiselect__content"
                                       style="display: block;"
                                     >
-                                       
+
                                       <!---->
-                                        
+
                                       <li
                                         style="display: none;"
                                       >
@@ -2818,7 +2818,7 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                           No elements found. Consider changing the search query.
                                         </span>
                                       </li>
-                                       
+
                                       <li>
                                         <span
                                           class="multiselect__option"
@@ -2826,31 +2826,31 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                           List is empty.
                                         </span>
                                       </li>
-                                       
+
                                     </ul>
                                   </div>
                                 </div>
                               </div>
-                               
+
                               <small
                                 class="text-danger"
                               >
-                                
+
                               </small>
                             </div>
                           </div>
-                           
+
                           <div
                             class="generic-contact-property-editor"
                           >
                             <hr />
-                             
+
                             <label
                               class="text-primary"
                             >
                               Contact Properties
                             </label>
-                             
+
                             <div
                               class="custom-control custom-checkbox"
                             >
@@ -2861,17 +2861,17 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                 type="checkbox"
                                 value="true"
                               />
-                               
+
                               <label
                                 class="custom-control-label font-weight-normal"
                                 for="setContactProperty"
                               >
-                                
+
       Set a contact property with the Contact’s response
-    
+
                               </label>
                             </div>
-                             
+
                             <div
                               class="form-group"
                             >
@@ -2888,27 +2888,27 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                     >
                                       Property
                                     </label>
-                                     
+
                                     <textarea
                                       class="form-control"
                                       placeholder="Enter contact property"
                                       rows="1"
                                     />
-                                     
+
                                   </div>
                                 </div>
-                                 
+
                                 <small
                                   class="text-danger"
                                 >
-                                  
+
                                 </small>
                               </div>
-                               
+
                               <h6>
                                 Value
                               </h6>
-                               
+
                               <div
                                 class="form-group"
                               >
@@ -2922,17 +2922,17 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                     type="radio"
                                     value="fromCurrentBlockResponse"
                                   />
-                                   
+
                                   <label
                                     class="custom-control-label font-weight-normal"
                                     for="setProp"
                                   >
-                                    
+
           Entry from this block
-        
+
                                   </label>
                                 </div>
-                                 
+
                                 <div
                                   class="custom-control custom-radio"
                                 >
@@ -2943,24 +2943,24 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                     type="radio"
                                     value="openExpression"
                                   />
-                                   
+
                                   <label
                                     class="custom-control-label font-weight-normal"
                                     for="clearProp"
                                   >
-                                    
+
           Expression
-        
+
                                   </label>
                                 </div>
                               </div>
-                               
+
                               <!---->
                             </div>
                           </div>
-                           
+
                           <hr />
-                           
+
                           <div
                             class="starting-block-button"
                           >
@@ -2976,21 +2976,21 @@ exports[`Storyshots SmartDevices/Location Response Block Non Starting Block 1`] 
                                   class="fa-btn"
                                   icon="fac,enter"
                                 />
-                                 
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="block-id text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
                               fake-uuid-3
                             </em>
@@ -3065,11 +3065,11 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                         <h3
                           class="no-room-above"
                         >
-                          
+
     Edit Photo Response block
-  
+
                         </h3>
-                         
+
                         <fieldset>
                           <section
                             class="mb-3"
@@ -3079,7 +3079,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                             >
                               Title
                             </label>
-                             
+
                             <div
                               class="validation-message form-group"
                               id="block/fake-uuid-103/label"
@@ -3091,15 +3091,15 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                   class="w-100"
                                 >
                                   <!---->
-                                   
+
                                   <textarea
                                     class="form-control"
                                     placeholder="Enter title"
                                     rows="1"
                                   />
-                                   
+
                                 </div>
-                                 
+
                                 <span
                                   class="btn btn-outline-primary btn-xs align-self-center ml-2"
                                 >
@@ -3109,17 +3109,17 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                   />
                                 </span>
                               </div>
-                               
+
                               <small
                                 class="text-danger"
                               >
-                                
+
                               </small>
                             </div>
                           </section>
-                           
+
                           <!---->
-                           
+
                           <div
                             class="mt-3"
                           >
@@ -3138,12 +3138,12 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                   >
                                     Code:
                                   </h6>
-                                   
+
                                   <span>
-                                      
+
                                   </span>
                                 </div>
-                                 
+
                                 <span
                                   class="btn btn-primary btn-xs align-self-baseline ml-2"
                                 >
@@ -3153,15 +3153,15 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                   />
                                 </span>
                               </div>
-                               
+
                               <small
                                 class="text-danger"
                               >
-                                
+
                               </small>
                             </div>
                           </div>
-                           
+
                           <div
                             class="photo-prompt-editor"
                           >
@@ -3170,7 +3170,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                             >
                               Photo response prompt
                             </label>
-                             
+
                             <div
                               class="custom-control custom-checkbox"
                             >
@@ -3181,22 +3181,22 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                 type="checkbox"
                                 value="false"
                               />
-                               
+
                               <label
                                 class="custom-control-label font-weight-normal"
                                 for="shouldIncludePrompt"
                               >
-                                
+
       Include photo response prompt
-    
+
                               </label>
                             </div>
-                             
+
                             <!---->
                           </div>
-                           
+
                           <hr />
-                           
+
                           <div
                             class="block-output-branching-config"
                           >
@@ -3208,12 +3208,12 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                               >
                                 Output Branching
                               </label>
-                               
+
                               <div
                                 class="btn-group d-block"
                               >
                                 <!---->
-                                 
+
                                 <button
                                   class="btn btn-sm active btn-primary"
                                   data-placement="bottom"
@@ -3225,7 +3225,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                     icon="fac,single-exit"
                                   />
                                 </button>
-                                 
+
                                 <button
                                   class="btn btn-sm btn-outline-primary"
                                   data-placement="bottom"
@@ -3239,16 +3239,16 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                 </button>
                               </div>
                             </div>
-                             
+
                             <!---->
-                             
+
                             <div
                               class="form-group"
                             >
                               <h6>
                                 When no valid response/all exit expressions evaluate to false
                               </h6>
-                               
+
                               <div
                                 class="form-check"
                               >
@@ -3258,17 +3258,17 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                   type="radio"
                                   value="END_CALL"
                                 />
-                                 
+
                                 <label
                                   class="form-check-label"
                                   for="END_CALL"
                                 >
-                                  
+
         End the call/session
-      
+
                                 </label>
                               </div>
-                               
+
                               <div
                                 class="form-check"
                               >
@@ -3278,30 +3278,30 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                   type="radio"
                                   value="CONTINUE_THRU_EXIT"
                                 />
-                                 
+
                                 <label
                                   class="form-check-label"
                                   for="CONTINUE_THRU_EXIT"
                                 >
-                                  
+
         Continue through Default exit
-      
+
                                 </label>
                               </div>
                             </div>
                           </div>
-                            
+
                           <div
                             class="block-categorization"
                           >
                             <hr />
-                             
+
                             <label
                               class="text-primary"
                             >
                               Categorization
                             </label>
-                             
+
                             <div
                               class="validation-message form-group"
                               id="block/fake-uuid-103/tags"
@@ -3312,7 +3312,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                 <label>
                                   Tags
                                 </label>
-                                 
+
                                 <div
                                   class="multiselect"
                                   tabindex="-1"
@@ -3320,7 +3320,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                   <div
                                     class="multiselect__select"
                                   />
-                                    
+
                                   <div
                                     class="multiselect__tags"
                                   >
@@ -3328,14 +3328,14 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                       class="multiselect__tags-wrap"
                                       style="display: none;"
                                     />
-                                     
+
                                     <!---->
-                                     
+
                                     <div
                                       class="multiselect__spinner"
                                       style="display: none;"
                                     />
-                                     
+
                                     <input
                                       autocomplete="nope"
                                       class="multiselect__input"
@@ -3345,18 +3345,18 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                       tabindex="0"
                                       type="text"
                                     />
-                                     
+
                                     <!---->
-                                     
+
                                     <span
                                       class="multiselect__placeholder"
                                     >
-                                      
+
           Select or add a tag
-        
+
                                     </span>
                                   </div>
-                                   
+
                                   <div
                                     class="multiselect__content-wrapper"
                                     style="max-height: 300px; display: none;"
@@ -3366,9 +3366,9 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                       class="multiselect__content"
                                       style="display: block;"
                                     >
-                                       
+
                                       <!---->
-                                        
+
                                       <li
                                         style="display: none;"
                                       >
@@ -3378,7 +3378,7 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                           No elements found. Consider changing the search query.
                                         </span>
                                       </li>
-                                       
+
                                       <li>
                                         <span
                                           class="multiselect__option"
@@ -3386,31 +3386,31 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                           List is empty.
                                         </span>
                                       </li>
-                                       
+
                                     </ul>
                                   </div>
                                 </div>
                               </div>
-                               
+
                               <small
                                 class="text-danger"
                               >
-                                
+
                               </small>
                             </div>
                           </div>
-                           
+
                           <div
                             class="generic-contact-property-editor"
                           >
                             <hr />
-                             
+
                             <label
                               class="text-primary"
                             >
                               Contact Properties
                             </label>
-                             
+
                             <div
                               class="custom-control custom-checkbox"
                             >
@@ -3421,17 +3421,17 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                 type="checkbox"
                                 value="true"
                               />
-                               
+
                               <label
                                 class="custom-control-label font-weight-normal"
                                 for="setContactProperty"
                               >
-                                
+
       Set a contact property with the Contact’s response
-    
+
                               </label>
                             </div>
-                             
+
                             <div
                               class="form-group"
                             >
@@ -3448,27 +3448,27 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                     >
                                       Property
                                     </label>
-                                     
+
                                     <textarea
                                       class="form-control"
                                       placeholder="Enter contact property"
                                       rows="1"
                                     />
-                                     
+
                                   </div>
                                 </div>
-                                 
+
                                 <small
                                   class="text-danger"
                                 >
-                                  
+
                                 </small>
                               </div>
-                               
+
                               <h6>
                                 Value
                               </h6>
-                               
+
                               <div
                                 class="form-group"
                               >
@@ -3482,17 +3482,17 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                     type="radio"
                                     value="fromCurrentBlockResponse"
                                   />
-                                   
+
                                   <label
                                     class="custom-control-label font-weight-normal"
                                     for="setProp"
                                   >
-                                    
+
           Entry from this block
-        
+
                                   </label>
                                 </div>
-                                 
+
                                 <div
                                   class="custom-control custom-radio"
                                 >
@@ -3503,24 +3503,24 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                     type="radio"
                                     value="openExpression"
                                   />
-                                   
+
                                   <label
                                     class="custom-control-label font-weight-normal"
                                     for="clearProp"
                                   >
-                                    
+
           Expression
-        
+
                                   </label>
                                 </div>
                               </div>
-                               
+
                               <!---->
                             </div>
                           </div>
-                           
+
                           <hr />
-                           
+
                           <div
                             class="starting-block-button"
                           >
@@ -3536,21 +3536,21 @@ exports[`Storyshots SmartDevices/Photo Response Block Non Starting Block 1`] = `
                                   class="fa-btn"
                                   icon="fac,enter"
                                 />
-                                 
+
           Currently set as starting block
-        
+
                               </button>
                             </div>
                           </div>
                         </fieldset>
-                         
+
                         <div
                           class="block-id text-right"
                         >
                           <small
                             class="text-muted"
                           >
-                            Block Id: 
+                            Block Id:
                             <em>
                               fake-uuid-103
                             </em>

@@ -17,13 +17,13 @@
 
       <choices-builder
         :block="block"
-        @choiceChanged="reflowExitsWhenBranchingTypeNotUnified()" />
+        @choiceChanged="handleChoiceChanged" />
 
       <block-output-branching-config
         :block="block"
         :has-exit-per-choice="true"
         :label-class="''"
-        @branchingTypeChanged="reflowExitsWhenBranchingTypeNotUnified()" />
+        @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
 
       <div class="prompt-resource">
         <resource-editor
@@ -114,7 +114,18 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     return this.resourcesByUuid[this.block.config.prompt]
   }
 
-  reflowExitsWhenBranchingTypeNotUnified(): void {
+  handleChoiceChanged(): void {
+    const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
+    const {EXIT_PER_CHOICE} = OutputBranchingType
+
+    if (metadata.io_viamo.branchingType !== EXIT_PER_CHOICE) {
+      return
+    }
+
+    this.reflowExitsFromChoices({blockId})
+  }
+
+  reflowExitsWhenSwitchingToBranchingTypeNotUnified(): void {
     const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
     const {EXIT_PER_CHOICE, ADVANCED} = OutputBranchingType
     const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)

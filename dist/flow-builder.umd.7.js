@@ -11,12 +11,12 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.d(__webpack_exports__, "MobilePrimitives_SelectOneResponseBlock", function() { return /* reexport */ MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock; });
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7d6111f6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=6890deaf&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mobile-primitive-select-one-response-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('choices-builder',{attrs:{"block":_vm.block},on:{"choiceChanged":function($event){return _vm.reflowExitsWhenBranchingTypeNotUnified()}}}),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":true},on:{"branchingTypeChanged":function($event){return _vm.reflowExitsWhenBranchingTypeNotUnified()}}}),_c('div',{staticClass:"prompt-resource"},[(_vm.promptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.prompt'),"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=19f34870&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mobile-primitive-select-one-response-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('choices-builder',{attrs:{"block":_vm.block},on:{"choiceChanged":_vm.handleChoiceChanged}}),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":true,"label-class":''},on:{"branchingTypeChanged":function($event){return _vm.reflowExitsWhenSwitchingToBranchingTypeNotUnified()}}}),_c('div',{staticClass:"prompt-resource"},[(_vm.promptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.prompt'),"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=6890deaf&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=19f34870&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -75,19 +75,19 @@ var ResourceVariantTextEditor = __webpack_require__("bb40");
 // EXTERNAL MODULE: ./src/store/flow/resource.ts
 var flow_resource = __webpack_require__("393e");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7d6111f6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=template&id=1e19cdaa&
-var ChoicesBuildervue_type_template_id_1e19cdaa_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"choices-builder form-group"},[_c('h4',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.choices')))]),_vm._l((_vm.block.config.choices),function(resourceId,choiceKey,choiceIndex){return [(_vm.resourcesByUuid[resourceId])?_c('resource-variant-text-editor',{key:resourceId,ref:"choices",refInFor:true,staticClass:"choices-builder-item",attrs:{"label":(choiceIndex + 1).toString(),"rows":1,"placeholder":'Enter choice...',"resource-id":resourceId,"resource-variant":_vm.resourcesByUuid[resourceId].values[0],"mode":_vm.SupportedMode.TEXT},on:{"afterResourceVariantChanged":function($event){return _vm.handleExistingResourceVariantChangedFor(
-        resourceId,
-        choiceIndex,
-        _vm.resourcesByUuid[resourceId])}}}):_vm._e()]}),(_vm.draftResource)?_c('resource-variant-text-editor',{key:_vm.draftResource.uuid,ref:"draftChoice",staticClass:"choices-builder-item",attrs:{"label":(_vm.choiceKeys.length + 1).toString(),"rows":1,"placeholder":'Enter choice...',"resource-id":_vm.draftResource.uuid,"resource-variant":_vm.findOrGenerateStubbedVariantOn(
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=template&id=46098a2a&
+var ChoicesBuildervue_type_template_id_46098a2a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"choices-builder form-group"},[_c('h4',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.choices')))]),_vm._l((_vm.choiceResourcesOrderedByResourcesList),function(resource,i){return [_c('resource-variant-text-editor',{key:resource.uuid,ref:"choices",refInFor:true,staticClass:"choices-builder-item",attrs:{"label":(i + 1).toString(),"rows":1,"placeholder":'Enter choice...',"resource-id":resource.uuid,"resource-variant":resource.values[0],"mode":_vm.SupportedMode.TEXT},on:{"afterResourceVariantChanged":function($event){return _vm.handleExistingResourceVariantChangedFor(
+        resource.uuid,
+        i,
+        resource)}}})]}),(_vm.draftResource)?_c('resource-variant-text-editor',{key:_vm.draftResource.uuid,ref:"draftChoice",staticClass:"choices-builder-item",attrs:{"label":(_vm.choiceResourcesOrderedByResourcesList.length + 1).toString(),"rows":1,"placeholder":'Enter choice...',"resource-id":_vm.draftResource.uuid,"resource-variant":_vm.findOrGenerateStubbedVariantOn(
       _vm.draftResource,
       {language_id: _vm.activeFlow.languages[0].id,
        content_type: _vm.SupportedContentType.TEXT,
        modes: [_vm.SupportedMode.TEXT]}),"mode":_vm.SupportedMode.TEXT},on:{"beforeResourceVariantChanged":_vm.addDraftResourceToChoices,"afterResourceVariantChanged":function($event){return _vm.rewriteChoiceKeyFor({resourceId: _vm.draftResource.uuid, blockId: _vm.block.uuid})}}}):_vm._e()],2)}
-var ChoicesBuildervue_type_template_id_1e19cdaa_staticRenderFns = []
+var ChoicesBuildervue_type_template_id_46098a2a_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=template&id=1e19cdaa&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=template&id=46098a2a&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
 var asyncToGenerator = __webpack_require__("c964");
@@ -95,8 +95,8 @@ var asyncToGenerator = __webpack_require__("c964");
 // EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
 var runtime = __webpack_require__("96cf");
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.keys.js
-var es_object_keys = __webpack_require__("b64b");
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.values.js
+var es_object_values = __webpack_require__("07ac");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
 var es_array_iterator = __webpack_require__("e260");
@@ -164,6 +164,8 @@ var ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder = /*#__PURE__*/function
 
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "findOrGenerateStubbedVariantOn", flow_resource["c" /* findOrGenerateStubbedVariantOn */]);
 
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "resources", void 0);
+
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "resourcesByUuid", void 0);
 
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "activeFlow", void 0);
@@ -182,10 +184,12 @@ var ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder = /*#__PURE__*/function
   }
 
   Object(createClass["a" /* default */])(ChoicesBuilder, [{
-    key: "choiceKeys",
+    key: "choiceResourcesOrderedByResourcesList",
     get: function get() {
-      // todo: my best guess for ordering is resources ordering? :/
-      return Object.keys(this.block.config.choices);
+      var choiceResourceIds = Object.values(this.block.config.choices);
+      return Object(lodash["intersectionWith"])(this.resources, choiceResourceIds, function (resource, choiceResourceId) {
+        return resource.uuid === choiceResourceId;
+      });
     }
   }, {
     key: "created",
@@ -288,7 +292,7 @@ var ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder = /*#__PURE__*/function
   }, {
     key: "handleExistingResourceVariantChangedFor",
     value: function handleExistingResourceVariantChangedFor(resourceId, choiceIndex, resource) {
-      var isLast = choiceIndex === this.choiceKeys.length - 1;
+      var isLast = choiceIndex === this.choiceResourcesOrderedByResourcesList.length - 1;
       var hasEmptyValue = Object(lodash["isEmpty"])(Object(lodash["get"])(resource.values[0], 'value'));
 
       if (isLast && hasEmptyValue) {
@@ -318,6 +322,8 @@ var ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder = /*#__PURE__*/function
 }(Object(vue_class_component_esm["c" /* mixins */])(lang["a" /* default */]));
 
 Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "block", void 0);
+
+Object(tslib_es6["__decorate"])([flowVuexNamespace.State], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "resources", void 0);
 
 Object(tslib_es6["__decorate"])([flowVuexNamespace.Getter], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "resourcesByUuid", void 0);
 
@@ -354,8 +360,8 @@ var componentNormalizer = __webpack_require__("2877");
 
 var component = Object(componentNormalizer["a" /* default */])(
   block_editors_ChoicesBuildervue_type_script_lang_ts_,
-  ChoicesBuildervue_type_template_id_1e19cdaa_render,
-  ChoicesBuildervue_type_template_id_1e19cdaa_staticRenderFns,
+  ChoicesBuildervue_type_template_id_46098a2a_render,
+  ChoicesBuildervue_type_template_id_46098a2a_staticRenderFns,
   false,
   null,
   null,
@@ -470,11 +476,27 @@ var MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimiti
       return this.resourcesByUuid[this.block.config.prompt];
     }
   }, {
-    key: "reflowExitsWhenBranchingTypeNotUnified",
-    value: function reflowExitsWhenBranchingTypeNotUnified() {
+    key: "handleChoiceChanged",
+    value: function handleChoiceChanged() {
       var _this$block = this.block,
           blockId = _this$block.uuid,
           metadata = _this$block.vendor_metadata;
+      var EXIT_PER_CHOICE = BlockOutputBranchingConfig["b" /* OutputBranchingType */].EXIT_PER_CHOICE;
+
+      if (metadata.io_viamo.branchingType !== EXIT_PER_CHOICE) {
+        return;
+      }
+
+      this.reflowExitsFromChoices({
+        blockId: blockId
+      });
+    }
+  }, {
+    key: "reflowExitsWhenSwitchingToBranchingTypeNotUnified",
+    value: function reflowExitsWhenSwitchingToBranchingTypeNotUnified() {
+      var _this$block2 = this.block,
+          blockId = _this$block2.uuid,
+          metadata = _this$block2.vendor_metadata;
       var EXIT_PER_CHOICE = BlockOutputBranchingConfig["b" /* OutputBranchingType */].EXIT_PER_CHOICE,
           ADVANCED = BlockOutputBranchingConfig["b" /* OutputBranchingType */].ADVANCED;
       var isEnteringChoiceOrAdvancedBranchingType = Object(lodash["includes"])([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType);
@@ -553,7 +575,7 @@ var MobilePrimitives_SelectOneResponseBlock_component = Object(componentNormaliz
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7d6111f6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue?vue&type=template&id=5c7a7930&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue?vue&type=template&id=5c7a7930&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('text-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.block-exit-semantic-label'),"placeholder":_vm._f("trans")('flow-builder.enter-block-exit-semantic-label')},model:{value:(_vm.semanticLabel),callback:function ($$v) {_vm.semanticLabel=$$v},expression:"semanticLabel"}})],1)}
 var staticRenderFns = []
 
