@@ -52,21 +52,49 @@ This is related to `Flow.js` library which is providing multiple simultaneous, s
 
 ### Create new flow
 
-To begin, you can create a new flow by visiting [localhost:8080/trees/create](http://localhost:8080/trees/create). From there, you can start with a blank flow (a flow without blocks) and get editing:
+To begin, you can create a new flow by visiting [localhost:8080/flows/new](http://localhost:8080/flows/new). From there, you can enter in the pertinent flow information before opening the Flow Builder.
+
+![Flow Builder 01](https://user-images.githubusercontent.com/88047281/127215173-d2927606-f89d-4d85-a10a-6a6fd53965d9.gif)
+
+You then start with a blank canvas (a flow without blocks) and get editing:
 
 ![image](https://user-images.githubusercontent.com/88047281/127185140-b9583be3-e141-46b6-bf3d-68efa1b9e9f7.png)
 
+### Adding Blocks and Content
+
+Once you have the canvas open you can add blocks to create your flow
+![Flow Builder 02](https://user-images.githubusercontent.com/88047281/127217649-179e2890-312c-409f-b249-a86388c6398f.gif)
+
+### Adding and Removing Connections
+
+Adding and removing connections can be done easily
+![Flow Builder 06](https://user-images.githubusercontent.com/88047281/127220321-0c198f8b-07a2-40ed-8068-358a2507d92d.gif)
+
+### Navigating the Block Toolbar
+
+Each block has a toolbar at the top that appears when hovering over the block. You may select the block, delete the block, duplicate the block, or access the sidebar editor from this toolbar.
+![Flow Builder 07](https://user-images.githubusercontent.com/88047281/127221002-4980c272-02fa-456f-bdda-007b50c73741.gif)
+
+### Multiple Block Actions
+
+If you select multiple blocks, you are able to duplicate or delete them on the Multiple Select Toolbar
+![Flow Builder 08](https://user-images.githubusercontent.com/88047281/127223671-2f6ea1c4-3038-406b-9bbf-465d0e2c6cdc.gif)
+
 ### Import existing flow
 
-Or you can use the Import/Export panel and text field to copy in an existing flow:
+Visit [localhost:8080/flows/import](http://localhost:8080/flows/import) To import an exiting flow via JSON schema or by pasting the JSON file directly
+Importing JSON file
+![Flow Builder 03](https://user-images.githubusercontent.com/88047281/127219526-84e0e468-c5ed-4dfb-8bca-8e6a5a9c4433.gif)
 
-![Imported flow](./docs/images/screenshot-imported-flow.png)
+Pasting JSON file directly
+![Flow Builder 04](https://user-images.githubusercontent.com/88047281/127219180-3a9ed00f-3c0e-4580-96c2-aa373bdbfa40.gif)
 
 Edits using the builder will then be reflected in the flow JSON in this panel and vice versa.
 
 ### Export flow
 
 To export, simply copy the json in this panel to a file. 
+![Flow Builder 05](https://user-images.githubusercontent.com/88047281/127219771-0ea1deaf-545f-4329-ae09-5a1dee3cd56c.gif)
 
 ## Storybook
 
