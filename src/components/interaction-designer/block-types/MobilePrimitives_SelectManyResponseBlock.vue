@@ -1,8 +1,9 @@
 <template>
   <div class="mobile-primitive-select-many-response-block">
     <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
+
     <fieldset :disabled="!isEditable">
       <block-label-editor
         :block="block"
@@ -11,6 +12,20 @@
         v-if="showSemanticLabel"
         :block="block" />
       <block-name-editor :block="block" />
+
+      <hr>
+
+      <choices-builder
+        :block="block"
+        @choiceChanged="handleChoiceChanged" />
+
+      <hr>
+
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false"
+        :label-class="''"
+        @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
 
       <div class="prompt-resource">
         <resource-editor
@@ -21,13 +36,7 @@
           :flow="flow" />
       </div>
 
-      <hr>
-
-      <choices-builder :block="block" />
-
-      <block-output-branching-config :block="block" />
-
-      <slot name="extras"></slot>
+      <slot name="extras" />
 
       <categorization :block="block" />
 
@@ -42,15 +51,23 @@
     </fieldset>
 
     <block-id :block="block" />
+
   </div>
 </template>
 
 <script lang="ts">
-import {Component} from 'vue-property-decorator'
-import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
+import {IBlock, IBlockExit, IFlow, IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {namespace} from 'vuex-class'
-import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
+import {Component, Prop} from 'vue-property-decorator'
+
+import SelectManyStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
+import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
+import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
+import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
+import ChoicesBuilder from '@/components/interaction-designer/block-editors/ChoicesBuilder.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -61,30 +78,44 @@ import BlockId from '../block-editors/BlockId.vue'
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
+const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
     GenericContactPropertyEditor,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
+    ResourceVariantTextEditor,
     BlockExitSemanticLabelEditor,
+    BlockId,
+    BlockLabelEditor,
+    BlockNameEditor,
+    BlockOutputBranchingConfig,
+    BlockSemanticLabelEditor,
+    ChoicesBuilder,
     FirstBlockEditorButton,
     ResourceEditor,
-    BlockId,
     Categorization,
   },
 })
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
+  @Prop() readonly declare block: ISelectOneResponseBlock
+
+  @Prop() readonly declare flow: IFlow
+
   showSemanticLabel = false
+
+  SupportedMode = SupportedMode
+  findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
   //Important: Even we extends from SelectOneResponseBlock, to avoid conflict
   // we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation
+  @flowVuexNamespace.Getter declare resourcesByUuid: { [key: string]: IResource }
+  @flowVuexNamespace.Action declare block_createBlockExitWith: ({props}: { props: { uuid: string } & Partial<IBlockExit> }) => Promise<IBlockExit>
+  @blockVuexNamespace.Action declare reflowExitsFromChoices: ({blockId}: {blockId: IBlock['uuid']}) => void
   @builderVuexNamespace.Getter declare isEditable: boolean
 }
 
 export default MobilePrimitives_SelectManyResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectManyResponseStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectManyStore)
 </script>

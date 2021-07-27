@@ -19,6 +19,8 @@
         :block="block"
         @choiceChanged="handleChoiceChanged" />
 
+      <hr>
+
       <block-output-branching-config
         :block="block"
         :has-exit-per-choice="true"
