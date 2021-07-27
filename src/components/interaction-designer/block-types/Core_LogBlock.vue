@@ -35,7 +35,7 @@
           </template>
         </template>
       </div>
-
+      <!--TODO: add block-output-branching-config component once vmo-4148 is merged-->
       <slot name="extras" />
 
       <categorization :block="block" />
