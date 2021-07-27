@@ -25,6 +25,12 @@
         :block="block"
         :has-exit-per-choice="false" />
 
+      <resource-editor
+        v-if="promptResource"
+        :resource="promptResource"
+        :block="block"
+        :flow="flow" />
+
       <slot name="extras" />
 
       <categorization :block="block" />
@@ -96,6 +102,10 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
 
   updateTimeout(value: number) {
     this.setAccuracyTimeout({blockId: this.block.uuid, value})
+  }
+
+  get promptResource(): IResource {
+    return this.resourcesByUuid[this.block.config.prompt]
   }
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }

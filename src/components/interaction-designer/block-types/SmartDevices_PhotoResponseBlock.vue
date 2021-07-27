@@ -12,12 +12,16 @@
         :block="block" />
       <block-name-editor :block="block" />
 
-      <photo-prompt-editor :block="block" :flow="flow" />
-
       <hr>
       <block-output-branching-config
         :block="block"
         :has-exit-per-choice="false" />
+
+      <resource-editor
+        v-if="promptResource"
+        :resource="promptResource"
+        :block="block"
+        :flow="flow" />
 
       <slot name="extras" />
 
@@ -30,7 +34,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
@@ -54,7 +57,7 @@ import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
-import PhotoPromptEditor from '../block-editors/PhotoPromptEditor.vue'
+import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -69,7 +72,7 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     Categorization,
     BlockOutputBranchingConfig,
-    PhotoPromptEditor,
+    ResourceEditor,
   },
 })
 class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
@@ -79,6 +82,12 @@ class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
 
   showSemanticLabel = false
+
+  get promptResource(): IResource {
+    return this.resourcesByUuid[this.block.config.prompt]
+  }
+
+  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @builderVuexNamespace.Getter isEditable !: boolean
 }
