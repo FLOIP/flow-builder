@@ -17,6 +17,11 @@
 
       <slot name="extras" />
 
+      <hr>
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
+
       <categorization :block="block" />
 
       <hr>
@@ -40,6 +45,7 @@ import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -57,6 +63,7 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     ContactPropertyEditor,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class Core_SetContactPropertyBlock extends mixins(Lang) {
