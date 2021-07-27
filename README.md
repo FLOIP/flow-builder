@@ -54,7 +54,7 @@ This is related to `Flow.js` library which is providing multiple simultaneous, s
 
 To begin, you can create a new flow by visiting [localhost:8080/trees/create](http://localhost:8080/trees/create). From there, you can start with a blank flow (a flow without blocks) and get editing:
 
-![Flow without blocks](./docs/images/screenshot-no-blocks.png)
+![image](https://user-images.githubusercontent.com/88047281/127185140-b9583be3-e141-46b6-bf3d-68efa1b9e9f7.png)
 
 ### Import existing flow
 
