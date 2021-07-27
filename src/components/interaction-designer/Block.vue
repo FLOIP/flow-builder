@@ -1,5 +1,6 @@
 <template>
   <div @click="selectBlock">
+
     <block-editor v-if="showBlockEditor" class="block-editor" :style="{transform: translatedBlockEditorPosition}" />
 
     <plain-draggable
@@ -9,6 +10,9 @@
       :class="{
         active: isBlockActivated,
         'has-toolbar': isBlockSelected,
+        ['has-exits']: hasExitsShown,
+        ['has-multiple-exits']: hasMultipleExitsShown,
+        [`has-${numberOfExitsShown}-exits`]: true,
         [`category-${blockClasses[block.type].category}`]: true,
       }"
       :start-x="x"
@@ -18,6 +22,7 @@
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
       @destroyed="handleDraggableDestroyedForBlock">
+
       <div class="block-toolbar d-flex justify-content-between">
         <div class="header-actions-left">
           <!--Selection-->
@@ -218,7 +223,7 @@
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import Vue from 'vue'
-import {filter, forEach, includes, isNumber} from 'lodash'
+import {filter, forEach, get, includes, isNumber} from 'lodash'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 import PlainDraggable from '@/components/common/PlainDraggable.vue'
 import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
@@ -253,7 +258,7 @@ export default {
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
       blockWidth: 0,
       exitHovers: {},
-      NoValidResponseHandler: NoValidResponseHandler,
+      NoValidResponseHandler,
     }
   },
 
@@ -296,6 +301,20 @@ export default {
 
     blockExitsLength() {
       return this.block.exits.length
+    },
+
+    numberOfExitsShown() {
+      const {exits} = this.block
+      const isDefaultShown = get(this.block.vendor_metadata, 'io_viamo.noValidResponse') === NoValidResponseHandler.CONTINUE_THRU_EXIT
+      return exits.length - (isDefaultShown ? 0 : 1)
+    },
+
+    hasExitsShown() {
+      return this.numberOfExitsShown > 0
+    },
+
+    hasMultipleExitsShown() {
+      return this.numberOfExitsShown > 1
     },
 
     hasLayout() {
@@ -678,6 +697,12 @@ export default {
     border-top-left-radius: inherit;
   }
 
+  &.has-multiple-exits {
+    .block-toolbar {
+      margin-right: -8px;
+    }
+  }
+
   .block-label {
     font-size: 14px;
     font-weight: normal;
@@ -777,6 +802,12 @@ export default {
     .block-toolbar {
       margin-left: -8px;
       margin-right: -8px;
+    }
+
+    &.has-multiple-exits {
+      .block-toolbar {
+        margin-right: -9px;
+      }
     }
   }
 }
