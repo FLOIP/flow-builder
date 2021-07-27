@@ -110,9 +110,6 @@ export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseB
 
   //Important: Even we extends from SelectOneResponseBlock, to avoid conflict
   // we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation
-  @flowVuexNamespace.Getter declare resourcesByUuid: { [key: string]: IResource }
-  @flowVuexNamespace.Action declare block_createBlockExitWith: ({props}: { props: { uuid: string } & Partial<IBlockExit> }) => Promise<IBlockExit>
-  @blockVuexNamespace.Action declare reflowExitsFromChoices: ({blockId}: {blockId: IBlock['uuid']}) => void
   @builderVuexNamespace.Getter declare isEditable: boolean
 }
 
