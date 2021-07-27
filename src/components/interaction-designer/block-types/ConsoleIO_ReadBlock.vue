@@ -13,26 +13,38 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <hr>
+
       <!--Specific config-->
       <block-format-string-editor
         :block="block"
         @commitFormatStringChange="setFormatString" />
 
-      <div
-        v-for="(variableStringFormat,i) in destinationVariablesFields"
-        class="form-group form-inline">
-        <validation-message
-          #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/config/destination_variables/${i}`">
-          <text-editor
-            :label="i+1"
-            :placeholder="'flow-builder.edit-variable' | trans"
-            :valid-state="isValid"
-            value=""
-            @keydown="filterVariableName"
-            @input="updatedestinationVariables($event, i)" />
-        </validation-message>
+      <div>
+        <h6>{{ 'flow-builder.destination-variable' | trans }}</h6>
+        <div
+          v-for="(variableStringFormat,i) in destinationVariablesFields"
+          :key="i"
+          class="form-group">
+          <validation-message
+            #input-control="{ isValid }"
+            :message-key="`block/${block.uuid}/config/destination_variables/${i}`">
+            <text-editor
+              :label="''"
+              :placeholder="'flow-builder.destination-variable-placeholder' | trans"
+              :valid-state="isValid"
+              value=""
+              @keydown="filterVariableName"
+              @input="updatedestinationVariables($event, i)" />
+          </validation-message>
+        </div>
       </div>
+
+      <hr>
+
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
 
       <slot name="extras" />
 
@@ -45,7 +57,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
@@ -65,6 +76,7 @@ import Categorization from '@/components/interaction-designer/block-editors/Cate
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -90,6 +102,7 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     ValidationMessage,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class ConsoleIO_ReadBlock extends mixins(Lang) {
