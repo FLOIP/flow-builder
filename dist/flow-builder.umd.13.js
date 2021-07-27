@@ -123,7 +123,8 @@ var actions = {
                 config: {
                   message: blankLogResource.uuid
                 },
-                tags: []
+                tags: [],
+                vendor_metadata: {}
               }));
 
             case 17:

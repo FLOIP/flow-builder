@@ -465,7 +465,8 @@ var actions = {
                 semantic_label: '',
                 exits: exits,
                 config: {},
-                tags: []
+                tags: [],
+                vendor_metadata: {}
               }));
 
             case 14:

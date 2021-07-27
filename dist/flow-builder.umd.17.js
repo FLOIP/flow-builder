@@ -198,7 +198,8 @@ var actions = {
                 config: {
                   prompt: blankResource.uuid
                 },
-                tags: []
+                tags: [],
+                vendor_metadata: {}
               }));
 
             case 28:

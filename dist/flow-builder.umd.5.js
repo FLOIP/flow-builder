@@ -423,7 +423,8 @@ var actions = {
                   is_member: null
                 },
                 exits: exits,
-                tags: []
+                tags: [],
+                vendor_metadata: {}
               }));
 
             case 14:
