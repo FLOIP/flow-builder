@@ -98,7 +98,7 @@ export const mutations: MutationTree<IFlowsState> = {
     )
   },
   block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
-    if(!destinationBlockId) {
+    if (!destinationBlockId) {
       destinationBlockId = undefined
     }
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
