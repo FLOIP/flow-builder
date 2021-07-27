@@ -530,6 +530,12 @@ export default {
       const {uuid: blockId} = this.block
 
       console.debug('Block', 'handleDraggableInitializedFor', {blockId, exitId: uuid, coords: {left, top}})
+
+      // TODO: To remove this if it does not work
+      this.$set(draggable, 'disabled', true)
+      setTimeout(() => {
+        this.$set(draggable, 'disabled', false)
+      }, 500)
     },
 
     handleDraggableDestroyedFor({uuid}) {

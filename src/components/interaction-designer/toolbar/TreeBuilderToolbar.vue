@@ -472,16 +472,22 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
 <style lang="scss">
 .tree-builder-toolbar {
-  position: relative;
   .flows-importer textarea {
     display: block;
     width: 100%;
   }
 }
 
+.tree-builder-toolbar-main-menu {
+  width: 100vw;
+
+  border-bottom: 1px solid darkgrey;
+  background: #eee;
+
+  box-shadow: 0 3px 6px #CACACA;
+}
+
 .tree-builder-toolbar-alerts {
-  position: relative;
-  padding-top: 60px;
   z-index: 3*10;
 }
 
