@@ -65,7 +65,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="ConsoleIO.Read"
-                      data-for-block-id="fake-uuid-132"
+                      data-for-block-id="fake-uuid-134"
                     >
                       <div
                         class="console-io-read-block"
@@ -90,7 +90,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-132/label"
+                              id="block/fake-uuid-134/label"
                             >
                               <div
                                 class="d-flex"
@@ -133,7 +133,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-132/name"
+                              id="block/fake-uuid-134/name"
                             >
                               <div
                                 class="d-flex justify-content-between"
@@ -174,7 +174,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-132/config/format_string"
+                            id="block/fake-uuid-134/config/format_string"
                           >
                             <div
                               class="block-format-string"
@@ -237,7 +237,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                                 <!---->
                                  
                                 <button
-                                  class="btn btn-sm btn-outline-primary"
+                                  class="btn btn-sm active btn-primary"
                                   data-placement="bottom"
                                   data-toggle="tooltip"
                                   title="One output for all choices"
@@ -326,7 +326,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-132/tags"
+                              id="block/fake-uuid-134/tags"
                             >
                               <div
                                 class="block-group"
@@ -459,7 +459,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                             >
                               <div
                                 class="validation-message form-group"
-                                id="block/fake-uuid-132/config/set_contact_property/property_key"
+                                id="block/fake-uuid-134/config/set_contact_property/property_key"
                               >
                                 <div
                                   class="block-contact-property-key"
@@ -530,7 +530,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-132
+                              fake-uuid-134
                             </em>
                           </small>
                         </div>

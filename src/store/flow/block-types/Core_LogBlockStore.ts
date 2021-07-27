@@ -39,6 +39,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         message: blankLogResource.uuid,
       },
       tags: [],
+      vendor_metadata: {},
     })
   },
 

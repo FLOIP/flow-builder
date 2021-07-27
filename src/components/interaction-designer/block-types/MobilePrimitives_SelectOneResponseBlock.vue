@@ -45,11 +45,9 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
-
   </div>
 </template>
 
@@ -58,7 +56,7 @@ import {IBlock, IBlockExit, IFlow, IResource, SupportedContentType, SupportedMod
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
-import {includes} from 'lodash'
+import {includes, map} from 'lodash'
 
 import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
@@ -133,6 +131,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
 
     if (!isEnteringChoiceOrAdvancedBranchingType) {
+      this.handleBranchingTypeChangedToUnified({block: this.block})
       return
     }
 
@@ -141,7 +140,10 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
   @flowVuexNamespace.Action block_createBlockExitWith!: ({props}: { props: { uuid: string } & Partial<IBlockExit> }) => Promise<IBlockExit>
+  @flowVuexNamespace.Action block_convertExitFormationToUnified!:
+    ({blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) => Promise<void>
   @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable !: boolean
 }
 

@@ -65,6 +65,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         prompt: blankResource.uuid,
       },
       tags: [],
+      vendor_metadata: {},
     })
   },
 }

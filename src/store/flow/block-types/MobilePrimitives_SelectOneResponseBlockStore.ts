@@ -1,14 +1,14 @@
-import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import { IRootState } from '@/store'
+import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {IRootState} from '@/store'
 import {
   IBlock,
   IBlockExit,
   IResource, ValidationException,
 } from '@floip/flow-runner'
-import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import { ISelectOneResponseBlock } from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
-import {defaultsDeep, filter, find, findKey, first, get, isEmpty, omit, snakeCase} from 'lodash'
+import {defaultsDeep, findKey, get, map, omit, snakeCase} from 'lodash'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
@@ -117,8 +117,25 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       },
       exits: [defaultExit],
       tags: [],
+      vendor_metadata: {},
     })
   },
+
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: formatTestValueForUnifiedBranchingType(block as ISelectOneResponseBlock),
+    }, {root: true})
+  },
+}
+
+function formatTestValueForUnifiedBranchingType(block: ISelectOneResponseBlock): string {
+  const blockChoicesKey = Object.keys(block.config.choices)
+  if (blockChoicesKey.length === 0) {
+    console.warn('Choices are empty for SelectOneBlock, providing `true` by default')
+    return 'true'
+  }
+  return `OR(${map(blockChoicesKey, (choice) => `block.value = \\"${choice}\\"`).join(',')})`
 }
 
 export default {
