@@ -10,12 +10,12 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=template&id=3cab02e8&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mobile-primitive-numeric-response-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-minimum-numeric-editor',{attrs:{"block":_vm.block},on:{"commitValidationMinimumChange":_vm.updateValidationMin}}),_c('block-maximum-numeric-editor',{attrs:{"block":_vm.block},on:{"commitValidationMaximumChange":_vm.updateValidationMax}}),_c('block-max-digit-editor',{attrs:{"block":_vm.block,"has-ivr":_vm.hasVoiceMode},on:{"commitMaxDigitsChange":_vm.updateMaxDigits}}),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":false}}),(_vm.promptResource)?_c('resource-editor',{attrs:{"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e(),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=template&id=877328ea&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mobile-primitive-numeric-response-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-minimum-numeric-editor',{attrs:{"block":_vm.block},on:{"commitValidationMinimumChange":_vm.updateValidationMin}}),_c('block-maximum-numeric-editor',{attrs:{"block":_vm.block},on:{"commitValidationMaximumChange":_vm.updateValidationMax}}),_c('block-max-digit-editor',{attrs:{"block":_vm.block,"has-ivr":_vm.hasVoiceMode},on:{"commitMaxDigitsChange":_vm.updateMaxDigits}}),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":false},on:{"branchingTypeChangedToUnified":function($event){return _vm.handleBranchingTypeChangedToUnified({block: _vm.block})}}}),(_vm.promptResource)?_c('resource-editor',{attrs:{"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e(),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=template&id=3cab02e8&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=template&id=877328ea&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -203,7 +203,8 @@ var actions = {
                 config: {
                   prompt: blankResource.uuid
                 },
-                tags: []
+                tags: [],
+                vendor_metadata: {}
               }));
 
             case 18:
@@ -213,8 +214,40 @@ var actions = {
         }
       }, _callee4);
     }))();
+  },
+  handleBranchingTypeChangedToUnified: function handleBranchingTypeChangedToUnified(_ref9, _ref10) {
+    var dispatch = _ref9.dispatch;
+    var block = _ref10.block;
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: formatTestValueForUnifiedBranchingType(block)
+    }, {
+      root: true
+    });
   }
 };
+
+function formatTestValueForUnifiedBranchingType(block) {
+  if ((block.config.validation_minimum === null || block.config.validation_minimum === undefined) && (block.config.validation_maximum === null || block.config.validation_maximum === undefined)) {
+    return 'is_number(block.value)';
+  }
+
+  if (block.config.validation_minimum !== null && block.config.validation_minimum !== undefined && block.config.validation_maximum !== null && block.config.validation_maximum !== undefined) {
+    return "AND(is_number(block.value, block.value >= ".concat(block.config.validation_minimum, ",") + " block.value <= ".concat(block.config.validation_maximum, ")");
+  }
+
+  if (block.config.validation_minimum !== null && block.config.validation_minimum !== undefined && (block.config.validation_maximum === null || block.config.validation_maximum === undefined)) {
+    return "AND(is_number(block.value), block.value >= ".concat(block.config.validation_minimum, ")");
+  }
+
+  if ((block.config.validation_minimum === null || block.config.validation_minimum === undefined) && block.config.validation_maximum !== null && block.config.validation_maximum !== undefined) {
+    return "AND(is_number(block.value), block.value <= ".concat(block.config.validation_maximum, ")");
+  }
+
+  console.warn('Exit test condition not found for NumericBlock, providing `true` by default');
+  return 'true';
+}
+
 /* harmony default export */ var MobilePrimitives_NumericResponseBlockStore = ({
   namespaced: true,
   getters: getters,
@@ -232,6 +265,9 @@ var builder = __webpack_require__("af98");
 
 // EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
 var vue_class_component_esm = __webpack_require__("2fe1");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue + 14 modules
+var BlockOutputBranchingConfig = __webpack_require__("18b0");
 
 // EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceEditor.vue + 37 modules
 var ResourceEditor = __webpack_require__("510a");
@@ -457,10 +493,8 @@ var MaxDigitEditor_component = Object(componentNormalizer["a" /* default */])(
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue + 4 modules
 var GenericContactPropertyEditor = __webpack_require__("b4ec");
 
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue + 14 modules
-var BlockOutputBranchingConfig = __webpack_require__("18b0");
-
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue?vue&type=script&lang=ts&
+
 
 
 
@@ -517,11 +551,15 @@ var MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitive
 
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "hasVoiceMode", void 0);
 
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "block_convertExitFormationToUnified", void 0);
+
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "setValidationMinimum", void 0);
 
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "setValidationMaximum", void 0);
 
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "setMaxDigits", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "handleBranchingTypeChangedToUnified", void 0);
 
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "isEditable", void 0);
 
@@ -540,6 +578,7 @@ var MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitive
         blockId: this.block.uuid,
         value: value
       });
+      this.handleActionsAccordingToBranchingType();
     }
   }, {
     key: "updateValidationMax",
@@ -548,6 +587,7 @@ var MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitive
         blockId: this.block.uuid,
         value: value
       });
+      this.handleActionsAccordingToBranchingType();
     }
   }, {
     key: "updateMaxDigits",
@@ -556,6 +596,20 @@ var MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitive
         blockId: this.block.uuid,
         value: value
       });
+    }
+  }, {
+    key: "handleActionsAccordingToBranchingType",
+    value: function handleActionsAccordingToBranchingType() {
+      var metadata = this.block.vendor_metadata;
+      var EXIT_PER_CHOICE = BlockOutputBranchingConfig["b" /* OutputBranchingType */].EXIT_PER_CHOICE,
+          ADVANCED = BlockOutputBranchingConfig["b" /* OutputBranchingType */].ADVANCED;
+      var isEnteringChoiceOrAdvancedBranchingType = Object(lodash["includes"])([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType);
+
+      if (!isEnteringChoiceOrAdvancedBranchingType) {
+        this.handleBranchingTypeChangedToUnified({
+          block: this.block
+        });
+      }
     }
   }]);
 
@@ -570,11 +624,15 @@ Object(tslib_es6["__decorate"])([flowVuexNamespace.Getter], MobilePrimitives_Num
 
 Object(tslib_es6["__decorate"])([flowVuexNamespace.Getter], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "hasVoiceMode", void 0);
 
+Object(tslib_es6["__decorate"])([flowVuexNamespace.Action], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "block_convertExitFormationToUnified", void 0);
+
 Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "setValidationMinimum", void 0);
 
 Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "setValidationMaximum", void 0);
 
 Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "setMaxDigits", void 0);
+
+Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "handleBranchingTypeChangedToUnified", void 0);
 
 Object(tslib_es6["__decorate"])([builderVuexNamespace.Getter], MobilePrimitives_NumericResponseBlockvue_type_script_lang_ts_MobilePrimitives_NumericResponseBlock.prototype, "isEditable", void 0);
 

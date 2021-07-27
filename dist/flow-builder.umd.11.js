@@ -434,7 +434,8 @@ var actions = {
                   flow_id: ''
                 },
                 exits: exits,
-                tags: []
+                tags: [],
+                vendor_metadata: {}
               }));
 
             case 24:

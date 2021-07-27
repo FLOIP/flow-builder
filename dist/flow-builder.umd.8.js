@@ -403,7 +403,8 @@ var actions = {
                 config: {
                   message: ''
                 },
-                tags: []
+                tags: [],
+                vendor_metadata: {}
               }));
 
             case 14:

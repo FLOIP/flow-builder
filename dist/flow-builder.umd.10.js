@@ -137,7 +137,8 @@ var actions = {
                   value: ''
                 },
                 exits: exits,
-                tags: []
+                tags: [],
+                vendor_metadata: {}
               }));
 
             case 14:

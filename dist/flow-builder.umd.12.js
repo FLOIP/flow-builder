@@ -209,7 +209,8 @@ var actions = {
                   destination_variables: []
                 },
                 exits: exits,
-                tags: []
+                tags: [],
+                vendor_metadata: {}
               }));
 
             case 26:
