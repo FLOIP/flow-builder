@@ -33,7 +33,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       label: '',
       semantic_label: '',
       config: {
-        value: '',
+        value: null,
       },
       exits,
       tags: [],
