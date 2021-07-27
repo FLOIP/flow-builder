@@ -51,11 +51,13 @@ class AdvancedExitEditor extends mixins(Lang) {
 
     this.$emit('beforeExitNameChanged', {blockId, exitId, value})
     this.block_setExitName({blockId, exitId, value})
+    this.$emit('afterExitNameChanged', {blockId, exitId, value})
   }
 
   async commitExpressionChange(value: IBlockExit['test']): Promise<void> {
     this.$emit('beforeExitTestChanged', {exitId: this.exit.uuid, blockId: this.block.uuid, value})
     this.block_setExitTest({exitId: this.exit.uuid, blockId: this.block.uuid, value})
+    this.$emit('afterExitTestChanged', {exitId: this.exit.uuid, blockId: this.block.uuid, value})
   }
 
   @flowVuexNamespace.Mutation block_setExitTest!:

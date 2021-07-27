@@ -4,17 +4,20 @@
 
     <template v-for="(exit, i) in block.exits">
       <advanced-exit-editor
-        ref="exitEditors"
         v-if="!exit.default"
+        ref="exitEditors"
         :key="exit.uuid"
         :block="block"
         :exit="exit"
         :label="(i + 1).toString()"
-        class="advanced-block-exit-builder-item mb-3" />
+        class="advanced-block-exit-builder-item mb-3"
+        @afterExitTestChanged="handleExitChanged(exit, /* Subtracting two to account for default exit */i === block.exits.length - 2)"
+        @afterExitNameChanged="handleExitChanged(exit, /* Subtracting two to account for default exit */i === block.exits.length - 2)" />
     </template>
 
     <advanced-exit-editor
       v-if="draftExit"
+      ref="draftExitEditor"
       :key="draftExit.uuid"
       :block="block"
       :exit="draftExit"
@@ -80,6 +83,19 @@ class AdvancedExitsBuilder extends mixins(Lang) {
     this.generateDraftExit()
   }
 
+  handleExitChanged(exit: IBlockExit, isLast: boolean): void {
+    if (!isLast || !this.hasEmptyValues(exit)) {
+      return
+    }
+
+    this.block_removeExit({blockId: this.block.uuid, exit})
+    this.focusInputEl(this.getTestInputFrom(this.$refs.draftExitEditor as Vue))
+  }
+
+  hasEmptyValues(exit: IBlockExit): boolean {
+    return isEmpty(exit.name) && isEmpty(exit.test)
+  }
+
   focusInputEl(input?: HTMLInputElement): void {
     input?.focus()
   }
@@ -93,6 +109,7 @@ class AdvancedExitsBuilder extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Mutation block_addExit!: ({blockId, exit}: {blockId: string, exit: IBlockExit}) => void
+  @flowVuexNamespace.Mutation block_removeExit!: ({blockId, exit}: {blockId: string, exit: IBlockExit}) => void
   @flowVuexNamespace.Action block_createBlockExitWith!: ({props}: { props: { uuid: string } & Partial<IBlockExit> }) => Promise<IBlockExit>
 }
 export default AdvancedExitsBuilder
