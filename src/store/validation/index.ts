@@ -218,7 +218,7 @@ function flatValidationStatuses({
       // error.dataPath could be empty or not for such errors
       index = `${keyPrefix}${error.schemaPath}`
       message = `${error.message}, for params ${JSON.stringify(error.params)}`
-      console.error('store/validation:', `Schema issue found on ${index}: ${message}`)
+      console.warn('store/validation:', `Schema issue found on ${index}: ${message}`)
     } else {
       index = `${keyPrefix}${error.dataPath}`
       message = error.message as string

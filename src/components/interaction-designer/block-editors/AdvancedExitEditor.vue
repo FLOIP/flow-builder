@@ -1,6 +1,7 @@
 <template>
   <div class="advanced-exit-editor">
     <expression-input
+      ref="testExpressionInput"
       label=""
       :placeholder="'flow-builder.advanced-exit-expression-placeholder' | trans"
       :current-expression="test"
@@ -10,6 +11,7 @@
 
     <h6 class="mt-2">{{ 'flow-builder.advanced-exit-name' | trans }}</h6>
     <textarea
+      ref="name"
       v-model="name"
       :placeholder="'flow-builder.advanced-exit-name-placeholder' | trans"
       class="form-control"
@@ -49,11 +51,13 @@ class AdvancedExitEditor extends mixins(Lang) {
 
     this.$emit('beforeExitNameChanged', {blockId, exitId, value})
     this.block_setExitName({blockId, exitId, value})
+    this.$emit('afterExitNameChanged', {blockId, exitId, value})
   }
 
   async commitExpressionChange(value: IBlockExit['test']): Promise<void> {
     this.$emit('beforeExitTestChanged', {exitId: this.exit.uuid, blockId: this.block.uuid, value})
     this.block_setExitTest({exitId: this.exit.uuid, blockId: this.block.uuid, value})
+    this.$emit('afterExitTestChanged', {exitId: this.exit.uuid, blockId: this.block.uuid, value})
   }
 
   @flowVuexNamespace.Mutation block_setExitTest!:
