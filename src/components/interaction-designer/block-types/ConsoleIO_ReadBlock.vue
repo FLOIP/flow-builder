@@ -1,7 +1,7 @@
 <template>
   <div class="console-io-read-block">
     <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -12,6 +12,8 @@
         v-if="showSemanticLabel"
         :block="block" />
       <block-name-editor :block="block" />
+
+      <slot name="extras" />
 
       <hr>
 
@@ -44,9 +46,8 @@
 
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
-
-      <slot name="extras" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <categorization :block="block" />
 
@@ -67,7 +68,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow} from '@floip/flow-runner'
 import {IReadBlock} from '@floip/flow-runner/src/model/block/IReadBlock'
 import TextEditor from '@/components/common/TextEditor.vue'
 import ReadStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
@@ -130,7 +131,7 @@ class ConsoleIO_ReadBlock extends mixins(Lang) {
   }: { variableName: string, keyIndex: number }) => Promise<string[]>
 
   @blockVuexNamespace.Getter declare destinationVariablesFields: () => Promise<string[]>
-
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter declare isEditable: boolean
 }
 

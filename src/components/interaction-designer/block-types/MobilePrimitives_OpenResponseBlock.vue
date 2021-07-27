@@ -1,7 +1,7 @@
 <template>
   <div class="mobile-primitive-open-response-block">
     <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -12,6 +12,8 @@
         v-if="showSemanticLabel"
         :block="block" />
       <block-name-editor :block="block" />
+
+      <slot name="extras" />
 
       <hr>
 
@@ -28,15 +30,14 @@
 
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"
         :block="block"
         :flow="flow" />
-
-      <slot name="extras" />
 
       <categorization :block="block" />
 
@@ -57,7 +58,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IFlow, IResource} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
 import OpenResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
 import Lang from '@/lib/filters/lang'
@@ -106,14 +107,12 @@ class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
-
   @flowVuexNamespace.Getter hasTextMode!: boolean
-
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
 
   @blockVuexNamespace.Action setMaxDurationSeconds!: (newDuration: number) => Promise<string>
-
   @blockVuexNamespace.Action setMaxResponseCharacters!: (newLength: number) => Promise<string>
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean
 }

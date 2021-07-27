@@ -1,7 +1,7 @@
 <template>
   <div class="core-output-block">
     <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -12,6 +12,8 @@
         v-if="showSemanticLabel"
         :block="block" />
       <block-name-editor :block="block" />
+
+      <slot name="extras" />
 
       <validation-message
         #input-control="{ isValid }"
@@ -27,9 +29,8 @@
       <hr>
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
-
-      <slot name="extras" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <categorization :block="block" />
 
@@ -49,7 +50,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 import {IOutputBlock} from '@floip/flow-runner/src/model/block/IOutputBlock'
-import {IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow} from '@floip/flow-runner'
 import OutputStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
 import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
@@ -94,6 +95,7 @@ class Core_OutputBlock extends mixins(Lang) {
   }
 
   @blockVuexNamespace.Action editOutputExpression!: (params: { blockId: string, value: string }) => Promise<string>
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean
 

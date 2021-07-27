@@ -1,6 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExit, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
+import {IBlock, IBlockExit, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {defaultsDeep} from 'lodash'
 import {IFlowsState} from '../index'
@@ -44,6 +44,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       tags: [],
       vendor_metadata: {},
     })
+  },
+
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: 'block.value = true',
+    }, {root: true})
   },
 
   async setIsMember({commit, rootGetters}, action) {

@@ -1,7 +1,7 @@
 <template>
   <div class="core-log-block">
     <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
     <fieldset :disabled="!isEditable">
       <block-label-editor
@@ -11,6 +11,8 @@
         v-if="showSemanticLabel"
         :block="block" />
       <block-name-editor :block="block" />
+
+      <slot name="extras" />
 
       <div class="text-only-resource-editor">
         <hr>
@@ -35,8 +37,6 @@
           </template>
         </template>
       </div>
-
-      <slot name="extras" />
 
       <categorization :block="block" />
 
