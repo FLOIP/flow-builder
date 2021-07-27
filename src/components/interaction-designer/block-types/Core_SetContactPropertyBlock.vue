@@ -14,7 +14,7 @@
       <block-name-editor :block="block" />
 
       <contact-property-editor :block="block" />
-
+<!--TODO: add block-output-branching-config component once vmo-4142 is merged-->
       <slot name="extras" />
 
       <categorization :block="block" />
@@ -47,6 +47,7 @@ import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 
 const builderVuexNamespace = namespace('builder')
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
@@ -66,6 +67,7 @@ class Core_SetContactPropertyBlock extends mixins(Lang) {
   showSemanticLabel = false
 
   @builderVuexNamespace.Getter isEditable !: boolean
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 }
 
 export default Core_SetContactPropertyBlock

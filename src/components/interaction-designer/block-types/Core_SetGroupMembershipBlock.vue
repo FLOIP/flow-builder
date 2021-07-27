@@ -16,10 +16,11 @@
       <group-membership-editor :block="block" />
 
       <hr>
-      <!--TODO: confirm the test in advanced branching `true` or expression from Single Exit mode eg: `block.value = 1`-->
+
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <slot name="extras" />
 
@@ -121,7 +122,7 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
   }
 
   @blockVuexNamespace.Action setIsMember!: (action: IGroupActionOption) => Promise<any>
-
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable!: boolean
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: ({

@@ -30,7 +30,8 @@
 
       <block-output-branching-config
         :block="block"
-        :has-exit-per-choice="false" />
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <categorization :block="block" />
 
@@ -52,7 +53,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IFlow, IResource} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import {IPrintBlock} from '@floip/flow-runner/src/model/block/IPrintBlock'
 
 import PrintStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
@@ -98,13 +99,13 @@ class ConsoleIO_PrintBlock extends mixins(Lang) {
     return this.block.config.message || ''
   }
 
-  @blockVuexNamespace.Action editMessage!: (params: { blockId: string, message: string }) => Promise<string>
-
-  @builderVuexNamespace.Getter isEditable !: boolean
-
   commitMessageChange(value: string): Promise<string> {
     return this.editMessage({blockId: this.block.uuid, message: value})
   }
+
+  @blockVuexNamespace.Action editMessage!: (params: { blockId: string, message: string }) => Promise<string>
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
+  @builderVuexNamespace.Getter isEditable !: boolean
 }
 
 export default ConsoleIO_PrintBlock
