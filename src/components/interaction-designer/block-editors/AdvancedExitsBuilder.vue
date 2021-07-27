@@ -11,8 +11,8 @@
         :exit="exit"
         :label="(i + 1).toString()"
         class="advanced-block-exit-builder-item mb-3"
-        @afterExitTestChanged="handleExitChanged(exit, /* Subtracting two to account for default exit */i === block.exits.length - 2)"
-        @afterExitNameChanged="handleExitChanged(exit, /* Subtracting two to account for default exit */i === block.exits.length - 2)" />
+        @afterExitTestChanged="handleExitChanged(exit, i)"
+        @afterExitNameChanged="handleExitChanged(exit, i)" />
     </template>
 
     <advanced-exit-editor
@@ -83,7 +83,9 @@ class AdvancedExitsBuilder extends mixins(Lang) {
     this.generateDraftExit()
   }
 
-  handleExitChanged(exit: IBlockExit, isLast: boolean): void {
+  handleExitChanged(exit: IBlockExit, index: number): void {
+    // Subtracting two to account for default exit
+    const isLast = index === this.block.exits.length - 2
     if (!isLast || !this.hasEmptyValues(exit)) {
       return
     }
