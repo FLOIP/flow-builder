@@ -7,7 +7,7 @@ module.exports = {
   lintOnSave: false,
   runtimeCompiler: true,
   css: {
-    extract: false,
+    extract: true,
   },
   configureWebpack: {
     resolve: {
