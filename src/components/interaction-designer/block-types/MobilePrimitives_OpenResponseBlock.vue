@@ -13,6 +13,8 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <hr>
+
       <block-max-duration-seconds-editor
         :block="block"
         :has-ivr="hasVoiceMode"
@@ -21,6 +23,12 @@
         :block="block"
         :has-text="hasTextMode"
         @commitMaxResponseCharactersChange="setMaxResponseCharacters" />
+
+      <hr>
+
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false" />
 
       <resource-editor
         v-if="promptResource"
@@ -39,7 +47,6 @@
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
-
     </fieldset>
 
     <block-id :block="block" />
@@ -57,6 +64,7 @@ import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -83,6 +91,7 @@ const builderVuexNamespace = namespace('builder')
     BlockMaxDurationSecondsEditor,
     BlockMaxResponseCharactersEditor,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
