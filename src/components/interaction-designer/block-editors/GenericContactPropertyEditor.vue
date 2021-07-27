@@ -30,6 +30,7 @@
           <text-editor
             :value="propertyKey"
             :label="'flow-builder.property' | trans"
+            :label-class="''"
             :placeholder="'flow-builder.enter-contact-property-label' | trans"
             :valid-state="isValid"
             @input="updatePropertyKey" />
@@ -37,7 +38,7 @@
       </validation-message>
 
       <!--Contact property value editor with actions-->
-      <h6>{{ 'flow-builder.value' | trans }}</h6>
+      <label>{{ 'flow-builder.value' | trans }}</label>
       <div
         v-if="isBlockInteractive(block)"
         class="form-group">
@@ -129,7 +130,14 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     this.propertyKey = get(this.block.config.set_contact_property, 'property_key', '')
     this.propertyValue = get(this.block.config.set_contact_property, 'property_value', null)
     if (this.propertyValue === null) {
-      this.updatePropertyValue(BLOCK_RESPONSE_EXPRESSION)
+      // default setting
+      if (this.isBlockInteractive(this.block)) {
+        // interactive blocks will have `Entry from this block` option by default
+        this.propertyValue = BLOCK_RESPONSE_EXPRESSION
+      } else {
+        // non interactive blocks will have `Expression` option by default
+        this.propertyValue = EMPTY_STRING_EXPRESSION
+      }
     }
     this.initPropertyValueAction()
   }
@@ -148,8 +156,8 @@ class GenericContactPropertyEditor extends mixins(Lang) {
         blockId: this.block.uuid,
         path: 'set_contact_property',
         value: {
-          property_key: '',
-          property_value: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : BLOCK_RESPONSE_EXPRESSION,
+          property_key: this.propertyKey,
+          property_value: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : this.propertyValue,
         } as IBlockConfig,
       })
     }

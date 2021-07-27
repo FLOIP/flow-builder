@@ -1,14 +1,12 @@
 import Vue from 'vue'
-import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
+import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, find, get, has, includes, isArray, last, reduce, reject, set, setWith, snakeCase, toPath} from 'lodash'
+import {defaults, get, has, isArray, last, reduce, reject, set, setWith, snakeCase, toPath} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import {BLOCK_TYPE as PHOTO_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
-import {BLOCK_TYPE as LOCATION_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
+import next from 'ajv/dist/vocabularies/next'
 import {IFlowsState} from '.'
 import {popFirstEmptyItem} from './utils/listBuilder'
-import next from 'ajv/dist/vocabularies/next'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
@@ -54,7 +52,7 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).test = value
   },
-  block_setExitConfigByPath(state, { exitId, blockId, path, value }: {exitId: string; blockId: string; path: string; value: object | string}) {
+  block_setExitConfigByPath(state, {exitId, blockId, path, value}: {exitId: string, blockId: string, path: string, value: object | string}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     // todo: this will break reactivity
     set(findBlockExitWith(exitId, block).config, path, value)
@@ -150,7 +148,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {dispatch, commit},
     {props}: { props: { uuid: string } & Partial<IBlockExit> },
   ): Promise<IBlockExit> {
-
     return {
       ...defaults(props, {
         name: '',
@@ -239,6 +236,5 @@ export interface IDeepBlockExitIdWithinFlow {
  * @param block
  */
 export function isBlockInteractive(block: IBlock): boolean {
-  const interactiveBlockTypesWithoutPrompt = [PHOTO_RESPONSE_BLOCK_TYPE, LOCATION_RESPONSE_BLOCK_TYPE]
-  return has(block.config, 'prompt') || includes(interactiveBlockTypesWithoutPrompt, block.type)
+  return has(block.config, 'prompt')
 }
