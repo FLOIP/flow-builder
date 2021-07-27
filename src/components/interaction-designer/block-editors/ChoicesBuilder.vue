@@ -3,22 +3,21 @@
     <h4>{{'flow-builder.choices' | trans}}</h4>
 
     <!-- Show non-empty choices -->
-    <template v-for="(resourceId, choiceKey, choiceIndex) in block.config.choices">
+    <template v-for="(resource, i) in choiceResourcesOrderedByResourcesList">
       <resource-variant-text-editor
-        v-if="resourcesByUuid[resourceId]"
         ref="choices"
-        :key="resourceId"
+        :key="resource.uuid"
         class="choices-builder-item"
-        :label="(choiceIndex + 1).toString()"
+        :label="(i + 1).toString()"
         :rows="1"
         :placeholder="'Enter choice...'"
-        :resource-id="resourceId"
-        :resource-variant="resourcesByUuid[resourceId].values[0]"
+        :resource-id="resource.uuid"
+        :resource-variant="resource.values[0]"
         :mode="SupportedMode.TEXT"
         @afterResourceVariantChanged="handleExistingResourceVariantChangedFor(
-          resourceId,
-          choiceIndex,
-          resourcesByUuid[resourceId])" />
+          resource.uuid,
+          i,
+          resource)" />
     </template>
 
     <!--Show empty choice-->
@@ -27,7 +26,7 @@
       ref="draftChoice"
       :key="draftResource.uuid"
       class="choices-builder-item"
-      :label="(choiceKeys.length + 1).toString()"
+      :label="(choiceResourcesOrderedByResourcesList.length + 1).toString()"
       :rows="1"
       :placeholder="'Enter choice...'"
       :resource-id="draftResource.uuid"
@@ -43,12 +42,12 @@
 </template>
 
 <script lang="ts">
-import {get, isEmpty, last} from 'lodash'
+import {get, isEmpty, last, intersectionWith} from 'lodash'
 import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import {IBlock, IBlockExit, IFlow, IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource, Resource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
@@ -74,9 +73,10 @@ class ChoicesBuilder extends mixins(Lang) {
   SupportedMode = SupportedMode
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
-  get choiceKeys(): string[] {
-    // todo: my best guess for ordering is resources ordering? :/
-    return Object.keys(this.block.config.choices)
+  get choiceResourcesOrderedByResourcesList(): IResource[] {
+    const choiceResourceIds = Object.values(this.block.config.choices)
+    return intersectionWith(this.resources, choiceResourceIds,
+      (resource, choiceResourceId) => resource.uuid === choiceResourceId)
   }
 
   created(): void {
@@ -112,7 +112,7 @@ class ChoicesBuilder extends mixins(Lang) {
   }
 
   handleExistingResourceVariantChangedFor(resourceId: IResource['uuid'], choiceIndex: number, resource: IResource): void {
-    const isLast = choiceIndex === this.choiceKeys.length - 1
+    const isLast = choiceIndex === this.choiceResourcesOrderedByResourcesList.length - 1
     const hasEmptyValue = isEmpty(get(resource.values[0], 'value'))
 
     if (isLast && hasEmptyValue) {
@@ -127,6 +127,7 @@ class ChoicesBuilder extends mixins(Lang) {
     this.$emit('choiceChanged', {resourceId, choiceIndex, resource})
   }
 
+  @flowVuexNamespace.State resources!: IResource[]
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Mutation resource_add!: ({resource}: {resource: IResource}) => void

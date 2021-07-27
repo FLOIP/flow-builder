@@ -2,7 +2,7 @@ import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IResource} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, find, get, has, includes, isArray, last, reduce, set, setWith, snakeCase, toPath} from 'lodash'
+import {defaults, find, get, has, includes, isArray, last, reduce, reject, set, setWith, snakeCase, toPath} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {BLOCK_TYPE as PHOTO_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import {BLOCK_TYPE as LOCATION_RESPONSE_BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
@@ -68,6 +68,12 @@ export const mutations: MutationTree<IFlowsState> = {
     // insert before default exit
     block.exits.splice(block.exits.length - 1, 0, exit)
   },
+
+  block_removeExit(state, {blockId, exit}: {blockId: string, exit: IBlockExit}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    block.exits = reject(block.exits, (e) => e.uuid === exit.uuid)
+  },
+
   block_updateConfig(state, {blockId, newConfig}: { blockId: string, newConfig: object }) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .config = newConfig
