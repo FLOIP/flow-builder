@@ -129,8 +129,15 @@ class GenericContactPropertyEditor extends mixins(Lang) {
     this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')
     this.propertyKey = get(this.block.config.set_contact_property, 'property_key', '')
     this.propertyValue = get(this.block.config.set_contact_property, 'property_value', null)
-    if (this.propertyValue === null && this.isBlockInteractive(this.block)) {
-      this.updatePropertyValue(BLOCK_RESPONSE_EXPRESSION)
+    if (this.propertyValue === null) {
+      // default setting
+      if (this.isBlockInteractive(this.block)) {
+        // interactive blocks will have `Entry from this block` option by default
+        this.propertyValue = BLOCK_RESPONSE_EXPRESSION
+      } else {
+        // non interactive blocks will have `Expression` option by default
+        this.propertyValue = EMPTY_STRING_EXPRESSION
+      }
     }
     this.initPropertyValueAction()
   }
@@ -149,8 +156,8 @@ class GenericContactPropertyEditor extends mixins(Lang) {
         blockId: this.block.uuid,
         path: 'set_contact_property',
         value: {
-          property_key: '',
-          property_value: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : BLOCK_RESPONSE_EXPRESSION,
+          property_key: this.propertyKey,
+          property_value: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : this.propertyValue,
         } as IBlockConfig,
       })
     }
