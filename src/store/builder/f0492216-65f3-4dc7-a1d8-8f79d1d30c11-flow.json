@@ -54,10 +54,7 @@
             }
           ],
           "config": {
-            "message": "3087a849-3f88-4fe4-8992-a8f5a8866124",
-            "set_contact_property": {
-              "property_value": "@block.value"
-            }
+            "message": "3087a849-3f88-4fe4-8992-a8f5a8866124"
           }
         },
         {
@@ -101,9 +98,6 @@
             "validation_maximum": 0,
             "ivr": {
               "max_digits": -1
-            },
-            "set_contact_property": {
-              "property_value": "@block.value"
             }
           }
         }
