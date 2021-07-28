@@ -165,7 +165,7 @@ export default class BuilderCanvas extends Vue {
     }
 
     const yPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.y
-    // TODO: clean this original solution in case the actual solution still works after we update the toolbar. I suspect there is a relation between the scrollHeight formula and the fact that we have toolbar elements with fixed position
+    // TODO in https://viamoinc.atlassian.net/browse/VMO-4192, clean this original solution in case the actual solution still works after we update the toolbar. I suspect there is a relation between the scrollHeight formula and the fact that we have toolbar elements with fixed position
     // const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
     const scrollHeight = yPosition
 
