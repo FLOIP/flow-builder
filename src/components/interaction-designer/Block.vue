@@ -145,7 +145,6 @@
             </span>
 
             <span
-              v-if="isEditable"
               class="align-self-center">
               <template v-if="exit.destination_block == null">
                 <plain-draggable
@@ -160,7 +159,7 @@
                   @dragEnded="onCreateExitDragEnded($event, exit)"
                   @destroyed="handleDraggableDestroyedFor(exit)">
                   <i
-                    v-if="exitHovers[exit.uuid]"
+                    v-if="isEditable && exitHovers[exit.uuid]"
                     class="glyphicon glyphicon-move" />
                   <font-awesome-icon
                     v-else
@@ -190,7 +189,7 @@
                   :key="`exit/${exit.uuid}/handle`"
                   class="btn btn-xs btn-flat">
                   <font-awesome-icon
-                    v-if="exitHovers[exit.uuid]"
+                    v-if="isEditable && exitHovers[exit.uuid]"
                     v-b-tooltip.hover.top="trans('flow-builder.tooltip-remove-connection')"
                     class="text-danger"
                     title="Click to remove this connection"
