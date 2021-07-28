@@ -144,13 +144,11 @@
               <span
                 v-if="!(exitHovers[exit.uuid] || isExitActivatedForCreate(exit))"
                 v-b-tooltip.hover.top="exit.test"
-                class="block-exit-tag-text align-self-center">
+                class="block-exit-tag-text">
                 {{ exit.name || '(untitled)' }}
               </span>
 
-              <span
-                v-if="isEditable"
-                class="align-self-center">
+              <span v-if="isEditable">
                 <template v-if="exit.destination_block == null">
                   <plain-draggable
                     v-if="exitHovers[exit.uuid] || isExitActivatedForCreate(exit)"
@@ -204,7 +202,8 @@
                     :source="livePosition ? null : block"
                     :target="blocksById[exit.destination_block]"
                     :exit="exit"
-                    :position="livePosition" />
+                    :position="livePosition"
+                    @isLineHovered="setLineHovered(exit, $event)" />
                 </template>
               </span>
             </div>
@@ -253,6 +252,7 @@ export default {
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
       blockWidth: 0,
       exitHovers: {},
+      lineHovers: {},
       NoValidResponseHandler,
     }
   },
@@ -389,7 +389,7 @@ export default {
 
     ...mapMutations('validation', ['removeValidationStatusesFor']),
 
-    exitMouseEnter(exit, event) {
+    exitMouseEnter(exit) {
       this.$set(this.exitHovers, exit.uuid, true)
     },
 
@@ -398,11 +398,15 @@ export default {
     },
 
     exitBackgroundColor(exit) {
-      if (exit.destination_block != null && this.exitHovers[exit.uuid]) {
+      if (exit.destination_block != null && (this.exitHovers[exit.uuid] || this.lineHovers[exit.uuid])) {
         return EXIT_HOVER_BG
       } else {
         return exit.destination_block == null ? EXIT_DISCONNECTED_BG : EXIT_CONNECTED_BG
       }
+    },
+
+    setLineHovered(exit, value) {
+      this.$set(this.lineHovers, [exit.uuid], value)
     },
 
     handleDeleteBlock() {
@@ -751,6 +755,7 @@ export default {
 
       .block-exit-tag {
         width: 100px;
+        height: 33px;
 
         padding: 0.4em;
         border: none;

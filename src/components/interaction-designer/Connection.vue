@@ -181,16 +181,17 @@ export default {
     mouseOverHandler() {
       this.line.setOptions(this.prominentOptions)
       this.activateConnection({connectionContext: this.connectionContext})
+      this.$emit('isLineHovered', true)
     },
     mouseOutHandler() {
       if (!this.isPermanentlyActive) {
         this.line.setOptions(this.options)
         this.deactivateConnection({connectionContext: this.connectionContext})
       }
+      this.$emit('isLineHovered', false)
     },
     clickHandler() {
       this.isPermanentlyActive = true
-      this.line.setOptions(this.prominentOptions)
       this.activateConnection({connectionContext: this.connectionContext})
       this.activateBlock({blockId: null})
     },
