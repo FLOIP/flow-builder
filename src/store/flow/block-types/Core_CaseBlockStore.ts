@@ -4,11 +4,10 @@ import {IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ICaseBlock} from '@floip/flow-runner/src/model/block/ICaseBlock'
 import {defaultsDeep} from 'lodash'
+import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import {IFlowsState} from '../index'
 
 import {allItemsHaveValue, twoItemsBlank} from '../utils/listBuilder'
-
-import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 export const BLOCK_TYPE = 'Core.Case'
 
@@ -71,8 +70,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       tags: [],
       vendor_metadata: {
         io_viamo: {
-          branchingType: OutputBranchingType.ADVANCED
-        }
+          branchingType: OutputBranchingType.ADVANCED,
+        },
       },
     })
   },

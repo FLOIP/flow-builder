@@ -48,7 +48,8 @@
           class="btn btn-sm"
           data-placement="bottom"
           data-toggle="tooltip"
-          @click="selectedBranchingType = OutputBranchingType.ADVANCED" :disabled="!hasUnifiedExit && !hasExitPerChoice">
+          :disabled="!hasUnifiedExit && !hasExitPerChoice"
+          @click="selectedBranchingType = OutputBranchingType.ADVANCED">
           <font-awesome-icon
             :icon="['fac', 'advanced-exit']"
             class="exit-type-icons" />
