@@ -23,9 +23,15 @@
 
       <hr>
 
-      <choices-builder :block="block" />
+      <choices-builder
+        :block="block"
+        @choiceChanged="handleChoiceChanged" />
 
-      <block-output-branching-config :block="block" />
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false"
+        :label-class="''"
+        @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
 
       <slot name="extras"></slot>
 
@@ -60,6 +66,8 @@ import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import ChoicesBuilder from "@/components/interaction-designer/block-editors/ChoicesBuilder.vue";
+import BlockOutputBranchingConfig from "@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue";
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -69,8 +77,10 @@ const builderVuexNamespace = namespace('builder')
     GenericContactPropertyEditor,
     BlockNameEditor,
     BlockLabelEditor,
+    BlockOutputBranchingConfig,
     BlockSemanticLabelEditor,
     BlockExitSemanticLabelEditor,
+    ChoicesBuilder,
     FirstBlockEditorButton,
     ResourceEditor,
     BlockId,

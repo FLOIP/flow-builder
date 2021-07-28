@@ -53,14 +53,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         }) as IBlockExit,
       }, {root: true}),
     ]
-    exits.push(
-      await dispatch('flow/block_createBlockExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-          name: 'Error',
-        }) as IBlockExit,
-      }, {root: true}),
-    )
 
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
