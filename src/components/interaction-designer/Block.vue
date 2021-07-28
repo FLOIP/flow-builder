@@ -138,10 +138,11 @@
 
             <div
               class="block-exit-tag badge badge-warning"
-              :style="{background: exit.destination_block == null ? '#858585' : '#418BCA'}"
-              @mouseenter="exitMouseEnter(exit)"
+              :style="{background: exitBackgroundColor(exit)}"
+              @mouseenter="exitMouseEnter(exit, $event)"
               @mouseleave="exitMouseLeave(exit)">
               <span
+                v-if="!(exitHovers[exit.uuid] || isExitActivatedForCreate(exit))"
                 v-b-tooltip.hover.top="exit.test"
                 class="block-exit-tag-text align-self-center">
                 {{ exit.name || '(untitled)' }}
@@ -231,6 +232,10 @@ import BlockEditor from '@/components/interaction-designer/block-editors/BlockEd
 Vue.component('BTooltip', BTooltip)
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
+
+const EXIT_CONNECTED_BG = '#418BCA'
+const EXIT_DISCONNECTED_BG = '#858585'
+const EXIT_HOVER_BG = '#FFECEC'
 
 export default {
   components: {
@@ -384,12 +389,20 @@ export default {
 
     ...mapMutations('validation', ['removeValidationStatusesFor']),
 
-    exitMouseEnter(exit) {
+    exitMouseEnter(exit, event) {
       this.$set(this.exitHovers, exit.uuid, true)
     },
 
     exitMouseLeave(exit) {
       this.$set(this.exitHovers, exit.uuid, false)
+    },
+
+    exitBackgroundColor(exit) {
+      if (exit.destination_block != null && this.exitHovers[exit.uuid]) {
+        return EXIT_HOVER_BG
+      } else {
+        return exit.destination_block == null ? EXIT_DISCONNECTED_BG : EXIT_CONNECTED_BG
+      }
     },
 
     handleDeleteBlock() {
@@ -737,9 +750,6 @@ export default {
       transition: border-radius 200ms ease-in-out;
 
       .block-exit-tag {
-        display: inline-flex;
-        min-width: 25px;
-        max-width: 100%;
         width: 100px;
 
         padding: 0.4em;
@@ -749,8 +759,6 @@ export default {
         font-size: 12px;
 
         .block-exit-tag-text {
-          width: 75%;
-          max-width: 75px;
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
@@ -762,7 +770,6 @@ export default {
         border-color: #333333;
       }
     }
-
   }
 
   // state mutations
