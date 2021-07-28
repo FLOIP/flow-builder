@@ -967,7 +967,7 @@ function formatTestValueForUnifiedBranchingType(block) {
   }
 
   return "OR(".concat(Object(lodash__WEBPACK_IMPORTED_MODULE_18__["map"])(blockChoicesKey, function (choice) {
-    return "block.value = \\\"".concat(choice, "\\\"");
+    return "block.value = '".concat(choice, "'");
   }).join(','), ")");
 }
 

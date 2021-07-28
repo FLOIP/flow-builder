@@ -5,16 +5,16 @@
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue?vue&type=template&id=5c48dc8f&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue?vue&type=template&id=bb893178&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"generic-contact-property-editor"},[_c('hr'),_c('label',{staticClass:"text-primary"},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.contact-properties')))]),_c('div',{staticClass:"custom-control custom-checkbox"},[_c('input',{staticClass:"custom-control-input",attrs:{"id":"setContactProperty","type":"checkbox","name":"setContactProperty"},domProps:{"value":_vm.shouldSetContactProperty,"checked":_vm.shouldSetContactProperty},on:{"change":_vm.toggleSetContactProperty}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"setContactProperty"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.set-contact-property-with-response'))+" ")])]),(_vm.shouldSetContactProperty)?_c('div',{staticClass:"form-group"},[_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/set_contact_property/property_key")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
-return [_c('div',{staticClass:"block-contact-property-key"},[_c('text-editor',{attrs:{"value":_vm.propertyKey,"label":_vm._f("trans")('flow-builder.property'),"placeholder":_vm._f("trans")('flow-builder.enter-contact-property-label'),"valid-state":isValid},on:{"input":_vm.updatePropertyKey}})],1)]}}],null,false,1545571803)}),_c('h6',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.value')))]),(_vm.isBlockInteractive(_vm.block))?_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{staticClass:"custom-control-input",attrs:{"id":"setProp","type":"radio","name":"contactPropAction"},domProps:{"checked":_vm.propertyValueAction === _vm.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE,"value":_vm.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE},on:{"change":_vm.updatePropertyValueAction}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"setProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.entry-from-this-block'))+" ")])]),_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{staticClass:"custom-control-input",attrs:{"id":"clearProp","type":"radio","name":"contactPropAction"},domProps:{"checked":_vm.propertyValueAction === _vm.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION,"value":_vm.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION},on:{"change":_vm.updatePropertyValueAction}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"clearProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.expression'))+" ")])])]):_vm._e(),(_vm.shouldUseOpenExpression)?_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/set_contact_property/property_value")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+return [_c('div',{staticClass:"block-contact-property-key"},[_c('text-editor',{attrs:{"value":_vm.propertyKey,"label":_vm._f("trans")('flow-builder.property'),"label-class":'',"placeholder":_vm._f("trans")('flow-builder.enter-contact-property-label'),"valid-state":isValid},on:{"input":_vm.updatePropertyKey}})],1)]}}],null,false,477660232)}),_c('label',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.value')))]),(_vm.isBlockInteractive(_vm.block))?_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{staticClass:"custom-control-input",attrs:{"id":"setProp","type":"radio","name":"contactPropAction"},domProps:{"checked":_vm.propertyValueAction === _vm.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE,"value":_vm.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE},on:{"change":_vm.updatePropertyValueAction}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"setProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.entry-from-this-block'))+" ")])]),_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{staticClass:"custom-control-input",attrs:{"id":"clearProp","type":"radio","name":"contactPropAction"},domProps:{"checked":_vm.propertyValueAction === _vm.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION,"value":_vm.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION},on:{"change":_vm.updatePropertyValueAction}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"clearProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.expression'))+" ")])])]):_vm._e(),(_vm.shouldUseOpenExpression)?_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/set_contact_property/property_value")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('expression-input',{attrs:{"label":'',"placeholder":_vm._f("trans")('flow-builder.enter-expression'),"current-expression":_vm.propertyValue,"valid-state":isValid},on:{"commitExpressionChange":_vm.updatePropertyValue}})]}}],null,false,3441631689)}):_vm._e()],1):_vm._e()])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue?vue&type=template&id=5c48dc8f&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue?vue&type=template&id=bb893178&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -137,7 +137,14 @@ var GenericContactPropertyEditorvue_type_script_lang_ts_GenericContactPropertyEd
       this.propertyValue = Object(lodash["get"])(this.block.config.set_contact_property, 'property_value', null);
 
       if (this.propertyValue === null) {
-        this.updatePropertyValue(BLOCK_RESPONSE_EXPRESSION);
+        // default setting
+        if (this.isBlockInteractive(this.block)) {
+          // interactive blocks will have `Entry from this block` option by default
+          this.propertyValue = BLOCK_RESPONSE_EXPRESSION;
+        } else {
+          // non interactive blocks will have `Expression` option by default
+          this.propertyValue = EMPTY_STRING_EXPRESSION;
+        }
       }
 
       this.initPropertyValueAction();
@@ -163,8 +170,8 @@ var GenericContactPropertyEditorvue_type_script_lang_ts_GenericContactPropertyEd
           blockId: this.block.uuid,
           path: 'set_contact_property',
           value: {
-            property_key: '',
-            property_value: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : BLOCK_RESPONSE_EXPRESSION
+            property_key: this.propertyKey,
+            property_value: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : this.propertyValue
           }
         });
       }
@@ -276,14 +283,12 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=template&id=4a9265b4&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"core-case-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_vm._l((_vm.exits),function(exit,i){return _c('div',{staticClass:"form-group"},[_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/exits/" + i + "/test")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
-var isValid = ref.isValid;
-return [_c('expression-input',{staticClass:"d-flex m-0",attrs:{"label":i+1,"placeholder":_vm._f("trans")('flow-builder.enter-expression'),"valid-state":isValid,"current-expression":exit.test,"expression-identifier":exit.uuid},on:{"commitExpressionChange":_vm.editCaseBlockExit}})]}}],null,true)})],1)}),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=template&id=d19238a4&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"core-case-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":false,"has-unified-exit":false}}),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=template&id=4a9265b4&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=template&id=d19238a4&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -315,9 +320,6 @@ var lib = __webpack_require__("4bb5");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/index.js + 14 modules
 var vue_property_decorator_lib = __webpack_require__("1b40");
 
-// EXTERNAL MODULE: ./src/components/common/ExpressionInput.vue + 5 modules
-var ExpressionInput = __webpack_require__("6faa");
-
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
 var asyncToGenerator = __webpack_require__("c964");
 
@@ -330,10 +332,14 @@ var IdGeneratorUuidV4 = __webpack_require__("31aa");
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __webpack_require__("2ef0");
 
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue + 14 modules
+var BlockOutputBranchingConfig = __webpack_require__("18b0");
+
 // EXTERNAL MODULE: ./src/store/flow/utils/listBuilder.ts
 var listBuilder = __webpack_require__("b199");
 
 // CONCATENATED MODULE: ./src/store/flow/block-types/Core_CaseBlockStore.ts
+
 
 
 
@@ -466,7 +472,11 @@ var actions = {
                 exits: exits,
                 config: {},
                 tags: [],
-                vendor_metadata: {}
+                vendor_metadata: {
+                  io_viamo: {
+                    branchingType: BlockOutputBranchingConfig["b" /* OutputBranchingType */].ADVANCED
+                  }
+                }
               }));
 
             case 14:
@@ -496,9 +506,6 @@ var builder = __webpack_require__("af98");
 // EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
 var vue_class_component_esm = __webpack_require__("2fe1");
 
-// EXTERNAL MODULE: ./src/components/common/ValidationMessage.vue + 5 modules
-var ValidationMessage = __webpack_require__("21e9");
-
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
 var NameEditor = __webpack_require__("f04e");
 
@@ -518,7 +525,6 @@ var BlockId = __webpack_require__("792f");
 var GenericContactPropertyEditor = __webpack_require__("b4ec");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=script&lang=ts&
-
 
 
 
@@ -594,14 +600,13 @@ Object(tslib_es6["__decorate"])([builderVuexNamespace.Getter], Core_CaseBlockvue
 Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
   components: {
     GenericContactPropertyEditor: GenericContactPropertyEditor["a" /* default */],
-    ExpressionInput: ExpressionInput["a" /* default */],
     BlockNameEditor: NameEditor["a" /* default */],
     BlockLabelEditor: LabelEditor["a" /* default */],
     BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
     FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
     BlockId: BlockId["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */],
-    Categorization: Categorization["a" /* default */]
+    Categorization: Categorization["a" /* default */],
+    BlockOutputBranchingConfig: BlockOutputBranchingConfig["c" /* default */]
   }
 })], Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock);
 /* harmony default export */ var Core_CaseBlockvue_type_script_lang_ts_ = (Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock);
