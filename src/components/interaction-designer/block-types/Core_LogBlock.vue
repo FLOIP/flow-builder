@@ -52,7 +52,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IFlow, IResource} from '@floip/flow-runner'
+import {IFlow, IResource, IBlock} from '@floip/flow-runner'
 import {ILogBlock} from '@floip/flow-runner/src/model/block/ILogBlock'
 
 import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'

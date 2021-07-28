@@ -65,7 +65,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="ConsoleIO.Read"
-                      data-for-block-id="fake-uuid-139"
+                      data-for-block-id="fake-uuid-136"
                     >
                       <div
                         class="console-io-read-block"
@@ -90,7 +90,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-139/label"
+                              id="block/fake-uuid-136/label"
                             >
                               <div
                                 class="d-flex"
@@ -133,7 +133,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-139/name"
+                              id="block/fake-uuid-136/name"
                             >
                               <div
                                 class="d-flex justify-content-between"
@@ -174,7 +174,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-139/config/format_string"
+                            id="block/fake-uuid-136/config/format_string"
                           >
                             <div
                               class="block-format-string"
@@ -326,7 +326,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-139/tags"
+                              id="block/fake-uuid-136/tags"
                             >
                               <div
                                 class="block-group"
@@ -490,7 +490,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-139
+                              fake-uuid-136
                             </em>
                           </small>
                         </div>
@@ -526,52 +526,7 @@ exports[`Storyshots Core/Log Block Styled Existing Data Block 1`] = `
 
 exports[`Storyshots Core/Log Block Styled Existing Data Non Starting Block 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="Core.Log"
-                      data-for-block-id="fake-uuid-29"
-                    >
-                      <!---->
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 
