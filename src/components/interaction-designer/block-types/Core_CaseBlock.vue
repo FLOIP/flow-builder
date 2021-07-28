@@ -1,6 +1,6 @@
 <template>
   <div class="core-case-block">
-    <h3 class="no-room-above">
+    <h3 class="block-editor-header">
       {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
