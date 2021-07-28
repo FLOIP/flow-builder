@@ -24,8 +24,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
           name: 'Default',
-        }),
-      }, {root: true}) as IBlockExit,
+        }) as IBlockExit,
+      }, {root: true}),
     ]
 
     return defaultsDeep(props, {
