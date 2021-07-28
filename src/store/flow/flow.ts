@@ -16,7 +16,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, every, forEach, get, has, includes, omit} from 'lodash'
+import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
 import {IFlowsState} from '.'
@@ -361,14 +361,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     // Set UI positions
     // TODO: remove this once IBlock has vendor_metadata key
-    duplicatedBlock.vendor_metadata = {
+    merge(duplicatedBlock.vendor_metadata, {
       io_viamo: {
         uiData: computeBlockVendorUiData(block),
       },
-    }
-    duplicatedBlock.ui_metadata = {
+    })
+
+    merge(duplicatedBlock.ui_metadata, {
       canvas_coordinates: computeBlockUiData(block),
-    }
+    })
 
     commit('flow_addBlock', {block: duplicatedBlock})
 
