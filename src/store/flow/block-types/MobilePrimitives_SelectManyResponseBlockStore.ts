@@ -27,23 +27,20 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-    const defaultExitProps: Partial<IBlockExit> = {
-      uuid: await (new IdGeneratorUuidV4()).generate(),
-      name: 'Default',
-      default: true,
-      // test: '',
-    }
-
-    const defaultExit = await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true })
+    const exits: IBlockExit[] = [
+      await dispatch('flow/block_createBlockDefaultExitWith', {
+        props: ({
+          uuid: await (new IdGeneratorUuidV4()).generate(),
+        }) as IBlockExit,
+      }, {root: true}),
+    ]
 
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',
       semantic_label: '',
-      exits: [
-        defaultExit,
-      ],
+      exits,
       config: {
         prompt: blankPromptResource.uuid,
         choices: {},

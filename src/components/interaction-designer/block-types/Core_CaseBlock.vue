@@ -82,7 +82,6 @@ class Core_CaseBlock extends mixins(Lang) {
     return this.block.exits
   }
 
-  @blockVuexNamespace.Action editCaseBlockExit!: ({exitId, value}: { exitId: string, value: string }) => Promise<IBlockExit>
   @builderVuexNamespace.Getter isEditable !: boolean
 }
 

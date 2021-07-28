@@ -6,8 +6,10 @@ import Vuex from 'vuex'
 import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {IBlockExit} from '@floip/flow-runner'
 
-const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const flowVuexNamespace = namespace('flow')
 
 Vue.use(Vuex)
 
@@ -53,11 +55,33 @@ class CurrentClass2 extends BaseMountedVueClass {
     const blockId = block.uuid
 
     this.setDescription(blockId)
-    this.editCaseBlockExit({identifier: block.exits[0].uuid, value: 'A expression'})
     this.setTags(blockId)
+
+    const exits: IBlockExit[] = [
+      await this.block_createBlockExitWith({
+        props: {
+          uuid: await (new IdGeneratorUuidV4()).generate(),
+          name: 'An exit',
+          test: 'block.value = "hello"',
+        },
+      }),
+
+      await this.block_createBlockExitWith({
+        props: {
+          uuid: await (new IdGeneratorUuidV4()).generate(),
+          name: 'Another exit',
+          test: 'block.value = "goodbye"',
+        },
+      }),
+    ]
+
+    this.block_addExit({blockId, exit: exits[0]})
+    this.block_addExit({blockId, exit: exits[1]})
   }
 
-  @blockVuexNamespace.Action editCaseBlockExit: any
+  @flowVuexNamespace.Mutation block_addExit: any
+  @flowVuexNamespace.Action block_createBlockExitWith: any
+  @flowVuexNamespace.Action block_createBlockDefaultExitWith: any
 }
 
 export const ExistingDataBlock = () => (CurrentClass2)
