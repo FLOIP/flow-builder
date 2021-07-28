@@ -14,29 +14,23 @@
 
       <slot name="extras" />
 
-      <div class="text-only-resource-editor">
-        <hr>
+      <validation-message
+        #input-control="{ isValid }"
+        :message-key="`block/${block.uuid}/config/message`">
+        <expression-input
+          :label="'flow-builder.log-message' | trans"
+          :placeholder="'flow-builder.enter-message' | trans"
+          :current-expression="value"
+          :valid-state="isValid"
+          @commitExpressionChange="commitMessageChange" />
+      </validation-message>
 
-        <h4>Log Message</h4>
-        <template v-for="{id: languageId, label: language} in flow.languages">
-          <div class="block-content-editor-lang">
-            <h5 class="badge badge-info">
-              {{ language || 'flow-builder.unknown-language' | trans }}
-            </h5>
-          </div>
+      <hr>
 
-          <template v-for="mode in flow.supported_modes">
-            <h6>{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
-            <resource-variant-text-editor
-              :resource-id="messageResource.uuid"
-              :resource-variant="findOrGenerateStubbedVariantOn(
-                messageResource,
-                {language_id: languageId, content_type: ['text'], modes: [mode]})"
-              :mode="mode"
-              :enable-autogen-button="true || enableAutogenButton" />
-          </template>
-        </template>
-      </div>
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
 
       <categorization :block="block" />
 
@@ -65,7 +59,10 @@ import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import LogStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import Lang from '@/lib/filters/lang'
+import ExpressionInput from '@/components/common/ExpressionInput.vue'
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import {mixins} from 'vue-class-component'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import ResourceVariantTextEditor from '../resource-editors/ResourceVariantTextEditor.vue'
@@ -76,12 +73,13 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
-const flowVuexNamespace = namespace('flow')
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
     GenericContactPropertyEditor,
+    ExpressionInput,
     ResourceEditor,
     ResourceVariantTextEditor,
     BlockNameEditor,
@@ -89,7 +87,9 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    ValidationMessage,
     Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class Core_LogBlock extends mixins(Lang) {
@@ -99,14 +99,16 @@ class Core_LogBlock extends mixins(Lang) {
 
   showSemanticLabel = false
 
-  findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
-
-  get messageResource(): IResource {
-    return this.resourcesByUuid[this.block.config.message]
+  get value(): string {
+    return this.block.config.message || ''
   }
 
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  commitMessageChange(value: string): Promise<string> {
+    return this.editMessage({blockId: this.block.uuid, message: value})
+  }
 
+  @blockVuexNamespace.Action editMessage!: (params: { blockId: string, message: string }) => Promise<string>
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable !: boolean
 }
 
