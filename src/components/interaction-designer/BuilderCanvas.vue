@@ -32,7 +32,7 @@ const MARGIN_HEIGHT = 100
 const MARGIN_WIDTH = 100
 
 //ms
-const DEBOUNCE_SCROLL_TIMER = 100
+const DEBOUNCE_SCROLL_TIMER = 300
 
 @Component({
   components: {
@@ -116,7 +116,7 @@ export default class BuilderCanvas extends Vue {
         `block/${this.blockAtTheLowestPosition?.uuid}`,
       )
       // temporary dummy height for UI scroll purpose
-      return 150
+      return 84
     }
     return (<HTMLElement>(<Vue>blockElementRef[0].$refs.draggable).$el).offsetHeight
   }
@@ -165,7 +165,9 @@ export default class BuilderCanvas extends Vue {
     }
 
     const yPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.y
-    const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
+    // TODO: clean this original solution in case the actual solution still works after we update the toolbar. I suspect there is a relation between the scrollHeight formula and the fact that we have toolbar elements with fixed position
+    // const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
+    const scrollHeight = yPosition
 
     if (scrollHeight < this.windowHeight) {
       return this.windowHeight
