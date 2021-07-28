@@ -99,6 +99,7 @@ import {
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
+import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
@@ -117,7 +118,6 @@ import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {mixins} from 'vue-class-component'
 import {TabsPlugin} from 'bootstrap-vue'
 import UploadMonitor from '../block-editors/UploadMonitor.vue'
-import ResourceVariantTextEditor from './ResourceVariantTextEditor.vue'
 
 Vue.use(TabsPlugin)
 
