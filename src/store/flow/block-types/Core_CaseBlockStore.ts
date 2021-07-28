@@ -8,6 +8,8 @@ import {IFlowsState} from '../index'
 
 import {allItemsHaveValue, twoItemsBlank} from '../utils/listBuilder'
 
+import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+
 export const BLOCK_TYPE = 'Core.Case'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
@@ -67,7 +69,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits,
       config: {},
       tags: [],
-      vendor_metadata: {},
+      vendor_metadata: {
+        io_viamo: {
+          branchingType: OutputBranchingType.ADVANCED
+        }
+      },
     })
   },
 

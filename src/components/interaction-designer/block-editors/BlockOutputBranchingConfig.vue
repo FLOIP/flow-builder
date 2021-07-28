@@ -22,6 +22,7 @@
         </button>
 
         <button
+          v-if="hasUnifiedExit"
           :class="{
             active: isBranchingTypeUnified,
             'btn-primary': isBranchingTypeUnified,
@@ -47,7 +48,7 @@
           class="btn btn-sm"
           data-placement="bottom"
           data-toggle="tooltip"
-          @click="selectedBranchingType = OutputBranchingType.ADVANCED">
+          @click="selectedBranchingType = OutputBranchingType.ADVANCED" :disabled="!hasUnifiedExit && !hasExitPerChoice">
           <font-awesome-icon
             :icon="['fac', 'advanced-exit']"
             class="exit-type-icons" />
@@ -135,6 +136,7 @@
   export default class BlockOutputBranchingConfig extends mixins(Lang) {
     @Prop() readonly block!: IBlock
     @Prop() readonly hasExitPerChoice!: boolean
+    @Prop({default: true}) readonly hasUnifiedExit!: boolean
     @Prop({default: 'text-primary'}) readonly labelClass?: string
 
     OutputBranchingType = OutputBranchingType
