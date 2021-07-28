@@ -11,8 +11,7 @@
         <b-tab
           v-for="{id: languageId, label: language} in flow.languages"
           :key="languageId"
-          :title="language || 'flow-builder.unknown-language' | trans"
-          active>
+          :title="language || 'flow-builder.unknown-language' | trans">
           <div
             v-for="(mode, i) in flow.supported_modes"
             :key="i"
