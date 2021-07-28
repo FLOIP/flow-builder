@@ -71,7 +71,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                         class="console-io-read-block"
                       >
                         <h3
-                          class="no-room-above"
+                          class="block-editor-header"
                         >
                           
     Read
