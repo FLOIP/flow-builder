@@ -4,6 +4,7 @@ import {IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ICaseBlock} from '@floip/flow-runner/src/model/block/ICaseBlock'
 import {defaultsDeep} from 'lodash'
+import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import {IFlowsState} from '../index'
 
 import {allItemsHaveValue, twoItemsBlank} from '../utils/listBuilder'
@@ -67,7 +68,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits,
       config: {},
       tags: [],
-      vendor_metadata: {},
+      vendor_metadata: {
+        io_viamo: {
+          branchingType: OutputBranchingType.ADVANCED,
+        },
+      },
     })
   },
 

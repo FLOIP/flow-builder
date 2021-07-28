@@ -65,7 +65,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                     <div
                       class="tree-sidebar-edit-block"
                       data-block-type="ConsoleIO.Read"
-                      data-for-block-id="fake-uuid-136"
+                      data-for-block-id="fake-uuid-113"
                     >
                       <div
                         class="console-io-read-block"
@@ -90,7 +90,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-136/label"
+                              id="block/fake-uuid-113/label"
                             >
                               <div
                                 class="d-flex"
@@ -133,7 +133,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-136/name"
+                              id="block/fake-uuid-113/name"
                             >
                               <div
                                 class="d-flex justify-content-between"
@@ -174,7 +174,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                            
                           <div
                             class="validation-message form-group"
-                            id="block/fake-uuid-136/config/format_string"
+                            id="block/fake-uuid-113/config/format_string"
                           >
                             <div
                               class="block-format-string"
@@ -219,99 +219,9 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                            
                           <hr />
                            
-                          <div
-                            class="block-output-branching-config"
-                          >
-                            <div
-                              class="form-group"
-                            >
-                              <label
-                                class="text-primary"
-                              >
-                                Output Branching
-                              </label>
-                               
-                              <div
-                                class="btn-group d-block"
-                              >
-                                <!---->
-                                 
-                                <button
-                                  class="btn btn-sm active btn-primary"
-                                  data-placement="bottom"
-                                  data-toggle="tooltip"
-                                  title="One output for all choices"
-                                >
-                                  <font-awesome-icon
-                                    class="exit-type-icons"
-                                    icon="fac,single-exit"
-                                  />
-                                </button>
-                                 
-                                <button
-                                  class="btn btn-sm btn-outline-primary"
-                                  data-placement="bottom"
-                                  data-toggle="tooltip"
-                                  title="flow-builder.advanced-configuration-of-outputs"
-                                >
-                                  <font-awesome-icon
-                                    class="exit-type-icons"
-                                    icon="fac,advanced-exit"
-                                  />
-                                </button>
-                              </div>
-                            </div>
-                             
-                            <!---->
-                             
-                            <div
-                              class="form-group"
-                            >
-                              <h6>
-                                When no valid response/all exit expressions evaluate to false
-                              </h6>
-                               
-                              <div
-                                class="form-check"
-                              >
-                                <input
-                                  class="form-check-input"
-                                  id="END_CALL"
-                                  type="radio"
-                                  value="END_CALL"
-                                />
-                                 
-                                <label
-                                  class="form-check-label"
-                                  for="END_CALL"
-                                >
-                                  
-        End the call/session
-      
-                                </label>
-                              </div>
-                               
-                              <div
-                                class="form-check"
-                              >
-                                <input
-                                  class="form-check-input"
-                                  id="CONTINUE_THRU_EXIT"
-                                  type="radio"
-                                  value="CONTINUE_THRU_EXIT"
-                                />
-                                 
-                                <label
-                                  class="form-check-label"
-                                  for="CONTINUE_THRU_EXIT"
-                                >
-                                  
-        Continue through Default exit
-      
-                                </label>
-                              </div>
-                            </div>
-                          </div>
+                          <block-output-branching-config
+                            block="[object Object]"
+                          />
                            
                           <div
                             class="block-categorization"
@@ -326,7 +236,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                              
                             <div
                               class="validation-message form-group"
-                              id="block/fake-uuid-136/tags"
+                              id="block/fake-uuid-113/tags"
                             >
                               <div
                                 class="block-group"
@@ -490,7 +400,7 @@ exports[`Storyshots ConsoleIo/Read Block Existing Data Non Starting Block 1`] = 
                           >
                             Block Id: 
                             <em>
-                              fake-uuid-136
+                              fake-uuid-113
                             </em>
                           </small>
                         </div>
