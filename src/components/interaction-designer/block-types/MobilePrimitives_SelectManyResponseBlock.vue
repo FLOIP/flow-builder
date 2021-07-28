@@ -57,6 +57,8 @@ import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Mobi
 import {namespace} from 'vuex-class'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import ChoicesBuilder from '@/components/interaction-designer/block-editors/ChoicesBuilder.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -66,8 +68,6 @@ import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
-import ChoicesBuilder from "@/components/interaction-designer/block-editors/ChoicesBuilder.vue";
-import BlockOutputBranchingConfig from "@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue";
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
