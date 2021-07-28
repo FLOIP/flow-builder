@@ -360,7 +360,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
 
     // Set UI positions
-    // TODO: remove this once IBlock has vendor_metadata key
     merge(duplicatedBlock.vendor_metadata, {
       io_viamo: {
         uiData: computeBlockVendorUiData(block),
