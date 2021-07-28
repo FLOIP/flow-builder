@@ -6,7 +6,6 @@ import {defaults, get, has, isArray, last, reduce, reject, set, setWith, snakeCa
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import next from 'ajv/dist/vocabularies/next'
 import {IFlowsState} from '.'
-import {popFirstEmptyItem} from './utils/listBuilder'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
@@ -16,10 +15,6 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 
 // @ts-ignore
 export const mutations: MutationTree<IFlowsState> = {
-  block_popFirstExitWithoutTest(state, {blockId}: { blockId: string }) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    block.exits = popFirstEmptyItem(block.exits, 'test')
-  },
   block_setName(state, {blockId, value}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .name = value

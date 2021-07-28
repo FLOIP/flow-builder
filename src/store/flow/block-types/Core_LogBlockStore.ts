@@ -21,7 +21,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return message
   },
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ILogBlock> }) {
-
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
