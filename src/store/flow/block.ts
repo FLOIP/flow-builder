@@ -128,7 +128,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {dispatch},
     {props}: { props: { uuid: string } & Partial<IBlockExit> },
   ): Promise<IBlockExit> {
-    return await dispatch('block_createBlockExitWith', {
+    return dispatch('block_createBlockExitWith', {
       props: {
         ...props,
         name: 'Default',
