@@ -136,8 +136,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return await dispatch('block_createBlockExitWith', {
       props: {
         ...props,
+        name: 'Default',
         default: true,
-
         // todo: fix flow-runner's handling of ".test"-less exits
         test: '',
       },
