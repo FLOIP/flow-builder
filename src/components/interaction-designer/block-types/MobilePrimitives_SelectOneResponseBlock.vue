@@ -1,6 +1,6 @@
 <template>
   <div class="mobile-primitive-select-one-response-block">
-    <h3 class="no-room-above">
+    <h3 class="block-editor-header">
       {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import {IBlock, IBlockExit, IFlow, IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IFlow, IResource, SupportedMode} from '@floip/flow-runner'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
@@ -106,7 +106,6 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
   showSemanticLabel = false
 
-  SupportedContentType = SupportedContentType
   SupportedMode = SupportedMode
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 

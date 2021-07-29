@@ -13,7 +13,11 @@ export const getters: GetterTree<IFlowsState, IRootState> = {}
 export const mutations: MutationTree<IFlowsState> = {}
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async editMessage({commit}, {blockId, message}: { blockId: string, message: string }): Promise<string> {
-    commit('flow/block_updateConfig', {blockId, newConfig: {message}}, {root: true})
+    commit('flow/block_updateConfigByKey', {
+      blockId,
+      key: 'message',
+      value: message,
+    }, {root: true})
     return message
   },
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IPrintBlock> }) {
@@ -21,7 +25,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
-          name: 'Default',
         }) as IBlockExit,
       }, {root: true}),
     ]

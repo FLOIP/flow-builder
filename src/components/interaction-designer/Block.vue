@@ -139,7 +139,7 @@
             <div
               class="block-exit-tag badge badge-warning d-flex justify-content-center"
               :style="{background: exitBackgroundColor(exit)}"
-              @mouseenter="exitMouseEnter(exit, $event)"
+              @mouseenter="exitMouseEnter(exit)"
               @mouseleave="exitMouseLeave(exit)">
               <span
                 v-if="!(exitHovers[exit.uuid] || isExitActivatedForCreate(exit))"
@@ -148,7 +148,7 @@
                 {{ exit.name || '(untitled)' }}
               </span>
 
-              <span v-if="isEditable" class="align-self-center">
+              <span class="align-self-center">
                 <template v-if="exit.destination_block == null">
                   <plain-draggable
                     v-if="exitHovers[exit.uuid] || isExitActivatedForCreate(exit)"
