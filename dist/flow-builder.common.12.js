@@ -283,14 +283,14 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_RunFlowBlock.vue?vue&type=template&id=7207031b&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"core-run-flow-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_vm._t("extras"),_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/flow_id")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_RunFlowBlock.vue?vue&type=template&id=4d4d6551&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"core-run-flow-block"},[_c('h3',{staticClass:"block-editor-header"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_vm._t("extras"),_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/flow_id")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('div',{staticClass:"form-group"},[_c('text-editor',{attrs:{"label":_vm._f("trans")('flow-builder.destination-flow'),"placeholder":_vm._f("trans")('flow-builder.enter-destination-flow-id'),"valid-state":isValid},model:{value:(_vm.destinationFlowId),callback:function ($$v) {_vm.destinationFlowId=$$v},expression:"destinationFlowId"}})],1)]}}])}),_c('hr'),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":false},on:{"branchingTypeChangedToUnified":function($event){return _vm.handleBranchingTypeChangedToUnified({block: _vm.block})}}}),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_RunFlowBlock.vue?vue&type=template&id=7207031b&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_RunFlowBlock.vue?vue&type=template&id=4d4d6551&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -396,8 +396,7 @@ var actions = {
             case 5:
               _context2.t1 = _context2.sent;
               _context2.t2 = {
-                uuid: _context2.t1,
-                name: 'Default'
+                uuid: _context2.t1
               };
               _context2.t3 = {
                 props: _context2.t2
@@ -410,28 +409,7 @@ var actions = {
 
             case 11:
               _context2.t5 = _context2.sent;
-              _context2.t6 = dispatch;
-              _context2.next = 15;
-              return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
-
-            case 15:
-              _context2.t7 = _context2.sent;
-              _context2.t8 = {
-                uuid: _context2.t7,
-                name: 'Error'
-              };
-              _context2.t9 = {
-                props: _context2.t8
-              };
-              _context2.t10 = {
-                root: true
-              };
-              _context2.next = 21;
-              return (0, _context2.t6)('flow/block_createBlockExitWith', _context2.t9, _context2.t10);
-
-            case 21:
-              _context2.t11 = _context2.sent;
-              exits = [_context2.t5, _context2.t11];
+              exits = [_context2.t5];
               return _context2.abrupt("return", Object(lodash["defaultsDeep"])(props, {
                 type: BLOCK_TYPE,
                 name: '',
@@ -445,7 +423,7 @@ var actions = {
                 vendor_metadata: {}
               }));
 
-            case 24:
+            case 14:
             case "end":
               return _context2.stop();
           }
