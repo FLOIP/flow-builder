@@ -507,13 +507,23 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                           </a>
                            
                           <a
-                            class="btn btn-primary btn-sm"
+                            class="btn btn-primary btn-sm mr-2"
                             href="#/flows/new"
                           >
                             
               New Flow
             
                           </a>
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Edit Flow
+            
+                          </button>
+                           
+                          <!---->
                            
                           <div
                             class="vertical-divider"
@@ -530,7 +540,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                               title="Click to toggle editing"
                             >
                               
-                View Flow
+                View Mode
               
                             </a>
                              
@@ -540,7 +550,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                               title="Click to toggle editing"
                             >
                               
-                Edit Flow
+                Edit Mode
               
                             </a>
                           </div>
@@ -670,13 +680,23 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                           </a>
                            
                           <a
-                            class="btn btn-primary btn-sm"
+                            class="btn btn-primary btn-sm mr-2"
                             href="#/flows/new"
                           >
                             
               New Flow
             
                           </a>
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Edit Flow
+            
+                          </button>
+                           
+                          <!---->
                            
                           <div
                             class="vertical-divider"
@@ -704,7 +724,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                               title="Click to toggle editing"
                             >
                               
-                View Flow
+                View Mode
               
                             </a>
                              
@@ -714,7 +734,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                               title="Click to toggle editing"
                             >
                               
-                Edit Flow
+                Edit Mode
               
                             </a>
                           </div>
@@ -1261,13 +1281,23 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                           </a>
                            
                           <a
-                            class="btn btn-primary btn-sm"
+                            class="btn btn-primary btn-sm mr-2"
                             href="#/flows/new"
                           >
                             
               New Flow
             
                           </a>
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Edit Flow
+            
+                          </button>
+                           
+                          <!---->
                            
                           <div
                             class="vertical-divider"
@@ -1295,7 +1325,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                               title="Click to toggle editing"
                             >
                               
-                View Flow
+                View Mode
               
                             </a>
                              
@@ -1305,7 +1335,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                               title="Click to toggle editing"
                             >
                               
-                Edit Flow
+                Edit Mode
               
                             </a>
                           </div>
@@ -1853,13 +1883,23 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                           </a>
                            
                           <a
-                            class="btn btn-primary btn-sm"
+                            class="btn btn-primary btn-sm mr-2"
                             href="#/flows/new"
                           >
                             
               New Flow
             
                           </a>
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Edit Flow
+            
+                          </button>
+                           
+                          <!---->
                            
                           <div
                             class="vertical-divider"
@@ -1887,7 +1927,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                               title="Click to toggle editing"
                             >
                               
-                View Flow
+                View Mode
               
                             </a>
                              
@@ -1897,7 +1937,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                               title="Click to toggle editing"
                             >
                               
-                Edit Flow
+                Edit Mode
               
                             </a>
                           </div>
@@ -2416,13 +2456,23 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                           </a>
                            
                           <a
-                            class="btn btn-primary btn-sm"
+                            class="btn btn-primary btn-sm mr-2"
                             href="#/flows/new"
                           >
                             
               New Flow
             
                           </a>
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Edit Flow
+            
+                          </button>
+                           
+                          <!---->
                            
                           <div
                             class="vertical-divider"
@@ -2450,7 +2500,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                               title="Click to toggle editing"
                             >
                               
-                View Flow
+                View Mode
               
                             </a>
                              
@@ -2460,7 +2510,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                               title="Click to toggle editing"
                             >
                               
-                Edit Flow
+                Edit Mode
               
                             </a>
                           </div>
