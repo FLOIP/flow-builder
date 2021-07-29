@@ -35,16 +35,18 @@
                 class="btn btn-primary btn-sm mr-2">
                 {{ trans('flow-builder.new-flow') }}
               </router-link>
-              <button class="btn btn-outline-primary btn-sm"
+              <button
+                class="btn btn-outline-primary btn-sm"
                 @click="showOrHideEditFlowModal">
-                {{'flow-builder.edit-flow' | trans}}
+                {{ 'flow-builder.edit-flow' | trans }}
               </button>
-              <b-modal title="Edit Flow"
+              <b-modal
+                ref="edit-flow-modal">
+                title="Edit Flow"
                 ok-only
                 hide-header
-                @ok="showOrHideEditFlowModal"
                 :ok-title="'flow-builder.done' | trans"
-                ref="edit-flow-modal">
+                @ok="showOrHideEditFlowModal"
                 <flow-editor :flow="activeFlow" />
               </b-modal>
 
@@ -306,7 +308,7 @@
   </div>
 </template>
 <script lang="ts">
-import { BModal } from 'bootstrap-vue'
+import {BModal} from 'bootstrap-vue'
 import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
@@ -513,9 +515,9 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       this.$router.push(route)
     }
   }
-  showOrHideEditFlowModal() {
+  showOrHideEditFlowModal(): void {
     const editFlowModal: any = this.$refs['edit-flow-modal']
-    if(editFlowModal) {
+    if (editFlowModal) {
       editFlowModal.toggle()
     }
   }
