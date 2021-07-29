@@ -32,9 +32,21 @@
               </router-link>
               <router-link
                 :to="route('flows.newFlow')"
-                class="btn btn-primary btn-sm">
+                class="btn btn-primary btn-sm mr-2">
                 {{ trans('flow-builder.new-flow') }}
               </router-link>
+              <button class="btn btn-outline-primary btn-sm"
+                @click="showOrHideEditFlowModal">
+                {{'flow-builder.edit-flow' | trans}}
+              </button>
+              <b-modal title="Edit Flow"
+                ok-only
+                hide-header
+                @ok="showOrHideEditFlowModal"
+                :ok-title="'flow-builder.done' | trans"
+                ref="edit-flow-modal">
+                <flow-editor :flow="activeFlow" />
+              </b-modal>
 
               <div class="vertical-divider"></div>
 
@@ -59,7 +71,7 @@
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: !isEditable}"
                   @click.native.prevent="handlePersistFlow(viewTreeUrl)">
-                  {{ trans('flow-builder.view-flow') }}
+                  {{ trans('flow-builder.view-mode') }}
                 </router-link>
                 <router-link
                   :to="editTreeUrl"
@@ -68,7 +80,7 @@
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isEditable}"
                   @click.native.prevent="handlePersistFlow(editTreeUrl)">
-                  {{ trans('flow-builder.edit-flow') }}
+                  {{ trans('flow-builder.edit-mode') }}
                 </router-link>
               </div>
 
@@ -294,6 +306,7 @@
   </div>
 </template>
 <script lang="ts">
+import { BModal } from 'bootstrap-vue'
 import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
@@ -312,6 +325,7 @@ import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import SelectionBanner from '@/components/interaction-designer/toolbar/SelectionBanner.vue'
 import ErrorNotifications from '@/components/interaction-designer/toolbar/ErrorNotifications.vue'
+import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import {Dictionary} from 'vue-router/types/router'
 
 Vue.use(VBTooltipPlugin)
@@ -325,6 +339,8 @@ const validationVuexNamespace = namespace('validation')
   components: {
     SelectionBanner,
     ErrorNotifications,
+    BModal,
+    FlowEditor,
     // Affix,
     // TreeUpdateConflictModal,
     // InteractionTotalsDateRangeConfiguration
@@ -334,6 +350,27 @@ const validationVuexNamespace = namespace('validation')
 export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isImporterVisible = false
   height = 102
+
+  async mounted() {
+    const editFlowModal: any = this.$refs['edit-flow-modal']
+    if (editFlowModal) {
+      if (this.$route.meta.isFlowEditorShown) {
+        editFlowModal.show()
+      } else {
+        editFlowModal.hide()
+      }
+    }
+    this.$root.$on('bv::modal::show', () => {
+      this.$router.history.replace({
+        name: 'flow-details',
+      })
+    })
+    this.$root.$on('bv::modal::hide', () => {
+      this.$router.history.replace({
+        name: 'flow-canvas',
+      })
+    })
+  }
 
   // Computed ####################
 
@@ -475,7 +512,12 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       this.$router.push(route)
     }
   }
-
+  showOrHideEditFlowModal() {
+    const editFlowModal: any = this.$refs['edit-flow-modal']
+    if(editFlowModal) {
+      editFlowModal.toggle()
+    }
+  }
   openDropdownMenu(targetElement: HTMLElement) {
     if (!targetElement.hasAttribute('aria-expanded')) {
       return

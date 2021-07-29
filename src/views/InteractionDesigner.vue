@@ -5,6 +5,7 @@
     <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate" />
 
     <div
+      v-if="isSimulatorActive"
       class="tree-sidebar-container"
       :class="{ 'slide-out': !$route.meta.isSidebarShown,}">
       <div
@@ -22,17 +23,8 @@
       </div>
 
       <div
-        v-if="isSimulatorActive"
         class="tree-sidebar">
         <clipboard-root />
-      </div>
-
-      <div
-        v-else
-        class="tree-sidebar">
-        <div class="tree-sidebar-edit-block">
-          <flow-editor :flow="activeFlow" />
-        </div>
       </div>
     </div>
 
@@ -61,7 +53,6 @@ import {store} from '@/store'
 // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
 // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
-import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
 import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
@@ -78,7 +69,6 @@ export default {
     // TreeViewer,
     TreeBuilderToolbar,
     BuilderCanvas,
-    FlowEditor,
     ClipboardRoot,
     // TreeUpdateConflictModal,
   },
@@ -268,7 +258,7 @@ export default {
         return
       }
       this.setIsBlockEditorOpen(false)
-      const routeName = this.$route.meta.isSidebarShown ? 'flow-details' : 'flow-canvas'
+      const routeName = this.$route.meta.isFlowEditorShown ? 'flow-details' : 'flow-canvas'
       this.$router.history.replace({
         name: routeName,
       })
@@ -303,9 +293,10 @@ export default {
     },
 
     showOrHideSidebar() {
-      this.$router.history.replace({
-        name: this.$route.meta.isSidebarShown ? 'flow-canvas' : 'flow-details',
-      })
+      //TODO with simulator work
+      //this.$router.history.replace({
+        //name: this.$route.meta.isSidebarShown ? 'flow-canvas' : '???',
+      //})
     },
 
     handleToolBarHeightUpdate(height) {
