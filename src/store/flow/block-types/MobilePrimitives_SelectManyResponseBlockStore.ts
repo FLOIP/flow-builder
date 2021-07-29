@@ -43,13 +43,17 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     }, {root: true})
   },
 
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: ISelectManyResponseBlock}) {
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: formatTestValueForUnifiedBranchingType(block),
+    }, {root: true})
+  },
+
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     const defaultExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
-      name: 'Default',
-      default: true,
-      // test: '',
     }
 
     const defaultExit = await dispatch('flow/block_createBlockDefaultExitWith', { props: defaultExitProps }, { root: true })
@@ -72,6 +76,35 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       tags: [],
     })
   },
+}
+
+function formatTestValueForUnifiedBranchingType(block: ISelectManyResponseBlock): string {
+  const {choices, minimum_choices: max, maximum_choices: min} = block.config
+  const choiceKeys = Object.keys(choices)
+
+  if (choiceKeys.length === 0) {
+    console.warn('Choices are empty for SelectManyBlock, providing `true` by default')
+    return 'true'
+  }
+
+  const validMinCount = `COUNT(block.value) >= ${min}`
+  const validMaxCount = `COUNT(block.value) <= ${max}`
+  const validChoices = `OR(${choiceKeys.map((choice) =>
+    `IN('${choice}', block.value)`).join(', ')})`
+
+  if (isNumber(min) && isNumber(max)) {
+    return `AND(${[validMinCount, validMaxCount, validChoices].join(', ')})`
+  }
+
+  if (isNumber(min)) {
+    return `AND(${[validMinCount, validChoices].join(', ')})`
+  }
+
+  if (isNumber(max)) {
+    return `AND(${[validMaxCount, validChoices].join(', ')})`
+  }
+
+  return validChoices
 }
 
 export default {

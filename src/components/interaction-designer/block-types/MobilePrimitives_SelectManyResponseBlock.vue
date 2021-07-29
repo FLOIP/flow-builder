@@ -32,7 +32,10 @@
 
       <hr>
 
-      <block-output-branching-config :block="block" />
+      <block-output-branching-config
+        :block="block"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
+
 
       <slot name="extras"></slot>
 
@@ -58,6 +61,9 @@ import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Mobi
 import {namespace} from 'vuex-class'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
+import MinimumChoicesEditor from '@/components/interaction-designer/block-editors/MinimumChoicesEditor.vue'
+import {IBlock} from '@floip/flow-runner'
+import MaximumChoicesEditor from '@/components/interaction-designer/block-editors/MaximumChoicesEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -67,8 +73,6 @@ import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
-import MinimumChoicesEditor from '@/components/interaction-designer/block-editors/MinimumChoicesEditor.vue'
-import MaximumChoicesEditor from '@/components/interaction-designer/block-editors/MaximumChoicesEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -94,6 +98,7 @@ export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseB
   //Important: Even we extends from SelectOneResponseBlock, to avoid conflict
   // we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation
   @builderVuexNamespace.Getter declare isEditable: boolean
+  @blockVuexNamespace.Action declare handleBranchingTypeChangedToUnified: ({block}: {block: IBlock}) => void
 }
 
 export default MobilePrimitives_SelectManyResponseBlock
