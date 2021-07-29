@@ -250,6 +250,7 @@ export default {
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
       blockWidth: 0,
+      blockHeight: 0,
       exitHovers: {},
       lineHovers: {},
       NoValidResponseHandler,
@@ -266,6 +267,7 @@ export default {
 
   updated() {
     this.blockWidth = this.$refs.draggable.$el.clientWidth
+    this.blockHeight = this.$refs.draggable.$el.clientHeight
   },
 
   created() {
@@ -345,7 +347,7 @@ export default {
 
     translatedBlockEditorPosition() {
       const xOffset = 5
-      const yOffset = 172
+      const yOffset = 32
       return `translate(${this.x + this.blockWidth + xOffset}px, ${this.y - yOffset}px)`
     },
 

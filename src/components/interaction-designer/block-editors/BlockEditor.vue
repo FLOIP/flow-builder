@@ -49,6 +49,7 @@ export default {
 <style lang="scss">
 .block-editor-wrapper {
   position: absolute;
+  top: 0;
   background: white;
   z-index: 15;
   max-height: 75vh;
