@@ -41,12 +41,12 @@
                 {{ 'flow-builder.edit-flow' | trans }}
               </button>
               <b-modal
-                ref="edit-flow-modal">
+                ref="edit-flow-modal"
                 title="Edit Flow"
                 ok-only
                 hide-header
                 :ok-title="'flow-builder.done' | trans"
-                @ok="showOrHideEditFlowModal"
+                @ok="showOrHideEditFlowModal">
                 <flow-editor :flow="activeFlow" />
               </b-modal>
 
