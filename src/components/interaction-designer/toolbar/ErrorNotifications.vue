@@ -113,10 +113,6 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
   fixFlowError(): void {
     this.$router.push({
       name: 'flow-details',
-    }).catch(err => {
-      if (err.name != "NavigationDuplicated") {
-        console.error(err);
-      }
     })
   }
 
@@ -128,10 +124,6 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
         blockId,
         field: dataPath,
       },
-    }).catch(err => {
-      if (err.name != "NavigationDuplicated") {
-        console.error(err);
-      }
     })
   }
 
