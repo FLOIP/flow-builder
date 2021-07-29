@@ -405,7 +405,9 @@ export default {
     },
 
     setLineHovered(exit, value) {
-      this.$set(this.lineHovers, exit.uuid, value)
+      this.$nextTick(() => {
+        this.$set(this.lineHovers, exit.uuid, value)
+      })
     },
 
     handleDeleteBlock() {
