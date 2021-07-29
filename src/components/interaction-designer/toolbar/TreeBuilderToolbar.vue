@@ -354,19 +354,20 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   async mounted() {
     const editFlowModal: any = this.$refs['edit-flow-modal']
     if (editFlowModal) {
-      if (this.$route.meta.isFlowEditorShown) {
+      const routeMeta = this.$route.meta
+      if (routeMeta && routeMeta.isFlowEditorShown) {
         editFlowModal.show()
       } else {
         editFlowModal.hide()
       }
     }
     this.$root.$on('bv::modal::show', () => {
-      this.$router.history.replace({
+      this.$router.replace({
         name: 'flow-details',
       })
     })
     this.$root.$on('bv::modal::hide', () => {
-      this.$router.history.replace({
+      this.$router.replace({
         name: 'flow-canvas',
       })
     })
