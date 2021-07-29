@@ -25,6 +25,13 @@
 
       <choices-builder :block="block" />
 
+      <hr>
+
+      <minimum-choices-editor :block="block" />
+      <maximum-choices-editor :block="block" />
+
+      <hr>
+
       <block-output-branching-config :block="block" />
 
       <slot name="extras"></slot>
@@ -60,21 +67,25 @@ import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import MinimumChoicesEditor from '@/components/interaction-designer/block-editors/MinimumChoicesEditor.vue'
+import MaximumChoicesEditor from '@/components/interaction-designer/block-editors/MaximumChoicesEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
-    GenericContactPropertyEditor,
+    BlockId,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
     BlockExitSemanticLabelEditor,
-    FirstBlockEditorButton,
-    ResourceEditor,
-    BlockId,
     Categorization,
+    FirstBlockEditorButton,
+    GenericContactPropertyEditor,
+    MinimumChoicesEditor,
+    MaximumChoicesEditor,
+    ResourceEditor,
   },
 })
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {

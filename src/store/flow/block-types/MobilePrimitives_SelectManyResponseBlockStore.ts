@@ -1,7 +1,7 @@
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
-import {IBlockExit} from '@floip/flow-runner'
+import {findBlockWith, IBlock, IBlockExit, IResource, ISelectManyResponseBlock, ValidationException} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import {defaultsDeep} from 'lodash'
+import {defaultsDeep, findKey, isNumber, omit} from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {
@@ -25,6 +25,24 @@ export const mutations: MutationTree<ICustomFlowState> = {
 export const actions: ActionTree<ICustomFlowState, IRootState> = {
   ...selectOneActions,
 
+  setMinChoices({commit, rootGetters}, {blockId, value}: {blockId: IBlock['uuid'], value?: number}): void {
+    const block: ISelectManyResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectManyResponseBlock
+    commit('flow/block_updateConfigByKey', {
+      blockId: block.uuid,
+      key: 'minimum_choices',
+      value: isNumber(value) ? value : undefined,
+    }, {root: true})
+  },
+
+  setMaxChoices({commit, rootGetters}, {blockId, value}: {blockId: IBlock['uuid'], value: number}): void {
+    const block: ISelectManyResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectManyResponseBlock
+    commit('flow/block_updateConfigByKey', {
+      blockId: block.uuid,
+      key: 'maximum_choices',
+      value: isNumber(value) ? value : undefined,
+    }, {root: true})
+  },
+
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     const defaultExitProps: Partial<IBlockExit> = {
@@ -47,6 +65,8 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       config: {
         prompt: blankPromptResource.uuid,
         choices: {},
+        minimum_choices: undefined,
+        maximum_choices: undefined,
       },
       vendor_metadata: {},
       tags: [],
