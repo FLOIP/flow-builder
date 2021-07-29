@@ -140,7 +140,7 @@
             @mouseenter="exitMouseEnter(exit)"
             @mouseleave="exitMouseLeave(exit)">
             <span class="block-exit-tag-text align-self-center"
-                  v-b-tooltip.hover.top="exit.test">
+                  v-b-tooltip.hover.bottom="exit.test">
               {{exit.name || '(untitled)'}}
             </span>
 
@@ -150,7 +150,7 @@
                 <plain-draggable
                   :id="`exit/${exit.uuid}/pseudo-block-handle`"
                   :key="`exit/${exit.uuid}/pseudo-block-handle`"
-                  v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
+                  v-b-tooltip.hover.bottom="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
                   class="btn btn-xs"
                   :is-editable="isEditable"
                   @initialized="handleDraggableInitializedFor(exit, $event)"
@@ -190,7 +190,7 @@
                   class="btn btn-xs btn-flat">
                   <font-awesome-icon
                     v-if="isEditable && exitHovers[exit.uuid]"
-                    v-b-tooltip.hover.top="trans('flow-builder.tooltip-remove-connection')"
+                    v-b-tooltip.hover.bottom="trans('flow-builder.tooltip-remove-connection')"
                     class="text-danger"
                     title="Click to remove this connection"
                     style="color: green"
