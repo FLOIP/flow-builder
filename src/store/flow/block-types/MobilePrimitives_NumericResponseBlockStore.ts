@@ -62,6 +62,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits,
       config: {
         prompt: blankResource.uuid,
+        validation_minimum: undefined,
+        validation_maximum: undefined,
       },
       tags: [],
       vendor_metadata: {},
