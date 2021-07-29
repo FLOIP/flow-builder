@@ -38,7 +38,7 @@
         :block="block"
         :has-exit-per-choice="false"
         :label-class="''"
-        @branchingTypeChangedToUnified="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
+        @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
 
       <slot name="extras"></slot>
 
