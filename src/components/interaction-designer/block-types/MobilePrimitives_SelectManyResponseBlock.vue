@@ -23,7 +23,9 @@
 
       <hr>
 
-      <choices-builder :block="block" />
+      <choices-builder
+        :block="block"
+        @choiceChanged="handleChoiceChanged" />
 
       <hr>
 
@@ -34,8 +36,9 @@
 
       <block-output-branching-config
         :block="block"
-        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
-
+        :has-exit-per-choice="false"
+        :label-class="''"
+        @branchingTypeChangedToUnified="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
 
       <slot name="extras"></slot>
 
@@ -61,6 +64,8 @@ import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Mobi
 import {namespace} from 'vuex-class'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import ChoicesBuilder from '@/components/interaction-designer/block-editors/ChoicesBuilder.vue'
 import MinimumChoicesEditor from '@/components/interaction-designer/block-editors/MinimumChoicesEditor.vue'
 import {IBlock} from '@floip/flow-runner'
 import MaximumChoicesEditor from '@/components/interaction-designer/block-editors/MaximumChoicesEditor.vue'
@@ -82,8 +87,10 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     BlockNameEditor,
     BlockLabelEditor,
+    BlockOutputBranchingConfig,
     BlockSemanticLabelEditor,
     BlockExitSemanticLabelEditor,
+    ChoicesBuilder,
     Categorization,
     FirstBlockEditorButton,
     GenericContactPropertyEditor,

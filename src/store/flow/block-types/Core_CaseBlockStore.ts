@@ -7,55 +7,18 @@ import {defaultsDeep} from 'lodash'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import {IFlowsState} from '../index'
 
-import {allItemsHaveValue, twoItemsBlank} from '../utils/listBuilder'
-
 export const BLOCK_TYPE = 'Core.Case'
 
-export const getters: GetterTree<IFlowsState, IRootState> = {
-  allExitsHaveTests: (state, _getters, _rootState, rootGetters): boolean => allItemsHaveValue(
-    rootGetters['builder/activeBlock'].exits,
-    'test',
-  ),
-  twoExitsBlank: (state, _getters, _rootState, rootGetters): boolean => twoItemsBlank(rootGetters['builder/activeBlock'].exits, 'test'),
-
-}
+export const getters: GetterTree<IFlowsState, IRootState> = {}
 
 export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  async editCaseBlockExit({
-    commit, dispatch, getters, rootGetters,
-  }, {identifier, value}: { identifier: string, value: string }) {
-    const activeBlock = rootGetters['builder/activeBlock']
-    await dispatch('flow/block_updateBlockExitWith', {
-      blockId: rootGetters['builder/activeBlock'].uuid,
-      exitId: identifier,
-      props: {
-        name: value,
-        test: value,
-      },
-    }, {root: true})
-
-    if (getters.allExitsHaveTests) {
-      const exit: IBlockExit = await dispatch('flow/block_createBlockExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-          name: '',
-          test: '',
-        }) as IBlockExit,
-      }, {root: true})
-      commit('flow/block_addExit', {blockId: activeBlock.uuid, newExit: exit}, {root: true})
-    } else if (getters.twoExitsBlank) {
-      commit('flow/block_popFirstExitWithoutTest', {blockId: activeBlock.uuid}, {root: true})
-    }
-  },
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ICaseBlock> }) {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
-          name: '',
-          test: '',
         }) as IBlockExit,
       }, {root: true}),
     ]
@@ -75,7 +38,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       },
     })
   },
-
 }
 
 export default {
