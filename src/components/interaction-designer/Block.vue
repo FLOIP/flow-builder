@@ -680,13 +680,12 @@ export default {
   scroll-margin: 35px;
   scroll-margin-top: 100px;
 
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.9);
   color: #575757;
   border: 1px solid #5b5b5b;
 
   border-radius: 0.3em;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  opacity: 0.9;
 
   transition: opacity 200ms ease-in-out,
   background-color 200ms ease-in-out;

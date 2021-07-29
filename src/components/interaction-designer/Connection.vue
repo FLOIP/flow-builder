@@ -49,12 +49,13 @@ export default {
         startSocket: 'bottom',
         endSocket: 'top',
 
-        size: 3,
+        size: 5,
         outline: true,
         outlineColor: '#ffffff',
         // outlineSize: 0.08,
 
         path: 'grid',
+        endPlugSize: 0.5,
         // path: 'fluid',
         // path: 'arc',
         // path: 'magnet',
