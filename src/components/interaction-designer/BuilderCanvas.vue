@@ -26,10 +26,10 @@ const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
 //px
-const MARGIN_HEIGHT = 100
+const MARGIN_HEIGHT_CORRECTION = -10
 
 //px
-const MARGIN_WIDTH = 100
+const MARGIN_WIDTH_CORRECTION = 50
 
 //ms
 const DEBOUNCE_SCROLL_TIMER = 300
@@ -115,8 +115,9 @@ export default class BuilderCanvas extends Vue {
         'Unable to find DOM element corresponding to lowest block id: ',
         `block/${this.blockAtTheLowestPosition?.uuid}`,
       )
-      // temporary dummy height for UI scroll purpose
-      return 84
+      // for UI scroll purpose
+      const temporaryDummyHeight = 84
+      return temporaryDummyHeight
     }
     return (<HTMLElement>(<Vue>blockElementRef[0].$refs.draggable).$el).offsetHeight
   }
@@ -131,8 +132,9 @@ export default class BuilderCanvas extends Vue {
         'Unable to find DOM element corresponding to furthest right block id: ',
         `block/${this.blockAtTheFurthestRightPosition?.uuid}`,
       )
-      // temporary dummy width for UI scroll purpose
-      return 110
+      // for UI scroll purpose
+      const temporaryDummyWidth = 110
+      return temporaryDummyWidth
     }
 
     return ((blockElementRef[0].$refs.draggable as Vue).$el as HTMLElement).offsetWidth
@@ -165,9 +167,7 @@ export default class BuilderCanvas extends Vue {
     }
 
     const yPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.y
-    // TODO in https://viamoinc.atlassian.net/browse/VMO-4192, clean this original solution in case the actual solution still works after we update the toolbar. I suspect there is a relation between the scrollHeight formula and the fact that we have toolbar elements with fixed position
-    // const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
-    const scrollHeight = yPosition
+    const scrollHeight = yPosition + MARGIN_HEIGHT_CORRECTION
 
     if (scrollHeight < this.windowHeight) {
       return this.windowHeight
@@ -187,7 +187,7 @@ export default class BuilderCanvas extends Vue {
     }
 
     const xPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.x
-    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
+    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH_CORRECTION
 
     if (scrollWidth < this.windowWidth) {
       return this.windowWidth - this.widthAdjustment
