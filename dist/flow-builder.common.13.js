@@ -10,14 +10,14 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue?vue&type=template&id=2dd4e1da&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"console-io-read-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_vm._t("extras"),_c('hr'),_c('block-format-string-editor',{attrs:{"block":_vm.block},on:{"commitFormatStringChange":_vm.setFormatString}}),_c('div',[_c('h6',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.destination-variable')))]),_vm._l((_vm.destinationVariablesFields),function(variableStringFormat,i){return _c('div',{key:i,staticClass:"form-group"},[_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/destination_variables/" + i)},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue?vue&type=template&id=7025d864&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"console-io-read-block"},[_c('h3',{staticClass:"block-editor-header"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_vm._t("extras"),_c('hr'),_c('block-format-string-editor',{attrs:{"block":_vm.block},on:{"commitFormatStringChange":_vm.setFormatString}}),_c('div',[_c('h6',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.destination-variable')))]),_vm._l((_vm.destinationVariablesFields),function(variableStringFormat,i){return _c('div',{key:i,staticClass:"form-group"},[_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/destination_variables/" + i)},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('text-editor',{attrs:{"label":'',"placeholder":_vm._f("trans")('flow-builder.destination-variable-placeholder'),"valid-state":isValid,"value":""},on:{"keydown":_vm.filterVariableName,"input":function($event){return _vm.updatedestinationVariables($event, i)}}})]}}],null,true)})],1)})],2),_c('hr'),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":false},on:{"branchingTypeChangedToUnified":function($event){return _vm.handleBranchingTypeChangedToUnified({block: _vm.block})}}}),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue?vue&type=template&id=2dd4e1da&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue?vue&type=template&id=7025d864&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -159,8 +159,7 @@ var actions = {
             case 5:
               _context3.t1 = _context3.sent;
               _context3.t2 = {
-                uuid: _context3.t1,
-                name: 'Default'
+                uuid: _context3.t1
               };
               _context3.t3 = {
                 props: _context3.t2
@@ -174,31 +173,6 @@ var actions = {
             case 11:
               _context3.t5 = _context3.sent;
               exits = [_context3.t5];
-              _context3.t6 = exits;
-              _context3.t7 = dispatch;
-              _context3.next = 17;
-              return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
-
-            case 17:
-              _context3.t8 = _context3.sent;
-              _context3.t9 = {
-                uuid: _context3.t8,
-                name: 'Error'
-              };
-              _context3.t10 = {
-                props: _context3.t9
-              };
-              _context3.t11 = {
-                root: true
-              };
-              _context3.next = 23;
-              return (0, _context3.t7)('flow/block_createBlockExitWith', _context3.t10, _context3.t11);
-
-            case 23:
-              _context3.t12 = _context3.sent;
-
-              _context3.t6.push.call(_context3.t6, _context3.t12);
-
               return _context3.abrupt("return", Object(lodash["defaultsDeep"])(props, {
                 type: BLOCK_TYPE,
                 name: '',
@@ -213,7 +187,7 @@ var actions = {
                 vendor_metadata: {}
               }));
 
-            case 26:
+            case 14:
             case "end":
               return _context3.stop();
           }
