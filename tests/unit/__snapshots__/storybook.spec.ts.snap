@@ -456,15 +456,15 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
-                  class="tree-builder-toolbar-main-menu"
+                  class="tree-builder-toolbar-main-menu d-flex flex-column"
                 >
                   <!---->
                    
                   <div
-                    class="tree-workspace-panel-heading panel-heading"
+                    class="tree-workspace-panel-heading panel-heading w-100"
                   >
                     <div
                       class="tree-workspace-panel-heading-contents"
@@ -472,61 +472,105 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                       <div
                         class="btn-toolbar"
                       >
-                        <button
-                          class="btn btn-secondary mr-2"
+                        <h4
+                          class="text-primary mr-4 flow-label"
+                          title=""
                         >
-                          <i
-                            class="glyphicon glyphicon-chevron-up"
+                          
+            
+          
+                        </h4>
+                         
+                        <div>
+                          <a
+                            aria-current="page"
+                            class="mr-2 router-link-exact-active router-link-active"
+                            href="#/"
+                            title="Home"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn svg-inline--fa fa-home fa-w-16"
+                              data-icon="home"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </a>
+                           
+                          <a
+                            class="btn btn-primary btn-sm"
+                            href="#/flows/new"
+                          >
+                            
+              New Flow
+            
+                          </a>
+                           
+                          <div
+                            class="vertical-divider"
                           />
-                          
-            Export
-          
-                        </button>
-                         
-                        <!---->
-                         
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
-                          title="Click to toggle editing"
-                        >
-                          
-            Edit Flow
-          
-                        </a>
-                         
-                        <!---->
-                         
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/flows/new"
-                        >
-                          
-            New Flow
-          
-                        </a>
-                         
-                        <a
-                          aria-current="page"
-                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
-                          href="#/"
-                        >
-                          
-            Home
-          
-                        </a>
-                          
-                        <!---->
+                           
+                          <!---->
+                           
+                          <div
+                            class="btn-group"
+                          >
+                            <a
+                              class="btn btn-outline-primary btn-sm active"
+                              href="#/trees/1/interaction-designer/view"
+                              title="Click to toggle editing"
+                            >
+                              
+                View Flow
+              
+                            </a>
+                             
+                            <a
+                              class="btn btn-outline-primary btn-sm"
+                              href="#/trees/1/interaction-designer/edit"
+                              title="Click to toggle editing"
+                            >
+                              
+                Edit Flow
+              
+                            </a>
+                          </div>
+                           
+                        </div>
                          
                         <div
-                          class="btn-group ml-auto mr-2"
+                          class="ml-auto mr-2"
                         >
                           <!---->
                            
+                          <div
+                            class="btn-group mr-2"
+                          />
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Export
+            
+                          </button>
+                           
+                          <!---->
                         </div>
                       </div>
                     </div>
                   </div>
+                   
+                  <!---->
                 </div>
                  
                 <div
@@ -575,15 +619,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
-                  class="tree-builder-toolbar-main-menu"
+                  class="tree-builder-toolbar-main-menu d-flex flex-column"
                 >
                   <!---->
                    
                   <div
-                    class="tree-workspace-panel-heading panel-heading"
+                    class="tree-workspace-panel-heading panel-heading w-100"
                   >
                     <div
                       class="tree-workspace-panel-heading-contents"
@@ -591,113 +635,194 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       <div
                         class="btn-toolbar"
                       >
-                        <button
-                          class="btn btn-secondary mr-2"
+                        <h4
+                          class="text-primary mr-4 flow-label"
+                          title=""
                         >
-                          <i
-                            class="glyphicon glyphicon-chevron-up"
-                          />
                           
-            Export
-          
-                        </button>
-                         
-                        <div
-                          class="btn-group mr-2"
-                        >
-                          <a
-                            class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
-                          >
-                            
-              Flow view
             
+          
+                        </h4>
+                         
+                        <div>
+                          <a
+                            aria-current="page"
+                            class="mr-2 router-link-exact-active router-link-active"
+                            href="#/"
+                            title="Home"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn svg-inline--fa fa-home fa-w-16"
+                              data-icon="home"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z"
+                                fill="currentColor"
+                              />
+                            </svg>
                           </a>
                            
                           <a
-                            class="btn btn-secondary"
+                            class="btn btn-primary btn-sm"
+                            href="#/flows/new"
+                          >
+                            
+              New Flow
+            
+                          </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <a
+                            class="btn btn-outline-primary btn-sm"
                             href="#/trees/1/resource-viewer"
                           >
                             
-              Resources view
-            
+                Resources view
+              
+                          </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <div
+                            class="btn-group"
+                          >
+                            <a
+                              class="btn btn-outline-primary btn-sm"
+                              href="#/trees/1/interaction-designer/view"
+                              title="Click to toggle editing"
+                            >
+                              
+                View Flow
+              
+                            </a>
+                             
+                            <a
+                              class="btn btn-outline-primary btn-sm active"
+                              href="#/trees/1/interaction-designer/edit"
+                              title="Click to toggle editing"
+                            >
+                              
+                Edit Flow
+              
+                            </a>
+                          </div>
+                           
+                          <a
+                            class="btn btn-success btn-sm ml-4"
+                            disabled="disabled"
+                            href="#"
+                            title="another grouped button"
+                          >
+                            
+           Action X
+        
+                          </a>
+                           
+                          <a
+                            class="btn btn-warning btn-sm"
+                            href="#"
+                            title="another grouped button"
+                          >
+                            
+           Action Y
+        
                           </a>
                         </div>
                          
-                        <a
-                          class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
-            View Flow
-          
-                        </a>
-                         
                         <div
-                          class="dropdown mr-2"
+                          class="ml-auto mr-2"
                         >
+                          <!---->
+                           
+                          <div
+                            class="btn-group mr-2"
+                          />
+                           
                           <button
-                            class="btn btn-secondary dropdown-toggle"
-                            data-toggle="dropdown"
-                            type="button"
+                            class="btn btn-outline-primary btn-sm"
                           >
                             
-              Add Block
+              Export
             
                           </button>
                            
+                          <button
+                            class="btn btn-info btn-sm tree-save-tree ml-4"
+                            title="Save changes to the flow"
+                            type="button"
+                          >
+                            
+              Save
+            
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                   
+                  <div
+                    class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0"
+                  >
+                    <div
+                      class="tree-workspace-panel-heading-contents"
+                    >
+                      <ul
+                        class="nav"
+                      >
+                        <li
+                          class="nav-item dropdown nav"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-content fa-w-16"
+                              data-icon="content"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M23.2 4v24h-15.2v-24h15.2zM8 2c-1.105 0-2 0.895-2 2v0 24c0 1.105 0.895 2 2 2v0h15.2c1.105 0 2-0.895 2-2v0-24c0-1.105-0.895-2-2-2v0h-15.2z M19.5 8v12.5h-8v-12.5h8zM11.5 6c-1.105 0-2 0.895-2 2v0 12.5c0 1.105 0.895 2 2 2v0h8c1.105 0 2-0.895 2-2v0-12.5c0-1.105-0.895-2-2-2v0h-8zM15.5 24.5v0c0.276 0 0.5 0.224 0.5 0.5s-0.224 0.5-0.5 0.5v0c-0.276 0-0.5-0.224-0.5-0.5s0.224-0.5 0.5-0.5zM15.5 26.5c0.828 0 1.5-0.672 1.5-1.5s-0.672-1.5-1.5-1.5v0c-0.828 0-1.5 0.672-1.5 1.5s0.672 1.5 1.5 1.5v0z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Content
+                            </span>
+                          </a>
+                           
                           <div
-                            class="dropdown-menu"
+                            class="dropdown-menu mt-0"
                           >
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Print"
-                              href="#"
-                            >
-                              
-                  Print
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Read"
-                              href="#"
-                            >
-                              
-                  Read
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Case"
-                              href="#"
-                            >
-                              
-                  Case
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Log"
-                              href="#"
-                            >
-                              
-                  Log
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="Core.Output"
                               href="#"
                             >
@@ -708,40 +833,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.RunFlow"
-                              href="#"
-                            >
-                              
-                  Run Flow
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetContactProperty"
-                              href="#"
-                            >
-                              
-                  Set Contact Property
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetGroupMembership"
-                              href="#"
-                            >
-                              
-                  Set Group Membership
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
@@ -752,7 +844,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.NumericResponse"
                               href="#"
                             >
@@ -760,10 +852,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                   Numeric Response
                 
                             </a>
-                            <!---->
+                            <div
+                              class="dropdown-divider"
+                            />
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.OpenResponse"
                               href="#"
                             >
@@ -774,7 +868,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
@@ -785,7 +879,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
@@ -793,21 +887,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                   Select Many Responses
                 
                             </a>
-                            <!---->
+                            <div
+                              class="dropdown-divider"
+                            />
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="SmartDevices.LocationResponse"
-                              href="#"
-                            >
-                              
-                  Location Response
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
@@ -816,69 +901,265 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                 
                             </a>
                              
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-contact fa-w-16"
+                              data-icon="contact"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M15.5 13c-1.773 0-3.5-1.623-3.5-4s1.727-4 3.5-4c1.773 0 3.5 1.623 3.5 4s-1.727 4-3.5 4zM15.5 15c3.038 0 5.5-2.686 5.5-6s-2.462-6-5.5-6-5.5 2.686-5.5 6 2.462 6 5.5 6zM11 17.611c-1.657 0-3 1.343-3 3v0 6.722h15v-6.722c0-1.657-1.343-3-3-3v0h-9zM6 20.611c0-2.761 2.239-5 5-5v0h9c2.761 0 5 2.239 5 5v0 6.722c0 1.105-0.895 2-2 2v0h-15c-1.105 0-2-0.895-2-2v0-6.722z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Contact
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
                             <!---->
                              
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.RunFlow"
+                              href="#"
+                            >
+                              
+                  Run Flow
+                
+                            </a>
                             <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetContactProperty"
+                              href="#"
+                            >
+                              
+                  Set Contact Property
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetGroupMembership"
+                              href="#"
+                            >
+                              
+                  Set Group Membership
+                
+                            </a>
+                             
                           </div>
-                        </div>
+                        </li>
                          
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/flows/new"
+                        <li
+                          class="nav-item dropdown"
                         >
-                          
-            New Flow
-          
-                        </a>
-                         
-                        <a
-                          aria-current="page"
-                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
-                          href="#/"
-                        >
-                          
-            Home
-          
-                        </a>
-                         
-                        <a
-                          class="btn btn-success"
-                          disabled="disabled"
-                          href="#"
-                          title="another grouped button"
-                        >
-                          
-           Action X
-        
-                        </a>
-                         
-                        <a
-                          class="btn btn-warning"
-                          href="#"
-                          title="another grouped button"
-                        >
-                          
-           Action Y
-        
-                        </a>
-                         
-                        <!---->
-                         
-                        <div
-                          class="btn-group ml-auto mr-2"
-                        >
-                          <button
-                            class="btn btn-primary tree-save-tree"
-                            title="Save changes to the flow"
-                            type="button"
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
                           >
-                            
-              Save
-            
-                          </button>
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-branching fa-w-16"
+                              data-icon="branching"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M4 6h7.2v1.6h-7.2v-1.6zM3 4c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2zM17.067 6h7.2v1.6h-7.2v-1.6zM16.067 4c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2zM11.467 15.333h7.2v1.6h-7.2v-1.6zM10.467 13.333c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2zM20.8 24.667h7.2v1.6h-7.2v-1.6zM19.8 22.667c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2z M15.067 7.8h-2.334v-2h2.334v2zM27.133 7.8h-1.333v-2h1.333c1.105 0 2 0.895 2 2v0 7.8c0 1.105-0.895 2-2 2v0h-6.466v-2h6.466v-7.8zM14.067 24.933v-6h2v6h2.733v2h-2.733c-1.105 0-2-0.895-2-2v0z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Branching
+                            </span>
+                          </a>
                            
-                        </div>
-                      </div>
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Case"
+                              href="#"
+                            >
+                              
+                  Case
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-weather fa-w-16"
+                              data-icon="weather"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.946 10.312c-1.762-0.066-3.398 1.477-3.465 3.659-0.030 0.954 0.255 1.825 0.738 2.501l-1.625 1.156c-0.698-0.978-1.116-2.197-1.116-3.515 0-0.076 0.001-0.153 0.004-0.228l-0 0.011c0.096-3.102 2.485-5.697 5.526-5.583 1.378 0.051 2.605 0.66 3.512 1.596l-1.431 1.388c-0.578-0.596-1.327-0.955-2.143-0.985z M11.159 17.549c0.001-3.019 2.204-5.299 4.727-5.299 1.868 0 3.542 1.23 4.305 3.108l0.41 1.008 0.97-0.494c0.597-0.304 1.257-0.472 1.952-0.472 2.523 0 4.727 2.281 4.727 5.3s-2.204 5.3-4.728 5.3h-14.020l-0.176-0.021c-1.58-0.193-2.94-1.707-2.94-3.704 0-2.149 1.563-3.725 3.296-3.725h0c0.125 0 0.249 0.008 0.356 0.022l1.123 0.136-0.002-1.158v-0.001zM9.219 16.571c-2.78 0.255-4.833 2.793-4.833 5.704 0 2.548 1.564 4.799 3.818 5.5v0.225h15.319c3.803 0 6.727-3.36 6.727-7.3s-2.924-7.3-6.727-7.3c-0.667 0-1.311 0.105-1.92 0.301-1.17-2.043-3.268-3.451-5.717-3.451-3.483 0-6.23 2.82-6.666 6.321zM14.832 8.093l-0.954 1.575-1.71-1.036 0.954-1.575 1.71 1.036zM8.748 5.778l0.477 2.1-1.95 0.444-0.477-2.1 1.95-0.444zM3.482 9.848l1.909 1.050-0.964 1.753-1.909-1.050 0.964-1.752zM2.737 17.928l1.432-1.576 1.48 1.346-1.432 1.575-1.48-1.346z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Weather
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="SmartDevices.LocationResponse"
+                              href="#"
+                            >
+                              
+                  Location Response
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-developer fa-w-16"
+                              data-icon="developer"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M19.888 7.070c0.514 0.202 0.766 0.783 0.564 1.297l-6.5 16.5c-0.202 0.514-0.783 0.766-1.297 0.564s-0.766-0.783-0.564-1.297l6.5-16.5c0.202-0.514 0.783-0.766 1.297-0.564zM10.947 12.619c0.21 0.511-0.033 1.095-0.544 1.305l-6.403 2.636 6.448 3.034c0.5 0.235 0.714 0.831 0.479 1.331s-0.831 0.714-1.331 0.479l-6.448-3.034c-1.573-0.74-1.518-2.997 0.090-3.659l6.403-2.636c0.511-0.21 1.095 0.033 1.305 0.544zM21.117 12.574c0.235-0.5 0.831-0.714 1.331-0.479l6.448 3.034c1.573 0.74 1.518 2.997-0.090 3.659l-6.402 2.636c-0.511 0.21-1.095-0.033-1.305-0.544s0.033-1.095 0.544-1.305l6.402-2.636-6.448-3.034c-0.5-0.235-0.714-0.831-0.479-1.331z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Developer
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Print"
+                              href="#"
+                            >
+                              
+                  Print
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Read"
+                              href="#"
+                            >
+                              
+                  Read
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Log"
+                              href="#"
+                            >
+                              
+                  Log
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -929,15 +1210,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
-                  class="tree-builder-toolbar-main-menu"
+                  class="tree-builder-toolbar-main-menu d-flex flex-column"
                 >
                   <!---->
                    
                   <div
-                    class="tree-workspace-panel-heading panel-heading"
+                    class="tree-workspace-panel-heading panel-heading w-100"
                   >
                     <div
                       class="tree-workspace-panel-heading-contents"
@@ -945,113 +1226,195 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       <div
                         class="btn-toolbar"
                       >
-                        <button
-                          class="btn btn-secondary mr-2"
+                        <h4
+                          class="text-primary mr-4 flow-label"
+                          title=""
                         >
-                          <i
-                            class="glyphicon glyphicon-chevron-up"
-                          />
                           
-            Export
-          
-                        </button>
-                         
-                        <div
-                          class="btn-group mr-2"
-                        >
-                          <a
-                            class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
-                          >
-                            
-              Flow view
             
+          
+                        </h4>
+                         
+                        <div>
+                          <a
+                            aria-current="page"
+                            class="mr-2 router-link-exact-active router-link-active"
+                            href="#/"
+                            title="Home"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn svg-inline--fa fa-home fa-w-16"
+                              data-icon="home"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z"
+                                fill="currentColor"
+                              />
+                            </svg>
                           </a>
                            
                           <a
-                            class="btn btn-secondary"
+                            class="btn btn-primary btn-sm"
+                            href="#/flows/new"
+                          >
+                            
+              New Flow
+            
+                          </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <a
+                            class="btn btn-outline-primary btn-sm"
                             href="#/trees/1/resource-viewer"
                           >
                             
-              Resources view
-            
+                Resources view
+              
                           </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <div
+                            class="btn-group"
+                          >
+                            <a
+                              class="btn btn-outline-primary btn-sm"
+                              href="#/trees/1/interaction-designer/view"
+                              title="Click to toggle editing"
+                            >
+                              
+                View Flow
+              
+                            </a>
+                             
+                            <a
+                              class="btn btn-outline-primary btn-sm active"
+                              href="#/trees/1/interaction-designer/edit"
+                              title="Click to toggle editing"
+                            >
+                              
+                Edit Flow
+              
+                            </a>
+                          </div>
+                           
                         </div>
                          
-                        <a
-                          class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
-            View Flow
-          
-                        </a>
-                         
                         <div
-                          class="dropdown mr-2"
+                          class="ml-auto mr-2"
                         >
+                          <!---->
+                           
+                          <div
+                            class="btn-group mr-2"
+                          >
+                            <a
+                              class="btn btn-success btn-sm ml-4"
+                              disabled="disabled"
+                              href="#"
+                              title="another grouped button"
+                            >
+                              
+           Action X
+        
+                            </a>
+                             
+                            <a
+                              class="btn btn-warning btn-sm"
+                              href="#"
+                              title="another grouped button"
+                            >
+                              
+           Action Y
+        
+                            </a>
+                          </div>
+                           
                           <button
-                            class="btn btn-secondary dropdown-toggle"
-                            data-toggle="dropdown"
-                            type="button"
+                            class="btn btn-outline-primary btn-sm"
                           >
                             
-              Add Block
+              Export
             
                           </button>
                            
+                          <button
+                            class="btn btn-info btn-sm tree-save-tree ml-4"
+                            title="Save changes to the flow"
+                            type="button"
+                          >
+                            
+              Save
+            
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                   
+                  <div
+                    class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0"
+                  >
+                    <div
+                      class="tree-workspace-panel-heading-contents"
+                    >
+                      <ul
+                        class="nav"
+                      >
+                        <li
+                          class="nav-item dropdown nav"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-content fa-w-16"
+                              data-icon="content"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M23.2 4v24h-15.2v-24h15.2zM8 2c-1.105 0-2 0.895-2 2v0 24c0 1.105 0.895 2 2 2v0h15.2c1.105 0 2-0.895 2-2v0-24c0-1.105-0.895-2-2-2v0h-15.2z M19.5 8v12.5h-8v-12.5h8zM11.5 6c-1.105 0-2 0.895-2 2v0 12.5c0 1.105 0.895 2 2 2v0h8c1.105 0 2-0.895 2-2v0-12.5c0-1.105-0.895-2-2-2v0h-8zM15.5 24.5v0c0.276 0 0.5 0.224 0.5 0.5s-0.224 0.5-0.5 0.5v0c-0.276 0-0.5-0.224-0.5-0.5s0.224-0.5 0.5-0.5zM15.5 26.5c0.828 0 1.5-0.672 1.5-1.5s-0.672-1.5-1.5-1.5v0c-0.828 0-1.5 0.672-1.5 1.5s0.672 1.5 1.5 1.5v0z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Content
+                            </span>
+                          </a>
+                           
                           <div
-                            class="dropdown-menu"
+                            class="dropdown-menu mt-0"
                           >
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Print"
-                              href="#"
-                            >
-                              
-                  Print
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Read"
-                              href="#"
-                            >
-                              
-                  Read
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Case"
-                              href="#"
-                            >
-                              
-                  Case
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Log"
-                              href="#"
-                            >
-                              
-                  Log
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="Core.Output"
                               href="#"
                             >
@@ -1062,40 +1425,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.RunFlow"
-                              href="#"
-                            >
-                              
-                  Run Flow
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetContactProperty"
-                              href="#"
-                            >
-                              
-                  Set Contact Property
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetGroupMembership"
-                              href="#"
-                            >
-                              
-                  Set Group Membership
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
@@ -1106,7 +1436,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.NumericResponse"
                               href="#"
                             >
@@ -1114,10 +1444,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                   Numeric Response
                 
                             </a>
-                            <!---->
+                            <div
+                              class="dropdown-divider"
+                            />
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.OpenResponse"
                               href="#"
                             >
@@ -1128,7 +1460,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
@@ -1139,7 +1471,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
@@ -1147,21 +1479,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                   Select Many Responses
                 
                             </a>
-                            <!---->
+                            <div
+                              class="dropdown-divider"
+                            />
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="SmartDevices.LocationResponse"
-                              href="#"
-                            >
-                              
-                  Location Response
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
@@ -1170,68 +1493,265 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                 
                             </a>
                              
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-contact fa-w-16"
+                              data-icon="contact"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M15.5 13c-1.773 0-3.5-1.623-3.5-4s1.727-4 3.5-4c1.773 0 3.5 1.623 3.5 4s-1.727 4-3.5 4zM15.5 15c3.038 0 5.5-2.686 5.5-6s-2.462-6-5.5-6-5.5 2.686-5.5 6 2.462 6 5.5 6zM11 17.611c-1.657 0-3 1.343-3 3v0 6.722h15v-6.722c0-1.657-1.343-3-3-3v0h-9zM6 20.611c0-2.761 2.239-5 5-5v0h9c2.761 0 5 2.239 5 5v0 6.722c0 1.105-0.895 2-2 2v0h-15c-1.105 0-2-0.895-2-2v0-6.722z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Contact
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
                             <!---->
                              
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.RunFlow"
+                              href="#"
+                            >
+                              
+                  Run Flow
+                
+                            </a>
                             <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetContactProperty"
+                              href="#"
+                            >
+                              
+                  Set Contact Property
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetGroupMembership"
+                              href="#"
+                            >
+                              
+                  Set Group Membership
+                
+                            </a>
+                             
                           </div>
-                        </div>
+                        </li>
                          
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/flows/new"
+                        <li
+                          class="nav-item dropdown"
                         >
-                          
-            New Flow
-          
-                        </a>
-                         
-                        <a
-                          aria-current="page"
-                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
-                          href="#/"
-                        >
-                          
-            Home
-          
-                        </a>
-                          
-                        <!---->
-                         
-                        <div
-                          class="btn-group ml-auto mr-2"
-                        >
-                          <button
-                            class="btn btn-primary tree-save-tree"
-                            title="Save changes to the flow"
-                            type="button"
-                          >
-                            
-              Save
-            
-                          </button>
-                           
                           <a
-                            class="btn btn-success"
-                            disabled="disabled"
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
                             href="#"
-                            title="another grouped button"
+                            role="button"
                           >
-                            
-           Action X
-        
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-branching fa-w-16"
+                              data-icon="branching"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M4 6h7.2v1.6h-7.2v-1.6zM3 4c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2zM17.067 6h7.2v1.6h-7.2v-1.6zM16.067 4c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2zM11.467 15.333h7.2v1.6h-7.2v-1.6zM10.467 13.333c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2zM20.8 24.667h7.2v1.6h-7.2v-1.6zM19.8 22.667c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2z M15.067 7.8h-2.334v-2h2.334v2zM27.133 7.8h-1.333v-2h1.333c1.105 0 2 0.895 2 2v0 7.8c0 1.105-0.895 2-2 2v0h-6.466v-2h6.466v-7.8zM14.067 24.933v-6h2v6h2.733v2h-2.733c-1.105 0-2-0.895-2-2v0z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Branching
+                            </span>
                           </a>
                            
-                          <a
-                            class="btn btn-warning"
-                            href="#"
-                            title="another grouped button"
+                          <div
+                            class="dropdown-menu mt-0"
                           >
-                            
-           Action Y
-        
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Case"
+                              href="#"
+                            >
+                              
+                  Case
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-weather fa-w-16"
+                              data-icon="weather"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.946 10.312c-1.762-0.066-3.398 1.477-3.465 3.659-0.030 0.954 0.255 1.825 0.738 2.501l-1.625 1.156c-0.698-0.978-1.116-2.197-1.116-3.515 0-0.076 0.001-0.153 0.004-0.228l-0 0.011c0.096-3.102 2.485-5.697 5.526-5.583 1.378 0.051 2.605 0.66 3.512 1.596l-1.431 1.388c-0.578-0.596-1.327-0.955-2.143-0.985z M11.159 17.549c0.001-3.019 2.204-5.299 4.727-5.299 1.868 0 3.542 1.23 4.305 3.108l0.41 1.008 0.97-0.494c0.597-0.304 1.257-0.472 1.952-0.472 2.523 0 4.727 2.281 4.727 5.3s-2.204 5.3-4.728 5.3h-14.020l-0.176-0.021c-1.58-0.193-2.94-1.707-2.94-3.704 0-2.149 1.563-3.725 3.296-3.725h0c0.125 0 0.249 0.008 0.356 0.022l1.123 0.136-0.002-1.158v-0.001zM9.219 16.571c-2.78 0.255-4.833 2.793-4.833 5.704 0 2.548 1.564 4.799 3.818 5.5v0.225h15.319c3.803 0 6.727-3.36 6.727-7.3s-2.924-7.3-6.727-7.3c-0.667 0-1.311 0.105-1.92 0.301-1.17-2.043-3.268-3.451-5.717-3.451-3.483 0-6.23 2.82-6.666 6.321zM14.832 8.093l-0.954 1.575-1.71-1.036 0.954-1.575 1.71 1.036zM8.748 5.778l0.477 2.1-1.95 0.444-0.477-2.1 1.95-0.444zM3.482 9.848l1.909 1.050-0.964 1.753-1.909-1.050 0.964-1.752zM2.737 17.928l1.432-1.576 1.48 1.346-1.432 1.575-1.48-1.346z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Weather
+                            </span>
                           </a>
-                        </div>
-                      </div>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="SmartDevices.LocationResponse"
+                              href="#"
+                            >
+                              
+                  Location Response
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-developer fa-w-16"
+                              data-icon="developer"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M19.888 7.070c0.514 0.202 0.766 0.783 0.564 1.297l-6.5 16.5c-0.202 0.514-0.783 0.766-1.297 0.564s-0.766-0.783-0.564-1.297l6.5-16.5c0.202-0.514 0.783-0.766 1.297-0.564zM10.947 12.619c0.21 0.511-0.033 1.095-0.544 1.305l-6.403 2.636 6.448 3.034c0.5 0.235 0.714 0.831 0.479 1.331s-0.831 0.714-1.331 0.479l-6.448-3.034c-1.573-0.74-1.518-2.997 0.090-3.659l6.403-2.636c0.511-0.21 1.095 0.033 1.305 0.544zM21.117 12.574c0.235-0.5 0.831-0.714 1.331-0.479l6.448 3.034c1.573 0.74 1.518 2.997-0.090 3.659l-6.402 2.636c-0.511 0.21-1.095-0.033-1.305-0.544s0.033-1.095 0.544-1.305l6.402-2.636-6.448-3.034c-0.5-0.235-0.714-0.831-0.479-1.331z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Developer
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Print"
+                              href="#"
+                            >
+                              
+                  Print
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Read"
+                              href="#"
+                            >
+                              
+                  Read
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Log"
+                              href="#"
+                            >
+                              
+                  Log
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -1282,15 +1802,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
-                  class="tree-builder-toolbar-main-menu"
+                  class="tree-builder-toolbar-main-menu d-flex flex-column"
                 >
                   <!---->
                    
                   <div
-                    class="tree-workspace-panel-heading panel-heading"
+                    class="tree-workspace-panel-heading panel-heading w-100"
                   >
                     <div
                       class="tree-workspace-panel-heading-contents"
@@ -1298,113 +1818,166 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       <div
                         class="btn-toolbar"
                       >
-                        <button
-                          class="btn btn-secondary mr-2"
+                        <h4
+                          class="text-primary mr-4 flow-label"
+                          title=""
                         >
-                          <i
-                            class="glyphicon glyphicon-chevron-up"
-                          />
                           
-            Export
-          
-                        </button>
-                         
-                        <div
-                          class="btn-group mr-2"
-                        >
-                          <a
-                            class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
-                          >
-                            
-              Flow view
             
+          
+                        </h4>
+                         
+                        <div>
+                          <a
+                            aria-current="page"
+                            class="mr-2 router-link-exact-active router-link-active"
+                            href="#/"
+                            title="Home"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn svg-inline--fa fa-home fa-w-16"
+                              data-icon="home"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z"
+                                fill="currentColor"
+                              />
+                            </svg>
                           </a>
                            
                           <a
-                            class="btn btn-secondary"
+                            class="btn btn-primary btn-sm"
+                            href="#/flows/new"
+                          >
+                            
+              New Flow
+            
+                          </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <a
+                            class="btn btn-outline-primary btn-sm"
                             href="#/trees/1/resource-viewer"
                           >
                             
-              Resources view
-            
+                Resources view
+              
                           </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <div
+                            class="btn-group"
+                          >
+                            <a
+                              class="btn btn-outline-primary btn-sm"
+                              href="#/trees/1/interaction-designer/view"
+                              title="Click to toggle editing"
+                            >
+                              
+                View Flow
+              
+                            </a>
+                             
+                            <a
+                              class="btn btn-outline-primary btn-sm active"
+                              href="#/trees/1/interaction-designer/edit"
+                              title="Click to toggle editing"
+                            >
+                              
+                Edit Flow
+              
+                            </a>
+                          </div>
+                           
                         </div>
                          
-                        <a
-                          class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
-            View Flow
-          
-                        </a>
-                         
                         <div
-                          class="dropdown mr-2"
+                          class="ml-auto mr-2"
                         >
+                          <!---->
+                           
+                          <div
+                            class="btn-group mr-2"
+                          />
+                           
                           <button
-                            class="btn btn-secondary dropdown-toggle"
-                            data-toggle="dropdown"
-                            type="button"
+                            class="btn btn-outline-primary btn-sm"
                           >
                             
-              Add Block
+              Export
             
                           </button>
                            
+                          <!---->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                   
+                  <div
+                    class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0"
+                  >
+                    <div
+                      class="tree-workspace-panel-heading-contents"
+                    >
+                      <ul
+                        class="nav"
+                      >
+                        <li
+                          class="nav-item dropdown nav"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-content fa-w-16"
+                              data-icon="content"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M23.2 4v24h-15.2v-24h15.2zM8 2c-1.105 0-2 0.895-2 2v0 24c0 1.105 0.895 2 2 2v0h15.2c1.105 0 2-0.895 2-2v0-24c0-1.105-0.895-2-2-2v0h-15.2z M19.5 8v12.5h-8v-12.5h8zM11.5 6c-1.105 0-2 0.895-2 2v0 12.5c0 1.105 0.895 2 2 2v0h8c1.105 0 2-0.895 2-2v0-12.5c0-1.105-0.895-2-2-2v0h-8zM15.5 24.5v0c0.276 0 0.5 0.224 0.5 0.5s-0.224 0.5-0.5 0.5v0c-0.276 0-0.5-0.224-0.5-0.5s0.224-0.5 0.5-0.5zM15.5 26.5c0.828 0 1.5-0.672 1.5-1.5s-0.672-1.5-1.5-1.5v0c-0.828 0-1.5 0.672-1.5 1.5s0.672 1.5 1.5 1.5v0z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Content
+                            </span>
+                          </a>
+                           
                           <div
-                            class="dropdown-menu"
+                            class="dropdown-menu mt-0"
                           >
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Print"
-                              href="#"
-                            >
-                              
-                  Print
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Read"
-                              href="#"
-                            >
-                              
-                  Read
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Case"
-                              href="#"
-                            >
-                              
-                  Case
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Log"
-                              href="#"
-                            >
-                              
-                  Log
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="Core.Output"
                               href="#"
                             >
@@ -1415,40 +1988,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.RunFlow"
-                              href="#"
-                            >
-                              
-                  Run Flow
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetContactProperty"
-                              href="#"
-                            >
-                              
-                  Set Contact Property
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetGroupMembership"
-                              href="#"
-                            >
-                              
-                  Set Group Membership
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
@@ -1459,7 +1999,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.NumericResponse"
                               href="#"
                             >
@@ -1467,10 +2007,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                   Numeric Response
                 
                             </a>
-                            <!---->
+                            <div
+                              class="dropdown-divider"
+                            />
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.OpenResponse"
                               href="#"
                             >
@@ -1481,7 +2023,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
@@ -1492,7 +2034,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
@@ -1500,21 +2042,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                   Select Many Responses
                 
                             </a>
-                            <!---->
+                            <div
+                              class="dropdown-divider"
+                            />
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="SmartDevices.LocationResponse"
-                              href="#"
-                            >
-                              
-                  Location Response
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
@@ -1523,40 +2056,265 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                 
                             </a>
                              
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-contact fa-w-16"
+                              data-icon="contact"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M15.5 13c-1.773 0-3.5-1.623-3.5-4s1.727-4 3.5-4c1.773 0 3.5 1.623 3.5 4s-1.727 4-3.5 4zM15.5 15c3.038 0 5.5-2.686 5.5-6s-2.462-6-5.5-6-5.5 2.686-5.5 6 2.462 6 5.5 6zM11 17.611c-1.657 0-3 1.343-3 3v0 6.722h15v-6.722c0-1.657-1.343-3-3-3v0h-9zM6 20.611c0-2.761 2.239-5 5-5v0h9c2.761 0 5 2.239 5 5v0 6.722c0 1.105-0.895 2-2 2v0h-15c-1.105 0-2-0.895-2-2v0-6.722z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Contact
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
                             <!---->
                              
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.RunFlow"
+                              href="#"
+                            >
+                              
+                  Run Flow
+                
+                            </a>
                             <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetContactProperty"
+                              href="#"
+                            >
+                              
+                  Set Contact Property
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetGroupMembership"
+                              href="#"
+                            >
+                              
+                  Set Group Membership
+                
+                            </a>
+                             
                           </div>
-                        </div>
+                        </li>
                          
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/flows/new"
+                        <li
+                          class="nav-item dropdown"
                         >
-                          
-            New Flow
-          
-                        </a>
-                         
-                        <a
-                          aria-current="page"
-                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
-                          href="#/"
-                        >
-                          
-            Home
-          
-                        </a>
-                          
-                        <!---->
-                         
-                        <div
-                          class="btn-group ml-auto mr-2"
-                        >
-                          <!---->
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-branching fa-w-16"
+                              data-icon="branching"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M4 6h7.2v1.6h-7.2v-1.6zM3 4c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2zM17.067 6h7.2v1.6h-7.2v-1.6zM16.067 4c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2zM11.467 15.333h7.2v1.6h-7.2v-1.6zM10.467 13.333c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2zM20.8 24.667h7.2v1.6h-7.2v-1.6zM19.8 22.667c-0.552 0-1 0.448-1 1v0 3.6c0 0.552 0.448 1 1 1v0h9.2c0.552 0 1-0.448 1-1v0-3.6c0-0.552-0.448-1-1-1v0h-9.2z M15.067 7.8h-2.334v-2h2.334v2zM27.133 7.8h-1.333v-2h1.333c1.105 0 2 0.895 2 2v0 7.8c0 1.105-0.895 2-2 2v0h-6.466v-2h6.466v-7.8zM14.067 24.933v-6h2v6h2.733v2h-2.733c-1.105 0-2-0.895-2-2v0z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Branching
+                            </span>
+                          </a>
                            
-                        </div>
-                      </div>
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Case"
+                              href="#"
+                            >
+                              
+                  Case
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-weather fa-w-16"
+                              data-icon="weather"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.946 10.312c-1.762-0.066-3.398 1.477-3.465 3.659-0.030 0.954 0.255 1.825 0.738 2.501l-1.625 1.156c-0.698-0.978-1.116-2.197-1.116-3.515 0-0.076 0.001-0.153 0.004-0.228l-0 0.011c0.096-3.102 2.485-5.697 5.526-5.583 1.378 0.051 2.605 0.66 3.512 1.596l-1.431 1.388c-0.578-0.596-1.327-0.955-2.143-0.985z M11.159 17.549c0.001-3.019 2.204-5.299 4.727-5.299 1.868 0 3.542 1.23 4.305 3.108l0.41 1.008 0.97-0.494c0.597-0.304 1.257-0.472 1.952-0.472 2.523 0 4.727 2.281 4.727 5.3s-2.204 5.3-4.728 5.3h-14.020l-0.176-0.021c-1.58-0.193-2.94-1.707-2.94-3.704 0-2.149 1.563-3.725 3.296-3.725h0c0.125 0 0.249 0.008 0.356 0.022l1.123 0.136-0.002-1.158v-0.001zM9.219 16.571c-2.78 0.255-4.833 2.793-4.833 5.704 0 2.548 1.564 4.799 3.818 5.5v0.225h15.319c3.803 0 6.727-3.36 6.727-7.3s-2.924-7.3-6.727-7.3c-0.667 0-1.311 0.105-1.92 0.301-1.17-2.043-3.268-3.451-5.717-3.451-3.483 0-6.23 2.82-6.666 6.321zM14.832 8.093l-0.954 1.575-1.71-1.036 0.954-1.575 1.71 1.036zM8.748 5.778l0.477 2.1-1.95 0.444-0.477-2.1 1.95-0.444zM3.482 9.848l1.909 1.050-0.964 1.753-1.909-1.050 0.964-1.752zM2.737 17.928l1.432-1.576 1.48 1.346-1.432 1.575-1.48-1.346z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Weather
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="SmartDevices.LocationResponse"
+                              href="#"
+                            >
+                              
+                  Location Response
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-developer fa-w-16"
+                              data-icon="developer"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M19.888 7.070c0.514 0.202 0.766 0.783 0.564 1.297l-6.5 16.5c-0.202 0.514-0.783 0.766-1.297 0.564s-0.766-0.783-0.564-1.297l6.5-16.5c0.202-0.514 0.783-0.766 1.297-0.564zM10.947 12.619c0.21 0.511-0.033 1.095-0.544 1.305l-6.403 2.636 6.448 3.034c0.5 0.235 0.714 0.831 0.479 1.331s-0.831 0.714-1.331 0.479l-6.448-3.034c-1.573-0.74-1.518-2.997 0.090-3.659l6.403-2.636c0.511-0.21 1.095 0.033 1.305 0.544zM21.117 12.574c0.235-0.5 0.831-0.714 1.331-0.479l6.448 3.034c1.573 0.74 1.518 2.997-0.090 3.659l-6.402 2.636c-0.511 0.21-1.095-0.033-1.305-0.544s0.033-1.095 0.544-1.305l6.402-2.636-6.448-3.034c-0.5-0.235-0.714-0.831-0.479-1.331z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Developer
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Print"
+                              href="#"
+                            >
+                              
+                  Print
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Read"
+                              href="#"
+                            >
+                              
+                  Read
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Log"
+                              href="#"
+                            >
+                              
+                  Log
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -1607,15 +2365,15 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
-                  class="tree-builder-toolbar-main-menu"
+                  class="tree-builder-toolbar-main-menu d-flex flex-column"
                 >
                   <!---->
                    
                   <div
-                    class="tree-workspace-panel-heading panel-heading"
+                    class="tree-workspace-panel-heading panel-heading w-100"
                   >
                     <div
                       class="tree-workspace-panel-heading-contents"
@@ -1623,81 +2381,116 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       <div
                         class="btn-toolbar"
                       >
-                        <button
-                          class="btn btn-secondary mr-2"
+                        <h4
+                          class="text-primary mr-4 flow-label"
+                          title=""
                         >
-                          <i
-                            class="glyphicon glyphicon-chevron-up"
-                          />
                           
-            Export
-          
-                        </button>
-                         
-                        <div
-                          class="btn-group mr-2"
-                        >
-                          <a
-                            class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
-                          >
-                            
-              Flow view
             
+          
+                        </h4>
+                         
+                        <div>
+                          <a
+                            aria-current="page"
+                            class="mr-2 router-link-exact-active router-link-active"
+                            href="#/"
+                            title="Home"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn svg-inline--fa fa-home fa-w-16"
+                              data-icon="home"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z"
+                                fill="currentColor"
+                              />
+                            </svg>
                           </a>
                            
                           <a
-                            class="btn btn-secondary"
+                            class="btn btn-primary btn-sm"
+                            href="#/flows/new"
+                          >
+                            
+              New Flow
+            
+                          </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <a
+                            class="btn btn-outline-primary btn-sm"
                             href="#/trees/1/resource-viewer"
                           >
                             
-              Resources view
-            
+                Resources view
+              
                           </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <div
+                            class="btn-group"
+                          >
+                            <a
+                              class="btn btn-outline-primary btn-sm active"
+                              href="#/trees/1/interaction-designer/view"
+                              title="Click to toggle editing"
+                            >
+                              
+                View Flow
+              
+                            </a>
+                             
+                            <a
+                              class="btn btn-outline-primary btn-sm"
+                              href="#/trees/1/interaction-designer/edit"
+                              title="Click to toggle editing"
+                            >
+                              
+                Edit Flow
+              
+                            </a>
+                          </div>
+                           
                         </div>
                          
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
-                          title="Click to toggle editing"
-                        >
-                          
-            Edit Flow
-          
-                        </a>
-                         
-                        <!---->
-                         
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/flows/new"
-                        >
-                          
-            New Flow
-          
-                        </a>
-                         
-                        <a
-                          aria-current="page"
-                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
-                          href="#/"
-                        >
-                          
-            Home
-          
-                        </a>
-                          
-                        <!---->
-                         
                         <div
-                          class="btn-group ml-auto mr-2"
+                          class="ml-auto mr-2"
                         >
                           <!---->
                            
+                          <div
+                            class="btn-group mr-2"
+                          />
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Export
+            
+                          </button>
+                           
+                          <!---->
                         </div>
                       </div>
                     </div>
                   </div>
+                   
+                  <!---->
                 </div>
                  
                 <div

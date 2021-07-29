@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="tree-contents position-relative">
+    <div class="tree-contents">
       <builder-canvas  @click.native="handleCanvasSelected" />
     </div>
   </div>
@@ -103,7 +103,7 @@ export default {
 
   data() {
     return {
-      toolbarHeight: 60,
+      toolbarHeight: 102,
       // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
       pureVuejsBlocks: [
         'CallBackWithCallCenterBlock',
@@ -354,7 +354,7 @@ export default {
       box-shadow: 0 3px 6px #CACACA;
 
       padding: 1em;
-      margin-top: 1em;
+      margin-top: 2em;
 
       transition:
         200ms background-color ease-in-out,
@@ -368,9 +368,6 @@ export default {
   }
 
   .tree-builder-toolbar-main-menu {
-    position: fixed;
-    z-index: 4*10;
-
     width: 100vw;
 
     border-bottom: 1px solid darkgrey;
@@ -429,7 +426,7 @@ export default {
     background-color: #eee;
     padding: 5px;
     position: fixed;
-    margin-top: 1em;
+    margin-top: 2em;
     right: 0;
     z-index: 5*10;
   }
