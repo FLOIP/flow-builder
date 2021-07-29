@@ -62,6 +62,7 @@ class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
     this.setValidationMinimum({blockId, value: 0})
     this.setValidationMaximum({blockId, value: 99})
     this.setMaxDigits({blockId, value: 2})
+    this.setTags(blockId)
   }
 
   @blockVuexNamespace.Action declare setValidationMinimum: any

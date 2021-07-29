@@ -16,9 +16,9 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, every, forEach, get, has, includes, omit} from 'lodash'
+import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
-import {computeBlockUiData} from '@/store/builder'
+import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
 
@@ -274,7 +274,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     return resource
   },
-  async flow_addBlankResourceForEnabledModesAndLangs({getters, dispatch, commit}): Promise<IResource> {
+  async flow_addBlankResourceForEnabledModesAndLangs({dispatch, commit}): Promise<IResource> {
+    const resource = await dispatch('flow_createBlankResourceForEnabledModesAndLangs')
+    commit('resource_add', {resource})
+    return resource
+  },
+
+  async flow_createBlankResourceForEnabledModesAndLangs({getters, dispatch, commit}): Promise<IResource> {
     // TODO - figure out of there should only be one value here at first? How would the resource editor change this?
     // TODO - is this right for setup of languages?
     // TODO - How will we add more blank values as supported languages are changed in the flow? We should probably also do this for modes rather than doing all possible modes here.
@@ -296,16 +302,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return memo
     }, [])
 
-    const blankResource = await dispatch('resource_createWith', {
+    return dispatch('resource_createWith', {
       props: {
         uuid: await (new IdGeneratorUuidV4()).generate(),
         values,
       },
     })
-
-    commit('resource_add', {resource: blankResource})
-
-    return blankResource
   },
 
   async flow_createWith(_context, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {
@@ -327,7 +329,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
   },
 
-  async flow_duplicateBlock({commit, state}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }): Promise<IBlock> {
+  async flow_duplicateBlock({commit, state, getters}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }): Promise<IBlock> {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     // @throws ValidationException when block absent
     const block: IBlock = findBlockWith(blockId, flow)
@@ -346,16 +348,27 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     )
 
     if (has(duplicatedBlock.config, 'prompt')) {
-      Vue.set(duplicatedBlock.config!, 'prompt', await (new IdGeneratorUuidV4()).generate())
+      const sourceResourceUuid = duplicatedBlock.config!.prompt
+      const targetResourceUuid = await (new IdGeneratorUuidV4()).generate()
+      const duplicatedResource: IResource = cloneDeep(getters.resourcesByUuid[sourceResourceUuid])
+
+      duplicatedResource.uuid = targetResourceUuid
+      commit('resource_add', {
+        resource: duplicatedResource
+      })
+      Vue.set(duplicatedBlock.config!, 'prompt', targetResourceUuid)
     }
 
     // Set UI positions
-    // TODO: remove this once IBlock has vendor_metadata key
-    duplicatedBlock.vendor_metadata = {
+    merge(duplicatedBlock.vendor_metadata, {
       io_viamo: {
-        uiData: computeBlockUiData(block),
+        uiData: computeBlockVendorUiData(block),
       },
-    }
+    })
+
+    merge(duplicatedBlock.ui_metadata, {
+      canvas_coordinates: computeBlockUiData(block),
+    })
 
     commit('flow_addBlock', {block: duplicatedBlock})
 

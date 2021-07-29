@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import {namespace} from 'vuex-class'
+import {namespace, State} from 'vuex-class'
 import {IBlock, IFlow, ILanguage, SupportedContentType, SupportedMode} from '@floip/flow-runner'
-import {cloneDeep, get, isEmpty} from 'lodash'
+import {cloneDeep, get, isEmpty, map} from 'lodash'
 import Component from 'vue-class-component'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import Vuex from 'vuex'
@@ -44,10 +44,24 @@ export class BaseMountedVueClass extends Vue {
   @flowVuexNamespace.Mutation block_setSemanticLabel: any
   @flowVuexNamespace.Mutation flow_setFirstBlockId: any
 
+  @flowVuexNamespace.Mutation block_setTags!: ({blockId, value}: {blockId: IBlock['uuid'], value: string[]}) => void
+  @State(({trees: {ui: {blockTags}}}) => blockTags) blockTags!: string[]
+
   setDescription(blockId: string) {
     this.block_setName({blockId, value: 'A Name'})
     this.block_setLabel({blockId, value: 'A Label'})
     this.block_setSemanticLabel({blockId, value: 'A Semantic Label'})
+  }
+
+  setTags(blockId: string) {
+    // Available tags
+    this.blockTags.push('tag1')
+    this.blockTags.push('tag2')
+    // Selected tags
+    this.block_setTags({
+      blockId,
+      value: ['tag1'],
+    })
   }
 
   /**

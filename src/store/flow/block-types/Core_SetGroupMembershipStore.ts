@@ -1,6 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExit, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
+import {IBlock, IBlockExit, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {defaultsDeep} from 'lodash'
 import {IFlowsState} from '../index'
@@ -25,8 +25,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
-          tag: 'Default',
-          label: 'Default',
         }) as IBlockExit,
       }, {root: true}),
     ]
@@ -42,7 +40,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         is_member: null,
       },
       exits,
+      tags: [],
+      vendor_metadata: {},
     })
+  },
+
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: 'block.value = true',
+    }, {root: true})
   },
 
   async setIsMember({commit, rootGetters}, action) {

@@ -288,7 +288,7 @@
       </div>
     </div>
     <div class="tree-builder-toolbar-alerts w-100">
-      <selection-banner @updated="handleHeightChangeFromDOM" />
+      <selection-banner v-if="isEditable" @updated="handleHeightChangeFromDOM" />
       <error-notifications @updated="handleHeightChangeFromDOM" />
     </div>
   </div>
@@ -304,7 +304,7 @@ import pickBy from 'lodash/fp/pickBy'
 // import {affix as Affix} from 'vue-strap'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
-import {computeBlockUiData} from '@/store/builder'
+import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
 import {VBTooltipPlugin} from 'bootstrap-vue'
 import Component, {mixins} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
@@ -380,8 +380,12 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   get saveButtonText(): any {
-    //TODO - once we can detect changes again we will change this text when saved
-    return this.trans('flow-builder.save')
+    if(this.isTreeSaving) {
+      return this.trans('flow-builder.saving')
+    } else {
+      return this.trans('flow-builder.save')
+    }
+    //TODO - once we can detect changes again we will change this text to "Saved" when saved and keep it that way until there are further changes.
   }
 
   get blockClassesForContentCategory(): any {
@@ -434,10 +438,12 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }): Promise<void> {
     const {uuid: blockId} = await this.flow_addBlankBlockByType({
       type,
-      // @ts-ignore TODO: remove this once IBlock has vendor_metadata key
+      ui_metadata: {
+        canvas_coordinates: computeBlockUiData(this.activeBlock),
+      },
       vendor_metadata: {
         io_viamo: {
-          uiData: computeBlockUiData(this.activeBlock),
+          uiData: computeBlockVendorUiData(this.activeBlock),
         },
       },
       // todo push out to intx-designer
@@ -596,13 +602,22 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
 <style lang="scss">
 .tree-builder-toolbar {
-  position: fixed;
+  position: relative; // fixed ?
   z-index: 3*10;
-
   .flows-importer textarea {
     display: block;
     width: 100%;
   }
+}
+
+//.tree-builder-toolbar-alerts {
+//  position: relative;
+//  margin-top: 60px; // padding ?
+//  z-index: 3*10;
+//}
+
+.tree-save-tree {
+  width: 5.5em;
 }
 
 .btn-toolbar > .flow-label {

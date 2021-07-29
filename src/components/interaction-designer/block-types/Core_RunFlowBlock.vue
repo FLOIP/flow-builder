@@ -1,7 +1,7 @@
 <template>
   <div class="core-run-flow-block">
-    <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+    <h3 class="block-editor-header">
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
     <fieldset :disabled="!isEditable">
       <block-label-editor
@@ -12,11 +12,14 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <slot name="extras" />
+
       <validation-message
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/flow_id`">
         <div class="form-group">
-          <label>{{ 'flow-builder.destination-flow' | trans }}</label>
+        <!--
+          <label class="text-primary">{{ 'flow-builder.destination-flow' | trans }}</label>
           <select
             v-model="destinationFlowId"
             class="form-control"
@@ -30,13 +33,33 @@
               {{ flow.name }}
             </option>
           </select>
+          //TODO - add back in or move across to embedding app via slot when ready - pull flows from a backend
+        -->
+          <text-editor
+            v-model="destinationFlowId"
+            :label="'flow-builder.destination-flow' | trans"
+            :placeholder="'flow-builder.enter-destination-flow-id' | trans"
+            :valid-state="isValid" />
         </div>
       </validation-message>
 
-      <slot name="extras" />
+      <hr>
+
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />
@@ -48,29 +71,37 @@ import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
 import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
-import {IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow} from '@floip/flow-runner'
 import RunAnotherFlowStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import TextEditor from '@/components/common/TextEditor.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
+    GenericContactPropertyEditor,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
+    TextEditor,
     BlockId,
     ValidationMessage,
+    Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class Core_RunAnotherFlowBlock extends mixins(Lang) {
@@ -91,8 +122,9 @@ class Core_RunAnotherFlowBlock extends mixins(Lang) {
   @blockVuexNamespace.Action declare setDestinationFlowId: (
     {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string },
   ) => Promise<string>
-
-  @blockVuexNamespace.Getter declare otherFlows: IFlow[]
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
+  //TODO - add back in or move across to embedding app via slot when ready - pull flows from a backend
+  //@blockVuexNamespace.Getter declare otherFlows: IFlow[]
 
   @builderVuexNamespace.Getter declare isEditable: boolean
 }

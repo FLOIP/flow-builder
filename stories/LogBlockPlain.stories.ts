@@ -48,6 +48,7 @@ class CurrentClass2 extends BaseMountedVueClass {
     const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, logBlockStore)
 
     this.setDescription(blockId)
+    this.setTags(blockId)
   }
 }
 

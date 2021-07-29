@@ -1,16 +1,22 @@
 ((typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] = (typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] || []).push([[7],{
 
-/***/ "192b":
+/***/ "5c47":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4ad08327-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue?vue&type=template&id=dadc9192&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"starting-block-button"},[(_vm.isEditable)?[_c('h4',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.options')))]),_c('div',{staticClass:"form-group"},[_c('button',{staticClass:"btn btn-secondary btn-sm",attrs:{"type":"button","disabled":_vm.isStartBlock},on:{"click":function($event){return _vm.setStartBlock($event)}}},[(_vm.isStartBlock)?[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.currently-set-as-starting-block'))+" ")]:[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.set-as-starting-block'))+" ")]],2)])]:_vm._e()],2)}
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "MobilePrimitives_SelectOneResponseBlock", function() { return /* reexport */ MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock; });
+__webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=0c410789&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mobile-primitive-select-one-response-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('choices-builder',{attrs:{"block":_vm.block},on:{"choiceChanged":_vm.handleChoiceChanged}}),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":true,"label-class":''},on:{"branchingTypeChanged":function($event){return _vm.reflowExitsWhenSwitchingToBranchingTypeNotUnified()}}}),_c('div',{staticClass:"prompt-resource"},[(_vm.promptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.prompt'),"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue?vue&type=template&id=dadc9192&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=0c410789&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -36,250 +42,8 @@ var es_array_concat = __webpack_require__("99af");
 // EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
 var tslib_es6 = __webpack_require__("9ab4");
 
-// EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/index.js + 14 modules
-var lib = __webpack_require__("1b40");
-
-// EXTERNAL MODULE: ./src/lib/filters/lang.ts
-var lang = __webpack_require__("4a51");
-
-// EXTERNAL MODULE: ./node_modules/vuex-class/lib/index.js + 1 modules
-var vuex_class_lib = __webpack_require__("4bb5");
-
-// EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
-var vue_class_component_esm = __webpack_require__("2fe1");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue?vue&type=script&lang=ts&
-
-
-
-
-
-
-
-
-
-
-
-
-var flowVuexNamespace = Object(vuex_class_lib["e" /* namespace */])('flow');
-
-var FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton = /*#__PURE__*/function (_mixins) {
-  Object(inherits["a" /* default */])(FirstBlockEditorButton, _mixins);
-
-  var _super = Object(createSuper["a" /* default */])(FirstBlockEditorButton);
-
-  function FirstBlockEditorButton() {
-    var _this;
-
-    Object(classCallCheck["a" /* default */])(this, FirstBlockEditorButton);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _super.call.apply(_super, [this].concat(args));
-
-    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "isEditable", void 0);
-
-    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "blockId", void 0);
-
-    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "flow", void 0);
-
-    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "flow_setFirstBlockId", void 0);
-
-    return _this;
-  }
-
-  Object(createClass["a" /* default */])(FirstBlockEditorButton, [{
-    key: "isStartBlock",
-    get: function get() {
-      return this.blockId === this.flow.first_block_id;
-    } // @ts-ignore
-
-  }, {
-    key: "setStartBlock",
-    value: function setStartBlock(event) {
-      var flowId = this.flow.uuid,
-          blockId = this.blockId;
-      this.flow_setFirstBlockId({
-        flowId: flowId,
-        blockId: blockId
-      });
-    }
-  }]);
-
-  return FirstBlockEditorButton;
-}(Object(vue_class_component_esm["c" /* mixins */])(lang["a" /* default */]));
-
-Object(tslib_es6["__decorate"])([Object(lib["b" /* Prop */])({
-  default: true
-})], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton.prototype, "isEditable", void 0);
-
-Object(tslib_es6["__decorate"])([Object(lib["b" /* Prop */])()], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton.prototype, "blockId", void 0);
-
-Object(tslib_es6["__decorate"])([Object(lib["b" /* Prop */])()], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton.prototype, "flow", void 0);
-
-Object(tslib_es6["__decorate"])([flowVuexNamespace.Mutation], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton.prototype, "flow_setFirstBlockId", void 0);
-
-FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton = Object(tslib_es6["__decorate"])([Object(lib["a" /* Component */])({})], FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton);
-/* harmony default export */ var FirstBlockEditorButtonvue_type_script_lang_ts_ = (FirstBlockEditorButtonvue_type_script_lang_ts_FirstBlockEditorButton);
-// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue?vue&type=script&lang=ts&
- /* harmony default export */ var flow_editors_FirstBlockEditorButtonvue_type_script_lang_ts_ = (FirstBlockEditorButtonvue_type_script_lang_ts_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__("2877");
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  flow_editors_FirstBlockEditorButtonvue_type_script_lang_ts_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var flow_editors_FirstBlockEditorButton = __webpack_exports__["a"] = (component.exports);
-
-/***/ }),
-
-/***/ "1b4e":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4ad08327-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue?vue&type=template&id=0f0277ae&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/semantic_label")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
-var isValid = ref.isValid;
-return [_c('div',{staticClass:"block-semantic-label"},[_c('text-editor',{attrs:{"label":_vm._f("trans")('flow-builder.block-semantic-label'),"placeholder":_vm._f("trans")('flow-builder.enter-block-semantic-label'),"valid-state":isValid},model:{value:(_vm.semanticLabel),callback:function ($$v) {_vm.semanticLabel=$$v},expression:"semanticLabel"}})],1)]}}])})}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue?vue&type=template&id=0f0277ae&
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/objectSpread2.js
-var objectSpread2 = __webpack_require__("f3f3");
-
-// EXTERNAL MODULE: ./node_modules/vuex/dist/vuex.esm.js
-var vuex_esm = __webpack_require__("2f62");
-
-// EXTERNAL MODULE: ./src/components/common/TextEditor.vue + 4 modules
-var TextEditor = __webpack_require__("d883");
-
-// EXTERNAL MODULE: ./src/lib/filters/lang.ts
-var lang = __webpack_require__("4a51");
-
-// EXTERNAL MODULE: ./src/components/common/ValidationMessage.vue + 5 modules
-var ValidationMessage = __webpack_require__("21e9");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue?vue&type=script&lang=js&
-
-
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-
-
-
-
-/* harmony default export */ var SemanticLabelEditorvue_type_script_lang_js_ = ({
-  components: {
-    TextEditor: TextEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
-  },
-  mixins: [lang["b" /* lang */]],
-  props: {
-    block: {
-      type: Object,
-      required: true
-    }
-  },
-  computed: {
-    semanticLabel: {
-      get: function get() {
-        return this.block.semantic_label || '';
-      },
-      set: function set(value) {
-        this.block_setSemanticLabel({
-          blockId: this.block.uuid,
-          value: value
-        });
-      }
-    }
-  },
-  methods: Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["c" /* mapMutations */])('flow', ['block_setSemanticLabel']))
-});
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue?vue&type=script&lang=js&
- /* harmony default export */ var block_editors_SemanticLabelEditorvue_type_script_lang_js_ = (SemanticLabelEditorvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__("2877");
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  block_editors_SemanticLabelEditorvue_type_script_lang_js_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var SemanticLabelEditor = __webpack_exports__["a"] = (component.exports);
-
-/***/ }),
-
-/***/ "2b44":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4ad08327-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue?vue&type=template&id=2e560ec9&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"smart-devices-photo-response-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.edit-block-type',{block_type: _vm.trans(("flow-builder." + (_vm.block.type)))}))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('block-label-editor',{attrs:{"block":_vm.block}}),_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}),_vm._t("extras"),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue?vue&type=template&id=2e560ec9&
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
-var classCallCheck = __webpack_require__("276c");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
-var assertThisInitialized = __webpack_require__("2c4c");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/inherits.js
-var inherits = __webpack_require__("920b");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/createSuper.js + 1 modules
-var createSuper = __webpack_require__("92a6");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/defineProperty.js
-var defineProperty = __webpack_require__("fc11");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
-var es_array_concat = __webpack_require__("99af");
-
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__("9ab4");
+// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/index.js
+var dist = __webpack_require__("9300");
 
 // EXTERNAL MODULE: ./node_modules/vuex-class/lib/index.js + 1 modules
 var lib = __webpack_require__("4bb5");
@@ -287,107 +51,17 @@ var lib = __webpack_require__("4bb5");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/index.js + 14 modules
 var vue_property_decorator_lib = __webpack_require__("1b40");
 
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__("c964");
-
-// EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
-var runtime = __webpack_require__("96cf");
-
-// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
-var IdGeneratorUuidV4 = __webpack_require__("31aa");
-
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __webpack_require__("2ef0");
 
-// CONCATENATED MODULE: ./src/store/flow/block-types/SmartDevices_PhotoResponseBlockStore.ts
+// EXTERNAL MODULE: ./src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore.ts
+var MobilePrimitives_SelectOneResponseBlockStore = __webpack_require__("ecef");
 
-
- // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to create at flow-runner
-
-
-var BLOCK_TYPE = 'SmartDevices.PhotoResponse';
-var getters = {};
-var mutations = {};
-var actions = {
-  createWith: function createWith(_ref, _ref2) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var dispatch, props, exits;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              dispatch = _ref.dispatch;
-              props = _ref2.props;
-              _context.t0 = dispatch;
-              _context.next = 5;
-              return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
-
-            case 5:
-              _context.t1 = _context.sent;
-              _context.t2 = {
-                uuid: _context.t1,
-                tag: 'Default',
-                label: 'Default'
-              };
-              _context.t3 = {
-                props: _context.t2
-              };
-              _context.t4 = {
-                root: true
-              };
-              _context.next = 11;
-              return (0, _context.t0)('flow/block_createBlockDefaultExitWith', _context.t3, _context.t4);
-
-            case 11:
-              _context.t5 = _context.sent;
-              _context.t6 = dispatch;
-              _context.next = 15;
-              return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
-
-            case 15:
-              _context.t7 = _context.sent;
-              _context.t8 = {
-                uuid: _context.t7,
-                tag: 'Error',
-                label: 'Error'
-              };
-              _context.t9 = {
-                props: _context.t8
-              };
-              _context.t10 = {
-                root: true
-              };
-              _context.next = 21;
-              return (0, _context.t6)('flow/block_createBlockExitWith', _context.t9, _context.t10);
-
-            case 21:
-              _context.t11 = _context.sent;
-              exits = [_context.t5, _context.t11];
-              return _context.abrupt("return", Object(lodash["defaultsDeep"])(props, {
-                type: BLOCK_TYPE,
-                name: '',
-                label: '',
-                semantic_label: '',
-                exits: exits
-              }));
-
-            case 24:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  }
-};
-/* harmony default export */ var SmartDevices_PhotoResponseBlockStore = ({
-  namespaced: true,
-  getters: getters,
-  mutations: mutations,
-  actions: actions
-});
 // EXTERNAL MODULE: ./src/lib/filters/lang.ts
 var lang = __webpack_require__("4a51");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/Categorization.vue + 9 modules
+var Categorization = __webpack_require__("8619");
 
 // EXTERNAL MODULE: ./src/store/builder/index.ts
 var builder = __webpack_require__("af98");
@@ -395,22 +69,54 @@ var builder = __webpack_require__("af98");
 // EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
 var vue_class_component_esm = __webpack_require__("2fe1");
 
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
-var NameEditor = __webpack_require__("f04e");
+// EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue + 4 modules
+var ResourceVariantTextEditor = __webpack_require__("bb40");
 
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue + 4 modules
-var LabelEditor = __webpack_require__("3411");
+// EXTERNAL MODULE: ./src/store/flow/resource.ts
+var flow_resource = __webpack_require__("393e");
 
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue + 4 modules
-var SemanticLabelEditor = __webpack_require__("1b4e");
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=template&id=46098a2a&
+var ChoicesBuildervue_type_template_id_46098a2a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"choices-builder form-group"},[_c('h4',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.choices')))]),_vm._l((_vm.choiceResourcesOrderedByResourcesList),function(resource,i){return [_c('resource-variant-text-editor',{key:resource.uuid,ref:"choices",refInFor:true,staticClass:"choices-builder-item",attrs:{"label":(i + 1).toString(),"rows":1,"placeholder":'Enter choice...',"resource-id":resource.uuid,"resource-variant":resource.values[0],"mode":_vm.SupportedMode.TEXT},on:{"afterResourceVariantChanged":function($event){return _vm.handleExistingResourceVariantChangedFor(
+        resource.uuid,
+        i,
+        resource)}}})]}),(_vm.draftResource)?_c('resource-variant-text-editor',{key:_vm.draftResource.uuid,ref:"draftChoice",staticClass:"choices-builder-item",attrs:{"label":(_vm.choiceResourcesOrderedByResourcesList.length + 1).toString(),"rows":1,"placeholder":'Enter choice...',"resource-id":_vm.draftResource.uuid,"resource-variant":_vm.findOrGenerateStubbedVariantOn(
+      _vm.draftResource,
+      {language_id: _vm.activeFlow.languages[0].id,
+       content_type: _vm.SupportedContentType.TEXT,
+       modes: [_vm.SupportedMode.TEXT]}),"mode":_vm.SupportedMode.TEXT},on:{"beforeResourceVariantChanged":_vm.addDraftResourceToChoices,"afterResourceVariantChanged":function($event){return _vm.rewriteChoiceKeyFor({resourceId: _vm.draftResource.uuid, blockId: _vm.block.uuid})}}}):_vm._e()],2)}
+var ChoicesBuildervue_type_template_id_46098a2a_staticRenderFns = []
 
-// EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue + 4 modules
-var FirstBlockEditorButton = __webpack_require__("192b");
 
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
-var BlockId = __webpack_require__("792f");
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=template&id=46098a2a&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue?vue&type=script&lang=ts&
+// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
+var asyncToGenerator = __webpack_require__("c964");
+
+// EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
+var runtime = __webpack_require__("96cf");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.values.js
+var es_object_values = __webpack_require__("07ac");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
+var es_array_iterator = __webpack_require__("e260");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
+var es_object_to_string = __webpack_require__("d3b7");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.iterator.js
+var web_dom_collections_iterator = __webpack_require__("ddb0");
+
+// EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
+var IdGeneratorUuidV4 = __webpack_require__("31aa");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=script&lang=ts&
+
+
+
+
+
+
 
 
 
@@ -430,17 +136,310 @@ var BlockId = __webpack_require__("792f");
 
 
 var flowVuexNamespace = Object(lib["e" /* namespace */])('flow');
-var builderVuexNamespace = Object(lib["e" /* namespace */])('builder');
+var blockVuexNamespace = Object(lib["e" /* namespace */])("flow/".concat(MobilePrimitives_SelectOneResponseBlockStore["a" /* BLOCK_TYPE */]));
 
-var SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock = /*#__PURE__*/function (_mixins) {
-  Object(inherits["a" /* default */])(SmartDevices_PhotoResponseBlock, _mixins);
+var ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder = /*#__PURE__*/function (_mixins) {
+  Object(inherits["a" /* default */])(ChoicesBuilder, _mixins);
 
-  var _super = Object(createSuper["a" /* default */])(SmartDevices_PhotoResponseBlock);
+  var _super = Object(createSuper["a" /* default */])(ChoicesBuilder);
 
-  function SmartDevices_PhotoResponseBlock() {
+  function ChoicesBuilder() {
     var _this;
 
-    Object(classCallCheck["a" /* default */])(this, SmartDevices_PhotoResponseBlock);
+    Object(classCallCheck["a" /* default */])(this, ChoicesBuilder);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _super.call.apply(_super, [this].concat(args));
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "block", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "draftResource", null);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "SupportedContentType", dist["SupportedContentType"]);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "SupportedMode", dist["SupportedMode"]);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "findOrGenerateStubbedVariantOn", flow_resource["c" /* findOrGenerateStubbedVariantOn */]);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "resources", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "resourcesByUuid", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "activeFlow", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "resource_add", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "resource_createWith", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "deleteChoiceByResourceIdFrom", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "rewriteChoiceKeyFor", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "addChoiceByResourceIdTo", void 0);
+
+    return _this;
+  }
+
+  Object(createClass["a" /* default */])(ChoicesBuilder, [{
+    key: "choiceResourcesOrderedByResourcesList",
+    get: function get() {
+      var choiceResourceIds = Object.values(this.block.config.choices);
+      return Object(lodash["intersectionWith"])(this.resources, choiceResourceIds, function (resource, choiceResourceId) {
+        return resource.uuid === choiceResourceId;
+      });
+    }
+  }, {
+    key: "created",
+    value: function created() {
+      this.generateDraftResource();
+    }
+  }, {
+    key: "generateDraftResource",
+    value: function () {
+      var _generateDraftResource = Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.t0 = this;
+                _context.next = 3;
+                return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
+
+              case 3:
+                _context.t1 = _context.sent;
+                _context.t2 = {
+                  uuid: _context.t1
+                };
+                _context.t3 = {
+                  props: _context.t2
+                };
+                _context.next = 8;
+                return _context.t0.resource_createWith.call(_context.t0, _context.t3);
+
+              case 8:
+                this.draftResource = _context.sent;
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function generateDraftResource() {
+        return _generateDraftResource.apply(this, arguments);
+      }
+
+      return generateDraftResource;
+    }()
+  }, {
+    key: "addDraftResourceToChoices",
+    value: function () {
+      var _addDraftResourceToChoices = Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var _this2 = this;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!(this.draftResource == null)) {
+                  _context2.next = 3;
+                  break;
+                }
+
+                console.warn('interaction-designer/block-editors/ChoicesBuilder', 'Unable to add absent draft resource to block choices.', {
+                  block: this.block
+                });
+                return _context2.abrupt("return");
+
+              case 3:
+                this.resource_add({
+                  resource: this.draftResource
+                });
+                this.addChoiceByResourceIdTo({
+                  blockId: this.block.uuid,
+                  resourceId: this.draftResource.uuid
+                });
+                this.$nextTick(function () {
+                  return _this2.focusInputElFor(Object(lodash["last"])(_this2.$refs.choices));
+                });
+                _context2.next = 8;
+                return this.generateDraftResource();
+
+              case 8:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function addDraftResourceToChoices() {
+        return _addDraftResourceToChoices.apply(this, arguments);
+      }
+
+      return addDraftResourceToChoices;
+    }()
+  }, {
+    key: "focusInputElFor",
+    value: function focusInputElFor(editor) {
+      editor === null || editor === void 0 ? void 0 : editor.$refs.input.focus();
+    }
+  }, {
+    key: "handleExistingResourceVariantChangedFor",
+    value: function handleExistingResourceVariantChangedFor(resourceId, choiceIndex, resource) {
+      var isLast = choiceIndex === this.choiceResourcesOrderedByResourcesList.length - 1;
+      var hasEmptyValue = Object(lodash["isEmpty"])(Object(lodash["get"])(resource.values[0], 'value'));
+
+      if (isLast && hasEmptyValue) {
+        // todo: clean up resource, but should we first check for references?
+        // this.resource_delete({resourceId: resource.uuid})
+        this.deleteChoiceByResourceIdFrom({
+          blockId: this.block.uuid,
+          resourceId: resourceId
+        });
+        this.focusInputElFor(this.$refs.draftChoice);
+        return;
+      }
+
+      this.rewriteChoiceKeyFor({
+        resourceId: resourceId,
+        blockId: this.block.uuid
+      });
+      this.$emit('choiceChanged', {
+        resourceId: resourceId,
+        choiceIndex: choiceIndex,
+        resource: resource
+      });
+    }
+  }]);
+
+  return ChoicesBuilder;
+}(Object(vue_class_component_esm["c" /* mixins */])(lang["a" /* default */]));
+
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "block", void 0);
+
+Object(tslib_es6["__decorate"])([flowVuexNamespace.State], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "resources", void 0);
+
+Object(tslib_es6["__decorate"])([flowVuexNamespace.Getter], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "resourcesByUuid", void 0);
+
+Object(tslib_es6["__decorate"])([flowVuexNamespace.Getter], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "activeFlow", void 0);
+
+Object(tslib_es6["__decorate"])([flowVuexNamespace.Mutation], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "resource_add", void 0);
+
+Object(tslib_es6["__decorate"])([flowVuexNamespace.Action], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "resource_createWith", void 0);
+
+Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "deleteChoiceByResourceIdFrom", void 0);
+
+Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "rewriteChoiceKeyFor", void 0);
+
+Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder.prototype, "addChoiceByResourceIdTo", void 0);
+
+ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
+  components: {
+    ResourceVariantTextEditor: ResourceVariantTextEditor["a" /* default */]
+  }
+})], ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder);
+/* harmony default export */ var ChoicesBuildervue_type_script_lang_ts_ = (ChoicesBuildervue_type_script_lang_ts_ChoicesBuilder);
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=script&lang=ts&
+ /* harmony default export */ var block_editors_ChoicesBuildervue_type_script_lang_ts_ = (ChoicesBuildervue_type_script_lang_ts_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2877");
+
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ChoicesBuilder.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  block_editors_ChoicesBuildervue_type_script_lang_ts_,
+  ChoicesBuildervue_type_template_id_46098a2a_render,
+  ChoicesBuildervue_type_template_id_46098a2a_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var block_editors_ChoicesBuilder = (component.exports);
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue + 14 modules
+var BlockOutputBranchingConfig = __webpack_require__("18b0");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
+var NameEditor = __webpack_require__("f04e");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue + 4 modules
+var LabelEditor = __webpack_require__("3411");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/SemanticLabelEditor.vue + 4 modules
+var SemanticLabelEditor = __webpack_require__("1b4e");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue + 4 modules
+var ExitSemanticLabelEditor = __webpack_require__("70f0");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue + 4 modules
+var FirstBlockEditorButton = __webpack_require__("192b");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceEditor.vue + 37 modules
+var ResourceEditor = __webpack_require__("510a");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
+var BlockId = __webpack_require__("792f");
+
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue + 4 modules
+var GenericContactPropertyEditor = __webpack_require__("b4ec");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=script&lang=ts&
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_flowVuexNamespace = Object(lib["e" /* namespace */])('flow');
+var MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_blockVuexNamespace = Object(lib["e" /* namespace */])("flow/".concat(MobilePrimitives_SelectOneResponseBlockStore["a" /* BLOCK_TYPE */]));
+var builderVuexNamespace = Object(lib["e" /* namespace */])('builder');
+
+var MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock = /*#__PURE__*/function (_mixins) {
+  Object(inherits["a" /* default */])(MobilePrimitives_SelectOneResponseBlock, _mixins);
+
+  var _super = Object(createSuper["a" /* default */])(MobilePrimitives_SelectOneResponseBlock);
+
+  function MobilePrimitives_SelectOneResponseBlock() {
+    var _this;
+
+    Object(classCallCheck["a" /* default */])(this, MobilePrimitives_SelectOneResponseBlock);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -452,192 +451,114 @@ var SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoRes
 
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "flow", void 0);
 
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "showSemanticLabel", false);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "SupportedContentType", dist["SupportedContentType"]);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "SupportedMode", dist["SupportedMode"]);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "findOrGenerateStubbedVariantOn", flow_resource["c" /* findOrGenerateStubbedVariantOn */]);
+
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "resourcesByUuid", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "block_createBlockExitWith", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "block_convertExitFormationToUnified", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "reflowExitsFromChoices", void 0);
+
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "handleBranchingTypeChangedToUnified", void 0);
 
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "isEditable", void 0);
 
     return _this;
   }
 
-  return SmartDevices_PhotoResponseBlock;
-}(Object(vue_class_component_esm["c" /* mixins */])(lang["a" /* default */]));
-
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock.prototype, "block", void 0);
-
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock.prototype, "flow", void 0);
-
-Object(tslib_es6["__decorate"])([flowVuexNamespace.Getter], SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock.prototype, "resourcesByUuid", void 0);
-
-Object(tslib_es6["__decorate"])([builderVuexNamespace.Getter], SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock.prototype, "isEditable", void 0);
-
-SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
-  components: {
-    BlockNameEditor: NameEditor["a" /* default */],
-    BlockLabelEditor: LabelEditor["a" /* default */],
-    BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
-    FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
-    BlockId: BlockId["a" /* default */]
-  }
-})], SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock);
-/* harmony default export */ var SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_ = (SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock);
-var install = Object(builder["c" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, SmartDevices_PhotoResponseBlockStore);
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue?vue&type=script&lang=ts&
- /* harmony default export */ var block_types_SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_ = (SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__("2877");
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  block_types_SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var block_types_SmartDevices_PhotoResponseBlock = __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "3411":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4ad08327-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/LabelEditor.vue?vue&type=template&id=017ef671&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/label")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
-var isValid = ref.isValid;
-return [_c('div',{staticClass:"block-label"},[_c('text-editor',{attrs:{"label":_vm._f("trans")('flow-builder.block-label'),"placeholder":_vm._f("trans")('flow-builder.enter-block-label'),"valid-state":isValid},model:{value:(_vm.label),callback:function ($$v) {_vm.label=$$v},expression:"label"}})],1)]}}])})}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue?vue&type=template&id=017ef671&
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
-var classCallCheck = __webpack_require__("276c");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/createClass.js
-var createClass = __webpack_require__("e954");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
-var assertThisInitialized = __webpack_require__("2c4c");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/inherits.js
-var inherits = __webpack_require__("920b");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/createSuper.js + 1 modules
-var createSuper = __webpack_require__("92a6");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/defineProperty.js
-var defineProperty = __webpack_require__("fc11");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
-var es_array_concat = __webpack_require__("99af");
-
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__("9ab4");
-
-// EXTERNAL MODULE: ./src/components/common/TextEditor.vue + 4 modules
-var TextEditor = __webpack_require__("d883");
-
-// EXTERNAL MODULE: ./src/lib/filters/lang.ts
-var lang = __webpack_require__("4a51");
-
-// EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/index.js + 14 modules
-var lib = __webpack_require__("1b40");
-
-// EXTERNAL MODULE: ./node_modules/vuex-class/lib/index.js + 1 modules
-var vuex_class_lib = __webpack_require__("4bb5");
-
-// EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
-var vue_class_component_esm = __webpack_require__("2fe1");
-
-// EXTERNAL MODULE: ./src/components/common/ValidationMessage.vue + 5 modules
-var ValidationMessage = __webpack_require__("21e9");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/LabelEditor.vue?vue&type=script&lang=ts&
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var flowVuexNamespace = Object(vuex_class_lib["e" /* namespace */])('flow');
-
-var LabelEditorvue_type_script_lang_ts_LabelEditor = /*#__PURE__*/function (_mixins) {
-  Object(inherits["a" /* default */])(LabelEditor, _mixins);
-
-  var _super = Object(createSuper["a" /* default */])(LabelEditor);
-
-  function LabelEditor() {
-    var _this;
-
-    Object(classCallCheck["a" /* default */])(this, LabelEditor);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _super.call.apply(_super, [this].concat(args));
-
-    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "block", void 0);
-
-    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "block_setLabel", void 0);
-
-    return _this;
-  }
-
-  Object(createClass["a" /* default */])(LabelEditor, [{
-    key: "label",
+  Object(createClass["a" /* default */])(MobilePrimitives_SelectOneResponseBlock, [{
+    key: "promptResource",
     get: function get() {
-      return this.block.label;
-    },
-    set: function set(value) {
-      this.block_setLabel({
-        blockId: this.block.uuid,
-        value: value
+      return this.resourcesByUuid[this.block.config.prompt];
+    }
+  }, {
+    key: "handleChoiceChanged",
+    value: function handleChoiceChanged() {
+      var _this$block = this.block,
+          blockId = _this$block.uuid,
+          metadata = _this$block.vendor_metadata;
+      var EXIT_PER_CHOICE = BlockOutputBranchingConfig["b" /* OutputBranchingType */].EXIT_PER_CHOICE;
+
+      if (metadata.io_viamo.branchingType !== EXIT_PER_CHOICE) {
+        return;
+      }
+
+      this.reflowExitsFromChoices({
+        blockId: blockId
+      });
+    }
+  }, {
+    key: "reflowExitsWhenSwitchingToBranchingTypeNotUnified",
+    value: function reflowExitsWhenSwitchingToBranchingTypeNotUnified() {
+      var _this$block2 = this.block,
+          blockId = _this$block2.uuid,
+          metadata = _this$block2.vendor_metadata;
+      var EXIT_PER_CHOICE = BlockOutputBranchingConfig["b" /* OutputBranchingType */].EXIT_PER_CHOICE,
+          ADVANCED = BlockOutputBranchingConfig["b" /* OutputBranchingType */].ADVANCED;
+      var isEnteringChoiceOrAdvancedBranchingType = Object(lodash["includes"])([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType);
+
+      if (!isEnteringChoiceOrAdvancedBranchingType) {
+        this.handleBranchingTypeChangedToUnified({
+          block: this.block
+        });
+        return;
+      }
+
+      this.reflowExitsFromChoices({
+        blockId: blockId
       });
     }
   }]);
 
-  return LabelEditor;
+  return MobilePrimitives_SelectOneResponseBlock;
 }(Object(vue_class_component_esm["c" /* mixins */])(lang["a" /* default */]));
 
-Object(tslib_es6["__decorate"])([Object(lib["b" /* Prop */])()], LabelEditorvue_type_script_lang_ts_LabelEditor.prototype, "block", void 0);
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "block", void 0);
 
-Object(tslib_es6["__decorate"])([flowVuexNamespace.Mutation], LabelEditorvue_type_script_lang_ts_LabelEditor.prototype, "block_setLabel", void 0);
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "flow", void 0);
 
-LabelEditorvue_type_script_lang_ts_LabelEditor = Object(tslib_es6["__decorate"])([Object(lib["a" /* Component */])({
+Object(tslib_es6["__decorate"])([MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_flowVuexNamespace.Getter], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "resourcesByUuid", void 0);
+
+Object(tslib_es6["__decorate"])([MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_flowVuexNamespace.Action], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "block_createBlockExitWith", void 0);
+
+Object(tslib_es6["__decorate"])([MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_flowVuexNamespace.Action], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "block_convertExitFormationToUnified", void 0);
+
+Object(tslib_es6["__decorate"])([MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_blockVuexNamespace.Action], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "reflowExitsFromChoices", void 0);
+
+Object(tslib_es6["__decorate"])([MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_blockVuexNamespace.Action], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "handleBranchingTypeChangedToUnified", void 0);
+
+Object(tslib_es6["__decorate"])([builderVuexNamespace.Getter], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock.prototype, "isEditable", void 0);
+
+MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
   components: {
-    TextEditor: TextEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    GenericContactPropertyEditor: GenericContactPropertyEditor["a" /* default */],
+    ResourceVariantTextEditor: ResourceVariantTextEditor["a" /* default */],
+    BlockExitSemanticLabelEditor: ExitSemanticLabelEditor["a" /* default */],
+    BlockId: BlockId["a" /* default */],
+    BlockLabelEditor: LabelEditor["a" /* default */],
+    BlockNameEditor: NameEditor["a" /* default */],
+    BlockOutputBranchingConfig: BlockOutputBranchingConfig["c" /* default */],
+    BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
+    ChoicesBuilder: block_editors_ChoicesBuilder,
+    FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
+    ResourceEditor: ResourceEditor["a" /* default */],
+    Categorization: Categorization["a" /* default */]
   }
-})], LabelEditorvue_type_script_lang_ts_LabelEditor);
-/* harmony default export */ var LabelEditorvue_type_script_lang_ts_ = (LabelEditorvue_type_script_lang_ts_LabelEditor);
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue?vue&type=script&lang=ts&
- /* harmony default export */ var block_editors_LabelEditorvue_type_script_lang_ts_ = (LabelEditorvue_type_script_lang_ts_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__("2877");
+})], MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock);
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/LabelEditor.vue
+/* harmony default export */ var MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_ = (MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock);
+var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(MobilePrimitives_SelectOneResponseBlockStore["a" /* BLOCK_TYPE */], MobilePrimitives_SelectOneResponseBlockStore["c" /* default */]);
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=script&lang=ts&
+ /* harmony default export */ var block_types_MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_ = (MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_); 
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue
 
 
 
@@ -645,8 +566,8 @@ var componentNormalizer = __webpack_require__("2877");
 
 /* normalize component */
 
-var component = Object(componentNormalizer["a" /* default */])(
-  block_editors_LabelEditorvue_type_script_lang_ts_,
+var MobilePrimitives_SelectOneResponseBlock_component = Object(componentNormalizer["a" /* default */])(
+  block_types_MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_,
   render,
   staticRenderFns,
   false,
@@ -656,156 +577,24 @@ var component = Object(componentNormalizer["a" /* default */])(
   
 )
 
-/* harmony default export */ var block_editors_LabelEditor = __webpack_exports__["a"] = (component.exports);
+/* harmony default export */ var block_types_MobilePrimitives_SelectOneResponseBlock = __webpack_exports__["default"] = (MobilePrimitives_SelectOneResponseBlock_component.exports);
 
 /***/ }),
 
-/***/ "792f":
+/***/ "70f0":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4ad08327-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/BlockId.vue?vue&type=template&id=0d0e1317&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"block-id text-right"},[_c('small',{staticClass:"text-muted"},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.block-id'))+": "),_c('em',[_vm._v(_vm._s(_vm.blockId))])])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue?vue&type=template&id=5c7a7930&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('text-editor',{attrs:{"is-editable":_vm.isEditable,"label":_vm._f("trans")('flow-builder.block-exit-semantic-label'),"placeholder":_vm._f("trans")('flow-builder.enter-block-exit-semantic-label')},model:{value:(_vm.semanticLabel),callback:function ($$v) {_vm.semanticLabel=$$v},expression:"semanticLabel"}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue?vue&type=template&id=0d0e1317&
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
-var classCallCheck = __webpack_require__("276c");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/createClass.js
-var createClass = __webpack_require__("e954");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
-var assertThisInitialized = __webpack_require__("2c4c");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/inherits.js
-var inherits = __webpack_require__("920b");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/createSuper.js + 1 modules
-var createSuper = __webpack_require__("92a6");
-
-// EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/defineProperty.js
-var defineProperty = __webpack_require__("fc11");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
-var es_array_concat = __webpack_require__("99af");
-
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__("9ab4");
-
-// EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/index.js + 14 modules
-var lib = __webpack_require__("1b40");
-
-// EXTERNAL MODULE: ./src/lib/filters/lang.ts
-var lang = __webpack_require__("4a51");
-
-// EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
-var vue_class_component_esm = __webpack_require__("2fe1");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/BlockId.vue?vue&type=script&lang=ts&
-
-
-
-
-
-
-
-
-
-
-
-
-var BlockIdvue_type_script_lang_ts_BlockId = /*#__PURE__*/function (_mixins) {
-  Object(inherits["a" /* default */])(BlockId, _mixins);
-
-  var _super = Object(createSuper["a" /* default */])(BlockId);
-
-  function BlockId() {
-    var _this;
-
-    Object(classCallCheck["a" /* default */])(this, BlockId);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _super.call.apply(_super, [this].concat(args));
-
-    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "block", void 0);
-
-    return _this;
-  }
-
-  Object(createClass["a" /* default */])(BlockId, [{
-    key: "blockId",
-    get: function get() {
-      return this.block.uuid || '';
-    }
-  }]);
-
-  return BlockId;
-}(Object(vue_class_component_esm["c" /* mixins */])(lang["a" /* default */]));
-
-Object(tslib_es6["__decorate"])([Object(lib["b" /* Prop */])()], BlockIdvue_type_script_lang_ts_BlockId.prototype, "block", void 0);
-
-BlockIdvue_type_script_lang_ts_BlockId = Object(tslib_es6["__decorate"])([Object(lib["a" /* Component */])({})], BlockIdvue_type_script_lang_ts_BlockId);
-/* harmony default export */ var BlockIdvue_type_script_lang_ts_ = (BlockIdvue_type_script_lang_ts_BlockId);
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue?vue&type=script&lang=ts&
- /* harmony default export */ var block_editors_BlockIdvue_type_script_lang_ts_ = (BlockIdvue_type_script_lang_ts_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__("2877");
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  block_editors_BlockIdvue_type_script_lang_ts_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var block_editors_BlockId = __webpack_exports__["a"] = (component.exports);
-
-/***/ }),
-
-/***/ "f04e":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4ad08327-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/NameEditor.vue?vue&type=template&id=e76ca57c&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/name")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
-var isValid = ref.isValid;
-return [_c('div',{staticClass:"block-name"},[_c('text-editor',{attrs:{"label":_vm._f("trans")('flow-builder.block-name'),"placeholder":_vm._f("trans")('flow-builder.enter-block-name'),"valid-state":isValid},on:{"keydown":_vm.filterName},model:{value:(_vm.name),callback:function ($$v) {_vm.name=$$v},expression:"name"}},[_c('small',{staticClass:"text-muted"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.only-accepts-word-characters'))+" ")])])],1)]}}])})}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue?vue&type=template&id=e76ca57c&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue?vue&type=template&id=5c7a7930&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/objectSpread2.js
 var objectSpread2 = __webpack_require__("f3f3");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
-var es_function_name = __webpack_require__("b0c0");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
-var es_regexp_exec = __webpack_require__("ac1f");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.match.js
-var es_string_match = __webpack_require__("466d");
 
 // EXTERNAL MODULE: ./node_modules/vuex/dist/vuex.esm.js
 var vuex_esm = __webpack_require__("2f62");
@@ -816,59 +605,47 @@ var TextEditor = __webpack_require__("d883");
 // EXTERNAL MODULE: ./src/lib/filters/lang.ts
 var lang = __webpack_require__("4a51");
 
-// EXTERNAL MODULE: ./src/components/common/ValidationMessage.vue + 5 modules
-var ValidationMessage = __webpack_require__("21e9");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/NameEditor.vue?vue&type=script&lang=js&
-
-
-
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue?vue&type=script&lang=js&
 
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
 
 
-
-/* harmony default export */ var NameEditorvue_type_script_lang_js_ = ({
+/* harmony default export */ var ExitSemanticLabelEditorvue_type_script_lang_js_ = ({
   components: {
-    TextEditor: TextEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    TextEditor: TextEditor["a" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {
-    block: {
+    isEditable: {
+      default: true,
+      type: Boolean
+    },
+    exit: {
       type: Object,
       required: true
     }
   },
   computed: {
-    name: {
+    semanticLabel: {
       get: function get() {
-        return this.block.name;
+        return this.exit.semantic_label;
       },
       set: function set(value) {
-        this.block_setName({
-          blockId: this.block.uuid,
-          value: value
-        });
+        this.exit.semantic_label = value;
+        this.$emit('commitSemanticLabel', value);
       }
     }
   },
-  methods: Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["c" /* mapMutations */])('flow', ['block_setName'])), {}, {
-    filterName: function filterName(e) {
-      if (e.key.match(/\W+|Enter/g)) {
-        e.preventDefault();
-      }
-    }
-  })
+  methods: Object(objectSpread2["a" /* default */])({}, Object(vuex_esm["c" /* mapMutations */])('flow', ['block_setExitSemanticLabel']))
 });
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue?vue&type=script&lang=js&
- /* harmony default export */ var block_editors_NameEditorvue_type_script_lang_js_ = (NameEditorvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue?vue&type=script&lang=js&
+ /* harmony default export */ var block_editors_ExitSemanticLabelEditorvue_type_script_lang_js_ = (ExitSemanticLabelEditorvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__("2877");
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue
 
 
 
@@ -877,7 +654,7 @@ var componentNormalizer = __webpack_require__("2877");
 /* normalize component */
 
 var component = Object(componentNormalizer["a" /* default */])(
-  block_editors_NameEditorvue_type_script_lang_js_,
+  block_editors_ExitSemanticLabelEditorvue_type_script_lang_js_,
   render,
   staticRenderFns,
   false,
@@ -887,7 +664,320 @@ var component = Object(componentNormalizer["a" /* default */])(
   
 )
 
-/* harmony default export */ var NameEditor = __webpack_exports__["a"] = (component.exports);
+/* harmony default export */ var ExitSemanticLabelEditor = __webpack_exports__["a"] = (component.exports);
+
+/***/ }),
+
+/***/ "ecef":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BLOCK_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return stateFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return mutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return actions; });
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_vue_babel_preset_app_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("d0ff");
+/* harmony import */ var _home_jacob_voto_flow_builder_node_modules_vue_babel_preset_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("c964");
+/* harmony import */ var regenerator_runtime_runtime_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("96cf");
+/* harmony import */ var regenerator_runtime_runtime_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("e260");
+/* harmony import */ var core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("d3b7");
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("ddb0");
+/* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("99af");
+/* harmony import */ var core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var core_js_modules_es_object_keys_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("b64b");
+/* harmony import */ var core_js_modules_es_object_keys_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys_js__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("fb6a");
+/* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("e6cf");
+/* harmony import */ var core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var core_js_modules_es_string_iterator_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("3ca3");
+/* harmony import */ var core_js_modules_es_string_iterator_js__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_iterator_js__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var core_js_modules_es_array_map_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("d81d");
+/* harmony import */ var core_js_modules_es_array_map_js__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_map_js__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var core_js_modules_es_object_assign_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("cca6");
+/* harmony import */ var core_js_modules_es_object_assign_js__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_assign_js__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__("a434");
+/* harmony import */ var core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var core_js_modules_es_array_join_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__("a15b");
+/* harmony import */ var core_js_modules_es_array_join_js__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_join_js__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__("9300");
+/* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__("31aa");
+/* harmony import */ var _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__("8bbf");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__("2ef0");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_18__);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse';
+var stateFactory = function stateFactory() {
+  return {};
+};
+var getters = {};
+var mutations = {};
+var actions = {
+  rewriteChoiceKeyFor: function rewriteChoiceKeyFor(_ref, _ref2) {
+    var rootGetters = _ref.rootGetters,
+        dispatch = _ref.dispatch;
+    var resourceId = _ref2.resourceId,
+        blockId = _ref2.blockId;
+    var block = rootGetters['builder/blocksById'][blockId];
+
+    if (block == null) {
+      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find block: ".concat(blockId));
+    }
+
+    var resource = rootGetters['flow/resourcesByUuid'][resourceId];
+
+    if (resource == null) {
+      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find resource for choice: ".concat(resourceId));
+    }
+
+    var choiceKey = String(Object(lodash__WEBPACK_IMPORTED_MODULE_18__["findKey"])(block.config.choices, function (v) {
+      return v === resourceId;
+    })); // omit() will inadvertently but desirably remove an empty `choiceKey`
+
+    block.config.choices = Object(lodash__WEBPACK_IMPORTED_MODULE_18__["omit"])(block.config.choices, choiceKey);
+    dispatch('addChoiceByResourceIdTo', {
+      blockId: blockId,
+      resourceId: resourceId
+    });
+  },
+  addChoiceByResourceIdTo: function addChoiceByResourceIdTo(_ref3, _ref4) {
+    var rootGetters = _ref3.rootGetters;
+    var blockId = _ref4.blockId,
+        resourceId = _ref4.resourceId;
+    var block = rootGetters['builder/blocksById'][blockId];
+
+    if (block == null) {
+      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find block: ".concat(blockId));
+    }
+
+    var resource = rootGetters['flow/resourcesByUuid'][resourceId];
+
+    if (resource == null) {
+      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find resource for choice: ".concat(resourceId));
+    } // defaulted to `resourceId` to mitigate empty keys and associated error handling altogether
+
+
+    var desiredChoiceKey = Object(lodash__WEBPACK_IMPORTED_MODULE_18__["snakeCase"])(Object(lodash__WEBPACK_IMPORTED_MODULE_18__["get"])(resource.values[0], 'value')) || resource.uuid;
+    var doesChoiceKeyAlreadyExist = (desiredChoiceKey in block.config.choices); // apply suffix as resourceId when duplicated to prevent overwriting as input is received
+
+    var suffix = doesChoiceKeyAlreadyExist ? "-".concat(resource.uuid) : '';
+    vue__WEBPACK_IMPORTED_MODULE_17___default.a.set(block.config.choices, "".concat(desiredChoiceKey).concat(suffix), resource.uuid);
+  },
+  deleteChoiceByResourceIdFrom: function deleteChoiceByResourceIdFrom(_ref5, _ref6) {
+    var rootGetters = _ref5.rootGetters;
+    var blockId = _ref6.blockId,
+        resourceId = _ref6.resourceId;
+    var block = rootGetters['builder/blocksById'][blockId];
+
+    if (block == null) {
+      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find block: ".concat(blockId));
+    }
+
+    var choiceKey = String(Object(lodash__WEBPACK_IMPORTED_MODULE_18__["findKey"])(block.config.choices, function (v) {
+      return v === resourceId;
+    }));
+    vue__WEBPACK_IMPORTED_MODULE_17___default.a.delete(block.config.choices, choiceKey);
+  },
+  reflowExitsFromChoices: function reflowExitsFromChoices(_ref7, _ref8) {
+    return Object(_home_jacob_voto_flow_builder_node_modules_vue_babel_preset_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var dispatch, rootGetters, blockId, block, choices, exits, choiceKeys, exitsForChoices;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              dispatch = _ref7.dispatch, rootGetters = _ref7.rootGetters;
+              blockId = _ref8.blockId;
+              block = rootGetters['builder/blocksById'][blockId];
+
+              if (!(block == null)) {
+                _context2.next = 5;
+                break;
+              }
+
+              throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find block: ".concat(blockId));
+
+            case 5:
+              choices = block.config.choices, exits = block.exits;
+              choiceKeys = Object.keys(choices);
+              exitsForChoices = exits.slice(0, -1); // non-default exits; default should always be last
+              // reflow exits based on choices
+
+              _context2.next = 10;
+              return Promise.all(choiceKeys.map( /*#__PURE__*/function () {
+                var _ref9 = Object(_home_jacob_voto_flow_builder_node_modules_vue_babel_preset_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee(choiceKey, i) {
+                  var uuid, exit;
+                  return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                      switch (_context.prev = _context.next) {
+                        case 0:
+                          if (!(exitsForChoices[i] == null)) {
+                            _context.next = 8;
+                            break;
+                          }
+
+                          _context.next = 3;
+                          return new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_16__["IdGeneratorUuidV4"]().generate();
+
+                        case 3:
+                          uuid = _context.sent;
+                          _context.next = 6;
+                          return dispatch('flow/block_createBlockExitWith', {
+                            props: {
+                              uuid: uuid
+                            }
+                          }, {
+                            root: true
+                          });
+
+                        case 6:
+                          exit = _context.sent;
+                          exitsForChoices.push(exit);
+
+                        case 8:
+                          Object.assign(exitsForChoices[i], {
+                            name: choiceKey,
+                            test: "block.value = ".concat(i + 1)
+                          });
+
+                        case 9:
+                        case "end":
+                          return _context.stop();
+                      }
+                    }
+                  }, _callee);
+                }));
+
+                return function (_x, _x2) {
+                  return _ref9.apply(this, arguments);
+                };
+              }()));
+
+            case 10:
+              exits.splice.apply(exits, [0, exits.length - 1].concat(Object(_home_jacob_voto_flow_builder_node_modules_vue_babel_preset_app_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(exitsForChoices)));
+
+            case 11:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  },
+  createWith: function createWith(_ref10, _ref11) {
+    return Object(_home_jacob_voto_flow_builder_node_modules_vue_babel_preset_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      var dispatch, props, blankPromptResource, defaultExitProps, defaultExit;
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              dispatch = _ref10.dispatch;
+              props = _ref11.props;
+              _context3.next = 4;
+              return dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {
+                root: true
+              });
+
+            case 4:
+              blankPromptResource = _context3.sent;
+              _context3.next = 7;
+              return new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_16__["IdGeneratorUuidV4"]().generate();
+
+            case 7:
+              _context3.t0 = _context3.sent;
+              defaultExitProps = {
+                uuid: _context3.t0,
+                name: 'Default',
+                default: true
+              };
+              _context3.next = 11;
+              return dispatch('flow/block_createBlockDefaultExitWith', {
+                props: defaultExitProps
+              }, {
+                root: true
+              });
+
+            case 11:
+              defaultExit = _context3.sent;
+              return _context3.abrupt("return", Object(lodash__WEBPACK_IMPORTED_MODULE_18__["defaultsDeep"])(props, {
+                type: BLOCK_TYPE,
+                name: '',
+                label: '',
+                semantic_label: '',
+                config: {
+                  prompt: blankPromptResource.uuid,
+                  choices: {}
+                },
+                exits: [defaultExit],
+                tags: [],
+                vendor_metadata: {}
+              }));
+
+            case 13:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
+  },
+  handleBranchingTypeChangedToUnified: function handleBranchingTypeChangedToUnified(_ref12, _ref13) {
+    var dispatch = _ref12.dispatch;
+    var block = _ref13.block;
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: formatTestValueForUnifiedBranchingType(block)
+    }, {
+      root: true
+    });
+  }
+};
+
+function formatTestValueForUnifiedBranchingType(block) {
+  var blockChoicesKey = Object.keys(block.config.choices);
+
+  if (blockChoicesKey.length === 0) {
+    console.warn('Choices are empty for SelectOneBlock, providing `true` by default');
+    return 'true';
+  }
+
+  return "OR(".concat(Object(lodash__WEBPACK_IMPORTED_MODULE_18__["map"])(blockChoicesKey, function (choice) {
+    return "block.value = '".concat(choice, "'");
+  }).join(','), ")");
+}
+
+/* harmony default export */ __webpack_exports__["c"] = ({
+  namespaced: true,
+  state: stateFactory,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
 
 /***/ })
 

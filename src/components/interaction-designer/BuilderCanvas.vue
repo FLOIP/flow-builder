@@ -9,8 +9,8 @@
       :key="block.uuid"
       :ref="`block/${block.uuid}`"
       :block="block"
-      :x="block.vendor_metadata.io_viamo.uiData.xPosition"
-      :y="block.vendor_metadata.io_viamo.uiData.yPosition" />
+      :x="block.ui_metadata.canvas_coordinates.x"
+      :y="block.ui_metadata.canvas_coordinates.y" />
   </div>
 </template>
 
@@ -32,7 +32,7 @@ const MARGIN_HEIGHT = 100
 const MARGIN_WIDTH = 100
 
 //ms
-const DEBOUNCE_SCROLL_TIMER = 100
+const DEBOUNCE_SCROLL_TIMER = 300
 
 @Component({
   components: {
@@ -41,6 +41,7 @@ const DEBOUNCE_SCROLL_TIMER = 100
 })
 export default class BuilderCanvas extends Vue {
   @Prop() block!: IBlock
+  @Prop({default: 0}) widthAdjustment!: number
 
   // ###### Validation API Watchers [
   @Watch('activeFlow', {deep: true, immediate: true})
@@ -115,7 +116,7 @@ export default class BuilderCanvas extends Vue {
         `block/${this.blockAtTheLowestPosition?.uuid}`,
       )
       // temporary dummy height for UI scroll purpose
-      return 150
+      return 84
     }
     return (<HTMLElement>(<Vue>blockElementRef[0].$refs.draggable).$el).offsetHeight
   }
@@ -138,11 +139,11 @@ export default class BuilderCanvas extends Vue {
   }
 
   get blockAtTheLowestPosition(): any {
-    return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.yPosition')
+    return maxBy(this.activeFlow.blocks, 'ui_metadata.canvas_coordinates.y')
   }
 
   get blockAtTheFurthestRightPosition(): any {
-    return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
+    return maxBy(this.activeFlow.blocks, 'ui_metadata.canvas_coordinates.x')
   }
 
   get windowHeight(): number {
@@ -154,7 +155,7 @@ export default class BuilderCanvas extends Vue {
   }
 
   get canvasHeight(): any {
-    if (this.activeFlow.blocks.length == 0) {
+    if (this.activeFlow.blocks.length === 0) {
       return this.windowHeight
     }
 
@@ -163,8 +164,10 @@ export default class BuilderCanvas extends Vue {
       return this.windowHeight
     }
 
-    const yPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.yPosition')
-    const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
+    const yPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.y
+    // TODO in https://viamoinc.atlassian.net/browse/VMO-4192, clean this original solution in case the actual solution still works after we update the toolbar. I suspect there is a relation between the scrollHeight formula and the fact that we have toolbar elements with fixed position
+    // const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
+    const scrollHeight = yPosition
 
     if (scrollHeight < this.windowHeight) {
       return this.windowHeight
@@ -174,23 +177,23 @@ export default class BuilderCanvas extends Vue {
   }
 
   get canvasWidth(): number {
-    if (this.activeFlow.blocks.length == 0) {
-      return this.windowWidth
+    if (this.activeFlow.blocks.length === 0) {
+      return this.windowWidth - this.widthAdjustment
     }
 
     if (!this.blockAtTheFurthestRightPosition) {
       console.debug('Interaction Designer', 'Unable to find block at the furthest right position')
-      return this.windowWidth
+      return this.windowWidth - this.widthAdjustment
     }
 
-    const xPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.xPosition')
+    const xPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.x
     const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
 
     if (scrollWidth < this.windowWidth) {
-      return this.windowWidth
+      return this.windowWidth - this.widthAdjustment
     }
 
-    return scrollWidth
+    return scrollWidth - this.widthAdjustment
   }
 
   @flowVuexNamespace.State flows?: IFlow[]

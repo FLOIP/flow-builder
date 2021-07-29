@@ -16,7 +16,7 @@
     </div>
     <div
       v-if="hasUnsupportedBlockClasses"
-      class="alert alert-danger"
+      class="alert alert-danger mt-3"
       role="alert">
       {{ `${trans('flow-builder.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}` }}
     </div>

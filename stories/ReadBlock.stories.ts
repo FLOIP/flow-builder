@@ -56,6 +56,7 @@ class ExistingDataClass extends BaseMountedVueClass {
 
     this.setDescription(blockId)
     this.setFormatString('%s lorem ipsum %d [...]')
+    this.setTags(blockId)
   }
 
   @blockVuexNamespace.Action setFormatString!: (newFormatString: string) => void

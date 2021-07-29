@@ -1,7 +1,7 @@
 <template>
   <div class="mobile-primitive-numeric-response-block">
-    <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+    <h3 class="block-editor-header">
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -24,12 +24,25 @@
         :has-ivr="hasVoiceMode"
         @commitMaxDigitsChange="updateMaxDigits" />
 
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
+
       <resource-editor
         v-if="promptResource"
         :resource="promptResource"
         :block="block"
         :flow="flow" />
+
       <slot name="extras" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
@@ -43,13 +56,19 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IBlock, IFlow, IResource} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IFlow, IResource} from '@floip/flow-runner'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 
 import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import BlockOutputBranchingConfig, {
+  IBlockWithBranchingType,
+  OutputBranchingType,
+} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {includes} from 'lodash'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -59,6 +78,7 @@ import BlockId from '../block-editors/BlockId.vue'
 import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue'
 import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
 import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -66,6 +86,7 @@ const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
+    GenericContactPropertyEditor,
     ResourceEditor,
     BlockNameEditor,
     BlockLabelEditor,
@@ -75,6 +96,8 @@ const builderVuexNamespace = namespace('builder')
     BlockMinimumNumericEditor,
     BlockMaximumNumericEditor,
     BlockMaxDigitEditor,
+    Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
@@ -90,19 +113,34 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
 
   updateValidationMin(value: number | string) {
     this.setValidationMinimum({blockId: this.block.uuid, value})
+    this.handleActionsAccordingToBranchingType()
   }
 
   updateValidationMax(value: number | string) {
     this.setValidationMaximum({blockId: this.block.uuid, value})
+    this.handleActionsAccordingToBranchingType()
   }
 
   updateMaxDigits(value: number | string) {
     this.setMaxDigits({blockId: this.block.uuid, value})
   }
 
+  handleActionsAccordingToBranchingType(): void {
+    const {vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
+    const {EXIT_PER_CHOICE, ADVANCED} = OutputBranchingType
+    const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
+
+    if (!isEnteringChoiceOrAdvancedBranchingType) {
+      this.handleBranchingTypeChangedToUnified({block: this.block})
+    }
+  }
+
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
+
+  @flowVuexNamespace.Action block_convertExitFormationToUnified!:
+    ({blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) => Promise<void>
 
   @blockVuexNamespace.Action setValidationMinimum!: ({
     blockId,
@@ -115,6 +153,8 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   }: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
 
   @blockVuexNamespace.Action setMaxDigits!: ({blockId, value}: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
+
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean
 }

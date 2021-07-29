@@ -1,7 +1,7 @@
 <template>
   <div class="console-io-print-block">
-    <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+    <h3 class="block-editor-header">
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -13,16 +13,36 @@
         :block="block" />
       <block-name-editor :block="block" />
 
-      <resource-editor
-        v-if="promptResource"
-        :resource="promptResource"
-        :block="block"
-        :flow="flow" />
-
       <slot name="extras" />
+
+      <validation-message
+        #input-control="{ isValid }"
+        :message-key="`block/${block.uuid}/config/message`">
+        <expression-input
+          :label="'flow-builder.print-message' | trans"
+          :placeholder="'flow-builder.enter-message' | trans"
+          :current-expression="value"
+          :valid-state="isValid"
+          @commitExpressionChange="commitMessageChange" />
+      </validation-message>
+
+      <hr>
+
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
+
     </fieldset>
 
     <block-id :block="block" />
@@ -33,31 +53,39 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IFlow, IResource} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import {IPrintBlock} from '@floip/flow-runner/src/model/block/IPrintBlock'
 
 import PrintStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+import ExpressionInput from '@/components/common/ExpressionInput.vue'
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
-const flowVuexNamespace = namespace('flow')
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
-    ResourceEditor,
+    GenericContactPropertyEditor,
+    ExpressionInput,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
+    ValidationMessage,
+    Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class ConsoleIO_PrintBlock extends mixins(Lang) {
@@ -67,12 +95,16 @@ class ConsoleIO_PrintBlock extends mixins(Lang) {
 
   showSemanticLabel = false
 
-  get promptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.message]
+  get value(): string {
+    return this.block.config.message || ''
   }
 
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  commitMessageChange(value: string): Promise<string> {
+    return this.editMessage({blockId: this.block.uuid, message: value})
+  }
 
+  @blockVuexNamespace.Action editMessage!: (params: { blockId: string, message: string }) => Promise<string>
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable !: boolean
 }
 

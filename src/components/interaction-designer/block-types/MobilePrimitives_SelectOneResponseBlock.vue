@@ -1,7 +1,7 @@
 <template>
   <div class="mobile-primitive-select-one-response-block">
-    <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+    <h3 class="block-editor-header">
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
     <fieldset :disabled="!isEditable">
@@ -13,6 +13,18 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <hr>
+
+      <choices-builder
+        :block="block"
+        @choiceChanged="handleChoiceChanged" />
+
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="true"
+        :label-class="''"
+        @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
+
       <div class="prompt-resource">
         <resource-editor
           v-if="promptResource"
@@ -21,48 +33,15 @@
           :block="block"
           :flow="flow" />
       </div>
-      <div class="question-prompt-resource">
-        <resource-editor
-          v-if="questionPromptResource"
-          :label="'flow-builder.question-prompt' | trans"
-          :resource="questionPromptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
-      <div class="choices-prompt-resource">
-        <resource-editor
-          v-if="choicesPromptResource"
-          :label="'flow-builder.choices-prompt' | trans"
-          :resource="choicesPromptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
-      <div class="form-group">
-        <!--Show non empty choices-->
-        <template v-for="(choiceKey) in Object.keys(inflatedChoices)">
-          <hr>
-          <h4>{{ `Choice ${choiceKey}` }}</h4>
-          <block-exit-semantic-label-editor
-            v-if="inflatedChoices[choiceKey].exit"
-            :exit="inflatedChoices[choiceKey].exit"
-            :block="block" />
 
-          <resource-editor
-            :resource="inflatedChoices[choiceKey].resource"
-            :block="block"
-            :flow="flow" />
-        </template>
-        <!--Show empty choice-->
-        <hr>
-        <h4>{{ `Choice ${Object.keys(inflatedChoices).length + 1}` }}</h4>
-        <block-exit-semantic-label-editor :exit="inflatedEmptyChoice.exit" />
-
-        <resource-editor
-          :resource="inflatedEmptyChoice.resource"
-          :block="block"
-          :flow="flow" />
-      </div>
       <slot name="extras" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
@@ -73,15 +52,24 @@
 </template>
 
 <script lang="ts">
-import {IFlow, IResource} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IFlow, IResource, SupportedMode} from '@floip/flow-runner'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {namespace} from 'vuex-class'
-import {Component, Prop, Watch} from 'vue-property-decorator'
+import {Component, Prop} from 'vue-property-decorator'
+import {includes, map} from 'lodash'
 
-import SelectOneStore, {BLOCK_TYPE, IInflatedChoicesInterface} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
+import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
+import ChoicesBuilder from '@/components/interaction-designer/block-editors/ChoicesBuilder.vue'
+import BlockOutputBranchingConfig, {
+  IBlockWithBranchingType,
+  OutputBranchingType,
+} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -89,20 +77,26 @@ import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEdit
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component<any>({
+@Component({
   components: {
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
+    GenericContactPropertyEditor,
+    ResourceVariantTextEditor,
     BlockExitSemanticLabelEditor,
+    BlockId,
+    BlockLabelEditor,
+    BlockNameEditor,
+    BlockOutputBranchingConfig,
+    BlockSemanticLabelEditor,
+    ChoicesBuilder,
     FirstBlockEditorButton,
     ResourceEditor,
-    BlockId,
+    Categorization,
   },
 })
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
@@ -112,38 +106,43 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
   showSemanticLabel = false
 
+  SupportedMode = SupportedMode
+  findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
+
   get promptResource(): IResource {
     return this.resourcesByUuid[this.block.config.prompt]
   }
 
-  get questionPromptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.question_prompt || '']
+  handleChoiceChanged(): void {
+    const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
+    const {EXIT_PER_CHOICE} = OutputBranchingType
+
+    if (metadata.io_viamo.branchingType !== EXIT_PER_CHOICE) {
+      return
+    }
+
+    this.reflowExitsFromChoices({blockId})
   }
 
-  get choicesPromptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.choices_prompt || '']
-  }
+  reflowExitsWhenSwitchingToBranchingTypeNotUnified(): void {
+    const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
+    const {EXIT_PER_CHOICE, ADVANCED} = OutputBranchingType
+    const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
 
-  @Watch('inflatedChoices', {deep: true})
-  onChoicesChanged(newChoices: object) {
-    console.debug('Watched inflatedChoices', newChoices)
-    this.editSelectOneResponseBlockChoice()
-  }
+    if (!isEnteringChoiceOrAdvancedBranchingType) {
+      this.handleBranchingTypeChangedToUnified({block: this.block})
+      return
+    }
 
-  @Watch('inflatedEmptyChoice', {deep: true})
-  onEmptyChoiceChanged(newChoice: object, oldChoice: object) {
-    console.debug('Watched inflatedEmptyChoice', newChoice, oldChoice)
-    this.editEmptyChoice({choice: oldChoice as IInflatedChoicesInterface})
+    this.reflowExitsFromChoices({blockId})
   }
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
-
-  @blockVuexNamespace.Getter inflatedChoices?: { [key: string]: IResource }
-  @blockVuexNamespace.State inflatedEmptyChoice?: { [key: string]: IResource }
-
-  @blockVuexNamespace.Action editSelectOneResponseBlockChoice!: () => Promise<object>
-  @blockVuexNamespace.Action editEmptyChoice!: ({choice}: { choice: IInflatedChoicesInterface }) => Promise<object>
-
+  @flowVuexNamespace.Action block_createBlockExitWith!: ({props}: { props: { uuid: string } & Partial<IBlockExit> }) => Promise<IBlockExit>
+  @flowVuexNamespace.Action block_convertExitFormationToUnified!:
+    ({blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) => Promise<void>
+  @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable !: boolean
 }
 

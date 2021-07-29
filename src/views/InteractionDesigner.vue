@@ -5,7 +5,6 @@
     <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate" />
 
     <div
-      :key="isSimulatorActive || (activeBlock && activeBlock.uuid)"
       class="tree-sidebar-container"
       :class="{ 'slide-out': !$route.meta.isSidebarShown,}">
       <div
@@ -29,33 +28,6 @@
       </div>
 
       <div
-        v-else-if="activeBlock"
-        class="tree-sidebar"
-        :class="[`category-${blockClasses[activeBlock.type].category}`]">
-        <div
-          class="tree-sidebar-edit-block"
-          :data-block-type="activeBlock && activeBlock.type"
-          :data-for-block-id="activeBlock && activeBlock.uuid">
-          <component
-            :is="`Flow${activeBlock.type.replace('.', '')}`"
-            v-if="activeBlock"
-            :block="activeBlock"
-            :flow="activeFlow" />
-        </div>
-
-        <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
-        <!--                     :jsonValidationResults="jsonValidationResults"-->
-        <!--                     :isTreeValid="isTreeValid"/>-->
-
-        <!--        <tree-viewer v-if="sidebarType === 'TreeViewer'"/>-->
-
-        <!--        <block-viewer-->
-        <!--          :key="jsKey"-->
-        <!--          v-if="sidebarType === 'BlockViewer'"-->
-        <!--          :data-for-block-id="jsKey" />-->
-      </div>
-
-      <div
         v-else
         class="tree-sidebar">
         <div class="tree-sidebar-edit-block">
@@ -64,13 +36,8 @@
       </div>
     </div>
 
-    <div
-      class="tree-contents"
-      :style="{
-        'min-height': `${designerWorkspaceHeight}px`,
-        'padding-top': `${toolbarHeight + 5}px`
-      }">
-      <builder-canvas @click.native="handleCanvasSelected" />
+    <div class="tree-contents position-relative">
+      <builder-canvas  @click.native="handleCanvasSelected" />
     </div>
   </div>
 </template>
@@ -198,16 +165,6 @@ export default {
     isPureVueBlock() {
       return _.includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
     },
-
-    sidebarType() {
-      const
-        blockType = get(this.selectedBlock, 'type')
-      const blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
-
-      return this.isEditable
-        ? blockType || 'TreeEditor'
-        : blockViewerType || 'TreeViewer'
-    },
   },
   watch: {
     // `this.mode` comes from captured param in js-routes
@@ -268,16 +225,23 @@ export default {
       if (field) {
         scrollBehavior(this.$route)
       }
+      if (this.$route.meta?.isBlockEditorShown) {
+        this.setIsBlockEditorOpen(true)
+      }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
   },
   beforeRouteUpdate(to, from, next) {
     this.activateBlock({blockId: to.params.blockId || null})
+    if (to.meta?.isBlockEditorShown) {
+      scrollBlockIntoView(to.params.blockId)
+      this.setIsBlockEditorOpen(true)
+    }
     next()
   },
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
-    ...mapMutations('builder', ['activateBlock']),
+    ...mapMutations('builder', ['activateBlock', 'setIsBlockEditorOpen']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
 
@@ -303,7 +267,7 @@ export default {
         console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
         return
       }
-
+      this.setIsBlockEditorOpen(false)
       const routeName = this.$route.meta.isSidebarShown ? 'flow-details' : 'flow-canvas'
       this.$router.history.replace({
         name: routeName,
@@ -339,14 +303,8 @@ export default {
     },
 
     showOrHideSidebar() {
-      let routeName = ''
-      if (this.$route.name.includes('block')) {
-        routeName = this.$route.meta.isSidebarShown ? 'block-selected' : 'block-selected-details'
-      } else {
-        routeName = this.$route.meta.isSidebarShown ? 'flow-canvas' : 'flow-details'
-      }
       this.$router.history.replace({
-        name: routeName,
+        name: this.$route.meta.isSidebarShown ? 'flow-canvas' : 'flow-details',
       })
     },
 
@@ -360,7 +318,7 @@ export default {
 
 <!--<style src="../css/voto3.css"></style>-->
 <!--<style src="../css/InteractionDesigner.css"></style>-->
-
+<style lang="scss"> @import '../css/customized/vue-multiselect.css';</style>
 <style lang="scss">
   // Colors + dimensions
   $dot-size: 1px;
@@ -372,15 +330,14 @@ export default {
   $sidebar-width: 365px;
 
   .interaction-designer-contents {
-    background:
-      linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
-      linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center, $dot-color;
+    background: #F5F5F5;
     background-size: $dot-space $dot-space;
   }
 
   .tree-sidebar-container {
     position: fixed;
     right: 0;
+    top: 62px;
     z-index: 3*10;
 
     height: 100vh;
@@ -388,13 +345,12 @@ export default {
     overflow-y: scroll;
 
     padding: 1em;
-    margin-top: 4em;
     transition: right 200ms ease-in-out;
 
     .tree-sidebar {
-      background-color: #eee;
-      border: 1px solid lightgray;
-      border-radius: 0;
+      background-color: white;
+      border: 1px solid #D6D0D0;
+      border-radius: 0.3em;
       box-shadow: 0 3px 6px #CACACA;
 
       padding: 1em;
@@ -433,70 +389,36 @@ export default {
 
   .tree-sidebar-container {
     .tree-sidebar {
-      &.category-0 {
-        border-color: $category-0-light;
-        background-color: $category-0-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-0-dark;
-        }
-      }
-
-      &.category-1 {
-        border-color: $category-1-light;
-        background-color: $category-1-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-1-dark;
-        }
-      }
-
-      &.category-2 {
-        border-color: $category-2-light;
-        background-color: $category-2-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-2-dark;
-        }
-      }
+      //  &.category-0 {
+      //    border-color: $category-0-light;
+      //    background-color: $category-0-faint;
+      //    border-radius: 0.3em;
+      //
+      //    h3 {
+      //      color: $category-0-dark;
+      //    }
+      //  }
+      //
+      //  &.category-1 {
+      //    border-color: $category-1-light;
+      //    background-color: $category-1-faint;
+      //    border-radius: 0.3em;
+      //
+      //    h3 {
+      //      color: $category-1-dark;
+      //    }
+      //  }
+      //
+      //  &.category-2 {
+      //    border-color: $category-2-light;
+      //    background-color: $category-2-faint;
+      //    border-radius: 0.3em;
+      //
+      //    h3 {
+      //      color: $category-2-dark;
+      //    }
+      //  }
     }
-  }
-
-  .block {
-    @mixin block-category($i, $faint, $light, $dark) {
-      &.category-#{$i} {
-        border-color: $light;
-
-        .block-type {
-          color: $light;
-        }
-
-        .block-exits .block-exit {
-          .block-exit-tag {
-            background-color: $light;
-          }
-
-          &.activated {
-            border-color: $light;
-          }
-        }
-
-        .block-target:hover {
-          border: 1px dashed $light;
-        }
-
-        &.active {
-          background-color: $faint;
-        }
-      }
-    }
-
-    @include block-category(0, $category-0-faint, $category-0-light, $category-0-dark);
-    @include block-category(1, $category-1-faint, $category-1-light, $category-1-dark);
-    @include block-category(2, $category-2-faint, $category-2-light, $category-2-dark);
   }
 
   .sidebar-cue {
