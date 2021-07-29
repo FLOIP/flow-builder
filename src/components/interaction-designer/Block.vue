@@ -137,25 +137,25 @@
             </div>
 
             <div
-              class="block-exit-tag badge badge-warning"
+              class="block-exit-tag badge badge-warning d-flex justify-content-center"
               :style="{background: exitBackgroundColor(exit)}"
               @mouseenter="exitMouseEnter(exit, $event)"
               @mouseleave="exitMouseLeave(exit)">
               <span
                 v-if="!(exitHovers[exit.uuid] || isExitActivatedForCreate(exit))"
                 v-b-tooltip.hover.top="exit.test"
-                class="block-exit-tag-text">
+                class="block-exit-tag-text align-self-center">
                 {{ exit.name || '(untitled)' }}
               </span>
 
-              <span v-if="isEditable">
+              <span v-if="isEditable" class="align-self-center">
                 <template v-if="exit.destination_block == null">
                   <plain-draggable
                     v-if="exitHovers[exit.uuid] || isExitActivatedForCreate(exit)"
                     :id="`exit/${exit.uuid}/pseudo-block-handle`"
                     :key="`exit/${exit.uuid}/pseudo-block-handle`"
                     v-b-tooltip.hover.top="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
-                    class="btn btn-xs"
+                    class="btn btn-xs btn-flat p-0"
                     :is-editable="isEditable"
                     @initialized="handleDraggableInitializedFor(exit, $event)"
                     @dragStarted="onCreateExitDragStarted($event, exit)"
@@ -168,7 +168,7 @@
                   <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
                     <div
                       :id="`exit/${exit.uuid}/handle`"
-                      class="block-handle-move btn btn-xs">
+                      class="btn btn-xs p-0">
                       <i class="glyphicon glyphicon-move" />
                     </div>
                     <connection
@@ -191,7 +191,6 @@
                       v-b-tooltip.hover.top="trans('flow-builder.tooltip-remove-connection')"
                       class="text-danger"
                       title="Click to remove this connection"
-                      style="color: green"
                       :icon="['far', 'times-circle']"
                       @click="removeConnectionFrom(exit)" />
                   </div>
@@ -406,7 +405,7 @@ export default {
     },
 
     setLineHovered(exit, value) {
-      this.$set(this.lineHovers, [exit.uuid], value)
+      this.$set(this.lineHovers, exit.uuid, value)
     },
 
     handleDeleteBlock() {
@@ -755,7 +754,7 @@ export default {
 
       .block-exit-tag {
         width: 100px;
-        height: 33px;
+        height: 28px;
 
         padding: 0.4em;
         border: none;
@@ -812,9 +811,5 @@ export default {
       }
     }
   }
-}
-
-.block-handle-move {
-  margin-left: -1.75rem!important;
 }
 </style>
