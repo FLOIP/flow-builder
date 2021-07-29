@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="tree-contents position-relative">
+    <div class="tree-contents">
       <builder-canvas  @click.native="handleCanvasSelected" />
     </div>
   </div>
