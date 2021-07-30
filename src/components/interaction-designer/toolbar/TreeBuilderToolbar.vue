@@ -18,8 +18,10 @@
         <!--    <tree-update-conflict-modal/>-->
         <div class="tree-workspace-panel-heading-contents">
           <div class="btn-toolbar">
-            <h4 class="text-primary mr-4 flow-label" :title="activeFlow.label">
-              {{activeFlow.label}}
+            <h4
+              class="text-primary mr-4 flow-label"
+              :title="activeFlow.label">
+              {{ activeFlow.label }}
             </h4>
             <div>
               <router-link
@@ -32,11 +34,37 @@
               </router-link>
               <router-link
                 :to="route('flows.newFlow')"
-                class="btn btn-primary btn-sm">
+                class="btn btn-primary btn-sm mr-2">
                 {{ trans('flow-builder.new-flow') }}
               </router-link>
+              <button
+                class="btn btn-outline-primary btn-sm"
+                @click="showOrHideEditFlowModal">
+                {{ 'flow-builder.edit-flow' | trans }}
+              </button>
+              <b-modal
+                ref="edit-flow-modal"
+                ok-only
+                :ok-title="'flow-builder.done' | trans"
+                @ok="showOrHideEditFlowModal">
+                <template slot="modal-header">
+                  <h2 class="mb-0">
+                    {{ 'flow-builder.edit-flow' | trans }}
+                  </h2>
+                  <button
+                    type="button"
+                    aria-label="Close"
+                    @click="showOrHideEditFlowModal"
+                    class="close">
+                    ×
+                  </button>
+                </template>
+                <flow-editor
+                  :flow="activeFlow"
+                  flow-header="" />
+              </b-modal>
 
-              <div class="vertical-divider"></div>
+              <div class="vertical-divider" />
 
               <template v-if="isResourceEditorEnabled">
                 <router-link
@@ -46,7 +74,7 @@
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>
 
-                <div class="vertical-divider"></div>
+                <div class="vertical-divider" />
               </template>
 
               <div
@@ -59,7 +87,7 @@
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: !isEditable}"
                   @click.native.prevent="handlePersistFlow(viewTreeUrl)">
-                  {{ trans('flow-builder.view-flow') }}
+                  {{ trans('flow-builder.view-mode') }}
                 </router-link>
                 <router-link
                   :to="editTreeUrl"
@@ -68,7 +96,7 @@
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isEditable}"
                   @click.native.prevent="handlePersistFlow(editTreeUrl)">
-                  {{ trans('flow-builder.edit-flow') }}
+                  {{ trans('flow-builder.edit-mode') }}
                 </router-link>
               </div>
 
@@ -295,6 +323,7 @@
   </div>
 </template>
 <script lang="ts">
+import {BModal, VBTooltipPlugin} from 'bootstrap-vue'
 import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
@@ -306,14 +335,16 @@ import pickBy from 'lodash/fp/pickBy'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
 import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
-import {VBTooltipPlugin} from 'bootstrap-vue'
+
 import Component, {mixins} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
 import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import SelectionBanner from '@/components/interaction-designer/toolbar/SelectionBanner.vue'
 import ErrorNotifications from '@/components/interaction-designer/toolbar/ErrorNotifications.vue'
+import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import {Dictionary} from 'vue-router/types/router'
+import {Watch} from 'vue-property-decorator'
 
 Vue.use(VBTooltipPlugin)
 
@@ -326,6 +357,8 @@ const validationVuexNamespace = namespace('validation')
   components: {
     SelectionBanner,
     ErrorNotifications,
+    BModal,
+    FlowEditor,
     // Affix,
     // TreeUpdateConflictModal,
     // InteractionTotalsDateRangeConfiguration
@@ -335,6 +368,39 @@ const validationVuexNamespace = namespace('validation')
 export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isImporterVisible = false
   height = 102
+
+  async mounted() {
+    const routeMeta = this.$route.meta ? this.$route.meta : {}
+    this.onMetaChanged(routeMeta)
+    this.$root.$on('bv::modal::show', () => {
+      const routeMeta = this.$route.meta
+      if (!routeMeta || !routeMeta.isFlowEditorShown) {
+        this.$router.replace({
+          name: 'flow-details',
+        })
+      }
+    })
+    this.$root.$on('bv::modal::hide', () => {
+      const routeMeta = this.$route.meta
+      if (routeMeta && routeMeta.isFlowEditorShown) {
+        this.$router.replace({
+          name: 'flow-canvas',
+        })
+      }
+    })
+  }
+
+  @Watch('$route.meta', {immediate: true, deep: true})
+  onMetaChanged(meta: {[key: string]: string}) {
+    const editFlowModal: any = this.$refs['edit-flow-modal']
+    if (editFlowModal) {
+      if (meta.isFlowEditorShown) {
+        editFlowModal.show()
+      } else {
+        editFlowModal.hide()
+      }
+    }
+  }
 
   // Computed ####################
 
@@ -381,7 +447,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   get saveButtonText(): any {
-    if(this.isTreeSaving) {
+    if (this.isTreeSaving) {
       return this.trans('flow-builder.saving')
     } else {
       return this.trans('flow-builder.save')
@@ -476,17 +542,22 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
       this.$router.push(route)
     }
   }
-
+  showOrHideEditFlowModal(): void {
+    const editFlowModal: any = this.$refs['edit-flow-modal']
+    if (editFlowModal) {
+      editFlowModal.toggle()
+    }
+  }
   openDropdownMenu(targetElement: HTMLElement) {
     if (!targetElement.hasAttribute('aria-expanded')) {
       return
     }
 
     if (targetElement.getAttribute('aria-expanded') === 'true') {
-      return;
+      return
     }
 
-    targetElement.click();
+    targetElement.click()
   }
 
   toggleImportExport(): void {

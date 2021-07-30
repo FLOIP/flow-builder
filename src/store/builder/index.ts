@@ -411,8 +411,10 @@ export function getViewportCenter() {
   const sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
   const rect = builderCanvasElement.getBoundingClientRect()
 
+  const sidebarAdjustment = sideBarElement ? sideBarElement.clientWidth : 0
+
   return {
-    x: Math.round(Math.abs(rect.left) + (window.innerWidth - sideBarElement.clientWidth) / 2),
+    x: Math.round(Math.abs(rect.left) + (window.innerWidth - sidebarAdjustment) / 2),
     y: Math.round(Math.abs(rect.top) + window.innerHeight / 2),
   }
 }
