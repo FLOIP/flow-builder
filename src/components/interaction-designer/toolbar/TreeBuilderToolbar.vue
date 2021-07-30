@@ -215,7 +215,8 @@
                 <slot name="extra-dropdown-items-for-category3" />
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <li v-if="!isEmpty(blockClassesForWeatherCategory)"
+              class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
                 @mouseover="openDropdownMenu($event.target)"

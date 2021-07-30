@@ -115,7 +115,11 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 
   handleChoiceChanged(): void {
     const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
-    const {EXIT_PER_CHOICE} = OutputBranchingType
+    const {EXIT_PER_CHOICE, UNIFIED} = OutputBranchingType
+
+    if (metadata.io_viamo.branchingType === UNIFIED) {
+      this.handleBranchingTypeChangedToUnified({block: this.block})
+    }
 
     if (metadata.io_viamo.branchingType !== EXIT_PER_CHOICE) {
       return

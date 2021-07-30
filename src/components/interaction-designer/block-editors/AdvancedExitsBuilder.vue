@@ -18,7 +18,6 @@
     <advanced-exit-editor
       v-if="draftExit"
       ref="draftExitEditor"
-      :key="draftExit.uuid"
       :block="block"
       :exit="draftExit"
       :label="block.exits.length.toString()"
