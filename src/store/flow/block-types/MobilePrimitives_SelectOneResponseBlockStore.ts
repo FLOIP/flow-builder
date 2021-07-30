@@ -1,9 +1,11 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {
+  findBlockWith,
   IBlock,
   IBlockExit,
-  IResource, ValidationException,
+  IResource,
+  ValidationException,
 } from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
@@ -23,12 +25,9 @@ export const mutations: MutationTree<ICustomFlowState> = {}
 
 export const actions: ActionTree<ICustomFlowState, IRootState> = {
   rewriteChoiceKeyFor({rootGetters, dispatch}, {resourceId, blockId}: {resourceId: IResource['uuid'], blockId: IBlock['uuid']}) {
-    const block: ISelectOneResponseBlock = rootGetters['builder/blocksById'][blockId]
-    if (block == null) {
-      throw new ValidationException(`Unable to find block: ${blockId}`)
-    }
-
+    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const resource: IResource = rootGetters['flow/resourcesByUuid'][resourceId]
+
     if (resource == null) {
       throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
     }
@@ -40,12 +39,9 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
   },
 
   addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) {
-    const block: ISelectOneResponseBlock = rootGetters['builder/blocksById'][blockId]
-    if (block == null) {
-      throw new ValidationException(`Unable to find block: ${blockId}`)
-    }
-
+    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const resource: IResource = rootGetters['flow/resourcesByUuid'][resourceId]
+
     if (resource == null) {
       throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
     }
@@ -59,21 +55,13 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
   },
 
   deleteChoiceByResourceIdFrom({rootGetters}, {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) {
-    const block: ISelectOneResponseBlock = rootGetters['builder/blocksById'][blockId]
-    if (block == null) {
-      throw new ValidationException(`Unable to find block: ${blockId}`)
-    }
-
+    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const choiceKey = String(findKey(block.config.choices, (v) => v === resourceId))
     Vue.delete(block.config.choices, choiceKey)
   },
 
   async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: {blockId: IBlock['uuid']}) {
-    const block: ISelectOneResponseBlock = rootGetters['builder/blocksById'][blockId]
-    if (block == null) {
-      throw new ValidationException(`Unable to find block: ${blockId}`)
-    }
-
+    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const {config: {choices}, exits}: ISelectOneResponseBlock = block
     const choiceKeys = Object.keys(choices)
     const exitsForChoices: IBlockExit[] = exits.slice(0, -1) // non-default exits; default should always be last
@@ -88,7 +76,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
       Object.assign(exitsForChoices[i], {
         name: choiceKey,
-        test: `block.value = ${i + 1}`,
+        test: `block.value = "${choiceKey}"`,
       })
     }))
 
@@ -134,7 +122,7 @@ function formatTestValueForUnifiedBranchingType(block: ISelectOneResponseBlock):
     console.warn('Choices are empty for SelectOneBlock, providing `true` by default')
     return 'true'
   }
-  return `OR(${map(blockChoicesKey, (choice) => `block.value = '${choice}'`).join(',')})`
+  return `OR(${map(blockChoicesKey, (choice) => `block.value = "${choice}"`).join(',')})`
 }
 
 export default {
