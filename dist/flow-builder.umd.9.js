@@ -283,12 +283,12 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=template&id=d19238a4&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"core-case-block"},[_c('h3',{staticClass:"no-room-above"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":false,"has-unified-exit":false}}),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=template&id=5c49894b&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"core-case-block"},[_c('h3',{staticClass:"block-editor-header"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":false,"has-unified-exit":false}}),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=template&id=d19238a4&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_CaseBlock.vue?vue&type=template&id=5c49894b&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -335,65 +335,33 @@ var lodash = __webpack_require__("2ef0");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue + 14 modules
 var BlockOutputBranchingConfig = __webpack_require__("18b0");
 
-// EXTERNAL MODULE: ./src/store/flow/utils/listBuilder.ts
-var listBuilder = __webpack_require__("b199");
-
 // CONCATENATED MODULE: ./src/store/flow/block-types/Core_CaseBlockStore.ts
 
 
 
 
 
-
 var BLOCK_TYPE = 'Core.Case';
-var Core_CaseBlockStore_getters = {
-  allExitsHaveTests: function allExitsHaveTests(state, _getters, _rootState, rootGetters) {
-    return Object(listBuilder["a" /* allItemsHaveValue */])(rootGetters['builder/activeBlock'].exits, 'test');
-  },
-  twoExitsBlank: function twoExitsBlank(state, _getters, _rootState, rootGetters) {
-    return Object(listBuilder["c" /* twoItemsBlank */])(rootGetters['builder/activeBlock'].exits, 'test');
-  }
-};
+var getters = {};
 var mutations = {};
 var actions = {
-  editCaseBlockExit: function editCaseBlockExit(_ref, _ref2) {
+  createWith: function createWith(_ref, _ref2) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var commit, dispatch, getters, rootGetters, identifier, value, activeBlock, exit;
+      var dispatch, props, exits;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref.commit, dispatch = _ref.dispatch, getters = _ref.getters, rootGetters = _ref.rootGetters;
-              identifier = _ref2.identifier, value = _ref2.value;
-              activeBlock = rootGetters['builder/activeBlock'];
-              _context.next = 5;
-              return dispatch('flow/block_updateBlockExitWith', {
-                blockId: rootGetters['builder/activeBlock'].uuid,
-                exitId: identifier,
-                props: {
-                  name: value,
-                  test: value
-                }
-              }, {
-                root: true
-              });
-
-            case 5:
-              if (!getters.allExitsHaveTests) {
-                _context.next = 19;
-                break;
-              }
-
+              dispatch = _ref.dispatch;
+              props = _ref2.props;
               _context.t0 = dispatch;
-              _context.next = 9;
+              _context.next = 5;
               return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
 
-            case 9:
+            case 5:
               _context.t1 = _context.sent;
               _context.t2 = {
-                uuid: _context.t1,
-                name: '',
-                test: ''
+                uuid: _context.t1
               };
               _context.t3 = {
                 props: _context.t2
@@ -401,70 +369,13 @@ var actions = {
               _context.t4 = {
                 root: true
               };
-              _context.next = 15;
-              return (0, _context.t0)('flow/block_createBlockExitWith', _context.t3, _context.t4);
-
-            case 15:
-              exit = _context.sent;
-              commit('flow/block_addExit', {
-                blockId: activeBlock.uuid,
-                newExit: exit
-              }, {
-                root: true
-              });
-              _context.next = 20;
-              break;
-
-            case 19:
-              if (getters.twoExitsBlank) {
-                commit('flow/block_popFirstExitWithoutTest', {
-                  blockId: activeBlock.uuid
-                }, {
-                  root: true
-                });
-              }
-
-            case 20:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  },
-  createWith: function createWith(_ref3, _ref4) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var dispatch, props, exits;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              dispatch = _ref3.dispatch;
-              props = _ref4.props;
-              _context2.t0 = dispatch;
-              _context2.next = 5;
-              return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
-
-            case 5:
-              _context2.t1 = _context2.sent;
-              _context2.t2 = {
-                uuid: _context2.t1,
-                name: '',
-                test: ''
-              };
-              _context2.t3 = {
-                props: _context2.t2
-              };
-              _context2.t4 = {
-                root: true
-              };
-              _context2.next = 11;
-              return (0, _context2.t0)('flow/block_createBlockDefaultExitWith', _context2.t3, _context2.t4);
+              _context.next = 11;
+              return (0, _context.t0)('flow/block_createBlockDefaultExitWith', _context.t3, _context.t4);
 
             case 11:
-              _context2.t5 = _context2.sent;
-              exits = [_context2.t5];
-              return _context2.abrupt("return", Object(lodash["defaultsDeep"])(props, {
+              _context.t5 = _context.sent;
+              exits = [_context.t5];
+              return _context.abrupt("return", Object(lodash["defaultsDeep"])(props, {
                 type: BLOCK_TYPE,
                 name: '',
                 label: '',
@@ -481,16 +392,16 @@ var actions = {
 
             case 14:
             case "end":
-              return _context2.stop();
+              return _context.stop();
           }
         }
-      }, _callee2);
+      }, _callee);
     }))();
   }
 };
 /* harmony default export */ var Core_CaseBlockStore = ({
   namespaced: true,
-  getters: Core_CaseBlockStore_getters,
+  getters: getters,
   mutations: mutations,
   actions: actions
 });
@@ -572,8 +483,6 @@ var Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock = /*#__PURE__*/function
 
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "showSemanticLabel", false);
 
-    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "editCaseBlockExit", void 0);
-
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "isEditable", void 0);
 
     return _this;
@@ -592,8 +501,6 @@ var Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock = /*#__PURE__*/function
 Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock.prototype, "block", void 0);
 
 Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock.prototype, "flow", void 0);
-
-Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock.prototype, "editCaseBlockExit", void 0);
 
 Object(tslib_es6["__decorate"])([builderVuexNamespace.Getter], Core_CaseBlockvue_type_script_lang_ts_Core_CaseBlock.prototype, "isEditable", void 0);
 

@@ -224,6 +224,7 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
     // voice
     [SupportedMode.IVR]: [AUDIO],
     [SupportedMode.SMS]: [TEXT],
+    [SupportedMode.TEXT]: [TEXT],
     [SupportedMode.USSD]: [TEXT],
     // clipboard
     [SupportedMode.OFFLINE]: [TEXT, IMAGE, VIDEO],
