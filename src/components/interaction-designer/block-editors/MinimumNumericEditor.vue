@@ -13,40 +13,30 @@
   </validation-message>
 </template>
 
-<script lang="js">
+<script lang="ts">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import NumericEditor from '@/components/common/NumericEditor'
-import {get} from 'lodash'
-import {lang} from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage'
+import NumericEditor from '@/components/common/NumericEditor.vue'
+import Lang from '@/lib/filters/lang'
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import Component, {mixins} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {IBlock} from '@floip/flow-runner'
 
-export default {
+@Component({
   components: {
     NumericEditor,
     ValidationMessage,
   },
-  mixins: [lang],
-  props: {
-    block: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      defaultValue: '',
-    }
-  },
+})
+class MinimumNumericEditor extends mixins(Lang) {
+  @Prop() readonly block!: IBlock
 
-  computed: {
-    minValue: {
-      get() {
-        return get(this.block, 'config.validation_minimum', this.defaultValue)
-      },
-      set(value) {
-        this.$emit('commitValidationMinimumChange', value)
-      },
-    },
-  },
+  get minValue() {
+    return this.block.config.validation_minimum
+  }
+  set minValue(value) {
+    this.$emit('commitValidationMinimumChange', value)
+  }
 }
+export default MinimumNumericEditor
 </script>
