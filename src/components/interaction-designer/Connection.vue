@@ -182,19 +182,20 @@ export default {
     mouseOverHandler() {
       this.line.setOptions(this.prominentOptions)
       this.activateConnection({connectionContext: this.connectionContext})
-      this.$emit('isLineHovered', true)
+      this.$emit('lineMouseIn')
     },
     mouseOutHandler() {
       if (!this.isPermanentlyActive) {
         this.line.setOptions(this.options)
         this.deactivateConnection({connectionContext: this.connectionContext})
       }
-      this.$emit('isLineHovered', false)
+      this.$emit('lineMouseOut')
     },
     clickHandler() {
       this.isPermanentlyActive = true
       this.activateConnection({connectionContext: this.connectionContext})
       this.activateBlock({blockId: null})
+      this.$emit('lineMouseIn')
     },
     clickAwayHandler(connectionElement) {
       document.addEventListener('click', (event) => {
@@ -212,6 +213,7 @@ export default {
           this.line.setOptions(this.options)
           this.deactivateConnection({connectionContext: this.connectionContext})
         }
+        this.$emit('lineMouseOut')
       }, false)
     },
   },

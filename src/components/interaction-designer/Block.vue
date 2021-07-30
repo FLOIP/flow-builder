@@ -117,9 +117,10 @@
       <footer
         :id="`block/${block.uuid}/exits`"
         :ref="`block/${block.uuid}/exits`"
+        :class="{'pointer-events-none': !isEditable}"
         class="block-exits d-flex mt-1">
         <div
-          v-for="(exit, key) in block.exits"
+          v-for="(exit) in block.exits"
           :key="exit.uuid"
           class="block-exit mr-2 flex-shrink-1"
           :class="{
@@ -137,14 +138,18 @@
             </div>
 
             <div
-              class="block-exit-tag badge badge-warning d-flex justify-content-center"
-              :style="{background: exitBackgroundColor(exit)}"
+              class="block-exit-name badge badge-warning is-connected"
+              :class="{
+                'is-connected': exit.destination_block != null,
+                'is-disconnected': exit.destination_block == null,
+                'is-connected-and-hovered': (exit.destination_block != null && exitHovers[exit.uuid]) || (exit.destination_block != null && lineHovers[exit.uuid]),
+              }"
               @mouseenter="exitMouseEnter(exit)"
               @mouseleave="exitMouseLeave(exit)">
               <span
                 v-if="!(exitHovers[exit.uuid] || isExitActivatedForCreate(exit))"
                 v-b-tooltip.hover.top="exit.test"
-                class="block-exit-tag-text align-self-center">
+                class="block-exit-name-text align-self-center">
                 {{ exit.name || '(untitled)' }}
               </span>
 
@@ -202,7 +207,8 @@
                     :target="blocksById[exit.destination_block]"
                     :exit="exit"
                     :position="livePosition"
-                    @isLineHovered="setLineHovered(exit, $event)" />
+                    @lineMouseIn="setLineHovered(exit, true)"
+                    @lineMouseOut="setLineHovered(exit, false)" />
                 </template>
               </span>
             </div>
@@ -230,10 +236,6 @@ import BlockEditor from '@/components/interaction-designer/block-editors/BlockEd
 Vue.component('BTooltip', BTooltip)
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
-
-const EXIT_CONNECTED_BG = '#418BCA'
-const EXIT_DISCONNECTED_BG = '#858585'
-const EXIT_HOVER_BG = '#FFECEC'
 
 export default {
   components: {
@@ -394,14 +396,6 @@ export default {
 
     exitMouseLeave(exit) {
       this.$set(this.exitHovers, exit.uuid, false)
-    },
-
-    exitBackgroundColor(exit) {
-      if (exit.destination_block != null && (this.exitHovers[exit.uuid] || this.lineHovers[exit.uuid])) {
-        return EXIT_HOVER_BG
-      } else {
-        return exit.destination_block == null ? EXIT_DISCONNECTED_BG : EXIT_CONNECTED_BG
-      }
     },
 
     setLineHovered(exit, value) {
@@ -669,6 +663,10 @@ export default {
   -webkit-tap-highlight-color: transparent;
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
 .block {
   position: absolute;
   left: 0;
@@ -753,7 +751,10 @@ export default {
       border: 1px dashed transparent;
       transition: border-radius 200ms ease-in-out;
 
-      .block-exit-tag {
+      .block-exit-name {
+        display: flex;
+        justify-content: center;
+
         width: 100px;
         height: 28px;
 
@@ -763,10 +764,25 @@ export default {
         font-weight: normal;
         font-size: 12px;
 
-        .block-exit-tag-text {
+        .block-exit-name-text {
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
+        }
+
+        &.is-connected {
+          color: #fff;
+          background: #418BCA;
+        }
+
+        &.is-disconnected {
+          color: #fff;
+          background: #858585;
+        }
+
+        &.is-connected-and-hovered {
+          color: #dc3545;
+          background: #FFECEC;
         }
       }
 
