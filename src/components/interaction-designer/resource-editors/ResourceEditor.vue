@@ -167,6 +167,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 
   iconsMap = new Map<string, object>([
     [SupportedMode.SMS, ['far', 'envelope']],
+    [SupportedMode.TEXT, ['fac', 'text']],
     [SupportedMode.USSD, ['fac', 'ussd']],
     [SupportedMode.IVR, ['fac', 'audio']],
     [SupportedMode.RICH_MESSAGING, ['far', 'comment-dots']],
