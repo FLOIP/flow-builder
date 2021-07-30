@@ -42,7 +42,6 @@
               </button>
               <b-modal
                 ref="edit-flow-modal"
-                title="Edit Flow"
                 ok-only
                 hide-header
                 :ok-title="'flow-builder.done' | trans"
@@ -330,6 +329,7 @@ import SelectionBanner from '@/components/interaction-designer/toolbar/Selection
 import ErrorNotifications from '@/components/interaction-designer/toolbar/ErrorNotifications.vue'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import {Dictionary} from 'vue-router/types/router'
+import {Watch} from 'vue-property-decorator'
 
 Vue.use(VBTooltipPlugin)
 
@@ -355,25 +355,34 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   height = 102
 
   async mounted() {
-    const editFlowModal: any = this.$refs['edit-flow-modal']
-    if (editFlowModal) {
+    this.$root.$on('bv::modal::show', () => {
+      const routeMeta = this.$route.meta
+      if (!routeMeta || !routeMeta.isFlowEditorShown) {
+        this.$router.replace({
+          name: 'flow-details',
+        })
+      }
+    })
+    this.$root.$on('bv::modal::hide', () => {
       const routeMeta = this.$route.meta
       if (routeMeta && routeMeta.isFlowEditorShown) {
+        this.$router.replace({
+          name: 'flow-canvas',
+        })
+      }
+    })
+  }
+
+  @Watch('$route.meta', { immediate: true, deep: true })
+  onMetaChanged(meta: {[key: string]: string}) {
+    const editFlowModal: any = this.$refs['edit-flow-modal']
+    if (editFlowModal) {
+      if (meta.isFlowEditorShown) {
         editFlowModal.show()
       } else {
         editFlowModal.hide()
       }
     }
-    this.$root.$on('bv::modal::show', () => {
-      this.$router.replace({
-        name: 'flow-details',
-      })
-    })
-    this.$root.$on('bv::modal::hide', () => {
-      this.$router.replace({
-        name: 'flow-canvas',
-      })
-    })
   }
 
   // Computed ####################
