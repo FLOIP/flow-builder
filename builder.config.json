@@ -126,7 +126,7 @@
         "is_interactive": false,
         "is_branching": false,
         "category":  0,
-        "menu_category": 2
+        "menu_category": 3
       },
       "Core.SetContactProperty": {
         "name": "Core.SetContactProperty",
@@ -152,6 +152,23 @@
         "category":  1,
         "menu_category": 1
       },
+      "MobilePrimitives.SelectOneResponse": {
+        "name": "MobilePrimitives.SelectOneResponse",
+        "type": "MobilePrimitives.SelectOneResponse",
+        "is_interactive": true,
+        "is_branching": true,
+        "category":  2,
+        "menu_category": 1,
+        "divider_before": true
+      },
+      "MobilePrimitives.SelectManyResponse": {
+        "name": "MobilePrimitives.SelectManyResponse",
+        "type": "MobilePrimitives.SelectManyResponse",
+        "is_interactive": true,
+        "is_branching": true,
+        "category":  2,
+        "menu_category": 1
+      },
       "MobilePrimitives.NumericResponse": {
         "name": "MobilePrimitives.NumericResponse",
         "type": "MobilePrimitives.NumericResponse",
@@ -166,23 +183,6 @@
         "is_interactive": true,
         "is_branching": false,
         "category":  1,
-        "menu_category": 1,
-        "divider_before": true
-      },
-      "MobilePrimitives.SelectOneResponse": {
-        "name": "MobilePrimitives.SelectOneResponse",
-        "type": "MobilePrimitives.SelectOneResponse",
-        "is_interactive": true,
-        "is_branching": true,
-        "category":  2,
-        "menu_category": 1
-      },
-      "MobilePrimitives.SelectManyResponse": {
-        "name": "MobilePrimitives.SelectManyResponse",
-        "type": "MobilePrimitives.SelectManyResponse",
-        "is_interactive": true,
-        "is_branching": true,
-        "category":  2,
         "menu_category": 1
       },
       "SmartDevices.LocationResponse": {
