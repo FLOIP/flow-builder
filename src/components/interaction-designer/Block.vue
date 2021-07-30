@@ -1,7 +1,7 @@
 <template>
   <div @click="selectBlock">
     <block-editor
-      v-if="showBlockEditor"
+      v-if="shouldShowBlockEditor"
       class="block-editor"
       :style="{transform: translatedBlockEditorPosition}" />
 
@@ -11,7 +11,7 @@
       class="block"
       :class="{
         active: isBlockActivated,
-        'has-toolbar': isBlockSelected,
+        'has-toolbar': isBlockSelected || shouldShowBlockEditor,
         ['has-exits']: hasExitsShown,
         ['has-multiple-exits']: hasMultipleExitsShown,
         [`has-${numberOfExitsShown}-exits`]: true,
@@ -24,66 +24,11 @@
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
       @destroyed="handleDraggableDestroyedForBlock">
-      <div class="block-toolbar d-flex justify-content-between">
-        <div class="header-actions-left">
-          <!--Selection-->
-          <font-awesome-icon
-            v-if="isBlockSelected"
-            v-b-tooltip.hover="trans('flow-builder.deselect-block')"
-            :icon="['far', 'check-circle']"
-            class="fa-btn text-info"
-            @click="isEditable && block_deselect({ blockId: block.uuid })" />
-          <font-awesome-icon
-            v-if="!isBlockSelected"
-            v-b-tooltip.hover="trans('flow-builder.select-block')"
-            :icon="['far', 'circle']"
-            class="fa-btn"
-            @click="isEditable && block_select({ blockId: block.uuid })" />
-        </div>
-        <div class="header-actions-right d-flex">
-          <!--Delete-->
-          <div
-            v-if="isEditable"
-            class="mr-1 ml-2">
-            <div v-if="isDeleting">
-              <button
-                class="btn btn-light btn-xs"
-                @click.prevent="isDeleting = false">
-                <small>{{ trans('flow-builder.cancel') }}</small>
-              </button>
-              <button
-                class="btn btn-danger btn-xs ml-1"
-                @click.prevent="handleDeleteBlock()">
-                <small>{{ trans('flow-builder.delete-block') }}</small>
-              </button>
-            </div>
-            <font-awesome-icon
-              v-if="!isDeleting"
-              v-b-tooltip.hover="trans('flow-builder.tooltip-delete-block')"
-              :icon="['far', 'trash-alt']"
-              class="fa-btn text-danger"
-              @click.prevent="isDeleting = true" />
-          </div>
-          <!--Duplicate-->
-          <div class="mr-1 ml-2">
-            <font-awesome-icon
-              v-if="isEditable"
-              v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
-              :icon="['fac', 'copy']"
-              class="fa-btn"
-              @click.prevent="handleDuplicateBlock" />
-          </div>
-          <!--Expand block editor-->
-          <div class="mr-1 ml-2">
-            <font-awesome-icon
-              v-if="isEditable"
-              v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
-              :icon="showBlockEditor ? ['fac', 'minimize'] : ['fac', 'expand']"
-              class="fa-btn"
-              @click.prevent="handleExpandBlockEditor" />
-          </div>
-        </div>
-      </div>
+
+      <block-toolbar
+        :block="block"
+        :is-editor-visible="shouldShowBlockEditor"
+        :is-block-selected="isBlockSelected" />
 
       <header
         :id="`block/${block.uuid}/handle`"
@@ -232,6 +177,7 @@ import {lang} from '@/lib/filters/lang'
 import {NoValidResponseHandler} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import {BTooltip} from 'bootstrap-vue'
 import BlockEditor from '@/components/interaction-designer/block-editors/BlockEditor'
+import BlockToolbar from '@/components/interaction-designer/block/BlockToolbar'
 
 Vue.component('BTooltip', BTooltip)
 
@@ -242,16 +188,17 @@ export default {
     Connection,
     PlainDraggable,
     BlockEditor,
+    BlockToolbar,
   },
   mixins: [lang],
   props: ['block', 'x', 'y'],
 
   data() {
     return {
-      isDeleting: false,
       livePosition: null,
       labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
       blockWidth: 0,
+      blockHeight: 0,
       exitHovers: {},
       lineHovers: {},
       NoValidResponseHandler,
@@ -347,11 +294,11 @@ export default {
 
     translatedBlockEditorPosition() {
       const xOffset = 5
-      const yOffset = 172
+      const yOffset = 32
       return `translate(${this.x + this.blockWidth + xOffset}px, ${this.y - yOffset}px)`
     },
 
-    showBlockEditor() {
+    shouldShowBlockEditor() {
       return this.isBlockEditorOpen && this.activeBlockId === this.block.uuid
     },
   },
@@ -381,15 +328,6 @@ export default {
       'applyConnectionCreate',
     ]),
 
-    ...mapActions('flow', [
-      'flow_duplicateBlock',
-      'flow_removeBlock',
-      'block_select',
-      'block_deselect',
-    ]),
-
-    ...mapMutations('validation', ['removeValidationStatusesFor']),
-
     exitMouseEnter(exit) {
       this.$set(this.exitHovers, exit.uuid, true)
     },
@@ -401,22 +339,6 @@ export default {
     setLineHovered(exit, value) {
       this.$nextTick(() => {
         this.$set(this.lineHovers, exit.uuid, value)
-      })
-    },
-
-    handleDeleteBlock() {
-      this.block_deselect({blockId: this.block.uuid})
-      this.flow_removeBlock({blockId: this.block.uuid})
-      this.removeValidationStatusesFor({key: `block/${this.block.uuid}`})
-      this.isDeleting = false
-    },
-
-    handleDuplicateBlock() {
-      this.flow_duplicateBlock({blockId: this.block.uuid}).then((duplicatedBlock) => {
-        this.$router.replace({
-          name: 'block-selected-details',
-          params: {blockId: duplicatedBlock.uuid},
-        })
       })
     },
 
@@ -634,16 +556,6 @@ export default {
         delete self.draggableForExitsByUuid[exit.uuid]
       })
     },
-
-    handleExpandBlockEditor() {
-      this.setIsBlockEditorOpen(!this.isBlockEditorOpen)
-      const {block: {uuid: blockId}} = this
-      const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
-      this.$router.history.replace({
-        name: routerName,
-        params: {blockId},
-      })
-    },
   },
 }
 </script>
@@ -687,29 +599,6 @@ export default {
 
   transition: opacity 200ms ease-in-out,
   background-color 200ms ease-in-out;
-
-  .block-toolbar {
-    transition: opacity 100ms ease-in-out;
-    background: white;
-    opacity: 0; // default state of hidden
-
-    margin-top: -39.75px;
-    margin-right: -7px;
-    margin-left: -7px;
-    padding: 5px;
-
-    border-top: inherit;
-    border-right: inherit;
-    border-left: inherit;
-    border-top-right-radius: inherit;
-    border-top-left-radius: inherit;
-  }
-
-  &.has-multiple-exits {
-    .block-toolbar {
-      margin-right: -8px;
-    }
-  }
 
   .block-label {
     font-size: 14px;
@@ -805,27 +694,6 @@ export default {
   &:hover {
     .block-exit .block-exit-remove {
       opacity: 1;
-    }
-  }
-
-  // toolbar states
-  &.has-toolbar,
-  &:hover {
-    .block-toolbar {
-      opacity: 1;
-    }
-  }
-
-  &.active {
-    .block-toolbar {
-      margin-left: -8px;
-      margin-right: -8px;
-    }
-
-    &.has-multiple-exits {
-      .block-toolbar {
-        margin-right: -9px;
-      }
     }
   }
 }
