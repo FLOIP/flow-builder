@@ -52,7 +52,7 @@ This is related to `Flow.js` library which is providing multiple simultaneous, s
 
 ### Create new flow
 
-To begin, you can create a new flow by visiting [https://floip.github.io/flow-builder/#/](https://floip.github.io/flow-builder/#/). Click on **New Flow** From there, you can enter in the pertinent flow information before opening the Flow Builder.
+To begin, you can create a new flow by visiting [https://floip.github.io/flow-builder/#/](https://floip.github.io/flow-builder/#/). Click on **New Flow** , from there, you can enter in the pertinent flow information before opening the Flow Builder.
 
 You may also go directly to the following link: [https://https://floip.github.io/flow-builder/#/flows/new](https://floip.github.io/flow-builder/#/flows/new)
 ![Flow 1](https://user-images.githubusercontent.com/88047281/127682517-9d2141f9-8d04-45f2-8121-1d80a71fe089.gif)
@@ -79,7 +79,7 @@ If you select multiple blocks, you are able to duplicate or delete them on the M
 
 ### Import existing flow
 
-Visit [https://floip.github.io/flow-builder/#/](https://floip.github.io/flow-builder/#/) and click on the **Import/Paste a JSON File Link in order to import an exiting flow via JSON schema or by pasting the JSON file directly
+Visit [https://floip.github.io/flow-builder/#/](https://floip.github.io/flow-builder/#/) and click on the **Import/Paste a JSON File** Link in order to import an exiting flow via JSON schema or by pasting the JSON file directly
 
 You may also go directly to the following link: [https://floip.github.io/flow-builder/#/flows/import](https://floip.github.io/flow-builder/#/flows/import)
 
