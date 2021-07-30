@@ -49,12 +49,13 @@ export default {
         startSocket: 'bottom',
         endSocket: 'top',
 
-        size: 3,
+        size: 5,
         outline: true,
         outlineColor: '#ffffff',
         // outlineSize: 0.08,
 
         path: 'grid',
+        endPlugSize: 0.5,
         // path: 'fluid',
         // path: 'arc',
         // path: 'magnet',
@@ -181,18 +182,20 @@ export default {
     mouseOverHandler() {
       this.line.setOptions(this.prominentOptions)
       this.activateConnection({connectionContext: this.connectionContext})
+      this.$emit('lineMouseIn')
     },
     mouseOutHandler() {
       if (!this.isPermanentlyActive) {
         this.line.setOptions(this.options)
         this.deactivateConnection({connectionContext: this.connectionContext})
       }
+      this.$emit('lineMouseOut')
     },
     clickHandler() {
       this.isPermanentlyActive = true
-      this.line.setOptions(this.prominentOptions)
       this.activateConnection({connectionContext: this.connectionContext})
       this.activateBlock({blockId: null})
+      this.$emit('lineMouseIn')
     },
     clickAwayHandler(connectionElement) {
       document.addEventListener('click', (event) => {
@@ -210,6 +213,7 @@ export default {
           this.line.setOptions(this.options)
           this.deactivateConnection({connectionContext: this.connectionContext})
         }
+        this.$emit('lineMouseOut')
       }, false)
     },
   },

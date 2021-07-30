@@ -603,19 +603,19 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
 <style lang="scss">
 .tree-builder-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 3*10;
   .flows-importer textarea {
     display: block;
     width: 100%;
   }
 }
 
-.tree-builder-toolbar-alerts {
-  position: sticky;
-  top: 0;
-  z-index: 3*10;
+.tree-builder-toolbar-main-menu {
+  width: 100vw;
+
+  border-bottom: 1px solid darkgrey;
+  background: #eee;
+
+  box-shadow: 0 3px 6px #CACACA;
 }
 
 .tree-save-tree {
