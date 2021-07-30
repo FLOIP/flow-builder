@@ -369,6 +369,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   height = 102
 
   async mounted() {
+    const routeMeta = this.$route.meta ? this.$route.meta : {}
+    this.onMetaChanged(routeMeta)
     this.$root.$on('bv::modal::show', () => {
       const routeMeta = this.$route.meta
       if (!routeMeta || !routeMeta.isFlowEditorShown) {
