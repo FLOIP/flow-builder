@@ -43,10 +43,16 @@
               <b-modal
                 ref="edit-flow-modal"
                 ok-only
-                hide-header
                 :ok-title="'flow-builder.done' | trans"
                 @ok="showOrHideEditFlowModal">
-                <flow-editor :flow="activeFlow" />
+                <template slot="modal-header">
+                  <h2 class="mb-0">
+                    {{ 'flow-builder.edit-flow' | trans }}
+                  </h2>
+                  <button type="button" aria-label="Close" class="close">×</button>
+                </template>
+                <flow-editor :flow="activeFlow"
+                  flowHeader="" />
               </b-modal>
 
               <div class="vertical-divider"></div>
