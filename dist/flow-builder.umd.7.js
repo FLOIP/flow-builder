@@ -5,11 +5,11 @@
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=template&id=46098a2a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=template&id=481d38b7&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"choices-builder form-group"},[_c('h4',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.choices')))]),_vm._l((_vm.choiceResourcesOrderedByResourcesList),function(resource,i){return [_c('resource-variant-text-editor',{key:resource.uuid,ref:"choices",refInFor:true,staticClass:"choices-builder-item",attrs:{"label":(i + 1).toString(),"rows":1,"placeholder":'Enter choice...',"resource-id":resource.uuid,"resource-variant":resource.values[0],"mode":_vm.SupportedMode.TEXT},on:{"afterResourceVariantChanged":function($event){return _vm.handleExistingResourceVariantChangedFor(
         resource.uuid,
         i,
-        resource)}}})]}),(_vm.draftResource)?_c('resource-variant-text-editor',{key:_vm.draftResource.uuid,ref:"draftChoice",staticClass:"choices-builder-item",attrs:{"label":(_vm.choiceResourcesOrderedByResourcesList.length + 1).toString(),"rows":1,"placeholder":'Enter choice...',"resource-id":_vm.draftResource.uuid,"resource-variant":_vm.findOrGenerateStubbedVariantOn(
+        resource)}}})]}),(_vm.draftResource)?_c('resource-variant-text-editor',{ref:"draftChoice",staticClass:"choices-builder-item",attrs:{"label":(_vm.choiceResourcesOrderedByResourcesList.length + 1).toString(),"rows":1,"placeholder":'Enter choice...',"resource-id":_vm.draftResource.uuid,"resource-variant":_vm.findOrGenerateStubbedVariantOn(
       _vm.draftResource,
       {language_id: _vm.activeFlow.languages[0].id,
        content_type: _vm.SupportedContentType.TEXT,
@@ -17,7 +17,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=template&id=46098a2a&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ChoicesBuilder.vue?vue&type=template&id=481d38b7&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
 var asyncToGenerator = __webpack_require__("c964");
@@ -365,12 +365,12 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.d(__webpack_exports__, "MobilePrimitives_SelectOneResponseBlock", function() { return /* reexport */ MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimitives_SelectOneResponseBlock; });
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=4e09fe6d&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=b97b0298&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mobile-primitive-select-one-response-block"},[_c('h3',{staticClass:"block-editor-header"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('choices-builder',{attrs:{"block":_vm.block},on:{"choiceChanged":_vm.handleChoiceChanged}}),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":true,"label-class":''},on:{"branchingTypeChanged":function($event){return _vm.reflowExitsWhenSwitchingToBranchingTypeNotUnified()}}}),_c('div',{staticClass:"prompt-resource"},[(_vm.promptResource)?_c('resource-editor',{attrs:{"label":_vm._f("trans")('flow-builder.prompt'),"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e()],1),_vm._t("extras"),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=4e09fe6d&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue?vue&type=template&id=b97b0298&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -545,7 +545,14 @@ var MobilePrimitives_SelectOneResponseBlockvue_type_script_lang_ts_MobilePrimiti
       var _this$block = this.block,
           blockId = _this$block.uuid,
           metadata = _this$block.vendor_metadata;
-      var EXIT_PER_CHOICE = BlockOutputBranchingConfig["b" /* OutputBranchingType */].EXIT_PER_CHOICE;
+      var EXIT_PER_CHOICE = BlockOutputBranchingConfig["b" /* OutputBranchingType */].EXIT_PER_CHOICE,
+          UNIFIED = BlockOutputBranchingConfig["b" /* OutputBranchingType */].UNIFIED;
+
+      if (metadata.io_viamo.branchingType === UNIFIED) {
+        this.handleBranchingTypeChangedToUnified({
+          block: this.block
+        });
+      }
 
       if (metadata.io_viamo.branchingType !== EXIT_PER_CHOICE) {
         return;
@@ -807,12 +814,7 @@ var actions = {
         dispatch = _ref.dispatch;
     var resourceId = _ref2.resourceId,
         blockId = _ref2.blockId;
-    var block = rootGetters['builder/blocksById'][blockId];
-
-    if (block == null) {
-      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find block: ".concat(blockId));
-    }
-
+    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
     var resource = rootGetters['flow/resourcesByUuid'][resourceId];
 
     if (resource == null) {
@@ -833,12 +835,7 @@ var actions = {
     var rootGetters = _ref3.rootGetters;
     var blockId = _ref4.blockId,
         resourceId = _ref4.resourceId;
-    var block = rootGetters['builder/blocksById'][blockId];
-
-    if (block == null) {
-      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find block: ".concat(blockId));
-    }
-
+    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
     var resource = rootGetters['flow/resourcesByUuid'][resourceId];
 
     if (resource == null) {
@@ -856,12 +853,7 @@ var actions = {
     var rootGetters = _ref5.rootGetters;
     var blockId = _ref6.blockId,
         resourceId = _ref6.resourceId;
-    var block = rootGetters['builder/blocksById'][blockId];
-
-    if (block == null) {
-      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find block: ".concat(blockId));
-    }
-
+    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
     var choiceKey = String(Object(lodash__WEBPACK_IMPORTED_MODULE_18__["findKey"])(block.config.choices, function (v) {
       return v === resourceId;
     }));
@@ -876,22 +868,13 @@ var actions = {
             case 0:
               dispatch = _ref7.dispatch, rootGetters = _ref7.rootGetters;
               blockId = _ref8.blockId;
-              block = rootGetters['builder/blocksById'][blockId];
-
-              if (!(block == null)) {
-                _context2.next = 5;
-                break;
-              }
-
-              throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find block: ".concat(blockId));
-
-            case 5:
+              block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
               choices = block.config.choices, exits = block.exits;
               choiceKeys = Object.keys(choices);
               exitsForChoices = exits.slice(0, -1); // non-default exits; default should always be last
               // reflow exits based on choices
 
-              _context2.next = 10;
+              _context2.next = 8;
               return Promise.all(choiceKeys.map( /*#__PURE__*/function () {
                 var _ref9 = Object(_home_jacob_voto_flow_builder_node_modules_vue_babel_preset_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee(choiceKey, i) {
                   var uuid, exit;
@@ -925,7 +908,7 @@ var actions = {
                         case 8:
                           Object.assign(exitsForChoices[i], {
                             name: choiceKey,
-                            test: "block.value = ".concat(i + 1)
+                            test: "block.value = \"".concat(choiceKey, "\"")
                           });
 
                         case 9:
@@ -941,10 +924,10 @@ var actions = {
                 };
               }()));
 
-            case 10:
+            case 8:
               exits.splice.apply(exits, [0, exits.length - 1].concat(Object(_home_jacob_voto_flow_builder_node_modules_vue_babel_preset_app_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(exitsForChoices)));
 
-            case 11:
+            case 9:
             case "end":
               return _context2.stop();
           }
@@ -1032,7 +1015,7 @@ function formatTestValueForUnifiedBranchingType(block) {
   }
 
   return "OR(".concat(Object(lodash__WEBPACK_IMPORTED_MODULE_18__["map"])(blockChoicesKey, function (choice) {
-    return "block.value = '".concat(choice, "'");
+    return "block.value = \"".concat(choice, "\"");
   }).join(','), ")");
 }
 
