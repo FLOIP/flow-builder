@@ -18,8 +18,10 @@
         <!--    <tree-update-conflict-modal/>-->
         <div class="tree-workspace-panel-heading-contents">
           <div class="btn-toolbar">
-            <h4 class="text-primary mr-4 flow-label" :title="activeFlow.label">
-              {{activeFlow.label}}
+            <h4
+              class="text-primary mr-4 flow-label"
+              :title="activeFlow.label">
+              {{ activeFlow.label }}
             </h4>
             <div>
               <router-link
@@ -49,13 +51,19 @@
                   <h2 class="mb-0">
                     {{ 'flow-builder.edit-flow' | trans }}
                   </h2>
-                  <button type="button" aria-label="Close" class="close">×</button>
+                  <button
+                    type="button"
+                    aria-label="Close"
+                    class="close">
+                    ×
+                  </button>
                 </template>
-                <flow-editor :flow="activeFlow"
-                  flowHeader="" />
+                <flow-editor
+                  :flow="activeFlow"
+                  flow-header="" />
               </b-modal>
 
-              <div class="vertical-divider"></div>
+              <div class="vertical-divider" />
 
               <template v-if="isResourceEditorEnabled">
                 <router-link
@@ -65,7 +73,7 @@
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>
 
-                <div class="vertical-divider"></div>
+                <div class="vertical-divider" />
               </template>
 
               <div
@@ -314,7 +322,7 @@
   </div>
 </template>
 <script lang="ts">
-import {BModal} from 'bootstrap-vue'
+import {BModal, VBTooltipPlugin} from 'bootstrap-vue'
 import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
@@ -326,7 +334,7 @@ import pickBy from 'lodash/fp/pickBy'
 // import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
 // import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
 import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
-import {VBTooltipPlugin} from 'bootstrap-vue'
+
 import Component, {mixins} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
 import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
@@ -379,7 +387,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     })
   }
 
-  @Watch('$route.meta', { immediate: true, deep: true })
+  @Watch('$route.meta', {immediate: true, deep: true})
   onMetaChanged(meta: {[key: string]: string}) {
     const editFlowModal: any = this.$refs['edit-flow-modal']
     if (editFlowModal) {
@@ -436,7 +444,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   get saveButtonText(): any {
-    if(this.isTreeSaving) {
+    if (this.isTreeSaving) {
       return this.trans('flow-builder.saving')
     } else {
       return this.trans('flow-builder.save')
@@ -543,10 +551,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     }
 
     if (targetElement.getAttribute('aria-expanded') === 'true') {
-      return;
+      return
     }
 
-    targetElement.click();
+    targetElement.click()
   }
 
   toggleImportExport(): void {
