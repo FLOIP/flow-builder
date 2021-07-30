@@ -24,7 +24,6 @@
     <resource-variant-text-editor
       v-if="draftResource"
       ref="draftChoice"
-      :key="draftResource.uuid"
       class="choices-builder-item"
       :label="(choiceResourcesOrderedByResourcesList.length + 1).toString()"
       :rows="1"

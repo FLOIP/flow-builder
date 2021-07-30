@@ -27,6 +27,13 @@
         :block="block"
         @choiceChanged="handleChoiceChanged" />
 
+      <hr>
+
+      <minimum-choices-editor :block="block" />
+      <maximum-choices-editor :block="block" />
+
+      <hr>
+
       <block-output-branching-config
         :block="block"
         :has-exit-per-choice="false"
@@ -59,6 +66,9 @@ import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import ChoicesBuilder from '@/components/interaction-designer/block-editors/ChoicesBuilder.vue'
+import MinimumChoicesEditor from '@/components/interaction-designer/block-editors/MinimumChoicesEditor.vue'
+import {IBlock} from '@floip/flow-runner'
+import MaximumChoicesEditor from '@/components/interaction-designer/block-editors/MaximumChoicesEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
@@ -74,17 +84,19 @@ const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
-    GenericContactPropertyEditor,
+    BlockId,
     BlockNameEditor,
     BlockLabelEditor,
     BlockOutputBranchingConfig,
     BlockSemanticLabelEditor,
     BlockExitSemanticLabelEditor,
     ChoicesBuilder,
-    FirstBlockEditorButton,
-    ResourceEditor,
-    BlockId,
     Categorization,
+    FirstBlockEditorButton,
+    GenericContactPropertyEditor,
+    MinimumChoicesEditor,
+    MaximumChoicesEditor,
+    ResourceEditor,
   },
 })
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
@@ -93,6 +105,7 @@ export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseB
   //Important: Even we extends from SelectOneResponseBlock, to avoid conflict
   // we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation
   @builderVuexNamespace.Getter declare isEditable: boolean
+  @blockVuexNamespace.Action declare handleBranchingTypeChangedToUnified: ({block}: {block: IBlock}) => void
 }
 
 export default MobilePrimitives_SelectManyResponseBlock
