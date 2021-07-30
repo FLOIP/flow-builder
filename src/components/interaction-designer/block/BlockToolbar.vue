@@ -96,7 +96,7 @@ class BlockToolbar extends mixins(Lang) {
         params: {blockId: duplicatedBlock.uuid},
       })
     })
-    this.$emit('duplicate')
+    this.$emit('after-duplicate')
   }
 
   handleExpandMinimizeBlockEditor() {
@@ -104,10 +104,10 @@ class BlockToolbar extends mixins(Lang) {
     let routerName = ''
     if (this.isEditorVisible) {
       routerName = 'block-selected-details'
-      this.$emit('minimize')
+      this.$emit('before-minimize')
     } else {
       routerName = 'block-selected'
-      this.$emit('expand')
+      this.$emit('before-expand')
     }
 
     this.$router.replace({
