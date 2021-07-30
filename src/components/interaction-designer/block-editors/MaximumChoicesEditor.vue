@@ -4,7 +4,7 @@
     :message-key="`block/${block.uuid}/config/maximum_choices`">
     <div class="block-validation-max-choices">
       <numeric-editor
-        v-model.number="value"
+        v-model.number="maxChoices"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.maximum-choices' | trans"
         :placeholder="'flow-builder.enter-value' | trans"
@@ -43,13 +43,13 @@ export class MaximumChoicesEditor extends mixins(Lang) {
   }
 
   // eslint-disable-next-line line-comment-position
-  get value(): number | string { //ISelectManyResponseBlockConfig['minimum_choices'] {
+  get maxChoices(): number | string { //ISelectManyResponseBlockConfig['minimum_choices'] {
     const max = this.block.config.maximum_choices
     return isNumber(max) ? max : ''
   }
 
   // eslint-disable-next-line line-comment-position
-  set value(value: number | string) { //ISelectManyResponseBlockConfig['minimum_choices']) {
+  set maxChoices(value: number | string) { //ISelectManyResponseBlockConfig['minimum_choices']) {
     const {uuid: blockId} = this.block
     this.setMaxChoices({blockId, value: isNumber(value) ? value : undefined})
   }

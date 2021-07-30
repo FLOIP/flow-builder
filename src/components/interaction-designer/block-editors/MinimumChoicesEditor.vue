@@ -4,7 +4,7 @@
     :message-key="`block/${block.uuid}/config/minimum_choices`">
     <div class="block-validation-min-choices">
       <numeric-editor
-        v-model.number="value"
+        v-model.number="minChoices"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.minimum-choices' | trans"
         :placeholder="'flow-builder.enter-value' | trans"
@@ -44,13 +44,13 @@ export class MinimumChoicesEditor extends mixins(Lang) {
   }
 
   // eslint-disable-next-line line-comment-position
-  get value(): number | string { //ISelectManyResponseBlockConfig['minimum_choices'] {
+  get minChoices(): number | string { //ISelectManyResponseBlockConfig['minimum_choices'] {
     const min = this.block.config.minimum_choices
     return isNumber(min) ? min : ''
   }
 
   // eslint-disable-next-line line-comment-position
-  set value(value: number | string) { //ISelectManyResponseBlockConfig['minimum_choices']) {
+  set minChoices(value: number | string) { //ISelectManyResponseBlockConfig['minimum_choices']) {
     const {uuid: blockId} = this.block
     this.setMinChoices({blockId, value: isNumber(value) ? value : undefined})
   }
