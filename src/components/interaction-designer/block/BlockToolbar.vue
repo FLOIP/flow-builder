@@ -53,7 +53,7 @@
         <font-awesome-icon
           v-if="isEditable"
           v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
-          :icon="isBlockEditorOpen ? ['fac', 'minimize'] : ['fac', 'expand']"
+          :icon="isEditorVisible ? ['fac', 'minimize'] : ['fac', 'expand']"
           class="fa-btn"
           @click.prevent="handleExpandMinimizeBlockEditor" />
       </div>
@@ -77,6 +77,7 @@ const validationVuexNamespace = namespace('validation')
 class BlockToolbar extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly isBlockSelected!: boolean
+  @Prop() readonly isEditorVisible!: boolean
 
   isDeleting = false
 
@@ -99,9 +100,9 @@ class BlockToolbar extends mixins(Lang) {
   }
 
   handleExpandMinimizeBlockEditor() {
-    this.setIsBlockEditorOpen(!this.isBlockEditorOpen)
+    this.setIsBlockEditorOpen(!this.isEditorVisible)
     let routerName = ''
-    if (this.isBlockEditorOpen) {
+    if (this.isEditorVisible) {
       routerName = 'block-selected-details'
       this.$emit('minimize')
     } else {
@@ -116,7 +117,6 @@ class BlockToolbar extends mixins(Lang) {
   }
 
   @builderVuexNamespace.Getter isEditable !: boolean
-  @builderVuexNamespace.State isBlockEditorOpen !: boolean
   @builderVuexNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
 
   @flowVuexNamespace.Action block_select!: ({blockId}: {blockId: IBlock['uuid']}) => void

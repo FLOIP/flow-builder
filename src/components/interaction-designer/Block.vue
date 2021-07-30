@@ -11,7 +11,7 @@
       class="block"
       :class="{
         active: isBlockActivated,
-        'has-toolbar': isBlockSelected,
+        'has-toolbar': isBlockSelected || shouldShowBlockEditor,
         ['has-exits']: hasExitsShown,
         ['has-multiple-exits']: hasMultipleExitsShown,
         [`has-${numberOfExitsShown}-exits`]: true,
@@ -27,6 +27,7 @@
 
       <block-toolbar
         :block="block"
+        :is-editor-visible="shouldShowBlockEditor"
         :is-block-selected="isBlockSelected" />
 
       <header
