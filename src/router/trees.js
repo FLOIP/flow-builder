@@ -30,7 +30,7 @@ export const routes = [
       {
         path: 'details',
         name: 'flow-details',
-        meta: {isSidebarShown: true},
+        meta: {isFlowEditorShown: true},
       },
       {
         path: 'block/:blockId',
