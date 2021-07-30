@@ -41,7 +41,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
     dispatch('flow/block_convertExitFormationToUnified', {
       blockId: block.uuid,
-      test: 'block.value > 1',
+      test: 'block.value > 0',
     }, {root: true})
   },
 
