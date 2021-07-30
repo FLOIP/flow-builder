@@ -2,9 +2,11 @@
   <div
     v-if="activeFlow"
     class="interaction-designer-contents">
-    <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate" />
+    <header class="interaction-designer-header">
+      <tree-builder-toolbar />
+    </header>
 
-    <div
+    <aside
       v-if="isSimulatorActive"
       class="tree-sidebar-container"
       :class="{ 'slide-out': !$route.meta.isSidebarShown,}">
@@ -26,11 +28,11 @@
         class="tree-sidebar">
         <clipboard-root />
       </div>
-    </div>
+    </aside>
 
-    <div class="tree-contents">
-      <builder-canvas  @click.native="handleCanvasSelected" />
-    </div>
+    <main class="interaction-designer-main">
+      <builder-canvas @click.native="handleCanvasSelected" />
+    </main>
   </div>
 </template>
 
@@ -298,11 +300,6 @@ export default {
         //name: this.$route.meta.isSidebarShown ? 'flow-canvas' : '???',
       //})
     },
-
-    handleToolBarHeightUpdate(height) {
-      this.toolbarHeight = height
-    },
-
   },
 }
 </script>
@@ -311,25 +308,28 @@ export default {
 <!--<style src="../css/InteractionDesigner.css"></style>-->
 <style lang="scss"> @import '../css/customized/vue-multiselect.css';</style>
 <style lang="scss">
-  // Colors + dimensions
-  $dot-size: 1px;
-  $dot-space: 22px;
-  $dot-color: #333;
-  $bg-color: #fcfcfc;
-
-  $toolbar-height: 56px;
   $sidebar-width: 365px;
 
   .interaction-designer-contents {
     background: #F5F5F5;
-    background-size: $dot-space $dot-space;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+  }
+
+  .interaction-designer-header {
+    position: sticky;
+    top: 0;
+    z-index: 4*10;
   }
 
   .tree-sidebar-container {
     position: fixed;
     right: 0;
     top: 62px;
-    z-index: 3*10;
+    z-index: 5*10;
 
     height: 100vh;
     width: $sidebar-width;
@@ -358,60 +358,6 @@ export default {
     }
   }
 
-  .tree-builder-toolbar-main-menu {
-    width: 100vw;
-
-    border-bottom: 1px solid darkgrey;
-    background: #eee;
-
-    box-shadow: 0 3px 6px #CACACA;
-  }
-
-  // color categorizations
-  $category-0-faint: #fbfdfb;
-  $category-0-light: #97BD8A;
-  $category-0-dark: #38542f;
-  $category-1-faint: #fdfdfe;
-  $category-1-light: #6897BB;
-  $category-1-dark: #30516a;
-  $category-2-faint: #fdfbf8;
-  $category-2-light: #C69557;
-  $category-2-dark: #6e4e25;
-
-  .tree-sidebar-container {
-    .tree-sidebar {
-      //  &.category-0 {
-      //    border-color: $category-0-light;
-      //    background-color: $category-0-faint;
-      //    border-radius: 0.3em;
-      //
-      //    h3 {
-      //      color: $category-0-dark;
-      //    }
-      //  }
-      //
-      //  &.category-1 {
-      //    border-color: $category-1-light;
-      //    background-color: $category-1-faint;
-      //    border-radius: 0.3em;
-      //
-      //    h3 {
-      //      color: $category-1-dark;
-      //    }
-      //  }
-      //
-      //  &.category-2 {
-      //    border-color: $category-2-light;
-      //    background-color: $category-2-faint;
-      //    border-radius: 0.3em;
-      //
-      //    h3 {
-      //      color: $category-2-dark;
-      //    }
-      //  }
-    }
-  }
-
   .sidebar-cue {
     cursor: pointer;
     background-color: #eee;
@@ -419,11 +365,14 @@ export default {
     position: fixed;
     margin-top: 2em;
     right: 0;
-    z-index: 5*10;
   }
 
   .sidebar-close {
     right: 350px;
+  }
+
+  .interaction-designer-main {
+    flex: 1;
   }
 
   // @note - these styles have been extracted so the output can be reused between storybook and voto5

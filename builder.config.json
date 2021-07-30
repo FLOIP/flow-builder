@@ -118,7 +118,7 @@
         "is_interactive": false,
         "is_branching": false,
         "category":  0,
-        "menu_category": 1
+        "menu_category": 3
       },
       "Core.RunFlow": {
         "name": "Core.RunFlow",
@@ -191,7 +191,8 @@
         "is_interactive": true,
         "is_branching": false,
         "category":  1,
-        "menu_category": 4
+        "menu_category": 1,
+        "divider_before": true
       },
       "SmartDevices.PhotoResponse": {
         "name": "SmartDevices.PhotoResponse",
@@ -199,8 +200,7 @@
         "is_interactive": true,
         "is_branching": false,
         "category":  1,
-        "menu_category": 1,
-        "divider_before": true
+        "menu_category": 1
       }
     },
     "blockTags": [],

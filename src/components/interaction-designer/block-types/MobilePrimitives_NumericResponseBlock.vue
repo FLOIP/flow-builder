@@ -127,10 +127,9 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
 
   handleActionsAccordingToBranchingType(): void {
     const {vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
-    const {EXIT_PER_CHOICE, ADVANCED} = OutputBranchingType
-    const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
+    const {UNIFIED} = OutputBranchingType
 
-    if (!isEnteringChoiceOrAdvancedBranchingType) {
+    if (metadata.io_viamo.branchingType === UNIFIED) {
       this.handleBranchingTypeChangedToUnified({block: this.block})
     }
   }

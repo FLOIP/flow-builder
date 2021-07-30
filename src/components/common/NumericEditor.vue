@@ -37,7 +37,7 @@ export default {
     },
     value: {
       type: [String, Number],
-      required: true,
+      required: false,
     },
     regexNumericFiltering: {
       type: String,

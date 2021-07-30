@@ -843,17 +843,6 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                              
                             <a
                               class="dropdown-item"
-                              data-block-type="Core.Output"
-                              href="#"
-                            >
-                              
-                  Output
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
@@ -910,6 +899,17 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             <div
                               class="dropdown-divider"
                             />
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="SmartDevices.LocationResponse"
+                              href="#"
+                            >
+                              
+                  Location Response
+                
+                            </a>
+                            <!---->
                              
                             <a
                               class="dropdown-item"
@@ -1048,62 +1048,22 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                   Case
                 
                             </a>
-                             
-                          </div>
-                        </li>
-                         
-                        <li
-                          class="nav-item dropdown"
-                        >
-                          <a
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            class="nav-link dropdown-toggle"
-                            data-toggle="dropdown"
-                            href="#"
-                            role="button"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              class="fa-btn big-icon svg-inline--fa fa-weather fa-w-16"
-                              data-icon="weather"
-                              data-prefix="fac"
-                              focusable="false"
-                              role="img"
-                              viewBox="0 0 32 32"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                class=""
-                                d="M9.946 10.312c-1.762-0.066-3.398 1.477-3.465 3.659-0.030 0.954 0.255 1.825 0.738 2.501l-1.625 1.156c-0.698-0.978-1.116-2.197-1.116-3.515 0-0.076 0.001-0.153 0.004-0.228l-0 0.011c0.096-3.102 2.485-5.697 5.526-5.583 1.378 0.051 2.605 0.66 3.512 1.596l-1.431 1.388c-0.578-0.596-1.327-0.955-2.143-0.985z M11.159 17.549c0.001-3.019 2.204-5.299 4.727-5.299 1.868 0 3.542 1.23 4.305 3.108l0.41 1.008 0.97-0.494c0.597-0.304 1.257-0.472 1.952-0.472 2.523 0 4.727 2.281 4.727 5.3s-2.204 5.3-4.728 5.3h-14.020l-0.176-0.021c-1.58-0.193-2.94-1.707-2.94-3.704 0-2.149 1.563-3.725 3.296-3.725h0c0.125 0 0.249 0.008 0.356 0.022l1.123 0.136-0.002-1.158v-0.001zM9.219 16.571c-2.78 0.255-4.833 2.793-4.833 5.704 0 2.548 1.564 4.799 3.818 5.5v0.225h15.319c3.803 0 6.727-3.36 6.727-7.3s-2.924-7.3-6.727-7.3c-0.667 0-1.311 0.105-1.92 0.301-1.17-2.043-3.268-3.451-5.717-3.451-3.483 0-6.23 2.82-6.666 6.321zM14.832 8.093l-0.954 1.575-1.71-1.036 0.954-1.575 1.71 1.036zM8.748 5.778l0.477 2.1-1.95 0.444-0.477-2.1 1.95-0.444zM3.482 9.848l1.909 1.050-0.964 1.753-1.909-1.050 0.964-1.752zM2.737 17.928l1.432-1.576 1.48 1.346-1.432 1.575-1.48-1.346z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                             
-                            <span
-                              class="nav-link-text"
-                            >
-                              Weather
-                            </span>
-                          </a>
-                           
-                          <div
-                            class="dropdown-menu mt-0"
-                          >
                             <!---->
                              
                             <a
                               class="dropdown-item"
-                              data-block-type="SmartDevices.LocationResponse"
+                              data-block-type="Core.Output"
                               href="#"
                             >
                               
-                  Location Response
+                  Output
                 
                             </a>
                              
                           </div>
                         </li>
+                         
+                        <!---->
                          
                         <li
                           class="nav-item dropdown"
@@ -1445,17 +1405,6 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                              
                             <a
                               class="dropdown-item"
-                              data-block-type="Core.Output"
-                              href="#"
-                            >
-                              
-                  Output
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
@@ -1512,6 +1461,17 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             <div
                               class="dropdown-divider"
                             />
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="SmartDevices.LocationResponse"
+                              href="#"
+                            >
+                              
+                  Location Response
+                
+                            </a>
+                            <!---->
                              
                             <a
                               class="dropdown-item"
@@ -1650,62 +1610,22 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                   Case
                 
                             </a>
-                             
-                          </div>
-                        </li>
-                         
-                        <li
-                          class="nav-item dropdown"
-                        >
-                          <a
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            class="nav-link dropdown-toggle"
-                            data-toggle="dropdown"
-                            href="#"
-                            role="button"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              class="fa-btn big-icon svg-inline--fa fa-weather fa-w-16"
-                              data-icon="weather"
-                              data-prefix="fac"
-                              focusable="false"
-                              role="img"
-                              viewBox="0 0 32 32"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                class=""
-                                d="M9.946 10.312c-1.762-0.066-3.398 1.477-3.465 3.659-0.030 0.954 0.255 1.825 0.738 2.501l-1.625 1.156c-0.698-0.978-1.116-2.197-1.116-3.515 0-0.076 0.001-0.153 0.004-0.228l-0 0.011c0.096-3.102 2.485-5.697 5.526-5.583 1.378 0.051 2.605 0.66 3.512 1.596l-1.431 1.388c-0.578-0.596-1.327-0.955-2.143-0.985z M11.159 17.549c0.001-3.019 2.204-5.299 4.727-5.299 1.868 0 3.542 1.23 4.305 3.108l0.41 1.008 0.97-0.494c0.597-0.304 1.257-0.472 1.952-0.472 2.523 0 4.727 2.281 4.727 5.3s-2.204 5.3-4.728 5.3h-14.020l-0.176-0.021c-1.58-0.193-2.94-1.707-2.94-3.704 0-2.149 1.563-3.725 3.296-3.725h0c0.125 0 0.249 0.008 0.356 0.022l1.123 0.136-0.002-1.158v-0.001zM9.219 16.571c-2.78 0.255-4.833 2.793-4.833 5.704 0 2.548 1.564 4.799 3.818 5.5v0.225h15.319c3.803 0 6.727-3.36 6.727-7.3s-2.924-7.3-6.727-7.3c-0.667 0-1.311 0.105-1.92 0.301-1.17-2.043-3.268-3.451-5.717-3.451-3.483 0-6.23 2.82-6.666 6.321zM14.832 8.093l-0.954 1.575-1.71-1.036 0.954-1.575 1.71 1.036zM8.748 5.778l0.477 2.1-1.95 0.444-0.477-2.1 1.95-0.444zM3.482 9.848l1.909 1.050-0.964 1.753-1.909-1.050 0.964-1.752zM2.737 17.928l1.432-1.576 1.48 1.346-1.432 1.575-1.48-1.346z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                             
-                            <span
-                              class="nav-link-text"
-                            >
-                              Weather
-                            </span>
-                          </a>
-                           
-                          <div
-                            class="dropdown-menu mt-0"
-                          >
                             <!---->
                              
                             <a
                               class="dropdown-item"
-                              data-block-type="SmartDevices.LocationResponse"
+                              data-block-type="Core.Output"
                               href="#"
                             >
                               
-                  Location Response
+                  Output
                 
                             </a>
                              
                           </div>
                         </li>
+                         
+                        <!---->
                          
                         <li
                           class="nav-item dropdown"
@@ -2018,17 +1938,6 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                              
                             <a
                               class="dropdown-item"
-                              data-block-type="Core.Output"
-                              href="#"
-                            >
-                              
-                  Output
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
@@ -2085,6 +1994,17 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             <div
                               class="dropdown-divider"
                             />
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="SmartDevices.LocationResponse"
+                              href="#"
+                            >
+                              
+                  Location Response
+                
+                            </a>
+                            <!---->
                              
                             <a
                               class="dropdown-item"
@@ -2223,62 +2143,22 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                   Case
                 
                             </a>
-                             
-                          </div>
-                        </li>
-                         
-                        <li
-                          class="nav-item dropdown"
-                        >
-                          <a
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            class="nav-link dropdown-toggle"
-                            data-toggle="dropdown"
-                            href="#"
-                            role="button"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              class="fa-btn big-icon svg-inline--fa fa-weather fa-w-16"
-                              data-icon="weather"
-                              data-prefix="fac"
-                              focusable="false"
-                              role="img"
-                              viewBox="0 0 32 32"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                class=""
-                                d="M9.946 10.312c-1.762-0.066-3.398 1.477-3.465 3.659-0.030 0.954 0.255 1.825 0.738 2.501l-1.625 1.156c-0.698-0.978-1.116-2.197-1.116-3.515 0-0.076 0.001-0.153 0.004-0.228l-0 0.011c0.096-3.102 2.485-5.697 5.526-5.583 1.378 0.051 2.605 0.66 3.512 1.596l-1.431 1.388c-0.578-0.596-1.327-0.955-2.143-0.985z M11.159 17.549c0.001-3.019 2.204-5.299 4.727-5.299 1.868 0 3.542 1.23 4.305 3.108l0.41 1.008 0.97-0.494c0.597-0.304 1.257-0.472 1.952-0.472 2.523 0 4.727 2.281 4.727 5.3s-2.204 5.3-4.728 5.3h-14.020l-0.176-0.021c-1.58-0.193-2.94-1.707-2.94-3.704 0-2.149 1.563-3.725 3.296-3.725h0c0.125 0 0.249 0.008 0.356 0.022l1.123 0.136-0.002-1.158v-0.001zM9.219 16.571c-2.78 0.255-4.833 2.793-4.833 5.704 0 2.548 1.564 4.799 3.818 5.5v0.225h15.319c3.803 0 6.727-3.36 6.727-7.3s-2.924-7.3-6.727-7.3c-0.667 0-1.311 0.105-1.92 0.301-1.17-2.043-3.268-3.451-5.717-3.451-3.483 0-6.23 2.82-6.666 6.321zM14.832 8.093l-0.954 1.575-1.71-1.036 0.954-1.575 1.71 1.036zM8.748 5.778l0.477 2.1-1.95 0.444-0.477-2.1 1.95-0.444zM3.482 9.848l1.909 1.050-0.964 1.753-1.909-1.050 0.964-1.752zM2.737 17.928l1.432-1.576 1.48 1.346-1.432 1.575-1.48-1.346z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                             
-                            <span
-                              class="nav-link-text"
-                            >
-                              Weather
-                            </span>
-                          </a>
-                           
-                          <div
-                            class="dropdown-menu mt-0"
-                          >
                             <!---->
                              
                             <a
                               class="dropdown-item"
-                              data-block-type="SmartDevices.LocationResponse"
+                              data-block-type="Core.Output"
                               href="#"
                             >
                               
-                  Location Response
+                  Output
                 
                             </a>
                              
                           </div>
                         </li>
+                         
+                        <!---->
                          
                         <li
                           class="nav-item dropdown"
