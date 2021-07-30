@@ -213,7 +213,6 @@ export default {
 
   updated() {
     this.blockWidth = this.$refs.draggable.$el.clientWidth
-    this.blockHeight = this.$refs.draggable.$el.clientHeight
   },
 
   created() {

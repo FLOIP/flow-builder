@@ -86,7 +86,7 @@ class BlockToolbar extends mixins(Lang) {
     this.flow_removeBlock({blockId: this.block.uuid})
     this.removeValidationStatusesFor({key: `block/${this.block.uuid}`})
     this.isDeleting = false
-    this.$emit('delete')
+    this.$emit('after-delete')
   }
 
   handleDuplicateBlock() {
@@ -110,7 +110,7 @@ class BlockToolbar extends mixins(Lang) {
       this.$emit('expand')
     }
 
-    this.$router.history.replace({
+    this.$router.replace({
       name: routerName,
       params: {blockId: this.block.uuid},
     })
