@@ -29,7 +29,6 @@ class AdvancedExitEditor extends mixins(Lang) {
   @Prop() readonly placeholder!: string
   @Prop() readonly resourceVariant!: IResourceValue
   @Prop() readonly mode!: string
-  @Prop({default: true}) readonly enableAutogenButton!: boolean
   @Prop({default: 2}) readonly rows!: number
 
   get content(): string {
@@ -37,20 +36,20 @@ class AdvancedExitEditor extends mixins(Lang) {
   }
 
   commitExpressionChange(value: string): void {
-    const {resourceId, mode} = this
-    const {language_id: languageId, content_type: contentType} = this.resourceVariant
+    const {resourceId, mode, resourceVariant} = this
+    const {language_id: languageId, content_type: contentType} = resourceVariant
 
-    this.$emit('beforeResourceVariantChanged', {variant: this.resourceVariant, resourceId})
+    this.$emit('beforeResourceVariantChanged', {variant: resourceVariant, resourceId})
     this.resource_setOrCreateValueModeSpecific({
       resourceId,
       filter: {language_id: languageId, content_type: contentType, modes: [mode]},
       value,
     })
-    this.$emit('afterResourceVariantChanged', {variant: this.resourceVariant, resourceId})
+    this.$emit('afterResourceVariantChanged', {variant: resourceVariant, resourceId})
   }
 
   @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!:
-    ({resourceId, filter, value}: { resourceId: string, filter: {}, value: string }) => void
+    ({resourceId, filter, value}: { resourceId: IResource['uuid'], filter: {}, value: string }) => void
 }
 
 export default AdvancedExitEditor

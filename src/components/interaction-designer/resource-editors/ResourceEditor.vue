@@ -34,8 +34,7 @@
                 :resource-variant="findOrGenerateStubbedVariantOn(
                   resource,
                   {language_id: languageId, content_type: contentType, modes: [mode]})"
-                :mode="mode"
-                :enable-autogen-button="true || enableAutogenButton" />
+                :mode="mode" />
 
               <div v-if="contentType === SupportedContentType.AUDIO">
                 <audio-library-selector
