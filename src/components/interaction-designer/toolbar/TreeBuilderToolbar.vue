@@ -54,6 +54,7 @@
                   <button
                     type="button"
                     aria-label="Close"
+                    @click="showOrHideEditFlowModal"
                     class="close">
                     ×
                   </button>
