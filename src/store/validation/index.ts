@@ -120,8 +120,8 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     return state.validationStatuses[key]
   },
 
-  async validate_new_language({ state }, { language }: { language: ILanguage }): Promise<IValidationStatus> {
-    const validate = getOrCreateLanguageValidator()
+  async validate_new_language({ state, rootGetters }, { language }: { language: ILanguage }): Promise<IValidationStatus> {
+    const validate = getOrCreateLanguageValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const index = 'language/new_language'
     Vue.set(state.validationStatuses, index, {
       isValid: validate(language),
@@ -169,11 +169,11 @@ function getOrCreateFlowValidator(schemaVersion: string): ValidateFunction {
   return validators.get(validationType)!
 }
 
-function getOrCreateLanguageValidator(): ValidateFunction {
+function getOrCreateLanguageValidator(schemaVersion: string): ValidateFunction {
   const validationType = 'language'
   if (isEmpty(validators) || !validators.has(validationType)) {
-    const flowContainerJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
-    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowContainerJsonSchema, '#/definitions/ILanguage'))
+    const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/ILanguage'))
   }
   return validators.get(validationType)!
 }
