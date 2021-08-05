@@ -1,35 +1,35 @@
 <template>
   <div class="core-set-group-membership-block">
-    <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+    <h3 class="block-editor-header">
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
-
-      <validation-message
-        #input-control="{ isValid: isValid }"
-        :message-key="`block/${block.uuid}/config/is_member`">
-        <div class="form-group">
-          <label>{{ 'flow-builder.action-label' | trans }}</label>
-          <vue-multiselect
-            v-model="selectedAction"
-            track-by="id"
-            label="name"
-            :class="{invalid: isValid === false}"
-            :placeholder="'flow-builder.action-placeholder' | trans"
-            :options="actionsList"
-            :allow-empty="true"
-            :show-labels="false"
-            :searchable="false" />
-        </div>
-      </validation-message>
-
-      <group-selector :block="block" />
 
       <slot name="extras" />
+
+      <group-membership-editor :block="block" />
+
+      <hr>
+
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
@@ -46,18 +46,21 @@ import {Component, Prop} from 'vue-property-decorator'
 import {IBlock, IFlow, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
 import GroupSelector from '@/components/interaction-designer/block-editors/GroupSelector.vue'
 import VueMultiselect from 'vue-multiselect'
-
+import GroupMembershipEditor from '@/components/interaction-designer/block-editors/GroupMembershipEditor.vue'
 import SetGroupMembershipStore, {ADD_KEY, BLOCK_TYPE, REMOVE_KEY} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {find} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const flowVuexNamespace = namespace('flow')
@@ -70,6 +73,7 @@ interface IGroupActionOption {
 
 @Component({
   components: {
+    GenericContactPropertyEditor,
     BlockNameEditor,
     BlockLabelEditor,
     BlockSemanticLabelEditor,
@@ -78,11 +82,16 @@ interface IGroupActionOption {
     GroupSelector,
     VueMultiselect,
     ValidationMessage,
+    Categorization,
+    GroupMembershipEditor,
+    BlockOutputBranchingConfig,
   },
 })
 class Core_SetGroupMembershipBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   actionsList: IGroupActionOption[] = [
     {
@@ -113,7 +122,7 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
   }
 
   @blockVuexNamespace.Action setIsMember!: (action: IGroupActionOption) => Promise<any>
-
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable!: boolean
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: ({

@@ -1,183 +1,128 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExit, IBlockExitTestRequired, IResource} from '@floip/flow-runner'
+import {
+  findBlockWith,
+  IBlock,
+  IBlockExit,
+  IResource,
+  ValidationException,
+} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
-import {defaultsDeep, filter, find, first, get} from 'lodash'
+import {defaultsDeep, findKey, get, map, omit, snakeCase} from 'lodash'
 import {IFlowsState} from '../index'
-
-import {someItemsHaveValue} from '../utils/listBuilder'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
-export interface IInflatedChoicesInterface {
-  exit: IBlockExit,
-  resource: IResource,
-}
+export interface ICustomFlowState extends Partial<IFlowsState> {}
 
-export interface ICustomFlowState extends Partial<IFlowsState> {
-  inflatedEmptyChoice: IInflatedChoicesInterface,
-}
+export const stateFactory = (): ICustomFlowState => ({})
 
-export const stateFactory = (): ICustomFlowState => ({
-  // put empty choice in state rather than in block config to avoid it being persisted
-  inflatedEmptyChoice: {} as IInflatedChoicesInterface,
-})
-
-export const getters: GetterTree<ICustomFlowState, IRootState> = {
-  inflatedChoices: (state, getters, _rootState, rootGetters): object => {
-    const currentBlock = rootGetters['builder/activeBlock']
-    const choices: { [key: string]: IInflatedChoicesInterface } = {}
-
-    return Object.keys(currentBlock.config.choices).reduce((memo, choiceKey): { [key: string]: IInflatedChoicesInterface } => {
-      const resourceUuid = currentBlock.config.choices[choiceKey]
-      memo[choiceKey] = {
-        exit: getters.blockExitFromResourceUuid(resourceUuid),
-        resource: rootGetters['flow/resourcesByUuid'][resourceUuid],
-      }
-      return memo
-    }, choices)
-  },
-  blockExitFromResourceUuid: (state, _getters, _rootState, rootGetters) => (resourceUuid: string): IBlockExit => {
-    const currentBlock = rootGetters['builder/activeBlock']
-    return first(filter(currentBlock.exits, {
-      label: resourceUuid,
-    })) as IBlockExit
-  },
-  isInflatedChoiceBlankOnKey: (state, getters) => (key: any): boolean => !someItemsHaveValue(
-    getters.inflatedChoices[key].resource.values,
-    'value',
-  ) && !get(getters.inflatedChoices[key], 'exit.semantic_label'),
-  isInflatedEmptyChoiceBlank: (state): boolean => !someItemsHaveValue(
-    state.inflatedEmptyChoice.resource.values || [],
-    'value',
-  ) && !get(state.inflatedEmptyChoice, 'exit.semantic_label'),
-  allChoicesHaveContent: (
-    state,
-    getters,
-  ): boolean => Object.keys(getters.inflatedChoices).every((key: string) => !getters.isInflatedChoiceBlankOnKey(key)),
-  twoChoicesBlank: (state, getters): boolean => {
-    let blankNumber = 0
-    return Object.keys(getters.inflatedChoices).some((key: string) => {
-      if (!someItemsHaveValue(getters.inflatedChoices[key].resource.values, 'value')) {
-        blankNumber += 1
-      }
-
-      return blankNumber > 1
-    })
-  },
-
-}
+export const getters: GetterTree<ICustomFlowState, IRootState> = {}
 
 export const mutations: MutationTree<ICustomFlowState> = {}
 
 export const actions: ActionTree<ICustomFlowState, IRootState> = {
-  deleteChoiceByKey({rootGetters, commit}, {choiceKeyToRemove}) {
-    const activeBlock = rootGetters['builder/activeBlock']
-    delete activeBlock.config.choices[choiceKeyToRemove]
+  rewriteChoiceKeyFor({rootGetters, dispatch}, {resourceId, blockId}: {resourceId: IResource['uuid'], blockId: IBlock['uuid']}) {
+    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
+    const resource: IResource = rootGetters['flow/resourcesByUuid'][resourceId]
 
-    // Rekey
-    const choices: { [key: string]: string } = {}
-    commit('flow/block_updateConfigByKey', {
-      blockId: activeBlock.uuid,
-      key: 'choices',
-      value: Object.keys(activeBlock.config.choices).sort().reduce((choices, choiceKey: string, index: number) => {
-        choices[index + 1] = activeBlock.config.choices[choiceKey]
-        return choices
-      }, choices),
-    }, {root: true})
-  },
-  pushNewChoice({rootGetters}, {choiceId, newIndex}) {
-    const activeBlock = rootGetters['builder/activeBlock']
-    Vue.set(activeBlock.config.choices, newIndex, choiceId)
-  },
-  async createVolatileEmptyChoice({state, dispatch, rootGetters}, {index}) {
-    const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-    const blankExit: IBlockExitTestRequired = await dispatch('flow/block_createBlockExitWith', {
-      props: {
-        uuid: await (new IdGeneratorUuidV4()).generate(),
-        test: `block.value = ${index}`,
-        label: blankResource.uuid,
-        semantic_label: '',
-      } as IBlockExitTestRequired,
-    }, {root: true})
-    state.inflatedEmptyChoice = {
-      exit: blankExit,
-      resource: rootGetters['flow/resourcesByUuid'][blankResource.uuid],
+    if (resource == null) {
+      throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
     }
+
+    const choiceKey = String(findKey(block.config.choices, (v) => v === resourceId))
+    // omit() will inadvertently but desirably remove an empty `choiceKey`
+    block.config.choices = omit(block.config.choices, choiceKey)
+    dispatch('addChoiceByResourceIdTo', {blockId, resourceId})
   },
-  async popFirstEmptyChoice({dispatch, rootGetters, getters}) {
-    const choiceKeyToRemove = find(Object.keys(getters.inflatedChoices), (key: string) => <boolean>getters.isInflatedChoiceBlankOnKey(key))
-    if (choiceKeyToRemove) {
-      const choiceToRemove = rootGetters['builder/activeBlock'].config.choices[choiceKeyToRemove]
-      dispatch('deleteChoiceByKey', {choiceKeyToRemove, blockId: rootGetters['builder/activeBlock'].uuid})
-      return choiceToRemove
+
+  addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) {
+    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
+    const resource: IResource = rootGetters['flow/resourcesByUuid'][resourceId]
+
+    if (resource == null) {
+      throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
     }
-    return null
+
+    // defaulted to `resourceId` to mitigate empty keys and associated error handling altogether
+    const desiredChoiceKey = snakeCase(get(resource.values[0], 'value')) || resource.uuid
+    const doesChoiceKeyAlreadyExist = desiredChoiceKey in block.config.choices
+    // apply suffix as resourceId when duplicated to prevent overwriting as input is received
+    const suffix = doesChoiceKeyAlreadyExist ? `-${resource.uuid}` : ''
+    Vue.set(block.config.choices, `${desiredChoiceKey}${suffix}`, resource.uuid)
   },
-  async editSelectOneResponseBlockChoice({
-    commit, dispatch, getters, rootGetters,
-  }) {
-    const activeBlock = rootGetters['builder/activeBlock']
-    // then remove the 1st blank exit
-    if (!getters.allChoicesHaveContent) {
-      const exitLabel = await dispatch('popFirstEmptyChoice', {blockId: activeBlock.uuid})
-      if (exitLabel) {
-        commit('flow/block_popExitsByLabel', {blockId: activeBlock.uuid, exitLabel}, {root: true})
+
+  deleteChoiceByResourceIdFrom({rootGetters}, {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) {
+    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
+    const choiceKey = String(findKey(block.config.choices, (v) => v === resourceId))
+    Vue.delete(block.config.choices, choiceKey)
+  },
+
+  async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: {blockId: IBlock['uuid']}) {
+    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
+    const {config: {choices}, exits}: ISelectOneResponseBlock = block
+    const choiceKeys = Object.keys(choices)
+    const exitsForChoices: IBlockExit[] = exits.slice(0, -1) // non-default exits; default should always be last
+
+    // reflow exits based on choices
+    await Promise.all(choiceKeys.map(async (choiceKey, i) => {
+      if (exitsForChoices[i] == null) {
+        const uuid = await (new IdGeneratorUuidV4()).generate()
+        const exit = await dispatch('flow/block_createBlockExitWith', {props: {uuid} as IBlockExit}, {root: true})
+        exitsForChoices.push(exit)
       }
-    }
-    return activeBlock.config.choices
+
+      Object.assign(exitsForChoices[i], {
+        name: choiceKey,
+        test: `block.value = "${choiceKey}"`,
+      })
+    }))
+
+    exits.splice(0, exits.length - 1, ...exitsForChoices)
   },
 
-  async editEmptyChoice({state, commit, dispatch, getters, rootGetters}, {choice}: { choice: IInflatedChoicesInterface }) {
-    if (choice === state.inflatedEmptyChoice && !getters.isInflatedEmptyChoiceBlank) {
-      // push the current value into choices & exits
-      const activeBlock = rootGetters['builder/activeBlock']
-      const newIndex = Object.keys(activeBlock.config.choices || {}).length + 1
-      const resourceUuid = state.inflatedEmptyChoice.resource.uuid
-      dispatch('pushNewChoice', {choiceId: resourceUuid, blockId: activeBlock.uuid, newIndex})
-      commit('flow/block_pushNewExit', {blockId: activeBlock.uuid, newExit: state.inflatedEmptyChoice.exit}, {root: true})
-
-      // associate new blank resource to the empty choice, this is important to stop endless watching
-      const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-      await dispatch('createVolatileEmptyChoice', {blankResource, index: newIndex})
-    }
-  },
-
-  // todo: in the flow-spec, there's mention that we can configure to swap between exit-per-choice and a default exit
-  //       but, it doesn't seem to mention how this is configured
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-    const blankQuestionPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-    const blankChoicesPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-
-    const defaultExitProps: Partial<IBlockExit> = {
-      uuid: await (new IdGeneratorUuidV4()).generate(),
-      tag: 'Default',
-      label: 'Default',
-      test: '',
-    }
-
-    await dispatch('createVolatileEmptyChoice', {index: 0})
+    const exits: IBlockExit[] = [
+      await dispatch('flow/block_createBlockDefaultExitWith', {
+        props: ({
+          uuid: await (new IdGeneratorUuidV4()).generate(),
+        }) as IBlockExit,
+      }, {root: true}),
+    ]
 
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',
       semantic_label: '',
-      exits: [
-        await dispatch('flow/block_createBlockDefaultExitWith', {props: defaultExitProps}, {root: true}),
-      ],
       config: {
         prompt: blankPromptResource.uuid,
-        question_prompt: blankQuestionPromptResource.uuid,
-        choices_prompt: blankChoicesPromptResource.uuid,
         choices: {},
       },
+      exits,
+      tags: [],
+      vendor_metadata: {},
     })
   },
 
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: formatTestValueForUnifiedBranchingType(block as ISelectOneResponseBlock),
+    }, {root: true})
+  },
+}
+
+function formatTestValueForUnifiedBranchingType(block: ISelectOneResponseBlock): string {
+  const blockChoicesKey = Object.keys(block.config.choices)
+  if (blockChoicesKey.length === 0) {
+    console.warn('Choices are empty for SelectOneBlock, providing `true` by default')
+    return 'true'
+  }
+  return `OR(${map(blockChoicesKey, (choice) => `block.value = "${choice}"`).join(',')})`
 }
 
 export default {

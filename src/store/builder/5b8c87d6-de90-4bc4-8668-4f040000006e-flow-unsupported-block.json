@@ -1,5 +1,5 @@
 {
-  "specification_version": "1.0.10",
+  "specification_version": "1.0.0-rc2",
   "uuid": "3666a05d-3792-482b-8f7f-9e2472e4f027",
   "name": "container name",
   "description": "container description",
@@ -27,6 +27,7 @@
       "blocks": [
         {
           "uuid": "eb34ac1f-f27c-43f4-87c9-7f61309bc725",
+          "ui_metadata": {"canvas_coordinates": {"x": 164, "y": 197}},
           "vendor_metadata": {
             "io_viamo": {
               "uiData": {
@@ -42,8 +43,7 @@
           "exits": [
             {
               "uuid": "6324a107-3194-4c5a-8cae-36882074ca1a",
-              "tag": "Default",
-              "label": "Default",
+              "name": "Default",
               "default": true,
               "config": {}
             }

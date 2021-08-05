@@ -12,17 +12,9 @@ import {mapGetters, mapMutations, mapState} from 'vuex'
 
 const {LeaderLine} = window
 
-const categoryColorMappings = {
-  'category-0-faint': '#fbfdfb',
-  'category-0-light': '#97BD8A',
-  'category-0-dark': '#38542f',
-  'category-1-faint': '#fdfdfe',
-  'category-1-light': '#6897BB',
-  'category-1-dark': '#30516a',
-  'category-2-faint': '#fdfbf8',
-  'category-2-light': '#C69557',
-  'category-2-dark': '#6e4e25',
-}
+const lightColor = '#6897BB'
+const darkColor = '#30516a'
+const disconnectionColor = '#dc3545'
 
 export default {
   props: {
@@ -32,8 +24,6 @@ export default {
     source: Object,
     target: Object,
     position: Object,
-
-    colorCategory: Number,
   },
 
   data() {
@@ -52,34 +42,36 @@ export default {
       return {
         startPlug: 'square',
 
-        startPlugColor: categoryColorMappings[`category-${this.colorCategory}-light`],
-        endPlugColor: categoryColorMappings[`category-${this.colorCategory}-dark`],
+        startPlugColor: lightColor,
+        endPlugColor: darkColor,
         gradient: true,
 
         startSocket: 'bottom',
         endSocket: 'top',
 
-        size: 3,
+        size: 5,
         outline: true,
         outlineColor: '#ffffff',
         // outlineSize: 0.08,
 
         path: 'grid',
+        endPlugSize: 0.5,
         // path: 'fluid',
         // path: 'arc',
         // path: 'magnet',
 
-        middleLabel: LeaderLine.captionLabel(this.exit.tag, {
-          color: categoryColorMappings[`category-${this.colorCategory}-dark`],
-          fontSize: 12,
-          // lineOffset: 65,
-        }),
+        // middleLabel: LeaderLine.captionLabel(this.exit.name, {
+        //   color: darkColor,
+        //   fontSize: 12,
+        //   // lineOffset: 65,
+        // }),
       }
     },
 
     prominentOptions() {
       return {
-        size: this.options.size + 3,
+        startPlugColor: disconnectionColor,
+        endPlugColor: disconnectionColor,
       }
     },
 
@@ -110,13 +102,13 @@ export default {
       // generate drafts while 'between exits' or 'source/destination unknown'
       // todo: push these out into ?block?
       const source = this.source || {
-        ...set({}, 'vendor_metadata.io_viamo.uiData.xPosition', this.position.x),
-        ...set({}, 'vendor_metadata.io_viamo.uiData.yPosition', this.position.y),
+        ...set({}, 'ui_metadata.canvas_coordinates.x', this.position.x),
+        ...set({}, 'ui_metadata.canvas_coordinates.y', this.position.y),
       }
 
       const target = this.target || {
-        ...set({}, 'vendor_metadata.io_viamo.uiData.xPosition', this.position.x),
-        ...set({}, 'vendor_metadata.io_viamo.uiData.yPosition', this.position.y),
+        ...set({}, 'ui_metadata.canvas_coordinates.x', this.position.x),
+        ...set({}, 'ui_metadata.canvas_coordinates.y', this.position.y),
       }
 
       return this.repaintCacheKeyGenerator(source, target)
@@ -140,7 +132,7 @@ export default {
     //     LeaderLine.pointAnchor(document.body, sourcePosition),
     //     LeaderLine.pointAnchor(document.body, targetPosition), options)
 
-    const blockPaddingOffset = {x: 34, y: -7}
+    const blockPaddingOffset = {x: '50%', y: -7}
     const start = document.getElementById(this.sourceElementId)
     const end = this.position
       ? document.getElementById(this.targetElementId)
@@ -190,18 +182,20 @@ export default {
     mouseOverHandler() {
       this.line.setOptions(this.prominentOptions)
       this.activateConnection({connectionContext: this.connectionContext})
+      this.$emit('lineMouseIn')
     },
     mouseOutHandler() {
       if (!this.isPermanentlyActive) {
         this.line.setOptions(this.options)
         this.deactivateConnection({connectionContext: this.connectionContext})
       }
+      this.$emit('lineMouseOut')
     },
     clickHandler() {
       this.isPermanentlyActive = true
-      this.line.setOptions(this.prominentOptions)
       this.activateConnection({connectionContext: this.connectionContext})
       this.activateBlock({blockId: null})
+      this.$emit('lineMouseIn')
     },
     clickAwayHandler(connectionElement) {
       document.addEventListener('click', (event) => {
@@ -219,6 +213,7 @@ export default {
           this.line.setOptions(this.options)
           this.deactivateConnection({connectionContext: this.connectionContext})
         }
+        this.$emit('lineMouseOut')
       }, false)
     },
   },

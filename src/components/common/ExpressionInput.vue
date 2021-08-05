@@ -1,12 +1,24 @@
 <template>
   <div class="expression-input form-group">
-    <label>{{ label }}</label>
-    <textarea
-      ref="input"
-      v-model="expression"
-      :class="['form-control', {'is-invalid': isInvalid}]"
-      :placeholder="placeholder"
-      @input="$emit('input', $event.target.value)" />
+    <label
+      v-if="label"
+      :class="labelClass">{{ label }}</label>
+
+    <div class="input-group">
+      <div
+        v-if="prependText"
+        class="input-group-prepend">
+        <span class="input-group-text">{{ prependText }}</span>
+      </div>
+
+      <textarea
+        ref="input"
+        v-model="expression"
+        :class="['form-control', {'is-invalid': isInvalid}]"
+        :rows="rows"
+        :placeholder="placeholder"
+        @input="$emit('input', $event.target.value)" />
+    </div>
     <slot />
   </div>
 </template>
@@ -37,21 +49,36 @@ export default {
       type: [String, Number],
       required: true,
     },
+    labelClass: {
+      type: String,
+      default: 'text-primary',
+      required: false,
+    },
     placeholder: {
       type: String,
       default: '',
     },
     currentExpression: {
       type: String,
-      required: true,
+      required: false,
     },
     expressionIdentifier: {
       type: [String, Number],
       default: null,
     },
+    rows: {
+      type: Number,
+      required: false,
+      default: 1,
+    },
     validState: {
       type: Boolean,
       default: null,
+      required: false,
+    },
+    prependText: {
+      type: String,
+      default: '',
       required: false,
     },
   },

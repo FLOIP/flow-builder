@@ -9,8 +9,8 @@
       :key="block.uuid"
       :ref="`block/${block.uuid}`"
       :block="block"
-      :x="block.vendor_metadata.io_viamo.uiData.xPosition"
-      :y="block.vendor_metadata.io_viamo.uiData.yPosition" />
+      :x="block.ui_metadata.canvas_coordinates.x"
+      :y="block.ui_metadata.canvas_coordinates.y" />
   </div>
 </template>
 
@@ -26,13 +26,13 @@ const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
 //px
-const MARGIN_HEIGHT = 100
+const MARGIN_HEIGHT_CORRECTION = -10
 
 //px
-const MARGIN_WIDTH = 100
+const MARGIN_WIDTH_CORRECTION = 50
 
 //ms
-const DEBOUNCE_SCROLL_TIMER = 100
+const DEBOUNCE_SCROLL_TIMER = 300
 
 @Component({
   components: {
@@ -115,8 +115,9 @@ export default class BuilderCanvas extends Vue {
         'Unable to find DOM element corresponding to lowest block id: ',
         `block/${this.blockAtTheLowestPosition?.uuid}`,
       )
-      // temporary dummy height for UI scroll purpose
-      return 150
+      // for UI scroll purpose
+      const temporaryDummyHeight = 84
+      return temporaryDummyHeight
     }
     return (<HTMLElement>(<Vue>blockElementRef[0].$refs.draggable).$el).offsetHeight
   }
@@ -131,19 +132,20 @@ export default class BuilderCanvas extends Vue {
         'Unable to find DOM element corresponding to furthest right block id: ',
         `block/${this.blockAtTheFurthestRightPosition?.uuid}`,
       )
-      // temporary dummy width for UI scroll purpose
-      return 110
+      // for UI scroll purpose
+      const temporaryDummyWidth = 110
+      return temporaryDummyWidth
     }
 
     return ((blockElementRef[0].$refs.draggable as Vue).$el as HTMLElement).offsetWidth
   }
 
   get blockAtTheLowestPosition(): any {
-    return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.yPosition')
+    return maxBy(this.activeFlow.blocks, 'ui_metadata.canvas_coordinates.y')
   }
 
   get blockAtTheFurthestRightPosition(): any {
-    return maxBy(this.activeFlow.blocks, 'vendor_metadata.io_viamo.uiData.xPosition')
+    return maxBy(this.activeFlow.blocks, 'ui_metadata.canvas_coordinates.x')
   }
 
   get windowHeight(): number {
@@ -155,7 +157,7 @@ export default class BuilderCanvas extends Vue {
   }
 
   get canvasHeight(): any {
-    if (this.activeFlow.blocks.length == 0) {
+    if (this.activeFlow.blocks.length === 0) {
       return this.windowHeight
     }
 
@@ -164,8 +166,8 @@ export default class BuilderCanvas extends Vue {
       return this.windowHeight
     }
 
-    const yPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.yPosition')
-    const scrollHeight = yPosition + this.blockHeight + MARGIN_HEIGHT
+    const yPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.y
+    const scrollHeight = yPosition + MARGIN_HEIGHT_CORRECTION
 
     if (scrollHeight < this.windowHeight) {
       return this.windowHeight
@@ -175,7 +177,7 @@ export default class BuilderCanvas extends Vue {
   }
 
   get canvasWidth(): number {
-    if (this.activeFlow.blocks.length == 0) {
+    if (this.activeFlow.blocks.length === 0) {
       return this.windowWidth - this.widthAdjustment
     }
 
@@ -184,8 +186,8 @@ export default class BuilderCanvas extends Vue {
       return this.windowWidth - this.widthAdjustment
     }
 
-    const xPosition = get(this.blockAtTheLowestPosition, 'vendor_metadata.io_viamo.uiData.xPosition')
-    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH
+    const xPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.x
+    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH_CORRECTION
 
     if (scrollWidth < this.windowWidth) {
       return this.windowWidth - this.widthAdjustment

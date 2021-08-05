@@ -56,6 +56,7 @@ export default {
         isSaveCurrentlyInProgress: false,
         isEditable: true,
         subscriberPropertyFields: [],
+        blockTags: [],
       },
     }
   },

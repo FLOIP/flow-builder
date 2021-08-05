@@ -1,7 +1,7 @@
 <template>
   <div class="contact-property-editor">
     <div class="form-group">
-      <label>{{ 'flow-builder.action-label' | trans }}</label>
+      <label class="text-primary">{{ 'flow-builder.action-label' | trans }}</label>
       <p>{{ 'flow-builder.contact-property-action-hint' | trans }}</p>
       <div class="form-group">
         <div class="custom-control custom-radio">
@@ -41,6 +41,7 @@
           <text-editor
             v-model="propertyKey"
             :label="'flow-builder.contact-property-label' | trans"
+            :label-class="'font-weight-bold'"
             :placeholder="'flow-builder.enter-contact-property-label' | trans"
             :valid-state="isValid" />
         </div>
@@ -51,8 +52,9 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-input
-          :label="'flow-builder.contact-property-expression' | trans"
-          :placeholder="'flow-builder.edit-expression' | trans"
+          :label="'flow-builder.value-expression' | trans"
+          :placeholder="'flow-builder.enter-expression' | trans"
+          :label-class="'font-weight-bold'"
           :current-expression="propertyValue"
           :valid-state="isValid"
           @commitExpressionChange="updatePropertyValue" />

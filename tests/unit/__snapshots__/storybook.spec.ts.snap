@@ -170,13 +170,16 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <div
                                     class=""
                                   >
-                                    <label>
+                                    <label
+                                      class="text-primary"
+                                    >
                                       Flow label
                                     </label>
                                      
                                     <textarea
                                       class="form-control"
                                       placeholder="Enter flow label"
+                                      rows="1"
                                     />
                                      
                                   </div>
@@ -199,9 +202,17 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                   <div
                                     class="number-editor"
                                   >
-                                    <label>
+                                    <label
+                                      class="text-primary mb-0"
+                                    >
                                       Interaction timeout
                                     </label>
+                                     
+                                    <div
+                                      class="small mb-2"
+                                    >
+                                      
+                                    </div>
                                      
                                     <div>
                                       <input
@@ -233,7 +244,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                 <div
                                   class="form-group flow-languages"
                                 >
-                                  <label>
+                                  <label
+                                    class="text-primary"
+                                  >
                                     Languages
                                   </label>
                                    
@@ -287,7 +300,9 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                 <div
                                   class="form-group flow-modes"
                                 >
-                                  <label>
+                                  <label
+                                    class="text-primary"
+                                  >
                                     Modes
                                   </label>
                                    
@@ -303,7 +318,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         value="TEXT"
                                       />
                                       
-      TEXT
+      Text
     
                                     </label>
                                   </div>
@@ -367,7 +382,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         value="RICH_MESSAGING"
                                       />
                                       
-      RICH_MESSAGING
+      Rich messaging
     
                                     </label>
                                   </div>
@@ -383,7 +398,7 @@ exports[`Storyshots Flow/Flow Editor Existing Data Pre Filled 1`] = `
                                         value="OFFLINE"
                                       />
                                       
-      OFFLINE
+      Offline
     
                                     </label>
                                   </div>
@@ -441,15 +456,15 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
-                  class="tree-builder-toolbar-main-menu"
+                  class="tree-builder-toolbar-main-menu d-flex flex-column"
                 >
                   <!---->
                    
                   <div
-                    class="tree-workspace-panel-heading panel-heading"
+                    class="tree-workspace-panel-heading panel-heading w-100"
                   >
                     <div
                       class="tree-workspace-panel-heading-contents"
@@ -457,61 +472,115 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
                       <div
                         class="btn-toolbar"
                       >
-                        <button
-                          class="btn btn-secondary mr-2"
+                        <h4
+                          class="text-primary mr-4 flow-label"
+                          title=""
                         >
-                          <i
-                            class="glyphicon glyphicon-chevron-up"
+                          
+            
+          
+                        </h4>
+                         
+                        <div>
+                          <a
+                            aria-current="page"
+                            class="mr-2 router-link-exact-active router-link-active"
+                            href="#/"
+                            title="Home"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn svg-inline--fa fa-home fa-w-16"
+                              data-icon="home"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </a>
+                           
+                          <a
+                            class="btn btn-primary btn-sm mr-2"
+                            href="#/flows/new"
+                          >
+                            
+              New Flow
+            
+                          </a>
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Edit Flow
+            
+                          </button>
+                           
+                          <!---->
+                           
+                          <div
+                            class="vertical-divider"
                           />
-                          
-            Export
-          
-                        </button>
-                         
-                        <!---->
-                         
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
-                          title="Click to toggle editing"
-                        >
-                          
-            Edit Flow
-          
-                        </a>
-                         
-                        <!---->
-                         
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/flows/new"
-                        >
-                          
-            New Flow
-          
-                        </a>
-                         
-                        <a
-                          aria-current="page"
-                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
-                          href="#/"
-                        >
-                          
-            Home
-          
-                        </a>
-                          
-                        <!---->
+                           
+                          <!---->
+                           
+                          <div
+                            class="btn-group"
+                          >
+                            <a
+                              class="btn btn-outline-primary btn-sm active"
+                              href="#/trees/1/interaction-designer/view"
+                              title="Click to toggle editing"
+                            >
+                              
+                View Mode
+              
+                            </a>
+                             
+                            <a
+                              class="btn btn-outline-primary btn-sm"
+                              href="#/trees/1/interaction-designer/edit"
+                              title="Click to toggle editing"
+                            >
+                              
+                Edit Mode
+              
+                            </a>
+                          </div>
+                           
+                        </div>
                          
                         <div
-                          class="btn-group ml-auto mr-2"
+                          class="ml-auto mr-2"
                         >
                           <!---->
                            
+                          <div
+                            class="btn-group mr-2"
+                          />
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Export
+            
+                          </button>
+                           
+                          <!---->
                         </div>
                       </div>
                     </div>
                   </div>
+                   
+                  <!---->
                 </div>
                  
                 <div
@@ -560,15 +629,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
-                  class="tree-builder-toolbar-main-menu"
+                  class="tree-builder-toolbar-main-menu d-flex flex-column"
                 >
                   <!---->
                    
                   <div
-                    class="tree-workspace-panel-heading panel-heading"
+                    class="tree-workspace-panel-heading panel-heading w-100"
                   >
                     <div
                       class="tree-workspace-panel-heading-contents"
@@ -576,157 +645,204 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                       <div
                         class="btn-toolbar"
                       >
-                        <button
-                          class="btn btn-secondary mr-2"
+                        <h4
+                          class="text-primary mr-4 flow-label"
+                          title=""
                         >
-                          <i
-                            class="glyphicon glyphicon-chevron-up"
-                          />
                           
-            Export
-          
-                        </button>
-                         
-                        <div
-                          class="btn-group mr-2"
-                        >
-                          <a
-                            class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
-                          >
-                            
-              Flow view
             
+          
+                        </h4>
+                         
+                        <div>
+                          <a
+                            aria-current="page"
+                            class="mr-2 router-link-exact-active router-link-active"
+                            href="#/"
+                            title="Home"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn svg-inline--fa fa-home fa-w-16"
+                              data-icon="home"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z"
+                                fill="currentColor"
+                              />
+                            </svg>
                           </a>
                            
                           <a
-                            class="btn btn-secondary"
-                            href="#/trees/1/resource-viewer"
+                            class="btn btn-primary btn-sm mr-2"
+                            href="#/flows/new"
                           >
                             
-              Resources view
+              New Flow
             
                           </a>
-                        </div>
-                         
-                        <a
-                          class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
-            View Flow
-          
-                        </a>
-                         
-                        <div
-                          class="dropdown mr-2"
-                        >
+                           
                           <button
-                            class="btn btn-secondary dropdown-toggle"
-                            data-toggle="dropdown"
-                            type="button"
+                            class="btn btn-outline-primary btn-sm"
                           >
                             
-              Add Block
+              Edit Flow
             
                           </button>
                            
+                          <!---->
+                           
                           <div
-                            class="dropdown-menu"
+                            class="vertical-divider"
+                          />
+                           
+                          <a
+                            class="btn btn-outline-primary btn-sm"
+                            href="#/trees/1/resource-viewer"
+                          >
+                            
+                Resources view
+              
+                          </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <div
+                            class="btn-group"
+                          >
+                            <a
+                              class="btn btn-outline-primary btn-sm"
+                              href="#/trees/1/interaction-designer/view"
+                              title="Click to toggle editing"
+                            >
+                              
+                View Mode
+              
+                            </a>
+                             
+                            <a
+                              class="btn btn-outline-primary btn-sm active"
+                              href="#/trees/1/interaction-designer/edit"
+                              title="Click to toggle editing"
+                            >
+                              
+                Edit Mode
+              
+                            </a>
+                          </div>
+                           
+                          <a
+                            class="btn btn-success btn-sm ml-4"
+                            disabled="disabled"
+                            href="#"
+                            title="another grouped button"
+                          >
+                            
+           Action X
+        
+                          </a>
+                           
+                          <a
+                            class="btn btn-warning btn-sm"
+                            href="#"
+                            title="another grouped button"
+                          >
+                            
+           Action Y
+        
+                          </a>
+                        </div>
+                         
+                        <div
+                          class="ml-auto mr-2"
+                        >
+                          <!---->
+                           
+                          <div
+                            class="btn-group mr-2"
+                          />
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Export
+            
+                          </button>
+                           
+                          <button
+                            class="btn btn-info btn-sm tree-save-tree ml-4"
+                            title="Save changes to the flow"
+                            type="button"
+                          >
+                            
+              Save
+            
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                   
+                  <div
+                    class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0"
+                  >
+                    <div
+                      class="tree-workspace-panel-heading-contents"
+                    >
+                      <ul
+                        class="nav"
+                      >
+                        <li
+                          class="nav-item dropdown nav"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-content fa-w-16"
+                              data-icon="content"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M23 4v0c0.552 0 1 0.448 1 1v23c0 0.552-0.448 1-1 1h-14c-0.552 0-1-0.448-1-1v-23c0-0.552 0.448-1 1-1h14zM9 3c-1.105 0-2 0.895-2 2v0 23c0 1.105 0.895 2 2 2v0h14c1.105 0 2-0.895 2-2v0-23c0-1.105-0.895-2-2-2v0h-14z M19.7 7v0c0.552 0 1 0.448 1 1v13c0 0.552-0.448 1-1 1h-7.2c-0.552 0-1-0.448-1-1v-13c0-0.552 0.448-1 1-1h7.2zM12.5 6c-1.105 0-2 0.895-2 2v0 13c0 1.105 0.895 2 2 2v0h7.2c1.105 0 2-0.895 2-2v0-13c0-1.105-0.895-2-2-2v0h-7.2zM16 27v0c-0.552 0-1-0.448-1-1s0.448-1 1-1v0c0.552 0 1 0.448 1 1s-0.448 1-1 1zM16 28c1.105 0 2-0.895 2-2s-0.895-2-2-2v0c-1.105 0-2 0.895-2 2s0.895 2 2 2v0z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Content
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
                           >
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Print"
-                              href="#"
-                            >
-                              
-                  Print
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Read"
-                              href="#"
-                            >
-                              
-                  Read
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Case"
-                              href="#"
-                            >
-                              
-                  Case
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Log"
-                              href="#"
-                            >
-                              
-                  Log
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Output"
-                              href="#"
-                            >
-                              
-                  Output
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.RunFlow"
-                              href="#"
-                            >
-                              
-                  Run Flow
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetContactProperty"
-                              href="#"
-                            >
-                              
-                  Set Contact Property
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetGroupMembership"
-                              href="#"
-                            >
-                              
-                  Set Group Membership
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
@@ -734,32 +850,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                   Message
                 
                             </a>
-                            <!---->
+                            <div
+                              class="dropdown-divider"
+                            />
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="MobilePrimitives.NumericResponse"
-                              href="#"
-                            >
-                              
-                  Numeric Response
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="MobilePrimitives.OpenResponse"
-                              href="#"
-                            >
-                              
-                  Open Response
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
@@ -770,7 +866,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
@@ -781,7 +877,31 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
+                              data-block-type="MobilePrimitives.NumericResponse"
+                              href="#"
+                            >
+                              
+                  Numeric Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="MobilePrimitives.OpenResponse"
+                              href="#"
+                            >
+                              
+                  Open Response
+                
+                            </a>
+                            <div
+                              class="dropdown-divider"
+                            />
+                             
+                            <a
+                              class="dropdown-item"
                               data-block-type="SmartDevices.LocationResponse"
                               href="#"
                             >
@@ -792,7 +912,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
@@ -801,69 +921,225 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                 
                             </a>
                              
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-contact fa-w-16"
+                              data-icon="contact"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M16 13v0c-2.761 0-5-2.239-5-5s2.239-5 5-5v0c2.761 0 5 2.239 5 5s-2.239 5-5 5zM16 14c3.314 0 6-2.686 6-6s-2.686-6-6-6v0c-3.314 0-6 2.686-6 6s2.686 6 6 6v0zM9 15.89h14c1.105 0 2 0.895 2 2v10.443h-18v-10.444c0-1.105 0.895-2 2-2zM26 17.889c0-1.657-1.343-3-3-3v0h-14c-1.657 0-3 1.343-3 3v0 11.444h20v-11.443z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Contact
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
                             <!---->
                              
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetContactProperty"
+                              href="#"
+                            >
+                              
+                  Set Contact Property
+                
+                            </a>
                             <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetGroupMembership"
+                              href="#"
+                            >
+                              
+                  Set Group Membership
+                
+                            </a>
+                             
                           </div>
-                        </div>
+                        </li>
                          
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/flows/new"
+                        <li
+                          class="nav-item dropdown"
                         >
-                          
-            New Flow
-          
-                        </a>
-                         
-                        <a
-                          aria-current="page"
-                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
-                          href="#/"
-                        >
-                          
-            Home
-          
-                        </a>
-                         
-                        <a
-                          class="btn btn-success"
-                          disabled="disabled"
-                          href="#"
-                          title="another grouped button"
-                        >
-                          
-           Action X
-        
-                        </a>
-                         
-                        <a
-                          class="btn btn-warning"
-                          href="#"
-                          title="another grouped button"
-                        >
-                          
-           Action Y
-        
-                        </a>
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-branching fa-w-16"
+                              data-icon="branching"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M12 4v4h-10v-4h10zM2 3c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10zM26 4v4h-10v-4h10zM16 3c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10zM20 14v4h-10v-4h10zM10 13c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10zM30 24v4h-10v-4h10zM20 23c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10z M15 6.5h-2.5v-1h2.5v1zM28.5 6.5h-2v-1h3v11.5h-8.5v-1h7.5v-9.5zM14.5 19h1v7h3.5v1h-4.5v-8z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Branching
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Case"
+                              href="#"
+                            >
+                              
+                  Case
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Output"
+                              href="#"
+                            >
+                              
+                  Output
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.RunFlow"
+                              href="#"
+                            >
+                              
+                  Run Flow
+                
+                            </a>
+                             
+                          </div>
+                        </li>
                          
                         <!---->
                          
-                        <div
-                          class="btn-group ml-auto mr-2"
+                        <li
+                          class="nav-item dropdown"
                         >
-                          <button
-                            class="btn btn-primary tree-save-tree"
-                            title="Save changes to the flow"
-                            type="button"
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
                           >
-                            
-              Save
-            
-                          </button>
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-developer fa-w-16"
+                              data-icon="developer"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M11.052 12.934c0-0 0-0 0-0 0-0.25-0.202-0.452-0.452-0.452-0.061 0-0.12 0.012-0.173 0.034l0.003-0.001-7.958 3.23c-0.279 0.116-0.471 0.386-0.471 0.701s0.192 0.585 0.466 0.699l0.005 0.002 7.958 3.23c0.050 0.021 0.108 0.033 0.169 0.033 0.25 0 0.452-0.203 0.452-0.452 0-0.189-0.116-0.351-0.28-0.418l-0.003-0.001-7.746-3.092 7.746-3.093c0.168-0.069 0.284-0.23 0.284-0.42 0-0 0-0 0-0v0zM12.319 25.385c-0.017 0.046-0.026 0.098-0.026 0.153 0 0.255 0.207 0.462 0.462 0.462 0.2 0 0.371-0.128 0.435-0.306l0.001-0.003 6.704-19.076c0.017-0.046 0.026-0.098 0.026-0.153 0-0.255-0.207-0.462-0.462-0.462-0.2 0-0.371 0.128-0.435 0.306l-0.001 0.003-6.704 19.076zM21.57 12.515c-0.053-0.024-0.116-0.038-0.181-0.038-0.25 0-0.452 0.202-0.452 0.452 0 0.193 0.122 0.358 0.292 0.423l0.003 0.001 7.746 3.093-7.746 3.092c-0.174 0.066-0.296 0.231-0.296 0.424 0 0.25 0.202 0.452 0.452 0.452 0.066 0 0.128-0.014 0.184-0.039l-0.003 0.001 7.958-3.229c0.279-0.116 0.471-0.386 0.471-0.701s-0.192-0.585-0.466-0.699l-0.005-0.002-7.958-3.23z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Developer
+                            </span>
+                          </a>
                            
-                        </div>
-                      </div>
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Print"
+                              href="#"
+                            >
+                              
+                  Print
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Read"
+                              href="#"
+                            >
+                              
+                  Read
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Log"
+                              href="#"
+                            >
+                              
+                  Log
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -914,15 +1190,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
-                  class="tree-builder-toolbar-main-menu"
+                  class="tree-builder-toolbar-main-menu d-flex flex-column"
                 >
                   <!---->
                    
                   <div
-                    class="tree-workspace-panel-heading panel-heading"
+                    class="tree-workspace-panel-heading panel-heading w-100"
                   >
                     <div
                       class="tree-workspace-panel-heading-contents"
@@ -930,157 +1206,205 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                       <div
                         class="btn-toolbar"
                       >
-                        <button
-                          class="btn btn-secondary mr-2"
+                        <h4
+                          class="text-primary mr-4 flow-label"
+                          title=""
                         >
-                          <i
-                            class="glyphicon glyphicon-chevron-up"
-                          />
                           
-            Export
-          
-                        </button>
-                         
-                        <div
-                          class="btn-group mr-2"
-                        >
-                          <a
-                            class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
-                          >
-                            
-              Flow view
             
+          
+                        </h4>
+                         
+                        <div>
+                          <a
+                            aria-current="page"
+                            class="mr-2 router-link-exact-active router-link-active"
+                            href="#/"
+                            title="Home"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn svg-inline--fa fa-home fa-w-16"
+                              data-icon="home"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z"
+                                fill="currentColor"
+                              />
+                            </svg>
                           </a>
                            
                           <a
-                            class="btn btn-secondary"
-                            href="#/trees/1/resource-viewer"
+                            class="btn btn-primary btn-sm mr-2"
+                            href="#/flows/new"
                           >
                             
-              Resources view
+              New Flow
             
                           </a>
-                        </div>
-                         
-                        <a
-                          class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
-            View Flow
-          
-                        </a>
-                         
-                        <div
-                          class="dropdown mr-2"
-                        >
+                           
                           <button
-                            class="btn btn-secondary dropdown-toggle"
-                            data-toggle="dropdown"
-                            type="button"
+                            class="btn btn-outline-primary btn-sm"
                           >
                             
-              Add Block
+              Edit Flow
             
                           </button>
                            
+                          <!---->
+                           
                           <div
-                            class="dropdown-menu"
+                            class="vertical-divider"
+                          />
+                           
+                          <a
+                            class="btn btn-outline-primary btn-sm"
+                            href="#/trees/1/resource-viewer"
+                          >
+                            
+                Resources view
+              
+                          </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <div
+                            class="btn-group"
+                          >
+                            <a
+                              class="btn btn-outline-primary btn-sm"
+                              href="#/trees/1/interaction-designer/view"
+                              title="Click to toggle editing"
+                            >
+                              
+                View Mode
+              
+                            </a>
+                             
+                            <a
+                              class="btn btn-outline-primary btn-sm active"
+                              href="#/trees/1/interaction-designer/edit"
+                              title="Click to toggle editing"
+                            >
+                              
+                Edit Mode
+              
+                            </a>
+                          </div>
+                           
+                        </div>
+                         
+                        <div
+                          class="ml-auto mr-2"
+                        >
+                          <!---->
+                           
+                          <div
+                            class="btn-group mr-2"
+                          >
+                            <a
+                              class="btn btn-success btn-sm ml-4"
+                              disabled="disabled"
+                              href="#"
+                              title="another grouped button"
+                            >
+                              
+           Action X
+        
+                            </a>
+                             
+                            <a
+                              class="btn btn-warning btn-sm"
+                              href="#"
+                              title="another grouped button"
+                            >
+                              
+           Action Y
+        
+                            </a>
+                          </div>
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Export
+            
+                          </button>
+                           
+                          <button
+                            class="btn btn-info btn-sm tree-save-tree ml-4"
+                            title="Save changes to the flow"
+                            type="button"
+                          >
+                            
+              Save
+            
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                   
+                  <div
+                    class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0"
+                  >
+                    <div
+                      class="tree-workspace-panel-heading-contents"
+                    >
+                      <ul
+                        class="nav"
+                      >
+                        <li
+                          class="nav-item dropdown nav"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-content fa-w-16"
+                              data-icon="content"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M23 4v0c0.552 0 1 0.448 1 1v23c0 0.552-0.448 1-1 1h-14c-0.552 0-1-0.448-1-1v-23c0-0.552 0.448-1 1-1h14zM9 3c-1.105 0-2 0.895-2 2v0 23c0 1.105 0.895 2 2 2v0h14c1.105 0 2-0.895 2-2v0-23c0-1.105-0.895-2-2-2v0h-14z M19.7 7v0c0.552 0 1 0.448 1 1v13c0 0.552-0.448 1-1 1h-7.2c-0.552 0-1-0.448-1-1v-13c0-0.552 0.448-1 1-1h7.2zM12.5 6c-1.105 0-2 0.895-2 2v0 13c0 1.105 0.895 2 2 2v0h7.2c1.105 0 2-0.895 2-2v0-13c0-1.105-0.895-2-2-2v0h-7.2zM16 27v0c-0.552 0-1-0.448-1-1s0.448-1 1-1v0c0.552 0 1 0.448 1 1s-0.448 1-1 1zM16 28c1.105 0 2-0.895 2-2s-0.895-2-2-2v0c-1.105 0-2 0.895-2 2s0.895 2 2 2v0z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Content
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
                           >
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Print"
-                              href="#"
-                            >
-                              
-                  Print
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Read"
-                              href="#"
-                            >
-                              
-                  Read
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Case"
-                              href="#"
-                            >
-                              
-                  Case
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Log"
-                              href="#"
-                            >
-                              
-                  Log
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Output"
-                              href="#"
-                            >
-                              
-                  Output
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.RunFlow"
-                              href="#"
-                            >
-                              
-                  Run Flow
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetContactProperty"
-                              href="#"
-                            >
-                              
-                  Set Contact Property
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetGroupMembership"
-                              href="#"
-                            >
-                              
-                  Set Group Membership
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
@@ -1088,32 +1412,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                   Message
                 
                             </a>
-                            <!---->
+                            <div
+                              class="dropdown-divider"
+                            />
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="MobilePrimitives.NumericResponse"
-                              href="#"
-                            >
-                              
-                  Numeric Response
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="MobilePrimitives.OpenResponse"
-                              href="#"
-                            >
-                              
-                  Open Response
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
@@ -1124,7 +1428,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
@@ -1135,7 +1439,31 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
+                              data-block-type="MobilePrimitives.NumericResponse"
+                              href="#"
+                            >
+                              
+                  Numeric Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="MobilePrimitives.OpenResponse"
+                              href="#"
+                            >
+                              
+                  Open Response
+                
+                            </a>
+                            <div
+                              class="dropdown-divider"
+                            />
+                             
+                            <a
+                              class="dropdown-item"
                               data-block-type="SmartDevices.LocationResponse"
                               href="#"
                             >
@@ -1146,7 +1474,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
@@ -1155,68 +1483,225 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                 
                             </a>
                              
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-contact fa-w-16"
+                              data-icon="contact"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M16 13v0c-2.761 0-5-2.239-5-5s2.239-5 5-5v0c2.761 0 5 2.239 5 5s-2.239 5-5 5zM16 14c3.314 0 6-2.686 6-6s-2.686-6-6-6v0c-3.314 0-6 2.686-6 6s2.686 6 6 6v0zM9 15.89h14c1.105 0 2 0.895 2 2v10.443h-18v-10.444c0-1.105 0.895-2 2-2zM26 17.889c0-1.657-1.343-3-3-3v0h-14c-1.657 0-3 1.343-3 3v0 11.444h20v-11.443z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Contact
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
                             <!---->
                              
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetContactProperty"
+                              href="#"
+                            >
+                              
+                  Set Contact Property
+                
+                            </a>
                             <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetGroupMembership"
+                              href="#"
+                            >
+                              
+                  Set Group Membership
+                
+                            </a>
+                             
                           </div>
-                        </div>
+                        </li>
                          
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/flows/new"
+                        <li
+                          class="nav-item dropdown"
                         >
-                          
-            New Flow
-          
-                        </a>
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-branching fa-w-16"
+                              data-icon="branching"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M12 4v4h-10v-4h10zM2 3c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10zM26 4v4h-10v-4h10zM16 3c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10zM20 14v4h-10v-4h10zM10 13c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10zM30 24v4h-10v-4h10zM20 23c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10z M15 6.5h-2.5v-1h2.5v1zM28.5 6.5h-2v-1h3v11.5h-8.5v-1h7.5v-9.5zM14.5 19h1v7h3.5v1h-4.5v-8z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Branching
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Case"
+                              href="#"
+                            >
+                              
+                  Case
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Output"
+                              href="#"
+                            >
+                              
+                  Output
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.RunFlow"
+                              href="#"
+                            >
+                              
+                  Run Flow
+                
+                            </a>
+                             
+                          </div>
+                        </li>
                          
-                        <a
-                          aria-current="page"
-                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
-                          href="#/"
-                        >
-                          
-            Home
-          
-                        </a>
-                          
                         <!---->
                          
-                        <div
-                          class="btn-group ml-auto mr-2"
+                        <li
+                          class="nav-item dropdown"
                         >
-                          <button
-                            class="btn btn-primary tree-save-tree"
-                            title="Save changes to the flow"
-                            type="button"
-                          >
-                            
-              Save
-            
-                          </button>
-                           
                           <a
-                            class="btn btn-success"
-                            disabled="disabled"
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
                             href="#"
-                            title="another grouped button"
+                            role="button"
                           >
-                            
-           Action X
-        
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-developer fa-w-16"
+                              data-icon="developer"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M11.052 12.934c0-0 0-0 0-0 0-0.25-0.202-0.452-0.452-0.452-0.061 0-0.12 0.012-0.173 0.034l0.003-0.001-7.958 3.23c-0.279 0.116-0.471 0.386-0.471 0.701s0.192 0.585 0.466 0.699l0.005 0.002 7.958 3.23c0.050 0.021 0.108 0.033 0.169 0.033 0.25 0 0.452-0.203 0.452-0.452 0-0.189-0.116-0.351-0.28-0.418l-0.003-0.001-7.746-3.092 7.746-3.093c0.168-0.069 0.284-0.23 0.284-0.42 0-0 0-0 0-0v0zM12.319 25.385c-0.017 0.046-0.026 0.098-0.026 0.153 0 0.255 0.207 0.462 0.462 0.462 0.2 0 0.371-0.128 0.435-0.306l0.001-0.003 6.704-19.076c0.017-0.046 0.026-0.098 0.026-0.153 0-0.255-0.207-0.462-0.462-0.462-0.2 0-0.371 0.128-0.435 0.306l-0.001 0.003-6.704 19.076zM21.57 12.515c-0.053-0.024-0.116-0.038-0.181-0.038-0.25 0-0.452 0.202-0.452 0.452 0 0.193 0.122 0.358 0.292 0.423l0.003 0.001 7.746 3.093-7.746 3.092c-0.174 0.066-0.296 0.231-0.296 0.424 0 0.25 0.202 0.452 0.452 0.452 0.066 0 0.128-0.014 0.184-0.039l-0.003 0.001 7.958-3.229c0.279-0.116 0.471-0.386 0.471-0.701s-0.192-0.585-0.466-0.699l-0.005-0.002-7.958-3.23z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Developer
+                            </span>
                           </a>
                            
-                          <a
-                            class="btn btn-warning"
-                            href="#"
-                            title="another grouped button"
+                          <div
+                            class="dropdown-menu mt-0"
                           >
-                            
-           Action Y
-        
-                          </a>
-                        </div>
-                      </div>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Print"
+                              href="#"
+                            >
+                              
+                  Print
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Read"
+                              href="#"
+                            >
+                              
+                  Read
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Log"
+                              href="#"
+                            >
+                              
+                  Log
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -1267,15 +1752,15 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
-                  class="tree-builder-toolbar-main-menu"
+                  class="tree-builder-toolbar-main-menu d-flex flex-column"
                 >
                   <!---->
                    
                   <div
-                    class="tree-workspace-panel-heading panel-heading"
+                    class="tree-workspace-panel-heading panel-heading w-100"
                   >
                     <div
                       class="tree-workspace-panel-heading-contents"
@@ -1283,157 +1768,176 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                       <div
                         class="btn-toolbar"
                       >
-                        <button
-                          class="btn btn-secondary mr-2"
+                        <h4
+                          class="text-primary mr-4 flow-label"
+                          title=""
                         >
-                          <i
-                            class="glyphicon glyphicon-chevron-up"
-                          />
                           
-            Export
-          
-                        </button>
-                         
-                        <div
-                          class="btn-group mr-2"
-                        >
-                          <a
-                            class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
-                          >
-                            
-              Flow view
             
+          
+                        </h4>
+                         
+                        <div>
+                          <a
+                            aria-current="page"
+                            class="mr-2 router-link-exact-active router-link-active"
+                            href="#/"
+                            title="Home"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn svg-inline--fa fa-home fa-w-16"
+                              data-icon="home"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z"
+                                fill="currentColor"
+                              />
+                            </svg>
                           </a>
                            
                           <a
-                            class="btn btn-secondary"
-                            href="#/trees/1/resource-viewer"
+                            class="btn btn-primary btn-sm mr-2"
+                            href="#/flows/new"
                           >
                             
-              Resources view
+              New Flow
             
                           </a>
-                        </div>
-                         
-                        <a
-                          class="btn btn-secondary mr-2 active"
-                          href="#/trees/1/interaction-designer/view"
-                          title="Click to toggle editing"
-                        >
-                          
-            View Flow
-          
-                        </a>
-                         
-                        <div
-                          class="dropdown mr-2"
-                        >
+                           
                           <button
-                            class="btn btn-secondary dropdown-toggle"
-                            data-toggle="dropdown"
-                            type="button"
+                            class="btn btn-outline-primary btn-sm"
                           >
                             
-              Add Block
+              Edit Flow
             
                           </button>
                            
+                          <!---->
+                           
                           <div
-                            class="dropdown-menu"
+                            class="vertical-divider"
+                          />
+                           
+                          <a
+                            class="btn btn-outline-primary btn-sm"
+                            href="#/trees/1/resource-viewer"
+                          >
+                            
+                Resources view
+              
+                          </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <div
+                            class="btn-group"
+                          >
+                            <a
+                              class="btn btn-outline-primary btn-sm"
+                              href="#/trees/1/interaction-designer/view"
+                              title="Click to toggle editing"
+                            >
+                              
+                View Mode
+              
+                            </a>
+                             
+                            <a
+                              class="btn btn-outline-primary btn-sm active"
+                              href="#/trees/1/interaction-designer/edit"
+                              title="Click to toggle editing"
+                            >
+                              
+                Edit Mode
+              
+                            </a>
+                          </div>
+                           
+                        </div>
+                         
+                        <div
+                          class="ml-auto mr-2"
+                        >
+                          <!---->
+                           
+                          <div
+                            class="btn-group mr-2"
+                          />
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Export
+            
+                          </button>
+                           
+                          <!---->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                   
+                  <div
+                    class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0"
+                  >
+                    <div
+                      class="tree-workspace-panel-heading-contents"
+                    >
+                      <ul
+                        class="nav"
+                      >
+                        <li
+                          class="nav-item dropdown nav"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-content fa-w-16"
+                              data-icon="content"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M23 4v0c0.552 0 1 0.448 1 1v23c0 0.552-0.448 1-1 1h-14c-0.552 0-1-0.448-1-1v-23c0-0.552 0.448-1 1-1h14zM9 3c-1.105 0-2 0.895-2 2v0 23c0 1.105 0.895 2 2 2v0h14c1.105 0 2-0.895 2-2v0-23c0-1.105-0.895-2-2-2v0h-14z M19.7 7v0c0.552 0 1 0.448 1 1v13c0 0.552-0.448 1-1 1h-7.2c-0.552 0-1-0.448-1-1v-13c0-0.552 0.448-1 1-1h7.2zM12.5 6c-1.105 0-2 0.895-2 2v0 13c0 1.105 0.895 2 2 2v0h7.2c1.105 0 2-0.895 2-2v0-13c0-1.105-0.895-2-2-2v0h-7.2zM16 27v0c-0.552 0-1-0.448-1-1s0.448-1 1-1v0c0.552 0 1 0.448 1 1s-0.448 1-1 1zM16 28c1.105 0 2-0.895 2-2s-0.895-2-2-2v0c-1.105 0-2 0.895-2 2s0.895 2 2 2v0z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Content
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
                           >
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Print"
-                              href="#"
-                            >
-                              
-                  Print
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="ConsoleIO.Read"
-                              href="#"
-                            >
-                              
-                  Read
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Case"
-                              href="#"
-                            >
-                              
-                  Case
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Log"
-                              href="#"
-                            >
-                              
-                  Log
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.Output"
-                              href="#"
-                            >
-                              
-                  Output
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.RunFlow"
-                              href="#"
-                            >
-                              
-                  Run Flow
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetContactProperty"
-                              href="#"
-                            >
-                              
-                  Set Contact Property
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="Core.SetGroupMembership"
-                              href="#"
-                            >
-                              
-                  Set Group Membership
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.Message"
                               href="#"
                             >
@@ -1441,32 +1945,12 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                   Message
                 
                             </a>
-                            <!---->
+                            <div
+                              class="dropdown-divider"
+                            />
                              
                             <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="MobilePrimitives.NumericResponse"
-                              href="#"
-                            >
-                              
-                  Numeric Response
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
-                              data-block-type="MobilePrimitives.OpenResponse"
-                              href="#"
-                            >
-                              
-                  Open Response
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectOneResponse"
                               href="#"
                             >
@@ -1477,7 +1961,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="MobilePrimitives.SelectManyResponse"
                               href="#"
                             >
@@ -1488,7 +1972,31 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
+                              data-block-type="MobilePrimitives.NumericResponse"
+                              href="#"
+                            >
+                              
+                  Numeric Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="MobilePrimitives.OpenResponse"
+                              href="#"
+                            >
+                              
+                  Open Response
+                
+                            </a>
+                            <div
+                              class="dropdown-divider"
+                            />
+                             
+                            <a
+                              class="dropdown-item"
                               data-block-type="SmartDevices.LocationResponse"
                               href="#"
                             >
@@ -1499,7 +2007,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                             <!---->
                              
                             <a
-                              class="dropdown-item tree-add-block"
+                              class="dropdown-item"
                               data-block-type="SmartDevices.PhotoResponse"
                               href="#"
                             >
@@ -1508,40 +2016,225 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                 
                             </a>
                              
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-contact fa-w-16"
+                              data-icon="contact"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M16 13v0c-2.761 0-5-2.239-5-5s2.239-5 5-5v0c2.761 0 5 2.239 5 5s-2.239 5-5 5zM16 14c3.314 0 6-2.686 6-6s-2.686-6-6-6v0c-3.314 0-6 2.686-6 6s2.686 6 6 6v0zM9 15.89h14c1.105 0 2 0.895 2 2v10.443h-18v-10.444c0-1.105 0.895-2 2-2zM26 17.889c0-1.657-1.343-3-3-3v0h-14c-1.657 0-3 1.343-3 3v0 11.444h20v-11.443z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Contact
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
                             <!---->
                              
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetContactProperty"
+                              href="#"
+                            >
+                              
+                  Set Contact Property
+                
+                            </a>
                             <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetGroupMembership"
+                              href="#"
+                            >
+                              
+                  Set Group Membership
+                
+                            </a>
+                             
                           </div>
-                        </div>
+                        </li>
                          
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/flows/new"
+                        <li
+                          class="nav-item dropdown"
                         >
-                          
-            New Flow
-          
-                        </a>
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-branching fa-w-16"
+                              data-icon="branching"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M12 4v4h-10v-4h10zM2 3c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10zM26 4v4h-10v-4h10zM16 3c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10zM20 14v4h-10v-4h10zM10 13c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10zM30 24v4h-10v-4h10zM20 23c-0.552 0-1 0.448-1 1v0 4c0 0.552 0.448 1 1 1v0h10c0.552 0 1-0.448 1-1v0-4c0-0.552-0.448-1-1-1v0h-10z M15 6.5h-2.5v-1h2.5v1zM28.5 6.5h-2v-1h3v11.5h-8.5v-1h7.5v-9.5zM14.5 19h1v7h3.5v1h-4.5v-8z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Branching
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Case"
+                              href="#"
+                            >
+                              
+                  Case
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Output"
+                              href="#"
+                            >
+                              
+                  Output
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.RunFlow"
+                              href="#"
+                            >
+                              
+                  Run Flow
+                
+                            </a>
+                             
+                          </div>
+                        </li>
                          
-                        <a
-                          aria-current="page"
-                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
-                          href="#/"
-                        >
-                          
-            Home
-          
-                        </a>
-                          
                         <!---->
                          
-                        <div
-                          class="btn-group ml-auto mr-2"
+                        <li
+                          class="nav-item dropdown"
                         >
-                          <!---->
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn big-icon svg-inline--fa fa-developer fa-w-16"
+                              data-icon="developer"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M11.052 12.934c0-0 0-0 0-0 0-0.25-0.202-0.452-0.452-0.452-0.061 0-0.12 0.012-0.173 0.034l0.003-0.001-7.958 3.23c-0.279 0.116-0.471 0.386-0.471 0.701s0.192 0.585 0.466 0.699l0.005 0.002 7.958 3.23c0.050 0.021 0.108 0.033 0.169 0.033 0.25 0 0.452-0.203 0.452-0.452 0-0.189-0.116-0.351-0.28-0.418l-0.003-0.001-7.746-3.092 7.746-3.093c0.168-0.069 0.284-0.23 0.284-0.42 0-0 0-0 0-0v0zM12.319 25.385c-0.017 0.046-0.026 0.098-0.026 0.153 0 0.255 0.207 0.462 0.462 0.462 0.2 0 0.371-0.128 0.435-0.306l0.001-0.003 6.704-19.076c0.017-0.046 0.026-0.098 0.026-0.153 0-0.255-0.207-0.462-0.462-0.462-0.2 0-0.371 0.128-0.435 0.306l-0.001 0.003-6.704 19.076zM21.57 12.515c-0.053-0.024-0.116-0.038-0.181-0.038-0.25 0-0.452 0.202-0.452 0.452 0 0.193 0.122 0.358 0.292 0.423l0.003 0.001 7.746 3.093-7.746 3.092c-0.174 0.066-0.296 0.231-0.296 0.424 0 0.25 0.202 0.452 0.452 0.452 0.066 0 0.128-0.014 0.184-0.039l-0.003 0.001 7.958-3.229c0.279-0.116 0.471-0.386 0.471-0.701s-0.192-0.585-0.466-0.699l-0.005-0.002-7.958-3.23z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                             
+                            <span
+                              class="nav-link-text"
+                            >
+                              Developer
+                            </span>
+                          </a>
                            
-                        </div>
-                      </div>
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Print"
+                              href="#"
+                            >
+                              
+                  Print
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Read"
+                              href="#"
+                            >
+                              
+                  Read
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Log"
+                              href="#"
+                            >
+                              
+                  Log
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -1592,15 +2285,15 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
               class="interaction-designer-contents panel panel-default"
             >
               <div
-                class="tree-builder-toolbar"
+                class="tree-builder-toolbar d-flex flex-column"
               >
                 <div
-                  class="tree-builder-toolbar-main-menu"
+                  class="tree-builder-toolbar-main-menu d-flex flex-column"
                 >
                   <!---->
                    
                   <div
-                    class="tree-workspace-panel-heading panel-heading"
+                    class="tree-workspace-panel-heading panel-heading w-100"
                   >
                     <div
                       class="tree-workspace-panel-heading-contents"
@@ -1608,81 +2301,126 @@ exports[`Storyshots InteractionDesigner/Toolbar Without Resource Editor Toggle 1
                       <div
                         class="btn-toolbar"
                       >
-                        <button
-                          class="btn btn-secondary mr-2"
+                        <h4
+                          class="text-primary mr-4 flow-label"
+                          title=""
                         >
-                          <i
-                            class="glyphicon glyphicon-chevron-up"
-                          />
                           
-            Export
-          
-                        </button>
-                         
-                        <div
-                          class="btn-group mr-2"
-                        >
-                          <a
-                            class="btn btn-secondary active"
-                            href="#/trees/1/interaction-designer"
-                          >
-                            
-              Flow view
             
+          
+                        </h4>
+                         
+                        <div>
+                          <a
+                            aria-current="page"
+                            class="mr-2 router-link-exact-active router-link-active"
+                            href="#/"
+                            title="Home"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn svg-inline--fa fa-home fa-w-16"
+                              data-icon="home"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z"
+                                fill="currentColor"
+                              />
+                            </svg>
                           </a>
                            
                           <a
-                            class="btn btn-secondary"
+                            class="btn btn-primary btn-sm mr-2"
+                            href="#/flows/new"
+                          >
+                            
+              New Flow
+            
+                          </a>
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Edit Flow
+            
+                          </button>
+                           
+                          <!---->
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <a
+                            class="btn btn-outline-primary btn-sm"
                             href="#/trees/1/resource-viewer"
                           >
                             
-              Resources view
-            
+                Resources view
+              
                           </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <div
+                            class="btn-group"
+                          >
+                            <a
+                              class="btn btn-outline-primary btn-sm active"
+                              href="#/trees/1/interaction-designer/view"
+                              title="Click to toggle editing"
+                            >
+                              
+                View Mode
+              
+                            </a>
+                             
+                            <a
+                              class="btn btn-outline-primary btn-sm"
+                              href="#/trees/1/interaction-designer/edit"
+                              title="Click to toggle editing"
+                            >
+                              
+                Edit Mode
+              
+                            </a>
+                          </div>
+                           
                         </div>
                          
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/trees/1/interaction-designer/edit"
-                          title="Click to toggle editing"
-                        >
-                          
-            Edit Flow
-          
-                        </a>
-                         
-                        <!---->
-                         
-                        <a
-                          class="btn btn-secondary mr-2"
-                          href="#/flows/new"
-                        >
-                          
-            New Flow
-          
-                        </a>
-                         
-                        <a
-                          aria-current="page"
-                          class="btn btn-secondary mr-2 router-link-exact-active router-link-active"
-                          href="#/"
-                        >
-                          
-            Home
-          
-                        </a>
-                          
-                        <!---->
-                         
                         <div
-                          class="btn-group ml-auto mr-2"
+                          class="ml-auto mr-2"
                         >
                           <!---->
                            
+                          <div
+                            class="btn-group mr-2"
+                          />
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Export
+            
+                          </button>
+                           
+                          <!---->
                         </div>
                       </div>
                     </div>
                   </div>
+                   
+                  <!---->
                 </div>
                  
                 <div
@@ -1746,900 +2484,13 @@ exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Iv
 
 exports[`Storyshots MobilePrimitives/Numeric Response Block Existing Data For Text Only 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="MobilePrimitives.NumericResponse"
-                      data-for-block-id="fake-uuid-70"
-                    >
-                      <div
-                        class="mobile-primitive-numeric-response-block"
-                      >
-                        <h3
-                          class="no-room-above"
-                        >
-                          
-    Edit Numeric Response block
-  
-                        </h3>
-                         
-                        <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/name"
-                          >
-                            <div
-                              class="block-name"
-                            >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
-                                >
-                                  
-        Only accepts word characters
-      
-                                </small>
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/label"
-                          >
-                            <div
-                              class="block-label"
-                            >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Block semantic label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block semantic label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/config/validation_minimum"
-                          >
-                            <div
-                              class="block-validation-min"
-                            >
-                              <div
-                                class="number-editor"
-                              >
-                                <label>
-                                  Minimum value (inclusive)
-                                </label>
-                                 
-                                <div>
-                                  <input
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="Enter value"
-                                    type="number"
-                                  />
-                                </div>
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/config/validation_maximum"
-                          >
-                            <div
-                              class="block-validation-max"
-                            >
-                              <div
-                                class="number-editor"
-                              >
-                                <label>
-                                  Maximum value (inclusive)
-                                </label>
-                                 
-                                <div>
-                                  <input
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="Enter value"
-                                    type="number"
-                                  />
-                                </div>
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-70/config/ivr/max_digits"
-                          >
-                            <div
-                              class="block-max-digits"
-                            >
-                              <div
-                                class="number-editor"
-                              >
-                                <label>
-                                  Maximum digits
-                                </label>
-                                 
-                                <div>
-                                  <input
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="Enter value"
-                                    type="number"
-                                  />
-                                </div>
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="resource-editor"
-                          >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
-                             
-                            <!---->
-                             
-                            <div>
-                              <div
-                                class="upload-monitor"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
-                               
-                              <div
-                                class="audio-library-selector"
-                              >
-                                <div
-                                  class="audio-library-search-field dropdown"
-                                >
-                                  <div
-                                    class="input-group"
-                                  >
-                                    <span
-                                      class="input-group-prepend"
-                                    >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
-                                      >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
-                                    />
-                                  </div>
-                                   
-                                  <!---->
-                                </div>
-                              </div>
-                               
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
-                              </div>
-                            </div>
-                          </div>
-                            
-                          <div
-                            class="starting-block-button"
-                          >
-                            <h4>
-                              Options
-                            </h4>
-                             
-                            <div
-                              class="form-group"
-                            >
-                              <button
-                                class="btn btn-secondary btn-sm"
-                                disabled="disabled"
-                                type="button"
-                              >
-                                
-          Currently set as starting block
-        
-                              </button>
-                            </div>
-                          </div>
-                        </fieldset>
-                         
-                        <div
-                          class="block-id text-right"
-                        >
-                          <small
-                            class="text-muted"
-                          >
-                            Block Id: 
-                            <em>
-                              fake-uuid-70
-                            </em>
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 
 exports[`Storyshots MobilePrimitives/Numeric Response Block Non Starting Block 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="MobilePrimitives.NumericResponse"
-                      data-for-block-id="fake-uuid-76"
-                    >
-                      <div
-                        class="mobile-primitive-numeric-response-block"
-                      >
-                        <h3
-                          class="no-room-above"
-                        >
-                          
-    Edit Numeric Response block
-  
-                        </h3>
-                         
-                        <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/name"
-                          >
-                            <div
-                              class="block-name"
-                            >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
-                                >
-                                  
-        Only accepts word characters
-      
-                                </small>
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/label"
-                          >
-                            <div
-                              class="block-label"
-                            >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Block semantic label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block semantic label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/config/validation_minimum"
-                          >
-                            <div
-                              class="block-validation-min"
-                            >
-                              <div
-                                class="number-editor"
-                              >
-                                <label>
-                                  Minimum value (inclusive)
-                                </label>
-                                 
-                                <div>
-                                  <input
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="Enter value"
-                                    type="number"
-                                  />
-                                </div>
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/config/validation_maximum"
-                          >
-                            <div
-                              class="block-validation-max"
-                            >
-                              <div
-                                class="number-editor"
-                              >
-                                <label>
-                                  Maximum value (inclusive)
-                                </label>
-                                 
-                                <div>
-                                  <input
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="Enter value"
-                                    type="number"
-                                  />
-                                </div>
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-76/config/ivr/max_digits"
-                          >
-                            <div
-                              class="block-max-digits"
-                            >
-                              <div
-                                class="number-editor"
-                              >
-                                <label>
-                                  Maximum digits
-                                </label>
-                                 
-                                <div>
-                                  <input
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="Enter value"
-                                    type="number"
-                                  />
-                                </div>
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="resource-editor"
-                          >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor content-editor-selected"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor content-editor-selected"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
-                             
-                            <!---->
-                             
-                            <div>
-                              <!---->
-                               
-                              <div
-                                class="audio-library-selector"
-                              >
-                                <div
-                                  class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
-                                  data-audio-file-container-language="1"
-                                >
-                                  <button
-                                    class="audio-library-selection-clear-selection btn-ghost pull-right"
-                                  >
-                                    <i
-                                      class="glyphicon glyphicon-remove"
-                                    />
-                                  </button>
-                                   
-                                  <div
-                                    class="btn-group audio-library-selection-download-dropdown"
-                                  >
-                                    <button
-                                      class="btn btn-ghost dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      type="button"
-                                    >
-                                      <span
-                                        aria-hidden="true"
-                                        class="glyphicon glyphicon-download-alt"
-                                      />
-                                       
-                                      <span
-                                        class="caret"
-                                      />
-                                    </button>
-                                     
-                                    <ul
-                                      class="dropdown-menu dropdown-menu-right"
-                                    >
-                                      <li>
-                                        <a
-                                          class="tree-block-audio-files-download-original"
-                                          href="path/to/ivr audio.mp3"
-                                          target="_blank"
-                                        >
-                                          Original file
-                                        </a>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                   
-                                  <p
-                                    class="audio-file-description"
-                                    title="path/to/ivr audio.mp3"
-                                  >
-                                    
-    path/to/ivr audio.mp3
-  
-                                  </p>
-                                   
-                                  <div
-                                    class="btn-toolbar"
-                                  >
-                                    <!---->
-                                  </div>
-                                </div>
-                              </div>
-                               
-                              <!---->
-                            </div>
-                          </div>
-                            
-                          <div
-                            class="starting-block-button"
-                          >
-                            <h4>
-                              Options
-                            </h4>
-                             
-                            <div
-                              class="form-group"
-                            >
-                              <button
-                                class="btn btn-secondary btn-sm"
-                                disabled="disabled"
-                                type="button"
-                              >
-                                
-          Currently set as starting block
-        
-                              </button>
-                            </div>
-                          </div>
-                        </fieldset>
-                         
-                        <div
-                          class="block-id text-right"
-                        >
-                          <small
-                            class="text-muted"
-                          >
-                            Block Id: 
-                            <em>
-                              fake-uuid-76
-                            </em>
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 
@@ -2663,850 +2514,13 @@ exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Ivr O
 
 exports[`Storyshots MobilePrimitives/Open Response Block Existing Data For Text Only 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="MobilePrimitives.OpenResponse"
-                      data-for-block-id="fake-uuid-105"
-                    >
-                      <div
-                        class="mobile-primitive-open-response-block"
-                      >
-                        <h3
-                          class="no-room-above"
-                        >
-                          
-    Edit Open Response block
-  
-                        </h3>
-                         
-                        <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/name"
-                          >
-                            <div
-                              class="block-name"
-                            >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
-                                >
-                                  
-        Only accepts word characters
-      
-                                </small>
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/label"
-                          >
-                            <div
-                              class="block-label"
-                            >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Block semantic label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block semantic label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/config/ivr/max_duration_seconds"
-                          >
-                            <div
-                              class="block-max-duration-seconds"
-                            >
-                              <div
-                                class="number-editor"
-                              >
-                                <label>
-                                  Maximum Duration (seconds)
-                                </label>
-                                 
-                                <div>
-                                  <input
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="Enter value"
-                                    type="number"
-                                  />
-                                </div>
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-105/config/text/max_response_characters"
-                          >
-                            <div
-                              class="block-max-response-characters"
-                            >
-                              <div
-                                class="number-editor"
-                              >
-                                <label>
-                                  Maximum Response Characters
-                                </label>
-                                 
-                                <div>
-                                  <input
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="Enter value"
-                                    type="number"
-                                  />
-                                </div>
-                                 
-                              </div>
-                               
-                              <small
-                                class="text-muted"
-                              >
-                                
-      Unlimited if not defined or set as zero
-    
-                              </small>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="resource-editor"
-                          >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
-                             
-                            <!---->
-                             
-                            <div>
-                              <div
-                                class="upload-monitor"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                              </div>
-                               
-                              <ul
-                                class="nav nav-tabs"
-                              >
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1 active"
-                                    href="#"
-                                  >
-                                    Library
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                  >
-                                    Phone recording
-                                  </a>
-                                </li>
-                                 
-                                <li
-                                  class="nav-item"
-                                >
-                                  <a
-                                    class="nav-link px-2 py-1"
-                                    href="#"
-                                    style="overflow: hidden;"
-                                  >
-                                    
-                  Upload
-                
-                                    <input
-                                      accept="audio/*"
-                                      style="visibility: hidden; position: absolute; width: 1px; height: 1px;"
-                                      type="file"
-                                    />
-                                  </a>
-                                </li>
-                              </ul>
-                               
-                              <div
-                                class="audio-library-selector"
-                              >
-                                <div
-                                  class="audio-library-search-field dropdown"
-                                >
-                                  <div
-                                    class="input-group"
-                                  >
-                                    <span
-                                      class="input-group-prepend"
-                                    >
-                                      <button
-                                        class="btn btn-outline-secondary dropdown-toggle"
-                                      >
-                                        <i
-                                          class="glyphicon glyphicon-search"
-                                        />
-                                      </button>
-                                    </span>
-                                     
-                                    <input
-                                      class="form-control"
-                                      placeholder="Search audio library…"
-                                      type="text"
-                                    />
-                                  </div>
-                                   
-                                  <!---->
-                                </div>
-                              </div>
-                               
-                              <div
-                                class="phone-recorder"
-                              >
-                                <!---->
-                              </div>
-                            </div>
-                          </div>
-                            
-                          <div
-                            class="starting-block-button"
-                          >
-                            <h4>
-                              Options
-                            </h4>
-                             
-                            <div
-                              class="form-group"
-                            >
-                              <button
-                                class="btn btn-secondary btn-sm"
-                                disabled="disabled"
-                                type="button"
-                              >
-                                
-          Currently set as starting block
-        
-                              </button>
-                            </div>
-                          </div>
-                        </fieldset>
-                         
-                        <div
-                          class="block-id text-right"
-                        >
-                          <small
-                            class="text-muted"
-                          >
-                            Block Id: 
-                            <em>
-                              fake-uuid-105
-                            </em>
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 
 exports[`Storyshots MobilePrimitives/Open Response Block Non Starting Block 1`] = `
 <div>
-  <div
-    class="viamo-app-container flow-builder-sidebar-editor-container"
-    id="viamo-app"
-  >
-    <div
-      class="container-full"
-    >
-      <div
-        class="main-content-container"
-      >
-        <section
-          id="tree-app"
-        >
-          <div
-            class="edit-tree"
-            id="tree-interaction-designer"
-          >
-            <div
-              class="interaction-designer-contents panel panel-default"
-            >
-              <div
-                class="hidden-print hidden-xs hidden-sm tree-sidebar-menu-container"
-              >
-                <nav
-                  class="bs-docs-sidebar"
-                >
-                  <div
-                    class="tree-sidebar-menu"
-                    id="tree-sidebar"
-                  >
-                    <div
-                      class="tree-sidebar-edit-block"
-                      data-block-type="MobilePrimitives.OpenResponse"
-                      data-for-block-id="fake-uuid-114"
-                    >
-                      <div
-                        class="mobile-primitive-open-response-block"
-                      >
-                        <h3
-                          class="no-room-above"
-                        >
-                          
-    Edit Open Response block
-  
-                        </h3>
-                         
-                        <fieldset>
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/name"
-                          >
-                            <div
-                              class="block-name"
-                            >
-                              <div>
-                                <label>
-                                  Block name
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block name"
-                                />
-                                 
-                                <small
-                                  class="text-muted"
-                                >
-                                  
-        Only accepts word characters
-      
-                                </small>
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/label"
-                          >
-                            <div
-                              class="block-label"
-                            >
-                              <div>
-                                <label>
-                                  Block label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/semantic_label"
-                          >
-                            <div
-                              class="block-semantic-label"
-                            >
-                              <div>
-                                <label>
-                                  Block semantic label
-                                </label>
-                                 
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter a block semantic label"
-                                />
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/config/ivr/max_duration_seconds"
-                          >
-                            <div
-                              class="block-max-duration-seconds"
-                            >
-                              <div
-                                class="number-editor"
-                              >
-                                <label>
-                                  Maximum Duration (seconds)
-                                </label>
-                                 
-                                <div>
-                                  <input
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="Enter value"
-                                    type="number"
-                                  />
-                                </div>
-                                 
-                              </div>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="validation-message form-group"
-                            id="block/fake-uuid-114/config/text/max_response_characters"
-                          >
-                            <div
-                              class="block-max-response-characters"
-                            >
-                              <div
-                                class="number-editor"
-                              >
-                                <label>
-                                  Maximum Response Characters
-                                </label>
-                                 
-                                <div>
-                                  <input
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="Enter value"
-                                    type="number"
-                                  />
-                                </div>
-                                 
-                              </div>
-                               
-                              <small
-                                class="text-muted"
-                              >
-                                
-      Unlimited if not defined or set as zero
-    
-                              </small>
-                            </div>
-                             
-                            <small
-                              class="text-danger"
-                            >
-                              
-                            </small>
-                          </div>
-                           
-                          <div
-                            class="resource-editor"
-                          >
-                            <!---->
-                             
-                            <!---->
-                             
-                            <div
-                              class="block-content-editor-lang"
-                            >
-                              <h5
-                                class="badge badge-info"
-                              >
-                                
-        English
-      
-                              </h5>
-                            </div>
-                             
-                            <h6>
-                              SMS Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor content-editor-selected"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              USSD Content
-                            </h6>
-                             
-                            <div
-                              class="resource-variant-text-editor"
-                            >
-                              <div
-                                class="content-editor content-editor-selected"
-                              >
-                                <textarea
-                                  class="form-control"
-                                  placeholder="Enter Text content"
-                                />
-                              </div>
-                               
-                              <div
-                                class="content-toolbar"
-                              >
-                                <!---->
-                                 
-                                <!---->
-                                 
-                                <!---->
-                              </div>
-                            </div>
-                             
-                            <!---->
-                            <h6>
-                              IVR Content
-                            </h6>
-                             
-                            <!---->
-                             
-                            <div>
-                              <!---->
-                               
-                              <div
-                                class="audio-library-selector"
-                              >
-                                <div
-                                  class="well well-sm audio-library-selection tree-audio-control-text-container-selected"
-                                  data-audio-file-container-language="1"
-                                >
-                                  <button
-                                    class="audio-library-selection-clear-selection btn-ghost pull-right"
-                                  >
-                                    <i
-                                      class="glyphicon glyphicon-remove"
-                                    />
-                                  </button>
-                                   
-                                  <div
-                                    class="btn-group audio-library-selection-download-dropdown"
-                                  >
-                                    <button
-                                      class="btn btn-ghost dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      type="button"
-                                    >
-                                      <span
-                                        aria-hidden="true"
-                                        class="glyphicon glyphicon-download-alt"
-                                      />
-                                       
-                                      <span
-                                        class="caret"
-                                      />
-                                    </button>
-                                     
-                                    <ul
-                                      class="dropdown-menu dropdown-menu-right"
-                                    >
-                                      <li>
-                                        <a
-                                          class="tree-block-audio-files-download-original"
-                                          href="path/to/ivr audio.mp3"
-                                          target="_blank"
-                                        >
-                                          Original file
-                                        </a>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                   
-                                  <p
-                                    class="audio-file-description"
-                                    title="path/to/ivr audio.mp3"
-                                  >
-                                    
-    path/to/ivr audio.mp3
-  
-                                  </p>
-                                   
-                                  <div
-                                    class="btn-toolbar"
-                                  >
-                                    <!---->
-                                  </div>
-                                </div>
-                              </div>
-                               
-                              <!---->
-                            </div>
-                          </div>
-                            
-                          <div
-                            class="starting-block-button"
-                          >
-                            <h4>
-                              Options
-                            </h4>
-                             
-                            <div
-                              class="form-group"
-                            >
-                              <button
-                                class="btn btn-secondary btn-sm"
-                                disabled="disabled"
-                                type="button"
-                              >
-                                
-          Currently set as starting block
-        
-                              </button>
-                            </div>
-                          </div>
-                        </fieldset>
-                         
-                        <div
-                          class="block-id text-right"
-                        >
-                          <small
-                            class="text-muted"
-                          >
-                            Block Id: 
-                            <em>
-                              fake-uuid-114
-                            </em>
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  <!---->
 </div>
 `;
 

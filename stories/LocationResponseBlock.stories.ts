@@ -54,6 +54,7 @@ class CurrentClass2 extends BaseMountedVueClass {
     this.setDescription(blockId)
     this.setAccuracyThreshold({blockId, value: 10.3})
     this.setAccuracyTimeout({blockId, value: 145})
+    this.setTags(blockId)
   }
 
   @blockVuexNamespace.Action setAccuracyThreshold: any

@@ -3,13 +3,22 @@
     <div
       class="content-editor"
       :class="{'content-editor-selected': !!content}">
-      <textarea
-        v-model="content"
-        v-focus="isSelected"
-        :placeholder="`flow-builder.enter-${resourceVariant.content_type.toString().toLowerCase()}-content` | trans"
-        class="form-control"
-        @focus="select"
-        @blur="deselect" />
+
+      <div class="input-group">
+        <div v-if="label" class="input-group-prepend">
+          <span class="input-group-text">{{label}}</span>
+        </div>
+
+        <textarea
+          ref="input"
+          v-model="content"
+          v-focus="isSelected"
+          :placeholder="placeholder || `flow-builder.enter-${resourceVariant.content_type.toString().toLowerCase()}-content` | trans"
+          class="form-control"
+          :rows="rows"
+          @focus="select"
+          @blur="deselect" />
+      </div>
 
       <!-- <button @click="select"
               class="btn btn-xs btn-secondary">
@@ -117,6 +126,17 @@ export default {
 
   props: {
     isEditable: Boolean,
+
+    label: {
+      type: String,
+      default: null,
+    },
+
+    placeholder: {
+      type: String,
+      default: null,
+    },
+
     resourceId: {
       type: String,
       default: null,
@@ -134,6 +154,11 @@ export default {
     enableAutogenButton: {
       type: Boolean,
       default: true,
+    },
+
+    rows: {
+      type: Number,
+      default: 2,
     },
 
     // maybe!?
@@ -156,11 +181,13 @@ export default {
         const {resourceId, mode} = this
         const {language_id: languageId, content_type: contentType} = this.resourceVariant
 
+        this.$emit('beforeResourceVariantChanged', {variant: this.resourceVariant, resourceId})
         this.resource_setOrCreateValueModeSpecific({
           resourceId,
           filter: {language_id: languageId, content_type: contentType, modes: [mode]},
           value,
         })
+        this.$emit('afterResourceVariantChanged', {variant: this.resourceVariant, resourceId})
       },
     },
 
@@ -222,6 +249,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.resource-variant-text-editor {
+  margin-bottom: 10px;
+}
+
 .block-text-content-editor-for-lang-and-type {
   margin-bottom: 0.5em;
 

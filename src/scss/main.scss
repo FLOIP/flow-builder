@@ -1,4 +1,26 @@
-@import './node_modules/bootstrap/scss/_functions.scss';
-@import './node_modules/bootstrap/scss/_variables.scss';
-@import './node_modules/bootstrap/scss/_mixins.scss';
+@import 'custom_variables.scss';
+@import './node_modules/bootstrap/scss/bootstrap';
+@import './node_modules/bootstrap-vue/src/index.scss';
 @import 'bootstrap3_compatibility.scss';
+@import '_v5_icons';
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  background-color: #F4F4F4;
+  border-bottom-color: #F4F4F4;
+}
+
+.form-control,
+.input-group-text { // or .input-group-append, .input-group-prepend ?
+  border-color: #B2ABB2;
+  display: inline-block;
+  min-width: 45px;
+}
+
+h3 {
+  color: #4C1E42;
+}
+
+h4 {
+  color: #812C5A;
+}

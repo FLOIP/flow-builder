@@ -4,9 +4,9 @@ import {IRootState} from '@/store'
 import Ajv, {ErrorObject, ValidateFunction} from 'ajv'
 import ajvFormat from 'ajv-formats'
 
-import { JSONSchema7 } from 'json-schema'
-import { IBlock, IFlow, IContainer, ILanguage } from '@floip/flow-runner'
-import { isEmpty, get, forIn } from 'lodash'
+import {JSONSchema7} from 'json-schema'
+import {IBlock, IContainer, IFlow, ILanguage, getFlowStructureErrors} from '@floip/flow-runner'
+import {forIn, get, isEmpty} from 'lodash'
 
 const ajv = new Ajv({allErrors: true})
 
@@ -77,10 +77,10 @@ export const mutations: MutationTree<IValidationState> = {
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
-  async validate_block({state, commit}, {block}: {block: IBlock}): Promise<IValidationStatus> {
+  async validate_block({state, commit, rootGetters}, {block}: {block: IBlock}): Promise<IValidationStatus> {
     const {uuid: blockId, type: blockType} = block
     const blockTypeWithoutNameSpace = blockType.split('.')[blockType.split('.').length - 1]
-    const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace)
+    const validate = getOrCreateBlockValidatorFor(blockTypeWithoutNameSpace, rootGetters['flow/activeFlowContainer'].specification_version)
     const key = `block/${blockId}`
 
     Vue.set(state.validationStatuses, key, {
@@ -95,8 +95,8 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     return state.validationStatuses[key]
   },
 
-  async validate_flow({state}, {flow}: {flow: IFlow}): Promise<IValidationStatus> {
-    const validate = getOrCreateFlowValidator()
+  async validate_flow({state, rootGetters}, {flow}: {flow: IFlow}): Promise<IValidationStatus> {
+    const validate = getOrCreateFlowValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const key = `flow/${flow.uuid}`
     Vue.set(state.validationStatuses, key, {
       isValid: validate(flow),
@@ -109,11 +109,11 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   },
 
   async validate_flowContainer({state}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
-    const validate = getOrCreateFlowContainerValidator()
     const key = `flowContainer/${flowContainer.uuid}`
+    const errors = getFlowStructureErrors(flowContainer, false)
     Vue.set(state.validationStatuses, key, {
-      isValid: validate(flowContainer),
-      ajvErrors: validate.errors,
+      isValid: !errors,
+      ajvErrors: errors,
     })
 
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
@@ -147,33 +147,24 @@ export const store: Module<IValidationState, IRootState> = {
 
 export default store
 
-function getOrCreateBlockValidatorFor(blockType: string): ValidateFunction {
+function getOrCreateBlockValidatorFor(blockType: string, schemaVersion: string): ValidateFunction {
   if (isEmpty(validators) || !validators.has(blockType)) {
-    const blockJsonSchema = require(`@floip/flow-runner/dist/resources/I${blockType}Block.json`)
+    const blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockType}Block.json`)
     validators.set(blockType, createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema))
   }
   return validators.get(blockType)!
 }
 
-function getOrCreateFlowValidator(): ValidateFunction {
+function getOrCreateFlowValidator(schemaVersion: string): ValidateFunction {
   const validationType = 'flow'
   if (isEmpty(validators) || !validators.has(validationType)) {
-    const flowJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
+    const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
 
     // remove `blocks` property from IFlow schema to avoid double validations
     flowJsonSchema.definitions.IFlow.additionalProperties = true
     delete flowJsonSchema.definitions.IFlow.properties.blocks
 
     validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IFlow'))
-  }
-  return validators.get(validationType)!
-}
-
-function getOrCreateFlowContainerValidator(): ValidateFunction {
-  const validationType = 'flowContainer'
-  if (isEmpty(validators) || !validators.has(validationType)) {
-    const flowContainerJsonSchema = require('@floip/flow-runner/dist/resources/flowSpecJsonSchema.json')
-    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowContainerJsonSchema))
   }
   return validators.get(validationType)!
 }
@@ -252,7 +243,7 @@ function flatValidationStatuses({
       // error.dataPath could be empty or not for such errors
       index = `${keyPrefix}${error.schemaPath}`
       message = `${error.message}, for params ${JSON.stringify(error.params)}`
-      console.error('store/validation:', `Schema issue found on ${index}: ${message}`)
+      console.warn('store/validation:', `Schema issue found on ${index}: ${message}`)
     } else {
       index = `${keyPrefix}${error.dataPath}`
       message = error.message as string

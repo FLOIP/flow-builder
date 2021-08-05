@@ -1,6 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExit} from '@floip/flow-runner'
+import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import {defaultsDeep, split} from 'lodash'
@@ -49,20 +49,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
-          tag: 'Default',
-          label: 'Default',
         }) as IBlockExit,
       }, {root: true}),
     ]
-    exits.push(
-      await dispatch('flow/block_createBlockExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-          tag: 'Error',
-          label: 'Error',
-        }) as IBlockExit,
-      }, {root: true}),
-    )
 
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
@@ -74,7 +63,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         destination_variables: [],
       },
       exits,
+      tags: [],
+      vendor_metadata: {},
     })
+  },
+
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: 'block.value = true',
+    }, {root: true})
   },
 
 }

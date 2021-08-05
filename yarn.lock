@@ -1646,18 +1646,18 @@
   resolved "https://registry.yarnpkg.com/@exodus/schemasafe/-/schemasafe-1.0.0-rc.3.tgz#dda2fbf3dafa5ad8c63dadff7e01d3fdf4736025"
   integrity sha512-GoXw0U2Qaa33m3eUcxuHnHpNvHjNlLo0gtV091XBpaRINaB4X6FGCG5XKxSFNFiPpugUDqNruHzaqpTdDm4AOg==
 
-"@floip/expression-evaluator@^2.1.3":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.4.tgz#ef4647f2d7140ac5841ab669945d7601588e43ab"
-  integrity sha512-WahhLzof0HcAldBbLswc9mMQZbnWxrqmZNOuUbQjwAbGNV8C9TihzescECtWsGcNvGAROVr5alIa434gSnqNGA==
-  dependencies:
-    "@floip/expression-parser" "^1.10.0"
-    moment "^2.24.0"
-
 "@floip/expression-evaluator@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.0.tgz#925d289ba4763df452f6e555005aa3fac117f6ca"
   integrity sha512-9t0Dw7/c8OrFkm8cT1m08r8CfHTsO5mm6373/cctz479EPmermt7KxQqRZtzesCMWh5yDVuxOC90kYHFaAlNZA==
+  dependencies:
+    "@floip/expression-parser" "^1.10.0"
+    moment "^2.24.0"
+
+"@floip/expression-evaluator@^2.1.3":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.4.tgz#ef4647f2d7140ac5841ab669945d7601588e43ab"
+  integrity sha512-WahhLzof0HcAldBbLswc9mMQZbnWxrqmZNOuUbQjwAbGNV8C9TihzescECtWsGcNvGAROVr5alIa434gSnqNGA==
   dependencies:
     "@floip/expression-parser" "^1.10.0"
     moment "^2.24.0"
@@ -1667,10 +1667,9 @@
   resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.10.0.tgz#386cb9fbfb2afc951daae40e03845a87bacf3509"
   integrity sha512-pLR8p2z6q87O9c1XkP4DYfuEX+cKMn14a4jYkZ/t4ky1k+MEvp69zj662xJTzCkbH3ABsrwaxx7fP1FWASlEZw==
 
-"@floip/flow-runner@^1.0.11":
+"@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#feature/VMO-4281-flow-spec-rc2":
   version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@floip/flow-runner/-/flow-runner-1.0.11.tgz#4d67ca657d5759ac5d184bbb6031e4ac528a2f45"
-  integrity sha512-nW/liwVP5ZwN8x7w3+UXvN+NirJFUUTcIMO2eBHMpCG+btNge91cKBsUknUP0M5ZdqiJzcqtqMzIexxPAGVCBA==
+  resolved "https://github.com/FLOIP/flow-runner.git#88858a2baf5889ece8f9abbd575bdc92adfbe4a4"
   dependencies:
     "@floip/expression-evaluator" "^2.1.3"
     ajv "^7.2.1"

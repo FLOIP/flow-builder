@@ -29,6 +29,14 @@
               </router-link>
             </div>
           </div>
+          <div class="mt-4">
+            <a
+              href="https://github.com/FLOIP/flow-builder"
+              :title="trans('flow-builder.flow-builder-documentation')"
+              class="mt-3 mr-2 active">
+              {{ 'flow-builder.flow-builder-documentation' | trans }}
+            </a>
+          </div>
         </main>
       </div>
     </div>

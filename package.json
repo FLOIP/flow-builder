@@ -11,6 +11,7 @@
     "serve": "vue-cli-service serve",
     "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts",
     "test:unit": "vue-cli-service test:unit",
+    "test:regenerate-storyshots": "vue-cli-service test:unit --no-cache",
     "lint": "vue-cli-service lint",
     "storybook:build": "vue-cli-service storybook:build -c config/storybook",
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
@@ -21,7 +22,7 @@
   "dependencies": {
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
-    "@floip/flow-runner": "^1.0.11",
+    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#feature/VMO-4281-flow-spec-rc2",
     "@flowjs/flow.js": "^2.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",

@@ -61,6 +61,7 @@ class CurrentClass3 extends BaseMountedVueClass {
 
     this.setDescription(blockId)
     await this.fakeCaseBlockAsFirstBlock(flowId)
+    this.setTags(blockId)
   }
 }
 
