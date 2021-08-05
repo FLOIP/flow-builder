@@ -146,6 +146,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     try {
       // check valid json
       flowContainer = JSON.parse(state.flowJsonText)
+      commit('setFlowJsonText', JSON.stringify(flowContainer, null, 2))
     } catch (e) {
       commit('resetLanguageMatching')
       commit('resetPropertyMatching')
