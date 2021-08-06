@@ -216,10 +216,10 @@ export default {
   updated() {
     this.blockWidth = this.$refs.draggable.$el.clientWidth
     // TODO: remove this after fix
-    console.log('CHECK Block')
-    const el = this.$refs.draggable.$el
-    console.log('el', el)
-    console.log('el.getBoundingClientRect', el.getBoundingClientRect())
+    // console.log('CHECK Block')
+    // const el = this.$refs.draggable.$el
+    // console.log('el', el)
+    // console.log('el.getBoundingClientRect', el.getBoundingClientRect())
   },
 
   created() {
@@ -299,10 +299,17 @@ export default {
 
     translatedBlockEditorPosition() {
       const draggableBoundingClientRect = this.$refs.draggable.$el.getBoundingClientRect()
+      console.log('CHECK Block')
+      const el = this.$refs.draggable.$el
+      console.log('el', el)
+      console.log('el.getBoundingClientRect', el.getBoundingClientRect())
+
+      console.log('CHECK ID')
+      console.log('interactionDesignerBoundingClientRect', this.interactionDesignerBoundingClientRect)
       const xOffset = 5
       const yOffset = 32 // Block toolbar height
-      const left = draggableBoundingClientRect.right + xOffset - this.interactionDesignerBoundingClientRect.left
-      const top = draggableBoundingClientRect.top - yOffset
+      const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
+      const top = this.y - yOffset
       return `translate(${left}px, ${top}px)`
     },
 
