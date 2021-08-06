@@ -215,6 +215,11 @@ export default {
 
   updated() {
     this.blockWidth = this.$refs.draggable.$el.clientWidth
+    // TODO: remove this after fix
+    console.log('CHECK Block')
+    const el = this.$refs.draggable.$el
+    console.log('el', el)
+    console.log('el.getBoundingClientRect', el.getBoundingClientRect())
   },
 
   created() {
@@ -243,7 +248,7 @@ export default {
       blockClasses: ({trees: {ui}}) => ui.blockClasses,
     }),
 
-    ...mapGetters('builder', ['blocksById', 'isEditable']),
+    ...mapGetters('builder', ['blocksById', 'isEditable', 'interactionDesignerBoundingClientRect']),
     ...mapGetters('flow', ['activeFlow']),
 
     blockExitsLength() {
@@ -293,9 +298,12 @@ export default {
     },
 
     translatedBlockEditorPosition() {
+      const draggableBoundingClientRect = this.$refs.draggable.$el.getBoundingClientRect()
       const xOffset = 5
-      const yOffset = 32
-      return `translate(${this.x + this.blockWidth + xOffset}px, ${this.y - yOffset}px)`
+      const yOffset = 32 // Block toolbar height
+      const left = draggableBoundingClientRect.right + xOffset - this.interactionDesignerBoundingClientRect.left
+      const top = draggableBoundingClientRect.top - yOffset
+      return `translate(${left}px, ${top}px)`
     },
 
     shouldShowBlockEditor() {

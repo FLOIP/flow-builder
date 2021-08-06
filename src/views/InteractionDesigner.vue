@@ -1,6 +1,7 @@
 <template>
   <div
     v-if="activeFlow"
+    ref="interaction-designer-contents"
     class="interaction-designer-contents">
     <header class="interaction-designer-header">
       <tree-builder-toolbar />
@@ -146,7 +147,7 @@ export default {
     }),
 
     ...mapGetters('flow', ['activeFlow']),
-    ...mapGetters('builder', ['activeBlock', 'isEditable']),
+    ...mapGetters('builder', ['activeBlock', 'isEditable', 'interactionDesignerBoundingClientRect']),
     ...mapGetters('clipboard', ['isSimulatorActive']),
 
     jsKey() {
@@ -163,6 +164,13 @@ export default {
     mode(newMode) {
       this.updateIsEditableFromParams(newMode)
     },
+  },
+
+  updated() { // TODO: remove this after fix
+    console.log('CHECK interaction-designer-contents')
+    const el = this.$refs['interaction-designer-contents']
+    console.log('el', el)
+    console.log('el.getBoundingClientRect', el.getBoundingClientRect())
   },
 
   created() {
@@ -222,6 +230,12 @@ export default {
       }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
+
+    // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
+    if (this.activeFlow && this.$refs['interaction-designer-contents'] != undefined) {
+      console.log('YES YES YES', this.interactionDesignerBoundingClientRect)
+      this.setInteractionDesignerBoundingClientRect(this.$refs['interaction-designer-contents'].getBoundingClientRect())
+    }
   },
   beforeRouteUpdate(to, from, next) {
     this.activateBlock({blockId: to.params.blockId || null})
@@ -233,7 +247,7 @@ export default {
   },
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
-    ...mapMutations('builder', ['activateBlock', 'setIsBlockEditorOpen']),
+    ...mapMutations('builder', ['activateBlock', 'setIsBlockEditorOpen', 'setInteractionDesignerBoundingClientRect']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
 
