@@ -166,13 +166,6 @@ export default {
     },
   },
 
-  updated() { // TODO: remove this after fix
-    console.log('CHECK interaction-designer-contents')
-    const el = this.$refs['interaction-designer-contents']
-    console.log('el', el)
-    console.log('el.getBoundingClientRect', el.getBoundingClientRect())
-  },
-
   created() {
     const {$store} = this
 
@@ -233,7 +226,6 @@ export default {
 
     // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
     if (this.activeFlow && this.$refs['interaction-designer-contents'] != undefined) {
-      console.log('YES YES YES', this.interactionDesignerBoundingClientRect)
       this.setInteractionDesignerBoundingClientRect(this.$refs['interaction-designer-contents'].getBoundingClientRect())
     }
   },

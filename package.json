@@ -10,6 +10,7 @@
     "build": "vue-cli-service build",
     "serve": "vue-cli-service serve",
     "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts",
+    "build-bundle-and-commit": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"build-bundle\"",
     "test:unit": "vue-cli-service test:unit",
     "test:regenerate-storyshots": "vue-cli-service test:unit --no-cache",
     "lint": "vue-cli-service lint",
