@@ -31,7 +31,7 @@
                     <a
                       class="btn btn-outline-secondary"
                       @click="chooseFile">
-                      {{ 'flow-builder.import-file' | trans }}
+                      {{ (!flowJsonText ? 'flow-builder.import-file' : 'flow-builder.replace-file') | trans }}
                     </a>
                     <input
                       id="flowUpload"

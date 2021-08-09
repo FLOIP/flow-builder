@@ -9,15 +9,25 @@
       </div>
     </div>
     <div
+      v-if="!flowError && !!flowJsonText"
+      class="alert alert-success mt-3"
+      role="alert">
+      <font-awesome-icon
+        :icon="['far', 'check-circle']"/>
+      {{ 'flow-builder.import-success' | trans }}
+    </div>
+    <div
       v-if="flowError"
       class="alert alert-danger mt-3"
       role="alert">
+      <i class="glyphicon glyphicon-exclamation-sign" />
       {{ flowError | trans(flowErrorInterpolations) }}
     </div>
     <div
       v-if="hasUnsupportedBlockClasses"
       class="alert alert-danger mt-3"
       role="alert">
+      <i class="glyphicon glyphicon-exclamation-sign" />
       {{ `${trans('flow-builder.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}` }}
     </div>
     <import-matcher
@@ -133,6 +143,8 @@ class ErrorHandler extends Vue {
   @importVuexNamespace.State existingGroupsWithoutMatch!: IGroupOption[]
 
   @importVuexNamespace.State updating!: boolean
+
+  @importVuexNamespace.State flowJsonText!: string
 }
 
 export default ErrorHandler
