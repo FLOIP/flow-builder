@@ -153,6 +153,8 @@ export default {
 
     connectionElement.addEventListener('mouseout', self.mouseOutHandler, false)
 
+    this.line.domElement = connectionElement
+
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false
     // this.line.positionByWindowResize = false
@@ -182,6 +184,7 @@ export default {
     mouseOverHandler() {
       this.line.setOptions(this.prominentOptions)
       this.activateConnection({connectionContext: this.connectionContext})
+      this.line.domElement.style.zIndex = 1
       this.$emit('lineMouseIn')
     },
     mouseOutHandler() {
@@ -189,12 +192,14 @@ export default {
         this.line.setOptions(this.options)
         this.deactivateConnection({connectionContext: this.connectionContext})
       }
+      this.line.domElement.style.zIndex = 0
       this.$emit('lineMouseOut')
     },
     clickHandler() {
       this.isPermanentlyActive = true
       this.activateConnection({connectionContext: this.connectionContext})
       this.activateBlock({blockId: null})
+      this.line.domElement.style.zIndex = 1
       this.$emit('lineMouseIn')
     },
     clickAwayHandler(connectionElement) {
@@ -213,6 +218,7 @@ export default {
           this.line.setOptions(this.options)
           this.deactivateConnection({connectionContext: this.connectionContext})
         }
+        this.line.domElement.style.zIndex = 0
         this.$emit('lineMouseOut')
       }, false)
     },
