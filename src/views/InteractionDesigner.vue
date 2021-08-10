@@ -313,16 +313,19 @@ export default {
   .interaction-designer-contents {
     background: #F5F5F5;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    display:inline-block;
     margin: 0;
     padding: 0;
+    border:2px solid green;
   }
 
   .interaction-designer-header {
     position: sticky;
     top: 0;
+    left: 0;
+    display:inline-block;
     z-index: 4*10;
+    border:2px solid red;
   }
 
   .tree-sidebar-container {
