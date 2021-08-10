@@ -12,8 +12,7 @@
       v-if="!flowError && !!flowJsonText"
       class="alert alert-success mt-3"
       role="alert">
-      <font-awesome-icon
-        :icon="['far', 'check-circle']"/>
+      <font-awesome-icon :icon="['far', 'check-circle']" />
       {{ 'flow-builder.import-success' | trans }}
     </div>
     <div

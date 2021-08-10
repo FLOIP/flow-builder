@@ -11,7 +11,7 @@
               <p>{{ 'flow-builder.create-flow-from-json' | trans }}</p>
               <div
                 v-if="trans('flow-builder.import-note')"
-                class="alert alert-primary"
+                class="alert alert-info"
                 role="alert">
                 {{ 'flow-builder.import-note'| trans }}
               </div>
@@ -285,13 +285,4 @@ export default ImportFlow
   overflow: hidden;
   white-space: nowrap;
 }
-</style>
-<style lang="scss" scoped>
-//The bootstrap default is what the design calls for but seems to get overridden somewhere else I can't find in order to style the block selection banner
-.alert-primary {
-    color: #004085;
-    background-color: #cce5ff;
-    border-color: #b8daff;
-}
-
 </style>
