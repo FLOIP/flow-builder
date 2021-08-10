@@ -31,6 +31,7 @@ export default {
       // no need to set up observers over this
       // line: null,
       isPermanentlyActive: false,
+      connectionDomHandle: HTMLElement,
     }
   },
 
@@ -140,20 +141,16 @@ export default {
 
     this.line = new LeaderLine(start, end, this.options)
 
+    this.connectionDomHandle = document.getElementById(`leader-line-${this.line._id}-line-path`).closest('svg.leader-line')
+
     // Add event listeners
-    const self = this
-    // the only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
-    const connectionElement = document.querySelector('body>.leader-line:last-of-type')
+    this.connectionDomHandle.addEventListener('click', this.clickHandler, false)
 
-    connectionElement.addEventListener('click', self.clickHandler, false)
+    this.connectionDomHandle.addEventListener('click', this.clickAwayHandler(this.connectionDomHandle), false)
 
-    connectionElement.addEventListener('click', self.clickAwayHandler(connectionElement), false)
+    this.connectionDomHandle.addEventListener('mouseover', this.mouseOverHandler, false)
 
-    connectionElement.addEventListener('mouseover', self.mouseOverHandler, false)
-
-    connectionElement.addEventListener('mouseout', self.mouseOutHandler, false)
-
-    this.line.domElement = connectionElement
+    this.connectionDomHandle.addEventListener('mouseout', this.mouseOutHandler, false)
 
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false
@@ -184,7 +181,7 @@ export default {
     mouseOverHandler() {
       this.line.setOptions(this.prominentOptions)
       this.activateConnection({connectionContext: this.connectionContext})
-      this.line.domElement.style.zIndex = 1
+      this.connectionDomHandle.style.zIndex = 1
       this.$emit('lineMouseIn')
     },
     mouseOutHandler() {
@@ -192,14 +189,14 @@ export default {
         this.line.setOptions(this.options)
         this.deactivateConnection({connectionContext: this.connectionContext})
       }
-      this.line.domElement.style.zIndex = 0
+      this.connectionDomHandle.style.zIndex = 0
       this.$emit('lineMouseOut')
     },
     clickHandler() {
       this.isPermanentlyActive = true
       this.activateConnection({connectionContext: this.connectionContext})
       this.activateBlock({blockId: null})
-      this.line.domElement.style.zIndex = 1
+      this.connectionDomHandle.style.zIndex = 1
       this.$emit('lineMouseIn')
     },
     clickAwayHandler(connectionElement) {
@@ -218,7 +215,7 @@ export default {
           this.line.setOptions(this.options)
           this.deactivateConnection({connectionContext: this.connectionContext})
         }
-        this.line.domElement.style.zIndex = 0
+        this.connectionDomHandle.style.zIndex = 0
         this.$emit('lineMouseOut')
       }, false)
     },
