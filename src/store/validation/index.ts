@@ -68,6 +68,20 @@ export const getters: GetterTree<IValidationState, IRootState> = {
     })
     return accumulator
   },
+  validationStatusForMessageKey: (state) => (messageKey: string): ErrorObject | undefined => {
+    let ajvErrorForMessageKey
+    forIn(state.validationStatuses, (validationStatus: IValidationStatus, index: string) => {
+      if (messageKey.includes(index)) {
+        const ajvErrors = validationStatus.ajvErrors
+        ajvErrors?.forEach((error: ErrorObject) => {
+          if (messageKey.includes(error.dataPath)) {
+            ajvErrorForMessageKey = error
+          }
+        })
+      }
+    })
+    return ajvErrorForMessageKey
+  },
 }
 
 export const mutations: MutationTree<IValidationState> = {
