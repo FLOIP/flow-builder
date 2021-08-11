@@ -187,7 +187,7 @@ export default class BuilderCanvas extends Vue {
       return this.windowWidth - this.widthAdjustment
     }
 
-    const xPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.x
+    const xPosition: number = this.blockAtTheFurthestRightPosition.ui_metadata.canvas_coordinates.x
     const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH_CORRECTION
 
     if (scrollWidth < this.windowWidth) {

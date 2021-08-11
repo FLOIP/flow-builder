@@ -316,7 +316,6 @@ export default {
     display:inline-block;
     margin: 0;
     padding: 0;
-    border:2px solid green;
   }
 
   .interaction-designer-header {
@@ -325,7 +324,6 @@ export default {
     left: 0;
     display:inline-block;
     z-index: 4*10;
-    border:2px solid red;
   }
 
   .tree-sidebar-container {
