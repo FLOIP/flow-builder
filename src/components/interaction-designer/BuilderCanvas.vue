@@ -2,7 +2,7 @@
   <div
     v-if="activeFlow"
     class="builder-canvas no-select"
-    :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }">
+    :style="{ minWidth: `${canvasWidth + visibleBlockEditorWidth}px` , minHeight: `${canvasHeight}px` }">
     <block
       v-for="block in activeFlow.blocks"
       :id="`block/${block.uuid}`"
@@ -24,6 +24,7 @@ import {IValidationStatus} from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
+const builderVuexNamespace = namespace('builder')
 
 //px
 const MARGIN_HEIGHT_CORRECTION = -10
@@ -196,8 +197,15 @@ export default class BuilderCanvas extends Vue {
     return scrollWidth - this.widthAdjustment
   }
 
+  get visibleBlockEditorWidth(): number {
+    const blockEditorWidth = 365
+    return this.isBlockEditorOpen ? blockEditorWidth : 0
+  }
+
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
+
+  @builderVuexNamespace.State isBlockEditorOpen!: boolean
 
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_block!: ({block}: { block: IBlock }) => Promise<IValidationStatus>
