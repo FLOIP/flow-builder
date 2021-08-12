@@ -11,7 +11,7 @@
               <p>{{ 'flow-builder.create-flow-from-json' | trans }}</p>
               <div
                 v-if="trans('flow-builder.import-note')"
-                class="alert alert-danger"
+                class="alert alert-info"
                 role="alert">
                 {{ 'flow-builder.import-note'| trans }}
               </div>
@@ -31,7 +31,7 @@
                     <a
                       class="btn btn-outline-secondary"
                       @click="chooseFile">
-                      {{ 'flow-builder.import-file' | trans }}
+                      {{ (!flowJsonText ? 'flow-builder.import-file' : 'flow-builder.replace-file') | trans }}
                     </a>
                     <input
                       id="flowUpload"
@@ -285,5 +285,4 @@ export default ImportFlow
   overflow: hidden;
   white-space: nowrap;
 }
-
 </style>
