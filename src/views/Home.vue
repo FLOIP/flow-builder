@@ -22,12 +22,20 @@
             <h2>Existing Flows</h2>
             <div v-for="flow in flows">
               <router-link
-                :to="route('flows.editTree', {flowId: flow.uuid, component: 'designer', mode: 'edit'})"
+                :to="route('flows.editFlow', {flowId: flow.uuid, component: 'designer', mode: 'edit'})"
                 title="trans('flow-builder.edit-flow')"
                 class="mt-3 btn btn-outline-secondary mr-2 active">
                 {{ flow.label || flow.uuid }}
               </router-link>
             </div>
+          </div>
+          <div class="mt-4">
+            <a
+              href="https://github.com/FLOIP/flow-builder"
+              :title="trans('flow-builder.flow-builder-documentation')"
+              class="mt-3 mr-2 active">
+              {{ 'flow-builder.flow-builder-documentation' | trans }}
+            </a>
           </div>
         </main>
       </div>

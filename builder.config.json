@@ -4,8 +4,7 @@
       "flows": {
         "persistFlow": {
           "name": "persistFlow",
-          "path": "\/backend\/flows\/{flowId}",
-          "params": ["flowId"],
+          "path": "\/backend\/flows",
           "methods": ["POST", "PUT"]
         },
         "fetchFlowServer": {
@@ -40,8 +39,8 @@
           "path": "\/",
           "methods": ["GET"]
         },
-        "editTree": {
-          "name": "editTree",
+        "editFlow": {
+          "name": "editFlow",
           "path": "\/flows\/{flowId}\/{component?}\/{mode?}",
           "params": ["flowId", "component", "mode"],
           "methods": ["GET", "HEAD"]
@@ -72,12 +71,12 @@
       {
         "id": "22",
         "label": "English",
-        "iso_639_3": "EN"
+        "iso_639_3": "eng"
       },
       {
         "id": "23",
-        "label": "Spanish",
-        "iso_639_3": "ES"
+        "label": "French",
+        "iso_639_3": "fra"
       }
     ],
     "blockClasses": {
@@ -86,105 +85,122 @@
         "type": "ConsoleIO.Print",
         "is_interactive": false,
         "is_branching": false,
-        "category":  0
+        "category":  0,
+        "menu_category": 5
       },
       "ConsoleIO.Read": {
         "name": "ConsoleIO.Read",
         "type": "ConsoleIO.Read",
         "is_interactive": true,
         "is_branching": false,
-        "category":  1
+        "category":  1,
+        "menu_category": 5
       },
       "Core.Case": {
         "name": "Core.Case",
         "type": "Core.Case",
         "is_interactive": false,
         "is_branching": true,
-        "category":  2
+        "category":  2,
+        "menu_category": 3
       },
       "Core.Log": {
         "name": "Core.Log",
         "type": "Core.Log",
         "is_interactive": false,
         "is_branching": false,
-        "category":  0
+        "category":  0,
+        "menu_category": 5
       },
       "Core.Output": {
         "name": "Core.Output",
         "type": "Core.Output",
         "is_interactive": false,
         "is_branching": false,
-        "category":  0
+        "category":  0,
+        "menu_category": 3
       },
       "Core.RunFlow": {
         "name": "Core.RunFlow",
         "type": "Core.RunFlow",
         "is_interactive": false,
         "is_branching": false,
-        "category":  0
+        "category":  0,
+        "menu_category": 3
       },
       "Core.SetContactProperty": {
         "name": "Core.SetContactProperty",
         "type": "Core.SetContactProperty",
         "is_interactive": false,
         "is_branching": false,
-        "category":  0
+        "category":  0,
+        "menu_category": 2
       },
       "Core.SetGroupMembership": {
         "name": "Core.SetGroupMembership",
         "type": "Core.SetGroupMembership",
         "is_interactive": false,
         "is_branching": false,
-        "category":  0
+        "category":  0,
+        "menu_category": 2
       },
       "MobilePrimitives.Message": {
         "name": "MobilePrimitives.Message",
         "type": "MobilePrimitives.Message",
         "is_interactive": true,
         "is_branching": false,
-        "category":  1
-      },
-      "MobilePrimitives.NumericResponse": {
-        "name": "MobilePrimitives.NumericResponse",
-        "type": "MobilePrimitives.NumericResponse",
-        "is_interactive": true,
-        "is_branching": false,
-        "category":  1
-      },
-      "MobilePrimitives.OpenResponse": {
-        "name": "MobilePrimitives.OpenResponse",
-        "type": "MobilePrimitives.OpenResponse",
-        "is_interactive": true,
-        "is_branching": false,
-        "category":  1
+        "category":  1,
+        "menu_category": 1
       },
       "MobilePrimitives.SelectOneResponse": {
         "name": "MobilePrimitives.SelectOneResponse",
         "type": "MobilePrimitives.SelectOneResponse",
         "is_interactive": true,
         "is_branching": true,
-        "category":  2
+        "category":  2,
+        "menu_category": 1,
+        "divider_before": true
       },
       "MobilePrimitives.SelectManyResponse": {
         "name": "MobilePrimitives.SelectManyResponse",
         "type": "MobilePrimitives.SelectManyResponse",
         "is_interactive": true,
         "is_branching": true,
-        "category":  2
+        "category":  2,
+        "menu_category": 1
+      },
+      "MobilePrimitives.NumericResponse": {
+        "name": "MobilePrimitives.NumericResponse",
+        "type": "MobilePrimitives.NumericResponse",
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1,
+        "menu_category": 1
+      },
+      "MobilePrimitives.OpenResponse": {
+        "name": "MobilePrimitives.OpenResponse",
+        "type": "MobilePrimitives.OpenResponse",
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1,
+        "menu_category": 1
       },
       "SmartDevices.LocationResponse": {
         "name": "SmartDevices.LocationResponse",
         "type": "SmartDevices.LocationResponse",
         "is_interactive": true,
         "is_branching": false,
-        "category":  1
+        "category":  1,
+        "menu_category": 1,
+        "divider_before": true
       },
       "SmartDevices.PhotoResponse": {
         "name": "SmartDevices.PhotoResponse",
         "type": "SmartDevices.PhotoResponse",
         "is_interactive": true,
         "is_branching": false,
-        "category":  1
+        "category":  1,
+        "menu_category": 1
       }
     },
     "blockTags": [],

@@ -15,7 +15,7 @@
         {
           "id": "22",
           "label": "English",
-          "iso_639_3": "EN"
+          "iso_639_3": "eng"
         }
       ],
       "vendor_metadata": {
@@ -36,8 +36,7 @@
               "no": "29841127-3247-461e-829a-94d800000000"
             },
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
-            "question_prompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc",
-            "choices_prompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc"
+            "question_prompt": "95bd9e4a-93cd-46f2-9b43-8edb922d18fc"
           },
           "vendor_metadata": {
             "io_viamo": {
@@ -294,8 +293,7 @@
               "no": "29841127-3247-461e-829c-ab6800000000"
             },
             "prompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
-            "question_prompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75",
-            "choices_prompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75"
+            "question_prompt": "95bd9e4a-93cd-46f2-9b43-8edb93117c75"
           },
           "vendor_metadata": {
             "io_viamo": {

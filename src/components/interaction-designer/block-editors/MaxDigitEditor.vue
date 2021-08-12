@@ -1,15 +1,15 @@
 <template>
   <validation-message
+    v-if="hasIvr"
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/ivr/max_digits`">
-    <div
-      v-if="hasIvr"
-      class="block-max-digits">
+    <div class="block-max-digits">
       <numeric-editor
         v-model.number="maxDigits"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.maximum-digits' | trans"
         :placeholder="'flow-builder.enter-value' | trans"
+        :sub-title="'flow-builder.max-digits-help-text' | trans"
         :valid-state="isValid" />
     </div>
   </validation-message>

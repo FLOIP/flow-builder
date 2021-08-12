@@ -1,6 +1,7 @@
 <template>
   <div class="number-editor">
-    <label>{{ label }}</label>
+    <label class="text-primary mb-0">{{ label }}</label>
+    <div class="small mb-2">{{subTitle}}</div>
     <div>
       <input
         type="number"
@@ -36,12 +37,17 @@ export default {
     },
     value: {
       type: [String, Number],
-      required: true,
+      required: false,
     },
     regexNumericFiltering: {
       type: String,
       required: false,
       default: '[0-9-]',
+    },
+    subTitle: {
+      type: [String],
+      required: false,
+      default: '',
     },
   },
   computed: {

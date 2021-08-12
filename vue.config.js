@@ -7,7 +7,7 @@ module.exports = {
   lintOnSave: false,
   runtimeCompiler: true,
   css: {
-    extract: false,
+    extract: true,
   },
   configureWebpack: {
     resolve: {
@@ -79,13 +79,13 @@ module.exports = {
         }
       })
       //In the success case, just echo the flow back
-      app.post('/backend/flows/:id', bodyParser.json(), (req, res) => {
+      app.post('/backend/flows', bodyParser.json(), (req, res) => {
         const flow = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(flow))
       })
       //In the success case, just echo the flow back
-      app.put('/backend/flows/:id', bodyParser.json(), (req, res) => {
+      app.put('/backend/flows', bodyParser.json(), (req, res) => {
         const flow = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(flow))

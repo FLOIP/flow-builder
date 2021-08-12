@@ -18,9 +18,9 @@
               :sidebar="false" />
             <div class="float-right">
               <a
-                :href="route('flows.editTree', {flowId: activeFlow.uuid, component: 'designer', mode: 'edit'})"
+                :href="route('flows.editFlow', {flowId: activeFlow.uuid, component: 'designer', mode: 'edit'})"
                 class="btn btn-primary"
-                @click.prevent="handlePersistFlow(route('flows.editTree', {flowId: activeFlow.uuid, component: 'designer', mode: 'edit'}))">
+                @click.prevent="handlePersistFlow(route('flows.editFlow', {flowId: activeFlow.uuid, component: 'designer', mode: 'edit'}))">
                 {{ 'flow-builder.save-and-continue' | trans }}
               </a>
             </div>
@@ -77,7 +77,7 @@ class NewFlow extends Vue {
     const flowContainer = await this.flow_persist({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore TODO: Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
-      persistRoute: this.route('flows.persistFlow', {flowId: this.activeFlow.uuid}),
+      persistRoute: this.route('flows.persistFlow', {}),
       flowContainer: this.activeFlowContainer,
     })
     if (flowContainer) {

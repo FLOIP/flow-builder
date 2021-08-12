@@ -1,13 +1,19 @@
 <template>
   <div class="smart-devices-location-response-block">
-    <h3 class="no-room-above">
-      {{ 'flow-builder.edit-block-type' | trans({block_type: trans(`flow-builder.${block.type}`)}) }}
+    <h3 class="block-editor-header">
+      {{ `flow-builder.${block.type}` | trans }}
     </h3>
 
     <fieldset :disabled="!isEditable">
+      <block-label-editor
+        :block="block"
+        @gearClicked="showSemanticLabel = !showSemanticLabel" />
+      <block-semantic-label-editor
+        v-if="showSemanticLabel"
+        :block="block" />
       <block-name-editor :block="block" />
-      <block-label-editor :block="block" />
-      <block-semantic-label-editor :block="block" />
+
+      <slot name="extras" />
 
       <block-threshold-editor
         :block="block"
@@ -16,7 +22,24 @@
         :block="block"
         @commitAccuracyTimeoutSecondsChange="updateTimeout" />
 
-      <slot name="extras" />
+      <hr>
+      <block-output-branching-config
+        :block="block"
+        :has-exit-per-choice="false"
+        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
+
+      <resource-editor
+        v-if="promptResource"
+        :resource="promptResource"
+        :block="block"
+        :flow="flow" />
+
+      <categorization :block="block" />
+
+      <generic-contact-property-editor :block="block" />
+
+      <hr>
+
       <first-block-editor-button
         :flow="flow"
         :block-id="block.uuid" />
@@ -33,8 +56,10 @@ import {Component, Prop} from 'vue-property-decorator'
 import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import LocationStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 import Lang from '@/lib/filters/lang'
+import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
+import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
@@ -43,6 +68,7 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import BlockThresholdEditor from '../block-editors/ThresholdEditor.vue'
 import BlockTimeoutEditor from '../block-editors/TimeoutEditor.vue'
+import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -50,6 +76,7 @@ const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
+    GenericContactPropertyEditor,
     ResourceEditor,
     BlockNameEditor,
     BlockLabelEditor,
@@ -58,6 +85,8 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     BlockThresholdEditor,
     BlockTimeoutEditor,
+    Categorization,
+    BlockOutputBranchingConfig,
   },
 })
 class SmartDevices_LocationResponseBlock extends mixins(Lang) {
@@ -65,6 +94,8 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
 
   // @Prop()readonly block!: ILocationResponseBlock
   @Prop() readonly flow!: IFlow
+
+  showSemanticLabel = false
 
   updateThreshold(value: number) {
     this.setAccuracyThreshold({blockId: this.block.uuid, value})
@@ -74,11 +105,15 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
     this.setAccuracyTimeout({blockId: this.block.uuid, value})
   }
 
+  get promptResource(): IResource {
+    return this.resourcesByUuid[this.block.config.prompt]
+  }
+
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
 
   @blockVuexNamespace.Action setAccuracyThreshold!: ({blockId, value}: { blockId: string, value: number }) => Promise<string>
-
   @blockVuexNamespace.Action setAccuracyTimeout!: ({blockId, value}: { blockId: string, value: number }) => Promise<string>
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean
 }

@@ -14,19 +14,12 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlock> }) {
+    const blankMessageResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
+
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
-          tag: 'Default',
-          label: 'Default',
-        }) as IBlockExit,
-      }, {root: true}),
-      await dispatch('flow/block_createBlockExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-          tag: 'Error',
-          label: 'Error',
         }) as IBlockExit,
       }, {root: true}),
     ]
@@ -37,7 +30,19 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       label: '',
       semantic_label: '',
       exits,
+      config: {
+        prompt: blankMessageResource.uuid,
+      },
+      tags: [],
+      vendor_metadata: {},
     })
+  },
+
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: 'NOT(block.value = false)',
+    }, {root: true})
   },
 }
 

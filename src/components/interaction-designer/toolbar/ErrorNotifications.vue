@@ -1,14 +1,45 @@
 <template>
   <main class="error-notifications-wrapper">
-    <!--    TODO: Need to uncomment the below piece once validation messages are added for a flow - https://viamoinc.atlassian.net/browse/VMO-3905-->
-    <!--    <section class="alert alert-danger d-flex mb-0 py-sm-1 px-2" role="alert" v-if="flowValidationErrors.length > 0">-->
-    <!--      <span class="align-self-center ml-2">-->
-    <!--        {{ 'flow-builder.flow-error-message' | trans }}-->
-    <!--      </span>-->
-    <!--      <button type="button" class="btn btn-link" @click="fixFlowError()">-->
-    <!--        {{ 'flow-builder.fix-issue' | trans }}-->
-    <!--      </button>-->
-    <!--    </section>-->
+    <section
+      v-if="flowValidationErrors.length > 0"
+      class="alert alert-danger d-flex mb-0 py-sm-1 px-2"
+      role="alert">
+      <span class="align-self-center ml-2">
+        {{ 'flow-builder.flow-error-message' | trans }}
+      </span>
+      <div class="dropdown">
+        <button
+          id="flowErrorsDropdown"
+          class="btn btn-link dropdown-toggle"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="true">
+          {{ 'flow-builder.show-issues' | trans }}
+          <span class="caret" />
+        </button>
+        <ul
+          class="notification dropdown-menu"
+          aria-labelledby="flowErrorsDropdown">
+          <li v-for="error in flowValidationErrors">
+            <div class="d-flex justify-content-between px-2 py-0">
+              <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
+              <div v-if="error.dataPath === '/first_block_id'">
+                {{ 'flow-builder.add-at-least-one-block' | trans }}
+              </div>
+              <button
+                v-else
+                type="button"
+                class="btn btn-link"
+                @click="fixFlowError()">
+                {{ 'flow-builder.fix-issue' | trans }}
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
     <section
       v-if="numberOfBlocksWithErrors > 0"
       class="alert alert-danger d-flex py-sm-1 px-2"
@@ -30,7 +61,9 @@
         <ul
           class="notification dropdown-menu"
           aria-labelledby="blockErrorsDropdown">
-          <li v-for="(status, key) in blockValidationStatuses">
+          <li
+            v-for="(status, key) in blockValidationStatuses"
+            :key="key">
             <div class="card">
               <div class="card-title m-0 px-2 pt-1">
                 {{ trans(`flow-builder.${status.type}`) }}
@@ -73,7 +106,6 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
     this.$emit('updated')
   }
 
-  // TODO: Need to test the below function - https://viamoinc.atlassian.net/browse/VMO-3905
   get flowValidationErrors(): ErrorObject[] {
     const flowKey = `flow/${this.activeFlow?.uuid}`
     return this.validationStatuses[flowKey]?.ajvErrors || []
@@ -97,6 +129,10 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
   fixFlowError(): void {
     this.$router.push({
       name: 'flow-details',
+    }).catch((err) => {
+      if (err.name !== 'NavigationDuplicated') {
+        console.error(err)
+      }
     })
   }
 
@@ -108,6 +144,10 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
         blockId,
         field: dataPath,
       },
+    }).catch((err) => {
+      if (err.name !== 'NavigationDuplicated') {
+        console.error(err)
+      }
     })
   }
 
@@ -117,10 +157,6 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
 </script>
 
 <style scoped lang="scss">
-.error-notifications-wrapper {
-  z-index: 2 * 10;
-}
-
 .notification {
   width: 500px;
   padding: 0;

@@ -29,7 +29,7 @@ export const routes = [
       {
         path: 'details',
         name: 'flow-details',
-        meta: {isSidebarShown: true},
+        meta: {isFlowEditorShown: true},
       },
       {
         path: 'block/:blockId',
@@ -39,12 +39,12 @@ export const routes = [
           {
             path: 'details',
             name: 'block-selected-details',
-            meta: {isSidebarShown: true},
+            meta: {isBlockEditorShown: true},
           },
           {
             path: ':field',
             name: 'block-scroll-to-anchor',
-            meta: {isSidebarShown: true},
+            meta: {isBlockEditorShown: true},
           },
         ],
       },

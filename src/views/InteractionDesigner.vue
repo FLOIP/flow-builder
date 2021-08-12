@@ -2,72 +2,37 @@
   <div
     v-if="activeFlow"
     class="interaction-designer-contents">
-    <tree-builder-toolbar @height-updated="handleToolBarHeightUpdate" />
+    <header class="interaction-designer-header">
+      <tree-builder-toolbar />
+    </header>
 
-    <div
-      :key="isSimulatorActive || (activeBlock && activeBlock.uuid)"
+    <aside
+      v-if="isSimulatorActive"
       class="tree-sidebar-container"
       :class="{ 'slide-out': !$route.meta.isSidebarShown,}">
       <div
         class="sidebar-cue"
         :class="{'sidebar-close': $route.meta.isSidebarShown}"
         @click="showOrHideSidebar">
-        <i
-          class="glyphicon"
-          :class="{'glyphicon-resize-full': !$route.meta.isSidebarShown,
-                   'glyphicon-resize-small': $route.meta.isSidebarShown}" />
+        <font-awesome-icon
+          v-if="$route.meta.isSidebarShown"
+          :icon="['fac', 'minimize']"
+          class="fa-btn" />
+        <font-awesome-icon
+          v-else
+          :icon="['fac', 'expand']"
+          class="fa-btn" />
       </div>
 
       <div
-        v-if="isSimulatorActive"
         class="tree-sidebar">
         <clipboard-root />
       </div>
+    </aside>
 
-      <div
-        v-else-if="activeBlock"
-        class="tree-sidebar"
-        :class="[`category-${blockClasses[activeBlock.type].category}`]">
-        <div
-          class="tree-sidebar-edit-block"
-          :data-block-type="activeBlock && activeBlock.type"
-          :data-for-block-id="activeBlock && activeBlock.uuid">
-          <component
-            :is="`Flow${activeBlock.type.replace('.', '')}`"
-            v-if="activeBlock"
-            :block="activeBlock"
-            :flow="activeFlow" />
-        </div>
-
-        <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
-        <!--                     :jsonValidationResults="jsonValidationResults"-->
-        <!--                     :isTreeValid="isTreeValid"/>-->
-
-        <!--        <tree-viewer v-if="sidebarType === 'TreeViewer'"/>-->
-
-        <!--        <block-viewer-->
-        <!--          :key="jsKey"-->
-        <!--          v-if="sidebarType === 'BlockViewer'"-->
-        <!--          :data-for-block-id="jsKey" />-->
-      </div>
-
-      <div
-        v-else
-        class="tree-sidebar">
-        <div class="tree-sidebar-edit-block">
-          <flow-editor :flow="activeFlow" />
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="tree-contents"
-      :style="{
-        'min-height': `${designerWorkspaceHeight}px`,
-        'padding-top': `${toolbarHeight + 5}px`
-      }">
+    <main class="interaction-designer-main">
       <builder-canvas @click.native="handleCanvasSelected" />
-    </div>
+    </main>
   </div>
 </template>
 
@@ -90,10 +55,9 @@ import {store} from '@/store'
 // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
 // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
-import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
-import {scrollBehavior, scrollBlockIntoView} from '@/router'
+import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
 
 // import '../TreeDiffLogger'
 
@@ -107,7 +71,6 @@ export default {
     // TreeViewer,
     TreeBuilderToolbar,
     BuilderCanvas,
-    FlowEditor,
     ClipboardRoot,
     // TreeUpdateConflictModal,
   },
@@ -132,7 +95,7 @@ export default {
 
   data() {
     return {
-      toolbarHeight: 60,
+      toolbarHeight: 102,
       // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
       pureVuejsBlocks: [
         'CallBackWithCallCenterBlock',
@@ -194,16 +157,6 @@ export default {
     isPureVueBlock() {
       return _.includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
     },
-
-    sidebarType() {
-      const
-        blockType = get(this.selectedBlock, 'type')
-      const blockViewerType = blockType && (this.isPureVueBlock ? blockType : 'BlockViewer')
-
-      return this.isEditable
-        ? blockType || 'TreeEditor'
-        : blockViewerType || 'TreeViewer'
-    },
   },
   watch: {
     // `this.mode` comes from captured param in js-routes
@@ -245,9 +198,9 @@ export default {
       this.flow_setActiveFlowId({flowId: null})
       this.$router.replace(
         {
- path: this.route('flows.fetchFlow', {flowId: this.id}),
-          query: {nextUrl: this.$route.path},
-},
+          path: this.route('flows.fetchFlow', {flowId: this.id}),
+          query: {nextUrl: this.$route.fullPath},
+        },
       )
     }
 
@@ -264,16 +217,23 @@ export default {
       if (field) {
         scrollBehavior(this.$route)
       }
+      if (this.$route.meta?.isBlockEditorShown) {
+        this.setIsBlockEditorOpen(true)
+      }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
   },
   beforeRouteUpdate(to, from, next) {
     this.activateBlock({blockId: to.params.blockId || null})
+    if (to.meta?.isBlockEditorShown) {
+      scrollBlockIntoView(to.params.blockId)
+      this.setIsBlockEditorOpen(true)
+    }
     next()
   },
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
-    ...mapMutations('builder', ['activateBlock']),
+    ...mapMutations('builder', ['activateBlock', 'setIsBlockEditorOpen']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
 
@@ -299,8 +259,8 @@ export default {
         console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
         return
       }
-
-      const routeName = this.$route.meta.isSidebarShown ? 'flow-details' : 'flow-canvas'
+      this.setIsBlockEditorOpen(false)
+      const routeName = this.$route.meta.isFlowEditorShown ? 'flow-details' : 'flow-canvas'
       this.$router.history.replace({
         name: routeName,
       })
@@ -335,66 +295,57 @@ export default {
     },
 
     showOrHideSidebar() {
-      let routeName = ''
-      if (this.$route.name.includes('block')) {
-        routeName = this.$route.meta.isSidebarShown ? 'block-selected' : 'block-selected-details'
-      } else {
-        routeName = this.$route.meta.isSidebarShown ? 'flow-canvas' : 'flow-details'
-      }
-      this.$router.history.replace({
-        name: routeName,
-      })
+      //TODO with simulator work
+      //this.$router.history.replace({
+        //name: this.$route.meta.isSidebarShown ? 'flow-canvas' : '???',
+      //})
     },
-
-    handleToolBarHeightUpdate(height) {
-      this.toolbarHeight = height
-    },
-
   },
 }
 </script>
 
 <!--<style src="../css/voto3.css"></style>-->
 <!--<style src="../css/InteractionDesigner.css"></style>-->
-
+<style lang="scss"> @import '../css/customized/vue-multiselect.css';</style>
 <style lang="scss">
-  // Colors + dimensions
-  $dot-size: 1px;
-  $dot-space: 22px;
-  $dot-color: #333;
-  $bg-color: #fcfcfc;
-
-  $toolbar-height: 56px;
   $sidebar-width: 365px;
 
   .interaction-designer-contents {
-    background:
-      linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
-      linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center, $dot-color;
-    background-size: $dot-space $dot-space;
+    background: #F5F5F5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+  }
+
+  .interaction-designer-header {
+    position: sticky;
+    top: 0;
+    z-index: 4*10;
   }
 
   .tree-sidebar-container {
     position: fixed;
     right: 0;
-    z-index: 3*10;
+    top: 62px;
+    z-index: 5*10;
 
     height: 100vh;
     width: $sidebar-width;
     overflow-y: scroll;
 
     padding: 1em;
-    margin-top: 3em;
     transition: right 200ms ease-in-out;
 
     .tree-sidebar {
-      background-color: #eee;
-      border: 1px solid lightgray;
-      border-radius: 0;
+      background-color: white;
+      border: 1px solid #D6D0D0;
+      border-radius: 0.3em;
       box-shadow: 0 3px 6px #CACACA;
 
       padding: 1em;
-      margin-top: 1em;
+      margin-top: 2em;
 
       transition:
         200ms background-color ease-in-out,
@@ -407,109 +358,21 @@ export default {
     }
   }
 
-  .tree-builder-toolbar-main-menu {
-    position: fixed;
-    z-index: 4*10;
-
-    width: 100vw;
-
-    border-bottom: 1px solid darkgrey;
-    background: #eee;
-
-    box-shadow: 0 3px 6px #CACACA;
-  }
-
-  // color categorizations
-  $category-0-faint: #fbfdfb;
-  $category-0-light: #97BD8A;
-  $category-0-dark: #38542f;
-  $category-1-faint: #fdfdfe;
-  $category-1-light: #6897BB;
-  $category-1-dark: #30516a;
-  $category-2-faint: #fdfbf8;
-  $category-2-light: #C69557;
-  $category-2-dark: #6e4e25;
-
-  .tree-sidebar-container {
-    .tree-sidebar {
-      &.category-0 {
-        border-color: $category-0-light;
-        background-color: $category-0-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-0-dark;
-        }
-      }
-
-      &.category-1 {
-        border-color: $category-1-light;
-        background-color: $category-1-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-1-dark;
-        }
-      }
-
-      &.category-2 {
-        border-color: $category-2-light;
-        background-color: $category-2-faint;
-        border-radius: 0.3em;
-
-        h3 {
-          color: $category-2-dark;
-        }
-      }
-    }
-  }
-
-  .block {
-    @mixin block-category($i, $faint, $light, $dark) {
-      &.category-#{$i} {
-        border-color: $light;
-
-        .block-type {
-          color: $light;
-        }
-
-        .block-exits .block-exit {
-          .block-exit-tag {
-            background-color: $light;
-          }
-
-          &.activated {
-            border-color: $light;
-          }
-        }
-
-        .block-target:hover {
-          border: 1px dashed $light;
-        }
-
-        &.active {
-          background-color: $faint;
-        }
-      }
-    }
-
-    @include block-category(0, $category-0-faint, $category-0-light, $category-0-dark);
-    @include block-category(1, $category-1-faint, $category-1-light, $category-1-dark);
-    @include block-category(2, $category-2-faint, $category-2-light, $category-2-dark);
-  }
-
   .sidebar-cue {
     cursor: pointer;
     background-color: #eee;
     padding: 5px;
     position: fixed;
-    margin-top: 1em;
+    margin-top: 2em;
     right: 0;
-    z-index: 5*10;
   }
 
   .sidebar-close {
     right: 350px;
+  }
+
+  .interaction-designer-main {
+    flex: 1;
   }
 
   // @note - these styles have been extracted so the output can be reused between storybook and voto5

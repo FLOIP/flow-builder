@@ -1,15 +1,6 @@
 <template>
   <div class="audio-library-search-field dropdown">
     <div class="input-group">
-      <span class="input-group-prepend">
-        <button
-          :class="{active: isEntireLibraryModeEnabled}"
-          class="btn btn-outline-secondary dropdown-toggle"
-          @click.prevent="toggleAudioLibrary">
-          <i class="glyphicon glyphicon-search" />
-        </button>
-      </span>
-
       <input
         v-model="rawQuery"
         type="text"
@@ -19,6 +10,15 @@
         @focus="activate"
         @blur="deactivate"
         @input="resetPagination">
+
+      <span class="input-group-append">
+        <button
+          :class="{active: isEntireLibraryModeEnabled}"
+          class="btn btn-primary dropdown-toggle"
+          @click.prevent="toggleAudioLibrary">
+          <i class="glyphicon glyphicon-search" />
+        </button>
+      </span>
     </div>
 
     <div

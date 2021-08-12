@@ -1,6 +1,6 @@
 {
-  "specification_version": "flow spec version",
-  "uuid": "container uuid",
+  "specification_version": "1.0.0-rc2",
+  "uuid": "3666a05d-3792-482b-8f7f-9e2472e4f027",
   "name": "container name",
   "description": "container description",
   "vendor_metadata": {},
@@ -12,20 +12,20 @@
       "last_modified": "2019-10-10 23:46:30.000000+00:00",
       "interaction_timeout": 172800,
       "supported_modes": [
-        "sms",
-        "ivr",
-        "ussd"
+        "SMS",
+        "USSD",
+        "IVR"
       ],
       "languages": [
         {
           "id": "22",
           "label": "English",
-          "iso_639_3": "EN"
+          "iso_639_3": "eng"
         },
         {
-          "id": "23",
+          "id": "24",
           "label": "Esperanto",
-          "iso_639_3": "EN"
+          "iso_639_3": "epo"
         }
       ],
       "vendor_metadata": {
@@ -35,7 +35,35 @@
         }
       },
       "blocks": [
-      ]
+        {
+          "uuid": "eb34ac1f-f27c-43f4-87c9-7f61309bc725",
+          "ui_metadata": {"canvas_coordinates": {"x": 164, "y": 197}},
+          "vendor_metadata": {
+            "io_viamo": {
+              "uiData": {
+                "xPosition": 164,
+                "yPosition": 197
+              }
+            }
+          },
+          "type": "Core.Log",
+          "name": "abc",
+          "label": "",
+          "semantic_label": "",
+          "exits": [
+            {
+              "uuid": "6324a107-3194-4c5a-8cae-36882074ca1a",
+              "name": "Default",
+              "default": true,
+              "config": {}
+            }
+          ],
+          "config": {
+            "message": "29841127-3247-461e-829a-89c000000000"
+          }
+        }
+      ],
+      "first_block_id": "eb34ac1f-f27c-43f4-87c9-7f61309bc725"
     }
   ],
   "resources": [
@@ -43,48 +71,48 @@
       "uuid": "29841127-3247-461e-829a-89c000000000",
       "values": [
         {
-          "language_id": "23",
+          "language_id": "24",
           "content_type": "text",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Yes"
         }
       ]
     },
     {
-      "uuid": "29841127-3247-461e-829a-94d800000000",
+      "uuid": "29841127-3246-461e-829a-94d800000000",
       "values": [
         {
           "language_id": "22",
           "content_type": "text",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "No"
         }
       ]
     },
     {
-      "uuid": "29841127-3247-4610-8037-cdc5199dc271",
+      "uuid": "29841127-3245-4610-8037-cdc5199dc271",
       "values": [
         {
           "language_id": "22",
           "content_type": "text",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Yes"
         }

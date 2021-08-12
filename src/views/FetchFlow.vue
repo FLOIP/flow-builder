@@ -55,15 +55,19 @@ class FetchFlow extends mixins(Routes, Lang) {
   @Getter isConfigured!: boolean
 
   async mounted() {
-    const flowContainer = await this.flow_fetch({fetchRoute: this.route('flows.fetchFlowServer', {flowId: this.uuid})})
+    const nextUrl: RawLocation = this.$route.query.nextUrl as RawLocation
+    const url = new URL(nextUrl as string, window.location.origin)
+    const urlParams = url.searchParams.toString()
+    const baseFetchRoute = this.route('flows.fetchFlowServer', {flowId: this.uuid})
+    const fetchRoute = `${baseFetchRoute}?${urlParams}`
+    const flowContainer = await this.flow_fetch({fetchRoute})
     if (flowContainer) {
       this.flow_setActiveFlowId({flowId: this.uuid})
-      const nextUrl: RawLocation = this.$route.query.nextUrl as RawLocation
       if (nextUrl) {
         await this.$router.replace(nextUrl)
       } else {
         this.message = 'flow-builder.flow-found'
-        this.flowLink = this.route('flows.editTree', {flowId: this.activeFlow.uuid, component: 'designer', mode: 'edit'})
+        this.flowLink = this.route('flows.editFlow', {flowId: this.activeFlow.uuid, component: 'designer', mode: 'edit'})
       }
     } else {
       this.message = 'flow-builder.flow-not-found'
