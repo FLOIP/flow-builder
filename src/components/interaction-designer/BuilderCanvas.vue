@@ -2,7 +2,7 @@
   <div
     v-if="activeFlow"
     class="builder-canvas no-select"
-    :style="{ minWidth: `${canvasWidth + visibleBlockEditorWidth}px` , minHeight: `${canvasHeight}px` }">
+    :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }">
     <block
       v-for="block in activeFlow.blocks"
       :id="`block/${block.uuid}`"
@@ -26,13 +26,13 @@ const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 const builderVuexNamespace = namespace('builder')
 
-//px
+//in `px`
 const MARGIN_HEIGHT_CORRECTION = -10
 
-//px
-const MARGIN_WIDTH_CORRECTION = 50
+//ideal value: the xDelta when we compute xPosition from existing active block, in `px`
+const MARGIN_WIDTH_CORRECTION = 120
 
-//ms
+//in `ms`
 const DEBOUNCE_SCROLL_TIMER = 300
 
 @Component({
@@ -188,7 +188,7 @@ export default class BuilderCanvas extends Vue {
     }
 
     const xPosition: number = this.blockAtTheFurthestRightPosition.ui_metadata.canvas_coordinates.x
-    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH_CORRECTION
+    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH_CORRECTION + this.visibleBlockEditorWidth
 
     if (scrollWidth < this.windowWidth) {
       return this.windowWidth - this.widthAdjustment

@@ -394,10 +394,13 @@ export function computeBlockUiData(block?: IBlock | null) {
     yPosition = viewPortCenter.y
   }
 
-  return {
+  const a = {
     x: xPosition + xDelta,
     y: yPosition + yDelta,
   }
+
+  console.log('check position rs', xPosition, yPosition, a)
+  return a
 }
 
 export function computeBlockVendorUiData(block?: IBlock | null) {
