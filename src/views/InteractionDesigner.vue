@@ -313,8 +313,7 @@ export default {
   .interaction-designer-contents {
     background: #F5F5F5;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    display:inline-block;
     margin: 0;
     padding: 0;
   }
@@ -322,6 +321,8 @@ export default {
   .interaction-designer-header {
     position: sticky;
     top: 0;
+    left: 0;
+    display:inline-block;
     z-index: 4*10;
   }
 

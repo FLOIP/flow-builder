@@ -113,6 +113,10 @@ class BlockToolbar extends mixins(Lang) {
     this.$router.replace({
       name: routerName,
       params: {blockId: this.block.uuid},
+    }).catch((err) => {
+      if (err.name !== 'NavigationDuplicated') {
+        console.error(err)
+      }
     })
   }
 
