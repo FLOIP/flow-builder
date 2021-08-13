@@ -10,20 +10,6 @@
       v-if="isSimulatorActive"
       class="tree-sidebar-container"
       :class="{ 'slide-out': !$route.meta.isSidebarShown,}">
-      <div
-        class="sidebar-cue"
-        :class="{'sidebar-close': $route.meta.isSidebarShown}"
-        @click="showOrHideSidebar">
-        <font-awesome-icon
-          v-if="$route.meta.isSidebarShown"
-          :icon="['fac', 'minimize']"
-          class="fa-btn" />
-        <font-awesome-icon
-          v-else
-          :icon="['fac', 'expand']"
-          class="fa-btn" />
-      </div>
-
       <div v-if="$route.name === 'flow-simulator' && hasSimulator" class="tree-sidebar">
         <clipboard-root />
       </div>

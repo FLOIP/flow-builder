@@ -40,7 +40,7 @@ export const mutations: MutationTree<IClipboardState> = {
 export const actions: ActionTree<IClipboardState, IRootState> = {
   setSimulatorActive({ commit }, value) {
     commit('setSimulatorActive', value)
-    const routeName = value ? 'flow-simulator' : 'flow-details'
+    const routeName = value ? 'flow-simulator' : 'flow-canvas'
     router.replace({
       name: routeName,
     })
