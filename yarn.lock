@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@avcs/autosuggest@^1.7.5":
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/@avcs/autosuggest/-/autosuggest-1.7.5.tgz#50b3a9d0d0244d9b122183af8416745c8b0ff92c"
+  integrity sha512-ldJywpfvP8/Ooov09jke1aCU9YsEnYQVE9dKMPY7eoq8jmTkHm6WgRe3AvZOT93Y5S8X5Izjjy9T36d9ww8fdw==
+
 "@babel/code-frame@7.10.4", "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.5.5":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.10.4.tgz#168da1a36e90da68ae8d49c0f1b48c7c6249213a"
@@ -1641,10 +1646,18 @@
   resolved "https://registry.yarnpkg.com/@exodus/schemasafe/-/schemasafe-1.0.0-rc.3.tgz#dda2fbf3dafa5ad8c63dadff7e01d3fdf4736025"
   integrity sha512-GoXw0U2Qaa33m3eUcxuHnHpNvHjNlLo0gtV091XBpaRINaB4X6FGCG5XKxSFNFiPpugUDqNruHzaqpTdDm4AOg==
 
-"@floip/expression-evaluator@^2.0":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.3.tgz#8e10bcc79aead874c42f5ec0e47d57a7b85f7605"
-  integrity sha512-OVHQn+6IgBCNH48nCNXtsYdRbCahml2h9QzM9eg9LRtFJ9rpaX8Lj+vTK9D2QCYtAzu1FxySKejq4VJenHP+4w==
+"@floip/expression-evaluator@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.0.tgz#925d289ba4763df452f6e555005aa3fac117f6ca"
+  integrity sha512-9t0Dw7/c8OrFkm8cT1m08r8CfHTsO5mm6373/cctz479EPmermt7KxQqRZtzesCMWh5yDVuxOC90kYHFaAlNZA==
+  dependencies:
+    "@floip/expression-parser" "^1.10.0"
+    moment "^2.24.0"
+
+"@floip/expression-evaluator@^2.1.3":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.4.tgz#ef4647f2d7140ac5841ab669945d7601588e43ab"
+  integrity sha512-WahhLzof0HcAldBbLswc9mMQZbnWxrqmZNOuUbQjwAbGNV8C9TihzescECtWsGcNvGAROVr5alIa434gSnqNGA==
   dependencies:
     "@floip/expression-parser" "^1.10.0"
     moment "^2.24.0"
@@ -1654,12 +1667,11 @@
   resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.10.0.tgz#386cb9fbfb2afc951daae40e03845a87bacf3509"
   integrity sha512-pLR8p2z6q87O9c1XkP4DYfuEX+cKMn14a4jYkZ/t4ky1k+MEvp69zj662xJTzCkbH3ABsrwaxx7fP1FWASlEZw==
 
-"@floip/flow-runner@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@floip/flow-runner/-/flow-runner-1.0.9.tgz#3f3640588c811b32355d1db6598d1369d93c0ac3"
-  integrity sha512-sJSkL6PbXcBKqgqPm29dzKtmm+kySrIhmYJtoSPeRZM+ZUsJflQZ4cjQS6kTni0KVb7mZRu5fZcv1GFfhoZmVw==
+"@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#feature/VMO-4281-flow-spec-rc2":
+  version "1.0.11"
+  resolved "https://github.com/FLOIP/flow-runner.git#88858a2baf5889ece8f9abbd575bdc92adfbe4a4"
   dependencies:
-    "@floip/expression-evaluator" "^2.0"
+    "@floip/expression-evaluator" "^2.1.3"
     ajv "^7.2.1"
     ajv-formats "^1.5.1"
     class-transformer "^0.3.1"
@@ -4231,9 +4243,9 @@ acorn@^7.4.0:
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
 acorn@^8.2.4:
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.4.0.tgz#af53266e698d7cffa416714b503066a82221be60"
-  integrity sha512-ULr0LDaEqQrMFGyQ3bhJkLsbtrQ8QibAseGZeaSUiT/6zb9IvIkomWHJIvgvwad+hinRAgsI51JcWk2yvwyL+w==
+  version "8.4.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.4.1.tgz#56c36251fc7cabc7096adc18f05afe814321a28c"
+  integrity sha512-asabaBSkEKosYKMITunzX177CXxQ4Q8BSSzMTKD+FefUhipQC70gfW5SiUDhYQ3vk8G+81HqQk7Fv9OXwwn9KA==
 
 address@1.1.2, address@^1.0.1, address@^1.1.2:
   version "1.1.2"
@@ -6160,9 +6172,9 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001093:
   integrity sha512-PFTw9UyVfbkcMEFs82q8XVlRayj7HKvnhu5BLcmjGpv+SNyiWasCcWXPGJuO0rK0dhLRDJmtZcJ+LHUfypbw1w==
 
 caniuse-lite@^1.0.30000844:
-  version "1.0.30001199"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001199.tgz#062afccaad21023e2e647d767bac4274b8b8fd7f"
-  integrity sha512-ifbK2eChUCFUwGhlEzIoVwzFt1+iriSjyKKFYNfv6hN34483wyWpLLavYQXhnR036LhkdUYaSDpHg1El++VgHQ==
+  version "1.0.30001202"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001202.tgz#4cb3bd5e8a808e8cd89e4e66c549989bc8137201"
+  integrity sha512-ZcijQNqrcF8JNLjzvEiXqX4JUYxoZa7Pvcsd9UD8Kz4TvhTonOSNRsK+qtvpVL4l6+T1Rh4LFtLfnNWg6BGWCQ==
 
 caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001125, caniuse-lite@^1.0.30001219:
   version "1.0.30001239"
@@ -7841,9 +7853,9 @@ ejs@^2.6.1:
   integrity sha512-7vmuyh5+kuUyJKePhQfRQBhXV5Ce+RnaeeQArKu1EAMpL3WbgMt5WG6uQZpEVvYSSsxMXRKOewtDk9RaTKXRlA==
 
 electron-to-chromium@^1.3.47:
-  version "1.3.687"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.687.tgz#c336184b7ab70427ffe2ee79eaeaedbc1ad8c374"
-  integrity sha512-IpzksdQNl3wdgkzf7dnA7/v10w0Utf1dF2L+B4+gKrloBrxCut+au+kky3PYvle3RMdSxZP+UiCZtLbcYRxSNQ==
+  version "1.3.689"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.689.tgz#0f4082467c109844b79a7b32a2649c9ab6a6c822"
+  integrity sha512-WCn+ZaU3V8WttlLNSOGOAlR2XpxibGre7slwGrYBB6oTjYPgP29LNDGG6wLvLTMseLdE+G1vno7PfY7JyDV48g==
 
 electron-to-chromium@^1.3.488:
   version "1.3.492"
@@ -7851,14 +7863,14 @@ electron-to-chromium@^1.3.488:
   integrity sha512-AD6v9Y2wN0HuoRH4LwCmlSHjkKq51D1U52bTuvM5uPzisbHVm3Hms15c42TBFLewxnSqxAynK/tbeaUi4Rnjqw==
 
 electron-to-chromium@^1.3.564, electron-to-chromium@^1.3.723:
-  version "1.3.756"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.756.tgz#942cee59cd64d19f576d8d5804eef09cb423740c"
-  integrity sha512-WsmJym1TMeHVndjPjczTFbnRR/c4sbzg8fBFtuhlb2Sru3i/S1VGpzDSrv/It8ctMU2bj8G7g7/O3FzYMGw6eA==
+  version "1.3.757"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.757.tgz#ff99436c99ca0fc5d120e11030a868401396e0e1"
+  integrity sha512-kP0ooyrvavDC+Y9UG6G/pUVxfRNM2VTJwtLQLvgsJeyf1V+7shMCb68Wj0/TETmfx8dWv9pToGkVT39udE87wQ==
 
 element-resize-detector@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/element-resize-detector/-/element-resize-detector-1.2.2.tgz#bf7c3ff915957e4e62e86241ed2f9c86b078892b"
-  integrity sha512-+LOXRkCJc4I5WhEJxIDjhmE3raF8jtOMBDqSCgZTMz2TX3oXAX5pE2+MDeopJlGdXzP7KzPbBJaUGfNaP9HG4A==
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/element-resize-detector/-/element-resize-detector-1.2.3.tgz#5078d9b99398fe4c589f8c8df94ff99e5d413ff3"
+  integrity sha512-+dhNzUgLpq9ol5tyhoG7YLoXL3ssjfFW+0gpszXPwRU6NjGr1fVHMEAF8fVzIiRJq57Nre0RFeIjJwI8Nh2NmQ==
   dependencies:
     batch-processor "1.0.0"
 

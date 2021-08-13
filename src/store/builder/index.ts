@@ -56,6 +56,7 @@ export interface IBuilderState {
     [OperationKind.BLOCK_RELOCATE]: null,
   },
   draggableForExitsByUuid: object,
+  isBlockEditorOpen: boolean,
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -74,6 +75,7 @@ export const stateFactory = (): IBuilderState => ({
     [OperationKind.BLOCK_RELOCATE]: null,
   },
   draggableForExitsByUuid: {},
+  isBlockEditorOpen: false,
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
@@ -119,8 +121,8 @@ export const mutations: MutationTree<IBuilderState> = {
     //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
     // }
 
-    block.vendor_metadata.io_viamo.uiData.xPosition = x
-    block.vendor_metadata.io_viamo.uiData.yPosition = y
+    block.ui_metadata.canvas_coordinates.x = x
+    block.ui_metadata.canvas_coordinates.y = y
   },
 
   setIsEditable(state, value) {
@@ -129,6 +131,10 @@ export const mutations: MutationTree<IBuilderState> = {
 
   initDraggableForExitsByUuid(state) {
     state.draggableForExitsByUuid = {}
+  },
+
+  setIsBlockEditorOpen(state, value) {
+    state.isBlockEditorOpen = value
   },
 }
 
@@ -361,8 +367,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
-    [get(source, 'vendor_metadata.io_viamo.uiData.xPosition'), get(source, 'vendor_metadata.io_viamo.uiData.yPosition')],
-    [get(target, 'vendor_metadata.io_viamo.uiData.xPosition'), get(target, 'vendor_metadata.io_viamo.uiData.yPosition')],
+    [source.ui_metadata.canvas_coordinates.x, source.ui_metadata.canvas_coordinates.y],
+    [target.ui_metadata.canvas_coordinates.x, target.ui_metadata.canvas_coordinates.y],
 
     // block titles
     source.label,
@@ -371,27 +377,31 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
     // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
 
     // other exit titles
-    ...map(source.exits, 'tag'),
-    ...map(target.exits, 'tag'),
+    ...map(source.exits, 'name'),
+    ...map(target.exits, 'name'),
   ]
 }
 
 export function computeBlockUiData(block?: IBlock | null) {
-  const xDelta = 160
-  const yDelta = 180
+  const xDelta = 120
+  const yDelta = 110
+  let xPosition = block ? block.ui_metadata.canvas_coordinates.x : null
+  let yPosition = block ? block.ui_metadata.canvas_coordinates.y : null
 
-  let xPosition = get(block, 'vendor_metadata.io_viamo.uiData.xPosition')
-  let yPosition = get(block, 'vendor_metadata.io_viamo.uiData.yPosition')
-
-  if (!xPosition || !yPosition) {
+  if (xPosition === null || yPosition === null) {
     const viewPortCenter = getViewportCenter()
     xPosition = viewPortCenter.x
     yPosition = viewPortCenter.y
   }
 
   return {
-    xPosition: xPosition + xDelta,
-    yPosition: yPosition + yDelta,
+    x: xPosition + xDelta,
+    y: yPosition + yDelta,
+  }
+}
+
+export function computeBlockVendorUiData(block?: IBlock | null) {
+  return {
     isSelected: false,
   }
 }
@@ -401,8 +411,10 @@ export function getViewportCenter() {
   const sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
   const rect = builderCanvasElement.getBoundingClientRect()
 
+  const sidebarAdjustment = sideBarElement ? sideBarElement.clientWidth : 0
+
   return {
-    x: Math.round(Math.abs(rect.left) + (window.innerWidth - sideBarElement.clientWidth) / 2),
+    x: Math.round(Math.abs(rect.left) + (window.innerWidth - sidebarAdjustment) / 2),
     y: Math.round(Math.abs(rect.top) + window.innerHeight / 2),
   }
 }

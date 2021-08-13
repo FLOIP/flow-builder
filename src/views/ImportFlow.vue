@@ -1,9 +1,8 @@
 <template>
   <div class="new-contents">
-    <!-- TODO Take a look at login style for an example of how this well could look -->
     <div class="row">
       <div class="col-sm-8 offset-sm-2">
-        <div class="card">
+        <div class="card d-flex">
           <div class="card-body">
             <div>
               <h2>
@@ -11,7 +10,8 @@
               </h2>
               <p>{{ 'flow-builder.create-flow-from-json' | trans }}</p>
               <div
-                class="alert alert-danger"
+                v-if="trans('flow-builder.import-note')"
+                class="alert alert-info"
                 role="alert">
                 {{ 'flow-builder.import-note'| trans }}
               </div>
@@ -31,7 +31,7 @@
                     <a
                       class="btn btn-outline-secondary"
                       @click="chooseFile">
-                      {{ 'flow-builder.import-file' | trans }}
+                      {{ (!flowJsonText ? 'flow-builder.import-file' : 'flow-builder.replace-file') | trans }}
                     </a>
                     <input
                       id="flowUpload"
@@ -221,7 +221,7 @@ class ImportFlow extends Vue {
   async handleImportFlow(route: string) {
     const flowContainer = await this.flow_import({
       // @ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
-      persistRoute: this.route('flows.persistFlow', {flowId: this.flowContainer.uuid}),
+      persistRoute: this.route('flows.persistFlow', {}),
       flowContainer: this.flowContainer,
     })
     if (flowContainer) {

@@ -1,16 +1,15 @@
 {
-  "specification_version": "flow spec version",
-  "uuid": "container uuid",
+  "specification_version": "1.0.0-rc2",
+  "uuid": "3666a05d-3792-482b-8f7f-9e2472e4f027",
   "name": "container name",
   "description": "container description",
   "vendor_metadata": {},
   "flows": [
     {
       "uuid": "463580a6-ff3a-4e43-a2be-4265cc33dd91",
-      "org_id": "",
-      "name": "",
-      "label": "",
-      "last_modified": "c",
+      "name": "Test",
+      "label": "Test",
+      "last_modified": "2021-06-10T11:19:05.790Z",
       "interaction_timeout": 30,
       "vendor_metadata": {},
       "supported_modes": [
@@ -18,10 +17,18 @@
         "USSD",
         "IVR"
       ],
-      "languages": [],
+      "languages": [
+        {
+          "id": "22",
+          "label": "English",
+          "iso_639_3": "eng"
+        }
+      ],
+      "first_block_id": "31570470-cb83-436a-97d6-5a0ce471280e",
       "blocks": [
         {
           "uuid": "31570470-cb83-436a-97d6-5a0ce471280e",
+          "ui_metadata": {"canvas_coordinates": {"x": 390, "y": 275}},
           "vendor_metadata": {
             "io_viamo": {
               "uiData": {
@@ -31,7 +38,7 @@
             }
           },
           "type": "Core.SetContactProperty",
-          "name": "",
+          "name": "abc",
           "label": "",
           "semantic_label": "",
           "config": {
@@ -43,8 +50,7 @@
           "exits": [
             {
               "uuid": "e41f9b81-165f-4fa7-9c93-7870d93ae5c4",
-              "tag": "Default",
-              "label": "Default",
+              "name": "Default",
               "default": true,
               "config": {}
             }
@@ -52,6 +58,7 @@
         },
         {
           "uuid": "bc3da62c-f036-4ec6-b157-5c43ac44b3db",
+          "ui_metadata": {"canvas_coordinates": {"x": 844, "y": 250}},
           "vendor_metadata": {
             "io_viamo": {
               "uiData": {
@@ -61,9 +68,9 @@
             }
           },
           "type": "Core.SetGroupMembership",
-          "name": "",
+          "name": "def",
           "label": "",
-          "semantic_abel": "",
+          "semantic_label": "",
           "config": {
             "group_key": 988,
             "group_name": "Group 3",
@@ -72,8 +79,7 @@
           "exits": [
             {
               "uuid": "c0152ecc-bd8b-465a-9fd7-58c8039cca96",
-              "tag": "Default",
-              "label": "Default",
+              "name": "Default",
               "default": true,
               "config": {}
             }

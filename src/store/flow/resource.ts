@@ -163,6 +163,15 @@ export function findResourceVariantOverModesOn(
   filter: IResourceDefinitionVariantOverModesFilter,
 ): IResourceValue {
   // b/c we do explicit partial matching on modes
+  // why do we do partial matching on modes?
+
+  // todo: is there a way that we could do an inclusive+additive search here?
+  // todo: the goal here would be to be able to do something like:
+  //       resource: {values: [
+  //             {modes: [...flow.modes], contentType: contentType, ...}
+  //       ]}
+  //      the equivalent of the above— This would provide us the ability to then toggle
+
   const keysForComparison = without(Object.keys(filter), 'modes')
   const filterWithComparatorKeys = pick(filter, keysForComparison)
   const variant = find<IResourceDefinitionVariantOverModes>(
@@ -215,6 +224,7 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
     // voice
     [SupportedMode.IVR]: [AUDIO],
     [SupportedMode.SMS]: [TEXT],
+    [SupportedMode.TEXT]: [TEXT],
     [SupportedMode.USSD]: [TEXT],
     // clipboard
     [SupportedMode.OFFLINE]: [TEXT, IMAGE, VIDEO],

@@ -52,6 +52,7 @@ class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
       shouldSetChoices: false,
       configPath: 'config.message',
     })
+    this.setTags(blockId)
   }
 }
 

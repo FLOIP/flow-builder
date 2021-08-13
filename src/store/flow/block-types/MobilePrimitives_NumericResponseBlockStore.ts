@@ -14,45 +14,39 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMinimum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
+    const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validation_minimum',
-      value,
+      value: valueAsNumberOrUnset,
     }, {root: true})
-    return value
+    return valueAsNumberOrUnset
   },
   async setValidationMaximum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
+    const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'validation_maximum',
-      value,
+      value: valueAsNumberOrUnset,
     }, {root: true})
-    return value
+    return valueAsNumberOrUnset
   },
   async setMaxDigits({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
+    const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
       blockId,
       key: 'ivr',
       value: {
-        max_digits: value,
+        max_digits: valueAsNumberOrUnset,
       },
     }, {root: true})
-    return value
+    return valueAsNumberOrUnset
   },
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<INumericResponseBlock> }) {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
-          tag: 'Default',
-          label: 'Default',
-        }) as IBlockExit,
-      }, {root: true}),
-      await dispatch('flow/block_createBlockExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-          tag: 'Error',
-          label: 'Error',
         }) as IBlockExit,
       }, {root: true}),
     ]
@@ -68,14 +62,43 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exits,
       config: {
         prompt: blankResource.uuid,
-        validation_minimum: '',
-        validation_maximum: '',
-        ivr: {
-          max_digits: '',
-        },
+        validation_minimum: undefined,
+        validation_maximum: undefined,
       },
+      tags: [],
+      vendor_metadata: {},
     })
   },
+
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+    dispatch('flow/block_convertExitFormationToUnified', {
+      blockId: block.uuid,
+      test: formatTestValueForUnifiedBranchingType(block as INumericResponseBlock),
+    }, {root: true})
+  },
+}
+
+function formatTestValueForUnifiedBranchingType(block: INumericResponseBlock): string {
+  if ((block.config.validation_minimum === null || block.config.validation_minimum === undefined)
+    && (block.config.validation_maximum === null || block.config.validation_maximum === undefined)) {
+    return 'is_number(block.value)'
+  }
+  if ((block.config.validation_minimum !== null && block.config.validation_minimum !== undefined)
+    && (block.config.validation_maximum !== null && block.config.validation_maximum !== undefined)) {
+    return `AND(is_number(block.value, block.value >= ${block.config.validation_minimum},`
+      + ` block.value <= ${block.config.validation_maximum})`
+  }
+  if ((block.config.validation_minimum !== null && block.config.validation_minimum !== undefined)
+    && (block.config.validation_maximum === null || block.config.validation_maximum === undefined)) {
+    return `AND(is_number(block.value), block.value >= ${block.config.validation_minimum})`
+  }
+  if ((block.config.validation_minimum === null || block.config.validation_minimum === undefined)
+    && (block.config.validation_maximum !== null && block.config.validation_maximum !== undefined)) {
+    return `AND(is_number(block.value), block.value <= ${block.config.validation_maximum})`
+  }
+
+  console.warn('Exit test condition not found for NumericBlock, providing `true` by default')
+  return 'true'
 }
 
 export default {

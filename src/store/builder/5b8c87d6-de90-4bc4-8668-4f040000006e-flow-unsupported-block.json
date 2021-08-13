@@ -1,79 +1,69 @@
 {
-   "specification_version":"flow spec version",
-   "uuid":"container uuid",
-   "name":"container name",
-   "description":"container description",
-   "platform_metadata":{
-      
-   },
-   "flows":[
-      {
-         "uuid":"31b76c1c-3333-4db3-9ba9-02131a7a8b6d",
-         "orgId":"",
-         "name":"",
-         "label":"",
-         "lastModified":"c",
-         "interactionTimeout":30,
-         "platformMetadata":{
-            
-         },
-         "supportedModes":[
-            "sms",
-            "ussd",
-            "ivr"
-         ],
-         "languages":[
-            
-         ],
-         "blocks":[
-            {
-               "uuid":"ad40dc54-f1e0-4f6d-a4c7-9da1f3c0e093",
-               "platform_metadata":{
-                  "io_viamo":{
-                     "uiData":{
-                        "xPosition":562,
-                        "yPosition":444
-                     }
-                  }
-               },
-               "type":"Core\\SetFooMembership",
-               "name":"",
-               "label":"",
-               "semanticLabel":"",
-               "config":{
-                  "groupKey":987,
-                  "groupName":"Group 1",
-                  "isMember":null
-               },
-               "exits":[
-                  {
-                     "uuid":"13e88ffc-5e83-4c9e-bd02-edd5fd7338cc",
-                     "tag":"Default",
-                     "label":"Default",
-                     "default":true,
-                     "config":{
-                        
-                     },
-                     "destinationBlock":"__vue_devtool_undefined__"
-                  }
-               ]
+  "specification_version": "1.0.0-rc2",
+  "uuid": "3666a05d-3792-482b-8f7f-9e2472e4f027",
+  "name": "container name",
+  "description": "container description",
+  "vendor_metadata": {},
+  "flows": [
+    {
+      "uuid": "f0492216-65f3-4dc7-a1d8-8f79d1d30c11",
+      "name": "Test",
+      "label": "Test",
+      "last_modified": "2021-06-10T11:19:05.790Z",
+      "interaction_timeout": 30,
+      "vendor_metadata": {},
+      "supported_modes": [
+        "SMS",
+        "USSD",
+        "IVR"
+      ],
+      "languages": [
+        {
+          "id": "22",
+          "label": "English",
+          "iso_639_3": "eng"
+        }
+      ],
+      "blocks": [
+        {
+          "uuid": "eb34ac1f-f27c-43f4-87c9-7f61309bc725",
+          "ui_metadata": {"canvas_coordinates": {"x": 164, "y": 197}},
+          "vendor_metadata": {
+            "io_viamo": {
+              "uiData": {
+                "xPosition": 164,
+                "yPosition": 197
+              }
             }
-         ],
-         "firstBlockId":"a86cd4a9-1711-4a27-b95e-ad9174d35be0"
-      }
-   ],
-   "resources":[
-      {
-         "uuid":"ab7661f1-8d8b-4597-9b0e-8513a46d2199",
-         "values":[
-            
-         ]
-      },
-      {
-         "uuid":"7471b4d5-1326-494e-8ae9-1e15718fa8d9",
-         "values":[
-            
-         ]
-      }
-   ]
+          },
+          "type": "Core.SetFooMembership",
+          "name": "abc",
+          "label": "",
+          "semantic_label": "",
+          "exits": [
+            {
+              "uuid": "6324a107-3194-4c5a-8cae-36882074ca1a",
+              "name": "Default",
+              "default": true,
+              "config": {}
+            }
+          ],
+          "config": {
+            "message": "3087a849-3f88-4fe4-8992-a8f5a8866124"
+          }
+        }
+      ],
+      "first_block_id": "eb34ac1f-f27c-43f4-87c9-7f61309bc725"
+    }
+  ],
+  "resources": [
+    {
+      "uuid": "3087a849-3f88-4fe4-8992-a8f5a8866124",
+      "values": []
+    },
+    {
+      "uuid": "5fe9f6b5-9cb2-4f3f-96f1-69ddb52cfd1e",
+      "values": []
+    }
+  ]
 }

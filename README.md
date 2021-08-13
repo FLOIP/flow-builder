@@ -52,22 +52,49 @@ This is related to `Flow.js` library which is providing multiple simultaneous, s
 
 ### Create new flow
 
-To begin, you can create a new flow by visiting [localhost:8080/trees/create](http://localhost:8080/trees/create). From there, you can start with a blank flow (a flow without blocks) and get editing:
+To begin, you can create a new flow by visiting [https://floip.github.io/flow-builder/#/](https://floip.github.io/flow-builder/#/). Click on **New Flow** , from there, you can enter in the pertinent flow information before opening the Flow Builder.
 
-![Flow without blocks](./docs/images/screenshot-no-blocks.png)
+You may also go directly to the following link: [https://https://floip.github.io/flow-builder/#/flows/new](https://floip.github.io/flow-builder/#/flows/new)
+![Flow 1](https://user-images.githubusercontent.com/88047281/127682517-9d2141f9-8d04-45f2-8121-1d80a71fe089.gif)
+
+### Adding Blocks and Content
+
+Once you have the canvas open you can add blocks to create your flow
+![Flow 2](https://user-images.githubusercontent.com/88047281/127685985-2946f931-f2a5-456b-81aa-7eb45b1d93ab.gif)
+
+### Adding and Removing Connections
+
+Adding and removing connections can be done easily
+![Flow 4](https://user-images.githubusercontent.com/88047281/127687599-7e0681c7-e36c-4b9e-b462-8c62cff693af.gif)
+
+### Navigating the Block Toolbar
+
+Each block has a toolbar at the top that appears when hovering over the block. You may select the block, delete the block, duplicate the block, or access the sidebar editor from this toolbar.
+![Flow 3](https://user-images.githubusercontent.com/88047281/127687008-484170c2-7687-4110-ab86-1bf913e16ac4.gif)
+
+### Multiple Block Actions
+
+If you select multiple blocks, you are able to duplicate or delete them on the Multiple Select Toolbar
+![Flow 5](https://user-images.githubusercontent.com/88047281/127688307-19808290-3881-43bb-bd26-60a55551d29b.gif)
 
 ### Import existing flow
 
-Or you can use the Import/Export panel and text field to copy in an existing flow:
+Visit [https://floip.github.io/flow-builder/#/](https://floip.github.io/flow-builder/#/) and click on the **Import/Paste a JSON File** Link in order to import an exiting flow via JSON schema or by pasting the JSON file directly
 
-![Imported flow](./docs/images/screenshot-imported-flow.png)
+You may also go directly to the following link: [https://floip.github.io/flow-builder/#/flows/import](https://floip.github.io/flow-builder/#/flows/import)
+
+Importing JSON file
+![Flow 6](https://user-images.githubusercontent.com/88047281/127689738-3a4184f3-fc46-4f3d-bf4a-405adaed6397.gif)
+
+Pasting JSON file directly
+![Flow 7](https://user-images.githubusercontent.com/88047281/127689934-7907d6c3-ecde-46b9-9d85-b60369868fdc.gif)
 
 Edits using the builder will then be reflected in the flow JSON in this panel and vice versa.
 
 ### Export flow
 
 To export, simply copy the json in this panel to a file. 
-
+![Flow 8](https://user-images.githubusercontent.com/88047281/127690332-5593e45f-b545-449b-89b7-b8a961be005b.gif)
 ## Storybook
 
 1. You only need to serve it with `yarn storybook:serve`
