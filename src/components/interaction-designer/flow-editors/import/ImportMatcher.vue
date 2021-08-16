@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <div v-if="type === 'languages'" class="row full-width mt-2">
+      <div v-if="type === 'languages' && isFeatureAddLanguageOnImportEnabled" class="row full-width mt-2">
         <div class="col-12">
           <language-adder/>
         </div>
@@ -53,6 +53,7 @@ import lang from '@/lib/filters/lang'
 import Vue from 'vue'
 import {Component, Prop} from 'vue-property-decorator'
 import {get, isEmpty, omit} from 'lodash'
+import {Action, Getter, namespace} from 'vuex-class'
 
 @Component({
   mixins: [lang],
@@ -96,6 +97,8 @@ class ImportMatcher extends Vue {
       this.mappings = omit(this.mappings, this.getIdentifier(missingMatch))
     }
   }
+
+  @Getter isFeatureAddLanguageOnImportEnabled!: boolean
 }
 
 export default ImportMatcher

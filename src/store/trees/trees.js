@@ -73,6 +73,7 @@ export default {
     ),
     isFeatureFloipPushEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'floipPush'),
     isFeatureTreeSaveEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSave'),
+    isFeatureAddLanguageOnImportEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'addLanguageOnImport'),
     isFeatureTreeSendEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSend'),
     isFeatureTreeDuplicateEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeDuplicate'),
     isFeatureTreeViewVersionsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeViewVersions'),
