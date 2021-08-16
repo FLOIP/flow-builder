@@ -4,7 +4,7 @@
     <div
       v-for="missingMatch in missingMatches"
       :key="`${getIdentifier(missingMatch)}-missing`">
-      <div class="row full-width ml-1">
+      <div class="row full-width ml-1 mt-2">
         <div class="form-check form-check-inline full-width">
           <div class="col-xl-2 col-md-3">
             <label class="form-check-label full-width mt-2 mb-2">{{ getLabel(missingMatch) }}</label>
@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <div class="row full-width mt-2">
+      <div v-if="type === 'languages'" class="row full-width mt-2">
         <div class="col-12">
           <language-adder/>
         </div>
@@ -60,6 +60,8 @@ import {get, isEmpty, omit} from 'lodash'
 })
 class ImportMatcher extends Vue {
   @Prop({default: ''}) readonly matchNotFoundText!: string
+
+  @Prop({required: true}) readonly type!: string
 
   @Prop({required: true}) readonly typeId!: string
 
