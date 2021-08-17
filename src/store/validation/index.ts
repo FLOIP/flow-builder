@@ -120,7 +120,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     return state.validationStatuses[key]
   },
 
-  async validate_new_language({ state, rootGetters }, { language }: { language: ILanguage }): Promise<IValidationStatus> {
+  async validate_new_language({state, rootGetters}, {language}: { language: ILanguage }): Promise<IValidationStatus> {
     const validate = getOrCreateLanguageValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const index = 'language/new_language'
     Vue.set(state.validationStatuses, index, {
@@ -131,7 +131,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     debugValidationStatus(state.validationStatuses[index], 'language validation status')
     return state.validationStatuses[index]
   },
-  validation_removeNewLanguageValidation({ state }): void {
+  validation_removeNewLanguageValidation({state}): void {
     const index = 'language/new_language'
     Vue.delete(state.validationStatuses, index)
   },

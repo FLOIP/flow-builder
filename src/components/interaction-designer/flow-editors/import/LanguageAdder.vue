@@ -99,7 +99,7 @@ import {
   ILanguage,
   IContext,
 } from '@floip/flow-runner'
-import {Action, namespace} from 'vuex-class'
+import {Action, namespace, State} from 'vuex-class'
 
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
@@ -109,6 +109,7 @@ import VueMultiselect from 'vue-multiselect'
 
 const countries = require('i18n-iso-countries')
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'))
+countries.registerLocale(require('i18n-iso-countries/langs/fr.json'))
 
 const importVuexNamespace = namespace('flow/import')
 const validationVuexNamespace = namespace('validation')
@@ -138,7 +139,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
   // As a result, we don't attempt to filter this list depending on the iso 639 selection
   // We use Alpha-2 Codes as apparently they are "the most widely used"
   // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-  async resetLanguage() {
+  resetLanguage(): void {
     this.newLanguage = {
       id: '',
       label: '',
@@ -149,24 +150,25 @@ class LanguageAdder extends mixins(Lang, Routes) {
     this.selected_iso_639_3 = {}
     this.validation_removeNewLanguageValidation()
   }
-  showAddLanguageModal() {
+  showAddLanguageModal(): void {
     this.resetLanguage()
     const languageModal: any = this.$refs['add-language-modal']
     languageModal.show()
   }
-  customLanguageLabel(option: any) {
+  customLanguageLabel(option: any): string {
     if (!isEmpty(option)) {
       return `${option.name} - ${option.iso6393}`
     }
+    return ''
   }
-  customLocaleLabel(option: any) {
+  customLocaleLabel(option: any): string {
     if (!isEmpty(option)) {
       return `${option.country} - ${option.locale}`
     }
+    return ''
   }
-  iso_3166_1Locales() {
-    //TODO - this gives you the english names of the locales. This library also supports FR. Should we allow searching in both languages?
-    const countriesByLocaleCode = countries.getNames('en', {select: 'official'})
+  iso_3166_1Locales(): object[] {
+    const countriesByLocaleCode = countries.getNames(this.locale, {select: 'official'})
     return map(keys(countriesByLocaleCode), (localeCode) => ({locale: localeCode, country: countriesByLocaleCode[localeCode]}))
   }
   set iso_639_3(selection: any) {
@@ -176,7 +178,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
       this.updateBCP47()
     }
   }
-  get iso_639_3() {
+  get iso_639_3(): string {
     return this.selected_iso_639_3
   }
   set iso_3166_1(selection: any) {
@@ -185,7 +187,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
       this.updateBCP47()
     }
   }
-  get iso_3166_1() {
+  get iso_3166_1(): string {
     return this.selected_iso_3166_1
   }
   set variant(value: string) {
@@ -194,7 +196,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
       this.updateBCP47()
     }
   }
-  get variant() {
+  get variant(): string {
     return this.newLanguage.variant
   }
 
@@ -203,15 +205,15 @@ class LanguageAdder extends mixins(Lang, Routes) {
     if (e.key.match(/[^a-z_]/g)) {
       e.preventDefault()
     }
-    const lastCharacter = this.newLanguage.variant[this.newLanguage.variant.length-1]
-    if (lastCharacter === "_" && e.key.match(/_/g)) {
+    const lastCharacter = this.newLanguage.variant[this.newLanguage.variant.length - 1]
+    if (lastCharacter === '_' && e.key.match(/_/g)) {
       e.preventDefault()
     }
   }
   // For now, we aren't allowing the use of 'script' or other elements in BCP 47 Construction - though the spec allows this.
   // We only use iso 639 + ISO 3166-1 (and not UN M.49)
   // https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1
-  updateBCP47() {
+  updateBCP47(): void {
     if (!isEmpty(this.selected_iso_639_3)) {
       let bcp_47 = `${this.newLanguage.iso_639_3}`
       if (!isEmpty(this.selected_iso_3166_1)) {
@@ -223,7 +225,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
       this.newLanguage.bcp_47 = bcp_47
     }
   }
-  async handleCreateLanguage() {
+  async handleCreateLanguage(): Promise<void> {
     this.newLanguage.id = await (new IdGeneratorUuidV4()).generate()
 
     const persistRoute = this.route('languages.persistLanguage', {})
@@ -236,6 +238,8 @@ class LanguageAdder extends mixins(Lang, Routes) {
     languageModal.hide()
   }
   @Action validateAndAddOrgLanguage!: ({language, persistRoute}: { language: ILanguage, persistRoute: string }) => Promise<any>
+
+  @State locale!: string
 
   @importVuexNamespace.Action validateLanguages!: (flowContainer: IContext) => Promise<void>
 
