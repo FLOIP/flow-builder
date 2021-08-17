@@ -24,14 +24,15 @@ import {IValidationStatus} from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
+const builderVuexNamespace = namespace('builder')
 
-//px
+//in `px`
 const MARGIN_HEIGHT_CORRECTION = -10
 
-//px
-const MARGIN_WIDTH_CORRECTION = 50
+//ideal value: the xDelta when we compute xPosition from existing active block, in `px`
+const MARGIN_WIDTH_CORRECTION = 120
 
-//ms
+//in `ms`
 const DEBOUNCE_SCROLL_TIMER = 300
 
 @Component({
@@ -186,8 +187,8 @@ export default class BuilderCanvas extends Vue {
       return this.windowWidth - this.widthAdjustment
     }
 
-    const xPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.x
-    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH_CORRECTION
+    const xPosition: number = this.blockAtTheFurthestRightPosition.ui_metadata.canvas_coordinates.x
+    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH_CORRECTION + this.visibleBlockEditorWidth
 
     if (scrollWidth < this.windowWidth) {
       return this.windowWidth - this.widthAdjustment
@@ -196,8 +197,15 @@ export default class BuilderCanvas extends Vue {
     return scrollWidth - this.widthAdjustment
   }
 
+  get visibleBlockEditorWidth(): number {
+    const blockEditorWidth = 365
+    return this.isBlockEditorOpen ? blockEditorWidth : 0
+  }
+
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
+
+  @builderVuexNamespace.State isBlockEditorOpen!: boolean
 
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_block!: ({block}: { block: IBlock }) => Promise<IValidationStatus>
