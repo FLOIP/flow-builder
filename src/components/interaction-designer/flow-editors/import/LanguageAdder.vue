@@ -47,7 +47,8 @@
             v-model="variant"
             :placeholder="'flow-builder.enter-variant' | trans"
             :label="'flow-builder.language-variant' | trans"
-            :valid-state="isValid" />
+            :valid-state="isValid"
+            @keydown="filterVariant" />
         </validation-message>
       </div>
       <div class="form-group">
@@ -195,6 +196,17 @@ class LanguageAdder extends mixins(Lang, Routes) {
   }
   get variant() {
     return this.newLanguage.variant
+  }
+
+  //Taken from voto5 restrictions
+  filterVariant(e: KeyboardEvent): void {
+    if (e.key.match(/[^a-z_]/g)) {
+      e.preventDefault()
+    }
+    const lastCharacter = this.newLanguage.variant[this.newLanguage.variant.length-1]
+    if (lastCharacter === "_" && e.key.match(/_/g)) {
+      e.preventDefault()
+    }
   }
   // For now, we aren't allowing the use of 'script' or other elements in BCP 47 Construction - though the spec allows this.
   // We only use iso 639 + ISO 3166-1 (and not UN M.49)
