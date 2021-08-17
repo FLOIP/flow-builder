@@ -237,7 +237,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
     const languageModal: any = this.$refs['add-language-modal']
     languageModal.hide()
   }
-  @Action validateAndAddOrgLanguage!: ({language, persistRoute}: { language: ILanguage, persistRoute: string }) => Promise<any>
+  @Action validateAndAddOrgLanguage!: ({language, persistRoute}: { language: ILanguage, persistRoute: string }) => Promise<boolean | ILanguage>
 
   @State locale!: string
 

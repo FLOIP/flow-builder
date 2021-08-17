@@ -83,14 +83,14 @@ class ImportMatcher extends Vue {
     return get(missingMatch, this.typeId, '')
   }
 
-  updateMappings(missingMatch: { [key: string]: string }, event: { target: { value: string } }) {
+  updateMappings(missingMatch: { [key: string]: string }, event: { target: { value: string } }): void {
     this.mappings[this.getIdentifier(missingMatch)] = event.target.value
   }
 
-  get mappingsEmpty() {
+  get mappingsEmpty(): boolean {
     return isEmpty(this.mappings)
   }
-  handleMatch(missingMatch: { [key: string]: string }) {
+  handleMatch(missingMatch: { [key: string]: string }): void {
     const matchingJson = get(this.mappings, this.getIdentifier(missingMatch))
     if (matchingJson) {
       const newMatch = JSON.parse(matchingJson)

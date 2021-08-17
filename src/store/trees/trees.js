@@ -5,7 +5,6 @@ import Vue from 'vue'
 
 import {routeFrom} from '@/lib/mixins/Routes'
 import flights from '@/store/common/flight-monitor'
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
