@@ -1,5 +1,6 @@
 {
   "en.flow-builder": {
+    "flow-builder": "Flow Builder",
     "weather": "Weather",
     "developer": "Developer",
     "photo-response-prompt": "Photo response prompt",
@@ -1644,6 +1645,7 @@
     "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit."
   },
   "fr.flow-builder": {
+    "flow-builder": "Générateur de flux",
     "weather": "Météo",
     "developer": "Développeur",
     "photo-response-prompt": "Invite de réponse photo",
