@@ -2,7 +2,7 @@
   <div class="bg-light home-contents">
     <div class="container pt-5 bg-light">
       <div class="row">
-        <div class="offset-2 col-8">
+        <div class="offset-1 col-10">
           <div class="card-deck mb-3">
             <div class="card mb-4 box-shadow">
               <div class="card-body">
@@ -14,9 +14,9 @@
                         <main class="px-3">
                           <router-link
                             :to="route('flows.newFlow')"
-                            title="trans('flow-builder.new-flow')"
+                            title="trans('flow-builder.create-flow')"
                             class="btn btn-outline-secondary mr-2 active">
-                            {{ 'flow-builder.new-flow' | trans }}
+                            {{ 'flow-builder.create-flow' | trans }}
                           </router-link>
                           <div class="mt-4">
                             <router-link
@@ -27,7 +27,7 @@
                             </router-link>
                           </div>
                           <div class="mt-4">
-                            <h2>Existing Flows</h2>
+                            <h4>Existing Flows</h4>
                             <div v-for="flow in flows">
                               <router-link
                                 :to="route('trees.editTree', {treeId: flow.uuid, component: 'interaction-designer', mode: 'edit'})"
@@ -51,17 +51,22 @@
                   </div>
                   <div class="col-sm-7">
                     <p>
-                      The Community Flow Builder is an open-source reference front end application that can be used independently or embedded within web applications, to author and export Flow Content - compliant flow definitions. It provides a drag and drop environment for designing Flow Content. It is licensed under the permissive BSD license for ease of embedding in both commercial and open source applications.
+                      <span>
+                        The Community Flow Builder is an open-source reference front end application that can be used independently or embedded within web applications, to author and export Flow Specification compliant flow definitions.
+                      </span>
+                      <span>
+                        <a :class="{'d-none': !extraContentHidden}" class="blue-link" href="#" @click="showExtraContent">Learn more</a>
+                      </span>
+                      <span :class="{'d-none': extraContentHidden}" ref="extra-content-1">
+                        It provides a drag and drop environment for designing Flow Content. It is licensed under the permissive BSD license for ease of embedding in both commercial and open source applications.
+                      </span>
                     </p>
-                    <p>
-                      The Community Flow Builder is an open-source reference front end application that can be used independently or embedded within web applications, to author and export Flow Content - compliant flow definitions.
-                    </p>
-                    <p>
-                      For more information, please visit: <a href="https://flowinterop.org/">https://flowinterop.org/</a> and Flow Specification. <a href="#" @click="">Less</a>
+                    <p :class="{'d-none': extraContentHidden}" ref="extra-content-2">
+                      For more information, please visit: <a href="https://flowinterop.org/">https://flowinterop.org/</a> where you can find links to the Flow Specification. <a href="#" class="blue-link" @click="hideExtraContent">Less</a>
                     </p>
                     <p>
                       Join the Flow Interoperability Community on Slack
-                      <a href="https://flowinteroperability.slack.com">flowinteroperability.slack.com</a>
+                      <b><a href="https://flowinteroperability.slack.com">flowinteroperability.slack.com</a></b>
                     </p>
                   </div>
                 </div>
@@ -95,6 +100,18 @@ class Home extends Vue {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 
+  extraContentHidden: boolean = true
+
+  showExtraContent(e: KeyboardEvent) {
+    e.preventDefault()
+    this.extraContentHidden = false
+  }
+
+  hideExtraContent(e: KeyboardEvent) {
+    e.preventDefault()
+    this.extraContentHidden = true
+  }
+
   @flowVuexNamespace.State flows!: IFlow[]
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
   @Getter isConfigured!: boolean
@@ -114,5 +131,8 @@ class Home extends Vue {
 export default Home
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+  .blue-link {
+    color: #007bff;
+  }
 </style>
