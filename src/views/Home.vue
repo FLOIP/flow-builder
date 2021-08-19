@@ -27,7 +27,7 @@
                             </router-link>
                           </div>
                           <div class="mt-4">
-                            <h4>Existing Flows</h4>
+                            <h4>{{'flow-builder.existing-flows' | trans}}</h4>
                             <div v-for="flow in flows">
                               <router-link
                                 :to="route('trees.editTree', {treeId: flow.uuid, component: 'interaction-designer', mode: 'edit'})"
@@ -52,20 +52,23 @@
                   <div class="col-sm-7">
                     <p>
                       <span>
-                        The Community Flow Builder is an open-source reference front end application that can be used independently or embedded within web applications, to author and export Flow Specification compliant flow definitions.
+                        {{'flow-builder.flow-builder-info-1' | trans}}
                       </span>
                       <span>
-                        <a :class="{'d-none': !extraContentHidden}" class="blue-link" href="#" @click="showExtraContent">Learn more</a>
+                        <a :class="{'d-none': !extraContentHidden}" class="blue-link" href="#" @click="showExtraContent">{{'flow-builder.learn-more' | trans}}</a>
                       </span>
                       <span :class="{'d-none': extraContentHidden}" ref="extra-content-1">
-                        It provides a drag and drop environment for designing Flow Content. It is licensed under the permissive BSD license for ease of embedding in both commercial and open source applications.
+                        {{'flow-builder.flow-builder-info-2' | trans}}
                       </span>
                     </p>
                     <p :class="{'d-none': extraContentHidden}" ref="extra-content-2">
-                      For more information, please visit: <a href="https://flowinterop.org/">https://flowinterop.org/</a> where you can find links to the Flow Specification. <a href="#" class="blue-link" @click="hideExtraContent">Less</a>
+                      <span>{{'flow-builder.flow-builder-info-3-pt-1' | trans}}</span>
+                      <a href="https://flowinterop.org/">https://flowinterop.org/</a>
+                      <span>{{'flow-builder.flow-builder-info-3-pt-2' | trans}}</span>
+                      <a href="#" class="blue-link" @click="hideExtraContent">{{'flow-builder.less' | trans}}</a>
                     </p>
                     <p>
-                      Join the Flow Interoperability Community on Slack
+                      {{'flow-builder.flow-builder-info-4' | trans}}
                       <b><a href="https://flowinteroperability.slack.com">flowinteroperability.slack.com</a></b>
                     </p>
                   </div>
@@ -134,5 +137,8 @@ export default Home
 <style lang="scss" scoped>
   .blue-link {
     color: #007bff;
+  }
+  .home-contents {
+    height: 100vh;
   }
 </style>
