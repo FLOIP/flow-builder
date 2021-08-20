@@ -1,10 +1,11 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExit} from '@floip/flow-runner'
+import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ICaseBlock} from '@floip/flow-runner/src/model/block/ICaseBlock'
 import {defaultsDeep} from 'lodash'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {validate_community_block} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'Core.Case'
@@ -37,6 +38,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         },
       },
     })
+  },
+
+  validate_block({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return validate_community_block({block, schemaVersion})
   },
 }
 

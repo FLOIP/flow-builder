@@ -5,6 +5,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import {IPrintBlock} from '@floip/flow-runner/src/model/block/IPrintBlock'
 import {defaultsDeep} from 'lodash'
 import {IFlowsState} from '../index'
+import {validate_community_block} from '@/store/validation/validationHelpers'
 
 export const BLOCK_TYPE = 'ConsoleIO.Print'
 
@@ -50,6 +51,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
   },
 
+  validate_block({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return validate_community_block({block, schemaVersion})
+  },
 }
 
 export default {

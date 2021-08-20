@@ -11,6 +11,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
 import {defaultsDeep, findKey, get, map, omit, snakeCase} from 'lodash'
+import {validate_community_block} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
@@ -113,6 +114,10 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       blockId: block.uuid,
       test: formatTestValueForUnifiedBranchingType(block as ISelectOneResponseBlock),
     }, {root: true})
+  },
+
+  validate_block({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return validate_community_block({block, schemaVersion})
   },
 }
 
