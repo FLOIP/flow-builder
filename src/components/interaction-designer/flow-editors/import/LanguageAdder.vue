@@ -1,10 +1,12 @@
 <template>
   <div>
-    <button
-      class="btn btn-primary"
-      @click="showAddLanguageModal">
-      {{ 'flow-builder.add-language' | trans }}
-    </button>
+    <slot :showAddLanguageModal="showAddLanguageModal">
+      <button
+        class="btn btn-primary"
+        @click="showAddLanguageModal">
+        {{ 'flow-builder.add-language' | trans }}
+      </button>
+    </slot>
     <b-modal
       ref="add-language-modal"
       title="Add Language"
@@ -233,17 +235,13 @@ class LanguageAdder extends mixins(Lang, Routes) {
     if (!valid) {
       return
     }
-    await this.validateLanguages(this.flowContainer)
+    this.$emit('onLanguageAddition')
     const languageModal: any = this.$refs['add-language-modal']
     languageModal.hide()
   }
   @Action validateAndAddOrgLanguage!: ({language, persistRoute}: { language: ILanguage, persistRoute: string }) => Promise<boolean | ILanguage>
 
   @State locale!: string
-
-  @importVuexNamespace.Action validateLanguages!: (flowContainer: IContext) => Promise<void>
-
-  @importVuexNamespace.State flowContainer!: IContext
 
   @validationVuexNamespace.Action validation_removeNewLanguageValidation!: () => Promise<void>
 }

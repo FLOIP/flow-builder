@@ -40,7 +40,7 @@
         v-if="type === 'languages' && isFeatureAddLanguageOnImportEnabled"
         class="row full-width mt-2">
         <div class="col-12">
-          <language-adder />
+          <language-adder @onLanguageAddition="onLanguageAddition"/>
         </div>
       </div>
     </div>
@@ -55,6 +55,8 @@ import {Component, Prop} from 'vue-property-decorator'
 import {get, isEmpty, omit} from 'lodash'
 import {Action, Getter, namespace} from 'vuex-class'
 import LanguageAdder from './LanguageAdder.vue'
+
+const importVuexNamespace = namespace('flow/import')
 
 @Component({
   mixins: [lang],
@@ -99,7 +101,15 @@ class ImportMatcher extends Vue {
     }
   }
 
+  async onLanguageAddition(): Promise<string> {
+    await this.validateLanguages(this.flowContainer)
+  }
+
   @Getter isFeatureAddLanguageOnImportEnabled!: boolean
+
+  @importVuexNamespace.Action validateLanguages!: (flowContainer: IContext) => Promise<void>
+
+  @importVuexNamespace.State flowContainer!: IContext
 }
 
 export default ImportMatcher

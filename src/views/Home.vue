@@ -7,7 +7,7 @@
             <div class="card mb-4 box-shadow">
               <div class="card-body">
                 <h3>{{'flow-builder.flow-builder' | trans}}</h3>
-                <div class="row mt-4 mb-5">
+                <div class="row mt-5 mb-5">
                   <div class="col-sm-5 border-right">
                     <div class="d-flex h-100 text-center">
                       <div class="cover-container d-flex w-100 h-100 mx-auto flex-column">
@@ -25,6 +25,15 @@
                               class="mt-3 mr-2 active">
                               {{ 'flow-builder.import-flow' | trans }}
                             </router-link>
+                          </div>
+                          <div class="mt-4">
+                            <language-adder v-slot="scope">
+                              <button
+                                class="btn btn-outline-secondary"
+                                @click="scope.showAddLanguageModal">
+                                {{ 'flow-builder.add-language' | trans }}
+                              </button>
+                            </language-adder>
                           </div>
                           <div class="mt-4">
                             <h4>{{'flow-builder.existing-flows' | trans}}</h4>
@@ -93,12 +102,14 @@ import {forEach, isEmpty} from 'lodash'
 import {store} from '@/store'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {IFlow} from '@floip/flow-runner'
+import LanguageAdder from '../components/interaction-designer/flow-editors/import/LanguageAdder.vue'
 
 const flowVuexNamespace = namespace('flow')
 
 @Component(
   {
     mixins: [lang, Routes],
+    components: {LanguageAdder},
   },
 )
 class Home extends Vue {
