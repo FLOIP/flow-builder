@@ -18,7 +18,7 @@ paths:
       tags:
       - Flows
       operationId: Fetch Flow
-      summary: Finds Flow in Container by ID
+      summary: Finds Flow in Container by ID. Route can be anything and is configured in builder.config.json - the UUID, body and verb are what matters.
       parameters:
       - name: id
         in: path
@@ -50,6 +50,7 @@ paths:
         with an attribute on the container - `created` - rather than with whether or not the flow
         has a uuid yet. `created` is not sent to the server.
         This route is used when `created` === false
+        Route can be anything and is configured in builder.config.json - the body and verb are what matters.
       requestBody:
         content:
           '*/*':
@@ -81,6 +82,7 @@ paths:
         with an attribute on the container - `created` - rather than with whether or not the flow
         has a uuid yet. `created` is not sent to the server.
         This route is used when `created` === true
+        Route can be anything and is configured in builder.config.json - the body and verb are what matters.
       requestBody:
         content:
           '*/*':
@@ -98,10 +100,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/FlowContainer'
         500:
-          description: Error in flow update including validation errors (the builder
-            should prevent these client side before we get to that point though)
+          description: Error in flow update including validation errors.
+            The builder should prevent these client side before we get to that point but that cannot always be done due to race conditions around concurrent use.
           content: {}
       x-codegen-request-body-name: flow_container
+  /languages:
+    post:
+      tags:
+      - Languages
+      operationId: Save Language
+      summary: Create a single new Flow Spec compliant language on the server.
+        The created language may be associated with an account.
+        Languages associated with an account/the current session
+        should override the hard coded languages in builder.config.json.
+        Route can be anything and is configured in builder.config.json - the body and verb are what matters.
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Language'
+        required: true
+      responses:
+        200:
+          description: Echos back the language for pushing into the languages array in the vuex tree state - `ui.languages`.
+            See https://floip.gitbook.io/flow-specification/flows#language-objects-and-identifiers for full spec.
+            The backend may make any changes it needs to the posted language as long as the id stays the same and the returned language conforms to the spec
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Language'
+        500:
+          description: Error in language creation including validation errors.
+            The builder should prevent these client side before we get to that point but that cannot always be done due to race conditions around concurrent use.
+          content: {}
+      x-codegen-request-body-name: language
 components:
   schemas:
     FlowContainer:
@@ -126,3 +158,16 @@ components:
         resources:
           type: object
           properties: {}
+    Language:
+      type: object
+      properties:
+        bcp_47:
+          type: string
+        id:
+          type: string
+        iso_639_3:
+          type: string
+        label:
+          type: string
+        variant:
+          type: string

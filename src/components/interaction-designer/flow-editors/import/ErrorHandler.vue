@@ -35,6 +35,7 @@
       :missing-matches="missingLanguages"
       type-id="id"
       type-label="label"
+      type="languages"
       :existing-options-without-match="existingLanguagesWithoutMatch"
       match-not-found-text="flow-builder.match-for-languages-not-found"
       @reactToMatch="handleMatchLanguage" />
@@ -44,6 +45,7 @@
       :missing-matches="missingProperties"
       type-id="name"
       type-label="name"
+      type="properties"
       :existing-options-without-match="existingPropertiesWithoutMatch"
       match-not-found-text="flow-builder.match-for-properties-not-found"
       @reactToMatch="handleMatchProperty" />
@@ -53,6 +55,7 @@
       :missing-matches="missingGroups"
       type-id="id"
       type-label="group_name"
+      type="group"
       :existing-options-without-match="existingGroupsWithoutMatch"
       match-not-found-text="flow-builder.match-for-groups-not-found"
       @reactToMatch="handleMatchGroup" />

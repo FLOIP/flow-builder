@@ -72,6 +72,7 @@ export default {
     ),
     isFeatureFloipPushEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'floipPush'),
     isFeatureTreeSaveEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSave'),
+    isFeatureAddLanguageOnImportEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'addLanguageOnImport'),
     isFeatureTreeSendEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSend'),
     isFeatureTreeDuplicateEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeDuplicate'),
     isFeatureTreeViewVersionsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeViewVersions'),
@@ -172,6 +173,11 @@ export default {
   },
 
   mutations: {
+    addOrgLanguage({ui}, language) {
+      const newLanguage = {...language}
+      ui.languages.push(newLanguage)
+    },
+
     setTreeSaving(state, isSaving) {
       state.ui.isSaveCurrentlyInProgress = isSaving
     },
@@ -387,6 +393,27 @@ export default {
   },
 
   actions: {
+    async validateAndAddOrgLanguage({dispatch, commit}, {persistRoute, language}) {
+      const validationErrors = await dispatch('validation/validate_new_language', {language}, {root: true})
+      if (!validationErrors.isValid) {
+        return false
+      }
+
+      if (!persistRoute) {
+        console.info('Language persistence route not configured correctly in builder.config.json. Falling back to vuex store')
+        commit('addOrgLanguage', language)
+        return language
+      }
+      try {
+        const {data} = await axios.post(persistRoute, language)
+        commit('addOrgLanguage', data)
+        return language
+      } catch (error) {
+        console.info(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
+        commit('flow/import/setFlowError', 'flow-builder.error-persisting-language', {root: true})
+        return false
+      }
+    },
     initializeTreeModel({dispatch, state: {ui: {isTreeImport}}}) {
       require('./10-trees-model')
       // todo: this is also included via `../public/dist/js/legacy/trees` on tree-builder

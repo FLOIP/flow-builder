@@ -5,7 +5,7 @@ import Ajv, {ErrorObject, ValidateFunction} from 'ajv'
 import ajvFormat from 'ajv-formats'
 
 import {JSONSchema7} from 'json-schema'
-import {IBlock, IContainer, IFlow, getFlowStructureErrors} from '@floip/flow-runner'
+import {IBlock, IContainer, IFlow, ILanguage, getFlowStructureErrors} from '@floip/flow-runner'
 import {forIn, get, isEmpty} from 'lodash'
 
 const ajv = new Ajv({allErrors: true})
@@ -119,6 +119,22 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
     return state.validationStatuses[key]
   },
+
+  async validate_new_language({state, rootGetters}, {language}: { language: ILanguage }): Promise<IValidationStatus> {
+    const validate = getOrCreateLanguageValidator(rootGetters['flow/activeFlowContainer'].specification_version)
+    const index = 'language/new_language'
+    Vue.set(state.validationStatuses, index, {
+      isValid: validate(language),
+      ajvErrors: validate.errors,
+    })
+
+    debugValidationStatus(state.validationStatuses[index], 'language validation status')
+    return state.validationStatuses[index]
+  },
+  validation_removeNewLanguageValidation({state}): void {
+    const index = 'language/new_language'
+    Vue.delete(state.validationStatuses, index)
+  },
 }
 
 export const store: Module<IValidationState, IRootState> = {
@@ -149,6 +165,15 @@ function getOrCreateFlowValidator(schemaVersion: string): ValidateFunction {
     delete flowJsonSchema.definitions.IFlow.properties.blocks
 
     validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IFlow'))
+  }
+  return validators.get(validationType)!
+}
+
+function getOrCreateLanguageValidator(schemaVersion: string): ValidateFunction {
+  const validationType = 'language'
+  if (isEmpty(validators) || !validators.has(validationType)) {
+    const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/ILanguage'))
   }
   return validators.get(validationType)!
 }
