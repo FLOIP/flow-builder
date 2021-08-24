@@ -1,6 +1,9 @@
 {
   "en.flow-builder": {
     "flow-builder": "Flow Builder",
+    "bcp-47-label": "BCP 47 - Generated from ISO 639 3, Locale, and Variant",
+    "iso-639-3-label": "ISO 639 3 Code",
+    "iso-3166-1-label": "ISO 3166 1 Locale (optional)",
     "add-language": "Add Language +",
     "weather": "Weather",
     "developer": "Developer",
@@ -1662,6 +1665,9 @@
   },
   "fr.flow-builder": {
     "flow-builder": "Générateur de flux",
+    "bcp-47-label": "BCP 47 - Généré à partir d'ISO 639 3, Locale et Variante",
+    "iso-639-3-label": "Code ISO 639 3",
+    "iso-3166-1-label": "ISO 3166 1 Paramètres régionaux (facultatif)",
     "add-language": "Ajouter une Langue +",
     "weather": "Météo",
     "developer": "Développeur",
