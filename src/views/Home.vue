@@ -56,13 +56,13 @@
                         {{'flow-builder.flow-builder-info-1' | trans}}
                       </span>
                       <span>
-                        <a :class="{'d-none': !extraContentHidden}" class="blue-link" href="#" @click="showExtraContent">{{'flow-builder.learn-more' | trans}}</a>
+                        <a :class="{'d-none': !isExtraContentHidden}" class="blue-link" href="#" @click="showExtraContent">{{'flow-builder.learn-more' | trans}}</a>
                       </span>
-                      <span :class="{'d-none': extraContentHidden}" ref="extra-content-1">
+                      <span :class="{'d-none': isExtraContentHidden}" ref="extra-content-1">
                         {{'flow-builder.flow-builder-info-2' | trans}}
                       </span>
                     </p>
-                    <p :class="{'d-none': extraContentHidden}" ref="extra-content-2">
+                    <p :class="{'d-none': isExtraContentHidden}" ref="extra-content-2">
                       <span>{{'flow-builder.flow-builder-info-3-pt-1' | trans}}</span>
                       <b><a href="https://flowinterop.org/">https://flowinterop.org/</a></b>
                       <span>{{'flow-builder.flow-builder-info-3-pt-2' | trans}}</span>
@@ -116,16 +116,16 @@ class Home extends Vue {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 
-  extraContentHidden: boolean = true
+  isExtraContentHidden: boolean = true
 
   showExtraContent(e: KeyboardEvent) {
     e.preventDefault()
-    this.extraContentHidden = false
+    this.isExtraContentHidden = false
   }
 
   hideExtraContent(e: KeyboardEvent) {
     e.preventDefault()
-    this.extraContentHidden = true
+    this.isExtraContentHidden = true
   }
 
   @flowVuexNamespace.State flows!: IFlow[]

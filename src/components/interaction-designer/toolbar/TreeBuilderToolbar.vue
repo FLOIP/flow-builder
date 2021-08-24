@@ -391,6 +391,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
           })
         }
       })
+    } else {
+      console.debug('Builder Toolbar', 'Unable to find the edit flow modal on mount - deep linking may not work')
     }
   }
 
