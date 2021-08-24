@@ -64,19 +64,19 @@
                     </p>
                     <p :class="{'d-none': extraContentHidden}" ref="extra-content-2">
                       <span>{{'flow-builder.flow-builder-info-3-pt-1' | trans}}</span>
-                      <a href="https://flowinterop.org/">https://flowinterop.org/</a>
+                      <b><a href="https://flowinterop.org/">https://flowinterop.org/</a></b>
                       <span>{{'flow-builder.flow-builder-info-3-pt-2' | trans}}</span>
                       <a href="#" class="blue-link" @click="hideExtraContent">{{'flow-builder.less' | trans}}</a>
                     </p>
                     <p>
                       <b>
-                      <a
-                        href="https://github.com/FLOIP/flow-builder"
-                        :title="trans('flow-builder.flow-builder-documentation')"
-                        class="mt-3 mr-2 active">
-                        {{ 'flow-builder.flow-builder-documentation' | trans }}
-                      </a>
-                    </b>
+                        <a
+                          href="https://github.com/FLOIP/flow-builder"
+                          :title="trans('flow-builder.flow-builder-documentation')"
+                          class="mt-3 mr-2 active">
+                          {{ 'flow-builder.flow-builder-documentation' | trans }}
+                        </a>
+                      </b>
                     </p>
                     <p>
                       {{'flow-builder.flow-builder-info-4' | trans}}
