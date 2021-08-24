@@ -1653,7 +1653,8 @@
         "config-text-max_response_characters-type": "Max Response Characters should be a number",
         "config-accuracy_threshold_meters-type": "Accuracy threshold in meters should be number",
         "config-accuracy_timeout_seconds-type": "Accuracy timeout in seconds shoud be number",
-        "config-value-type": "Output expression should be a string"
+        "config-value-type": "Output expression should be a string",
+        "config-is_member-type": "Value/Expression should be a string"
       }
     }
   },
@@ -3309,7 +3310,8 @@
         "config-text-max_response_characters-type": "Les caractères de réponse maximale doivent être un nombre",
         "config-accuracy_threshold_meters-type": "Seuil de précision en mètres devrait être un nombre",
         "config-accuracy_timeout_seconds-type": "Délai de précision en secondes devrait être numéro",
-        "config-value-type": "L'expression de sortie devrait être une chaîne"
+        "config-value-type": "L'expression de sortie devrait être une chaîne",
+        "config-is_member-type": "La valeur / l'expression devrait être une chaîne"
       }
     }
   }
