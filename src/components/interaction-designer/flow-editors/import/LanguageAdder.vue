@@ -99,7 +99,6 @@ import {
 
 import {
   ILanguage,
-  IContext,
 } from '@floip/flow-runner'
 import {Action, namespace, State} from 'vuex-class'
 
@@ -150,6 +149,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
       bcp_47: '',
     }
     this.selected_iso_639_3 = {}
+    this.selected_iso_3166_1 = {}
     this.validation_removeNewLanguageValidation()
   }
   showAddLanguageModal(): void {

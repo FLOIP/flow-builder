@@ -36,7 +36,7 @@
                             </language-adder>
                           </div>
                           <div class="mt-4">
-                            <h4>{{'flow-builder.existing-flows' | trans}}</h4>
+                            <h4 v-if="!!flows.length">{{'flow-builder.existing-flows' | trans}}:</h4>
                             <div v-for="flow in flows">
                               <router-link
                                 :to="route('trees.editTree', {treeId: flow.uuid, component: 'interaction-designer', mode: 'edit'})"

@@ -49,6 +49,10 @@
 
 <script lang="ts">
 
+import {
+  IContext,
+} from '@floip/flow-runner'
+
 import lang from '@/lib/filters/lang'
 import Vue from 'vue'
 import {Component, Prop} from 'vue-property-decorator'
@@ -101,8 +105,8 @@ class ImportMatcher extends Vue {
     }
   }
 
-  async onLanguageAddition(): Promise<string> {
-    await this.validateLanguages(this.flowContainer)
+  async onLanguageAddition(): Promise<void> {
+    return await this.validateLanguages(this.flowContainer)
   }
 
   @Getter isFeatureAddLanguageOnImportEnabled!: boolean
