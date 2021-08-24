@@ -243,7 +243,7 @@ export default {
       blockClasses: ({trees: {ui}}) => ui.blockClasses,
     }),
 
-    ...mapGetters('builder', ['blocksById', 'isEditable']),
+    ...mapGetters('builder', ['blocksById', 'isEditable', 'interactionDesignerBoundingClientRect']),
     ...mapGetters('flow', ['activeFlow']),
 
     blockExitsLength() {
@@ -294,8 +294,10 @@ export default {
 
     translatedBlockEditorPosition() {
       const xOffset = 5
-      const yOffset = 32
-      return `translate(${this.x + this.blockWidth + xOffset}px, ${this.y - yOffset}px)`
+      const yOffset = 32 // Block toolbar height
+      const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
+      const top = this.y - yOffset
+      return `translate(${left}px, ${top}px)`
     },
 
     shouldShowBlockEditor() {
@@ -535,9 +537,13 @@ export default {
     selectBlock() {
       const {block: {uuid: blockId}} = this
       const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
-      this.$router.history.replace({
+      this.$router.replace({
         name: routerName,
         params: {blockId},
+      }).catch((err) => {
+        if (err.name !== 'NavigationDuplicated') {
+          console.error(err)
+        }
       })
     },
 
