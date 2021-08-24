@@ -29,22 +29,22 @@ class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
 
   get errorMessage(): string {
+    let ajvErrorMessage = this.flattenErrorMessages[this.messageKey]
     // get value by property (not by path like with lodash.get()), as the messageKey can contain `.` chars
     if (!Object.prototype.hasOwnProperty.call(this.flattenErrorMessages, this.messageKey)) {
-      return ''
+      ajvErrorMessage = ''
     }
 
-    this.validationMessage()
-
-    return this.flattenErrorMessages[this.messageKey]
-  }
-
-  validationMessage() {
-    const ajvError = this.validationStatusForMessageKey(this.messageKey)
+    const ajvError: ErrorObject = this.validationStatusForMessageKey(this.messageKey)!
     const entity = this.messageKey.startsWith('flow') ? 'flows' : 'blocks'
     const property = ajvError.dataPath.replaceAll('/', '-')
-    const validationMessageKey = `${entity}.validation${property}-${ajvError.keyword}`
-    console.log('*** validationMessageKey ', validationMessageKey)
+    const validationMessageKey = `validation.${entity}.${property.substring(1)}-${ajvError.keyword}`
+    let localizedValidationMessage = this.trans(`flow-builder.${validationMessageKey}`)
+    if (localizedValidationMessage === `flow-builder.${validationMessageKey}`) {
+      localizedValidationMessage = null
+    }
+    // Falling back to AJV error message in case we do not find a localized message for a key.
+    return localizedValidationMessage ?? ajvErrorMessage
   }
 
   get isValid(): boolean {
