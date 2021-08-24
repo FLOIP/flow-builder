@@ -29,10 +29,10 @@ class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
 
   get errorMessage(): string {
-    let ajvErrorMessage = this.flattenErrorMessages[this.messageKey]
+    let ajvErrorMessage = ''
     // get value by property (not by path like with lodash.get()), as the messageKey can contain `.` chars
-    if (!Object.prototype.hasOwnProperty.call(this.flattenErrorMessages, this.messageKey)) {
-      ajvErrorMessage = ''
+    if (Object.prototype.hasOwnProperty.call(this.flattenErrorMessages, this.messageKey)) {
+      ajvErrorMessage = this.flattenErrorMessages[this.messageKey]
     }
 
     const ajvError: ErrorObject = this.validationStatusForMessageKey(this.messageKey)!
