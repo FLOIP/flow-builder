@@ -42,34 +42,8 @@ export const stateFactory = (): IValidationState => ({
 })
 
 export const getters: GetterTree<IValidationState, IRootState> = {
-  /**
-   * Human readable errors, keys are index like `flow/flowId/path/to/prop`
-   * check this repo to see more available example: https://github.com/ajv-validator/ajv-i18n/blob/master/messages/index.js
-   * eg:
-   * {
-   *   "flow/1607666a-2216-4a17-b8ba-9eb861d72933/blocks/0/name": "should match pattern \"^[a-zA-Z_]\\w*$\"",
-   *   "flow/1607666a-2216-4a17-b8ba-9eb861d72933/languages/0/iso_639_3": "should match pattern \"^[a-z][a-z][a-z]$\"",
-   *   "block/a520eb17-49f0-4617-af18-b0d524f921ce#/required": "should have required property 'config', for params {\"missingProperty\":\"config\"}",
-   *   "block/a520eb17-49f0-4617-af18-b0d524f921ce/name": "should match pattern \"^[a-zA-Z_]\\w*$\"",
-   *   "block/a520eb17-49f0-4617-af18-b0d524f921ce/exits/1/tag": "should match pattern \"^[a-zA-Z_]\\w*$\"",
-   *   "block/44663ef4-5e1f-4ead-a8e5-05d6f7d47f0d/name": "should match pattern \"^[a-zA-Z_]\\w*$\""
-   * }
-   *
-   * Note that indexedErrors has more elements than validationStatuses.
-   */
-  flattenErrorMessages(state): IIndexedString {
-    const accumulator: IIndexedString = {}
-    forIn(state.validationStatuses, (validationStatus: IValidationStatus, index: string) => {
-      flatValidationStatuses({
-        keyPrefix: index,
-        errors: validationStatus.ajvErrors,
-        accumulator,
-      })
-    })
-    return accumulator
-  },
-  validationStatusForMessageKey: (state) => (messageKey: string): ErrorObject | undefined => {
-    let ajvErrorForMessageKey
+  validationStatusForMessageKey: (state) => (messageKey: string): ErrorObject | null => {
+    let ajvErrorForMessageKey = null
     forIn(state.validationStatuses, (validationStatus: IValidationStatus, index: string) => {
       if (messageKey.includes(index)) {
         const ajvErrors = validationStatus.ajvErrors
@@ -217,26 +191,4 @@ function debugValidationStatus(status: IValidationStatus, customMessage: string)
   } else {
     console.debug('store/validation:', 'the status in debugValidationStatus was undefined')
   }
-}
-
-function flatValidationStatuses({
-  keyPrefix,
-  errors,
-  accumulator,
-}: { keyPrefix: string, errors: undefined | null | Array<ErrorObject>, accumulator: IIndexedString }) {
-  errors?.forEach((error) => {
-    let index = ''
-    let message = ''
-    if (DEV_ERROR_KEYWORDS.includes(error.keyword)) {
-      // this is more likely a dev issue than user error
-      // error.dataPath could be empty or not for such errors
-      index = `${keyPrefix}${error.schemaPath}`
-      message = `${error.message}, for params ${JSON.stringify(error.params)}`
-      console.warn('store/validation:', `Schema issue found on ${index}: ${message}`)
-    } else {
-      index = `${keyPrefix}${error.dataPath}`
-      message = error.message as string
-    }
-    accumulator[index] = message
-  })
 }

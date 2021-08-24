@@ -29,29 +29,25 @@ class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
 
   get errorMessage(): string {
-    let ajvErrorMessage = ''
-    // get value by property (not by path like with lodash.get()), as the messageKey can contain `.` chars
-    if (Object.prototype.hasOwnProperty.call(this.flattenErrorMessages, this.messageKey)) {
-      ajvErrorMessage = this.flattenErrorMessages[this.messageKey]
-    }
+    const ajvErrorObject = this.validationStatusForMessageKey(this.messageKey)
+    if (ajvErrorObject) {
+      const entity = this.messageKey.startsWith('flow') ? 'flows' : 'blocks'
+      const property = ajvErrorObject.dataPath.replaceAll('/', '-')
+      const validationMessageKey = `validation.${entity}.${property.substring(1)}-${ajvErrorObject.keyword}`
+      let localizedValidationMessage = this.trans(`flow-builder.${validationMessageKey}`)
+      if (localizedValidationMessage === `flow-builder.${validationMessageKey}`) {
+        localizedValidationMessage = null
+      }
 
-    const ajvError: ErrorObject = this.validationStatusForMessageKey(this.messageKey)!
-    const entity = this.messageKey.startsWith('flow') ? 'flows' : 'blocks'
-    const property = ajvError.dataPath.replaceAll('/', '-')
-    const validationMessageKey = `validation.${entity}.${property.substring(1)}-${ajvError.keyword}`
-    let localizedValidationMessage = this.trans(`flow-builder.${validationMessageKey}`)
-    if (localizedValidationMessage === `flow-builder.${validationMessageKey}`) {
-      localizedValidationMessage = null
+      return localizedValidationMessage ?? ajvErrorObject.message
     }
-    // Falling back to AJV error message in case we do not find a localized message for a key.
-    return localizedValidationMessage ?? ajvErrorMessage
+    return ''
   }
 
   get isValid(): boolean {
     return !this.errorMessage
   }
 
-  @validationVuexNamespace.Getter flattenErrorMessages!: IIndexedString
   @validationVuexNamespace.Getter validationStatusForMessageKey!: (messageKey: string) => ErrorObject | undefined
 }
 
