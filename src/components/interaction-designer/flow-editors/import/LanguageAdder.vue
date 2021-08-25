@@ -198,7 +198,11 @@ class LanguageAdder extends mixins(Lang, Routes) {
     }
   }
   get variant(): string {
-    return this.newLanguage.variant || ''
+    if (this.newLanguage.variant !== undefined) {
+      return this.newLanguage.variant
+    } else {
+      return ''
+    }
   }
 
   //Taken from voto5 restrictions
@@ -206,7 +210,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
     if (e.key.match(/[^a-z_]/g)) {
       e.preventDefault()
     }
-    if(this.newLanguage.variant) {
+    if (this.newLanguage.variant !== undefined) {
       const lastCharacter = this.newLanguage.variant[this.newLanguage.variant.length - 1]
       if (lastCharacter === '_' && e.key.match(/_/g)) {
         e.preventDefault()
@@ -224,7 +228,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
       if (!isEmpty(this.selected_iso_3166_1)) {
         bcp_47 += `-${this.selected_iso_3166_1.locale}`
       }
-      if (this.newLanguage.variant) {
+      if (this.newLanguage.variant !== undefined) {
         bcp_47 += `-${this.newLanguage.variant}`
       }
       this.newLanguage.bcp_47 = bcp_47
