@@ -35,7 +35,7 @@
       :missing-matches="missingLanguages"
       type-id="id"
       type-label="label"
-      type="languages"
+      type="language"
       :existing-options-without-match="existingLanguagesWithoutMatch"
       match-not-found-text="flow-builder.match-for-languages-not-found"
       @reactToMatch="handleMatchLanguage" />
@@ -45,7 +45,7 @@
       :missing-matches="missingProperties"
       type-id="name"
       type-label="name"
-      type="properties"
+      type="property"
       :existing-options-without-match="existingPropertiesWithoutMatch"
       match-not-found-text="flow-builder.match-for-properties-not-found"
       @reactToMatch="handleMatchProperty" />
