@@ -123,13 +123,13 @@ const validationVuexNamespace = namespace('validation')
   },
 })
 class LanguageAdder extends mixins(Lang, Routes) {
-  newLanguage = {
+  newLanguage: ILanguage = {
     id: '',
     label: '',
     iso_639_3: '',
     variant: '',
     bcp_47: '',
-  } as ILanguage
+  }
   selected_iso_639_3: any = {}
   selected_iso_3166_1: any = {}
   iso_639_3Tags: any[] = iso6393
@@ -196,7 +196,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
     }
   }
   get variant(): string {
-    return this.newLanguage.variant
+    return this.newLanguage.variant || ''
   }
 
   //Taken from voto5 restrictions
@@ -204,9 +204,11 @@ class LanguageAdder extends mixins(Lang, Routes) {
     if (e.key.match(/[^a-z_]/g)) {
       e.preventDefault()
     }
-    const lastCharacter = this.newLanguage.variant[this.newLanguage.variant.length - 1]
-    if (lastCharacter === '_' && e.key.match(/_/g)) {
-      e.preventDefault()
+    if(this.newLanguage.variant) {
+      const lastCharacter = this.newLanguage.variant[this.newLanguage.variant.length - 1]
+      if (lastCharacter === '_' && e.key.match(/_/g)) {
+        e.preventDefault()
+      }
     }
   }
   /*
