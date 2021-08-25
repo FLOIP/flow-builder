@@ -9,7 +9,7 @@
     </slot>
     <b-modal
       ref="add-language-modal"
-      title="Add Language"
+      :title="'flow-builder.add-language' | trans"
       :ok-title="'flow-builder.create' | trans"
       :cancel-title="'flow-builder.cancel' | trans"
       @ok.prevent="handleCreateLanguage">
@@ -29,7 +29,7 @@
         <validation-message
           #input-control="{ isValid }"
           message-key="language/new_language/iso_639_3">
-          <label class="form-check-label mt-2 mb-2 mr-2">{{'flow-builder.iso-639-3-label' | trans}}</label>
+          <label class="text-primary">{{ 'flow-builder.iso-639-3-label' | trans }}</label>
           <vue-multiselect
             v-model="iso_639_3"
             :class="{invalid: isValid === false}"
@@ -54,7 +54,7 @@
         </validation-message>
       </div>
       <div class="form-group">
-        <label class="form-check-label mt-2 mb-2 mr-2">{{'flow-builder.iso-3166-1-label' | trans}}</label>
+        <label class="text-primary">{{ 'flow-builder.iso-3166-1-label' | trans }}</label>
         <vue-multiselect
           v-model="iso_3166_1"
           :placeholder="'flow-builder.language-locale-selector-placeholder' | trans"
@@ -65,7 +65,7 @@
           :searchable="true" />
       </div>
       <div class="form-group">
-        <label class="form-check-label mt-2 mb-2 mr-2">{{'flow-builder.bcp-47-label' | trans}}</label>
+        <label class="text-primary">{{ 'flow-builder.bcp-47-label' | trans }}</label>
         <validation-message
           #input-control="{ isValid }"
           message-key="language/new_language/bcp_47">
@@ -124,8 +124,7 @@ const validationVuexNamespace = namespace('validation')
   },
 })
 class LanguageAdder extends mixins(Lang, Routes) {
-  addLanguageError = ''
-  newLanguage = {
+  newLanguage: ILanguage = {
     id: '',
     label: '',
     iso_639_3: '',
@@ -147,7 +146,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
       iso_639_3: '',
       variant: '',
       bcp_47: '',
-    }
+    } as ILanguage
     this.selected_iso_639_3 = {}
     this.selected_iso_3166_1 = {}
     this.validation_removeNewLanguageValidation()
@@ -199,7 +198,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
     }
   }
   get variant(): string {
-    return this.newLanguage.variant
+    return this.newLanguage.variant || ''
   }
 
   //Taken from voto5 restrictions
@@ -207,14 +206,18 @@ class LanguageAdder extends mixins(Lang, Routes) {
     if (e.key.match(/[^a-z_]/g)) {
       e.preventDefault()
     }
-    const lastCharacter = this.newLanguage.variant[this.newLanguage.variant.length - 1]
-    if (lastCharacter === '_' && e.key.match(/_/g)) {
-      e.preventDefault()
+    if(this.newLanguage.variant) {
+      const lastCharacter = this.newLanguage.variant[this.newLanguage.variant.length - 1]
+      if (lastCharacter === '_' && e.key.match(/_/g)) {
+        e.preventDefault()
+      }
     }
   }
-  // For now, we aren't allowing the use of 'script' or other elements in BCP 47 Construction - though the spec allows this.
-  // We only use iso 639 + ISO 3166-1 (and not UN M.49)
-  // https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1
+  /*
+   * For now, we aren't allowing the use of 'script' or other elements in BCP 47 Construction - though the spec allows this.
+   * We only use iso 639 + ISO 3166-1 (and not UN M.49)
+   * https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1
+   */
   updateBCP47(): void {
     if (!isEmpty(this.selected_iso_639_3)) {
       let bcp_47 = `${this.newLanguage.iso_639_3}`
