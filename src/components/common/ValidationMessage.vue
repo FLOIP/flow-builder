@@ -1,11 +1,11 @@
 <template>
   <div
     :id="messageKey"
-    class="validation-message form-group">
+    class="validation-message form-group" @mousedown="onFocusEvent">
     <slot
       name="input-control"
       :isValid="isValid" />
-    <small class="text-danger">{{ errorMessage }}</small>
+    <small v-if="dirtyStatusForKey(messageKey)" class="text-danger">{{ errorMessage }}</small>
   </div>
 </template>
 
@@ -45,10 +45,26 @@ class ValidationMessage extends mixins(Lang) {
   }
 
   get isValid(): boolean {
-    return !this.errorMessage
+    return !(this.errorMessage && this.dirtyStatusForKey(this.messageKey))
+  }
+
+  mounted() {
+    this.setDirtyStatusForKey({
+      key: this.messageKey,
+      value: false,
+    })
+  }
+
+  onFocusEvent(): void {
+    this.setDirtyStatusForKey({
+      messageKey: this.messageKey,
+      value: true,
+    })
   }
 
   @validationVuexNamespace.Getter validationStatusForMessageKey!: (messageKey: string) => ErrorObject | undefined
+  @validationVuexNamespace.Getter dirtyStatusForKey!: (messageKey: string) => boolean
+  @validationVuexNamespace.Action setDirtyStatusForKey!: ({key, value}: {messageKey: string, value: boolean}) => void
 }
 
 export default ValidationMessage

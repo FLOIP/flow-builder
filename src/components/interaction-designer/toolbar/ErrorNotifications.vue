@@ -31,7 +31,7 @@
                 v-else
                 type="button"
                 class="btn btn-link"
-                @click="fixFlowError()">
+                @click="fixFlowError(error.dataPath)">
                 {{ 'flow-builder.fix-issue' | trans }}
               </button>
             </div>
@@ -126,13 +126,17 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
     return size(this.blockValidationStatuses)
   }
 
-  fixFlowError(): void {
+  fixFlowError(dataPath: string): void {
     this.$router.push({
       name: 'flow-details',
     }).catch((err) => {
       if (err.name !== 'NavigationDuplicated') {
         console.error(err)
       }
+    })
+    this.setDirtyStatusForKey({
+      messageKey: `flow/${this.activeFlow?.uuid}${dataPath}`,
+      value: true,
     })
   }
 
@@ -149,9 +153,14 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
         console.error(err)
       }
     })
+    this.setDirtyStatusForKey({
+      messageKey: `${key}${dataPath}`,
+      value: true,
+    })
   }
 
   @validationVuexNamespace.State validationStatuses!: { [key: string]: IValidationStatus }
+  @validationVuexNamespace.Action setDirtyStatusForKey!: ({messageKey, value}: {messageKey: string, value: boolean}) => void
   @flowVuexNamespace.Getter activeFlow?: IFlow
 }
 </script>

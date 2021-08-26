@@ -35,10 +35,12 @@ export interface IValidationStatus {
 export interface IValidationState {
   // important context for future debug or testing, keys are index like `flow/flowId
   validationStatuses: { [key: string]: IValidationStatus },
+  dirtyStatuses: {[key: string]: boolean}
 }
 
 export const stateFactory = (): IValidationState => ({
   validationStatuses: {} as { [key: string]: IValidationStatus },
+  dirtyStatuses: {} as {[key: string]: boolean},
 })
 
 export const getters: GetterTree<IValidationState, IRootState> = {
@@ -56,6 +58,7 @@ export const getters: GetterTree<IValidationState, IRootState> = {
     })
     return ajvErrorForMessageKey
   },
+  dirtyStatusForKey: (state) => (key: string): boolean => state.dirtyStatuses[key],
 }
 
 export const mutations: MutationTree<IValidationState> = {
@@ -106,6 +109,13 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
     return state.validationStatuses[key]
+  },
+
+  setDirtyStatusForKey({state}, {messageKey, value}: {messageKey: string, value: boolean}) {
+    if (state.dirtyStatuses[messageKey]) {
+      return
+    }
+    Vue.set(state.dirtyStatuses, messageKey, value)
   },
 }
 
