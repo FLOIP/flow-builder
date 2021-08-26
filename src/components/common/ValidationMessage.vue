@@ -50,7 +50,7 @@ class ValidationMessage extends mixins(Lang) {
 
   mounted() {
     this.setDirtyStatusForKey({
-      key: this.messageKey,
+      messageKey: this.messageKey,
       value: false,
     })
   }
@@ -64,7 +64,7 @@ class ValidationMessage extends mixins(Lang) {
 
   @validationVuexNamespace.Getter validationStatusForMessageKey!: (messageKey: string) => ErrorObject | undefined
   @validationVuexNamespace.Getter dirtyStatusForKey!: (messageKey: string) => boolean
-  @validationVuexNamespace.Action setDirtyStatusForKey!: ({key, value}: {messageKey: string, value: boolean}) => void
+  @validationVuexNamespace.Action setDirtyStatusForKey!: ({messageKey, value}: {messageKey: string, value: boolean}) => void
 }
 
 export default ValidationMessage
