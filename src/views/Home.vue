@@ -15,7 +15,7 @@
                           <router-link
                             :to="route('flows.newFlow')"
                             title="trans('flow-builder.create-flow')"
-                            class="btn btn-outline-secondary mr-2 active">
+                            class="btn btn-primary mr-2">
                             {{ 'flow-builder.create-flow' | trans }}
                           </router-link>
                           <div class="mt-4">
@@ -29,7 +29,7 @@
                           <div class="mt-4">
                             <language-adder v-slot="scope">
                               <button
-                                class="btn btn-outline-secondary"
+                                class="btn btn-outline-primary"
                                 @click="scope.showAddLanguageModal">
                                 {{ 'flow-builder.add-language' | trans }}
                               </button>
