@@ -108,7 +108,7 @@ export function getOrCreateFlowValidator(schemaVersion: string): ValidateFunctio
   return validators.get(validationType)!
 }
 
-export function validate_community_block({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
+export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
   let validate = null
   if (isEmpty(validators) || !validators.has(block.type)) {
     const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]

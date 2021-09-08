@@ -4,7 +4,7 @@ import {IBlock, IBlockExit, IFlow} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import {defaultsDeep} from 'lodash'
-import {validate_community_block} from '@/store/validation/validationHelpers'
+import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'Core.RunFlow'
@@ -56,7 +56,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validate_community_block({block, schemaVersion})
+    return validateCommunityBlock({block, schemaVersion})
   },
 }
 
