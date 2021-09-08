@@ -116,7 +116,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     }, {root: true})
   },
 
-  validate_block({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
     return validate_community_block({block, schemaVersion})
   },
 }

@@ -63,7 +63,7 @@ export const mutations: MutationTree<IValidationState> = {
 export const actions: ActionTree<IValidationState, IRootState> = {
   async validate_block({state, commit, rootGetters, dispatch}, {block}: {block: IBlock}): Promise<IValidationStatus> {
     const schemaVersion = rootGetters['flow/activeFlowContainer'].specification_version
-    const status = await dispatch(`flow/${block.type}/validate_block`, {block, schemaVersion}, {root: true})
+    const status = await dispatch(`flow/${block.type}/validate`, {block, schemaVersion}, {root: true})
 
     const key = `block/${block.uuid}`
     Vue.set(state.validationStatuses, key, status)
