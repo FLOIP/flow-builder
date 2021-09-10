@@ -55,7 +55,6 @@ export const getters: GetterTree<IValidationState, IRootState> = {
     })
     return ajvErrorsMap
   },
-  dirtyStatusForKey: (state) => (key: string): boolean => state.dirtyStatuses[key],
 }
 
 export const mutations: MutationTree<IValidationState> = {

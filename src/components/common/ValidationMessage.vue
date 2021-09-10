@@ -1,11 +1,12 @@
 <template>
   <div
     :id="messageKey"
-    class="validation-message form-group" @mousedown="onFocusEvent">
+    class="validation-message form-group"
+    @mousedown="onFocusEvent">
     <slot
       name="input-control"
       :isValid="isValid" />
-    <small v-if="dirtyStatusForKey(messageKey)" class="text-danger">{{ errorMessage }}</small>
+    <small v-if="dirtyStatuses[messageKey]" class="text-danger">{{ errorMessage }}</small>
   </div>
 </template>
 
@@ -15,7 +16,6 @@ import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {BAlert} from 'bootstrap-vue'
 import {namespace} from 'vuex-class'
-import {IIndexedString} from '@/store/validation'
 import {ErrorObject} from 'ajv'
 
 const validationVuexNamespace = namespace('validation')
@@ -46,7 +46,7 @@ class ValidationMessage extends mixins(Lang) {
   }
 
   get isValid(): boolean {
-    return !(this.errorMessage && this.dirtyStatusForKey(this.messageKey))
+    return !(this.errorMessage && this.dirtyStatuses[this.messageKey])
   }
 
   mounted() {
@@ -63,8 +63,8 @@ class ValidationMessage extends mixins(Lang) {
     })
   }
 
+  @validationVuexNamespace.State dirtyStatuses!: {[key: string]: boolean}
   @validationVuexNamespace.Getter validationStatusForMessageKey!: {[key: string]: ErrorObject | undefined}
-  @validationVuexNamespace.Getter dirtyStatusForKey!: (messageKey: string) => boolean
   @validationVuexNamespace.Action setDirtyStatusForKey!: ({messageKey, value}: {messageKey: string, value: boolean}) => void
 }
 
