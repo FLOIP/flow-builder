@@ -29,7 +29,7 @@ class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
 
   get errorMessage(): string | undefined {
-    const ajvErrorObject = this.validationStatusForMessageKey(this.messageKey)
+    const ajvErrorObject: ErrorObject | undefined = this.validationStatusForMessageKey[this.messageKey]
     if (ajvErrorObject) {
       const entity = this.messageKey.startsWith('flow') ? 'flows' : 'blocks'
       const property = ajvErrorObject.dataPath.replaceAll('/', '-')
@@ -49,7 +49,7 @@ class ValidationMessage extends mixins(Lang) {
     return !this.errorMessage
   }
 
-  @validationVuexNamespace.Getter validationStatusForMessageKey!: (messageKey: string) => ErrorObject | undefined
+  @validationVuexNamespace.Getter validationStatusForMessageKey!: {[key: string]: ErrorObject | undefined}
 }
 
 export default ValidationMessage
