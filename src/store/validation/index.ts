@@ -44,19 +44,16 @@ export const stateFactory = (): IValidationState => ({
 })
 
 export const getters: GetterTree<IValidationState, IRootState> = {
-  validationStatusForMessageKey: (state) => (messageKey: string): ErrorObject | null => {
-    let ajvErrorForMessageKey = null
+  validationStatusForMessageKey: (state): {[key: string]: ErrorObject} => {
+    const ajvErrorsMap: {[key: string]: ErrorObject} = {}
     forIn(state.validationStatuses, (validationStatus: IValidationStatus, index: string) => {
-      if (messageKey.includes(index)) {
-        const ajvErrors = validationStatus.ajvErrors
-        ajvErrors?.forEach((error: ErrorObject) => {
-          if (messageKey.includes(error.dataPath)) {
-            ajvErrorForMessageKey = error
-          }
-        })
-      }
+      const ajvErrors = validationStatus.ajvErrors
+      ajvErrors?.forEach((error: ErrorObject) => {
+        const messageKey = index + error.dataPath
+        ajvErrorsMap[messageKey] = error
+      })
     })
-    return ajvErrorForMessageKey
+    return ajvErrorsMap
   },
   dirtyStatusForKey: (state) => (key: string): boolean => state.dirtyStatuses[key],
 }

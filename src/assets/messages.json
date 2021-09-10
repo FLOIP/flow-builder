@@ -1639,24 +1639,7 @@
     "your-orgs-audio-library": "your organization's audio library",
     "your-prompt": "<your prompt>",
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!",
-    "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit.",
-    "validation": {
-      "flows": {
-        "name-minLength": "Flow Label should have a minimum of 3 characters",
-        "interaction_timeout-type": "Interaction Timeout should be a number",
-        "languages-minItems": "Minimum of 1 language must be selected for the Flow",
-        "supported_modes-minItems": "Minimum of 1 mode must be selected for the Flow"
-      },
-      "blocks": {
-        "name-pattern": "Block code allows only alphanumeric characters with an underscore",
-        "config-ivr-max_duration_seconds-type": "Max Duration Seconds should to be a number",
-        "config-text-max_response_characters-type": "Max Response Characters should be a number",
-        "config-accuracy_threshold_meters-type": "Accuracy threshold in meters should be number",
-        "config-accuracy_timeout_seconds-type": "Accuracy timeout in seconds shoud be number",
-        "config-value-type": "Output expression should be a string",
-        "config-is_member-type": "Value/Expression should be a string"
-      }
-    }
+    "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit."
   },
   "fr.flow-builder": {
     "weather": "Météo",
@@ -3296,24 +3279,33 @@
     "your-orgs-audio-library": "bibliothèque audio de votre organisation",
     "your-prompt": "<votre message>",
     "youre-using-floip-expressions": "On dirait que vous utilisez des expressions FLOIP, nice!",
-    "simulator-unsupported-block": "bloc est pas pris en charge en ce moment. Vous ne serez pas en mesure de procéder. S'il vous plaît quitter.",
-    "validation": {
-      "flows": {
-        "name-minLength": "L'étiquette de flux devrait avoir un minimum de 3 caractères",
-        "interaction_timeout-type": "Le délai d'interaction devrait être un nombre",
-        "languages-minItems": "Le minimum de 1 langue doit être sélectionné pour le flux",
-        "supported_modes-minItems": "Minimum de 1 mode doit être sélectionné pour le flux"
-      },
-      "blocks": {
-        "name-pattern": "Le code de bloc ne permet que des caractères alphanumériques avec un soulignement",
-        "config-ivr-max_duration_seconds-type": "La durée maximale des secondes devraient être un nombre",
-        "config-text-max_response_characters-type": "Les caractères de réponse maximale doivent être un nombre",
-        "config-accuracy_threshold_meters-type": "Seuil de précision en mètres devrait être un nombre",
-        "config-accuracy_timeout_seconds-type": "Délai de précision en secondes devrait être numéro",
-        "config-value-type": "L'expression de sortie devrait être une chaîne",
-        "config-is_member-type": "La valeur / l'expression devrait être une chaîne"
-      }
-    }
+    "simulator-unsupported-block": "bloc est pas pris en charge en ce moment. Vous ne serez pas en mesure de procéder. S'il vous plaît quitter."
+  },
+  "en.flow-builder-validation": {
+    "flows-name-minLength": "Flow Label should have a minimum of 3 characters",
+    "flows-interaction_timeout-type": "Interaction Timeout should be a number",
+    "flows-languages-minItems": "Minimum of 1 language must be selected for the Flow",
+    "flows-supported_modes-minItems": "Minimum of 1 mode must be selected for the Flow",
+    "blocks-name-pattern": "Block code allows only alphanumeric characters with an underscore",
+    "blocks-config-ivr-max_duration_seconds-type": "Max Duration Seconds should to be a number",
+    "blocks-config-text-max_response_characters-type": "Max Response Characters should be a number",
+    "blocks-config-accuracy_threshold_meters-type": "Accuracy threshold in meters should be number",
+    "blocks-config-accuracy_timeout_seconds-type": "Accuracy timeout in seconds shoud be number",
+    "blocks-config-value-type": "Output expression should be a string",
+    "blocks-config-is_member-type": "Value/Expression should be a string"
+  },
+  "fr.flow-builder-validation": {
+    "flows-name-minLength": "L'étiquette de flux devrait avoir un minimum de 3 caractères",
+    "flows-interaction_timeout-type": "Le délai d'interaction devrait être un nombre",
+    "flows-languages-minItems": "Le minimum de 1 langue doit être sélectionné pour le flux",
+    "flows-supported_modes-minItems": "Minimum de 1 mode doit être sélectionné pour le flux",
+    "blocks-name-pattern": "Le code de bloc ne permet que des caractères alphanumériques avec un soulignement",
+    "blocks-config-ivr-max_duration_seconds-type": "La durée maximale des secondes devraient être un nombre",
+    "blocks-config-text-max_response_characters-type": "Les caractères de réponse maximale doivent être un nombre",
+    "blocks-config-accuracy_threshold_meters-type": "Seuil de précision en mètres devrait être un nombre",
+    "blocks-config-accuracy_timeout_seconds-type": "Délai de précision en secondes devrait être numéro",
+    "blocks-config-value-type": "L'expression de sortie devrait être une chaîne",
+    "blocks-config-is_member-type": "La valeur / l'expression devrait être une chaîne"
   }
 }
 

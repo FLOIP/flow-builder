@@ -28,18 +28,19 @@ const validationVuexNamespace = namespace('validation')
 class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
 
-  get errorMessage(): string {
-    const ajvErrorObject = this.validationStatusForMessageKey(this.messageKey)
+  get errorMessage(): string | undefined {
+    const ajvErrorObject: ErrorObject | undefined = this.validationStatusForMessageKey[this.messageKey]
     if (ajvErrorObject) {
       const entity = this.messageKey.startsWith('flow') ? 'flows' : 'blocks'
       const property = ajvErrorObject.dataPath.replaceAll('/', '-')
-      const validationMessageKey = `validation.${entity}.${property.substring(1)}-${ajvErrorObject.keyword}`
-      let localizedValidationMessage = this.trans(`flow-builder.${validationMessageKey}`)
-      if (localizedValidationMessage === `flow-builder.${validationMessageKey}`) {
-        localizedValidationMessage = null
+      const validationMessageKey = `${entity}-${property.substring(1)}-${ajvErrorObject.keyword}`
+      const localizedValidationMessage = this.trans(`flow-builder-validation.${validationMessageKey}`)
+      if (localizedValidationMessage === `flow-builder-validation.${validationMessageKey}`) {
+        console.debug(`Validation ${localizedValidationMessage} key not found in localization data`)
+        return ajvErrorObject.message
       }
 
-      return localizedValidationMessage ?? ajvErrorObject.message
+      return localizedValidationMessage
     }
     return ''
   }
@@ -62,7 +63,7 @@ class ValidationMessage extends mixins(Lang) {
     })
   }
 
-  @validationVuexNamespace.Getter validationStatusForMessageKey!: (messageKey: string) => ErrorObject | undefined
+  @validationVuexNamespace.Getter validationStatusForMessageKey!: {[key: string]: ErrorObject | undefined}
   @validationVuexNamespace.Getter dirtyStatusForKey!: (messageKey: string) => boolean
   @validationVuexNamespace.Action setDirtyStatusForKey!: ({messageKey, value}: {messageKey: string, value: boolean}) => void
 }
