@@ -4,6 +4,7 @@ import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to create at flow-runner
 import {defaultsDeep} from 'lodash'
+import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'SmartDevices.PhotoResponse'
@@ -43,6 +44,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId: block.uuid,
       test: 'NOT(block.value = false)',
     }, {root: true})
+  },
+
+  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return validateCommunityBlock({block, schemaVersion})
   },
 }
 
