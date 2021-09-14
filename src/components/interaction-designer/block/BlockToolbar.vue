@@ -51,7 +51,6 @@
       <!--Expand block editor-->
       <div class="mr-1 ml-2">
         <font-awesome-icon
-          v-if="isEditable"
           v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
           :icon="isEditorVisible ? ['fac', 'minimize'] : ['fac', 'expand']"
           class="fa-btn"
