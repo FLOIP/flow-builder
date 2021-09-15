@@ -1,7 +1,7 @@
 <template>
   <main class="error-notifications-wrapper">
     <section
-      v-if="flowValidationErrors.length > 0"
+      v-if="Object.keys(flowValidationErrors).length > 0"
       class="alert alert-danger d-flex mb-0 py-sm-1 px-2"
       role="alert">
       <span class="align-self-center ml-2">
@@ -21,10 +21,10 @@
         <ul
           class="notification dropdown-menu"
           aria-labelledby="flowErrorsDropdown">
-          <li v-for="error in flowValidationErrors">
+          <li v-for="(message, path) in flowValidationErrors" :key="path">
             <div class="d-flex justify-content-between px-2 py-0">
-              <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
-              <div v-if="error.dataPath === '/first_block_id'">
+              <span class="text-danger align-self-center">{{ message }}</span>
+              <div v-if="path === '/first_block_id'">
                 {{ 'flow-builder.add-at-least-one-block' | trans }}
               </div>
               <button
@@ -69,13 +69,13 @@
                 {{ trans(`flow-builder.${status.type}`) }}
               </div>
               <div
-                v-for="error in status.ajvErrors"
+                v-for="(message, path) in status.errors"
                 class="card-body d-flex justify-content-between px-2 py-0">
-                <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
+                <span class="text-danger align-self-center">{{ message }}</span>
                 <button
                   type="button"
                   class="btn btn-link"
-                  @click="fixBlockError(key, error.dataPath)">
+                  @click="fixBlockError(key, path)">
                   {{ 'flow-builder.fix-issue' | trans }}
                 </button>
               </div>
@@ -106,12 +106,13 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
     this.$emit('updated')
   }
 
-  get flowValidationErrors(): ErrorObject[] {
+  get flowValidationErrors(): {[key: string]: string} {
     const flowKey = `flow/${this.activeFlow?.uuid}`
-    return this.validationStatuses[flowKey]?.ajvErrors || []
+    const flowAJVErrors = this.validationStatuses[flowKey]?.ajvErrors || []
+    return this.getCustomMessageMapForAJVErrors(flowAJVErrors, 'flows')
   }
 
-  get blockValidationStatuses(): { [key: string]: IValidationStatus } {
+  get blockValidationStatuses(): {[key: string]: {errors: {[key: string]: string}, type: string}} {
     const blocksMap = this.activeFlow?.blocks.reduce((map: { [key: string]: boolean }, block) => {
       map[`block/${block.uuid}`] = true
       return map
@@ -119,7 +120,29 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
     if (!blocksMap || size(blocksMap) === 0) {
       return {}
     }
-    return pickBy(this.validationStatuses, (value: IValidationStatus, key) => value.type !== 'flow' && blocksMap[key])
+    const blockAJVErrors = pickBy(this.validationStatuses, (value: IValidationStatus, key) => value.type !== 'flow' && blocksMap[key])
+    const customMessageMapForBlocks: {[key: string]: {errors: {[key: string]: string}, type: string}} = {}
+    for (const key in blockAJVErrors) {
+      const ajvErrors = blockAJVErrors[key].ajvErrors || []
+      const customMessageMap = this.getCustomMessageMapForAJVErrors(ajvErrors, 'blocks')
+      customMessageMapForBlocks[key] = {
+        errors: customMessageMap,
+        type: blockAJVErrors[key].type,
+      }
+    }
+    return customMessageMapForBlocks
+  }
+
+  getCustomMessageMapForAJVErrors(ajvErrors: ErrorObject[], entity: string): {[key: string]: string} {
+    const customErrorMsgMap: {[key: string]: string} = {}
+    ajvErrors.forEach((error: ErrorObject) => {
+      const property = error.dataPath.replaceAll('/', '-')
+      const validationMessageKey = `${entity}-${property.substring(1)}-${error.keyword}`
+      const localizedValidationMessage = this.trans(`flow-builder-validation.${validationMessageKey}`)
+      customErrorMsgMap[error.dataPath] = localizedValidationMessage === `flow-builder-validation.${validationMessageKey}`
+        ? error.message : localizedValidationMessage
+    })
+    return customErrorMsgMap
   }
 
   get numberOfBlocksWithErrors(): number {
