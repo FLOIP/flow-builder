@@ -218,7 +218,11 @@ var runtime = __webpack_require__("96cf");
 // EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
 var IdGeneratorUuidV4 = __webpack_require__("31aa");
 
+// EXTERNAL MODULE: ./src/store/validation/validationHelpers.ts
+var validationHelpers = __webpack_require__("85b2");
+
 // CONCATENATED MODULE: ./src/store/flow/block-types/Core_SetContactPropertyStore.ts
+
 
 
 
@@ -289,6 +293,15 @@ var actions = {
       test: 'block.value = true'
     }, {
       root: true
+    });
+  },
+  validate: function validate(_ref5, _ref6) {
+    var rootGetters = _ref5.rootGetters;
+    var block = _ref6.block,
+        schemaVersion = _ref6.schemaVersion;
+    return Object(validationHelpers["e" /* validateCommunityBlock */])({
+      block: block,
+      schemaVersion: schemaVersion
     });
   }
 };

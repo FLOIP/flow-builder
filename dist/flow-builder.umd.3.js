@@ -783,6 +783,8 @@ var component = Object(componentNormalizer["a" /* default */])(
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_17__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__("2ef0");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_18__);
+/* harmony import */ var _store_validation_validationHelpers__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__("85b2");
+
 
 
 
@@ -1002,6 +1004,15 @@ var actions = {
       test: formatTestValueForUnifiedBranchingType(block)
     }, {
       root: true
+    });
+  },
+  validate: function validate(_ref14, _ref15) {
+    var rootGetters = _ref14.rootGetters;
+    var block = _ref15.block,
+        schemaVersion = _ref15.schemaVersion;
+    return Object(_store_validation_validationHelpers__WEBPACK_IMPORTED_MODULE_19__[/* validateCommunityBlock */ "e"])({
+      block: block,
+      schemaVersion: schemaVersion
     });
   }
 };

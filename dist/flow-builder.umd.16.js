@@ -75,7 +75,11 @@ var MobilePrimitives_SelectOneResponseBlockStore = __webpack_require__("ecef");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue + 14 modules
 var BlockOutputBranchingConfig = __webpack_require__("18b0");
 
+// EXTERNAL MODULE: ./src/store/validation/validationHelpers.ts
+var validationHelpers = __webpack_require__("85b2");
+
 // CONCATENATED MODULE: ./src/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore.ts
+
 
 
 
@@ -208,6 +212,15 @@ var actions = Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" 
         }
       }, _callee);
     }))();
+  },
+  validate: function validate(_ref9, _ref10) {
+    var rootGetters = _ref9.rootGetters;
+    var block = _ref10.block,
+        schemaVersion = _ref10.schemaVersion;
+    return Object(validationHelpers["e" /* validateCommunityBlock */])({
+      block: block,
+      schemaVersion: schemaVersion
+    });
   }
 });
 

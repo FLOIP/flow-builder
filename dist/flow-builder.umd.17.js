@@ -59,10 +59,14 @@ var IdGeneratorUuidV4 = __webpack_require__("31aa");
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __webpack_require__("2ef0");
 
+// EXTERNAL MODULE: ./src/store/validation/validationHelpers.ts
+var validationHelpers = __webpack_require__("85b2");
+
 // CONCATENATED MODULE: ./src/store/flow/block-types/SmartDevices_LocationResponseBlockStore.ts
 
 
  // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
+
 
 
 var BLOCK_TYPE = 'SmartDevices.LocationResponse';
@@ -189,6 +193,15 @@ var actions = {
       test: 'NOT(block.value = false)'
     }, {
       root: true
+    });
+  },
+  validate: function validate(_ref9, _ref10) {
+    var rootGetters = _ref9.rootGetters;
+    var block = _ref10.block,
+        schemaVersion = _ref10.schemaVersion;
+    return Object(validationHelpers["e" /* validateCommunityBlock */])({
+      block: block,
+      schemaVersion: schemaVersion
     });
   }
 };

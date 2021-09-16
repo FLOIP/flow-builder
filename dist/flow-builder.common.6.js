@@ -334,7 +334,11 @@ var IdGeneratorUuidV4 = __webpack_require__("31aa");
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __webpack_require__("2ef0");
 
+// EXTERNAL MODULE: ./src/store/validation/validationHelpers.ts
+var validationHelpers = __webpack_require__("85b2");
+
 // CONCATENATED MODULE: ./src/store/flow/block-types/ConsoleIO_PrintBlockStore.ts
+
 
 
 
@@ -428,6 +432,15 @@ var actions = {
       test: 'block.value = true'
     }, {
       root: true
+    });
+  },
+  validate: function validate(_ref7, _ref8) {
+    var rootGetters = _ref7.rootGetters;
+    var block = _ref8.block,
+        schemaVersion = _ref8.schemaVersion;
+    return Object(validationHelpers["e" /* validateCommunityBlock */])({
+      block: block,
+      schemaVersion: schemaVersion
     });
   }
 };

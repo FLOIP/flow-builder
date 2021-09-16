@@ -359,7 +359,11 @@ var runtime = __webpack_require__("96cf");
 // EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
 var IdGeneratorUuidV4 = __webpack_require__("31aa");
 
+// EXTERNAL MODULE: ./src/store/validation/validationHelpers.ts
+var validationHelpers = __webpack_require__("85b2");
+
 // CONCATENATED MODULE: ./src/store/flow/block-types/Core_SetGroupMembershipStore.ts
+
 
 
 
@@ -463,6 +467,15 @@ var actions = {
         }
       }, _callee2);
     }))();
+  },
+  validate: function validate(_ref6, _ref7) {
+    var rootGetters = _ref6.rootGetters;
+    var block = _ref7.block,
+        schemaVersion = _ref7.schemaVersion;
+    return Object(validationHelpers["e" /* validateCommunityBlock */])({
+      block: block,
+      schemaVersion: schemaVersion
+    });
   }
 };
 /* harmony default export */ var Core_SetGroupMembershipStore = ({

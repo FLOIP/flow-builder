@@ -335,7 +335,11 @@ var lodash = __webpack_require__("2ef0");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue + 14 modules
 var BlockOutputBranchingConfig = __webpack_require__("18b0");
 
+// EXTERNAL MODULE: ./src/store/validation/validationHelpers.ts
+var validationHelpers = __webpack_require__("85b2");
+
 // CONCATENATED MODULE: ./src/store/flow/block-types/Core_CaseBlockStore.ts
+
 
 
 
@@ -397,6 +401,15 @@ var actions = {
         }
       }, _callee);
     }))();
+  },
+  validate: function validate(_ref3, _ref4) {
+    var rootGetters = _ref3.rootGetters;
+    var block = _ref4.block,
+        schemaVersion = _ref4.schemaVersion;
+    return Object(validationHelpers["e" /* validateCommunityBlock */])({
+      block: block,
+      schemaVersion: schemaVersion
+    });
   }
 };
 /* harmony default export */ var Core_CaseBlockStore = ({
