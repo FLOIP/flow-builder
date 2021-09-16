@@ -146,7 +146,7 @@ export default {
     // Add event listeners
     this.connectionDomHandle.addEventListener('click', this.clickHandler, false)
 
-    this.connectionDomHandle.addEventListener('click', this.clickAwayHandler(this.connectionDomHandle), false)
+    this.clickAwayHandler(this.connectionDomHandle)
 
     this.connectionDomHandle.addEventListener('mouseover', this.mouseOverHandler, false)
 
