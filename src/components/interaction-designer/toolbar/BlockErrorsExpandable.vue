@@ -2,6 +2,9 @@
   <div class="card">
     <div class="card-title m-0 px-2 pt-1">
       {{ trans(`flow-builder.${status.type}`) }}
+      <div class="text-secondary">
+        <small>{{ blockName }}</small>
+      </div>
     </div>
     <div
       v-for="error in errorsToShow"
@@ -31,8 +34,12 @@ import {IValidationStatus} from '@/store/validation'
 import Lang from '@/lib/filters/lang'
 import {ErrorObject} from 'ajv/lib/types/index'
 import {Prop} from 'vue-property-decorator'
+import {IFlow} from '@floip/flow-runner'
+import {namespace} from 'vuex-class'
 
-const DEFAULT_LIST_SIZE = 1
+const flowVuexNamespace = namespace('flow')
+
+const DEFAULT_LIST_SIZE = 3
 
 @Component({})
 export default class BlockErrorsExpandable extends mixins(Lang) {
@@ -51,13 +58,23 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
     return this.status.ajvErrors != null && this.status.ajvErrors.length > DEFAULT_LIST_SIZE
   }
 
+  get blockName(): string {
+    const blockId = this.statusKey.replace('block/', '')
+    const block = this.activeFlow?.blocks?.find((block) => block.uuid === blockId)
+    return block?.label != null && block.label !== ''
+      ? block.label
+      : this.trans('flow-builder.untitled-block')
+  }
+
   toggleList(): void {
     this.showMore = !this.showMore
   }
+
+  @flowVuexNamespace.Getter activeFlow?: IFlow
 }
 </script>
 <style scoped>
 .highlight-on-hover:hover {
-  background-color: #f8d7da;
+  background-color: #f1e5e5;
 }
 </style>
