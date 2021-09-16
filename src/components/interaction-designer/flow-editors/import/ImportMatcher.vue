@@ -40,7 +40,7 @@
         v-if="type === 'language' && isFeatureAddLanguageOnImportEnabled"
         class="row full-width mt-2">
         <div class="col-12">
-          <language-adder @onLanguageAddition="onLanguageAddition"/>
+          <language-adder @onLanguageAddition="onLanguageAddition" />
         </div>
       </div>
     </div>

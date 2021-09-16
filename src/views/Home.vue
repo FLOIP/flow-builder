@@ -6,7 +6,7 @@
           <div class="card-deck mb-3">
             <div class="card mb-4 box-shadow">
               <div class="card-body">
-                <h3>{{'flow-builder.flow-builder' | trans}}</h3>
+                <h3>{{ 'flow-builder.flow-builder' | trans }}</h3>
                 <div class="row mt-5 mb-5">
                   <div class="col-sm-5 border-right">
                     <div class="d-flex h-100 text-center">
@@ -36,8 +36,10 @@
                             </language-adder>
                           </div>
                           <div class="mt-4">
-                            <h4 v-if="!!flows.length">{{'flow-builder.existing-flows' | trans}}:</h4>
-                            <div v-for="flow in flows">
+                            <h4 v-if="!!flows.length">
+                              {{ 'flow-builder.existing-flows' | trans }}:
+                            </h4>
+                            <div v-for="flow in flows" :key="flow.uuid">
                               <router-link
                                 :to="route('trees.editTree', {treeId: flow.uuid, component: 'interaction-designer', mode: 'edit'})"
                                 title="trans('flow-builder.edit-flow')"
@@ -53,20 +55,31 @@
                   <div class="col-sm-7">
                     <p>
                       <span>
-                        {{'flow-builder.flow-builder-info-1' | trans}}
+                        {{ 'flow-builder.flow-builder-info-1' | trans }}
                       </span>
                       <span>
-                        <a :class="{'d-none': !isExtraContentHidden}" class="blue-link" href="#" @click="showExtraContent">{{'flow-builder.learn-more' | trans}}</a>
+                        <a
+                          :class="{'d-none': !isExtraContentHidden}"
+                          class="blue-link"
+                          href="#"
+                          @click="showExtraContent">{{ 'flow-builder.learn-more' | trans }}</a>
                       </span>
-                      <span :class="{'d-none': isExtraContentHidden}" ref="extra-content-1">
-                        {{'flow-builder.flow-builder-info-2' | trans}}
+                      <span
+                        ref="extra-content-1"
+                        :class="{'d-none': isExtraContentHidden}">
+                        {{ 'flow-builder.flow-builder-info-2' | trans }}
                       </span>
                     </p>
-                    <p :class="{'d-none': isExtraContentHidden}" ref="extra-content-2">
-                      <span>{{'flow-builder.flow-builder-info-3-pt-1' | trans}}</span>
+                    <p
+                      ref="extra-content-2"
+                      :class="{'d-none': isExtraContentHidden}">
+                      <span>{{ 'flow-builder.flow-builder-info-3-pt-1' | trans }}</span>
                       <b><a href="https://flowinterop.org/">https://flowinterop.org/</a></b>
-                      <span>{{'flow-builder.flow-builder-info-3-pt-2' | trans}}</span>
-                      <a href="#" class="blue-link" @click="hideExtraContent">{{'flow-builder.less' | trans}}</a>
+                      <span>{{ 'flow-builder.flow-builder-info-3-pt-2' | trans }}</span>
+                      <a
+                        href="#"
+                        class="blue-link"
+                        @click="hideExtraContent">{{ 'flow-builder.less' | trans }}</a>
                     </p>
                     <p>
                       <b>
@@ -79,7 +92,7 @@
                       </b>
                     </p>
                     <p>
-                      {{'flow-builder.flow-builder-info-4' | trans}}
+                      {{ 'flow-builder.flow-builder-info-4' | trans }}
                       <b><a href="https://flowinteroperability.slack.com">flowinteroperability.slack.com</a></b>
                     </p>
                   </div>
@@ -116,7 +129,7 @@ class Home extends Vue {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 
-  isExtraContentHidden: boolean = true
+  isExtraContentHidden = true
 
   showExtraContent(e: KeyboardEvent) {
     e.preventDefault()
