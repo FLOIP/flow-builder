@@ -207,10 +207,10 @@ class LanguageAdder extends mixins(Lang, Routes) {
 
   //Taken from voto5 restrictions
   filterVariant(e: KeyboardEvent): void {
-    if (e.key.match(/[^a-z_]/g)) {
+    if (e.key.match(/[^a-z_]/g) && e.keyCode !== 8 && e.keyCode !== 46) {//allow backspace and delete
       e.preventDefault()
     }
-    if (this.newLanguage.variant !== undefined) {
+    if (this.newLanguage.variant !== undefined && !isEmpty(this.newLanguage.variant)) {
       const lastCharacter = this.newLanguage.variant[this.newLanguage.variant.length - 1]
       if (lastCharacter === '_' && e.key.match(/_/g)) {
         e.preventDefault()
@@ -228,7 +228,7 @@ class LanguageAdder extends mixins(Lang, Routes) {
       if (!isEmpty(this.selected_iso_3166_1)) {
         bcp_47 += `-${this.selected_iso_3166_1.locale}`
       }
-      if (this.newLanguage.variant !== undefined) {
+      if (this.newLanguage.variant !== undefined && !isEmpty(this.newLanguage.variant)) {
         bcp_47 += `-${this.newLanguage.variant}`
       }
       this.newLanguage.bcp_47 = bcp_47
