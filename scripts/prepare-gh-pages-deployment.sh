@@ -15,8 +15,8 @@ abort()
 *** - Regenerate patches:
 ***     $ git diff src/router/index.ts > patches/gh-pages-prepare-router.patch
 ***     $ git diff vue.config.js > patches/gh-pages-prepare-vue-config.patch
-***     $ git diff builder.config.js > patches/remove-backend-routes-from-config.patch
-***     $ git diff > patches/disable-save-button.patch
+***     $ git diff builder.config.json > patches/remove-backend-routes-from-config.patch
+***     $ git diff builder.config.json > patches/disable-save-button.patch
 *** - commit changes for future usage
 *****************************************************************************************
 '

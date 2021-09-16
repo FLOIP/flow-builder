@@ -108,6 +108,15 @@ export function getOrCreateFlowValidator(schemaVersion: string): ValidateFunctio
   return validators.get(validationType)!
 }
 
+export function getOrCreateLanguageValidator(schemaVersion: string): ValidateFunction {
+  const validationType = 'language'
+  if (isEmpty(validators) || !validators.has(validationType)) {
+    const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/ILanguage'))
+  }
+  return validators.get(validationType)!
+}
+
 export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
   let validate = null
   if (isEmpty(validators) || !validators.has(block.type)) {

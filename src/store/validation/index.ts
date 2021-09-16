@@ -2,9 +2,9 @@ import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {ErrorObject} from 'ajv'
-import {IBlock, IContainer, IFlow, getFlowStructureErrors} from '@floip/flow-runner'
+import {IBlock, IContainer, IFlow, ILanguage, getFlowStructureErrors} from '@floip/flow-runner'
 import {forIn} from 'lodash'
-import {debugValidationStatus, flatValidationStatuses, getOrCreateFlowValidator} from '@/store/validation/validationHelpers'
+import {debugValidationStatus, flatValidationStatuses, getOrCreateFlowValidator, getOrCreateLanguageValidator} from '@/store/validation/validationHelpers'
 
 export interface IIndexedString {
   [key: string]: string,
@@ -97,6 +97,22 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
     return state.validationStatuses[key]
+  },
+
+  async validate_new_language({state, rootGetters}, {language}: { language: ILanguage }): Promise<IValidationStatus> {
+    const validate = getOrCreateLanguageValidator(rootGetters['flow/activeFlowContainer'].specification_version)
+    const index = 'language/new_language'
+    Vue.set(state.validationStatuses, index, {
+      isValid: validate(language),
+      ajvErrors: validate.errors,
+    })
+
+    debugValidationStatus(state.validationStatuses[index], 'language validation status')
+    return state.validationStatuses[index]
+  },
+  validation_removeNewLanguageValidation({state}): void {
+    const index = 'language/new_language'
+    Vue.delete(state.validationStatuses, index)
   },
 }
 
