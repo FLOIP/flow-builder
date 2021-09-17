@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-title m-0 px-2 pt-1">
+    <div class="card-title m-0 px-2 pt-1 menu-bg-color">
       {{ trans(`flow-builder.${status.type}`) }}
       <div class="text-secondary">
         <small>{{ blockName }}</small>
@@ -9,22 +9,29 @@
     <div
       v-for="error in errorsToShow"
       :key="error.dataPath"
-      class="card-body d-flex justify-content-between px-2 py-0 highlight-on-hover">
+      class="card-body d-flex justify-content-between px-2 py-0 highlight-on-hover menu-bg-color">
       <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
       <button
         type="button"
-        class="btn btn-link"
+        class="btn btn-link btn-link-text"
         @click="$emit('fixBlockError', statusKey, error.dataPath)">
         {{ 'flow-builder.fix-issue' | trans }}
       </button>
     </div>
-    <label
+    <div
       v-if="isListLong"
       type="button"
-      class="btn btn-link text-left px-2 m-0 border-0"
+      class="btn btn-link text-left px-2 m-0 border-0 text-center menu-bg-color"
       @click.stop="toggleList">
-      {{ showMore ? trans('flow-builder.show-less') : trans('flow-builder.show-more') }}
-    </label>
+      <font-awesome-icon
+        v-if="!isExpanded"
+        :icon="['fas', 'chevron-down']"
+        :aria-label="'flow-builder.show-more' | trans" />
+      <font-awesome-icon
+        v-else
+        :icon="['fas', 'chevron-up']"
+        :aria-label="'flow-builder.show-less' | trans" />
+    </div>
   </div>
 </template>
 
@@ -46,10 +53,10 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
   @Prop({required: true}) readonly status!: IValidationStatus
   @Prop({required: true}) readonly statusKey!: string
 
-  showMore = false
+  isExpanded = false
 
   get errorsToShow(): ErrorObject[] {
-    return this.showMore
+    return this.isExpanded
       ? this.status.ajvErrors ?? []
       : this.status.ajvErrors?.slice(0, DEFAULT_LIST_SIZE) ?? []
   }
@@ -67,14 +74,23 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
   }
 
   toggleList(): void {
-    this.showMore = !this.showMore
+    this.isExpanded = !this.isExpanded
   }
 
   @flowVuexNamespace.Getter activeFlow?: IFlow
 }
 </script>
 <style scoped>
+.menu-bg-color {
+  background-color: #F8F8F8;
+}
+
 .highlight-on-hover:hover {
-  background-color: #f1e5e5;
+  background-color: #FFEBEB;
+}
+
+.btn-link-text {
+  text-decoration: underline;
+  color: #216FCE;
 }
 </style>

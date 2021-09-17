@@ -10,7 +10,7 @@
       <div class="dropdown">
         <button
           id="flowErrorsDropdown"
-          class="btn btn-link dropdown-toggle"
+          class="btn btn-link btn-link-text dropdown-toggle"
           type="button"
           data-toggle="dropdown"
           aria-haspopup="true"
@@ -32,7 +32,7 @@
               <button
                 v-else
                 type="button"
-                class="btn btn-link"
+                class="btn btn-link btn-link-text"
                 @click="fixFlowError()">
                 {{ 'flow-builder.fix-issue' | trans }}
               </button>
@@ -52,7 +52,7 @@
       <div class="dropdown">
         <button
           id="blockErrorsDropdown"
-          class="btn btn-link dropdown-toggle"
+          class="btn btn-link btn-link-text dropdown-toggle"
           type="button"
           data-toggle="dropdown"
           aria-haspopup="true"
@@ -161,5 +161,10 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
 
 .card {
   background: #F8F2F2;
+}
+
+.btn-link-text {
+  text-decoration: underline;
+  color: #216FCE;
 }
 </style>
