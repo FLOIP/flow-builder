@@ -61,17 +61,21 @@ export const mutations: MutationTree<IValidationState> = {
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
-  async validate_block({state, commit, rootGetters, dispatch}, {block}: {block: IBlock}): Promise<IValidationStatus> {
+  async validate_block({state, commit, rootGetters, dispatch}, {block}: {block: IBlock}): Promise<void> {
     const schemaVersion = rootGetters['flow/activeFlowContainer'].specification_version
-    const status = await dispatch(`flow/${block.type}/validate`, {block, schemaVersion}, {root: true})
 
-    const key = `block/${block.uuid}`
-    Vue.set(state.validationStatuses, key, status)
-    if (status.ajvErrors === null) {
-      commit('removeValidationStatusesFor', {key})
-    }
-    debugValidationStatus(state.validationStatuses[key], `validation status for ${key}`)
-    return state.validationStatuses[key]
+    let status = await dispatch(`flow/${block.type}/validate`, {block, schemaVersion}, {root: true})
+    const timeoutSeconds = status !== undefined ? 0 : 250
+
+    setTimeout(async () => {
+      status = status ?? await dispatch(`flow/${block.type}/validate`, {block, schemaVersion}, {root: true})
+      const key = `block/${block.uuid}`
+      Vue.set(state.validationStatuses, key, status)
+      if (status.ajvErrors === null) {
+        commit('removeValidationStatusesFor', {key})
+      }
+      debugValidationStatus(state.validationStatuses[key], `validation status for ${key}`)
+    }, timeoutSeconds)
   },
 
   async validate_flow({state, rootGetters}, {flow}: {flow: IFlow}): Promise<IValidationStatus> {
