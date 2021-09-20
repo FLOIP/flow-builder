@@ -24,7 +24,7 @@
           <li
             v-for="error in flowValidationErrors"
             :key="error.dataPath">
-            <div class="d-flex justify-content-between px-2 py-0">
+            <div class="d-flex justify-content-between px-2 py-0 highlight-on-hover">
               <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
               <div v-if="error.dataPath === '/first_block_id'">
                 {{ 'flow-builder.add-at-least-one-block' | trans }}
@@ -166,5 +166,9 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
 .btn-link-text {
   text-decoration: underline;
   color: #216FCE;
+}
+
+.highlight-on-hover:hover {
+  background-color: #FFEBEB;
 }
 </style>
