@@ -1,9 +1,9 @@
 <template>
-  <div class="card">
+  <div class="block-errors-expandable card">
     <div class="card-title m-0 px-2 pt-1 menu-bg-color">
       {{ trans(`flow-builder.${status.type}`) }}
       <div class="text-secondary">
-        <small>{{ blockName }}</small>
+        <small>{{ blockLabel }}</small>
       </div>
     </div>
     <div
@@ -39,7 +39,7 @@
 import Component, {mixins} from 'vue-class-component'
 import {IValidationStatus} from '@/store/validation'
 import Lang from '@/lib/filters/lang'
-import {ErrorObject} from 'ajv/lib/types/index'
+import {ErrorObject} from 'ajv/dist/types/index'
 import {Prop} from 'vue-property-decorator'
 import {IFlow} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
@@ -65,11 +65,10 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
     return this.status.ajvErrors != null && this.status.ajvErrors.length > DEFAULT_LIST_SIZE
   }
 
-  get blockName(): string {
-    const blockId = this.statusKey.replace('block/', '')
-    const block = this.activeFlow?.blocks?.find((block) => block.uuid === blockId)
-    return block?.label != null && block.label !== ''
-      ? block.label
+  get blockLabel(): string {
+    const {label} = this.status
+    return label != null && label !== ''
+      ? label
       : this.trans('flow-builder.untitled-block')
   }
 
@@ -81,6 +80,8 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
 }
 </script>
 <style scoped>
+.block-errors-expandable {}
+
 .menu-bg-color {
   background-color: #F8F8F8;
 }
