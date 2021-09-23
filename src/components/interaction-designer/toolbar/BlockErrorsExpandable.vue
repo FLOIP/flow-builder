@@ -39,14 +39,14 @@
 import Component, {mixins} from 'vue-class-component'
 import {IValidationStatus} from '@/store/validation'
 import Lang from '@/lib/filters/lang'
-import {ErrorObject} from 'ajv/dist/types/index'
+import {ErrorObject} from 'ajv'
 import {Prop} from 'vue-property-decorator'
 import {IFlow} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 
 const flowVuexNamespace = namespace('flow')
 
-const DEFAULT_LIST_SIZE = 3
+const DEFAULT_LIST_SIZE = 2
 
 @Component({})
 export default class BlockErrorsExpandable extends mixins(Lang) {
@@ -67,7 +67,7 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
 
   get blockLabel(): string {
     const {label} = this.status
-    return label != null && label !== ''
+    return Boolean(label)
       ? label
       : this.trans('flow-builder.untitled-block')
   }
