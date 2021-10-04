@@ -243,7 +243,7 @@ export default {
       blockClasses: ({trees: {ui}}) => ui.blockClasses,
     }),
 
-    ...mapGetters('builder', ['blocksById', 'isEditable', 'interactionDesignerBoundingClientRect']),
+    ...mapGetters('builder', ['blocksById', 'isEditable']),
     ...mapGetters('flow', ['activeFlow']),
 
     blockExitsLength() {
@@ -295,7 +295,7 @@ export default {
     translatedBlockEditorPosition() {
       const xOffset = 5
       const yOffset = 32 // Block toolbar height
-      const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
+      const left = this.x + this.blockWidth + xOffset
       const top = this.y - yOffset
       return `translate(${left}px, ${top}px)`
     },
