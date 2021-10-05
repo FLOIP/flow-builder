@@ -144,7 +144,7 @@ import { OperationKind, generateConnectionLayoutKeyFor } from '@/store/builder'
 import Connection from '@/components/interaction-designer/Connection.vue'
 import { lang } from '@/lib/filters/lang'
 import {BLOCK_CLASS_CONFIG as BLOCK_CLASS_CONFIG__CASE_BLOCK} from '@/store/flow/block-types/Core_CaseBlockStore'
-import {BLOCK_CLASS_CONFIG as BLOCK_CLASS_CONFIG__SELECT_ONE_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import {BLOCK_CLASS_CONFIG as BLOCK_CLASS_CONFIG__SELECT_ONE_BLOCK} from '@/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
 import {BLOCK_CLASS_CONFIG as BLOCK_CLASS_CONFIG__SELECT_MANY_BLOCK} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 
 import { BTooltip } from 'bootstrap-vue'

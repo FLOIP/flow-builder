@@ -98,7 +98,7 @@ export default class BuilderCanvas extends Vue {
   get blockHeight() {
     const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
     if (!blockElementRef) {
-      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition?.uuid}`)
+      console.debug('Builder Canvas', 'Unable to find DOM element corresponding to lowest block id: ', `block/${this.blockAtTheLowestPosition?.uuid}`)
       return 150 // temporary dummy height for UI scroll purpose
     }
     return (<HTMLElement> (<Vue> blockElementRef[0].$refs['draggable']).$el).offsetHeight
@@ -108,7 +108,7 @@ export default class BuilderCanvas extends Vue {
     const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition?.uuid}`] as Vue[]// it returns array as we loop blocks inside v-for
 
     if (!blockElementRef) {
-      console.debug('Interaction Designer', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition?.uuid}`)
+      console.debug('Builder Canvas', 'Unable to find DOM element corresponding to furthest right block id: ', `block/${this.blockAtTheFurthestRightPosition?.uuid}`)
       return 110 // temporary dummy width for UI scroll purpose
     }
 
@@ -137,7 +137,7 @@ export default class BuilderCanvas extends Vue {
     }
 
     if (!this.blockAtTheLowestPosition) {
-      console.debug('Interaction Designer', 'Unable to find block at the lowest position')
+      console.debug('Builder Canvas', 'Unable to find block at the lowest position')
       return this.windowHeight
     }
 
@@ -157,7 +157,7 @@ export default class BuilderCanvas extends Vue {
     }
 
     if (!this.blockAtTheFurthestRightPosition) {
-      console.debug('Interaction Designer', 'Unable to find block at the furthest right position')
+      console.debug('Builder Canvas', 'Unable to find block at the furthest right position')
       return this.windowWidth
     }
 

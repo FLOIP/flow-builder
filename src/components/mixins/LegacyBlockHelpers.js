@@ -18,33 +18,18 @@ export default {
   },
 
   mounted() {
-    console.debug(`Mounting LegacyBlockHelpers for ${this.$el.dataset.blockType}`)
+    console.debug('Legacy Block Helpers', `Mounting for ${this.$el.dataset.blockType}`)
 
     // perform setup for old + non-reactive dom
-    this.setEditableState()
-    this.setInitialEnabledLanguageViews()
     this.setSidebarToSelectedBlockType()
-
 
     // todo: push 99% pure vuejs templates into corresponding vue component files
   },
 
   methods: {
-    // todo: these top-level block management functions don't need to exist anymore.
-
-    setEditableState: function() {
-      if (app.ui.isEditable === 0) {
-        // todo: this needs to be captured on a page-load (interaction designer?) hook
-        var desiredLocation = '/trees/' + app.tree.get('id') + '/interaction-designer/view';
-        window.viamo.$route.fullPath !== desiredLocation && window.viamo.$router.history.replace(desiredLocation);
-      }
-      else {
-        var desiredLocation = '/trees/' + app.tree.get('id') + '/interaction-designer/edit';
-        window.viamo.$route.fullPath !== desiredLocation && window.viamo.$router.history.replace(desiredLocation);
-      }
-    },
-
     setSidebarToSelectedBlockType: function() {
+      debugger
+
       var selectedBlock = app.tree.getBlock(app.ui.selectedBlock);
       if (!selectedBlock) {
         return;
@@ -63,7 +48,7 @@ export default {
 
       // Set radios
       _.each(selectedBlock.customData, function (value, key) {
-        var radios = $('.tree-sidebar-edit-block[data-block-type=' + selectedBlock.type + '] input[type=radio][data-custom-data-radio=' + key + ']');
+        var radios = $('.tree-sidebar-edit-block[data-block-type="' + selectedBlock.type + '"] input[type=radio][data-custom-data-radio="' + key + '"]');
         _.each(radios, function (el) {
           el = $(el);
           var radioValue = el.val();
@@ -75,7 +60,7 @@ export default {
 
       // Set checkboxes:
       _.each(selectedBlock.customData, function (value, key) {
-        var checkboxes = $('.tree-sidebar-edit-block[data-block-type=' + selectedBlock.type + '] input[type=checkbox][data-custom-data-field=' + key + ']');
+        var checkboxes = $('.tree-sidebar-edit-block[data-block-type="' + selectedBlock.type + '"] input[type=checkbox][data-custom-data-field="' + key + '"]');
         _.each(checkboxes, function (el) {
           el = $(el);
           el.prop('checked', value);
@@ -125,25 +110,6 @@ export default {
           currentTarget.trigger('keyup');
         }
       })
-    },
-
-    setInitialEnabledLanguageViews: function() {
-
-      // Hide all language-specific elements
-      $('.tree-sidebar-edit-block [data-show-on-language-id]').hide();
-
-      // Show those that should be shown.
-      _.each(app.tree.get('details')['enabledLanguages'], function(value, key) {
-        $('.tree-sidebar-edit-block [data-show-on-language-id=' + value + ']').show();
-      });
-
-      if (app.tree.get('details')['enabledLanguages'].length == 0) {
-        $('.tree-no-enabled-languages').show();
-      }
-      else {
-        $('.tree-no-enabled-languages').hide();
-      }
-
     },
 
     handleUiChanged: function (e, data) {

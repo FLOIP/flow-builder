@@ -13,6 +13,9 @@ import { defaults, set } from 'lodash'
 import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import { IFlowsState } from '.'
 import { popFirstEmptyItem } from './utils/listBuilder'
+import Vue from "vue";
+import {VueConfiguration} from "vue/types/vue";
+import {VueClass} from "vue-class-component/lib/declarations";
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
@@ -150,4 +153,7 @@ export interface IBlockClassConfig {
   is_interactive: boolean,
   is_branching: boolean,
   category:  number
+
+  install?: (builder: Vue) => any
+  uiComponent?: VueClass<any> | VueConfiguration
 }

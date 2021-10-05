@@ -1,11 +1,19 @@
 /* eslint-disable no-underscore-dangle */
 
-import {map, omit} from 'lodash'
+import {isEmpty, map, omit} from 'lodash'
 import Vue from 'vue'
 import {Store} from 'vuex'
-import {IBlock, IFlow, ResourceResolver} from '@floip/flow-runner'
+import {
+  IBlock,
+  IFlow,
+  ISelectOneResponseBlockConfig,
+  ResourceResolver,
+  ValidationException
+} from '@floip/flow-runner'
 import {ITree} from '@/store/trees/adapters/TreeAdapter'
+import {IBlockWithViamoMetadata} from "@/store/trees/adapters/BlockAdapter";
 
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface ICustomData {
   title: string
   label: string
@@ -16,11 +24,28 @@ export interface ICustomData {
   choices: string[]
   numChoices: number
 
-
 }
 
 export function createBlockCustomDataAdapterFor(
-  flow: IFlow, block: IBlock, tree: ITree, store: Store<any>) {
+  flow: IFlow,
+  block: IBlockWithViamoMetadata,
+  tree: ITree,
+  store: Store<any>,
+) {
+  // explicitly initialize shared reference for customData
+  if (isEmpty(block.vendor_metadata.io_viamo.customData)) {
+    throw new ValidationException('Unable to create customData adapter for absent customData value.')
+  }
+
+  Vue.observable(flow)
+  Vue.observable(block)
+  Vue.observable(tree)
+
+  delete block.vendor_metadata.io_viamo.customData.label
+  // delete block.vendor_metadata.io_viamo.customData.branching
+  // delete block.vendor_metadata.io_viamo.customData.addExitForNoResponse
+  // delete block.vendor_metadata.io_viamo.customData.choices
+  // delete block.vendor_metadata.io_viamo.customData.numChoices
 
   return new Vue({
     store,
@@ -30,22 +55,17 @@ export function createBlockCustomDataAdapterFor(
       //       === shared customdata instance
       // todo: we should provide container resources into this adapter factory for resource lookups
 
-      return {
-        _flow: flow,
-        _block: block,
+      // todo: need flow and block to be observables
+      // debugger
 
-        // ack. the reality that we're maintaining separate entity refs for customData itself
-        ...omit(this.$data._block.vendor_metadata.io_viamo.customData, [
-          // wipe props that will be proxied as computed properties
-          'branching',
-          'addExitForNoResponse',
-          'choices',
-          'numChoices',
-        ])
-      }
+      return block.vendor_metadata.io_viamo.customData
     },
 
     computed: {
+      title() {
+        return block.label
+      },
+
       branching() {
         return // getter for isSeggregated
       },
@@ -55,13 +75,20 @@ export function createBlockCustomDataAdapterFor(
       },
 
       choices() {
-        return this.$data._block.config.choices.map(resourceId =>
-          ResourceResolver.prototype.resolve.call({resources: []}, resourceId))
+        // return map(
+        //   (block.config as ISelectOneResponseBlockConfig).choices,
+        //   (resourceId) => ResourceResolver.prototype.resolve.call({ resources: [] }, resourceId)
+        // )
+
+        return
+
+        // return this.$data._block.config.choices.map(resourceId =>
+        //   ResourceResolver.prototype.resolve.call({resources: []}, resourceId))
       },
 
       numChoices() {
-        return Object.keys(this.$data._block.config.choices).length
+        return Object.keys((block.config as ISelectOneResponseBlockConfig).choices).length
       },
     },
-  });
+  })
 }

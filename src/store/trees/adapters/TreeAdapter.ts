@@ -4,7 +4,7 @@ import Vue from 'vue'
 import {IFlow, SupportedMode} from '@floip/flow-runner'
 import {Store} from "vuex";
 import {createTreeDetailsAdapterFor} from '@/store/trees/adapters/TreeDetailsAdapter'
-import {createBlockAdapterFor, ITreeBlock} from './BlockAdapter'
+import {createBlockAdapterFor, IBlockWithViamoMetadata, ITreeBlock} from './BlockAdapter'
 
 export interface ITree {
   id: string
@@ -41,7 +41,12 @@ export function getOrCreateProxyFor(key: string, creator: Function, cache: Map<s
   return cache.get(key)
 }
 
-export function createTreeAdapterFor(flow: IFlow, store: Store<any>) {
+export function createTreeAdapterFor(
+  flow: IFlow,
+  store: Store<any>,
+): ITree {
+  Vue.observable(flow)
+
   /**
    * Maintains list of block proxies to maintain block references throughout app.
    * @example {[blockUuid]: BlockProxy, ...}
@@ -62,49 +67,39 @@ export function createTreeAdapterFor(flow: IFlow, store: Store<any>) {
   return new Vue({
     store,
 
-    data: () => ({_flow: flow}),
-
     computed: {
       id() {
-        return this.$data._flow.uuid
+        return flow.uuid
       },
 
       hasClipboard() {
-        return this.$data._flow.supportedModes.indexOf(SupportedMode.OFFLINE) !== -1
+        return flow.supported_modes.indexOf(SupportedMode.OFFLINE) !== -1
       },
 
       hasSms() {
-        return this.$data._flow.supportedModes.indexOf(SupportedMode.SMS) !== -1
+        return flow.supported_modes.indexOf(SupportedMode.SMS) !== -1
       },
 
       hasSocial() {
-        return this.$data._flow.supportedModes.indexOf(SupportedMode.RICH_MESSAGING) !== -1
+        return flow.supported_modes.indexOf(SupportedMode.RICH_MESSAGING) !== -1
       },
 
       hasUssd() {
-        return this.$data._flow.supportedModes.indexOf(SupportedMode.USSD) !== -1
+        return flow.supported_modes.indexOf(SupportedMode.USSD) !== -1
       },
 
       hasVoice() {
-        return this.$data._flow.supportedModes.indexOf(SupportedMode.IVR) !== -1
+        return flow.supported_modes.indexOf(SupportedMode.IVR) !== -1
       },
 
       blocks() {
-        // const flowId = this.$data._flow.uuid
-        // const blocks = getOrCreateProxyFor(flowId, () => [], FLOW_BLOCKS_LIST_CACHE)
-
-
-        // todo: how to fix regenerating blocks list on _every_ invocation of .blocks()?
-        // well, we actually have control over when a block is added and removed; maybe we needn't be so magical about that
-
-
-
-        return this.$data._flow.blocks.map(b => createBlockAdapterFor(b, this.$store))
+        return flow.blocks.map((b) =>
+          createBlockAdapterFor(flow, b as IBlockWithViamoMetadata, this, this.$store))
       },
 
       details: {
         get() {
-          return createTreeDetailsAdapterFor(flow, this, store)
+          return createTreeDetailsAdapterFor(flow, this as unknown as ITree, store)
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})

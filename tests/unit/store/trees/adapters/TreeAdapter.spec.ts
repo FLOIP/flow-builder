@@ -1,14 +1,17 @@
-import {cloneDeep, isEqual, find, map, every, isObjectLike} from 'lodash'
+/* eslint-disable @typescript-eslint/camelcase */
+import {cloneDeep, difference, every, find, isEqual, isObjectLike, kebabCase, map} from 'lodash'
 import Vue from 'vue'
-import Vuex, {Store} from "vuex"
+import Vuex, {Store, StoreOptions} from "vuex"
 
-import {IBlock, IFlow, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource, SupportedMode} from '@floip/flow-runner'
 import {createTreeAdapterFor, ITree} from '@/store/trees/adapters/TreeAdapter'
-import {ITreeBlock} from '@/store/trees/adapters/BlockAdapter'
-import ILanguage from '@floip/flow-runner/src/flow-spec/ILanguage'
+import {IBlockWithViamoMetadata, ITreeBlock} from '@/store/trees/adapters/BlockAdapter'
+import {ILanguage} from '@floip/flow-runner/src/flow-spec/ILanguage'
 
 import BlankFlowContainer from '@/store/builder/blank-flow.json'
 import ShortcutFlowContainer from '@/store/builder/2019-10-10-shortcut-flow.json'
+import {createBlockCustomDataAdapterFor} from "@/store/trees/adapters/BlockCustomDataAdapter";
+import {store as flowStore} from "@/store/flow";
 
 Vue.use(Vuex)
 
@@ -20,7 +23,10 @@ describe('createTreeAdapterFor', () => {
 
   beforeEach(() => {
     flow = cloneDeep(BlankFlowContainer.flows[0])
-    store = new Store<unknown>({})
+    store = new Store<unknown>({
+      modules: { flow: flowStore },
+    })
+
     tree = createTreeAdapterFor(flow, store)
   })
 
@@ -34,46 +40,47 @@ describe('createTreeAdapterFor', () => {
       expect(tree.id).toBe(flow.uuid)
     })
 
-    it('should map `hasClipboard` to `flow.supportedModes.indexOf(offline)`', () => {
-      flow.supportedModes = []
+    it('should map `hasClipboard` to `flow.supported_modes.indexOf(offline)`', () => {
+      flow.supported_modes = []
       expect(tree.hasClipboard).toBe(false)
 
-      flow.supportedModes = [SupportedMode.OFFLINE]
+      flow.supported_modes = [SupportedMode.OFFLINE]
       expect(tree.hasClipboard).toBe(true)
     })
 
-    it('should map `hasSms` to `flow.supportedModes.indexOf(sms)`', () => {
-      flow.supportedModes = []
+    it('should map `hasSms` to `flow.supported_modes.indexOf(sms)`', () => {
+      flow.supported_modes = []
       expect(tree.hasSms).toBe(false)
 
-      flow.supportedModes = [SupportedMode.SMS]
+      flow.supported_modes = [SupportedMode.SMS]
       expect(tree.hasSms).toBe(true)
     })
 
-    it('should map `hasSocial` to `flow.supportedModes.indexOf(rich_messaging)`', () => {
-      flow.supportedModes = []
+    it('should map `hasSocial` to `flow.supported_modes.indexOf(rich_messaging)`', () => {
+      flow.supported_modes = []
       expect(tree.hasSocial).toBe(false)
 
-      flow.supportedModes = [SupportedMode.RICH_MESSAGING]
+      flow.supported_modes = [SupportedMode.RICH_MESSAGING]
       expect(tree.hasSocial).toBe(true)
     })
 
-    it('should map `hasUssd` to `flow.supportedModes.indexOf(ussd)`', () => {
-      flow.supportedModes = []
+    it('should map `hasUssd` to `flow.supported_modes.indexOf(ussd)`', () => {
+      flow.supported_modes = []
       expect(tree.hasUssd).toBe(false)
 
-      flow.supportedModes = [SupportedMode.USSD]
+      flow.supported_modes = [SupportedMode.USSD]
       expect(tree.hasUssd).toBe(true)
     })
 
-    it('should map `hasVoice` to `flow.supportedModes.indexOf(ivr)`', () => {
-      flow.supportedModes = []
+    it('should map `hasVoice` to `flow.supported_modes.indexOf(ivr)`', () => {
+      flow.supported_modes = []
       expect(tree.hasVoice).toBe(false)
 
-      flow.supportedModes = [SupportedMode.IVR]
+      flow.supported_modes = [SupportedMode.IVR]
       expect(tree.hasVoice).toBe(true)
     })
 
+    // todo: change this to map to name first, then uuid
     it('should map `blocks.*.jsKey` to `flow.blocks.*.uuid`', () => {
       // todo: test cache
       // todo: test block adapter
@@ -167,58 +174,58 @@ describe('createTreeAdapterFor', () => {
     })
 
     it('should map `startingBlockKey` to `flow.firstBlockId`', () => {
-      flow.firstBlockId = null
-      expect(tree.details.startingBlockKey).toBe(null)
+      flow.first_block_id = ''
+      expect(tree.details.startingBlockKey).toBe('')
 
-      flow.firstBlockId = '5b8c87d6-de90-4bc4-8668-4f040000006e'
-      expect(tree.details.startingBlockKey).toBe(flow.firstBlockId)
+      flow.first_block_id = '5b8c87d6-de90-4bc4-8668-4f040000006e'
+      expect(tree.details.startingBlockKey).toBe(flow.first_block_id)
     })
 
     it('should map `exitBlockKey` to `flow.exitBlockId`', () => {
-      flow.exitBlockId = null
-      expect(tree.details.exitBlockKey).toBe(null)
+      flow.exit_block_id = undefined
+      expect(tree.details.exitBlockKey).toBe(undefined)
 
-      flow.exitBlockId = '5b8c87d6-de90-4bc4-8668-4f040000006e'
-      expect(tree.details.exitBlockKey).toBe(flow.exitBlockId)
+      flow.exit_block_id = '5b8c87d6-de90-4bc4-8668-4f040000006e'
+      expect(tree.details.exitBlockKey).toBe(flow.exit_block_id)
     })
 
-    it('should map `hasClipboard` to `flow.supportedModes.indexOf(offline)`', () => {
-      flow.supportedModes = []
+    it('should map `hasClipboard` to `flow.supported_modes.indexOf(offline)`', () => {
+      flow.supported_modes = []
       expect(tree.details.hasClipboard).toBe(false)
 
-      flow.supportedModes = [SupportedMode.OFFLINE]
+      flow.supported_modes = [SupportedMode.OFFLINE]
       expect(tree.details.hasClipboard).toBe(true)
     })
 
-    it('should map `hasSms` to `flow.supportedModes.indexOf(sms)`', () => {
-      flow.supportedModes = []
+    it('should map `hasSms` to `flow.supported_modes.indexOf(sms)`', () => {
+      flow.supported_modes = []
       expect(tree.details.hasSms).toBe(false)
 
-      flow.supportedModes = [SupportedMode.SMS]
+      flow.supported_modes = [SupportedMode.SMS]
       expect(tree.details.hasSms).toBe(true)
     })
 
-    it('should map `hasSocial` to `flow.supportedModes.indexOf(rich_messaging)`', () => {
-      flow.supportedModes = []
+    it('should map `hasSocial` to `flow.supported_modes.indexOf(rich_messaging)`', () => {
+      flow.supported_modes = []
       expect(tree.details.hasSocial).toBe(false)
 
-      flow.supportedModes = [SupportedMode.RICH_MESSAGING]
+      flow.supported_modes = [SupportedMode.RICH_MESSAGING]
       expect(tree.details.hasSocial).toBe(true)
     })
 
-    it('should map `hasUssd` to `flow.supportedModes.indexOf(ussd)`', () => {
-      flow.supportedModes = []
+    it('should map `hasUssd` to `flow.supported_modes.indexOf(ussd)`', () => {
+      flow.supported_modes = []
       expect(tree.details.hasUssd).toBe(false)
 
-      flow.supportedModes = [SupportedMode.USSD]
+      flow.supported_modes = [SupportedMode.USSD]
       expect(tree.details.hasUssd).toBe(true)
     })
 
-    it('should map `hasVoice` to `flow.supportedModes.indexOf(ivr)`', () => {
-      flow.supportedModes = []
+    it('should map `hasVoice` to `flow.supported_modes.indexOf(ivr)`', () => {
+      flow.supported_modes = []
       expect(tree.details.hasVoice).toBe(false)
 
-      flow.supportedModes = [SupportedMode.IVR]
+      flow.supported_modes = [SupportedMode.IVR]
       expect(tree.details.hasVoice).toBe(true)
     })
 
@@ -232,12 +239,12 @@ describe('createTreeAdapterFor', () => {
   })
 
   describe('BlockAdapter', () => {
-    let flowBlock: IBlock
+    let flowBlock: IBlockWithViamoMetadata
     let treeBlock: ITreeBlock
 
     beforeEach(() => {
       flow.blocks = cloneDeep(ShortcutFlowContainer.flows[0].blocks)
-      flowBlock = flow.blocks[0]
+      flowBlock = flow.blocks[0] as IBlockWithViamoMetadata
       treeBlock = tree.blocks[0]
       // treeBlock = findWhere({jsKey: flowBlock.uuid})
     })
@@ -259,10 +266,12 @@ describe('createTreeAdapterFor', () => {
 
     it('should map `type` to a fallback of `block.type` when absent', () => {
       const {type} = flowBlock
-      expect(type).toBe('MobilePrimitives\\SelectOneResponse') // todo: should be dot-notation
+      expect(type).toBe('MobilePrimitives.SelectOneResponse') // todo: should be dot-notation
 
-      flowBlock.vendor_metadata.io_viamo.type = null
-      expect(treeBlock.type).toBe(type)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      delete flowBlock.vendor_metadata.io_viamo.type
+      expect(treeBlock.type).toBe(kebabCase(type))
     })
 
     /*
@@ -292,16 +301,47 @@ describe('createTreeAdapterFor', () => {
 
     it('should map `customData` to `block.vendor_metadata.io_viamo.customData`', () => {
       expect(isObjectLike(treeBlock.customData)).toBe(true)
-      expect(isEqual(treeBlock.customData, flowBlock.vendor_metadata.io_viamo.customData))
-        .toBe(true)
-
-      /** todo: we'll need to use blacklist from `CustomDataAdapter` to also filter those from above
-                because they're not guarantted to match if the computed result from flowBlock
-                differs from customData's */
+      expect(difference(
+        // order dependent because `treeBlock.customData` has props from Vue instrumentation
+        Object.keys(flowBlock.vendor_metadata.io_viamo.customData),
+        Object.keys(treeBlock.customData)))
+        .toEqual([])
     })
 
     describe('CustomDataAdapter', () => {
-      xit('should map `label` to `block.name`', () => {})
+      // @note - Two things re: "should explicitly initialize empty customData" test below
+      //   1) properties on customData _need_ to be defined prior to adapter init, because vue
+      //      proxies only those items that have already been defined on the object at the time
+      //      data() is invoked
+      //   2) this should never happen in the wild, we should always have a customData prop on viamo
+      //      block types, so I've opted to simply raise an exception
+
+      // it('should explicitly initialize empty customData to create a known shared reference', () => {
+      //   console.log('should explicitly initialize empty customData to create a known shared reference')
+      //   expect(flowBlock.vendor_metadata.io_viamo.customData).toBeTruthy()
+      //   delete flowBlock.vendor_metadata.io_viamo.customData
+      //   expect(flowBlock.vendor_metadata.io_viamo.customData).toBeUndefined()
+      //
+      //
+      //   const customData = createBlockCustomDataAdapterFor(flow, flowBlock, tree, store)
+      //   // expect(flowBlock.vendor_metadata.io_viamo.customData).toEqual({test: null})
+      //
+      //   // expect(customData).toBeTruthy()
+      //   // flowBlock.vendor_metadata.io_viamo.customData.test = true
+      //   // expect(customData.test).toBe(true)
+      // })
+
+      it('should raise an exception when customData absent while trying to set up adapter', () => {
+        delete flowBlock.vendor_metadata.io_viamo.customData
+        expect(flowBlock.vendor_metadata.io_viamo.customData).toBeUndefined()
+        expect(() => createBlockCustomDataAdapterFor(flow, flowBlock, tree, store))
+          .toThrowError('Unable to create customData adapter for absent customData value.')
+      })
+
+      it('should map `title` to `block.name`', () => {
+        expect(flowBlock.label).toEqual('Do you have more children to add?')
+        expect(treeBlock.customData.title).toEqual(flowBlock.label)
+      })
 
       // todo: see @safs work on seggregated exits
       xit('should map `branching` to `some query over exits', () => {})
@@ -313,10 +353,9 @@ describe('createTreeAdapterFor', () => {
       // todo: figure out which Number field we were updating to show/hide certain exits
       it('should map `numChoices` to `block.exits.length`', () => {
         expect(flowBlock.exits.length).toBeGreaterThan(0)
-        expect(treeBlock.customData.numChoices).toEqual(Object.keys(flowBlock.config.choices).length)
+        expect(treeBlock.customData.numChoices)
+          .toEqual(Object.keys(flowBlock.config?.choices).length)
       })
-
-
     })
 
 
@@ -510,8 +549,41 @@ describe('createTreeAdapterFor', () => {
       }
     },
 */
+    describe('smsContent', () => {
 
-    xit('should map `smsContent` to flow.resources.values.*.values.{sms,text,language_id}', () => {})
+      let resource: IResource
+
+      beforeEach(() => {
+        resource = {
+          uuid: "6f7ad6cf-9ec0-457a-a8ae-61eb78a1af45",
+          values: [
+            {language_id: 22, value: '', content_type: 'TEXT', modes: ['TEXT']},
+            {language_id: 22, value: 'Hello english sms', content_type: 'TEXT', modes: ['SMS']},
+            {language_id: 22, value: '', content_type: 'TEXT', modes: ['USSD']},
+            {language_id: 22, value: '', content_type: 'AUDIO', modes: ['IVR']},
+            {language_id: 22, value: '', content_type: 'TEXT', modes: ['RICH_MESSAGING']},
+            {language_id: 22, value: '', content_type: 'IMAGE', modes: ['RICH_MESSAGING']},
+            {language_id: 22, value: '', content_type: 'VIDEO', modes: ['RICH_MESSAGING']},
+            {language_id: 22, value: '', content_type: 'TEXT', modes: ['OFFLINE']},
+            {language_id: 22, value: '', content_type: 'IMAGE', modes: ['OFFLINE']},
+            {language_id: 22, value: '', content_type: 'VIDEO', modes: ['OFFLINE']}]}
+
+        store.commit('flow/resource_add', { resource })
+      })
+
+      it('should source content from flow.resources.values.*.values.{sms,text,language_id}', () => {
+        flowBlock.config.prompt = '6f7ad6cf-9ec0-457a-a8ae-61eb78a1af45'
+
+        expect(isObjectLike(treeBlock.smsContent)).toBe(true)
+        expect(treeBlock.smsContent[22]).toEqual('Hello english sms')
+      })
+
+      xit('should map `smsContent` to flow.resources.values.*.values.{sms,text,language_id}', () => {
+
+      })
+
+    })
+
     xit('should map `ussdContent` to flow.resources.values.*.values.{ussd,text,language_id}', () => {})
     xit('should map `clipboardContent.{language_id}.{text}` to flow.resources.values.*.values.{offline,text,language_id}', () => {})
     xit('should map `socialContent.{language_id}.{text}` to flow.resources.values.*.values.{rich_messaging,text,language_id}', () => {})

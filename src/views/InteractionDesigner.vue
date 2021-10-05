@@ -14,7 +14,8 @@
 <!--                     :flow="activeFlow">-->
 <!--          </component>-->
 
-          <location-block></location-block>
+<!--          <location-block></location-block>-->
+          <id-validation-block></id-validation-block>
         </div>
       </div>
       <div v-else class="tree-sidebar">
@@ -46,11 +47,12 @@ import {
 import { store } from '@/store'
 
 // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
-  // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
-  import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
-  import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
-  import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
-  import LocationBlock from '@/components/interaction-designer/block-types/LocationBlock';
+// import TreeUpdateConflictModal from './TreeUpdateConflictModal';
+import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
+import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
+import {BuilderCanvas} from '@/components/interaction-designer/BuilderCanvas'
+// import LocationBlock from '@/components/interaction-designer/block-types/LocationBlock';
+// import IdValidationBlock from '@/components/interaction-designer/block-types/IdValidationBlock';
 
 // import '../TreeDiffLogger'
 
@@ -79,7 +81,8 @@ export default {
   mixins: [lang, Routes],
 
   components: {
-    LocationBlock,
+    // IdValidationBlock,
+    // LocationBlock,
     TreeBuilderToolbar,
     BuilderCanvas,
     FlowEditor,
@@ -130,17 +133,17 @@ export default {
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
-    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+    // if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({ appConfig: this.appConfig, builderConfig: this.builderConfig, supportedBlockTypes: this.supportedBlockTypes })
-    }
+    // }
 
     global.builder = this // initialize global reference for legacy + debugging
 
     this.registerBlockTypes()
 
     // this.initializeTreeModel()
-      this.updateIsEditableFromParams(this.mode) // `this.mode` comes from captured param in js-routes
-    },
+    this.updateIsEditableFromParams(this.mode) // `this.mode` comes from captured param in js-routes
+  },
 
   activated() {
     this.deselectBlocks() // todo: remove once we have jsKey in our js-route
@@ -159,11 +162,10 @@ export default {
       )
     }
 
-    this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
+    // this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
     this.deselectBlocks()
-    this.discoverTallestBlockForDesignerWorkspaceHeight({ aboveTallest: true })
 
-    console.debug('Vuej tree interaction designer mounted!')
+    console.debug('Interaction Designer', 'mounted')
   },
   watch: {
     mode(newMode) {
@@ -182,12 +184,12 @@ export default {
       'initializeTreeModel']),
 
     async registerBlockTypes() {
-      forEach(this.supportedBlockTypes, async ({ type }) => {
-        const normalizedType = type.replace('.', '_')
-        const typeWithoutSeparators = type.replace('.', '')
-        const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
-        invoke(exported, 'install', this)
-        this.$options.components[`Flow${typeWithoutSeparators}`] = exported.default
+      // todo: why must we global register components in `lib.ts` in addition to below?
+
+      forEach(this.supportedBlockTypes, async (blockConfig) => {
+        const typeWithoutSeparators = blockConfig.type.replace('.', '')
+        invoke(blockConfig, 'install', this)
+        this.$options.components[`Flow${typeWithoutSeparators}`] = blockConfig.uiComponent
       })
     },
 

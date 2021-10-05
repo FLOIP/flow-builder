@@ -1,5 +1,5 @@
-import BlockCode from 'trees/components/BlockCode'
-import BlockExitBlockButton from 'trees/components/block-editors/BlockExitBlockButton'
+// import BlockCode from 'trees/components/BlockCode'
+// import BlockExitBlockButton from 'trees/components/block-editors/BlockExitBlockButton'
 import lang from 'lib/filters/lang'
 
 /**
@@ -7,9 +7,9 @@ import lang from 'lib/filters/lang'
  */
 export default {
   components: {
-    BlockCode,
-    BlockExitBlockButton,
+    // BlockCode,
+    // BlockExitBlockButton,
   },
-  
+
   mixins: [lang],
 }

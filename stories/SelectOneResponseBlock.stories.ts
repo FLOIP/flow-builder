@@ -4,9 +4,9 @@ import {
   BaseMountedVueClassWithResourceAndMode,
   IBaseOptions
 } from './story-utils/storeSetup'
-import SelectOneResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
+import SelectOneResponseBlock, {BLOCK_CLASS_CONFIG} from '@/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-import selectOneStore, { BLOCK_CLASS_CONFIG } from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import selectOneStore from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 
 import {
   SupportedMode,

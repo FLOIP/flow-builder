@@ -6,69 +6,74 @@ import {Store} from 'vuex'
 import {IFlow, SupportedMode} from '@floip/flow-runner'
 import {ITree} from '@/store/trees/adapters/TreeAdapter'
 
-export function createTreeDetailsAdapterFor(flow: IFlow, tree: ITree, store: Store<any>) {
+export function createTreeDetailsAdapterFor(
+  flow: IFlow,
+  tree: ITree,
+  store: Store<any>,
+) {
+  Vue.observable(flow)
+  Vue.observable(tree)
+
   return new Vue({
     store,
-
-    data: () => ({_flow: flow}),
 
     computed: {
       title: {
         get() {
-          return this.$data._flow.name
+          return flow.name
         },
       },
 
       description: {
         get() {
-          return this.$data._flow.label
+          return flow.label
         },
       },
 
       // todo: when should we use getters vs. FlowAdapter?
       hasClipboard() {
-        return this.$data._flow.supportedModes.indexOf(SupportedMode.OFFLINE) !== -1
+        return flow.supported_modes.indexOf(SupportedMode.OFFLINE) !== -1
       },
 
       hasSms() {
-        return this.$data._flow.supportedModes.indexOf(SupportedMode.SMS) !== -1
+        return flow.supported_modes.indexOf(SupportedMode.SMS) !== -1
       },
 
       hasSocial() {
-        return this.$data._flow.supportedModes.indexOf(SupportedMode.RICH_MESSAGING) !== -1
+        return flow.supported_modes.indexOf(SupportedMode.RICH_MESSAGING) !== -1
       },
 
       hasUssd() {
-        return this.$data._flow.supportedModes.indexOf(SupportedMode.USSD) !== -1
+        return flow.supported_modes.indexOf(SupportedMode.USSD) !== -1
       },
 
       hasVoice() {
-        return this.$data._flow.supportedModes.indexOf(SupportedMode.IVR) !== -1
+        return flow.supported_modes.indexOf(SupportedMode.IVR) !== -1
       },
 
       startingBlockKey: {
         get() {
-          return this.$data._flow.firstBlockId
+          return flow.first_block_id
         },
 
-        set(blockId) {
-          this.flow_setFirstBlockId({flowId: this.$data._flow.uuid, blockId});
-        },
+        // set(blockId) {
+        //   this.flow_setFirstBlockId({flowId: flow.uuid, blockId});
+        // },
       },
 
       exitBlockKey: {
         get() {
-          return this.$data._flow.exitBlockId
+          return flow.exit_block_id
         },
 
         // set(blockId) {
-        // this.flow_setFirstBlockId({flowId: this.$data._flow.uuid, blockId});
+        // this.flow_setFirstBlockId({flowId: flow.uuid, blockId});
         // },
       },
 
       enabledLanguages: {
         get() {
-          return map(this.$data._flow.languages, 'id')
+          return map(flow.languages, 'id')
         },
 
         // set() {

@@ -64,13 +64,15 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable @typescript-eslint/camelcase */
 import { IFlow, IResource } from '@floip/flow-runner'
 import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import { namespace } from 'vuex-class'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
 import SelectOneStore, {
-  BLOCK_CLASS_CONFIG,
+  BLOCK_TYPE,
+  // BLOCK_CLASS_CONFIG,
   IInflatedChoicesInterface
 } from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
@@ -83,9 +85,10 @@ import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import { mixins } from 'vue-class-component'
+import {IBlockClassConfig} from '@/store/flow/block'
 
 const flowVuexNamespace = namespace('flow')
-const blockVuexNamespace = namespace(`flow/${BLOCK_CLASS_CONFIG.type}`)
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component<any>({
@@ -140,5 +143,24 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 }
 
 export default MobilePrimitives_SelectOneResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_CLASS_CONFIG.type, SelectOneStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectOneStore)
+
+/* todo: declare these as static properties on the actual vue class/declaration
+         wait and ensure this will work for viamo block types as well */
+// todo: attempt to avoid having non-primitives on these because they end up in vuex
+export const BLOCK_CLASS_CONFIG: IBlockClassConfig = {
+  // name
+  name: BLOCK_TYPE,
+  type: BLOCK_TYPE,
+
+  // config
+  is_interactive: true,
+  is_branching: true,
+  category:  2,
+
+  // installation
+  install,
+  uiComponent: MobilePrimitives_SelectOneResponseBlock,
+}
+
 </script>

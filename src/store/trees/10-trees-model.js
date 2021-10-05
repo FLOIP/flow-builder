@@ -18,6 +18,7 @@
 
 /* global Backbone */
 import _ from 'lodash'
+import { createTreeDetailsAdapterFor } from '@/store/trees/adapters/TreeDetailsAdapter';
 
 window.app = window.app || {};
 

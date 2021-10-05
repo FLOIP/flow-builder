@@ -95,7 +95,7 @@ export default {
 
     // todo: trip a debounced version of this (for larger trees)
     // todo: which is faster lodash deep isEqual or JSON.stringify() ?
-    hasChanges: ({ tree, ui }) => ui.previousTreeJson !== JSON.stringify(tree),
+    hasChanges: ({ tree, ui }) => true,//ui.previousTreeJson !== JSON.stringify(tree),
 
     hasIssues({ tree, ui }) {
       const {
@@ -177,8 +177,9 @@ export default {
         __AUDIO__: audio,
         __TREES_UI__: uiOverrides,
         __APP__: appContext,
-      } = bootstrapLegacyGlobalDependencies(appConfig, builderConfig, supportedBlockTypes)
-      ui.isConfigured = true
+      } = bootstrapLegacyGlobalDependencies(appConfig, builderConfig, supportedBlockTypes, this)
+
+      app.ui.isConfigured = true
 
       // update this.state to expose permissions, etc
       lodash.merge(this.state, appContext)
@@ -190,11 +191,13 @@ export default {
 
       // todo: does this muck with our proxy reference?
       state.ui = lodash.assign(uiOverrides, {
-        previousTreeJson: JSON.stringify(uiOverrides.originalTreeJson),
+        previousTreeJson: null,//JSON.stringify(uiOverrides.originalTreeJson),
         validationResults: uiOverrides.originalValidationResults,
       })
     },
     setWorkingTree(state, { tree: treeData }) {
+      debugger
+
       const tree = new app.Tree(treeData)
       /** @property app.tree
        *  @deprecated We'll only need this until we've eradicated references in legacy. */

@@ -1,10 +1,11 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit} from '@floip/flow-runner'
-import IdGeneratorUuidV4 from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import IMessageBlock from '@floip/flow-runner/src/model/block/IMessageBlock'
+import {IBlockExit} from '@floip/flow-runner'
+import { IdGeneratorUuidV4 } from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {IMessageBlock} from '@floip/flow-runner/src/model/block/IMessageBlock'
 import {cloneDeep, defaults, defaultsDeep, merge} from 'lodash'
-import {IFlowsState} from '../index'
+import {IFlowsState} from "@/store/flow"
+import {IBlockWithViamoMetadata} from "@/store/trees/adapters/BlockAdapter";
 
 export const BLOCK_TYPE = 'LocationBlock'
 
@@ -23,7 +24,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
      * @see src/store/trees/10-trees-model.js::addBlock()
      */
     const blankMessageResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-    const block: IBlock = defaults(props, {
+    const block: IBlockWithViamoMetadata = defaults(props, {
       type: BLOCK_TYPE,
       name: '',
       label: '',
@@ -35,7 +36,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       },
 
       // todo: sync this with flow-runner@v1.0 upgrade
+      // eslint-disable-next-line @typescript-eslint/camelcase
       vendor_metadata: {
+        // eslint-disable-next-line @typescript-eslint/camelcase
         io_viamo: defaultsDeep(
           cloneDeep(appUiblockDefaults[BLOCK_TYPE]),
           cloneDeep(appUiCommonBlockDefaults))
@@ -46,7 +49,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     block.exits = await Promise.all(outputNames
       .map(async (name) => dispatch('flow/block_createBlockExitWith', {
         props: ({
-          uuid: (new IdGeneratorUuidV4()).generate(),
+          uuid: await (new IdGeneratorUuidV4()).generate(),
           tag: name,
           label: name,
         }) as IBlockExit,

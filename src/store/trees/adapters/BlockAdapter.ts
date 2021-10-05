@@ -1,44 +1,76 @@
 /* eslint-disable @typescript-eslint/interface-name-prefix */
-import {find, keyBy, mapValues} from 'lodash'
+import {fill, filter, find, kebabCase, keyBy, map, mapValues, zipObject} from 'lodash'
 import Vue from 'vue'
-import {mapMutations, Store} from "vuex"
+import {mapGetters, mapMutations, Store} from "vuex"
 import {IBlock, IFlow, IResource, SupportedMode} from "@floip/flow-runner"
+import {ILanguage} from "@floip/flow-runner/src/index";
+import {
+  createBlockCustomDataAdapterFor,
+  ICustomData
+} from "@/store/trees/adapters/BlockCustomDataAdapter";
+import {ITree} from "@/store/trees/adapters/TreeAdapter";
+
+export interface IBlockWithViamoMetadata extends IBlock {
+  vendor_metadata: {
+    io_viamo: ITreeBlock
+  }
+}
 
 export interface ITreeBlock {
   jsKey: string
   type: string
 
-  customData: {}
-  uiData: {}
+  customData: ICustomData
+  uiData: {
+    xPosition: number
+    yPosition: number
+    outputNames: string[]
+  },
 
-  smsContent: {} // {"206062": ""},
-  ussdContent: {}
-  socialContent: {} // {"206062": {"text": "Social content"}},
-  clipboardContent: {}
+  smsContent: Record<ILanguage['id'], string>
+  ussdContent: Record<ILanguage['id'], string>
+  /** @see trees/stores/trees.js::updateBlockContentFor() */
+  socialContent: Record<ILanguage['id'], {
+    text: string
+    allLanguagesFileUrl: null
+    allLanguagesFileId: null
+    allLanguagesFileType: null
+  }>
+  clipboardContent: Record<ILanguage['id'], string>
 
-  smsAutogenLangs: string[]
-  ussdAutogenLangs: string[]
-  socialAutogenLangs: string[]
-  clipboardAutogenLangs: string[]
+  smsAutogenLangs: ILanguage['id'][]
+  ussdAutogenLangs: ILanguage['id'][]
+  socialAutogenLangs: ILanguage['id'][]
+  clipboardAutogenLangs: ILanguage['id'][]
 
-  audioFiles: {} // ?
+  audioFiles: {
+    // ?
+  }
 }
 
-export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
+export function createBlockAdapterFor(
+  flow: IFlow,
+  block: IBlockWithViamoMetadata,
+  tree: ITree,
+  store: Store<any>,
+): ITreeBlock {
+  Vue.observable(flow)
+  Vue.observable(block)
+  Vue.observable(tree)
+
   return new Vue({
     store,
 
-    data: () => ({_block: block}),
-
     computed: {
+      ...mapGetters('flow', ['activeFlow']),
+
       jsKey() {
-        return this.$data._block.uuid
+        return block.uuid
       },
 
       type: {
         get() {
-          const block = this.$data._block;
-          return block.vendor_metadata.io_viamo.type || block.type
+          return block.vendor_metadata.io_viamo.type || kebabCase(block.type)
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -46,24 +78,12 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
         // },
       },
 
-      customData: {
-        get() {
-          return this.$data._block.vendor_metadata.io_viamo.customData
-        },
-        // set(details) {
-        //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
-        //   return details
-        // },
+      customData() {
+        return createBlockCustomDataAdapterFor(flow, block, tree, store)
       },
 
-      uiData: {
-        get() {
-          return this.$data._block.vendor_metadata.io_viamo.uiData
-        },
-        // set(details) {
-        //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
-        //   return details
-        // },
+      uiData() {
+        return block.vendor_metadata.io_viamo.uiData
       },
 
       audioFiles: {
@@ -78,15 +98,26 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
       smsContent: {
         get() {
-          // const resourcesByUuid = this.$store.getters['flow/resourcesByUuid']
-          // const resource: IResource = resourcesByUuid[this._block.config]
+          // todo: debug which gets called first: watch(flow.languages) or get(smsContent)
 
-          // todo: leverage something like findResourceVariantOverModesWith
-          //  or findResourceVariantOverModesOn
-          // const smsResourceVariants = find(resource.values, {modes: [SupportedMode.SMS]})
-          // return mapValues(keyBy(smsResourceVariants, 'languageId'), ({value}) => value)
+          const {values}: IResource = this.resourcesByUuid[block.config.prompt]
+          const languageIds: ILanguage['id'][] = map(flow.languages, 'id')
+          const content = zipObject(
+            languageIds,
+            fill(languageIds.slice(), null))
+
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          const valuesForContentType = filter(values, {content_type: 'TEXT', modes: ['SMS']})
+          const resourceValuesByLangId = keyBy(valuesForContentType, 'language_id')
+          const contentPopulated = mapValues(resourceValuesByLangId, ({ value }) => value)
+
+          Object.assign(content, contentPopulated)
+          return Vue.observable(content)
         },
         set(value) {
+
+          // handle blanket assignment by delegating to separate method
+
           // this.resource_setOrCreateValueModeSpecific({resourceId, filter, value})
         },
       },
@@ -123,7 +154,7 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
       smsAutogenLangs: {
         get() {
-          return this.$data._block.vendor_metadata.io_viamo.smsAutogenLangs
+          return block.vendor_metadata.io_viamo.smsAutogenLangs
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -133,7 +164,7 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
       ussdAutogenLangs: {
         get() {
-          return this.$data._block.vendor_metadata.io_viamo.ussdAutogenLangs
+          return block.vendor_metadata.io_viamo.ussdAutogenLangs
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -143,7 +174,7 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
       socialAutogenLangs: {
         get() {
-          return this.$data._block.vendor_metadata.io_viamo.socialAutogenLangs
+          return block.vendor_metadata.io_viamo.socialAutogenLangs
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -153,7 +184,7 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
 
       clipboardAutogenLangs: {
         get() {
-          return this.$data._block.vendor_metadata.io_viamo.clipboardAutogenLangs
+          return block.vendor_metadata.io_viamo.clipboardAutogenLangs
         },
         // set(details) {
         //   this.$store.dispatch('viamoToFlowAdapter/setTreeDetails', {details})
@@ -163,8 +194,31 @@ export function createBlockAdapterFor(block: IBlock, store: Store<any>) {
     },
 
     watch: {
+      ['activeFlow.languages'](val, previousVal) {
+        // set up watchers for new languages
+        console.debug("setting up more watchers");
+
+        // const newLanguageIds = difference(
+        //   this.flow.languageIds,
+        //   Object.keys(this.smsContent)
+        // );
+        //
+        // console.debug(newLanguageIds);
+        //
+        // forEach(newLanguageIds, (id) => {
+        //   this.$set(this.smsContent, id, null);
+        //   this.$watch(
+        //     function () {
+        //       return this.smsContent[id];
+        //     },
+        //
+        //     this.handleContentChanged
+        //   );
+        // });
+      },
+
       // ['customData.title'](value, previousValue) {
-      //   this.block_setName({blockId: this.$data._block.uuid, value})
+      //   this.block_setName({blockId: block.uuid, value})
       // },
     },
 
