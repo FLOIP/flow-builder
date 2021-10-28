@@ -7,6 +7,11 @@ import HomeComponent from './views/Home.vue'
 import defaultLocalisationsJson from "./assets/messages.json";
 import CustomIconComponents from './lib/custom-icons/index'
 
+//Block helpers
+import BaseBlockComponent from './components/interaction-designer/block-types/BaseBlock.vue'
+
+import {createDefaultBlockTypeInstallerFor as createDefaultBlockTypeInstallerForFunction} from '@/store/builder'
+
 export const appConfig = require('../app.config')
 export const builderConfig = require('../builder.config')
 
@@ -17,6 +22,10 @@ export const ImportFlow = ImportFlowComponent
 export const Home = HomeComponent
 export const defaultLocalisations = defaultLocalisationsJson
 export const CustomIcons = CustomIconComponents
+
+export const createDefaultBlockTypeInstallerFor = createDefaultBlockTypeInstallerForFunction
+
+export const BaseBlock = BaseBlockComponent
 
 const Components: { [key: string]: any } = {
   InteractionDesignerComponent,
