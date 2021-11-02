@@ -1,10 +1,8 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {ActionTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExit, IBlockConfig, IBlock} from '@floip/flow-runner'
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import {defaultsDeep} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
+import {IBlockConfig} from '@floip/flow-runner'
+import BaseBlockStore from './BaseBlockStore'
 
 export interface IContactPropertyOption {
   id: string,
@@ -14,52 +12,21 @@ export interface IContactPropertyOption {
 
 export const BLOCK_TYPE = 'Core.SetContactProperty'
 
-export const getters: GetterTree<IFlowsState, IRootState> = {}
+const baseActions = Object.assign({}, BaseBlockStore.actions)
 
-export const mutations: MutationTree<IFlowsState> = {}
-
-export const actions: ActionTree<IFlowsState, IRootState> = {
+const actions: ActionTree<IFlowsState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
-    const exits: IBlockExit[] = [
-      await dispatch('flow/block_createBlockDefaultExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-        }) as IBlockExit,
-      }, {root: true}),
-    ]
 
-    return defaultsDeep(props, {
-      type: BLOCK_TYPE,
-      name: '',
-      label: '',
-      semantic_label: '',
-      config: {
-        set_contact_property: {
-          property_key: '',
-          property_value: '',
-        },
-      },
-      exits,
-      tags: [],
-      vendor_metadata: {},
-    })
-  },
+    props.type = BLOCK_TYPE
+    //better way to do this?
+    return await baseActions.createWith({dispatch}, {props})
+  }
 
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
-    dispatch('flow/block_convertExitFormationToUnified', {
-      blockId: block.uuid,
-      test: 'block.value = true',
-    }, {root: true})
-  },
-
-  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateCommunityBlock({block, schemaVersion})
-  },
 }
 
-export default {
-  namespaced: true,
-  getters,
-  mutations,
-  actions,
-}
+const Core_SetContactPropertyStore = Object.assign({}, BaseBlockStore)
+
+//better way to do this?
+Core_SetContactPropertyStore.actions.createWith = actions.createWith
+
+export default Core_SetContactPropertyStore
