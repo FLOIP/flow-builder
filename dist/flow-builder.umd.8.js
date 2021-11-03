@@ -1,6 +1,6 @@
 ((typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] = (typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] || []).push([[8],{
 
-/***/ "d81e":
+/***/ "41bd":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10,14 +10,14 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"1fb466d0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue?vue&type=template&id=133e5f32&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"console-io-print-block"},[_c('h3',{staticClass:"block-editor-header"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_vm._t("extras"),_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/message")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"1fb466d0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=template&id=6e078121&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"core-log-block"},[_c('h3',{staticClass:"block-editor-header"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_vm._t("extras"),_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/message")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
-return [_c('expression-input',{attrs:{"label":_vm._f("trans")('flow-builder.print-message'),"placeholder":_vm._f("trans")('flow-builder.enter-message'),"current-expression":_vm.value,"valid-state":isValid},on:{"commitExpressionChange":_vm.commitMessageChange}})]}}])}),_c('hr'),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":false},on:{"branchingTypeChangedToUnified":function($event){return _vm.handleBranchingTypeChangedToUnified({block: _vm.block})}}}),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+return [_c('expression-input',{attrs:{"label":_vm._f("trans")('flow-builder.log-message'),"placeholder":_vm._f("trans")('flow-builder.enter-message'),"current-expression":_vm.value,"valid-state":isValid},on:{"commitExpressionChange":_vm.commitMessageChange}})]}}])}),_c('hr'),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":false},on:{"branchingTypeChangedToUnified":function($event){return _vm.handleBranchingTypeChangedToUnified({block: _vm.block})}}}),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue?vue&type=template&id=133e5f32&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=template&id=6e078121&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -64,13 +64,13 @@ var lodash = __webpack_require__("2ef0");
 // EXTERNAL MODULE: ./src/store/validation/validationHelpers.ts
 var validationHelpers = __webpack_require__("85b2");
 
-// CONCATENATED MODULE: ./src/store/flow/block-types/ConsoleIO_PrintBlockStore.ts
+// CONCATENATED MODULE: ./src/store/flow/block-types/Core_LogBlockStore.ts
 
 
 
 
 
-var BLOCK_TYPE = 'ConsoleIO.Print';
+var BLOCK_TYPE = 'Core.Log';
 var getters = {};
 var mutations = {};
 var actions = {
@@ -171,7 +171,7 @@ var actions = {
     });
   }
 };
-/* harmony default export */ var ConsoleIO_PrintBlockStore = ({
+/* harmony default export */ var Core_LogBlockStore = ({
   namespaced: true,
   getters: getters,
   mutations: mutations,
@@ -179,9 +179,6 @@ var actions = {
 });
 // EXTERNAL MODULE: ./src/store/builder/index.ts
 var builder = __webpack_require__("af98");
-
-// EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
-var vue_class_component_esm = __webpack_require__("2fe1");
 
 // EXTERNAL MODULE: ./src/lib/filters/lang.ts
 var lang = __webpack_require__("4a51");
@@ -197,6 +194,9 @@ var Categorization = __webpack_require__("8619");
 
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue + 14 modules
 var BlockOutputBranchingConfig = __webpack_require__("18b0");
+
+// EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
+var vue_class_component_esm = __webpack_require__("2fe1");
 
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
 var NameEditor = __webpack_require__("f04e");
@@ -216,7 +216,7 @@ var BlockId = __webpack_require__("792f");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue + 4 modules
 var GenericContactPropertyEditor = __webpack_require__("b4ec");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue?vue&type=script&lang=ts&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=script&lang=ts&
 
 
 
@@ -244,15 +244,15 @@ var GenericContactPropertyEditor = __webpack_require__("b4ec");
 var blockVuexNamespace = Object(lib["e" /* namespace */])("flow/".concat(BLOCK_TYPE));
 var builderVuexNamespace = Object(lib["e" /* namespace */])('builder');
 
-var ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock = /*#__PURE__*/function (_mixins) {
-  Object(inherits["a" /* default */])(ConsoleIO_PrintBlock, _mixins);
+var Core_LogBlockvue_type_script_lang_ts_Core_LogBlock = /*#__PURE__*/function (_mixins) {
+  Object(inherits["a" /* default */])(Core_LogBlock, _mixins);
 
-  var _super = Object(createSuper["a" /* default */])(ConsoleIO_PrintBlock);
+  var _super = Object(createSuper["a" /* default */])(Core_LogBlock);
 
-  function ConsoleIO_PrintBlock() {
+  function Core_LogBlock() {
     var _this;
 
-    Object(classCallCheck["a" /* default */])(this, ConsoleIO_PrintBlock);
+    Object(classCallCheck["a" /* default */])(this, Core_LogBlock);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -275,7 +275,7 @@ var ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock = /*#__PURE
     return _this;
   }
 
-  Object(createClass["a" /* default */])(ConsoleIO_PrintBlock, [{
+  Object(createClass["a" /* default */])(Core_LogBlock, [{
     key: "value",
     get: function get() {
       return this.block.config.message || '';
@@ -290,20 +290,20 @@ var ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock = /*#__PURE
     }
   }]);
 
-  return ConsoleIO_PrintBlock;
+  return Core_LogBlock;
 }(Object(vue_class_component_esm["c" /* mixins */])(lang["a" /* default */]));
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "block", void 0);
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock.prototype, "block", void 0);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "flow", void 0);
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock.prototype, "flow", void 0);
 
-Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "editMessage", void 0);
+Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock.prototype, "editMessage", void 0);
 
-Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "handleBranchingTypeChangedToUnified", void 0);
+Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock.prototype, "handleBranchingTypeChangedToUnified", void 0);
 
-Object(tslib_es6["__decorate"])([builderVuexNamespace.Getter], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock.prototype, "isEditable", void 0);
+Object(tslib_es6["__decorate"])([builderVuexNamespace.Getter], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock.prototype, "isEditable", void 0);
 
-ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
+Core_LogBlockvue_type_script_lang_ts_Core_LogBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
   components: {
     GenericContactPropertyEditor: GenericContactPropertyEditor["a" /* default */],
     ExpressionInput: ExpressionInput["a" /* default */],
@@ -316,15 +316,15 @@ ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock = Object(tslib_
     Categorization: Categorization["a" /* default */],
     BlockOutputBranchingConfig: BlockOutputBranchingConfig["c" /* default */]
   }
-})], ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock);
-/* harmony default export */ var ConsoleIO_PrintBlockvue_type_script_lang_ts_ = (ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock);
-var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, ConsoleIO_PrintBlockStore);
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue?vue&type=script&lang=ts&
- /* harmony default export */ var block_types_ConsoleIO_PrintBlockvue_type_script_lang_ts_ = (ConsoleIO_PrintBlockvue_type_script_lang_ts_); 
+})], Core_LogBlockvue_type_script_lang_ts_Core_LogBlock);
+/* harmony default export */ var Core_LogBlockvue_type_script_lang_ts_ = (Core_LogBlockvue_type_script_lang_ts_Core_LogBlock);
+var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, Core_LogBlockStore);
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_LogBlock.vue?vue&type=script&lang=ts&
+ /* harmony default export */ var block_types_Core_LogBlockvue_type_script_lang_ts_ = (Core_LogBlockvue_type_script_lang_ts_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__("2877");
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/Core_LogBlock.vue
 
 
 
@@ -333,7 +333,7 @@ var componentNormalizer = __webpack_require__("2877");
 /* normalize component */
 
 var component = Object(componentNormalizer["a" /* default */])(
-  block_types_ConsoleIO_PrintBlockvue_type_script_lang_ts_,
+  block_types_Core_LogBlockvue_type_script_lang_ts_,
   render,
   staticRenderFns,
   false,
@@ -343,7 +343,7 @@ var component = Object(componentNormalizer["a" /* default */])(
   
 )
 
-/* harmony default export */ var block_types_ConsoleIO_PrintBlock = __webpack_exports__["default"] = (component.exports);
+/* harmony default export */ var block_types_Core_LogBlock = __webpack_exports__["default"] = (component.exports);
 
 /***/ })
 

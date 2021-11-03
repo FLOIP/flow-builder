@@ -9,7 +9,7 @@ import CustomIconComponents from './lib/custom-icons/index'
 
 //Block helpers
 import BaseBlockComponent from './components/interaction-designer/block-types/BaseBlock.vue'
-
+import BaseStore from './store/flow/block-types/BaseBlock'
 import {createDefaultBlockTypeInstallerFor as createDefaultBlockTypeInstallerForFunction} from '@/store/builder'
 
 export const appConfig = require('../app.config')
@@ -23,9 +23,9 @@ export const Home = HomeComponent
 export const defaultLocalisations = defaultLocalisationsJson
 export const CustomIcons = CustomIconComponents
 
-export const createDefaultBlockTypeInstallerFor = createDefaultBlockTypeInstallerForFunction
-
 export const BaseBlock = BaseBlockComponent
+export const BaseBlockStore = BaseStore
+export const createDefaultBlockTypeInstallerFor = createDefaultBlockTypeInstallerForFunction
 
 const Components: { [key: string]: any } = {
   InteractionDesignerComponent,
