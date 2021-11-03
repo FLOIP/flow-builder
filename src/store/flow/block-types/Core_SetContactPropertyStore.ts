@@ -1,7 +1,8 @@
 import {ActionTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IFlowsState} from '../index'
-import {IBlockConfig} from '@floip/flow-runner'
+import {IBlockExit, IBlockConfig} from '@floip/flow-runner'
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import BaseBlockStore from './BaseBlockStore'
 
 export interface IContactPropertyOption {
@@ -18,15 +19,27 @@ const actions: ActionTree<IFlowsState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
 
     props.type = BLOCK_TYPE
-    //better way to do this?
+    props.config = {
+        set_contact_property: {
+          property_key: '',
+          property_value: '',
+        },
+    }
+    const exits: IBlockExit[] = [
+      await dispatch('flow/block_createBlockDefaultExitWith', {
+        props: ({
+          uuid: await (new IdGeneratorUuidV4()).generate(),
+        }) as IBlockExit,
+      }, {root: true}),
+    ]
+    props.exits = exits
     return await baseActions.createWith({dispatch}, {props})
   }
 
 }
 
+//better way to do this kind of thing?
 const Core_SetContactPropertyStore = Object.assign({}, BaseBlockStore)
-
-//better way to do this?
 Core_SetContactPropertyStore.actions.createWith = actions.createWith
 
 export default Core_SetContactPropertyStore

@@ -1,7 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlockExit, IBlockConfig, IBlock} from '@floip/flow-runner'
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {defaultsDeep} from 'lodash'
 import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
@@ -12,27 +11,14 @@ export const mutations: MutationTree<IFlowsState> = {}
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
-    console.log(props)
-    const exits: IBlockExit[] = [
-      await dispatch('flow/block_createBlockDefaultExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-        }) as IBlockExit,
-      }, {root: true}),
-    ]
-
     return defaultsDeep(props, {
       type: '',
       name: '',
       label: '',
       semantic_label: '',
       config: {
-        set_contact_property: {
-          property_key: '',
-          property_value: '',
-        },
       },
-      exits,
+      exits: [],
       tags: [],
       vendor_metadata: {},
     })
@@ -45,6 +31,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
   },
 
+  //Will need to be fully overridden in embedding apps
   validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
     return validateCommunityBlock({block, schemaVersion})
   },
