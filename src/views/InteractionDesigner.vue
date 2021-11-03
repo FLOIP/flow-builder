@@ -251,10 +251,11 @@ export default {
     async registerBlockTypes() {
       const {blockClasses} = this
 
-      forEach(blockClasses, async ({type}) => {
+      forEach(blockClasses, async (blockClass) => {
+        const type = blockClass.type
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')
-        const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
+        const exported = blockClass.exported ? blockClass.exported : await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
         invoke(exported, 'install', this)
         Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
       })
