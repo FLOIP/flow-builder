@@ -255,7 +255,12 @@ export default {
         const type = blockClass.type
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')
-        const exported = blockClass.exported ? blockClass.exported : await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
+        let exported
+        if (blockClass.exported === undefined) {
+          exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
+        } else {
+          exported = await blockClass.exported()
+        }
         invoke(exported, 'install', this)
         Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
       })
