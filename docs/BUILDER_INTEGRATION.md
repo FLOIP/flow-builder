@@ -6,30 +6,28 @@
 
 Auth is up to the implementer for now
 
-## Customising Core Blocks - Slots
+## Customising Core Blocks
 
 ## Overriding Core Blocks
 
-## Creating Fully Custom Vendor Blocks
-
-- validations...
-  - schema somewhere the app can find... don't use validateCommunityBlock in base store. Dynamically find schema somewhere.
-- stores...
-  - need BLOCK_TYPE and overriding createWith at least 
-  - example minimal...: BaseBlockStore
-  - example extending minimal
-  - in future export some typescript helpers - IRootState
-  - now export some important other functionas that stores sometimes use..? Or can all be done with commit/dispatch? If so, document these...
-
 ## Removing Blocks
 
-## Overriding Components - Expression editor etc.
+## Creating Fully Custom Vendor Blocks
 
-## Customising Views - Slots
+- Using helpers - BaseBlock and BaseStore
+- Minimal block example
+- Block store API and structure
+- Custom validations
 
-## Overriding Views - /flows, /flows/new etc.
+- Documented elsewhere - converting Viamo Tree Blocks to Flow Blocks.
+
+## Overriding Components
+
+## Customising Components 
 
 ## Creating New Views
+
+- some guidance on the store structure and API goes here?
 
 ## Custom styling
 
