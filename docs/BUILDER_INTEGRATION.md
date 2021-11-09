@@ -23,6 +23,9 @@ Auth is up to the implementer for now
 
 ## Overriding Components
 
+- Specific guidance on routing for views?
+- Can get store api and initial template from looking at existing?
+
 ## Customising Components 
 
 ## Creating New Views
