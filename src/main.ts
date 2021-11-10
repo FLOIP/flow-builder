@@ -24,6 +24,11 @@ import CustomIcons from './lib/custom-icons/index'
 import router from './router'
 import App from './App.vue'
 
+import * as components from '@/components'
+Object.entries(components).forEach((component) => {
+  Vue.component(component[0], component[1])
+})
+
 library.add(faCircle, faCheckCircle, faEdit, faCheck, faEnvelope, faMobileAlt, faCommentDots, faClone, faTrashAlt, faTimesCircle, faDotCircle, ...CustomIcons)
 Vue.component('FontAwesomeIcon', FontAwesomeIcon)
 

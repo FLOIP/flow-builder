@@ -1,4 +1,4 @@
-export * as ValidationMessage from '@/components/common/ValidationMessage.vue'
-export * as TextEditor from '@/components/common/TextEditor.vue'
+export * from '@/components/common/ValidationMessage.vue'
+export * from '@/components/common/TextEditor.vue'
 
 

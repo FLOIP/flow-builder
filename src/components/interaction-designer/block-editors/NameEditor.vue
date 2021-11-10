@@ -44,19 +44,9 @@ import Lang from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 
-//Switch these to named exports instead of needing .default?
-import {TextEditor, ValidationMessage} from '@/components'
-console.log("TextEditor")
-console.log(TextEditor.default)
-
 const flowVuexNamespace = namespace('flow')
 
-@Component({
-  components: {
-    TextEditor: TextEditor.default,
-    ValidationMessage: ValidationMessage.default,
-  },
-})
+@Component({})
 class NameEditor extends mixins(Lang) {
   editBlockName = false
 
