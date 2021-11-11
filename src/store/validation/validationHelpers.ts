@@ -121,8 +121,15 @@ export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, s
   let validate = null
   if (isEmpty(validators) || !validators.has(block.type)) {
     const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]
-    const blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block.json`)
-    validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema)
+    let blockJsonSchema
+    try {
+      blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block.json`)
+      validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema)
+    } catch (e) {
+      console.info(`A Specific Validator for the ${blockTypeWithoutNameSpace}Block could not be found. Falling back the generic Block validator for ${schemaVersion}`)
+      blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
+      validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema, '#/definitions/IBlock')
+    }
     validators.set(block.type, validate)
   } else {
     validate = validators.get(block.type)!
