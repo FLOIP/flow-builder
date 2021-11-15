@@ -313,7 +313,7 @@ Core_OutputBlockvue_type_script_lang_ts_Core_OutputBlock = Object(tslib_es6["__d
     BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
     FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
     BlockId: BlockId["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */],
+    ValidationMessage: ValidationMessage["b" /* default */],
     Categorization: Categorization["a" /* default */],
     BlockOutputBranchingConfig: BlockOutputBranchingConfig["c" /* default */]
   }

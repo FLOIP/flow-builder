@@ -375,7 +375,7 @@ Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], MinimumChoicesEdito
 MinimumChoicesEditorvue_type_script_lang_ts_MinimumChoicesEditor = Object(tslib_es6["__decorate"])([Object(lib["a" /* Component */])({
   components: {
     NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   }
 })], MinimumChoicesEditorvue_type_script_lang_ts_MinimumChoicesEditor);
 
@@ -489,7 +489,7 @@ Object(tslib_es6["__decorate"])([MaximumChoicesEditorvue_type_script_lang_ts_blo
 MaximumChoicesEditorvue_type_script_lang_ts_MaximumChoicesEditor = Object(tslib_es6["__decorate"])([Object(lib["a" /* Component */])({
   components: {
     NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   }
 })], MaximumChoicesEditorvue_type_script_lang_ts_MaximumChoicesEditor);
 

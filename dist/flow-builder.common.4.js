@@ -164,7 +164,7 @@ Object(tslib_es6["__decorate"])([lib["b" /* Getter */]], GroupSelectorvue_type_s
 GroupSelectorvue_type_script_lang_ts_GroupSelector = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
   components: {
     VueMultiselect: vue_multiselect_min_default.a,
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   }
 })], GroupSelectorvue_type_script_lang_ts_GroupSelector);
 /* harmony default export */ var GroupSelectorvue_type_script_lang_ts_ = (GroupSelectorvue_type_script_lang_ts_GroupSelector);
@@ -322,9 +322,9 @@ Object(tslib_es6["__decorate"])([GroupMembershipEditorvue_type_script_lang_ts_fl
 
 GroupMembershipEditorvue_type_script_lang_ts_GroupMembershipEditor = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
   components: {
-    TextEditor: TextEditor["a" /* default */],
+    TextEditor: TextEditor["b" /* default */],
     ExpressionInput: ExpressionInput["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   }
 })], GroupMembershipEditorvue_type_script_lang_ts_GroupMembershipEditor);
 /* harmony default export */ var GroupMembershipEditorvue_type_script_lang_ts_ = (GroupMembershipEditorvue_type_script_lang_ts_GroupMembershipEditor);
@@ -633,7 +633,7 @@ Core_SetGroupMembershipBlockvue_type_script_lang_ts_Core_SetGroupMembershipBlock
     BlockId: BlockId["a" /* default */],
     GroupSelector: block_editors_GroupSelector,
     VueMultiselect: vue_multiselect_min_default.a,
-    ValidationMessage: ValidationMessage["a" /* default */],
+    ValidationMessage: ValidationMessage["b" /* default */],
     Categorization: Categorization["a" /* default */],
     GroupMembershipEditor: block_editors_GroupMembershipEditor,
     BlockOutputBranchingConfig: BlockOutputBranchingConfig["c" /* default */]

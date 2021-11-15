@@ -271,8 +271,8 @@ var FormatStringEditorvue_type_template_id_6a186454_staticRenderFns = []
 
 /* harmony default export */ var FormatStringEditorvue_type_script_lang_js_ = ({
   components: {
-    TextEditor: TextEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    TextEditor: TextEditor["b" /* default */],
+    ValidationMessage: ValidationMessage["b" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {
@@ -424,9 +424,9 @@ ConsoleIO_ReadBlockvue_type_script_lang_ts_ConsoleIO_ReadBlock = Object(tslib_es
     BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
     BlockFormatStringEditor: FormatStringEditor,
     FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
-    TextEditor: TextEditor["a" /* default */],
+    TextEditor: TextEditor["b" /* default */],
     BlockId: BlockId["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */],
+    ValidationMessage: ValidationMessage["b" /* default */],
     Categorization: Categorization["a" /* default */],
     BlockOutputBranchingConfig: BlockOutputBranchingConfig["c" /* default */]
   }

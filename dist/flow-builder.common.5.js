@@ -312,7 +312,7 @@ ConsoleIO_PrintBlockvue_type_script_lang_ts_ConsoleIO_PrintBlock = Object(tslib_
     BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
     FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
     BlockId: BlockId["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */],
+    ValidationMessage: ValidationMessage["b" /* default */],
     Categorization: Categorization["a" /* default */],
     BlockOutputBranchingConfig: BlockOutputBranchingConfig["c" /* default */]
   }

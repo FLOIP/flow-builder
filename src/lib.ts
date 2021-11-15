@@ -27,12 +27,17 @@ export const BaseBlock = BaseBlockComponent
 export const BaseBlockStore = BaseStore
 export const createDefaultBlockTypeInstallerFor = createDefaultBlockTypeInstallerForFunction
 
+import * as components from '@/components'
+
+export const defaultComponents = components
+
 const Components: { [key: string]: any } = {
   InteractionDesignerComponent,
   FetchFlowComponent,
   NewFlowComponent,
   ImportFlowComponent,
   HomeComponent,
+  ...components
 }
 
 Object.keys(Components).forEach((name) => {

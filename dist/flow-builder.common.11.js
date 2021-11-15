@@ -181,9 +181,9 @@ Object(tslib_es6["__decorate"])([flowVuexNamespace.Mutation], ContactPropertyEdi
 
 ContactPropertyEditorvue_type_script_lang_ts_ContactPropertyEditor = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
   components: {
-    TextEditor: TextEditor["a" /* default */],
+    TextEditor: TextEditor["b" /* default */],
     ExpressionInput: ExpressionInput["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   }
 })], ContactPropertyEditorvue_type_script_lang_ts_ContactPropertyEditor);
 /* harmony default export */ var ContactPropertyEditorvue_type_script_lang_ts_ = (ContactPropertyEditorvue_type_script_lang_ts_ContactPropertyEditor);

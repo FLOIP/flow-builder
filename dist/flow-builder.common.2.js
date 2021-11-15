@@ -684,7 +684,7 @@ var lang = __webpack_require__("4a51");
 
 /* harmony default export */ var ExitSemanticLabelEditorvue_type_script_lang_js_ = ({
   components: {
-    TextEditor: TextEditor["a" /* default */]
+    TextEditor: TextEditor["b" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {

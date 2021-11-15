@@ -368,7 +368,7 @@ var ValidationMessage = __webpack_require__("21e9");
 /* harmony default export */ var ThresholdEditorvue_type_script_lang_js_ = ({
   components: {
     FloatEditor: FloatEditor,
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {
@@ -436,7 +436,7 @@ var NumericEditor = __webpack_require__("2f00");
 /* harmony default export */ var TimeoutEditorvue_type_script_lang_js_ = ({
   components: {
     NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {

@@ -372,7 +372,7 @@ Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop *
 MinimumNumericEditorvue_type_script_lang_ts_MinimumNumericEditor = Object(tslib_es6["__decorate"])([Object(vue_class_component_esm["b" /* default */])({
   components: {
     NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   }
 })], MinimumNumericEditorvue_type_script_lang_ts_MinimumNumericEditor);
 /* harmony default export */ var MinimumNumericEditorvue_type_script_lang_ts_ = (MinimumNumericEditorvue_type_script_lang_ts_MinimumNumericEditor);
@@ -466,7 +466,7 @@ Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop *
 MaximumNumericEditorvue_type_script_lang_ts_MaximumNumericEditor = Object(tslib_es6["__decorate"])([Object(vue_class_component_esm["b" /* default */])({
   components: {
     NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   }
 })], MaximumNumericEditorvue_type_script_lang_ts_MaximumNumericEditor);
 /* harmony default export */ var MaximumNumericEditorvue_type_script_lang_ts_ = (MaximumNumericEditorvue_type_script_lang_ts_MaximumNumericEditor);
@@ -510,7 +510,7 @@ var MaxDigitEditorvue_type_template_id_d1168578_staticRenderFns = []
 /* harmony default export */ var MaxDigitEditorvue_type_script_lang_js_ = ({
   components: {
     NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {

@@ -275,7 +275,7 @@ var ValidationMessage = __webpack_require__("21e9");
 /* harmony default export */ var MaxDurationSecondsEditorvue_type_script_lang_js_ = ({
   components: {
     NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {
@@ -347,7 +347,7 @@ var MaxResponseCharactersEditorvue_type_template_id_fd061100_staticRenderFns = [
 /* harmony default export */ var MaxResponseCharactersEditorvue_type_script_lang_js_ = ({
   components: {
     NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
+    ValidationMessage: ValidationMessage["b" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {

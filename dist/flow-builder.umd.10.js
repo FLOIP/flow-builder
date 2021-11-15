@@ -315,9 +315,9 @@ Core_RunFlowBlockvue_type_script_lang_ts_Core_RunAnotherFlowBlock = Object(tslib
     BlockLabelEditor: LabelEditor["a" /* default */],
     BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
     FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
-    TextEditor: TextEditor["a" /* default */],
+    TextEditor: TextEditor["b" /* default */],
     BlockId: BlockId["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */],
+    ValidationMessage: ValidationMessage["b" /* default */],
     Categorization: Categorization["a" /* default */],
     BlockOutputBranchingConfig: BlockOutputBranchingConfig["c" /* default */]
   }

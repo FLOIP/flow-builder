@@ -312,7 +312,7 @@ Core_LogBlockvue_type_script_lang_ts_Core_LogBlock = Object(tslib_es6["__decorat
     BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
     FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
     BlockId: BlockId["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */],
+    ValidationMessage: ValidationMessage["b" /* default */],
     Categorization: Categorization["a" /* default */],
     BlockOutputBranchingConfig: BlockOutputBranchingConfig["c" /* default */]
   }
