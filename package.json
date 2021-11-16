@@ -22,7 +22,7 @@
   "dependencies": {
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
-    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#feature/VMO-4281-flow-spec-rc2#fdf532cf413fc363e5413f0013e2f86138127499",
+    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#feature/VMO-4281-flow-spec-rc2",
     "@flowjs/flow.js": "^2.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
