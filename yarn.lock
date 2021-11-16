@@ -1667,7 +1667,7 @@
   resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.10.0.tgz#386cb9fbfb2afc951daae40e03845a87bacf3509"
   integrity sha512-pLR8p2z6q87O9c1XkP4DYfuEX+cKMn14a4jYkZ/t4ky1k+MEvp69zj662xJTzCkbH3ABsrwaxx7fP1FWASlEZw==
 
-"@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#feature/VMO-4281-flow-spec-rc2#fdf532cf413fc363e5413f0013e2f86138127499":
+"@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#feature/VMO-4281-flow-spec-rc2":
   version "1.0.0-rc2.6"
   resolved "https://github.com/FLOIP/flow-runner.git#fdf532cf413fc363e5413f0013e2f86138127499"
   dependencies:
