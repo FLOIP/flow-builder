@@ -4,6 +4,7 @@ import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IMessageBlock} from '@floip/flow-runner/src/model/block/IMessageBlock'
 import {defaultsDeep} from 'lodash'
+import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.Message'
@@ -43,6 +44,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId: block.uuid,
       test: 'block.value > 0',
     }, {root: true})
+  },
+
+  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return validateCommunityBlock({block, schemaVersion})
   },
 
 }

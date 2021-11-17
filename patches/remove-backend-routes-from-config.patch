@@ -1,10 +1,18 @@
 diff --git a/builder.config.json b/builder.config.json
-index 51f5e1c..b815922 100644
+index 5830d4e3..b0b17801 100644
 --- a/builder.config.json
 +++ b/builder.config.json
-@@ -2,17 +2,6 @@
+@@ -1,25 +1,7 @@
+ {
    "ui": {
      "routes": {
+-      "languages": {
+-        "persistLanguage": {
+-          "name": "persistLanguage",
+-          "path": "\/backend\/languages",
+-          "methods": ["POST"]
+-        }
+-      },
        "flows": {
 -        "persistFlow": {
 -          "name": "persistFlow",

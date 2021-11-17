@@ -91,6 +91,13 @@ module.exports = {
         res.end(JSON.stringify(flow))
       })
 
+      //In the success case, just echo the language back
+      app.post('/backend/languages', bodyParser.json(), (req, res) => {
+        const language = req.body
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(language))
+      })
+
       // Mock call to record start, with this format
       // {uuid: ..., queue_id: ..., status: "in_progress", status_description: ..., description: ...}
       app.all('/calltorecord/start', (req, res) => {

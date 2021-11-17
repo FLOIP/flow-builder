@@ -1,6 +1,6 @@
 ((typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] = (typeof self !== 'undefined' ? self : this)["webpackJsonpflow_builder"] || []).push([[18],{
 
-/***/ "59c3":
+/***/ "2b44":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10,12 +10,12 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ install; });
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=template&id=4eefec78&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"smart-devices-location-response-block"},[_c('h3',{staticClass:"block-editor-header"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_vm._t("extras"),_c('block-threshold-editor',{attrs:{"block":_vm.block},on:{"commitAccuracyThresholdMetersChange":_vm.updateThreshold}}),_c('block-timeout-editor',{attrs:{"block":_vm.block},on:{"commitAccuracyTimeoutSecondsChange":_vm.updateTimeout}}),_c('hr'),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":false},on:{"branchingTypeChangedToUnified":function($event){return _vm.handleBranchingTypeChangedToUnified({block: _vm.block})}}}),(_vm.promptResource)?_c('resource-editor',{attrs:{"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e(),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"1fb466d0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue?vue&type=template&id=387b5530&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"smart-devices-photo-response-block"},[_c('h3',{staticClass:"block-editor-header"},[_vm._v(" "+_vm._s(_vm._f("trans")(("flow-builder." + (_vm.block.type))))+" ")]),_c('fieldset',{attrs:{"disabled":!_vm.isEditable}},[_c('block-label-editor',{attrs:{"block":_vm.block},on:{"gearClicked":function($event){_vm.showSemanticLabel = !_vm.showSemanticLabel}}}),(_vm.showSemanticLabel)?_c('block-semantic-label-editor',{attrs:{"block":_vm.block}}):_vm._e(),_c('block-name-editor',{attrs:{"block":_vm.block}}),_vm._t("extras"),_c('hr'),_c('block-output-branching-config',{attrs:{"block":_vm.block,"has-exit-per-choice":false},on:{"branchingTypeChangedToUnified":function($event){return _vm.handleBranchingTypeChangedToUnified({block: _vm.block})}}}),(_vm.promptResource)?_c('resource-editor',{attrs:{"resource":_vm.promptResource,"block":_vm.block,"flow":_vm.flow}}):_vm._e(),_c('categorization',{attrs:{"block":_vm.block}}),_c('generic-contact-property-editor',{attrs:{"block":_vm.block}}),_c('hr'),_c('first-block-editor-button',{attrs:{"flow":_vm.flow,"block-id":_vm.block.uuid}})],2),_c('block-id',{attrs:{"block":_vm.block}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=template&id=4eefec78&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue?vue&type=template&id=387b5530&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("276c");
@@ -47,6 +47,9 @@ var lib = __webpack_require__("4bb5");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/index.js + 14 modules
 var vue_property_decorator_lib = __webpack_require__("1b40");
 
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue + 14 modules
+var BlockOutputBranchingConfig = __webpack_require__("18b0");
+
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
 var asyncToGenerator = __webpack_require__("c964");
 
@@ -59,115 +62,65 @@ var IdGeneratorUuidV4 = __webpack_require__("31aa");
 // EXTERNAL MODULE: ./node_modules/lodash/lodash.js
 var lodash = __webpack_require__("2ef0");
 
-// CONCATENATED MODULE: ./src/store/flow/block-types/SmartDevices_LocationResponseBlockStore.ts
+// EXTERNAL MODULE: ./src/store/validation/validationHelpers.ts
+var validationHelpers = __webpack_require__("85b2");
+
+// CONCATENATED MODULE: ./src/store/flow/block-types/SmartDevices_PhotoResponseBlockStore.ts
 
 
- // import ILocationResponseBlock from '@floip/flow-runner/src/model/block/ILocationResponseBlock' // TODO: to be created on flow-runner side
+ // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to create at flow-runner
 
 
-var BLOCK_TYPE = 'SmartDevices.LocationResponse';
+
+var BLOCK_TYPE = 'SmartDevices.PhotoResponse';
 var getters = {};
 var mutations = {};
 var actions = {
-  setAccuracyThreshold: function setAccuracyThreshold(_ref, _ref2) {
+  createWith: function createWith(_ref, _ref2) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var commit, blockId, value;
+      var dispatch, props, blankMessageResource, exits;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref.commit;
-              blockId = _ref2.blockId, value = _ref2.value;
-              commit('flow/block_updateConfigByKey', {
-                blockId: blockId,
-                key: 'accuracy_threshold_meters',
-                value: value
-              }, {
-                root: true
-              });
-              return _context.abrupt("return", value);
-
-            case 4:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  },
-  setAccuracyTimeout: function setAccuracyTimeout(_ref3, _ref4) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var commit, blockId, value;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              commit = _ref3.commit;
-              blockId = _ref4.blockId, value = _ref4.value;
-              commit('flow/block_updateConfigByKey', {
-                blockId: blockId,
-                key: 'accuracy_timeout_seconds',
-                value: value
-              }, {
-                root: true
-              });
-              return _context2.abrupt("return", value);
-
-            case 4:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }))();
-  },
-  createWith: function createWith(_ref5, _ref6) {
-    return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-      var dispatch, props, blankMessageResource, exits;
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              dispatch = _ref5.dispatch;
-              props = _ref6.props;
-              _context3.next = 4;
+              dispatch = _ref.dispatch;
+              props = _ref2.props;
+              _context.next = 4;
               return dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {
                 root: true
               });
 
             case 4:
-              blankMessageResource = _context3.sent;
-              _context3.t0 = dispatch;
-              _context3.next = 8;
+              blankMessageResource = _context.sent;
+              _context.t0 = dispatch;
+              _context.next = 8;
               return new IdGeneratorUuidV4["IdGeneratorUuidV4"]().generate();
 
             case 8:
-              _context3.t1 = _context3.sent;
-              _context3.t2 = {
-                uuid: _context3.t1
+              _context.t1 = _context.sent;
+              _context.t2 = {
+                uuid: _context.t1
               };
-              _context3.t3 = {
-                props: _context3.t2
+              _context.t3 = {
+                props: _context.t2
               };
-              _context3.t4 = {
+              _context.t4 = {
                 root: true
               };
-              _context3.next = 14;
-              return (0, _context3.t0)('flow/block_createBlockDefaultExitWith', _context3.t3, _context3.t4);
+              _context.next = 14;
+              return (0, _context.t0)('flow/block_createBlockDefaultExitWith', _context.t3, _context.t4);
 
             case 14:
-              _context3.t5 = _context3.sent;
-              exits = [_context3.t5];
-              return _context3.abrupt("return", Object(lodash["defaultsDeep"])(props, {
+              _context.t5 = _context.sent;
+              exits = [_context.t5];
+              return _context.abrupt("return", Object(lodash["defaultsDeep"])(props, {
                 type: BLOCK_TYPE,
                 name: '',
                 label: '',
                 semantic_label: '',
                 exits: exits,
                 config: {
-                  prompt: blankMessageResource.uuid,
-                  accuracy_threshold_meters: 5.0,
-                  accuracy_timeout_seconds: 120
+                  prompt: blankMessageResource.uuid
                 },
                 tags: [],
                 vendor_metadata: {}
@@ -175,24 +128,33 @@ var actions = {
 
             case 17:
             case "end":
-              return _context3.stop();
+              return _context.stop();
           }
         }
-      }, _callee3);
+      }, _callee);
     }))();
   },
-  handleBranchingTypeChangedToUnified: function handleBranchingTypeChangedToUnified(_ref7, _ref8) {
-    var dispatch = _ref7.dispatch;
-    var block = _ref8.block;
+  handleBranchingTypeChangedToUnified: function handleBranchingTypeChangedToUnified(_ref3, _ref4) {
+    var dispatch = _ref3.dispatch;
+    var block = _ref4.block;
     dispatch('flow/block_convertExitFormationToUnified', {
       blockId: block.uuid,
       test: 'NOT(block.value = false)'
     }, {
       root: true
     });
+  },
+  validate: function validate(_ref5, _ref6) {
+    var rootGetters = _ref5.rootGetters;
+    var block = _ref6.block,
+        schemaVersion = _ref6.schemaVersion;
+    return Object(validationHelpers["e" /* validateCommunityBlock */])({
+      block: block,
+      schemaVersion: schemaVersion
+    });
   }
 };
-/* harmony default export */ var SmartDevices_LocationResponseBlockStore = ({
+/* harmony default export */ var SmartDevices_PhotoResponseBlockStore = ({
   namespaced: true,
   getters: getters,
   mutations: mutations,
@@ -210,11 +172,8 @@ var builder = __webpack_require__("af98");
 // EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
 var vue_class_component_esm = __webpack_require__("2fe1");
 
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue + 14 modules
-var BlockOutputBranchingConfig = __webpack_require__("18b0");
-
-// EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceEditor.vue + 37 modules
-var ResourceEditor = __webpack_require__("510a");
+// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue + 4 modules
+var GenericContactPropertyEditor = __webpack_require__("b4ec");
 
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/NameEditor.vue + 4 modules
 var NameEditor = __webpack_require__("f04e");
@@ -231,257 +190,10 @@ var FirstBlockEditorButton = __webpack_require__("192b");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
 var BlockId = __webpack_require__("792f");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=7e541c7f&
-var ThresholdEditorvue_type_template_id_7e541c7f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/accuracy_threshold_meters")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
-var isValid = ref.isValid;
-return [_c('div',{staticClass:"block-threshold"},[_c('float-editor',{attrs:{"min":0,"regex-float-filtering":'[0-9.,]',"label":_vm._f("trans")('flow-builder.accuracy-threshold-in-meters'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"valid-state":isValid},model:{value:(_vm.threshold),callback:function ($$v) {_vm.threshold=_vm._n($$v)},expression:"threshold"}})],1)]}}])})}
-var ThresholdEditorvue_type_template_id_7e541c7f_staticRenderFns = []
+// EXTERNAL MODULE: ./src/components/interaction-designer/resource-editors/ResourceEditor.vue + 37 modules
+var ResourceEditor = __webpack_require__("510a");
 
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=7e541c7f&
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/FloatEditor.vue?vue&type=template&id=5356095a&
-var FloatEditorvue_type_template_id_5356095a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"float-editor"},[_c('label',{staticClass:"text-primary"},[_vm._v(_vm._s(_vm.label))]),_c('div',[_c('input',{staticClass:"form-control",class:{ 'is-invalid': _vm.isInvalid },attrs:{"type":"number","min":_vm.min,"placeholder":_vm.placeholder,"step":_vm.step},domProps:{"value":_vm.value},on:{"keypress":_vm.filterFloat,"keydown":function($event){return _vm.$emit('keydown', $event)},"input":function($event){return _vm.$emit('input', $event.target.value)}}})]),_vm._t("default")],2)}
-var FloatEditorvue_type_template_id_5356095a_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/common/FloatEditor.vue?vue&type=template&id=5356095a&
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
-var es_number_constructor = __webpack_require__("a9e3");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
-var es_regexp_exec = __webpack_require__("ac1f");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.match.js
-var es_string_match = __webpack_require__("466d");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.constructor.js
-var es_regexp_constructor = __webpack_require__("4d63");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.to-string.js
-var es_regexp_to_string = __webpack_require__("25f0");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/FloatEditor.vue?vue&type=script&lang=js&
-
-
-
-
-
-
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-/* harmony default export */ var FloatEditorvue_type_script_lang_js_ = ({
-  props: {
-    label: {
-      type: [String, Number],
-      required: true
-    },
-    placeholder: {
-      type: String,
-      default: ''
-    },
-    step: {
-      type: String,
-      default: '0.1'
-    },
-    value: {
-      type: [String, Number],
-      required: true
-    },
-    min: {
-      type: [String, Number],
-      required: false,
-      // Meaning it's accepting negative by default
-      default: ''
-    },
-    regexFloatFiltering: {
-      type: String,
-      required: false,
-      default: '[0-9-.,]'
-    },
-    validState: {
-      type: Boolean,
-      default: null,
-      required: false
-    }
-  },
-  computed: {
-    isInvalid: function isInvalid() {
-      return this.validState === false;
-    }
-  },
-  methods: {
-    filterFloat: function filterFloat(e) {
-      if (!e.key.match(new RegExp(this.regexFloatFiltering, 'g'))) {
-        e.preventDefault();
-      }
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/components/common/FloatEditor.vue?vue&type=script&lang=js&
- /* harmony default export */ var common_FloatEditorvue_type_script_lang_js_ = (FloatEditorvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__("2877");
-
-// CONCATENATED MODULE: ./src/components/common/FloatEditor.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  common_FloatEditorvue_type_script_lang_js_,
-  FloatEditorvue_type_template_id_5356095a_render,
-  FloatEditorvue_type_template_id_5356095a_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var FloatEditor = (component.exports);
-// EXTERNAL MODULE: ./src/components/common/ValidationMessage.vue + 5 modules
-var ValidationMessage = __webpack_require__("21e9");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=script&lang=js&
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-
-
-
-
-/* harmony default export */ var ThresholdEditorvue_type_script_lang_js_ = ({
-  components: {
-    FloatEditor: FloatEditor,
-    ValidationMessage: ValidationMessage["a" /* default */]
-  },
-  mixins: [lang["b" /* lang */]],
-  props: {
-    block: {
-      type: Object,
-      required: true
-    }
-  },
-  data: function data() {
-    return {
-      defaultValue: 5.0
-    };
-  },
-  computed: {
-    threshold: {
-      get: function get() {
-        return Object(lodash["get"])(this.block, 'config.accuracy_threshold_meters', this.defaultValue);
-      },
-      set: function set(value) {
-        this.$emit('commitAccuracyThresholdMetersChange', value);
-      }
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=script&lang=js&
- /* harmony default export */ var block_editors_ThresholdEditorvue_type_script_lang_js_ = (ThresholdEditorvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue
-
-
-
-
-
-/* normalize component */
-
-var ThresholdEditor_component = Object(componentNormalizer["a" /* default */])(
-  block_editors_ThresholdEditorvue_type_script_lang_js_,
-  ThresholdEditorvue_type_template_id_7e541c7f_render,
-  ThresholdEditorvue_type_template_id_7e541c7f_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var ThresholdEditor = (ThresholdEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"26dc0a25-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=3a2ac4cc&
-var TimeoutEditorvue_type_template_id_3a2ac4cc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/accuracy_timeout_seconds")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
-var isValid = ref.isValid;
-return [_c('div',{staticClass:"block-timeout"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.accuracy-timeout-in-seconds'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"valid-state":isValid},model:{value:(_vm.timeout),callback:function ($$v) {_vm.timeout=_vm._n($$v)},expression:"timeout"}})],1)]}}])})}
-var TimeoutEditorvue_type_template_id_3a2ac4cc_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=3a2ac4cc&
-
-// EXTERNAL MODULE: ./src/components/common/NumericEditor.vue + 4 modules
-var NumericEditor = __webpack_require__("2f00");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=script&lang=js&
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-
-
-
-
-/* harmony default export */ var TimeoutEditorvue_type_script_lang_js_ = ({
-  components: {
-    NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["a" /* default */]
-  },
-  mixins: [lang["b" /* lang */]],
-  props: {
-    block: {
-      type: Object,
-      required: true
-    },
-    validState: {
-      type: Boolean,
-      // to tell boostrap `No state`
-      default: null,
-      required: false
-    }
-  },
-  data: function data() {
-    return {
-      defaultValue: 120
-    };
-  },
-  computed: {
-    timeout: {
-      get: function get() {
-        return Object(lodash["get"])(this.block, 'config.accuracy_timeout_seconds', this.defaultValue);
-      },
-      set: function set(value) {
-        this.$emit('commitAccuracyTimeoutSecondsChange', value);
-      }
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=script&lang=js&
- /* harmony default export */ var block_editors_TimeoutEditorvue_type_script_lang_js_ = (TimeoutEditorvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue
-
-
-
-
-
-/* normalize component */
-
-var TimeoutEditor_component = Object(componentNormalizer["a" /* default */])(
-  block_editors_TimeoutEditorvue_type_script_lang_js_,
-  TimeoutEditorvue_type_template_id_3a2ac4cc_render,
-  TimeoutEditorvue_type_template_id_3a2ac4cc_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var TimeoutEditor = (TimeoutEditor_component.exports);
-// EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue + 4 modules
-var GenericContactPropertyEditor = __webpack_require__("b4ec");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=script&lang=ts&
-
-
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue?vue&type=script&lang=ts&
 
 
 
@@ -506,18 +218,18 @@ var GenericContactPropertyEditor = __webpack_require__("b4ec");
 
 
 var flowVuexNamespace = Object(lib["e" /* namespace */])('flow');
-var blockVuexNamespace = Object(lib["e" /* namespace */])("flow/".concat(BLOCK_TYPE));
 var builderVuexNamespace = Object(lib["e" /* namespace */])('builder');
+var blockVuexNamespace = Object(lib["e" /* namespace */])("flow/".concat(BLOCK_TYPE));
 
-var SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock = /*#__PURE__*/function (_mixins) {
-  Object(inherits["a" /* default */])(SmartDevices_LocationResponseBlock, _mixins);
+var SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock = /*#__PURE__*/function (_mixins) {
+  Object(inherits["a" /* default */])(SmartDevices_PhotoResponseBlock, _mixins);
 
-  var _super = Object(createSuper["a" /* default */])(SmartDevices_LocationResponseBlock);
+  var _super = Object(createSuper["a" /* default */])(SmartDevices_PhotoResponseBlock);
 
-  function SmartDevices_LocationResponseBlock() {
+  function SmartDevices_PhotoResponseBlock() {
     var _this;
 
-    Object(classCallCheck["a" /* default */])(this, SmartDevices_LocationResponseBlock);
+    Object(classCallCheck["a" /* default */])(this, SmartDevices_PhotoResponseBlock);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -533,77 +245,54 @@ var SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_Locat
 
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "resourcesByUuid", void 0);
 
-    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "setAccuracyThreshold", void 0);
-
-    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "setAccuracyTimeout", void 0);
+    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "isEditable", void 0);
 
     Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "handleBranchingTypeChangedToUnified", void 0);
-
-    Object(defineProperty["a" /* default */])(Object(assertThisInitialized["a" /* default */])(_this), "isEditable", void 0);
 
     return _this;
   }
 
-  Object(createClass["a" /* default */])(SmartDevices_LocationResponseBlock, [{
-    key: "updateThreshold",
-    value: function updateThreshold(value) {
-      this.setAccuracyThreshold({
-        blockId: this.block.uuid,
-        value: value
-      });
-    }
-  }, {
-    key: "updateTimeout",
-    value: function updateTimeout(value) {
-      this.setAccuracyTimeout({
-        blockId: this.block.uuid,
-        value: value
-      });
-    }
-  }, {
+  Object(createClass["a" /* default */])(SmartDevices_PhotoResponseBlock, [{
     key: "promptResource",
     get: function get() {
       return this.resourcesByUuid[this.block.config.prompt];
     }
   }]);
 
-  return SmartDevices_LocationResponseBlock;
+  return SmartDevices_PhotoResponseBlock;
 }(Object(vue_class_component_esm["c" /* mixins */])(lang["a" /* default */]));
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "block", void 0);
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock.prototype, "block", void 0);
 
-Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "flow", void 0);
+Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop */])()], SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock.prototype, "flow", void 0);
 
-Object(tslib_es6["__decorate"])([flowVuexNamespace.Getter], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "resourcesByUuid", void 0);
+Object(tslib_es6["__decorate"])([flowVuexNamespace.Getter], SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock.prototype, "resourcesByUuid", void 0);
 
-Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "setAccuracyThreshold", void 0);
+Object(tslib_es6["__decorate"])([builderVuexNamespace.Getter], SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock.prototype, "isEditable", void 0);
 
-Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "setAccuracyTimeout", void 0);
+Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock.prototype, "handleBranchingTypeChangedToUnified", void 0);
 
-Object(tslib_es6["__decorate"])([blockVuexNamespace.Action], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "handleBranchingTypeChangedToUnified", void 0);
-
-Object(tslib_es6["__decorate"])([builderVuexNamespace.Getter], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock.prototype, "isEditable", void 0);
-
-SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
+SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
   components: {
     GenericContactPropertyEditor: GenericContactPropertyEditor["a" /* default */],
-    ResourceEditor: ResourceEditor["a" /* default */],
     BlockNameEditor: NameEditor["a" /* default */],
     BlockLabelEditor: LabelEditor["a" /* default */],
     BlockSemanticLabelEditor: SemanticLabelEditor["a" /* default */],
     FirstBlockEditorButton: FirstBlockEditorButton["a" /* default */],
     BlockId: BlockId["a" /* default */],
-    BlockThresholdEditor: ThresholdEditor,
-    BlockTimeoutEditor: TimeoutEditor,
     Categorization: Categorization["a" /* default */],
-    BlockOutputBranchingConfig: BlockOutputBranchingConfig["c" /* default */]
+    BlockOutputBranchingConfig: BlockOutputBranchingConfig["c" /* default */],
+    ResourceEditor: ResourceEditor["a" /* default */]
   }
-})], SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock);
-/* harmony default export */ var SmartDevices_LocationResponseBlockvue_type_script_lang_ts_ = (SmartDevices_LocationResponseBlockvue_type_script_lang_ts_SmartDevices_LocationResponseBlock);
-var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, SmartDevices_LocationResponseBlockStore);
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue?vue&type=script&lang=ts&
- /* harmony default export */ var block_types_SmartDevices_LocationResponseBlockvue_type_script_lang_ts_ = (SmartDevices_LocationResponseBlockvue_type_script_lang_ts_); 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue
+})], SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock);
+/* harmony default export */ var SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_ = (SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_SmartDevices_PhotoResponseBlock);
+var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(BLOCK_TYPE, SmartDevices_PhotoResponseBlockStore);
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue?vue&type=script&lang=ts&
+ /* harmony default export */ var block_types_SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_ = (SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2877");
+
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue
 
 
 
@@ -611,8 +300,8 @@ var install = Object(builder["d" /* createDefaultBlockTypeInstallerFor */])(BLOC
 
 /* normalize component */
 
-var SmartDevices_LocationResponseBlock_component = Object(componentNormalizer["a" /* default */])(
-  block_types_SmartDevices_LocationResponseBlockvue_type_script_lang_ts_,
+var component = Object(componentNormalizer["a" /* default */])(
+  block_types_SmartDevices_PhotoResponseBlockvue_type_script_lang_ts_,
   render,
   staticRenderFns,
   false,
@@ -622,7 +311,7 @@ var SmartDevices_LocationResponseBlock_component = Object(componentNormalizer["a
   
 )
 
-/* harmony default export */ var block_types_SmartDevices_LocationResponseBlock = __webpack_exports__["default"] = (SmartDevices_LocationResponseBlock_component.exports);
+/* harmony default export */ var block_types_SmartDevices_PhotoResponseBlock = __webpack_exports__["default"] = (component.exports);
 
 /***/ })
 

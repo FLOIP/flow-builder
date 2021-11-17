@@ -12,6 +12,7 @@ import {
   stateFactory,
 } from './MobilePrimitives_SelectOneResponseBlockStore'
 import {IBlockWithBranchingType, OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectManyResponse'
 
@@ -89,6 +90,10 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       vendor_metadata: {},
       tags: [],
     })
+  },
+
+  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return validateCommunityBlock({block, schemaVersion})
   },
 }
 
