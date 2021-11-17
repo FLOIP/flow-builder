@@ -40,7 +40,7 @@
 <script>
 import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {endsWith, forEach, get, isEmpty} from 'lodash'
+import {endsWith, forEach, get, isEmpty, invoke} from 'lodash'
 import Vue from 'vue'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 // import {affix as Affix} from 'vue-strap'
@@ -255,13 +255,13 @@ export default {
         const type = blockClass.type
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')
-        let {install, uiComponent} = blockClass
-        if(install === undefined) {
+        let {uiComponent} = blockClass
+        if (blockClass.install === undefined) {
           const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
-          install = exported.install
+          blockClass.install = exported.install
           uiComponent = exported.default
         }
-        install(this)
+        invoke(blockClass, 'install', this)
         Vue.component(`Flow${typeWithoutSeparators}`, uiComponent)
       })
     },

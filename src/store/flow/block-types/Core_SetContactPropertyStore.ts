@@ -4,6 +4,7 @@ import {IFlowsState} from '../index'
 import {IBlockExit, IBlockConfig} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import BaseStore from './BaseBlock'
+import {cloneDeep} from 'lodash'
 
 export interface IContactPropertyOption {
   id: string,
@@ -13,7 +14,7 @@ export interface IContactPropertyOption {
 
 export const BLOCK_TYPE = 'Core.SetContactProperty'
 
-const baseActions = Object.assign({}, BaseStore.actions)
+const baseActions = cloneDeep(BaseStore.actions)
 
 const actions: ActionTree<IFlowsState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
@@ -39,8 +40,7 @@ const actions: ActionTree<IFlowsState, IRootState> = {
 
 }
 
-//better way to do this kind of thing?
-const Core_SetContactPropertyStore = Object.assign({}, BaseStore)
+const Core_SetContactPropertyStore = cloneDeep(BaseStore)
 Core_SetContactPropertyStore.actions.createWith = actions.createWith
 
 export default Core_SetContactPropertyStore
