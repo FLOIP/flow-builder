@@ -218,9 +218,6 @@ var asyncToGenerator = __webpack_require__("c964");
 // EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
 var runtime = __webpack_require__("96cf");
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.assign.js
-var es_object_assign = __webpack_require__("cca6");
-
 // EXTERNAL MODULE: ./node_modules/@floip/flow-runner/dist/domain/IdGeneratorUuidV4.js
 var IdGeneratorUuidV4 = __webpack_require__("31aa");
 
@@ -234,7 +231,7 @@ var block_types_BaseBlock = __webpack_require__("2680");
 
 
 var BLOCK_TYPE = 'Core.SetContactProperty';
-var baseActions = Object.assign({}, block_types_BaseBlock["a" /* default */].actions);
+var baseActions = Object(lodash["cloneDeep"])(block_types_BaseBlock["a" /* default */].actions);
 var actions = {
   createWith: function createWith(_ref, _ref2) {
     return Object(asyncToGenerator["a" /* default */])( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -293,9 +290,8 @@ var actions = {
       }, _callee);
     }))();
   }
-}; //better way to do this kind of thing?
-
-var Core_SetContactPropertyStore = Object.assign({}, block_types_BaseBlock["a" /* default */]);
+};
+var Core_SetContactPropertyStore = Object(lodash["cloneDeep"])(block_types_BaseBlock["a" /* default */]);
 Core_SetContactPropertyStore.actions.createWith = actions.createWith;
 /* harmony default export */ var block_types_Core_SetContactPropertyStore = (Core_SetContactPropertyStore);
 // EXTERNAL MODULE: ./src/store/builder/index.ts

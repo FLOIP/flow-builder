@@ -34,6 +34,7 @@ const actions: ActionTree<IFlowsState, IRootState> = {
       }, {root: true}),
     ]
     props.exits = exits
+    //TODO - fix this
     // @ts-ignore
     return await baseActions.createWith({dispatch}, {props})
   }
