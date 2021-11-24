@@ -147,7 +147,7 @@ export default {
     }),
 
     ...mapGetters('flow', ['activeFlow']),
-    ...mapGetters('builder', ['activeBlock', 'isEditable', 'interactionDesignerBoundingClientRect']),
+    ...mapGetters('builder', ['activeBlock', 'isEditable']),
     ...mapGetters('clipboard', ['isSimulatorActive']),
 
     jsKey() {
@@ -223,11 +223,6 @@ export default {
       }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
-
-    // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
-    if (this.activeFlow && this.$refs['interaction-designer-contents'] != undefined) {
-      this.setInteractionDesignerBoundingClientRect(this.$refs['interaction-designer-contents'].getBoundingClientRect())
-    }
   },
   beforeRouteUpdate(to, from, next) {
     this.activateBlock({blockId: to.params.blockId || null})
@@ -239,7 +234,7 @@ export default {
   },
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
-    ...mapMutations('builder', ['activateBlock', 'setIsBlockEditorOpen', 'setInteractionDesignerBoundingClientRect']),
+    ...mapMutations('builder', ['activateBlock', 'setIsBlockEditorOpen']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
 

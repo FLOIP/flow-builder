@@ -57,7 +57,6 @@ export interface IBuilderState {
   },
   draggableForExitsByUuid: object,
   isBlockEditorOpen: boolean,
-  interactionDesignerBoundingClientRect: DOMRect,
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -77,7 +76,6 @@ export const stateFactory = (): IBuilderState => ({
   },
   draggableForExitsByUuid: {},
   isBlockEditorOpen: false,
-  interactionDesignerBoundingClientRect: {} as DOMRect,
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
@@ -93,8 +91,6 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
   exitLabelsById: (_state, _getters, {flow: {flows}}) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
-
-  interactionDesignerBoundingClientRect: (state) => state.interactionDesignerBoundingClientRect,
 }
 
 export const mutations: MutationTree<IBuilderState> = {
@@ -140,10 +136,6 @@ export const mutations: MutationTree<IBuilderState> = {
   setIsBlockEditorOpen(state, value) {
     state.isBlockEditorOpen = value
   },
-
-  setInteractionDesignerBoundingClientRect(state, value) {
-    state.interactionDesignerBoundingClientRect = value
-  }
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {

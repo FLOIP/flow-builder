@@ -747,33 +747,42 @@ var component = Object(componentNormalizer["a" /* default */])(
 /* harmony import */ var _Users_bulatgab_viamo_flow_builder_node_modules_vue_babel_preset_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("c964");
 /* harmony import */ var regenerator_runtime_runtime_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("96cf");
 /* harmony import */ var regenerator_runtime_runtime_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("d3b7");
-/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("ddb0");
-/* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("99af");
-/* harmony import */ var core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var core_js_modules_es_object_keys_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("b64b");
-/* harmony import */ var core_js_modules_es_object_keys_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys_js__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("fb6a");
-/* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var core_js_modules_es_string_iterator_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("3ca3");
-/* harmony import */ var core_js_modules_es_string_iterator_js__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_iterator_js__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var core_js_modules_es_array_map_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("d81d");
-/* harmony import */ var core_js_modules_es_array_map_js__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_map_js__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("a434");
-/* harmony import */ var core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var core_js_modules_es_array_join_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("a15b");
-/* harmony import */ var core_js_modules_es_array_join_js__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_join_js__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("9300");
-/* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__("31aa");
-/* harmony import */ var _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__("8bbf");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__("2ef0");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var _store_validation_validationHelpers__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__("85b2");
+/* harmony import */ var core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("e260");
+/* harmony import */ var core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("d3b7");
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("ddb0");
+/* harmony import */ var core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("99af");
+/* harmony import */ var core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var core_js_modules_es_object_keys_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("b64b");
+/* harmony import */ var core_js_modules_es_object_keys_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys_js__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("fb6a");
+/* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("e6cf");
+/* harmony import */ var core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise_js__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var core_js_modules_es_string_iterator_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("3ca3");
+/* harmony import */ var core_js_modules_es_string_iterator_js__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_iterator_js__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var core_js_modules_es_array_map_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("d81d");
+/* harmony import */ var core_js_modules_es_array_map_js__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_map_js__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var core_js_modules_es_object_assign_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("cca6");
+/* harmony import */ var core_js_modules_es_object_assign_js__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_assign_js__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__("a434");
+/* harmony import */ var core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var core_js_modules_es_array_join_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__("a15b");
+/* harmony import */ var core_js_modules_es_array_join_js__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_join_js__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__("9300");
+/* harmony import */ var _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__("31aa");
+/* harmony import */ var _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__("8bbf");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__("2ef0");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_18__);
+/* harmony import */ var _store_validation_validationHelpers__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__("85b2");
+
+
+
 
 
 
@@ -803,18 +812,18 @@ var actions = {
         dispatch = _ref.dispatch;
     var resourceId = _ref2.resourceId,
         blockId = _ref2.blockId;
-    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_12__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
+    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
     var resource = rootGetters['flow/resourcesByUuid'][resourceId];
 
     if (resource == null) {
-      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_12__["ValidationException"]("Unable to find resource for choice: ".concat(resourceId));
+      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find resource for choice: ".concat(resourceId));
     }
 
-    var choiceKey = String(Object(lodash__WEBPACK_IMPORTED_MODULE_15__["findKey"])(block.config.choices, function (v) {
+    var choiceKey = String(Object(lodash__WEBPACK_IMPORTED_MODULE_18__["findKey"])(block.config.choices, function (v) {
       return v === resourceId;
     })); // omit() will inadvertently but desirably remove an empty `choiceKey`
 
-    block.config.choices = Object(lodash__WEBPACK_IMPORTED_MODULE_15__["omit"])(block.config.choices, choiceKey);
+    block.config.choices = Object(lodash__WEBPACK_IMPORTED_MODULE_18__["omit"])(block.config.choices, choiceKey);
     dispatch('addChoiceByResourceIdTo', {
       blockId: blockId,
       resourceId: resourceId
@@ -824,29 +833,29 @@ var actions = {
     var rootGetters = _ref3.rootGetters;
     var blockId = _ref4.blockId,
         resourceId = _ref4.resourceId;
-    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_12__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
+    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
     var resource = rootGetters['flow/resourcesByUuid'][resourceId];
 
     if (resource == null) {
-      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_12__["ValidationException"]("Unable to find resource for choice: ".concat(resourceId));
+      throw new _floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["ValidationException"]("Unable to find resource for choice: ".concat(resourceId));
     } // defaulted to `resourceId` to mitigate empty keys and associated error handling altogether
 
 
-    var desiredChoiceKey = Object(lodash__WEBPACK_IMPORTED_MODULE_15__["snakeCase"])(Object(lodash__WEBPACK_IMPORTED_MODULE_15__["get"])(resource.values[0], 'value')) || resource.uuid;
+    var desiredChoiceKey = Object(lodash__WEBPACK_IMPORTED_MODULE_18__["snakeCase"])(Object(lodash__WEBPACK_IMPORTED_MODULE_18__["get"])(resource.values[0], 'value')) || resource.uuid;
     var doesChoiceKeyAlreadyExist = (desiredChoiceKey in block.config.choices); // apply suffix as resourceId when duplicated to prevent overwriting as input is received
 
     var suffix = doesChoiceKeyAlreadyExist ? "-".concat(resource.uuid) : '';
-    vue__WEBPACK_IMPORTED_MODULE_14___default.a.set(block.config.choices, "".concat(desiredChoiceKey).concat(suffix), resource.uuid);
+    vue__WEBPACK_IMPORTED_MODULE_17___default.a.set(block.config.choices, "".concat(desiredChoiceKey).concat(suffix), resource.uuid);
   },
   deleteChoiceByResourceIdFrom: function deleteChoiceByResourceIdFrom(_ref5, _ref6) {
     var rootGetters = _ref5.rootGetters;
     var blockId = _ref6.blockId,
         resourceId = _ref6.resourceId;
-    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_12__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
-    var choiceKey = String(Object(lodash__WEBPACK_IMPORTED_MODULE_15__["findKey"])(block.config.choices, function (v) {
+    var block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
+    var choiceKey = String(Object(lodash__WEBPACK_IMPORTED_MODULE_18__["findKey"])(block.config.choices, function (v) {
       return v === resourceId;
     }));
-    vue__WEBPACK_IMPORTED_MODULE_14___default.a.delete(block.config.choices, choiceKey);
+    vue__WEBPACK_IMPORTED_MODULE_17___default.a.delete(block.config.choices, choiceKey);
   },
   reflowExitsFromChoices: function reflowExitsFromChoices(_ref7, _ref8) {
     return Object(_Users_bulatgab_viamo_flow_builder_node_modules_vue_babel_preset_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
@@ -857,7 +866,7 @@ var actions = {
             case 0:
               dispatch = _ref7.dispatch, rootGetters = _ref7.rootGetters;
               blockId = _ref8.blockId;
-              block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_12__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
+              block = Object(_floip_flow_runner__WEBPACK_IMPORTED_MODULE_15__["findBlockWith"])(blockId, rootGetters['flow/activeFlow']);
               choices = block.config.choices, exits = block.exits;
               choiceKeys = Object.keys(choices);
               exitsForChoices = exits.slice(0, -1); // non-default exits; default should always be last
@@ -877,7 +886,7 @@ var actions = {
                           }
 
                           _context.next = 3;
-                          return new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_13__["IdGeneratorUuidV4"]().generate();
+                          return new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_16__["IdGeneratorUuidV4"]().generate();
 
                         case 3:
                           uuid = _context.sent;
@@ -942,7 +951,7 @@ var actions = {
               blankPromptResource = _context3.sent;
               _context3.t0 = dispatch;
               _context3.next = 8;
-              return new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_13__["IdGeneratorUuidV4"]().generate();
+              return new _floip_flow_runner_dist_domain_IdGeneratorUuidV4__WEBPACK_IMPORTED_MODULE_16__["IdGeneratorUuidV4"]().generate();
 
             case 8:
               _context3.t1 = _context3.sent;
@@ -961,7 +970,7 @@ var actions = {
             case 14:
               _context3.t5 = _context3.sent;
               exits = [_context3.t5];
-              return _context3.abrupt("return", Object(lodash__WEBPACK_IMPORTED_MODULE_15__["defaultsDeep"])(props, {
+              return _context3.abrupt("return", Object(lodash__WEBPACK_IMPORTED_MODULE_18__["defaultsDeep"])(props, {
                 type: BLOCK_TYPE,
                 name: '',
                 label: '',
@@ -997,7 +1006,7 @@ var actions = {
     var rootGetters = _ref14.rootGetters;
     var block = _ref15.block,
         schemaVersion = _ref15.schemaVersion;
-    return Object(_store_validation_validationHelpers__WEBPACK_IMPORTED_MODULE_16__[/* validateCommunityBlock */ "e"])({
+    return Object(_store_validation_validationHelpers__WEBPACK_IMPORTED_MODULE_19__[/* validateCommunityBlock */ "e"])({
       block: block,
       schemaVersion: schemaVersion
     });
@@ -1012,7 +1021,7 @@ function formatTestValueForUnifiedBranchingType(block) {
     return 'true';
   }
 
-  return "OR(".concat(Object(lodash__WEBPACK_IMPORTED_MODULE_15__["map"])(blockChoicesKey, function (choice) {
+  return "OR(".concat(Object(lodash__WEBPACK_IMPORTED_MODULE_18__["map"])(blockChoicesKey, function (choice) {
     return "block.value = \"".concat(choice, "\"");
   }).join(','), ")");
 }
