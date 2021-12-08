@@ -139,5 +139,6 @@ export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, s
     isValid: validate(block),
     ajvErrors: validate.errors,
     type: block.type,
+    label: block.label,
   }
 }

@@ -17,7 +17,7 @@ import 'scss/main.scss'
  *
  */
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faCheck, faMobileAlt} from '@fortawesome/free-solid-svg-icons'
+import {faCheck, faMobileAlt, faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons'
 import {faCheckCircle, faCircle, faClone, faTrashAlt, faTimesCircle, faDotCircle, faEdit, faEnvelope, faCommentDots} from '@fortawesome/free-regular-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import CustomIcons from './lib/custom-icons/index'
@@ -29,7 +29,7 @@ Object.entries(components).forEach((component) => {
   Vue.component(component[0], component[1])
 })
 
-library.add(faCircle, faCheckCircle, faEdit, faCheck, faEnvelope, faMobileAlt, faCommentDots, faClone, faTrashAlt, faTimesCircle, faDotCircle, ...CustomIcons)
+library.add(faCircle, faCheckCircle, faEdit, faCheck, faEnvelope, faMobileAlt, faCommentDots, faClone, faTrashAlt, faTimesCircle, faDotCircle, faChevronDown, faChevronUp, ...CustomIcons)
 Vue.component('FontAwesomeIcon', FontAwesomeIcon)
 
 Vue.use(Vuex)

@@ -1661,7 +1661,9 @@
     "your-orgs-audio-library": "your organization's audio library",
     "your-prompt": "<your prompt>",
     "youre-using-floip-expressions": "It looks like you're using FLOIP expressions, nice!",
-    "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit."
+    "simulator-unsupported-block": "block is not supported right now. You will not be able to proceed. Please Exit.",
+    "show-more":  "Show more…",
+    "show-less":  "Show less…"
   },
   "fr.flow-builder": {
     "flow-builder": "Générateur de flux",
@@ -3323,7 +3325,9 @@
     "your-orgs-audio-library": "bibliothèque audio de votre organisation",
     "your-prompt": "<votre message>",
     "youre-using-floip-expressions": "On dirait que vous utilisez des expressions FLOIP, nice!",
-    "simulator-unsupported-block": "bloc est pas pris en charge en ce moment. Vous ne serez pas en mesure de procéder. S'il vous plaît quitter."
+    "simulator-unsupported-block": "bloc est pas pris en charge en ce moment. Vous ne serez pas en mesure de procéder. S'il vous plaît quitter.",
+    "show-more":  "Montre plus…",
+    "show-less":  "Montrer moins…"
   }
 }
 

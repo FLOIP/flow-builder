@@ -1668,8 +1668,8 @@
   integrity sha512-pLR8p2z6q87O9c1XkP4DYfuEX+cKMn14a4jYkZ/t4ky1k+MEvp69zj662xJTzCkbH3ABsrwaxx7fP1FWASlEZw==
 
 "@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#feature/VMO-4281-flow-spec-rc2":
-  version "1.0.11"
-  resolved "https://github.com/FLOIP/flow-runner.git#88858a2baf5889ece8f9abbd575bdc92adfbe4a4"
+  version "1.0.0-rc2.6"
+  resolved "https://github.com/FLOIP/flow-runner.git#fdf532cf413fc363e5413f0013e2f86138127499"
   dependencies:
     "@floip/expression-evaluator" "^2.1.3"
     ajv "^7.2.1"

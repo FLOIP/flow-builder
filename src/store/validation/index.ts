@@ -14,6 +14,7 @@ export interface IValidationStatus {
   isValid: boolean | PromiseLike<any>,
   ajvErrors?: null | Array<ErrorObject>,
   type: string,
+  label?: string,
 }
 
 export interface IValidationState {

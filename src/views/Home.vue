@@ -41,7 +41,7 @@
                             </h4>
                             <div v-for="flow in flows" :key="flow.uuid">
                               <router-link
-                                :to="route('trees.editTree', {treeId: flow.uuid, component: 'interaction-designer', mode: 'edit'})"
+                                :to="route('flows.editFlow', {flowId: flow.uuid, component: 'designer', mode: 'edit'})"
                                 title="trans('flow-builder.edit-flow')"
                                 class="mt-3 btn btn-outline-secondary mr-2 active">
                                 {{ flow.label || flow.uuid }}

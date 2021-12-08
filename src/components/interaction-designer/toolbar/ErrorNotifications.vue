@@ -10,7 +10,7 @@
       <div class="dropdown">
         <button
           id="flowErrorsDropdown"
-          class="btn btn-link dropdown-toggle"
+          class="btn btn-link btn-link-text dropdown-toggle"
           type="button"
           data-toggle="dropdown"
           aria-haspopup="true"
@@ -21,8 +21,10 @@
         <ul
           class="notification dropdown-menu"
           aria-labelledby="flowErrorsDropdown">
-          <li v-for="error in flowValidationErrors">
-            <div class="d-flex justify-content-between px-2 py-0">
+          <li
+            v-for="error in flowValidationErrors"
+            :key="error.dataPath">
+            <div class="d-flex justify-content-between px-2 py-0 highlight-on-hover">
               <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
               <div v-if="error.dataPath === '/first_block_id'">
                 {{ 'flow-builder.add-at-least-one-block' | trans }}
@@ -30,7 +32,7 @@
               <button
                 v-else
                 type="button"
-                class="btn btn-link"
+                class="btn btn-link btn-link-text"
                 @click="fixFlowError()">
                 {{ 'flow-builder.fix-issue' | trans }}
               </button>
@@ -50,7 +52,7 @@
       <div class="dropdown">
         <button
           id="blockErrorsDropdown"
-          class="btn btn-link dropdown-toggle"
+          class="btn btn-link btn-link-text dropdown-toggle"
           type="button"
           data-toggle="dropdown"
           aria-haspopup="true"
@@ -64,22 +66,10 @@
           <li
             v-for="(status, key) in blockValidationStatuses"
             :key="key">
-            <div class="card">
-              <div class="card-title m-0 px-2 pt-1">
-                {{ trans(`flow-builder.${status.type}`) }}
-              </div>
-              <div
-                v-for="error in status.ajvErrors"
-                class="card-body d-flex justify-content-between px-2 py-0">
-                <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
-                <button
-                  type="button"
-                  class="btn btn-link"
-                  @click="fixBlockError(key, error.dataPath)">
-                  {{ 'flow-builder.fix-issue' | trans }}
-                </button>
-              </div>
-            </div>
+            <block-errors-expandable
+              :status-key="key"
+              :status="status"
+              @fixBlockError="fixBlockError" />
           </li>
         </ul>
       </div>
@@ -96,11 +86,16 @@ import Component, {mixins} from 'vue-class-component'
 import {namespace} from 'vuex-class'
 import {IFlow} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
+import BlockErrorsExpandable from '@/components/interaction-designer/toolbar/BlockErrorsExpandable.vue'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
-@Component({})
+@Component({
+  components: {
+    BlockErrorsExpandable,
+  },
+})
 export default class ErrorNotifications extends mixins(Routes, Lang) {
   updated(): void {
     this.$emit('updated')
@@ -166,5 +161,14 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
 
 .card {
   background: #F8F2F2;
+}
+
+.btn-link-text {
+  text-decoration: underline;
+  color: #216FCE;
+}
+
+.highlight-on-hover:hover {
+  background-color: #FFEBEB;
 }
 </style>
