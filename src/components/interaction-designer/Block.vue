@@ -55,7 +55,7 @@
           class="block-label"
           :style="{ maxWidth: `${labelContainerMaxWidth}px` }"
           :class="{'empty': !block.label}">
-          {{ block.label || 'Untitled block' }}
+          {{ block.label || trans('flow-builder.untitled-block') }}
         </h3>
       </header>
 
