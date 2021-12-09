@@ -316,10 +316,8 @@ export default {
 }
 </script>
 
-<!--<style src="../css/voto3.css"></style>-->
-<!--<style src="../css/InteractionDesigner.css"></style>-->
 <style lang="scss"> @import '../css/customized/vue-multiselect.css';</style>
-<style lang="scss">
+<style lang="scss" scoped>
   $sidebar-width: 365px;
 
   .interaction-designer-contents {
@@ -388,6 +386,4 @@ export default {
     flex: 1;
   }
 
-  // @note - these styles have been extracted so the output can be reused between storybook and voto5
-  /*@import "resources/assets/js/trees/components/InteractionDesigner.scss";*/
 </style>

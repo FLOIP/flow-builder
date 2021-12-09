@@ -104,6 +104,3 @@ class NewFlow extends Vue {
 export default NewFlow
 
 </script>
-
-<style lang="scss">
-</style>

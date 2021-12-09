@@ -90,6 +90,3 @@ class FetchFlow extends mixins(Routes, Lang) {
 export default FetchFlow
 
 </script>
-
-<style lang="scss">
-</style>
