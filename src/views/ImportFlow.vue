@@ -1,5 +1,5 @@
 <template>
-  <div class="new-contents">
+  <div class="import-flow">
     <div class="row">
       <div class="col-sm-8 offset-sm-2">
         <div class="card d-flex">
@@ -276,7 +276,7 @@ export default ImportFlow
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .tall-text textarea {
   min-height: 200px
 }

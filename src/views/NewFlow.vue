@@ -1,5 +1,5 @@
 <template>
-  <div class="new-contents">
+  <div class="new-flow">
     <div
       v-if="activeFlow"
       class="row">

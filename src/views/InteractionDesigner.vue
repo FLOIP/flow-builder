@@ -2,7 +2,7 @@
   <div
     v-if="activeFlow"
     ref="interaction-designer-contents"
-    class="interaction-designer-contents">
+    class="interaction-designer interaction-designer-contents">
     <header class="interaction-designer-header">
       <tree-builder-toolbar />
     </header>
@@ -317,7 +317,7 @@ export default {
 </script>
 
 <style lang="scss"> @import '../css/customized/vue-multiselect.css';</style>
-<style lang="scss" scoped>
+<style lang="scss">
   $sidebar-width: 365px;
 
   .interaction-designer-contents {
