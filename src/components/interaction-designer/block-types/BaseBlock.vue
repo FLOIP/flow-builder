@@ -15,7 +15,7 @@
 
       <slot name="extras" />
 
-      <slot name="branching">
+      <slot name="branching" v-if="usesDefaultBranchingEditor">
         <block-output-branching-config
           :block="block"
           :has-exit-per-choice="false"
@@ -24,7 +24,7 @@
 
       <categorization :block="block" />
 
-      <slot name="contact-props">
+      <slot name="contact-props" v-if="usesDefaultContactPropsEditor">
         <generic-contact-property-editor :block="block" />
       </slot>
 
@@ -72,6 +72,8 @@ const builderVuexNamespace = namespace('builder')
 class BaseBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
+  @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
+  @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
   @Prop({default: false}) readonly showSemanticLabel!: boolean
 
   handleBranchingTypeChangedToUnified() {

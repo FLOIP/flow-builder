@@ -1,10 +1,14 @@
 <template>
   <div class="core-set-contact-property-block">
-    <base-block :block="block" :flow="flow" @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" :showSemanticLabel="false">
+    <base-block
+        :block="block"
+        :flow="flow"
+        @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})"
+        :showSemanticLabel="false"
+        :usesDefaultContactPropsEditor=false>
       <template slot="extras">
         <contact-property-editor :block="block" />
       </template>
-      <template slot="contact-props"/>
     </base-block>
   </div>
 </template>
