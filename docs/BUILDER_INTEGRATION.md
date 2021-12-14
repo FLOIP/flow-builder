@@ -12,7 +12,7 @@ or
 npm install --save @floip/flow-builder
 ```
 
-Unlike the standalone app, the built version of the flow-builder in `/dist` is intended to integrate with an existing Vue Router setup. See the example [here]('#full-example-routes-index-js-src-lib-ts-for-exports') 
+Unlike the standalone app, the built version of the flow-builder in `/dist` is intended to integrate with an existing Vue Router setup. See the example [here](#full-example-routesindexjs-see-srclibts-for-exports) 
 
 ## Backend Routes
 
