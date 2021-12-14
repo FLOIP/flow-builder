@@ -54,7 +54,6 @@ import {IFlow} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {ILanguage, SupportedMode} from '@floip/flow-runner/src/index'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {mixins} from 'vue-class-component'
 import FlowLabelEditor from './LabelEditor.vue'
 import FlowInteractionTimeoutEditor from './InteractionTimeoutEditor.vue'
@@ -70,7 +69,6 @@ const builderVuexNamespace = namespace('builder')
     FlowInteractionTimeoutEditor,
     FlowLanguagesEditor,
     FlowModesEditor,
-    ValidationMessage,
   },
 })
 class FlowEditor extends mixins(Lang) {

@@ -251,31 +251,26 @@ var FirstBlockEditorButton = __webpack_require__("192b");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
 var BlockId = __webpack_require__("792f");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDurationSecondsEditor.vue?vue&type=template&id=08f43223&
-var MaxDurationSecondsEditorvue_type_template_id_08f43223_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/ivr/max_duration_seconds")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDurationSecondsEditor.vue?vue&type=template&id=177ef314&
+var MaxDurationSecondsEditorvue_type_template_id_177ef314_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/ivr/max_duration_seconds")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [(_vm.hasIvr)?_c('div',{staticClass:"block-max-duration-seconds"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.max-duration-in-seconds'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"valid-state":isValid},model:{value:(_vm.duration),callback:function ($$v) {_vm.duration=_vm._n($$v)},expression:"duration"}})],1):_vm._e()]}}])})}
-var MaxDurationSecondsEditorvue_type_template_id_08f43223_staticRenderFns = []
+var MaxDurationSecondsEditorvue_type_template_id_177ef314_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxDurationSecondsEditor.vue?vue&type=template&id=08f43223&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxDurationSecondsEditor.vue?vue&type=template&id=177ef314&
 
 // EXTERNAL MODULE: ./src/components/common/NumericEditor.vue + 4 modules
 var NumericEditor = __webpack_require__("2f00");
-
-// EXTERNAL MODULE: ./src/components/common/ValidationMessage.vue + 5 modules
-var ValidationMessage = __webpack_require__("21e9");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDurationSecondsEditor.vue?vue&type=script&lang=js&
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
 
 
-
 /* harmony default export */ var MaxDurationSecondsEditorvue_type_script_lang_js_ = ({
   components: {
-    NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["b" /* default */]
+    NumericEditor: NumericEditor["a" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {
@@ -319,8 +314,8 @@ var componentNormalizer = __webpack_require__("2877");
 
 var component = Object(componentNormalizer["a" /* default */])(
   block_editors_MaxDurationSecondsEditorvue_type_script_lang_js_,
-  MaxDurationSecondsEditorvue_type_template_id_08f43223_render,
-  MaxDurationSecondsEditorvue_type_template_id_08f43223_staticRenderFns,
+  MaxDurationSecondsEditorvue_type_template_id_177ef314_render,
+  MaxDurationSecondsEditorvue_type_template_id_177ef314_staticRenderFns,
   false,
   null,
   null,
@@ -329,25 +324,23 @@ var component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var MaxDurationSecondsEditor = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxResponseCharactersEditor.vue?vue&type=template&id=fd061100&
-var MaxResponseCharactersEditorvue_type_template_id_fd061100_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('span',{staticClass:"d-flex mb-2"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.shouldShowMaxResponseCharField),expression:"shouldShowMaxResponseCharField"}],staticClass:"align-self-center",attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.shouldShowMaxResponseCharField)?_vm._i(_vm.shouldShowMaxResponseCharField,null)>-1:(_vm.shouldShowMaxResponseCharField)},on:{"change":function($event){var $$a=_vm.shouldShowMaxResponseCharField,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.shouldShowMaxResponseCharField=$$a.concat([$$v]))}else{$$i>-1&&(_vm.shouldShowMaxResponseCharField=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.shouldShowMaxResponseCharField=$$c}}}}),_c('p',{staticClass:"m-0 ml-2"},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.max-response-prompt')))])]),(_vm.shouldShowMaxResponseCharField)?_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/text/max_response_characters")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxResponseCharactersEditor.vue?vue&type=template&id=38c95783&
+var MaxResponseCharactersEditorvue_type_template_id_38c95783_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('span',{staticClass:"d-flex mb-2"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.shouldShowMaxResponseCharField),expression:"shouldShowMaxResponseCharField"}],staticClass:"align-self-center",attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.shouldShowMaxResponseCharField)?_vm._i(_vm.shouldShowMaxResponseCharField,null)>-1:(_vm.shouldShowMaxResponseCharField)},on:{"change":function($event){var $$a=_vm.shouldShowMaxResponseCharField,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.shouldShowMaxResponseCharField=$$a.concat([$$v]))}else{$$i>-1&&(_vm.shouldShowMaxResponseCharField=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.shouldShowMaxResponseCharField=$$c}}}}),_c('p',{staticClass:"m-0 ml-2"},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.max-response-prompt')))])]),(_vm.shouldShowMaxResponseCharField)?_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/text/max_response_characters")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [(_vm.hasText)?_c('div',{staticClass:"block-max-response-characters"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.max-response-characters'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"valid-state":isValid},model:{value:(_vm.maxResponse),callback:function ($$v) {_vm.maxResponse=_vm._n($$v)},expression:"maxResponse"}}),_c('small',{staticClass:"text-muted"},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.unlimited-if-not-defined-or-set-as-zero'))+" ")])],1):_vm._e()]}}],null,false,3564627455)}):_vm._e()],1)}
-var MaxResponseCharactersEditorvue_type_template_id_fd061100_staticRenderFns = []
+var MaxResponseCharactersEditorvue_type_template_id_38c95783_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxResponseCharactersEditor.vue?vue&type=template&id=fd061100&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxResponseCharactersEditor.vue?vue&type=template&id=38c95783&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxResponseCharactersEditor.vue?vue&type=script&lang=js&
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
 
 
-
 /* harmony default export */ var MaxResponseCharactersEditorvue_type_script_lang_js_ = ({
   components: {
-    NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["b" /* default */]
+    NumericEditor: NumericEditor["a" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {
@@ -389,8 +382,8 @@ var MaxResponseCharactersEditorvue_type_template_id_fd061100_staticRenderFns = [
 
 var MaxResponseCharactersEditor_component = Object(componentNormalizer["a" /* default */])(
   block_editors_MaxResponseCharactersEditorvue_type_script_lang_js_,
-  MaxResponseCharactersEditorvue_type_template_id_fd061100_render,
-  MaxResponseCharactersEditorvue_type_template_id_fd061100_staticRenderFns,
+  MaxResponseCharactersEditorvue_type_template_id_38c95783_render,
+  MaxResponseCharactersEditorvue_type_template_id_38c95783_staticRenderFns,
   false,
   null,
   null,

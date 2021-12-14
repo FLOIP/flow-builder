@@ -107,7 +107,6 @@ import {debounce, forEach, get, isEmpty} from 'lodash'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
 
-import TextEditor from '@/components/common/TextEditor.vue'
 import ErrorHandler from '@/components/interaction-designer/flow-editors/import/ErrorHandler.vue'
 import ImportStore from '@/store/flow/views/import'
 
@@ -117,7 +116,6 @@ const importVuexNamespace = namespace('flow/import')
 @Component(
   {
     components: {
-      TextEditor,
       ErrorHandler,
     },
     mixins: [lang, Routes],

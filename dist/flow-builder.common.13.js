@@ -301,20 +301,17 @@ var FirstBlockEditorButton = __webpack_require__("192b");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
 var BlockId = __webpack_require__("792f");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=template&id=0f36fb8f&
-var MinimumNumericEditorvue_type_template_id_0f36fb8f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/validation_minimum")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=template&id=6a6ee882&
+var MinimumNumericEditorvue_type_template_id_6a6ee882_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/validation_minimum")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('div',{staticClass:"block-validation-min"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.minimum-value-(inclusive)'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"valid-state":isValid},model:{value:(_vm.minValue),callback:function ($$v) {_vm.minValue=_vm._n($$v)},expression:"minValue"}})],1)]}}])})}
-var MinimumNumericEditorvue_type_template_id_0f36fb8f_staticRenderFns = []
+var MinimumNumericEditorvue_type_template_id_6a6ee882_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=template&id=0f36fb8f&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=template&id=6a6ee882&
 
 // EXTERNAL MODULE: ./src/components/common/NumericEditor.vue + 4 modules
 var NumericEditor = __webpack_require__("2f00");
-
-// EXTERNAL MODULE: ./src/components/common/ValidationMessage.vue + 5 modules
-var ValidationMessage = __webpack_require__("21e9");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MinimumNumericEditor.vue?vue&type=script&lang=ts&
 
@@ -326,7 +323,6 @@ var ValidationMessage = __webpack_require__("21e9");
 
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-
 
 
 
@@ -371,8 +367,7 @@ Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop *
 
 MinimumNumericEditorvue_type_script_lang_ts_MinimumNumericEditor = Object(tslib_es6["__decorate"])([Object(vue_class_component_esm["b" /* default */])({
   components: {
-    NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["b" /* default */]
+    NumericEditor: NumericEditor["a" /* default */]
   }
 })], MinimumNumericEditorvue_type_script_lang_ts_MinimumNumericEditor);
 /* harmony default export */ var MinimumNumericEditorvue_type_script_lang_ts_ = (MinimumNumericEditorvue_type_script_lang_ts_MinimumNumericEditor);
@@ -391,8 +386,8 @@ var componentNormalizer = __webpack_require__("2877");
 
 var component = Object(componentNormalizer["a" /* default */])(
   block_editors_MinimumNumericEditorvue_type_script_lang_ts_,
-  MinimumNumericEditorvue_type_template_id_0f36fb8f_render,
-  MinimumNumericEditorvue_type_template_id_0f36fb8f_staticRenderFns,
+  MinimumNumericEditorvue_type_template_id_6a6ee882_render,
+  MinimumNumericEditorvue_type_template_id_6a6ee882_staticRenderFns,
   false,
   null,
   null,
@@ -401,14 +396,14 @@ var component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var block_editors_MinimumNumericEditor = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=template&id=2a27c761&
-var MaximumNumericEditorvue_type_template_id_2a27c761_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/validation_maximum")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=template&id=31357080&
+var MaximumNumericEditorvue_type_template_id_31357080_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/validation_maximum")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('div',{staticClass:"block-validation-max"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.maximum-value-(inclusive)'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"valid-state":isValid},model:{value:(_vm.maxValue),callback:function ($$v) {_vm.maxValue=_vm._n($$v)},expression:"maxValue"}})],1)]}}])})}
-var MaximumNumericEditorvue_type_template_id_2a27c761_staticRenderFns = []
+var MaximumNumericEditorvue_type_template_id_31357080_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=template&id=2a27c761&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=template&id=31357080&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaximumNumericEditor.vue?vue&type=script&lang=ts&
 
@@ -420,7 +415,6 @@ var MaximumNumericEditorvue_type_template_id_2a27c761_staticRenderFns = []
 
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-
 
 
 
@@ -465,8 +459,7 @@ Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["b" /* Prop *
 
 MaximumNumericEditorvue_type_script_lang_ts_MaximumNumericEditor = Object(tslib_es6["__decorate"])([Object(vue_class_component_esm["b" /* default */])({
   components: {
-    NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["b" /* default */]
+    NumericEditor: NumericEditor["a" /* default */]
   }
 })], MaximumNumericEditorvue_type_script_lang_ts_MaximumNumericEditor);
 /* harmony default export */ var MaximumNumericEditorvue_type_script_lang_ts_ = (MaximumNumericEditorvue_type_script_lang_ts_MaximumNumericEditor);
@@ -482,8 +475,8 @@ MaximumNumericEditorvue_type_script_lang_ts_MaximumNumericEditor = Object(tslib_
 
 var MaximumNumericEditor_component = Object(componentNormalizer["a" /* default */])(
   block_editors_MaximumNumericEditorvue_type_script_lang_ts_,
-  MaximumNumericEditorvue_type_template_id_2a27c761_render,
-  MaximumNumericEditorvue_type_template_id_2a27c761_staticRenderFns,
+  MaximumNumericEditorvue_type_template_id_31357080_render,
+  MaximumNumericEditorvue_type_template_id_31357080_staticRenderFns,
   false,
   null,
   null,
@@ -492,25 +485,23 @@ var MaximumNumericEditor_component = Object(componentNormalizer["a" /* default *
 )
 
 /* harmony default export */ var block_editors_MaximumNumericEditor = (MaximumNumericEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=d1168578&
-var MaxDigitEditorvue_type_template_id_d1168578_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.hasIvr)?_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/ivr/max_digits")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=1aee26fe&
+var MaxDigitEditorvue_type_template_id_1aee26fe_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.hasIvr)?_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/ivr/max_digits")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('div',{staticClass:"block-max-digits"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.maximum-digits'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"sub-title":_vm._f("trans")('flow-builder.max-digits-help-text'),"valid-state":isValid},model:{value:(_vm.maxDigits),callback:function ($$v) {_vm.maxDigits=_vm._n($$v)},expression:"maxDigits"}})],1)]}}],null,false,2439896574)}):_vm._e()}
-var MaxDigitEditorvue_type_template_id_d1168578_staticRenderFns = []
+var MaxDigitEditorvue_type_template_id_1aee26fe_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=d1168578&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=template&id=1aee26fe&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/MaxDigitEditor.vue?vue&type=script&lang=js&
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
 
 
-
 /* harmony default export */ var MaxDigitEditorvue_type_script_lang_js_ = ({
   components: {
-    NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["b" /* default */]
+    NumericEditor: NumericEditor["a" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {
@@ -546,8 +537,8 @@ var MaxDigitEditorvue_type_template_id_d1168578_staticRenderFns = []
 
 var MaxDigitEditor_component = Object(componentNormalizer["a" /* default */])(
   block_editors_MaxDigitEditorvue_type_script_lang_js_,
-  MaxDigitEditorvue_type_template_id_d1168578_render,
-  MaxDigitEditorvue_type_template_id_d1168578_staticRenderFns,
+  MaxDigitEditorvue_type_template_id_1aee26fe_render,
+  MaxDigitEditorvue_type_template_id_1aee26fe_staticRenderFns,
   false,
   null,
   null,

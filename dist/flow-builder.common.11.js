@@ -47,16 +47,16 @@ var lib = __webpack_require__("4bb5");
 // EXTERNAL MODULE: ./node_modules/vue-property-decorator/lib/index.js + 14 modules
 var vue_property_decorator_lib = __webpack_require__("1b40");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ContactPropertyEditor.vue?vue&type=template&id=95c55a4e&
-var ContactPropertyEditorvue_type_template_id_95c55a4e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"contact-property-editor"},[_c('div',{staticClass:"form-group"},[_c('label',{staticClass:"text-primary"},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.action-label')))]),_c('p',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.contact-property-action-hint')))]),_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyAction),expression:"propertyAction"}],staticClass:"custom-control-input",attrs:{"id":"setProp","type":"radio","name":"contactPropAction"},domProps:{"value":_vm.PROPERTY_ACTION.SET,"checked":_vm._q(_vm.propertyAction,_vm.PROPERTY_ACTION.SET)},on:{"change":function($event){_vm.propertyAction=_vm.PROPERTY_ACTION.SET}}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"setProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.set-contact-property'))+" ")])]),_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyAction),expression:"propertyAction"}],staticClass:"custom-control-input",attrs:{"id":"clearProp","type":"radio","name":"contactPropAction"},domProps:{"value":_vm.PROPERTY_ACTION.CLEAR,"checked":_vm._q(_vm.propertyAction,_vm.PROPERTY_ACTION.CLEAR)},on:{"change":function($event){_vm.propertyAction=_vm.PROPERTY_ACTION.CLEAR}}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"clearProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.clear-contact-property'))+" ")])])]),_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/set_contact_property/property_key")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ContactPropertyEditor.vue?vue&type=template&id=46de0de2&
+var ContactPropertyEditorvue_type_template_id_46de0de2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"contact-property-editor"},[_c('div',{staticClass:"form-group"},[_c('label',{staticClass:"text-primary"},[_vm._v(_vm._s(_vm._f("trans")('flow-builder.action-label')))]),_c('p',[_vm._v(_vm._s(_vm._f("trans")('flow-builder.contact-property-action-hint')))]),_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyAction),expression:"propertyAction"}],staticClass:"custom-control-input",attrs:{"id":"setProp","type":"radio","name":"contactPropAction"},domProps:{"value":_vm.PROPERTY_ACTION.SET,"checked":_vm._q(_vm.propertyAction,_vm.PROPERTY_ACTION.SET)},on:{"change":function($event){_vm.propertyAction=_vm.PROPERTY_ACTION.SET}}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"setProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.set-contact-property'))+" ")])]),_c('div',{staticClass:"custom-control custom-radio"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyAction),expression:"propertyAction"}],staticClass:"custom-control-input",attrs:{"id":"clearProp","type":"radio","name":"contactPropAction"},domProps:{"value":_vm.PROPERTY_ACTION.CLEAR,"checked":_vm._q(_vm.propertyAction,_vm.PROPERTY_ACTION.CLEAR)},on:{"change":function($event){_vm.propertyAction=_vm.PROPERTY_ACTION.CLEAR}}}),_c('label',{staticClass:"custom-control-label font-weight-normal",attrs:{"for":"clearProp"}},[_vm._v(" "+_vm._s(_vm._f("trans")('flow-builder.clear-contact-property'))+" ")])])]),_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/set_contact_property/property_key")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('div',{staticClass:"block-contact-property-key"},[_c('text-editor',{attrs:{"label":_vm._f("trans")('flow-builder.contact-property-label'),"label-class":'font-weight-bold',"placeholder":_vm._f("trans")('flow-builder.enter-contact-property-label'),"valid-state":isValid},model:{value:(_vm.propertyKey),callback:function ($$v) {_vm.propertyKey=$$v},expression:"propertyKey"}})],1)]}}])}),(_vm.propertyAction === _vm.PROPERTY_ACTION.SET)?_c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/set_contact_property/property_value")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('expression-input',{attrs:{"label":_vm._f("trans")('flow-builder.value-expression'),"placeholder":_vm._f("trans")('flow-builder.enter-expression'),"label-class":'font-weight-bold',"current-expression":_vm.propertyValue,"valid-state":isValid},on:{"commitExpressionChange":_vm.updatePropertyValue}})]}}],null,false,3462627979)}):_vm._e()],1)])}
-var ContactPropertyEditorvue_type_template_id_95c55a4e_staticRenderFns = []
+var ContactPropertyEditorvue_type_template_id_46de0de2_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ContactPropertyEditor.vue?vue&type=template&id=95c55a4e&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ContactPropertyEditor.vue?vue&type=template&id=46de0de2&
 
 // EXTERNAL MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/createClass.js
 var createClass = __webpack_require__("e954");
@@ -70,18 +70,10 @@ var lodash = __webpack_require__("2ef0");
 // EXTERNAL MODULE: ./node_modules/vue-class-component/dist/vue-class-component.esm.js
 var vue_class_component_esm = __webpack_require__("2fe1");
 
-// EXTERNAL MODULE: ./src/components/common/ValidationMessage.vue + 5 modules
-var ValidationMessage = __webpack_require__("21e9");
-
 // EXTERNAL MODULE: ./src/components/common/ExpressionInput.vue + 5 modules
 var ExpressionInput = __webpack_require__("6faa");
 
-// EXTERNAL MODULE: ./src/components/common/TextEditor.vue + 4 modules
-var TextEditor = __webpack_require__("d883");
-
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ContactPropertyEditor.vue?vue&type=script&lang=ts&
-
-
 
 
 
@@ -181,9 +173,7 @@ Object(tslib_es6["__decorate"])([flowVuexNamespace.Mutation], ContactPropertyEdi
 
 ContactPropertyEditorvue_type_script_lang_ts_ContactPropertyEditor = Object(tslib_es6["__decorate"])([Object(vue_property_decorator_lib["a" /* Component */])({
   components: {
-    TextEditor: TextEditor["b" /* default */],
-    ExpressionInput: ExpressionInput["a" /* default */],
-    ValidationMessage: ValidationMessage["b" /* default */]
+    ExpressionInput: ExpressionInput["a" /* default */]
   }
 })], ContactPropertyEditorvue_type_script_lang_ts_ContactPropertyEditor);
 /* harmony default export */ var ContactPropertyEditorvue_type_script_lang_ts_ = (ContactPropertyEditorvue_type_script_lang_ts_ContactPropertyEditor);
@@ -202,8 +192,8 @@ var componentNormalizer = __webpack_require__("2877");
 
 var component = Object(componentNormalizer["a" /* default */])(
   block_editors_ContactPropertyEditorvue_type_script_lang_ts_,
-  ContactPropertyEditorvue_type_template_id_95c55a4e_render,
-  ContactPropertyEditorvue_type_template_id_95c55a4e_staticRenderFns,
+  ContactPropertyEditorvue_type_template_id_46de0de2_render,
+  ContactPropertyEditorvue_type_template_id_46de0de2_staticRenderFns,
   false,
   null,
   null,

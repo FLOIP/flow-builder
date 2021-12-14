@@ -244,14 +244,14 @@ var FirstBlockEditorButton = __webpack_require__("192b");
 // EXTERNAL MODULE: ./src/components/interaction-designer/block-editors/BlockId.vue + 4 modules
 var BlockId = __webpack_require__("792f");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=7e541c7f&
-var ThresholdEditorvue_type_template_id_7e541c7f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/accuracy_threshold_meters")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=4fa15506&
+var ThresholdEditorvue_type_template_id_4fa15506_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/accuracy_threshold_meters")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('div',{staticClass:"block-threshold"},[_c('float-editor',{attrs:{"min":0,"regex-float-filtering":'[0-9.,]',"label":_vm._f("trans")('flow-builder.accuracy-threshold-in-meters'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"valid-state":isValid},model:{value:(_vm.threshold),callback:function ($$v) {_vm.threshold=_vm._n($$v)},expression:"threshold"}})],1)]}}])})}
-var ThresholdEditorvue_type_template_id_7e541c7f_staticRenderFns = []
+var ThresholdEditorvue_type_template_id_4fa15506_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=7e541c7f&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=template&id=4fa15506&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/common/FloatEditor.vue?vue&type=template&id=5356095a&
 var FloatEditorvue_type_template_id_5356095a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"float-editor"},[_c('label',{staticClass:"text-primary"},[_vm._v(_vm._s(_vm.label))]),_c('div',[_c('input',{staticClass:"form-control",class:{ 'is-invalid': _vm.isInvalid },attrs:{"type":"number","min":_vm.min,"placeholder":_vm.placeholder,"step":_vm.step},domProps:{"value":_vm.value},on:{"keypress":_vm.filterFloat,"keydown":function($event){return _vm.$emit('keydown', $event)},"input":function($event){return _vm.$emit('input', $event.target.value)}}})]),_vm._t("default")],2)}
@@ -356,19 +356,14 @@ var component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var FloatEditor = (component.exports);
-// EXTERNAL MODULE: ./src/components/common/ValidationMessage.vue + 5 modules
-var ValidationMessage = __webpack_require__("21e9");
-
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/ThresholdEditor.vue?vue&type=script&lang=js&
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
 
 
-
 /* harmony default export */ var ThresholdEditorvue_type_script_lang_js_ = ({
   components: {
-    FloatEditor: FloatEditor,
-    ValidationMessage: ValidationMessage["b" /* default */]
+    FloatEditor: FloatEditor
   },
   mixins: [lang["b" /* lang */]],
   props: {
@@ -405,8 +400,8 @@ var ValidationMessage = __webpack_require__("21e9");
 
 var ThresholdEditor_component = Object(componentNormalizer["a" /* default */])(
   block_editors_ThresholdEditorvue_type_script_lang_js_,
-  ThresholdEditorvue_type_template_id_7e541c7f_render,
-  ThresholdEditorvue_type_template_id_7e541c7f_staticRenderFns,
+  ThresholdEditorvue_type_template_id_4fa15506_render,
+  ThresholdEditorvue_type_template_id_4fa15506_staticRenderFns,
   false,
   null,
   null,
@@ -415,14 +410,14 @@ var ThresholdEditor_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var ThresholdEditor = (ThresholdEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=3a2ac4cc&
-var TimeoutEditorvue_type_template_id_3a2ac4cc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/accuracy_timeout_seconds")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d80eb91e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=13f5cd5f&
+var TimeoutEditorvue_type_template_id_13f5cd5f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('validation-message',{attrs:{"message-key":("block/" + (_vm.block.uuid) + "/config/accuracy_timeout_seconds")},scopedSlots:_vm._u([{key:"input-control",fn:function(ref){
 var isValid = ref.isValid;
 return [_c('div',{staticClass:"block-timeout"},[_c('numeric-editor',{attrs:{"regex-numeric-filtering":'[0-9]',"label":_vm._f("trans")('flow-builder.accuracy-timeout-in-seconds'),"placeholder":_vm._f("trans")('flow-builder.enter-value'),"valid-state":isValid},model:{value:(_vm.timeout),callback:function ($$v) {_vm.timeout=_vm._n($$v)},expression:"timeout"}})],1)]}}])})}
-var TimeoutEditorvue_type_template_id_3a2ac4cc_staticRenderFns = []
+var TimeoutEditorvue_type_template_id_13f5cd5f_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=3a2ac4cc&
+// CONCATENATED MODULE: ./src/components/interaction-designer/block-editors/TimeoutEditor.vue?vue&type=template&id=13f5cd5f&
 
 // EXTERNAL MODULE: ./src/components/common/NumericEditor.vue + 4 modules
 var NumericEditor = __webpack_require__("2f00");
@@ -432,11 +427,9 @@ var NumericEditor = __webpack_require__("2f00");
 
 
 
-
 /* harmony default export */ var TimeoutEditorvue_type_script_lang_js_ = ({
   components: {
-    NumericEditor: NumericEditor["a" /* default */],
-    ValidationMessage: ValidationMessage["b" /* default */]
+    NumericEditor: NumericEditor["a" /* default */]
   },
   mixins: [lang["b" /* lang */]],
   props: {
@@ -479,8 +472,8 @@ var NumericEditor = __webpack_require__("2f00");
 
 var TimeoutEditor_component = Object(componentNormalizer["a" /* default */])(
   block_editors_TimeoutEditorvue_type_script_lang_js_,
-  TimeoutEditorvue_type_template_id_3a2ac4cc_render,
-  TimeoutEditorvue_type_template_id_3a2ac4cc_staticRenderFns,
+  TimeoutEditorvue_type_template_id_13f5cd5f_render,
+  TimeoutEditorvue_type_template_id_13f5cd5f_staticRenderFns,
   false,
   null,
   null,
