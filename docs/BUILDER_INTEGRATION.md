@@ -1,6 +1,6 @@
 The flow-builder has been designed for drop in use as an embedded app in other projects. With this in mind we expose several methods for customisation to integrate with your existing systems.
 
-# General set up
+# General set up as an embedded app
 
 The flow-builder can be installed as a package from npm:
 
@@ -107,7 +107,7 @@ const routes = {
 And override the builder.config.json defaults from the community builder like so:
 
 ```
-//Importing top level views, default config
+//Importing default config
 import {
   builderConfig as platformBuilderConfig,
 } from '@floip/flow-builder'
@@ -188,7 +188,7 @@ export const router = new VueRouter({
 })
 ```
 
-See the example [here](#full-example-routesindexjs-see-srclibts-for-exports) 
+See the example [here](#full-example-routesindexjs-see-srclibts-for-exports). This also shows other `builder.config.json` and `app.config.json` being overridden.
 
 ## Backend Routes
 
@@ -198,23 +198,65 @@ Auth is up to the implementer for now
 
 # Customising the Builder
 
+## Customising and overriding community version blocks
 
-## Customising Core Blocks
+The process for customising and overriding community blocks is roughly the same. All blocks are exported from `src/lib.ts` and provide several options for customisation. The core of adding new blocks, removing blocks and customising existing blocks is in overriding `app.builder.config`:
 
+```
+//Importing default config
+import {
+  builderConfig as platformBuilderConfig,
+} from '@floip/flow-builder'
 
+//Override existing block type
+platformBuilderConfig.ui.blockClasses['Core.SetContactProperty'] = {
+  name: 'Core.SetContactProperty',
+  type: 'Core.SetContactProperty',
+  is_interactive: false,
+  is_branching: false,
+  category: 0,
+  menu_category: 2,
+  uiComponent: Core_SetContactPropertyTwoBlock, //using a different component for this community block
+  install: installSetContactPropertyTwoBlock //using a different installer
+}
+//Add custom block type
+platformBuilderConfig.ui.blockClasses['Viamo.GroupBranch'] = {
+  name: 'Viamo.GroupBranch',
+  type: 'Viamo.GroupBranch',
+  is_interactive: false,
+  is_branching: false,
+  category: 0,
+  menu_category: 3,
+  uiComponent: Viamo_GroupBranchBlock,
+  install: installGroupBranchBlock
+}
+//Remove default block type
+delete platformBuilderConfig.ui.blockClasses['Core.Log']
+```
 
-## Overriding Core Blocks
+See the general setup guidance above for how this is passed into Views.
 
-## Removing Blocks
-
-## Creating Fully Custom Vendor Blocks
-
-- Using helpers - BaseBlock and BaseStore
-- Minimal block example
-- Block store API and structure
-- Custom validations
-  - overwrite the validate method in the store
-  - example version, you can make this fit your app:
+You then have several options:
+- Start from scratch and create a new block editor - requires a component, store and installer. See `src/components/interaction-designer/block-types` for examples.
+- Wrap an existing block and use it's slots to override default UI. Slots available:
+    - `branching` - defaults to the `BlockOutputBranchingConfig` component
+    - `contact-props` - defaults to the `GenericContactPropertyEditor` component
+    - `extras` - add content and UI specific to your custom block
+    - All other UI is common between community blocks. If you wish to override then see [Overriding Components](overriding-components) below
+- Extend/use inheritance with an existing block and create a fully custom template
+- Create your own block wrapping `src/components/interaction-designer/block-types/BaseBlock.vue` and extending `src/store/flow/block-types/BaseBlock.ts` - this gives you the standard flow spec UI and content common to all blocks. All community blocks use these if you need examples.
+    - Wrapping BaseBlock
+        - Label editor
+        - Semantic label editor
+        - Branching config
+        - Contact property config
+        - A button to set the block as the first in a flow
+        - It will display your block auto generated ID
+        - It will provide a slot for extras
+    - Extending base store
+        - Provides a generic `createWith` method - pass props to this which your block defaults to on creation
+        - Provides a generic `handleBranchingTypeChangedToUnified` method - defines what should happen if you set your block to have a unified exit (if your block supports this)
+        - Provides a generic validation method. The basic method validates your block is a minimal spec compliant IBlock according to your schema version. See `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`. This can be overriden with validations specific to your custom block. See here for an example:
 
   ```
   export function validateCustomBlock({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
@@ -243,8 +285,6 @@ Auth is up to the implementer for now
     }
   }
   ```
-
-- Documented elsewhere - converting Viamo Tree Blocks to Flow Blocks.
 
 ## Overriding Components
 
@@ -327,16 +367,16 @@ platformBuilderConfig.ui.enabledFeatures.push(
 //Turn some other things off
 platformBuilderConfig.ui.enabledFeatures = without(platformBuilderConfig.ui.enabledFeatures, 'addLanguageOnImport')
 
-//Override existing block type ...TODO
-platformBuilderConfig.ui.blockClasses['Core.SetContactPropertyTwo'] = {
-  name: 'Core.SetContactPropertyTwo',
-  type: 'Core.SetContactPropertyTwo',
+//Override existing block type
+platformBuilderConfig.ui.blockClasses['Core.SetContactProperty'] = {
+  name: 'Core.SetContactProperty',
+  type: 'Core.SetContactProperty',
   is_interactive: false,
   is_branching: false,
   category: 0,
   menu_category: 2,
-  uiComponent: Core_SetContactPropertyTwoBlock,
-  install: installSetContactPropertyTwoBlock
+  uiComponent: Core_SetContactPropertyTwoBlock, //using a different component for this community block
+  install: installSetContactPropertyTwoBlock //using a different installer
 }
 //Add custom block type
 platformBuilderConfig.ui.blockClasses['Viamo.GroupBranch'] = {
@@ -350,7 +390,7 @@ platformBuilderConfig.ui.blockClasses['Viamo.GroupBranch'] = {
   install: installGroupBranchBlock
 }
 //Remove default block type
-...TODO
+delete platformBuilderConfig.ui.blockClasses['Core.Log']
 
 //Export routing config for use in an existing router:
 //import FlowBuilderRoutes from 'floip/builder/routes' //importing these routes here
