@@ -12,7 +12,183 @@ or
 npm install --save @floip/flow-builder
 ```
 
-Unlike the standalone app, the built version of the flow-builder in `/dist` is intended to integrate with an existing Vue Router setup. See the example [here](#full-example-routesindexjs-see-srclibts-for-exports) 
+Unlike the standalone app, the built version of the flow-builder in `/dist` is intended to integrate with an existing Vue Router setup instead of using the exact routing config in https://github.com/FLOIP/flow-builder/blob/master/src/router/trees.js. 
+
+First we need some config to let the components know what routes are available. For example we could have:
+
+```
+const routes = {
+    "flows": {
+        "persistFlow": {
+            "name": "persistFlow",
+            "path": "/backend/flows",
+            "methods": [
+                "POST",
+                "PUT"
+            ]
+        },
+        "fetchFlowServer": {
+            "name": "fetchFlowServer",
+            "path": "/backend/flows/{flowId}",
+            "params": [
+                "flowId"
+            ],
+            "methods": [
+                "GET"
+            ]
+        },
+        "newFlow": {
+            "name": "newFlow",
+            "path": "/flows/new",
+            "methods": [
+                "GET"
+            ]
+        },
+        "importFlow": {
+            "name": "importFlow",
+            "path": "/flows/import",
+            "methods": [
+                "GET"
+            ]
+        },
+        "fetchFlow": {
+            "name": "fetchFlow",
+            "path": "/flows/{flowId}",
+            "params": [
+                "flowId"
+            ],
+            "methods": [
+                "GET"
+            ]
+        },
+        "home": {
+            "name": "home",
+            "path": "/host-app/flows",
+            "methods": [
+                "GET"
+            ]
+        },
+        "cancelImport": {
+            "name": "home",
+            "path": "/flows",
+            "methods": [
+                "GET"
+            ]
+        },
+        "editFlow": {
+            "name": "editFlow",
+            "path": "/flows/{flowId}/{mode?}",
+            "params": [
+                "flowId",
+                "component",
+                "mode"
+            ],
+            "methods": [
+                "GET",
+                "HEAD"
+            ]
+        }
+    },
+    "trees": {
+        "resumeableAudioUpload": {
+            "name": "resumeableAudioUpload",
+            "path": "/audiofiles/upload",
+            "params": [],
+            "methods": [
+                "POST",
+                "HEAD"
+            ]
+        }
+    }
+}
+
+```
+
+And override the builder.config.json defaults from the community builder like so:
+
+```
+//Importing top level views, default config
+import {
+  builderConfig as platformBuilderConfig,
+} from '@floip/flow-builder'
+
+platformBuilderConfig.ui.routes = routes
+
+```
+Then we can configure Vue Router for this. Note passing in of `platformBuilderConfig` to make components aware of the configured routes:
+
+```
+
+const flowBuilderRoutes [
+  {
+    path: '/flows/:id/:mode',
+    name: 'flow-canvas',
+    props: route => ({id: route.params.id, mode: route.params.mode, appConfig: appConfigOverrides, builderConfig: platformBuilderConfig}), //passing in platformBuilderConfig
+    component: CustomInteractionDesigner, //Custom version of InteractionDesigner view
+    children: [ //Paths for deep linking in the interaction designer - link to validation error, edit flow modal etc.
+      {
+        path: 'details',
+        name: 'flow-details',
+        meta: {isFlowEditorShown: true},
+      },
+      {
+        path: 'block/:blockId',
+        name: 'block-selected',
+        props: route => ({blockId: route.params.blockId}),
+        children: [
+          {
+            path: 'details',
+            name: 'block-selected-details',
+            meta: {isBlockEditorShown: true},
+          },
+          {
+            path: ':field',
+            name: 'block-scroll-to-anchor',
+            meta: {isBlockEditorShown: true},
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: '/flows',
+    props: {appConfig: appConfigOverrides, builderConfig: platformBuilderConfig}, //passing in platformBuilderConfig
+    component: Home,
+  },
+  {
+    path: '/host-app/flows',
+    beforeEnter() { window.location.href = '/trees' } //A path to navigate back to the host app
+  },
+  {
+    path: '/flows/new',
+    props: {appConfig: appConfigOverrides, builderConfig: platformBuilderConfig}, //passing in platformBuilderConfig
+    component: CustomNewFlow, //Another custom override - this time of the flow-builder NewFlow route
+  },
+  {
+    path: '/flows/import',
+    props: {appConfig: appConfigOverrides, builderConfig: platformBuilderConfig}, //passing in platformBuilderConfig
+    component: ImportFlow,
+  },
+  {
+    path: '/flows/:uuid',
+    props: route => ({uuid: route.params.uuid, appConfig: appConfigOverrides, builderConfig: platformBuilderConfig}), //passing in platformBuilderConfig
+    component: FetchFlow,
+  },
+]
+
+routes = [
+  {
+    path: '/home', //An existing route in the app where you are embedding
+    component: require('../dashboard/components/DashboardContent.vue').default,
+  },
+  ...flowBuildeRoutes
+]
+export const router = new VueRouter({
+  routes
+})
+```
+
+See the example [here](#full-example-routesindexjs-see-srclibts-for-exports) 
 
 ## Backend Routes
 
@@ -20,7 +196,7 @@ Unlike the standalone app, the built version of the flow-builder in `/dist` is i
 
 Auth is up to the implementer for now
 
-## Customising the Builder
+# Customising the Builder
 
 
 ## Customising Core Blocks
@@ -85,7 +261,7 @@ Auth is up to the implementer for now
 
 - semantic class names on each component div/top level component
 
-## Full example routes/index.js. See `src/lib.ts` for exports
+## Full example routes/index.js. See `src/lib.ts` for exports - The full file described above in the snippets
 
 ```
 import Vue from 'vue'
@@ -194,8 +370,8 @@ export default [
     path: '/flows/:id/:mode',
     name: 'flow-canvas',
     props: route => ({id: route.params.id, mode: route.params.mode, appConfig: appConfigOverrides, builderConfig: platformBuilderConfig}),
-    component: CustomInteractionDesigner,
-    children: [
+    component: CustomInteractionDesigner, //Custom version of InteractionDesigner view
+    children: [ //Paths for deep linking in the interaction designer - link to validation error, edit flow modal etc.
       {
         path: 'details',
         name: 'flow-details',
@@ -223,16 +399,16 @@ export default [
   {
     path: '/flows',
     props: {appConfig: appConfigOverrides, builderConfig: platformBuilderConfig},
-    component: Home, //TODO - temp component - will likely be replaced with voto5 page
+    component: Home,
   },
   {
     path: '/host-app/flows',
-    beforeEnter() { window.location.href = '/trees' }
+    beforeEnter() { window.location.href = '/trees' } //A path to navigate back to the host app
   },
   {
     path: '/flows/new',
     props: {appConfig: appConfigOverrides, builderConfig: platformBuilderConfig},
-    component: CustomNewFlow,
+    component: CustomNewFlow, //Another custom override - this time of the flow-builder NewFlow route
   },
   {
     path: '/flows/import',
