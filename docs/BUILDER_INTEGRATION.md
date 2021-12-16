@@ -311,11 +311,26 @@ import {
 
 ## Overriding default views.
 
-- some guidance on the store structure and API goes here?
+- If your project requires custom versions of what's in the `src/views/` directory, we encourage you to override the components you need to change in the manner described [here](#overriding-and-customising-non-block-components) rather than extending the existing views as syncing changes in the templates between flow-builder versions is onerous.
+    - For example, to customise the toolbar you can override the global toolbar component with a component that wraps this and uses it's slots to add custom buttons.
+- We hope to standardise slots in these views so that they can instead be wrapped by a custom version and select parts overriden in future. 
+- If you do want to override the whole component you can use this custom version by simply switching to it in your Vue Router config as discussed [here](#general-set-up-as-an-embedded-app):
+
+```
+
+const flowBuilderRoutes [
+  {
+    path: '/flows/:id/:mode',
+    name: 'flow-canvas',
+    props: route => ({id: route.params.id, mode: route.params.mode, appConfig: appConfigOverrides, builderConfig: platformBuilderConfig}), //passing in platformBuilderConfig
+    component: CustomInteractionDesigner, //Custom version of InteractionDesigner view
+    ...
+```
 
 ## Custom styling
 
-- semantic class names on each component div/top level component
+- Default styles for the flow-builder are available in @floip/flow-builder/dist/flow-builder.css and can be included on the page serving the flow-builder. Some components also require the css chunks in `@floip/flow-builder/dist/css/*.css` to be available at the path `/dist/js/css/*.css`. We are working on a fix for this.
+- All components have a top level element with a css class corresponding to the component name kebab-cases. For example FetchFlow is fetch-flow, InteractionDesigner interaction-designer etc. This can be used as a hook for custom styling.
 
 ## Full example routes/index.js. See `src/lib.ts` for exports - The full file described above in the snippets
 
@@ -482,6 +497,8 @@ export default [
 
 ## Documentation of app.config.json options
 
-TODO
+TODO - also tidy no longer used options
 
 ## Documentation of builder.config.json options
+
+TODO - also tidy no longer used options
