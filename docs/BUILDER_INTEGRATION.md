@@ -216,8 +216,8 @@ platformBuilderConfig.ui.blockClasses['Core.SetContactProperty'] = {
   is_branching: false,
   category: 0,
   menu_category: 2,
-  uiComponent: Core_SetContactPropertyTwoBlock, //using a different component for this community block
-  install: installSetContactPropertyTwoBlock //using a different installer
+  uiComponent: Core_SetContactPropertyTwoBlock, //Using a different component for this community block. You may notice that this is not present in builder.config.json. If the function which registers blocks doesn't detect this then it will fall back to the registration process used by default blocks. See `src/views/InteractionDesigner.vue` - `registerBlockTypes()`
+  install: installSetContactPropertyTwoBlock //Using a different installer. You may notice that this is not present in builder.config.json. If the function which registers blocks doesn't detect this then it will fall back to the registration process used by default blocks. See `src/views/InteractionDesigner.vue` - `registerBlockTypes()`
 }
 //Add custom block type
 platformBuilderConfig.ui.blockClasses['Viamo.GroupBranch'] = {
@@ -237,10 +237,10 @@ delete platformBuilderConfig.ui.blockClasses['Core.Log']
 See the general setup guidance above for how this is passed into Views.
 
 You then have several options:
-- Start from scratch and create a new block editor - requires a component, store and installer. See `src/components/interaction-designer/block-types` for examples.
+- Start from scratch and create a new block editor - requires a component, store, BLOCK_TYPE and installer. See `src/components/interaction-designer/block-types` for examples.
 - Wrap an existing block and use it's slots to override default UI. Slots available:
-    - `branching` - defaults to the `BlockOutputBranchingConfig` component
-    - `contact-props` - defaults to the `GenericContactPropertyEditor` component
+    - `branching` - defaults to the `BlockOutputBranchingConfig` component. Can be switched off entirely with the `usesDefaultBranchingEditor` boolean prop
+    - `contact-props` - defaults to the `GenericContactPropertyEditor` component. Can be switched off entirely with the `usesDefaultContactPropsEditor` boolean prop
     - `extras` - add content and UI specific to your custom block
     - All other UI is common between community blocks. If you wish to override then see [Overriding Components](overriding-components) below
 - Extend/use inheritance with an existing block and create a fully custom template
@@ -285,15 +285,31 @@ You then have several options:
     }
   }
   ```
+  Your block will need a component, store, BLOCK_TYPE and installer
 
-## Overriding Components
+## Overriding and customising non block components
 
-- Specific guidance on routing for views?
-- Can get store api and initial template from looking at existing?
+At the top level - views - this is simple enough to do by extending or wrapping those components but we want to make such customisation as atomic as possible to allow keeping in sync with this community version of the builder and to allow changing the smallest amount possible.
 
-## Customising Components 
+- By exporting all components in `src/lib.ts` and registering them globally (rather than only where needed) we provide a simple hook for overiding any component. This means for example, that if you would like all of your `src/components/common/TextEditor.vue` components to work differently from the existing component you can simply override this when you set up the app with:
 
-## Creating New Views
+```
+//importing your new text editor.
+import TextEditor from '../components/common/TextEditor.vue'
+
+//registering it globally again will replace the currently used component which we have registerd in `src/lib.ts`
+Vue.component('TextEditor', TextEditor)
+```
+
+This allows us to override UI at any level of nesting required and should continue to work as long as you obey the contract of the existing component in terms of props it takes, things it writes to the store that other components need etc. You can import and wrap or extend the existing component as needed. All components can be imported like so:
+
+```
+import {
+  TextEditor,
+} from '@floip/flow-builder'
+```
+
+## Overriding default views.
 
 - some guidance on the store structure and API goes here?
 
