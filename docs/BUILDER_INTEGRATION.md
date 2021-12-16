@@ -188,7 +188,7 @@ export const router = new VueRouter({
 })
 ```
 
-See the example [here](#full-example-routesindexjs-see-srclibts-for-exports). This also shows other `builder.config.json` and `app.config.json` being overridden.
+See the example [here](#full-example-routesindexjs-see-srclibts-for-exports---the-full-file-described-above-in-the-snippets). This also shows other `builder.config.json` and `app.config.json` being overridden.
 
 ## Backend Routes
 
@@ -242,7 +242,7 @@ You then have several options:
     - `branching` - defaults to the `BlockOutputBranchingConfig` component. Can be switched off entirely with the `usesDefaultBranchingEditor` boolean prop
     - `contact-props` - defaults to the `GenericContactPropertyEditor` component. Can be switched off entirely with the `usesDefaultContactPropsEditor` boolean prop
     - `extras` - add content and UI specific to your custom block
-    - All other UI is common between community blocks. If you wish to override then see [Overriding Components](overriding-components) below
+    - All other UI is common between community blocks. If you wish to override then see [Overriding Components](#overriding-components) below
 - Extend/use inheritance with an existing block and create a fully custom template
 - Create your own block wrapping `src/components/interaction-designer/block-types/BaseBlock.vue` and extending `src/store/flow/block-types/BaseBlock.ts` - this gives you the standard flow spec UI and content common to all blocks. All community blocks use these if you need examples.
     - Wrapping BaseBlock
