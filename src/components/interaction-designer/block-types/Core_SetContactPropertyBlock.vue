@@ -5,9 +5,18 @@
         :flow="flow"
         @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})"
         :showSemanticLabel="false"
-        :usesDefaultContactPropsEditor=false>
+        :usesDefaultContactPropsEditor="usesDefaultContactPropsEditor">
       <template slot="extras">
-        <contact-property-editor :block="block" />
+        <contact-property-editor v-if="!$slots['extras']" :block="block" />
+        <slot v-if="$slots['extras']" name="extras" />
+      </template>
+      <template slot="branching">
+        <slot name="branching" v-if="usesDefaultBranchingEditor">
+        </slot>
+      </template>
+      <template slot="contact-props">
+        <slot name="contact-props" v-if="usesDefaultContactPropsEditor">
+        </slot>
       </template>
     </base-block>
   </div>
@@ -35,6 +44,8 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 class Core_SetContactPropertyBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
+  @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
+  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
   showSemanticLabel = false
 

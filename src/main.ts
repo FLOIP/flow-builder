@@ -24,8 +24,8 @@ import CustomIcons from './lib/custom-icons/index'
 import router from './router'
 import App from './App.vue'
 
-import * as components from '@/components'
-Object.entries(components).forEach((component) => {
+import * as commonComponents from '@/components/common'
+Object.entries(commonComponents).forEach((component) => {
   Vue.component(component[0], component[1])
 })
 
