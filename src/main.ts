@@ -20,11 +20,11 @@ import {library} from '@fortawesome/fontawesome-svg-core'
 import {faCheck, faMobileAlt, faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons'
 import {faCheckCircle, faCircle, faClone, faTrashAlt, faTimesCircle, faDotCircle, faEdit, faEnvelope, faCommentDots} from '@fortawesome/free-regular-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import * as commonComponents from '@/components/common'
 import CustomIcons from './lib/custom-icons/index'
 import router from './router'
 import App from './App.vue'
 
-import * as commonComponents from '@/components/common'
 Object.entries(commonComponents).forEach((component) => {
   Vue.component(component[0], component[1])
 })

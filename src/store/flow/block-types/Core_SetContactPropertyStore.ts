@@ -1,10 +1,10 @@
 import {ActionTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IFlowsState} from '../index'
 import {IBlockExit, IBlockConfig} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import BaseStore from './BaseBlock'
 import {cloneDeep} from 'lodash'
+import BaseStore from './BaseBlock'
+import {IFlowsState} from '../index'
 
 export interface IContactPropertyOption {
   id: string,
@@ -18,7 +18,6 @@ const baseActions = cloneDeep(BaseStore.actions)
 
 const actions: ActionTree<IFlowsState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
-
     props.type = BLOCK_TYPE
     props.config = {
         set_contact_property: {
@@ -37,7 +36,7 @@ const actions: ActionTree<IFlowsState, IRootState> = {
     //TODO - fix this
     // @ts-ignore
     return await baseActions.createWith({dispatch}, {props})
-  }
+  },
 
 }
 

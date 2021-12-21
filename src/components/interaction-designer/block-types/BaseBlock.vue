@@ -15,7 +15,9 @@
 
       <slot name="extras" />
 
-      <slot name="branching" v-if="usesDefaultBranchingEditor">
+      <slot
+        v-if="usesDefaultBranchingEditor"
+        name="branching">
         <block-output-branching-config
           :block="block"
           :has-exit-per-choice="false"
@@ -24,7 +26,9 @@
 
       <categorization :block="block" />
 
-      <slot name="contact-props" v-if="usesDefaultContactPropsEditor">
+      <slot
+        v-if="usesDefaultContactPropsEditor"
+        name="contact-props">
         <generic-contact-property-editor :block="block" />
       </slot>
 
