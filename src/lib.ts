@@ -4,6 +4,7 @@ import {library} from '@fortawesome/fontawesome-svg-core'
 import {faCheck, faMobileAlt} from '@fortawesome/free-solid-svg-icons'
 import {faCheckCircle, faCircle, faClone, faTrashAlt, faTimesCircle, faDotCircle, faEdit, faEnvelope, faCommentDots} from '@fortawesome/free-regular-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+//To register components globally by default
 import * as commonComponents from '@/components/common'
 import InteractionDesignerComponent from './views/InteractionDesigner.vue'
 import FetchFlowComponent from './views/FetchFlow.vue'
@@ -23,8 +24,6 @@ import BaseStore from './store/flow/block-types/BaseBlock'
  *
  */
 import CustomIcons from './lib/custom-icons/index'
-
-//To register components globally by default
 
 library.add(faCircle, faCheckCircle, faEdit, faCheck, faEnvelope, faMobileAlt, faCommentDots, faClone, faTrashAlt, faTimesCircle, faDotCircle, ...CustomIcons)
 Vue.component('FontAwesomeIcon', FontAwesomeIcon)
