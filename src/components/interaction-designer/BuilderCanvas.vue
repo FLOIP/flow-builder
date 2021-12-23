@@ -19,7 +19,7 @@ import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
 import {cloneDeep, debounce, find, get, isEqual, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
-import {IBlock, IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow, IResources} from '@floip/flow-runner'
 import {IValidationStatus} from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
@@ -69,6 +69,16 @@ export default class BuilderCanvas extends Vue {
     )
   }
 
+  @Watch('resourcesOnActiveFlow', {deep: true, immediate: true})
+  async onResourcesChanged(newResources: IResources[], oldResources: IResources[]) {
+    if (newResources.length === 0) {
+      return
+    }
+
+    console.debug('watch/resourcesOnActiveFlow:', 'resources inside active flow have changed, validating ...')
+    // TOOD: change this to validation call
+    console.debug('resources', newResources)
+  }
   // ] ######### end Validation API Watchers
 
   // ##### Canvas dynamic size watchers [
@@ -204,6 +214,7 @@ export default class BuilderCanvas extends Vue {
 
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Getter resourcesOnActiveFlow!: IResources[]
 
   @builderVuexNamespace.State isBlockEditorOpen!: boolean
 

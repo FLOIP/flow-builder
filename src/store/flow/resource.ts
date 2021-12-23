@@ -18,11 +18,9 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   resourceUuidsOnActiveFlow: (state, getters) => filter(map(getters.activeFlow.blocks, (block) => block.config.prompt)),
 
   resourcesOnActiveFlow: (state, getters) => {
-    if (state.flows.length) {
-      return filter(state.resources, (resource) => {
-        return includes(getters.resourceUuidsOnActiveFlow, resource.uuid)
-      })
-    }
+    return filter(state.resources, (resource) => {
+      return includes(getters.resourceUuidsOnActiveFlow, resource.uuid)
+    })
   }
 }
 
