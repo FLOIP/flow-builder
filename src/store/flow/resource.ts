@@ -7,13 +7,23 @@ import {
   SupportedMode,
 } from '@floip/flow-runner'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
-import {cloneDeep, defaults, difference, find, findIndex, first, isEmpty, isEqual, keyBy, map, pick, without} from 'lodash'
+import {cloneDeep, defaults, difference, find, findIndex, first, filter, includes, isEmpty, isEqual, keyBy, map, pick, without} from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '@/store/flow/index'
 import {IRootState} from '@/store'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   resourcesByUuid: ({resources}) => keyBy(resources, 'uuid'),
+
+  resourceUuidsOnActiveFlow: (state, getters) => filter(map(getters.activeFlow.blocks, (block) => block.config.prompt)),
+
+  resourcesOnActiveFlow: (state, getters) => {
+    if (state.flows.length) {
+      return filter(state.resources, (resource) => {
+        return includes(getters.resourceUuidsOnActiveFlow, resource.uuid)
+      })
+    }
+  }
 }
 
 export const mutations: MutationTree<IFlowsState> = {
