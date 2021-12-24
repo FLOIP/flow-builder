@@ -7,7 +7,7 @@ import {
   SupportedMode,
 } from '@floip/flow-runner'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
-import {cloneDeep, defaults, difference, find, findIndex, first, filter, includes, isEmpty, isEqual, keyBy, map, pick, without} from 'lodash'
+import {chain, cloneDeep, defaults, difference, find, findIndex, first, filter, includes, intersection, isEmpty, isEqual, keyBy, map, pick, without} from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '@/store/flow/index'
 import {IRootState} from '@/store'
@@ -18,9 +18,18 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   resourceUuidsOnActiveFlow: (state, getters) => filter(map(getters.activeFlow.blocks, (block) => block.config.prompt)),
 
   resourcesOnActiveFlow: (state, getters) => {
-    return filter(state.resources, (resource) => {
-      return includes(getters.resourceUuidsOnActiveFlow, resource.uuid)
-    })
+    return chain(state.resources)
+      .filter((resource) => {
+        return includes(getters.resourceUuidsOnActiveFlow, resource.uuid)
+      })
+      .map((resource) => {
+        const valuesHavingSupportedMode = filter(
+          resource.values,
+          (v) => !isEmpty(intersection(getters.activeFlow.supported_modes, v.modes)) // only values having supported modes
+        ) as IResourceValue[]
+        return {uuid: resource.uuid, values: valuesHavingSupportedMode} as IResource
+      })
+      .value()
   }
 }
 
