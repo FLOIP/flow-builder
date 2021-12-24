@@ -17,7 +17,7 @@
 <script lang="ts">
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import {cloneDeep, debounce, find, get, isEqual, maxBy} from 'lodash'
+import {cloneDeep, debounce, each, find, get, isEqual, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
 import {IBlock, IFlow, IResource, IResources} from '@floip/flow-runner'
 import {IValidationStatus} from '@/store/validation'
@@ -77,11 +77,8 @@ export default class BuilderCanvas extends Vue {
 
     console.debug('watch/resourcesOnActiveFlow:', 'resources inside active flow have changed, validating ...')
     await Promise.all(
-      newResources.map(async (currentNewResource) => {
-        const currentOldResource = find(oldResources, {uuid: currentNewResource.uuid})
-        if (!isEqual(currentNewResource, currentOldResource)) {
-          await this.validate_resource({resource: currentNewResource})
-        }
+      each(newResources, async (currentNewResource) => {
+        await this.validate_resource({resource: currentNewResource})
       }),
     )
   }

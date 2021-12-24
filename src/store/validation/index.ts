@@ -125,6 +125,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   async validate_resource({state, rootGetters}, {resource}: {resource: IResource}): Promise<IValidationStatus> {
     const validate = getOrCreateResourceValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const key = `resource/${resource.uuid}`
+    console.info('check validate resource', resource)
     Vue.set(state.validationStatuses, key, {
       isValid: validate(resource),
       ajvErrors: validate.errors,

@@ -27,7 +27,9 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
           resource.values,
           (v) => !isEmpty(intersection(getters.activeFlow.supported_modes, v.modes)) // only values having supported modes
         ) as IResourceValue[]
-        return {uuid: resource.uuid, values: valuesHavingSupportedMode} as IResource
+        resource.values = valuesHavingSupportedMode
+        // return {uuid: resource.uuid, values: valuesHavingSupportedMode} as IResource
+        return resource
       })
       .value()
   }
