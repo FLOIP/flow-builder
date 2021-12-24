@@ -19,7 +19,7 @@ import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
 import {cloneDeep, debounce, find, get, isEqual, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
-import {IBlock, IFlow, IResources} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource, IResources} from '@floip/flow-runner'
 import {IValidationStatus} from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
@@ -70,14 +70,20 @@ export default class BuilderCanvas extends Vue {
   }
 
   @Watch('resourcesOnActiveFlow', {deep: true, immediate: true})
-  async onResourcesChanged(newResources: IResources[], oldResources: IResources[]) {
+  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources) {
     if (newResources.length === 0) {
       return
     }
 
     console.debug('watch/resourcesOnActiveFlow:', 'resources inside active flow have changed, validating ...')
-    // TOOD: change this to validation call
-    console.debug('resources', newResources)
+    await Promise.all(
+      newResources.map(async (currentNewResource) => {
+        const currentOldResource = find(oldResources, {uuid: currentNewResource.uuid})
+        if (!isEqual(currentNewResource, currentOldResource)) {
+          await this.validate_resource({resource: currentNewResource})
+        }
+      }),
+    )
   }
   // ] ######### end Validation API Watchers
 
@@ -214,12 +220,13 @@ export default class BuilderCanvas extends Vue {
 
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Getter resourcesOnActiveFlow!: IResources[]
+  @flowVuexNamespace.Getter resourcesOnActiveFlow!: IResources
 
   @builderVuexNamespace.State isBlockEditorOpen!: boolean
 
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_block!: ({block}: { block: IBlock }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_resource!: ({resource}: { resource: IResource }) => Promise<IValidationStatus>
 }
 
 export {BuilderCanvas}

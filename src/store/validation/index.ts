@@ -2,9 +2,15 @@ import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {ErrorObject} from 'ajv'
-import {IBlock, IContainer, IFlow, ILanguage, getFlowStructureErrors} from '@floip/flow-runner'
+import {IBlock, IContainer, IFlow, ILanguage, getFlowStructureErrors, IResource} from '@floip/flow-runner'
 import {forIn} from 'lodash'
-import {debugValidationStatus, flatValidationStatuses, getOrCreateFlowValidator, getOrCreateLanguageValidator} from '@/store/validation/validationHelpers'
+import {
+  debugValidationStatus,
+  flatValidationStatuses,
+  getOrCreateFlowValidator,
+  getOrCreateLanguageValidator,
+  getOrCreateResourceValidator,
+} from '@/store/validation/validationHelpers'
 
 export interface IIndexedString {
   [key: string]: string,
@@ -114,6 +120,18 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   validation_removeNewLanguageValidation({state}): void {
     const index = 'language/new_language'
     Vue.delete(state.validationStatuses, index)
+  },
+
+  async validate_resource({state, rootGetters}, {resource}: {resource: IResource}): Promise<IValidationStatus> {
+    const validate = getOrCreateResourceValidator(rootGetters['flow/activeFlowContainer'].specification_version)
+    const key = `resource/${resource.uuid}`
+    Vue.set(state.validationStatuses, key, {
+      isValid: validate(resource),
+      ajvErrors: validate.errors,
+    })
+
+    debugValidationStatus(state.validationStatuses[key], 'resource validation status')
+    return state.validationStatuses[key]
   },
 }
 
