@@ -34,8 +34,8 @@ const actions: ActionTree<IFlowsState, IRootState> = {
     ]
     props.exits = exits
     //TODO - fix this
-    // @ts-ignore
-    return await baseActions.createWith({dispatch}, {props})
+    // @ts-ignore - Not all constituents of type 'Action<IFlowsState, IRootState>' are callable.
+    return baseActions.createWith({dispatch}, {props})
   },
 
 }
