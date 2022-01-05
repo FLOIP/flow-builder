@@ -246,8 +246,9 @@ You then have several options:
 - Start from scratch and create a new block editor - requires a component, store, BLOCK_TYPE and installer. See `src/components/interaction-designer/block-types` for examples.
 - Wrap an existing block and use it's slots to override default UI. Slots available:
     - `branching` - defaults to the `BlockOutputBranchingConfig` component. Can be switched off entirely with the `usesDefaultBranchingEditor` boolean prop
-    - `contact-props` - defaults to the `GenericContactPropertyEditor` component. Can be switched off entirely with the `usesDefaultContactPropsEditor` boolean prop
+    - `contact-props` - defaults to the `GenericCont``actPropertyEditor` component. Can be switched off entirely with the `usesDefaultContactPropsEditor` boolean prop
     - `extras` - add content and UI specific to your custom block
+    - `resource-editors` - add resource editors for block type specific resources. A more specific version of extras.
     - All other UI is common between community blocks. If you wish to override then see the [Overriding and customising non block components](#overriding-and-customising-non-block-components) section below
 - Extend/use inheritance with an existing block and create a fully custom template (or wrap the BaseBlock component)
 - Create your own block wrapping `src/components/interaction-designer/block-types/BaseBlock.vue` and extending `src/store/flow/block-types/BaseBlock.ts` - this gives you the standard flow spec UI and content common to all blocks. All community blocks use these if you need examples.
@@ -259,6 +260,7 @@ You then have several options:
         - A button to set the block as the first in a flow
         - It will display your block auto generated ID
         - It will provide a slot for extras
+        - It will provide a slot for resource editors
     - Extending base store
         - Provides a generic `createWith` method - pass props to this which your block defaults to on creation
         - Provides a generic `handleBranchingTypeChangedToUnified` method - defines what should happen if you set your block to have a unified exit (if your block supports this)
