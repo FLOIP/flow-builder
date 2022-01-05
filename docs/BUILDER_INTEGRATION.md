@@ -2,6 +2,8 @@ The flow-builder has been designed for drop in use as an embedded app in other p
 
 # General set up as an embedded app
 
+## Install
+
 The flow-builder can be installed as a package from npm:
 
 ```
@@ -11,6 +13,8 @@ or
 
 npm install --save @floip/flow-builder
 ```
+
+## Route Config
 
 Unlike the standalone app, the built version of the flow-builder in `/dist` is intended to integrate with an existing Vue Router setup instead of using the exact routing config in https://github.com/FLOIP/flow-builder/blob/master/src/router/trees.js. 
 
@@ -191,6 +195,8 @@ export const router = new VueRouter({
 See the example [here](#full-example-routesindexjs-see-srclibts-for-exports---the-full-file-described-above-in-the-snippets). This also shows other `builder.config.json` and `app.config.json` being overridden.
 
 ## Backend Routes
+
+When using the builder in an app with server side persistence, the following routes must be defined and the routes above prefixed by `/backend` must be updated to use them.
 
 [Full Spec Here](routes/markdown/routes.md)
 
