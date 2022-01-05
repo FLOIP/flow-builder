@@ -30,7 +30,7 @@ import {IGroupOption} from '../../../store/flow/block-types/Core_SetGroupMembers
 
 const flowVuexNamespace = namespace('flow')
 
-@Component<any>({
+@Component({
   components: {
     VueMultiselect,
   },

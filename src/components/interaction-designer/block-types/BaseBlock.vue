@@ -13,6 +13,7 @@
         :block="block" />
       <block-name-editor :block="block" />
 
+      <slot name="resource-editors" />
       <slot name="extras" />
 
       <slot
@@ -78,7 +79,7 @@ class BaseBlock extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
-  @Prop({default: false}) readonly showSemanticLabel!: boolean
+  @Prop({default: false}) showSemanticLabel!: boolean
 
   handleBranchingTypeChangedToUnified() {
     this.$emit('handleBranchingTypeChangedToUnified')
