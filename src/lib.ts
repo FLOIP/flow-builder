@@ -1,8 +1,18 @@
 import Vue from 'vue'
 import {createDefaultBlockTypeInstallerFor as createDefaultBlockTypeInstallerForFunction} from '@/store/builder'
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faCheck, faMobileAlt} from '@fortawesome/free-solid-svg-icons'
-import {faCheckCircle, faCircle, faClone, faTrashAlt, faTimesCircle, faDotCircle, faEdit, faEnvelope, faCommentDots} from '@fortawesome/free-regular-svg-icons'
+import {faCheck, faMobileAlt, faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons'
+import {
+  faCheckCircle,
+  faCircle,
+  faClone,
+  faTrashAlt,
+  faTimesCircle,
+  faDotCircle,
+  faEdit,
+  faEnvelope,
+  faCommentDots,
+} from '@fortawesome/free-regular-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 //To register components globally by default
 import * as commonComponents from '@/components/common'
@@ -25,7 +35,22 @@ import BaseStore from './store/flow/block-types/BaseBlock'
  */
 import CustomIcons from './lib/custom-icons/index'
 
-library.add(faCircle, faCheckCircle, faEdit, faCheck, faEnvelope, faMobileAlt, faCommentDots, faClone, faTrashAlt, faTimesCircle, faDotCircle, ...CustomIcons)
+library.add(
+  faCircle,
+  faCheckCircle,
+  faEdit,
+  faCheck,
+  faEnvelope,
+  faMobileAlt,
+  faCommentDots,
+  faClone,
+  faTrashAlt,
+  faTimesCircle,
+  faDotCircle,
+  faChevronDown,
+  faChevronUp,
+  ...CustomIcons,
+)
 Vue.component('FontAwesomeIcon', FontAwesomeIcon)
 
 export const appConfig = require('../app.config')

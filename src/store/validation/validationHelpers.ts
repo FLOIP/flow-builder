@@ -123,15 +123,17 @@ export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, s
     const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]
     let blockJsonSchema
     try {
-      blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block.json`)
+      const schemaPath = `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block2.json`
+      blockJsonSchema = require(schemaPath)
       validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema)
     } catch (e) {
-      if(e.code === "MODULE_NOT_FOUND") {
-        console.info(`A Specific Validator for the ${blockTypeWithoutNameSpace}Block could not be found. Falling back the generic Block validator for ${schemaVersion}`)
+      if (e.code === 'MODULE_NOT_FOUND') {
+        console.info(`A Specific Validator for the ${blockTypeWithoutNameSpace}Block could not be found. `
+          + `Falling back the generic Block validator for ${schemaVersion}`)
         blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
         validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema, '#/definitions/IBlock')
       } else {
-        throw(e)
+        throw e
       }
     }
     validators.set(block.type, validate)
