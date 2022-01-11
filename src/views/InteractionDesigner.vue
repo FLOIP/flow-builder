@@ -191,6 +191,8 @@ export default {
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   mounted() {
+    //Ensure that the blocks are installed before activating the flow
+    //Block stores are needed to ensure validations can run immediately
     this.registerBlockTypes().then(() => {
       this.flow_setActiveFlowId({flowId: this.id})
 

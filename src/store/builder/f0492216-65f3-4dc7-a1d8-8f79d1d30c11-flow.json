@@ -100,6 +100,49 @@
               "max_digits": -1
             }
           }
+        },
+        {
+          "uuid": "3f01148c-0945-4f2f-808e-15039cbd962c",
+          "ui_metadata": {
+            "canvas_coordinates": {
+              "x": 888,
+              "y": 612
+            }
+          },
+          "vendor_metadata": {
+            "io_viamo": {
+              "uiData": {
+                "isSelected": false
+              },
+              "branchingType": "UNIFIED",
+              "noValidResponse": "END_CALL"
+            }
+          },
+          "type": "Core.SetGroupMembership",
+          "name": "abc",
+          "label": "abc",
+          "semantic_label": "",
+          "config": {
+            "group_key": "",
+            "group_name": "",
+            "is_member": null
+          },
+          "exits": [
+            {
+              "uuid": "6c9aee4f-afce-484c-8652-356777bf686b",
+              "name": "1",
+              "test": "block.value = true",
+              "config": {}
+            },
+            {
+              "uuid": "9c7c4aa0-14ed-482f-b56d-02ebb0ada9c1",
+              "name": "Default",
+              "default": true,
+              "test": "",
+              "config": {}
+            }
+          ],
+          "tags": []
         }
       ],
       "first_block_id": "eb34ac1f-f27c-43f4-87c9-7f61309bc725"
