@@ -40,7 +40,7 @@
 <script>
 import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {endsWith, forEach, get, isEmpty, invoke} from 'lodash'
+import {endsWith, forEach, get, isEmpty, invoke, keys} from 'lodash'
 import Vue from 'vue'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 // import {affix as Affix} from 'vue-strap'
@@ -178,7 +178,6 @@ export default {
     // initialize global reference for legacy + debugging
     global.builder = this
 
-    this.registerBlockTypes()
 
     this.initializeTreeModel()
     // `this.mode` comes from captured param in js-routes
@@ -192,42 +191,44 @@ export default {
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   mounted() {
-    this.flow_setActiveFlowId({flowId: this.id})
+    this.registerBlockTypes().then(() => {
+      this.flow_setActiveFlowId({flowId: this.id})
 
-    // if nothing was found for the flow Id
-    if (!this.activeFlow) {
-      this.flow_setActiveFlowId({flowId: null})
-      this.$router.replace(
-        {
-          path: this.route('flows.fetchFlow', {flowId: this.id}),
-          query: {nextUrl: this.$route.fullPath},
-        },
-      )
-    }
-
-    this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
-    this.deselectBlocks()
-    this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
-
-    setTimeout(() => {
-      const {blockId, field} = this.$route.params
-      if (blockId) {
-        this.activateBlock({blockId})
-        scrollBlockIntoView(blockId)
+      // if nothing was found for the flow Id
+      if (!this.activeFlow) {
+        this.flow_setActiveFlowId({flowId: null})
+        this.$router.replace(
+          {
+            path: this.route('flows.fetchFlow', {flowId: this.id}),
+            query: {nextUrl: this.$route.fullPath},
+          },
+        )
       }
-      if (field) {
-        scrollBehavior(this.$route)
-      }
-      if (this.$route.meta?.isBlockEditorShown) {
-        this.setIsBlockEditorOpen(true)
-      }
-    }, 500)
-    console.debug('Vuej tree interaction designer mounted!')
 
-    // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
-    if (this.activeFlow && this.$refs['interaction-designer-contents'] != undefined) {
-      this.setInteractionDesignerBoundingClientRect(this.$refs['interaction-designer-contents'].getBoundingClientRect())
-    }
+      this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
+      this.deselectBlocks()
+      this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
+
+      setTimeout(() => {
+        const {blockId, field} = this.$route.params
+        if (blockId) {
+          this.activateBlock({blockId})
+          scrollBlockIntoView(blockId)
+        }
+        if (field) {
+          scrollBehavior(this.$route)
+        }
+        if (this.$route.meta?.isBlockEditorShown) {
+          this.setIsBlockEditorOpen(true)
+        }
+      }, 500)
+      console.debug('Vuej tree interaction designer mounted!')
+
+      // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
+      if (this.activeFlow && this.$refs['interaction-designer-contents'] != undefined) {
+        this.setInteractionDesignerBoundingClientRect(this.$refs['interaction-designer-contents'].getBoundingClientRect())
+      }
+    })
   },
   beforeRouteUpdate(to, from, next) {
     this.activateBlock({blockId: to.params.blockId || null})
@@ -251,7 +252,8 @@ export default {
     async registerBlockTypes() {
       const {blockClasses} = this
 
-      forEach(blockClasses, async (blockClass) => {
+      const blockInstallers = keys(blockClasses).map(async (blockClassKey) => {
+        const blockClass = blockClasses[blockClassKey]
         const type = blockClass.type
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')
@@ -264,6 +266,7 @@ export default {
         invoke(blockClass, 'install', this)
         Vue.component(`Flow${typeWithoutSeparators}`, uiComponent)
       })
+      return Promise.all(blockInstallers)
     },
 
     handleCanvasSelected({target}) {
