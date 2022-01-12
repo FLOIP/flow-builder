@@ -23,7 +23,7 @@
   "dependencies": {
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
-    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#VMO-3877-resource-validation--spike-idea1",
+    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#VMO-4152-resource-validation",
     "@flowjs/flow.js": "^2.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
