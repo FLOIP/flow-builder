@@ -16,11 +16,16 @@ export interface IIndexedString {
   [key: string]: string,
 }
 
+export interface IValidationStatusContext {
+  resourceUuid?: string,
+}
+
 export interface IValidationStatus {
   isValid: boolean | PromiseLike<any>,
   ajvErrors?: null | Array<ErrorObject>,
   type: string,
   label?: string,
+  context?: IValidationStatusContext,
 }
 
 export interface IValidationState {
@@ -129,6 +134,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     Vue.set(state.validationStatuses, key, {
       isValid: validate(resource),
       ajvErrors: validate.errors,
+      type: 'resource',
     })
 
     debugValidationStatus(state.validationStatuses[key], 'resource validation status')

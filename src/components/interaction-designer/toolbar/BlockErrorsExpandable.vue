@@ -43,10 +43,12 @@ import {ErrorObject} from 'ajv'
 import {Prop} from 'vue-property-decorator'
 import {IFlow} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
+import {get, union} from "lodash"
 
 const flowVuexNamespace = namespace('flow')
+const validationVuexNamespace = namespace('validation')
 
-const DEFAULT_LIST_SIZE = 2
+const DEFAULT_LIST_SIZE = 3
 
 @Component({})
 export default class BlockErrorsExpandable extends mixins(Lang) {
@@ -57,12 +59,21 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
 
   get errorsToShow(): ErrorObject[] {
     return this.isExpanded
-      ? this.status.ajvErrors ?? []
-      : this.status.ajvErrors?.slice(0, DEFAULT_LIST_SIZE) ?? []
+      ? this.allErrors ?? []
+      : this.allErrors?.slice(0, DEFAULT_LIST_SIZE) ?? []
+  }
+
+  /**
+   * get allErrors to consider errors from:
+   * - block validation
+   * - resource validation
+   */
+  get allErrors() {
+    return union(this.status.ajvErrors, this.resourceValidationStatuses.ajvErrors);
   }
 
   get isListLong(): boolean {
-    return this.status.ajvErrors != null && this.status.ajvErrors.length > DEFAULT_LIST_SIZE
+    return this.allErrors && this.allErrors.length > DEFAULT_LIST_SIZE
   }
 
   get blockLabel(): string {
@@ -72,10 +83,15 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
       : this.trans('flow-builder.untitled-block')
   }
 
+  get resourceValidationStatuses(): IValidationStatus {
+    return get(this.validationStatuses, `resource/${this.status.context?.resourceUuid}`)
+  }
+
   toggleList(): void {
     this.isExpanded = !this.isExpanded
   }
 
+  @validationVuexNamespace.State validationStatuses!: { [key: string]: IValidationStatus }
   @flowVuexNamespace.Getter activeFlow?: IFlow
 }
 </script>

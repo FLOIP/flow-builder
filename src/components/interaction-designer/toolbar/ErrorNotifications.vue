@@ -107,14 +107,7 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
   }
 
   get blockValidationStatuses(): { [key: string]: IValidationStatus } {
-    const blocksMap = this.activeFlow?.blocks.reduce((map: { [key: string]: boolean }, block) => {
-      map[`block/${block.uuid}`] = true
-      return map
-    }, {})
-    if (!blocksMap || size(blocksMap) === 0) {
-      return {}
-    }
-    return pickBy(this.validationStatuses, (value: IValidationStatus, key) => value.type !== 'flow' && blocksMap[key])
+    return pickBy(this.validationStatuses, (value: IValidationStatus, key) => key.includes('block/'))
   }
 
   get numberOfBlocksWithErrors(): number {
