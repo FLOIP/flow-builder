@@ -123,8 +123,9 @@ export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, s
     const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]
     let blockJsonSchema
     try {
-      const schemaPath = `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block2.json`
-      blockJsonSchema = require(schemaPath)
+      blockJsonSchema = require(
+        `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block.json`,
+      )
       validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema)
     } catch (e) {
       if (e.code === 'MODULE_NOT_FOUND') {
