@@ -81,7 +81,7 @@ class BaseBlock extends mixins(Lang) {
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
   @Prop({default: false}) showSemanticLabel!: boolean
 
-  handleBranchingTypeChangedToUnified() {
+  handleBranchingTypeChangedToUnified(): void {
     this.$emit('handleBranchingTypeChangedToUnified')
   }
 
