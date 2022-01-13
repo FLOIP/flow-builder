@@ -40,7 +40,7 @@
 <script>
 import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {endsWith, forEach, get, isEmpty, invoke, keys} from 'lodash'
+import {endsWith, forEach, get, isEmpty, invoke, values} from 'lodash'
 import Vue from 'vue'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 // import {affix as Affix} from 'vue-strap'
@@ -253,8 +253,7 @@ export default {
     async registerBlockTypes() {
       const {blockClasses} = this
 
-      const blockInstallers = keys(blockClasses).map(async (blockClassKey) => {
-        const blockClass = blockClasses[blockClassKey]
+      const blockInstallers = values(blockClasses).map(async (blockClass) => {
         const type = blockClass.type
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')
