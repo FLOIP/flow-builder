@@ -190,47 +190,46 @@ export default {
   },
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
-  mounted() {
+  async mounted() {
     //Ensure that the blocks are installed before activating the flow
     //Block stores are needed to ensure validations can run immediately
-    this.registerBlockTypes().then(() => {
-      this.flow_setActiveFlowId({flowId: this.id})
+    await this.registerBlockTypes()
+    this.flow_setActiveFlowId({flowId: this.id})
 
-      // if nothing was found for the flow Id
-      if (!this.activeFlow) {
-        this.flow_setActiveFlowId({flowId: null})
-        this.$router.replace(
-          {
-            path: this.route('flows.fetchFlow', {flowId: this.id}),
-            query: {nextUrl: this.$route.fullPath},
-          },
-        )
+    // if nothing was found for the flow Id
+    if (!this.activeFlow) {
+      this.flow_setActiveFlowId({flowId: null})
+      this.$router.replace(
+        {
+          path: this.route('flows.fetchFlow', {flowId: this.id}),
+          query: {nextUrl: this.$route.fullPath},
+        },
+      )
+    }
+
+    this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
+    this.deselectBlocks()
+    this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
+
+    setTimeout(() => {
+      const {blockId, field} = this.$route.params
+      if (blockId) {
+        this.activateBlock({blockId})
+        scrollBlockIntoView(blockId)
       }
-
-      this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
-      this.deselectBlocks()
-      this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
-
-      setTimeout(() => {
-        const {blockId, field} = this.$route.params
-        if (blockId) {
-          this.activateBlock({blockId})
-          scrollBlockIntoView(blockId)
-        }
-        if (field) {
-          scrollBehavior(this.$route)
-        }
-        if (this.$route.meta?.isBlockEditorShown) {
-          this.setIsBlockEditorOpen(true)
-        }
-      }, 500)
-      console.debug('Vuej tree interaction designer mounted!')
-
-      // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
-      if (this.activeFlow && this.$refs['interaction-designer-contents'] != undefined) {
-        this.setInteractionDesignerBoundingClientRect(this.$refs['interaction-designer-contents'].getBoundingClientRect())
+      if (field) {
+        scrollBehavior(this.$route)
       }
-    })
+      if (this.$route.meta?.isBlockEditorShown) {
+        this.setIsBlockEditorOpen(true)
+      }
+    }, 500)
+    console.debug('Vuej tree interaction designer mounted!')
+
+    // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
+    if (this.activeFlow && this.$refs['interaction-designer-contents'] != undefined) {
+      this.setInteractionDesignerBoundingClientRect(this.$refs['interaction-designer-contents'].getBoundingClientRect())
+    }
   },
   beforeRouteUpdate(to, from, next) {
     this.activateBlock({blockId: to.params.blockId || null})
