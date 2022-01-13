@@ -9,12 +9,12 @@
     <div>
       <b-tabs>
         <b-tab
-          v-for="{id: languageId, label: language} in flow.languages"
+          v-for="({id: languageId, label: language}, langIndex) in flow.languages"
           :key="languageId"
           :title="language || 'flow-builder.unknown-language' | trans">
           <div
-            v-for="(mode, i) in flow.supported_modes"
-            :key="i"
+            v-for="(mode, modeIndex) in flow.supported_modes"
+            :key="modeIndex"
             class="tab-content-style">
             <header class="d-flex">
               <font-awesome-icon
@@ -29,8 +29,8 @@
 
               <resource-variant-text-editor
                 v-if="contentType === SupportedContentType.TEXT"
+                :index="langIndex * flow.supported_modes.length + modeIndex"
                 :resource-id="resource.uuid"
-
                 :resource-variant="findOrGenerateStubbedVariantOn(
                   resource,
                   {language_id: languageId, content_type: contentType, modes: [mode]})"
