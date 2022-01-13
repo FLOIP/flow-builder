@@ -68,7 +68,7 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
    * - block validation
    * - resource validation
    */
-  get allErrors() {
+  get allErrors(): ErrorObject[] {
     return union(this.status.ajvErrors, this.resourceValidationStatuses.ajvErrors);
   }
 

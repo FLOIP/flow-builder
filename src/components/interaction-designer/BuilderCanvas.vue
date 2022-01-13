@@ -70,7 +70,7 @@ export default class BuilderCanvas extends Vue {
   }
 
   @Watch('resourcesOnActiveFlow', {deep: true, immediate: true})
-  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources) {
+  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
     if (newResources.length === 0) {
       return
     }

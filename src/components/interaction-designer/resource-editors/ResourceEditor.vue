@@ -122,7 +122,7 @@ import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {mixins} from 'vue-class-component'
 import {TabsPlugin} from 'bootstrap-vue'
 import UploadMonitor from '../block-editors/UploadMonitor.vue'
-import ValidationMessage from '@/components/common/ValidationMessage'
+import ValidationMessage from '@/components/common/ValidationMessage.vue'
 
 Vue.use(TabsPlugin)
 
@@ -237,7 +237,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
    * @param langIndex
    * @param modeIndex
    */
-  computeResourceIndex(langIndex, modeIndex) {
+  computeResourceIndex(langIndex: number, modeIndex: number): number {
     return langIndex * this.flow.supported_modes.length + modeIndex
   }
 

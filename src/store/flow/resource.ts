@@ -19,20 +19,19 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 
   resourcesOnActiveFlow: (state, getters) => {
     return chain(state.resources)
-      .filter((resource) => {
-        return includes(getters.resourceUuidsOnActiveFlow, resource.uuid)
-      })
+      .filter((resource) => includes(getters.resourceUuidsOnActiveFlow, resource.uuid))
       .map((resource) => {
         const valuesHavingSupportedMode = filter(
           resource.values,
-          (v) => !isEmpty(intersection(getters.activeFlow.supported_modes, v.modes)) // only values having supported modes
+          // only get values having supported modes
+          (v) => !isEmpty(intersection(getters.activeFlow.supported_modes, v.modes))
         ) as IResourceValue[]
         resource.values = valuesHavingSupportedMode
 
         return resource
       })
       .value()
-  }
+  },
 }
 
 export const mutations: MutationTree<IFlowsState> = {
