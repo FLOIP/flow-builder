@@ -104,8 +104,6 @@ import {Action, namespace, State} from 'vuex-class'
 
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
-import TextEditor from '@/components/common/TextEditor.vue'
 import VueMultiselect from 'vue-multiselect'
 
 const countries = require('i18n-iso-countries')
@@ -118,9 +116,7 @@ const validationVuexNamespace = namespace('validation')
 @Component({
   components: {
     BModal,
-    ValidationMessage,
     VueMultiselect,
-    TextEditor,
   },
 })
 class LanguageAdder extends mixins(Lang, Routes) {

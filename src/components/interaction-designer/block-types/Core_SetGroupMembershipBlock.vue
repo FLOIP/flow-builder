@@ -53,7 +53,6 @@ import Categorization from '@/components/interaction-designer/block-editors/Cate
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {find} from 'lodash'
 import {mixins} from 'vue-class-component'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
@@ -81,7 +80,6 @@ interface IGroupActionOption {
     BlockId,
     GroupSelector,
     VueMultiselect,
-    ValidationMessage,
     Categorization,
     GroupMembershipEditor,
     BlockOutputBranchingConfig,

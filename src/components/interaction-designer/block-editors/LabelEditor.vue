@@ -25,8 +25,6 @@
 
 <script lang="ts">
 import {Component, Prop} from 'vue-property-decorator'
-import TextEditor from '@/components/common/TextEditor.vue'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
@@ -34,12 +32,7 @@ import {namespace} from 'vuex-class'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({
-  components: {
-    TextEditor,
-    ValidationMessage,
-  },
-})
+@Component
 class LabelEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 

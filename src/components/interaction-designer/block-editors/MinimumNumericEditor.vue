@@ -17,7 +17,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import NumericEditor from '@/components/common/NumericEditor.vue'
 import Lang from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import Component, {mixins} from 'vue-class-component'
 import {Prop} from 'vue-property-decorator'
 import {IBlock} from '@floip/flow-runner'
@@ -25,7 +24,6 @@ import {IBlock} from '@floip/flow-runner'
 @Component({
   components: {
     NumericEditor,
-    ValidationMessage,
   },
 })
 class MinimumNumericEditor extends mixins(Lang) {

@@ -26,15 +26,13 @@ import {Getter, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {find} from 'lodash'
 import {mixins} from 'vue-class-component'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {IGroupOption} from '../../../store/flow/block-types/Core_SetGroupMembershipStore'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component<any>({
+@Component({
   components: {
     VueMultiselect,
-    ValidationMessage,
   },
 })
 class GroupSelector extends mixins(Lang) {

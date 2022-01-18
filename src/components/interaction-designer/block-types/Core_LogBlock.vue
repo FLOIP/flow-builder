@@ -60,7 +60,6 @@ import LogStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import Lang from '@/lib/filters/lang'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import {mixins} from 'vue-class-component'
@@ -83,7 +82,6 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
-    ValidationMessage,
     Categorization,
     BlockOutputBranchingConfig,
   },

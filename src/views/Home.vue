@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-light home-contents">
+  <div class="bg-light home">
     <div class="container pt-5 bg-light">
       <div class="row">
         <div class="offset-1 col-10">
@@ -160,11 +160,11 @@ class Home extends Vue {
 export default Home
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
   .blue-link {
     color: #007bff;
   }
-  .home-contents {
+  .home {
     height: 100vh;
   }
 </style>
