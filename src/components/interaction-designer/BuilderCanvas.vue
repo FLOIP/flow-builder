@@ -70,8 +70,8 @@ export default class BuilderCanvas extends Vue {
     )
   }
 
-  @Watch('resourcesWithSupportedModesOnActiveFlow', {deep: true, immediate: true})
-  async onResourcesWithSupportedModesOnActiveFlow(newResources: IResources, oldResources: IResources): Promise<void> {
+  @Watch('resourcesToBeValidatedOnActiveFlow', {deep: true, immediate: true})
+  async onResourcesToBeValidatedOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
     if (newResources.length === 0) {
       return
     }
@@ -218,7 +218,7 @@ export default class BuilderCanvas extends Vue {
 
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Getter resourcesWithSupportedModesOnActiveFlow!: IResources
+  @flowVuexNamespace.Getter resourcesToBeValidatedOnActiveFlow!: IResources
 
   @builderVuexNamespace.State isBlockEditorOpen!: boolean
 

@@ -7,7 +7,23 @@ import {
   SupportedMode,
 } from '@floip/flow-runner'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
-import {cloneDeep, defaults, difference, find, findIndex, first, filter, includes, intersection, isEmpty, isEqual, keyBy, map, pick, without} from 'lodash'
+import {
+  cloneDeep,
+  defaults,
+  difference,
+  filter,
+  find,
+  findIndex,
+  first,
+  includes,
+  intersection,
+  isEmpty,
+  isEqual,
+  keyBy,
+  map,
+  pick,
+  without,
+} from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '@/store/flow/index'
 import {IRootState} from '@/store'
@@ -22,18 +38,24 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   },
 
   /**
-   * Resources on activeFlow which values only correspond to supported modes
+   * Resources on activeFlow to be validated.
+   *
+   * Note: For its values, we should only validate
+   * - values which correspond to supported modes (provided by user)
+   * - values which correspond to supported content type: ['TEXT', 'AUDIO'] (hard coded in UI, see ResourceEditor component)
+   *
    * @param state
    * @param getters
    */
-  resourcesWithSupportedModesOnActiveFlow: (state, getters) => {
-    return map(getters.resourcesOnActiveFlow, (resource) => {
+  resourcesToBeValidatedOnActiveFlow: (state, getters) => {
+    return map(getters.resourcesOnActiveFlow, (resource: IResource) => {
       const resourceWithNewValues = cloneDeep(resource)
-      // only get values having supported modes
+      // only get values having supported modes && values which content type is supported by the UI
       resourceWithNewValues.values = filter(
         resource.values,
         (v) => {
           return !isEmpty(intersection(getters.activeFlow.supported_modes, v.modes))
+            && includes( [SupportedContentType.TEXT, SupportedContentType.AUDIO], v.content_type)
         }
       ) as IResourceValue[]
 
