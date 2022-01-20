@@ -43,7 +43,7 @@ import {ErrorObject} from 'ajv'
 import {Prop} from 'vue-property-decorator'
 import {IFlow} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import {get, union} from "lodash"
+import {get, union} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
@@ -69,7 +69,7 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
    * - resource validation
    */
   get allErrors(): ErrorObject[] {
-    return union(this.status.ajvErrors, this.resourceValidationStatuses.ajvErrors);
+    return union(this.status.ajvErrors, this.resourceValidationStatusesForCurrentBlockValidationStatus.ajvErrors)
   }
 
   get isListLong(): boolean {
@@ -83,7 +83,7 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
       : this.trans('flow-builder.untitled-block')
   }
 
-  get resourceValidationStatuses(): IValidationStatus {
+  get resourceValidationStatusesForCurrentBlockValidationStatus(): IValidationStatus {
     return get(this.validationStatuses, `resource/${this.status.context?.resourceUuid}`)
   }
 
@@ -96,8 +96,6 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
 }
 </script>
 <style scoped>
-.block-errors-expandable {}
-
 .menu-bg-color {
   background-color: #F8F8F8;
 }

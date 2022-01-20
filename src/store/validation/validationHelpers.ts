@@ -120,13 +120,10 @@ export function getOrCreateLanguageValidator(schemaVersion: string): ValidateFun
 
 export function getOrCreateResourceValidator(schemaVersion: string): ValidateFunction {
   const validationType = 'resource'
-  console.debug('validators', validators, '|', schemaVersion, '|')
   if (isEmpty(validators) || !validators.has(validationType)) {
     const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
-    console.debug('set validators on', validationType)
     validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IResource'))
   }
-  console.debug('validators, after', validators)
   return validators.get(validationType)!
 }
 
