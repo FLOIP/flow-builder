@@ -16,7 +16,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit} from 'lodash'
+import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
 import {IFlowsState} from '.'
@@ -122,7 +122,9 @@ export const mutations: MutationTree<IFlowsState> = {
 
   flow_setSupportedMode(state, {flowId, value}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    flow.supported_modes = Array.isArray(value) ? value : [value]
+    const supportedModesOrder = Object.values(SupportedMode)
+    // Make sure to follow order when populating supported_modes, because the order may affect indexes during resource validation
+    flow.supported_modes = Array.isArray(value) ? sortBy(value, (o) => supportedModesOrder.indexOf(o)) : [value]
   },
 
   flow_setLanguages(state, {flowId, value}) {
