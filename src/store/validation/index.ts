@@ -2,8 +2,18 @@ import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {ErrorObject} from 'ajv'
-import {IBlock, IContainer, IFlow, ILanguage, getFlowStructureErrors, IResource} from '@floip/flow-runner'
-import {forIn} from 'lodash'
+import {
+  IBlock,
+  IContainer,
+  IFlow,
+  ILanguage,
+  getFlowStructureErrors,
+  IResource,
+  SupportedContentType,
+  SupportedMode,
+  IResourceValue,
+} from '@floip/flow-runner'
+import {cloneDeep, each, filter, forIn, includes, intersection, isEmpty, map} from 'lodash'
 import {
   debugValidationStatus,
   flatValidationStatuses,
@@ -130,7 +140,6 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   async validate_resource({state, rootGetters}, {resource}: {resource: IResource}): Promise<IValidationStatus> {
     const validate = getOrCreateResourceValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const key = `resource/${resource.uuid}`
-    console.info('check validate resource', resource)
     Vue.set(state.validationStatuses, key, {
       isValid: validate(resource),
       ajvErrors: validate.errors,
@@ -140,6 +149,44 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     debugValidationStatus(state.validationStatuses[key], 'resource validation status')
     return state.validationStatuses[key]
   },
+
+  /**
+   * Resources may have unsupported values, so we should only validate:
+   * - values which correspond to supported modes (provided by user)
+   * - values which correspond to supported content type: ['TEXT', 'AUDIO'] (hard coded in UI, see ResourceEditor component)
+   *
+   * @param dispatch
+   * @param resources
+   * @param supportedModes
+   */
+  async validate_resourcesOnSupportedValues(
+    {dispatch},
+    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
+  ): Promise<void> {
+    if (!resources) {
+      return
+    }
+
+    const resourcesWithSupportedValues = map(resources, (resource: IResource) => {
+      const resourceWithNewValues = cloneDeep(resource)
+      // only get values having supported modes && values which content type is supported by the UI
+      resourceWithNewValues.values = filter(
+        resource.values,
+        (v) => {
+          return !isEmpty(intersection(supportedModes, v.modes))
+            && includes( [SupportedContentType.TEXT, SupportedContentType.AUDIO], v.content_type)
+        }
+      ) as IResourceValue[]
+
+      return resourceWithNewValues
+    })
+
+    await Promise.all(
+      each(resourcesWithSupportedValues, async (currentResource) => {
+        await dispatch('validate_resource', {resource: currentResource})
+      }),
+    )
+  }
 }
 
 export const store: Module<IValidationState, IRootState> = {

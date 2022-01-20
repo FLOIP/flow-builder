@@ -16,7 +16,6 @@ import {
   findIndex,
   first,
   includes,
-  intersection,
   isEmpty,
   isEqual,
   keyBy,
@@ -33,34 +32,8 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 
   resourceUuidsOnActiveFlow: (state, getters) => filter(map(getters.activeFlow.blocks, (block) => block.config.prompt)),
 
-  resourcesOnActiveFlow: (state, getters) => {
+  resourcesOnActiveFlow: (state, getters): IResource[] => {
     return filter(state.resources, (resource) => includes(getters.resourceUuidsOnActiveFlow, resource.uuid))
-  },
-
-  /**
-   * Resources on activeFlow to be validated.
-   *
-   * Note: For its values, we should only validate
-   * - values which correspond to supported modes (provided by user)
-   * - values which correspond to supported content type: ['TEXT', 'AUDIO'] (hard coded in UI, see ResourceEditor component)
-   *
-   * @param state
-   * @param getters
-   */
-  resourcesToBeValidatedOnActiveFlow: (state, getters) => {
-    return map(getters.resourcesOnActiveFlow, (resource: IResource) => {
-      const resourceWithNewValues = cloneDeep(resource)
-      // only get values having supported modes && values which content type is supported by the UI
-      resourceWithNewValues.values = filter(
-        resource.values,
-        (v) => {
-          return !isEmpty(intersection(getters.activeFlow.supported_modes, v.modes))
-            && includes( [SupportedContentType.TEXT, SupportedContentType.AUDIO], v.content_type)
-        }
-      ) as IResourceValue[]
-
-      return resourceWithNewValues
-    })
   },
 }
 

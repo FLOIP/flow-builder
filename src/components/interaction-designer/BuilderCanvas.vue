@@ -17,11 +17,10 @@
 <script lang="ts">
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import {cloneDeep, debounce, each, find, get, isEqual, maxBy} from 'lodash'
+import {cloneDeep, debounce, find, isEqual, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
-import {IBlock, IFlow, IResource, IResources} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource, IResources, SupportedMode} from '@floip/flow-runner'
 import {IValidationStatus} from '@/store/validation'
-import {SupportedMode} from "@floip/flow-runner/src/index";
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
@@ -70,18 +69,13 @@ export default class BuilderCanvas extends Vue {
     )
   }
 
-  @Watch('resourcesToBeValidatedOnActiveFlow', {deep: true, immediate: true})
-  async onResourcesToBeValidatedOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
-    if (newResources.length === 0) {
-      return
-    }
-
+  @Watch('resourcesOnActiveFlow', {deep: true, immediate: true})
+  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
     console.debug('watch/resourcesOnActiveFlow:', 'resources inside active flow have changed, validating ...')
-    await Promise.all(
-      each(newResources, async (currentNewResource) => {
-        await this.validate_resource({resource: currentNewResource})
-      }),
-    )
+    await this.validate_resourcesOnSupportedValues({
+      resources: newResources,
+      supportedModes: this.activeFlow.supported_modes
+    })
   }
   // ] ######### end Validation API Watchers
 
@@ -218,13 +212,15 @@ export default class BuilderCanvas extends Vue {
 
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Getter resourcesToBeValidatedOnActiveFlow!: IResources
+  @flowVuexNamespace.Getter resourcesOnActiveFlow!: IResources
 
   @builderVuexNamespace.State isBlockEditorOpen!: boolean
 
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_block!: ({block}: { block: IBlock }) => Promise<IValidationStatus>
-  @validationVuexNamespace.Action validate_resource!: ({resource}: { resource: IResource }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
+    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
+  ) => Promise<void>
 }
 
 export {BuilderCanvas}
