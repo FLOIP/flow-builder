@@ -129,7 +129,8 @@ export const mutations: MutationTree<IFlowsState> = {
 
   flow_setLanguages(state, {flowId, value}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    flow.languages = Array.isArray(value) ? value : [value]
+    // Make sure to follow order when populating languages, because the order may affect indexes during resource validation
+    flow.languages = Array.isArray(value) ? sortBy(value, ['label']) : [value]
   },
 }
 
