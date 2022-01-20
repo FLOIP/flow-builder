@@ -21,6 +21,7 @@ import {cloneDeep, debounce, each, find, get, isEqual, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
 import {IBlock, IFlow, IResource, IResources} from '@floip/flow-runner'
 import {IValidationStatus} from '@/store/validation'
+import {SupportedMode} from "@floip/flow-runner/src/index";
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
@@ -69,8 +70,8 @@ export default class BuilderCanvas extends Vue {
     )
   }
 
-  @Watch('resourcesOnActiveFlow', {deep: true, immediate: true})
-  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
+  @Watch('resourcesWithSupportedModesOnActiveFlow', {deep: true, immediate: true})
+  async onResourcesWithSupportedModesOnActiveFlow(newResources: IResources, oldResources: IResources): Promise<void> {
     if (newResources.length === 0) {
       return
     }
@@ -217,7 +218,7 @@ export default class BuilderCanvas extends Vue {
 
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Getter resourcesOnActiveFlow!: IResources
+  @flowVuexNamespace.Getter resourcesWithSupportedModesOnActiveFlow!: IResources
 
   @builderVuexNamespace.State isBlockEditorOpen!: boolean
 

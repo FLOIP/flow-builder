@@ -7,7 +7,7 @@ import {
   SupportedMode,
 } from '@floip/flow-runner'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
-import {chain, cloneDeep, defaults, difference, find, findIndex, first, filter, includes, intersection, isEmpty, isEqual, keyBy, map, pick, without} from 'lodash'
+import {cloneDeep, defaults, difference, find, findIndex, first, filter, includes, intersection, isEmpty, isEqual, keyBy, map, pick, without} from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '@/store/flow/index'
 import {IRootState} from '@/store'
@@ -18,19 +18,27 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   resourceUuidsOnActiveFlow: (state, getters) => filter(map(getters.activeFlow.blocks, (block) => block.config.prompt)),
 
   resourcesOnActiveFlow: (state, getters) => {
-    return chain(state.resources)
-      .filter((resource) => includes(getters.resourceUuidsOnActiveFlow, resource.uuid))
-      .map((resource) => {
-        const valuesHavingSupportedMode = filter(
-          resource.values,
-          // only get values having supported modes
-          (v) => !isEmpty(intersection(getters.activeFlow.supported_modes, v.modes))
-        ) as IResourceValue[]
-        resource.values = valuesHavingSupportedMode
+    return filter(state.resources, (resource) => includes(getters.resourceUuidsOnActiveFlow, resource.uuid))
+  },
 
-        return resource
-      })
-      .value()
+  /**
+   * Resources on activeFlow which values only correspond to supported modes
+   * @param state
+   * @param getters
+   */
+  resourcesWithSupportedModesOnActiveFlow: (state, getters) => {
+    return map(getters.resourcesOnActiveFlow, (resource) => {
+      const resourceWithNewValues = cloneDeep(resource)
+      // only get values having supported modes
+      resourceWithNewValues.values = filter(
+        resource.values,
+        (v) => {
+          return !isEmpty(intersection(getters.activeFlow.supported_modes, v.modes))
+        }
+      ) as IResourceValue[]
+
+      return resourceWithNewValues
+    })
   },
 }
 
