@@ -24,7 +24,7 @@ import NumericEditor from '@/components/common/NumericEditor.vue'
 
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
-import {namespace} from 'vuex-class'
+import {Getter, namespace} from 'vuex-class'
 
 const treesVuexNamespace = namespace('trees')
 
@@ -44,7 +44,7 @@ class ModeEditor extends mixins(Lang) {
     this.$emit('commitFlowModesChange', value)
   }
 
-  @treesVuexNamespace.Getter supportedModes!: SupportedMode[]
+  @Getter supportedModes!: SupportedMode[]
 }
 
 export default ModeEditor
