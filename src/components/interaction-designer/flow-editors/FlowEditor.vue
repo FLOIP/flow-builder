@@ -39,6 +39,7 @@
             #input-control="{ isValid }"
             :message-key="`flow/${flow.uuid}/supported_modes`">
             <flow-modes-editor
+              :flow="flow"
               @commitFlowModesChange="updateFlowModes" />
           </validation-message>
         </div>
