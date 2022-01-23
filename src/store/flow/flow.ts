@@ -401,6 +401,4 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
 export const DEFAULT_MODES = [
   SupportedMode.SMS,
-  SupportedMode.USSD,
-  SupportedMode.IVR,
 ]
