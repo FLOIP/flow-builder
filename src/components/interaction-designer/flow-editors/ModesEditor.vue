@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
-import {IFlow, SupportedMode} from '@floip/flow-runner'
+import {Component} from 'vue-property-decorator'
+import {SupportedMode} from '@floip/flow-runner'
 import NumericEditor from '@/components/common/NumericEditor.vue'
 
 import Lang from '@/lib/filters/lang'
@@ -34,8 +34,6 @@ const treesVuexNamespace = namespace('trees')
   },
 })
 class ModeEditor extends mixins(Lang) {
-  @Prop() readonly flow!: IFlow
-
   get flowSelectedModes(): SupportedMode[] {
     return this.flow.supported_modes
   }
