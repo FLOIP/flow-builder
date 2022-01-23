@@ -333,7 +333,15 @@
       "treeSave",
       "addLanguageOnImport",
       "callToRecord"
-    ]
+    ],
+    "supportedModes": {
+      "TEXT": "TEXT",
+      "SMS": "SMS",
+      "USSD": "USSD",
+      "IVR": "IVR",
+      "RICH_MESSAGING": "RICH_MESSAGING",
+      "OFFLINE": "OFFLINE"
+    }
   },
   "audio": {
     "library": [
