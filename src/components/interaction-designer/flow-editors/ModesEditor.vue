@@ -44,7 +44,7 @@ class ModeEditor extends mixins(Lang) {
     this.$emit('commitFlowModesChange', value)
   }
 
-  @treesVuexNamespace.Getter supportedModes: SupportedMode[]
+  @treesVuexNamespace.Getter supportedModes!: SupportedMode[]
 }
 
 export default ModeEditor
