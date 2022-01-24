@@ -24,9 +24,7 @@ import NumericEditor from '@/components/common/NumericEditor.vue'
 
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
-import {Getter, namespace} from 'vuex-class'
-
-const treesVuexNamespace = namespace('trees')
+import {Getter} from 'vuex-class'
 
 @Component({
   components: {
