@@ -40,7 +40,7 @@
 <script>
 import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {endsWith, forEach, get, isEmpty, invoke} from 'lodash'
+import {endsWith, forEach, get, isEmpty, invoke, values} from 'lodash'
 import Vue from 'vue'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 // import {affix as Affix} from 'vue-strap'
@@ -178,7 +178,6 @@ export default {
     // initialize global reference for legacy + debugging
     global.builder = this
 
-    this.registerBlockTypes()
 
     this.initializeTreeModel()
     // `this.mode` comes from captured param in js-routes
@@ -191,7 +190,10 @@ export default {
   },
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
-  mounted() {
+  async mounted() {
+    //Ensure that the blocks are installed before activating the flow
+    //Block stores are needed to ensure validations can run immediately
+    await this.registerBlockTypes()
     this.flow_setActiveFlowId({flowId: this.id})
 
     // if nothing was found for the flow Id
@@ -251,7 +253,7 @@ export default {
     async registerBlockTypes() {
       const {blockClasses} = this
 
-      forEach(blockClasses, async (blockClass) => {
+      const blockInstallers = values(blockClasses).map(async (blockClass) => {
         const type = blockClass.type
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')
@@ -264,6 +266,7 @@ export default {
         invoke(blockClass, 'install', this)
         Vue.component(`Flow${typeWithoutSeparators}`, uiComponent)
       })
+      return Promise.all(blockInstallers)
     },
 
     handleCanvasSelected({target}) {
