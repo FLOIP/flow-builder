@@ -69,7 +69,7 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
    * - resource validation
    */
   get allErrors(): ErrorObject[] {
-    return union(this.status.ajvErrors, this.resourceValidationStatusesForCurrentBlockValidationStatus.ajvErrors)
+    return union(this.status.ajvErrors, this.resourceValidationStatusesForCurrentBlock.ajvErrors)
   }
 
   get isListLong(): boolean {
@@ -83,7 +83,7 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
       : this.trans('flow-builder.untitled-block')
   }
 
-  get resourceValidationStatusesForCurrentBlockValidationStatus(): IValidationStatus {
+  get resourceValidationStatusesForCurrentBlock(): IValidationStatus {
     return get(this.validationStatuses, `resource/${this.status.context?.resourceUuid}`)
   }
 
