@@ -24,7 +24,7 @@ import {mergeFlowContainer} from './utils/importHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
-  activeFlow: (state) => {
+  activeFlow: (state): IFlow | undefined => {
     if (state.flows.length) {
       try {
         return getActiveFlowFrom(state as unknown as IContext)
@@ -32,6 +32,9 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
         return undefined
       }
     }
+  },
+  blockUuidsOnActiveFlow: (state, getters): IBlock['uuid'][] => {
+    return getters.activeFlow?.blocks
   },
   isActiveFlowValid: (state, getters, rootState) => {
     const flowValidationResult = get(rootState.validation.validationStatuses, `flow/${getters.activeFlow.uuid}`)
@@ -43,7 +46,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     return every(
       getters.activeFlow.blocks,
       (block) => get(rootState.validation.validationStatuses, `block/${block.uuid}`)?.isValid,
-)
+    )
   },
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: (state) => ({
