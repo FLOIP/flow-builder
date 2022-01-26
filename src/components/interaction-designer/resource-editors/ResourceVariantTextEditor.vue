@@ -9,7 +9,7 @@
 
         <div class="input-group">
           <div v-if="label" class="input-group-prepend">
-            <span class="input-group-text">{{label}}</span>
+            <span class="input-group-text">{{ label }}</span>
           </div>
 
           <textarea
@@ -42,7 +42,7 @@
           v-if="isEditable"
           class="text-muted transition-all"
           :class="{invisible: !characterCounter.count}">
-        {{ characterCounter.count }} characters
+          {{ characterCounter.count }} characters
 
         <template v-if="mode === 'sms' && characterCounter.pages > 1">
           ({{ characterCounter.pages }} {{ characterCounter.hasUnicode ? 'unicode pages' : 'pages' }})

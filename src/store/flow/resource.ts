@@ -32,9 +32,10 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 
   resourceUuidsOnActiveFlow: (state, getters) => filter(map(getters.activeFlow.blocks, (block) => block.config.prompt)),
 
-  resourcesOnActiveFlow: (state, getters): IResource[] => {
-    return filter(state.resources, (resource) => includes(getters.resourceUuidsOnActiveFlow, resource.uuid))
-  },
+  resourcesOnActiveFlow: (state, getters): IResource[] => filter(
+    state.resources,
+    (resource) => includes(getters.resourceUuidsOnActiveFlow, resource.uuid)
+  ),
 }
 
 export const mutations: MutationTree<IFlowsState> = {

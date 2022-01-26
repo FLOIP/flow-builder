@@ -145,6 +145,6 @@ export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, s
     label: block.label,
     context: {
       resourceUuid: get(block, 'config.prompt'),
-    }
+    },
   }
 }
