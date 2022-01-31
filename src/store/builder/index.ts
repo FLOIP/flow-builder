@@ -4,7 +4,6 @@ import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IBlockExit, IFlow, IResource, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
-import {DEFAULT_MODES} from '@/store/flow/flow'
 
 // todo migrate these to flight-monitor
 export enum OperationKind {
@@ -321,9 +320,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    * @param rootState
    * @param flows
    */
-  async importFlowsAndResources({
-    rootState,
-  }, {flows, resources}: { flows: IFlow[], resources: IResource[] }) {
+  async importFlowsAndResources({rootState}, {flows, resources}: { flows: IFlow[], resources: IResource[] }) {
     console.debug('importing flows & resources ...')
     console.log({flows, resources})
     const {flow: flowState} = rootState
@@ -331,7 +328,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     // add default activated modes if not set yet
     flows.forEach((_flow, key) => {
       if (!Object.prototype.hasOwnProperty.call([key], 'supported_modes') || !flows[key].supported_modes.length) {
-        flows[key].supported_modes = DEFAULT_MODES
+        flows[key].supported_modes = rootState.trees.ui.defaultModes
       }
     })
 

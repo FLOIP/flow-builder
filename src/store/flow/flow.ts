@@ -310,7 +310,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  async flow_createWith(_context, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {
+  async flow_createWith({rootState}, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {
     return {
       ...defaults(props, {
         name: '',
@@ -320,7 +320,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         interaction_timeout: 30,
         vendor_metadata: {},
 
-        supported_modes: DEFAULT_MODES,
+        supported_modes: rootState.trees.ui.defaultModes,
         languages: [],
         blocks: [],
 
@@ -398,7 +398,3 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     state.selectedBlocks = newBlocksUuid
   },
 }
-
-export const DEFAULT_MODES = [
-  SupportedMode.SMS,
-]

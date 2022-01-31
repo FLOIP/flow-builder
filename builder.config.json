@@ -341,6 +341,11 @@
       "IVR": "IVR",
       "RICH_MESSAGING": "RICH_MESSAGING",
       "OFFLINE": "OFFLINE"
+    },
+    "defaultModes": {
+      "SMS": "SMS",
+      "USSD": "USSD",
+      "IVR": "IVR"
     }
   },
   "audio": {

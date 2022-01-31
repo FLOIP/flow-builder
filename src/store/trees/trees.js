@@ -172,6 +172,7 @@ export default {
     treeUpdatedAt: ({tree}) => tree.updatedAt.date,
 
     supportedModes: ({ui}) => Object.values(ui.supportedModes),
+    defaultModes: ({ui}) => Object.values(ui.defaultModes),
   },
 
   mutations: {
