@@ -171,8 +171,8 @@ export default {
     treeEditedAt: ({tree}) => tree.editedAt.date,
     treeUpdatedAt: ({tree}) => tree.updatedAt.date,
 
-    supportedModes: ({ui}) => Object.values(ui.supportedModes),
-    defaultModes: ({ui}) => Object.values(ui.defaultModes),
+    supportedModes: ({ui}) => ui.supportedModes || [],
+    defaultModes: ({ui}) => ui.defaultModes || [],
   },
 
   mutations: {

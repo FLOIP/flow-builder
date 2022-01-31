@@ -334,19 +334,19 @@
       "addLanguageOnImport",
       "callToRecord"
     ],
-    "supportedModes": {
-      "TEXT": "TEXT",
-      "SMS": "SMS",
-      "USSD": "USSD",
-      "IVR": "IVR",
-      "RICH_MESSAGING": "RICH_MESSAGING",
-      "OFFLINE": "OFFLINE"
-    },
-    "defaultModes": {
-      "SMS": "SMS",
-      "USSD": "USSD",
-      "IVR": "IVR"
-    }
+    "supportedModes": [
+      "TEXT",
+      "SMS",
+      "USSD",
+      "IVR",
+      "RICH_MESSAGING",
+      "OFFLINE"
+    ],
+    "defaultModes": [
+      "SMS",
+      "USSD",
+      "IVR"
+    ]
   },
   "audio": {
     "library": [
