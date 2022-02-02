@@ -405,8 +405,8 @@ platformBuilderConfig.ui.enabledFeatures.push(
 )
 //Turn some other things off
 platformBuilderConfig.ui.enabledFeatures = without(platformBuilderConfig.ui.enabledFeatures, 'addLanguageOnImport')
-platformBuilderConfig.ui.supportedModes = [SupportedMode.SMS]
-platformBuilderConfig.ui.defaultModes = [SupportedMode.SMS]
+platformBuilderConfig.ui.supportedModes = ['SMS']
+platformBuilderConfig.ui.defaultModes = ['SMS']
 
 //Override existing block type
 platformBuilderConfig.ui.blockClasses['Core.SetContactProperty'] = {
@@ -510,5 +510,17 @@ export default [
 TODO - also tidy no longer used options
 
 ## Documentation of builder.config.json options
+### Enabling and disabling modes
+Supported modes are defined in builder.config.json as ["TEXT", "SMS", "USSD", "IVR", "RICH_MESSAGING", "OFFLINE"].
+This can be limited to a subset, for example:
+```
+platformBuilderConfig.ui.supportedModes = ['SMS', 'USSD']
+```
 
-TODO - also tidy no longer used options
+### Setting default modes
+Likewise, the modes that are *selected* by default when a new flow is created can be configured as follows:
+```
+platformBuilderConfig.ui.defaultModes = ['SMS']
+```
+
+TODO - add more
