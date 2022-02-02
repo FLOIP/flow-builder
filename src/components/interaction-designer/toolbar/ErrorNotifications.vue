@@ -64,11 +64,10 @@
           class="notification dropdown-menu"
           aria-labelledby="blockErrorsDropdown">
           <li
-            v-for="(status, key) in blockValidationStatuses"
+            v-for="(block, key) in invalidBlocksInActiveFlow"
             :key="key">
             <block-errors-expandable
-              :status-key="key"
-              :status="status"
+              :block="block"
               @fixBlockError="fixBlockError" />
           </li>
         </ul>
@@ -79,12 +78,12 @@
 
 <script lang="ts">
 import Lang from '@/lib/filters/lang'
-import {pickBy, size} from 'lodash'
+import {Dictionary, filter, get, pickBy, replace, size} from 'lodash'
 import {IValidationStatus} from '@/store/validation'
 import Routes from '@/lib/mixins/Routes'
 import Component, {mixins} from 'vue-class-component'
 import {namespace} from 'vuex-class'
-import {IFlow} from '@floip/flow-runner'
+import {IFlow, IResource} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
 import BlockErrorsExpandable from '@/components/interaction-designer/toolbar/BlockErrorsExpandable.vue'
 
@@ -120,8 +119,22 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
     return pickBy(this.validationStatuses, (value: IValidationStatus, key) => key.includes('block/') && blocksMap[key])
   }
 
+  get resourceValidationStatusesForActiveFlow(): Dictionary<IValidationStatus> {
+    return pickBy(this.validationStatuses, (status, key) => {
+      const resourceUuid = replace(key, 'resource/', '')
+      return this.resourceUuidsOnActiveFlow.includes(resourceUuid) && !get(this.validationStatuses, `resource/${resourceUuid}`)?.isValid
+    })
+  }
+
+  get invalidBlocksInActiveFlow() {
+    return filter(this.activeFlow?.blocks, (block) => {
+      // The block is invalid on IBlock OR it's invalid on corresponding IResource
+      return get(this.blockValidationStatuses, `block/${block.uuid}`) || get(this.resourceValidationStatusesForActiveFlow, `resource/${block.config.prompt}`)
+    });
+  }
+
   get numberOfBlocksWithErrors(): number {
-    return size(this.blockValidationStatuses)
+    return size(this.invalidBlocksInActiveFlow)
   }
 
   fixFlowError(): void {
@@ -151,6 +164,7 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
 
   @validationVuexNamespace.State validationStatuses!: { [key: string]: IValidationStatus }
   @flowVuexNamespace.Getter activeFlow?: IFlow
+  @flowVuexNamespace.Getter resourceUuidsOnActiveFlow!: IResource['uuid'][]
 }
 </script>
 
