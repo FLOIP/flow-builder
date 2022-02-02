@@ -61,7 +61,6 @@ import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -83,7 +82,6 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     FirstBlockEditorButton,
     BlockId,
-    ValidationMessage,
     Categorization,
     BlockOutputBranchingConfig,
   },

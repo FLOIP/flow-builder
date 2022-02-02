@@ -17,7 +17,7 @@
 
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-export default {
+export const TextEditor = {
   props: {
     label: {
       type: [String, Number],
@@ -53,4 +53,6 @@ export default {
     },
   },
 }
+
+export default TextEditor
 </script>

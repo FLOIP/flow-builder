@@ -21,7 +21,6 @@ import {ISelectManyResponseBlock} from '@floip/flow-runner/src/model/block/ISele
 import {namespace} from 'vuex-class'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import NumericEditor from '@/components/common/NumericEditor.vue'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {get, isNumber} from 'lodash'
 import {IBlock} from '@floip/flow-runner'
 // import {ISelectManyResponseBlockConfig} from '@floip/flow-runner'
@@ -32,7 +31,6 @@ const builderVuexNamespace = namespace('builder')
 @Component({
   components: {
     NumericEditor,
-    ValidationMessage,
   },
 })
 export class MaximumChoicesEditor extends mixins(Lang) {

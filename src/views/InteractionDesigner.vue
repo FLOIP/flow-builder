@@ -2,7 +2,7 @@
   <div
     v-if="activeFlow"
     ref="interaction-designer-contents"
-    class="interaction-designer-contents">
+    class="interaction-designer interaction-designer-contents">
     <header class="interaction-designer-header">
       <tree-builder-toolbar />
     </header>
@@ -40,7 +40,7 @@
 <script>
 import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {endsWith, forEach, get, invoke, isEmpty} from 'lodash'
+import {endsWith, forEach, get, isEmpty, invoke, values} from 'lodash'
 import Vue from 'vue'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 // import {affix as Affix} from 'vue-strap'
@@ -178,7 +178,6 @@ export default {
     // initialize global reference for legacy + debugging
     global.builder = this
 
-    this.registerBlockTypes()
 
     this.initializeTreeModel()
     // `this.mode` comes from captured param in js-routes
@@ -191,7 +190,10 @@ export default {
   },
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
-  mounted() {
+  async mounted() {
+    //Ensure that the blocks are installed before activating the flow
+    //Block stores are needed to ensure validations can run immediately
+    await this.registerBlockTypes()
     this.flow_setActiveFlowId({flowId: this.id})
 
     // if nothing was found for the flow Id
@@ -251,13 +253,20 @@ export default {
     async registerBlockTypes() {
       const {blockClasses} = this
 
-      forEach(blockClasses, async ({type}) => {
+      const blockInstallers = values(blockClasses).map(async (blockClass) => {
+        const type = blockClass.type
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')
-        const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
-        invoke(exported, 'install', this)
-        Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
+        let {uiComponent} = blockClass
+        if (blockClass.install === undefined) {
+          const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
+          blockClass.install = exported.install
+          uiComponent = exported.default
+        }
+        invoke(blockClass, 'install', this)
+        Vue.component(`Flow${typeWithoutSeparators}`, uiComponent)
       })
+      return Promise.all(blockInstallers)
     },
 
     handleCanvasSelected({target}) {
@@ -310,8 +319,6 @@ export default {
 }
 </script>
 
-<!--<style src="../css/voto3.css"></style>-->
-<!--<style src="../css/InteractionDesigner.css"></style>-->
 <style lang="scss"> @import '../css/customized/vue-multiselect.css';</style>
 <style lang="scss">
   $sidebar-width: 365px;
@@ -382,6 +389,4 @@ export default {
     flex: 1;
   }
 
-  // @note - these styles have been extracted so the output can be reused between storybook and voto5
-  /*@import "resources/assets/js/trees/components/InteractionDesigner.scss";*/
 </style>

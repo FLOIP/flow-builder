@@ -70,13 +70,11 @@ import {Component, Prop} from 'vue-property-decorator'
 
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {IReadBlock} from '@floip/flow-runner/src/model/block/IReadBlock'
-import TextEditor from '@/components/common/TextEditor.vue'
 import ReadStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
 import Lang from '@/lib/filters/lang'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
@@ -99,9 +97,7 @@ const builderVuexNamespace = namespace('builder')
     BlockSemanticLabelEditor,
     BlockFormatStringEditor,
     FirstBlockEditorButton,
-    TextEditor,
     BlockId,
-    ValidationMessage,
     Categorization,
     BlockOutputBranchingConfig,
   },

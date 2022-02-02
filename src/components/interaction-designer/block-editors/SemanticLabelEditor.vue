@@ -16,14 +16,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {mapMutations} from 'vuex'
 import {lang} from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage'
-import TextEditor from '@/components/common/TextEditor'
 
 export default {
-  components: {
-    TextEditor,
-    ValidationMessage,
-  },
   mixins: [lang],
   props: {
     block: {

@@ -24,7 +24,7 @@ const validationVuexNamespace = namespace('validation')
     BAlert,
   },
 })
-class ValidationMessage extends mixins(Lang) {
+export class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
 
   get errorMessage(): string {

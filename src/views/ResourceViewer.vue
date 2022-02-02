@@ -1,4 +1,4 @@
-<style lang="scss" scoped>
+<style lang="scss">
 .resource-viewer {
   .block-content-filter {
     margin-top: 5px;
