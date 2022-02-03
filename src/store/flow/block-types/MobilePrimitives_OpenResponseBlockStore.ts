@@ -47,7 +47,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
 
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-    commit('flow/resource_add', {resource: blankResource}, {root: true})
 
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
