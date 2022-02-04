@@ -16,7 +16,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit} from 'lodash'
+import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
 import {IFlowsState} from '.'
@@ -24,7 +24,7 @@ import {mergeFlowContainer} from './utils/importHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
-  activeFlow: (state) => {
+  activeFlow: (state): IFlow | undefined => {
     if (state.flows.length) {
       try {
         return getActiveFlowFrom(state as unknown as IContext)
@@ -32,6 +32,9 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
         return undefined
       }
     }
+  },
+  blockUuidsOnActiveFlow: (state, getters): IBlock['uuid'][] => {
+    return getters.activeFlow?.blocks
   },
   isActiveFlowValid: (state, getters, rootState) => {
     const flowValidationResult = get(rootState.validation.validationStatuses, `flow/${getters.activeFlow.uuid}`)
@@ -43,7 +46,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     return every(
       getters.activeFlow.blocks,
       (block) => get(rootState.validation.validationStatuses, `block/${block.uuid}`)?.isValid,
-)
+    )
   },
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: (state) => ({
@@ -122,12 +125,15 @@ export const mutations: MutationTree<IFlowsState> = {
 
   flow_setSupportedMode(state, {flowId, value}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    flow.supported_modes = Array.isArray(value) ? value : [value]
+    const supportedModesOrder = Object.values(SupportedMode)
+    // Make sure to follow order when populating supported_modes, because the order may affect indexes during resource validation
+    flow.supported_modes = Array.isArray(value) ? sortBy(value, (o) => supportedModesOrder.indexOf(o)) : [value]
   },
 
   flow_setLanguages(state, {flowId, value}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    flow.languages = Array.isArray(value) ? value : [value]
+    // Make sure to follow order when populating languages, because the order may affect indexes during resource validation
+    flow.languages = Array.isArray(value) ? sortBy(value, ['label']) : [value]
   },
 }
 

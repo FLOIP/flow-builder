@@ -17,9 +17,9 @@
 <script lang="ts">
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 import Block from '@/components/interaction-designer/Block.vue'
-import {cloneDeep, debounce, find, get, isEqual, maxBy} from 'lodash'
+import {cloneDeep, debounce, find, isEqual, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
-import {IBlock, IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource, IResources, SupportedMode} from '@floip/flow-runner'
 import {IValidationStatus} from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
@@ -69,6 +69,14 @@ export default class BuilderCanvas extends Vue {
     )
   }
 
+  @Watch('resourcesOnActiveFlow', {deep: true, immediate: true})
+  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
+    console.debug('watch/resourcesOnActiveFlow:', 'resources inside active flow have changed, validating ...')
+    await this.validate_resourcesOnSupportedValues({
+      resources: newResources,
+      supportedModes: this.activeFlow.supported_modes
+    })
+  }
   // ] ######### end Validation API Watchers
 
   // ##### Canvas dynamic size watchers [
@@ -204,11 +212,15 @@ export default class BuilderCanvas extends Vue {
 
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Getter resourcesOnActiveFlow!: IResources
 
   @builderVuexNamespace.State isBlockEditorOpen!: boolean
 
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_block!: ({block}: { block: IBlock }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
+    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
+  ) => Promise<void>
 }
 
 export {BuilderCanvas}

@@ -5,11 +5,6 @@ import {get, isEmpty} from 'lodash'
 import {JSONSchema7} from 'json-schema'
 import ajvFormat from 'ajv-formats'
 
-const ajv = new Ajv({allErrors: true})
-
-// we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
-ajvFormat(ajv)
-
 const DEV_ERROR_KEYWORDS = [
   // unwanted extra props
   'additionalProperties',
@@ -31,9 +26,15 @@ const validators = new Map<string, ValidateFunction>()
  * @param subSchema, Specify it if we want to pick a sub definition eg: pick `#/definitions/IFlow` under IContainer
  */
 export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchema7, subSchema = ''): ValidateFunction {
+  const ajv = new Ajv({allErrors: true})
+  // we need this to use AJV format such as 'date-time'
+  // (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
+  ajvFormat(ajv)
+
   if (subSchema === '') {
     return ajv.compile(jsonSchema)
   }
+
   let validate = ajv.getSchema(subSchema)
   if (!validate) {
     ajv.addSchema(jsonSchema)
@@ -117,6 +118,15 @@ export function getOrCreateLanguageValidator(schemaVersion: string): ValidateFun
   return validators.get(validationType)!
 }
 
+export function getOrCreateResourceValidator(schemaVersion: string): ValidateFunction {
+  const validationType = 'resource'
+  if (isEmpty(validators) || !validators.has(validationType)) {
+    const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IResource'))
+  }
+  return validators.get(validationType)!
+}
+
 export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
   let validate = null
   if (isEmpty(validators) || !validators.has(block.type)) {
@@ -147,5 +157,8 @@ export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, s
     ajvErrors: validate.errors,
     type: block.type,
     label: block.label,
+    context: {
+      resourceUuid: get(block, 'config.prompt'),
+    },
   }
 }
