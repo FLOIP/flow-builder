@@ -16,7 +16,7 @@ npm install --save @floip/flow-builder
 
 ## Route Config
 
-Unlike the standalone app, the built version of the flow-builder in `/dist` is intended to integrate with an existing Vue Router setup instead of using the exact routing config in https://github.com/FLOIP/flow-builder/blob/master/src/router/trees.js. 
+Unlike the standalone app, the built version of the flow-builder in `/dist` is intended to integrate with an existing Vue Router setup instead of using the exact routing config in https://github.com/FLOIP/flow-builder/blob/master/src/router/trees.js.
 
 First we need some config to let the components know what routes are available. For example we could have:
 
@@ -321,7 +321,7 @@ import {
 
 - If your project requires custom versions of what's in the `src/views/` directory, we encourage you to override the components you need to change in the manner described [here](#overriding-and-customising-non-block-components) rather than extending the existing views as syncing changes in the templates between flow-builder versions is onerous.
     - For example, to customise the toolbar you can override the global toolbar component with a component that wraps this and uses it's slots to add custom buttons.
-- We hope to standardise slots in these views so that they can instead be wrapped by a custom version and select parts overriden in future. 
+- We hope to standardise slots in these views so that they can instead be wrapped by a custom version and select parts overriden in future.
 - If you do want to override the whole component you can use this custom version by simply switching to it in your Vue Router config as discussed [here](#general-set-up-as-an-embedded-app):
 
 ```
@@ -337,7 +337,7 @@ const flowBuilderRoutes [
 
 ## Custom styling
 
-- Default styles for the flow-builder are available in @floip/flow-builder/dist/flow-builder.css and can be included on the page serving the flow-builder. 
+- Default styles for the flow-builder are available in @floip/flow-builder/dist/flow-builder.css and can be included on the page serving the flow-builder.
 - All components have a top level element with a css class corresponding to the component name kebab-cases. For example FetchFlow is fetch-flow, InteractionDesigner interaction-designer etc. This can be used as a hook for custom styling.
 
 # Full example routes/index.js. See `src/lib.ts` for exports - The full file described above in the snippets
@@ -405,6 +405,8 @@ platformBuilderConfig.ui.enabledFeatures.push(
 )
 //Turn some other things off
 platformBuilderConfig.ui.enabledFeatures = without(platformBuilderConfig.ui.enabledFeatures, 'addLanguageOnImport')
+platformBuilderConfig.ui.supportedModes = ['SMS']
+platformBuilderConfig.ui.defaultModes = ['SMS']
 
 //Override existing block type
 platformBuilderConfig.ui.blockClasses['Core.SetContactProperty'] = {
@@ -508,5 +510,17 @@ export default [
 TODO - also tidy no longer used options
 
 ## Documentation of builder.config.json options
+### Enabling and disabling modes
+Supported modes are defined in builder.config.json as ["TEXT", "SMS", "USSD", "IVR", "RICH_MESSAGING", "OFFLINE"].
+This can be limited to a subset, for example:
+```
+platformBuilderConfig.ui.supportedModes = ['SMS', 'USSD']
+```
 
-TODO - also tidy no longer used options
+### Setting default modes
+Likewise, the modes that are *selected* by default when a new flow is created can be configured as follows:
+```
+platformBuilderConfig.ui.defaultModes = ['SMS']
+```
+
+TODO - add more
