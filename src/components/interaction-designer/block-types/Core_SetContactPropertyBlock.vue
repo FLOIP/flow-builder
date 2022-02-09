@@ -5,6 +5,7 @@
       :flow="flow"
       :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
+      :uses-default-branching-editor="usesDefaultBranchingEditor"
       @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
       <template slot="extras">
         <contact-property-editor
@@ -16,12 +17,10 @@
       </template>
       <template slot="branching">
         <slot
-          v-if="usesDefaultBranchingEditor"
           name="branching" />
       </template>
       <template slot="contact-props">
         <slot
-          v-if="usesDefaultContactPropsEditor"
           name="contact-props" />
       </template>
     </base-block>
