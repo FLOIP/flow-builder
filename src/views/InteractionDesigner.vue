@@ -55,7 +55,7 @@ import {store} from '@/store'
 // import TreeViewer from './TreeViewer'
 // import LegacyInteractionDesigner from './InteractionDesigner.legacy'
 // import TreeUpdateConflictModal from './TreeUpdateConflictModal';
-import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
+// import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
 import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
@@ -70,7 +70,7 @@ export default {
     // JsPlumbBlock,
     // TreeEditor,
     // TreeViewer,
-    TreeBuilderToolbar,
+    // TreeBuilderToolbar,
     BuilderCanvas,
     ClipboardRoot,
     // TreeUpdateConflictModal,
