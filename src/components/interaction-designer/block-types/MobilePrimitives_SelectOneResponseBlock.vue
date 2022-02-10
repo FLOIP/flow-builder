@@ -40,9 +40,8 @@
         <slot
           name="contact-props" />
       </template>
-      <slot name="vendor"/>
     </base-block>
-
+    <slot name="vendor"/>
   </div>
 </template>
 
