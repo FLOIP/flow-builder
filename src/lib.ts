@@ -70,6 +70,7 @@ export const createDefaultBlockTypeInstallerFor = createDefaultBlockTypeInstalle
 //To allow importing of common components as named imports rather than part of default
 export * from '@/components/common'
 export * from '@/components/interaction-designer/block-types'
+export * from '@/store/flow/block-types'
 
 const Components: { [key: string]: any } = {
   InteractionDesignerComponent,
