@@ -12,7 +12,12 @@
           <choices-builder
             :block="block"
             @choiceChanged="handleChoiceChanged" />
-
+          <block-output-branching-config
+            v-if="!$slots['branching']"
+            :block="block"
+            :has-exit-per-choice="true"
+            :label-class="''"
+            @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
 
           <div class="prompt-resource">
             <resource-editor
@@ -28,19 +33,11 @@
           name="extras" />
       </template>
       <template slot="branching">
-        <block-output-branching-config
-          v-if="!$slots['branching']"
-          :block="block"
-          :has-exit-per-choice="true"
-          :label-class="''"
-          @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
         <slot
-          v-if="$slots['branching']"
           name="branching" />
       </template>
       <template slot="contact-props">
         <slot
-          v-if="usesDefaultContactPropsEditor"
           name="contact-props" />
       </template>
     </base-block>
@@ -82,8 +79,8 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
   @Prop() readonly flow!: IFlow
-  @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
-  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
+  @Prop({default: false}) readonly usesDefaultBranchingEditor!: boolean
+  @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
 
   showSemanticLabel = false
 
