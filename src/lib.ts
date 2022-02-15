@@ -74,11 +74,11 @@ export * from '@/components/common'
 export * from '@/components/interaction-designer/block-types'
 
 const Components: { [key: string]: any } = {
-  InteractionDesignerComponent,
-  FetchFlowComponent,
-  NewFlowComponent,
-  ImportFlowComponent,
-  HomeComponent,
+  InteractionDesigner: InteractionDesignerComponent,
+  FetchFlow: FetchFlowComponent,
+  NewFlow: NewFlowComponent,
+  ImportFlow: ImportFlowComponent,
+  Home: HomeComponent,
   TreeBuilderToolbar: TreeBuilderToolbarComponent,
   ...commonComponents,
 }
