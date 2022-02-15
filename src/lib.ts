@@ -16,6 +16,7 @@ import {
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 //To register components globally by default
 import * as commonComponents from '@/components/common'
+import * as toolbarComponents from '@/components/interaction-designer/toolbar'
 import InteractionDesignerComponent from './views/InteractionDesigner.vue'
 import FetchFlowComponent from './views/FetchFlow.vue'
 import NewFlowComponent from './views/NewFlow.vue'
@@ -81,6 +82,7 @@ const Components: { [key: string]: any } = {
   Home: HomeComponent,
   TreeBuilderToolbar: TreeBuilderToolbarComponent,
   ...commonComponents,
+  ...toolbarComponents,
 }
 
 Object.keys(Components).forEach((name) => {
