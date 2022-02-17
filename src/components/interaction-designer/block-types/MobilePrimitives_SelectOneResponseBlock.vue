@@ -27,6 +27,12 @@
               :block="block"
               :flow="flow" />
           </div>
+          <response-choice-mapper
+            v-if="promptResource"
+            :label="'flow-builder.prompt' | trans"
+            :resource="promptResource"
+            :block="block"
+            :flow="flow" />
         </template>
         <slot
           v-if="$slots['extras']"
@@ -63,6 +69,7 @@ import BlockOutputBranchingConfig, {
   OutputBranchingType,
 } from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
+import ResponseChoiceMapper from '@/components/interaction-designer/block-editors/ResponseChoiceMapper.vue'
 import BaseBlock from './BaseBlock.vue'
 
 const flowVuexNamespace = namespace('flow')
@@ -70,6 +77,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
+    ResponseChoiceMapper,
     BlockOutputBranchingConfig,
     ChoicesBuilder,
     ResourceEditor,
