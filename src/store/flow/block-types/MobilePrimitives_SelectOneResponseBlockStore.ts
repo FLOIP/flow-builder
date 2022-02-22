@@ -130,6 +130,9 @@ function formatTestValueForUnifiedBranchingType(block: ISelectOneResponseBlock):
   return `OR(${map(blockChoicesKey, (choice) => `block.value = "${choice}"`).join(',')})`
 }
 
+export function convertResponseChoiceMappingToTest(mapping: object) {
+}
+
 export default {
   namespaced: true,
   state: stateFactory,

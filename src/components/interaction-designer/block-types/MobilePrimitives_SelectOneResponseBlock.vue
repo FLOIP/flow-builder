@@ -27,12 +27,23 @@
               :block="block"
               :flow="flow" />
           </div>
-          <response-choice-mapper
-            v-if="promptResource"
-            :label="'flow-builder.prompt' | trans"
-            :resource="promptResource"
-            :block="block"
-            :flow="flow" />
+
+              <b-modal
+                ref="edit-response-choice-mappings"
+                ok-only
+                @ok="showOrHideEditChoiceMappings">
+                <response-choice-mapper
+                  v-if="promptResource"
+                  :label="'flow-builder.prompt' | trans"
+                  :resource="promptResource"
+                  :block="block"
+                  :flow="flow" />
+              </b-modal>
+              <button
+                class="btn btn-outline-primary btn-sm"
+                @click="showOrHideEditChoiceMappings">
+                {{ 'flow-builder.set-choice-options' | trans }}
+              </button>
         </template>
         <slot
           v-if="$slots['extras']"
@@ -52,6 +63,7 @@
 </template>
 
 <script lang="ts">
+import {BModal} from 'bootstrap-vue'
 import {IBlock, IBlockExit, IFlow, IResource, SupportedMode} from '@floip/flow-runner'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {namespace} from 'vuex-class'
@@ -77,6 +89,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
+    BModal,
     ResponseChoiceMapper,
     BlockOutputBranchingConfig,
     ChoicesBuilder,
@@ -99,6 +112,12 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     return this.resourcesByUuid[this.block.config.prompt]
   }
 
+  showOrHideEditChoiceMappings(): void {
+    const editResponseChoiceMappings: any = this.$refs['edit-response-choice-mappings']
+    if (editResponseChoiceMappings) {
+      editResponseChoiceMappings.toggle()
+    }
+  }
   handleChoiceChanged(): void {
     const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
     const {EXIT_PER_CHOICE, UNIFIED} = OutputBranchingType

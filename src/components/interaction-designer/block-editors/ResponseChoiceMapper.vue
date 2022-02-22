@@ -93,6 +93,7 @@
 </template>
 
 <script lang="ts">
+//NOTE - TODO - Used the Resource Editor as the basis here as resources need to change in the prompt. This might not be quite right though - I think we should start from scratch
 import Vue from 'vue'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {
