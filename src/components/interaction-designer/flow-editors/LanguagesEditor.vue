@@ -1,24 +1,20 @@
 <template>
   <div class="form-group flow-languages">
     <label class="text-primary">{{ 'flow-builder.languages' | trans }}</label>
-    <div
-      v-for="language in languages"
-      :key="language.id"
-      class="checkbox">
-      <label class="font-weight-normal">
-        <input
-          v-model="flowSelectedLanguages"
-          :value="language"
-          type="checkbox"
-          class="flow-language-toggle-checkbox">
-
-        {{ language.label }}
-      </label>
-    </div>
+    <vue-multiselect
+      v-model="flowSelectedLanguages"
+      track-by="id"
+      label="label"
+      :placeholder="'flow-builder.select-languages' | trans"
+      :options="languages"
+      multiple="true"
+      :show-labels="false"
+      :searchable="true" />
   </div>
 </template>
 
 <script lang="ts">
+import VueMultiselect from 'vue-multiselect'
 import {Component, Prop} from 'vue-property-decorator'
 import {IFlow} from '@floip/flow-runner'
 import NumericEditor from '@/components/common/NumericEditor.vue'
@@ -30,6 +26,7 @@ import {sortBy} from 'lodash'
 @Component({
   components: {
     NumericEditor,
+    VueMultiselect,
   },
 })
 class LanguagesEditor extends mixins(Lang) {
