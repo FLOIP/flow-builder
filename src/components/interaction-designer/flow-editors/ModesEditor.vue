@@ -5,7 +5,7 @@
       v-model="flowSelectedModes"
       :placeholder="'flow-builder.select-modes' | trans"
       :options="supportedModes"
-      multiple="true"
+      :multiple="true"
       :show-labels="false"
       :searchable="true" />
   </div>

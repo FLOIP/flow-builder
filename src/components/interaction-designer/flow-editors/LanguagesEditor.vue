@@ -7,7 +7,7 @@
       label="label"
       :placeholder="'flow-builder.select-languages' | trans"
       :options="languages"
-      multiple="true"
+      :multiple="true"
       :show-labels="false"
       :searchable="true" />
   </div>
