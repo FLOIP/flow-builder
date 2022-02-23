@@ -2,7 +2,7 @@
   <div class="form-group flow-modes">
     <label class="text-primary">{{ 'flow-builder.modes' | trans }}</label>
     <div
-      v-for="mode in availableModes"
+      v-for="mode in supportedModes"
       :key="mode"
       class="checkbox">
       <label class="font-weight-normal">
@@ -24,6 +24,7 @@ import NumericEditor from '@/components/common/NumericEditor.vue'
 
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
+import {Getter} from 'vuex-class'
 
 @Component({
   components: {
@@ -33,8 +34,6 @@ import {mixins} from 'vue-class-component'
 class ModeEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
 
-  protected availableModes = Object.values(SupportedMode)
-
   get flowSelectedModes(): SupportedMode[] {
     return this.flow.supported_modes
   }
@@ -42,6 +41,8 @@ class ModeEditor extends mixins(Lang) {
   set flowSelectedModes(value: SupportedMode[]) {
     this.$emit('commitFlowModesChange', value)
   }
+
+  @Getter supportedModes!: SupportedMode[]
 }
 
 export default ModeEditor

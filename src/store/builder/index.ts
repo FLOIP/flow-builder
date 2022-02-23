@@ -2,7 +2,7 @@ import {filter, flatMap, get, isEqual, keyBy, map, mapValues, union} from 'lodas
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, IFlow, IResource, SupportedMode, ValidationException} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IFlow, IResource, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 
 // todo migrate these to flight-monitor
@@ -320,22 +320,15 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    * @param rootState
    * @param flows
    */
-  async importFlowsAndResources({
-    rootState,
-  }, {flows, resources}: { flows: IFlow[], resources: IResource[] }) {
+  async importFlowsAndResources({rootState}, {flows, resources}: { flows: IFlow[], resources: IResource[] }) {
     console.debug('importing flows & resources ...')
     console.log({flows, resources})
     const {flow: flowState} = rootState
-    const defaultSupportedMode = [
-      SupportedMode.IVR,
-      SupportedMode.SMS,
-      SupportedMode.USSD,
-    ]
 
     // add default activated modes if not set yet
     flows.forEach((_flow, key) => {
       if (!Object.prototype.hasOwnProperty.call([key], 'supported_modes') || !flows[key].supported_modes.length) {
-        flows[key].supported_modes = defaultSupportedMode
+        flows[key].supported_modes = rootState.trees.ui.defaultModes
       }
     })
 

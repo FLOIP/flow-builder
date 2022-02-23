@@ -43,37 +43,15 @@ import Routes from '@/lib/mixins/Routes'
 import {endsWith, forEach, get, isEmpty, invoke, values} from 'lodash'
 import Vue from 'vue'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-// import {affix as Affix} from 'vue-strap'
-// import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
-
-// import * as BlockTypes from './block-types'
-// import JsPlumbBlock from './JsPlumbBlock'
-
 import {store} from '@/store'
-
-// import TreeEditor from './TreeEditor'
-// import TreeViewer from './TreeViewer'
-// import LegacyInteractionDesigner from './InteractionDesigner.legacy'
-// import TreeUpdateConflictModal from './TreeUpdateConflictModal';
-import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
 import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
 
-// import '../TreeDiffLogger'
-
 export default {
-
   components: {
-    // ...BlockTypes,
-    // Affix,
-    // JsPlumbBlock,
-    // TreeEditor,
-    // TreeViewer,
-    TreeBuilderToolbar,
     BuilderCanvas,
     ClipboardRoot,
-    // TreeUpdateConflictModal,
   },
 
   mixins: [lang, Routes],

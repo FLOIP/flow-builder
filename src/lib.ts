@@ -16,11 +16,13 @@ import {
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 //To register components globally by default
 import * as commonComponents from '@/components/common'
+import * as toolbarComponents from '@/components/interaction-designer/toolbar'
 import InteractionDesignerComponent from './views/InteractionDesigner.vue'
 import FetchFlowComponent from './views/FetchFlow.vue'
 import NewFlowComponent from './views/NewFlow.vue'
 import ImportFlowComponent from './views/ImportFlow.vue'
 import HomeComponent from './views/Home.vue'
+import TreeBuilderToolbarComponent from './components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import defaultLocalisationsJson from './assets/messages.json'
 
 //Block helpers
@@ -61,6 +63,7 @@ export const FetchFlow = FetchFlowComponent
 export const NewFlow = NewFlowComponent
 export const ImportFlow = ImportFlowComponent
 export const Home = HomeComponent
+export const TreeBuilderToolbar = TreeBuilderToolbarComponent
 export const defaultLocalisations = defaultLocalisationsJson
 
 export const BaseBlock = BaseBlockComponent
@@ -73,12 +76,14 @@ export * from '@/components/interaction-designer/block-types'
 export * from '@/store/flow/block-types'
 
 const Components: { [key: string]: any } = {
-  InteractionDesignerComponent,
-  FetchFlowComponent,
-  NewFlowComponent,
-  ImportFlowComponent,
-  HomeComponent,
+  InteractionDesigner: InteractionDesignerComponent,
+  FetchFlow: FetchFlowComponent,
+  NewFlow: NewFlowComponent,
+  ImportFlow: ImportFlowComponent,
+  Home: HomeComponent,
+  TreeBuilderToolbar: TreeBuilderToolbarComponent,
   ...commonComponents,
+  ...toolbarComponents,
 }
 
 Object.keys(Components).forEach((name) => {
