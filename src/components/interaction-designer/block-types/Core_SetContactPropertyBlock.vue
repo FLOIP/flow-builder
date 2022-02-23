@@ -24,7 +24,7 @@
           name="contact-props" />
       </template>
     </base-block>
-    <slot name="vendor"/>
+    <slot name="vendor" />
   </div>
 </template>
 

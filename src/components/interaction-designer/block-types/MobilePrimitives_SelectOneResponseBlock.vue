@@ -41,7 +41,7 @@
           name="contact-props" />
       </template>
     </base-block>
-    <slot name="vendor"/>
+    <slot name="vendor" />
   </div>
 </template>
 
@@ -73,7 +73,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
     BlockOutputBranchingConfig,
     ChoicesBuilder,
     ResourceEditor,
-    BaseBlock
+    BaseBlock,
   },
 })
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
