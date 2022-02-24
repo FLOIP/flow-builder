@@ -504,6 +504,67 @@ export default [
 ]
 
 ```
+## Useful store hooks available when embedding and customising the builder:
+
+### Editing block vendor_metadata
+
+```
+  export default {
+    props: {
+      block: {
+        type: Object,
+        required: true
+      },
+    },
+    methods: {
+      ...mapMutations('flow', [
+        'block_updateVendorMetadataByPath',
+      ]),
+    },
+    computed: {
+      shortenedTitle: {
+        get() {
+          ...
+        },
+        set(value) {
+          const {uuid: blockId} = this.block
+          this.block_updateVendorMetadataByPath({blockId, path: 'customData.summaryConfiguration.shortenedTitle', value})
+        }
+      }
+    }
+```
+
+### Determining if the flow is currently editable
+
+```
+<template>
+  <div class="block-summary-config">
+    <h4>Summary</h4>
+
+    <div class="form-group">
+      <fieldset :disabled="!isEditable">
+        <label :class="{'text-muted' : !isEditable}">
+          ...
+         </label>
+      </fieldset>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  export default {
+    ...
+    computed: {
+      ...mapGetters('builder', [
+        'isEditable',
+      ]),
+    },
+    ...
+  }
+</script>
+
+```
 
 ## Documentation of app.config.json options
 
@@ -524,3 +585,4 @@ platformBuilderConfig.ui.defaultModes = ['SMS']
 ```
 
 TODO - add more
+
