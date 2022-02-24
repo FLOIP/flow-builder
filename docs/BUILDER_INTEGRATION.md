@@ -250,21 +250,24 @@ You then have several options:
     - `extras` - add content and UI specific to your custom block
     - `resource-editors` - add resource editors for block type specific resources. A more specific version of extras.
     - All other UI is common between community blocks. If you wish to override then see the [Overriding and customising non block components](#overriding-and-customising-non-block-components) section below
+    - `vendor` - for anything which edits the `vendor_metadata` of the block.
 - Extend/use inheritance with an existing block and create a fully custom template (or wrap the BaseBlock component)
 - Create your own block wrapping `src/components/interaction-designer/block-types/BaseBlock.vue` and extending `src/store/flow/block-types/BaseBlock.ts` - this gives you the standard flow spec UI and content common to all blocks. All community blocks use these if you need examples.
     - Wrapping BaseBlock
         - Label editor
         - Semantic label editor
-        - Branching config
-        - Contact property config
+        - Branching config - overridable via a `branching` slot
+        - Contact property config - overridable via a `contact-props` slot
         - A button to set the block as the first in a flow
         - It will display your block auto generated ID
-        - It will provide a slot for extras
-        - It will provide a slot for resource editors
+        - It will provide a slot for `extras`
+        - It will provide a slot for `resource-editors`
+        - It will NOT provide the `vendor` slot as that's only expected to be used when extending flow-spec blocks
+
     - Extending base store
-        - Provides a generic `createWith` method - pass props to this which your block defaults to on creation
-        - Provides a generic `handleBranchingTypeChangedToUnified` method - defines what should happen if you set your block to have a unified exit (if your block supports this)
-        - Provides a generic validation method. The basic method validates your block is a minimal spec compliant IBlock according to your schema version. See `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`. This can be overriden with validations specific to your custom block. See here for an example:
+        - Provides a generic `createWith` action - pass props to this which your block defaults to on creation
+        - Provides a generic `handleBranchingTypeChangedToUnified` action - defines what should happen if you set your block to have a unified exit (if your block supports this)
+        - Provides a generic validation action - `validate`. The basic method validates your block is a minimal spec compliant IBlock according to your schema version. See `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`. This can be overriden with validations specific to your custom block. See here for an example:
 
   ```
   export function validateCustomBlock({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
@@ -293,7 +296,18 @@ You then have several options:
     }
   }
   ```
-  Your block will need a component, store, BLOCK_TYPE and installer
+  Your block will need a component, store, BLOCK_TYPE and store installer.
+
+  The installer can be generated with a an exported helper:
+
+  ```
+  import {
+    createDefaultBlockTypeInstallerFor
+  } from '@floip/flow-builder'
+  export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SomeBlockStore)
+  ```
+
+  By using an existing BLOCK_TYPE already used by a flow-spec block, you can override the default store for that flow spec block (e.g. to change how to validate your extended customised version)
 
 ## Overriding and customising non block components
 
