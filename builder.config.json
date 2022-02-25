@@ -346,7 +346,8 @@
       "SMS",
       "USSD",
       "IVR"
-    ]
+    ],
+    "showValidationErrorsOnlyAfterAttemptToPublishTree": false
   },
   "audio": {
     "library": [
