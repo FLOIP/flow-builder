@@ -347,7 +347,8 @@
       "USSD",
       "IVR"
     ],
-    "showValidationErrorsOnlyAfterAttemptToPublishTree": false
+    "showValidationErrorsOnlyAfterAttemptToPublishTree": false,
+    "appWideInteractionTimeout": 172800
   },
   "audio": {
     "library": [

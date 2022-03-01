@@ -327,7 +327,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
         label: '',
         last_modified: moment().toISOString(),
-        interaction_timeout: 30,
+        interaction_timeout: rootState.trees.ui.appWideInteractionTimeout,
         vendor_metadata: {},
 
         supported_modes: rootState.trees.ui.defaultModes,
