@@ -348,7 +348,7 @@
       "IVR"
     ],
     "showValidationErrorsOnlyAfterAttemptToPublishTree": false,
-    "appWideInteractionTimeout": 172800
+    "appWideInteractionTimeout": null
   },
   "audio": {
     "library": [

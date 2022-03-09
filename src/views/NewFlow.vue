@@ -15,7 +15,7 @@
             <flow-editor
               :flow="activeFlow"
               flow-header="flow-builder.create-flow"
-              :sidebar="false" />
+              :is-on-small-container="false" />
             <div class="float-right">
               <a
                 :href="route('flows.editFlow', {flowId: activeFlow.uuid, component: 'designer', mode: 'edit'})"
