@@ -1,6 +1,6 @@
 <template>
   <div class="flow-editor">
-    <h3 class="no-room-above">
+    <h3 class="no-room-above" v-if="flowHeader">
       {{ flowHeader | trans }}
     </h3>
 
@@ -78,7 +78,7 @@ const validationVuexNamespace = namespace('validation')
 })
 class FlowEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
-  @Prop({default: 'flow-builder.edit-flow'}) readonly flowHeader!: string
+  @Prop({default: ''}) readonly flowHeader!: string
   @Prop({default: true}) readonly isOnSmallContainer!: boolean
 
   get hasDefaultInteractionTimeout(): boolean {

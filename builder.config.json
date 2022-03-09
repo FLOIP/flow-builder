@@ -348,7 +348,11 @@
       "IVR"
     ],
     "showValidationErrorsOnlyAfterAttemptToPublishTree": false,
-    "appWideInteractionTimeout": null
+    "appWideInteractionTimeout": null,
+    "title": {
+      "createFlow": "flow-builder.create-flow",
+      "editFlow": "flow-builder.edit-flow"
+    }
   },
   "audio": {
     "library": [

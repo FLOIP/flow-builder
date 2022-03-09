@@ -14,7 +14,7 @@
             </div>
             <flow-editor
               :flow="activeFlow"
-              flow-header="flow-builder.create-flow"
+              :flow-header="createFlowTitle"
               :is-on-small-container="false" />
             <div class="float-right">
               <a
@@ -56,6 +56,10 @@ const flowVuexNamespace = namespace('flow')
 class NewFlow extends Vue {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
+
+  get createFlowTitle() {
+    return this.$store.state.trees.ui.title.createFlow
+  }
 
   async mounted(): Promise<void> {
     await this.flow_addBlankFlow()

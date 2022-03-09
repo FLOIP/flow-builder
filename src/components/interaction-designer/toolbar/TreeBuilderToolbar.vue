@@ -49,7 +49,7 @@
                 @ok="showOrHideEditFlowModal">
                 <template slot="modal-header">
                   <h2 class="mb-0">
-                    {{ 'flow-builder.edit-flow' | trans }}
+                    {{ editFlowTitle | trans }}
                   </h2>
                   <button
                     type="button"
@@ -368,6 +368,10 @@ const validationVuexNamespace = namespace('validation')
 export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isImporterVisible = false
   height = 102
+
+  get editFlowTitle() {
+    return this.$store.state.trees.ui.title.editFlow
+  }
 
   async mounted() {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
