@@ -12,6 +12,7 @@
         <validation-message
           :class="firstRowClass"
           #input-control="{ isValid }"
+          :should-hide-validation="!didUserSubmit"
           :message-key="`flow/${flow.uuid}/name`">
           <flow-label-editor
             :flow="flow"
@@ -22,6 +23,7 @@
           v-if="!hasDefaultInteractionTimeout"
           :class="firstRowClass"
           #input-control="{ isValid }"
+          :should-hide-validation="!didUserSubmit"
           :message-key="`flow/${flow.uuid}/interaction_timeout`">
           <flow-interaction-timeout-editor
             :flow="flow"
@@ -32,6 +34,7 @@
         <validation-message
           :class="otherRowsClass"
           #input-control="{ isValid }"
+          :should-hide-validation="!didUserSubmit"
           :message-key="`flow/${flow.uuid}/languages`">
           <flow-languages-editor
             :flow="flow"
@@ -41,6 +44,7 @@
         <validation-message
           :class="otherRowsClass"
           #input-control="{ isValid }"
+          :should-hide-validation="!didUserSubmit"
           :message-key="`flow/${flow.uuid}/supported_modes`">
           <flow-modes-editor
             :flow="flow"
@@ -80,6 +84,7 @@ class FlowEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop({default: ''}) readonly flowHeader!: string
   @Prop({default: true}) readonly isOnSmallContainer!: boolean
+  @Prop({default: false}) readonly didUserSubmit!: boolean
 
   get hasDefaultInteractionTimeout(): boolean {
     return !!this.$store.state.trees.ui.appWideInteractionTimeout

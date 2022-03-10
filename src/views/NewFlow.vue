@@ -15,6 +15,7 @@
             <flow-editor
               :flow="activeFlow"
               :flow-header="createFlowTitle"
+              :did-user-submit="didUserSubmit"
               :is-on-small-container="false" />
             <div class="float-right">
               <a
@@ -59,6 +60,8 @@ class NewFlow extends Vue {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 
+  didUserSubmit = false
+
   @Watch('activeFlow', {deep: true, immediate: true})
   async onActiveFlowChanged(newFlow: IFlow) {
     if (newFlow) {
@@ -88,7 +91,12 @@ class NewFlow extends Vue {
   }
 
   async handlePersistFlow(route: RawLocation): Promise<void> {
-    this.flowError = null
+    this.didUserSubmit = true
+    if (!this.isActiveFlowConsideredValidOnCreationForm) {
+      return
+    }
+
+    this.flowError = null;
     const flowContainer = await this.flow_persist({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore TODO: Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
@@ -111,6 +119,7 @@ class NewFlow extends Vue {
     flowContainer,
   }: { persistRoute: any, flowContainer: IContext }) => Promise<IContext | null>
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Getter isActiveFlowConsideredValidOnCreationForm?: boolean
   @flowVuexNamespace.Getter activeFlowContainer!: IContext
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
   @Getter isConfigured!: boolean
