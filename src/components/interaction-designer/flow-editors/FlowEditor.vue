@@ -1,6 +1,8 @@
 <template>
   <div class="flow-editor">
-    <h3 class="no-room-above" v-if="flowHeader">
+    <h3
+      v-if="flowHeader"
+      class="no-room-above">
       {{ flowHeader | trans }}
     </h3>
 
@@ -10,10 +12,10 @@
                     - name refers to validation message-key
                     - the UI field will be for label -->
         <validation-message
-          :class="firstRowClass"
           #input-control="{ isValid }"
-          :should-hide-validation="!didUserSubmit"
-          :message-key="`flow/${flow.uuid}/name`">
+          :class="firstRowClass"
+          :message-key="`flow/${flow.uuid}/name`"
+          :should-hide-validation="!didUserSubmit">
           <flow-label-editor
             :flow="flow"
             :valid-state="isValid" />
@@ -21,10 +23,10 @@
 
         <validation-message
           v-if="!hasDefaultInteractionTimeout"
-          :class="firstRowClass"
           #input-control="{ isValid }"
-          :should-hide-validation="!didUserSubmit"
-          :message-key="`flow/${flow.uuid}/interaction_timeout`">
+          :class="firstRowClass"
+          :message-key="`flow/${flow.uuid}/interaction_timeout`"
+          :should-hide-validation="!didUserSubmit">
           <flow-interaction-timeout-editor
             :flow="flow"
             :valid-state="isValid" />
@@ -32,20 +34,20 @@
       </div>
       <div class="row">
         <validation-message
-          :class="otherRowsClass"
           #input-control="{ isValid }"
-          :should-hide-validation="!didUserSubmit"
-          :message-key="`flow/${flow.uuid}/languages`">
+          :class="otherRowsClass"
+          :message-key="`flow/${flow.uuid}/languages`"
+          :should-hide-validation="!didUserSubmit">
           <flow-languages-editor
             :flow="flow"
             @commitFlowLanguagesChange="updateFlowLanguages" />
         </validation-message>
 
         <validation-message
-          :class="otherRowsClass"
           #input-control="{ isValid }"
-          :should-hide-validation="!didUserSubmit"
-          :message-key="`flow/${flow.uuid}/supported_modes`">
+          :class="otherRowsClass"
+          :message-key="`flow/${flow.uuid}/supported_modes`"
+          :should-hide-validation="!didUserSubmit">
           <flow-modes-editor
             :flow="flow"
             @commitFlowModesChange="updateFlowModes" />
@@ -95,9 +97,9 @@ class FlowEditor extends mixins(Lang) {
       // show full width, no matter we have default InteractionTimeout or not
       return 'col-12'
     } if (!this.hasDefaultInteractionTimeout) {
-      return 'col-xl-6 col-lg-6 col-md-12 col-sm-12';
+      return 'col-xl-6 col-lg-6 col-md-12 col-sm-12'
     } else {
-      return 'col-12';
+      return 'col-12'
     }
   }
 

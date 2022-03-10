@@ -43,7 +43,7 @@ import {forEach, isEmpty} from 'lodash'
 import {store} from '@/store'
 import {IContext, IFlow} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
-import {IValidationStatus} from "@/store/validation";
+import {IValidationStatus} from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
@@ -70,7 +70,7 @@ class NewFlow extends Vue {
     }
   }
 
-  get createFlowTitle() {
+  get createFlowTitle(): string {
     return this.$store.state.trees.ui.title.createFlow
   }
 
@@ -96,7 +96,7 @@ class NewFlow extends Vue {
       return
     }
 
-    this.flowError = null;
+    this.flowError = null
     const flowContainer = await this.flow_persist({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore TODO: Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins

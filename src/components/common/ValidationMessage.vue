@@ -5,7 +5,11 @@
     <slot
       name="input-control"
       :isValid="isValid" />
-    <small class="text-danger" v-if="!shouldHideValidation">{{ errorMessage }}</small>
+    <small
+      v-if="!shouldHideValidation"
+      class="text-danger">
+      {{ errorMessage }}
+    </small>
   </div>
 </template>
 

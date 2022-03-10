@@ -318,7 +318,7 @@
     </div>
     <div class="tree-builder-toolbar-alerts w-100">
       <selection-banner v-if="isEditable" @updated="handleHeightChangeFromDOM" />
-      <error-notifications @updated="handleHeightChangeFromDOM"/>
+      <error-notifications @updated="handleHeightChangeFromDOM" />
     </div>
   </div>
 </template>
@@ -369,7 +369,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   isImporterVisible = false
   height = 102
 
-  get editFlowTitle() {
+  get editFlowTitle(): string {
     return this.$store.state.trees.ui.title.editFlow
   }
 
