@@ -35,15 +35,17 @@
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {Component, Prop} from 'vue-property-decorator'
+import {Component, Prop, Watch} from 'vue-property-decorator'
 import Vue from 'vue'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {forEach, isEmpty} from 'lodash'
 import {store} from '@/store'
 import {IContext, IFlow} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
+import {IValidationStatus} from "@/store/validation";
 
 const flowVuexNamespace = namespace('flow')
+const validationVuexNamespace = namespace('validation')
 
 @Component(
   {
@@ -57,6 +59,14 @@ class NewFlow extends Vue {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 
+  @Watch('activeFlow', {deep: true, immediate: true})
+  async onActiveFlowChanged(newFlow: IFlow) {
+    if (newFlow) {
+      console.debug('watch/activeFlow:', 'active flow has changed from new flow flow page, validating ...');
+      await this.validate_flow({flow: newFlow})
+    }
+  }
+
   get createFlowTitle() {
     return this.$store.state.trees.ui.title.createFlow
   }
@@ -65,12 +75,13 @@ class NewFlow extends Vue {
     await this.flow_addBlankFlow()
   }
 
-  async created(): Promise<void> {
+  async beforeCreate(): Promise<void> {
     const {$store} = this
 
-    forEach(store.modules, (v, k) =>
-      !$store.hasModule(k) && $store.registerModule(k, v))
+    forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
+  }
 
+  async created(): Promise<void> {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
@@ -103,6 +114,8 @@ class NewFlow extends Vue {
   @flowVuexNamespace.Getter activeFlowContainer!: IContext
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
   @Getter isConfigured!: boolean
+
+  @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
 }
 
 export default NewFlow

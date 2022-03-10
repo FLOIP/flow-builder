@@ -347,7 +347,6 @@
       "USSD",
       "IVR"
     ],
-    "showValidationErrorsOnlyAfterAttemptToPublishTree": false,
     "appWideInteractionTimeout": null,
     "title": {
       "createFlow": "flow-builder.create-flow",

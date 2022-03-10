@@ -318,7 +318,7 @@
     </div>
     <div class="tree-builder-toolbar-alerts w-100">
       <selection-banner v-if="isEditable" @updated="handleHeightChangeFromDOM" />
-      <error-notifications v-if="showErrorNotifications" @updated="handleHeightChangeFromDOM"/>
+      <error-notifications @updated="handleHeightChangeFromDOM"/>
     </div>
   </div>
 </template>
@@ -510,16 +510,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return this.hasOfflineMode && this.isFeatureSimulatorEnabled
   }
 
-  get showErrorNotifications(): boolean {
-    if (this.isActiveFlowValid) {
-      return false
-    } else if (this.ui.showValidationErrorsOnlyAfterAttemptToPublishTree === true && this.ui.didAttemptToPublishTree === false) {
-      return false
-    } else {
-      return true
-    }
-  }
-
   // Methods #####################
 
   async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }): Promise<void> {
@@ -660,7 +650,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @Getter isResourceEditorEnabled!: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
   @Action attemptSaveTree!: void
-  @Action maybeShowErrorNotificationsOnAttemptToPublishTree!: () => void
 
   // Flow
   @flowVuexNamespace.Getter activeFlow?: IFlow

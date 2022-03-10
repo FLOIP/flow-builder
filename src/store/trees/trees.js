@@ -56,7 +56,6 @@ export default {
         isEditable: true,
         subscriberPropertyFields: [],
         blockTags: [],
-        didAttemptToPublishTree: false,
       },
     }
   },
@@ -393,10 +392,6 @@ export default {
 
     setInteractionTotals(state, {interactionTotals}) {
       Vue.set(state.ui, 'interactionTotals', interactionTotals)
-    },
-
-    setDidAttemptToPublishTree({ui}, value) {
-      ui.didAttemptToPublishTree = value
     },
   },
 
@@ -899,10 +894,6 @@ export default {
       if (response) {
         commit('setInteractionTotals', {interactionTotals: response.data})
       }
-    },
-
-    maybeShowErrorNotificationsOnAttemptToPublishTree({commit}) {
-      return commit('setDidAttemptToPublishTree', true)
     },
   },
 }

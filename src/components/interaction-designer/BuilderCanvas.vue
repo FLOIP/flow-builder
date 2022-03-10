@@ -47,7 +47,7 @@ export default class BuilderCanvas extends Vue {
   // ###### Validation API Watchers [
   @Watch('activeFlow', {deep: true, immediate: true})
   async onActiveFlowChanged(newFlow: IFlow) {
-    console.debug('watch/activeFlow:', 'active flow has changed, validating ...')
+    console.debug('watch/activeFlow:', 'active flow has changed from builder canvas, validating ...')
     await this.validate_flow({flow: newFlow})
   }
 
