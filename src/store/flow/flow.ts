@@ -52,10 +52,12 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       },
     )
   },
+  //TODO: when IFlow interface is fixed in https://viamoinc.atlassian.net/browse/VMO-5581
+  // remove isActiveFlowConsideredValidOnCreationForm, and change every references to isActiveFlowValid
   isActiveFlowConsideredValidOnCreationForm: (state, getters, rootState) => {
     const flowValidationResult = get(rootState.validation.validationStatuses, `flow/${getters.activeFlow.uuid}`)
     // true if we only have 1 validation error (it's related to '/first_block_id')
-    return flowValidationResult && flowValidationResult.ajvErrors?.length === 1
+    return getters.isActiveFlowValid || (flowValidationResult && flowValidationResult.ajvErrors?.length === 1)
   },
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: (state) => ({
