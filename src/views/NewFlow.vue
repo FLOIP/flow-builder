@@ -3,8 +3,8 @@
     <div
       v-if="activeFlow"
       class="row">
-      <div class="col-sm-8 offset-sm-2">
-        <div class="card">
+      <div class="col-sm-12 m-2">
+        <div class="card w-100 pb-3 bg-light">
           <div class="card-body">
             <div
               v-if="flowError"
