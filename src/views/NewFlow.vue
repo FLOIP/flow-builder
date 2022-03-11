@@ -18,6 +18,12 @@
               :did-user-submit="didUserSubmit"
               :is-on-small-container="false" />
             <div class="float-right">
+              <router-link
+                :to="route('flows.cancelCreate')"
+                class="btn btn-outline-secondary mr-2">
+                {{ trans('flow-builder.cancel') }}
+              </router-link>
+
               <a
                 :href="route('flows.editFlow', {flowId: activeFlow.uuid, component: 'designer', mode: 'edit'})"
                 class="btn btn-primary"

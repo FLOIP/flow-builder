@@ -42,7 +42,12 @@
           "methods": ["GET"]
         },
         "cancelImport": {
-          "name": "home",
+          "name": "cancelImport",
+          "path": "\/",
+          "methods": ["GET"]
+        },
+        "cancelCreate": {
+          "name": "cancelCreate",
           "path": "\/",
           "methods": ["GET"]
         },
