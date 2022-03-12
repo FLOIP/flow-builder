@@ -14,10 +14,15 @@ import {IBlock, IFlow} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
+import {TextEditor} from '@/components/common/'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component
+@Component({
+  components: {
+    TextEditor,
+  }
+})
 class FlowLabelEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop() validState?: boolean

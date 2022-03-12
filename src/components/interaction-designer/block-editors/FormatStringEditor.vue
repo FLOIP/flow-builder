@@ -18,8 +18,13 @@
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {lang} from '@/lib/filters/lang'
+import {TextEditor, ValidationMessage} from '@/components/common/'
 
 export default {
+  components: {
+    ValidationMessage,
+    TextEditor,
+  },
   mixins: [lang],
   props: {
     block: {

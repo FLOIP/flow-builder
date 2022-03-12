@@ -98,6 +98,7 @@ import {get, has} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import {isBlockInteractive} from '@/store/flow/block.ts'
+import {TextEditor, ValidationMessage} from '@/components/common/'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -107,6 +108,8 @@ const BLOCK_RESPONSE_EXPRESSION = '@block.value'
 @Component({
   components: {
     ExpressionInput,
+    ValidationMessage,
+    TextEditor,
   },
 })
 class GenericContactPropertyEditor extends mixins(Lang) {

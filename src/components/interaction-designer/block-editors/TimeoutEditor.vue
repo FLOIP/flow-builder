@@ -18,10 +18,12 @@
 import NumericEditor from '@/components/common/NumericEditor'
 import {get} from 'lodash'
 import {lang} from '@/lib/filters/lang'
+import {ValidationMessage} from '@/components/common/'
 
 export default {
   components: {
     NumericEditor,
+    ValidationMessage,
   },
   mixins: [lang],
   props: {

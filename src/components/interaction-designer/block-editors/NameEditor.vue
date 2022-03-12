@@ -43,10 +43,16 @@ import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
+import {TextEditor, ValidationMessage} from '@/components/common/'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({})
+@Component({
+  components: {
+    ValidationMessage,
+    TextEditor,
+  }
+})
 class NameEditor extends mixins(Lang) {
   editBlockName = false
 

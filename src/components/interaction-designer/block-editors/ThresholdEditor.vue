@@ -19,10 +19,12 @@
 import FloatEditor from '@/components/common/FloatEditor'
 import {get} from 'lodash'
 import {lang} from '@/lib/filters/lang'
+import {ValidationMessage} from '@/components/common/'
 
 export default {
   components: {
     FloatEditor,
+    ValidationMessage,
   },
   mixins: [lang],
   props: {

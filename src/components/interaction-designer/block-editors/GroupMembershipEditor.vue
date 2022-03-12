@@ -86,6 +86,7 @@ import Lang from '@/lib/filters/lang'
 import {get} from 'lodash'
 import {mixins} from 'vue-class-component'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
+import {TextEditor, ValidationMessage} from '@/components/common/'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -96,6 +97,8 @@ const EMPTY_STRING_EXPRESSION = ''
 @Component({
   components: {
     ExpressionInput,
+    ValidationMessage,
+    TextEditor,
   },
 })
 class GroupMembershipEditor extends mixins(Lang) {

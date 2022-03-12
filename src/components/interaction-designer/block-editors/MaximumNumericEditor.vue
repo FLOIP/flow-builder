@@ -20,10 +20,12 @@ import Lang from '@/lib/filters/lang'
 import Component, {mixins} from 'vue-class-component'
 import {Prop} from 'vue-property-decorator'
 import {IBlock} from '@floip/flow-runner'
+import {ValidationMessage} from '@/components/common/'
 
 @Component({
   components: {
     NumericEditor,
+    ValidationMessage,
   },
 })
 class MaximumNumericEditor extends mixins(Lang) {

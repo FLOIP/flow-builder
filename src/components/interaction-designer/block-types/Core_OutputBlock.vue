@@ -64,6 +64,7 @@ import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import {ValidationMessage} from '@/components/common/'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -79,6 +80,7 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     Categorization,
     BlockOutputBranchingConfig,
+    ValidationMessage,
   },
 })
 class Core_OutputBlock extends mixins(Lang) {

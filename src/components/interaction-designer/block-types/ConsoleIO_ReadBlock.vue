@@ -84,6 +84,7 @@ import BlockFormatStringEditor from '../block-editors/FormatStringEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import {TextEditor, ValidationMessage} from '@/components/common/'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
@@ -100,6 +101,8 @@ const builderVuexNamespace = namespace('builder')
     BlockId,
     Categorization,
     BlockOutputBranchingConfig,
+    ValidationMessage,
+    TextEditor,
   },
 })
 class ConsoleIO_ReadBlock extends mixins(Lang) {
