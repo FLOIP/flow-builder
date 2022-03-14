@@ -37,7 +37,7 @@ const flowVuexNamespace = namespace('flow')
   components: {
     ValidationMessage,
     TextEditor,
-  }
+  },
 })
 class LabelEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock

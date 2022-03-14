@@ -21,7 +21,7 @@ const flowVuexNamespace = namespace('flow')
 @Component({
   components: {
     TextEditor,
-  }
+  },
 })
 class FlowLabelEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow

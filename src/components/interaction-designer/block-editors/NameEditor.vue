@@ -51,7 +51,7 @@ const flowVuexNamespace = namespace('flow')
   components: {
     ValidationMessage,
     TextEditor,
-  }
+  },
 })
 class NameEditor extends mixins(Lang) {
   editBlockName = false

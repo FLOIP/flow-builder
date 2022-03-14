@@ -51,11 +51,8 @@
 <script lang="ts">
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
-
-import {IFlow, IResource, IBlock} from '@floip/flow-runner'
+import {IFlow, IBlock} from '@floip/flow-runner'
 import {ILogBlock} from '@floip/flow-runner/src/model/block/ILogBlock'
-
-import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import LogStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import Lang from '@/lib/filters/lang'
@@ -63,13 +60,13 @@ import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import {mixins} from 'vue-class-component'
+import {ValidationMessage} from '@/components/common/'
 import BlockNameEditor from '../block-editors/NameEditor.vue'
 import BlockLabelEditor from '../block-editors/LabelEditor.vue'
 import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
 import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import BlockId from '../block-editors/BlockId.vue'
 import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
-import {ValidationMessage} from '@/components/common/'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
