@@ -16,6 +16,12 @@ import {
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 //To register components globally by default
 import * as commonComponents from '@/components/common'
+import * as interactionDesignerComponents from '@/components/interaction-designer/'
+import * as blockEditorsComponents from '@/components/interaction-designer/block-editors'
+import * as blockTypesComponents from '@/components/interaction-designer/block-types'
+import * as flowEditorsComponents from '@/components/interaction-designer/flow-editors'
+import * as flowImportComponents from '@/components/interaction-designer/flow-editors/import'
+import * as resourceEditorsComponents from '@/components/interaction-designer/resource-editors'
 import * as toolbarComponents from '@/components/interaction-designer/toolbar'
 import InteractionDesignerComponent from './views/InteractionDesigner.vue'
 import FetchFlowComponent from './views/FetchFlow.vue'
@@ -65,14 +71,19 @@ export const ImportFlow = ImportFlowComponent
 export const Home = HomeComponent
 export const TreeBuilderToolbar = TreeBuilderToolbarComponent
 export const defaultLocalisations = defaultLocalisationsJson
-
 export const BaseBlock = BaseBlockComponent
 export const BaseBlockStore = BaseStore
 export const createDefaultBlockTypeInstallerFor = createDefaultBlockTypeInstallerForFunction
 
 //To allow importing of common components as named imports rather than part of default
 export * from '@/components/common'
+export * from '@/components/interaction-designer'
 export * from '@/components/interaction-designer/block-types'
+export * from '@/components/interaction-designer/block-editors'
+export * from '@/components/interaction-designer/flow-editors'
+export * from '@/components/interaction-designer/flow-editors/import'
+export * from '@/components/interaction-designer/resource-editors'
+export * from '@/components/interaction-designer/toolbar'
 export * from '@/store/flow/block-types'
 
 const Components: { [key: string]: any } = {
@@ -83,6 +94,12 @@ const Components: { [key: string]: any } = {
   Home: HomeComponent,
   TreeBuilderToolbar: TreeBuilderToolbarComponent,
   ...commonComponents,
+  ...interactionDesignerComponents,
+  ...blockEditorsComponents,
+  ...blockTypesComponents,
+  ...flowEditorsComponents,
+  ...flowImportComponents,
+  ...resourceEditorsComponents,
   ...toolbarComponents,
 }
 
