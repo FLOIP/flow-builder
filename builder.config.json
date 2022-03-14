@@ -355,7 +355,7 @@
     "appWideInteractionTimeout": null,
     "title": {
       "createFlow": "flow-builder.create-flow",
-      "editFlow": "flow-builder.edit-flow",
+      "editFlow": "flow-builder.flow-details",
       "importFlow": "flow-builder.import-flow"
     }
   },

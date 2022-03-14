@@ -14,7 +14,7 @@
           <router-link
             v-if="flowLink"
             :to="flowLink"
-            title="trans('flow-builder.edit-flow')"
+            title="trans('flow-builder.flow-details')"
             class="mt-3 btn btn-outline-secondary mr-2 active">
             {{ 'flow-builder.go-to-flow' | trans }}
           </router-link>
