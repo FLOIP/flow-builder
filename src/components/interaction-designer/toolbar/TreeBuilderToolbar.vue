@@ -133,6 +133,7 @@
                 :disabled="!!isTreeSaving"
                 @click="handlePersistFlow()">
                 {{ saveButtonText }}
+                <font-awesome-icon v-if="isTreeSaving" :icon="['fas', 'spinner']" class="fa-btn fa-spin" />
               </button>
             </div>
           </div>
@@ -368,6 +369,9 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   isImporterVisible = false
   height = 102
 
+  // The "Saving" text flashes too quickly w/o actual backend interaction
+  private readonly SAVING_ANIMATION_DURATION = 1000
+
   async mounted(): Promise<void> {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
     this.onMetaChanged(routeMeta)
@@ -535,10 +539,19 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     //If we aren't in edit mode there should be nothing to persist
     if (this.isEditable) {
       this.setTreeSaving(true)
-      const flowContainer = await this.flow_persist({
-        persistRoute: this.route('flows.persistFlow', {}),
-        flowContainer: this.activeFlowContainer,
-      })
+      const flowContainer = (await Promise.all([
+        this.flow_persist({
+          persistRoute: this.route('flows.persistFlow', {}),
+          flowContainer: this.activeFlowContainer,
+        }),
+        new Promise((resolve) => {
+          global.setTimeout(() => {
+            resolve(false)
+          }, this.SAVING_ANIMATION_DURATION)
+        }),
+      ]))
+        .filter(Boolean)
+        .pop()
       this.setTreeSaving(false)
       if (!flowContainer) {
         //TODO - hook into showing validation errors design when we have it
@@ -698,7 +711,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 }
 
 .tree-save-tree {
-  width: 5.5em;
+  width: 6em;
 }
 
 .btn-toolbar > .flow-label {
