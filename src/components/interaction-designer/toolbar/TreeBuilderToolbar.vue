@@ -19,7 +19,7 @@
         <div class="tree-workspace-panel-heading-contents">
           <div class="btn-toolbar">
             <h4
-              class="text-primary mr-4 flow-label"
+              class="text-primary mr-4 mb-0 flow-label"
               :title="activeFlow.label">
               {{ activeFlow.label }}
             </h4>
@@ -54,8 +54,8 @@
                   <button
                     type="button"
                     aria-label="Close"
-                    @click="showOrHideEditFlowModal"
-                    class="close">
+                    class="close"
+                    @click="showOrHideEditFlowModal">
                     ×
                   </button>
                 </template>
@@ -139,18 +139,22 @@
         </div>
       </div>
 
-      <div v-if="isEditable" class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0">
+      <div
+        v-if="isEditable"
+        class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0">
         <div class="tree-workspace-panel-heading-contents">
           <ul class="nav">
-            <li class="nav-item dropdown nav">
+            <li
+              v-if="!isEmpty(blockClassesForContentCategory)"
+              class="nav-item dropdown nav">
               <a
                 class="nav-link dropdown-toggle"
-                @mouseover="openDropdownMenu($event.target)"
                 data-toggle="dropdown"
                 href="#"
                 role="button"
                 aria-haspopup="true"
-                aria-expanded="false">
+                aria-expanded="false"
+                @mouseover="openDropdownMenu($event.target)">
                 <span class="nav-link-text">{{ 'flow-builder.content' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
@@ -158,7 +162,7 @@
                   <div
                     v-if="shouldDisplayDividerBefore(blockClassesForContentCategory, className)"
                     :key="`${className}divider`"
-                    class="dropdown-divider"></div>
+                    class="dropdown-divider" />
                   <a
                     v-if="isBlockAvailableByBlockClass[className]"
                     :key="className + 'item'"
@@ -173,15 +177,17 @@
                 <slot name="extra-dropdown-items-for-category1" />
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <li
+              v-if="!isEmpty(blockClassesForContactCategory)"
+              class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
-                @mouseover="openDropdownMenu($event.target)"
                 data-toggle="dropdown"
                 href="#"
                 role="button"
                 aria-haspopup="true"
-                aria-expanded="false">
+                aria-expanded="false"
+                @mouseover="openDropdownMenu($event.target)">
                 <span class="nav-link-text">{{ 'flow-builder.contact' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
@@ -189,7 +195,7 @@
                   <div
                     v-if="shouldDisplayDividerBefore(blockClassesForContactCategory, className)"
                     :key="`${className}divider`"
-                    class="dropdown-divider"></div>
+                    class="dropdown-divider" />
                   <a
                     v-if="isBlockAvailableByBlockClass[className]"
                     :key="className + 'item'"
@@ -204,15 +210,17 @@
                 <slot name="extra-dropdown-items-for-category2" />
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <li
+              v-if="!isEmpty(blockClassesForBranchingCategory)"
+              class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
-                @mouseover="openDropdownMenu($event.target)"
                 data-toggle="dropdown"
                 href="#"
                 role="button"
                 aria-haspopup="true"
-                aria-expanded="false">
+                aria-expanded="false"
+                @mouseover="openDropdownMenu($event.target)">
                 <span class="nav-link-text">{{ 'flow-builder.branching' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
@@ -220,7 +228,7 @@
                   <div
                     v-if="shouldDisplayDividerBefore(blockClassesForBranchingCategory, className)"
                     :key="`${className}divider`"
-                    class="dropdown-divider"></div>
+                    class="dropdown-divider" />
                   <a
                     v-if="isBlockAvailableByBlockClass[className]"
                     :key="className + 'item'"
@@ -235,16 +243,17 @@
                 <slot name="extra-dropdown-items-for-category3" />
               </div>
             </li>
-            <li v-if="!isEmpty(blockClassesForWeatherCategory)"
+            <li
+              v-if="!isEmpty(blockClassesForWeatherCategory)"
               class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
-                @mouseover="openDropdownMenu($event.target)"
                 data-toggle="dropdown"
                 href="#"
                 role="button"
                 aria-haspopup="true"
-                aria-expanded="false">
+                aria-expanded="false"
+                @mouseover="openDropdownMenu($event.target)">
                 <span class="nav-link-text">{{ 'flow-builder.weather' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
@@ -252,7 +261,7 @@
                   <div
                     v-if="shouldDisplayDividerBefore(blockClassesForWeatherCategory, className)"
                     :key="`${className}divider`"
-                    class="dropdown-divider"></div>
+                    class="dropdown-divider" />
                   <a
                     v-if="isBlockAvailableByBlockClass[className]"
                     :key="className + 'item'"
@@ -267,15 +276,17 @@
                 <slot name="extra-dropdown-items-for-category4" />
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <li
+              v-if="!isEmpty(blockClassesForDeveloperCategory)"
+              class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
-                @mouseover="openDropdownMenu($event.target)"
                 data-toggle="dropdown"
                 href="#"
                 role="button"
                 aria-haspopup="true"
-                aria-expanded="false">
+                aria-expanded="false"
+                @mouseover="openDropdownMenu($event.target)">
                 <span class="nav-link-text">{{ 'flow-builder.developer' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
@@ -283,7 +294,7 @@
                   <div
                     v-if="shouldDisplayDividerBefore(blockClassesForDeveloperCategory, className)"
                     :key="`${className}divider`"
-                    class="dropdown-divider"></div>
+                    class="dropdown-divider" />
                   <a
                     v-if="isBlockAvailableByBlockClass[className]"
                     :key="className + 'item'"
@@ -303,7 +314,9 @@
       </div>
     </div>
     <div class="tree-builder-toolbar-alerts w-100">
-      <selection-banner v-if="isEditable" @updated="handleHeightChangeFromDOM" />
+      <selection-banner
+        v-if="isEditable"
+        @updated="handleHeightChangeFromDOM" />
       <error-notifications @updated="handleHeightChangeFromDOM" />
     </div>
   </div>
@@ -468,9 +481,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   get blockClassesForBranchingCategory(): any {
     return flow(
       pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hidden_in_menu')),
-      pickBy((classDetails: { [key: string]: any }) => {
-        return this.hasMenuCategory(classDetails, 3) || this.hasClassDetail(classDetails, 'branchingMenu')
-      }),
+      pickBy((classDetails: { [key: string]: any }) => this.hasMenuCategory(classDetails, 3) || this.hasClassDetail(classDetails, 'branchingMenu')),
     )(this.ui.blockClasses)
   }
 
@@ -574,7 +585,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   hasMenuCategory(classDetails: { [key: string]: any }, category: number): any {
-    return this.hasClassDetail(classDetails, 'menu_category') && classDetails['menu_category'] === category
+    return this.hasClassDetail(classDetails, 'menu_category') && classDetails.menu_category === category
   }
 
   translateTreeClassName(className: string): any {
