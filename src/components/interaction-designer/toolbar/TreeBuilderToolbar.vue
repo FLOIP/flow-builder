@@ -34,6 +34,7 @@
                   class="fa-btn" />
               </router-link>
               <router-link
+                v-if="hasNewFlowButton"
                 :to="route('flows.newFlow')"
                 class="btn btn-primary btn-sm mr-2">
                 {{ trans('flow-builder.new-flow') }}
@@ -514,6 +515,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   get hasFlowTitle() {
     return this.$store.state.trees.ui.toolbar.flowTitle
+  }
+
+  get hasNewFlowButton() {
+    return this.$store.state.trees.ui.toolbar.newFlowButton
   }
 
   // Methods #####################
