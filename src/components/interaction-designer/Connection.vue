@@ -6,11 +6,9 @@
 
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-// import LeaderLine from 'leader-line'
+import LeaderLine from 'leader-line-new'
 import {set} from 'lodash'
 import {mapGetters, mapMutations, mapState} from 'vuex'
-
-const {LeaderLine} = window
 
 const lightColor = '#6897BB'
 const darkColor = '#30516a'

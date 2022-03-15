@@ -52,7 +52,7 @@
     "jquery": "^3.5.1",
     "json-schema": "0.2.3",
     "lang.js": "^1.1.14",
-    "leader-line": "^1.0.5",
+    "leader-line-new": "^1.1.9",
     "lodash": "^4.17.19",
     "m-class-list": "^1.1.9",
     "moment": "^2.27.0",
