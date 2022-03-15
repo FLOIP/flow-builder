@@ -46,13 +46,13 @@ export default class BuilderCanvas extends Vue {
 
   // ###### Validation API Watchers [
   @Watch('activeFlow', {deep: true, immediate: true})
-  async onActiveFlowChanged(newFlow: IFlow) {
+  async onActiveFlowChanged(newFlow: IFlow): Promise<void> {
     console.debug('watch/activeFlow:', 'active flow has changed from builder canvas, validating ...')
     await this.validate_flow({flow: newFlow})
   }
 
   @Watch('blocksOnActiveFlowForWatcher', {deep: true, immediate: true})
-  async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]) {
+  async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void> {
     if (newBlocks.length === 0) {
       return
     }
@@ -74,7 +74,7 @@ export default class BuilderCanvas extends Vue {
     console.debug('watch/resourcesOnActiveFlow:', 'resources inside active flow have changed, validating ...')
     await this.validate_resourcesOnSupportedValues({
       resources: newResources,
-      supportedModes: this.activeFlow.supported_modes
+      supportedModes: this.activeFlow.supported_modes,
     })
   }
   // ] ######### end Validation API Watchers

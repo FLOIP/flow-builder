@@ -373,7 +373,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
     return this.$store.state.trees.ui.title.editFlow
   }
 
-  async mounted() {
+  async mounted(): Promise<void> {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
     this.onMetaChanged(routeMeta)
 

@@ -158,7 +158,6 @@ export default {
     // initialize global reference for legacy + debugging
     global.builder = this
 
-
     this.initializeTreeModel()
     // `this.mode` comes from captured param in js-routes
     this.updateIsEditableFromParams(this.mode)

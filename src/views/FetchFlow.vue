@@ -54,7 +54,7 @@ class FetchFlow extends mixins(Routes, Lang) {
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
   @Getter isConfigured!: boolean
 
-  async mounted() {
+  async mounted(): Promise<void> {
     const nextUrl: RawLocation = this.$route.query.nextUrl as RawLocation
     const url = new URL(nextUrl as string, window.location.origin)
     const urlParams = url.searchParams.toString()
