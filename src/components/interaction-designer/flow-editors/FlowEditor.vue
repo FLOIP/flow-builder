@@ -12,6 +12,7 @@
                     - name refers to validation message-key
                     - the UI field will be for label -->
         <validation-message
+          #input-control="{ isValid }"
           :class="firstRowClass"
           :message-key="`flow/${flow.uuid}/name`"
           :should-hide-validation="!didUserSubmit">
@@ -21,6 +22,7 @@
         </validation-message>
 
         <validation-message
+          #input-control="{ isValid }"
           v-if="!hasDefaultInteractionTimeout"
           :class="firstRowClass"
           :message-key="`flow/${flow.uuid}/interaction_timeout`"
@@ -32,6 +34,7 @@
       </div>
       <div class="row">
         <validation-message
+          #input-control="{ isValid }"
           :class="otherRowsClass"
           :message-key="`flow/${flow.uuid}/languages`"
           :should-hide-validation="!didUserSubmit">
@@ -41,6 +44,7 @@
         </validation-message>
 
         <validation-message
+          #input-control="{ isValid }"
           :class="otherRowsClass"
           :message-key="`flow/${flow.uuid}/supported_modes`"
           :should-hide-validation="!didUserSubmit">
