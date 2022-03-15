@@ -3,8 +3,8 @@
     <div
       v-if="activeFlow"
       class="row">
-      <div class="col-sm-8 offset-sm-2">
-        <div class="card">
+      <div class="col-sm-12 m-2">
+        <div class="card w-100 pb-3 bg-light">
           <div class="card-body">
             <div
               v-if="flowError"
@@ -14,9 +14,16 @@
             </div>
             <flow-editor
               :flow="activeFlow"
-              flow-header="flow-builder.create-flow"
-              :sidebar="false" />
+              :flow-header="createFlowTitle"
+              :did-user-submit="didUserSubmit"
+              :is-on-small-container="false" />
             <div class="float-right">
+              <router-link
+                :to="route('flows.cancelCreate')"
+                class="btn btn-outline-secondary mr-2">
+                {{ trans('flow-builder.cancel') }}
+              </router-link>
+
               <a
                 :href="route('flows.editFlow', {flowId: activeFlow.uuid, component: 'designer', mode: 'edit'})"
                 class="btn btn-primary"
@@ -35,15 +42,17 @@
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {Component, Prop} from 'vue-property-decorator'
+import {Component, Prop, Watch} from 'vue-property-decorator'
 import Vue from 'vue'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {forEach, isEmpty} from 'lodash'
 import {store} from '@/store'
 import {IContext, IFlow} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
+import {IValidationStatus} from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
+const validationVuexNamespace = namespace('validation')
 
 @Component(
   {
@@ -57,22 +66,42 @@ class NewFlow extends Vue {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 
+  didUserSubmit = false
+
+  @Watch('activeFlow', {deep: true, immediate: true})
+  async onActiveFlowChanged(newFlow: IFlow) {
+    if (newFlow) {
+      console.debug('watch/activeFlow:', 'active flow has changed from new flow flow page, validating ...');
+      await this.validate_flow({flow: newFlow})
+    }
+  }
+
+  get createFlowTitle(): string {
+    return this.$store.state.trees.ui.title.createFlow
+  }
+
   async mounted(): Promise<void> {
     await this.flow_addBlankFlow()
   }
 
-  async created(): Promise<void> {
+  async beforeCreate(): Promise<void> {
     const {$store} = this
 
-    forEach(store.modules, (v, k) =>
-      !$store.hasModule(k) && $store.registerModule(k, v))
+    forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
+  }
 
+  async created(): Promise<void> {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
   }
 
   async handlePersistFlow(route: RawLocation): Promise<void> {
+    this.didUserSubmit = true
+    if (!this.isActiveFlowConsideredValidOnCreationForm) {
+      return
+    }
+
     this.flowError = null
     const flowContainer = await this.flow_persist({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -96,9 +125,12 @@ class NewFlow extends Vue {
     flowContainer,
   }: { persistRoute: any, flowContainer: IContext }) => Promise<IContext | null>
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Getter isActiveFlowConsideredValidOnCreationForm?: boolean
   @flowVuexNamespace.Getter activeFlowContainer!: IContext
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
   @Getter isConfigured!: boolean
+
+  @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
 }
 
 export default NewFlow

@@ -1,12 +1,12 @@
 <template>
   <div class="import-flow">
     <div class="row">
-      <div class="col-sm-8 offset-sm-2">
-        <div class="card d-flex">
+      <div class="col-sm-12 m-2">
+        <div class="card d-flex bg-light">
           <div class="card-body">
             <div>
               <h2>
-                {{ 'flow-builder.import-flow' | trans }}
+                {{ trans(importFlowTitle) }}
               </h2>
               <p>{{ 'flow-builder.create-flow-from-json' | trans }}</p>
               <div
@@ -129,6 +129,10 @@ class ImportFlow extends Vue {
   uploadOrPasteSetting = 'upload'
 
   fileName = ''
+
+  get importFlowTitle(): string {
+    return this.$store.state.trees.ui.title.importFlow
+  }
 
   async created() {
     const {$store} = this
