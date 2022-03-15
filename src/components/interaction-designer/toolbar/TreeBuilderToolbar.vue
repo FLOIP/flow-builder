@@ -19,6 +19,7 @@
         <div class="tree-workspace-panel-heading-contents">
           <div class="btn-toolbar">
             <h4
+              v-if="hasFlowTitle"
               class="text-primary mr-4 mb-0 flow-label"
               :title="activeFlow.label">
               {{ activeFlow.label }}
@@ -509,6 +510,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   get hasSimulator() {
     return this.hasOfflineMode && this.isFeatureSimulatorEnabled
+  }
+
+  get hasFlowTitle() {
+    return this.$store.state.trees.ui.toolbar.flowTitle
   }
 
   // Methods #####################

@@ -347,6 +347,9 @@
       "RICH_MESSAGING",
       "OFFLINE"
     ],
+    "toolbar": {
+      "flowTitle": true
+    },
     "defaultModes": [
       "SMS",
       "USSD",
