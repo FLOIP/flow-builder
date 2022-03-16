@@ -130,7 +130,7 @@
               <button
                 v-if="isEditable && isFeatureTreeSaveEnabled"
                 type="button"
-                class="btn btn-info btn-sm tree-save-tree ml-4"
+                class="btn btn-outline-primary btn-sm ml-4 save-button"
                 :title="trans('flow-builder.save-changes-to-the-flow')"
                 :disabled="!!isTreeSaving"
                 @click="handlePersistFlow()">
@@ -704,6 +704,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 </script>
 
 <style lang="scss">
+@import "../../../scss/custom_variables";
+
 .tree-builder-toolbar {
   .flows-importer textarea {
     display: block;
@@ -714,14 +716,9 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 .tree-builder-toolbar-main-menu {
   width: 100vw;
 
-  border-bottom: 1px solid darkgrey;
-  background: #eee;
+  background: $neutral-50;
 
   box-shadow: 0 3px 6px #CACACA;
-}
-
-.tree-save-tree {
-  width: 6em;
 }
 
 .btn-toolbar > .flow-label {
@@ -764,5 +761,20 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   display: inline;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.tree-builder-toolbar-main-menu .btn.btn-outline-primary {
+  color: $primary-900;
+  border-color: $primary-900;
+  background-color: $white;
+
+  &.active,
+  &.save-button:disabled {
+    background-color: $primary-100;
+  }
+
+  &.save-button:disabled {
+    opacity: 1;
+  }
 }
 </style>
