@@ -61,6 +61,7 @@
                 </template>
                 <flow-editor
                   :flow="activeFlow"
+                  :did-user-submit="true"
                   flow-header="" />
               </b-modal>
 
