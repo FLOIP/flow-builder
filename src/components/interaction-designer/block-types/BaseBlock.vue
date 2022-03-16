@@ -5,13 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
       <slot name="resource-editors" />
       <slot name="extras" />
@@ -62,18 +62,7 @@ import GenericContactPropertyEditor from '../block-editors/GenericContactPropert
 
 const builderVuexNamespace = namespace('builder')
 
-@Component({
-  components: {
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
-    FirstBlockEditorButton,
-    BlockId,
-    Categorization,
-    BlockOutputBranchingConfig,
-    GenericContactPropertyEditor,
-  },
-})
+@Component({})
 class BaseBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow

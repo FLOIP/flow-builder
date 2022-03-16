@@ -77,13 +77,10 @@ const importVuexNamespace = namespace('flow/import')
 
 @Component(
   {
-    components: {
-      ImportMatcher,
-    },
     mixins: [lang],
   },
 )
-class ErrorHandler extends Vue {
+export class ErrorHandler extends Vue {
   handleMatchLanguage(oldLanguage: ILanguage, matchingNewLanguage: ILanguage) {
     this.matchLanguage({oldLanguage, matchingNewLanguage})
   }

@@ -47,9 +47,6 @@ const flowVuexNamespace = namespace('flow')
 
 @Component(
   {
-    components: {
-      FlowEditor,
-    },
     mixins: [lang, Routes],
   },
 )

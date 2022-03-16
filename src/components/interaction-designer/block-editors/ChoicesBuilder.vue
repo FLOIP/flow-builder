@@ -57,13 +57,8 @@ import Vue from 'vue'
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
-@Component({
-  components: {
-    ResourceVariantTextEditor,
-
-  },
-})
-class ChoicesBuilder extends mixins(Lang) {
+@Component({})
+export class ChoicesBuilder extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
 
   draftResource: IResource | null = null

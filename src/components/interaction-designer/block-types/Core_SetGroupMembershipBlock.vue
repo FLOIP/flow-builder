@@ -5,13 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
       <slot name="extras" />
 
@@ -72,17 +72,7 @@ interface IGroupActionOption {
 
 @Component({
   components: {
-    GenericContactPropertyEditor,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
-    FirstBlockEditorButton,
-    BlockId,
-    GroupSelector,
     VueMultiselect,
-    Categorization,
-    GroupMembershipEditor,
-    BlockOutputBranchingConfig,
   },
 })
 class Core_SetGroupMembershipBlock extends mixins(Lang) {

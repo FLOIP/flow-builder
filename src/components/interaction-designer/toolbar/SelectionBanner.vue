@@ -62,7 +62,7 @@ import {size} from 'lodash'
 const flowVuexNamespace = namespace('flow')
 
 @Component({})
-export default class SelectionBanner extends mixins(Lang) {
+export class SelectionBanner extends mixins(Lang) {
   deleting = false
 
   updated(): void {
@@ -88,4 +88,5 @@ export default class SelectionBanner extends mixins(Lang) {
   @flowVuexNamespace.Action flow_removeAllSelectedBlocks!: () => Promise<void>
   @flowVuexNamespace.Action flow_duplicateAllSelectedBlocks!: () => Promise<void>
 }
+export default SelectionBanner
 </script>

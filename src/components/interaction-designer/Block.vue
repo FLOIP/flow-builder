@@ -183,13 +183,7 @@ Vue.component('BTooltip', BTooltip)
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
 
-export default {
-  components: {
-    Connection,
-    PlainDraggable,
-    BlockEditor,
-    BlockToolbar,
-  },
+export const Block = {
   mixins: [lang],
   props: ['block', 'x', 'y'],
 
@@ -564,6 +558,8 @@ export default {
     },
   },
 }
+
+export default Block
 </script>
 
 <style lang="scss">

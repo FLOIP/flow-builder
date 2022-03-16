@@ -13,12 +13,8 @@ import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
 import TagSelector from '@/components/interaction-designer/block-editors/TagSelector.vue'
 
-@Component({
-  components: {
-    TagSelector,
-  },
-})
-class Categorization extends mixins(Lang) {
+@Component({})
+export class Categorization extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 }
 

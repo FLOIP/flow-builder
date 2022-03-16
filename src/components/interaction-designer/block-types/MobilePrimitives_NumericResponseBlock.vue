@@ -5,21 +5,21 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
-      <block-minimum-numeric-editor
+      <minimum-numeric-editor
         :block="block"
         @commitValidationMinimumChange="updateValidationMin" />
-      <block-maximum-numeric-editor
+      <maximum-numeric-editor
         :block="block"
         @commitValidationMaximumChange="updateValidationMax" />
-      <block-max-digit-editor
+      <max-digit-editor
         :block="block"
         :has-ivr="hasVoiceMode"
         @commitMaxDigitsChange="updateMaxDigits" />
@@ -84,22 +84,7 @@ const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({
-  components: {
-    GenericContactPropertyEditor,
-    ResourceEditor,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
-    FirstBlockEditorButton,
-    BlockId,
-    BlockMinimumNumericEditor,
-    BlockMaximumNumericEditor,
-    BlockMaxDigitEditor,
-    Categorization,
-    BlockOutputBranchingConfig,
-  },
-})
+@Component({})
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: INumericResponseBlock
 

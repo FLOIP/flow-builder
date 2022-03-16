@@ -77,12 +77,8 @@ const flowVuexNamespace = namespace('flow')
 const NULL_STRING_EXPRESSION = '@(null)'
 const EMPTY_STRING_EXPRESSION = ''
 
-@Component({
-  components: {
-    ExpressionInput,
-  },
-})
-class ContactPropertyEditor extends mixins(Lang) {
+@Component({})
+export class ContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   PROPERTY_ACTION = {

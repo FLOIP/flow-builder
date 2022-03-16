@@ -111,7 +111,7 @@ import {trim} from 'lodash'
 import VueFocus from 'vue-focus'
 import {lang} from '@/lib/filters/lang'
 
-export default {
+export const AudioLibrarySearchField = {
   mixins: [VueFocus.mixin, lang],
   props: ['langId', 'audioFiles'],
 
@@ -207,6 +207,8 @@ export default {
     },
   },
 }
+
+export default AudioLibrarySearchField
 </script>
 
 <style lang="scss" scoped>

@@ -5,20 +5,20 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
       <slot name="extras" />
 
       <hr>
 
       <!--Specific config-->
-      <block-format-string-editor
+      <format-string-editor
         :block="block"
         @commitFormatStringChange="setFormatString" />
 
@@ -88,20 +88,7 @@ import GenericContactPropertyEditor from '../block-editors/GenericContactPropert
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({
-  components: {
-    GenericContactPropertyEditor,
-    ResourceEditor,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
-    BlockFormatStringEditor,
-    FirstBlockEditorButton,
-    BlockId,
-    Categorization,
-    BlockOutputBranchingConfig,
-  },
-})
+@Component({})
 class ConsoleIO_ReadBlock extends mixins(Lang) {
   @Prop() readonly declare block: IReadBlock
 

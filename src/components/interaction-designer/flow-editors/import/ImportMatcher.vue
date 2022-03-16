@@ -64,9 +64,8 @@ const importVuexNamespace = namespace('flow/import')
 
 @Component({
   mixins: [lang],
-  components: {LanguageAdder},
 })
-class ImportMatcher extends Vue {
+export class ImportMatcher extends Vue {
   @Prop({default: ''}) readonly matchNotFoundText!: string
 
   @Prop({required: true}) readonly type!: string

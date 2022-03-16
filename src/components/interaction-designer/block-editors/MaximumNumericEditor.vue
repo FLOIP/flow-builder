@@ -21,12 +21,8 @@ import Component, {mixins} from 'vue-class-component'
 import {Prop} from 'vue-property-decorator'
 import {IBlock} from '@floip/flow-runner'
 
-@Component({
-  components: {
-    NumericEditor,
-  },
-})
-class MaximumNumericEditor extends mixins(Lang) {
+@Component({})
+export class MaximumNumericEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   get maxValue() {

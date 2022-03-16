@@ -19,6 +19,7 @@ import * as commonComponents from '@/components/common'
 import * as interactionDesignerComponents from '@/components/interaction-designer/'
 import * as blockEditorsComponents from '@/components/interaction-designer/block-editors'
 import * as blockTypesComponents from '@/components/interaction-designer/block-types'
+import * as blockComponents from '@/components/interaction-designer/block'
 import * as flowEditorsComponents from '@/components/interaction-designer/flow-editors'
 import * as flowImportComponents from '@/components/interaction-designer/flow-editors/import'
 import * as resourceEditorsComponents from '@/components/interaction-designer/resource-editors'
@@ -69,7 +70,6 @@ export const FetchFlow = FetchFlowComponent
 export const NewFlow = NewFlowComponent
 export const ImportFlow = ImportFlowComponent
 export const Home = HomeComponent
-export const TreeBuilderToolbar = TreeBuilderToolbarComponent
 export const defaultLocalisations = defaultLocalisationsJson
 export const BaseBlock = BaseBlockComponent
 export const BaseBlockStore = BaseStore
@@ -80,6 +80,7 @@ export * from '@/components/common'
 export * from '@/components/interaction-designer'
 export * from '@/components/interaction-designer/block-types'
 export * from '@/components/interaction-designer/block-editors'
+export * from '@/components/interaction-designer/block'
 export * from '@/components/interaction-designer/flow-editors'
 export * from '@/components/interaction-designer/flow-editors/import'
 export * from '@/components/interaction-designer/resource-editors'
@@ -92,11 +93,11 @@ const Components: { [key: string]: any } = {
   NewFlow: NewFlowComponent,
   ImportFlow: ImportFlowComponent,
   Home: HomeComponent,
-  TreeBuilderToolbar: TreeBuilderToolbarComponent,
   ...commonComponents,
   ...interactionDesignerComponents,
   ...blockEditorsComponents,
   ...blockTypesComponents,
+  ...blockComponents,
   ...flowEditorsComponents,
   ...flowImportComponents,
   ...resourceEditorsComponents,

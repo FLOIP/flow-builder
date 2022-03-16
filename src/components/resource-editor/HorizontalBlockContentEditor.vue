@@ -103,12 +103,6 @@ import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
 import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType'
 
 export default {
-
-  components: {
-    AudioLibrarySelector,
-    BlockTextContentEditorForLangAndType,
-  },
-
   mixins: [lang],
   props: [
     'alternateAudioFileSelections',

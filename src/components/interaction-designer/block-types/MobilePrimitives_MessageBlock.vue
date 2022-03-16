@@ -5,13 +5,13 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
       <hr>
 
@@ -68,19 +68,7 @@ const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
-@Component({
-  components: {
-    GenericContactPropertyEditor,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
-    ResourceEditor,
-    FirstBlockEditorButton,
-    BlockId,
-    Categorization,
-    BlockOutputBranchingConfig,
-  },
-})
+@Component({})
 class MobilePrimitives_MessageBlock extends mixins(Lang) {
   @Prop() readonly block!: IMessageBlock
 

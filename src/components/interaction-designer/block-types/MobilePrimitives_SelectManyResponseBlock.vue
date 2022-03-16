@@ -4,13 +4,13 @@
       {{ `flow-builder.${block.type}` | trans }}
     </h3>
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
       <div class="prompt-resource">
         <resource-editor
@@ -82,23 +82,7 @@ import GenericContactPropertyEditor from '../block-editors/GenericContactPropert
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({
-  components: {
-    BlockId,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockOutputBranchingConfig,
-    BlockSemanticLabelEditor,
-    BlockExitSemanticLabelEditor,
-    ChoicesBuilder,
-    Categorization,
-    FirstBlockEditorButton,
-    GenericContactPropertyEditor,
-    MinimumChoicesEditor,
-    MaximumChoicesEditor,
-    ResourceEditor,
-  },
-})
+@Component({})
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
   showSemanticLabel = false
 

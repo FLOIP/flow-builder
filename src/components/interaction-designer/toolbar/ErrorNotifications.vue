@@ -90,12 +90,8 @@ import BlockErrorsExpandable from '@/components/interaction-designer/toolbar/Blo
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
-@Component({
-  components: {
-    BlockErrorsExpandable,
-  },
-})
-export default class ErrorNotifications extends mixins(Routes, Lang) {
+@Component({})
+export class ErrorNotifications extends mixins(Routes, Lang) {
   updated(): void {
     this.$emit('updated')
   }
@@ -166,6 +162,7 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
   @flowVuexNamespace.Getter activeFlow?: IFlow
   @flowVuexNamespace.Getter resourceUuidsOnActiveFlow!: IResource['uuid'][]
 }
+export default ErrorNotifications
 </script>
 
 <style scoped lang="scss">

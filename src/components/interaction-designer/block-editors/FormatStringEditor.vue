@@ -19,7 +19,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {lang} from '@/lib/filters/lang'
 
-export default {
+export const FormatStringEditor = {
   mixins: [lang],
   props: {
     block: {
@@ -38,4 +38,5 @@ export default {
     },
   },
 }
+export default FormatStringEditor
 </script>

@@ -119,7 +119,7 @@ const validationVuexNamespace = namespace('validation')
     VueMultiselect,
   },
 })
-class LanguageAdder extends mixins(Lang, Routes) {
+export class LanguageAdder extends mixins(Lang, Routes) {
   newLanguage: ILanguage = {
     id: '',
     label: '',

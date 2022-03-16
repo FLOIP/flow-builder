@@ -11,7 +11,7 @@ import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
 
 @Component({})
-class BlockId extends mixins(Lang) {
+export class BlockId extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   get blockId(): string {

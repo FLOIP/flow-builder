@@ -43,9 +43,8 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
-    ContactPropertyEditor,
-    BaseBlock,
-  },
+    BaseBlock
+  }
 })
 class Core_SetContactPropertyBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock

@@ -70,11 +70,8 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
-    BlockOutputBranchingConfig,
-    ChoicesBuilder,
-    ResourceEditor,
-    BaseBlock,
-  },
+    BaseBlock
+  }
 })
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock

@@ -129,12 +129,8 @@
     vendor_metadata: IVendorMetadataWithBranchingType,
   }
 
-  @Component({
-    components: {
-      AdvancedExitsBuilder,
-    },
-  })
-  export default class BlockOutputBranchingConfig extends mixins(Lang) {
+  @Component({})
+  export class BlockOutputBranchingConfig extends mixins(Lang) {
     @Prop() readonly block!: IBlock
     @Prop() readonly hasExitPerChoice!: boolean
     @Prop({default: true}) readonly hasUnifiedExit!: boolean
@@ -216,6 +212,7 @@
     @flowVuexNamespace.Mutation block_exitClearDestinationBlockFor!:
       ({blockExit}: {blockExit: IBlockExit}) => void
   }
+  export default BlockOutputBranchingConfig
 </script>
 
 <style scoped>

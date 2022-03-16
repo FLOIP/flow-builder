@@ -2,7 +2,7 @@
   <validation-message
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`">
-    <div class="block-threshold">
+    <div class="threshold-editor">
       <float-editor
         v-model.number="threshold"
         :min="0"
@@ -20,10 +20,7 @@ import FloatEditor from '@/components/common/FloatEditor'
 import {get} from 'lodash'
 import {lang} from '@/lib/filters/lang'
 
-export default {
-  components: {
-    FloatEditor,
-  },
+export const ThresholdEditor = {
   mixins: [lang],
   props: {
     block: {
@@ -47,4 +44,5 @@ export default {
     },
   },
 }
+export default ThresholdEditor
 </script>

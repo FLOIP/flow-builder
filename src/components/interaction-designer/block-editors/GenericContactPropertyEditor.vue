@@ -104,12 +104,8 @@ const flowVuexNamespace = namespace('flow')
 const EMPTY_STRING_EXPRESSION = ''
 const BLOCK_RESPONSE_EXPRESSION = '@block.value'
 
-@Component({
-  components: {
-    ExpressionInput,
-  },
-})
-class GenericContactPropertyEditor extends mixins(Lang) {
+@Component({})
+export class GenericContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   shouldSetContactProperty = false

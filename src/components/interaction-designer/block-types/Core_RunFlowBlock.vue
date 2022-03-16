@@ -4,13 +4,13 @@
       {{ `flow-builder.${block.type}` | trans }}
     </h3>
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
       <slot name="extras" />
 
@@ -88,18 +88,7 @@ import GenericContactPropertyEditor from '../block-editors/GenericContactPropert
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({
-  components: {
-    GenericContactPropertyEditor,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
-    FirstBlockEditorButton,
-    BlockId,
-    Categorization,
-    BlockOutputBranchingConfig,
-  },
-})
+@Component({})
 class Core_RunAnotherFlowBlock extends mixins(Lang) {
   @Prop() readonly block!: IRunFlowBlock
 

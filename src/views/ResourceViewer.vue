@@ -319,12 +319,6 @@ import BlockContentEditorUnsupported from '@/components/resource-editor/BlockCon
 import stores from '../store'
 
 export default {
-  components: {
-    BatchMatchAudioFilesPrompt,
-    HorizontalBlockContentEditor,
-    BlockContentEditorUnsupported,
-  },
-
   mixins: [
     lang,
   ],

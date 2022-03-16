@@ -123,11 +123,7 @@ import ValidationMessage from '@/components/common/ValidationMessage'
 
 Vue.component('BTooltip', BTooltip)
 
-export default {
-  components: {
-    ValidationMessage,
-    // BlockContentAutogenButton,
-  },
+export const ResourceVariantTextEditor = {
   mixins: [lang, VueFocus.mixin],
 
   props: {
@@ -256,6 +252,7 @@ export default {
     // }, 500),
   },
 }
+export default ResourceVariantTextEditor
 </script>
 
 <style lang="scss" scoped>

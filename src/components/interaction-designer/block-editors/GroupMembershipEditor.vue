@@ -93,12 +93,8 @@ const NULL_STRING_EXPRESSION = '@(null)'
 const TRUTHY_STRING_EXPRESSION = '@(true)'
 const EMPTY_STRING_EXPRESSION = ''
 
-@Component({
-  components: {
-    ExpressionInput,
-  },
-})
-class GroupMembershipEditor extends mixins(Lang) {
+@Component({})
+export class GroupMembershipEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   MEMBERSHIP_ACTION = {

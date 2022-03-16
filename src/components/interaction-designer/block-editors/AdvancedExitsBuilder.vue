@@ -40,12 +40,8 @@ import Vue from 'vue'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({
-  components: {
-    AdvancedExitEditor,
-  },
-})
-class AdvancedExitsBuilder extends mixins(Lang) {
+@Component({})
+export class AdvancedExitsBuilder extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   draftExit: IBlockExit | null = null

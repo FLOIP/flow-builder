@@ -122,7 +122,6 @@ const flowVuexNamespace = namespace('flow')
 @Component(
   {
     mixins: [lang, Routes],
-    components: {LanguageAdder},
   },
 )
 class Home extends Vue {

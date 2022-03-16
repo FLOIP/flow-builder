@@ -26,12 +26,8 @@ import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
 import {Getter} from 'vuex-class'
 
-@Component({
-  components: {
-    NumericEditor,
-  },
-})
-class ModeEditor extends mixins(Lang) {
+@Component({})
+export class ModesEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
 
   get flowSelectedModes(): SupportedMode[] {
@@ -45,5 +41,5 @@ class ModeEditor extends mixins(Lang) {
   @Getter supportedModes!: SupportedMode[]
 }
 
-export default ModeEditor
+export default ModesEditor
 </script>

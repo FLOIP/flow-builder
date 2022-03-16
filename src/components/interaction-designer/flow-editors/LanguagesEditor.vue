@@ -27,12 +27,8 @@ import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
 import {sortBy} from 'lodash'
 
-@Component({
-  components: {
-    NumericEditor,
-  },
-})
-class LanguagesEditor extends mixins(Lang) {
+@Component({})
+export class LanguagesEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
 
   get languages(): ILanguage[] {

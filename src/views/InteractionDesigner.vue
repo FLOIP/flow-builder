@@ -50,10 +50,8 @@ import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
 
 export default {
   components: {
-    BuilderCanvas,
     ClipboardRoot,
   },
-
   mixins: [lang, Routes],
   props: {
     id: {type: String},

@@ -14,11 +14,7 @@
 import {mapGetters, mapState} from 'vuex'
 import PhoneRecordingRecorderSelector from './PhoneRecordingRecorderSelector'
 
-export default {
-  components: {
-    PhoneRecordingRecorderSelector,
-  },
-
+export const PhoneRecorder = {
   props: ['recordingKey'],
 
   data() {
@@ -56,4 +52,5 @@ export default {
     },
   },
 }
+export default PhoneRecorder
 </script>

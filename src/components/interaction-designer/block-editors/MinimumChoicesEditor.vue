@@ -29,11 +29,7 @@ import {IBlock} from '@floip/flow-runner'
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({
-  components: {
-    NumericEditor,
-  },
-})
+@Component({})
 export class MinimumChoicesEditor extends mixins(Lang) {
   @Prop() readonly block!: ISelectManyResponseBlock
 

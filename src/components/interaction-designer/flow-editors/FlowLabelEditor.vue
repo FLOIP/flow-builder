@@ -18,7 +18,7 @@ import {mixins} from 'vue-class-component'
 const flowVuexNamespace = namespace('flow')
 
 @Component
-class FlowLabelEditor extends mixins(Lang) {
+export class FlowLabelEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop() validState?: boolean
 

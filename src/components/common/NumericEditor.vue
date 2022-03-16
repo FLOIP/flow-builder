@@ -20,7 +20,7 @@
 
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-export default {
+export const NumericEditor = {
   props: {
     validState: {
       type: Boolean,
@@ -64,4 +64,5 @@ export default {
     },
   },
 }
+export default NumericEditor
 </script>

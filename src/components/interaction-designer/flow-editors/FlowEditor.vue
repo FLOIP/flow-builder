@@ -21,7 +21,7 @@
           <validation-message
             #input-control="{ isValid }"
             :message-key="`flow/${flow.uuid}/interaction_timeout`">
-            <flow-interaction-timeout-editor
+            <interaction-timeout-editor
               :flow="flow"
               :valid-state="isValid" />
           </validation-message>
@@ -30,7 +30,7 @@
           <validation-message
             #input-control="{ isValid }"
             :message-key="`flow/${flow.uuid}/languages`">
-            <flow-languages-editor
+            <languages-editor
               :flow="flow"
               @commitFlowLanguagesChange="updateFlowLanguages" />
           </validation-message>
@@ -38,7 +38,7 @@
           <validation-message
             #input-control="{ isValid }"
             :message-key="`flow/${flow.uuid}/supported_modes`">
-            <flow-modes-editor
+            <modes-editor
               :flow="flow"
               @commitFlowModesChange="updateFlowModes" />
           </validation-message>
@@ -55,8 +55,6 @@ import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {mixins} from 'vue-class-component'
-import FlowLabelEditor from './LabelEditor.vue'
-import FlowInteractionTimeoutEditor from './InteractionTimeoutEditor.vue'
 import FlowLanguagesEditor from './LanguagesEditor.vue'
 import FlowModesEditor from './ModesEditor.vue'
 
@@ -64,16 +62,8 @@ const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 const validationVuexNamespace = namespace('validation')
 
-@Component({
-  components: {
-    FlowLabelEditor,
-    FlowInteractionTimeoutEditor,
-    FlowLanguagesEditor,
-    FlowModesEditor,
-    ValidationMessage,
-  },
-})
-class FlowEditor extends mixins(Lang) {
+@Component({})
+export class FlowEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop({default: 'flow-builder.edit-flow'}) readonly flowHeader!: string
   @Prop({default: true}) readonly sidebar!: boolean

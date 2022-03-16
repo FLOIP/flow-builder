@@ -5,23 +5,23 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
       <slot name="extras" />
 
       <hr>
 
-      <block-max-duration-seconds-editor
+      <max-duration-seconds-editor
         :block="block"
         :has-ivr="hasVoiceMode"
         @commitMaxDurationChange="setMaxDurationSeconds" />
-      <block-max-response-characters-editor
+      <max-response-characters-editor
         :block="block"
         :has-text="hasTextMode"
         @commitMaxResponseCharactersChange="setMaxResponseCharacters" />
@@ -80,21 +80,7 @@ const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({
-  components: {
-    GenericContactPropertyEditor,
-    ResourceEditor,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
-    FirstBlockEditorButton,
-    BlockId,
-    BlockMaxDurationSecondsEditor,
-    BlockMaxResponseCharactersEditor,
-    Categorization,
-    BlockOutputBranchingConfig,
-  },
-})
+@Component({})
 class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: IOpenResponseBlock
 

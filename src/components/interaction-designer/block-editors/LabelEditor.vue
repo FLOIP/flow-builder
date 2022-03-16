@@ -33,7 +33,7 @@ import {namespace} from 'vuex-class'
 const flowVuexNamespace = namespace('flow')
 
 @Component
-class LabelEditor extends mixins(Lang) {
+export class LabelEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   get blockLabel(): IBlock['label'] {

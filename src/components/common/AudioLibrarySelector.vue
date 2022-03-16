@@ -32,12 +32,7 @@ import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import AudioLibrarySearchField from './AudioLibrarySearchField'
 import AudioLibrarySelection from './AudioLibrarySelection'
 
-export default {
-
-  components: {
-    AudioLibrarySearchField,
-    AudioLibrarySelection,
-  },
+export const AudioLibrarySelector = {
   props: [
     'alternateSelections',
     'selectedAudioFile',
@@ -72,4 +67,5 @@ export default {
     },
   },
 }
+export default AudioLibrarySelector
 </script>

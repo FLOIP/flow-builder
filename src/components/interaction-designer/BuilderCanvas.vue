@@ -35,12 +35,8 @@ const MARGIN_WIDTH_CORRECTION = 120
 //in `ms`
 const DEBOUNCE_SCROLL_TIMER = 300
 
-@Component({
-  components: {
-    Block,
-  },
-})
-export default class BuilderCanvas extends Vue {
+@Component({})
+export class BuilderCanvas extends Vue {
   @Prop() block!: IBlock
   @Prop({default: 0}) widthAdjustment!: number
 
@@ -223,7 +219,7 @@ export default class BuilderCanvas extends Vue {
   ) => Promise<void>
 }
 
-export {BuilderCanvas}
+export default BuilderCanvas
 </script>
 
 <style scoped>

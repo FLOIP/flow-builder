@@ -115,9 +115,6 @@ const importVuexNamespace = namespace('flow/import')
 
 @Component(
   {
-    components: {
-      ErrorHandler,
-    },
     mixins: [lang, Routes],
   },
 )
