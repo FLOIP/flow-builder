@@ -44,7 +44,7 @@ import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {Component, Prop, Watch} from 'vue-property-decorator'
 import Vue from 'vue'
-import {Getter, Mutation, namespace} from 'vuex-class'
+import {Getter, Mutation, namespace, State} from 'vuex-class'
 import {forEach, isEmpty} from 'lodash'
 import {store} from '@/store'
 import {IContext, IFlow} from '@floip/flow-runner'
@@ -77,7 +77,7 @@ class NewFlow extends Vue {
   }
 
   get createFlowTitle(): string {
-    return this.$store.state.trees.ui.title.createFlow
+    return this.ui.title.createFlow
   }
 
   async mounted(): Promise<void> {
@@ -118,6 +118,8 @@ class NewFlow extends Vue {
   }
 
   flowError: string | null = null
+
+  @State(({trees: {ui}}) => ui) ui!: any
 
   @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
   @flowVuexNamespace.Action flow_persist!: ({

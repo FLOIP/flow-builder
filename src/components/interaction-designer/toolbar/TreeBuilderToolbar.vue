@@ -411,7 +411,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   // Computed ####################
 
   get editFlowTitle(): string {
-    return this.$store.state.trees.ui.title.editFlow
+    return this.ui.title.editFlow
   }
 
   isEmpty(value?: any): boolean {

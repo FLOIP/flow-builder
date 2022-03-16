@@ -60,7 +60,7 @@
 <script lang="ts">
 import {Component, Prop} from 'vue-property-decorator'
 import {IFlow, IResource, ILanguage, SupportedMode} from '@floip/flow-runner'
-import {namespace} from 'vuex-class'
+import {namespace, State} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {mixins} from 'vue-class-component'
@@ -89,7 +89,7 @@ class FlowEditor extends mixins(Lang) {
   @Prop({default: false}) readonly didUserSubmit!: boolean
 
   get hasDefaultInteractionTimeout(): boolean {
-    return Boolean(this.$store.state.trees.ui.appWideInteractionTimeout)
+    return Boolean(this.ui.appWideInteractionTimeout)
   }
 
   get firstRowClass(): string {
@@ -123,6 +123,7 @@ class FlowEditor extends mixins(Lang) {
     })
   }
 
+  @State(({trees: {ui}}) => ui) ui!: any
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Getter resourcesOnActiveFlow!: IResource[]
   @flowVuexNamespace.Mutation flow_setLanguages: any

@@ -102,7 +102,7 @@ import lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {Component, Prop} from 'vue-property-decorator'
 import Vue from 'vue'
-import {Getter, Mutation, namespace} from 'vuex-class'
+import {Getter, Mutation, namespace, State} from 'vuex-class'
 import {debounce, forEach, get, isEmpty} from 'lodash'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
@@ -131,7 +131,7 @@ class ImportFlow extends Vue {
   fileName = ''
 
   get importFlowTitle(): string {
-    return this.$store.state.trees.ui.title.importFlow
+    return this.ui.title.importFlow
   }
 
   async created() {
@@ -235,6 +235,8 @@ class ImportFlow extends Vue {
       // TODO - hook into validation system when we have it to display any errors? Or should we have caught any errors already?
     }
   }
+
+  @State(({trees: {ui}}) => ui) ui!: any
 
   @flowVuexNamespace.Action flow_import!: ({
     persistRoute,

@@ -22,6 +22,7 @@ import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
 import {sortBy} from 'lodash'
+import {State} from 'vuex-class'
 
 @Component({
   components: {
@@ -34,7 +35,7 @@ class LanguagesEditor extends mixins(Lang) {
 
   get languages(): ILanguage[] {
     // Make sure to follow order when populating languages, because the order may affect indexes during resource validation
-    return sortBy(this.$store.state.trees.ui.languages, ['label'])
+    return sortBy(this.ui.languages, ['label'])
   }
 
   get flowSelectedLanguages(): ILanguage[] {
@@ -44,6 +45,8 @@ class LanguagesEditor extends mixins(Lang) {
   set flowSelectedLanguages(value: ILanguage[]) {
     this.$emit('commitFlowLanguagesChange', value)
   }
+
+  @State(({trees: {ui}}) => ui) ui!: any
 }
 
 export default LanguagesEditor
