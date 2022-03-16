@@ -31,6 +31,13 @@ import {
 } from '@fortawesome/free-regular-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import * as commonComponents from '@/components/common'
+import * as interactionDesignerComponents from '@/components/interaction-designer/'
+import * as blockEditorsComponents from '@/components/interaction-designer/block-editors'
+import * as blockTypesComponents from '@/components/interaction-designer/block-types'
+import * as flowEditorsComponents from '@/components/interaction-designer/flow-editors'
+import * as flowImportComponents from '@/components/interaction-designer/flow-editors/import'
+import * as resourceEditorsComponents from '@/components/interaction-designer/resource-editors'
+import * as toolbarComponents from '@/components/interaction-designer/toolbar'
 import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import CustomIcons from './lib/custom-icons/index'
 import router from './router'
@@ -38,7 +45,16 @@ import App from './App.vue'
 
 Vue.component('TreeBuilderToolbar', TreeBuilderToolbar)
 
-Object.entries(commonComponents).forEach((component) => {
+Object.entries({
+  ...commonComponents,
+  ...interactionDesignerComponents,
+  ...blockEditorsComponents,
+  ...blockTypesComponents,
+  ...flowEditorsComponents,
+  ...flowImportComponents,
+  ...resourceEditorsComponents,
+  ...toolbarComponents
+}).forEach((component) => {
   Vue.component(component[0], component[1])
 })
 
