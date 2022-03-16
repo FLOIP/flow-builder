@@ -69,9 +69,9 @@ class NewFlow extends Vue {
   didUserSubmit = false
 
   @Watch('activeFlow', {deep: true, immediate: true})
-  async onActiveFlowChanged(newFlow: IFlow) {
-    if (newFlow) {
-      console.debug('watch/activeFlow:', 'active flow has changed from new flow flow page, validating ...');
+  async onActiveFlowChanged(newFlow: IFlow): Promise<void> {
+    if (Boolean(newFlow) === true) {
+      console.debug('watch/activeFlow:', 'active flow has changed from new flow flow page, validating ...')
       await this.validate_flow({flow: newFlow})
     }
   }

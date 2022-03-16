@@ -369,10 +369,6 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   isImporterVisible = false
   height = 102
 
-  get editFlowTitle(): string {
-    return this.$store.state.trees.ui.title.editFlow
-  }
-
   async mounted(): Promise<void> {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
     this.onMetaChanged(routeMeta)
@@ -413,6 +409,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   // Computed ####################
+
+  get editFlowTitle(): string {
+    return this.$store.state.trees.ui.title.editFlow
+  }
 
   isEmpty(value?: any): boolean {
     return isEmpty(value)

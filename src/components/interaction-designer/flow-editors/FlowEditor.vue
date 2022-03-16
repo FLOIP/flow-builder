@@ -22,8 +22,8 @@
         </validation-message>
 
         <validation-message
-          #input-control="{ isValid }"
           v-if="!hasDefaultInteractionTimeout"
+          #input-control="{ isValid }"
           :class="firstRowClass"
           :message-key="`flow/${flow.uuid}/interaction_timeout`"
           :should-hide-validation="!didUserSubmit">

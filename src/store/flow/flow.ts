@@ -57,7 +57,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   isActiveFlowConsideredValidOnCreationForm: (state, getters, rootState) => {
     const flowValidationResult = get(rootState.validation.validationStatuses, `flow/${getters.activeFlow.uuid}`)
     // true if we only have 1 validation error (it's related to '/first_block_id')
-    return getters.isActiveFlowValid || (flowValidationResult && flowValidationResult.ajvErrors?.length === 1)
+    return Boolean(getters.isActiveFlowValid) || (Boolean(flowValidationResult) && flowValidationResult.ajvErrors?.length === 1)
   },
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: (state) => ({
