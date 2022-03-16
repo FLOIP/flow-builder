@@ -75,12 +75,13 @@ class FetchFlow extends mixins(Routes, Lang) {
     }
   }
 
-  async created() {
+  async beforeCreate(): Promise<void> {
     const {$store} = this
 
-    forEach(store.modules, (v, k) =>
-      !$store.hasModule(k) && $store.registerModule(k, v))
+    forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
+  }
 
+  async created(): Promise<void> {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }

@@ -134,14 +134,16 @@ class ImportFlow extends Vue {
     return this.ui.title.importFlow
   }
 
-  async created() {
+  async beforeCreate(): Promise<void> {
     const {$store} = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
     $store.hasModule(['flow', 'import'])
     || $store.registerModule(['flow', 'import'], ImportStore)
+  }
 
+  async created(): Promise<void> {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
