@@ -7,14 +7,14 @@
           <router-link
             v-if="showNewButton"
             :to="route('flows.newFlow')"
-            title="trans('flow-builder.create-a-new-flow')"
+            :title="trans('flow-builder.create-a-new-flow')"
             class="mt-3 btn btn-outline-secondary mr-2 active">
             {{ 'flow-builder.new-flow' | trans }}
           </router-link>
           <router-link
             v-if="flowLink"
             :to="flowLink"
-            title="trans('flow-builder.flow-details')"
+            :title="trans('flow-builder.flow-details')"
             class="mt-3 btn btn-outline-secondary mr-2 active">
             {{ 'flow-builder.go-to-flow' | trans }}
           </router-link>
