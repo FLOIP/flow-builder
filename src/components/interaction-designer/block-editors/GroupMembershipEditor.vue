@@ -85,7 +85,6 @@ import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {get} from 'lodash'
 import {mixins} from 'vue-class-component'
-import ExpressionInput from '@/components/common/ExpressionInput.vue'
 
 const flowVuexNamespace = namespace('flow')
 

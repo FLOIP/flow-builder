@@ -85,7 +85,6 @@ import Component, {mixins} from 'vue-class-component'
 import {namespace} from 'vuex-class'
 import {IFlow, IResource} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
-import BlockErrorsExpandable from '@/components/interaction-designer/toolbar/BlockErrorsExpandable.vue'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')

@@ -53,10 +53,7 @@ import {Component, Prop} from 'vue-property-decorator'
 import {IFlow, IResource, ILanguage, SupportedMode} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {mixins} from 'vue-class-component'
-import FlowLanguagesEditor from './LanguagesEditor.vue'
-import FlowModesEditor from './ModesEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')

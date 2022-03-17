@@ -115,7 +115,6 @@ import {forEach, isEmpty} from 'lodash'
 import {store} from '@/store'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {IFlow} from '@floip/flow-runner'
-import LanguageAdder from '../components/interaction-designer/flow-editors/import/LanguageAdder.vue'
 
 const flowVuexNamespace = namespace('flow')
 

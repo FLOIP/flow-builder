@@ -34,7 +34,6 @@ import Lang from '@/lib/filters/lang'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import AdvancedExitEditor from '@/components/interaction-designer/block-editors/AdvancedExitEditor.vue'
 import {isEmpty, last} from 'lodash'
 import Vue from 'vue'
 

@@ -98,11 +98,10 @@
 </template>
 
 <script lang="ts">
-  import {get, isEmpty, isNil, find} from 'lodash'
+  import {get, isEmpty, find} from 'lodash'
   import {Component, Prop} from 'vue-property-decorator'
   import {IBlock, IBlockExit, ValidationException} from '@floip/flow-runner'
   import {mixins} from 'vue-class-component'
-  import AdvancedExitsBuilder from '@/components/interaction-designer/block-editors/AdvancedExitsBuilder.vue'
   import Lang from '@/lib/filters/lang'
   import {namespace} from 'vuex-class'
 

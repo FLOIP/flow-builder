@@ -44,7 +44,6 @@ import {endsWith, forEach, get, isEmpty, invoke, values} from 'lodash'
 import Vue from 'vue'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 import {store} from '@/store'
-import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
 import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
 

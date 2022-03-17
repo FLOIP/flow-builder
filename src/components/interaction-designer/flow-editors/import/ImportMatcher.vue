@@ -57,8 +57,7 @@ import lang from '@/lib/filters/lang'
 import Vue from 'vue'
 import {Component, Prop} from 'vue-property-decorator'
 import {get, isEmpty, omit} from 'lodash'
-import {Action, Getter, namespace} from 'vuex-class'
-import LanguageAdder from './LanguageAdder.vue'
+import {Getter, namespace} from 'vuex-class'
 
 const importVuexNamespace = namespace('flow/import')
 

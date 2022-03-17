@@ -1,6 +1,6 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExit, IBlockConfig, IBlock} from '@floip/flow-runner'
+import {IBlockConfig, IBlock} from '@floip/flow-runner'
 import {defaultsDeep} from 'lodash'
 import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'

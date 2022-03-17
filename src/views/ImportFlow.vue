@@ -107,7 +107,6 @@ import {debounce, forEach, get, isEmpty} from 'lodash'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
 
-import ErrorHandler from '@/components/interaction-designer/flow-editors/import/ErrorHandler.vue'
 import ImportStore from '@/store/flow/views/import'
 
 const flowVuexNamespace = namespace('flow')

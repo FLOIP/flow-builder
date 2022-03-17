@@ -96,7 +96,6 @@ import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {get, has} from 'lodash'
 import {mixins} from 'vue-class-component'
-import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import {isBlockInteractive} from '@/store/flow/block.ts'
 
 const flowVuexNamespace = namespace('flow')

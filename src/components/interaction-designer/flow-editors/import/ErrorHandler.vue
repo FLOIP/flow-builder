@@ -69,7 +69,6 @@ import Vue from 'vue'
 import {Getter, namespace} from 'vuex-class'
 import {IContext} from '@floip/flow-runner'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
-import ImportMatcher from '@/components/interaction-designer/flow-editors/import/ImportMatcher.vue'
 import {IContactPropertyOption} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import {IGroupOption} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 

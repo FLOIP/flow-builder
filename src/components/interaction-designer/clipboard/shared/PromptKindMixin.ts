@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { Prop } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { IContext, IPrompt } from '@floip/flow-runner';
+import {Prop} from 'vue-property-decorator'
+import {namespace} from 'vuex-class'
+import {IContext, IPrompt} from '@floip/flow-runner'
 
 const clipboardVuexNamespace = namespace('clipboard')
 

@@ -20,7 +20,6 @@
 <script lang="ts">
 import {Component, Prop} from 'vue-property-decorator'
 import {IFlow, SupportedMode} from '@floip/flow-runner'
-import NumericEditor from '@/components/common/NumericEditor.vue'
 
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'

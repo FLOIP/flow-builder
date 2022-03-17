@@ -52,7 +52,7 @@ const Components: { [key: string]: any } = {
   ...flowEditorsComponents,
   ...flowImportComponents,
   ...resourceEditorsComponents,
-  ...toolbarComponents
+  ...toolbarComponents,
 }
 
 Object.entries(Components).forEach((component) => {

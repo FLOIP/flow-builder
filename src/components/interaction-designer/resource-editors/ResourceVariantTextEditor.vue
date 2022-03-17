@@ -117,7 +117,6 @@ import {isObject, some} from 'lodash'
 import VueFocus from 'vue-focus'
 import {mapActions} from 'vuex'
 import {BTooltip} from 'bootstrap-vue'
-import ValidationMessage from '@/components/common/ValidationMessage'
 
 // import BlockContentAutogenButton from './BlockContentAutogenButton'
 

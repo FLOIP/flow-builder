@@ -29,8 +29,6 @@
 import {isEmpty} from 'lodash'
 import {mapActions} from 'vuex'
 import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
-import AudioLibrarySearchField from './AudioLibrarySearchField'
-import AudioLibrarySelection from './AudioLibrarySelection'
 
 export const AudioLibrarySelector = {
   props: [

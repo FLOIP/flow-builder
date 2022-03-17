@@ -48,17 +48,8 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 import {IBlock, IFlow} from '@floip/flow-runner'
-import ContactPropertyEditor from '@/components/interaction-designer/block-editors/ContactPropertyEditor.vue'
 import Lang from '@/lib/filters/lang'
-import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {mixins} from 'vue-class-component'
-import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import BlockId from '../block-editors/BlockId.vue'
-import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-import BlockLabelEditor from '../block-editors/LabelEditor.vue'
-import BlockNameEditor from '../block-editors/NameEditor.vue'
-import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const builderVuexNamespace = namespace('builder')
 

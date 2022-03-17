@@ -11,7 +11,6 @@ import {IBlock} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
-import TagSelector from '@/components/interaction-designer/block-editors/TagSelector.vue'
 
 @Component({})
 export class Categorization extends mixins(Lang) {

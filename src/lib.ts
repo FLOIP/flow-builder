@@ -29,7 +29,6 @@ import FetchFlowComponent from './views/FetchFlow.vue'
 import NewFlowComponent from './views/NewFlow.vue'
 import ImportFlowComponent from './views/ImportFlow.vue'
 import HomeComponent from './views/Home.vue'
-import TreeBuilderToolbarComponent from './components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import defaultLocalisationsJson from './assets/messages.json'
 
 //Block helpers

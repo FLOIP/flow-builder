@@ -15,7 +15,6 @@
 
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import NumericEditor from '@/components/common/NumericEditor'
 import {get} from 'lodash'
 import {lang} from '@/lib/filters/lang'
 

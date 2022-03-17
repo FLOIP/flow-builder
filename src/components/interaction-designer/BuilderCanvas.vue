@@ -16,7 +16,6 @@
 
 <script lang="ts">
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
-import Block from '@/components/interaction-designer/Block.vue'
 import {cloneDeep, debounce, find, isEqual, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
 import {IBlock, IFlow, IResource, IResources, SupportedMode} from '@floip/flow-runner'

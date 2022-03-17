@@ -32,7 +32,6 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 import {IBlock, IFlow} from '@floip/flow-runner'
-import ContactPropertyEditor from '@/components/interaction-designer/block-editors/ContactPropertyEditor.vue'
 import SetContactPropertyStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
@@ -43,8 +42,8 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({
   components: {
-    BaseBlock
-  }
+    BaseBlock,
+  },
 })
 class Core_SetContactPropertyBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
