@@ -17,7 +17,7 @@ import * as commonComponents from '@/components/common'
 import * as interactionDesignerComponents from '@/components/interaction-designer/'
 import * as blockEditorsComponents from '@/components/interaction-designer/block-editors'
 import * as blockTypesComponents from '@/components/interaction-designer/block-types'
-import * as blockComponents from '@/components/interaction-designer/block'
+import * as blocksComponents from '@/components/interaction-designer/blocks'
 import * as flowEditorsComponents from '@/components/interaction-designer/flow-editors'
 import * as flowImportComponents from '@/components/interaction-designer/flow-editors/import'
 import * as resourceEditorsComponents from '@/components/interaction-designer/resource-editors'
@@ -28,7 +28,7 @@ const Components: { [key: string]: any } = {
   ...interactionDesignerComponents,
   ...blockEditorsComponents,
   ...blockTypesComponents,
-  ...blockComponents,
+  ...blocksComponents,
   ...flowEditorsComponents,
   ...flowImportComponents,
   ...resourceEditorsComponents,
