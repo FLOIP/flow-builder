@@ -144,18 +144,19 @@ export default {
     },
   },
 
-  created() {
+  async beforeCreate() {
     const {$store} = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
+  },
 
+  created() {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
 
     // initialize global reference for legacy + debugging
     global.builder = this
-
 
     this.initializeTreeModel()
     // `this.mode` comes from captured param in js-routes

@@ -1,12 +1,12 @@
 <template>
   <div class="import-flow">
     <div class="row">
-      <div class="col-sm-8 offset-sm-2">
-        <div class="card d-flex">
+      <div class="col-sm-12 m-2">
+        <div class="card d-flex bg-light">
           <div class="card-body">
             <div>
               <h2>
-                {{ 'flow-builder.import-flow' | trans }}
+                {{ trans(importFlowTitle) }}
               </h2>
               <p>{{ 'flow-builder.create-flow-from-json' | trans }}</p>
               <div
@@ -102,7 +102,7 @@ import lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {Component, Prop} from 'vue-property-decorator'
 import Vue from 'vue'
-import {Getter, Mutation, namespace} from 'vuex-class'
+import {Getter, Mutation, namespace, State} from 'vuex-class'
 import {debounce, forEach, get, isEmpty} from 'lodash'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
@@ -130,14 +130,20 @@ class ImportFlow extends Vue {
 
   fileName = ''
 
-  async created() {
+  get importFlowTitle(): string {
+    return this.ui.title.importFlow
+  }
+
+  async beforeCreate(): Promise<void> {
     const {$store} = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
     $store.hasModule(['flow', 'import'])
     || $store.registerModule(['flow', 'import'], ImportStore)
+  }
 
+  async created(): Promise<void> {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
@@ -231,6 +237,8 @@ class ImportFlow extends Vue {
       // TODO - hook into validation system when we have it to display any errors? Or should we have caught any errors already?
     }
   }
+
+  @State(({trees: {ui}}) => ui) ui!: any
 
   @flowVuexNamespace.Action flow_import!: ({
     persistRoute,

@@ -49,7 +49,7 @@
                 @ok="showOrHideEditFlowModal">
                 <template slot="modal-header">
                   <h2 class="mb-0">
-                    {{ 'flow-builder.edit-flow' | trans }}
+                    {{ editFlowTitle | trans }}
                   </h2>
                   <button
                     type="button"
@@ -61,6 +61,7 @@
                 </template>
                 <flow-editor
                   :flow="activeFlow"
+                  :did-user-submit="true"
                   flow-header="" />
               </b-modal>
 
@@ -369,7 +370,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   isImporterVisible = false
   height = 102
 
-  async mounted() {
+  async mounted(): Promise<void> {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
     this.onMetaChanged(routeMeta)
 
@@ -409,6 +410,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   // Computed ####################
+
+  get editFlowTitle(): string {
+    return this.ui.title.editFlow
+  }
 
   isEmpty(value?: any): boolean {
     return isEmpty(value)
@@ -651,6 +656,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   @flowVuexNamespace.Getter activeFlow?: IFlow
   @flowVuexNamespace.Getter activeFlowContainer?: IContext
   @flowVuexNamespace.Getter hasOfflineMode?: boolean
+  @flowVuexNamespace.Getter isActiveFlowValid?: boolean
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.State resources?: IResource[]
   @flowVuexNamespace.Action flow_removeBlock!: ({flowId, blockId}: { flowId?: string, blockId: IBlock['uuid'] | undefined }) => void
