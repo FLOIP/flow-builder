@@ -54,7 +54,7 @@ import {mixins} from 'vue-class-component'
 const builderVuexNamespace = namespace('builder')
 
 @Component({})
-class BaseBlock extends mixins(Lang) {
+export class BaseBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean

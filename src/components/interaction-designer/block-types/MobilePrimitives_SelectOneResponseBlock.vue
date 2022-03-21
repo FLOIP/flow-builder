@@ -61,16 +61,11 @@ import {
   IBlockWithBranchingType,
   OutputBranchingType,
 } from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import BaseBlock from './BaseBlock.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
-@Component({
-  components: {
-    BaseBlock,
-  },
-})
+@Component({})
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
   @Prop() readonly flow!: IFlow
