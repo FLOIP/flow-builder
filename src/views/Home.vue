@@ -107,23 +107,20 @@
 </template>
 
 <script lang="ts">
-import {lang} from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {Component, Prop} from 'vue-property-decorator'
 import Vue from 'vue'
 import {forEach, isEmpty} from 'lodash'
+import {mixins} from 'vue-class-component'
 import {store} from '@/store'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {IFlow} from '@floip/flow-runner'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component(
-  {
-    mixins: [lang, Routes],
-  },
-)
-class Home extends Vue {
+@Component({})
+class Home extends mixins(Lang, Routes) {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 

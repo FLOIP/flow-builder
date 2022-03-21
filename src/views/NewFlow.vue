@@ -32,24 +32,21 @@
 </template>
 
 <script lang="ts">
-import {lang} from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {Component, Prop} from 'vue-property-decorator'
 import Vue from 'vue'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {forEach, isEmpty} from 'lodash'
+import {mixins} from 'vue-class-component'
 import {store} from '@/store'
 import {IContext, IFlow} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component(
-  {
-    mixins: [lang, Routes],
-  },
-)
-class NewFlow extends Vue {
+@Component({})
+class NewFlow extends mixins(Lang, Routes) {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 
