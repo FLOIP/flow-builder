@@ -45,8 +45,19 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     // check if all blocks are valid
     return every(
       getters.activeFlow.blocks,
-      (block) => get(rootState.validation.validationStatuses, `block/${block.uuid}`)?.isValid,
+      (block) => {
+        const currentValidation = get(rootState.validation.validationStatuses, `block/${block.uuid}`)
+        // should be valid if we don't have associated validation in validationStatuses
+        return currentValidation != null ? currentValidation.isValid : true
+      },
     )
+  },
+  //TODO: when IFlow interface is fixed in https://viamoinc.atlassian.net/browse/VMO-5581
+  // remove isActiveFlowConsideredValidOnCreationForm, and change every references to isActiveFlowValid
+  isActiveFlowConsideredValidOnCreationForm: (state, getters, rootState) => {
+    const flowValidationResult = get(rootState.validation.validationStatuses, `flow/${getters.activeFlow.uuid}`)
+    // true if we only have 1 validation error (it's related to '/first_block_id')
+    return Boolean(getters.isActiveFlowValid) || (Boolean(flowValidationResult) && flowValidationResult.ajvErrors?.length === 1)
   },
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: (state) => ({
@@ -323,7 +334,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
         label: '',
         last_modified: moment().toISOString(),
-        interaction_timeout: 30,
+        interaction_timeout: rootState.trees.ui.appWideInteractionTimeout,
         vendor_metadata: {},
 
         supported_modes: rootState.trees.ui.defaultModes,

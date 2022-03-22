@@ -89,16 +89,15 @@ function formatTestValueForUnifiedBranchingType(block: INumericResponseBlock): s
   }
   if ((block.config.validation_minimum !== null && block.config.validation_minimum !== undefined)
     && (block.config.validation_maximum !== null && block.config.validation_maximum !== undefined)) {
-    return `AND(is_number(block.value, block.value >= ${block.config.validation_minimum},`
-      + ` block.value <= ${block.config.validation_maximum})`
+    return `AND(is_number(block.value, block.value >= ${block.config.validation_minimum}, block.value <= ${block.config.validation_maximum}))`
   }
   if ((block.config.validation_minimum !== null && block.config.validation_minimum !== undefined)
     && (block.config.validation_maximum === null || block.config.validation_maximum === undefined)) {
-    return `AND(is_number(block.value), block.value >= ${block.config.validation_minimum})`
+    return `AND(is_number(block.value), block.value >= ${block.config.validation_minimum}))`
   }
   if ((block.config.validation_minimum === null || block.config.validation_minimum === undefined)
     && (block.config.validation_maximum !== null && block.config.validation_maximum !== undefined)) {
-    return `AND(is_number(block.value), block.value <= ${block.config.validation_maximum})`
+    return `AND(is_number(block.value), block.value <= ${block.config.validation_maximum}))`
   }
 
   console.warn('Exit test condition not found for NumericBlock, providing `true` by default')

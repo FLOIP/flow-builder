@@ -1,53 +1,47 @@
 <template>
   <div class="mobile-primitive-select-one-response-block">
-    <h3 class="block-editor-header">
-      {{ `flow-builder.${block.type}` | trans }}
-    </h3>
+    <base-block
+      :block="block"
+      :flow="flow"
+      :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
+      :uses-default-branching-editor="usesDefaultBranchingEditor"
+      :show-semantic-label="false">
+      <template slot="extras">
+        <template
+          v-if="!$slots['extras']">
+          <choices-builder
+            :block="block"
+            @choiceChanged="handleChoiceChanged" />
+          <block-output-branching-config
+            v-if="!$slots['branching']"
+            :block="block"
+            :has-exit-per-choice="true"
+            :label-class="''"
+            @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
 
-    <fieldset :disabled="!isEditable">
-      <block-label-editor
-        :block="block"
-        @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
-        v-if="showSemanticLabel"
-        :block="block" />
-      <block-name-editor :block="block" />
-
-      <hr>
-
-      <choices-builder
-        :block="block"
-        @choiceChanged="handleChoiceChanged" />
-
-      <block-output-branching-config
-        :block="block"
-        :has-exit-per-choice="true"
-        :label-class="''"
-        @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
-
-      <div class="prompt-resource">
-        <resource-editor
-          v-if="promptResource"
-          :label="'flow-builder.prompt' | trans"
-          :resource="promptResource"
-          :block="block"
-          :flow="flow" />
-      </div>
-
-      <slot name="extras" />
-
-      <categorization :block="block" />
-
-      <generic-contact-property-editor :block="block" />
-
-      <hr>
-
-      <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
-    </fieldset>
-
-    <block-id :block="block" />
+          <div class="prompt-resource">
+            <resource-editor
+              v-if="promptResource"
+              :label="'flow-builder.prompt' | trans"
+              :resource="promptResource"
+              :block="block"
+              :flow="flow" />
+          </div>
+        </template>
+        <slot
+          v-if="$slots['extras']"
+          name="extras" />
+      </template>
+      <template slot="branching">
+        <slot
+          name="branching" />
+      </template>
+      <template slot="contact-props">
+        <slot
+          name="contact-props" />
+      </template>
+    </base-block>
+    <slot name="vendor" />
   </div>
 </template>
 
@@ -60,49 +54,33 @@ import {includes, map} from 'lodash'
 
 import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
-import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
-import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
 import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import ChoicesBuilder from '@/components/interaction-designer/block-editors/ChoicesBuilder.vue'
 import BlockOutputBranchingConfig, {
   IBlockWithBranchingType,
   OutputBranchingType,
 } from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import BlockNameEditor from '../block-editors/NameEditor.vue'
-import BlockLabelEditor from '../block-editors/LabelEditor.vue'
-import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor.vue'
-import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
 import ResourceEditor from '../resource-editors/ResourceEditor.vue'
-import BlockId from '../block-editors/BlockId.vue'
-import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
+import BaseBlock from './BaseBlock.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
-const builderVuexNamespace = namespace('builder')
 
 @Component({
   components: {
-    GenericContactPropertyEditor,
-    ResourceVariantTextEditor,
-    BlockExitSemanticLabelEditor,
-    BlockId,
-    BlockLabelEditor,
-    BlockNameEditor,
     BlockOutputBranchingConfig,
-    BlockSemanticLabelEditor,
     ChoicesBuilder,
-    FirstBlockEditorButton,
     ResourceEditor,
-    Categorization,
+    BaseBlock,
   },
 })
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
-
   @Prop() readonly flow!: IFlow
+  @Prop({default: false}) readonly usesDefaultBranchingEditor!: boolean
+  @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
 
   showSemanticLabel = false
 
@@ -142,12 +120,8 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
-  @flowVuexNamespace.Action block_createBlockExitWith!: ({props}: { props: { uuid: string } & Partial<IBlockExit> }) => Promise<IBlockExit>
-  @flowVuexNamespace.Action block_convertExitFormationToUnified!:
-    ({blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) => Promise<void>
   @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
-  @builderVuexNamespace.Getter isEditable !: boolean
 }
 
 export default MobilePrimitives_SelectOneResponseBlock
