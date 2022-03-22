@@ -73,6 +73,8 @@ class FetchFlow extends mixins(Routes, Lang) {
       this.message = 'flow-builder.flow-not-found'
       this.showNewButton = true
     }
+
+    this.$emit('flowLabel', this.activeFlow?.label)
   }
 
   async beforeCreate(): Promise<void> {
