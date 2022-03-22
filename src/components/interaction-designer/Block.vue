@@ -537,14 +537,18 @@ export default {
     selectBlock() {
       const {block: {uuid: blockId}} = this
       const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
-      this.$router.replace({
-        name: routerName,
-        params: {blockId},
-      }).catch((err) => {
-        if (err.name !== 'NavigationDuplicated') {
-          console.error(err)
-        }
-      })
+      this.$router.replace(
+        {
+          name: routerName,
+          params: {blockId},
+        },
+        undefined,
+        (err) => {
+          if (err.name !== 'NavigationDuplicated') {
+            console.error(err)
+          }
+        },
+      )
     },
 
     handleDraggableEndedForBlock() {
