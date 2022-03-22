@@ -787,6 +787,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   &.active,
   &.save-button:disabled {
+    color: $primary-900;
     background-color: $primary-100;
   }
 
