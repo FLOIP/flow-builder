@@ -349,7 +349,8 @@
     ],
     "toolbar": {
       "flowTitle": true,
-      "newFlowButton": true
+      "newFlowButton": true,
+      "exportButton": true
     },
     "defaultModes": [
       "SMS",

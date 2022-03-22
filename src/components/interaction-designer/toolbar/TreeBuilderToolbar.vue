@@ -120,6 +120,7 @@
               </div>
 
               <button
+                v-if="hasExportButton"
                 class="btn btn-outline-primary btn-sm"
                 :class="{active: isImporterVisible}"
                 @click="toggleImportExport">
@@ -519,6 +520,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   get hasNewFlowButton() {
     return this.$store.state.trees.ui.toolbar.newFlowButton
+  }
+
+  get hasExportButton() {
+    return this.$store.state.trees.ui.toolbar.exportButton
   }
 
   // Methods #####################
