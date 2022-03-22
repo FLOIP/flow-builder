@@ -544,8 +544,10 @@ export default {
         },
         undefined,
         (err) => {
-          if (err.name !== 'NavigationDuplicated') {
-            console.error(err)
+          if (err == null) {
+            console.warn('Unknown navigation error has occurred when selecting a block')
+          } else if (err.name !== 'NavigationDuplicated') {
+            console.warn(err)
           }
         },
       )
