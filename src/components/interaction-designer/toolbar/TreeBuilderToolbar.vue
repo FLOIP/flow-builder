@@ -41,7 +41,11 @@
                 {{ trans('flow-builder.new-flow') }}
               </router-link>
               <button
-                class="btn btn-outline-primary btn-sm"
+                class="btn btn-sm"
+                :class="{
+                  'btn-outline-primary': hasNewFlowButton,
+                  'btn-primary': !hasNewFlowButton }
+                "
                 @click="showOrHideEditFlowModal">
                 {{ 'flow-builder.flow-details' | trans }}
               </button>
@@ -137,7 +141,10 @@
                 :disabled="!!isTreeSaving"
                 @click="handlePersistFlow()">
                 {{ saveButtonText }}
-                <font-awesome-icon v-if="isTreeSaving" :icon="['fas', 'spinner']" class="fa-btn fa-spin" />
+                <font-awesome-icon
+                  v-if="isTreeSaving"
+                  :icon="['fas', 'spinner']"
+                  class="fa-btn fa-spin" />
               </button>
             </div>
           </div>
