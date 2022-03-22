@@ -26,6 +26,7 @@
             </h4>
             <div>
               <router-link
+                v-if="hasHomeButton"
                 :to="route('flows.home')"
                 :title="trans('flow-builder.home')"
                 class="mr-2">
@@ -516,6 +517,10 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   get hasFlowTitle() {
     return this.$store.state.trees.ui.toolbar.flowTitle
+  }
+
+  get hasHomeButton() {
+    return this.$store.state.trees.ui.toolbar.homeButton
   }
 
   get hasNewFlowButton() {

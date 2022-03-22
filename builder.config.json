@@ -349,6 +349,7 @@
     ],
     "toolbar": {
       "flowTitle": true,
+      "homeButton": true,
       "newFlowButton": true,
       "exportButton": true
     },
