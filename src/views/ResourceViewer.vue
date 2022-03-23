@@ -308,11 +308,10 @@
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
-import {mapActions, mapGetters} from 'vuex'
+import {mapActions, mapGetters, mapState} from 'vuex'
 import fuse from 'fuse.js'
 import {lang} from '@/lib/filters/lang'
 import lodash from 'lodash'
-
 import stores from '../store'
 
 export default {
@@ -336,6 +335,8 @@ export default {
   },
 
   computed: {
+    // TODO: When the time comes to update finalized this `Resource viewer` feature, use vuex to get tree & ui instead of $store.state
+    // Preferably: transform the component to be class based
     ...mapGetters([
       'hasIssues',
       'isFeatureTreesBatchLinkAudioEnabled',

@@ -24,7 +24,6 @@ export class InteractionTimeoutEditor extends mixins(Lang) {
   @Prop() validState?: boolean
 
   get interactionTimeout(): number {
-    // 30 comes from src/store/flow/flow.ts
     return this.flow.interaction_timeout
   }
 
