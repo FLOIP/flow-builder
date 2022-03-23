@@ -22,8 +22,9 @@ import * as blockTypesComponents from '@/components/interaction-designer/block-t
 import * as blocksComponents from '@/components/interaction-designer/blocks'
 import * as flowEditorsComponents from '@/components/interaction-designer/flow-editors'
 import * as flowImportComponents from '@/components/interaction-designer/flow-editors/import'
-import * as resourceEditorsComponents from '@/components/interaction-designer/resource-editors'
+import * as blockResourceEditorsComponents from '@/components/interaction-designer/resource-editors'
 import * as toolbarComponents from '@/components/interaction-designer/toolbar'
+import * as resourceEditorComponents from '@/components/resource-editor'
 import InteractionDesignerComponent from './views/InteractionDesigner.vue'
 import FetchFlowComponent from './views/FetchFlow.vue'
 import NewFlowComponent from './views/NewFlow.vue'
@@ -83,6 +84,7 @@ export * from '@/components/interaction-designer/blocks'
 export * from '@/components/interaction-designer/flow-editors'
 export * from '@/components/interaction-designer/flow-editors/import'
 export * from '@/components/interaction-designer/resource-editors'
+export * from '@/components/resource-editor'
 export * from '@/components/interaction-designer/toolbar'
 export * from '@/store/flow/block-types'
 
@@ -99,7 +101,8 @@ const Components: { [key: string]: any } = {
   ...blocksComponents,
   ...flowEditorsComponents,
   ...flowImportComponents,
-  ...resourceEditorsComponents,
+  ...blockResourceEditorsComponents,
+  ...resourceEditorComponents,
   ...toolbarComponents,
 }
 

@@ -20,7 +20,8 @@ import * as blockTypesComponents from '@/components/interaction-designer/block-t
 import * as blocksComponents from '@/components/interaction-designer/blocks'
 import * as flowEditorsComponents from '@/components/interaction-designer/flow-editors'
 import * as flowImportComponents from '@/components/interaction-designer/flow-editors/import'
-import * as resourceEditorsComponents from '@/components/interaction-designer/resource-editors'
+import * as blockResourceEditorsComponents from '@/components/interaction-designer/resource-editors'
+import * as resourceEditorComponents from '@/components/resource-editor'
 import * as toolbarComponents from '@/components/interaction-designer/toolbar'
 
 const Components: { [key: string]: any } = {
@@ -31,7 +32,8 @@ const Components: { [key: string]: any } = {
   ...blocksComponents,
   ...flowEditorsComponents,
   ...flowImportComponents,
-  ...resourceEditorsComponents,
+  ...blockResourceEditorsComponents,
+  ...resourceEditorComponents,
   ...toolbarComponents
 }
 
