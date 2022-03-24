@@ -34,27 +34,30 @@ import * as commonComponents from '@/components/common'
 import * as interactionDesignerComponents from '@/components/interaction-designer/'
 import * as blockEditorsComponents from '@/components/interaction-designer/block-editors'
 import * as blockTypesComponents from '@/components/interaction-designer/block-types'
+import * as blocksComponents from '@/components/interaction-designer/blocks'
 import * as flowEditorsComponents from '@/components/interaction-designer/flow-editors'
 import * as flowImportComponents from '@/components/interaction-designer/flow-editors/import'
-import * as resourceEditorsComponents from '@/components/interaction-designer/resource-editors'
+import * as blockResourceEditorsComponents from '@/components/interaction-designer/resource-editors'
+import * as resourceEditorComponents from '@/components/resource-editor'
 import * as toolbarComponents from '@/components/interaction-designer/toolbar'
-import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
 import CustomIcons from './lib/custom-icons/index'
 import router from './router'
 import App from './App.vue'
 
-Vue.component('TreeBuilderToolbar', TreeBuilderToolbar)
-
-Object.entries({
+const Components: { [key: string]: any } = {
   ...commonComponents,
   ...interactionDesignerComponents,
   ...blockEditorsComponents,
   ...blockTypesComponents,
+  ...blocksComponents,
   ...flowEditorsComponents,
   ...flowImportComponents,
-  ...resourceEditorsComponents,
-  ...toolbarComponents
-}).forEach((component) => {
+  ...blockResourceEditorsComponents,
+  ...resourceEditorComponents,
+  ...toolbarComponents,
+}
+
+Object.entries(Components).forEach((component) => {
   Vue.component(component[0], component[1])
 })
 

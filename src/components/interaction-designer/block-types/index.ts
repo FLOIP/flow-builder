@@ -58,3 +58,4 @@ export {
   default as Core_SetContactPropertyBlock,
   install as setContactPropertyBlockInstaller,
 } from './Core_SetContactPropertyBlock.vue'
+export * from './BaseBlock.vue'

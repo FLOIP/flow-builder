@@ -169,27 +169,17 @@
 import Vue from 'vue'
 import {filter, forEach, get, includes, isNumber} from 'lodash'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-import PlainDraggable from '@/components/common/PlainDraggable.vue'
 import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
 import {generateConnectionLayoutKeyFor, OperationKind} from '@/store/builder'
-import Connection from '@/components/interaction-designer/Connection.vue'
 import {lang} from '@/lib/filters/lang'
 import {NoValidResponseHandler} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import {BTooltip} from 'bootstrap-vue'
-import BlockEditor from '@/components/interaction-designer/block-editors/BlockEditor'
-import BlockToolbar from '@/components/interaction-designer/block/BlockToolbar'
 
 Vue.component('BTooltip', BTooltip)
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
 
-export default {
-  components: {
-    Connection,
-    PlainDraggable,
-    BlockEditor,
-    BlockToolbar,
-  },
+export const Block = {
   mixins: [lang],
   props: ['block', 'x', 'y'],
 
@@ -564,6 +554,8 @@ export default {
     },
   },
 }
+
+export default Block
 </script>
 
 <style lang="scss">

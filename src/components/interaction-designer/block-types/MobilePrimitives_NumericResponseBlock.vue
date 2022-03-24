@@ -5,21 +5,21 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
-      <block-minimum-numeric-editor
+      <minimum-numeric-editor
         :block="block"
         @commitValidationMinimumChange="updateValidationMin" />
-      <block-maximum-numeric-editor
+      <maximum-numeric-editor
         :block="block"
         @commitValidationMaximumChange="updateValidationMax" />
-      <block-max-digit-editor
+      <max-digit-editor
         :block="block"
         :has-ivr="hasVoiceMode"
         @commitMaxDigitsChange="updateMaxDigits" />
@@ -61,45 +61,18 @@ import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumeric
 
 import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
 import Lang from '@/lib/filters/lang'
-import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
-import BlockOutputBranchingConfig, {
+import {
   IBlockWithBranchingType,
   OutputBranchingType,
 } from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import {includes} from 'lodash'
-import ResourceEditor from '../resource-editors/ResourceEditor.vue'
-import BlockNameEditor from '../block-editors/NameEditor.vue'
-import BlockLabelEditor from '../block-editors/LabelEditor.vue'
-import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-import BlockId from '../block-editors/BlockId.vue'
-import BlockMinimumNumericEditor from '../block-editors/MinimumNumericEditor.vue'
-import BlockMaximumNumericEditor from '../block-editors/MaximumNumericEditor.vue'
-import BlockMaxDigitEditor from '../block-editors/MaxDigitEditor.vue'
-import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({
-  components: {
-    GenericContactPropertyEditor,
-    ResourceEditor,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
-    FirstBlockEditorButton,
-    BlockId,
-    BlockMinimumNumericEditor,
-    BlockMaximumNumericEditor,
-    BlockMaxDigitEditor,
-    Categorization,
-    BlockOutputBranchingConfig,
-  },
-})
+@Component({})
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: INumericResponseBlock
 

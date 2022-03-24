@@ -2,7 +2,7 @@
   <validation-message
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/accuracy_timeout_seconds`">
-    <div class="block-timeout">
+    <div class="timeout-editor">
       <numeric-editor
         v-model.number="timeout"
         :regex-numeric-filtering="'[0-9]'"
@@ -15,14 +15,10 @@
 
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import NumericEditor from '@/components/common/NumericEditor'
 import {get} from 'lodash'
 import {lang} from '@/lib/filters/lang'
 
-export default {
-  components: {
-    NumericEditor,
-  },
+export const TimeoutEditor = {
   mixins: [lang],
   props: {
     block: {
@@ -52,4 +48,5 @@ export default {
     },
   },
 }
+export default TimeoutEditor
 </script>

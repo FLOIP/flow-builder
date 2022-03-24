@@ -59,7 +59,7 @@
 import {lang} from '@/lib/filters/lang'
 import momentFilters from '@/lib/filters/moment'
 
-export default {
+export const AudioLibrarySelection = {
 
   mixins: [lang, momentFilters],
   props: ['audioFile', 'selected', 'selectable', 'langId'],
@@ -80,6 +80,7 @@ export default {
     },
   },
 }
+export default AudioLibrarySelection
 </script>
 
 <style lang="scss">

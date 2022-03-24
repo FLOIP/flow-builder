@@ -70,19 +70,14 @@ import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {get} from 'lodash'
 import {mixins} from 'vue-class-component'
-import ExpressionInput from '@/components/common/ExpressionInput.vue'
 
 const flowVuexNamespace = namespace('flow')
 
 const NULL_STRING_EXPRESSION = '@(null)'
 const EMPTY_STRING_EXPRESSION = ''
 
-@Component({
-  components: {
-    ExpressionInput,
-  },
-})
-class ContactPropertyEditor extends mixins(Lang) {
+@Component({})
+export class ContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   PROPERTY_ACTION = {

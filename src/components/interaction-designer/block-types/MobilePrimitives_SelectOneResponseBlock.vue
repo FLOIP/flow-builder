@@ -46,36 +46,26 @@
 </template>
 
 <script lang="ts">
-import {IBlock, IBlockExit, IFlow, IResource, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource, SupportedMode} from '@floip/flow-runner'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
-import {includes, map} from 'lodash'
+import {includes} from 'lodash'
 
 import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
-import ChoicesBuilder from '@/components/interaction-designer/block-editors/ChoicesBuilder.vue'
-import BlockOutputBranchingConfig, {
+import {
   IBlockWithBranchingType,
   OutputBranchingType,
 } from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import ResourceEditor from '../resource-editors/ResourceEditor.vue'
-import BaseBlock from './BaseBlock.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
-@Component({
-  components: {
-    BlockOutputBranchingConfig,
-    ChoicesBuilder,
-    ResourceEditor,
-    BaseBlock,
-  },
-})
+@Component({})
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
   @Prop() readonly flow!: IFlow

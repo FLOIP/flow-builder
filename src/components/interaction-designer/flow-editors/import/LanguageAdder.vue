@@ -86,7 +86,6 @@
 import {BModal} from 'bootstrap-vue'
 import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import Vue from 'vue'
 import {Component} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import {iso6393} from 'iso-639-3'
@@ -119,7 +118,7 @@ const validationVuexNamespace = namespace('validation')
     VueMultiselect,
   },
 })
-class LanguageAdder extends mixins(Lang, Routes) {
+export class LanguageAdder extends mixins(Lang, Routes) {
   newLanguage: ILanguage = {
     id: '',
     label: '',

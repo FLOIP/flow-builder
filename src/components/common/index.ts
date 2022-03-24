@@ -1,5 +1,6 @@
 export * from './AudioLibrarySearchField.vue'
 export * from './AudioLibrarySelection.vue'
+export * from './AudioLibrarySelector.vue'
 export * from './ExpressionInput.vue'
 export * from './FloatEditor.vue'
 export * from './NumericEditor.vue'

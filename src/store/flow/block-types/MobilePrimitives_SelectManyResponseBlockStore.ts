@@ -1,9 +1,11 @@
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
-import {findBlockWith, IBlock, IBlockExit, IResource, ISelectManyResponseBlock, ValidationException} from '@floip/flow-runner'
+import {findBlockWith, IBlock, IBlockExit, ISelectManyResponseBlock} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import {defaultsDeep, findKey, isNumber, omit} from 'lodash'
+import {defaultsDeep, isNumber} from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
+import {IBlockWithBranchingType, OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {
   actions as selectOneActions,
   getters as selectOneGetters,
@@ -11,8 +13,6 @@ import {
   mutations as selectOneMutations,
   stateFactory,
 } from './MobilePrimitives_SelectOneResponseBlockStore'
-import {IBlockWithBranchingType, OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectManyResponse'
 

@@ -4,13 +4,13 @@
       {{ `flow-builder.${block.type}` | trans }}
     </h3>
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
       <slot name="extras" />
 
@@ -46,37 +46,16 @@ import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
 import {IBlock, IFlow, IResource} from '@floip/flow-runner'
-import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import PhotoStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
 import Lang from '@/lib/filters/lang'
-import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
-import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
-import BlockNameEditor from '../block-editors/NameEditor.vue'
-import BlockLabelEditor from '../block-editors/LabelEditor.vue'
-import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-import BlockId from '../block-editors/BlockId.vue'
-import ResourceEditor from '../resource-editors/ResourceEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
-@Component({
-  components: {
-    GenericContactPropertyEditor,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
-    FirstBlockEditorButton,
-    BlockId,
-    Categorization,
-    BlockOutputBranchingConfig,
-    ResourceEditor,
-  },
-})
+@Component({})
 class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
   // @Prop()readonly block!: IPhotoResponseBlock
   @Prop() readonly block!: IBlock

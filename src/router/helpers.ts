@@ -1,4 +1,4 @@
-import VueRouter, {Route} from 'vue-router'
+import {Route} from 'vue-router'
 
 export const scrollBehavior = (to: Route) => {
   if (to.params.field) {

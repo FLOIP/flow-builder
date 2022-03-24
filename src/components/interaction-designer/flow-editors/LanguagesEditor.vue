@@ -17,7 +17,6 @@
 import VueMultiselect from 'vue-multiselect'
 import {Component, Prop} from 'vue-property-decorator'
 import {IFlow} from '@floip/flow-runner'
-import NumericEditor from '@/components/common/NumericEditor.vue'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
@@ -26,11 +25,10 @@ import {State} from 'vuex-class'
 
 @Component({
   components: {
-    NumericEditor,
     VueMultiselect,
   },
 })
-class LanguagesEditor extends mixins(Lang) {
+export class LanguagesEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
 
   get languages(): ILanguage[] {

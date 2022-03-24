@@ -15,7 +15,6 @@
 import VueMultiselect from 'vue-multiselect'
 import {Component, Prop} from 'vue-property-decorator'
 import {IFlow, SupportedMode} from '@floip/flow-runner'
-import NumericEditor from '@/components/common/NumericEditor.vue'
 
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
@@ -23,11 +22,10 @@ import {Getter} from 'vuex-class'
 
 @Component({
   components: {
-    NumericEditor,
     VueMultiselect,
   },
 })
-class ModeEditor extends mixins(Lang) {
+export class ModesEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
 
   get flowSelectedModes(): SupportedMode[] {
@@ -41,5 +39,5 @@ class ModeEditor extends mixins(Lang) {
   @Getter supportedModes!: SupportedMode[]
 }
 
-export default ModeEditor
+export default ModesEditor
 </script>
