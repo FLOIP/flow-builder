@@ -376,7 +376,7 @@ const validationVuexNamespace = namespace('validation')
   },
 
 })
-export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
+export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isImporterVisible = false
   height = 102
 
@@ -718,6 +718,8 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined}) => void
 }
+
+export default TreeBuilderToolbar
 </script>
 
 <style lang="scss">
