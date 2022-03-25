@@ -30,19 +30,7 @@ import '@/css/customized/vue-multiselect.css'
 import Vue from 'vue'
 import {Component} from 'vue-property-decorator'
 
-/**
- * Vue way for Fontawesome
- * more details: https://www.npmjs.com/package/@fortawesome/vue-fontawesome#the-icon-property
- *
- */
-import {library} from '@fortawesome/fontawesome-svg-core'
-import {faCheck, faMobileAlt} from '@fortawesome/free-solid-svg-icons'
-import {faCheckCircle, faCircle, faClone, faTrashAlt, faEdit, faEnvelope, faCommentDots} from '@fortawesome/free-regular-svg-icons'
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import CustomIcons from '../../src/lib/custom-icons/index'
-
-library.add(faCircle, faCheckCircle, faEdit, faCheck, faEnvelope, faMobileAlt, faCommentDots, faClone, faTrashAlt, ...CustomIcons)
-Vue.component('FontAwesomeIcon', FontAwesomeIcon)
+require('../../src/font-awesome-icon')
 
 @Component({})
 export class FlowBuilderContainer extends Vue {
