@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import {createDefaultBlockTypeInstallerFor as createDefaultBlockTypeInstallerForFunction} from '@/store/builder'
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faCheck, faMobileAlt, faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons'
+import {faCheck, faMobileAlt, faChevronDown, faChevronUp, faSpinner} from '@fortawesome/free-solid-svg-icons'
 import {
   faCheckCircle,
   faCircle,
@@ -57,6 +57,7 @@ library.add(
   faDotCircle,
   faChevronDown,
   faChevronUp,
+  faSpinner,
   ...CustomIcons,
 )
 Vue.component('FontAwesomeIcon', FontAwesomeIcon)
