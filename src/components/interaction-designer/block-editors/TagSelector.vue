@@ -38,7 +38,7 @@ const flowVuexNamespace = namespace('flow')
     VueMultiselect,
   },
 })
-class TagSelector extends mixins(Lang) {
+export class TagSelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop({default: true}) readonly taggable!: boolean
 

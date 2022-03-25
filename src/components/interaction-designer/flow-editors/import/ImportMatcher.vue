@@ -53,20 +53,17 @@ import {
   IContext,
 } from '@floip/flow-runner'
 
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import Vue from 'vue'
 import {Component, Prop} from 'vue-property-decorator'
 import {get, isEmpty, omit} from 'lodash'
-import {Action, Getter, namespace} from 'vuex-class'
-import LanguageAdder from './LanguageAdder.vue'
+import {mixins} from 'vue-class-component'
+import {Getter, namespace} from 'vuex-class'
 
 const importVuexNamespace = namespace('flow/import')
 
-@Component({
-  mixins: [lang],
-  components: {LanguageAdder},
-})
-class ImportMatcher extends Vue {
+@Component({})
+export class ImportMatcher extends mixins(Lang) {
   @Prop({default: ''}) readonly matchNotFoundText!: string
 
   @Prop({required: true}) readonly type!: string

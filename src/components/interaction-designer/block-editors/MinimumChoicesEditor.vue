@@ -21,19 +21,14 @@ import {Component, Prop} from 'vue-property-decorator'
 import {ISelectManyResponseBlock} from '@floip/flow-runner/src/model/block/ISelectManyResponseBlock'
 import {namespace} from 'vuex-class'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
-import NumericEditor from '@/components/common/NumericEditor.vue'
-import {get, isNumber} from 'lodash'
+import {isNumber} from 'lodash'
 import {IBlock} from '@floip/flow-runner'
 // import {ISelectManyResponseBlockConfig} from '@floip/flow-runner'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({
-  components: {
-    NumericEditor,
-  },
-})
+@Component({})
 export class MinimumChoicesEditor extends mixins(Lang) {
   @Prop() readonly block!: ISelectManyResponseBlock
 

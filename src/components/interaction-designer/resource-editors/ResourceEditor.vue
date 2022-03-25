@@ -114,15 +114,10 @@ import {
   findResourceVariantOverModesOn,
   IResourceDefinitionVariantOverModesFilter,
 } from '@/store/flow/resource'
-import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
-import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
-import PhoneRecorder from '@/components/interaction-designer/block-editors/PhoneRecorder.vue'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {mixins} from 'vue-class-component'
 import {TabsPlugin} from 'bootstrap-vue'
-import UploadMonitor from '../block-editors/UploadMonitor.vue'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 
 Vue.use(TabsPlugin)
 
@@ -143,15 +138,7 @@ interface IResourceDefinitionVariantOverModesWithOptionalValue extends Partial<I
   value?: IResourceDefinitionVariantOverModes['value'],
 }
 
-@Component({
-  components: {
-    AudioLibrarySelector,
-    ResourceVariantTextEditor,
-    UploadMonitor,
-    PhoneRecorder,
-    ValidationMessage,
-  },
-})
+@Component({})
 export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
 

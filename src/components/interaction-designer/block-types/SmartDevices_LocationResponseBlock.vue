@@ -5,20 +5,20 @@
     </h3>
 
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
       <slot name="extras" />
 
-      <block-threshold-editor
+      <threshold-editor
         :block="block"
         @commitAccuracyThresholdMetersChange="updateThreshold" />
-      <block-timeout-editor
+      <timeout-editor
         :block="block"
         @commitAccuracyTimeoutSecondsChange="updateTimeout" />
 
@@ -56,39 +56,14 @@ import {Component, Prop} from 'vue-property-decorator'
 import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import LocationStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
 import Lang from '@/lib/filters/lang'
-import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
-import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import ResourceEditor from '../resource-editors/ResourceEditor.vue'
-import BlockNameEditor from '../block-editors/NameEditor.vue'
-import BlockLabelEditor from '../block-editors/LabelEditor.vue'
-import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-import BlockId from '../block-editors/BlockId.vue'
-import BlockThresholdEditor from '../block-editors/ThresholdEditor.vue'
-import BlockTimeoutEditor from '../block-editors/TimeoutEditor.vue'
-import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({
-  components: {
-    GenericContactPropertyEditor,
-    ResourceEditor,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockSemanticLabelEditor,
-    FirstBlockEditorButton,
-    BlockId,
-    BlockThresholdEditor,
-    BlockTimeoutEditor,
-    Categorization,
-    BlockOutputBranchingConfig,
-  },
-})
+@Component({})
 class SmartDevices_LocationResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 

@@ -33,7 +33,7 @@ import {mixins} from 'vue-class-component'
 const flowVuexNamespace = namespace('flow')
 
 @Component({})
-class FirstBlockEditorButton extends mixins(Lang) {
+export class FirstBlockEditorButton extends mixins(Lang) {
   @Prop({default: true}) readonly isEditable!: boolean
 
   @Prop() readonly blockId!: string

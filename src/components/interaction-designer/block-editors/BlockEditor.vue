@@ -9,16 +9,6 @@
                    :block="activeBlock"
                    :flow="activeFlow" />
       </div>
-      <!--        <tree-editor v-if="sidebarType === 'TreeEditor'"-->
-      <!--                     :jsonValidationResults="jsonValidationResults"-->
-      <!--                     :isTreeValid="isTreeValid"/>-->
-
-      <!--        <tree-viewer v-if="sidebarType === 'TreeViewer'"/>-->
-
-      <!--        <block-viewer-->
-      <!--          :key="jsKey"-->
-      <!--          v-if="sidebarType === 'BlockViewer'"-->
-      <!--          :data-for-block-id="jsKey" />-->
     </div>
   </div>
 </template>
@@ -27,7 +17,7 @@
 import {mapGetters, mapState} from 'vuex'
 import {get} from 'lodash'
 
-export default {
+export const BlockEditor = {
   computed: {
     ...mapGetters('builder', ['activeBlock']),
     ...mapState({
@@ -44,6 +34,7 @@ export default {
     },
   },
 }
+export default BlockEditor
 </script>
 
 <style lang="scss">

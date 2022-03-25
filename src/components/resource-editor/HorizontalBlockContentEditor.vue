@@ -99,16 +99,8 @@
 import {lang} from '@/lib/filters/lang'
 import {debounce} from 'lodash'
 import {mapGetters, mapState} from 'vuex'
-import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
-import BlockTextContentEditorForLangAndType from '../block-editors/BlockTextContentEditorForLangAndType'
 
 export default {
-
-  components: {
-    AudioLibrarySelector,
-    BlockTextContentEditorForLangAndType,
-  },
-
   mixins: [lang],
   props: [
     'alternateAudioFileSelections',

@@ -25,14 +25,11 @@ import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import ExpressionInput from '@/components/common/ExpressionInput.vue'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({
-  components: {ExpressionInput},
-})
-class AdvancedExitEditor extends mixins(Lang) {
+@Component({})
+export class AdvancedExitEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly exit!: IBlockExit
   @Prop() readonly label!: string

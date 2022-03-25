@@ -96,11 +96,10 @@ import {clone} from 'lodash'
 import {mapState} from 'vuex'
 import {BModal} from 'bootstrap-vue'
 
-export default {
+export const PhoneRecordingRecorderSelector = {
   components: {
     BModal,
   },
-
   mixins: [lang],
 
   props: {
@@ -171,6 +170,7 @@ export default {
     },
   },
 }
+export default PhoneRecordingRecorderSelector
 </script>
 
 <style lang="scss" scoped>

@@ -16,7 +16,6 @@
 
 <script lang="ts">
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
-import Block from '@/components/interaction-designer/Block.vue'
 import {cloneDeep, debounce, find, isEqual, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
 import {IBlock, IFlow, IResource, IResources, SupportedMode} from '@floip/flow-runner'
@@ -35,12 +34,8 @@ const MARGIN_WIDTH_CORRECTION = 120
 //in `ms`
 const DEBOUNCE_SCROLL_TIMER = 300
 
-@Component({
-  components: {
-    Block,
-  },
-})
-export default class BuilderCanvas extends Vue {
+@Component({})
+export class BuilderCanvas extends Vue {
   @Prop() block!: IBlock
   @Prop({default: 0}) widthAdjustment!: number
 
@@ -223,7 +218,7 @@ export default class BuilderCanvas extends Vue {
   ) => Promise<void>
 }
 
-export {BuilderCanvas}
+export default BuilderCanvas
 </script>
 
 <style scoped>

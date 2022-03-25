@@ -5,6 +5,9 @@ import Vuex from 'vuex'
 import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+import {namespace} from 'vuex-class'
+
+const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 export default {
   title: 'ConsoleIo/Print Block',
@@ -48,12 +51,11 @@ class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
     const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, printBlockStore)
 
     this.setDescription(blockId)
-    this.setResourceData({
-      shouldSetChoices: false,
-      configPath: 'config.message',
-    })
+    this.editMessage({blockId, message: 'my message'})
     this.setTags(blockId)
   }
+
+  @blockVuexNamespace.Action editMessage!: ({blockId, message}: { blockId: string, message: string }) => void
 }
 
 export const ExistingDataBlock = () => (ExistingDataBlockClass)

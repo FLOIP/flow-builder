@@ -24,7 +24,7 @@
 import {mapMutations} from 'vuex'
 import {lang} from '@/lib/filters/lang'
 
-export default {
+export const ExitBlockEditorToggle = {
   mixins: [lang],
   props: {
     flow: Object,
@@ -54,4 +54,5 @@ export default {
     },
   },
 }
+export default ExitBlockEditorToggle
 </script>

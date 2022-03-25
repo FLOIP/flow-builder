@@ -12,13 +12,8 @@
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {mapGetters, mapState} from 'vuex'
-import PhoneRecordingRecorderSelector from './PhoneRecordingRecorderSelector'
 
-export default {
-  components: {
-    PhoneRecordingRecorderSelector,
-  },
-
+export const PhoneRecorder = {
   props: ['recordingKey'],
 
   data() {
@@ -56,4 +51,5 @@ export default {
     },
   },
 }
+export default PhoneRecorder
 </script>

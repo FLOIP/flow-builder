@@ -36,10 +36,8 @@ import {mapState} from 'vuex'
 import {BProgress} from 'bootstrap-vue'
 import multimediaUpload, {Statuses as UploadStatuses} from '@/store/trees/multimediaUpload'
 
-export default {
-
+export const UploadMonitor = {
   components: {BProgress},
-
   mixins: [lang],
   props: ['uploadKey'],
 
@@ -74,6 +72,7 @@ export default {
     forEach(modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
   },
 }
+export default UploadMonitor
 </script>
 
 <style lang="scss">

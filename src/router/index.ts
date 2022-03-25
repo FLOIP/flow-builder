@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VueRouter, {Route, RouteConfig} from 'vue-router'
+import VueRouter, {RouteConfig} from 'vue-router'
 import {routes as treesRoutes} from '@/router/trees.js'
 import {scrollBehavior} from '@/router/helpers'
 

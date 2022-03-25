@@ -117,17 +117,12 @@ import {isObject, some} from 'lodash'
 import VueFocus from 'vue-focus'
 import {mapActions} from 'vuex'
 import {BTooltip} from 'bootstrap-vue'
-import ValidationMessage from '@/components/common/ValidationMessage'
 
 // import BlockContentAutogenButton from './BlockContentAutogenButton'
 
 Vue.component('BTooltip', BTooltip)
 
-export default {
-  components: {
-    ValidationMessage,
-    // BlockContentAutogenButton,
-  },
+export const ResourceVariantTextEditor = {
   mixins: [lang, VueFocus.mixin],
 
   props: {
@@ -256,6 +251,7 @@ export default {
     // }, 500),
   },
 }
+export default ResourceVariantTextEditor
 </script>
 
 <style lang="scss" scoped>
