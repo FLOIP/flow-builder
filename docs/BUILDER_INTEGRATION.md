@@ -598,5 +598,16 @@ Likewise, the modes that are *selected* by default when a new flow is created ca
 platformBuilderConfig.ui.defaultModes = ['SMS']
 ```
 
+### Configuring Toolbar items visibility
+There are several boolean flags that allow hiding flow title and buttons from the toolbar.
+
+```
+platformBuilderConfig.ui.toolbar.hasFlowTitle = false
+
+platformBuilderConfig.ui.toolbar.hasHomeButton = false
+platformBuilderConfig.ui.toolbar.hasNewFlowButton = false
+platformBuilderConfig.ui.toolbar.hasExportButton = false
+```
+
 TODO - add more
 

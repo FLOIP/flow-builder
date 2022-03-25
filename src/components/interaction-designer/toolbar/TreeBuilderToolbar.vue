@@ -523,19 +523,19 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
   }
 
   get hasFlowTitle() {
-    return this.$store.state.trees.ui.toolbar.flowTitle
+    return this.$store.state.trees.ui.toolbar.hasFlowTitle
   }
 
   get hasHomeButton() {
-    return this.$store.state.trees.ui.toolbar.homeButton
+    return this.$store.state.trees.ui.toolbar.hasHomeButton
   }
 
   get hasNewFlowButton() {
-    return this.$store.state.trees.ui.toolbar.newFlowButton
+    return this.$store.state.trees.ui.toolbar.hasNewFlowButton
   }
 
   get hasExportButton() {
-    return this.$store.state.trees.ui.toolbar.exportButton
+    return this.$store.state.trees.ui.toolbar.hasExportButton
   }
 
   // Methods #####################

@@ -348,10 +348,10 @@
       "OFFLINE"
     ],
     "toolbar": {
-      "flowTitle": true,
-      "homeButton": true,
-      "newFlowButton": true,
-      "exportButton": true
+      "hasFlowTitle": true,
+      "hasHomeButton": true,
+      "hasNewFlowButton": true,
+      "hasExportButton": true
     },
     "defaultModes": [
       "SMS",
