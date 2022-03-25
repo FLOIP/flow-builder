@@ -9,6 +9,8 @@ import * as flowImportComponents from '@/components/interaction-designer/flow-ed
 import * as resourceEditorsComponents from '@/components/interaction-designer/resource-editors'
 import * as toolbarComponents from '@/components/interaction-designer/toolbar'
 
+require('./font-awesome-icon')
+
 export default function registerCustomComponents(extra = {}) {
   Object.entries({
     ...commonComponents,

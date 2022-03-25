@@ -15,8 +15,6 @@ import registerCustomComponents from '@/common-imports'
 import router from './router'
 import App from './App.vue'
 
-require('./font-awesome-icon')
-
 registerCustomComponents()
 
 Vue.use(Vuex)

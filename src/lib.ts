@@ -39,8 +39,6 @@ export * from '@/components/interaction-designer/resource-editors'
 export * from '@/components/interaction-designer/toolbar'
 export * from '@/store/flow/block-types'
 
-require('./font-awesome-icon')
-
 const Components = registerCustomComponents({
   InteractionDesigner: InteractionDesignerComponent,
   FetchFlow: FetchFlowComponent,
