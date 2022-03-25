@@ -1,19 +1,6 @@
 import Vue from 'vue'
 import {createDefaultBlockTypeInstallerFor as createDefaultBlockTypeInstallerForFunction} from '@/store/builder'
-import {library} from '@fortawesome/fontawesome-svg-core'
-import {faCheck, faMobileAlt, faChevronDown, faChevronUp, faSpinner} from '@fortawesome/free-solid-svg-icons'
-import {
-  faCheckCircle,
-  faCircle,
-  faClone,
-  faTrashAlt,
-  faTimesCircle,
-  faDotCircle,
-  faEdit,
-  faEnvelope,
-  faCommentDots,
-} from '@fortawesome/free-regular-svg-icons'
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+
 //To register components globally by default
 import * as commonComponents from '@/components/common'
 import * as interactionDesignerComponents from '@/components/interaction-designer/'
@@ -34,33 +21,6 @@ import defaultLocalisationsJson from './assets/messages.json'
 //Block helpers
 import BaseBlockComponent from './components/interaction-designer/block-types/BaseBlock.vue'
 import BaseStore from './store/flow/block-types/BaseBlock'
-
-/**
- * Enable needed icons
- * Vue way for Fontawesome
- * more details: https://www.npmjs.com/package/@fortawesome/vue-fontawesome#the-icon-property
- *
- */
-import CustomIcons from './lib/custom-icons/index'
-
-library.add(
-  faCircle,
-  faCheckCircle,
-  faEdit,
-  faCheck,
-  faEnvelope,
-  faMobileAlt,
-  faCommentDots,
-  faClone,
-  faTrashAlt,
-  faTimesCircle,
-  faDotCircle,
-  faChevronDown,
-  faChevronUp,
-  faSpinner,
-  ...CustomIcons,
-)
-Vue.component('FontAwesomeIcon', FontAwesomeIcon)
 
 export const appConfig = require('../app.config')
 export const builderConfig = require('../builder.config')
@@ -86,6 +46,8 @@ export * from '@/components/interaction-designer/flow-editors/import'
 export * from '@/components/interaction-designer/resource-editors'
 export * from '@/components/interaction-designer/toolbar'
 export * from '@/store/flow/block-types'
+
+require('./font-awesome-icon')
 
 const Components: { [key: string]: any } = {
   InteractionDesigner: InteractionDesignerComponent,
