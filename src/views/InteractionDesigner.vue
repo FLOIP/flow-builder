@@ -209,8 +209,6 @@ export default {
     if (this.activeFlow && this.$refs['interaction-designer-contents'] != undefined) {
       this.setInteractionDesignerBoundingClientRect(this.$refs['interaction-designer-contents'].getBoundingClientRect())
     }
-
-    this.$emit('flowLabel', this.activeFlow?.label)
   },
   beforeRouteUpdate(to, from, next) {
     this.activateBlock({blockId: to.params.blockId || null})
