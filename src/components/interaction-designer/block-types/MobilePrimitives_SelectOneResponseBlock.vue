@@ -21,6 +21,7 @@
           :block="block"
           @choiceChanged="handleChoiceChanged" />
       </slot>
+      <slot name="vendor-extras"/>
       <slot
         slot="branching"
         name="branching">

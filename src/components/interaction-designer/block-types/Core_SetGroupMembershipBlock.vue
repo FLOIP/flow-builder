@@ -9,6 +9,7 @@
         name="extras">
         <group-membership-editor :block="block" />
       </slot>
+      <slot name="vendor-extras"/>
       <slot
         slot="branching"
         name="branching" />
