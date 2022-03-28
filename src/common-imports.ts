@@ -26,7 +26,7 @@ export default function registerCustomComponents(extra = {}) {
     ...blockResourceEditorsComponents,
     ...resourceEditorComponents,
     ...extra,
-  }).forEach(([name, Component]) => {
-    Vue.component(name, Component)
+  }).forEach(([name, component]: [string, any]) => {
+    Vue.component(name, component)
   })
 }
