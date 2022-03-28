@@ -3,13 +3,15 @@
     <base-block
       :block="block"
       :flow="flow"
+      :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
+      :uses-default-branching-editor="usesDefaultBranchingEditor"
       :show-semantic-label="false">
       <slot
         slot="extras"
         name="extras">
         <group-membership-editor :block="block" />
       </slot>
-      <slot name="vendor-extras"/>
+      <slot name="vendor-extras" />
       <slot
         slot="branching"
         name="branching" />
@@ -49,6 +51,8 @@ interface IGroupActionOption {
 class Core_SetGroupMembershipBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
+  @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
+  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
   showSemanticLabel = false
 

@@ -3,6 +3,8 @@
     <base-block
       :block="block"
       :flow="flow"
+      :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
+      :uses-default-branching-editor="usesDefaultBranchingEditor"
       :show-semantic-label="false">
       <slot
         slot="resource-editors"
@@ -21,7 +23,7 @@
           :block="block"
           @choiceChanged="handleChoiceChanged" />
       </slot>
-      <slot name="vendor-extras"/>
+      <slot name="vendor-extras" />
       <slot
         slot="branching"
         name="branching">
@@ -63,6 +65,8 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
   @Prop() readonly flow!: IFlow
+  @Prop({default: false}) readonly usesDefaultBranchingEditor!: boolean
+  @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
 
   showSemanticLabel = false
 
