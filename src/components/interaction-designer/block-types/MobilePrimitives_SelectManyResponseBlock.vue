@@ -1,60 +1,46 @@
 <template>
   <div class="mobile-primitive-select-many-response-block">
-    <h3 class="block-editor-header">
-      {{ `flow-builder.${block.type}` | trans }}
-    </h3>
-    <fieldset :disabled="!isEditable">
-      <label-editor
-        :block="block"
-        @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <semantic-label-editor
-        v-if="showSemanticLabel"
-        :block="block" />
-      <name-editor :block="block" />
-
-      <div class="prompt-resource">
+    <base-block
+      :block="block"
+      :flow="flow"
+      :show-semantic-label="false"
+      :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
+      :uses-default-branching-editor="usesDefaultBranchingEditor"
+      @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
+      <slot
+        slot="resource-editors"
+        name="resource-editors">
         <resource-editor
           v-if="promptResource"
           :label="'flow-builder.prompt' | trans"
           :resource="promptResource"
           :block="block"
           :flow="flow" />
-      </div>
-
-      <hr>
-
-      <choices-builder
-        :block="block"
-        @choiceChanged="handleChoiceChanged" />
-
-      <hr>
-
-      <minimum-choices-editor :block="block" />
-      <maximum-choices-editor :block="block" />
-
-      <hr>
-
-      <block-output-branching-config
-        :block="block"
-        :has-exit-per-choice="false"
-        :label-class="''"
-        @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
-
-      <slot name="extras"></slot>
-
-      <categorization :block="block" />
-
-      <generic-contact-property-editor :block="block" />
-
-      <hr>
-
-      <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
-
-    </fieldset>
-
-    <block-id :block="block" />
+      </slot>
+      <slot
+        slot="extras"
+        name="extras">
+        <choices-builder
+          :block="block"
+          @choiceChanged="handleChoiceChanged" />
+        <hr>
+        <minimum-choices-editor :block="block" />
+        <maximum-choices-editor :block="block" />
+      </slot>
+      <slot name="vendor-extras" />
+      <slot
+        slot="branching"
+        name="branching">
+        <block-output-branching-config
+          :block="block"
+          :has-exit-per-choice="false"
+          :label-class="''"
+          @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
+      </slot>
+      <slot
+        slot="contact-props"
+        name="contact-props" />
+    </base-block>
   </div>
 </template>
 
@@ -71,8 +57,6 @@ const builderVuexNamespace = namespace('builder')
 
 @Component({})
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
-  showSemanticLabel = false
-
   //Important: Even we extends from SelectOneResponseBlock, to avoid conflict
   // we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation
   @builderVuexNamespace.Getter declare isEditable: boolean

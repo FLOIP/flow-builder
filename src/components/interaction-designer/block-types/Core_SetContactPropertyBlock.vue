@@ -8,6 +8,9 @@
       :uses-default-branching-editor="usesDefaultBranchingEditor"
       @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
       <slot
+        slot="resource-editors"
+        name="resource-editors" />
+      <slot
         slot="extras"
         name="extras">
         <contact-property-editor :block="block" />
@@ -41,8 +44,6 @@ class Core_SetContactPropertyBlock extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
-
-  showSemanticLabel = false
 
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 }

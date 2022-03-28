@@ -1,40 +1,30 @@
 <template>
   <div class="core-case-block">
-    <h3 class="block-editor-header">
-      {{ `flow-builder.${block.type}` | trans }}
-    </h3>
-
-    <fieldset :disabled="!isEditable">
-      <label-editor
-        :block="block"
-        @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <semantic-label-editor
-        v-if="showSemanticLabel"
-        :block="block" />
-      <name-editor :block="block" />
-
-      <hr>
-
-      <block-output-branching-config
-        :block="block"
-        :has-exit-per-choice="false"
-        :has-unified-exit="false" />
-
-      <slot name="extras" />
-
-      <categorization :block="block" />
-
-      <generic-contact-property-editor :block="block" />
-
-      <hr>
-
-      <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
-
-    </fieldset>
-
-    <block-id :block="block" />
+    <base-block
+      :block="block"
+      :flow="flow"
+      :show-semantic-label="false"
+      :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
+      :uses-default-branching-editor="usesDefaultBranchingEditor">
+      <slot
+        slot="resource-editors"
+        name="resource-editors" />
+      <slot
+        slot="extras"
+        name="extras" />
+      <slot name="vendor-extras" />
+      <slot
+        slot="branching"
+        name="branching">
+        <block-output-branching-config
+          :block="block"
+          :has-exit-per-choice="false"
+          :has-unified-exit="false" />
+      </slot>
+      <slot
+        slot="contact-props"
+        name="contact-props" />
+    </base-block>
   </div>
 </template>
 
@@ -54,10 +44,9 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 class Core_CaseBlock extends mixins(Lang) {
   @Prop() readonly block!: ICaseBlock
-
   @Prop() readonly flow!: IFlow
-
-  showSemanticLabel = false
+  @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
+  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
   get exits(): IBlockExit[] {
     return this.block.exits

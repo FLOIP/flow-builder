@@ -3,9 +3,13 @@
     <base-block
       :block="block"
       :flow="flow"
+      :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor"
-      :show-semantic-label="false">
+      @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
+      <slot
+        slot="resource-editors"
+        name="resource-editors" />
       <slot
         slot="extras"
         name="extras">
@@ -54,8 +58,6 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
-  showSemanticLabel = false
-
   actionsList: IGroupActionOption[] = [
     {
       id: ADD_KEY,
@@ -67,7 +69,7 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
     },
   ]
 
-  get selectedAction() {
+  get selectedAction(): IGroupActionOption {
     const {is_member} = this.block.config as ISetGroupMembershipBlockConfig
     if (!is_member) {
       return find(this.actionsList, {id: REMOVE_KEY}) || {} as IGroupActionOption
@@ -84,7 +86,7 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
     this.setIsMember(action)
   }
 
-  @blockVuexNamespace.Action setIsMember!: (action: IGroupActionOption) => Promise<any>
+  @blockVuexNamespace.Action setIsMember!: (action: IGroupActionOption) => Promise<void>
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable!: boolean
 

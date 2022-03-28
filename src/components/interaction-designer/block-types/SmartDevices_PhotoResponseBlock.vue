@@ -1,43 +1,32 @@
 <template>
   <div class="smart-devices-photo-response-block">
-    <h3 class="block-editor-header">
-      {{ `flow-builder.${block.type}` | trans }}
-    </h3>
-    <fieldset :disabled="!isEditable">
-      <label-editor
-        :block="block"
-        @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <semantic-label-editor
-        v-if="showSemanticLabel"
-        :block="block" />
-      <name-editor :block="block" />
-
-      <slot name="extras" />
-
-      <hr>
-      <block-output-branching-config
-        :block="block"
-        :has-exit-per-choice="false"
-        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
-
-      <resource-editor
-        v-if="promptResource"
-        :resource="promptResource"
-        :block="block"
-        :flow="flow" />
-
-      <categorization :block="block" />
-
-      <generic-contact-property-editor :block="block" />
-
-      <hr>
-
-      <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
-    </fieldset>
-
-    <block-id :block="block" />
+    <base-block
+      :block="block"
+      :flow="flow"
+      :show-semantic-label="false"
+      :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
+      :uses-default-branching-editor="usesDefaultBranchingEditor"
+      @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
+      <slot
+        slot="resource-editors"
+        name="resource-editors">
+        <resource-editor
+          v-if="promptResource"
+          :resource="promptResource"
+          :block="block"
+          :flow="flow" />
+      </slot>
+      <slot
+        slot="extras"
+        name="extras" />
+      <slot name="vendor-extras" />
+      <slot
+        slot="branching"
+        name="branching" />
+      <slot
+        slot="contact-props"
+        name="contact-props" />
+    </base-block>
   </div>
 </template>
 
@@ -59,10 +48,9 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
   // @Prop()readonly block!: IPhotoResponseBlock
   @Prop() readonly block!: IBlock
-
   @Prop() readonly flow!: IFlow
-
-  showSemanticLabel = false
+  @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
+  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
   get promptResource(): IResource {
     return this.resourcesByUuid[this.block.config.prompt]

@@ -3,9 +3,10 @@
     <base-block
       :block="block"
       :flow="flow"
+      :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor"
-      :show-semantic-label="false">
+      @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
       <slot
         slot="resource-editors"
         name="resource-editors">
@@ -15,7 +16,7 @@
           :resource="promptResource"
           :block="block"
           :flow="flow" />
-      </slot>>
+      </slot>
       <slot
         slot="extras"
         name="extras">
@@ -67,8 +68,6 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop({default: false}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
-
-  showSemanticLabel = false
 
   SupportedMode = SupportedMode
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
