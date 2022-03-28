@@ -8,7 +8,7 @@ import {
   faChevronDown,
   faChevronUp,
   faMobileAlt,
-  faSpinner
+  faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
