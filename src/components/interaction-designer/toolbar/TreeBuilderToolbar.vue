@@ -56,7 +56,7 @@
                 @ok="showOrHideEditFlowModal">
                 <template slot="modal-header">
                   <h2 class="mb-0">
-                    {{ editFlowTitle | trans }}
+                    {{ 'flow-builder.flow-details' | trans }}
                   </h2>
                   <button
                     type="button"
@@ -413,10 +413,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   }
 
   // Computed ####################
-
-  get editFlowTitle(): string {
-    return this.ui.title.editFlow
-  }
 
   isEmpty(value?: any): boolean {
     return isEmpty(value)

@@ -70,7 +70,10 @@ class NewFlow extends mixins(Lang, Routes) {
   }
 
   get createFlowTitle(): string {
-    return this.ui.title.createFlow
+    if (this.ui.pages.createFlow.hasPageTitle === true) {
+      return 'flow-builder.create-flow'
+    }
+    return ''
   }
 
   async mounted(): Promise<void> {

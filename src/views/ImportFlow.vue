@@ -5,7 +5,7 @@
         <div class="card d-flex bg-light">
           <div class="card-body">
             <div>
-              <h2>
+              <h2 v-if="importFlowTitle">
                 {{ trans(importFlowTitle) }}
               </h2>
               <p>{{ 'flow-builder.create-flow-from-json' | trans }}</p>
@@ -124,7 +124,10 @@ class ImportFlow extends mixins(Lang, Routes) {
   fileName = ''
 
   get importFlowTitle(): string {
-    return this.ui.title.importFlow
+    if (this.ui.pages.importFlow.hasPageTitle === true) {
+      return 'flow-builder.import-flow'
+    }
+    return ''
   }
 
   async beforeCreate(): Promise<void> {
