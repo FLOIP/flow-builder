@@ -512,22 +512,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     return this.hasOfflineMode && this.isFeatureSimulatorEnabled
   }
 
-  get hasFlowTitle() {
-    return this.$store.state.trees.ui.toolbar.hasFlowTitle
-  }
-
-  get hasHomeButton() {
-    return this.$store.state.trees.ui.toolbar.hasHomeButton
-  }
-
-  get hasNewFlowButton() {
-    return this.$store.state.trees.ui.toolbar.hasNewFlowButton
-  }
-
-  get hasExportButton() {
-    return this.$store.state.trees.ui.toolbar.hasExportButton
-  }
-
   // Methods #####################
 
   async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }): Promise<void> {
@@ -663,6 +647,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   // ########### VUEX ###############
   @State(({trees: {tree}}) => tree) tree!: any
   @State(({trees: {ui}}) => ui) ui!: any
+  @State((state) => state.trees.ui.toolbar.hasFlowTitle) hasFlowTitle!: boolean
+  @State((state) => state.trees.ui.toolbar.hasHomeButton) hasHomeButton!: boolean
+  @State((state) => state.trees.ui.toolbar.hasNewFlowButton) hasNewFlowButton!: boolean
+  @State((state) => state.trees.ui.toolbar.hasExportButton) hasExportButton!: boolean
   @Getter isTreeSaving!: number | boolean
   @Getter isBlockAvailableByBlockClass?: any
   @Getter hasChanges!: boolean
