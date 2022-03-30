@@ -535,12 +535,11 @@ export default {
     },
 
     selectBlock() {
-      const {block: {uuid: blockId}} = this
       const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
       this.$router.replace(
         {
           name: routerName,
-          params: {blockId},
+          params: {blockId: this.block.uuid},
         },
         undefined,
         (err) => {
