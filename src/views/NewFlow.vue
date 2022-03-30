@@ -70,7 +70,7 @@ class NewFlow extends mixins(Lang, Routes) {
   }
 
   get createFlowTitle(): string {
-    if (this.ui.pages.createFlow.hasPageTitle === true) {
+    if (this.hasCreateFlowTitle) {
       return 'flow-builder.create-flow'
     }
     return ''
@@ -116,6 +116,8 @@ class NewFlow extends mixins(Lang, Routes) {
   flowError: string | null = null
 
   @State(({trees: {ui}}) => ui) ui!: any
+
+  @Getter hasCreateFlowTitle!: boolean
 
   @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
   @flowVuexNamespace.Action flow_persist!: ({

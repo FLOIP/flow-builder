@@ -83,6 +83,14 @@ export default {
     isFeatureSimulatorEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'simulator'),
     isFeatureViewResultsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'viewResults'),
 
+    hasCreateFlowTitle: ({ui}) => lodash.get(ui, 'pages.createFlow.hasPageTitle', true),
+    hasImportFlowTitle: ({ui}) => lodash.get(ui, 'pages.importFlow.hasPageTitle', true),
+
+    hasToolbarFlowTitle: ({ui}) => lodash.get(ui, 'toolbar.hasFlowTitle', true),
+    hasToolbarHomeButton: ({ui}) => lodash.get(ui, 'toolbar.hasHomeButton', true),
+    hasToolbarNewFlowButton: ({ui}) => lodash.get(ui, 'toolbar.hasNewFlowButton', true),
+    hasToolbarExportButton: ({ui}) => lodash.get(ui, 'toolbar.hasExportButton', true),
+
     selectedBlock: ({tree, ui}) => lodash.find(get(tree, 'blocks', []), {jsKey: ui.selectedBlock}),
 
     subscriberPropertyFields: ({ui}) => lodash.get(ui, 'subscriberPropertyFields', []),

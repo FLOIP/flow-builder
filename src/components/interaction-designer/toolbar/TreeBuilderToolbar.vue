@@ -19,14 +19,14 @@
         <div class="tree-workspace-panel-heading-contents">
           <div class="btn-toolbar">
             <h4
-              v-if="hasFlowTitle"
+              v-if="hasToolbarFlowTitle"
               class="text-primary mr-4 mb-0 flow-label"
               :title="activeFlow.label">
               {{ activeFlow.label }}
             </h4>
             <div>
               <router-link
-                v-if="hasHomeButton"
+                v-if="hasToolbarHomeButton"
                 :to="route('flows.home')"
                 :title="trans('flow-builder.home')"
                 class="mr-2">
@@ -35,7 +35,7 @@
                   class="fa-btn" />
               </router-link>
               <router-link
-                v-if="hasNewFlowButton"
+                v-if="hasToolbarNewFlowButton"
                 :to="route('flows.newFlow')"
                 class="btn btn-primary btn-sm mr-2">
                 {{ trans('flow-builder.new-flow') }}
@@ -125,7 +125,7 @@
               </div>
 
               <button
-                v-if="hasExportButton"
+                v-if="hasToolbarExportButton"
                 class="btn btn-outline-primary btn-sm"
                 :class="{active: isImporterVisible}"
                 @click="toggleImportExport">
@@ -603,10 +603,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   // ########### VUEX ###############
   @State(({trees: {tree}}) => tree) tree!: any
   @State(({trees: {ui}}) => ui) ui!: any
-  @State((state) => state.trees.ui.toolbar.hasFlowTitle) hasFlowTitle!: boolean
-  @State((state) => state.trees.ui.toolbar.hasHomeButton) hasHomeButton!: boolean
-  @State((state) => state.trees.ui.toolbar.hasNewFlowButton) hasNewFlowButton!: boolean
-  @State((state) => state.trees.ui.toolbar.hasExportButton) hasExportButton!: boolean
+  @Getter hasToolbarFlowTitle!: boolean
+  @Getter hasToolbarHomeButton!: boolean
+  @Getter hasToolbarNewFlowButton!: boolean
+  @Getter hasToolbarExportButton!: boolean
   @Getter isTreeSaving!: number | boolean
   @Getter isBlockAvailableByBlockClass?: any
   @Getter hasChanges!: boolean
@@ -621,6 +621,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @Getter isResourceEditorEnabled!: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
   @Action attemptSaveTree!: void
+  @Getter getToolbarConfig!: boolean
 
   // Flow
   @flowVuexNamespace.Getter activeFlow?: IFlow
