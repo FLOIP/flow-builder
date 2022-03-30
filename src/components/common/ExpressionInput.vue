@@ -28,7 +28,7 @@ import AutoSuggest from '@avcs/autosuggest'
 import '@avcs/autosuggest/dropdown.css'
 import {mapGetters} from 'vuex'
 import {MethodNodeEvaluatorFactory} from '@floip/expression-evaluator/dist/Evaluator/NodeEvaluator/MethodNodeEvaluator/Factory'
-import Lang from 'lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 
 const defaultContactPropertyFields = [
   'phone',
