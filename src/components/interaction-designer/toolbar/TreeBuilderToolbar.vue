@@ -256,39 +256,6 @@
               </div>
             </li>
             <li
-              v-if="!isEmpty(blockClassesForWeatherCategory)"
-              class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                data-toggle="dropdown"
-                href="#"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-                @mouseover="openDropdownMenu($event.target)">
-                <span class="nav-link-text">{{ 'flow-builder.weather' | trans }}</span>
-              </a>
-              <div class="dropdown-menu mt-0">
-                <template v-for="(classDetails, className) in blockClassesForWeatherCategory">
-                  <div
-                    v-if="shouldDisplayDividerBefore(blockClassesForWeatherCategory, className)"
-                    :key="`${className}divider`"
-                    class="dropdown-divider" />
-                  <a
-                    v-if="isBlockAvailableByBlockClass[className]"
-                    :key="className + 'item'"
-                    href="#"
-                    class="dropdown-item"
-                    :data-block-type="className"
-                    :data-default-num-connections="classDetails['defaultConnections']"
-                    @click.prevent="handleAddBlockByTypeSelected(classDetails)">
-                    {{ translateTreeClassName(className) }}
-                  </a>
-                </template>
-                <slot name="extra-dropdown-items-for-category4" />
-              </div>
-            </li>
-            <li
               v-if="!isEmpty(blockClassesForDeveloperCategory)"
               class="nav-item dropdown">
               <a
@@ -483,13 +450,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     return flow(
       pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hidden_in_menu')),
       pickBy((classDetails: { [key: string]: any }) => this.hasMenuCategory(classDetails, 3) || this.hasClassDetail(classDetails, 'branchingMenu')),
-    )(this.ui.blockClasses)
-  }
-
-  get blockClassesForWeatherCategory(): any {
-    return flow(
-      pickBy((classDetails: { [key: string]: any }) => !this.hasClassDetail(classDetails, 'hidden_in_menu')),
-      pickBy((classDetails: { [key: string]: any }) => this.hasMenuCategory(classDetails, 4)),
     )(this.ui.blockClasses)
   }
 
