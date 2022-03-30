@@ -118,7 +118,7 @@ class BlockToolbar extends mixins(Lang) {
       undefined,
       (err) => {
         if (err == null) {
-          console.warn('Unknown navigation error has occurred when selecting a block')
+          console.warn('Unknown navigation error has occurred when expanding/minimizing a block editor')
         } else if (err.name !== 'NavigationDuplicated') {
           console.warn(err)
         }
