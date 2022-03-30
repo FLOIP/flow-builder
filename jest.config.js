@@ -3,6 +3,14 @@ module.exports = {
   transformIgnorePatterns: [
     '!node_modules/',
   ],
+  transform: {
+    "^.+\\.js$": "babel-jest",
+    "^.+\\.vue$": "@vue/vue2-jest"
+  },
+  testPathIgnorePatterns : [
+    "tests/unit/storybook.spec.ts",
+    "tests/unit/app.spec.ts"
+  ],
   globals: {
     'ts-jest': {
       // fix from https://github.com/kulshekhar/ts-jest/issues/805#issuecomment-456055213
