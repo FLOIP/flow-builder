@@ -43,8 +43,8 @@
               <button
                 class="btn btn-sm"
                 :class="{
-                  'btn-outline-primary': hasNewFlowButton,
-                  'btn-primary': !hasNewFlowButton }
+                  'btn-outline-primary': hasToolbarNewFlowButton,
+                  'btn-primary': !hasToolbarNewFlowButton }
                 "
                 @click="showOrHideEditFlowModal">
                 {{ 'flow-builder.flow-details' | trans }}
