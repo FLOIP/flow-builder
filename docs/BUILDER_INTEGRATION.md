@@ -598,6 +598,14 @@ Likewise, the modes that are *selected* by default when a new flow is created ca
 platformBuilderConfig.ui.defaultModes = ['SMS']
 ```
 
+### Configuring page headings visibility
+It is possible to hide page titles for the Create Flow and Import Flow pages:
+
+```
+platformBuilderConfig.ui.pages.createFlow.hasPageTitle = false
+platformBuilderConfig.ui.pages.importFlow.hasPageTitle = false
+```
+
 ### Configuring Toolbar items visibility
 There are several boolean flags that allow hiding flow title and buttons from the toolbar.
 
