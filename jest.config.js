@@ -9,7 +9,9 @@ module.exports = {
   },
   testPathIgnorePatterns : [
     "tests/unit/storybook.spec.ts",
-    "tests/unit/app.spec.ts"
+    "tests/unit/app.spec.ts",
+    // "tests/unit/BaseBlockSlots.spec.ts",
+    "tests/unit/MessageBlock.spec.ts",
   ],
   globals: {
     'ts-jest': {

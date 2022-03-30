@@ -77,6 +77,7 @@
     "@storybook/addon-notes": "6.0.0-alpha.6",
     "@storybook/addon-storyshots": "6.2.9",
     "@storybook/vue": "6.2.9",
+    "@testing-library/vue": "5",
     "@types/jest": "^27.4.1",
     "@typescript-eslint/eslint-plugin": "4.23.0",
     "@typescript-eslint/parser": "^4.27.0",
