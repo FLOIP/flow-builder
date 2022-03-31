@@ -617,5 +617,13 @@ platformBuilderConfig.ui.toolbar.hasNewFlowButton = false
 platformBuilderConfig.ui.toolbar.hasExportButton = false
 ```
 
+### Adjusting builder width
+In case builder width must occupy less than full page wide,
+you may reduce its width by a certain amount in pixels, e.g. 80
+
+```
+platformBuilderConfig.ui.pages.interactionDesigner.builderWidthAdjustment = 80
+```
+
 TODO - add more
 

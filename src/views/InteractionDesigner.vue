@@ -32,7 +32,9 @@
     </aside>
 
     <main class="interaction-designer-main">
-      <builder-canvas @click.native="handleCanvasSelected" />
+      <builder-canvas
+        @click.native="handleCanvasSelected"
+        :width-adjustment="builderWidthAdjustment" />,
     </main>
   </div>
 </template>
@@ -106,6 +108,7 @@ export default {
       'isTreeValid',
       'jsonValidationResults',
       'validationResults',
+      'builderWidthAdjustment',
     ]),
     ...mapState({
 
@@ -308,6 +311,7 @@ export default {
   }
 
   .interaction-designer-header {
+    width: 100%;
     position: sticky;
     top: 0;
     left: 0;

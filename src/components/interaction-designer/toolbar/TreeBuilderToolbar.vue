@@ -668,8 +668,6 @@ export default TreeBuilderToolbar
 }
 
 .tree-builder-toolbar-main-menu {
-  width: 100vw;
-
   background: $neutral-50;
 
   box-shadow: 0 3px 6px #CACACA;

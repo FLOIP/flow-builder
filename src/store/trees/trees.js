@@ -91,6 +91,8 @@ export default {
     hasToolbarNewFlowButton: ({ui}) => lodash.get(ui, 'toolbar.hasNewFlowButton', true),
     hasToolbarExportButton: ({ui}) => lodash.get(ui, 'toolbar.hasExportButton', true),
 
+    builderWidthAdjustment: ({ui}) => lodash.get(ui, 'pages.interactionDesigner.builderWidthAdjustment', 0),
+
     selectedBlock: ({tree, ui}) => lodash.find(get(tree, 'blocks', []), {jsKey: ui.selectedBlock}),
 
     subscriberPropertyFields: ({ui}) => lodash.get(ui, 'subscriberPropertyFields', []),

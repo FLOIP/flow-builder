@@ -365,6 +365,9 @@
       },
       "importFlow": {
         "hasPageTitle": true
+      },
+      "interactionDesigner": {
+        "builderWidthAdjustment": 0
       }
     }
   },
