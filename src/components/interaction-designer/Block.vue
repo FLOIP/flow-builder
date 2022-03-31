@@ -525,16 +525,21 @@ export const Block = {
     },
 
     selectBlock() {
-      const {block: {uuid: blockId}} = this
       const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
-      this.$router.replace({
-        name: routerName,
-        params: {blockId},
-      }).catch((err) => {
-        if (err.name !== 'NavigationDuplicated') {
-          console.error(err)
-        }
-      })
+      this.$router.replace(
+        {
+          name: routerName,
+          params: {blockId: this.block.uuid},
+        },
+        undefined,
+        (err) => {
+          if (err == null) {
+            console.warn('Unknown navigation error has occurred when selecting a block')
+          } else if (err.name !== 'NavigationDuplicated') {
+            console.warn(err)
+          }
+        },
+      )
     },
 
     handleDraggableEndedForBlock() {
