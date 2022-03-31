@@ -4,13 +4,13 @@
       {{ `flow-builder.${block.type}` | trans }}
     </h3>
     <fieldset :disabled="!isEditable">
-      <block-label-editor
+      <label-editor
         :block="block"
         @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <block-semantic-label-editor
+      <semantic-label-editor
         v-if="showSemanticLabel"
         :block="block" />
-      <block-name-editor :block="block" />
+      <name-editor :block="block" />
 
       <div class="prompt-resource">
         <resource-editor
@@ -63,42 +63,13 @@ import {Component} from 'vue-property-decorator'
 import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {namespace} from 'vuex-class'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import Categorization from '@/components/interaction-designer/block-editors/Categorization.vue'
-import BlockOutputBranchingConfig from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import ChoicesBuilder from '@/components/interaction-designer/block-editors/ChoicesBuilder.vue'
-import MinimumChoicesEditor from '@/components/interaction-designer/block-editors/MinimumChoicesEditor.vue'
 import {IBlock} from '@floip/flow-runner'
-import MaximumChoicesEditor from '@/components/interaction-designer/block-editors/MaximumChoicesEditor.vue'
-import BlockNameEditor from '../block-editors/NameEditor.vue'
-import BlockLabelEditor from '../block-editors/LabelEditor.vue'
-import BlockSemanticLabelEditor from '../block-editors/SemanticLabelEditor.vue'
-import BlockExitSemanticLabelEditor from '../block-editors/ExitSemanticLabelEditor.vue'
-import FirstBlockEditorButton from '../flow-editors/FirstBlockEditorButton.vue'
-import ResourceEditor from '../resource-editors/ResourceEditor.vue'
-import BlockId from '../block-editors/BlockId.vue'
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
-import GenericContactPropertyEditor from '../block-editors/GenericContactPropertyEditor.vue'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({
-  components: {
-    BlockId,
-    BlockNameEditor,
-    BlockLabelEditor,
-    BlockOutputBranchingConfig,
-    BlockSemanticLabelEditor,
-    BlockExitSemanticLabelEditor,
-    ChoicesBuilder,
-    Categorization,
-    FirstBlockEditorButton,
-    GenericContactPropertyEditor,
-    MinimumChoicesEditor,
-    MaximumChoicesEditor,
-    ResourceEditor,
-  },
-})
+@Component({})
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
   showSemanticLabel = false
 

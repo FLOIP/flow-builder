@@ -27,7 +27,7 @@
           :class="firstRowClass"
           :message-key="`flow/${flow.uuid}/interaction_timeout`"
           :should-hide-validation="!didUserSubmit">
-          <flow-interaction-timeout-editor
+          <interaction-timeout-editor
             :flow="flow"
             :valid-state="isValid" />
         </validation-message>
@@ -38,7 +38,7 @@
           :class="otherRowsClass"
           :message-key="`flow/${flow.uuid}/languages`"
           :should-hide-validation="!didUserSubmit">
-          <flow-languages-editor
+          <languages-editor
             :flow="flow"
             @commitFlowLanguagesChange="updateFlowLanguages" />
         </validation-message>
@@ -48,7 +48,7 @@
           :class="otherRowsClass"
           :message-key="`flow/${flow.uuid}/supported_modes`"
           :should-hide-validation="!didUserSubmit">
-          <flow-modes-editor
+          <modes-editor
             :flow="flow"
             @commitFlowModesChange="updateFlowModes" />
         </validation-message>
@@ -62,27 +62,14 @@ import {Component, Prop} from 'vue-property-decorator'
 import {IFlow, IResource, ILanguage, SupportedMode} from '@floip/flow-runner'
 import {namespace, State} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {mixins} from 'vue-class-component'
-import FlowLabelEditor from './LabelEditor.vue'
-import FlowInteractionTimeoutEditor from './InteractionTimeoutEditor.vue'
-import FlowLanguagesEditor from './LanguagesEditor.vue'
-import FlowModesEditor from './ModesEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 const validationVuexNamespace = namespace('validation')
 
-@Component({
-  components: {
-    FlowLabelEditor,
-    FlowInteractionTimeoutEditor,
-    FlowLanguagesEditor,
-    FlowModesEditor,
-    ValidationMessage,
-  },
-})
-class FlowEditor extends mixins(Lang) {
+@Component({})
+export class FlowEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop({default: ''}) readonly flowHeader!: string
   @Prop({default: true}) readonly isOnSmallContainer!: boolean

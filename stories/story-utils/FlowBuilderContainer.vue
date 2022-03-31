@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import '@/css/InteractionDesigner.css'
+import '@/css/stories/InteractionDesigner.css'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'

@@ -47,7 +47,7 @@ import {namespace} from 'vuex-class'
 const flowVuexNamespace = namespace('flow')
 
 @Component({})
-class NameEditor extends mixins(Lang) {
+export class NameEditor extends mixins(Lang) {
   editBlockName = false
 
   @Prop() readonly block!: IBlock

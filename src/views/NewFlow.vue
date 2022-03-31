@@ -39,13 +39,13 @@
 </template>
 
 <script lang="ts">
-import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
-import {lang} from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {Component, Prop, Watch} from 'vue-property-decorator'
 import Vue from 'vue'
 import {Getter, Mutation, namespace, State} from 'vuex-class'
 import {forEach, isEmpty} from 'lodash'
+import {mixins} from 'vue-class-component'
 import {store} from '@/store'
 import {IContext, IFlow} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
@@ -54,15 +54,8 @@ import {IValidationStatus} from '@/store/validation'
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
-@Component(
-  {
-    components: {
-      FlowEditor,
-    },
-    mixins: [lang, Routes],
-  },
-)
-class NewFlow extends Vue {
+@Component({})
+class NewFlow extends mixins(Lang, Routes) {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 

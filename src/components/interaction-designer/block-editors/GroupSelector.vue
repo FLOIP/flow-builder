@@ -35,7 +35,7 @@ const flowVuexNamespace = namespace('flow')
     VueMultiselect,
   },
 })
-class GroupSelector extends mixins(Lang) {
+export class GroupSelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   get selectedGroup() {

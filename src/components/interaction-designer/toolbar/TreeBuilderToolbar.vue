@@ -341,9 +341,6 @@ import Component, {mixins} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
 import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
-import SelectionBanner from '@/components/interaction-designer/toolbar/SelectionBanner.vue'
-import ErrorNotifications from '@/components/interaction-designer/toolbar/ErrorNotifications.vue'
-import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
 
@@ -356,17 +353,10 @@ const validationVuexNamespace = namespace('validation')
 
 @Component({
   components: {
-    SelectionBanner,
-    ErrorNotifications,
     BModal,
-    FlowEditor,
-    // Affix,
-    // TreeUpdateConflictModal,
-    // InteractionTotalsDateRangeConfiguration
   },
-
 })
-export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
+export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isImporterVisible = false
   height = 102
 
@@ -682,6 +672,7 @@ export default class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang
 
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined}) => void
 }
+export default TreeBuilderToolbar
 </script>
 
 <style lang="scss">

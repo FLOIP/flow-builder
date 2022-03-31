@@ -74,7 +74,7 @@ const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
 @Component({})
-class BlockToolbar extends mixins(Lang) {
+export class BlockToolbar extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly isBlockSelected!: boolean
   @Prop() readonly isEditorVisible!: boolean

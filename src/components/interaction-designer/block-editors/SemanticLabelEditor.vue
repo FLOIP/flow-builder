@@ -17,7 +17,7 @@
 import {mapMutations} from 'vuex'
 import {lang} from '@/lib/filters/lang'
 
-export default {
+export const SemanticLabelEditor = {
   mixins: [lang],
   props: {
     block: {
@@ -39,5 +39,5 @@ export default {
     ...mapMutations('flow', ['block_setSemanticLabel']),
   },
 }
-
+export default SemanticLabelEditor
 </script>

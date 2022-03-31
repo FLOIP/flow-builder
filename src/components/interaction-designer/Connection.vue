@@ -14,7 +14,7 @@ const lightColor = '#6897BB'
 const darkColor = '#30516a'
 const disconnectionColor = '#dc3545'
 
-export default {
+export const Connection = {
   props: {
     exit: Object,
 
@@ -216,6 +216,7 @@ export default {
     },
   },
 }
+export default Connection
 </script>
 <style lang="scss">
 svg.leader-line {

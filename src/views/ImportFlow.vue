@@ -98,30 +98,23 @@
 
 <script lang="ts">
 
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {Component, Prop} from 'vue-property-decorator'
 import Vue from 'vue'
 import {Getter, Mutation, namespace, State} from 'vuex-class'
 import {debounce, forEach, get, isEmpty} from 'lodash'
+import {mixins} from 'vue-class-component'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
 
-import ErrorHandler from '@/components/interaction-designer/flow-editors/import/ErrorHandler.vue'
 import ImportStore from '@/store/flow/views/import'
 
 const flowVuexNamespace = namespace('flow')
 const importVuexNamespace = namespace('flow/import')
 
-@Component(
-  {
-    components: {
-      ErrorHandler,
-    },
-    mixins: [lang, Routes],
-  },
-)
-class ImportFlow extends Vue {
+@Component({})
+class ImportFlow extends mixins(Lang, Routes) {
   @Prop({default: () => ({})}) readonly appConfig!: object
 
   @Prop({default: () => ({})}) readonly builderConfig!: object

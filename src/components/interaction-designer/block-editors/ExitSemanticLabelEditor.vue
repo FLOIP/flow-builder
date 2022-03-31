@@ -13,7 +13,7 @@
 import {mapMutations} from 'vuex'
 import {lang} from '@/lib/filters/lang'
 
-export default {
+export const ExitSemanticLabelEditor = {
   mixins: [lang],
   props: {
     isEditable: {
@@ -41,4 +41,5 @@ export default {
   },
 }
 
+export default ExitSemanticLabelEditor
 </script>

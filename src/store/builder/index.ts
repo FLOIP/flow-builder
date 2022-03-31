@@ -1,4 +1,4 @@
-import {filter, flatMap, get, isEqual, keyBy, map, mapValues, union} from 'lodash'
+import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'

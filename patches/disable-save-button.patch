@@ -3,6 +3,7 @@ index 0ba9db66..8b41402e 100644
 --- a/builder.config.json
 +++ b/builder.config.json
 @@ -330,7 +330,6 @@
+     "treeSets": [],
      "enabledFeatures": [
        "audioUpload",
        "simulator",

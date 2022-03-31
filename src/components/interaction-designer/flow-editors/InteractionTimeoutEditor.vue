@@ -12,19 +12,14 @@
 <script lang="ts">
 import {Component, Prop} from 'vue-property-decorator'
 import {IFlow} from '@floip/flow-runner'
-import NumericEditor from '@/components/common/NumericEditor.vue'
 import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({
-  components: {
-    NumericEditor,
-  },
-})
-class InteractionTimeoutEditor extends mixins(Lang) {
+@Component({})
+export class InteractionTimeoutEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop() validState?: boolean
 

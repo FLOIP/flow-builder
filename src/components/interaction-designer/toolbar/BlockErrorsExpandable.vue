@@ -51,7 +51,7 @@ const validationVuexNamespace = namespace('validation')
 const DEFAULT_LIST_SIZE = 3
 
 @Component({})
-export default class BlockErrorsExpandable extends mixins(Lang) {
+export class BlockErrorsExpandable extends mixins(Lang) {
   @Prop({required: true}) readonly block!: IBlock
 
   isExpanded = false
@@ -97,6 +97,7 @@ export default class BlockErrorsExpandable extends mixins(Lang) {
   @validationVuexNamespace.State validationStatuses!: { [key: string]: IValidationStatus }
   @flowVuexNamespace.Getter activeFlow?: IFlow
 }
+export default BlockErrorsExpandable
 </script>
 <style scoped>
 .menu-bg-color {

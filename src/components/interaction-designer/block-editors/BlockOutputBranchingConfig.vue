@@ -98,11 +98,10 @@
 </template>
 
 <script lang="ts">
-  import {get, isEmpty, isNil, find} from 'lodash'
+  import {get, isEmpty, find} from 'lodash'
   import {Component, Prop} from 'vue-property-decorator'
   import {IBlock, IBlockExit, ValidationException} from '@floip/flow-runner'
   import {mixins} from 'vue-class-component'
-  import AdvancedExitsBuilder from '@/components/interaction-designer/block-editors/AdvancedExitsBuilder.vue'
   import Lang from '@/lib/filters/lang'
   import {namespace} from 'vuex-class'
 
@@ -129,12 +128,8 @@
     vendor_metadata: IVendorMetadataWithBranchingType,
   }
 
-  @Component({
-    components: {
-      AdvancedExitsBuilder,
-    },
-  })
-  export default class BlockOutputBranchingConfig extends mixins(Lang) {
+  @Component({})
+  export class BlockOutputBranchingConfig extends mixins(Lang) {
     @Prop() readonly block!: IBlock
     @Prop() readonly hasExitPerChoice!: boolean
     @Prop({default: true}) readonly hasUnifiedExit!: boolean
@@ -216,6 +211,7 @@
     @flowVuexNamespace.Mutation block_exitClearDestinationBlockFor!:
       ({blockExit}: {blockExit: IBlockExit}) => void
   }
+  export default BlockOutputBranchingConfig
 </script>
 
 <style scoped>

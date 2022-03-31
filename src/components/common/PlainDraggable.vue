@@ -5,9 +5,9 @@
 </template>
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import PlainDraggable from 'plain-draggable'
+import PlainDraggableLib from 'plain-draggable'
 
-export default {
+export const PlainDraggable = {
 
   props: {
     startX: Number,
@@ -35,7 +35,7 @@ export default {
     // this.$nextTick(() => {
     const handle = this.$el.querySelectorAll('.draggable-handle')[0]
 
-    this.draggable = new PlainDraggable(this.$el, {
+    this.draggable = new PlainDraggableLib(this.$el, {
       containment: document.querySelector('.builder-canvas'),
       autoScroll: true,
 
@@ -102,4 +102,5 @@ export default {
     },
   },
 }
+export default PlainDraggable
 </script>
