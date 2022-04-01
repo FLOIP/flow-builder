@@ -81,7 +81,7 @@ export class BlockToolbar extends mixins(Lang) {
 
   isDeleting = false
 
-  handleDeleteBlock() {
+  handleDeleteBlock(): void {
     this.block_deselect({blockId: this.block.uuid})
     this.flow_removeBlock({blockId: this.block.uuid})
     this.removeValidationStatusesFor({key: `block/${this.block.uuid}`})
@@ -89,7 +89,7 @@ export class BlockToolbar extends mixins(Lang) {
     this.$emit('after-delete')
   }
 
-  handleDuplicateBlock() {
+  handleDuplicateBlock(): void {
     this.flow_duplicateBlock({blockId: this.block.uuid}).then((duplicatedBlock) => {
       this.$router.replace({
         name: 'block-selected-details',
@@ -99,7 +99,7 @@ export class BlockToolbar extends mixins(Lang) {
     this.$emit('after-duplicate')
   }
 
-  handleExpandMinimizeBlockEditor() {
+  handleExpandMinimizeBlockEditor(): void {
     this.setIsBlockEditorOpen(!this.isEditorVisible)
     let routerName = ''
     if (this.isEditorVisible) {
@@ -110,14 +110,20 @@ export class BlockToolbar extends mixins(Lang) {
       this.$emit('before-expand')
     }
 
-    this.$router.replace({
-      name: routerName,
-      params: {blockId: this.block.uuid},
-    }).catch((err) => {
-      if (err.name !== 'NavigationDuplicated') {
-        console.error(err)
-      }
-    })
+    this.$router.replace(
+      {
+        name: routerName,
+        params: {blockId: this.block.uuid},
+      },
+      undefined,
+      (err) => {
+        if (err == null) {
+          console.warn('Unknown navigation error has occurred when expanding/minimizing a block editor')
+        } else if (err.name !== 'NavigationDuplicated') {
+          console.warn(err)
+        }
+      },
+    )
   }
 
   @builderVuexNamespace.Getter isEditable !: boolean
