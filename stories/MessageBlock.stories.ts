@@ -22,7 +22,7 @@ const MessageBlockTemplate = `
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-const BaseOptions: IBaseOptions = {
+export const BaseOptions: IBaseOptions = {
   components: {MessageBlock, FlowBuilderSidebarEditorContainer},
   template: MessageBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
@@ -45,7 +45,7 @@ export const Default = () => (DefaultClass)
     ...BaseOptions,
   },
 )
-class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
+export class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
   async mounted() {
     const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, messageBlockStore)
 
