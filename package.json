@@ -24,7 +24,7 @@
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
     "@floip/expression-parser": "^1.11.3",
-    "@floip/flow-runner": "https://github.com/object-required/flow-runner#spike/VMO-5680/ajv-expression-validation",
+    "@floip/flow-runner": "https://github.com/object-required/flow-runner#4842685c",
     "@flowjs/flow.js": "^2.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
