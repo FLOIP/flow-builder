@@ -81,14 +81,21 @@ export const mutations: MutationTree<IFlowsState> = {
     Vue.delete(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, key)
   },
   block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string}) {
-    // todo: this might still break reactivity
-    // Make nested assignment reactive
-    setWith(
-      findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!,
-      path,
-      value,
-      (nestedValue, key, nestedObject) => Vue.set(nestedObject, key, nestedValue),
-    )
+    const base = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
+    const chunks = path.split('.')
+
+    let pointer = base
+
+    while (chunks.length !== 1) {
+      const name = chunks.shift()!
+
+      if (typeof pointer[name] === 'undefined') {
+        Vue.set(pointer, name, {})
+      }
+      pointer = pointer[name]
+    }
+
+    Vue.set(pointer, chunks[0], value)
   },
   block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
     if (!destinationBlockId) {
