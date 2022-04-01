@@ -1667,6 +1667,11 @@
   resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.10.0.tgz#386cb9fbfb2afc951daae40e03845a87bacf3509"
   integrity sha512-pLR8p2z6q87O9c1XkP4DYfuEX+cKMn14a4jYkZ/t4ky1k+MEvp69zj662xJTzCkbH3ABsrwaxx7fP1FWASlEZw==
 
+"@floip/expression-parser@^1.11.3":
+  version "1.11.3"
+  resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.11.3.tgz#da32541845ec482b60daabe963ccb6200870781c"
+  integrity sha512-r8433SL1ZjOZKcgIkLMci9LUAYM7aJQGIdE9+37/op5H0DOhB8qh6HvQe7wDhpoOyrCiMYUx/6FBruOf9HT91w==
+
 "@floip/flow-runner@https://github.com/object-required/flow-runner#spike/VMO-5680/ajv-expression-validation":
   version "1.0.0-rc2.7"
   resolved "https://github.com/object-required/flow-runner#eb1c5c6186062790befe626ff93a473edd770d77"
