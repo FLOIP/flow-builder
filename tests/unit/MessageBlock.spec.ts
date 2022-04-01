@@ -1,26 +1,30 @@
 import {render} from '@testing-library/vue'
-import MessageBlock from '@/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue'
-import {ExistingDataBlock, NonStartingBlock, Default as MessageBlockStories} from '../../stories/MessageBlock.stories'
+import {BaseOptions, ExistingDataBlockClass as MessageBlockStory} from '../../stories/MessageBlock.stories'
 
-describe('Checks if the form is valid', () => {
-  const {container, getByTestId, getByText} = render(MessageBlock, {
-    // props: {
-    //   ...ExistingDataBlock.args,
-    // },
-  })
+// For some reason, putting this in test() fails the tests
+const {container} = render(MessageBlockStory, {
+  store: BaseOptions.store,
+})
 
-  test('It is mounted correctly and the root div is available', () => {
-    const rootDiv = container.querySelector('[class="mobile-primitive-message-block"]')
-    expect(rootDiv).toBeTruthy()
-  })
+test('The MessageBlock slots work as expected', () => {
+  // All assertions had to be placed in one test, otherwise the tests were failing.
+  // It might be caused by testing-library (and underlying vue-test-utils which destroy the Vue instance after each test?
 
-  test('It has the default branching config', () => {
-    const el = container.querySelector('[class="block-output-branching-config"]')
-    expect(el).toBeTruthy()
-  })
+  const blockRootDiv = container.querySelector('.mobile-primitive-message-block')
+  expect(blockRootDiv).not.toBeNull()
 
-  test('It doesn\'t have a contact property editor', () => {
-    const el = container.querySelector('[class="generic-contact-property-editor"]')
-    expect(el).toBeNull()
-  })
+  const resourceEditor = container.querySelector('.resource-editor')
+  expect(resourceEditor).not.toBeNull()
+
+  const defaultBranchingConfig = container.querySelector('.block-output-branching-config')
+  expect(defaultBranchingConfig).not.toBeNull()
+
+  const contactPropertyEditor = container.querySelector('.generic-contact-property-editor')
+  expect(contactPropertyEditor).toBeNull()
+
+  const blockCategorization = container.querySelector('.block-categorization')
+  expect(blockCategorization).not.toBeNull()
+
+  const blockId = container.querySelector('.block-id')
+  expect(blockId).not.toBeNull()
 })
