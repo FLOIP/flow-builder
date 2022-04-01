@@ -347,16 +347,28 @@
       "RICH_MESSAGING",
       "OFFLINE"
     ],
+    "toolbar": {
+      "hasFlowTitle": true,
+      "hasHomeButton": true,
+      "hasNewFlowButton": true,
+      "hasExportButton": true
+    },
     "defaultModes": [
       "SMS",
       "USSD",
       "IVR"
     ],
     "appWideInteractionTimeout": null,
-    "title": {
-      "createFlow": "flow-builder.create-flow",
-      "editFlow": "flow-builder.edit-flow",
-      "importFlow": "flow-builder.import-flow"
+    "pages": {
+      "createFlow": {
+        "hasPageTitle": true
+      },
+      "importFlow": {
+        "hasPageTitle": true
+      },
+      "interactionDesigner": {
+        "builderWidthAdjustment": 0
+      }
     }
   },
   "audio": {

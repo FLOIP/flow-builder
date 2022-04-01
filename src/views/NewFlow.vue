@@ -70,7 +70,10 @@ class NewFlow extends mixins(Lang, Routes) {
   }
 
   get createFlowTitle(): string {
-    return this.ui.title.createFlow
+    if (this.hasCreateFlowTitle) {
+      return 'flow-builder.create-flow'
+    }
+    return ''
   }
 
   async mounted(): Promise<void> {
@@ -113,6 +116,8 @@ class NewFlow extends mixins(Lang, Routes) {
   flowError: string | null = null
 
   @State(({trees: {ui}}) => ui) ui!: any
+
+  @Getter hasCreateFlowTitle!: boolean
 
   @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
   @flowVuexNamespace.Action flow_persist!: ({

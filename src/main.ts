@@ -11,73 +11,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import 'scss/main.scss'
 
-/**
- * Vue way for Fontawesome
- * more details: https://www.npmjs.com/package/@fortawesome/vue-fontawesome#the-icon-property
- *
- */
-import {library} from '@fortawesome/fontawesome-svg-core'
-import {faCheck, faMobileAlt, faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons'
-import {
-  faCheckCircle,
-  faCircle,
-  faClone,
-  faTrashAlt,
-  faTimesCircle,
-  faDotCircle,
-  faEdit,
-  faEnvelope,
-  faCommentDots,
-} from '@fortawesome/free-regular-svg-icons'
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import * as commonComponents from '@/components/common'
-import * as interactionDesignerComponents from '@/components/interaction-designer/'
-import * as blockEditorsComponents from '@/components/interaction-designer/block-editors'
-import * as blockTypesComponents from '@/components/interaction-designer/block-types'
-import * as blocksComponents from '@/components/interaction-designer/blocks'
-import * as flowEditorsComponents from '@/components/interaction-designer/flow-editors'
-import * as flowImportComponents from '@/components/interaction-designer/flow-editors/import'
-import * as blockResourceEditorsComponents from '@/components/interaction-designer/resource-editors'
-import * as resourceEditorComponents from '@/components/resource-editor'
-import * as toolbarComponents from '@/components/interaction-designer/toolbar'
-import CustomIcons from './lib/custom-icons/index'
+import registerCustomComponents from '@/common-imports'
 import router from './router'
 import App from './App.vue'
 
-const Components: { [key: string]: any } = {
-  ...commonComponents,
-  ...interactionDesignerComponents,
-  ...blockEditorsComponents,
-  ...blockTypesComponents,
-  ...blocksComponents,
-  ...flowEditorsComponents,
-  ...flowImportComponents,
-  ...blockResourceEditorsComponents,
-  ...resourceEditorComponents,
-  ...toolbarComponents,
-}
-
-Object.entries(Components).forEach((component) => {
-  Vue.component(component[0], component[1])
-})
-
-library.add(
-  faCircle,
-  faCheckCircle,
-  faEdit,
-  faCheck,
-  faEnvelope,
-  faMobileAlt,
-  faCommentDots,
-  faClone,
-  faTrashAlt,
-  faTimesCircle,
-  faDotCircle,
-  faChevronDown,
-  faChevronUp,
-  ...CustomIcons,
-)
-Vue.component('FontAwesomeIcon', FontAwesomeIcon)
+registerCustomComponents()
 
 Vue.use(Vuex)
 

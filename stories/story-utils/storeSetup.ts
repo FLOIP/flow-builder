@@ -1,45 +1,20 @@
 import Vue from 'vue'
 import {namespace, State} from 'vuex-class'
 import {IBlock, IFlow, ILanguage, SupportedContentType, SupportedMode} from '@floip/flow-runner'
-import {cloneDeep, get, isEmpty, map} from 'lodash'
+import {cloneDeep, get, isEmpty} from 'lodash'
 import Component from 'vue-class-component'
-import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import Vuex from 'vuex'
+import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import {IRootState, store} from '@/store'
 import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
+import registerCustomComponents from '@/common-imports'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
 let storyInitState: any = {}
 
-import * as commonComponents from '@/components/common'
-import * as interactionDesignerComponents from '@/components/interaction-designer/'
-import * as blockEditorsComponents from '@/components/interaction-designer/block-editors'
-import * as blockTypesComponents from '@/components/interaction-designer/block-types'
-import * as blocksComponents from '@/components/interaction-designer/blocks'
-import * as flowEditorsComponents from '@/components/interaction-designer/flow-editors'
-import * as flowImportComponents from '@/components/interaction-designer/flow-editors/import'
-import * as blockResourceEditorsComponents from '@/components/interaction-designer/resource-editors'
-import * as resourceEditorComponents from '@/components/resource-editor'
-import * as toolbarComponents from '@/components/interaction-designer/toolbar'
-
-const Components: { [key: string]: any } = {
-  ...commonComponents,
-  ...interactionDesignerComponents,
-  ...blockEditorsComponents,
-  ...blockTypesComponents,
-  ...blocksComponents,
-  ...flowEditorsComponents,
-  ...flowImportComponents,
-  ...blockResourceEditorsComponents,
-  ...resourceEditorComponents,
-  ...toolbarComponents
-}
-
-Object.entries(Components).forEach((component) => {
-  Vue.component(component[0], component[1])
-})
+registerCustomComponents()
 
 Vue.use(Vuex)
 
