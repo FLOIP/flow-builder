@@ -9,12 +9,12 @@
     <div>
       <b-tabs>
         <b-tab
-          v-for="{id: languageId, label: language} in flow.languages"
+          v-for="({id: languageId, label: language}, langIndex) in flow.languages"
           :key="languageId"
           :title="language || 'flow-builder.unknown-language' | trans">
           <div
-            v-for="(mode, i) in flow.supported_modes"
-            :key="i"
+            v-for="(mode, modeIndex) in flow.supported_modes"
+            :key="modeIndex"
             class="tab-content-style">
             <header class="d-flex">
               <font-awesome-icon
@@ -29,21 +29,25 @@
 
               <resource-variant-text-editor
                 v-if="contentType === SupportedContentType.TEXT"
+                :index="computeResourceIndex(langIndex, modeIndex)"
                 :resource-id="resource.uuid"
-
                 :resource-variant="findOrGenerateStubbedVariantOn(
                   resource,
                   {language_id: languageId, content_type: contentType, modes: [mode]})"
                 :mode="mode" />
 
               <div v-if="contentType === SupportedContentType.AUDIO">
-                <audio-library-selector
-                  :audio-files="availableAudio"
-                  :lang-id="languageId"
-                  :resource-id="resource.uuid"
-                  :selected-audio-file="findOrGenerateStubbedVariantOn(
+                <validation-message
+                  #input-control="{ isValid }"
+                  :message-key="`resource/${resource.uuid}/values/${computeResourceIndex(langIndex, modeIndex)}/value`">
+                  <audio-library-selector
+                    :audio-files="availableAudio"
+                    :lang-id="languageId"
+                    :resource-id="resource.uuid"
+                    :selected-audio-file="findOrGenerateStubbedVariantOn(
                     resource,
                     {language_id: languageId, content_type: contentType, modes: [mode]}).value" />
+                </validation-message>
 
                 <phone-recorder
                   v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [mode]}).value"
@@ -109,14 +113,10 @@ import {
   findResourceVariantOverModesOn,
   IResourceDefinitionVariantOverModesFilter,
 } from '@/store/flow/resource'
-import ResourceVariantTextEditor from '@/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue'
-import AudioLibrarySelector from '@/components/common/AudioLibrarySelector.vue'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
-import PhoneRecorder from '@/components/interaction-designer/block-editors/PhoneRecorder.vue'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {mixins} from 'vue-class-component'
 import {TabsPlugin} from 'bootstrap-vue'
-import UploadMonitor from '../block-editors/UploadMonitor.vue'
 
 Vue.use(TabsPlugin)
 
@@ -137,14 +137,7 @@ interface IResourceDefinitionVariantOverModesWithOptionalValue extends Partial<I
   value?: IResourceDefinitionVariantOverModes['value'],
 }
 
-@Component({
-  components: {
-    AudioLibrarySelector,
-    ResourceVariantTextEditor,
-    UploadMonitor,
-    PhoneRecorder,
-  },
-})
+@Component({})
 export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
 
@@ -222,6 +215,16 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 
       return null
     }
+  }
+
+  /**
+   * Compute resource index (cell index) for a table having X languages and Y modes
+   *
+   * @param langIndex
+   * @param modeIndex
+   */
+  computeResourceIndex(langIndex: number, modeIndex: number): number {
+    return langIndex * this.flow.supported_modes.length + modeIndex
   }
 
   @Getter availableAudio!: IAudioFile[]

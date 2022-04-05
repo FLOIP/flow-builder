@@ -1,17 +1,20 @@
 import Vue from 'vue'
 import {namespace, State} from 'vuex-class'
 import {IBlock, IFlow, ILanguage, SupportedContentType, SupportedMode} from '@floip/flow-runner'
-import {cloneDeep, get, isEmpty, map} from 'lodash'
+import {cloneDeep, get, isEmpty} from 'lodash'
 import Component from 'vue-class-component'
-import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import Vuex from 'vuex'
+import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import {IRootState, store} from '@/store'
 import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
+import registerCustomComponents from '@/common-imports'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
 let storyInitState: any = {}
+
+registerCustomComponents()
 
 Vue.use(Vuex)
 

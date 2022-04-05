@@ -55,7 +55,7 @@
           class="block-label"
           :style="{ maxWidth: `${labelContainerMaxWidth}px` }"
           :class="{'empty': !block.label}">
-          {{ block.label || 'Untitled block' }}
+          {{ block.label || trans('flow-builder.untitled-block') }}
         </h3>
       </header>
 
@@ -169,27 +169,17 @@
 import Vue from 'vue'
 import {filter, forEach, get, includes, isNumber} from 'lodash'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-import PlainDraggable from '@/components/common/PlainDraggable.vue'
 import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
 import {generateConnectionLayoutKeyFor, OperationKind} from '@/store/builder'
-import Connection from '@/components/interaction-designer/Connection.vue'
 import {lang} from '@/lib/filters/lang'
 import {NoValidResponseHandler} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import {BTooltip} from 'bootstrap-vue'
-import BlockEditor from '@/components/interaction-designer/block-editors/BlockEditor'
-import BlockToolbar from '@/components/interaction-designer/block/BlockToolbar'
 
 Vue.component('BTooltip', BTooltip)
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
 
-export default {
-  components: {
-    Connection,
-    PlainDraggable,
-    BlockEditor,
-    BlockToolbar,
-  },
+export const Block = {
   mixins: [lang],
   props: ['block', 'x', 'y'],
 
@@ -243,7 +233,7 @@ export default {
       blockClasses: ({trees: {ui}}) => ui.blockClasses,
     }),
 
-    ...mapGetters('builder', ['blocksById', 'isEditable']),
+    ...mapGetters('builder', ['blocksById', 'isEditable', 'interactionDesignerBoundingClientRect']),
     ...mapGetters('flow', ['activeFlow']),
 
     blockExitsLength() {
@@ -294,8 +284,10 @@ export default {
 
     translatedBlockEditorPosition() {
       const xOffset = 5
-      const yOffset = 32
-      return `translate(${this.x + this.blockWidth + xOffset}px, ${this.y - yOffset}px)`
+      const yOffset = 32 // Block toolbar height
+      const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
+      const top = this.y - yOffset
+      return `translate(${left}px, ${top}px)`
     },
 
     shouldShowBlockEditor() {
@@ -533,12 +525,21 @@ export default {
     },
 
     selectBlock() {
-      const {block: {uuid: blockId}} = this
       const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
-      this.$router.history.replace({
-        name: routerName,
-        params: {blockId},
-      })
+      this.$router.replace(
+        {
+          name: routerName,
+          params: {blockId: this.block.uuid},
+        },
+        undefined,
+        (err) => {
+          if (err == null) {
+            console.warn('Unknown navigation error has occurred when selecting a block')
+          } else if (err.name !== 'NavigationDuplicated') {
+            console.warn(err)
+          }
+        },
+      )
     },
 
     handleDraggableEndedForBlock() {
@@ -558,6 +559,8 @@ export default {
     },
   },
 }
+
+export default Block
 </script>
 
 <style lang="scss">

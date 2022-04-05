@@ -16,7 +16,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit} from 'lodash'
+import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
 import {IFlowsState} from '.'
@@ -24,7 +24,7 @@ import {mergeFlowContainer} from './utils/importHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
-  activeFlow: (state) => {
+  activeFlow: (state): IFlow | undefined => {
     if (state.flows.length) {
       try {
         return getActiveFlowFrom(state as unknown as IContext)
@@ -32,6 +32,9 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
         return undefined
       }
     }
+  },
+  blockUuidsOnActiveFlow: (state, getters): IBlock['uuid'][] => {
+    return getters.activeFlow?.blocks
   },
   isActiveFlowValid: (state, getters, rootState) => {
     const flowValidationResult = get(rootState.validation.validationStatuses, `flow/${getters.activeFlow.uuid}`)
@@ -42,8 +45,19 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     // check if all blocks are valid
     return every(
       getters.activeFlow.blocks,
-      (block) => get(rootState.validation.validationStatuses, `block/${block.uuid}`)?.isValid,
-)
+      (block) => {
+        const currentValidation = get(rootState.validation.validationStatuses, `block/${block.uuid}`)
+        // should be valid if we don't have associated validation in validationStatuses
+        return currentValidation != null ? currentValidation.isValid : true
+      },
+    )
+  },
+  //TODO: when IFlow interface is fixed in https://viamoinc.atlassian.net/browse/VMO-5581
+  // remove isActiveFlowConsideredValidOnCreationForm, and change every references to isActiveFlowValid
+  isActiveFlowConsideredValidOnCreationForm: (state, getters, rootState) => {
+    const flowValidationResult = get(rootState.validation.validationStatuses, `flow/${getters.activeFlow.uuid}`)
+    // true if we only have 1 validation error (it's related to '/first_block_id')
+    return Boolean(getters.isActiveFlowValid) || (Boolean(flowValidationResult) && flowValidationResult.ajvErrors?.length === 1)
   },
   //TODO - is the IContext equivalent to the Flow Container? Can we say that it should be?
   activeFlowContainer: (state) => ({
@@ -122,12 +136,15 @@ export const mutations: MutationTree<IFlowsState> = {
 
   flow_setSupportedMode(state, {flowId, value}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    flow.supported_modes = Array.isArray(value) ? value : [value]
+    const supportedModesOrder = Object.values(SupportedMode)
+    // Make sure to follow order when populating supported_modes, because the order may affect indexes during resource validation
+    flow.supported_modes = Array.isArray(value) ? sortBy(value, (o) => supportedModesOrder.indexOf(o)) : [value]
   },
 
   flow_setLanguages(state, {flowId, value}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    flow.languages = Array.isArray(value) ? value : [value]
+    // Make sure to follow order when populating languages, because the order may affect indexes during resource validation
+    flow.languages = Array.isArray(value) ? sortBy(value, ['label']) : [value]
   },
 }
 
@@ -310,17 +327,17 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  async flow_createWith(_context, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {
+  async flow_createWith({rootState}, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {
     return {
       ...defaults(props, {
         name: '',
         // TODO: Remove this optional attribute once the findFlowWith( ) is able to mutate state when setting non existing key.
         label: '',
         last_modified: moment().toISOString(),
-        interaction_timeout: 30,
+        interaction_timeout: rootState.trees.ui.appWideInteractionTimeout,
         vendor_metadata: {},
 
-        supported_modes: DEFAULT_MODES,
+        supported_modes: rootState.trees.ui.defaultModes,
         languages: [],
         blocks: [],
 
@@ -398,9 +415,3 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     state.selectedBlocks = newBlocksUuid
   },
 }
-
-export const DEFAULT_MODES = [
-  SupportedMode.SMS,
-  SupportedMode.USSD,
-  SupportedMode.IVR,
-]

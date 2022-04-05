@@ -17,6 +17,17 @@ module.exports = {
         // path.resolve(__dirname, 'node_modules'),
       ],
     },
+    module: {
+      rules: [
+        {
+          test: require('path').resolve(__dirname, 'node_modules/leader-line/'),
+          use: [{
+            loader: 'skeleton-loader',
+            options: {procedure: content => `${content}export default LeaderLine`}
+          }]
+        }
+      ]
+    }
   },
   devServer: {
     before(app) {
@@ -89,6 +100,13 @@ module.exports = {
         const flow = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(flow))
+      })
+
+      //In the success case, just echo the language back
+      app.post('/backend/languages', bodyParser.json(), (req, res) => {
+        const language = req.body
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(language))
       })
 
       // Mock call to record start, with this format

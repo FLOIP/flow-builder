@@ -2,7 +2,7 @@
   <validation-message
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`">
-    <div class="block-threshold">
+    <div class="threshold-editor">
       <float-editor
         v-model.number="threshold"
         :min="0"
@@ -16,16 +16,10 @@
 
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import FloatEditor from '@/components/common/FloatEditor'
 import {get} from 'lodash'
 import {lang} from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage'
 
-export default {
-  components: {
-    FloatEditor,
-    ValidationMessage,
-  },
+export const ThresholdEditor = {
   mixins: [lang],
   props: {
     block: {
@@ -49,4 +43,5 @@ export default {
     },
   },
 }
+export default ThresholdEditor
 </script>

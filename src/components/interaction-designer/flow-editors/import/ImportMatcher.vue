@@ -4,8 +4,8 @@
     <div
       v-for="missingMatch in missingMatches"
       :key="`${getIdentifier(missingMatch)}-missing`">
-      <div class="form-check form-check-inline full-width">
-        <div class="row full-width ml-1">
+      <div class="row full-width ml-1 mt-2">
+        <div class="form-check form-check-inline full-width">
           <div class="col-xl-2 col-md-3">
             <label class="form-check-label full-width mt-2 mb-2">{{ getLabel(missingMatch) }}</label>
           </div>
@@ -36,22 +36,37 @@
           </div>
         </div>
       </div>
+      <div
+        v-if="type === 'language' && isFeatureAddLanguageOnImportEnabled"
+        class="row full-width mt-2">
+        <div class="col-12">
+          <language-adder @onLanguageAddition="onLanguageAddition" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 
-import lang from '@/lib/filters/lang'
+import {
+  IContext,
+} from '@floip/flow-runner'
+
+import Lang from '@/lib/filters/lang'
 import Vue from 'vue'
 import {Component, Prop} from 'vue-property-decorator'
 import {get, isEmpty, omit} from 'lodash'
+import {mixins} from 'vue-class-component'
+import {Getter, namespace} from 'vuex-class'
 
-@Component({
-  mixins: [lang],
-})
-class ImportMatcher extends Vue {
+const importVuexNamespace = namespace('flow/import')
+
+@Component({})
+export class ImportMatcher extends mixins(Lang) {
   @Prop({default: ''}) readonly matchNotFoundText!: string
+
+  @Prop({required: true}) readonly type!: string
 
   @Prop({required: true}) readonly typeId!: string
 
@@ -71,15 +86,14 @@ class ImportMatcher extends Vue {
     return get(missingMatch, this.typeId, '')
   }
 
-  updateMappings(missingMatch: { [key: string]: string }, event: { target: { value: string } }) {
+  updateMappings(missingMatch: { [key: string]: string }, event: { target: { value: string } }): void {
     this.mappings[this.getIdentifier(missingMatch)] = event.target.value
   }
 
-  get mappingsEmpty() {
+  get mappingsEmpty(): boolean {
     return isEmpty(this.mappings)
   }
-
-  handleMatch(missingMatch: { [key: string]: string }) {
+  handleMatch(missingMatch: { [key: string]: string }): void {
     const matchingJson = get(this.mappings, this.getIdentifier(missingMatch))
     if (matchingJson) {
       const newMatch = JSON.parse(matchingJson)
@@ -87,6 +101,16 @@ class ImportMatcher extends Vue {
       this.mappings = omit(this.mappings, this.getIdentifier(missingMatch))
     }
   }
+
+  async onLanguageAddition(): Promise<void> {
+    return await this.validateLanguages(this.flowContainer)
+  }
+
+  @Getter isFeatureAddLanguageOnImportEnabled!: boolean
+
+  @importVuexNamespace.Action validateLanguages!: (flowContainer: IContext) => Promise<void>
+
+  @importVuexNamespace.State flowContainer!: IContext
 }
 
 export default ImportMatcher

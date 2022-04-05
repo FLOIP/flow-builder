@@ -4,6 +4,7 @@ import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import {defaultsDeep} from 'lodash'
+import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
@@ -52,7 +53,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
 
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-    commit('flow/resource_add', {resource: blankResource}, {root: true})
 
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
@@ -76,6 +76,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       test: formatTestValueForUnifiedBranchingType(block as INumericResponseBlock),
     }, {root: true})
   },
+
+  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return validateCommunityBlock({block, schemaVersion})
+  },
 }
 
 function formatTestValueForUnifiedBranchingType(block: INumericResponseBlock): string {
@@ -85,16 +89,15 @@ function formatTestValueForUnifiedBranchingType(block: INumericResponseBlock): s
   }
   if ((block.config.validation_minimum !== null && block.config.validation_minimum !== undefined)
     && (block.config.validation_maximum !== null && block.config.validation_maximum !== undefined)) {
-    return `AND(is_number(block.value, block.value >= ${block.config.validation_minimum},`
-      + ` block.value <= ${block.config.validation_maximum})`
+    return `AND(is_number(block.value, block.value >= ${block.config.validation_minimum}, block.value <= ${block.config.validation_maximum}))`
   }
   if ((block.config.validation_minimum !== null && block.config.validation_minimum !== undefined)
     && (block.config.validation_maximum === null || block.config.validation_maximum === undefined)) {
-    return `AND(is_number(block.value), block.value >= ${block.config.validation_minimum})`
+    return `AND(is_number(block.value), block.value >= ${block.config.validation_minimum}))`
   }
   if ((block.config.validation_minimum === null || block.config.validation_minimum === undefined)
     && (block.config.validation_maximum !== null && block.config.validation_maximum !== undefined)) {
-    return `AND(is_number(block.value), block.value <= ${block.config.validation_maximum})`
+    return `AND(is_number(block.value), block.value <= ${block.config.validation_maximum}))`
   }
 
   console.warn('Exit test condition not found for NumericBlock, providing `true` by default')

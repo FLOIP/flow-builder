@@ -10,7 +10,7 @@
       <div class="dropdown">
         <button
           id="flowErrorsDropdown"
-          class="btn btn-link dropdown-toggle"
+          class="btn btn-link btn-link-text dropdown-toggle"
           type="button"
           data-toggle="dropdown"
           aria-haspopup="true"
@@ -21,8 +21,10 @@
         <ul
           class="notification dropdown-menu"
           aria-labelledby="flowErrorsDropdown">
-          <li v-for="error in flowValidationErrors">
-            <div class="d-flex justify-content-between px-2 py-0">
+          <li
+            v-for="error in flowValidationErrors"
+            :key="error.dataPath">
+            <div class="d-flex justify-content-between px-2 py-0 highlight-on-hover">
               <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
               <div v-if="error.dataPath === '/first_block_id'">
                 {{ 'flow-builder.add-at-least-one-block' | trans }}
@@ -30,7 +32,7 @@
               <button
                 v-else
                 type="button"
-                class="btn btn-link"
+                class="btn btn-link btn-link-text"
                 @click="fixFlowError()">
                 {{ 'flow-builder.fix-issue' | trans }}
               </button>
@@ -50,7 +52,7 @@
       <div class="dropdown">
         <button
           id="blockErrorsDropdown"
-          class="btn btn-link dropdown-toggle"
+          class="btn btn-link btn-link-text dropdown-toggle"
           type="button"
           data-toggle="dropdown"
           aria-haspopup="true"
@@ -62,24 +64,11 @@
           class="notification dropdown-menu"
           aria-labelledby="blockErrorsDropdown">
           <li
-            v-for="(status, key) in blockValidationStatuses"
+            v-for="(block, key) in invalidBlocksInActiveFlow"
             :key="key">
-            <div class="card">
-              <div class="card-title m-0 px-2 pt-1">
-                {{ trans(`flow-builder.${status.type}`) }}
-              </div>
-              <div
-                v-for="error in status.ajvErrors"
-                class="card-body d-flex justify-content-between px-2 py-0">
-                <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
-                <button
-                  type="button"
-                  class="btn btn-link"
-                  @click="fixBlockError(key, error.dataPath)">
-                  {{ 'flow-builder.fix-issue' | trans }}
-                </button>
-              </div>
-            </div>
+            <block-errors-expandable
+              :block="block"
+              @fixBlockError="fixBlockError" />
           </li>
         </ul>
       </div>
@@ -89,19 +78,19 @@
 
 <script lang="ts">
 import Lang from '@/lib/filters/lang'
-import {pickBy, size} from 'lodash'
+import {Dictionary, filter, get, pickBy, replace, size} from 'lodash'
 import {IValidationStatus} from '@/store/validation'
 import Routes from '@/lib/mixins/Routes'
 import Component, {mixins} from 'vue-class-component'
 import {namespace} from 'vuex-class'
-import {IFlow} from '@floip/flow-runner'
+import {IFlow, IResource} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
 @Component({})
-export default class ErrorNotifications extends mixins(Routes, Lang) {
+export class ErrorNotifications extends mixins(Routes, Lang) {
   updated(): void {
     this.$emit('updated')
   }
@@ -111,6 +100,9 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
     return this.validationStatuses[flowKey]?.ajvErrors || []
   }
 
+  /**
+   * block validation statuses for active flow only
+   */
   get blockValidationStatuses(): { [key: string]: IValidationStatus } {
     const blocksMap = this.activeFlow?.blocks.reduce((map: { [key: string]: boolean }, block) => {
       map[`block/${block.uuid}`] = true
@@ -119,11 +111,25 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
     if (!blocksMap || size(blocksMap) === 0) {
       return {}
     }
-    return pickBy(this.validationStatuses, (value: IValidationStatus, key) => value.type !== 'flow' && blocksMap[key])
+    return pickBy(this.validationStatuses, (value: IValidationStatus, key) => key.includes('block/') && blocksMap[key])
+  }
+
+  get resourceValidationStatusesForActiveFlow(): Dictionary<IValidationStatus> {
+    return pickBy(this.validationStatuses, (status, key) => {
+      const resourceUuid = replace(key, 'resource/', '')
+      return this.resourceUuidsOnActiveFlow.includes(resourceUuid) && !get(this.validationStatuses, `resource/${resourceUuid}`)?.isValid
+    })
+  }
+
+  get invalidBlocksInActiveFlow() {
+    return filter(this.activeFlow?.blocks, (block) => {
+      // The block is invalid on IBlock OR it's invalid on corresponding IResource
+      return get(this.blockValidationStatuses, `block/${block.uuid}`) || get(this.resourceValidationStatusesForActiveFlow, `resource/${block.config.prompt}`)
+    });
   }
 
   get numberOfBlocksWithErrors(): number {
-    return size(this.blockValidationStatuses)
+    return size(this.invalidBlocksInActiveFlow)
   }
 
   fixFlowError(): void {
@@ -153,7 +159,9 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
 
   @validationVuexNamespace.State validationStatuses!: { [key: string]: IValidationStatus }
   @flowVuexNamespace.Getter activeFlow?: IFlow
+  @flowVuexNamespace.Getter resourceUuidsOnActiveFlow!: IResource['uuid'][]
 }
+export default ErrorNotifications
 </script>
 
 <style scoped lang="scss">
@@ -166,5 +174,14 @@ export default class ErrorNotifications extends mixins(Routes, Lang) {
 
 .card {
   background: #F8F2F2;
+}
+
+.btn-link-text {
+  text-decoration: underline;
+  color: #216FCE;
+}
+
+.highlight-on-hover:hover {
+  background-color: #FFEBEB;
 }
 </style>

@@ -16,14 +16,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {mapMutations} from 'vuex'
 import {lang} from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage'
-import TextEditor from '@/components/common/TextEditor'
 
-export default {
-  components: {
-    TextEditor,
-    ValidationMessage,
-  },
+export const SemanticLabelEditor = {
   mixins: [lang],
   props: {
     block: {
@@ -45,5 +39,5 @@ export default {
     ...mapMutations('flow', ['block_setSemanticLabel']),
   },
 }
-
+export default SemanticLabelEditor
 </script>

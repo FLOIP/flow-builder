@@ -153,6 +153,10 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('setFlowError', 'flow-builder.invalid-json-provided')
       return
     }
+
+    //We know it's valid JSON at least. Let's display it correctly formatted
+    commit('setFlowJsonText', JSON.stringify(flowContainer, null, 2))
+
     if (!checkSingleFlowOnly(flowContainer)) {
       commit('setFlowError', 'flow-builder.importer-currently-supports-single-flow-only')
       return

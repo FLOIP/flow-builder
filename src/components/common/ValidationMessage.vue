@@ -5,7 +5,11 @@
     <slot
       name="input-control"
       :isValid="isValid" />
-    <small class="text-danger">{{ errorMessage }}</small>
+    <small
+      v-if="!shouldHideValidation"
+      class="text-danger">
+      {{ errorMessage }}
+    </small>
   </div>
 </template>
 
@@ -24,8 +28,9 @@ const validationVuexNamespace = namespace('validation')
     BAlert,
   },
 })
-class ValidationMessage extends mixins(Lang) {
+export class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
+  @Prop({default: false}) shouldHideValidation!: boolean
 
   get errorMessage(): string {
     // get value by property (not by path like with lodash.get()), as the messageKey can contain `.` chars

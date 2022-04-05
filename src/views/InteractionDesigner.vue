@@ -1,7 +1,8 @@
 <template>
   <div
     v-if="activeFlow"
-    class="interaction-designer-contents">
+    ref="interaction-designer-contents"
+    class="interaction-designer interaction-designer-contents">
     <header class="interaction-designer-header">
       <tree-builder-toolbar />
     </header>
@@ -31,7 +32,9 @@
     </aside>
 
     <main class="interaction-designer-main">
-      <builder-canvas @click.native="handleCanvasSelected" />
+      <builder-canvas
+        @click.native="handleCanvasSelected"
+        :width-adjustment="builderWidthAdjustment" />,
     </main>
   </div>
 </template>
@@ -39,42 +42,17 @@
 <script>
 import {lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {endsWith, forEach, get, invoke, isEmpty} from 'lodash'
+import {endsWith, forEach, get, isEmpty, invoke, values} from 'lodash'
 import Vue from 'vue'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-// import {affix as Affix} from 'vue-strap'
-// import {SelectOneResponseBlock} from '../components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue'
-
-// import * as BlockTypes from './block-types'
-// import JsPlumbBlock from './JsPlumbBlock'
-
 import {store} from '@/store'
-
-// import TreeEditor from './TreeEditor'
-// import TreeViewer from './TreeViewer'
-// import LegacyInteractionDesigner from './InteractionDesigner.legacy'
-// import TreeUpdateConflictModal from './TreeUpdateConflictModal';
-import TreeBuilderToolbar from '@/components/interaction-designer/toolbar/TreeBuilderToolbar.vue'
-import BuilderCanvas from '@/components/interaction-designer/BuilderCanvas.vue'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
 import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
 
-// import '../TreeDiffLogger'
-
 export default {
-
   components: {
-    // ...BlockTypes,
-    // Affix,
-    // JsPlumbBlock,
-    // TreeEditor,
-    // TreeViewer,
-    TreeBuilderToolbar,
-    BuilderCanvas,
     ClipboardRoot,
-    // TreeUpdateConflictModal,
   },
-
   mixins: [lang, Routes],
   props: {
     id: {type: String},
@@ -130,6 +108,7 @@ export default {
       'isTreeValid',
       'jsonValidationResults',
       'validationResults',
+      'builderWidthAdjustment',
     ]),
     ...mapState({
 
@@ -146,7 +125,7 @@ export default {
     }),
 
     ...mapGetters('flow', ['activeFlow']),
-    ...mapGetters('builder', ['activeBlock', 'isEditable']),
+    ...mapGetters('builder', ['activeBlock', 'isEditable', 'interactionDesignerBoundingClientRect']),
     ...mapGetters('clipboard', ['isSimulatorActive']),
 
     jsKey() {
@@ -165,19 +144,19 @@ export default {
     },
   },
 
-  created() {
+  async beforeCreate() {
     const {$store} = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
+  },
 
+  created() {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
 
     // initialize global reference for legacy + debugging
     global.builder = this
-
-    this.registerBlockTypes()
 
     this.initializeTreeModel()
     // `this.mode` comes from captured param in js-routes
@@ -190,7 +169,10 @@ export default {
   },
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
-  mounted() {
+  async mounted() {
+    //Ensure that the blocks are installed before activating the flow
+    //Block stores are needed to ensure validations can run immediately
+    await this.registerBlockTypes()
     this.flow_setActiveFlowId({flowId: this.id})
 
     // if nothing was found for the flow Id
@@ -222,6 +204,11 @@ export default {
       }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
+
+    // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
+    if (this.activeFlow && this.$refs['interaction-designer-contents'] != undefined) {
+      this.setInteractionDesignerBoundingClientRect(this.$refs['interaction-designer-contents'].getBoundingClientRect())
+    }
   },
   beforeRouteUpdate(to, from, next) {
     this.activateBlock({blockId: to.params.blockId || null})
@@ -233,7 +220,7 @@ export default {
   },
   methods: {
     ...mapMutations(['deselectBlocks', 'configure']),
-    ...mapMutations('builder', ['activateBlock', 'setIsBlockEditorOpen']),
+    ...mapMutations('builder', ['activateBlock', 'setIsBlockEditorOpen', 'setInteractionDesignerBoundingClientRect']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
 
@@ -245,13 +232,20 @@ export default {
     async registerBlockTypes() {
       const {blockClasses} = this
 
-      forEach(blockClasses, async ({type}) => {
+      const blockInstallers = values(blockClasses).map(async (blockClass) => {
+        const type = blockClass.type
         const normalizedType = type.replace('.', '_')
         const typeWithoutSeparators = type.replace('.', '')
-        const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
-        invoke(exported, 'install', this)
-        Vue.component(`Flow${typeWithoutSeparators}`, exported.default)
+        let {uiComponent} = blockClass
+        if (blockClass.install === undefined) {
+          const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
+          blockClass.install = exported.install
+          uiComponent = exported.default
+        }
+        invoke(blockClass, 'install', this)
+        Vue.component(`Flow${typeWithoutSeparators}`, uiComponent)
       })
+      return Promise.all(blockInstallers)
     },
 
     handleCanvasSelected({target}) {
@@ -304,8 +298,6 @@ export default {
 }
 </script>
 
-<!--<style src="../css/voto3.css"></style>-->
-<!--<style src="../css/InteractionDesigner.css"></style>-->
 <style lang="scss"> @import '../css/customized/vue-multiselect.css';</style>
 <style lang="scss">
   $sidebar-width: 365px;
@@ -313,15 +305,17 @@ export default {
   .interaction-designer-contents {
     background: #F5F5F5;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    display:inline-block;
     margin: 0;
     padding: 0;
   }
 
   .interaction-designer-header {
+    width: 100%;
     position: sticky;
     top: 0;
+    left: 0;
+    display:inline-block;
     z-index: 4*10;
   }
 
@@ -375,6 +369,4 @@ export default {
     flex: 1;
   }
 
-  // @note - these styles have been extracted so the output can be reused between storybook and voto5
-  /*@import "resources/assets/js/trees/components/InteractionDesigner.scss";*/
 </style>

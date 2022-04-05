@@ -30,17 +30,15 @@ import {State, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {map} from 'lodash'
 import {mixins} from 'vue-class-component'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')
 
 @Component({
   components: {
     VueMultiselect,
-    ValidationMessage,
   },
 })
-class TagSelector extends mixins(Lang) {
+export class TagSelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop({default: true}) readonly taggable!: boolean
 

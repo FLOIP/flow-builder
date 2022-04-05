@@ -85,9 +85,6 @@ import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {get} from 'lodash'
 import {mixins} from 'vue-class-component'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
-import ExpressionInput from '@/components/common/ExpressionInput.vue'
-import TextEditor from '@/components/common/TextEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -95,14 +92,8 @@ const NULL_STRING_EXPRESSION = '@(null)'
 const TRUTHY_STRING_EXPRESSION = '@(true)'
 const EMPTY_STRING_EXPRESSION = ''
 
-@Component({
-  components: {
-    TextEditor,
-    ExpressionInput,
-    ValidationMessage,
-  },
-})
-class GroupMembershipEditor extends mixins(Lang) {
+@Component({})
+export class GroupMembershipEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   MEMBERSHIP_ACTION = {

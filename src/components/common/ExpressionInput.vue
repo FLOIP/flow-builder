@@ -41,7 +41,7 @@ const defaultDateFields = [
   'tomorrow',
 ]
 
-export default {
+export const ExpressionInput = {
   mixins: [Lang],
 
   props: {
@@ -188,4 +188,5 @@ export default {
     }, input)
   },
 }
+export default ExpressionInput
 </script>

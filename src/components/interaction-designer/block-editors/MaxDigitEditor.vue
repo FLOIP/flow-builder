@@ -17,16 +17,10 @@
 
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import NumericEditor from '@/components/common/NumericEditor'
 import {get} from 'lodash'
 import {lang} from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage'
 
-export default {
-  components: {
-    NumericEditor,
-    ValidationMessage,
-  },
+export const MaxDigitEditor = {
   mixins: [lang],
   props: {
     block: {
@@ -49,4 +43,5 @@ export default {
     },
   },
 }
+export default MaxDigitEditor
 </script>

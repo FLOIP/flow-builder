@@ -39,22 +39,15 @@
 
 <script lang="ts">
 import {Component, Prop} from 'vue-property-decorator'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import TextEditor from '@/components/common/TextEditor.vue'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({
-  components: {
-    TextEditor,
-    ValidationMessage,
-  },
-})
-class NameEditor extends mixins(Lang) {
+@Component({})
+export class NameEditor extends mixins(Lang) {
   editBlockName = false
 
   @Prop() readonly block!: IBlock

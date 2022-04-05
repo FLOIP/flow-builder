@@ -4,6 +4,7 @@ import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
 import {defaultsDeep} from 'lodash'
+import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.OpenResponse'
@@ -46,7 +47,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
 
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-    commit('flow/resource_add', {resource: blankResource}, {root: true})
 
     return defaultsDeep(props, {
       type: BLOCK_TYPE,
@@ -67,6 +67,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId: block.uuid,
       test: 'LEN(block.value) > 0',
     }, {root: true})
+  },
+
+  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return validateCommunityBlock({block, schemaVersion})
   },
 }
 

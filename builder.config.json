@@ -1,6 +1,13 @@
 {
   "ui": {
     "routes": {
+      "languages": {
+        "persistLanguage": {
+          "name": "persistLanguage",
+          "path": "\/backend\/languages",
+          "methods": ["POST"]
+        }
+      },
       "flows": {
         "persistFlow": {
           "name": "persistFlow",
@@ -35,18 +42,23 @@
           "methods": ["GET"]
         },
         "cancelImport": {
-          "name": "home",
+          "name": "cancelImport",
           "path": "\/",
           "methods": ["GET"]
+        },
+        "cancelCreate": {
+          "name": "cancelCreate",
+          "path": "\/",
+          "methods": ["GET"]
+        },
+        "editFlow": {
+          "name": "editFlow",
+          "path": "\/flows\/{flowId}\/{component?}\/{mode?}",
+          "params": ["flowId", "component", "mode"],
+          "methods": ["GET", "HEAD"]
         }
       },
       "trees": {
-        "editTree": {
-          "name": "editTree",
-          "path": "\/trees\/{treeId}\/{component?}\/{mode?}",
-          "params": ["treeId", "component", "mode"],
-          "methods": ["GET", "HEAD"]
-        },
         "resumeableAudioUpload": {
           "name": "resumeableAudioUpload",
           "path": "\/audiofiles\/upload",
@@ -324,8 +336,40 @@
       "audioUpload",
       "simulator",
       "treeSave",
+      "addLanguageOnImport",
       "callToRecord"
-    ]
+    ],
+    "supportedModes": [
+      "TEXT",
+      "SMS",
+      "USSD",
+      "IVR",
+      "RICH_MESSAGING",
+      "OFFLINE"
+    ],
+    "toolbar": {
+      "hasFlowTitle": true,
+      "hasHomeButton": true,
+      "hasNewFlowButton": true,
+      "hasExportButton": true
+    },
+    "defaultModes": [
+      "SMS",
+      "USSD",
+      "IVR"
+    ],
+    "appWideInteractionTimeout": null,
+    "pages": {
+      "createFlow": {
+        "hasPageTitle": true
+      },
+      "importFlow": {
+        "hasPageTitle": true
+      },
+      "interactionDesigner": {
+        "builderWidthAdjustment": 0
+      }
+    }
   },
   "audio": {
     "library": [

@@ -16,42 +16,38 @@
 
 <script lang="ts">
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
-import Block from '@/components/interaction-designer/Block.vue'
-import {cloneDeep, debounce, find, get, isEqual, maxBy} from 'lodash'
+import {cloneDeep, debounce, find, isEqual, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
-import {IBlock, IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource, IResources, SupportedMode} from '@floip/flow-runner'
 import {IValidationStatus} from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
+const builderVuexNamespace = namespace('builder')
 
-//px
+//in `px`
 const MARGIN_HEIGHT_CORRECTION = -10
 
-//px
-const MARGIN_WIDTH_CORRECTION = 50
+//ideal value: the xDelta when we compute xPosition from existing active block, in `px`
+const MARGIN_WIDTH_CORRECTION = 120
 
-//ms
+//in `ms`
 const DEBOUNCE_SCROLL_TIMER = 300
 
-@Component({
-  components: {
-    Block,
-  },
-})
-export default class BuilderCanvas extends Vue {
+@Component({})
+export class BuilderCanvas extends Vue {
   @Prop() block!: IBlock
   @Prop({default: 0}) widthAdjustment!: number
 
   // ###### Validation API Watchers [
   @Watch('activeFlow', {deep: true, immediate: true})
-  async onActiveFlowChanged(newFlow: IFlow) {
-    console.debug('watch/activeFlow:', 'active flow has changed, validating ...')
+  async onActiveFlowChanged(newFlow: IFlow): Promise<void> {
+    console.debug('watch/activeFlow:', 'active flow has changed from builder canvas, validating ...')
     await this.validate_flow({flow: newFlow})
   }
 
   @Watch('blocksOnActiveFlowForWatcher', {deep: true, immediate: true})
-  async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]) {
+  async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void> {
     if (newBlocks.length === 0) {
       return
     }
@@ -68,6 +64,14 @@ export default class BuilderCanvas extends Vue {
     )
   }
 
+  @Watch('resourcesOnActiveFlow', {deep: true, immediate: true})
+  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
+    console.debug('watch/resourcesOnActiveFlow:', 'resources inside active flow have changed, validating ...')
+    await this.validate_resourcesOnSupportedValues({
+      resources: newResources,
+      supportedModes: this.activeFlow.supported_modes,
+    })
+  }
   // ] ######### end Validation API Watchers
 
   // ##### Canvas dynamic size watchers [
@@ -186,8 +190,8 @@ export default class BuilderCanvas extends Vue {
       return this.windowWidth - this.widthAdjustment
     }
 
-    const xPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.x
-    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH_CORRECTION
+    const xPosition: number = this.blockAtTheFurthestRightPosition.ui_metadata.canvas_coordinates.x
+    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH_CORRECTION + this.visibleBlockEditorWidth
 
     if (scrollWidth < this.windowWidth) {
       return this.windowWidth - this.widthAdjustment
@@ -196,14 +200,25 @@ export default class BuilderCanvas extends Vue {
     return scrollWidth - this.widthAdjustment
   }
 
+  get visibleBlockEditorWidth(): number {
+    const blockEditorWidth = 365
+    return this.isBlockEditorOpen ? blockEditorWidth : 0
+  }
+
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Getter resourcesOnActiveFlow!: IResources
+
+  @builderVuexNamespace.State isBlockEditorOpen!: boolean
 
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_block!: ({block}: { block: IBlock }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
+    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
+  ) => Promise<void>
 }
 
-export {BuilderCanvas}
+export default BuilderCanvas
 </script>
 
 <style scoped>

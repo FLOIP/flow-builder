@@ -1,17 +1,17 @@
 <template>
-  <div class="new-contents">
+  <div class="import-flow">
     <div class="row">
-      <div class="col-sm-8 offset-sm-2">
-        <div class="card d-flex">
+      <div class="col-sm-12 m-2">
+        <div class="card d-flex bg-light">
           <div class="card-body">
             <div>
-              <h2>
-                {{ 'flow-builder.import-flow' | trans }}
+              <h2 v-if="hasImportFlowTitle">
+                {{ trans('flow-builder.import-flow') }}
               </h2>
               <p>{{ 'flow-builder.create-flow-from-json' | trans }}</p>
               <div
                 v-if="trans('flow-builder.import-note')"
-                class="alert alert-danger"
+                class="alert alert-info"
                 role="alert">
                 {{ 'flow-builder.import-note'| trans }}
               </div>
@@ -31,7 +31,7 @@
                     <a
                       class="btn btn-outline-secondary"
                       @click="chooseFile">
-                      {{ 'flow-builder.import-file' | trans }}
+                      {{ (!flowJsonText ? 'flow-builder.import-file' : 'flow-builder.replace-file') | trans }}
                     </a>
                     <input
                       id="flowUpload"
@@ -80,11 +80,12 @@
                 class="btn btn-outline-secondary mr-2">
                 {{ trans('flow-builder.cancel') }}
               </router-link>
+
               <a
-                :href="route('trees.editTree', {treeId: flowUUID, component: 'interaction-designer', mode: 'edit'})"
+                :href="route('flows.editFlow', {flowId: flowUUID, component: 'designer', mode: 'edit'})"
                 class="btn btn-primary"
                 :class="{'disabled': disableContinue}"
-                @click.prevent="handleImportFlow(route('trees.editTree', {treeId: flowUUID, component: 'interaction-designer', mode: 'edit'}))">
+                @click.prevent="handleImportFlow(route('flows.editFlow', {flowId: flowUUID, component: 'designer', mode: 'edit'}))">
                 {{ 'flow-builder.create-flow' | trans }}
               </a>
             </div>
@@ -97,32 +98,23 @@
 
 <script lang="ts">
 
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {Component, Prop} from 'vue-property-decorator'
 import Vue from 'vue'
-import {Getter, Mutation, namespace} from 'vuex-class'
+import {Getter, Mutation, namespace, State} from 'vuex-class'
 import {debounce, forEach, get, isEmpty} from 'lodash'
+import {mixins} from 'vue-class-component'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
 
-import TextEditor from '@/components/common/TextEditor.vue'
-import ErrorHandler from '@/components/interaction-designer/flow-editors/import/ErrorHandler.vue'
 import ImportStore from '@/store/flow/views/import'
 
 const flowVuexNamespace = namespace('flow')
 const importVuexNamespace = namespace('flow/import')
 
-@Component(
-  {
-    components: {
-      TextEditor,
-      ErrorHandler,
-    },
-    mixins: [lang, Routes],
-  },
-)
-class ImportFlow extends Vue {
+@Component({})
+class ImportFlow extends mixins(Lang, Routes) {
   @Prop({default: () => ({})}) readonly appConfig!: object
 
   @Prop({default: () => ({})}) readonly builderConfig!: object
@@ -131,14 +123,16 @@ class ImportFlow extends Vue {
 
   fileName = ''
 
-  async created() {
+  async beforeCreate(): Promise<void> {
     const {$store} = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 
     $store.hasModule(['flow', 'import'])
     || $store.registerModule(['flow', 'import'], ImportStore)
+  }
 
+  async created(): Promise<void> {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
@@ -233,6 +227,8 @@ class ImportFlow extends Vue {
     }
   }
 
+  @State(({trees: {ui}}) => ui) ui!: any
+
   @flowVuexNamespace.Action flow_import!: ({
     persistRoute,
     flowContainer,
@@ -241,6 +237,8 @@ class ImportFlow extends Vue {
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
 
   @Getter isConfigured!: boolean
+
+  @Getter hasImportFlowTitle!: boolean
 
   @importVuexNamespace.Getter hasUnsupportedBlockClasses!: boolean
 
@@ -285,5 +283,4 @@ export default ImportFlow
   overflow: hidden;
   white-space: nowrap;
 }
-
 </style>

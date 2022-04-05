@@ -4,7 +4,7 @@
     :message-key="`block/${block.uuid}/config/ivr/max_duration_seconds`">
     <div
       v-if="hasIvr"
-      class="block-max-duration-seconds">
+      class="max-duration-seconds-editor">
       <numeric-editor
         v-model.number="duration"
         :regex-numeric-filtering="'[0-9]'"
@@ -17,16 +17,10 @@
 
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import NumericEditor from '@/components/common/NumericEditor'
 import {get} from 'lodash'
 import {lang} from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage'
 
-export default {
-  components: {
-    NumericEditor,
-    ValidationMessage,
-  },
+export const MaxDurationSecondsEditor = {
   mixins: [lang],
   props: {
     hasIvr: {
@@ -55,4 +49,5 @@ export default {
     },
   },
 }
+export default MaxDurationSecondsEditor
 </script>

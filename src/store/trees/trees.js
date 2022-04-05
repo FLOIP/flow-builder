@@ -72,6 +72,7 @@ export default {
     ),
     isFeatureFloipPushEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'floipPush'),
     isFeatureTreeSaveEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSave'),
+    isFeatureAddLanguageOnImportEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'addLanguageOnImport'),
     isFeatureTreeSendEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeSend'),
     isFeatureTreeDuplicateEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeDuplicate'),
     isFeatureTreeViewVersionsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treeViewVersions'),
@@ -81,6 +82,16 @@ export default {
     isFeatureAudioUploadEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'audioUpload'),
     isFeatureSimulatorEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'simulator'),
     isFeatureViewResultsEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'viewResults'),
+
+    hasCreateFlowTitle: ({ui}) => lodash.get(ui, 'pages.createFlow.hasPageTitle', true),
+    hasImportFlowTitle: ({ui}) => lodash.get(ui, 'pages.importFlow.hasPageTitle', true),
+
+    hasToolbarFlowTitle: ({ui}) => lodash.get(ui, 'toolbar.hasFlowTitle', true),
+    hasToolbarHomeButton: ({ui}) => lodash.get(ui, 'toolbar.hasHomeButton', true),
+    hasToolbarNewFlowButton: ({ui}) => lodash.get(ui, 'toolbar.hasNewFlowButton', true),
+    hasToolbarExportButton: ({ui}) => lodash.get(ui, 'toolbar.hasExportButton', true),
+
+    builderWidthAdjustment: ({ui}) => lodash.get(ui, 'pages.interactionDesigner.builderWidthAdjustment', 0),
 
     selectedBlock: ({tree, ui}) => lodash.find(get(tree, 'blocks', []), {jsKey: ui.selectedBlock}),
 
@@ -169,9 +180,17 @@ export default {
     treeCreatedAt: ({tree}) => tree.createdAt.date,
     treeEditedAt: ({tree}) => tree.editedAt.date,
     treeUpdatedAt: ({tree}) => tree.updatedAt.date,
+
+    supportedModes: ({ui}) => ui.supportedModes || [],
+    defaultModes: ({ui}) => ui.defaultModes || [],
   },
 
   mutations: {
+    addOrgLanguage({ui}, language) {
+      const newLanguage = {...language}
+      ui.languages.push(newLanguage)
+    },
+
     setTreeSaving(state, isSaving) {
       state.ui.isSaveCurrentlyInProgress = isSaving
     },
@@ -387,6 +406,27 @@ export default {
   },
 
   actions: {
+    async validateAndAddOrgLanguage({dispatch, commit}, {persistRoute, language}) {
+      const validationErrors = await dispatch('validation/validate_new_language', {language}, {root: true})
+      if (!validationErrors.isValid) {
+        return false
+      }
+
+      if (!persistRoute) {
+        console.info('Language persistence route not configured correctly in builder.config.json. Falling back to vuex store')
+        commit('addOrgLanguage', language)
+        return language
+      }
+      try {
+        const {data} = await axios.post(persistRoute, language)
+        commit('addOrgLanguage', data)
+        return language
+      } catch (error) {
+        console.info(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
+        commit('flow/import/setFlowError', 'flow-builder.error-persisting-language', {root: true})
+        return false
+      }
+    },
     initializeTreeModel({dispatch, state: {ui: {isTreeImport}}}) {
       require('./10-trees-model')
       // todo: this is also included via `../public/dist/js/legacy/trees` on tree-builder

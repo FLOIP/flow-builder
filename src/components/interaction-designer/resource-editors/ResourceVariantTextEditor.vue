@@ -1,13 +1,17 @@
 <template>
-  <div class="resource-variant-text-editor">
-    <expression-input
-      ref="input"
-      :label="label"
-      :placeholder="placeholder || `flow-builder.enter-${resourceVariant.modes[0].replace('_', '-').toLowerCase()}-content` | trans"
-      :current-expression="content"
-      :rows="rows"
-      @commitExpressionChange="commitExpressionChange" />
-  </div>
+  <validation-message
+    #input-control="{ isValid }"
+    :message-key="`resource/${resourceId}/values/${index}/value`">
+    <div class="resource-variant-text-editor">
+      <expression-input
+        ref="input"
+        :label="label"
+        :placeholder="placeholder || `flow-builder.enter-${resourceVariant.modes[0].replace('_', '-').toLowerCase()}-content` | trans"
+        :current-expression="content"
+        :rows="rows"
+        @commitExpressionChange="commitExpressionChange" />
+    </div>
+  </validation-message>
 </template>
 
 <script lang="ts">
@@ -24,6 +28,7 @@ const flowVuexNamespace = namespace('flow')
   components: {ExpressionInput},
 })
 class AdvancedExitEditor extends mixins(Lang) {
+  @Prop({default: null}) readonly index!: number
   @Prop() readonly resourceId!: IResource['uuid']
   @Prop({default: ''}) readonly label!: string
   @Prop() readonly placeholder!: string

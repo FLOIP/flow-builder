@@ -96,9 +96,6 @@ import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {get, has} from 'lodash'
 import {mixins} from 'vue-class-component'
-import ValidationMessage from '@/components/common/ValidationMessage.vue'
-import ExpressionInput from '@/components/common/ExpressionInput.vue'
-import TextEditor from '@/components/common/TextEditor.vue'
 import {isBlockInteractive} from '@/store/flow/block.ts'
 
 const flowVuexNamespace = namespace('flow')
@@ -106,14 +103,8 @@ const flowVuexNamespace = namespace('flow')
 const EMPTY_STRING_EXPRESSION = ''
 const BLOCK_RESPONSE_EXPRESSION = '@block.value'
 
-@Component({
-  components: {
-    TextEditor,
-    ExpressionInput,
-    ValidationMessage,
-  },
-})
-class GenericContactPropertyEditor extends mixins(Lang) {
+@Component({})
+export class GenericContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   shouldSetContactProperty = false

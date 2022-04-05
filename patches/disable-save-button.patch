@@ -1,12 +1,13 @@
 diff --git a/builder.config.json b/builder.config.json
-index 51f5e1ce..ab4822d1 100644
+index 0ba9db66..8b41402e 100644
 --- a/builder.config.json
 +++ b/builder.config.json
-@@ -306,7 +306,6 @@
+@@ -330,7 +330,6 @@
+     "treeSets": [],
      "enabledFeatures": [
        "audioUpload",
        "simulator",
 -      "treeSave",
+       "addLanguageOnImport",
        "callToRecord"
      ]
-   },

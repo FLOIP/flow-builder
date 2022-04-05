@@ -1,5 +1,5 @@
 <template>
-  <div class="fetch-contents">
+  <div class="fetch-flow">
     <div class="d-flex h-100 text-center">
       <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <main class="px-3">
@@ -7,14 +7,14 @@
           <router-link
             v-if="showNewButton"
             :to="route('flows.newFlow')"
-            title="trans('flow-builder.create-a-new-flow')"
+            :title="trans('flow-builder.create-a-new-flow')"
             class="mt-3 btn btn-outline-secondary mr-2 active">
             {{ 'flow-builder.new-flow' | trans }}
           </router-link>
           <router-link
             v-if="flowLink"
             :to="flowLink"
-            title="trans('flow-builder.edit-flow')"
+            :title="trans('flow-builder.flow-details')"
             class="mt-3 btn btn-outline-secondary mr-2 active">
             {{ 'flow-builder.go-to-flow' | trans }}
           </router-link>
@@ -54,7 +54,7 @@ class FetchFlow extends mixins(Routes, Lang) {
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
   @Getter isConfigured!: boolean
 
-  async mounted() {
+  async mounted(): Promise<void> {
     const nextUrl: RawLocation = this.$route.query.nextUrl as RawLocation
     const url = new URL(nextUrl as string, window.location.origin)
     const urlParams = url.searchParams.toString()
@@ -67,7 +67,7 @@ class FetchFlow extends mixins(Routes, Lang) {
         await this.$router.replace(nextUrl)
       } else {
         this.message = 'flow-builder.flow-found'
-        this.flowLink = this.route('trees.editTree', {treeId: this.activeFlow.uuid, component: 'interaction-designer', mode: 'edit'})
+        this.flowLink = this.route('flows.editFlow', {flowId: this.activeFlow.uuid, component: 'designer', mode: 'edit'})
       }
     } else {
       this.message = 'flow-builder.flow-not-found'
@@ -75,12 +75,13 @@ class FetchFlow extends mixins(Routes, Lang) {
     }
   }
 
-  async created() {
+  async beforeCreate(): Promise<void> {
     const {$store} = this
 
-    forEach(store.modules, (v, k) =>
-      !$store.hasModule(k) && $store.registerModule(k, v))
+    forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
+  }
 
+  async created(): Promise<void> {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
@@ -90,6 +91,3 @@ class FetchFlow extends mixins(Routes, Lang) {
 export default FetchFlow
 
 </script>
-
-<style lang="scss">
-</style>

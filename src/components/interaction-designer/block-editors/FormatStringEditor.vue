@@ -17,15 +17,9 @@
 
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import TextEditor from '@/components/common/TextEditor'
 import {lang} from '@/lib/filters/lang'
-import ValidationMessage from '@/components/common/ValidationMessage'
 
-export default {
-  components: {
-    TextEditor,
-    ValidationMessage,
-  },
+export const FormatStringEditor = {
   mixins: [lang],
   props: {
     block: {
@@ -44,4 +38,5 @@ export default {
     },
   },
 }
+export default FormatStringEditor
 </script>

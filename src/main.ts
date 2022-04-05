@@ -11,21 +11,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import 'scss/main.scss'
 
-/**
- * Vue way for Fontawesome
- * more details: https://www.npmjs.com/package/@fortawesome/vue-fontawesome#the-icon-property
- *
- */
-import {library} from '@fortawesome/fontawesome-svg-core'
-import {faCheck, faMobileAlt} from '@fortawesome/free-solid-svg-icons'
-import {faCheckCircle, faCircle, faClone, faTrashAlt, faTimesCircle, faDotCircle, faEdit, faEnvelope, faCommentDots} from '@fortawesome/free-regular-svg-icons'
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import CustomIcons from './lib/custom-icons/index'
+import registerCustomComponents from '@/common-imports'
 import router from './router'
 import App from './App.vue'
 
-library.add(faCircle, faCheckCircle, faEdit, faCheck, faEnvelope, faMobileAlt, faCommentDots, faClone, faTrashAlt, faTimesCircle, faDotCircle, ...CustomIcons)
-Vue.component('FontAwesomeIcon', FontAwesomeIcon)
+registerCustomComponents()
 
 Vue.use(Vuex)
 

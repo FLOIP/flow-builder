@@ -9,15 +9,24 @@
       </div>
     </div>
     <div
+      v-if="!flowError && !!flowJsonText"
+      class="alert alert-success mt-3"
+      role="alert">
+      <font-awesome-icon :icon="['far', 'check-circle']" />
+      {{ 'flow-builder.import-success' | trans }}
+    </div>
+    <div
       v-if="flowError"
       class="alert alert-danger mt-3"
       role="alert">
+      <i class="glyphicon glyphicon-exclamation-sign" />
       {{ flowError | trans(flowErrorInterpolations) }}
     </div>
     <div
       v-if="hasUnsupportedBlockClasses"
       class="alert alert-danger mt-3"
       role="alert">
+      <i class="glyphicon glyphicon-exclamation-sign" />
       {{ `${trans('flow-builder.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}` }}
     </div>
     <import-matcher
@@ -26,6 +35,7 @@
       :missing-matches="missingLanguages"
       type-id="id"
       type-label="label"
+      type="language"
       :existing-options-without-match="existingLanguagesWithoutMatch"
       match-not-found-text="flow-builder.match-for-languages-not-found"
       @reactToMatch="handleMatchLanguage" />
@@ -35,6 +45,7 @@
       :missing-matches="missingProperties"
       type-id="name"
       type-label="name"
+      type="property"
       :existing-options-without-match="existingPropertiesWithoutMatch"
       match-not-found-text="flow-builder.match-for-properties-not-found"
       @reactToMatch="handleMatchProperty" />
@@ -44,6 +55,7 @@
       :missing-matches="missingGroups"
       type-id="id"
       type-label="group_name"
+      type="group"
       :existing-options-without-match="existingGroupsWithoutMatch"
       match-not-found-text="flow-builder.match-for-groups-not-found"
       @reactToMatch="handleMatchGroup" />
@@ -51,27 +63,20 @@
 </template>
 
 <script lang="ts">
-import lang from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import {Component} from 'vue-property-decorator'
 import Vue from 'vue'
 import {Getter, namespace} from 'vuex-class'
+import {mixins} from 'vue-class-component'
 import {IContext} from '@floip/flow-runner'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
-import ImportMatcher from '@/components/interaction-designer/flow-editors/import/ImportMatcher.vue'
 import {IContactPropertyOption} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import {IGroupOption} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 
 const importVuexNamespace = namespace('flow/import')
 
-@Component(
-  {
-    components: {
-      ImportMatcher,
-    },
-    mixins: [lang],
-  },
-)
-class ErrorHandler extends Vue {
+@Component({})
+export class ErrorHandler extends mixins(Lang) {
   handleMatchLanguage(oldLanguage: ILanguage, matchingNewLanguage: ILanguage) {
     this.matchLanguage({oldLanguage, matchingNewLanguage})
   }
@@ -133,6 +138,8 @@ class ErrorHandler extends Vue {
   @importVuexNamespace.State existingGroupsWithoutMatch!: IGroupOption[]
 
   @importVuexNamespace.State updating!: boolean
+
+  @importVuexNamespace.State flowJsonText!: string
 }
 
 export default ErrorHandler

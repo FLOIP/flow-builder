@@ -1,39 +1,32 @@
 <template>
   <div class="form-group flow-modes">
     <label class="text-primary">{{ 'flow-builder.modes' | trans }}</label>
-    <div
-      v-for="mode in availableModes"
-      :key="mode"
-      class="checkbox">
-      <label class="font-weight-normal">
-        <input
-          v-model="flowSelectedModes"
-          :value="mode"
-          type="checkbox"
-          class="flow-mode-toggle-checkbox">
-        {{ trans(`flow-builder.${mode.toLowerCase()}`) }}
-      </label>
-    </div>
+    <vue-multiselect
+      v-model="flowSelectedModes"
+      :placeholder="'flow-builder.select-modes' | trans"
+      :options="supportedModes"
+      :multiple="true"
+      :show-labels="false"
+      :searchable="true" />
   </div>
 </template>
 
 <script lang="ts">
+import VueMultiselect from 'vue-multiselect'
 import {Component, Prop} from 'vue-property-decorator'
 import {IFlow, SupportedMode} from '@floip/flow-runner'
-import NumericEditor from '@/components/common/NumericEditor.vue'
 
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
+import {Getter} from 'vuex-class'
 
 @Component({
   components: {
-    NumericEditor,
+    VueMultiselect,
   },
 })
-class ModeEditor extends mixins(Lang) {
+export class ModesEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
-
-  protected availableModes = Object.values(SupportedMode)
 
   get flowSelectedModes(): SupportedMode[] {
     return this.flow.supported_modes
@@ -42,7 +35,9 @@ class ModeEditor extends mixins(Lang) {
   set flowSelectedModes(value: SupportedMode[]) {
     this.$emit('commitFlowModesChange', value)
   }
+
+  @Getter supportedModes!: SupportedMode[]
 }
 
-export default ModeEditor
+export default ModesEditor
 </script>

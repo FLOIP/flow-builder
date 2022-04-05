@@ -1,8 +1,8 @@
-import {filter, flatMap, get, isEqual, keyBy, map, mapValues, union} from 'lodash'
+import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, IFlow, IResource, SupportedMode, ValidationException} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IFlow, IResource, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 
 // todo migrate these to flight-monitor
@@ -57,6 +57,7 @@ export interface IBuilderState {
   },
   draggableForExitsByUuid: object,
   isBlockEditorOpen: boolean,
+  interactionDesignerBoundingClientRect: DOMRect,
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -76,6 +77,7 @@ export const stateFactory = (): IBuilderState => ({
   },
   draggableForExitsByUuid: {},
   isBlockEditorOpen: false,
+  interactionDesignerBoundingClientRect: {} as DOMRect,
 })
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
@@ -91,6 +93,8 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
   exitLabelsById: (_state, _getters, {flow: {flows}}) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
+
+  interactionDesignerBoundingClientRect: (state) => state.interactionDesignerBoundingClientRect,
 }
 
 export const mutations: MutationTree<IBuilderState> = {
@@ -136,6 +140,10 @@ export const mutations: MutationTree<IBuilderState> = {
   setIsBlockEditorOpen(state, value) {
     state.isBlockEditorOpen = value
   },
+
+  setInteractionDesignerBoundingClientRect(state, value) {
+    state.interactionDesignerBoundingClientRect = value
+  }
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
@@ -312,22 +320,15 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    * @param rootState
    * @param flows
    */
-  async importFlowsAndResources({
-    rootState,
-  }, {flows, resources}: { flows: IFlow[], resources: IResource[] }) {
+  async importFlowsAndResources({rootState}, {flows, resources}: { flows: IFlow[], resources: IResource[] }) {
     console.debug('importing flows & resources ...')
     console.log({flows, resources})
     const {flow: flowState} = rootState
-    const defaultSupportedMode = [
-      SupportedMode.IVR,
-      SupportedMode.SMS,
-      SupportedMode.USSD,
-    ]
 
     // add default activated modes if not set yet
     flows.forEach((_flow, key) => {
       if (!Object.prototype.hasOwnProperty.call([key], 'supported_modes') || !flows[key].supported_modes.length) {
-        flows[key].supported_modes = defaultSupportedMode
+        flows[key].supported_modes = rootState.trees.ui.defaultModes
       }
     })
 
