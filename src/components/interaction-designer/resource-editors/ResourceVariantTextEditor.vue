@@ -27,7 +27,7 @@ const flowVuexNamespace = namespace('flow')
 @Component({
   components: {ExpressionInput},
 })
-class AdvancedExitEditor extends mixins(Lang) {
+export class ResourceVariantTextEditor extends mixins(Lang) {
   @Prop({default: null}) readonly index!: number
   @Prop() readonly resourceId!: IResource['uuid']
   @Prop({default: ''}) readonly label!: string
@@ -57,5 +57,5 @@ class AdvancedExitEditor extends mixins(Lang) {
     ({resourceId, filter, value}: { resourceId: IResource['uuid'], filter: {}, value: string }) => void
 }
 
-export default AdvancedExitEditor
+export default ResourceVariantTextEditor
 </script>
