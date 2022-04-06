@@ -32,7 +32,7 @@ import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
 import {IFlowsState} from '@/store/flow'
 import {bootstrapLegacyGlobalDependencies} from '../../src/store/trees/bootstrap-legacy-global-dependencies'
 
-export function registerGlobalComponents(localVue: VueConstructor): void {
+export function registerGlobalComponents(localOrGlobalVue: VueConstructor): void {
   library.add(
     faCircle,
     faCheckCircle,
@@ -65,7 +65,7 @@ export function registerGlobalComponents(localVue: VueConstructor): void {
   }
 
   Object.entries(Components).forEach((component) => {
-    localVue.component(component[0], component[1])
+    localOrGlobalVue.component(component[0], component[1])
   })
 }
 
