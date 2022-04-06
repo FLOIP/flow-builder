@@ -37,6 +37,10 @@ export interface IBaseOptions {
 export class BaseMountedVueClass extends Vue {
   @builderVuexNamespace.Getter activeBlock!: IBlock
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Action flow_addBlankFlow!: () => Promise<IFlow>
+  @flowVuexNamespace.Action flow_add!: ({flow}: { flow: IFlow }) => Promise<IFlow>
+  @flowVuexNamespace.Action flow_createWith!: ({props}: { props: { uuid: string } & Partial<IFlow> }) => Promise<IFlow>
+  @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({flowId}: { flowId: IFlow['uuid'] }) => void
 
   setDescription(blockId: string): void {
     setDescription(this.$store, blockId)
@@ -63,6 +67,8 @@ export class BaseMountedVueClass extends Vue {
   store: new Vuex.Store<IRootState>(store),
 })
 export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass {
+  @flowVuexNamespace.Mutation flow_setSupportedMode: any
+
   setResourceData({shouldSetChoices, configPath}: { shouldSetChoices: boolean, configPath: string }): void {
     setResourceData(this.$store, {shouldSetChoices, configPath})
   }
