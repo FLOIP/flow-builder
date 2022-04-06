@@ -4,6 +4,7 @@ import Ajv, {ErrorObject, ValidateFunction} from 'ajv'
 import {get, isEmpty} from 'lodash'
 import {JSONSchema7} from 'json-schema'
 import ajvFormat from 'ajv-formats'
+import {parse as floipExpressionParser} from '@floip/expression-parser'
 
 const DEV_ERROR_KEYWORDS = [
   // unwanted extra props
@@ -30,6 +31,18 @@ export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchem
   // we need this to use AJV format such as 'date-time'
   // (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
   ajvFormat(ajv)
+
+  ajv.addFormat('floip-expression', {
+    type: 'string',
+    validate: (x: string) => {
+      try {
+        floipExpressionParser(x)
+      } catch (e) {
+        return false
+      }
+      return true
+    },
+  })
 
   if (subSchema === '') {
     return ajv.compile(jsonSchema)

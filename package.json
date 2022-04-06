@@ -23,6 +23,7 @@
   "dependencies": {
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
+    "@floip/expression-parser": "^1.11.3",
     "@floip/flow-runner": "1.0.0-rc2.7",
     "@flowjs/flow.js": "^2.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
