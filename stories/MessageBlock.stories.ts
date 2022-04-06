@@ -22,7 +22,8 @@ const MessageBlockTemplate = `
       :flow="activeFlow"/>
   </flow-builder-sidebar-editor-container>
 `
-export const BaseOptions: IBaseOptions = {
+
+const BaseOptions: IBaseOptions = {
   components: {MessageBlock, FlowBuilderSidebarEditorContainer},
   template: MessageBlockTemplate,
   store: new Vuex.Store<IRootState>(store),
@@ -32,7 +33,7 @@ export const BaseOptions: IBaseOptions = {
   ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {
-  async mounted() {
+  async mounted(): Promise<void> {
     await this.baseMounted(BLOCK_TYPE, messageBlockStore)
   }
 }
@@ -40,13 +41,11 @@ class DefaultClass extends BaseMountedVueClass {
 // default log block state
 export const Default = () => (DefaultClass)
 
-@Component(
-  {
-    ...BaseOptions,
-  },
-)
-export class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
-  async mounted() {
+@Component({
+  ...BaseOptions,
+})
+class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
+  async mounted(): Promise<void> {
     const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, messageBlockStore)
 
     this.setDescription(blockId)
@@ -60,13 +59,11 @@ export class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMo
 
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
 
-@Component(
-  {
-    ...BaseOptions,
-  },
-)
+@Component({
+  ...BaseOptions,
+})
 class NonStartingBlockClass extends BaseMountedVueClass {
-  async mounted() {
+  async mounted(): Promise<void> {
     const {flow: {uuid: flowId}} = await this.baseMounted(BLOCK_TYPE, messageBlockStore)
     await this.fakeCaseBlockAsFirstBlock(flowId)
   }
