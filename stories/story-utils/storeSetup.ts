@@ -58,7 +58,7 @@ export class BaseMountedVueClass extends Vue {
     safeRegisterBlockModule(this.$store, BLOCK_TYPE, blockTypeStore)
   }
 
-  async baseMounted(BLOCK_TYPE: string, blockTypeStore: Module<IFlowsState, IRootState>): Promise<{block: IBlock, flow: IFlow}> {
+  async baseMounted(BLOCK_TYPE: string, blockTypeStore: any): Promise<{block: IBlock, flow: IFlow}> {
     return setupFlowAndBlock(this.$store, BLOCK_TYPE, blockTypeStore)
   }
 }
