@@ -81,10 +81,10 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
   }
 
   get promptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.prompt]
+    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
   }
 
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
 
   @blockVuexNamespace.Action setAccuracyThreshold!: ({blockId, value}: { blockId: string, value: number }) => Promise<string>
   @blockVuexNamespace.Action setAccuracyTimeout!: ({blockId, value}: { blockId: string, value: number }) => Promise<string>

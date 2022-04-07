@@ -121,7 +121,6 @@ export class ChoicesBuilder extends mixins(Lang) {
   }
 
   @flowVuexNamespace.State resources!: IResource[]
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Mutation resource_add!: ({resource}: {resource: IResource}) => void
   // @flowVuexNamespace.Action flow_createBlankResourceForEnabledModesAndLangs!: () => Promise<IResource>

@@ -65,10 +65,10 @@ class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
   showSemanticLabel = false
 
   get promptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.prompt]
+    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
   }
 
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
 
   @builderVuexNamespace.Getter isEditable !: boolean
 

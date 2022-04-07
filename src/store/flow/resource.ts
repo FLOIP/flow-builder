@@ -1,5 +1,5 @@
 import {
-  IContext,
+  IFlow,
   IResource,
   IResourceValue,
   IResourceValue as IResourceDefinitionVariantOverModes,
@@ -28,48 +28,48 @@ import {IFlowsState} from '@/store/flow/index'
 import {IRootState} from '@/store'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  resourcesByUuid: ({resources}) => keyBy(resources, 'uuid'),
+  resourcesByUuidOnActiveFlow: (_state, getters) => keyBy(getters.activeFlow.resources, 'uuid'),
 
+  //TODO: try to redefine this using getters.activeFlow.resources only
   resourceUuidsOnActiveFlow: (state, getters) => filter(map(getters.activeFlow.blocks, (block) => block.config.prompt)),
-
-  resourcesOnActiveFlow: (state, getters): IResource[] => filter(
-    state.resources,
-    (resource) => includes(getters.resourceUuidsOnActiveFlow, resource.uuid)
-  ),
 }
 
 export const mutations: MutationTree<IFlowsState> = {
-  resource_add({resources}, {resource}: { resource: IResource }) {
-    resources.push(resource)
+  resource_add(state, {flow, resource}: {flow: IFlow, resource: IResource}) {
+    if (resource == null) {
+      throw new ValidationException('Unable to add null resource to flow')
+    }
+
+    const length = flow.resources.push(resource)
   },
 
   // currently unused - see todo
-  resource_delete({resources}, {resourceId}: { resourceId: string }) {
+  resource_delete(state, {flow, resourceId}: {flow: IFlow, resourceId: IResource['uuid']}) {
     // TODO - we need an action that can clean resources and then call this to actuall remove. We need logic to truly check resources are unused
-    const resourceIndex = findIndex(resources, (resource) => resource.uuid === resourceId)
-    resources.splice(resourceIndex, 1)
+    const resourceIndex = findIndex(flow.resources, (resource) => resource.uuid === resourceId)
+    flow.resources.splice(resourceIndex, 1)
   },
 
-  resource_createVariant(state, {resourceId, variant}: { resourceId: string, variant: IResourceDefinitionVariantOverModes }) {
-    // append to resource
-    findResourceWith(resourceId, state as unknown as IContext)
+  resource_createVariant(state, {flow, resourceId, variant}: {flow: IFlow, resourceId: IResource['uuid'], variant: IResourceDefinitionVariantOverModes }) {
+    // append to given flow's resource
+    findResourceWith(resourceId, flow)
       .values
       .push(cloneDeep(variant))
   },
 
   resource_setValue(
     state,
-    {resourceId, filter, value}: { resourceId: string, filter: IResourceDefinitionVariantOverModesFilter, value: string },
+    {flow, resourceId, filter, value}: { flow: IFlow, resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesFilter, value: string },
   ) {
-    findResourceVariantOverModesWith(resourceId, filter, state as unknown as IContext)
+    findResourceVariantOverModesWith(resourceId, filter, flow)
       .value = value || ''
   },
 
   // @note -- modes in this case does not tighten filter, but rather exists solely for update operation
   resource_setModes(
     state,
-    {resourceId, filter, modes}:
-      { resourceId: string, filter: IResourceDefinitionVariantOverModesFilter } & { modes: SupportedMode[] },
+    {flow, resourceId, filter, modes}:
+      { flow: IFlow, resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesFilter } & { modes: SupportedMode[] },
   ) {
     if (isEmpty(modes)) {
       // todo: create type that requires both resourceId & modes with (N>1) entries
@@ -79,7 +79,7 @@ export const mutations: MutationTree<IFlowsState> = {
     // todo: this should likely validate whether or not we're intersecting with other variants with this operation
     //       eg. variants: [{modes: [a, b]}, {modes: [c]}] => variants[0].modes = [c]
 
-    findResourceVariantOverModesWith(resourceId, filter, state as unknown as IContext)
+    findResourceVariantOverModesWith(resourceId, filter, flow)
       .modes = modes
   },
 }
@@ -96,39 +96,41 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   resource_setOrCreateValueModeSpecific(
     {commit, dispatch, state},
-    {resourceId, filter, value}: { resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModes, value: string },
+    {flow, resourceId, filter, value}: {flow: IFlow, resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModes, value: string },
   ) {
     try {
       // @note - `find()` raises when absent; this verifies its presence
-      findResourceVariantOverModesWith(resourceId, filter, state as unknown as IContext)
-      dispatch('resource_setValueModeSpecific', {resourceId, filter, value})
+      findResourceVariantOverModesWith(resourceId, filter, flow)
+      dispatch('resource_setValueModeSpecific', {flow, resourceId, filter, value})
     } catch (e) {
       if (!(e instanceof ValidationException)) {
         throw e
       }
 
-      commit('resource_createVariant', {resourceId, variant: Object.assign(cloneDeep(filter), {value})})
+      commit('resource_createVariant', {flow, resourceId, variant: Object.assign(cloneDeep(filter), {value})})
     }
   },
 
   resource_setValueModeSpecific(
     {commit, state},
     {
+      flow,
       resourceId,
       filter,
       value,
-    }: { resourceId: string, filter: IResourceDefinitionVariantOverModes } & { value: string, mode: SupportedMode },
+    }: { flow: IFlow, resourceId: string, filter: IResourceDefinitionVariantOverModes } & { value: string, mode: SupportedMode },
   ) {
     // find resource variant over modes
     const
       mode = first(filter.modes)
-    const variant = findResourceVariantOverModesWith(resourceId, filter, state as unknown as IContext)
+    const variant = findResourceVariantOverModesWith(resourceId, filter, flow)
 
     // need to disambiguate b/c value is spread over multiple modes
 
     if (variant.modes.length > 1) {
       // remove mode from existing variant
       commit('resource_setModes', {
+        flow,
         resourceId,
         filter: variant,
         modes: without(variant.modes, mode),
@@ -138,6 +140,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
       //
       commit('resource_createVariant', {
+        flow,
         resourceId,
         variant: Object.assign(
           cloneDeep(variant),
@@ -150,7 +153,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return
     }
 
-    commit('resource_setValue', {resourceId, filter: variant, value})
+    commit('resource_setValue', {flow, resourceId, filter: variant, value})
   },
 }
 
@@ -160,7 +163,7 @@ export type IResourceDefinitionVariantOverModesFilterAsKey = Omit<IResourceDefin
 export type IResourceDefinitionVariantOverModesFilterWithResourceId =
   Partial<IResourceDefinitionVariantOverModes> & { resourceId: string }
 
-export function findResourceWith(uuid: string, {resources}: IContext): IResource {
+export function findResourceWith(uuid: string, {resources}: IFlow): IResource {
   const resource = find(resources, {uuid})
   if (resource == null) {
     throw new ValidationException(`Unable to find resource on context: ${uuid} in ${map(resources, 'uuid')}`)
@@ -170,12 +173,12 @@ export function findResourceWith(uuid: string, {resources}: IContext): IResource
 }
 
 export function findResourceVariantOverModesWith(
-  uuid: string,
+  uuid: IResource['uuid'],
   filter: IResourceDefinitionVariantOverModesFilter,
-  {resources}: IContext,
+  flow: IFlow,
 ): IResourceDefinitionVariantOverModes {
   return findResourceVariantOverModesOn(
-    findResourceWith(uuid, {resources} as IContext),
+    findResourceWith(uuid, flow),
     filter,
   )
 }
@@ -213,12 +216,12 @@ export function findResourceVariantOverModesOn(
 }
 
 export function findOrGenerateStubbedVariantFor(
-  resourceId: string,
+  resourceId: IResource['uuid'],
   filter: IResourceDefinitionVariantOverModesFilterAsKey,
-  {resources}: IContext,
+  flow: IFlow,
 ): IResourceDefinitionVariantOverModes {
   return findOrGenerateStubbedVariantOn(
-    findResourceWith(resourceId, {resources} as unknown as IContext),
+    findResourceWith(resourceId, flow),
     filter,
   )
 }

@@ -81,7 +81,7 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   showSemanticLabel = false
 
   get promptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.prompt]
+    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
   }
 
   updateValidationMin(value: number | string) {
@@ -107,7 +107,7 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
     }
   }
 
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
 
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
 

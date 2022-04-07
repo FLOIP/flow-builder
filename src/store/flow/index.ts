@@ -14,7 +14,6 @@ export interface IFlowsState {
   specification_version: string,
   container_uuid: string,
   flows: IFlow[],
-  resources: IResource[],
 
   first_flow_id: string | null,
   // @note - for exciting future
@@ -25,12 +24,11 @@ export interface IFlowsState {
 export const stateFactory = (): IFlowsState => ({
   isCreated: false,
   //TODO - think about how to make this dynamic
-  specification_version: '1.0.0-rc2',
+  specification_version: '1.0.0-rc4',
   //For now we'll hard code this as it doesn't yet have a function
   //Even import shouldn't override it I think even though a container is required
   container_uuid: '3666a05d-3792-482b-8f7f-9e2472e4f027',
   flows: [],
-  resources: [],
 
   first_flow_id: null,
   // todo: not quite right -- pulled from IContext

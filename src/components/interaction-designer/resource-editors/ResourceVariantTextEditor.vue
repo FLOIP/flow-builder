@@ -115,7 +115,7 @@ import {lang} from '@/lib/filters/lang'
 import {parse as floipExpressionParser} from '@floip/expression-parser'
 import {isObject, some} from 'lodash'
 import VueFocus from 'vue-focus'
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import {BTooltip} from 'bootstrap-vue'
 
 // import BlockContentAutogenButton from './BlockContentAutogenButton'
@@ -177,6 +177,7 @@ export const ResourceVariantTextEditor = {
   data: () => ({isSelected: false}),
 
   computed: {
+    ...mapGetters('flow', ['activeFlow']),
     content: {
       get() {
         return this.resourceVariant.value
@@ -188,6 +189,7 @@ export const ResourceVariantTextEditor = {
 
         this.$emit('beforeResourceVariantChanged', {variant: this.resourceVariant, resourceId})
         this.resource_setOrCreateValueModeSpecific({
+          flow: this.activeFlow,
           resourceId,
           filter: {language_id: languageId, content_type: contentType, modes: [mode]},
           value,
