@@ -368,8 +368,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
-    [source.ui_metadata.canvas_coordinates.x, source.ui_metadata.canvas_coordinates.y],
-    [target.ui_metadata.canvas_coordinates.x, target.ui_metadata.canvas_coordinates.y],
+    [source.ui_metadata?.canvas_coordinates.x, source.ui_metadata?.canvas_coordinates.y],
+    [target.ui_metadata?.canvas_coordinates.x, target.ui_metadata?.canvas_coordinates.y],
 
     // block titles
     source.label,
@@ -386,10 +386,10 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
 export function computeBlockUiData(block?: IBlock | null) {
   const xDelta = 120
   const yDelta = 110
-  let xPosition = block ? block.ui_metadata.canvas_coordinates.x : null
-  let yPosition = block ? block.ui_metadata.canvas_coordinates.y : null
+  let xPosition = block?.ui_metadata?.canvas_coordinates.x
+  let yPosition = block?.ui_metadata?.canvas_coordinates.y
 
-  if (xPosition === null || yPosition === null) {
+  if (xPosition == null || yPosition == null) {
     const viewPortCenter = getViewportCenter()
     xPosition = viewPortCenter.x
     yPosition = viewPortCenter.y
