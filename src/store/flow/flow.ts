@@ -68,7 +68,6 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     description: 'TODO',
     vendor_metadata: {},
     flows: state.flows,
-    resources: state.resources,
   } as unknown as IContext),
   hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(
     getters.activeFlow.supported_modes || [],
@@ -87,7 +86,6 @@ export const mutations: MutationTree<IFlowsState> = {
     const persistedState = flowContainer
     state.isCreated = persistedState.isCreated
     state.flows = persistedState.flows
-    state.resources = persistedState.resources
   },
   //used to track whether we should put or post when persisting
   flow_updateCreatedState(state, createdState) {
@@ -336,12 +334,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         last_modified: moment().toISOString(),
         interaction_timeout: rootState.trees.ui.appWideInteractionTimeout,
         vendor_metadata: {},
-
         supported_modes: rootState.trees.ui.defaultModes,
         languages: [],
         blocks: [],
-
         first_block_id: '',
+        resources: [],
       }),
     }
   },

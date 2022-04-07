@@ -299,20 +299,23 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   },
 
   /**
-   * Import Flows And Resources from importer tool
+   * Import Flows from importer tool
    *
    * The imported JSON should be compatible with IFlowsState
    * {
    *  flows: [
-   *    { uuid: 'xxxx', name: 'flow1', ...},
-   *    { uuid: 'yyyy', name: 'flow2', ...}]
-   *  ],
-   *  resources: [
-   *    { uuid: 'xxxx-flow1-resource1', values: [...]},
-   *    { uuid: 'xxxx-flow1-resource2', values: [...]},
-   *    { uuid: 'xxxx-flow2-resource1', values: [...]},
+   *    {
+   *      uuid: 'xxxx',
+   *      name: 'flow1',
+   *      resources: [
+   *        { uuid: 'xxxx-flow1-resource1', values: [...]},
+   *        { uuid: 'xxxx-flow1-resource2', values: [...]},
+   *        { uuid: 'xxxx-flow2-resource1', values: [...]},
+   *        ...
+   *      ]
+   *    },
    *    ...
-   *  ]
+   *  ],
    * }
    * @param dispatch
    * @param commit
@@ -320,9 +323,9 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
    * @param rootState
    * @param flows
    */
-  async importFlowsAndResources({rootState}, {flows, resources}: { flows: IFlow[], resources: IResource[] }) {
-    console.debug('importing flows & resources ...')
-    console.log({flows, resources})
+  async importFlowsAndResources({rootState}, {flows}: { flows: IFlow[]}) {
+    console.debug('importing flows ...')
+    console.log({flows})
     const {flow: flowState} = rootState
 
     // add default activated modes if not set yet
@@ -335,7 +338,6 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     // Update flow state
     flowState.flows.splice(0, Number.MAX_SAFE_INTEGER, ...flows)
     flowState.first_flow_id = flows[0].uuid
-    flowState.resources.splice(0, Number.MAX_SAFE_INTEGER, ...resources)
 
     // make sure we use the same languages ids on both UI & Flows
     rootState.trees.ui.languages = flows[0].languages

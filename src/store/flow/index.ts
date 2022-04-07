@@ -6,8 +6,6 @@ import {actions as blockActions, getters as blockGetters, mutations as blockMuta
 import {actions as flowActions, getters as flowGetters, mutations as flowMutations} from './flow'
 import {actions as resourceActions, getters as resourceGetters, mutations as resourceMutations} from './resource'
 
-// type IFlowsState = Pick<IContext, 'flows' | 'first_flow_id' | 'resources' | 'nested_flow_block_interaction_id_stack'>
-
 export interface IFlowsState {
   //Created is *not* the same as persisted. It does not guarantee the current state is saved to the server. Only that the currently active flow in the container was persisted - the persistFlow route was called with the container and the active flow uuid and the route response did not have an error status code
   isCreated: boolean,

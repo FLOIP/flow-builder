@@ -219,7 +219,6 @@ export const Block = {
 
   computed: {
     ...mapState('flow', [
-      'resources',
       'selectedBlocks',
     ]),
     ...mapState('builder', [
@@ -366,7 +365,7 @@ export const Block = {
     },
 
     resolveTextResource(uuid) {
-      const {resources} = this
+      const {resources} = this.activeFlow
       const context = {
         resources,
         language_id: '22',
