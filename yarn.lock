@@ -1668,8 +1668,8 @@
   integrity sha512-pLR8p2z6q87O9c1XkP4DYfuEX+cKMn14a4jYkZ/t4ky1k+MEvp69zj662xJTzCkbH3ABsrwaxx7fP1FWASlEZw==
 
 "@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#VMO-5464-initiate-rc4":
-  version "1.0.0-rc3"
-  resolved "https://github.com/FLOIP/flow-runner.git#ea0273e80577db63fd428b98994301c63dac9157"
+  version "1.0.0-rc4"
+  resolved "https://github.com/FLOIP/flow-runner.git#8c4f2bbe5fa515fb411b1d22b8d68c2854c6edf6"
   dependencies:
     "@floip/expression-evaluator" "^2.1.3"
     ajv "^7.2.1"
