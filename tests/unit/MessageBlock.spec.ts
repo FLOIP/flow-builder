@@ -37,7 +37,7 @@ async function renderDefaultMessageBlock(): Promise<RenderResult> {
   })
 }
 
-test('The MessageBlock has the root div', async () => {
+test('The MessageBlock mounted correctly and has the root div', async () => {
   const {container, debug} = await renderDefaultMessageBlock()
   debug()
   const blockRootDiv = container.querySelector('.mobile-primitive-message-block')
@@ -68,8 +68,49 @@ test('The MessageBlock has a block categorization', async () => {
   expect(blockCategorization).not.toBeNull()
 })
 
-test('The MessageBlock has a block id', async () => {
+test('The MessageBlock displays a block id', async () => {
   const {container} = await renderDefaultMessageBlock()
   const blockId = container.querySelector('.block-id')
   expect(blockId).not.toBeNull()
+})
+
+async function renderMessageBlockWithReversedSlotFlags(): Promise<RenderResult> {
+  const localVue = createLocalVue()
+
+  registerGlobalComponents(localVue)
+  localVue.use(Vuex)
+  setupGlobalLang()
+
+  const localStore = new Vuex.Store<IRootState>(store)
+  await setupMessageBlock(localStore)
+
+  return render(MobilePrimitives_MessageBlock, {
+    propsData: {
+      usesDefaultBranchingEditor: false,
+      usesDefaultContactPropsEditor: true,
+
+      block: localStore.getters['builder/activeBlock'],
+      flow: localStore.getters['flow/activeFlow'],
+    },
+    store: localStore,
+    localVue,
+  })
+}
+
+test('The MessageBlockWithReverseSlotFlags mounted correctly and has the root div', async () => {
+  const {container} = await renderMessageBlockWithReversedSlotFlags()
+  const blockRootDiv = container.querySelector('.mobile-primitive-message-block')
+  expect(blockRootDiv).not.toBeNull()
+})
+
+test('The MessageBlockWithReverseSlotFlags doesn\'t have the default branching config', async () => {
+  const {container} = await renderMessageBlockWithReversedSlotFlags()
+  const defaultBranchingConfig = container.querySelector('.block-output-branching-config')
+  expect(defaultBranchingConfig).toBeNull()
+})
+
+test('The MessageBlockWithReverseSlotFlags has a contact property editor', async () => {
+  const {container} = await renderMessageBlockWithReversedSlotFlags()
+  const contactPropertyEditor = container.querySelector('.generic-contact-property-editor')
+  expect(contactPropertyEditor).not.toBeNull()
 })
