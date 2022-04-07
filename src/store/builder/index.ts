@@ -389,7 +389,7 @@ export function computeBlockUiData(block?: IBlock | null) {
   let xPosition = block?.ui_metadata?.canvas_coordinates.x
   let yPosition = block?.ui_metadata?.canvas_coordinates.y
 
-  if (xPosition != null || yPosition != null) {
+  if (xPosition == null || yPosition == null) {
     const viewPortCenter = getViewportCenter()
     xPosition = viewPortCenter.x
     yPosition = viewPortCenter.y
