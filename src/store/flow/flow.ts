@@ -282,16 +282,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return block
   },
 
-  async flow_addBlankResource({dispatch, commit}): Promise<IResource> {
+  async flow_addBlankResource({dispatch}): Promise<IResource> {
     const resource = await dispatch('resource_createWith', {props: {uuid: await (new IdGeneratorUuidV4()).generate()}})
-
-    commit('resource_add', {resource})
+    dispatch('resource_add', {resource})
 
     return resource
   },
-  async flow_addBlankResourceForEnabledModesAndLangs({dispatch, commit}): Promise<IResource> {
+  async flow_addBlankResourceForEnabledModesAndLangs({dispatch}): Promise<IResource> {
     const resource = await dispatch('flow_createBlankResourceForEnabledModesAndLangs')
-    commit('resource_add', {resource})
+    dispatch('resource_add', {resource})
     return resource
   },
 
@@ -343,7 +342,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
   },
 
-  async flow_duplicateBlock({commit, state, getters}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }): Promise<IBlock> {
+  async flow_duplicateBlock({commit, state, getters, dispatch}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }): Promise<IBlock> {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     // @throws ValidationException when block absent
     const block: IBlock = findBlockWith(blockId, flow)
@@ -367,9 +366,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       const duplicatedResource: IResource = cloneDeep(getters.resourcesByUuidOnActiveFlow[sourceResourceUuid])
 
       duplicatedResource.uuid = targetResourceUuid
-      commit('resource_add', {
-        resource: duplicatedResource
-      })
+      dispatch('resource_add', {resource: duplicatedResource})
       Vue.set(duplicatedBlock.config!, 'prompt', targetResourceUuid)
     }
 

@@ -197,7 +197,6 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     }
 
     this.resource_setOrCreateValueModeSpecific({
-      flow: this.activeFlow,
       resourceId: this.resource.uuid,
       filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
       value: description,
@@ -236,12 +235,10 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
   @Mutation pushAudioIntoLibrary!: (audio: IAudioFile) => void
 
   @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!: ({
-    flow,
     resourceId,
     filter,
     value,
-  }: { flow: IFlow, resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesWithOptionalValue, value: string }) => void
-  @flowVuexNamespace.Getter activeFlow!: IFlow
+  }: { resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesWithOptionalValue, value: string }) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean
 }

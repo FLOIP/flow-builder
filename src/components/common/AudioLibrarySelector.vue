@@ -42,7 +42,6 @@ export const AudioLibrarySelector = {
   ],
 
   computed: {
-    ...mapGetters('flow', ['activeFlow']),
     selectable() {
       return !isEmpty(this.alternateSelections)
     },
@@ -52,7 +51,6 @@ export const AudioLibrarySelector = {
     ...mapActions('flow', ['resource_setOrCreateValueModeSpecific']),
     clearSelection() {
       this.resource_setOrCreateValueModeSpecific({
-        flow: this.activeFlow,
         resourceId: this.resourceId,
         filter: {language_id: this.langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
         value: '',
@@ -60,7 +58,6 @@ export const AudioLibrarySelector = {
     },
     selectAudioFile({value, langId}) {
       this.resource_setOrCreateValueModeSpecific({
-        flow: this.activeFlow,
         resourceId: this.resourceId,
         filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
         value: value.description,
