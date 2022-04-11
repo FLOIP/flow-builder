@@ -68,7 +68,12 @@ export class BlockErrorsExpandable extends mixins(Lang) {
    * - resource validation
    */
   get allErrors(): ErrorObject[] {
-    return union(this.blockValidationStatusesForCurrentBlock?.ajvErrors, this.resourceValidationStatusesForCurrentBlock?.ajvErrors)
+    return [
+      ...this.blockValidationStatusesForCurrentBlock?.ajvErrors || [],
+      ...this.resourceValidationStatusesForCurrentBlock
+        .map((status) => status.ajvErrors)
+        .flat(),
+    ]
   }
 
   get isListLong(): boolean {
@@ -83,7 +88,14 @@ export class BlockErrorsExpandable extends mixins(Lang) {
   }
 
   get resourceValidationStatusesForCurrentBlock(): IValidationStatus {
-    return get(this.validationStatuses, `resource/${this.block.config?.prompt}`)
+    const choiceValidationStatuses = Object.values(this.block.config?.choices)
+      .map((uuid) => get(this.validationStatuses, `resource/${uuid}`))
+
+    return [
+      ...choiceValidationStatuses,
+      get(this.validationStatuses, `resource/${this.block.config?.prompt}`),
+    ]
+      .filter((status) => status.isValid === false)
   }
 
   get blockValidationStatusesForCurrentBlock(): IValidationStatus {

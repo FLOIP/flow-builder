@@ -78,7 +78,7 @@
 
 <script lang="ts">
 import Lang from '@/lib/filters/lang'
-import {Dictionary, filter, get, pickBy, replace, size} from 'lodash'
+import {Dictionary, filter, get, has, pickBy, replace, size} from 'lodash'
 import {IValidationStatus} from '@/store/validation'
 import Routes from '@/lib/mixins/Routes'
 import Component, {mixins} from 'vue-class-component'
@@ -123,9 +123,14 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
 
   get invalidBlocksInActiveFlow() {
     return filter(this.activeFlow?.blocks, (block) => {
-      // The block is invalid on IBlock OR it's invalid on corresponding IResource
-      return get(this.blockValidationStatuses, `block/${block.uuid}`) || get(this.resourceValidationStatusesForActiveFlow, `resource/${block.config.prompt}`)
-    });
+      const hasBlockValidationError = has(this.blockValidationStatuses, `block/${block.uuid}`)
+      const hasResourceValidationError = has(this.resourceValidationStatusesForActiveFlow, `resource/${block.config.prompt}`)
+
+      const hasChoiceValidationError = Object.values(block.config.choices)
+        .reduce((result, uuid) => (result === true || has(this.resourceValidationStatusesForActiveFlow, `resource/${uuid}`)), false)
+
+      return hasBlockValidationError || hasResourceValidationError || hasChoiceValidationError
+    })
   }
 
   get numberOfBlocksWithErrors(): number {

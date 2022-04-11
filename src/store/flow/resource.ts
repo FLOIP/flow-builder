@@ -9,18 +9,21 @@ import {
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import {
   cloneDeep,
+  compact,
   defaults,
   difference,
   filter,
   find,
   findIndex,
   first,
+  flatMap,
   includes,
   isEmpty,
   isEqual,
   keyBy,
   map,
   pick,
+  values,
   without,
 } from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
@@ -30,7 +33,10 @@ import {IRootState} from '@/store'
 export const getters: GetterTree<IFlowsState, IRootState> = {
   resourcesByUuid: ({resources}) => keyBy(resources, 'uuid'),
 
-  resourceUuidsOnActiveFlow: (state, getters) => filter(map(getters.activeFlow.blocks, (block) => block.config.prompt)),
+  resourceUuidsOnActiveFlow: (state, getters) => compact(flatMap(getters.activeFlow.blocks, (block) => [
+    block.config.prompt,
+    ...values(block.config.choices),
+  ])),
 
   resourcesOnActiveFlow: (state, getters): IResource[] => filter(
     state.resources,
