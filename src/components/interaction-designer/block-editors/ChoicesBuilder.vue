@@ -33,6 +33,7 @@
         draftResource,
         {language_id: activeFlow.languages[0].id,
          content_type: SupportedContentType.TEXT,
+         mime_type: this.choiceMimeType,
          modes: [SupportedMode.TEXT]})"
       :mode="SupportedMode.TEXT"
       @beforeResourceVariantChanged="addDraftResourceToChoices"
@@ -55,6 +56,7 @@ import Vue from 'vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const validationVuexNamespace = namespace('validation')
 
 @Component({})
 export class ChoicesBuilder extends mixins(Lang) {
@@ -119,6 +121,8 @@ export class ChoicesBuilder extends mixins(Lang) {
     this.rewriteChoiceKeyFor({resourceId, blockId: this.block.uuid})
     this.$emit('choiceChanged', {resourceId, choiceIndex, resource})
   }
+
+  @validationVuexNamespace.Getter choiceMimeType: string
 
   @flowVuexNamespace.State resources!: IResource[]
   @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }

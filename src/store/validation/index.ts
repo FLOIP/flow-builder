@@ -74,6 +74,10 @@ export const getters: GetterTree<IValidationState, IRootState> = {
     })
     return accumulator
   },
+
+  choiceMimeType() {
+    return 'text/plain;choice=true'
+  },
 }
 
 export const mutations: MutationTree<IValidationState> = {
@@ -160,7 +164,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
    * @param supportedModes
    */
   async validate_resourcesOnSupportedValues(
-    {dispatch},
+    {dispatch, getters},
     {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
   ): Promise<void> {
     if (!resources) {
@@ -173,10 +177,13 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       resourceWithNewValues.values = filter(
         resource.values,
         (v) => {
-          return !isEmpty(intersection(supportedModes, v.modes))
-            && includes( [SupportedContentType.TEXT, SupportedContentType.AUDIO], v.content_type)
-        }
-      ) as IResourceValue[]
+          const isChoiceResource = v.mime_type === getters.choiceMimeType
+          const hasSupportedMode = !isEmpty(intersection(supportedModes, v.modes))
+          const hasContentType = includes([SupportedContentType.TEXT, SupportedContentType.AUDIO], v.content_type)
+
+          return isChoiceResource || (hasSupportedMode && hasContentType)
+        },
+      )
 
       return resourceWithNewValues
     })

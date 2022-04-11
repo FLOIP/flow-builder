@@ -44,10 +44,10 @@
           :class="{invisible: !characterCounter.count}">
           {{ characterCounter.count }} characters
 
-        <template v-if="mode === 'sms' && characterCounter.pages > 1">
-          ({{ characterCounter.pages }} {{ characterCounter.hasUnicode ? 'unicode pages' : 'pages' }})
-        </template>
-      </span>
+          <template v-if="mode === 'sms' && characterCounter.pages > 1">
+            ({{ characterCounter.pages }} {{ characterCounter.hasUnicode ? 'unicode pages' : 'pages' }})
+          </template>
+        </span>
 
         <a
           v-if="doesContentContainExpression"
@@ -91,8 +91,8 @@
             <em>
               {{ contentExpressionAST.message }}
               (<span v-if="contentExpressionAST.location.start.line !== 1">{{ 'flow-builder.on-line' | trans }}
-              {{ contentExpressionAST.location.start.line }},
-            </span>{{ 'flow-builder.at-character' | trans }} {{ contentExpressionAST.location.start.column }})
+                {{ contentExpressionAST.location.start.line }},
+              </span>{{ 'flow-builder.at-character' | trans }} {{ contentExpressionAST.location.start.column }})
             </em>
           </p>
         </div>
@@ -184,12 +184,22 @@ export const ResourceVariantTextEditor = {
 
       set(value) {
         const {resourceId, mode} = this
-        const {language_id: languageId, content_type: contentType} = this.resourceVariant
+        const {language_id: languageId, content_type: contentType, mime_type: mimeType} = this.resourceVariant
+
+        const filter = {
+          language_id: languageId,
+          content_type: contentType,
+           modes: [mode],
+        }
+
+        if (mimeType !== undefined) {
+          filter.mime_type = mimeType
+        }
 
         this.$emit('beforeResourceVariantChanged', {variant: this.resourceVariant, resourceId})
         this.resource_setOrCreateValueModeSpecific({
           resourceId,
-          filter: {language_id: languageId, content_type: contentType, modes: [mode]},
+          filter,
           value,
         })
         this.$emit('afterResourceVariantChanged', {variant: this.resourceVariant, resourceId})
