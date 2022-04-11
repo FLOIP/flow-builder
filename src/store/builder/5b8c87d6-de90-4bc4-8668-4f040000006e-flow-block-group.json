@@ -86,17 +86,17 @@
           ]
         }
       ],
-      "first_block_id": "31570470-cb83-436a-97d6-5a0ce471280e"
-    }
-  ],
-  "resources": [
-    {
-      "uuid": "7aa63f91-1eeb-466b-a27d-4fdee496a2e9",
-      "values": []
-    },
-    {
-      "uuid": "ecb48341-5134-4a34-a75f-004fd976b369",
-      "values": []
+      "first_block_id": "31570470-cb83-436a-97d6-5a0ce471280e",
+      "resources": [
+        {
+          "uuid": "7aa63f91-1eeb-466b-a27d-4fdee496a2e9",
+          "values": []
+        },
+        {
+          "uuid": "ecb48341-5134-4a34-a75f-004fd976b369",
+          "values": []
+        }
+      ]
     }
   ]
 }
