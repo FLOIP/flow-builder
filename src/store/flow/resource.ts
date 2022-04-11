@@ -61,7 +61,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   resource_setValue(
     {getters},
-    {resourceId, filter, value}: { flow: IFlow, resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesFilter, value: string },
+    {resourceId, filter, value}: {
+      flow: IFlow,
+      resourceId: IResource['uuid'],
+      filter: IResourceDefinitionVariantOverModesFilter,
+      value: string
+    },
   ) {
     findResourceVariantOverModesWith(resourceId, filter, getters.activeFlow)
       .value = value || ''
