@@ -125,9 +125,12 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
     return filter(this.activeFlow?.blocks, (block) => {
       const hasBlockValidationError = has(this.blockValidationStatuses, `block/${block.uuid}`)
       const hasResourceValidationError = has(this.resourceValidationStatusesForActiveFlow, `resource/${block.config.prompt}`)
+      let hasChoiceValidationError = false
 
-      const hasChoiceValidationError = Object.values(block.config.choices)
-        .reduce((result, uuid) => (result === true || has(this.resourceValidationStatusesForActiveFlow, `resource/${uuid}`)), false)
+      if (block.config?.choices !== undefined) {
+        hasChoiceValidationError = Object.values(block.config.choices)
+          .reduce((result, uuid) => (result === true || has(this.resourceValidationStatusesForActiveFlow, `resource/${uuid}`)), false)
+      }
 
       return hasBlockValidationError || hasResourceValidationError || hasChoiceValidationError
     })
@@ -147,8 +150,7 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
     })
   }
 
-  fixBlockError(key: string, dataPath: string): void {
-    const blockId = key.replace('block/', '')
+  fixBlockError(blockId: string, dataPath: string): void {
     this.$router.push({
       name: 'block-scroll-to-anchor',
       params: {

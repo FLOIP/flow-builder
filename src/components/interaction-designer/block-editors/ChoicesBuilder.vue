@@ -7,6 +7,7 @@
       <resource-variant-text-editor
         ref="choices"
         :key="resource.uuid"
+        :index="i"
         class="choices-builder-item"
         :label="(i + 1).toString()"
         :rows="1"
