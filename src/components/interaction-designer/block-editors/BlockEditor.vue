@@ -57,7 +57,7 @@ export default BlockEditor
 .block-editor-header {
   position: sticky;
   top: 0;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 1);
   padding-top: 1rem;
   padding-bottom: 0.8rem;
   z-index: 15;
