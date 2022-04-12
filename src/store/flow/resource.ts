@@ -29,8 +29,7 @@ import {IRootState} from '@/store'
 export const getters: GetterTree<IFlowsState, IRootState> = {
   resourcesByUuidOnActiveFlow: (_state, getters) => keyBy(getters.activeFlow.resources, 'uuid'),
 
-  //TODO: try to redefine this using getters.activeFlow.resources only
-  resourceUuidsOnActiveFlow: (state, getters) => filter(map(getters.activeFlow.blocks, (block) => block.config.prompt)),
+  resourceUuidsOnActiveFlow: (_state, getters) => filter(map(getters.activeFlow.resources, (res) => res.uuid)),
 }
 
 export const mutations: MutationTree<IFlowsState> = {}
