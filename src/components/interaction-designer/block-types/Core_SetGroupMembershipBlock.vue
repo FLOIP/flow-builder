@@ -23,6 +23,7 @@
         slot="contact-props"
         name="contact-props" />
     </base-block>
+    <slot name="vendor" />
   </div>
 </template>
 
