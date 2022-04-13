@@ -27,7 +27,7 @@
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {isEmpty} from 'lodash'
-import {mapActions, mapGetters} from 'vuex'
+import {mapActions} from 'vuex'
 import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
 
 export const AudioLibrarySelector = {
