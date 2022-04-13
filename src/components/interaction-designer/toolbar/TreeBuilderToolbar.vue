@@ -20,15 +20,15 @@
           <div class="btn-toolbar">
             <h4
               v-if="hasToolbarFlowTitle"
-              class="text-primary mr-4 mb-0 flow-label"
-              v-b-tooltip.hover="activeFlow.label">
+              v-b-tooltip.hover="activeFlow.label"
+              class="text-primary mr-4 mb-0 flow-label">
               {{ activeFlow.label }}
             </h4>
             <div>
               <router-link
                 v-if="hasToolbarHomeButton"
-                :to="route('flows.home')"
                 v-b-tooltip.hover="trans('flow-builder.home')"
+                :to="route('flows.home')"
                 class="mr-2">
                 <font-awesome-icon
                   :icon="['fac', 'home']"
@@ -89,18 +89,18 @@
                 v-if="!ui.isEditableLocked"
                 class="btn-group">
                 <router-link
+                  v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
                   :to="viewTreeUrl"
                   event=""
-                  v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: !isEditable}"
                   @click.native.prevent="handlePersistFlow(viewTreeUrl)">
                   {{ trans('flow-builder.view-mode') }}
                 </router-link>
                 <router-link
+                  v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
                   :to="editTreeUrl"
                   event=""
-                  v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isEditable}"
                   @click.native.prevent="handlePersistFlow(editTreeUrl)">
