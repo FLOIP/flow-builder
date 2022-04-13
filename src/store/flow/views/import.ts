@@ -66,14 +66,26 @@ export const mutations: MutationTree<IImportState> = {
   setExistingLanguagesWithoutMatch(state, languages) {
     state.existingLanguagesWithoutMatch = languages
   },
-  setFirstFlowLanguages(state, languages) {
+  /**
+   * Set languages for the 1st flow
+   * Imports can only contain 01 flow.
+   * @param state
+   * @param languages
+   */
+  setImportedFlowLanguages(state, languages) {
     if (state.flowContainer) {
       state.flowContainer.flows[0].languages = languages
     } else {
       throw new Error('flowContainer is not set')
     }
   },
-  setFirstFlowResources(state, resources) {
+  /**
+   * Set resources for the 1st flow
+   * Imports can only contain 01 flow.
+   * @param state
+   * @param resources
+   */
+  setImportedFlowResources(state, resources) {
     if (state.flowContainer) {
       state.flowContainer.flows[0].resources = resources
     } else {
@@ -204,7 +216,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       })
       commit('setMatchingLanguages', matchingLanguages)
       // Update the languages so we use the org settings for things like id and orgId
-      commit('setFirstFlowLanguages', state.matchingLanguages)
+      commit('setImportedFlowLanguages', state.matchingLanguages)
       commit('setExistingLanguagesWithoutMatch', differenceWith(rootGetters.languages, state.matchingLanguages, isEqual))
     }
   },
@@ -278,7 +290,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
   matchLanguage({commit, state, dispatch}, {oldLanguage, matchingNewLanguage}) {
     commit('addFlowLanguage', matchingNewLanguage)
     commit(
-      'setFirstFlowResources',
+      'setImportedFlowResources',
       updateResourcesForLanguageMatch(get(state.flowContainer, 'flows.0.resources', []), oldLanguage.id, matchingNewLanguage.id),
     )
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
