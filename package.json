@@ -1,6 +1,6 @@
 {
   "name": "@floip/flow-builder",
-  "version": "0.1.11",
+  "version": "0.2.1",
   "description": "flow-builder provides an open source frontend for authoring flow interoperability project specification compliant flows.",
   "main": "./dist/flow-builder.common.js",
   "files": [
@@ -23,7 +23,7 @@
   "dependencies": {
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
-    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#feature/VMO-4281-flow-spec-rc2",
+    "@floip/flow-runner": "1.0.0-rc2.7",
     "@flowjs/flow.js": "^2.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
@@ -52,7 +52,7 @@
     "jquery": "^3.5.1",
     "json-schema": "0.2.3",
     "lang.js": "^1.1.14",
-    "leader-line": "^1.0.5",
+    "leader-line": "^1.0.7",
     "lodash": "^4.17.19",
     "m-class-list": "^1.1.9",
     "moment": "^2.27.0",
@@ -60,6 +60,7 @@
     "plain-draggable": "^2.5.12",
     "pointer-event": "^1.0.0",
     "popper.js": "^1.16.1",
+    "skeleton-loader": "^2.0.0",
     "vue": "^2.6.14",
     "vue-class-component": "^7.2.6",
     "vue-focus": "^2.1.0",

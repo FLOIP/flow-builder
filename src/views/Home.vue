@@ -14,7 +14,7 @@
                         <main class="px-3">
                           <router-link
                             :to="route('flows.newFlow')"
-                            title="trans('flow-builder.create-flow')"
+                            :title="trans('flow-builder.create-flow')"
                             class="btn btn-primary mr-2">
                             {{ 'flow-builder.create-flow' | trans }}
                           </router-link>
@@ -42,7 +42,7 @@
                             <div v-for="flow in flows" :key="flow.uuid">
                               <router-link
                                 :to="route('flows.editFlow', {flowId: flow.uuid, component: 'designer', mode: 'edit'})"
-                                title="trans('flow-builder.edit-flow')"
+                                :title="trans('flow-builder.flow-details')"
                                 class="mt-3 btn btn-outline-secondary mr-2 active">
                                 {{ flow.label || flow.uuid }}
                               </router-link>

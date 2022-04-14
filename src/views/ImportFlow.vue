@@ -5,8 +5,8 @@
         <div class="card d-flex bg-light">
           <div class="card-body">
             <div>
-              <h2>
-                {{ trans(importFlowTitle) }}
+              <h2 v-if="hasImportFlowTitle">
+                {{ trans('flow-builder.import-flow') }}
               </h2>
               <p>{{ 'flow-builder.create-flow-from-json' | trans }}</p>
               <div
@@ -123,10 +123,6 @@ class ImportFlow extends mixins(Lang, Routes) {
 
   fileName = ''
 
-  get importFlowTitle(): string {
-    return this.ui.title.importFlow
-  }
-
   async beforeCreate(): Promise<void> {
     const {$store} = this
 
@@ -241,6 +237,8 @@ class ImportFlow extends mixins(Lang, Routes) {
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
 
   @Getter isConfigured!: boolean
+
+  @Getter hasImportFlowTitle!: boolean
 
   @importVuexNamespace.Getter hasUnsupportedBlockClasses!: boolean
 

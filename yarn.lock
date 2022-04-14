@@ -1667,9 +1667,10 @@
   resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.10.0.tgz#386cb9fbfb2afc951daae40e03845a87bacf3509"
   integrity sha512-pLR8p2z6q87O9c1XkP4DYfuEX+cKMn14a4jYkZ/t4ky1k+MEvp69zj662xJTzCkbH3ABsrwaxx7fP1FWASlEZw==
 
-"@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#feature/VMO-4281-flow-spec-rc2":
-  version "1.0.0-rc2.6"
-  resolved "https://github.com/FLOIP/flow-runner.git#9e144f361a62d3818cc753071836708ab58403e6"
+"@floip/flow-runner@1.0.0-rc2.7":
+  version "1.0.0-rc2.7"
+  resolved "https://registry.yarnpkg.com/@floip/flow-runner/-/flow-runner-1.0.0-rc2.7.tgz#b643b7e3d2ccb2457a544dd045ee8431c15458e5"
+  integrity sha512-IGBdEUxq13kkByqaltkkyyla1/AgRCrcnRj76gfjR88XY+mWgSQDigTsz+qmL+O6j7aCVroj5BlPw1d5fxojNA==
   dependencies:
     "@floip/expression-evaluator" "^2.1.3"
     ajv "^7.2.1"
@@ -12370,10 +12371,10 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-leader-line@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/leader-line/-/leader-line-1.0.5.tgz#691b5e2649ddff30d9e03084fb327503120dc77a"
-  integrity sha512-OHA4YmCO7LcvnQ9u4AWUrmuIzOE1/pxOzA2eHmb0DhtoKlEf0xiBm5aYtv77OmmMeW5xnbE1G6Hayp/vrtMOmw==
+leader-line@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/leader-line/-/leader-line-1.0.7.tgz#c197268d8346d73f7ac10fe568d677d119c656c1"
+  integrity sha512-PhJpQLV7XychSIuGPD0TEqR9PgRYBbrhReaOcmHFOVtTw4dWKfUMAtOb7UP7xTsoib6sFzq2giQeOUHy7LCuJQ==
 
 left-pad@^1.3.0:
   version "1.3.0"
@@ -16651,6 +16652,13 @@ sisteransi@^1.0.4, sisteransi@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
   integrity sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
+
+skeleton-loader@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/skeleton-loader/-/skeleton-loader-2.0.0.tgz#4154ed123d28be036c5d65297633d9049a70ea63"
+  integrity sha1-QVTtEj0ovgNsXWUpdjPZBJpw6mM=
+  dependencies:
+    loader-utils "^1.1.0"
 
 slash@^1.0.0:
   version "1.0.0"
