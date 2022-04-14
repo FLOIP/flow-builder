@@ -1,50 +1,38 @@
 <template>
   <div class="core-log-block">
-    <h3 class="block-editor-header">
-      {{ `flow-builder.${block.type}` | trans }}
-    </h3>
-    <fieldset :disabled="!isEditable">
-      <label-editor
-        :block="block"
-        @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <semantic-label-editor
-        v-if="showSemanticLabel"
-        :block="block" />
-      <name-editor :block="block" />
-
-      <slot name="extras" />
-
-      <validation-message
-        #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/message`">
-        <expression-input
-          :label="'flow-builder.log-message' | trans"
-          :placeholder="'flow-builder.enter-message' | trans"
-          :current-expression="value"
-          :valid-state="isValid"
-          @commitExpressionChange="commitMessageChange" />
-      </validation-message>
-
-      <hr>
-
-      <block-output-branching-config
-        :block="block"
-        :has-exit-per-choice="false"
-        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
-
-      <categorization :block="block" />
-
-      <generic-contact-property-editor :block="block" />
-
-      <hr>
-
-      <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
-
-    </fieldset>
-
-    <block-id :block="block" />
+    <base-block
+      :block="block"
+      :flow="flow"
+      :show-semantic-label="false"
+      :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
+      :uses-default-branching-editor="usesDefaultBranchingEditor"
+      @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
+      <slot
+        slot="resource-editors"
+        name="resource-editors" />
+      <slot
+        slot="extras"
+        name="extras">
+        <validation-message
+          #input-control="{ isValid }"
+          :message-key="`block/${block.uuid}/config/message`">
+          <expression-input
+            :label="'flow-builder.log-message' | trans"
+            :placeholder="'flow-builder.enter-message' | trans"
+            :current-expression="value"
+            :valid-state="isValid"
+            @commitExpressionChange="commitMessageChange" />
+        </validation-message>
+      </slot>
+      <slot name="vendor-extras" />
+      <slot
+        slot="branching"
+        name="branching" />
+      <slot
+        slot="contact-props"
+        name="contact-props" />
+    </base-block>
+    <slot name="vendor" />
   </div>
 </template>
 
@@ -66,10 +54,9 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 class Core_LogBlock extends mixins(Lang) {
   @Prop() readonly block!: ILogBlock
-
   @Prop() readonly flow!: IFlow
-
-  showSemanticLabel = false
+  @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
+  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
   get value(): string {
     return this.block.config.message || ''
