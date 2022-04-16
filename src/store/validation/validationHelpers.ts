@@ -4,6 +4,7 @@ import Ajv, {ErrorObject, ValidateFunction} from 'ajv'
 import {get, isEmpty} from 'lodash'
 import {JSONSchema7} from 'json-schema'
 import ajvFormat from 'ajv-formats'
+import Lang from '@/lib/filters/lang'
 
 const DEV_ERROR_KEYWORDS = [
   // unwanted extra props
@@ -11,6 +12,8 @@ const DEV_ERROR_KEYWORDS = [
   // missing props
   'required',
 ]
+
+const lang = new Lang()
 
 // AJV validators, keys are types
 const validators = new Map<string, ValidateFunction>()
@@ -71,6 +74,38 @@ export function debugValidationStatus(status: IValidationStatus, customMessage: 
   } else {
     console.debug('store/validation:', 'the status in debugValidationStatus was undefined')
   }
+}
+
+function getErrorMessageLocalizationKey(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
+  const entity = keyPrefix.startsWith('flow') ? 'flows' : 'blocks'
+  const property = ajvErrorObject.dataPath.replaceAll('/', '-')
+
+  return `flow-builder-validation.${entity}-${property.substring(1)}-${ajvErrorObject.keyword}`
+}
+
+function getLocalizedErrorMessage(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
+  const localizationKey = getErrorMessageLocalizationKey(keyPrefix, ajvErrorObject)
+
+  const localizedMessage = lang.trans(localizationKey)
+  const hasTranslation = localizedMessage !== localizationKey
+
+  if (!hasTranslation) {
+    console.debug(`Validation ${localizationKey} key was not found in localization data`, ajvErrorObject)
+    return ajvErrorObject.message ?? ''
+  }
+
+  return localizedMessage
+}
+
+export function getLocalizedAjvErrors(keyPrefix: string, ajvErrors?: ErrorObject[] | null): ErrorObject[] | null {
+  if (ajvErrors === undefined || ajvErrors === null) {
+    return null
+  }
+
+  return ajvErrors.map((ajvError) => ({
+    ...ajvError,
+    message: getLocalizedErrorMessage(keyPrefix, ajvError),
+  }))
 }
 
 export function flatValidationStatuses({
