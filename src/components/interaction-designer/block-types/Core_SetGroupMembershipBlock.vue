@@ -1,41 +1,29 @@
 <template>
   <div class="core-set-group-membership-block">
-    <h3 class="block-editor-header">
-      {{ `flow-builder.${block.type}` | trans }}
-    </h3>
-
-    <fieldset :disabled="!isEditable">
-      <label-editor
-        :block="block"
-        @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <semantic-label-editor
-        v-if="showSemanticLabel"
-        :block="block" />
-      <name-editor :block="block" />
-
-      <slot name="extras" />
-
-      <group-membership-editor :block="block" />
-
-      <hr>
-
-      <block-output-branching-config
-        :block="block"
-        :has-exit-per-choice="false"
-        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
-
-      <categorization :block="block" />
-
-      <generic-contact-property-editor :block="block" />
-
-      <hr>
-
-      <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
-    </fieldset>
-
-    <block-id :block="block" />
+    <base-block
+      :block="block"
+      :flow="flow"
+      :show-semantic-label="false"
+      :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
+      :uses-default-branching-editor="usesDefaultBranchingEditor"
+      @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
+      <slot
+        slot="resource-editors"
+        name="resource-editors" />
+      <slot
+        slot="extras"
+        name="extras">
+        <group-membership-editor :block="block" />
+      </slot>
+      <slot name="vendor-extras" />
+      <slot
+        slot="branching"
+        name="branching" />
+      <slot
+        slot="contact-props"
+        name="contact-props" />
+    </base-block>
+    <slot name="vendor" />
   </div>
 </template>
 
@@ -68,8 +56,8 @@ interface IGroupActionOption {
 class Core_SetGroupMembershipBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
-
-  showSemanticLabel = false
+  @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
+  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
   actionsList: IGroupActionOption[] = [
     {
@@ -82,7 +70,7 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
     },
   ]
 
-  get selectedAction() {
+  get selectedAction(): IGroupActionOption {
     const {is_member} = this.block.config as ISetGroupMembershipBlockConfig
     if (!is_member) {
       return find(this.actionsList, {id: REMOVE_KEY}) || {} as IGroupActionOption
@@ -99,7 +87,7 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
     this.setIsMember(action)
   }
 
-  @blockVuexNamespace.Action setIsMember!: (action: IGroupActionOption) => Promise<any>
+  @blockVuexNamespace.Action setIsMember!: (action: IGroupActionOption) => Promise<void>
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable!: boolean
 
