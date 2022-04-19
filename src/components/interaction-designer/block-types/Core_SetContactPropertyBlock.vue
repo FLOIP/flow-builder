@@ -15,7 +15,9 @@
         name="extras">
         <contact-property-editor :block="block" />
       </slot>
-      <slot name="vendor-extras" />
+      <slot
+        slot="vendor-extras"
+        name="vendor-extras" />
       <slot
         slot="branching"
         name="branching" />

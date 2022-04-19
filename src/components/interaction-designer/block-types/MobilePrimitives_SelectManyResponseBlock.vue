@@ -27,7 +27,9 @@
         <minimum-choices-editor :block="block" />
         <maximum-choices-editor :block="block" />
       </slot>
-      <slot name="vendor-extras" />
+      <slot
+        slot="vendor-extras"
+        name="vendor-extras" />
       <slot
         slot="branching"
         name="branching">

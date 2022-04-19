@@ -17,6 +17,8 @@
       <hr>
       <slot name="extras" />
 
+      <slot name="vendor-extras" />
+
       <slot name="branching">
         <block-output-branching-config
           v-if="usesDefaultBranchingEditor"

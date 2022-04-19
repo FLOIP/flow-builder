@@ -12,7 +12,9 @@
       <slot
         slot="extras"
         name="extras" />
-      <slot name="vendor-extras" />
+      <slot
+        slot="vendor-extras"
+        name="vendor-extras" />
       <slot
         slot="branching"
         name="branching">
