@@ -23,12 +23,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import AutoSuggest from '@avcs/autosuggest'
 import '@avcs/autosuggest/dropdown.css'
-import {mapGetters} from 'vuex'
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import {Getter, namespace} from 'vuex-class'
 import {MethodNodeEvaluatorFactory} from '@floip/expression-evaluator/dist/Evaluator/NodeEvaluator/MethodNodeEvaluator/Factory'
-import Lang from 'lib/filters/lang'
+import Lang from '@/lib/filters/lang'
+import {IBlock} from "@floip/flow-runner";
 
 const defaultContactPropertyFields = [
   'phone',
@@ -41,152 +44,126 @@ const defaultDateFields = [
   'tomorrow',
 ]
 
-export const ExpressionInput = {
-  mixins: [Lang],
+const flowNamespace = namespace('flow')
 
-  props: {
-    label: {
-      type: [String, Number],
-      required: true,
-    },
-    labelClass: {
-      type: String,
-      default: 'text-primary',
-      required: false,
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    currentExpression: {
-      type: String,
-      required: false,
-    },
-    expressionIdentifier: {
-      type: [String, Number],
-      default: null,
-    },
-    rows: {
-      type: Number,
-      required: false,
-      default: 1,
-    },
-    validState: {
-      type: Boolean,
-      default: null,
-      required: false,
-    },
-    prependText: {
-      type: String,
-      default: '',
-      required: false,
-    },
-  },
+@Component({})
+export class ExpressionInput extends mixins(Lang) {
+  @Prop({type: [String, Number], required: true}) readonly label!: string | number
+  @Prop({type: String, default: 'text-primary'}) readonly labelClass!: string
+  @Prop({type: String, default: ''}) readonly placeholder!: string
+  @Prop({type: String}) readonly currentExpression?: string
+  @Prop({type: [String, Number], default: null}) readonly expressionIdentifier!: string | number | null
+  @Prop({type: Number, default: 1}) readonly rows!: number
+  @Prop({type: Boolean, default: null}) readonly validState!: boolean|null
+  @Prop({type: String, default: ''}) readonly prependText!: string
 
-  data() {
-    return {
-      suggest: {},
-    }
-  },
+  suggest = {}
 
-  computed: {
-    ...mapGetters(['subscriberPropertyFields']),
-    ...mapGetters('flow', ['activeFlow']),
+  get isInvalid(): boolean {
+    return this.validState === false
+  }
 
-    isInvalid() {
-      return this.validState === false
-    },
-    expression: {
-      get() {
-        return this.currentExpression
-      },
-      set(value) {
-        if (this.expressionIdentifier !== null) {
-          value = {
-            identifier: this.expressionIdentifier,
-            value,
-          }
-        }
-        this.$emit('commitExpressionChange', value)
-      },
-    },
-    expressionContext() {
-      const contactFields = this.subscriberPropertyFields.map((prop) => prop.name).concat(defaultContactPropertyFields)
-      const blocks = this.activeFlow.blocks.flatMap((b) => [b.name, b.uuid])
-      return {
-        contact: contactFields,
-        flow: blocks,
-        date: defaultDateFields,
-      }
-    },
-    topLevelSuggestions() {
-      return {
-        trigger: '@',
-        values: [
-          {
-            value: '@()',
-            focusText: [-1, -1],
-          },
-          ...Array.from(Object.entries(this.expressionContext)).map((item) => `@${item[0]}`),
-        ],
-      }
-    },
-    contextSuggestions() {
-      return Array.from(Object.entries(this.expressionContext)).map((item) => {
-        const name = item[0]
-        return {
-          trigger: `${name}.`,
-          values: item[1].map((val) => `${name}.${val}`),
-        }
+  get expression(): string | undefined {
+    return this.currentExpression
+  }
+
+  set expression(value: string | undefined) {
+    if (value === undefined) return
+    if (this.expressionIdentifier !== null) {
+      this.$emit('commitExpressionChange', {
+        identifier: this.expressionIdentifier,
+        value,
       })
-    },
-    methodSuggestions() {
-      return Array.from(this.evaluatorMethods.entries()).map((item) => ({
-        trigger: item[0],
-        values: item[1].map((i) => ({
-          value: `${i}()`,
-          focusText: [-1, -1],
-        })),
-      }))
-    },
-    evaluatorMethods() {
-      const methods = new Map()
+    } else {
+      this.$emit('commitExpressionChange', value)
+    }
+  }
 
-      /* eslint-disable no-restricted-syntax */
-      for (const handler of MethodNodeEvaluatorFactory.defaultHandlers()) {
-        for (const method of handler.handles()) {
-          const trigger = method.substr(0, 2)
-          const upperTrigger = trigger.toUpperCase()
-          const upperMethod = method.toUpperCase()
-          if (methods.has(trigger)) {
-            methods.set(trigger, [...methods.get(trigger), method])
-            methods.set(upperTrigger, [...methods.get(upperTrigger), upperMethod])
-          } else {
-            methods.set(trigger, [method])
-            methods.set(upperTrigger, [upperMethod])
-          }
+  get expressionContext() {
+    const contactFields = this.subscriberPropertyFields.map((prop: any) => prop.name).concat(defaultContactPropertyFields)
+    const blocks = this.activeFlow.blocks.flatMap((b: IBlock) => [b.name, b.uuid])
+    return {
+      contact: contactFields,
+      flow: blocks,
+      date: defaultDateFields,
+    }
+  }
+
+  get topLevelSuggestions() {
+    return [{
+      trigger: '@',
+      values: [
+        {
+          value: '@()',
+          focusText: [-1, -1],
+        },
+        ...Array.from(Object.entries(this.expressionContext)).map((item) => `@${item[0]}`),
+      ],
+    }]
+  }
+
+  get contextSuggestions() {
+    return Array.from(Object.entries(this.expressionContext)).map((item) => {
+      const name = item[0]
+      return {
+        trigger: `${name}.`,
+        values: item[1].map((val: any) => `${name}.${val}`),
+      }
+    })
+  }
+
+  get methodSuggestions() {
+    return Array.from(this.evaluatorMethods.entries()).map((item) => ({
+      trigger: item[0],
+      values: item[1].map((i: any) => ({
+        value: `${i}()`,
+        focusText: [-1, -1],
+      })),
+    }))
+  }
+
+  get evaluatorMethods() {
+    const methods = new Map()
+
+    /* eslint-disable no-restricted-syntax */
+    for (const handler of MethodNodeEvaluatorFactory.defaultHandlers()) {
+      for (const method of handler.handles()) {
+        const trigger = method.substr(0, 2)
+        const upperTrigger = trigger.toUpperCase()
+        const upperMethod = method.toUpperCase()
+        if (methods.has(trigger)) {
+          methods.set(trigger, [...methods.get(trigger), method])
+          methods.set(upperTrigger, [...methods.get(upperTrigger), upperMethod])
+        } else {
+          methods.set(trigger, [method])
+          methods.set(upperTrigger, [upperMethod])
         }
       }
-      /* eslint-enable no-restricted-syntax */
-      return methods
-    },
-    suggestions() {
-      return [
-        ...this.contextSuggestions,
-        ...this.methodSuggestions,
-        this.topLevelSuggestions,
-      ]
-    },
-  },
+    }
+    /* eslint-enable no-restricted-syntax */
+    return methods
+  }
+
+  get suggestions() {
+    return [
+      ...this.contextSuggestions,
+      ...this.methodSuggestions,
+      ...this.topLevelSuggestions,
+    ]
+  }
 
   mounted() {
     const input = this.$refs.input
     this.suggest = new AutoSuggest({
       caseSensitive: false,
       suggestions: this.suggestions,
-      onChange: () => input.dispatchEvent(new Event('input')),
+      onChange: () => (input as HTMLInputElement)!.dispatchEvent(new Event('input')),
     }, input)
-  },
+  }
+
+  @flowNamespace.Getter activeFlow: any
+  @Getter subscriberPropertyFields: any
 }
+
 export default ExpressionInput
 </script>

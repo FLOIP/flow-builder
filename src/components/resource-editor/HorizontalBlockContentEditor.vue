@@ -1,32 +1,9 @@
-<style lang="scss" scoped>
-.horizontal-block-content-editor {
-  transition: all 200ms ease-in-out;
-  background: #fff;
-  border-top: 1px solid #eee;
-  padding: 0.5em;
-  padding-top: 1em;
-
-  > .list-group > .list-group-item {
-    transition: all 200ms ease-in-out;
-
-    &:not(.list-group-item-success) {
-      background: #f6f6f6;
-    }
-  }
-
-  & &-reviewed {
-    text-align: center;
-    font-size: 3em;
-    cursor: pointer;
-  }
-}
-</style>
-
 <template>
   <div class="horizontal-block-content-editor">
     <div class="list-group">
       <div
         v-for="langId in enabledLanguages"
+        :key="langId"
         class="list-group-item"
         :class="{
           'list-group-item-success': block.customData.reviewed[langId],
@@ -93,48 +70,73 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-
-import {lang} from '@/lib/filters/lang'
+<script lang="ts">
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import {Getter, State} from 'vuex-class'
 import {debounce} from 'lodash'
-import {mapGetters, mapState} from 'vuex'
 
-export default {
-  mixins: [lang],
-  props: [
-    'alternateAudioFileSelections',
-    'tree',
-    'block',
-    'enabledLanguages',
-    'blockTypes',
-    'languageNames',
-  ],
+import Lang from '@/lib/filters/lang'
 
-  computed: {
-    ...mapGetters(['isEditable']),
-    ...mapState({
-      audioFiles: ({trees: {ui: {audioFiles}}}) => audioFiles,
-    }),
-  },
+@Component({})
+export class HorizontalBlockContentEditor extends mixins(Lang) {
+  @Prop() alternateAudioFileSelections: any
+  @Prop() tree: any
+  @Prop() block: any
+  @Prop() enabledLanguages: any
+  @Prop() blockTypes: any
+  @Prop() languageNames: any
 
-  methods: {
-    debouncedSaveTree: debounce(function () {
+  @Getter isEditable!: boolean
+  @State(({trees: {ui: {audioFiles}}}) => audioFiles) audioFiles: any
+
+  debouncedSaveTree: () => void
+
+  constructor() {
+    super()
+
+    this.debouncedSaveTree = debounce(() => {
       this.$store.dispatch('attemptSaveTree')
-    }, 500),
+    }, 500)
+  }
 
-    selectAudioFileFor({langId, value}) {
-      const {jsKey} = this.block
-      this.$store.commit('updateAudioFileFor', {jsKey, langId, value})
-      this.$store.commit('updateReviewedStateFor', {jsKey, langId, value: false})
-      this.debouncedSaveTree()
-    },
+  selectAudioFileFor({langId, value}: {langId: string, value: boolean}): void {
+    const {jsKey} = this.block
+    this.$store.commit('updateAudioFileFor', {jsKey, langId, value})
+    this.$store.commit('updateReviewedStateFor', {jsKey, langId, value: false})
+    this.debouncedSaveTree()
+  }
 
-    toggleReviewedStateFor(langId) {
-      const previousVal = !!this.block.customData.reviewed?.langId ?? false
-      this.$store.commit('updateReviewedStateFor', {jsKey: this.block.jsKey, langId, value: !previousVal})
-      this.debouncedSaveTree()
-    },
-  },
+  toggleReviewedStateFor(langId: string): void {
+    const previousVal = Boolean(this.block.customData.reviewed?.langId)
+    this.$store.commit('updateReviewedStateFor', {jsKey: this.block.jsKey, langId, value: !previousVal})
+    this.debouncedSaveTree()
+  }
 }
+
+export default HorizontalBlockContentEditor
 </script>
+
+<style lang="scss" scoped>
+.horizontal-block-content-editor {
+  transition: all 200ms ease-in-out;
+  background: #fff;
+  border-top: 1px solid #eee;
+  padding: 0.5em;
+  padding-top: 1em;
+
+  > .list-group > .list-group-item {
+    transition: all 200ms ease-in-out;
+
+    &:not(.list-group-item-success) {
+      background: #f6f6f6;
+    }
+  }
+
+  & &-reviewed {
+    text-align: center;
+    font-size: 3em;
+    cursor: pointer;
+  }
+}
+</style>

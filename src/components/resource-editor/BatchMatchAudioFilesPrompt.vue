@@ -1,15 +1,3 @@
-<style lang="scss" scoped>
-.batch-match-audio-files-prompt {
-  > p, > ul {
-    margin-bottom: 10px;
-  }
-
-  table {
-    background: white;
-  }
-}
-</style>
-
 <template>
   <form class="batch-match-audio-files-prompt alert alert-info form-horizontal">
     <h4>{{ 'flow-builder.auto-link-audio-files' | trans }}</h4>
@@ -162,50 +150,58 @@
   </form>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import {lang} from '@/lib/filters/lang'
+<script lang="ts">
 import {includes} from 'lodash'
-import VueFocus from 'vue-focus'
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import Lang from '@/lib/filters/lang'
 
-export default {
-  mixins: [lang, VueFocus.mixin],
-  props: ['focus', 'data', 'isAudioLibraryEmpty'],
+@Component({})
+export class BatchMatchAudioFilesPrompt extends mixins(Lang) {
+  @Prop() readonly focus: any
+  @Prop() readonly data: any
+  @Prop() readonly isAudioLibraryEmpty: any
 
-  data() {
-    return {
-      pattern: '',
-      replaceExisting: true,
-      expanded: false,
-    }
-  },
+  pattern = ''
+  replaceExisting = true
+  expanded = false
 
-  computed: {
-    disabled() {
-      return this.data.isPending
-    },
+  get disabled() {
+    return this.data.isPending
+  }
 
-    isValid() {
-      return includes(this.pattern, '[label]')
-        && includes(this.pattern, '[language]')
-    },
-  },
+  get isValid() {
+    return includes(this.pattern, '[label]')
+      && includes(this.pattern, '[language]')
+  }
 
-  methods: {
-    cancel() {
-      this.$emit('cancel')
-    },
+  cancel() {
+    this.$emit('cancel')
+  }
 
-    confirm() {
-      this.$emit('confirm', {
-        value: this.pattern,
-        replaceExisting: this.replaceExisting,
-      })
-    },
+  confirm() {
+    this.$emit('confirm', {
+      value: this.pattern,
+      replaceExisting: this.replaceExisting,
+    })
+  }
 
-    toggleExpanded() {
-      this.expanded = !this.expanded
-    },
-  },
+  toggleExpanded() {
+    this.expanded = !this.expanded
+  }
 }
+
+export default BatchMatchAudioFilesPrompt
 </script>
+
+<style lang="scss" scoped>
+.batch-match-audio-files-prompt {
+  > p, > ul {
+    margin-bottom: 10px;
+  }
+
+  table {
+    background: white;
+  }
+}
+</style>

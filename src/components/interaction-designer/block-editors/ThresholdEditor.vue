@@ -1,47 +1,39 @@
 <template>
-  <validation-message
-    #input-control="{ isValid }"
-    :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`">
-    <div class="threshold-editor">
-      <float-editor
-        v-model.number="threshold"
-        :min="0"
-        :regex-float-filtering="'[0-9.,]'"
-        :label="'flow-builder.accuracy-threshold-in-meters' | trans"
-        :placeholder="'flow-builder.enter-value' | trans"
-        :valid-state="isValid" />
-    </div>
+  <validation-message :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`">
+    <template #input-control="{ isValid }">
+      <div class="threshold-editor">
+        <float-editor
+          v-model.number="threshold"
+          :min="0"
+          :regex-float-filtering="'[0-9.,]'"
+          :label="'flow-builder.accuracy-threshold-in-meters' | trans"
+          :placeholder="'flow-builder.enter-value' | trans"
+          :valid-state="isValid" />
+      </div>
+    </template>
   </validation-message>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
+<script lang="ts">
 import {get} from 'lodash'
-import {lang} from '@/lib/filters/lang'
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import Lang from '@/lib/filters/lang'
 
-export const ThresholdEditor = {
-  mixins: [lang],
-  props: {
-    block: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      defaultValue: 5.0,
-    }
-  },
-  computed: {
-    threshold: {
-      get() {
-        return get(this.block, 'config.accuracy_threshold_meters', this.defaultValue)
-      },
-      set(value) {
-        this.$emit('commitAccuracyThresholdMetersChange', value)
-      },
-    },
-  },
+@Component({})
+export class ThresholdEditor extends mixins(Lang) {
+  @Prop({type: Object, required: true}) readonly block!: object
+
+  readonly defaultValue = 5.0
+
+  get threshold(): number {
+    return get(this.block, 'config.accuracy_threshold_meters', this.defaultValue)
+  }
+
+  set threshold(value: number) {
+    this.$emit('commitAccuracyThresholdMetersChange', value)
+  }
 }
+
 export default ThresholdEditor
 </script>

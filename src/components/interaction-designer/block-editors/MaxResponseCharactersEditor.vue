@@ -9,59 +9,49 @@
     </span>
     <validation-message
       v-if="shouldShowMaxResponseCharField"
-      #input-control="{ isValid }"
       :message-key="`block/${block.uuid}/config/text/max_response_characters`">
-      <div
-        v-if="hasText"
-        class="block-max-response-characters">
-        <numeric-editor
-          v-model.number="maxResponse"
-          :regex-numeric-filtering="'[0-9]'"
-          :label="'flow-builder.max-response-characters' | trans"
-          :placeholder="'flow-builder.enter-value' | trans"
-          :valid-state="isValid" />
-        <small class="text-muted">
-          {{ 'flow-builder.unlimited-if-not-defined-or-set-as-zero' | trans }}
-        </small>
-      </div>
+      <template #input-control="{ isValid }">
+        <div
+          v-if="hasText"
+          class="block-max-response-characters">
+          <numeric-editor
+            v-model.number="maxResponse"
+            :regex-numeric-filtering="'[0-9]'"
+            :label="'flow-builder.max-response-characters' | trans"
+            :placeholder="'flow-builder.enter-value' | trans"
+            :valid-state="isValid" />
+          <small class="text-muted">
+            {{ 'flow-builder.unlimited-if-not-defined-or-set-as-zero' | trans }}
+          </small>
+        </div>
+      </template>
     </validation-message>
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
+<script lang="ts">
 import {get} from 'lodash'
-import {lang} from '@/lib/filters/lang'
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import {IBlock} from '@floip/flow-runner'
+import Lang from '@/lib/filters/lang'
 
-export const MaxResponseCharactersEditor = {
-  mixins: [lang],
-  props: {
-    hasText: {
-      default: true,
-      type: Boolean,
-    },
-    block: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      defaultMaxLength: 0,
-      shouldShowMaxResponseCharField: false,
-    }
-  },
+@Component({})
+export class MaxResponseCharactersEditor extends mixins(Lang) {
+  @Prop({type: Boolean, default: true}) readonly hasText!: boolean
+  @Prop({type: Object, required: true}) readonly block!: IBlock
 
-  computed: {
-    maxResponse: {
-      get() {
-        return get(this.block, 'config.text.max_response_characters', '')
-      },
-      set(value) {
-        this.$emit('commitMaxResponseCharactersChange', value)
-      },
-    },
-  },
+  defaultMaxLength = 0
+  shouldShowMaxResponseCharField = false
+
+  get maxResponse(): number {
+    return get(this.block, 'config.text.max_response_characters', '')
+  }
+
+  set maxResponse(value: string | number) {
+    this.$emit('commitMaxResponseCharactersChange', Number(value))
+  }
 }
+
 export default MaxResponseCharactersEditor
 </script>

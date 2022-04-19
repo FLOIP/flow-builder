@@ -1,5 +1,7 @@
 <template>
-  <div @click="selectBlock" class="block">
+  <div
+    class="block"
+    @click="selectBlock">
     <block-editor
       v-if="shouldShowBlockEditor"
       class="block-editor"
@@ -24,7 +26,6 @@
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
       @destroyed="handleDraggableDestroyedForBlock">
-
       <block-toolbar
         :block="block"
         :is-editor-visible="shouldShowBlockEditor"
@@ -142,7 +143,7 @@
                       class="text-danger"
                       title="Click to remove this connection"
                       :icon="['far', 'times-circle']"
-                      @click="removeConnectionFrom(exit)" />
+                      @click="doRemoveConnectionFrom(exit)" />
                   </div>
 
                   <connection
@@ -164,396 +165,401 @@
   </div>
 </template>
 
-<script lang="js">
+<script lang="ts">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import Vue from 'vue'
 import {filter, forEach, get, includes, isNumber} from 'lodash'
-import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
+import {mixins} from 'vue-class-component'
+import {Component, Prop, Watch} from 'vue-property-decorator'
+import {namespace, State} from 'vuex-class'
+import {IBlock, IContext, ResourceResolver, SupportedMode} from '@floip/flow-runner'
 import {generateConnectionLayoutKeyFor, OperationKind} from '@/store/builder'
-import {lang} from '@/lib/filters/lang'
+import Lang from '@/lib/filters/lang'
 import {NoValidResponseHandler} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
 
-export const Block = {
-  mixins: [lang],
-  props: ['block', 'x', 'y'],
+const flowNamespace = namespace('flow')
+const builderNamespace = namespace('builder')
 
-  data() {
-    return {
-      livePosition: null,
-      labelContainerMaxWidth: LABEL_CONTAINER_MAX_WIDTH,
-      blockWidth: 0,
-      blockHeight: 0,
-      exitHovers: {},
-      lineHovers: {},
-      NoValidResponseHandler,
-    }
-  },
+@Component({})
+export class Block extends mixins(Lang) {
+  @Prop() readonly block: any
+  @Prop() readonly x: any
+  @Prop() readonly y: any
 
-  watch: {
-    blockExitsLength(newValue, oldValue) {
-      this.$nextTick(function () {
-        this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
-      })
-    },
-  },
+  livePosition: { x: number, y: number } | null = null
+  labelContainerMaxWidth = LABEL_CONTAINER_MAX_WIDTH
+  blockWidth = 0
+  blockHeight = 0
+  exitHovers = {}
+  lineHovers = {}
 
-  updated() {
-    this.blockWidth = this.$refs.draggable.$el.clientWidth
-  },
+  readonly NoValidResponseHandler = NoValidResponseHandler
 
   created() {
     this.initDraggableForExitsByUuid()
-  },
+  }
+
+  updated() {
+    if (this.$refs.draggable) {
+      this.blockWidth = (this.$refs.draggable as Vue).$el.clientWidth
+    }
+  }
 
   mounted() {
     this.$nextTick(function () {
       this.updateLabelContainerMaxWidth()
     })
-  },
+  }
 
-  computed: {
-    ...mapState('flow', [
-      'selectedBlocks',
-    ]),
-    ...mapState('builder', [
-      'activeBlockId',
-      'operations',
-      'activeConnectionsContext',
-      'draggableForExitsByUuid',
-      'isBlockEditorOpen',
-    ]),
-    ...mapState({
-      blockClasses: ({trees: {ui}}) => ui.blockClasses,
-    }),
+  @Watch('blockExitsLength')
+  onBlockExitsLengthChanged(newValue, oldValue) {
+    this.$nextTick(function () {
+      this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
+    })
+  }
 
-    ...mapGetters('builder', ['blocksById', 'isEditable', 'interactionDesignerBoundingClientRect']),
-    ...mapGetters('flow', ['activeFlow']),
+  @flowNamespace.State selectedBlocks: any
+  @builderNamespace.State activeBlockId: any
+  @builderNamespace.State operations: any
+  @builderNamespace.State activeConnectionsContext: any
+  @builderNamespace.State draggableForExitsByUuid: any
+  @builderNamespace.State isBlockEditorOpen: any
+  @State(({trees: {ui}}) => ui.blockClasses) blockClasses: any
 
-    blockExitsLength() {
-      return this.block.exits.length
-    },
+  @builderNamespace.Getter blocksById: any
+  @builderNamespace.Getter isEditable: any
+  @builderNamespace.Getter interactionDesignerBoundingClientRect: any
 
-    numberOfExitsShown() {
-      const {exits} = this.block
-      const isDefaultShown = get(this.block.vendor_metadata, 'io_viamo.noValidResponse') === NoValidResponseHandler.CONTINUE_THRU_EXIT
-      return exits.length - (isDefaultShown ? 0 : 1)
-    },
+  @flowNamespace.Getter activeFlow: any
 
-    hasExitsShown() {
-      return this.numberOfExitsShown > 0
-    },
+  get blockExitsLength() {
+    return this.block.exits.length
+  }
 
-    hasMultipleExitsShown() {
-      return this.numberOfExitsShown > 1
-    },
+  get numberOfExitsShown() {
+    const {exits} = this.block
+    const isDefaultShown = get(this.block.vendor_metadata, 'io_viamo.noValidResponse') === NoValidResponseHandler.CONTINUE_THRU_EXIT
+    return exits.length - (isDefaultShown ? 0 : 1)
+  }
 
-    hasLayout() {
-      return isNumber(this.x) && isNumber(this.y)
-    },
+  get hasExitsShown() {
+    return this.numberOfExitsShown > 0
+  }
 
-    isAssociatedWithActiveConnection({block, activeConnectionsContext}) {
-      return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid || context.targetId === block.uuid).length
-    },
+  get hasMultipleExitsShown() {
+    return this.numberOfExitsShown > 1
+  }
 
-    isBlockSelected() {
-      return includes(this.selectedBlocks, this.block.uuid)
-    },
+  get hasLayout() {
+    return isNumber(this.x) && isNumber(this.y)
+  }
 
-    // todo: does this component know too much, what out of the above mapped state can be mapped?
-    // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
+  get isAssociatedWithActiveConnection() {
+    const {block, activeConnectionsContext} = this
+    return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid || context.targetId === block.uuid).length
+  }
 
-    isConnectionSourceRelocateActive: ({operations}) => !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data,
-    isConnectionCreateActive: ({operations}) => !!operations[OperationKind.CONNECTION_CREATE].data,
-    isBlockActivated: ({
-                         activeBlockId, isAssociatedWithActiveConnection, block, operations,
-                       }) => {
-      if ((activeBlockId && activeBlockId === block.uuid) || isAssociatedWithActiveConnection) {
-        return true
-      }
+  get isBlockSelected() {
+    return includes(this.selectedBlocks, this.block.uuid)
+  }
 
-      const {data} = operations[OperationKind.CONNECTION_CREATE]
-      return data && data.targetId === block.uuid
-    },
+  // todo: does this component know too much, what out of the above mapped state can be mapped?
+  // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
 
-    translatedBlockEditorPosition() {
-      const xOffset = 5
-      const yOffset = 32 // Block toolbar height
-      const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
-      const top = this.y - yOffset
-      return `translate(${left}px, ${top}px)`
-    },
+  get isConnectionSourceRelocateActive() {
+    const {operations} = this
+    return !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data
+  }
 
-    shouldShowBlockEditor() {
-      return this.isBlockEditorOpen && this.activeBlockId === this.block.uuid
-    },
-  },
+  get isConnectionCreateActive() {
+    const {operations} = this
+    return !!operations[OperationKind.CONNECTION_CREATE].data
+  }
 
-  methods: {
-    // todo: how do we decide whether or not this should be an action or a vanilla domain function?
-    ...{
-      generateConnectionLayoutKeyFor,
-    },
+  get isBlockActivated() {
+    const {activeBlockId, isAssociatedWithActiveConnection, block, operations,} = this
+    if ((activeBlockId && activeBlockId === block.uuid) || isAssociatedWithActiveConnection) {
+      return true
+    }
 
-    ...mapMutations('builder', ['activateBlock', 'setBlockPositionTo', 'initDraggableForExitsByUuid', 'setIsBlockEditorOpen']),
-    ...mapActions('builder', {
-      _removeConnectionFrom: 'removeConnectionFrom',
-    }),
+    const {data} = operations[OperationKind.CONNECTION_CREATE]
+    return data && data.targetId === block.uuid
+  }
 
-    ...mapActions('builder', [
-      // ConnectionSourceRelocate
-      'initializeConnectionSourceRelocateWith',
-      'setConnectionSourceRelocateValue',
-      'setConnectionSourceRelocateValueToNullFrom',
-      'applyConnectionSourceRelocate',
+  get translatedBlockEditorPosition() {
+    const xOffset = 5
+    const yOffset = 32 // Block toolbar height
+    const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
+    const top = this.y - yOffset
+    return `translate(${left}px, ${top}px)`
+  }
 
-      // ConnectionCreate
-      'initializeConnectionCreateWith',
-      'setConnectionCreateTargetBlock',
-      'setConnectionCreateTargetBlockToNullFrom',
-      'applyConnectionCreate',
-    ]),
+  get shouldShowBlockEditor() {
+    return this.isBlockEditorOpen && this.activeBlockId === this.block.uuid
+  }
 
-    exitMouseEnter(exit) {
-      this.$set(this.exitHovers, exit.uuid, true)
-    },
+  // todo: how do we decide whether or not this should be an action or a vanilla domain function?
+  generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
+    return generateConnectionLayoutKeyFor(source, target)
+  }
 
-    exitMouseLeave(exit) {
-      this.$set(this.exitHovers, exit.uuid, false)
-    },
+  @builderNamespace.Mutation activateBlock: any
+  @builderNamespace.Mutation setBlockPositionTo: any
+  @builderNamespace.Mutation initDraggableForExitsByUuid: any
+  @builderNamespace.Mutation setIsBlockEditorOpen: any
 
-    setLineHovered(exit, value) {
-      this.$nextTick(() => {
-        this.$set(this.lineHovers, exit.uuid, value)
-      })
-    },
+  @builderNamespace.Action removeConnectionFrom: any
 
-    updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
-      // one exit
-      const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`)
+  // ConnectionSourceRelocate
+  @builderNamespace.Action initializeConnectionSourceRelocateWith: any
+  @builderNamespace.Action setConnectionSourceRelocateValue: any
+  @builderNamespace.Action setConnectionSourceRelocateValueToNullFrom: any
+  @builderNamespace.Action applyConnectionSourceRelocate: any
 
-      if (!blockExitElement) {
-        console.debug('blockExitWidth', 'DOM not ready yet on', `#block\\/${this.block.uuid} .block-exit`)
+  // ConnectionCreate
+  @builderNamespace.Action initializeConnectionCreateWith: any
+  @builderNamespace.Action setConnectionCreateTargetBlock: any
+  @builderNamespace.Action setConnectionCreateTargetBlockToNullFrom: any
+  @builderNamespace.Action applyConnectionCreate: any
+
+  exitMouseEnter(exit: any) {
+    this.$set(this.exitHovers, exit.uuid, true)
+  }
+
+  exitMouseLeave(exit: any) {
+    this.$set(this.exitHovers, exit.uuid, false)
+  }
+
+  setLineHovered(exit: any, value: any) {
+    this.$nextTick(() => {
+      this.$set(this.lineHovers, exit.uuid, value)
+    })
+  }
+
+  updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
+    // one exit
+    const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`) as HTMLElement
+
+    if (!blockExitElement) {
+      console.debug('blockExitWidth', 'DOM not ready yet on', `#block\\/${this.block.uuid} .block-exit`)
+      return
+    }
+
+    // This allows us to shrink .block-exit into the min-width before extending the block label container
+    // Removing exit
+    if (isRemoving) {
+      // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible
+      if (LABEL_CONTAINER_MAX_WIDTH < (blockExitsLength - 1) * blockExitElement.offsetWidth) {
+        // but set with `n x {outer width}`
+        this.labelContainerMaxWidth = (blockExitsLength - 1) * blockExitElement.offsetWidth
         return
       }
-
-      // This allows us to shrink .block-exit into the min-width before extending the block label container
-      // Removing exit
-      if (isRemoving) {
-        // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible
-        if (LABEL_CONTAINER_MAX_WIDTH < (blockExitsLength - 1) * blockExitElement.offsetWidth) {
-          // but set with `n x {outer width}`
-          this.labelContainerMaxWidth = (blockExitsLength - 1) * blockExitElement.offsetWidth
-          return
-        }
-        // Adding new exit
-      } else {
-        // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible (especially when removing exits)
-        if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) {
-          // but set with `n x {outer width}`
-          this.labelContainerMaxWidth = blockExitsLength * blockExitElement.offsetWidth
-          return
-        }
+      // Adding new exit
+    } else {
+      // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible (especially when removing exits)
+      if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) {
+        // but set with `n x {outer width}`
+        this.labelContainerMaxWidth = blockExitsLength * blockExitElement.offsetWidth
+        return
       }
+    }
 
-      this.labelContainerMaxWidth = LABEL_CONTAINER_MAX_WIDTH
-    },
+    this.labelContainerMaxWidth = LABEL_CONTAINER_MAX_WIDTH
+  }
 
-    resolveTextResource(uuid) {
-      const {resources} = this.activeFlow
-      const context = {
-        resources,
-        language_id: '22',
-        mode: SupportedMode.SMS,
-      }
-      // as IContext) // this isn't ts
-      const resource = new ResourceResolver(context)
-        .resolve(uuid)
+  resolveTextResource(uuid: string) {
+    const {resources} = this.activeFlow
+    const context: IContext = {
+      resources,
+      language_id: '22',
+      mode: SupportedMode.SMS,
+    }
+    // as IContext) // this isn't ts
+    const resource = new ResourceResolver(context)
+      .resolve(uuid)
 
-      return resource.hasText()
-        ? resource.getText()
-        : uuid
-    },
+    return resource.hasText()
+      ? resource.getText()
+      : uuid
+  }
 
-    // todo: push NodeExit into it's own vue component
-    isExitActivatedForRelocate(exit) {
-      const {data} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
-      return data
-        && data.to
-        && data.to.exitId === exit.uuid
-    },
+  // todo: push NodeExit into it's own vue component
+  isExitActivatedForRelocate(exit: any) {
+    const {data} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
+    return data
+      && data.to
+      && data.to.exitId === exit.uuid
+  }
 
-    isExitActivatedForCreate(exit) {
-      const {data} = this.operations[OperationKind.CONNECTION_CREATE]
-      return data
-        && data.source
-        && data.source.exitId === exit.uuid
-    },
+  isExitActivatedForCreate(exit: any) {
+    const {data} = this.operations[OperationKind.CONNECTION_CREATE]
+    return data
+      && data.source
+      && data.source.exitId === exit.uuid
+  }
 
-    activateExitAsDropZone(e, exit) {
-      const {block} = this
-      this.setConnectionSourceRelocateValue({block, exit})
-    },
+  activateExitAsDropZone(e: any, exit: any) {
+    const {block} = this
+    this.setConnectionSourceRelocateValue({block, exit})
+  }
 
-    deactivateExitAsDropZone(e, exit) {
-      const {block} = this
-      this.setConnectionSourceRelocateValueToNullFrom({block, exit})
-    },
+  deactivateExitAsDropZone(e: any, exit: any) {
+    const {block} = this
+    this.setConnectionSourceRelocateValueToNullFrom({block, exit})
+  }
 
-    // eslint-disable-next-line no-unused-vars
-    activateBlockAsDropZone(e) {
-      const {block} = this
-      this.setConnectionCreateTargetBlock({block})
-    },
+  // eslint-disable-next-line no-unused-vars
+  activateBlockAsDropZone() {
+    const {block} = this
+    this.setConnectionCreateTargetBlock({block})
+  }
 
-    // eslint-disable-next-line no-unused-vars
-    deactivateBlockAsDropZone(e) {
-      const {block} = this
-      this.setConnectionCreateTargetBlockToNullFrom({block})
-    },
+  // eslint-disable-next-line no-unused-vars
+  deactivateBlockAsDropZone() {
+    const {block} = this
+    this.setConnectionCreateTargetBlockToNullFrom({block})
+  }
 
-    onMoved({position: {left: x, top: y}}) {
-      // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
+  onMoved({position: {left: x, top: y}}: {position: {left: number, top: number}}) {
+    // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
 
-      const {block} = this
-      this.$nextTick(() => {
-        this.setBlockPositionTo({position: {x, y}, block})
+    const {block} = this
+    this.$nextTick(() => {
+      this.setBlockPositionTo({position: {x, y}, block})
 
-        forEach(this.draggableForExitsByUuid, (draggable, key) => {
-          try {
-            draggable.position()
-          } catch (e) {
-            console.warn('Block', 'onMoved', 'positioning draggable on', key, 'can\'t access property "initElm", props is undefined')
-          }
-        })
-        console.debug('Block', 'onMoved', 'positioned all of', this.draggableForExitsByUuid)
+      forEach(this.draggableForExitsByUuid, (draggable, key) => {
+        try {
+          draggable.position()
+        } catch (e) {
+          console.warn('Block', 'onMoved', 'positioning draggable on', key, 'can\'t access property "initElm", props is undefined')
+        }
       })
-    },
+      console.debug('Block', 'onMoved', 'positioned all of', this.draggableForExitsByUuid)
+    })
+  }
 
-    removeConnectionFrom(exit) {
-      const {block} = this
-      this._removeConnectionFrom({block, exit})
-      // force render, useful if the exit label is very short
-      this.labelContainerMaxWidth += 0
-    },
+  doRemoveConnectionFrom(exit: any) {
+    const {block} = this
+    this.removeConnectionFrom({block, exit})
+    // force render, useful if the exit label is very short
+    this.labelContainerMaxWidth += 0
+  }
 
-    handleDraggableInitializedFor({uuid}, {draggable}) {
-      this.draggableForExitsByUuid[uuid] = draggable
+  handleDraggableInitializedFor({uuid}: {uuid: string}, {draggable}: {draggable: any}) {
+    this.draggableForExitsByUuid[uuid] = draggable
 
-      const {left, top} = draggable
-      const {uuid: blockId} = this.block
+    const {left, top} = draggable
+    const {uuid: blockId} = this.block
 
-      console.debug('Block', 'handleDraggableInitializedFor', {blockId, exitId: uuid, coords: {left, top}})
-    },
+    console.debug('Block', 'handleDraggableInitializedFor', {blockId, exitId: uuid, coords: {left, top}})
+  }
 
-    handleDraggableDestroyedFor({uuid}) {
-      delete this.draggableForExitsByUuid[uuid]
-    },
+  handleDraggableDestroyedFor({uuid}: {uuid: string}) {
+    delete this.draggableForExitsByUuid[uuid]
+  }
 
-    onCreateExitDragStarted({draggable}, exit) {
-      const {block} = this
-      const {left: x, top: y} = draggable
+  onCreateExitDragStarted({draggable}: {draggable: any}, exit: any) {
+    const {block} = this
+    const {left: x, top: y} = draggable
 
-      this.initializeConnectionCreateWith({
-        block,
-        exit,
-        position: {x, y},
-      })
+    this.initializeConnectionCreateWith({
+      block,
+      exit,
+      position: {x, y},
+    })
 
-      // since mouseenter + mouseleave will not occur when draggable is below cursor
-      // we simply snap the draggable out from under the cursor during this operation
-      draggable.left += 30
-      draggable.top += 25
-    },
+    // since mouseenter + mouseleave will not occur when draggable is below cursor
+    // we simply snap the draggable out from under the cursor during this operation
+    draggable.left += 30
+    draggable.top += 25
+  }
 
-    onCreateExitDragged({position: {left: x, top: y}}) {
-      this.livePosition = {x, y}
-    },
+  onCreateExitDragged({position: {left: x, top: y}}: {position: {left: number, top: number}}) {
+    this.livePosition = {x, y}
+  }
 
-    onCreateExitDragEnded({draggable}) {
-      const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE].data.position
+  onCreateExitDragEnded({draggable}: {draggable: any}) {
+    const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE].data.position
 
-      console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
-      console.debug('Block', 'onCreateExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
+    console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
+    console.debug('Block', 'onCreateExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
 
-      Object.assign(draggable, {left, top})
+    Object.assign(draggable, {left, top})
 
-      this.applyConnectionCreate()
+    this.applyConnectionCreate()
 
-      this.livePosition = null
-    },
+    this.livePosition = null
+  }
 
-    onMoveExitDragStarted({draggable}, exit) {
-      const {block} = this
-      const {left: x, top: y} = draggable
+  onMoveExitDragStarted({draggable}: {draggable: any}, exit: any) {
+    const {block} = this
+    const {left: x, top: y} = draggable
 
-      this.initializeConnectionSourceRelocateWith({
-        block,
-        exit,
-        position: {x, y},
-      })
+    this.initializeConnectionSourceRelocateWith({
+      block,
+      exit,
+      position: {x, y},
+    })
 
-      // since mouseenter + mouseleave will not occur when draggable is below cursor
-      // we simply snap the draggable out from under the cursor during this operation
-      draggable.left += 30
-      draggable.top += 25
-    },
+    // since mouseenter + mouseleave will not occur when draggable is below cursor
+    // we simply snap the draggable out from under the cursor during this operation
+    draggable.left += 30
+    draggable.top += 25
+  }
 
-    onMoveExitDragged({position: {left: x, top: y}}) {
-      this.livePosition = {x, y}
-    },
+  onMoveExitDragged({position: {left: x, top: y}}: {position: {left: number, top: number}}) {
+    this.livePosition = {x, y}
+  }
 
-    // todo: store the leaderlines in vuex and manip there --- aka the leaderline itself would simply _produce_ the
-    //       domain object which we thenceforth manip in vuex ?
+  // todo: store the leaderlines in vuex and manip there --- aka the leaderline itself would simply _produce_ the
+  //       domain object which we thenceforth manip in vuex ?
 
-    onMoveExitDragEnded({draggable}) {
-      const {x: left, y: top} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data.position
+  onMoveExitDragEnded({draggable}: {draggable: any}) {
+    const {x: left, y: top} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data.position
 
-      console.debug('Block', 'onMoveExitDragEnded', 'operation.data.position', {left, top})
-      console.debug('Block', 'onMoveExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
+    console.debug('Block', 'onMoveExitDragEnded', 'operation.data.position', {left, top})
+    console.debug('Block', 'onMoveExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
 
-      Object.assign(draggable, {left, top})
+    Object.assign(draggable, {left, top})
 
-      this.applyConnectionSourceRelocate()
-      this.livePosition = null
-    },
+    this.applyConnectionSourceRelocate()
+    this.livePosition = null
+  }
 
-    selectBlock() {
-      const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
-      this.$router.replace(
-        {
-          name: routerName,
-          params: {blockId: this.block.uuid},
-        },
-        undefined,
-        (err) => {
-          if (err == null) {
-            console.warn('Unknown navigation error has occurred when selecting a block')
-          } else if (err.name !== 'NavigationDuplicated') {
-            console.warn(err)
-          }
-        },
-      )
-    },
+  selectBlock() {
+    const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
+    this.$router.replace(
+      {
+        name: routerName,
+        params: {blockId: this.block.uuid},
+      },
+      undefined,
+      (err) => {
+        if (err == null) {
+          console.warn('Unknown navigation error has occurred when selecting a block')
+        } else if (err.name !== 'NavigationDuplicated') {
+          console.warn(err)
+        }
+      },
+    )
+  }
 
-    handleDraggableEndedForBlock() {
-      console.debug('Block', 'handleDraggableEndedForBlock')
-      const self = this
-      forEach(this.block.exits, (exit) => {
-        delete self.draggableForExitsByUuid[exit.uuid]
-      })
-    },
+  handleDraggableEndedForBlock() {
+    console.debug('Block', 'handleDraggableEndedForBlock')
+    const self = this
+    forEach(this.block.exits, (exit) => {
+      delete self.draggableForExitsByUuid[exit.uuid]
+    })
+  }
 
-    handleDraggableDestroyedForBlock() {
-      console.debug('Block', 'handleDraggableDestroyedForBlock')
-      const self = this
-      forEach(this.block.exits, (exit) => {
-        delete self.draggableForExitsByUuid[exit.uuid]
-      })
-    },
-  },
+  handleDraggableDestroyedForBlock() {
+    console.debug('Block', 'handleDraggableDestroyedForBlock')
+    const self = this
+    forEach(this.block.exits, (exit) => {
+      delete self.draggableForExitsByUuid[exit.uuid]
+    })
+  }
 }
 
 export default Block

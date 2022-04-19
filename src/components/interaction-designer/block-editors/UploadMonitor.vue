@@ -27,51 +27,58 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions,@typescript-eslint/unbound-method */
-import {lang} from '@/lib/filters/lang'
-import {forEach, get} from 'lodash'
-
-import {mapState} from 'vuex'
+w<script lang="ts">
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import {namespace} from 'vuex-class'
 import {BProgress} from 'bootstrap-vue'
+import Lang from '@/lib/filters/lang'
 import multimediaUpload, {Statuses as UploadStatuses} from '@/store/trees/multimediaUpload'
 
-export const UploadMonitor = {
-  components: {BProgress},
-  mixins: [lang],
-  props: ['uploadKey'],
+const multimediaUploadNamespace = namespace('multimediaUpload')
 
-  computed: {
-    ...mapState('multimediaUpload', ['uploadsById', 'uploadIdsByKey']),
-
-    upload() {
-      return this.uploadsById[this.uploadIdsByKey[this.uploadKey]]
-    },
-
-    hasProgress() {
-      return this.upload
-        && this.upload.status !== UploadStatuses.SUCCESS
-        && this.upload.status !== UploadStatuses.FAILURE
-    },
-
-    isFailure() {
-      return this.upload && this.upload.status === UploadStatuses.FAILURE
-    },
-
-    progress() {
-      return get(this.upload, 'progress', 0) * 100
-    },
-  },
-
-  created() {
-    const {$store} = this
-    const modules = {
-      multimediaUpload,
-    }
-
-    forEach(modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
-  },
+type Upload = {
+  progress: number,
+  status: Map<string, number>,
 }
+
+@Component({
+  components: {BProgress},
+})
+export class UploadMonitor extends mixins(Lang) {
+  @Prop({type: String, required: true}) readonly uploadKey!: string
+
+  get upload(): Upload | null {
+    return this.uploadsById[this.uploadIdsByKey[this.uploadKey]] ?? null
+  }
+
+  hasProgress(): boolean {
+    return this.upload !== null
+      && this.upload.status !== UploadStatuses.SUCCESS
+      && this.upload.status !== UploadStatuses.FAILURE
+  }
+
+  isFailure(): boolean {
+    return this.upload !== null && this.upload.status === UploadStatuses.FAILURE
+  }
+
+  progress(): number {
+    return (this.upload?.progress ?? 0) * 100
+  }
+
+  created(): void {
+    const $store = this.$store
+    const moduleName = 'multimediaUpload'
+
+    if (!$store.hasModule(moduleName)) {
+      $store.registerModule(moduleName, multimediaUpload)
+    }
+  }
+
+  @multimediaUploadNamespace.State uploadsById!: any
+  @multimediaUploadNamespace.State uploadIdsByKey!: any
+}
+
 export default UploadMonitor
 </script>
 

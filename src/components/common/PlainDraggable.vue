@@ -3,32 +3,28 @@
     <slot />
   </div>
 </template>
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
+
+<script lang="ts">
+import {mixins} from 'vue-class-component'
+import {Component, Prop, Watch} from 'vue-property-decorator'
 import PlainDraggableLib from 'plain-draggable'
+import Lang from '@/lib/filters/lang'
 
-export const PlainDraggable = {
+@Component({})
+export class PlainDraggable extends mixins(Lang) {
+  @Prop(Number) startX?: number
+  @Prop(Number) startY?: number
+  @Prop(String) handleDomId?: string
+  @Prop(Boolean) isEditable?: boolean
 
-  props: {
-    startX: Number,
-    startY: Number,
-    handleDomId: String,
-    isEditable: Boolean,
-  },
-  data() {
-    return {
-      // no need to set up observers over these
-      // draggable: null
-    }
-  },
+  draggable: any = null
 
-  watch: {
-    isEditable(value) {
-      this.draggable.disabled = !value
-    },
-  },
+  @Watch('isEditable')
+  onToggleEditable(value: boolean) {
+    this.draggable.disabled = !value
+  }
 
-  mounted() {
+  mounted(): void {
     // todo: modify this to instantiate blank draggable onCreate, then set options when props change
     console.debug('PlainDraggable.vue', 'mounted')
 
@@ -44,10 +40,10 @@ export const PlainDraggable = {
       leftTop: false,
       // synced with src/store/builder/index.ts:isEditable=true
       disabled: false,
-      onDrag: this.handleDragged,
-      onDragStart: this.handleDragStarted,
-      onDragEnd: this.handleDragEnded,
-      // onMove: this.handleMoved,
+      onDrag: this.handleDragged.bind(this),
+      onDragStart: this.handleDragStarted.bind(this),
+      onDragEnd: this.handleDragEnded.bind(this),
+      // onMove: this.handleMoved.bind(this),
 
       left: this.startX,
       top: this.startY,
@@ -63,44 +59,41 @@ export const PlainDraggable = {
 
     this.handleInitialized()
     // })
-  },
+  }
 
-  destroyed() {
+  destroyed(): void {
     const {draggable} = this
     this.$emit('destroyed', {draggable})
-    this.draggable.remove()
-  },
+    this.draggable?.remove()
+  }
 
-  // todo: also set `handle` from props onPropsChanged()
+  handleInitialized(): void {
+    const {draggable} = this
+    // `draggable` reference to reposition if changed externally like:
+    // https://www.npmjs.com/package/plain-draggable#position
+    this.$emit('initialized', {draggable})
+  }
 
-  methods: {
-    handleInitialized() {
-      const {draggable} = this
-      // `draggable` reference to reposition if changed externally like:
-      // https://www.npmjs.com/package/plain-draggable#position
-      this.$emit('initialized', {draggable})
-    },
+  handleDragged(position: any): void {
+    const {draggable} = this
+    this.$emit('dragged', {draggable, position})
+  }
 
-    handleDragged(position) {
-      const {draggable} = this
-      this.$emit('dragged', {draggable, position})
-    },
+  handleDragStarted(position: any): void {
+    const {draggable} = this
+    this.$emit('dragStarted', {draggable, position})
+  }
 
-    handleDragStarted(position) {
-      const {draggable} = this
-      this.$emit('dragStarted', {draggable, position})
-    },
+  handleDragEnded(position: any): void {
+    const {draggable} = this
+    this.$emit('dragEnded', {draggable, position})
+  }
 
-    handleDragEnded(position) {
-      const {draggable} = this
-      this.$emit('dragEnded', {draggable, position})
-    },
-
-    handleMoved(position) {
-      const {draggable} = this
-      this.$emit('moved', {draggable, position})
-    },
-  },
+  // handleMoved(position): void {
+  //   const {draggable} = this
+  //   this.$emit('moved', {draggable, position})
+  // }
 }
+
 export default PlainDraggable
 </script>

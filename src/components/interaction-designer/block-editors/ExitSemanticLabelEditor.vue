@@ -8,37 +8,25 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import {mapMutations} from 'vuex'
-import {lang} from '@/lib/filters/lang'
+<script lang="ts">
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import Lang from '@/lib/filters/lang'
+import {IBlockExit} from '@floip/flow-runner'
 
-export const ExitSemanticLabelEditor = {
-  mixins: [lang],
-  props: {
-    isEditable: {
-      default: true,
-      type: Boolean,
-    },
-    exit: {
-      type: Object,
-      required: true,
-    },
-  },
-  computed: {
-    semanticLabel: {
-      get() {
-        return this.exit.semantic_label
-      },
-      set(value) {
-        this.exit.semantic_label = value
-        this.$emit('commitSemanticLabel', value)
-      },
-    },
-  },
-  methods: {
-    ...mapMutations('flow', ['block_setExitSemanticLabel']),
-  },
+@Component({})
+export class ExitSemanticLabelEditor extends mixins(Lang) {
+  @Prop({type: Boolean, default: true}) readonly isEditable!: boolean
+  @Prop({type: Object, required: true}) readonly exit!: IBlockExit
+
+  get semanticLabel(): string {
+    return this.exit.semantic_label ?? ''
+  }
+
+  set semanticLabel(value: string) {
+    this.exit.semantic_label = value
+    this.$emit('commitSemanticLabel', value)
+  }
 }
 
 export default ExitSemanticLabelEditor

@@ -54,32 +54,32 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import {lang} from '@/lib/filters/lang'
-import momentFilters from '@/lib/filters/moment'
+<script lang="ts">
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import Lang from '@/lib/filters/lang'
+import Moment from '@/lib/filters/moment'
 
-export const AudioLibrarySelection = {
+@Component({})
+export class AudioLibrarySelection extends mixins(Lang, Moment) {
+  @Prop() audioFile: any
+  @Prop() selected: any
+  @Prop() selectable: any
+  @Prop() langId: any
 
-  mixins: [lang, momentFilters],
-  props: ['audioFile', 'selected', 'selectable', 'langId'],
+  get audioFileUrl(): any {
+    return this.audioFile
+  }
 
-  computed: {
-    audioFileUrl() {
-      return this.audioFile
-    },
-  },
+  select(): void {
+    this.$emit('select')
+  }
 
-  methods: {
-    select() {
-      this.$emit('select')
-    },
-
-    clear() {
-      this.$emit('clear')
-    },
-  },
+  clear(): void {
+    this.$emit('clear')
+  }
 }
+
 export default AudioLibrarySelection
 </script>
 

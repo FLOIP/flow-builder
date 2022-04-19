@@ -15,43 +15,21 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-export const TextEditor = {
-  props: {
-    label: {
-      type: [String, Number],
-      required: true,
-    },
-    labelClass: {
-      type: String,
-      default: 'text-primary',
-      required: false,
-    },
-    placeholder: {
-      type: String,
-      required: true,
-    },
-    value: {
-      type: String,
-      required: true,
-    },
-    validState: {
-      type: Boolean,
-      default: null,
-      required: false,
-    },
-    rows: {
-      type: Number,
-      required: false,
-      default: 1,
-    },
-  },
-  computed: {
-    isInvalid() {
-      return this.validState === false
-    },
-  },
+<script lang="ts">
+import {Component, Prop, Vue} from 'vue-property-decorator'
+
+@Component({})
+export class TextEditor extends Vue {
+  @Prop({type: [String, Number], required: true}) readonly label!: string | number
+  @Prop({type: String, default: 'text-primary'}) readonly labelClass!: string
+  @Prop({type: String, required: true}) readonly placeholder!: string
+  @Prop({type: String, required: true}) readonly value!: string
+  @Prop({type: Boolean, default: null}) readonly validState!: boolean | null
+  @Prop({type: Number, default: 1}) readonly rows!: number
+
+  get isInvalid(): boolean {
+    return this.validState === false
+  }
 }
 
 export default TextEditor

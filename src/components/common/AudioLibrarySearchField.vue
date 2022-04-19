@@ -104,108 +104,102 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import fuse from 'fuse.js'
+<script lang="ts">
+import Fuse from 'fuse.js'
 import {trim} from 'lodash'
 import VueFocus from 'vue-focus'
-import {lang} from '@/lib/filters/lang'
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import Lang from '@/lib/filters/lang'
 
-export const AudioLibrarySearchField = {
-  mixins: [VueFocus.mixin, lang],
-  props: ['langId', 'audioFiles'],
+@Component({})
+export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
+  @Prop() readonly langId: any
+  @Prop() readonly audioFiles: any
 
-  data() {
-    return {
-      isActive: false,
+  isActive = false
 
-      // querying
-      rawQuery: '',
-      cache: {},
-      isEntireLibraryModeEnabled: false,
+  // querying
+  rawQuery = ''
+  cache: Record<string, any> = {}
+  isEntireLibraryModeEnabled = false
 
-      // pagination
-      offset: 0,
-      limit: 10,
+  // pagination
+  offset = 0
+  limit = 10
+
+  get query(): string {
+    return trim(this.rawQuery)
+  }
+
+  get isAudioLibraryEmpty() {
+    return this.isActive && !this.audioFiles.length
+  }
+
+  get hasNext() {
+    return (this.search(this.query).length / (this.offset + 1)) > this.limit
+  }
+
+  get hasPrevious() {
+    return this.offset > 0
+  }
+
+  search(query: string) {
+    if (this.isEntireLibraryModeEnabled) {
+      return this.audioFiles
     }
-  },
 
-  computed: {
-    query() {
-      return trim(this.rawQuery)
-    },
+    if (query.length < 3) {
+      return []
+    }
 
-    isAudioLibraryEmpty() {
-      return this.isActive && !this.audioFiles.length
-    },
+    console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'searching', query)
 
-    hasNext() {
-      return (this.search(this.query).length / (this.offset + 1)) > this.limit
-    },
-
-    hasPrevious() {
-      return this.offset > 0
-    },
-  },
-
-  methods: {
-    search(query) {
-      if (this.isEntireLibraryModeEnabled) {
-        return this.audioFiles
-      }
-
-      if (query.length < 3) {
-        return []
-      }
-
-      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'searching', query)
-
-      if (query in this.cache) {
-        console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache hit', query)
-        return this.cache[query]
-      }
-
-      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
-
-      const keys = ['filename', 'description']
-      this.cache[query] = new fuse(this.audioFiles, {keys}).search(query)
+    if (query in this.cache) {
+      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache hit', query)
       return this.cache[query]
-    },
+    }
 
-    // todo: push pagination into isolated component
-    incrementPage() {
-      if (this.hasNext) {
-        this.offset += 1
-      }
-    },
+    console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
 
-    decrementPage() {
-      if (this.hasPrevious) {
-        (this.offset -= 1)
-      }
-    },
+    const keys = ['filename', 'description']
+    this.cache[query] = new Fuse(this.audioFiles, {keys, fieldNormWeight: 1}).search(query)
+    return this.cache[query]
+  }
 
-    resetPagination() {
-      this.offset = 0
-    },
+  // TODO: Push pagination into isolated component
+  incrementPage() {
+    if (this.hasNext) {
+      this.offset += 1
+    }
+  }
 
-    toggleAudioLibrary() {
-      this.isEntireLibraryModeEnabled = !this.isEntireLibraryModeEnabled
-      this.resetPagination()
-    },
+  decrementPage() {
+    if (this.hasPrevious) {
+      (this.offset -= 1)
+    }
+  }
 
-    select(audio) {
-      this.$emit('select', {value: audio, langId: this.langId})
-    },
+  resetPagination() {
+    this.offset = 0
+  }
 
-    activate() {
-      this.isActive = true
-    },
+  toggleAudioLibrary() {
+    this.isEntireLibraryModeEnabled = !this.isEntireLibraryModeEnabled
+    this.resetPagination()
+  }
 
-    deactivate() {
-      this.isActive = false
-    },
-  },
+  select(audio: any) {
+    this.$emit('select', {value: audio, langId: this.langId})
+  }
+
+  activate() {
+    this.isActive = true
+  }
+
+  deactivate() {
+    this.isActive = false
+  }
 }
 
 export default AudioLibrarySearchField

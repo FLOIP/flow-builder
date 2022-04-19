@@ -33,122 +33,122 @@
 
     <main class="interaction-designer-main">
       <builder-canvas
-        @click.native="handleCanvasSelected"
-        :width-adjustment="builderWidthAdjustment" />,
+        :width-adjustment="builderWidthAdjustment"
+        @click.native="handleCanvasSelected" />,
     </main>
   </div>
 </template>
 
-<script>
-import {lang} from '@/lib/filters/lang'
+<script lang="ts">
+import {endsWith, forEach, get, includes, invoke, isEmpty, values} from 'lodash'
+import {mixins} from 'vue-class-component'
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
+import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
+import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {endsWith, forEach, get, isEmpty, invoke, values} from 'lodash'
-import Vue from 'vue'
-import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
+import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
 import {store} from '@/store'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
-import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
+import {Route} from 'vue-router'
 
-export default {
+Component.registerHooks(['beforeRouteUpdate'])
+
+const flowNamespace = namespace('flow')
+const builderNamespace = namespace('builder')
+const clipboardNamespace = namespace('clipboard')
+
+@Component({
   components: {
     ClipboardRoot,
   },
-  mixins: [lang, Routes],
-  props: {
-    id: {type: String},
-    mode: {type: String},
-    appConfig: {
-      type: Object,
-      default() {
-        return {}
-      },
+})
+export class InteractionDesigner extends mixins(Lang, Routes) {
+  @Prop(String) readonly id!: string
+  @Prop(String) readonly mode!: string
+  @Prop({
+    type: Object,
+    default() {
+      return {}
     },
-    builderConfig: {
-      type: Object,
-      default() {
-        return {}
-      },
+  }) readonly appConfig!: object
+  @Prop({
+    type: Object,
+    default() {
+      return {}
     },
-  },
+  }) readonly builderConfig!: object
 
-  data() {
-    return {
-      toolbarHeight: 102,
-      // todo: move this to BlockClassDetails spec // an inversion can be "legacy types"
-      pureVuejsBlocks: [
-        'CallBackWithCallCenterBlock',
-        'CollaborativeFilteringQuestionBlock',
-        'CollaborativeFilteringRatingBlock',
-        'CollaborativeFilteringRatioBranchBlock',
-        'CreateSubscriberBlock',
-        'CurrentTimeBranchBlock',
-        'DirectorySelectionBlock',
-        'EntitySelectionBlock',
-        'GenerateCodeBlock',
-        'GroupPropertyBlock',
-        'SubscriberPropertiesSnapshotBlock',
-        'SubscriberPropertyBlock',
-        'SummaryBlock',
-        'ValidateCodeBlock',
-        'WebhookBlock',
-        'WebhookContentBlock',
-        'RecordGroupMessageBlock',
-        'PlayGroupMessageBlock',
-      ],
-      simulateClipboard: true,
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'isConfigured',
-      'selectedBlock',
-      'hasChanges',
-      'hasIssues',
-      'isTreeSaving',
-      'isTreeValid',
-      'jsonValidationResults',
-      'validationResults',
-      'builderWidthAdjustment',
-    ]),
-    ...mapState({
+  toolbarHeight = 102
+  // TODO: Move this to BlockClassDetails spec // an inversion can be "legacy types"
+  pureVuejsBlocks = [
+    'CallBackWithCallCenterBlock',
+    'CollaborativeFilteringQuestionBlock',
+    'CollaborativeFilteringRatingBlock',
+    'CollaborativeFilteringRatioBranchBlock',
+    'CreateSubscriberBlock',
+    'CurrentTimeBranchBlock',
+    'DirectorySelectionBlock',
+    'EntitySelectionBlock',
+    'GenerateCodeBlock',
+    'GroupPropertyBlock',
+    'SubscriberPropertiesSnapshotBlock',
+    'SubscriberPropertyBlock',
+    'SummaryBlock',
+    'ValidateCodeBlock',
+    'WebhookBlock',
+    'WebhookContentBlock',
+    'RecordGroupMessageBlock',
+    'PlayGroupMessageBlock',
+  ]
+  simulateClipboard = true
 
-      // todo: we'll need to do width as well and use margin-right:365 to allow for sidebar
-      designerWorkspaceHeight: ({trees: {tree, ui}}) => ui.designerWorkspaceHeight,
-      tree: ({trees: {tree, ui}}) => tree,
-      validationResultsEmptyTree: ({trees: {tree, ui}}) => !tree.blocks.length,
-      hasVoice: ({trees: {tree}}) => tree.details.hasVoice,
-      hasSms: ({trees: {tree}}) => tree.details.hasSms,
-      hasUssd: ({trees: {tree}}) => tree.details.hasUssd,
-      hasSocial: ({trees: {tree}}) => tree.details.hasSocial,
-      hasClipboard: ({trees: {tree}}) => tree.details.hasClipboard,
-      blockClasses: ({trees: {ui}}) => ui.blockClasses,
-    }),
+  @Getter isConfigured: any
+  @Getter selectedBlock: any
+  @Getter hasChanges: any
+  @Getter hasIssues: any
+  @Getter isTreeSaving: any
+  @Getter isTreeValid: any
+  @Getter jsonValidationResults: any
+  @Getter validationResults: any
+  @Getter builderWidthAdjustment: any
 
-    ...mapGetters('flow', ['activeFlow']),
-    ...mapGetters('builder', ['activeBlock', 'isEditable', 'interactionDesignerBoundingClientRect']),
-    ...mapGetters('clipboard', ['isSimulatorActive']),
+  // TODO: We'll need to do width as well and use margin-right:365 to allow for sidebar
+  @State(({trees: {tree, ui}}) => ui.designerWorkspaceHeight) designerWorkspaceHeight: any
+  @State(({trees: {tree, ui}}) => tree) tree: any
+  @State(({trees: {tree, ui}}) => !tree.blocks.length) validationResultsEmptyTree: any
+  @State(({trees: {tree}}) => tree.details.hasVoice) hasVoice: any
+  @State(({trees: {tree}}) => tree.details.hasSms) hasSms: any
+  @State(({trees: {tree}}) => tree.details.hasUssd) hasUssd: any
+  @State(({trees: {tree}}) => tree.details.hasSocial) hasSocial: any
+  @State(({trees: {tree}}) => tree.details.hasClipboard) hasClipboard: any
+  @State(({trees: {ui}}) => ui.blockClasses) blockClasses: any
 
-    jsKey() {
-      return get(this.selectedBlock, 'jsKey')
-    },
+  @flowNamespace.Getter activeFlow: any
+  @builderNamespace.Getter activeBlock: any
+  @builderNamespace.Getter isEditable: any
+  @builderNamespace.Getter interactionDesignerBoundingClientRect: any
+  @clipboardNamespace.Getter isSimulatorActive: any
 
-    // pure vuejs block types handle readonly mode on their own
-    isPureVueBlock() {
-      return _.includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
-    },
-  },
-  watch: {
-    // `this.mode` comes from captured param in js-routes
-    mode(newMode) {
-      this.updateIsEditableFromParams(newMode)
-    },
-  },
+  get jsKey() {
+    return get(this.selectedBlock, 'jsKey')
+  }
+
+  // Pure VueJS block types handle readonly mode on their own
+  isPureVueBlock() {
+    return includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
+  }
 
   async beforeCreate() {
     const {$store} = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
-  },
+  }
+
+  // `this.mode` comes from captured param in js-routes
+  @Watch('mode')
+  onModeChanged(newMode) {
+    this.updateIsEditableFromParams(newMode)
+  }
 
   created() {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
@@ -156,17 +156,17 @@ export default {
     }
 
     // initialize global reference for legacy + debugging
-    global.builder = this
+    (global as any).builder = this
 
     this.initializeTreeModel()
     // `this.mode` comes from captured param in js-routes
     this.updateIsEditableFromParams(this.mode)
-  },
+  }
 
   activated() {
     // todo: remove once we have jsKey in our js-route
     this.deselectBlocks()
-  },
+  }
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   async mounted() {
@@ -207,95 +207,98 @@ export default {
 
     // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
     if (this.activeFlow && this.$refs['interaction-designer-contents'] != undefined) {
-      this.setInteractionDesignerBoundingClientRect(this.$refs['interaction-designer-contents'].getBoundingClientRect())
+      this.setInteractionDesignerBoundingClientRect((this.$refs['interaction-designer-contents'] as Element).getBoundingClientRect())
     }
-  },
-  beforeRouteUpdate(to, from, next) {
+  }
+
+  beforeRouteUpdate(to: Route, from: Route, next: Function) {
     this.activateBlock({blockId: to.params.blockId || null})
     if (to.meta?.isBlockEditorShown) {
       scrollBlockIntoView(to.params.blockId)
       this.setIsBlockEditorOpen(true)
     }
     next()
-  },
-  methods: {
-    ...mapMutations(['deselectBlocks', 'configure']),
-    ...mapMutations('builder', ['activateBlock', 'setIsBlockEditorOpen', 'setInteractionDesignerBoundingClientRect']),
-    ...mapActions('builder', ['setIsEditable']),
-    ...mapMutations('flow', ['flow_setActiveFlowId']),
+  }
 
-    ...mapActions([
-      'attemptSaveTree',
-      'discoverTallestBlockForDesignerWorkspaceHeight',
-      'initializeTreeModel']),
+  @Mutation configure: any
+  @Mutation deselectBlocks: any
+  @builderNamespace.Mutation activateBlock: any
+  @builderNamespace.Mutation setIsBlockEditorOpen: any
+  @builderNamespace.Mutation setInteractionDesignerBoundingClientRect: any
+  @builderNamespace.Action setIsEditable: any
+  @flowNamespace.Mutation flow_setActiveFlowId: any
+  @Action attemptSaveTree: any
+  @Action discoverTallestBlockForDesignerWorkspaceHeight: any
+  @Action initializeTreeModel: any
 
-    async registerBlockTypes() {
-      const {blockClasses} = this
+  async registerBlockTypes() {
+    const {blockClasses} = this
 
-      const blockInstallers = values(blockClasses).map(async (blockClass) => {
-        const type = blockClass.type
-        const normalizedType = type.replace('.', '_')
-        const typeWithoutSeparators = type.replace('.', '')
-        let {uiComponent} = blockClass
-        if (blockClass.install === undefined) {
-          const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
-          blockClass.install = exported.install
-          uiComponent = exported.default
-        }
-        invoke(blockClass, 'install', this)
-        Vue.component(`Flow${typeWithoutSeparators}`, uiComponent)
-      })
-      return Promise.all(blockInstallers)
-    },
-
-    handleCanvasSelected({target}) {
-      if (!target.classList.contains('builder-canvas')) {
-        console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
-        return
+    const blockInstallers = values(blockClasses).map(async (blockClass) => {
+      const type = blockClass.type
+      const normalizedType = type.replace('.', '_')
+      const typeWithoutSeparators = type.replace('.', '')
+      let {uiComponent} = blockClass
+      if (blockClass.install === undefined) {
+        const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
+        blockClass.install = exported.install
+        uiComponent = exported.default
       }
-      this.setIsBlockEditorOpen(false)
-      const routeName = this.$route.meta.isFlowEditorShown ? 'flow-details' : 'flow-canvas'
-      this.$router.history.replace({
-        name: routeName,
-      })
-    },
+      invoke(blockClass, 'install', this)
+      Vue.component(`Flow${typeWithoutSeparators}`, uiComponent)
+    })
+    return Promise.all(blockInstallers)
+  }
 
-    updateIsEditableFromParams(mode) {
-      const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!app.ui.isEditableLocked)
-      this.setIsEditable(isEditable)
-    },
+  handleCanvasSelected({target}: {target: Element}) {
+    if (!target.classList.contains('builder-canvas')) {
+      console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
+      return
+    }
+    this.setIsBlockEditorOpen(false)
+    const routeName = this.$route.meta?.isFlowEditorShown ? 'flow-details' : 'flow-canvas'
+    this.$router.history.replace({
+      name: routeName,
+    })
+  }
 
-    /** --------------------------------| has-editable-locked | not-editable-locked |
-       | mode-is-absent+view-url-suffix   |        0            |     0               |
-       | mode-is-absent+edit-url-suffix   |        0 (r=>view)  |     1               |
-       | mode-is-absent+absent-url-suffix |        0 (r=>view)  |     0 (r=>view)     | <- Equivalent to /view
-       | mode-is-view                     |        0            |     0               |
-       | mode-is-view+edit-url-suffix     |        0            |     0               |
-       | mode-is-edit                     |        0 (r=>view)  |     1               |
-       | mode-is-edit+view-url-suffix     |        0 (r=>view)  |     1               |
-       ------------------------------------------------------------------------------ */
-    discoverIsEditableFrom(mode, hash, isEditableLocked) {
-      return !isEditableLocked && (
-        mode === 'edit' || (!mode && endsWith(hash, '/edit'))
-      )
-    },
+  updateIsEditableFromParams(mode: string) {
+    const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!(global as any).app.ui.isEditableLocked)
+    this.setIsEditable(isEditable)
+  }
 
-    hoistResourceViewerToPushState(hash) {
-      if (!_.endsWith(hash, '/resource-viewer')) {
-        return
-      }
+  /** --------------------------------| has-editable-locked | not-editable-locked |
+   | mode-is-absent+view-url-suffix   |        0            |     0               |
+   | mode-is-absent+edit-url-suffix   |        0 (r=>view)  |     1               |
+   | mode-is-absent+absent-url-suffix |        0 (r=>view)  |     0 (r=>view)     | <- Equivalent to /view
+   | mode-is-view                     |        0            |     0               |
+   | mode-is-view+edit-url-suffix     |        0            |     0               |
+   | mode-is-edit                     |        0 (r=>view)  |     1               |
+   | mode-is-edit+view-url-suffix     |        0 (r=>view)  |     1               |
+   ------------------------------------------------------------------------------ */
+  discoverIsEditableFrom(mode: string, hash: string, isEditableLocked: boolean) {
+    return !isEditableLocked && (
+      mode === 'edit' || (!mode && endsWith(hash, '/edit'))
+    )
+  }
 
-      this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
-    },
+  hoistResourceViewerToPushState(hash: string) {
+    if (!endsWith(hash, '/resource-viewer')) {
+      return
+    }
 
-    showOrHideSidebar() {
-      //TODO with simulator work
-      //this.$router.history.replace({
-        //name: this.$route.meta.isSidebarShown ? 'flow-canvas' : '???',
-      //})
-    },
-  },
+    this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
+  }
+
+  showOrHideSidebar() {
+    //TODO with simulator work
+    //this.$router.history.replace({
+    //name: this.$route.meta.isSidebarShown ? 'flow-canvas' : '???',
+    //})
+  }
 }
+
+export default InteractionDesigner
 </script>
 
 <style lang="scss"> @import '../css/customized/vue-multiselect.css';</style>
