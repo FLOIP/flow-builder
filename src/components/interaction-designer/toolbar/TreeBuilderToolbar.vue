@@ -20,15 +20,15 @@
           <div class="btn-toolbar">
             <h4
               v-if="hasToolbarFlowTitle"
-              class="text-primary mr-4 mb-0 flow-label"
-              :title="activeFlow.label">
+              v-b-tooltip.hover="activeFlow.label"
+              class="text-primary mr-4 mb-0 flow-label">
               {{ activeFlow.label }}
             </h4>
             <div>
               <router-link
                 v-if="hasToolbarHomeButton"
+                v-b-tooltip.hover="trans('flow-builder.home')"
                 :to="route('flows.home')"
-                :title="trans('flow-builder.home')"
                 class="mr-2">
                 <font-awesome-icon
                   :icon="['fac', 'home']"
@@ -89,18 +89,18 @@
                 v-if="!ui.isEditableLocked"
                 class="btn-group">
                 <router-link
+                  v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
                   :to="viewTreeUrl"
                   event=""
-                  :title="trans('flow-builder.click-to-toggle-editing')"
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: !isEditable}"
                   @click.native.prevent="handlePersistFlow(viewTreeUrl)">
                   {{ trans('flow-builder.view-mode') }}
                 </router-link>
                 <router-link
+                  v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
                   :to="editTreeUrl"
                   event=""
-                  :title="trans('flow-builder.click-to-toggle-editing')"
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isEditable}"
                   @click.native.prevent="handlePersistFlow(editTreeUrl)">
@@ -137,7 +137,7 @@
                 v-if="isEditable && isFeatureTreeSaveEnabled"
                 type="button"
                 class="btn btn-outline-primary btn-sm ml-4 save-button"
-                :title="trans('flow-builder.save-changes-to-the-flow')"
+                v-b-tooltip.hover="trans('flow-builder.save-changes-to-the-flow')"
                 :disabled="!!isTreeSaving"
                 @click="handlePersistFlow()">
                 {{ saveButtonText }}
@@ -301,7 +301,7 @@
   </div>
 </template>
 <script lang="ts">
-import {BModal, VBTooltipPlugin} from 'bootstrap-vue'
+import {BModal} from 'bootstrap-vue'
 import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
@@ -320,8 +320,6 @@ import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
-
-Vue.use(VBTooltipPlugin)
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
