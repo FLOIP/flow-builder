@@ -301,7 +301,7 @@
   </div>
 </template>
 <script lang="ts">
-import {BModal} from 'bootstrap-vue'
+import {BModal, BootstrapVue, BTooltip} from 'bootstrap-vue'
 import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
@@ -320,6 +320,9 @@ import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
+
+Vue.use(BootstrapVue)
+Vue.component('BTooltip', BTooltip)
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
