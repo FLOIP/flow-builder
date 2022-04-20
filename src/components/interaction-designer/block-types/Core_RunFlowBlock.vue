@@ -51,8 +51,10 @@
       <slot
         slot="contact-props"
         name="contact-props" />
+      <slot
+        slot="vendor"
+        name="vendor" />
     </base-block>
-    <slot name="vendor" />
   </div>
 </template>
 

@@ -35,6 +35,8 @@
           :block="block" />
       </slot>
 
+      <slot name="vendor" />
+
       <hr>
 
       <first-block-editor-button
