@@ -12,13 +12,9 @@ import 'vue-multiselect/dist/vue-multiselect.min.css'
 import 'scss/main.scss'
 
 import registerCustomComponents from '@/common-imports'
-import {BootstrapVue, BTooltip} from 'bootstrap-vue'
 
 import router from './router'
 import App from './App.vue'
-
-Vue.use(BootstrapVue)
-Vue.component('BTooltip', BTooltip)
 
 registerCustomComponents()
 
