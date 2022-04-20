@@ -58,7 +58,7 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
   // @Prop()readonly block!: ILocationResponseBlock
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
-  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
+  @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
 
   updateThreshold(value: number): void {
     this.setAccuracyThreshold({blockId: this.block.uuid, value})
