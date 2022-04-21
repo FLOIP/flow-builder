@@ -303,7 +303,16 @@
     "treeTitles": {},
     "treeSetTitles": {},
     "groupNames": {},
-    "groups": [],
+    "groups": [
+      {
+        "id": "12",
+        "name": "my group 1"
+      },
+      {
+        "id": "13",
+        "name": "my group 2"
+      }
+    ],
     "languageNames": {"1": "English", "2": "Spanish"},
     "languageSelectors": [],
     "apiKey": null,
