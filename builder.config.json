@@ -273,7 +273,23 @@
     "isEditableLocked": 0,
     "orgTimezone": "America/Toronto",
     "subscriberCount": 0,
-    "subscriberPropertyFields": [],
+    "subscriberPropertyFields": [
+      {
+        "id": "10",
+        "name": "name",
+        "displayLabel": "Name (Text)"
+      },
+      {
+        "id": "11",
+        "name": "comment",
+        "displayLabel": "Comment (Text)"
+      },
+      {
+        "id": "12",
+        "name": "start_date",
+        "displayLabel": "Start Date (Date)"
+      }
+    ],
     "subscriberPropertyFieldDataTypes": [
       "text",
       "location",
