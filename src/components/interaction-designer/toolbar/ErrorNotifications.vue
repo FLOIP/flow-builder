@@ -78,12 +78,12 @@
 
 <script lang="ts">
 import Lang from '@/lib/filters/lang'
-import {Dictionary, filter, get, has, pickBy, replace, size} from 'lodash'
+import {Dictionary, castArray, filter, get, has, pickBy, replace, size} from 'lodash'
 import {IValidationStatus} from '@/store/validation'
 import Routes from '@/lib/mixins/Routes'
 import Component, {mixins} from 'vue-class-component'
 import {namespace} from 'vuex-class'
-import {IFlow, IResource} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
 
 const flowVuexNamespace = namespace('flow')
@@ -121,19 +121,29 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
     })
   }
 
-  get invalidBlocksInActiveFlow() {
-    return filter(this.activeFlow?.blocks, (block) => {
-      const hasBlockValidationError = has(this.blockValidationStatuses, `block/${block.uuid}`)
-      const hasResourceValidationError = has(this.resourceValidationStatusesForActiveFlow, `resource/${block.config.prompt}`)
-      let hasChoiceValidationError = false
+  hasBlockValidationErrors(uuid: string): boolean {
+    return has(this.blockValidationStatuses, `block/${uuid}`)
+  }
 
-      if (block.config?.choices !== undefined) {
-        hasChoiceValidationError = Object.values(block.config.choices)
-          .reduce((result, uuid) => (result === true || has(this.resourceValidationStatusesForActiveFlow, `resource/${uuid}`)), false)
+  hasResourceValidationErrors(uuidOrUuids: string | string[]): boolean {
+    const uuids = castArray(uuidOrUuids)
+
+    for (let i = 0; i < uuids.length; i += 1) {
+      if (has(this.resourceValidationStatusesForActiveFlow, `resource/${uuids[i]}`)) {
+        return true
       }
+    }
+    return false
+  }
 
-      return hasBlockValidationError || hasResourceValidationError || hasChoiceValidationError
-    })
+  isBlockInvalid(block: IBlock): boolean {
+    return this.hasBlockValidationErrors(block.uuid)
+      || this.hasResourceValidationErrors(block.config.prompt)
+      || this.hasResourceValidationErrors(block.config.choices)
+  }
+
+  get invalidBlocksInActiveFlow(): IBlock[] {
+    return filter(this.activeFlow?.blocks, this.isBlockInvalid.bind(this))
   }
 
   get numberOfBlocksWithErrors(): number {
