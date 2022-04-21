@@ -26,11 +26,8 @@
             :key="error.dataPath">
             <div class="d-flex justify-content-between px-2 py-0 highlight-on-hover">
               <span class="text-danger align-self-center">{{ error.message }}</span>
-              <div v-if="error.dataPath === '/first_block_id'">
-                {{ 'flow-builder.add-at-least-one-block' | trans }}
-              </div>
               <button
-                v-else
+                v-if="error.dataPath !== '/first_block_id'"
                 type="button"
                 class="btn btn-link btn-link-text"
                 @click="fixFlowError()">
