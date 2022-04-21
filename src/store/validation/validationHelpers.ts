@@ -89,11 +89,25 @@ export function debugValidationStatus(status: IValidationStatus, customMessage: 
   }
 }
 
-function getErrorMessageLocalizationKey(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
+function getErrorMessageLocalizationKeyForProperty(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
   const entity = keyPrefix.startsWith('flow') ? 'flows' : 'blocks'
-  const property = ajvErrorObject.dataPath.replaceAll('/', '-')
+  const property = ajvErrorObject.dataPath
+    .replaceAll('/', '-')
+    // Replacing digits with zeros to eliminate resource indexes
+    .replaceAll(/\d/g, '0')
 
   return `flow-builder-validation.${entity}-${property.substring(1)}-${ajvErrorObject.keyword}`
+}
+
+function getErrorMessageLocalizationKey(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
+  const isFormatError = ajvErrorObject.keyword === 'format'
+  const isExpressionFormat = ajvErrorObject.params?.format === 'floip-expression'
+
+  if (isFormatError && isExpressionFormat) {
+    return 'flow-builder-validation.floip-format'
+  }
+
+  return getErrorMessageLocalizationKeyForProperty(keyPrefix, ajvErrorObject)
 }
 
 function getLocalizedErrorMessage(keyPrefix: string, ajvErrorObject: ErrorObject) : string {

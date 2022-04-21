@@ -3338,6 +3338,7 @@
     "show-less":  "Montrer moins…"
   },
   "en.flow-builder-validation": {
+    "floip-format": "FLOIP Expression should be valid",
     "flows-first_block_id-pattern": "Flow must contain at least one block",
     "flows-name-minLength": "Flow Label should have a minimum of 3 characters",
     "flows-interaction_timeout-type": "Interaction Timeout should be a number",
@@ -3349,9 +3350,11 @@
     "blocks-config-accuracy_threshold_meters-type": "Accuracy threshold in meters should be a number",
     "blocks-config-accuracy_timeout_seconds-type": "Accuracy timeout in seconds should be a number",
     "blocks-config-value-type": "Output expression should be a string",
-    "blocks-config-is_member-type": "Value/Expression should be a string"
+    "blocks-config-is_member-type": "Value/Expression should be a string",
+    "blocks-values-0-value-pattern": "Content should only contain basic Latin script, digits, or punctuation"
   },
   "fr.flow-builder-validation": {
+    "floip-format": "L'expression FlOIP devrait être valide",
     "flows-first_block_id-pattern": "Le débit doit contenir au moins un bloc",
     "flows-name-minLength": "L'étiquette de flux devrait avoir un minimum de 3 caractères",
     "flows-interaction_timeout-type": "Le délai d'interaction devrait être un nombre",
@@ -3363,7 +3366,8 @@
     "blocks-config-accuracy_threshold_meters-type": "Le seuil de précision en mètres devrait être un nombre",
     "blocks-config-accuracy_timeout_seconds-type": "Le délai d'attente de précision en quelques secondes devrait être un nombre",
     "blocks-config-value-type": "L'expression de sortie devrait être une chaîne",
-    "blocks-config-is_member-type": "La valeur / l'expression devrait être une chaîne"
+    "blocks-config-is_member-type": "La valeur / l'expression devrait être une chaîne",
+    "blocks-values-0-value-pattern": "Le contenu ne doit contenir que le script, les chiffres et la ponctuation de base"
   }
 }
 
