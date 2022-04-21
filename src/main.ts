@@ -12,6 +12,7 @@ import 'vue-multiselect/dist/vue-multiselect.min.css'
 import 'scss/main.scss'
 
 import registerCustomComponents from '@/common-imports'
+
 import router from './router'
 import App from './App.vue'
 

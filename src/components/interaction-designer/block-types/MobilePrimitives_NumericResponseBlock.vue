@@ -1,54 +1,44 @@
 <template>
   <div class="mobile-primitive-numeric-response-block">
-    <h3 class="block-editor-header">
-      {{ `flow-builder.${block.type}` | trans }}
-    </h3>
-
-    <fieldset :disabled="!isEditable">
-      <label-editor
-        :block="block"
-        @gearClicked="showSemanticLabel = !showSemanticLabel" />
-      <semantic-label-editor
-        v-if="showSemanticLabel"
-        :block="block" />
-      <name-editor :block="block" />
-
-      <minimum-numeric-editor
-        :block="block"
-        @commitValidationMinimumChange="updateValidationMin" />
-      <maximum-numeric-editor
-        :block="block"
-        @commitValidationMaximumChange="updateValidationMax" />
-      <max-digit-editor
-        :block="block"
-        :has-ivr="hasVoiceMode"
-        @commitMaxDigitsChange="updateMaxDigits" />
-
-      <block-output-branching-config
-        :block="block"
-        :has-exit-per-choice="false"
-        @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})" />
-
-      <resource-editor
-        v-if="promptResource"
-        :resource="promptResource"
-        :block="block"
-        :flow="flow" />
-
-      <slot name="extras" />
-
-      <categorization :block="block" />
-
-      <generic-contact-property-editor :block="block" />
-
-      <hr>
-
-      <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
-    </fieldset>
-
-    <block-id :block="block" />
+    <base-block
+      :block="block"
+      :flow="flow"
+      :show-semantic-label="false"
+      :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
+      :uses-default-branching-editor="usesDefaultBranchingEditor"
+      @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
+      <slot
+        slot="resource-editors"
+        name="resource-editors">
+        <resource-editor
+          v-if="promptResource"
+          :resource="promptResource"
+          :block="block"
+          :flow="flow" />
+      </slot>
+      <slot
+        slot="extras"
+        name="extras">
+        <minimum-numeric-editor
+          :block="block"
+          @commitValidationMinimumChange="updateValidationMin" />
+        <maximum-numeric-editor
+          :block="block"
+          @commitValidationMaximumChange="updateValidationMax" />
+        <max-digit-editor
+          :block="block"
+          :has-ivr="hasVoiceMode"
+          @commitMaxDigitsChange="updateMaxDigits" />
+      </slot>
+      <slot name="vendor-extras" />
+      <slot
+        slot="branching"
+        name="branching" />
+      <slot
+        slot="contact-props"
+        name="contact-props" />
+    </base-block>
+    <slot name="vendor" />
   </div>
 </template>
 
@@ -75,26 +65,25 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: INumericResponseBlock
-
   @Prop() readonly flow!: IFlow
-
-  showSemanticLabel = false
+  @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
+  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
   get promptResource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
   }
 
-  updateValidationMin(value: number | string) {
+  updateValidationMin(value: number | string): void {
     this.setValidationMinimum({blockId: this.block.uuid, value})
     this.handleActionsAccordingToBranchingType()
   }
 
-  updateValidationMax(value: number | string) {
+  updateValidationMax(value: number | string): void {
     this.setValidationMaximum({blockId: this.block.uuid, value})
     this.handleActionsAccordingToBranchingType()
   }
 
-  updateMaxDigits(value: number | string) {
+  updateMaxDigits(value: number | string): void {
     this.setMaxDigits({blockId: this.block.uuid, value})
   }
 

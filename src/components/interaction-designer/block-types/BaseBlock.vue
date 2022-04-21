@@ -14,12 +14,12 @@
       <name-editor :block="block" />
 
       <slot name="resource-editors" />
+      <hr>
       <slot name="extras" />
 
-      <slot
-        v-if="usesDefaultBranchingEditor"
-        name="branching">
+      <slot name="branching">
         <block-output-branching-config
+          v-if="usesDefaultBranchingEditor"
           :block="block"
           :has-exit-per-choice="false"
           @branchingTypeChangedToUnified="handleBranchingTypeChangedToUnified" />
@@ -27,10 +27,10 @@
 
       <categorization :block="block" />
 
-      <slot
-        v-if="usesDefaultContactPropsEditor"
-        name="contact-props">
-        <generic-contact-property-editor :block="block" />
+      <slot name="contact-props">
+        <generic-contact-property-editor
+          v-if="usesDefaultContactPropsEditor"
+          :block="block" />
       </slot>
 
       <hr>
