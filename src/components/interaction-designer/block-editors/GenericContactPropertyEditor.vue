@@ -229,7 +229,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   }
 
   set flowSelectedContactPropertyField(option: IContactPropertyOption) {
-    this.updatePropertyKey(option.name)
+    this.updatePropertyKey(option?.name)
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
