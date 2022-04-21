@@ -3344,8 +3344,8 @@
     "blocks-name-pattern": "Block code allows only alphanumeric characters with an underscore",
     "blocks-config-ivr-max_duration_seconds-type": "Max Duration Seconds should to be a number",
     "blocks-config-text-max_response_characters-type": "Max Response Characters should be a number",
-    "blocks-config-accuracy_threshold_meters-type": "Accuracy threshold in meters should be number",
-    "blocks-config-accuracy_timeout_seconds-type": "Accuracy timeout in seconds shoud be number",
+    "blocks-config-accuracy_threshold_meters-type": "Accuracy threshold in meters should be a number",
+    "blocks-config-accuracy_timeout_seconds-type": "Accuracy timeout in seconds should be a number",
     "blocks-config-value-type": "Output expression should be a string",
     "blocks-config-is_member-type": "Value/Expression should be a string"
   },
@@ -3358,8 +3358,8 @@
     "blocks-name-pattern": "Le code de bloc ne permet que des caractères alphanumériques avec un soulignement",
     "blocks-config-ivr-max_duration_seconds-type": "La durée maximale des secondes devraient être un nombre",
     "blocks-config-text-max_response_characters-type": "Les caractères de réponse maximale doivent être un nombre",
-    "blocks-config-accuracy_threshold_meters-type": "Seuil de précision en mètres devrait être un nombre",
-    "blocks-config-accuracy_timeout_seconds-type": "Délai de précision en secondes devrait être numéro",
+    "blocks-config-accuracy_threshold_meters-type": "Le seuil de précision en mètres devrait être un nombre",
+    "blocks-config-accuracy_timeout_seconds-type": "Le délai d'attente de précision en quelques secondes devrait être un nombre",
     "blocks-config-value-type": "L'expression de sortie devrait être une chaîne",
     "blocks-config-is_member-type": "La valeur / l'expression devrait être une chaîne"
   }
