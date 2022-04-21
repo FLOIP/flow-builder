@@ -224,8 +224,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
       this.availableContactPropertyFields,
       (option: IContactPropertyOption) => option.name === this.block.config.set_contact_property?.property_key,
     )
-    // TODO: update reactivity of block_updateConfigByPath like Nikolai did using chunks
-    console.log('check rs', this.block.config.set_contact_property?.property_key)
+
     return selectedOption || {} as IContactPropertyOption
   }
 
