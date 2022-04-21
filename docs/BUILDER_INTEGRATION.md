@@ -649,3 +649,5 @@ See below how we may configure available contact groups:
 platformBuilderConfig.ui.groups = [group1, group2, ..., groupN]
 ```
 where each `group` option follow the [IGroupOption](https://github.com/FLOIP/flow-builder/blob/master/src/store/flow/block-types/Core_SetGroupMembershipStore.ts#L9) schema.
+
+TODO - add more
