@@ -27,7 +27,21 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_key`">
         <div class="block-contact-property-key">
+          <div v-if="flowSelectedContactPropertyField">
+            <label for="contact-property-selector">{{ trans('flow-builder.property') }}</label>
+            <vue-multiselect
+              id="contact-property-selector"
+              v-model="flowSelectedContactPropertyField"
+              track-by="id"
+              label="displayLabel"
+              :placeholder="'flow-builder.select-a-property' | trans"
+              :options="availableContactPropertyFields"
+              :multiple="false"
+              :show-labels="false"
+              :searchable="true" />
+          </div>
           <text-editor
+            v-else
             :value="propertyKey"
             :label="'flow-builder.property' | trans"
             :label-class="''"
@@ -92,18 +106,24 @@
 <script lang="ts">
 import {IBlock, IBlockConfig} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
-import {namespace} from 'vuex-class'
+import {namespace, State} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import {get, has} from 'lodash'
+import {find, get, has} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {isBlockInteractive} from '@/store/flow/block.ts'
+import VueMultiselect from 'vue-multiselect'
+import {IContactPropertyOption} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 
 const flowVuexNamespace = namespace('flow')
 
 const EMPTY_STRING_EXPRESSION = ''
 const BLOCK_RESPONSE_EXPRESSION = '@block.value'
 
-@Component({})
+@Component({
+  components: {
+    VueMultiselect,
+  },
+})
 export class GenericContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
@@ -195,6 +215,24 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     })
   }
 
+  get availableContactPropertyFields(): IContactPropertyOption[] {
+    return this.ui.subscriberPropertyFields
+  }
+
+  get flowSelectedContactPropertyField(): IContactPropertyOption {
+    const selectedOption = find(
+      this.availableContactPropertyFields,
+      (option: IContactPropertyOption) => option.name === this.block.config.set_contact_property?.property_key,
+    )
+    // TODO: update reactivity of block_updateConfigByPath like Nikolai did using chunks
+    console.log('check rs', this.block.config.set_contact_property?.property_key)
+    return selectedOption || {} as IContactPropertyOption
+  }
+
+  set flowSelectedContactPropertyField(option: IContactPropertyOption) {
+    this.updatePropertyKey(option.name)
+  }
+
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
     {blockId, path, value}: { blockId: string, path: string, value: string | object }
   ) => void
@@ -202,6 +240,8 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     {blockId, path, value}: { blockId: string, path: string, value: string }
   ) => void
   @flowVuexNamespace.Mutation block_removeConfigByKey!: ({blockId, key}: { blockId: string, key: string}) => void
+
+  @State(({trees: {ui}}) => ui) ui!: any
 }
 
 export default GenericContactPropertyEditor
