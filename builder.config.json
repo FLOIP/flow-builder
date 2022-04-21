@@ -277,17 +277,17 @@
       {
         "id": "10",
         "name": "name",
-        "displayLabel": "Name (Text)"
+        "display_label": "Name (Text)"
       },
       {
         "id": "11",
         "name": "comment",
-        "displayLabel": "Comment (Text)"
+        "display_label": "Comment (Text)"
       },
       {
         "id": "12",
         "name": "start_date",
-        "displayLabel": "Start Date (Date)"
+        "display_label": "Start Date (Date)"
       }
     ],
     "subscriberPropertyFieldDataTypes": [

@@ -33,7 +33,7 @@
               id="contact-property-selector"
               v-model="flowSelectedContactPropertyField"
               track-by="id"
-              label="displayLabel"
+              label="display_label"
               :placeholder="'flow-builder.select-a-property' | trans"
               :options="availableContactPropertyFields"
               :multiple="false"
