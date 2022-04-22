@@ -63,10 +63,10 @@ class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
   @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
   get promptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.prompt]
+    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
   }
 
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
   @flowVuexNamespace.Getter hasTextMode!: boolean
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
 

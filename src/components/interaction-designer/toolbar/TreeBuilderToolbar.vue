@@ -4,12 +4,12 @@
     class="tree-builder-toolbar d-flex flex-column">
     <div class="tree-builder-toolbar-main-menu d-flex flex-column">
       <div
-        v-if="isImporterVisible"
-        class="flows-importer alert alert-info">
-        <h3>{{ trans('flow-builder.flow-importer') }}</h3>
+        v-if="isExportVisible"
+        class="flows-exporter alert alert-info">
+        <h3>{{ trans('flow-builder.flow-exporter') }}</h3>
         <textarea
-          v-model="flow"
-          class="flow-importer"
+          :value="flow"
+          class="flow-exporter"
           rows="15"
           disabled />
       </div>
@@ -127,9 +127,9 @@
               <button
                 v-if="hasToolbarExportButton"
                 class="btn btn-outline-primary btn-sm"
-                :class="{active: isImporterVisible}"
-                @click="toggleImportExport">
-                {{ trans('flow-builder.import-export') }}
+                :class="{active: isExportVisible}"
+                @click="toggleExportVisibility">
+                {{ trans('flow-builder.export') }}
               </button>
 
               <!--TODO - do disable if no changes logic-->
@@ -309,11 +309,7 @@ import Routes from '@/lib/mixins/Routes'
 import {identity, isEmpty, isNil, pickBy as _pickBy, reduce, omit} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
-// import {affix as Affix} from 'vue-strap'
-// import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
-// import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
 import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
-
 import Component, {mixins} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
 import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
@@ -335,7 +331,7 @@ const validationVuexNamespace = namespace('validation')
   },
 })
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
-  isImporterVisible = false
+  isExportVisible = false
   height = 102
 
   // The "Saving" text flashes too quickly w/o actual backend interaction
@@ -392,10 +388,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       null,
       2,
     )
-  }
-
-  set flow(value: string) {
-    this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[], resources: IResource[] })
   }
 
   get resourceViewUrl(): any {
@@ -538,8 +530,8 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     targetElement.click()
   }
 
-  toggleImportExport(): void {
-    this.isImporterVisible = !this.isImporterVisible
+  toggleExportVisibility(): void {
+    this.isExportVisible = !this.isExportVisible
   }
 
   editTreeRoute({component = null, mode = null}: { component?: any, mode?: string | null } = {}): any {
@@ -646,7 +638,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @builderVuexNamespace.Getter isEditable!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
   @builderVuexNamespace.Getter activeBlock?: IBlock
-  @builderVuexNamespace.Action importFlowsAndResources!: ({flows, resources}: { flows: IFlow[], resources: IResource[]}) => Promise<void>
   @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void
 
   // Clipboard
@@ -662,7 +653,7 @@ export default TreeBuilderToolbar
 @import "../../../scss/custom_variables";
 
 .tree-builder-toolbar {
-  .flows-importer textarea {
+  .flows-exporter textarea {
     display: block;
     width: 100%;
   }

@@ -121,7 +121,7 @@ export class BaseMountedVueClass extends Vue {
   store: new Vuex.Store<IRootState>(store),
 })
 export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass {
-  @flowVuexNamespace.Mutation resource_setValue: any
+  @flowVuexNamespace.Action resource_setValue: any
   @flowVuexNamespace.Mutation flow_setSupportedMode: any
 
   setResourceData({shouldSetChoices, configPath}: { shouldSetChoices: boolean, configPath: string }) {
