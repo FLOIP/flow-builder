@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="unsupported-block card">
     <div class="card-body sm-padding-below font-roboto">
       {{blockName}} {{'flow-builder.simulator-unsupported-block' | trans}}
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group flow-label">
+  <div class="flow-label-editor form-group flow-label">
     <text-editor
       v-model="label"
       :label="'flow-builder.flow-label' | trans"

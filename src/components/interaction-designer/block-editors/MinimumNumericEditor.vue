@@ -2,7 +2,7 @@
   <validation-message
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/validation_minimum`">
-    <div class="block-validation-min">
+    <div class="minimum-numeric-editor block-validation-min">
       <numeric-editor
         v-model.number="minValue"
         :regex-numeric-filtering="'[0-9]'"

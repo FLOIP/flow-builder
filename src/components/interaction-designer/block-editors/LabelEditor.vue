@@ -1,26 +1,28 @@
 <template>
-  <section class="mb-3">
-    <label class="text-primary">{{ 'flow-builder.title' | trans }}</label>
-    <validation-message
-      #input-control="{ isValid }"
-      :message-key="`block/${block.uuid}/label`">
-      <div class="d-flex">
-        <text-editor
-          v-model="blockLabel"
-          class="w-100"
-          :label="''"
-          :placeholder="'flow-builder.enter-title' | trans"
-          :valid-state="isValid" />
-        <span
-          class="btn btn-outline-primary btn-xs align-self-center ml-2"
-          @click="emitGearClickedEvent">
-          <font-awesome-icon
-            :icon="['fac', 'settings']"
-            class="fa-btn" />
-        </span>
-      </div>
-    </validation-message>
-  </section>
+  <div class="label-editor">
+    <section class="mb-3">
+      <label class="text-primary">{{ 'flow-builder.title' | trans }}</label>
+      <validation-message
+        #input-control="{ isValid }"
+        :message-key="`block/${block.uuid}/label`">
+        <div class="d-flex">
+          <text-editor
+            v-model="blockLabel"
+            class="w-100"
+            :label="''"
+            :placeholder="'flow-builder.enter-title' | trans"
+            :valid-state="isValid" />
+          <span
+            class="btn btn-outline-primary btn-xs align-self-center ml-2"
+            @click="emitGearClickedEvent">
+            <font-awesome-icon
+              :icon="['fac', 'settings']"
+              class="fa-btn" />
+          </span>
+        </div>
+      </validation-message>
+    </section>
+  </div>
 </template>
 
 <script lang="ts">

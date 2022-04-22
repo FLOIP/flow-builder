@@ -1,5 +1,5 @@
 <template>
-  <div class="clipboard-root-view">
+  <div class="clipboard-root clipboard-root-view">
     <header class="d-flex justify-content-between">
       <h3>
         {{ 'flow-builder.clipboard-simulator' | trans }}

@@ -2,7 +2,7 @@
   <validation-message
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/semantic_label`">
-    <div class="block-semantic-label">
+    <div class="semantic-label-editor block-semantic-label">
       <text-editor
         v-model="semanticLabel"
         :label="'flow-builder.block-exit-semantic-label' | trans"

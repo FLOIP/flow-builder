@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="max-response-characters-editor">
     <span class="d-flex mb-2">
       <input
         v-model="shouldShowMaxResponseCharField"
