@@ -10,7 +10,7 @@
       v-for="error in errorsToShow"
       :key="error.dataPath"
       class="card-body d-flex justify-content-between px-2 py-0 highlight-on-hover menu-bg-color">
-      <span class="text-danger align-self-center">{{ error.dataPath }} - {{ error.message }}</span>
+      <span class="text-danger align-self-center">{{ error.message }}</span>
       <button
         type="button"
         class="btn btn-link btn-link-text"
