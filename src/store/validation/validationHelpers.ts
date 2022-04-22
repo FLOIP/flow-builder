@@ -100,9 +100,10 @@ export function getOrCreateFlowValidator(schemaVersion: string): ValidateFunctio
   if (isEmpty(validators) || !validators.has(validationType)) {
     const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
 
-    // remove `blocks` property from IFlow schema to avoid double validations
+    // remove `blocks` & `resources` properties from IFlow schema to avoid double validations
     flowJsonSchema.definitions.IFlow.additionalProperties = true
     delete flowJsonSchema.definitions.IFlow.properties.blocks
+    delete flowJsonSchema.definitions.IFlow.properties.resources
 
     validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IFlow'))
   }
