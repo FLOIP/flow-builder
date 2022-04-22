@@ -55,7 +55,7 @@
               "uuid": "6324a107-3194-4c5a-8cae-36882074ca1a",
               "name": "Default",
               "default": true,
-              "config": {}
+              "vendor_metadata": {}
             }
           ],
           "config": {

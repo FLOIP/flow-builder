@@ -69,7 +69,7 @@
               "uuid": "d2a101b0-c14c-4a1c-8321-cc3a60a78090",
               "name": "1",
               "test": "block.value = true",
-              "config": {},
+              "vendor_metadata": {},
               "destination_block": "a5d6f811-7ba6-404d-890f-29d6c10e43b5"
             },
             {

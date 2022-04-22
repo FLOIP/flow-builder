@@ -45,7 +45,7 @@
               "uuid": "6324a107-3194-4c5a-8cae-36882074ca1a",
               "name": "Default",
               "default": true,
-              "config": {}
+              "vendor_metadata": {}
             }
           ],
           "config": {
@@ -72,12 +72,12 @@
               "uuid": "0638e873-a28c-4b7d-9578-5341de4e66bf",
               "name": "Default",
               "default": true,
-              "config": {}
+              "vendor_metadata": {}
             },
             {
               "uuid": "2c1a46ac-4c60-4750-96fa-aa56a36f3318",
               "name": "Error",
-              "config": {}
+              "vendor_metadata": {}
             }
           ],
           "config": {
@@ -142,7 +142,7 @@
               "uuid": "6324a107-3194-4c5a-8cae-36882074ca1a",
               "name": "Default",
               "default": true,
-              "config": {}
+              "vendor_metadata": {}
             }
           ],
           "config": {
@@ -169,12 +169,12 @@
               "uuid": "0638e873-a28c-4b7d-9578-5341de4e66bf",
               "name": "Default",
               "default": true,
-              "config": {}
+              "vendor_metadata": {}
             },
             {
               "uuid": "2c1a46ac-4c60-4750-96fa-aa56a36f3318",
               "name": "Error",
-              "config": {}
+              "vendor_metadata": {}
             }
           ],
           "config": {

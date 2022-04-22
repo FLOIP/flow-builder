@@ -141,7 +141,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return {
       ...defaults(props, {
         name: '',
-        config: {},
+        vendor_metadata: {},
         // prerequisite for reactivity, even optional params
         destination_block: undefined,
         test: '',

@@ -52,7 +52,7 @@
               "uuid": "e41f9b81-165f-4fa7-9c93-7870d93ae5c4",
               "name": "Default",
               "default": true,
-              "config": {}
+              "vendor_metadata": {}
             }
           ]
         },
@@ -81,7 +81,7 @@
               "uuid": "c0152ecc-bd8b-465a-9fd7-58c8039cca96",
               "name": "Default",
               "default": true,
-              "config": {}
+              "vendor_metadata": {}
             }
           ]
         }
