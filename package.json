@@ -20,6 +20,9 @@
     "clean": "rm -rf dist/",
     "deploy": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD"
   },
+  "engines": {
+    "node": "^14.19.1"
+  },
   "dependencies": {
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
