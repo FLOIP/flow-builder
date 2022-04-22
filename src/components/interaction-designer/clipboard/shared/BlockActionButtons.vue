@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isFocused" class="row blockActionButtonRoot">
+  <div v-if="isFocused" class="block-action-buttons row blockActionButtonRoot">
     <div v-if="isBlockInteraction && isFocused" class="col-md-6">
       <button
           class="btn btn-secondary btn-block sm-room-below"
