@@ -64,9 +64,9 @@ export class BuilderCanvas extends Vue {
     )
   }
 
-  @Watch('resourcesOnActiveFlow', {deep: true, immediate: true})
+  @Watch('activeFlow.resources', {deep: true, immediate: true})
   async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
-    console.debug('watch/resourcesOnActiveFlow:', 'resources inside active flow have changed, validating ...')
+    console.debug('watch/activeFlow.resources:', 'resources inside active flow have changed, validating ...')
     await this.validate_resourcesOnSupportedValues({
       resources: newResources,
       supportedModes: this.activeFlow.supported_modes,
@@ -207,7 +207,6 @@ export class BuilderCanvas extends Vue {
 
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Getter resourcesOnActiveFlow!: IResources
 
   @builderVuexNamespace.State isBlockEditorOpen!: boolean
 

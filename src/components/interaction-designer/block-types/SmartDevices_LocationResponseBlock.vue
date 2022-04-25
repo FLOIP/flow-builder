@@ -58,7 +58,7 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
   // @Prop()readonly block!: ILocationResponseBlock
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
-  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
+  @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
 
   updateThreshold(value: number): void {
     this.setAccuracyThreshold({blockId: this.block.uuid, value})
@@ -69,10 +69,10 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
   }
 
   get promptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.prompt]
+    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
   }
 
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
 
   @blockVuexNamespace.Action setAccuracyThreshold!: ({blockId, value}: { blockId: string, value: number }) => Promise<string>
   @blockVuexNamespace.Action setAccuracyTimeout!: ({blockId, value}: { blockId: string, value: number }) => Promise<string>

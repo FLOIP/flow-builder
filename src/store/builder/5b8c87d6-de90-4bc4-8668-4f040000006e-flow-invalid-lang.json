@@ -1,5 +1,5 @@
 {
-  "specification_version": "1.0.0-rc2",
+  "specification_version": "1.0.0-rc4",
   "uuid": "3666a05d-3792-482b-8f7f-9e2472e4f027",
   "name": "container name",
   "description": "container description",
@@ -55,7 +55,7 @@
               "uuid": "6324a107-3194-4c5a-8cae-36882074ca1a",
               "name": "Default",
               "default": true,
-              "config": {}
+              "vendor_metadata": {}
             }
           ],
           "config": {
@@ -63,58 +63,58 @@
           }
         }
       ],
-      "first_block_id": "eb34ac1f-f27c-43f4-87c9-7f61309bc725"
-    }
-  ],
-  "resources": [
-    {
-      "uuid": "29841127-3247-461e-829a-89c000000000",
-      "values": [
+      "first_block_id": "eb34ac1f-f27c-43f4-87c9-7f61309bc725",
+      "resources": [
         {
-          "language_id": "24",
-          "content_type": "text",
-          "modes": [
-            "IVR",
-            "SMS",
-            "USSD",
-            "RICH_MESSAGING",
-            "OFFLINE"
-          ],
-          "value": "Yes"
-        }
-      ]
-    },
-    {
-      "uuid": "29841127-3246-461e-829a-94d800000000",
-      "values": [
+          "uuid": "29841127-3247-461e-829a-89c000000000",
+          "values": [
+            {
+              "language_id": "24",
+              "content_type": "text",
+              "modes": [
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
+              ],
+              "value": "Yes"
+            }
+          ]
+        },
         {
-          "language_id": "22",
-          "content_type": "text",
-          "modes": [
-            "IVR",
-            "SMS",
-            "USSD",
-            "RICH_MESSAGING",
-            "OFFLINE"
-          ],
-          "value": "No"
-        }
-      ]
-    },
-    {
-      "uuid": "29841127-3245-4610-8037-cdc5199dc271",
-      "values": [
+          "uuid": "29841127-3246-461e-829a-94d800000000",
+          "values": [
+            {
+              "language_id": "22",
+              "content_type": "text",
+              "modes": [
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
+              ],
+              "value": "No"
+            }
+          ]
+        },
         {
-          "language_id": "22",
-          "content_type": "text",
-          "modes": [
-            "IVR",
-            "SMS",
-            "USSD",
-            "RICH_MESSAGING",
-            "OFFLINE"
-          ],
-          "value": "Yes"
+          "uuid": "29841127-3245-4610-8037-cdc5199dc271",
+          "values": [
+            {
+              "language_id": "22",
+              "content_type": "text",
+              "modes": [
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
+              ],
+              "value": "Yes"
+            }
+          ]
         }
       ]
     }
