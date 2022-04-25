@@ -77,7 +77,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
   get promptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.prompt]
+    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
   }
 
   handleChoiceChanged(): void {
@@ -108,7 +108,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     this.reflowExitsFromChoices({blockId})
   }
 
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
   @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 }

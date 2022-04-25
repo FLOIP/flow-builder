@@ -1,5 +1,5 @@
 {
-  "specification_version": "1.0.0-rc2",
+  "specification_version": "1.0.0-rc4",
   "uuid": "3666a05d-3792-482b-8f7f-9e2472e4f027",
   "name": "container name",
   "description": "container description",
@@ -45,7 +45,7 @@
               "uuid": "6324a107-3194-4c5a-8cae-36882074ca1a",
               "name": "Default",
               "default": true,
-              "config": {}
+              "vendor_metadata": {}
             }
           ],
           "config": {
@@ -72,12 +72,12 @@
               "uuid": "0638e873-a28c-4b7d-9578-5341de4e66bf",
               "name": "Default",
               "default": true,
-              "config": {}
+              "vendor_metadata": {}
             },
             {
               "uuid": "2c1a46ac-4c60-4750-96fa-aa56a36f3318",
               "name": "Error",
-              "config": {}
+              "vendor_metadata": {}
             }
           ],
           "config": {
@@ -90,17 +90,17 @@
           }
         }
       ],
-      "first_block_id": "eb34ac1f-f27c-43f4-87c9-7f61309bc725"
-    }
-  ],
-  "resources": [
-    {
-      "uuid": "3087a849-3f88-4fe4-8992-a8f5a8866124",
-      "values": []
-    },
-    {
-      "uuid": "5fe9f6b5-9cb2-4f3f-96f1-69ddb52cfd1e",
-      "values": []
+      "first_block_id": "eb34ac1f-f27c-43f4-87c9-7f61309bc725",
+      "resources": [
+        {
+          "uuid": "3087a849-3f88-4fe4-8992-a8f5a8866124",
+          "values": []
+        },
+        {
+          "uuid": "5fe9f6b5-9cb2-4f3f-96f1-69ddb52cfd1e",
+          "values": []
+        }
+      ]
     }
   ]
 }

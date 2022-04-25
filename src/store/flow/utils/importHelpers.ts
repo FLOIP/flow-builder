@@ -18,25 +18,6 @@ export function updateResourcesForLanguageMatch(
   })
 }
 
-export function replaceResourcesWhenNecessary(
-  existingResources: IResource[], newResources: IResource[],
-): IResource[] {
-  const newExistingResources = cloneDeep(existingResources)
-  newResources.forEach((resource) => {
-    const newResourceUUID = resource.uuid
-    const existingResourceIndex = findIndex(
-      newExistingResources,
-      (oldResource) => oldResource.uuid === newResourceUUID,
-    )
-    if (existingResourceIndex < 0) {
-      newExistingResources.push(resource)
-    } else {
-      newExistingResources[existingResourceIndex] = resource
-    }
-  })
-  return newExistingResources
-}
-
 // We shouldn't need any special logic over collisions
 // We just overwrite any existing flows/resources with a given uuid
 // This is because they are uuids
@@ -60,11 +41,6 @@ export function mergeFlowContainer(
   } else {
     newExistingFlowContainer.flows[existingFlowIndex] = newFlow
   }
-  const newResources = cloneDeep(newExistingFlowContainer.resources)
-  newExistingFlowContainer.resources = replaceResourcesWhenNecessary(
-    newResources,
-    newFlowContainer.resources,
-  )
   return newExistingFlowContainer
 }
 

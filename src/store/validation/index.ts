@@ -17,6 +17,7 @@ import {cloneDeep, each, filter, forIn, includes, intersection, isEmpty, map} fr
 import {
   debugValidationStatus,
   flatValidationStatuses,
+  getLocalizedAjvErrors,
   getOrCreateFlowValidator,
   getOrCreateLanguageValidator,
   getOrCreateResourceValidator,
@@ -88,7 +89,10 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     const status = await dispatch(`flow/${block.type}/validate`, {block, schemaVersion}, {root: true})
 
     const key = `block/${block.uuid}`
-    Vue.set(state.validationStatuses, key, status)
+    Vue.set(state.validationStatuses, key, {
+      ...status,
+      ajvErrors: getLocalizedAjvErrors(key, status.ajvErrors),
+    })
     if (status.ajvErrors === null) {
       commit('removeValidationStatusesFor', {key})
     }
@@ -101,7 +105,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     const key = `flow/${flow.uuid}`
     Vue.set(state.validationStatuses, key, {
       isValid: validate(flow),
-      ajvErrors: validate.errors,
+      ajvErrors: getLocalizedAjvErrors(key, validate.errors),
       type: 'flow',
     })
 
@@ -114,7 +118,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     const errors = getFlowStructureErrors(flowContainer, false)
     Vue.set(state.validationStatuses, key, {
       isValid: !errors,
-      ajvErrors: errors,
+      ajvErrors: getLocalizedAjvErrors(key, errors),
     })
 
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
@@ -142,7 +146,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     const key = `resource/${resource.uuid}`
     Vue.set(state.validationStatuses, key, {
       isValid: validate(resource),
-      ajvErrors: validate.errors,
+      ajvErrors: getLocalizedAjvErrors(key, validate.errors),
       type: 'resource',
     })
 

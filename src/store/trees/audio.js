@@ -175,7 +175,7 @@ export default {
           },
         })
 
-        commit('flow/resource_add', {resource})
+        dispatch('flow/resource_add', {resource})
         commit('pushAudioIntoLibrary', uploadedAudio)
 
         // TODO: what should be the equivalence of this in flow-builder

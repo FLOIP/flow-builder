@@ -27,7 +27,7 @@ export const mutations: MutationTree<ICustomFlowState> = {}
 export const actions: ActionTree<ICustomFlowState, IRootState> = {
   rewriteChoiceKeyFor({rootGetters, dispatch}, {resourceId, blockId}: {resourceId: IResource['uuid'], blockId: IBlock['uuid']}) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
-    const resource: IResource = rootGetters['flow/resourcesByUuid'][resourceId]
+    const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
 
     if (resource == null) {
       throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
@@ -41,7 +41,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
 
   addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
-    const resource: IResource = rootGetters['flow/resourcesByUuid'][resourceId]
+    const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
 
     if (resource == null) {
       throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)

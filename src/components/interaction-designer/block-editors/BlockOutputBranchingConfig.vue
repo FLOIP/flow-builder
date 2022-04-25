@@ -6,15 +6,13 @@
       <div class="btn-group d-block">
         <button
           v-if="hasExitPerChoice"
+          v-b-tooltip.hover.bottom="trans('flow-builder.separate-output-for-each-choice')"
           :class="{
             active: isBranchingTypeExitPerChoice,
             'btn-primary': isBranchingTypeExitPerChoice,
             'btn-outline-primary': !isBranchingTypeExitPerChoice,
           }"
-          :title="'flow-builder.separate-output-for-each-choice' | trans"
           class="btn btn-sm"
-          data-placement="bottom"
-          data-toggle="tooltip"
           @click="selectedBranchingType = OutputBranchingType.EXIT_PER_CHOICE">
           <font-awesome-icon
             :icon="['fac', 'one-exit-per-choice']"
@@ -23,15 +21,13 @@
 
         <button
           v-if="hasUnifiedExit"
+          v-b-tooltip.hover.bottom="trans('flow-builder.one-output-for-all-choices')"
           :class="{
             active: isBranchingTypeUnified,
             'btn-primary': isBranchingTypeUnified,
             'btn-outline-primary': !isBranchingTypeUnified,
           }"
-          :title="'flow-builder.one-output-for-all-choices' | trans"
           class="btn btn-sm"
-          data-placement="bottom"
-          data-toggle="tooltip"
           @click="selectedBranchingType = OutputBranchingType.UNIFIED">
           <font-awesome-icon
             :icon="['fac', 'single-exit']"
@@ -39,15 +35,13 @@
         </button>
 
         <button
+          v-b-tooltip.hover.bottom="trans('flow-builder.advanced-configuration-of-outputs')"
           :class="{
             active: isBranchingTypeAdvanced,
             'btn-primary': isBranchingTypeAdvanced,
             'btn-outline-primary': !isBranchingTypeAdvanced,
           }"
-          :title="'flow-builder.advanced-configuration-of-outputs' | trans"
           class="btn btn-sm"
-          data-placement="bottom"
-          data-toggle="tooltip"
           :disabled="!hasUnifiedExit && !hasExitPerChoice"
           @click="selectedBranchingType = OutputBranchingType.ADVANCED">
           <font-awesome-icon
