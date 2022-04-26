@@ -1,5 +1,5 @@
 <template>
-  <div class="first-block-editor-button starting-block-button">
+  <div class="first-block-editor-button">
     <template v-if="isEditable">
       <div class="form-group">
         <button
