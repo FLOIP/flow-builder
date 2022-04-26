@@ -1,5 +1,5 @@
 <template>
-  <main class="error-notifications error-notifications-wrapper">
+  <main class="error-notifications">
     <section
       v-if="flowValidationErrors.length > 0"
       class="alert alert-danger d-flex mb-0 py-sm-1 px-2"
