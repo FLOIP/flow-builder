@@ -2,7 +2,7 @@
   <validation-message
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/format_string`">
-    <div class="format-string-editor block-format-string">
+    <div class="format-string-editor">
       <text-editor
         v-model="formatString"
         :label="'flow-builder.format-string' | trans"
