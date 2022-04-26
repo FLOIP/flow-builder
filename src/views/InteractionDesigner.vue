@@ -302,19 +302,21 @@ export default {
 <style lang="scss">
   $sidebar-width: 365px;
 
+html {
+  background: #F5F5F5;
+}
+
   .interaction-designer-contents {
     background: #F5F5F5;
     min-height: 100vh;
-    display:inline-block;
-    margin: 0;
-    padding: 0;
   }
 
   .interaction-designer-header {
     width: 100%;
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
+    right: 0;
     display:inline-block;
     z-index: 4*10;
   }
