@@ -1,5 +1,5 @@
 <template>
-  <div class="clipboard-root clipboard-root-view">
+  <div class="clipboard-root">
     <header class="d-flex justify-content-between">
       <h3>
         {{ 'flow-builder.clipboard-simulator' | trans }}
@@ -176,7 +176,7 @@ export default class ClipboardRoot extends mixins(Lang) {
 </script>
 
 <style lang="scss">
-.clipboard-root-view {
+.clipboard-root {
   min-height: 80vh;
 }
 
