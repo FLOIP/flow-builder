@@ -66,16 +66,28 @@ export const mutations: MutationTree<IImportState> = {
   setExistingLanguagesWithoutMatch(state, languages) {
     state.existingLanguagesWithoutMatch = languages
   },
-  setFlowLanguages(state, languages) {
+  /**
+   * Set languages for the 1st flow
+   * Imports can only contain 01 flow.
+   * @param state
+   * @param languages
+   */
+  setImportedFlowLanguages(state, languages) {
     if (state.flowContainer) {
       state.flowContainer.flows[0].languages = languages
     } else {
       throw new Error('flowContainer is not set')
     }
   },
-  setFlowResources(state, resources) {
+  /**
+   * Set resources for the 1st flow
+   * Imports can only contain 01 flow.
+   * @param state
+   * @param resources
+   */
+  setImportedFlowResources(state, resources) {
     if (state.flowContainer) {
-      state.flowContainer.resources = resources
+      state.flowContainer.flows[0].resources = resources
     } else {
       throw new Error('flowContainer is not set')
     }
@@ -204,7 +216,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       })
       commit('setMatchingLanguages', matchingLanguages)
       // Update the languages so we use the org settings for things like id and orgId
-      commit('setFlowLanguages', state.matchingLanguages)
+      commit('setImportedFlowLanguages', state.matchingLanguages)
       commit('setExistingLanguagesWithoutMatch', differenceWith(rootGetters.languages, state.matchingLanguages, isEqual))
     }
   },
@@ -278,8 +290,8 @@ export const actions: ActionTree<IImportState, IRootState> = {
   matchLanguage({commit, state, dispatch}, {oldLanguage, matchingNewLanguage}) {
     commit('addFlowLanguage', matchingNewLanguage)
     commit(
-      'setFlowResources',
-      updateResourcesForLanguageMatch(get(state.flowContainer, 'resources', []), oldLanguage.id, matchingNewLanguage.id),
+      'setImportedFlowResources',
+      updateResourcesForLanguageMatch(get(state.flowContainer, 'flows.0.resources', []), oldLanguage.id, matchingNewLanguage.id),
     )
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
     commit('setMissingLanguages', reject(state.missingLanguages, (language) => isEqual(language, oldLanguage)))

@@ -109,7 +109,6 @@ export default class ClipboardRoot extends mixins(Lang) {
     const { flows } = flowState
     const languageId = '22'
     const mode = SupportedMode.OFFLINE
-    const { resources } = flowState
     const context: IContext = await createContextDataObjectFor(
       contact,
       groups,
@@ -118,7 +117,6 @@ export default class ClipboardRoot extends mixins(Lang) {
       flows,
       languageId,
       mode,
-      resources,
     )
 
     this.context = context
