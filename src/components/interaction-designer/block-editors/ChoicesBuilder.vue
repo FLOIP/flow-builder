@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import {get, isEmpty, last, intersectionWith} from 'lodash'
+import {get, intersectionWith, isEmpty, last} from 'lodash'
 import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
@@ -71,7 +71,7 @@ export class ChoicesBuilder extends mixins(Lang) {
 
   get choiceResourcesOrderedByResourcesList(): IResource[] {
     const choiceResourceIds = Object.values(this.block.config.choices)
-    return intersectionWith(this.resources, choiceResourceIds,
+    return intersectionWith(this.activeFlow.resources, choiceResourceIds,
       (resource, choiceResourceId) => resource.uuid === choiceResourceId)
   }
 
@@ -104,7 +104,8 @@ export class ChoicesBuilder extends mixins(Lang) {
   }
 
   focusInputElFor(editor?: Vue): void {
-    (editor?.$refs.input as HTMLInputElement).focus()
+    // Target input may be nested inside another Vue component
+    editor.$el.querySelector('input, textarea')?.focus()
   }
 
   handleExistingResourceVariantChangedFor(resourceId: IResource['uuid'], choiceIndex: number, resource: IResource): void {
@@ -125,7 +126,6 @@ export class ChoicesBuilder extends mixins(Lang) {
 
   @validationVuexNamespace.Getter choiceMimeType: string
 
-  @flowVuexNamespace.State resources!: IResource[]
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action resource_add!: ({resource}: {resource: IResource}) => void
   // @flowVuexNamespace.Action flow_createBlankResourceForEnabledModesAndLangs!: () => Promise<IResource>
