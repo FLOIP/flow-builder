@@ -37,7 +37,6 @@ export const PlainDraggable = {
 
     this.draggable = new PlainDraggableLib(this.$el, {
       containment: document.querySelector('.builder-canvas'),
-      //target: document.querySelector('.builder-canvas'),
       autoScroll: true,
 
       // prevent css translate() animations for move
