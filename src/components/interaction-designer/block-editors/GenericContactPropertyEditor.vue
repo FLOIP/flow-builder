@@ -27,7 +27,7 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_key`">
         <div class="block-contact-property-key">
-          <div v-if="availableContactPropertyFields">
+          <div v-if="subscriberPropertyFields">
             <label for="contact-property-selector">{{ trans('flow-builder.property') }}</label>
             <vue-multiselect
               id="contact-property-selector"
@@ -35,7 +35,7 @@
               track-by="id"
               label="display_label"
               :placeholder="'flow-builder.select-a-property' | trans"
-              :options="availableContactPropertyFields"
+              :options="subscriberPropertyFields"
               :multiple="false"
               :show-labels="false"
               :searchable="true" />
@@ -106,7 +106,7 @@
 <script lang="ts">
 import {IBlock, IBlockConfig} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
-import {namespace, State} from 'vuex-class'
+import {Getter, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {find, get, has} from 'lodash'
 import {mixins} from 'vue-class-component'
@@ -215,13 +215,9 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     })
   }
 
-  get availableContactPropertyFields(): IContactPropertyOption[] {
-    return this.ui.subscriberPropertyFields
-  }
-
   get flowSelectedContactPropertyField(): IContactPropertyOption | null {
     const selectedOption = find(
-      this.availableContactPropertyFields,
+      this.subscriberPropertyFields,
       (option: IContactPropertyOption) => option.name === this.block.config.set_contact_property?.property_key,
     )
 
@@ -240,7 +236,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   ) => void
   @flowVuexNamespace.Mutation block_removeConfigByKey!: ({blockId, key}: { blockId: string, key: string}) => void
 
-  @State(({trees: {ui}}) => ui) ui!: any
+  @Getter subscriberPropertyFields!: IContactPropertyOption[]
 }
 
 export default GenericContactPropertyEditor
