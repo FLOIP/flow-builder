@@ -3,43 +3,40 @@
     <base-block
       :block="block"
       :flow="flow"
+      :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor"
-      :show-semantic-label="false">
-      <template slot="extras">
-        <template
-          v-if="!$slots['extras']">
-          <choices-builder
-            :block="block"
-            @choiceChanged="handleChoiceChanged" />
-          <block-output-branching-config
-            v-if="!$slots['branching']"
-            :block="block"
-            :has-exit-per-choice="true"
-            :label-class="''"
-            @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
-
-          <div class="prompt-resource">
-            <resource-editor
-              v-if="promptResource"
-              :label="'flow-builder.prompt' | trans"
-              :resource="promptResource"
-              :block="block"
-              :flow="flow" />
-          </div>
-        </template>
-        <slot
-          v-if="$slots['extras']"
-          name="extras" />
-      </template>
-      <template slot="branching">
-        <slot
-          name="branching" />
-      </template>
-      <template slot="contact-props">
-        <slot
-          name="contact-props" />
-      </template>
+      @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
+      <slot
+        slot="resource-editors"
+        name="resource-editors">
+        <resource-editor
+          v-if="promptResource"
+          :label="'flow-builder.prompt' | trans"
+          :resource="promptResource"
+          :block="block"
+          :flow="flow" />
+      </slot>
+      <slot
+        slot="extras"
+        name="extras">
+        <choices-builder
+          :block="block"
+          @choiceChanged="handleChoiceChanged" />
+      </slot>
+      <slot name="vendor-extras" />
+      <slot
+        slot="branching"
+        name="branching">
+        <block-output-branching-config
+          :block="block"
+          :has-exit-per-choice="true"
+          :label-class="''"
+          @branchingTypeChanged="reflowExitsWhenSwitchingToBranchingTypeNotUnified()" />
+      </slot>
+      <slot
+        slot="contact-props"
+        name="contact-props" />
     </base-block>
     <slot name="vendor" />
   </div>
@@ -72,13 +69,11 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop({default: false}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
 
-  showSemanticLabel = false
-
   SupportedMode = SupportedMode
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
   get promptResource(): IResource {
-    return this.resourcesByUuid[this.block.config.prompt]
+    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
   }
 
   handleChoiceChanged(): void {
@@ -109,7 +104,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     this.reflowExitsFromChoices({blockId})
   }
 
-  @flowVuexNamespace.Getter resourcesByUuid!: { [key: string]: IResource }
+  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
   @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 }

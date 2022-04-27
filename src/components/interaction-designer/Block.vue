@@ -173,9 +173,6 @@ import {ResourceResolver, SupportedMode} from '@floip/flow-runner'
 import {generateConnectionLayoutKeyFor, OperationKind} from '@/store/builder'
 import {lang} from '@/lib/filters/lang'
 import {NoValidResponseHandler} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import {BTooltip} from 'bootstrap-vue'
-
-Vue.component('BTooltip', BTooltip)
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
 
@@ -219,7 +216,6 @@ export const Block = {
 
   computed: {
     ...mapState('flow', [
-      'resources',
       'selectedBlocks',
     ]),
     ...mapState('builder', [
@@ -366,7 +362,7 @@ export const Block = {
     },
 
     resolveTextResource(uuid) {
-      const {resources} = this
+      const {resources} = this.activeFlow
       const context = {
         resources,
         language_id: '22',

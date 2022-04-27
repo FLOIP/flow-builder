@@ -4,12 +4,12 @@
     class="tree-builder-toolbar d-flex flex-column">
     <div class="tree-builder-toolbar-main-menu d-flex flex-column">
       <div
-        v-if="isImporterVisible"
-        class="flows-importer alert alert-info">
-        <h3>{{ trans('flow-builder.flow-importer') }}</h3>
+        v-if="isExportVisible"
+        class="flows-exporter alert alert-info">
+        <h3>{{ trans('flow-builder.flow-exporter') }}</h3>
         <textarea
-          v-model="flow"
-          class="flow-importer"
+          :value="flow"
+          class="flow-exporter"
           rows="15"
           disabled />
       </div>
@@ -20,15 +20,15 @@
           <div class="btn-toolbar">
             <h4
               v-if="hasToolbarFlowTitle"
-              class="text-primary mr-4 mb-0 flow-label"
-              :title="activeFlow.label">
+              v-b-tooltip.hover="activeFlow.label"
+              class="text-primary mr-4 mb-0 flow-label">
               {{ activeFlow.label }}
             </h4>
             <div>
               <router-link
                 v-if="hasToolbarHomeButton"
+                v-b-tooltip.hover="trans('flow-builder.home')"
                 :to="route('flows.home')"
-                :title="trans('flow-builder.home')"
                 class="mr-2">
                 <font-awesome-icon
                   :icon="['fac', 'home']"
@@ -89,18 +89,18 @@
                 v-if="!ui.isEditableLocked"
                 class="btn-group">
                 <router-link
+                  v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
                   :to="viewTreeUrl"
                   event=""
-                  :title="trans('flow-builder.click-to-toggle-editing')"
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: !isEditable}"
                   @click.native.prevent="handlePersistFlow(viewTreeUrl)">
                   {{ trans('flow-builder.view-mode') }}
                 </router-link>
                 <router-link
+                  v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
                   :to="editTreeUrl"
                   event=""
-                  :title="trans('flow-builder.click-to-toggle-editing')"
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isEditable}"
                   @click.native.prevent="handlePersistFlow(editTreeUrl)">
@@ -127,9 +127,9 @@
               <button
                 v-if="hasToolbarExportButton"
                 class="btn btn-outline-primary btn-sm"
-                :class="{active: isImporterVisible}"
-                @click="toggleImportExport">
-                {{ trans('flow-builder.import-export') }}
+                :class="{active: isExportVisible}"
+                @click="toggleExportVisibility">
+                {{ trans('flow-builder.export') }}
               </button>
 
               <!--TODO - do disable if no changes logic-->
@@ -137,7 +137,7 @@
                 v-if="isEditable && isFeatureTreeSaveEnabled"
                 type="button"
                 class="btn btn-outline-primary btn-sm ml-4 save-button"
-                :title="trans('flow-builder.save-changes-to-the-flow')"
+                v-b-tooltip.hover="trans('flow-builder.save-changes-to-the-flow')"
                 :disabled="!!isTreeSaving"
                 @click="handlePersistFlow()">
                 {{ saveButtonText }}
@@ -301,7 +301,7 @@
   </div>
 </template>
 <script lang="ts">
-import {BModal, VBTooltipPlugin} from 'bootstrap-vue'
+import {BModal, BootstrapVue, BTooltip} from 'bootstrap-vue'
 import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
@@ -309,11 +309,7 @@ import Routes from '@/lib/mixins/Routes'
 import {identity, isEmpty, isNil, pickBy as _pickBy, reduce, omit} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
-// import {affix as Affix} from 'vue-strap'
-// import TreeUpdateConflictModal from '../TreeUpdateConflictModal'
-// import InteractionTotalsDateRangeConfiguration from './InteractionTotalsDateRangeConfiguration'
 import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
-
 import Component, {mixins} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
 import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
@@ -321,7 +317,8 @@ import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
 
-Vue.use(VBTooltipPlugin)
+Vue.use(BootstrapVue)
+Vue.component('BTooltip', BTooltip)
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -334,7 +331,7 @@ const validationVuexNamespace = namespace('validation')
   },
 })
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
-  isImporterVisible = false
+  isExportVisible = false
   height = 102
 
   // The "Saving" text flashes too quickly w/o actual backend interaction
@@ -391,10 +388,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       null,
       2,
     )
-  }
-
-  set flow(value: string) {
-    this.importFlowsAndResources(JSON.parse(value) as { flows: IFlow[], resources: IResource[] })
   }
 
   get resourceViewUrl(): any {
@@ -537,8 +530,8 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     targetElement.click()
   }
 
-  toggleImportExport(): void {
-    this.isImporterVisible = !this.isImporterVisible
+  toggleExportVisibility(): void {
+    this.isExportVisible = !this.isExportVisible
   }
 
   editTreeRoute({component = null, mode = null}: { component?: any, mode?: string | null } = {}): any {
@@ -645,7 +638,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @builderVuexNamespace.Getter isEditable!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
   @builderVuexNamespace.Getter activeBlock?: IBlock
-  @builderVuexNamespace.Action importFlowsAndResources!: ({flows, resources}: { flows: IFlow[], resources: IResource[]}) => Promise<void>
   @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void
 
   // Clipboard
@@ -661,7 +653,7 @@ export default TreeBuilderToolbar
 @import "../../../scss/custom_variables";
 
 .tree-builder-toolbar {
-  .flows-importer textarea {
+  .flows-exporter textarea {
     display: block;
     width: 100%;
   }

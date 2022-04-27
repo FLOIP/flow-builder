@@ -68,7 +68,6 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
     description: 'TODO',
     vendor_metadata: {},
     flows: state.flows,
-    resources: state.resources,
   } as unknown as IContext),
   hasTextMode: (state, getters) => [SupportedMode.USSD, SupportedMode.SMS].some((mode) => includes(
     getters.activeFlow.supported_modes || [],
@@ -87,7 +86,6 @@ export const mutations: MutationTree<IFlowsState> = {
     const persistedState = flowContainer
     state.isCreated = persistedState.isCreated
     state.flows = persistedState.flows
-    state.resources = persistedState.resources
   },
   //used to track whether we should put or post when persisting
   flow_updateCreatedState(state, createdState) {
@@ -284,16 +282,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return block
   },
 
-  async flow_addBlankResource({dispatch, commit}): Promise<IResource> {
+  async flow_addBlankResource({dispatch}): Promise<IResource> {
     const resource = await dispatch('resource_createWith', {props: {uuid: await (new IdGeneratorUuidV4()).generate()}})
-
-    commit('resource_add', {resource})
+    dispatch('resource_add', {resource})
 
     return resource
   },
-  async flow_addBlankResourceForEnabledModesAndLangs({dispatch, commit}): Promise<IResource> {
+  async flow_addBlankResourceForEnabledModesAndLangs({dispatch}): Promise<IResource> {
     const resource = await dispatch('flow_createBlankResourceForEnabledModesAndLangs')
-    commit('resource_add', {resource})
+    dispatch('resource_add', {resource})
     return resource
   },
 
@@ -336,17 +333,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         last_modified: moment().toISOString(),
         interaction_timeout: rootState.trees.ui.appWideInteractionTimeout,
         vendor_metadata: {},
-
         supported_modes: rootState.trees.ui.defaultModes,
         languages: [],
         blocks: [],
-
         first_block_id: '',
+        resources: [],
       }),
     }
   },
 
-  async flow_duplicateBlock({commit, state, getters}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }): Promise<IBlock> {
+  async flow_duplicateBlock({commit, state, getters, dispatch}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }): Promise<IBlock> {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     // @throws ValidationException when block absent
     const block: IBlock = findBlockWith(blockId, flow)
@@ -367,12 +363,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     if (has(duplicatedBlock.config, 'prompt')) {
       const sourceResourceUuid = duplicatedBlock.config!.prompt
       const targetResourceUuid = await (new IdGeneratorUuidV4()).generate()
-      const duplicatedResource: IResource = cloneDeep(getters.resourcesByUuid[sourceResourceUuid])
+      const duplicatedResource: IResource = cloneDeep(getters.resourcesByUuidOnActiveFlow[sourceResourceUuid])
 
       duplicatedResource.uuid = targetResourceUuid
-      commit('resource_add', {
-        resource: duplicatedResource
-      })
+      dispatch('resource_add', {resource: duplicatedResource})
       Vue.set(duplicatedBlock.config!, 'prompt', targetResourceUuid)
     }
 

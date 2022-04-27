@@ -244,10 +244,11 @@ See the general setup guidance above for how this is passed into Views.
 
 You then have several options:
 - Start from scratch and create a new block editor - requires a component, store, BLOCK_TYPE and installer. See `src/components/interaction-designer/block-types` for examples.
-- Wrap an existing block and use it's slots to override default UI. Slots available:
+- Wrap an existing block and use its slots to override default UI. Slots available:
     - `branching` - defaults to the `BlockOutputBranchingConfig` component. Can be switched off entirely with the `usesDefaultBranchingEditor` boolean prop
     - `contact-props` - defaults to the `GenericContactPropertyEditor` component. Can be switched off entirely with the `usesDefaultContactPropsEditor` boolean prop
     - `extras` - add content and UI specific to your custom block
+    - `vendor-extras`
     - `resource-editors` - add resource editors for block type specific resources. A more specific version of extras.
     - All other UI is common between community blocks. If you wish to override then see the [Overriding and customising non block components](#overriding-and-customising-non-block-components) section below
     - `vendor` - for anything which edits the `vendor_metadata` of the block.

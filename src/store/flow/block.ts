@@ -47,11 +47,6 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).test = value
   },
-  block_setExitConfigByPath(state, {exitId, blockId, path, value}: {exitId: string, blockId: string, path: string, value: object | string}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    // todo: this will break reactivity
-    set(findBlockExitWith(exitId, block).config, path, value)
-  },
   block_setExitSemanticLabel(state, {exitId, blockId, value}: { exitId: string, blockId: string, value: string }) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).semantic_label = value
@@ -156,7 +151,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return {
       ...defaults(props, {
         name: '',
-        config: {},
+        vendor_metadata: {},
         // prerequisite for reactivity, even optional params
         destination_block: undefined,
         test: '',
