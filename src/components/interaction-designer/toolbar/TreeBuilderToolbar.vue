@@ -2,7 +2,7 @@
   <div
     ref="builder-toolbar"
     class="tree-builder-toolbar d-flex flex-column">
-    <div class="tree-builder-toolbar tree-builder-toolbar-main-menu d-flex flex-column">
+    <div class="tree-builder-toolbar-main-menu d-flex flex-column">
       <div
         v-if="isExportVisible"
         class="flows-exporter alert alert-info">

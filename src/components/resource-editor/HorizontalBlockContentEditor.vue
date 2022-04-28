@@ -1,5 +1,5 @@
 <style lang="scss" scoped>
-.block-content-editor {
+.horizontal-block-content-editor {
   transition: all 200ms ease-in-out;
   background: #fff;
   border-top: 1px solid #eee;
@@ -23,7 +23,7 @@
 </style>
 
 <template>
-  <div class="block-content-editor">
+  <div class="horizontal-block-content-editor">
     <div class="list-group">
       <div
         v-for="langId in enabledLanguages"

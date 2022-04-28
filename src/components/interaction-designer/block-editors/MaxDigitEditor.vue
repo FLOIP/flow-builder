@@ -3,7 +3,7 @@
     v-if="hasIvr"
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/ivr/max_digits`">
-    <div class="max-digit-editor block-max-digits">
+    <div class="max-digit-editor">
       <numeric-editor
         v-model.number="maxDigits"
         :regex-numeric-filtering="'[0-9]'"
