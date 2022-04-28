@@ -68,11 +68,10 @@ export class BlockErrorsExpandable extends mixins(Lang) {
    * - resource validation
    */
   get allErrors(): ErrorObject[] {
-    return [].concat(
-      this.blockValidationStatusesForCurrentBlock,
-      this.resourceValidationStatusesForCurrentBlock,
-    )
-      .flat()
+    return [
+      ...this.blockValidationStatusesForCurrentBlock,
+      ...this.resourceValidationStatusesForCurrentBlock,
+    ]
       .filter(Boolean)
   }
 
@@ -81,13 +80,10 @@ export class BlockErrorsExpandable extends mixins(Lang) {
   }
 
   get blockLabel(): string {
-    const {label} = this.block
-    return Boolean(label)
-      ? label
-      : this.trans('flow-builder.untitled-block')
+    return this.block.label ?? this.trans('flow-builder.untitled-block')
   }
 
-  get resourceValidationStatusesForCurrentBlock(): IValidationStatus {
+  get resourceValidationStatusesForCurrentBlock(): ErrorObject[] {
     const choiceResourceUuids = this.block.config?.choices !== undefined
       ? Object.values(this.block.config.choices)
       : []
@@ -97,21 +93,21 @@ export class BlockErrorsExpandable extends mixins(Lang) {
       ...choiceResourceUuids,
     ]
       .map((uuid) => this.getAjvErrorsFor('resource', uuid))
-      .filter(Boolean)
+      .flat()
   }
 
-  get blockValidationStatusesForCurrentBlock(): IValidationStatus {
+  get blockValidationStatusesForCurrentBlock(): ErrorObject[] {
     return this.getAjvErrorsFor('block', this.block.uuid)
   }
 
-  getAjvErrorsFor(type: 'block' | 'resource', uuid: string): null | Array<ErrorObject> {
+  getAjvErrorsFor(type: 'block' | 'resource', uuid: string): ErrorObject[] {
     const validationStatus = get(this.validationStatuses, `${type}/${uuid}`)
 
-    if (validationStatus === undefined) {
-      return null
+    if (validationStatus === undefined || !validationStatus.ajvErrors) {
+      return []
     }
 
-    return validationStatus.ajvErrors?.map((ajvError) => ({
+    return validationStatus.ajvErrors.map((ajvError) => ({
       ...ajvError,
       dataPath: `${type}/${uuid}${ajvError.dataPath}`,
     }))

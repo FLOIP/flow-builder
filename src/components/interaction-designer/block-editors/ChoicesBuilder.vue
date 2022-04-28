@@ -104,8 +104,10 @@ export class ChoicesBuilder extends mixins(Lang) {
   }
 
   focusInputElFor(editor?: Vue): void {
-    // Target input may be nested inside another Vue component
-    editor.$el.querySelector('input, textarea')?.focus()
+    if (editor) {
+      // Target input may be nested inside another Vue component
+      (editor.$el.querySelector('input, textarea') as HTMLElement)?.focus()
+    }
   }
 
   handleExistingResourceVariantChangedFor(resourceId: IResource['uuid'], choiceIndex: number, resource: IResource): void {
@@ -124,7 +126,7 @@ export class ChoicesBuilder extends mixins(Lang) {
     this.$emit('choiceChanged', {resourceId, choiceIndex, resource})
   }
 
-  @validationVuexNamespace.Getter choiceMimeType: string
+  @validationVuexNamespace.Getter choiceMimeType!: string
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action resource_add!: ({resource}: {resource: IResource}) => void
