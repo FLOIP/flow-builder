@@ -27,7 +27,7 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_key`">
         <div class="block-contact-property-key">
-          <div v-if="subscriberPropertyFields">
+          <div v-if="hasSubscriberPropertyFields">
             <label for="contact-property-selector">{{ trans('flow-builder.property') }}</label>
             <vue-multiselect
               id="contact-property-selector"
@@ -108,7 +108,7 @@ import {IBlock, IBlockConfig} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
 import {Getter, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import {find, get, has} from 'lodash'
+import {find, get, has, isEmpty} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {isBlockInteractive} from '@/store/flow/block.ts'
 import VueMultiselect from 'vue-multiselect'
@@ -226,6 +226,10 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   set flowSelectedContactPropertyField(option: IContactPropertyOption | null) {
     this.updatePropertyKey(option?.name as string)
+  }
+
+  get hasSubscriberPropertyFields(): boolean {
+    return !isEmpty(this.subscriberPropertyFields)
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
