@@ -277,29 +277,54 @@
       {
         "id": "10",
         "name": "name",
-        "display_label": "Name (Text)"
+        "display_label": "Name (Text)",
+        "data_type": "text"
       },
       {
         "id": "11",
         "name": "comment",
-        "display_label": "Comment (Text)"
+        "display_label": "Comment (Text)",
+        "data_type": "text"
       },
       {
         "id": "12",
-        "name": "start_date",
-        "display_label": "Start Date (Date)"
+        "name": "age",
+        "display_label": "Age (Number)",
+        "data_type": "number"
+      },
+      {
+        "id": "13",
+        "name": "phone_number",
+        "display_label": "Phone number (phone)",
+        "data_type": "phone"
+      },
+      {
+        "id": "14",
+        "name": "favourite_fruits",
+        "display_label": "Favourite fruits (Multiple_choice)",
+        "data_type": "multiple_choice"
+      },
+      {
+        "id": "15",
+        "name": "address",
+        "display_label": "Address (Location)",
+        "data_type": "location"
+      },
+      {
+        "id": "16",
+        "name": "avatar",
+        "display_label": "Avatar (Media)",
+        "data_type": "media"
       }
     ],
-    "subscriberPropertyFieldDataTypes": [
-      "text",
-      "location",
-      "number",
-      "map_coordinates",
-      "boolean",
-      "phone",
-      "multiple_choice",
-      "date"
-    ],
+    "subscriberPropertyFieldDataTypesMapping": {
+      "text": ["MobilePrimitives.OpenResponse"],
+      "location": ["SmartDevices.LocationResponse"],
+      "number": ["MobilePrimitives.NumericResponse"],
+      "phone": ["MobilePrimitives.NumericResponse"],
+      "multiple_choice": ["MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
+      "media": ["SmartDevices.PhotoResponse"]
+    },
     "treeTitles": {},
     "treeSetTitles": {},
     "groupNames": {},
