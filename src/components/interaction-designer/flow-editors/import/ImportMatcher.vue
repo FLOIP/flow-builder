@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="import-matcher">
     <label>{{ matchNotFoundText | trans }}</label>
     <div
       v-for="missingMatch in missingMatches"

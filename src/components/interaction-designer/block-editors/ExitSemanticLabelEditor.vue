@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="exit-semantic-label-editor">
     <text-editor
       v-model="semanticLabel"
       :is-editable="isEditable"

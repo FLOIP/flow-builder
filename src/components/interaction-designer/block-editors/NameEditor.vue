@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-3">
+  <div class="name-editor mt-3">
     <validation-message
       #input-control="{ isValid }"
       :message-key="`block/${block.uuid}/name`">

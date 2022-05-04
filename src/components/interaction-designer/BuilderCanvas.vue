@@ -221,7 +221,7 @@ export default BuilderCanvas
 </script>
 
 <style scoped>
-.noselect * {
+.no-select * {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
