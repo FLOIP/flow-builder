@@ -27,7 +27,7 @@
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
     "@floip/expression-parser": "^1.11.3",
-    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#feature/VMO-5090/validate-expressions",
+    "@floip/flow-runner": "^1.0.0-rc4",
     "@flowjs/flow.js": "^2.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
