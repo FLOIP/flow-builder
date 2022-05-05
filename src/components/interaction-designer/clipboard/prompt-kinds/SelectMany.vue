@@ -1,42 +1,42 @@
 <template>
-    <div>
-      <div class="d-flex justify-content-between">
-        <slot name="title"></slot>
-        <i v-if="!isFocused && !isComplete" @click="editBlock"
-           class="glyphicon glyphicon-pencil cursor-pointer"></i>
-      </div>
-      <slot name="content"></slot>
-
-      <div class="form-group">
-        <div v-for="(option, index) in options" :key="index" class="form-check">
-          <input
-            type="checkbox"
-            name="select-many"
-            class="form-check-input"
-            :class="{'is-invalid': errorMsg}"
-            :id="index"
-            :value="option.key"
-            :disabled="!isFocused"
-            v-model="selectedChoices"
-            @change="checkIsValid(selectedChoices)"
-          />
-          <label class="form-check-label" :for="index">{{option.value}}</label>
-        </div>
-        <div v-if="errorMsg" class="text-danger">
-          <small>{{errorMsg}}</small>
-        </div>
-      </div>
-
-      <block-action-buttons
-        class="sm-room-above"
-        :is-disabled="false"
-        :is-focused="isFocused"
-        :on-next-clicked="submitAnswer"
-        :is-block-interaction="isBlockInteraction"
-        :on-cancel-clicked="onCancel"
-      />
-
+  <div class="select-many">
+    <div class="d-flex justify-content-between">
+      <slot name="title"></slot>
+      <i v-if="!isFocused && !isComplete" @click="editBlock"
+         class="glyphicon glyphicon-pencil cursor-pointer"></i>
     </div>
+    <slot name="content"></slot>
+
+    <div class="form-group">
+      <div v-for="(option, index) in options" :key="index" class="form-check">
+        <input
+          type="checkbox"
+          name="select-many"
+          class="form-check-input"
+          :class="{'is-invalid': errorMsg}"
+          :id="index"
+          :value="option.key"
+          :disabled="!isFocused"
+          v-model="selectedChoices"
+          @change="checkIsValid(selectedChoices)"
+        />
+        <label class="form-check-label" :for="index">{{option.value}}</label>
+      </div>
+      <div v-if="errorMsg" class="text-danger">
+        <small>{{errorMsg}}</small>
+      </div>
+    </div>
+
+    <block-action-buttons
+      class="sm-room-above"
+      :is-disabled="false"
+      :is-focused="isFocused"
+      :on-next-clicked="submitAnswer"
+      :is-block-interaction="isBlockInteraction"
+      :on-cancel-clicked="onCancel"
+    />
+
+  </div>
 </template>
 
 <script lang="ts">

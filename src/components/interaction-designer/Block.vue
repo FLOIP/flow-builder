@@ -1,5 +1,5 @@
 <template>
-  <div @click="selectBlock">
+  <div @click="selectBlock" class="block">
     <block-editor
       v-if="shouldShowBlockEditor"
       class="block-editor"

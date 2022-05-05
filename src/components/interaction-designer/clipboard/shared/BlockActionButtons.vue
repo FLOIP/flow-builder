@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isFocused" class="row blockActionButtonRoot">
+  <div v-if="isFocused" class="block-action-buttons row">
     <div v-if="isBlockInteraction && isFocused" class="col-md-6">
       <button
           class="btn btn-secondary btn-block sm-room-below"
@@ -49,7 +49,7 @@ export default {
   button {
   }
 
-  .blockActionButtonRoot {
+  .block-action-buttons {
     padding-left: 16px;
     padding-right: 16px;
     padding-bottom: 6px;
