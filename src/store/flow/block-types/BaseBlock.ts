@@ -1,8 +1,9 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockConfig, IBlock} from '@floip/flow-runner'
+import {IBlockConfig, IBlock, IBlockExit} from '@floip/flow-runner'
 import {defaultsDeep} from 'lodash'
 import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '../index'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
@@ -17,7 +18,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       label: '',
       semantic_label: '',
       config: {},
-      exits: [],
+      exits: [
+        await dispatch('flow/block_createBlockDefaultExitWith', {
+          props: ({
+            uuid: await (new IdGeneratorUuidV4()).generate(),
+          }) as IBlockExit,
+        }, {root: true}),
+      ],
       tags: [],
       vendor_metadata: {},
     })

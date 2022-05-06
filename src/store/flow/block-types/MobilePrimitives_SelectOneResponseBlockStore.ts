@@ -4,8 +4,8 @@ import {findBlockWith, IBlock, IBlockExit, IResource, ValidationException} from 
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
-import {cloneDeep, findKey, get, map, omit, snakeCase} from 'lodash'
-import BaseStore from '@/store/flow/block-types/BaseBlock'
+import {cloneDeep, findKey, get, map, merge, omit, snakeCase} from 'lodash'
+import BaseStore, {actions as baseActions} from '@/store/flow/block-types/BaseBlock'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
@@ -13,8 +13,6 @@ export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 export interface ICustomFlowState extends Partial<IFlowsState> {}
 
 export const stateFactory = (): ICustomFlowState => ({})
-
-const baseActions = cloneDeep(BaseStore.actions)
 
 const actions: ActionTree<ICustomFlowState, IRootState> = {
   rewriteChoiceKeyFor({rootGetters, dispatch}, {resourceId, blockId}: { resourceId: IResource['uuid'], blockId: IBlock['uuid'] }) {
@@ -79,13 +77,6 @@ const actions: ActionTree<ICustomFlowState, IRootState> = {
 
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     props.type = BLOCK_TYPE
-    props.exits = [
-      await dispatch('flow/block_createBlockDefaultExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-        }) as IBlockExit,
-      }, {root: true}),
-    ]
 
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
@@ -115,15 +106,9 @@ function formatTestValueForUnifiedBranchingType(block: ISelectOneResponseBlock):
   return `OR(${map(blockChoicesKey, (choice) => `block.value = "${choice}"`).join(',')})`
 }
 
-const MobilePrimitives_SelectOneResponseBlockStore = cloneDeep(BaseStore)
-
-MobilePrimitives_SelectOneResponseBlockStore.actions.rewriteChoiceKeyFor = actions.rewriteChoiceKeyFor
-MobilePrimitives_SelectOneResponseBlockStore.actions.addChoiceByResourceIdTo = actions.addChoiceByResourceIdTo
-MobilePrimitives_SelectOneResponseBlockStore.actions.deleteChoiceByResourceIdFrom = actions.deleteChoiceByResourceIdFrom
-MobilePrimitives_SelectOneResponseBlockStore.actions.reflowExitsFromChoices = actions.reflowExitsFromChoices
-MobilePrimitives_SelectOneResponseBlockStore.actions.createWith = actions.createWith
-MobilePrimitives_SelectOneResponseBlockStore.actions.handleBranchingTypeChangedToUnified = actions.handleBranchingTypeChangedToUnified
-
-MobilePrimitives_SelectOneResponseBlockStore.state = stateFactory
-
+const MobilePrimitives_SelectOneResponseBlockStore = merge(cloneDeep(BaseStore),
+  {
+    actions,
+    state: stateFactory(),
+  })
 export default MobilePrimitives_SelectOneResponseBlockStore
