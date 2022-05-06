@@ -2,7 +2,7 @@
   <validation-message
     #input-control="{isValid}"
     :message-key="`block/${block.uuid}/tags`">
-    <div class="block-group">
+    <div class="tag-selector">
       <label>{{ 'flow-builder.tags-label' | trans }}</label>
       <vue-multiselect
         v-model="selectedTags"

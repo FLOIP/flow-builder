@@ -2,7 +2,7 @@
   <validation-message
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/group_key`">
-    <div class="block-group">
+    <div class="group-selector block-group">
       <label class="text-primary">{{ 'flow-builder.group-label' | trans }}</label>
       <vue-multiselect
         v-model="selectedGroup"

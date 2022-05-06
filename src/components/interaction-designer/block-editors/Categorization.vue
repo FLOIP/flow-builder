@@ -1,5 +1,5 @@
 <template>
-  <div class="block-categorization">
+  <div class="categorization">
     <hr>
     <label class="text-primary">{{ 'flow-builder.categorization' | trans }}</label>
     <tag-selector :block="block" />

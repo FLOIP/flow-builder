@@ -7,6 +7,7 @@
       <resource-variant-text-editor
         ref="choices"
         :key="resource.uuid"
+        :index="i"
         class="choices-builder-item"
         :label="(i + 1).toString()"
         :rows="1"
@@ -33,6 +34,7 @@
         draftResource,
         {language_id: activeFlow.languages[0].id,
          content_type: SupportedContentType.TEXT,
+         mime_type: this.choiceMimeType,
          modes: [SupportedMode.TEXT]})"
       :mode="SupportedMode.TEXT"
       @beforeResourceVariantChanged="addDraftResourceToChoices"
@@ -41,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import {get, isEmpty, last, intersectionWith} from 'lodash'
+import {get, intersectionWith, isEmpty, last} from 'lodash'
 import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
@@ -55,6 +57,7 @@ import Vue from 'vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
+const validationVuexNamespace = namespace('validation')
 
 @Component({})
 export class ChoicesBuilder extends mixins(Lang) {
@@ -68,7 +71,7 @@ export class ChoicesBuilder extends mixins(Lang) {
 
   get choiceResourcesOrderedByResourcesList(): IResource[] {
     const choiceResourceIds = Object.values(this.block.config.choices)
-    return intersectionWith(this.resources, choiceResourceIds,
+    return intersectionWith(this.activeFlow.resources, choiceResourceIds,
       (resource, choiceResourceId) => resource.uuid === choiceResourceId)
   }
 
@@ -101,7 +104,10 @@ export class ChoicesBuilder extends mixins(Lang) {
   }
 
   focusInputElFor(editor?: Vue): void {
-    (editor?.$refs.input as HTMLInputElement).focus()
+    if (editor) {
+      // Target input may be nested inside another Vue component
+      (editor.$el.querySelector('input, textarea') as HTMLElement)?.focus()
+    }
   }
 
   handleExistingResourceVariantChangedFor(resourceId: IResource['uuid'], choiceIndex: number, resource: IResource): void {
@@ -120,7 +126,8 @@ export class ChoicesBuilder extends mixins(Lang) {
     this.$emit('choiceChanged', {resourceId, choiceIndex, resource})
   }
 
-  @flowVuexNamespace.State resources!: IResource[]
+  @validationVuexNamespace.Getter choiceMimeType!: string
+
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action resource_add!: ({resource}: {resource: IResource}) => void
   // @flowVuexNamespace.Action flow_createBlankResourceForEnabledModesAndLangs!: () => Promise<IResource>

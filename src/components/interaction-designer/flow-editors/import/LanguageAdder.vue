@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="language-adder">
     <slot :showAddLanguageModal="showAddLanguageModal">
       <button
         class="btn btn-primary"

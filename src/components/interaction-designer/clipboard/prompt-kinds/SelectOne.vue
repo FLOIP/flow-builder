@@ -1,11 +1,11 @@
 <template>
-    <div>
-      <div class="d-flex justify-content-between">
-        <slot name="title"></slot>
-        <i v-if="!isFocused && !isComplete" @click="editBlock"
-           class="glyphicon glyphicon-pencil cursor-pointer"></i>
-      </div>
-      <slot name="content"></slot>
+  <div class="select-one">
+    <div class="d-flex justify-content-between">
+      <slot name="title"></slot>
+      <i v-if="!isFocused && !isComplete" @click="editBlock"
+         class="glyphicon glyphicon-pencil cursor-pointer"></i>
+    </div>
+    <slot name="content"></slot>
 
     <div class="form-group">
       <div v-for="(option, index) in options" :key="index" class="form-check">
@@ -34,7 +34,7 @@
       :is-block-interaction="isBlockInteraction"
       :on-cancel-clicked="onCancel"
     />
-    </div>
+  </div>
 </template>
 
 <script lang="ts">

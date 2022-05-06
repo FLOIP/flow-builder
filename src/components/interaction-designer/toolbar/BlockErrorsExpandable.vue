@@ -14,7 +14,7 @@
       <button
         type="button"
         class="btn btn-link btn-link-text"
-        @click="$emit('fixBlockError', `block/${block.uuid}`, error.dataPath)">
+        @click="$emit('fixBlockError', block.uuid, error.dataPath)">
         {{ 'flow-builder.fix-issue' | trans }}
       </button>
     </div>
@@ -68,26 +68,49 @@ export class BlockErrorsExpandable extends mixins(Lang) {
    * - resource validation
    */
   get allErrors(): ErrorObject[] {
-    return union(this.blockValidationStatusesForCurrentBlock?.ajvErrors, this.resourceValidationStatusesForCurrentBlock?.ajvErrors)
+    return [
+      ...this.blockValidationStatusesForCurrentBlock,
+      ...this.resourceValidationStatusesForCurrentBlock,
+    ]
+      .filter(Boolean)
   }
 
   get isListLong(): boolean {
-    return this.allErrors && this.allErrors.length > DEFAULT_LIST_SIZE
+    return this.allErrors.length > DEFAULT_LIST_SIZE
   }
 
   get blockLabel(): string {
-    const {label} = this.block
-    return Boolean(label)
-      ? label
-      : this.trans('flow-builder.untitled-block')
+    return this.block.label ?? this.trans('flow-builder.untitled-block')
   }
 
-  get resourceValidationStatusesForCurrentBlock(): IValidationStatus {
-    return get(this.validationStatuses, `resource/${this.block.config?.prompt}`)
+  get resourceValidationStatusesForCurrentBlock(): ErrorObject[] {
+    const choiceResourceUuids = this.block.config?.choices !== undefined
+      ? Object.values(this.block.config.choices)
+      : []
+
+    return [
+      this.block.config?.prompt,
+      ...choiceResourceUuids,
+    ]
+      .map((uuid) => this.getAjvErrorsFor('resource', uuid))
+      .flat()
   }
 
-  get blockValidationStatusesForCurrentBlock(): IValidationStatus {
-    return get(this.validationStatuses, `block/${this.block.uuid}`)
+  get blockValidationStatusesForCurrentBlock(): ErrorObject[] {
+    return this.getAjvErrorsFor('block', this.block.uuid)
+  }
+
+  getAjvErrorsFor(type: 'block' | 'resource', uuid: string): ErrorObject[] {
+    const validationStatus = get(this.validationStatuses, `${type}/${uuid}`)
+
+    if (validationStatus === undefined || !validationStatus.ajvErrors) {
+      return []
+    }
+
+    return validationStatus.ajvErrors.map((ajvError) => ({
+      ...ajvError,
+      dataPath: `${type}/${uuid}${ajvError.dataPath}`,
+    }))
   }
 
   toggleList(): void {
