@@ -1,19 +1,17 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {ActionTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
-import {defaultsDeep} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {cloneDeep} from 'lodash'
+import BaseStore from '@/store/flow/block-types/BaseBlock'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.OpenResponse'
 
-export const getters: GetterTree<IFlowsState, IRootState> = {}
+const baseActions = cloneDeep(BaseStore.actions)
 
-export const mutations: MutationTree<IFlowsState> = {}
-
-export const actions: ActionTree<IFlowsState, IRootState> = {
+const actions: ActionTree<IFlowsState, IRootState> = {
   async setMaxDurationSeconds({commit, rootGetters}, newDuration: number) {
     const activeBlock = rootGetters['builder/activeBlock']
     commit('flow/block_updateConfigByKey', {
@@ -25,6 +23,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
     return newDuration
   },
+
   async setMaxResponseCharacters({commit, rootGetters}, newLength: number) {
     const activeBlock = rootGetters['builder/activeBlock']
     const value = {
@@ -37,8 +36,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
     return value
   },
+
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<IOpenResponseBlock> }) {
-    const exits: IBlockExit[] = [
+    props.type = BLOCK_TYPE
+    props.exits = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
@@ -47,36 +48,27 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
 
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
+    props.config = {
+      prompt: blankResource.uuid,
+    }
 
-    return defaultsDeep(props, {
-      type: BLOCK_TYPE,
-      name: '',
-      label: '',
-      semantic_label: '',
-      exits,
-      config: {
-        prompt: blankResource.uuid,
-      },
-      tags: [],
-      vendor_metadata: {},
-    })
+    //TODO - fix this
+    // @ts-ignore - Not all constituents of type 'Action<IFlowsState, IRootState>' are callable.
+    return baseActions.createWith({dispatch}, {props})
   },
 
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
     dispatch('flow/block_convertExitFormationToUnified', {
       blockId: block.uuid,
       test: 'LEN(block.value) > 0',
     }, {root: true})
   },
-
-  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateCommunityBlock({block, schemaVersion})
-  },
 }
 
-export default {
-  namespaced: true,
-  getters,
-  mutations,
-  actions,
-}
+const MobilePrimitives_OpenResponseBlockStore = cloneDeep(BaseStore)
+MobilePrimitives_OpenResponseBlockStore.actions.setMaxDurationSeconds = actions.setMaxDurationSeconds
+MobilePrimitives_OpenResponseBlockStore.actions.setMaxResponseCharacters = actions.setMaxResponseCharacters
+MobilePrimitives_OpenResponseBlockStore.actions.createWith = actions.createWith
+MobilePrimitives_OpenResponseBlockStore.actions.handleBranchingTypeChangedToUnified = actions.handleBranchingTypeChangedToUnified
+
+export default MobilePrimitives_OpenResponseBlockStore

@@ -1,23 +1,20 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {ActionTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IMessageBlock} from '@floip/flow-runner/src/model/block/IMessageBlock'
-import {defaultsDeep} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {cloneDeep} from 'lodash'
+import BaseStore from '@/store/flow/block-types/BaseBlock'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.Message'
 
-export const getters: GetterTree<IFlowsState, IRootState> = {}
+const baseActions = cloneDeep(BaseStore.actions)
 
-export const mutations: MutationTree<IFlowsState> = {}
-export const actions: ActionTree<IFlowsState, IRootState> = {
-
+const actions: ActionTree<IFlowsState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IMessageBlock> }) {
-    const blankMessageResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-
-    const exits: IBlockExit[] = [
+    props.type = BLOCK_TYPE
+    props.exits = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
@@ -25,36 +22,26 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }, {root: true}),
     ]
 
-    return defaultsDeep(props, {
-      type: BLOCK_TYPE,
-      name: '',
-      label: '',
-      semantic_label: '',
-      exits,
-      config: {
-        prompt: blankMessageResource.uuid,
-      },
-      tags: [],
-      vendor_metadata: {},
-    })
+    const blankMessageResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
+    props.config = {
+      prompt: blankMessageResource.uuid,
+    }
+
+    //TODO - fix this
+    // @ts-ignore - Not all constituents of type 'Action<IFlowsState, IRootState>' are callable.
+    return baseActions.createWith({dispatch}, {props})
   },
 
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
     dispatch('flow/block_convertExitFormationToUnified', {
       blockId: block.uuid,
       test: 'block.value > 0',
     }, {root: true})
   },
-
-  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateCommunityBlock({block, schemaVersion})
-  },
-
 }
 
-export default {
-  namespaced: true,
-  getters,
-  mutations,
-  actions,
-}
+const MobilePrimitives_MessageBlockStore = cloneDeep(BaseStore)
+MobilePrimitives_MessageBlockStore.actions.createWith = actions.createWith
+MobilePrimitives_MessageBlockStore.actions.handleBranchingTypeChangedToUnified = actions.handleBranchingTypeChangedToUnified
+
+export default MobilePrimitives_MessageBlockStore

@@ -1,19 +1,17 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {ActionTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
-import {defaultsDeep} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {cloneDeep} from 'lodash'
+import BaseStore from '@/store/flow/block-types/BaseBlock'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
 
-export const getters: GetterTree<IFlowsState, IRootState> = {}
+const baseActions = cloneDeep(BaseStore.actions)
 
-export const mutations: MutationTree<IFlowsState> = {}
-
-export const actions: ActionTree<IFlowsState, IRootState> = {
+const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMinimum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
     const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
@@ -23,6 +21,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
     return valueAsNumberOrUnset
   },
+
   async setValidationMaximum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
     const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
@@ -32,6 +31,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
     return valueAsNumberOrUnset
   },
+
   async setMaxDigits({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
     const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
@@ -43,8 +43,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
     return valueAsNumberOrUnset
   },
+
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<INumericResponseBlock> }) {
-    const exits: IBlockExit[] = [
+    props.type = BLOCK_TYPE
+    props.exits = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
@@ -53,32 +55,22 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
 
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
+    props.config = {
+      prompt: blankResource.uuid,
+      validation_minimum: undefined,
+      validation_maximum: undefined,
+    }
 
-    return defaultsDeep(props, {
-      type: BLOCK_TYPE,
-      name: '',
-      label: '',
-      semantic_label: '',
-      exits,
-      config: {
-        prompt: blankResource.uuid,
-        validation_minimum: undefined,
-        validation_maximum: undefined,
-      },
-      tags: [],
-      vendor_metadata: {},
-    })
+    //TODO - fix this
+    // @ts-ignore - Not all constituents of type 'Action<IFlowsState, IRootState>' are callable.
+    return baseActions.createWith({dispatch}, {props})
   },
 
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
     dispatch('flow/block_convertExitFormationToUnified', {
       blockId: block.uuid,
       test: formatTestValueForUnifiedBranchingType(block as INumericResponseBlock),
     }, {root: true})
-  },
-
-  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateCommunityBlock({block, schemaVersion})
   },
 }
 
@@ -104,9 +96,11 @@ function formatTestValueForUnifiedBranchingType(block: INumericResponseBlock): s
   return 'true'
 }
 
-export default {
-  namespaced: true,
-  getters,
-  mutations,
-  actions,
-}
+const MobilePrimitives_NumericResponseBlockStore = cloneDeep(BaseStore)
+MobilePrimitives_NumericResponseBlockStore.actions.setValidationMinimum = actions.setValidationMinimum
+MobilePrimitives_NumericResponseBlockStore.actions.setValidationMaximum = actions.setValidationMaximum
+MobilePrimitives_NumericResponseBlockStore.actions.setMaxDigits = actions.setMaxDigits
+MobilePrimitives_NumericResponseBlockStore.actions.createWith = actions.createWith
+MobilePrimitives_NumericResponseBlockStore.actions.handleBranchingTypeChangedToUnified = actions.handleBranchingTypeChangedToUnified
+
+export default MobilePrimitives_NumericResponseBlockStore

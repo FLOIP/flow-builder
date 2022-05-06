@@ -1,17 +1,11 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {ActionTree} from 'vuex'
 import {IRootState} from '@/store'
-import {
-  findBlockWith,
-  IBlock,
-  IBlockExit,
-  IResource,
-  ValidationException,
-} from '@floip/flow-runner'
+import {findBlockWith, IBlock, IBlockExit, IResource, ValidationException} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
-import {defaultsDeep, findKey, get, map, omit, snakeCase} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {cloneDeep, findKey, get, map, omit, snakeCase} from 'lodash'
+import BaseStore from '@/store/flow/block-types/BaseBlock'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
@@ -20,12 +14,10 @@ export interface ICustomFlowState extends Partial<IFlowsState> {}
 
 export const stateFactory = (): ICustomFlowState => ({})
 
-export const getters: GetterTree<ICustomFlowState, IRootState> = {}
+const baseActions = cloneDeep(BaseStore.actions)
 
-export const mutations: MutationTree<ICustomFlowState> = {}
-
-export const actions: ActionTree<ICustomFlowState, IRootState> = {
-  rewriteChoiceKeyFor({rootGetters, dispatch}, {resourceId, blockId}: {resourceId: IResource['uuid'], blockId: IBlock['uuid']}) {
+const actions: ActionTree<ICustomFlowState, IRootState> = {
+  rewriteChoiceKeyFor({rootGetters, dispatch}, {resourceId, blockId}: { resourceId: IResource['uuid'], blockId: IBlock['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
 
@@ -39,7 +31,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     dispatch('addChoiceByResourceIdTo', {blockId, resourceId})
   },
 
-  addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) {
+  addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
 
@@ -55,17 +47,18 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
     Vue.set(block.config.choices, `${desiredChoiceKey}${suffix}`, resource.uuid)
   },
 
-  deleteChoiceByResourceIdFrom({rootGetters}, {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) {
+  deleteChoiceByResourceIdFrom({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const choiceKey = String(findKey(block.config.choices, (v) => v === resourceId))
     Vue.delete(block.config.choices, choiceKey)
   },
 
-  async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: {blockId: IBlock['uuid']}) {
+  async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: { blockId: IBlock['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const {config: {choices}, exits}: ISelectOneResponseBlock = block
     const choiceKeys = Object.keys(choices)
-    const exitsForChoices: IBlockExit[] = exits.slice(0, -1) // non-default exits; default should always be last
+    // non-default exits; default should always be last
+    const exitsForChoices: IBlockExit[] = exits.slice(0, -1)
 
     // reflow exits based on choices
     await Promise.all(choiceKeys.map(async (choiceKey, i) => {
@@ -85,8 +78,8 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
   },
 
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
-    const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-    const exits: IBlockExit[] = [
+    props.type = BLOCK_TYPE
+    props.exits = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
@@ -94,30 +87,22 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
       }, {root: true}),
     ]
 
-    return defaultsDeep(props, {
-      type: BLOCK_TYPE,
-      name: '',
-      label: '',
-      semantic_label: '',
-      config: {
-        prompt: blankPromptResource.uuid,
-        choices: {},
-      },
-      exits,
-      tags: [],
-      vendor_metadata: {},
-    })
+    const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
+    props.config = {
+      prompt: blankPromptResource.uuid,
+      choices: {},
+    }
+
+    //TODO - fix this
+    // @ts-ignore - Not all constituents of type 'Action<IFlowsState, IRootState>' are callable.
+    return baseActions.createWith({dispatch}, {props})
   },
 
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
     dispatch('flow/block_convertExitFormationToUnified', {
       blockId: block.uuid,
       test: formatTestValueForUnifiedBranchingType(block as ISelectOneResponseBlock),
     }, {root: true})
-  },
-
-  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateCommunityBlock({block, schemaVersion})
   },
 }
 
@@ -130,10 +115,15 @@ function formatTestValueForUnifiedBranchingType(block: ISelectOneResponseBlock):
   return `OR(${map(blockChoicesKey, (choice) => `block.value = "${choice}"`).join(',')})`
 }
 
-export default {
-  namespaced: true,
-  state: stateFactory,
-  getters,
-  mutations,
-  actions,
-}
+const MobilePrimitives_SelectOneResponseBlockStore = cloneDeep(BaseStore)
+
+MobilePrimitives_SelectOneResponseBlockStore.actions.rewriteChoiceKeyFor = actions.rewriteChoiceKeyFor
+MobilePrimitives_SelectOneResponseBlockStore.actions.addChoiceByResourceIdTo = actions.addChoiceByResourceIdTo
+MobilePrimitives_SelectOneResponseBlockStore.actions.deleteChoiceByResourceIdFrom = actions.deleteChoiceByResourceIdFrom
+MobilePrimitives_SelectOneResponseBlockStore.actions.reflowExitsFromChoices = actions.reflowExitsFromChoices
+MobilePrimitives_SelectOneResponseBlockStore.actions.createWith = actions.createWith
+MobilePrimitives_SelectOneResponseBlockStore.actions.handleBranchingTypeChangedToUnified = actions.handleBranchingTypeChangedToUnified
+
+MobilePrimitives_SelectOneResponseBlockStore.state = stateFactory
+
+export default MobilePrimitives_SelectOneResponseBlockStore

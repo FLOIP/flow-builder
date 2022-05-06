@@ -1,6 +1,6 @@
 import {ActionTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockExit, IBlockConfig} from '@floip/flow-runner'
+import {IBlockConfig, IBlockExit} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {cloneDeep} from 'lodash'
 import BaseStore from './BaseBlock'
@@ -25,19 +25,17 @@ const actions: ActionTree<IFlowsState, IRootState> = {
           property_value: '',
         },
     }
-    const exits: IBlockExit[] = [
+    props.exits = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
         }) as IBlockExit,
       }, {root: true}),
     ]
-    props.exits = exits
     //TODO - fix this
     // @ts-ignore - Not all constituents of type 'Action<IFlowsState, IRootState>' are callable.
     return baseActions.createWith({dispatch}, {props})
   },
-
 }
 
 const Core_SetContactPropertyStore = cloneDeep(BaseStore)

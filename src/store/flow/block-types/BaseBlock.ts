@@ -16,8 +16,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       name: '',
       label: '',
       semantic_label: '',
-      config: {
-      },
+      config: {},
       exits: [],
       tags: [],
       vendor_metadata: {},
