@@ -1,9 +1,9 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit} from '@floip/flow-runner'
+import {IBlock, IBlockExit, INumericBlockConfig} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
-import {defaultsDeep} from 'lodash'
+import {defaultsDeep, get} from 'lodash'
 import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
 
@@ -78,7 +78,72 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateCommunityBlock({block, schemaVersion})
+    const validationResults = validateCommunityBlock({block, schemaVersion})
+
+    // Custom validation specific for the block
+    if (validationResults.ajvErrors == null) {
+      validationResults.ajvErrors = []
+    }
+
+    //TODO - re-trigger when ivr disabled/enabled...
+    const maxDigits = (block.config as INumericBlockConfig)?.ivr?.max_digits
+    const validationMax = (block.config as INumericBlockConfig)?.validation_maximum
+    const validationMin = (block.config as INumericBlockConfig)?.validation_minimum
+
+    // validationMin & validationMax relations, valid for all modes
+    if(validationMax < validationMin || (validationMax == null && validationMin != null)) {
+      validationResults.ajvErrors.push({
+        dataPath: "/config/validation_minimum",
+        message: "Minimum value (inclusive) must be lower than Maximum value (inclusive)" // TODO - i18n
+      })
+      validationResults.ajvErrors.push({
+        dataPath: "/config/validation_maximum",
+        message: "Maximum value (inclusive) must be greatter than Minimum value (inclusive)" // TODO - i18n
+      })
+    }
+
+    // MaxDigit & validationMin/validationMax relations, valid for iVR only
+    if (rootGetters['flow/hasVoiceMode']) {
+      // Must have one of MaxDigit or validationMax
+      if(maxDigits == null && validationMax == null) {
+        validationResults.ajvErrors.push({
+          dataPath: "/config/ivr/max_digits",
+          message: "Either Maximum Response Digits or Maximum value (inclusive) must be set when IVR is enabled" // TODO - i18n
+        })
+        validationResults.ajvErrors.push({
+          dataPath: "/config/validation_maximum",
+          message: "Either Maximum Response Digits or Maximum value (inclusive) must be set when IVR is enabled" // TODO - i18n
+        })
+      }
+
+      if (maxDigits != null) {
+        // validationMin must comply with MaxDigit
+        if(maxDigits * 9 < validationMin) {
+          validationResults.ajvErrors.push({
+            dataPath: "/config/ivr/max_digits",
+            message: "Minimum value (inclusive) must be lower than the number implied by Maximum Response Digits" // TODO - i18n
+          })
+          validationResults.ajvErrors.push({
+            dataPath: "/config/validation_minimum",
+            message: "Minimum value (inclusive) must be lower than the number implied by Maximum Response Digits" // TODO - i18n
+          })
+        }
+
+        // validationMax must comply with MaxDigit
+        if(maxDigits * 9 < validationMax) {
+          validationResults.ajvErrors.push({
+            dataPath: "/config/ivr/max_digits",
+            message: "Maximum value (inclusive) must be lower than the number implied by Maximum Response Digits" // TODO - i18n
+          })
+          validationResults.ajvErrors.push({
+            dataPath: "/config/validation_maximum",
+            message: "Maximum value (inclusive) must be lower than the number implied by Maximum Response Digits" // TODO - i18n
+          })
+        }
+      }
+    }
+
+    return validationResults
   },
 }
 
