@@ -1,16 +1,18 @@
 <template>
   <validation-message
-    #input-control="{ isValid }"
     :message-key="`resource/${resourceId}/values/${index}/value`">
-    <div class="resource-variant-text-editor">
-      <expression-input
-        ref="input"
-        :label="label"
-        :placeholder="placeholder || `flow-builder.enter-${resourceVariant.modes[0].replace('_', '-').toLowerCase()}-content` | trans"
-        :current-expression="content"
-        :rows="rows"
-        @commitExpressionChange="commitExpressionChange" />
-    </div>
+    <template #input-control="{ isValid }">
+      <div class="resource-variant-text-editor">
+        <expression-input
+          ref="input"
+          :label="label"
+          :placeholder="placeholder || `flow-builder.enter-${resourceVariant.modes[0].replace('_', '-').toLowerCase()}-content` | trans"
+          :current-expression="content"
+          :rows="rows"
+          :valid-state="isValid"
+          @commitExpressionChange="commitExpressionChange" />
+      </div>
+    </template>
   </validation-message>
 </template>
 
@@ -21,6 +23,7 @@ import Lang from '@/lib/filters/lang'
 import {IResource, IResourceValue} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
+import {SupportedMode} from '@floip/flow-runner/src/flow-spec/SupportedMode';
 
 const flowVuexNamespace = namespace('flow')
 
@@ -33,7 +36,7 @@ export class ResourceVariantTextEditor extends mixins(Lang) {
   @Prop({default: ''}) readonly label!: string
   @Prop() readonly placeholder!: string
   @Prop() readonly resourceVariant!: IResourceValue
-  @Prop() readonly mode!: string
+  @Prop() readonly mode!: SupportedMode
   @Prop({default: 2}) readonly rows!: number
 
   get content(): string {
@@ -42,12 +45,22 @@ export class ResourceVariantTextEditor extends mixins(Lang) {
 
   commitExpressionChange(value: string): void {
     const {resourceId, mode, resourceVariant} = this
-    const {language_id: languageId, content_type: contentType} = resourceVariant
+    const {language_id: languageId, content_type: contentType, mime_type: mimeType} = resourceVariant
+
+    const filter: Partial<IResourceValue> = {
+      language_id: languageId,
+      content_type: contentType,
+      modes: [mode],
+    }
+
+    if (mimeType !== undefined) {
+      filter.mime_type = mimeType
+    }
 
     this.$emit('beforeResourceVariantChanged', {variant: resourceVariant, resourceId})
     this.resource_setOrCreateValueModeSpecific({
       resourceId,
-      filter: {language_id: languageId, content_type: contentType, modes: [mode]},
+      filter,
       value,
     })
     this.$emit('afterResourceVariantChanged', {variant: resourceVariant, resourceId})
