@@ -1,5 +1,5 @@
 <template>
-  <div class="number-editor">
+  <div class="numeric-editor">
     <label class="text-primary mb-0">{{ label }}</label>
     <div class="small mb-2">{{subTitle}}</div>
     <div>

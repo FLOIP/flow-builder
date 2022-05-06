@@ -2,7 +2,7 @@
   <validation-message
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/maximum_choices`">
-    <div class="block-validation-max-choices">
+    <div class="maximum-choices-editor">
       <numeric-editor
         v-model.number="maxChoices"
         :regex-numeric-filtering="'[0-9]'"

@@ -1,5 +1,5 @@
 <template>
-  <main class="error-notifications-wrapper">
+  <main class="error-notifications">
     <section
       v-if="flowValidationErrors.length > 0"
       class="alert alert-danger d-flex mb-0 py-sm-1 px-2"
@@ -75,12 +75,12 @@
 
 <script lang="ts">
 import Lang from '@/lib/filters/lang'
-import {Dictionary, filter, get, pickBy, replace, size} from 'lodash'
+import {Dictionary, castArray, filter, get, has, pickBy, replace, size} from 'lodash'
 import {IValidationStatus} from '@/store/validation'
 import Routes from '@/lib/mixins/Routes'
 import Component, {mixins} from 'vue-class-component'
 import {namespace} from 'vuex-class'
-import {IFlow, IResource} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
 
 const flowVuexNamespace = namespace('flow')
@@ -118,11 +118,29 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
     })
   }
 
-  get invalidBlocksInActiveFlow() {
-    return filter(this.activeFlow?.blocks, (block) => {
-      // The block is invalid on IBlock OR it's invalid on corresponding IResource
-      return get(this.blockValidationStatuses, `block/${block.uuid}`) || get(this.resourceValidationStatusesForActiveFlow, `resource/${block.config.prompt}`)
-    });
+  hasBlockValidationErrors(uuid: string): boolean {
+    return has(this.blockValidationStatuses, `block/${uuid}`)
+  }
+
+  hasResourceValidationErrors(uuidOrUuids: string | string[]): boolean {
+    const uuids = castArray(uuidOrUuids)
+
+    for (let i = 0; i < uuids.length; i += 1) {
+      if (has(this.resourceValidationStatusesForActiveFlow, `resource/${uuids[i]}`)) {
+        return true
+      }
+    }
+    return false
+  }
+
+  isBlockInvalid(block: IBlock): boolean {
+    return this.hasBlockValidationErrors(block.uuid)
+      || this.hasResourceValidationErrors(block.config.prompt)
+      || this.hasResourceValidationErrors(block.config.choices)
+  }
+
+  get invalidBlocksInActiveFlow(): IBlock[] {
+    return filter(this.activeFlow?.blocks, this.isBlockInvalid.bind(this))
   }
 
   get numberOfBlocksWithErrors(): number {
@@ -139,8 +157,7 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
     })
   }
 
-  fixBlockError(key: string, dataPath: string): void {
-    const blockId = key.replace('block/', '')
+  fixBlockError(blockId: string, dataPath: string): void {
     this.$router.push({
       name: 'block-scroll-to-anchor',
       params: {
