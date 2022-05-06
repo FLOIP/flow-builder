@@ -7,6 +7,7 @@ import {
   faCheck,
   faChevronDown,
   faChevronUp,
+  faInfoCircle,
   faMobileAlt,
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
@@ -46,6 +47,7 @@ library.add(
   faSpinner,
   faTimesCircle,
   faTrashAlt,
+  faInfoCircle,
   ...CustomIcons,
 )
 
