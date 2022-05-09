@@ -112,7 +112,7 @@ import {find, get, has, isEmpty, map} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {isBlockInteractive} from '@/store/flow/block.ts'
 import VueMultiselect from 'vue-multiselect'
-import {IContactPropertyOption} from '@/store/flow/block-types/Core_SetContactPropertyStore'
+import {IContactPropertyOption, IContactPropertyOptionForUISelector} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -232,10 +232,10 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     return !isEmpty(this.subscriberPropertyFields)
   }
 
-  get subscriberPropertyFieldsForSelector() {
+  get subscriberPropertyFieldsForSelector(): IContactPropertyOptionForUISelector[] {
     return map(this.subscriberPropertyFields, (field: IContactPropertyOption) => {
-      const isFieldTypeMatchedWithCurrentBlock = this.subscriberPropertyFieldDataTypesMapping[field.data_type].includes(this.block.type)
-      return {...field, $isDisabled: isFieldTypeMatchedWithCurrentBlock === false}
+      const isFieldTypeMatchedWithCurrentBlock: boolean = this.subscriberPropertyFieldDataTypesMapping[field.data_type].includes(this.block.type)
+      return {...field, $isDisabled: !isFieldTypeMatchedWithCurrentBlock}
     })
   }
 
@@ -248,7 +248,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   @flowVuexNamespace.Mutation block_removeConfigByKey!: ({blockId, key}: { blockId: string, key: string}) => void
 
   @Getter subscriberPropertyFields!: IContactPropertyOption[]
-  @Getter subscriberPropertyFieldDataTypesMapping!: any
+  @Getter subscriberPropertyFieldDataTypesMapping!: Record<string, string[]>
 }
 
 export default GenericContactPropertyEditor
