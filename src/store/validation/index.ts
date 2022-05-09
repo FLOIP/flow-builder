@@ -104,6 +104,17 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     return state.validationStatuses[key]
   },
 
+  /**
+   * Validate all existing blocks in current flow
+   * This is useful when the flow has changed, and may affect blocks' validation
+   */
+  async validate_allBlocksWithinFlow({state, commit, rootGetters, dispatch}, {block}: {block: IBlock}): Promise<IValidationStatus[]> {
+    const schemaVersion = rootGetters['flow/activeFlowContainer'].specification_version
+    // TODO
+    // for each blocks in active flow
+    //  dispatch('validate_block', block)
+  },
+
   async validate_flow({state, rootGetters}, {flow}: {flow: IFlow}): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const key = `flow/${flow.uuid}`
