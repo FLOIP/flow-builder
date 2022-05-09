@@ -321,6 +321,10 @@ html {
     z-index: 4*10;
   }
 
+  .viamo-app-container .interaction-designer-header {
+    position: sticky;
+  }
+
   .tree-sidebar-container {
     position: fixed;
     right: 0;
@@ -370,6 +374,10 @@ html {
   .interaction-designer-main {
     flex: 1;
     margin-top: 150px;
+  }
+
+  .viamo-app-container .interaction-designer-main {
+    margin-top: 0;
   }
 
 </style>
