@@ -4,6 +4,7 @@ import Ajv, {ErrorObject, ValidateFunction} from 'ajv'
 import {get, isEmpty} from 'lodash'
 import {JSONSchema7} from 'json-schema'
 import ajvFormat from 'ajv-formats'
+import {parse as floipExpressionParser} from '@floip/expression-parser'
 import Lang from '@/lib/filters/lang'
 
 const DEV_ERROR_KEYWORDS = [
@@ -33,6 +34,18 @@ export function createDefaultJsonSchemaValidatorFactoryFor(jsonSchema: JSONSchem
   // we need this to use AJV format such as 'date-time'
   // (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
   ajvFormat(ajv)
+
+  ajv.addFormat('floip-expression', {
+    type: 'string',
+    validate: (x: string) => {
+      try {
+        floipExpressionParser(x)
+      } catch (e) {
+        return false
+      }
+      return true
+    },
+  })
 
   if (subSchema === '') {
     return ajv.compile(jsonSchema)
@@ -76,11 +89,25 @@ export function debugValidationStatus(status: IValidationStatus, customMessage: 
   }
 }
 
-function getErrorMessageLocalizationKey(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
-  const entity = keyPrefix.startsWith('flow') ? 'flows' : 'blocks'
-  const property = ajvErrorObject.dataPath.replaceAll('/', '-')
+function getErrorMessageLocalizationKeyForProperty(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
+  const [entity] = keyPrefix.split('/')
+  const property = ajvErrorObject.dataPath
+    .replaceAll('/', '-')
+    // Replacing digits to eliminate resource indexes
+    .replaceAll(/\d/g, 'x')
 
   return `flow-builder-validation.${entity}-${property.substring(1)}-${ajvErrorObject.keyword}`
+}
+
+function getErrorMessageLocalizationKey(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
+  const isFormatError = ajvErrorObject.keyword === 'format'
+  const isExpressionFormat = ajvErrorObject.params?.format === 'floip-expression'
+
+  if (isFormatError && isExpressionFormat) {
+    return 'flow-builder-validation.floip-format'
+  }
+
+  return getErrorMessageLocalizationKeyForProperty(keyPrefix, ajvErrorObject)
 }
 
 function getLocalizedErrorMessage(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
@@ -90,7 +117,7 @@ function getLocalizedErrorMessage(keyPrefix: string, ajvErrorObject: ErrorObject
   const hasTranslation = localizedMessage !== localizationKey
 
   if (!hasTranslation) {
-    console.debug(`Validation ${localizationKey} key was not found in localization data`, ajvErrorObject)
+    console.warn(`Error message not localized: ${localizationKey}`, JSON.parse(JSON.stringify(ajvErrorObject)))
     return ajvErrorObject.message ?? ''
   }
 

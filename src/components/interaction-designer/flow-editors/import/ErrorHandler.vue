@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="error-handler">
     <div v-if="updating">
       <br>
       <div

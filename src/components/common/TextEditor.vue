@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-editor">
     <label
       v-if="label"
       :class="labelClass">{{ label }}</label>

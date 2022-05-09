@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="base-block">
     <h3 class="block-editor-header">
       {{ `flow-builder.${block.type}` | trans }}
     </h3>

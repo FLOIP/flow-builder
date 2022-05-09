@@ -9,7 +9,7 @@
 </style>
 
 <template>
-  <div class="block-content-editor block-content-editor-unsupported">
+  <div class="block-content-editor-unsupported">
     <ul class="list-inline pull-right h4">
       <li v-for="tag in block.customData.tags">
         <span class="badge badge-default">{{ tag }}</span>

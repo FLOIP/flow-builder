@@ -2,7 +2,7 @@ import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, get, has, isArray, last, reduce, reject, set, setWith, snakeCase, toPath} from 'lodash'
+import {cloneDeep, defaults, defaultsDeep, get, has, isArray, last, reduce, reject, set, snakeCase, toPath} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import next from 'ajv/dist/vocabularies/next'
 import {IFlowsState} from '.'
@@ -77,10 +77,6 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   /**
    * update config by path, and make nested assignment reactive for vue
-   * @param state
-   * @param blockId
-   * @param path
-   * @param value
    */
   block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string}) {
     const base = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
