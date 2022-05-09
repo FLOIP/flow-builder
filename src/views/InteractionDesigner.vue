@@ -33,8 +33,8 @@
 
     <main class="interaction-designer-main">
       <builder-canvas
-        @click.native="handleCanvasSelected"
-        :width-adjustment="builderWidthAdjustment" />
+        :width-adjustment="builderWidthAdjustment"
+        @click.native="handleCanvasSelected" />
     </main>
   </div>
 </template>
