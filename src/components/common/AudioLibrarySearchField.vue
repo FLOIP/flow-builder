@@ -132,19 +132,19 @@ export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
     return trim(this.rawQuery)
   }
 
-  get isAudioLibraryEmpty() {
-    return this.isActive && !this.audioFiles.length
+  get isAudioLibraryEmpty(): boolean {
+    return this.isActive && this.audioFiles.length === 0
   }
 
-  get hasNext() {
+  get hasNext(): boolean {
     return (this.search(this.query).length / (this.offset + 1)) > this.limit
   }
 
-  get hasPrevious() {
+  get hasPrevious(): boolean {
     return this.offset > 0
   }
 
-  search(query: string) {
+  search(query: string): any {
     if (this.isEntireLibraryModeEnabled) {
       return this.audioFiles
     }
@@ -168,36 +168,36 @@ export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
   }
 
   // TODO: Push pagination into isolated component
-  incrementPage() {
+  incrementPage(): void {
     if (this.hasNext) {
       this.offset += 1
     }
   }
 
-  decrementPage() {
+  decrementPage(): void {
     if (this.hasPrevious) {
       (this.offset -= 1)
     }
   }
 
-  resetPagination() {
+  resetPagination(): void {
     this.offset = 0
   }
 
-  toggleAudioLibrary() {
+  toggleAudioLibrary(): void {
     this.isEntireLibraryModeEnabled = !this.isEntireLibraryModeEnabled
     this.resetPagination()
   }
 
-  select(audio: any) {
+  select(audio: any): void {
     this.$emit('select', {value: audio, langId: this.langId})
   }
 
-  activate() {
+  activate(): void {
     this.isActive = true
   }
 
-  deactivate() {
+  deactivate(): void {
     this.isActive = false
   }
 }

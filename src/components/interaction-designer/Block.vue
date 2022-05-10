@@ -213,8 +213,8 @@ export class Block extends mixins(Lang) {
   }
 
   @Watch('blockExitsLength')
-  onBlockExitsLengthChanged(newValue, oldValue) {
-    this.$nextTick(function () {
+  onBlockExitsLengthChanged(newValue: number, oldValue: number): void {
+    this.$nextTick(() => {
       this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
     })
   }
@@ -233,7 +233,7 @@ export class Block extends mixins(Lang) {
 
   @flowNamespace.Getter activeFlow: any
 
-  get blockExitsLength() {
+  get blockExitsLength(): number {
     return this.block.exits.length
   }
 
@@ -366,22 +366,6 @@ export class Block extends mixins(Lang) {
     }
 
     this.labelContainerMaxWidth = LABEL_CONTAINER_MAX_WIDTH
-  }
-
-  resolveTextResource(uuid: string) {
-    const {resources} = this.activeFlow
-    const context: IContext = {
-      resources,
-      language_id: '22',
-      mode: SupportedMode.SMS,
-    }
-    // as IContext) // this isn't ts
-    const resource = new ResourceResolver(context)
-      .resolve(uuid)
-
-    return resource.hasText()
-      ? resource.getText()
-      : uuid
   }
 
   // todo: push NodeExit into it's own vue component

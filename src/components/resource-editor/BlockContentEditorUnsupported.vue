@@ -29,9 +29,6 @@ import Lang from '@/lib/filters/lang'
 @Component({})
 export class BlockContentEditorUnsupported extends mixins(Lang) {
   @Prop() readonly block?: object
-
-  // TODO VMO-5609 Make sure this variable should not be used
-  // @Prop() readonly blockTypes: object[]
 }
 
 export default BlockContentEditorUnsupported

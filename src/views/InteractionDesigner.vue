@@ -146,7 +146,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
 
   // `this.mode` comes from captured param in js-routes
   @Watch('mode')
-  onModeChanged(newMode) {
+  onModeChanged(newMode: string) {
     this.updateIsEditableFromParams(newMode)
   }
 
@@ -257,7 +257,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     }
     this.setIsBlockEditorOpen(false)
     const routeName = this.$route.meta?.isFlowEditorShown ? 'flow-details' : 'flow-canvas'
-    this.$router.history.replace({
+    this.$router.replace({
       name: routeName,
     })
   }
@@ -287,12 +287,12 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       return
     }
 
-    this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
+    this.$router.replace(`/trees/${this.id}/resource-viewer`)
   }
 
   showOrHideSidebar() {
     //TODO with simulator work
-    //this.$router.history.replace({
+    //this.$router.replace({
     //name: this.$route.meta.isSidebarShown ? 'flow-canvas' : '???',
     //})
   }

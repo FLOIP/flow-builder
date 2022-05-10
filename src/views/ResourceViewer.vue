@@ -101,11 +101,11 @@
                 <span
                   class="label"
                   :class="{
-                    'label-warning': totalPiecesOfBlockContenWithSms !== totalPiecesOfBlockContent,
-                    'label-success': totalPiecesOfBlockContenWithSms === totalPiecesOfBlockContent}">
+                    'label-warning': totalPiecesOfBlockContentWithSms !== totalPiecesOfBlockContent,
+                    'label-success': totalPiecesOfBlockContentWithSms === totalPiecesOfBlockContent}">
                   {{ 'trees.sms' | trans }}
                   <!--<i class="glyphicon glyphicon-alert"></i>-->
-                  {{ totalPiecesOfBlockContenWithSms }}
+                  {{ totalPiecesOfBlockContentWithSms }}
                   <small>/ {{ totalPiecesOfBlockContent }}</small>
                 </span>
               </a>
@@ -117,11 +117,11 @@
                 <span
                   class="label"
                   :class="{
-                    'label-warning': totalPiecesOfBlockContenWithUssd !== totalPiecesOfBlockContent,
-                    'label-success': totalPiecesOfBlockContenWithUssd === totalPiecesOfBlockContent}">
+                    'label-warning': totalPiecesOfBlockContentWithUssd !== totalPiecesOfBlockContent,
+                    'label-success': totalPiecesOfBlockContentWithUssd === totalPiecesOfBlockContent}">
                   {{ 'trees.ussd' | trans }}
                   <!--<i class="glyphicon glyphicon-alert"></i>-->
-                  {{ totalPiecesOfBlockContenWithUssd }}
+                  {{ totalPiecesOfBlockContentWithUssd }}
                   <small>/ {{ totalPiecesOfBlockContent }}</small>
                 </span>
               </a>
@@ -242,13 +242,18 @@
         <fieldset :disabled="isEditableLocked">
           <template v-for="block in (query.length >= 3 ? search(query) : blocks)">
             <template v-if="hasContent(block.type)">
-              <ul class="list-inline pull-right h4">
-                <li v-for="tag in block.customData.tags">
+              <ul
+                :key="block.uuid"
+                class="list-inline pull-right h4">
+                <li
+                  v-for="(tag, i) in block.customData.tags"
+                  :key="i">
                   <span class="badge badge-default">{{ tag }}</span>
                 </li>
               </ul>
 
               <h4
+                :key="block.uuid"
                 :class="{'text-muted': !block.customData.title}"
                 :title="'Block ID - ' + block.jsKey">
                 <span v-if="block.customData.label">{{ block.customData.label }} - </span>
@@ -305,57 +310,58 @@ export class ResourceViewer extends mixins(Lang) {
   showEmptyBlocksOnly = false
   query = ''
 
-  created() {
+  created(): void {
     if (!this.$store.state.trees) {
       forEach(stores.modules, (v, k) => this.$store.registerModule(k, v))
       this.initializeTreeModel()
     }
   }
 
-  mounted() {
+  mounted(): void {
     console.debug('VueJS tree resources viewer mounted!')
   }
 
-  @Getter hasIssues: any
-  @Getter isFeatureTreesBatchLinkAudioEnabled: any
+  @Getter hasIssues!: boolean
+  @Getter isFeatureTreesBatchLinkAudioEnabled!: boolean
 
-  get id() {
+  get id(): string {
     return this.$route.params.id
   }
 
-  get pathToSendTree() {
+  get pathToSendTree(): string {
     return `/outgoing/new?tree=${this.tree.id}`
   }
 
-  get isEditableLocked() {
+  get isEditableLocked(): boolean {
     return this.$store.state.trees.ui.isEditableLocked === 1
   }
 
-  get languageNames() {
+  get languageNames(): string[] {
     return this.$store.state.trees.ui.languageNames
   }
 
-  get enabledLanguages() {
+  get enabledLanguages(): string[] {
     return this.$store.state.trees.tree.details.enabledLanguages
   }
 
-  get contentBlockTypes() {
+  get contentBlockTypes(): string[] {
     return this.$store.state.trees.ui.contentBlockTypes
   }
 
-  get blockTypes() {
+  get blockTypes(): Record<string, object> {
     return this.$store.state.trees.ui.blockClasses
   }
 
-  get tree() {
+  get tree(): any {
     return this.$store.state.trees.tree
   }
 
-  get blocks() {
+  get blocks(): any {
     if (this.showEmptyBlocksOnly) {
       // filter only empty content:
       // Empty content could be like: {} or {smsContent:{44:''}
-      // Generally, if a block is missing any of the content for all of the content types that are enabled for the tree, the block should be considered “empty” and show up using this filter.
+      // Generally, if a block is missing any of the content for all the content types
+      // that are enabled for the tree, the block should be considered “empty” and show up using this filter.
       return filter(this.$store.state.trees.tree.blocks, (item) => {
         if (!this.hasContent(item.type)) {
           return false
@@ -385,23 +391,23 @@ export class ResourceViewer extends mixins(Lang) {
     return this.$store.state.trees.tree.blocks
   }
 
-  get blocksWithContent() {
+  get blocksWithContent(): any {
     return filter(this.blocks, ({type}) => this.hasContent(type))
   }
 
-  get batchMatchAudioData() {
+  get batchMatchAudioData(): any {
     return this.$store.state.trees.ui.batchMatchAudio
   }
 
-  get isAudioLibraryEmpty() {
+  get isAudioLibraryEmpty(): boolean {
     return !this.$store.state.audio.library.length
   }
 
-  get totalPiecesOfBlockContent() {
+  get totalPiecesOfBlockContent(): number {
     return this.blocks.length * size(this.enabledLanguages)
   }
 
-  get percentagePiecesWithContent() {
+  get percentagePiecesWithContent(): string | number {
     if (!this.blocks.length) {
       return 0
     }
@@ -413,15 +419,15 @@ export class ResourceViewer extends mixins(Lang) {
         // + 1 = reviewed
         + 1
     const completed = this.totalPiecesOfBlockContentWithVoice
-      + this.totalPiecesOfBlockContenWithSms
-      + this.totalPiecesOfBlockContenWithUssd
+      + this.totalPiecesOfBlockContentWithSms
+      + this.totalPiecesOfBlockContentWithUssd
       + this.totalPiecesOfBlockContentReviewed
     const total = (this.totalPiecesOfBlockContent * channels)
 
     return ((completed / total) * 100).toFixed(0)
   }
 
-  get totalPiecesOfBlockContentWithVoice() {
+  get totalPiecesOfBlockContentWithVoice(): number {
     if (!this.tree.details.hasVoice) {
       return 0
     }
@@ -433,7 +439,7 @@ export class ResourceViewer extends mixins(Lang) {
     )
   }
 
-  get totalPiecesOfBlockContenWithSms() {
+  get totalPiecesOfBlockContentWithSms(): number {
     if (!this.tree.details.hasSms) {
       return 0
     }
@@ -445,7 +451,7 @@ export class ResourceViewer extends mixins(Lang) {
     )
   }
 
-  get totalPiecesOfBlockContenWithUssd() {
+  get totalPiecesOfBlockContentWithUssd(): number {
     if (!this.tree.details.hasUssd) {
       return 0
     }
@@ -457,28 +463,28 @@ export class ResourceViewer extends mixins(Lang) {
     )
   }
 
-  get totalPiecesOfBlockContentReviewed() {
+  get totalPiecesOfBlockContentReviewed(): number {
     return reduce(this.enabledLanguages, (sum, langId) =>
         // using lodash to fetch this one because reviewed hash may be absent
         reduce(this.blocks, (sum, block) => sum + +!!get(block, `customData.reviewed.${langId}`), sum),
       0)
   }
 
-  @Action initializeTreeModel: any
+  @Action initializeTreeModel!: () => void
 
-  handleTreeEditorSelected() {
+  handleTreeEditorSelected(): void {
     this.$el.scrollIntoView(true)
   }
 
-  toggleBatchMatchAudioDialog() {
+  toggleBatchMatchAudioDialog(): void {
     this.batchMatchAudioDialogShown = !this.batchMatchAudioDialogShown
   }
 
-  toggleShowEmptyBlocks() {
+  toggleShowEmptyBlocks(): void {
     this.showEmptyBlocksOnly = !this.showEmptyBlocksOnly
   }
 
-  dispatchBatchMatchAudio({value: pattern, replaceExisting} : {value: string, replaceExisting: boolean}) {
+  dispatchBatchMatchAudio({value: pattern, replaceExisting} : {value: string, replaceExisting: boolean}): void {
     const {id: treeId} = this.tree
 
     this.$store.dispatch('batchMatchAudioTriggered', {treeId, pattern, replaceExisting})
@@ -493,7 +499,7 @@ export class ResourceViewer extends mixins(Lang) {
       })
   }
 
-  hasContent(blockType: string) {
+  hasContent(blockType: string): boolean {
     // special case -- we don't support this nested content type yet.
     if (blockType === 'RandomOrderMultipleChoiceQuestionBlock') {
       return false
@@ -502,7 +508,7 @@ export class ResourceViewer extends mixins(Lang) {
     return includes(this.contentBlockTypes, blockType)
   }
 
-  search(query: any) {
+  search(query: string): any {
     const
       {enabledLanguages: languages} = this.$store.state.trees.tree.details
     const keys = [
@@ -518,7 +524,7 @@ export class ResourceViewer extends mixins(Lang) {
     return new Fuse(this.blocks, {fieldNormWeight: 1, keys}).search(query)
   }
 
-  clearSearch() {
+  clearSearch(): void {
     this.query = ''
   }
 }
