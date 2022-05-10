@@ -93,11 +93,13 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-input
+          class="mb-1"
           :label="''"
           :placeholder="'flow-builder.enter-expression' | trans"
           :current-expression="propertyValue"
           :valid-state="isValid"
           @commitExpressionChange="updatePropertyValue" />
+        <div class="small">{{ trans('flow-builder.hint-to-set-contact-prop-by-expression') }}</div>
       </validation-message>
     </div>
   </div>
