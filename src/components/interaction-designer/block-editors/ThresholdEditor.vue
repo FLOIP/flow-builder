@@ -1,5 +1,5 @@
 <template>
-  <validation-message :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`">
+  <ValidationMessage :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`">
     <template #input-control="{ isValid }">
       <div class="threshold-editor">
         <float-editor
@@ -11,7 +11,7 @@
           :valid-state="isValid" />
       </div>
     </template>
-  </validation-message>
+  </ValidationMessage>
 </template>
 
 <script lang="ts">

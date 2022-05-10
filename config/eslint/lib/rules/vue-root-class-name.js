@@ -21,7 +21,15 @@ module.exports = {
     messages: {
       missing: 'root element should have \'{{name}}\' class',
       add: 'add \'{{name}}\' to the class list'
-    }
+    },
+    schema: [
+      {
+        type: "array",
+        items: {
+          type: "string"
+        }
+      }
+    ]
   },
 
   create (context) {
@@ -29,13 +37,24 @@ module.exports = {
     // Helpers
     // ----------------------------------------------------------------------
 
-    function getRootElement (program) {
-      const elements = program?.templateBody?.children
-      if (!elements) return null
+    function findRootElement (element) {
+      const children = element?.children
+      if (!children) return null
 
-      for (const child of elements) {
-        if (child.type === 'VElement') {
-          return child
+      const wrapperComponentNames = [
+        ...context.options[0].map(kebabCase),
+        'template'
+      ]
+
+      for (const node of children) {
+        if (node.type !== 'VElement') {
+          continue
+        }
+
+        if (wrapperComponentNames.includes(kebabCase(node.rawName))) {
+          return findRootElement(node)
+        } else {
+          return node
         }
       }
 
@@ -119,7 +138,7 @@ module.exports = {
 
     return {
       Program (program) {
-        const root = getRootElement(program)
+        const root = findRootElement(program?.templateBody)
 
         // No template
         if (!root) return
