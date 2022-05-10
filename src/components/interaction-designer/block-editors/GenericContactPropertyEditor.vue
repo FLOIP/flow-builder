@@ -234,8 +234,15 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   get subscriberPropertyFieldsForSelector(): IContactPropertyOptionForUISelector[] {
     return map(this.subscriberPropertyFields, (field: IContactPropertyOption) => {
-      const isFieldTypeMatchedWithCurrentBlock: boolean = this.subscriberPropertyFieldDataTypesMapping[field.data_type].includes(this.block.type)
-      return {...field, $isDisabled: !isFieldTypeMatchedWithCurrentBlock}
+      let shouldDisplay
+      if (this.block.config?.set_contact_property?.property_value === '') {
+        // users choose to set the contact prop from "expression" value
+        shouldDisplay = true
+      } else {
+        shouldDisplay = this.subscriberPropertyFieldDataTypesMapping[field.data_type].includes(this.block.type)
+      }
+
+      return {...field, $isDisabled: !shouldDisplay}
     })
   }
 
