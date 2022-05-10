@@ -99,7 +99,9 @@
           :current-expression="propertyValue"
           :valid-state="isValid"
           @commitExpressionChange="updatePropertyValue" />
-        <div class="small">{{ trans('flow-builder.hint-to-set-contact-prop-by-expression') }}</div>
+        <div class="small">
+          {{ trans('flow-builder.hint-to-set-contact-prop-by-expression') }}
+        </div>
       </validation-message>
     </div>
   </div>

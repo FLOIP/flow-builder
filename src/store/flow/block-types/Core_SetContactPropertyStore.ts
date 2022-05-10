@@ -15,7 +15,7 @@ export interface IContactPropertyOption {
 
 export interface IContactPropertyOptionForUISelector extends IContactPropertyOption {
   // $isDisabled is used by vue-multiselect
-  $isDisabled: boolean
+  $isDisabled: boolean,
 }
 
 export const BLOCK_TYPE = 'Core.SetContactProperty'
