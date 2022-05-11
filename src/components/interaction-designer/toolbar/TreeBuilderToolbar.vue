@@ -631,7 +631,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @Getter getToolbarConfig!: boolean
 
   // Flow
-  @flowVuexNamespace.Getter activeFlow?: IFlow
+  @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Getter activeFlowContainer?: IContext
   @flowVuexNamespace.Getter hasOfflineMode?: boolean
   @flowVuexNamespace.Getter isActiveFlowValid?: boolean

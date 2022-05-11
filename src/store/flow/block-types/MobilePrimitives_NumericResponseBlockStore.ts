@@ -6,6 +6,7 @@ import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumeric
 import {defaultsDeep, get} from 'lodash'
 import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import Lang from '@/lib/filters/lang'
+import {ErrorObject} from 'ajv'
 import {IFlowsState} from '../index'
 
 const lang = new Lang()
@@ -96,52 +97,52 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     if ((validationMax != null && validationMin != null && validationMax < validationMin)
       || (validationMax == null && validationMin != null)) {
       validationResults.ajvErrors.push({
-        dataPath: "/config/validation_minimum",
-        message: lang.trans('flow-builder-validation.numeric-block-min-value-must-be-lower-than-max-value')
-      })
+        dataPath: '/config/validation_minimum',
+        message: lang.trans('flow-builder-validation.numeric-block-min-value-must-be-lower-than-max-value'),
+      } as ErrorObject)
       validationResults.ajvErrors.push({
-        dataPath: "/config/validation_maximum",
-        message: lang.trans('flow-builder-validation.numeric-block-max-value-must-be-greater-than-min-value')
-      })
+        dataPath: '/config/validation_maximum',
+        message: lang.trans('flow-builder-validation.numeric-block-max-value-must-be-greater-than-min-value'),
+      } as ErrorObject)
     }
 
     // MaxDigit & validationMin/validationMax relations, valid for iVR only
-    if (rootGetters['flow/hasVoiceMode']) {
+    if (rootGetters['flow/hasVoiceMode'] as boolean) {
       // Must have one of MaxDigit or validationMax
       if (maxDigits == null && validationMax == null) {
         validationResults.ajvErrors.push({
-          dataPath: "/config/ivr/max_digits",
-          message: lang.trans('flow-builder-validation.numeric-block-missing-max-value-and-max-digits')
-        })
+          dataPath: '/config/ivr/max_digits',
+          message: lang.trans('flow-builder-validation.numeric-block-missing-max-value-and-max-digits'),
+        } as ErrorObject)
         validationResults.ajvErrors.push({
-          dataPath: "/config/validation_maximum",
-          message: lang.trans('flow-builder-validation.numeric-block-missing-max-value-and-max-digits')
-        })
+          dataPath: '/config/validation_maximum',
+          message: lang.trans('flow-builder-validation.numeric-block-missing-max-value-and-max-digits'),
+        } as ErrorObject)
       }
 
       if (maxDigits != null) {
         // validationMin must comply with MaxDigit
-        if (maxDigits * 9 < validationMin) {
+        if (validationMin != null && maxDigits * 9 < validationMin) {
           validationResults.ajvErrors.push({
-            dataPath: "/config/ivr/max_digits",
-            message: lang.trans('flow-builder-validation.numeric-block-min-value-must-be-lower-than-implied-max-digits')
-          })
+            dataPath: '/config/ivr/max_digits',
+            message: lang.trans('flow-builder-validation.numeric-block-min-value-must-be-lower-than-implied-max-digits'),
+          } as ErrorObject)
           validationResults.ajvErrors.push({
-            dataPath: "/config/validation_minimum",
-            message: lang.trans('flow-builder-validation.numeric-block-min-value-must-be-lower-than-implied-max-digits')
-          })
+            dataPath: '/config/validation_minimum',
+            message: lang.trans('flow-builder-validation.numeric-block-min-value-must-be-lower-than-implied-max-digits'),
+          } as ErrorObject)
         }
 
         // validationMax must comply with MaxDigit
-        if (maxDigits * 9 < validationMax) {
+        if (validationMax != null && maxDigits * 9 < validationMax) {
           validationResults.ajvErrors.push({
-            dataPath: "/config/ivr/max_digits",
-            message: lang.trans('flow-builder-validation.numeric-block-max-value-must-be-lower-than-implied-max-digits')
-          })
+            dataPath: '/config/ivr/max_digits',
+            message: lang.trans('flow-builder-validation.numeric-block-max-value-must-be-lower-than-implied-max-digits'),
+          } as ErrorObject)
           validationResults.ajvErrors.push({
-            dataPath: "/config/validation_maximum",
-            message: lang.trans('flow-builder-validation.numeric-block-max-value-must-be-lower-than-implied-max-digits')
-          })
+            dataPath: '/config/validation_maximum',
+            message: lang.trans('flow-builder-validation.numeric-block-max-value-must-be-lower-than-implied-max-digits'),
+          } as ErrorObject)
         }
       }
     }
