@@ -26,7 +26,7 @@
   "dependencies": {
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
-    "@floip/flow-runner": "^1.0.0-rc4",
+    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#9e284943ea5adb776b2af129cadc344cf3326b21",
     "@flowjs/flow.js": "^2.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
