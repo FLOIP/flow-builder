@@ -96,18 +96,10 @@ export class FlowEditor extends mixins(Lang) {
 
   async updateFlowLanguages(value: ILanguage[] | ILanguage): Promise<void> {
     this.flow_setLanguages({flowId: this.flow.uuid, value})
-    await this.validate_resourcesOnSupportedValues({
-      resources: this.activeFlow.resources,
-      supportedModes: this.activeFlow.supported_modes,
-    })
   }
 
   async updateFlowModes(value: SupportedMode[] | SupportedMode): Promise<void> {
     this.flow_setSupportedMode({flowId: this.flow.uuid, value})
-    await this.validate_resourcesOnSupportedValues({
-      resources: this.activeFlow.resources,
-      supportedModes: this.activeFlow.supported_modes,
-    })
   }
 
   @State(({trees: {ui}}) => ui) ui!: any
@@ -115,10 +107,6 @@ export class FlowEditor extends mixins(Lang) {
   @flowVuexNamespace.Mutation flow_setLanguages: any
   @flowVuexNamespace.Mutation flow_setSupportedMode!: any
   @builderVuexNamespace.Getter isEditable!: boolean
-
-  @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
-    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
-  ) => Promise<void>
 }
 
 export default FlowEditor

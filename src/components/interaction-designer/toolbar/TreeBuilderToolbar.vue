@@ -53,7 +53,7 @@
                 ref="edit-flow-modal"
                 ok-only
                 :ok-title="'flow-builder.done' | trans"
-                @ok="showOrHideEditFlowModal">
+                @ok="handleUpdateFlowDetails">
                 <template slot="modal-header">
                   <h2 class="mb-0">
                     {{ 'flow-builder.flow-details' | trans }}
@@ -312,7 +312,7 @@ import pickBy from 'lodash/fp/pickBy'
 import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
 import Component, {mixins} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
-import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
+import {IBlock, IContext, IFlow, IResource, SupportedMode} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
@@ -512,6 +512,20 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       this.$router.push(route)
     }
   }
+
+  async handleUpdateFlowDetails() {
+    this.showOrHideEditFlowModal()
+
+    // flow modes/languages could have been changed, so
+    // 1. Trigger validation for all blocks
+    await this.validate_allBlocksWithinFlow()
+    // 2. Trigger validation for resources
+    await this.validate_resourcesOnSupportedValues({
+      resources: this.activeFlow.resources,
+      supportedModes: this.activeFlow.supported_modes,
+    })
+  }
+
   showOrHideEditFlowModal(): void {
     const editFlowModal: any = this.$refs['edit-flow-modal']
     if (editFlowModal) {
@@ -644,6 +658,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
 
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined}) => void
+  @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
+  @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
+    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
+  ) => Promise<void>
 }
 
 export default TreeBuilderToolbar
