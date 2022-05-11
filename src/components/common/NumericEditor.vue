@@ -6,7 +6,7 @@
         v-if="tooltipHint"
         v-b-tooltip.hover="tooltipHint"
         :icon="['fas', 'info-circle']"
-        class="fa-btn text-primary"/>
+        class="fa-btn text-primary" />
     </label>
     <div class="small mb-2">{{subTitle}}</div>
     <div>

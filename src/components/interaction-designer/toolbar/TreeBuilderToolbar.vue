@@ -513,7 +513,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     }
   }
 
-  async handleUpdateFlowDetails() {
+  async handleUpdateFlowDetails(): Promise<void> {
     this.showOrHideEditFlowModal()
 
     // flow modes/languages could have been changed, so
