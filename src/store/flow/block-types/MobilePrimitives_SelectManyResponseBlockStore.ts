@@ -1,21 +1,17 @@
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
-import {findBlockWith, IBlock, IBlockExit, ISelectManyResponseBlock} from '@floip/flow-runner'
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {findBlockWith, IBlock, ISelectManyResponseBlock} from '@floip/flow-runner'
 import {cloneDeep, isNumber} from 'lodash'
-import {ActionTree} from 'vuex'
+import {ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlockWithBranchingType, OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import BaseStore from '@/store/flow/block-types/BaseBlock'
-import MobilePrimitives_SelectOneResponseBlockStore, {
-  ICustomFlowState,
-  stateFactory,
-} from './MobilePrimitives_SelectOneResponseBlockStore'
+import {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import MobilePrimitives_SelectOneResponseBlockStore from './MobilePrimitives_SelectOneResponseBlockStore'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectManyResponse'
 
-const baseActions = cloneDeep(BaseStore.actions)
+const actions: ActionTree<IEmptyState, IRootState> = {
+  ...baseActions,
 
-const actions: ActionTree<ICustomFlowState, IRootState> = {
   setMinChoices({commit, dispatch, rootGetters}, {blockId, value}: { blockId: IBlock['uuid'], value?: number }): void {
     const block: ISelectManyResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectManyResponseBlock
     commit('flow/block_updateConfigByKey', {
@@ -56,14 +52,6 @@ const actions: ActionTree<ICustomFlowState, IRootState> = {
 
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     props.type = BLOCK_TYPE
-    props.exits = [
-      await dispatch('flow/block_createBlockDefaultExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-        }) as IBlockExit,
-      }, {root: true}),
-    ]
-
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
       prompt: blankPromptResource.uuid,
@@ -71,8 +59,6 @@ const actions: ActionTree<ICustomFlowState, IRootState> = {
       minimum_choices: undefined,
       maximum_choices: undefined,
     }
-    //TODO - fix this
-    // @ts-ignore - Not all constituents of type 'Action<IFlowsState, IRootState>' are callable.
     return baseActions.createWith({dispatch}, {props})
   },
 }
@@ -106,13 +92,9 @@ function formatTestValueForUnifiedBranchingType(block: ISelectManyResponseBlock)
   return validChoices
 }
 
-const MobilePrimitives_SelectManyResponseBlockStore = cloneDeep(MobilePrimitives_SelectOneResponseBlockStore)
-
-MobilePrimitives_SelectManyResponseBlockStore.actions.setMinChoices = actions.setMinChoices
-MobilePrimitives_SelectManyResponseBlockStore.actions.setMaxChoices = actions.setMaxChoices
-MobilePrimitives_SelectManyResponseBlockStore.actions.handleBranchingTypeChangedToUnified = actions.handleBranchingTypeChangedToUnified
-MobilePrimitives_SelectManyResponseBlockStore.actions.createWith = actions.createWith
-
-MobilePrimitives_SelectManyResponseBlockStore.state = stateFactory
+const MobilePrimitives_SelectManyResponseBlockStore: Module<IEmptyState, IRootState> = {
+  ...cloneDeep(MobilePrimitives_SelectOneResponseBlockStore),
+  actions,
+}
 
 export default MobilePrimitives_SelectManyResponseBlockStore

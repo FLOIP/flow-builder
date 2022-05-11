@@ -1,18 +1,27 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {ActionContext, Dispatch, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlockConfig, IBlock, IBlockExit} from '@floip/flow-runner'
-import {defaultsDeep} from 'lodash'
+import {defaults} from 'lodash'
 import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import {IFlowsState} from '../index'
+import {IValidationStatus} from '@/store/validation'
 
-export const getters: GetterTree<IFlowsState, IRootState> = {}
+export type ActionHandlerTree<S, R> = {
+  [key: string]: (injectee: ActionContext<S, R>, payload?: any) => void,
+}
 
-export const mutations: MutationTree<IFlowsState> = {}
+export interface IEmptyState {}
 
-export const actions: ActionTree<IFlowsState, IRootState> = {
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
-    return defaultsDeep(props, {
+export const getters: GetterTree<IEmptyState, IRootState> = {}
+
+export const mutations: MutationTree<IEmptyState> = {}
+
+export const actions = {
+  async createWith(
+    {dispatch}: {dispatch: Dispatch},
+    {props}: { props: { uuid: string } & Partial<IBlockConfig> },
+  ): Promise<IBlock> {
+    return defaults(props, {
       type: '',
       name: '',
       label: '',
@@ -30,22 +39,27 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
-    dispatch('flow/block_convertExitFormationToUnified', {
+  async handleBranchingTypeChangedToUnified(
+    {dispatch}: {dispatch: Dispatch},
+    {block}: {block: IBlock},
+  ): Promise<void> {
+    return dispatch('flow/block_convertExitFormationToUnified', {
       blockId: block.uuid,
       test: 'block.value = true',
     }, {root: true})
   },
 
   //Will need to be fully overridden in embedding apps
-  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+  validate(ctx: unknown, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
     return validateCommunityBlock({block, schemaVersion})
   },
 }
 
-export default {
+const BaseBlockStore: Module<IEmptyState, IRootState> = {
   namespaced: true,
   getters,
   mutations,
   actions,
 }
+
+export default BaseBlockStore

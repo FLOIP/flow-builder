@@ -1,20 +1,17 @@
-import {ActionTree} from 'vuex'
+import {ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {findBlockWith, IBlock, IBlockExit, IResource, ValidationException} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
-import {cloneDeep, findKey, get, map, merge, omit, snakeCase} from 'lodash'
-import BaseStore, {actions as baseActions} from '@/store/flow/block-types/BaseBlock'
-import {IFlowsState} from '../index'
+import {cloneDeep, findKey, get, map, omit, snakeCase} from 'lodash'
+import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
-export interface ICustomFlowState extends Partial<IFlowsState> {}
+const actions: ActionTree<IEmptyState, IRootState> = {
+  ...baseActions,
 
-export const stateFactory = (): ICustomFlowState => ({})
-
-const actions: ActionTree<ICustomFlowState, IRootState> = {
   rewriteChoiceKeyFor({rootGetters, dispatch}, {resourceId, blockId}: { resourceId: IResource['uuid'], blockId: IBlock['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
@@ -77,15 +74,11 @@ const actions: ActionTree<ICustomFlowState, IRootState> = {
 
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     props.type = BLOCK_TYPE
-
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
       prompt: blankPromptResource.uuid,
       choices: {},
     }
-
-    //TODO - fix this
-    // @ts-ignore - Not all constituents of type 'Action<IFlowsState, IRootState>' are callable.
     return baseActions.createWith({dispatch}, {props})
   },
 
@@ -106,9 +99,9 @@ function formatTestValueForUnifiedBranchingType(block: ISelectOneResponseBlock):
   return `OR(${map(blockChoicesKey, (choice) => `block.value = "${choice}"`).join(',')})`
 }
 
-const MobilePrimitives_SelectOneResponseBlockStore = merge(cloneDeep(BaseStore),
-  {
-    actions,
-    state: stateFactory(),
-  })
+const MobilePrimitives_SelectOneResponseBlockStore: Module<IEmptyState, IRootState> = {
+  ...cloneDeep(BaseStore),
+  actions,
+}
+
 export default MobilePrimitives_SelectOneResponseBlockStore
