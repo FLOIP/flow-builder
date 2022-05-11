@@ -75,12 +75,10 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
 
   updateValidationMin(value: number | string): void {
     this.setValidationMinimum({blockId: this.block.uuid, value})
-    this.handleActionsAccordingToBranchingType()
   }
 
   updateValidationMax(value: number | string): void {
     this.setValidationMaximum({blockId: this.block.uuid, value})
-    this.handleActionsAccordingToBranchingType()
   }
 
   updateMaxDigits(value: number | string): void {
