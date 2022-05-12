@@ -53,18 +53,12 @@
                 ref="edit-flow-modal"
                 ok-only
                 :ok-title="'flow-builder.done' | trans"
-                @ok="handleUpdateFlowDetails">
+                @ok="handleUpdateFlowDetails"
+                no-close-on-backdrop>
                 <template slot="modal-header">
                   <h2 class="mb-0">
                     {{ 'flow-builder.flow-details' | trans }}
                   </h2>
-                  <button
-                    type="button"
-                    aria-label="Close"
-                    class="close"
-                    @click="showOrHideEditFlowModal">
-                    ×
-                  </button>
                 </template>
                 <flow-editor
                   :flow="activeFlow"
