@@ -49,9 +49,6 @@ export class Connection extends mixins(Lang) {
   line: any = undefined
   isPermanentlyActive = false
 
-  @builderNamespace.State activeConnectionContext!: IConnectionContext[]
-  @builderNamespace.State blocksById!: Record<IBlock['uuid'], IBlock>
-
   get options(): ILeaderLineOptions {
     return {
       startPlug: 'square',
@@ -102,9 +99,10 @@ export class Connection extends mixins(Lang) {
   }
 
   get targetElementId(): string {
-    return this.exit.destination_block
-      ? `block/${this.exit.destination_block}/handle`
-      : `exit/${this.exit.uuid}/pseudo-block-handle`
+    const {exit} = this
+    return exit.destination_block
+      ? `block/${exit.destination_block}/handle`
+      : `exit/${exit.uuid}/pseudo-block-handle`
   }
 
   // todo: externalize as `positionCacheKey` + deprecate `position` prop
@@ -166,8 +164,7 @@ export class Connection extends mixins(Lang) {
     // Add event listeners
     if (connectionElement !== null) {
       connectionElement.addEventListener('click', this.clickHandler.bind(this), false)
-      // connectionElement.addEventListener('click', this.clickAwayHandler(connectionElement), false)
-      this.clickAwayHandler(connectionElement)
+      connectionElement.addEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
       connectionElement.addEventListener('mouseover', this.mouseOverHandler.bind(this), false)
       connectionElement.addEventListener('mouseout', this.mouseOutHandler.bind(this), false)
     }

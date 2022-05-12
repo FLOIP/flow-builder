@@ -261,7 +261,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     }
     this.setIsBlockEditorOpen(false)
     const routeName = this.$route.meta?.isFlowEditorShown as boolean ? 'flow-details' : 'flow-canvas'
-    this.$router.replace({
+    this.$router.history.replace({
       name: routeName,
     })
   }
@@ -293,12 +293,12 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       return
     }
 
-    this.$router.replace(`/trees/${this.id}/resource-viewer`)
+    this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
   }
 
   showOrHideSidebar(): void {
     //TODO with simulator work
-    //this.$router.replace({
+    //this.$router.history.replace({
     //name: this.$route.meta.isSidebarShown ? 'flow-canvas' : '???',
     //})
   }
