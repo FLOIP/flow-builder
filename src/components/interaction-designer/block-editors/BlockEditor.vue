@@ -1,8 +1,6 @@
 <template>
   <div class="block-editor">
-    <div
-      v-if="activeBlock"
-      class="block-editor">
+    <div v-if="activeBlock">
       <div
         class="tree-sidebar-edit-block"
         :data-block-type="activeBlock && activeBlock.type"
