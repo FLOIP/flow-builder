@@ -53,12 +53,18 @@
                 ref="edit-flow-modal"
                 ok-only
                 :ok-title="'flow-builder.done' | trans"
-                @ok="handleUpdateFlowDetails"
-                no-close-on-backdrop>
+                @ok="showOrHideEditFlowModal">
                 <template slot="modal-header">
                   <h2 class="mb-0">
                     {{ 'flow-builder.flow-details' | trans }}
                   </h2>
+                  <button
+                    type="button"
+                    aria-label="Close"
+                    class="close"
+                    @click="showOrHideEditFlowModal">
+                    ×
+                  </button>
                 </template>
                 <flow-editor
                   :flow="activeFlow"
@@ -506,20 +512,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       this.$router.push(route)
     }
   }
-
-  async handleUpdateFlowDetails(): Promise<void> {
-    this.showOrHideEditFlowModal()
-
-    // flow modes/languages could have been changed, so
-    // 1. Trigger validation for all blocks
-    await this.validate_allBlocksWithinFlow()
-    // 2. Trigger validation for resources
-    await this.validate_resourcesOnSupportedValues({
-      resources: this.activeFlow.resources,
-      supportedModes: this.activeFlow.supported_modes,
-    })
-  }
-
   showOrHideEditFlowModal(): void {
     const editFlowModal: any = this.$refs['edit-flow-modal']
     if (editFlowModal) {
@@ -652,10 +644,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
 
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined}) => void
-  @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
-  @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
-    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
-  ) => Promise<void>
 }
 
 export default TreeBuilderToolbar
