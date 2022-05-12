@@ -9,7 +9,7 @@ import {IFlowsState} from '../index'
 export interface IContactPropertyOption {
   id: string,
   name: string,
-  displayLabel: string,
+  display_label: string,
 }
 
 export const BLOCK_TYPE = 'Core.SetContactProperty'
