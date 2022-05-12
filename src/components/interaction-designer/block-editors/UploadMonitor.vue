@@ -28,11 +28,12 @@
 </template>
 
 <script lang="ts">
+import Lang from '@/lib/filters/lang'
+import {get} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {Component, Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import {BProgress} from 'bootstrap-vue'
-import Lang from '@/lib/filters/lang'
 import multimediaUpload, {Statuses as UploadStatuses} from '@/store/trees/multimediaUpload'
 
 const multimediaUploadNamespace = namespace('multimediaUpload')
@@ -43,27 +44,32 @@ type Upload = {
 }
 
 @Component({
-  components: {BProgress},
+  components: {
+    BProgress,
+  },
 })
 export class UploadMonitor extends mixins(Lang) {
   @Prop({type: String, required: true}) readonly uploadKey!: string
+
+  @multimediaUploadNamespace.State uploadsById!: Record<string, Upload>
+  @multimediaUploadNamespace.State uploadIdsByKey!: Record<string, string>
 
   get upload(): Upload | null {
     return this.uploadsById[this.uploadIdsByKey[this.uploadKey]] ?? null
   }
 
-  hasProgress(): boolean {
+  get hasProgress(): boolean {
     return this.upload !== null
       && this.upload.status !== UploadStatuses.SUCCESS
       && this.upload.status !== UploadStatuses.FAILURE
   }
 
-  isFailure(): boolean {
+  get isFailure(): boolean {
     return this.upload !== null && this.upload.status === UploadStatuses.FAILURE
   }
 
-  progress(): number {
-    return (this.upload?.progress ?? 0) * 100
+  get progress(): number {
+    return get(this.upload, 'progress', 0) * 100
   }
 
   created(): void {
@@ -74,9 +80,6 @@ export class UploadMonitor extends mixins(Lang) {
       $store.registerModule(moduleName, multimediaUpload)
     }
   }
-
-  @multimediaUploadNamespace.State uploadsById!: Record<string, Upload>
-  @multimediaUploadNamespace.State uploadIdsByKey!: Record<string, string>
 }
 
 export default UploadMonitor
