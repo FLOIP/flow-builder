@@ -101,7 +101,7 @@ module.exports = {
       return classes
     }
 
-    function getComponentName (declaration) {
+    function getComponentName (declaration = {}) {
       // Classic Vue2
       if (declaration.type === 'ObjectExpression') {
         for (const { key: { name }, value: { value } } of declaration.properties) {
@@ -116,6 +116,11 @@ module.exports = {
         return declaration.name
       }
 
+      // Exporting class declaration
+      if (declaration.type === 'ClassDeclaration') {
+        return declaration.id.name
+      }
+
       return null
     }
 
@@ -125,11 +130,9 @@ module.exports = {
 
     function findComponentName (program) {
       const exportDeclaration = getDefaultExport(program)
-      if (exportDeclaration) {
-        return getComponentName(exportDeclaration)
-      } else {
-        return getFilenameFromPath(context.getFilename())
-      }
+
+      return getComponentName(exportDeclaration)
+          ?? getFilenameFromPath(context.getFilename())
     }
 
     // ----------------------------------------------------------------------
