@@ -7,7 +7,7 @@ import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block
 export interface IContactPropertyOption {
   id: string,
   name: string,
-  displayLabel: string,
+  display_label: string,
 }
 
 export const BLOCK_TYPE = 'Core.SetContactProperty'

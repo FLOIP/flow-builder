@@ -1,13 +1,17 @@
 <template>
   <div class="advanced-exit-editor">
-    <expression-input
-      ref="testExpressionInput"
-      label=""
-      :placeholder="'flow-builder.advanced-exit-expression-placeholder' | trans"
-      :current-expression="test"
-      :rows="1"
-      :prepend-text="label"
-      @commitExpressionChange="commitExpressionChange" />
+    <validation-message :message-key="`block/${block.uuid}/exits/${index}/test`">
+      <template #input-control>
+        <expression-input
+          ref="testExpressionInput"
+          label=""
+          :placeholder="'flow-builder.advanced-exit-expression-placeholder' | trans"
+          :current-expression="test"
+          :rows="1"
+          :prepend-text="label"
+          @commitExpressionChange="commitExpressionChange" />
+      </template>
+    </validation-message>
 
     <h6 class="mt-2">{{ 'flow-builder.advanced-exit-name' | trans }}</h6>
     <textarea
@@ -33,6 +37,10 @@ export class AdvancedExitEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly exit!: IBlockExit
   @Prop() readonly label!: string
+
+  get index() {
+    return this.block.exits?.findIndex(({uuid}) => uuid === this.exit.uuid)
+  }
 
   get test(): IBlockExit['test'] {
     return this.exit.test
