@@ -260,10 +260,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       return
     }
     this.setIsBlockEditorOpen(false)
-    const routeName = this.$route.meta?.isFlowEditorShown as boolean ? 'flow-details' : 'flow-canvas'
-    this.$router.history.replace({
-      name: routeName,
-    })
+    this.replaceRouteInHistory(this.$route.meta?.isFlowEditorShown as boolean ? 'flow-details' : 'flow-canvas')
   }
 
   updateIsEditableFromParams(mode: string): void {
@@ -293,14 +290,20 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       return
     }
 
-    this.$router.history.replace(`/trees/${this.id}/resource-viewer`)
+    this.replaceRouteInHistory(`/trees/${this.id}/resource-viewer`)
   }
 
   showOrHideSidebar(): void {
     //TODO with simulator work
-    //this.$router.history.replace({
-    //name: this.$route.meta.isSidebarShown ? 'flow-canvas' : '???',
-    //})
+    // this.replaceRoute(this.$route.meta.isSidebarShown ? 'flow-canvas' : '???')
+  }
+
+  replaceRouteInHistory(name: string): void {
+    // VueRouter doesn't have typed .history but actually has it
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (this.$router as any).history.replace({
+      name,
+    })
   }
 }
 
