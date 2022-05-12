@@ -12,6 +12,7 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator'
 import {Getter, State} from 'vuex-class'
+import {Recorder} from '@/components/interaction-designer/block-editors/PhoneRecordingRecorderSelector.vue'
 
 @Component({})
 export class PhoneRecorder extends Vue {
@@ -21,7 +22,7 @@ export class PhoneRecorder extends Vue {
    * This is set by hooking into the v-model property of <phone-recording-recorder-selector v-model="callConfig">
    * which $emits a new value that results in setting this variable by reference.
    */
-  callConfig: Partial<{ recorder: any, description: string }> = {}
+  callConfig: Partial<{ recorder: Recorder, description: string }> = {}
 
   handleRecorderSelectionChanged(): void {
     this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', {isVisible: false})

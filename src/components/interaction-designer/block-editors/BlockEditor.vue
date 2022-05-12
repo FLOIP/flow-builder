@@ -1,5 +1,5 @@
 <template>
-  <div class="block-editor-wrapper">
+  <div class="block-editor">
     <div
       v-if="activeBlock"
       class="block-editor">
@@ -29,7 +29,7 @@ const flowNamespace = namespace('flow')
 
 @Component({})
 export class BlockEditor extends mixins(Lang) {
-  @builderNamespace.Getter activeBlock?: IBlock | null
+  @builderNamespace.Getter activeBlock?: IBlock
   @flowNamespace.Getter activeFlow?: IFlow
 }
 
@@ -37,7 +37,7 @@ export default BlockEditor
 </script>
 
 <style lang="scss">
-.block-editor-wrapper {
+.block-editor {
   position: absolute;
   top: 0;
   background: white;
@@ -45,8 +45,7 @@ export default BlockEditor
   max-height: 75vh;
   width: 365px;
   overflow-y: scroll;
-  padding: 1em;
-  padding-top: 0;
+  padding: 0 1em 1em;
   border: 1px solid lightgray;
   border-radius: 0;
   box-shadow: 0 3px 6px #cacaca;

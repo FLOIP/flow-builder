@@ -29,21 +29,24 @@ import {mixins} from 'vue-class-component'
 import {Component, Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import {isEmpty} from 'lodash'
-import {SupportedContentType, SupportedMode, ILanguage} from '@floip/flow-runner'
+import {IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import Lang from '@/lib/filters/lang'
 import {IResourceValue as IResourceDefinitionVariantOverModes} from '@floip/flow-runner/dist/flow-spec/IResource'
+import {IAudioFile} from '@/store/builder'
+import {IAudioFileSelection} from '@/lib/types'
 
 const flowNamespace = namespace('flow')
 
+const EMPTY_RESOURCE_UUID: IResource['uuid'] = ''
+
 @Component({})
 export class AudioLibrarySelector extends mixins(Lang) {
-  @Prop() alternateSelections: any
-  @Prop() selectedAudioFile: any
-  @Prop() langId: any
-  @Prop() audioFiles: any
-  @Prop() isPlaying: any
-  @Prop() audioPlayerUrl: any
-  @Prop() resourceId: any
+  @Prop() alternateSelections: unknown
+  @Prop() selectedAudioFile?: string
+  @Prop() langId?: string
+  @Prop() audioFiles?: IAudioFile[]
+  @Prop() audioPlayerUrl?: string
+  @Prop() resourceId?: string
 
   get selectable(): boolean {
     return !isEmpty(this.alternateSelections)
@@ -51,15 +54,15 @@ export class AudioLibrarySelector extends mixins(Lang) {
 
   clearSelection(): void {
     this.resource_setOrCreateValueModeSpecific({
-      resourceId: this.resourceId,
+      resourceId: this.resourceId ?? EMPTY_RESOURCE_UUID,
       filter: {language_id: this.langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
       value: '',
     })
   }
 
-  selectAudioFile({value, langId}: {value: any, langId: ILanguage['id']}): void {
+  selectAudioFile({value, langId}: IAudioFileSelection): void {
     this.resource_setOrCreateValueModeSpecific({
-      resourceId: this.resourceId,
+      resourceId: this.resourceId ?? EMPTY_RESOURCE_UUID,
       filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
       value: value.description,
     })

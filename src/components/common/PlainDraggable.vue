@@ -9,18 +9,20 @@ import {mixins} from 'vue-class-component'
 import {Component, Prop, Watch} from 'vue-property-decorator'
 import PlainDraggableLib from 'plain-draggable'
 import Lang from '@/lib/filters/lang'
+import {IPosition} from '@/lib/types'
 
 @Component({})
 export class PlainDraggable extends mixins(Lang) {
   @Prop(Number) startX?: number
   @Prop(Number) startY?: number
-  @Prop(String) handleDomId?: string
-  @Prop(Boolean) isEditable?: boolean
+  @Prop({type: Boolean, required: true}) isEditable!: boolean
 
+  // The plain-draggable library has no types yet
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   draggable: any = null
 
   @Watch('isEditable')
-  onToggleEditable(value: boolean) {
+  onToggleEditable(value: boolean): void {
     this.draggable.disabled = !value
   }
 
@@ -74,17 +76,17 @@ export class PlainDraggable extends mixins(Lang) {
     this.$emit('initialized', {draggable})
   }
 
-  handleDragged(position: any): void {
+  handleDragged(position: IPosition): void {
     const {draggable} = this
     this.$emit('dragged', {draggable, position})
   }
 
-  handleDragStarted(position: any): void {
+  handleDragStarted(position: IPosition): void {
     const {draggable} = this
     this.$emit('dragStarted', {draggable, position})
   }
 
-  handleDragEnded(position: any): void {
+  handleDragEnded(position: IPosition): void {
     const {draggable} = this
     this.$emit('dragEnded', {draggable, position})
   }

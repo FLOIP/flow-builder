@@ -2,7 +2,7 @@ import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, IFlow, IResource, ValidationException} from '@floip/flow-runner'
+import {IBlock, IBlockExit, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 
 // todo migrate these to flight-monitor
@@ -80,6 +80,16 @@ export const stateFactory = (): IBuilderState => ({
   interactionDesignerBoundingClientRect: {} as DOMRect,
 })
 
+export interface IAudioFile {
+  id: string,
+    filename: string,
+    description: string,
+    language_id: string,
+    duration_seconds: string,
+    original_extension: string,
+    created_at: string,
+}
+
 export const getters: GetterTree<IBuilderState, IRootState> = {
   activeBlock: ({activeBlockId}, {blocksById}) => (activeBlockId ? blocksById[activeBlockId] : null),
 
@@ -98,7 +108,7 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 }
 
 export const mutations: MutationTree<IBuilderState> = {
-  activateBlock(state, {blockId}: { blockId: IBlock['uuid'] }) {
+  activateBlock(state, {blockId}: { blockId: IBlock['uuid'] | null }) {
     state.activeBlockId = blockId
 
     // simulate engaging with specified block
@@ -143,7 +153,7 @@ export const mutations: MutationTree<IBuilderState> = {
 
   setInteractionDesignerBoundingClientRect(state, value) {
     state.interactionDesignerBoundingClientRect = value
-  }
+  },
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
@@ -370,7 +380,7 @@ export function getViewportCenter() {
   const sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
   const rect = builderCanvasElement.getBoundingClientRect()
 
-  const sidebarAdjustment = sideBarElement ? sideBarElement.clientWidth : 0
+  const sidebarAdjustment = sideBarElement !== undefined ? sideBarElement.clientWidth : 0
 
   return {
     x: Math.round(Math.abs(rect.left) + (window.innerWidth - sidebarAdjustment) / 2),

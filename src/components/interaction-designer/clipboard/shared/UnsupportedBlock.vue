@@ -13,7 +13,7 @@ import {Component, Prop} from 'vue-property-decorator'
 
 @Component({})
 export class UnsupportedBlock extends mixins(Lang) {
-  @Prop(String) readonly blockName: string | undefined
+  @Prop(String) readonly blockName?: string
 }
 
 export default UnsupportedBlock

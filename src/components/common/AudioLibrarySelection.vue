@@ -30,8 +30,18 @@
             class="tree-block-audio-files-download-original">{{ 'flow-builder.original-file'|trans }}</a>
         </li>
 
-        <!-- <li><a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">{{'flow-builder.download-X-format'|trans({kind: '.ogg'})}}</a></li>
-        <li><a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">{{'flow-builder.download-X-format'|trans({kind: '.ul'})}}</a></li> -->
+        <!--
+        <li>
+          <a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">
+            {{'flow-builder.download-X-format'|trans({kind: '.ogg'})}}
+          </a>
+        </li>
+        <li>
+          <a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">
+            {{'flow-builder.download-X-format'|trans({kind: '.ul'})}}
+          </a>
+        </li>
+        -->
       </ul>
     </div>
 
@@ -62,12 +72,11 @@ import Moment from '@/lib/filters/moment'
 
 @Component({})
 export class AudioLibrarySelection extends mixins(Lang, Moment) {
-  @Prop() audioFile: any
-  @Prop() selected: any
-  @Prop() selectable: any
-  @Prop() langId: any
+  @Prop({type: String, required: true}) audioFile!: string
+  @Prop() selectable?: boolean
+  @Prop() langId?: string
 
-  get audioFileUrl(): any {
+  get audioFileUrl(): string {
     return this.audioFile
   }
 

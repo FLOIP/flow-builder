@@ -50,6 +50,8 @@ import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
 import {store} from '@/store'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
 import {Route} from 'vue-router'
+import {IBlock, IFlow} from '@floip/flow-runner'
+import {ErrorObject} from 'ajv'
 
 Component.registerHooks(['beforeRouteUpdate'])
 
@@ -102,43 +104,43 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   ]
   simulateClipboard = true
 
-  @Getter isConfigured: any
-  @Getter selectedBlock: any
-  @Getter hasChanges: any
-  @Getter hasIssues: any
-  @Getter isTreeSaving: any
-  @Getter isTreeValid: any
-  @Getter jsonValidationResults: any
-  @Getter validationResults: any
-  @Getter builderWidthAdjustment: any
+  @Getter isConfigured!: boolean
+  @Getter selectedBlock?: IBlock
+  @Getter hasChanges!: boolean
+  @Getter hasIssues!: boolean
+  @Getter isTreeSaving!: boolean
+  @Getter isTreeValid!: boolean
+  @Getter jsonValidationResults?: ErrorObject
+  @Getter validationResults?: ErrorObject
+  @Getter builderWidthAdjustment!: number
 
   // TODO: We'll need to do width as well and use margin-right:365 to allow for sidebar
-  @State(({trees: {tree, ui}}) => ui.designerWorkspaceHeight) designerWorkspaceHeight: any
-  @State(({trees: {tree, ui}}) => tree) tree: any
-  @State(({trees: {tree, ui}}) => !tree.blocks.length) validationResultsEmptyTree: any
-  @State(({trees: {tree}}) => tree.details.hasVoice) hasVoice: any
-  @State(({trees: {tree}}) => tree.details.hasSms) hasSms: any
-  @State(({trees: {tree}}) => tree.details.hasUssd) hasUssd: any
-  @State(({trees: {tree}}) => tree.details.hasSocial) hasSocial: any
-  @State(({trees: {tree}}) => tree.details.hasClipboard) hasClipboard: any
-  @State(({trees: {ui}}) => ui.blockClasses) blockClasses: any
+  @State(({trees: {tree, ui}}) => ui.designerWorkspaceHeight) designerWorkspaceHeight!: number
+  @State(({trees: {tree, ui}}) => tree) tree: unknown
+  @State(({trees: {tree, ui}}) => !(tree.blocks.length as number)) validationResultsEmptyTree!: boolean
+  @State(({trees: {tree}}) => tree.details.hasVoice) hasVoice?: boolean
+  @State(({trees: {tree}}) => tree.details.hasSms) hasSms?: boolean
+  @State(({trees: {tree}}) => tree.details.hasUssd) hasUssd?: boolean
+  @State(({trees: {tree}}) => tree.details.hasSocial) hasSocial?: boolean
+  @State(({trees: {tree}}) => tree.details.hasClipboard) hasClipboard?: boolean
+  @State(({trees: {ui}}) => ui.blockClasses) blockClasses!: Record<string, any>
 
-  @flowNamespace.Getter activeFlow: any
-  @builderNamespace.Getter activeBlock: any
-  @builderNamespace.Getter isEditable: any
-  @builderNamespace.Getter interactionDesignerBoundingClientRect: any
-  @clipboardNamespace.Getter isSimulatorActive: any
+  @flowNamespace.Getter activeFlow?: IFlow
+  @builderNamespace.Getter activeBlock?: IBlock
+  @builderNamespace.Getter isEditable!: boolean
+  @builderNamespace.Getter interactionDesignerBoundingClientRect!: DOMRect
+  @clipboardNamespace.Getter isSimulatorActive!: boolean
 
-  get jsKey() {
+  get jsKey(): string {
     return get(this.selectedBlock, 'jsKey')
   }
 
   // Pure VueJS block types handle readonly mode on their own
-  isPureVueBlock() {
+  isPureVueBlock(): boolean {
     return includes(this.pureVuejsBlocks, get(this.selectedBlock, 'type'))
   }
 
-  async beforeCreate() {
+  async beforeCreate(): Promise<void> {
     const {$store} = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
@@ -146,16 +148,17 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
 
   // `this.mode` comes from captured param in js-routes
   @Watch('mode')
-  onModeChanged(newMode: string) {
+  onModeChanged(newMode: string): void {
     this.updateIsEditableFromParams(newMode)
   }
 
-  created() {
+  created(): void {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
 
-    // initialize global reference for legacy + debugging
+    // Initialize global reference for legacy + debugging
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (global as any).builder = this
 
     this.initializeTreeModel()
@@ -163,13 +166,13 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     this.updateIsEditableFromParams(this.mode)
   }
 
-  activated() {
+  activated(): void {
     // todo: remove once we have jsKey in our js-route
     this.deselectBlocks()
   }
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
-  async mounted() {
+  async mounted(): Promise<void> {
     //Ensure that the blocks are installed before activating the flow
     //Block stores are needed to ensure validations can run immediately
     await this.registerBlockTypes()
@@ -178,7 +181,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     // if nothing was found for the flow Id
     if (!this.activeFlow) {
       this.flow_setActiveFlowId({flowId: null})
-      this.$router.replace(
+      await this.$router.replace(
         {
           path: this.route('flows.fetchFlow', {flowId: this.id}),
           query: {nextUrl: this.$route.fullPath},
@@ -199,39 +202,39 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       if (field) {
         scrollBehavior(this.$route)
       }
-      if (this.$route.meta?.isBlockEditorShown) {
+      if (this.$route.meta?.isBlockEditorShown as boolean) {
         this.setIsBlockEditorOpen(true)
       }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
 
     // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
-    if (this.activeFlow && this.$refs['interaction-designer-contents'] != undefined) {
+    if (this.activeFlow && this.$refs['interaction-designer-contents'] !== undefined) {
       this.setInteractionDesignerBoundingClientRect((this.$refs['interaction-designer-contents'] as Element).getBoundingClientRect())
     }
   }
 
-  beforeRouteUpdate(to: Route, from: Route, next: Function) {
+  beforeRouteUpdate(to: Route, from: Route, next: Function): void {
     this.activateBlock({blockId: to.params.blockId || null})
-    if (to.meta?.isBlockEditorShown) {
+    if (to.meta?.isBlockEditorShown as boolean) {
       scrollBlockIntoView(to.params.blockId)
       this.setIsBlockEditorOpen(true)
     }
     next()
   }
 
-  @Mutation configure: any
-  @Mutation deselectBlocks: any
-  @builderNamespace.Mutation activateBlock: any
-  @builderNamespace.Mutation setIsBlockEditorOpen: any
-  @builderNamespace.Mutation setInteractionDesignerBoundingClientRect: any
-  @builderNamespace.Action setIsEditable: any
-  @flowNamespace.Mutation flow_setActiveFlowId: any
-  @Action attemptSaveTree: any
-  @Action discoverTallestBlockForDesignerWorkspaceHeight: any
-  @Action initializeTreeModel: any
+  @Mutation configure!: ({appConfig, builderConfig}: {appConfig: object, builderConfig: object}) => void
+  @Mutation deselectBlocks!: () => void
+  @builderNamespace.Mutation activateBlock!: ({blockId}: {blockId: string | null}) => void
+  @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
+  @builderNamespace.Mutation setInteractionDesignerBoundingClientRect!: (value: DOMRect) => void
+  @builderNamespace.Action setIsEditable!: (arg0: boolean) => void
+  @flowNamespace.Mutation flow_setActiveFlowId!: ({flowId}: {flowId: string | null}) => void
+  @Action attemptSaveTree!: () => void
+  @Action discoverTallestBlockForDesignerWorkspaceHeight!: ({buffer, aboveTallest}: {buffer?: number, aboveTallest: boolean}) => void
+  @Action initializeTreeModel!: () => void
 
-  async registerBlockTypes() {
+  async registerBlockTypes(): Promise<void[]> {
     const {blockClasses} = this
 
     const blockInstallers = values(blockClasses).map(async (blockClass) => {
@@ -240,6 +243,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       const typeWithoutSeparators = type.replace('.', '')
       let {uiComponent} = blockClass
       if (blockClass.install === undefined) {
+        // noinspection TypeScriptCheckImport
         const exported = await import(`../components/interaction-designer/block-types/${normalizedType}Block.vue`)
         blockClass.install = exported.install
         uiComponent = exported.default
@@ -250,20 +254,22 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     return Promise.all(blockInstallers)
   }
 
-  handleCanvasSelected({target}: {target: Element}) {
+  handleCanvasSelected({target}: {target: Element}): void {
     if (!target.classList.contains('builder-canvas')) {
       console.debug('InteractionDesigner', 'Non-canvas selection mitigated')
       return
     }
     this.setIsBlockEditorOpen(false)
-    const routeName = this.$route.meta?.isFlowEditorShown ? 'flow-details' : 'flow-canvas'
+    const routeName = this.$route.meta?.isFlowEditorShown as boolean ? 'flow-details' : 'flow-canvas'
     this.$router.replace({
       name: routeName,
     })
   }
 
-  updateIsEditableFromParams(mode: string) {
-    const isEditable = +this.discoverIsEditableFrom(mode, this.$route.hash, !!(global as any).app.ui.isEditableLocked)
+  updateIsEditableFromParams(mode: string): void {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const isEditableLocked = Boolean((global as any).app.ui.isEditableLocked)
+    const isEditable = Boolean(+this.discoverIsEditableFrom(mode, this.$route.hash, isEditableLocked))
     this.setIsEditable(isEditable)
   }
 
@@ -276,13 +282,13 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
    | mode-is-edit                     |        0 (r=>view)  |     1               |
    | mode-is-edit+view-url-suffix     |        0 (r=>view)  |     1               |
    ------------------------------------------------------------------------------ */
-  discoverIsEditableFrom(mode: string, hash: string, isEditableLocked: boolean) {
+  discoverIsEditableFrom(mode: string, hash: string, isEditableLocked: boolean): boolean {
     return !isEditableLocked && (
       mode === 'edit' || (!mode && endsWith(hash, '/edit'))
     )
   }
 
-  hoistResourceViewerToPushState(hash: string) {
+  hoistResourceViewerToPushState(hash: string): void {
     if (!endsWith(hash, '/resource-viewer')) {
       return
     }
@@ -290,7 +296,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     this.$router.replace(`/trees/${this.id}/resource-viewer`)
   }
 
-  showOrHideSidebar() {
+  showOrHideSidebar(): void {
     //TODO with simulator work
     //this.$router.replace({
     //name: this.$route.meta.isSidebarShown ? 'flow-canvas' : '???',

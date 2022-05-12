@@ -59,7 +59,8 @@ export class AdvancedExitsBuilder extends mixins(Lang) {
       console.warn(
         'interaction-designer/block-editors/AdvancedExitsBuilder',
         'Unable to add absent draft exit to block.',
-        {block: this.block})
+        {block: this.block},
+)
       return
     }
 

@@ -27,7 +27,7 @@ import Lang from '@/lib/filters/lang'
 
 @Component({})
 export class NumericEditor extends mixins(Lang) {
-  @Prop({type: Boolean}) readonly validState: boolean | undefined
+  @Prop({type: Boolean}) readonly validState?: boolean
   @Prop({type: [String, Number], required: true}) readonly label!: string | number
   @Prop({type: String, default: ''}) readonly placeholder!: string
   @Prop({type: [String, Number]}) readonly value?: string | number
@@ -40,7 +40,7 @@ export class NumericEditor extends mixins(Lang) {
   }
 
   filterNumeric(e: KeyboardEvent): void {
-    if (e.key.match(new RegExp(this.regexNumericFiltering, 'g')) === null) {
+    if ((new RegExp(this.regexNumericFiltering, 'g').exec(e.key)) === null) {
       e.preventDefault()
     }
   }

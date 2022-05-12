@@ -25,10 +25,11 @@
 import {mixins} from 'vue-class-component'
 import {Component, Prop} from 'vue-property-decorator'
 import Lang from '@/lib/filters/lang'
+import {IBlock} from '@floip/flow-runner'
 
 @Component({})
 export class BlockContentEditorUnsupported extends mixins(Lang) {
-  @Prop() readonly block?: object
+  @Prop() readonly block?: IBlock
 }
 
 export default BlockContentEditorUnsupported

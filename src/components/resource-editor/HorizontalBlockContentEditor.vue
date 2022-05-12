@@ -77,18 +77,18 @@ import {Getter, State} from 'vuex-class'
 import {debounce} from 'lodash'
 
 import Lang from '@/lib/filters/lang'
+import {IBlockExtended} from '@/lib/types'
 
 @Component({})
 export class HorizontalBlockContentEditor extends mixins(Lang) {
-  @Prop() alternateAudioFileSelections: any
-  @Prop() tree: any
-  @Prop() block: any
-  @Prop() enabledLanguages: any
-  @Prop() blockTypes: any
-  @Prop() languageNames: any
+  @Prop() alternateAudioFileSelections: unknown
+  @Prop() tree: unknown
+  @Prop({type: Object, required: true}) block!: IBlockExtended
+  @Prop({type: Array, required: true}) enabledLanguages!: string[]
+  @Prop({type: Object, required: true}) languageNames!: Record<string, string>
 
   @Getter isEditable!: boolean
-  @State(({trees: {ui: {audioFiles}}}) => audioFiles) audioFiles: any
+  @State(({trees: {ui: {audioFiles}}}) => audioFiles) audioFiles: unknown
 
   debouncedSaveTree: () => void
 

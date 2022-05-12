@@ -153,40 +153,42 @@
 <script lang="ts">
 import {includes} from 'lodash'
 import {mixins} from 'vue-class-component'
+import VueFocus from 'vue-focus'
 import {Component, Prop} from 'vue-property-decorator'
 import Lang from '@/lib/filters/lang'
+import {IBatchMatchAudioData} from '@/lib/types'
 
 @Component({})
-export class BatchMatchAudioFilesPrompt extends mixins(Lang) {
-  @Prop() readonly focus: any
-  @Prop() readonly data: any
-  @Prop() readonly isAudioLibraryEmpty: any
+export class BatchMatchAudioFilesPrompt extends mixins(Lang, VueFocus.mixin) {
+  @Prop({type: Boolean, required: true}) readonly focus!: boolean
+  @Prop({type: Object, required: true}) readonly data!: IBatchMatchAudioData
+  @Prop() readonly isAudioLibraryEmpty?: boolean
 
   pattern = ''
   replaceExisting = true
   expanded = false
 
-  get disabled() {
+  get disabled(): boolean {
     return this.data.isPending
   }
 
-  get isValid() {
+  get isValid(): boolean {
     return includes(this.pattern, '[label]')
       && includes(this.pattern, '[language]')
   }
 
-  cancel() {
+  cancel(): void {
     this.$emit('cancel')
   }
 
-  confirm() {
+  confirm(): void {
     this.$emit('confirm', {
       value: this.pattern,
       replaceExisting: this.replaceExisting,
     })
   }
 
-  toggleExpanded() {
+  toggleExpanded(): void {
     this.expanded = !this.expanded
   }
 }

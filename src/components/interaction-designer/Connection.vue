@@ -13,6 +13,7 @@ import LeaderLine from 'leader-line'
 import {set} from 'lodash'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import Lang from '@/lib/filters/lang'
+import {IConnectionContext} from '@/store/builder'
 
 const lightColor = '#6897BB'
 const darkColor = '#30516a'
@@ -20,21 +21,38 @@ const disconnectionColor = '#dc3545'
 
 const builderNamespace = namespace('builder')
 
+interface ILeaderLineOptions {
+  endPlugColor: string,
+  endPlugSize: number,
+  endSocket: string,
+  gradient: true,
+  outline: boolean,
+  outlineColor: string,
+  path: string,
+  size: number,
+  startPlug: string,
+  startPlugColor: string,
+  startSocket: string,
+}
+
 @Component({})
 export class Connection extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly exit!: IBlockExit
   @Prop({type: Function, required: true}) readonly repaintCacheKeyGenerator!: Function
-  @Prop({type: Object, required: true}) readonly source!: IBlock | null
-  @Prop({type: Object, required: true}) readonly target!: IBlock | null
-  @Prop({type: Object, required: true}) readonly position!: { x: number, y: number } | null
+  @Prop({type: Object}) readonly source!: IBlock
+  @Prop({type: Object}) readonly target!: IBlock
+  @Prop({type: Object}) readonly position!: { x: number, y: number }
 
+  // The leader-line library has no types yet
+  // No need to set up observers over this
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  line: any = undefined
   isPermanentlyActive = false
-  line: any = null
 
-  @builderNamespace.State activeConnectionContext: any
-  @builderNamespace.State blocksById: any
+  @builderNamespace.State activeConnectionContext!: IConnectionContext[]
+  @builderNamespace.State blocksById!: Record<IBlock['uuid'], IBlock>
 
-  get options() {
+  get options(): ILeaderLineOptions {
     return {
       startPlug: 'square',
 
@@ -64,26 +82,26 @@ export class Connection extends mixins(Lang) {
     }
   }
 
-  get prominentOptions() {
+  get prominentOptions(): Partial<ILeaderLineOptions> {
     return {
       startPlugColor: disconnectionColor,
       endPlugColor: disconnectionColor,
     }
   }
 
-  get connectionContext() {
+  get connectionContext(): IConnectionContext {
     return {
-      sourceId: this.source?.uuid,
-      targetId: this.target?.uuid,
-      exitId: this.exit?.uuid,
+      sourceId: this.source?.uuid ?? '',
+      targetId: this.target?.uuid ?? '',
+      exitId: this.exit?.uuid ?? '',
     }
   }
 
-  get sourceElementId() {
+  get sourceElementId(): string {
     return `exit/${this.exit.uuid}/handle`
   }
 
-  get targetElementId() {
+  get targetElementId(): string {
     return this.exit.destination_block
       ? `block/${this.exit.destination_block}/handle`
       : `exit/${this.exit.uuid}/pseudo-block-handle`
@@ -91,7 +109,7 @@ export class Connection extends mixins(Lang) {
 
   // todo: externalize as `positionCacheKey` + deprecate `position` prop
   //       but rather include that in `positionCacheKey`'s domain definition
-  get repositionHook() {
+  get repositionHook(): string | null {
     if (!this.repaintCacheKeyGenerator) {
       return null
     }
@@ -118,7 +136,7 @@ export class Connection extends mixins(Lang) {
       .join('\n')
   }
 
-  mounted() {
+  mounted(): void {
     // todo: add an invisible centered dot on a node header
     // if (!this.datum.source || !this.datum.target) {
     //   return
@@ -159,15 +177,15 @@ export class Connection extends mixins(Lang) {
     // this.line.positionByWindowResize = false
   }
 
-  beforeDestroy() {
+  beforeDestroy(): void {
     this.line.remove()
   }
 
-  @builderNamespace.Mutation activateConnection: any
-  @builderNamespace.Mutation deactivateConnection: any
-  @builderNamespace.Mutation activateBlock: any
+  @builderNamespace.Mutation activateConnection!: ({connectionContext}: { connectionContext: IConnectionContext }) => void
+  @builderNamespace.Mutation deactivateConnection!: ({connectionContext}: { connectionContext: IConnectionContext }) => void
+  @builderNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null }) => void
 
-  reposition() {
+  reposition(): void {
     if (!this.line) {
       return
     }
@@ -183,13 +201,13 @@ export class Connection extends mixins(Lang) {
     })
   }
 
-  mouseOverHandler() {
+  mouseOverHandler(): void {
     this.line.setOptions(this.prominentOptions)
     this.activateConnection({connectionContext: this.connectionContext})
     this.$emit('lineMouseIn')
   }
 
-  mouseOutHandler() {
+  mouseOutHandler(): void {
     if (!this.isPermanentlyActive) {
       this.line.setOptions(this.options)
       this.deactivateConnection({connectionContext: this.connectionContext})
@@ -197,14 +215,14 @@ export class Connection extends mixins(Lang) {
     this.$emit('lineMouseOut')
   }
 
-  clickHandler() {
+  clickHandler(): void {
     this.isPermanentlyActive = true
     this.activateConnection({connectionContext: this.connectionContext})
     this.activateBlock({blockId: null})
     this.$emit('lineMouseIn')
   }
 
-  clickAwayHandler(connectionElement: Element) {
+  clickAwayHandler(connectionElement: Element): void {
     document.addEventListener('click', (event) => {
       // Do not listen if the connection was not fully set
       if (!this.line?.end) {

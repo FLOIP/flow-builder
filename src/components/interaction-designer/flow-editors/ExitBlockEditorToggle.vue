@@ -24,7 +24,7 @@ import {mixins} from 'vue-class-component'
 import {Component, Prop} from 'vue-property-decorator'
 import Lang from '@/lib/filters/lang'
 import {namespace} from 'vuex-class'
-import {IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow} from '@floip/flow-runner'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -32,7 +32,7 @@ const flowVuexNamespace = namespace('flow')
 export class ExitBlockEditorToggle extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly flow!: IFlow
   // Toggle for particular block
-  @Prop({type: String, default: ''}) readonly blockId!: string
+  @Prop({type: String, default: ''}) readonly blockId!: IBlock['uuid']
   @Prop({type: Boolean, default: true}) readonly isEditable!: boolean
   // TODO: Validate use of the variable
   @Prop({type: Boolean, default: false}) readonly hasClipboard!: boolean

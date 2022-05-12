@@ -98,7 +98,7 @@ import {Component, Prop} from 'vue-property-decorator'
 import {State} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 
-type Recorder = {
+export type Recorder = {
   name: string | null,
   phone: string | null,
   isNew: boolean,
@@ -164,7 +164,7 @@ export class PhoneRecordingRecorderSelector extends mixins(Lang) {
     })
   }
 
-  @State(({audio: {recording: {recorders}}}) => recorders) recorders: any
+  @State(({audio: {recording: {recorders}}}) => recorders) recorders: unknown
 }
 
 export default PhoneRecordingRecorderSelector

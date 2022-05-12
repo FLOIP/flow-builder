@@ -38,7 +38,6 @@ export class BlockActionButtons extends mixins(Lang) {
   @Prop({type: Function, required: true}) readonly onCancelClicked!: () => void
 
   get primaryButtonText(): string {
-    // window.addEventListener()
     if (this.isBlockInteraction) {
       return 'Revise'
     }

@@ -39,7 +39,9 @@
                             <h4 v-if="!!flows.length">
                               {{ 'flow-builder.existing-flows' | trans }}:
                             </h4>
-                            <div v-for="flow in flows" :key="flow.uuid">
+                            <div
+                              v-for="flow in flows"
+                              :key="flow.uuid">
                               <router-link
                                 :to="route('flows.editFlow', {flowId: flow.uuid, component: 'designer', mode: 'edit'})"
                                 :title="trans('flow-builder.flow-details')"
@@ -110,7 +112,6 @@
 import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {Component, Prop} from 'vue-property-decorator'
-import Vue from 'vue'
 import {forEach, isEmpty} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {store} from '@/store'
@@ -126,12 +127,12 @@ class Home extends mixins(Lang, Routes) {
 
   isExtraContentHidden = true
 
-  showExtraContent(e: KeyboardEvent) {
+  showExtraContent(e: KeyboardEvent): void {
     e.preventDefault()
     this.isExtraContentHidden = false
   }
 
-  hideExtraContent(e: KeyboardEvent) {
+  hideExtraContent(e: KeyboardEvent): void {
     e.preventDefault()
     this.isExtraContentHidden = true
   }

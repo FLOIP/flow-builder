@@ -32,14 +32,14 @@ export class FloatEditor extends mixins(Lang) {
   // Meaning it's accepting negative by default
   @Prop({type: [String, Number], required: true, default: ''}) readonly min!: string | number
   @Prop({type: String, default: '[0-9-.,]'}) readonly regexFloatFiltering!: string
-  @Prop({type: Boolean}) readonly validState: boolean | undefined
+  @Prop({type: Boolean}) readonly validState?: boolean
 
   get isInvalid(): boolean {
     return typeof this.validState === 'boolean' && !this.validState
   }
 
   filterFloat(e: KeyboardEvent): void {
-    if (e.key.match(new RegExp(this.regexFloatFiltering, 'g')) === null) {
+    if ((new RegExp(this.regexFloatFiltering, 'g').exec(e.key)) === null) {
       e.preventDefault()
     }
   }

@@ -24,11 +24,11 @@ export class TextEditor extends Vue {
   @Prop({type: String, default: 'text-primary'}) readonly labelClass!: string
   @Prop({type: String, required: true}) readonly placeholder!: string
   @Prop({type: String, required: true}) readonly value!: string
-  @Prop({type: Boolean, default: null}) readonly validState!: boolean | null
+  @Prop({type: Boolean}) readonly validState?: boolean
   @Prop({type: Number, default: 1}) readonly rows!: number
 
   get isInvalid(): boolean {
-    return this.validState === false
+    return typeof this.validState === 'boolean' && !this.validState
   }
 }
 

@@ -266,7 +266,6 @@
                 :tree="tree"
                 :block="block"
                 :enabled-languages="enabledLanguages"
-                :block-types="blockTypes"
                 :alternate-audio-file-selections="batchMatchAudioData.results && batchMatchAudioData.results[block.jsKey]"
                 :language-names="languageNames" />
             </template>
@@ -274,8 +273,7 @@
             <block-content-editor-unsupported
               v-else
               :key="block.jsKey"
-              :block="block"
-              :block-types="blockTypes" />
+              :block="block" />
           </template>
         </fieldset>
       </div>
@@ -287,22 +285,15 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
 import Fuse from 'fuse.js'
-import {
-  filter,
-  forEach,
-  get,
-  identity,
-  includes,
-  isEmpty,
-  pickBy,
-  reduce,
-  size,
-} from 'lodash'
+import {filter, forEach, get, identity, includes, isEmpty, pickBy, reduce, size} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {Component} from 'vue-property-decorator'
 import {Action, Getter} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
+import {IBatchMatchAudioData, IBlockExtended} from '@/lib/types'
+import {IBlock, IBlockConfig} from '@floip/flow-runner'
 import stores from '../store'
+import FuseResult = Fuse.FuseResult;
 
 @Component({})
 export class ResourceViewer extends mixins(Lang) {
@@ -348,15 +339,11 @@ export class ResourceViewer extends mixins(Lang) {
     return this.$store.state.trees.ui.contentBlockTypes
   }
 
-  get blockTypes(): Record<string, object> {
-    return this.$store.state.trees.ui.blockClasses
-  }
-
   get tree(): any {
     return this.$store.state.trees.tree
   }
 
-  get blocks(): any {
+  get blocks(): IBlockExtended[] {
     if (this.showEmptyBlocksOnly) {
       // filter only empty content:
       // Empty content could be like: {} or {smsContent:{44:''}
@@ -391,11 +378,11 @@ export class ResourceViewer extends mixins(Lang) {
     return this.$store.state.trees.tree.blocks
   }
 
-  get blocksWithContent(): any {
+  get blocksWithContent(): IBlock[] {
     return filter(this.blocks, ({type}) => this.hasContent(type))
   }
 
-  get batchMatchAudioData(): any {
+  get batchMatchAudioData(): IBatchMatchAudioData {
     return this.$store.state.trees.ui.batchMatchAudio
   }
 
@@ -508,7 +495,7 @@ export class ResourceViewer extends mixins(Lang) {
     return includes(this.contentBlockTypes, blockType)
   }
 
-  search(query: string): any {
+  search(query: string): FuseResult<IBlockExtended>[] {
     const
       {enabledLanguages: languages} = this.$store.state.trees.tree.details
     const keys = [

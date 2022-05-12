@@ -27,7 +27,7 @@
   </div>
 </template>
 
-w<script lang="ts">
+<script lang="ts">
 import {mixins} from 'vue-class-component'
 import {Component, Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
@@ -75,8 +75,8 @@ export class UploadMonitor extends mixins(Lang) {
     }
   }
 
-  @multimediaUploadNamespace.State uploadsById!: any
-  @multimediaUploadNamespace.State uploadIdsByKey!: any
+  @multimediaUploadNamespace.State uploadsById!: Record<string, Upload>
+  @multimediaUploadNamespace.State uploadIdsByKey!: Record<string, string>
 }
 
 export default UploadMonitor

@@ -143,7 +143,7 @@
                       class="text-danger"
                       title="Click to remove this connection"
                       :icon="['far', 'times-circle']"
-                      @click="doRemoveConnectionFrom(exit)" />
+                      @click="handleRemoveConnectionFrom(exit)" />
                   </div>
 
                   <connection
@@ -167,11 +167,12 @@
 
 <script lang="ts">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
+import Vue from 'vue'
 import {filter, forEach, get, includes, isNumber} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {Component, Prop, Watch} from 'vue-property-decorator'
 import {namespace, State} from 'vuex-class'
-import {IBlock, IContext, ResourceResolver, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {generateConnectionLayoutKeyFor, OperationKind} from '@/store/builder'
 import Lang from '@/lib/filters/lang'
 import {NoValidResponseHandler} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
@@ -183,9 +184,9 @@ const builderNamespace = namespace('builder')
 
 @Component({})
 export class Block extends mixins(Lang) {
-  @Prop() readonly block: any
-  @Prop() readonly x: any
-  @Prop() readonly y: any
+  @Prop({type: Object, required: true}) readonly block!: IBlock
+  @Prop({type: Number, required: true}) readonly x!: number
+  @Prop({type: Number, required: true}) readonly y!: number
 
   livePosition: { x: number, y: number } | null = null
   labelContainerMaxWidth = LABEL_CONTAINER_MAX_WIDTH
@@ -196,17 +197,17 @@ export class Block extends mixins(Lang) {
 
   readonly NoValidResponseHandler = NoValidResponseHandler
 
-  created() {
+  created(): void {
     this.initDraggableForExitsByUuid()
   }
 
-  updated() {
+  updated(): void {
     if (this.$refs.draggable) {
       this.blockWidth = (this.$refs.draggable as Vue).$el.clientWidth
     }
   }
 
-  mounted() {
+  mounted(): void {
     this.$nextTick(function () {
       this.updateLabelContainerMaxWidth()
     })
@@ -219,7 +220,7 @@ export class Block extends mixins(Lang) {
     })
   }
 
-  @flowNamespace.State selectedBlocks: any
+  @flowNamespace.State selectedBlocks!: IBlock['uuid'][]
   @builderNamespace.State activeBlockId: any
   @builderNamespace.State operations: any
   @builderNamespace.State activeConnectionsContext: any
@@ -228,7 +229,7 @@ export class Block extends mixins(Lang) {
   @State(({trees: {ui}}) => ui.blockClasses) blockClasses: any
 
   @builderNamespace.Getter blocksById: any
-  @builderNamespace.Getter isEditable: any
+  @builderNamespace.Getter isEditable!: boolean
   @builderNamespace.Getter interactionDesignerBoundingClientRect: any
 
   @flowNamespace.Getter activeFlow: any
@@ -237,48 +238,48 @@ export class Block extends mixins(Lang) {
     return this.block.exits.length
   }
 
-  get numberOfExitsShown() {
+  get numberOfExitsShown(): number {
     const {exits} = this.block
     const isDefaultShown = get(this.block.vendor_metadata, 'io_viamo.noValidResponse') === NoValidResponseHandler.CONTINUE_THRU_EXIT
     return exits.length - (isDefaultShown ? 0 : 1)
   }
 
-  get hasExitsShown() {
+  get hasExitsShown(): boolean {
     return this.numberOfExitsShown > 0
   }
 
-  get hasMultipleExitsShown() {
+  get hasMultipleExitsShown(): boolean {
     return this.numberOfExitsShown > 1
   }
 
-  get hasLayout() {
+  get hasLayout(): boolean {
     return isNumber(this.x) && isNumber(this.y)
   }
 
-  get isAssociatedWithActiveConnection() {
+  get isAssociatedWithActiveConnection(): boolean {
     const {block, activeConnectionsContext} = this
     return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid || context.targetId === block.uuid).length
   }
 
-  get isBlockSelected() {
+  get isBlockSelected(): boolean {
     return includes(this.selectedBlocks, this.block.uuid)
   }
 
   // todo: does this component know too much, what out of the above mapped state can be mapped?
   // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
 
-  get isConnectionSourceRelocateActive() {
+  get isConnectionSourceRelocateActive(): boolean {
     const {operations} = this
     return !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data
   }
 
-  get isConnectionCreateActive() {
+  get isConnectionCreateActive(): boolean {
     const {operations} = this
     return !!operations[OperationKind.CONNECTION_CREATE].data
   }
 
-  get isBlockActivated() {
-    const {activeBlockId, isAssociatedWithActiveConnection, block, operations,} = this
+  get isBlockActivated(): boolean {
+    const {activeBlockId, isAssociatedWithActiveConnection, block, operations} = this
     if ((activeBlockId && activeBlockId === block.uuid) || isAssociatedWithActiveConnection) {
       return true
     }
@@ -287,7 +288,7 @@ export class Block extends mixins(Lang) {
     return data && data.targetId === block.uuid
   }
 
-  get translatedBlockEditorPosition() {
+  get translatedBlockEditorPosition(): string {
     const xOffset = 5
     const yOffset = 32 // Block toolbar height
     const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
@@ -295,7 +296,7 @@ export class Block extends mixins(Lang) {
     return `translate(${left}px, ${top}px)`
   }
 
-  get shouldShowBlockEditor() {
+  get shouldShowBlockEditor(): boolean {
     return this.isBlockEditorOpen && this.activeBlockId === this.block.uuid
   }
 
@@ -304,10 +305,10 @@ export class Block extends mixins(Lang) {
     return generateConnectionLayoutKeyFor(source, target)
   }
 
-  @builderNamespace.Mutation activateBlock: any
-  @builderNamespace.Mutation setBlockPositionTo: any
-  @builderNamespace.Mutation initDraggableForExitsByUuid: any
-  @builderNamespace.Mutation setIsBlockEditorOpen: any
+  @builderNamespace.Mutation activateBlock!: () => void
+  @builderNamespace.Mutation setBlockPositionTo!: ({position: {x, y}, block}: {position: {x: number, y: number}, block: IBlock}) => void
+  @builderNamespace.Mutation initDraggableForExitsByUuid!: () => void
+  @builderNamespace.Mutation setIsBlockEditorOpen!: () => void
 
   @builderNamespace.Action removeConnectionFrom: any
 
@@ -323,21 +324,21 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Action setConnectionCreateTargetBlockToNullFrom: any
   @builderNamespace.Action applyConnectionCreate: any
 
-  exitMouseEnter(exit: any) {
+  exitMouseEnter(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, true)
   }
 
-  exitMouseLeave(exit: any) {
+  exitMouseLeave(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, false)
   }
 
-  setLineHovered(exit: any, value: any) {
+  setLineHovered(exit: IBlockExit, value: any): void {
     this.$nextTick(() => {
       this.$set(this.lineHovers, exit.uuid, value)
     })
   }
 
-  updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false) {
+  updateLabelContainerMaxWidth(blockExitsLength = this.blockExitsLength, isRemoving = false): void {
     // one exit
     const blockExitElement = document.querySelector(`#block\\/${this.block.uuid} .block-exit`) as HTMLElement
 
@@ -369,43 +370,43 @@ export class Block extends mixins(Lang) {
   }
 
   // todo: push NodeExit into it's own vue component
-  isExitActivatedForRelocate(exit: any) {
+  isExitActivatedForRelocate(exit: any): boolean {
     const {data} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
     return data
       && data.to
       && data.to.exitId === exit.uuid
   }
 
-  isExitActivatedForCreate(exit: any) {
+  isExitActivatedForCreate(exit: any): boolean {
     const {data} = this.operations[OperationKind.CONNECTION_CREATE]
     return data
       && data.source
       && data.source.exitId === exit.uuid
   }
 
-  activateExitAsDropZone(e: any, exit: any) {
+  activateExitAsDropZone(e: any, exit: any): void {
     const {block} = this
     this.setConnectionSourceRelocateValue({block, exit})
   }
 
-  deactivateExitAsDropZone(e: any, exit: any) {
+  deactivateExitAsDropZone(e: any, exit: any): void {
     const {block} = this
     this.setConnectionSourceRelocateValueToNullFrom({block, exit})
   }
 
   // eslint-disable-next-line no-unused-vars
-  activateBlockAsDropZone() {
+  activateBlockAsDropZone(): void {
     const {block} = this
     this.setConnectionCreateTargetBlock({block})
   }
 
   // eslint-disable-next-line no-unused-vars
-  deactivateBlockAsDropZone() {
+  deactivateBlockAsDropZone(): void {
     const {block} = this
     this.setConnectionCreateTargetBlockToNullFrom({block})
   }
 
-  onMoved({position: {left: x, top: y}}: {position: {left: number, top: number}}) {
+  onMoved({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
     // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
 
     const {block} = this
@@ -423,14 +424,14 @@ export class Block extends mixins(Lang) {
     })
   }
 
-  doRemoveConnectionFrom(exit: any) {
+  handleRemoveConnectionFrom(exit: any): void {
     const {block} = this
     this.removeConnectionFrom({block, exit})
     // force render, useful if the exit label is very short
     this.labelContainerMaxWidth += 0
   }
 
-  handleDraggableInitializedFor({uuid}: {uuid: string}, {draggable}: {draggable: any}) {
+  handleDraggableInitializedFor({uuid}: {uuid: string}, {draggable}: {draggable: any}): void {
     this.draggableForExitsByUuid[uuid] = draggable
 
     const {left, top} = draggable
@@ -439,11 +440,11 @@ export class Block extends mixins(Lang) {
     console.debug('Block', 'handleDraggableInitializedFor', {blockId, exitId: uuid, coords: {left, top}})
   }
 
-  handleDraggableDestroyedFor({uuid}: {uuid: string}) {
+  handleDraggableDestroyedFor({uuid}: {uuid: string}): void {
     delete this.draggableForExitsByUuid[uuid]
   }
 
-  onCreateExitDragStarted({draggable}: {draggable: any}, exit: any) {
+  onCreateExitDragStarted({draggable}: {draggable: any}, exit: any): void {
     const {block} = this
     const {left: x, top: y} = draggable
 
@@ -459,11 +460,11 @@ export class Block extends mixins(Lang) {
     draggable.top += 25
   }
 
-  onCreateExitDragged({position: {left: x, top: y}}: {position: {left: number, top: number}}) {
+  onCreateExitDragged({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
     this.livePosition = {x, y}
   }
 
-  onCreateExitDragEnded({draggable}: {draggable: any}) {
+  onCreateExitDragEnded({draggable}: {draggable: any}): void {
     const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE].data.position
 
     console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
@@ -476,7 +477,7 @@ export class Block extends mixins(Lang) {
     this.livePosition = null
   }
 
-  onMoveExitDragStarted({draggable}: {draggable: any}, exit: any) {
+  onMoveExitDragStarted({draggable}: {draggable: any}, exit: any): void {
     const {block} = this
     const {left: x, top: y} = draggable
 
@@ -492,14 +493,14 @@ export class Block extends mixins(Lang) {
     draggable.top += 25
   }
 
-  onMoveExitDragged({position: {left: x, top: y}}: {position: {left: number, top: number}}) {
+  onMoveExitDragged({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
     this.livePosition = {x, y}
   }
 
   // todo: store the leaderlines in vuex and manip there --- aka the leaderline itself would simply _produce_ the
   //       domain object which we thenceforth manip in vuex ?
 
-  onMoveExitDragEnded({draggable}: {draggable: any}) {
+  onMoveExitDragEnded({draggable}: {draggable: any}): void {
     const {x: left, y: top} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data.position
 
     console.debug('Block', 'onMoveExitDragEnded', 'operation.data.position', {left, top})
@@ -511,7 +512,7 @@ export class Block extends mixins(Lang) {
     this.livePosition = null
   }
 
-  selectBlock() {
+  selectBlock(): void {
     const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
     this.$router.replace(
       {
@@ -529,19 +530,17 @@ export class Block extends mixins(Lang) {
     )
   }
 
-  handleDraggableEndedForBlock() {
+  handleDraggableEndedForBlock(): void {
     console.debug('Block', 'handleDraggableEndedForBlock')
-    const self = this
     forEach(this.block.exits, (exit) => {
-      delete self.draggableForExitsByUuid[exit.uuid]
+      delete this.draggableForExitsByUuid[exit.uuid]
     })
   }
 
-  handleDraggableDestroyedForBlock() {
+  handleDraggableDestroyedForBlock(): void {
     console.debug('Block', 'handleDraggableDestroyedForBlock')
-    const self = this
     forEach(this.block.exits, (exit) => {
-      delete self.draggableForExitsByUuid[exit.uuid]
+      delete this.draggableForExitsByUuid[exit.uuid]
     })
   }
 }
