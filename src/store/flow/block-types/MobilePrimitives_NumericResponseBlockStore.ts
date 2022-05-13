@@ -69,10 +69,22 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         prompt: blankResource.uuid,
         validation_minimum: undefined,
         validation_maximum: undefined,
+        ...await dispatch('initialVendorExtraConfig'),
       },
       tags: [],
       vendor_metadata: {},
     })
+  },
+
+  /**
+   * Override this in the consumer side to add extra config props to avoid the validation saying we have missing prop at the creation
+   * eg: {
+   *   prop1: undefined,
+   *   prop2: undefined,
+   * }
+   */
+  async initialVendorExtraConfig(): Promise<object> {
+    return {}
   },
 
   handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
