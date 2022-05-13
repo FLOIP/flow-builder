@@ -172,15 +172,30 @@ import {filter, forEach, get, includes, isNumber} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {Component, Prop, Watch} from 'vue-property-decorator'
 import {namespace, State} from 'vuex-class'
-import {IBlock, IBlockExit} from '@floip/flow-runner'
-import {generateConnectionLayoutKeyFor, OperationKind} from '@/store/builder'
+import {IBlock, IBlockExit, IFlow} from '@floip/flow-runner'
+import {
+  ConnectionLayout,
+  generateConnectionLayoutKeyFor, IConnectionContext,
+  IConnectionCreateOperation,
+  IConnectionSourceRelocateOperation, IPosition,
+  OperationKind,
+  SupportedOperation,
+} from '@/store/builder'
 import Lang from '@/lib/filters/lang'
 import {NoValidResponseHandler} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {BlockClasses, IPositionLeftTop} from '@/lib/types'
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
 
 const flowNamespace = namespace('flow')
 const builderNamespace = namespace('builder')
+
+type Draggable = any
+
+type BlockAction = ({block}: { block: IBlock }) => void;
+type BlockExitAction = ({block, exit}: { block: IBlock, exit: IBlockExit }) => void;
+type BlockPositionAction = ({block, position}: { block: IBlock, position: IPosition }) => void;
+type BlockExitPositionAction = ({block, exit, position}: { block: IBlock, exit: IBlockExit, position: IPosition }) => void;
 
 @Component({})
 export class Block extends mixins(Lang) {
@@ -193,7 +208,7 @@ export class Block extends mixins(Lang) {
   blockWidth = 0
   blockHeight = 0
   exitHovers = {}
-  lineHovers = {}
+  lineHovers: Record<IBlockExit['uuid'], boolean> = {}
 
   readonly NoValidResponseHandler = NoValidResponseHandler
 
@@ -208,7 +223,7 @@ export class Block extends mixins(Lang) {
   }
 
   mounted(): void {
-    this.$nextTick(function () {
+    this.$nextTick(function onMounted() {
       this.updateLabelContainerMaxWidth()
     })
   }
@@ -221,18 +236,18 @@ export class Block extends mixins(Lang) {
   }
 
   @flowNamespace.State selectedBlocks!: IBlock['uuid'][]
-  @builderNamespace.State activeBlockId: any
-  @builderNamespace.State operations: any
-  @builderNamespace.State activeConnectionsContext: any
-  @builderNamespace.State draggableForExitsByUuid: any
-  @builderNamespace.State isBlockEditorOpen: any
-  @State(({trees: {ui}}) => ui.blockClasses) blockClasses: any
+  @builderNamespace.State activeBlockId!: IBlock['uuid'] | null
+  @builderNamespace.State operations!: Record<OperationKind, SupportedOperation>
+  @builderNamespace.State activeConnectionsContext!: IConnectionContext[]
+  @builderNamespace.State draggableForExitsByUuid!: Record<string, Draggable>
+  @builderNamespace.State isBlockEditorOpen!: boolean
+  @State(({trees: {ui}}) => ui.blockClasses) blockClasses!: BlockClasses
 
-  @builderNamespace.Getter blocksById: any
+  @builderNamespace.Getter blocksById!: Record<IBlock['uuid'], IBlock>
   @builderNamespace.Getter isEditable!: boolean
-  @builderNamespace.Getter interactionDesignerBoundingClientRect: any
+  @builderNamespace.Getter interactionDesignerBoundingClientRect!: DOMRect
 
-  @flowNamespace.Getter activeFlow: any
+  @flowNamespace.Getter activeFlow?: IFlow
 
   get blockExitsLength(): number {
     return this.block.exits.length
@@ -284,13 +299,14 @@ export class Block extends mixins(Lang) {
       return true
     }
 
-    const {data} = operations[OperationKind.CONNECTION_CREATE]
-    return data && data.targetId === block.uuid
+    const {data} = operations[OperationKind.CONNECTION_CREATE] as IConnectionCreateOperation
+    return data?.targetId === block.uuid
   }
 
   get translatedBlockEditorPosition(): string {
     const xOffset = 5
-    const yOffset = 32 // Block toolbar height
+    // Block toolbar height
+    const yOffset = 32
     const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
     const top = this.y - yOffset
     return `translate(${left}px, ${top}px)`
@@ -301,28 +317,28 @@ export class Block extends mixins(Lang) {
   }
 
   // todo: how do we decide whether or not this should be an action or a vanilla domain function?
-  generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
+  generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout {
     return generateConnectionLayoutKeyFor(source, target)
   }
 
   @builderNamespace.Mutation activateBlock!: () => void
-  @builderNamespace.Mutation setBlockPositionTo!: ({position: {x, y}, block}: {position: {x: number, y: number}, block: IBlock}) => void
+  @builderNamespace.Mutation setBlockPositionTo!: BlockPositionAction
   @builderNamespace.Mutation initDraggableForExitsByUuid!: () => void
   @builderNamespace.Mutation setIsBlockEditorOpen!: () => void
 
-  @builderNamespace.Action removeConnectionFrom: any
+  @builderNamespace.Action removeConnectionFrom!: BlockExitAction
 
   // ConnectionSourceRelocate
-  @builderNamespace.Action initializeConnectionSourceRelocateWith: any
-  @builderNamespace.Action setConnectionSourceRelocateValue: any
-  @builderNamespace.Action setConnectionSourceRelocateValueToNullFrom: any
-  @builderNamespace.Action applyConnectionSourceRelocate: any
+  @builderNamespace.Action initializeConnectionSourceRelocateWith!: BlockExitPositionAction
+  @builderNamespace.Action setConnectionSourceRelocateValue!: BlockExitAction
+  @builderNamespace.Action setConnectionSourceRelocateValueToNullFrom!: BlockExitAction
+  @builderNamespace.Action applyConnectionSourceRelocate!: () => void
 
   // ConnectionCreate
-  @builderNamespace.Action initializeConnectionCreateWith: any
-  @builderNamespace.Action setConnectionCreateTargetBlock: any
-  @builderNamespace.Action setConnectionCreateTargetBlockToNullFrom: any
-  @builderNamespace.Action applyConnectionCreate: any
+  @builderNamespace.Action initializeConnectionCreateWith!: BlockExitPositionAction
+  @builderNamespace.Action setConnectionCreateTargetBlock!: BlockAction
+  @builderNamespace.Action setConnectionCreateTargetBlockToNullFrom!: BlockAction
+  @builderNamespace.Action applyConnectionCreate!: () => void
 
   exitMouseEnter(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, true)
@@ -332,7 +348,7 @@ export class Block extends mixins(Lang) {
     this.$set(this.exitHovers, exit.uuid, false)
   }
 
-  setLineHovered(exit: IBlockExit, value: any): void {
+  setLineHovered(exit: IBlockExit, value: boolean): void {
     this.$nextTick(() => {
       this.$set(this.lineHovers, exit.uuid, value)
     })
@@ -357,39 +373,33 @@ export class Block extends mixins(Lang) {
         return
       }
       // Adding new exit
-    } else {
-      // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible (especially when removing exits)
-      if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) {
+    } else if (LABEL_CONTAINER_MAX_WIDTH < blockExitsLength * blockExitElement.clientWidth) {
+        // -1: to force having LABEL_CONTAINER_MAX_WIDTH as possible (especially when removing exits)
         // but set with `n x {outer width}`
         this.labelContainerMaxWidth = blockExitsLength * blockExitElement.offsetWidth
         return
       }
-    }
 
     this.labelContainerMaxWidth = LABEL_CONTAINER_MAX_WIDTH
   }
 
   // todo: push NodeExit into it's own vue component
-  isExitActivatedForRelocate(exit: any): boolean {
-    const {data} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
-    return data
-      && data.to
-      && data.to.exitId === exit.uuid
+  isExitActivatedForRelocate(exit: IBlockExit): boolean {
+    const {data} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE] as IConnectionSourceRelocateOperation
+    return data?.to?.exitId === exit.uuid
   }
 
-  isExitActivatedForCreate(exit: any): boolean {
-    const {data} = this.operations[OperationKind.CONNECTION_CREATE]
-    return data
-      && data.source
-      && data.source.exitId === exit.uuid
+  isExitActivatedForCreate(exit: IBlockExit): boolean {
+    const {data} = this.operations[OperationKind.CONNECTION_CREATE] as IConnectionCreateOperation
+    return data?.source?.exitId === exit.uuid
   }
 
-  activateExitAsDropZone(e: any, exit: any): void {
+  activateExitAsDropZone(e: MouseEvent, exit: IBlockExit): void {
     const {block} = this
     this.setConnectionSourceRelocateValue({block, exit})
   }
 
-  deactivateExitAsDropZone(e: any, exit: any): void {
+  deactivateExitAsDropZone(e: MouseEvent, exit: IBlockExit): void {
     const {block} = this
     this.setConnectionSourceRelocateValueToNullFrom({block, exit})
   }
@@ -424,14 +434,14 @@ export class Block extends mixins(Lang) {
     })
   }
 
-  handleRemoveConnectionFrom(exit: any): void {
+  handleRemoveConnectionFrom(exit: IBlockExit): void {
     const {block} = this
     this.removeConnectionFrom({block, exit})
     // force render, useful if the exit label is very short
     this.labelContainerMaxWidth += 0
   }
 
-  handleDraggableInitializedFor({uuid}: {uuid: string}, {draggable}: {draggable: any}): void {
+  handleDraggableInitializedFor({uuid}: {uuid: string}, {draggable}: {draggable: Draggable}): void {
     this.draggableForExitsByUuid[uuid] = draggable
 
     const {left, top} = draggable
@@ -444,7 +454,7 @@ export class Block extends mixins(Lang) {
     delete this.draggableForExitsByUuid[uuid]
   }
 
-  onCreateExitDragStarted({draggable}: {draggable: any}, exit: any): void {
+  onCreateExitDragStarted({draggable}: {draggable: Draggable}, exit: IBlockExit): void {
     const {block} = this
     const {left: x, top: y} = draggable
 
@@ -464,8 +474,8 @@ export class Block extends mixins(Lang) {
     this.livePosition = {x, y}
   }
 
-  onCreateExitDragEnded({draggable}: {draggable: any}): void {
-    const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE].data.position
+  onCreateExitDragEnded({draggable}: {draggable: Draggable}): void {
+    const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE]!.data!.position
 
     console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
     console.debug('Block', 'onCreateExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
@@ -477,7 +487,7 @@ export class Block extends mixins(Lang) {
     this.livePosition = null
   }
 
-  onMoveExitDragStarted({draggable}: {draggable: any}, exit: any): void {
+  onMoveExitDragStarted({draggable}: {draggable: Draggable}, exit: IBlockExit): void {
     const {block} = this
     const {left: x, top: y} = draggable
 
@@ -500,8 +510,8 @@ export class Block extends mixins(Lang) {
   // todo: store the leaderlines in vuex and manip there --- aka the leaderline itself would simply _produce_ the
   //       domain object which we thenceforth manip in vuex ?
 
-  onMoveExitDragEnded({draggable}: {draggable: any}): void {
-    const {x: left, y: top} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data.position
+  onMoveExitDragEnded({draggable}: {draggable: Draggable}): void {
+    const {x: left, y: top} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]!.data!.position
 
     console.debug('Block', 'onMoveExitDragEnded', 'operation.data.position', {left, top})
     console.debug('Block', 'onMoveExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})

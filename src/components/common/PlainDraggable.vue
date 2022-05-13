@@ -9,7 +9,7 @@ import {mixins} from 'vue-class-component'
 import {Component, Prop, Watch} from 'vue-property-decorator'
 import PlainDraggableLib from 'plain-draggable'
 import Lang from '@/lib/filters/lang'
-import {IPosition} from '@/lib/types'
+import {IPositionLeftTop} from '@/lib/types'
 
 @Component({})
 export class PlainDraggable extends mixins(Lang) {
@@ -76,17 +76,17 @@ export class PlainDraggable extends mixins(Lang) {
     this.$emit('initialized', {draggable})
   }
 
-  handleDragged(position: IPosition): void {
+  handleDragged(position: IPositionLeftTop): void {
     const {draggable} = this
     this.$emit('dragged', {draggable, position})
   }
 
-  handleDragStarted(position: IPosition): void {
+  handleDragStarted(position: IPositionLeftTop): void {
     const {draggable} = this
     this.$emit('dragStarted', {draggable, position})
   }
 
-  handleDragEnded(position: IPosition): void {
+  handleDragEnded(position: IPositionLeftTop): void {
     const {draggable} = this
     this.$emit('dragEnded', {draggable, position})
   }

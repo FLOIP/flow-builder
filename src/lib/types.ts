@@ -56,7 +56,9 @@ export interface ISubscriberPropertyField {
   'display_label': string,
 }
 
-export interface IPosition {
+export interface IPositionLeftTop {
   left: number,
   top: number,
 }
+
+export type BlockClasses = string[]

@@ -41,7 +41,7 @@ export interface IConnectionContext {
 
 export type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation
 
-interface IPosition {
+export interface IPosition {
   x: number,
   y: number,
 }
@@ -89,6 +89,8 @@ export interface IAudioFile {
     original_extension: string,
     created_at: string,
 }
+
+export type ConnectionLayout = any[]
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
   activeBlock: ({activeBlockId}, {blocksById}) => (activeBlockId ? blocksById[activeBlockId] : null),
@@ -332,7 +334,7 @@ export function createDefaultBlockTypeInstallerFor(
     || builder.$store.registerModule(['flow', blockType], storeForBlockType)
 }
 
-export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
+export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
