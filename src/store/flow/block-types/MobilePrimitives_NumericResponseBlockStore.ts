@@ -8,6 +8,7 @@ import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import Lang from '@/lib/filters/lang'
 import {ErrorObject} from 'ajv'
 import {IFlowsState} from '../index'
+import {IValidationStatus} from '@/store/validation'
 
 const lang = new Lang()
 
@@ -81,8 +82,20 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
   },
 
-  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    const validationResults = validateCommunityBlock({block, schemaVersion})
+  /**
+   * Validate the vendor block (Consumer block)
+   * By overriding this action in the consumer side, we will be able to customize it using different json schema for eg.
+   *
+   * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
+   * instead edit the `validate()` if needed.
+   */
+  async validateVendorBlock({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
+    // TODO: if this works, then update all blocks
+    return validateCommunityBlock({block, schemaVersion})
+  },
+
+  async validate({rootGetters, dispatch}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    const validationResults = await dispatch('validateVendorBlock', {block, schemaVersion})
 
     // Custom validation specific for the block
     if (validationResults.ajvErrors == null) {
