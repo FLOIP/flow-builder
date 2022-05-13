@@ -66,7 +66,7 @@ class Core_LogBlock extends mixins(Lang) {
     return this.editMessage({blockId: this.block.uuid, message: value})
   }
 
-  @blockVuexNamespace.Action editMessage!: (params: { blockId: string, message: string }) => Promise<string>
+  @blockVuexNamespace.Action editMessage!: (params: { blockId: IBlock['uuid'], message: string }) => Promise<string>
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable !: boolean
 }

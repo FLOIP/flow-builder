@@ -105,8 +105,8 @@ export class AdvancedExitsBuilder extends mixins(Lang) {
     return (exitEditor?.$refs.testExpressionInput as Vue).$refs.input as HTMLInputElement
   }
 
-  @flowVuexNamespace.Mutation block_addExit!: ({blockId, exit}: {blockId: string, exit: IBlockExit}) => void
-  @flowVuexNamespace.Mutation block_removeExit!: ({blockId, exit}: {blockId: string, exit: IBlockExit}) => void
+  @flowVuexNamespace.Mutation block_addExit!: ({blockId, exit}: {blockId: IBlock['uuid'], exit: IBlockExit}) => void
+  @flowVuexNamespace.Mutation block_removeExit!: ({blockId, exit}: {blockId: IBlock['uuid'], exit: IBlockExit}) => void
   @flowVuexNamespace.Action block_createBlockExitWith!: ({props}: { props: { uuid: string } & Partial<IBlockExit> }) => Promise<IBlockExit>
 }
 export default AdvancedExitsBuilder

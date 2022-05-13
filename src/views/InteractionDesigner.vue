@@ -225,7 +225,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
 
   @Mutation configure!: ({appConfig, builderConfig}: {appConfig: object, builderConfig: object}) => void
   @Mutation deselectBlocks!: () => void
-  @builderNamespace.Mutation activateBlock!: ({blockId}: {blockId: string | null}) => void
+  @builderNamespace.Mutation activateBlock!: ({blockId}: {blockId: IBlock['uuid'] | null}) => void
   @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
   @builderNamespace.Mutation setInteractionDesignerBoundingClientRect!: (value: DOMRect) => void
   @builderNamespace.Action setIsEditable!: (arg0: boolean) => void
