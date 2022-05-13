@@ -12,7 +12,9 @@
       <slot
         slot="extras"
         name="extras" />
-      <slot name="vendor-extras" />
+      <slot
+        slot="vendor-extras"
+        name="vendor-extras" />
       <slot
         slot="branching"
         name="branching">
@@ -24,8 +26,10 @@
       <slot
         slot="contact-props"
         name="contact-props" />
+      <slot
+        slot="vendor"
+        name="vendor" />
     </base-block>
-    <slot name="vendor" />
   </div>
 </template>
 

@@ -76,7 +76,7 @@ export const mutations: MutationTree<IFlowsState> = {
     Vue.delete(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, key)
   },
   /**
-   * Make nested assignment reactive
+   * update config by path, and make nested assignment reactive for vue
    */
   block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string}) {
     const base = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config

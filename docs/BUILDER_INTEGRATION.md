@@ -626,5 +626,28 @@ you may reduce its width by a certain amount in pixels, e.g. 80
 platformBuilderConfig.ui.pages.interactionDesigner.builderWidthAdjustment = 80
 ```
 
-TODO - add more
+### Setting default available languages
+Available languages can be configured as follows:
 
+```
+platformBuilderConfig.ui.languages = [lang1, lang2, ..., langN]
+```
+where each `lang` option follows the [ILanguage](https://github.com/FLOIP/flow-runner/blob/master/src/flow-spec/ILanguage.ts) schema.
+
+### Setting available contact property fields
+See below how we may configure available contact property fields:
+
+```
+platformBuilderConfig.ui.subscriberPropertyFields = [contactProp1, contactProp2, ..., contactPropN]
+```
+where each `contactProp` option follow the [IContactPropertyOption](https://github.com/FLOIP/flow-builder/blob/master/src/store/flow/block-types/Core_SetContactPropertyStore.ts#L9) schema.
+
+### Setting available contact groups
+See below how we may configure available contact groups:
+
+```
+platformBuilderConfig.ui.groups = [group1, group2, ..., groupN]
+```
+where each `group` option follow the [IGroupOption](https://github.com/FLOIP/flow-builder/blob/master/src/store/flow/block-types/Core_SetGroupMembershipStore.ts#L9) schema.
+
+TODO - add more
