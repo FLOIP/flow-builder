@@ -3,12 +3,12 @@ import {IRootState} from '@/store'
 import {IBlock, IBlockExit, INumericBlockConfig} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
-import {defaultsDeep, get} from 'lodash'
+import {defaultsDeep} from 'lodash'
 import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import Lang from '@/lib/filters/lang'
 import {ErrorObject} from 'ajv'
-import {IFlowsState} from '../index'
 import {IValidationStatus} from '@/store/validation'
+import {IFlowsState} from '../index'
 
 const lang = new Lang()
 
@@ -83,7 +83,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    *   prop2: undefined,
    * }
    */
-  async initialVendorExtraConfig(): Promise<object> {
+  async initiateExtraVendorConfig(): Promise<object> {
     return {}
   },
 
@@ -102,7 +102,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * instead edit the `validate()` if needed.
    */
   async validateVendorBlock({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
-    // TODO: if this works, then update all blocks
     return validateCommunityBlock({block, schemaVersion})
   },
 
