@@ -17,6 +17,8 @@
       <hr>
       <slot name="extras" />
 
+      <slot name="vendor-extras" />
+
       <slot name="branching">
         <block-output-branching-config
           v-if="usesDefaultBranchingEditor"
@@ -32,6 +34,8 @@
           v-if="usesDefaultContactPropsEditor"
           :block="block" />
       </slot>
+
+      <slot name="vendor" />
 
       <hr>
 

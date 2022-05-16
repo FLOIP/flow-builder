@@ -21,7 +21,7 @@
     "deploy": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD"
   },
   "engines": {
-    "node": "^14.19.1"
+    "node": "^14"
   },
   "dependencies": {
     "@avcs/autosuggest": "^1.7.5",
