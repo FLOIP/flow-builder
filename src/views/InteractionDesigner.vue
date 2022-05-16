@@ -323,6 +323,10 @@ export default {
 
   .viamo-app-container .interaction-designer-header {
     position: sticky;
+    left: 95px;
+    float: left;
+    width: calc(100vw - 125px);
+    margin-right: -100px;
   }
 
   .tree-sidebar-container {

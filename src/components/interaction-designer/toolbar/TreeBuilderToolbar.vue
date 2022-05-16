@@ -659,6 +659,11 @@ export default TreeBuilderToolbar
   }
 }
 
+.viamo-app-container .tree-builder-toolbar {
+  position: absolute;
+  width: 100%;
+}
+
 .tree-builder-toolbar-main-menu {
   background: $neutral-50;
 
