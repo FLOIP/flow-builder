@@ -302,10 +302,6 @@ export default {
 <style lang="scss">
   $sidebar-width: 365px;
 
-  html {
-    background: #F5F5F5;
-  }
-
   .interaction-designer-contents {
     background: #F5F5F5;
     min-height: 100vh;

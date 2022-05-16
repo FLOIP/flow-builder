@@ -234,5 +234,10 @@ export default BuilderCanvas
   /*standard proportion min-width and min-height here so that initial render on slower machines*/
   min-width: 1024px;
   min-height: 768px;
+  background: #f4f4f4;
+}
+
+.viamo-app-container .builder-canvas {
+  background: #fff;
 }
 </style>
