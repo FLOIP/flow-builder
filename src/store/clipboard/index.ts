@@ -2,7 +2,8 @@ import {
   ActionTree, GetterTree, Module, MutationTree,
 } from 'vuex'
 import { IRootState } from '@/store'
-import { IPrompt } from '@floip/flow-runner';
+import { router } from '@/router'
+import { IPrompt } from '@floip/flow-runner'
 
 export interface BlocksData {
   isFocused: boolean;
@@ -24,6 +25,7 @@ export const getters: GetterTree<IClipboardState, IRootState> = {
   blocksData: (state) => state.blocksData,
   getBlockPrompt: (state) => (index: number) => state.blocksData[index].prompt,
   isBlockFocused: (state) => (index: number) => state.blocksData[index].isFocused,
+  hasSimulator: (_, _2, _3, rootGetters) => rootGetters['flow/hasOfflineMode'] && rootGetters.isFeatureSimulatorEnabled && !rootGetters['builder/isEditable'],
 }
 
 export const mutations: MutationTree<IClipboardState> = {
@@ -38,6 +40,10 @@ export const mutations: MutationTree<IClipboardState> = {
 export const actions: ActionTree<IClipboardState, IRootState> = {
   setSimulatorActive({ commit }, value) {
     commit('setSimulatorActive', value)
+    const routeName = value ? 'flow-simulator' : 'flow-canvas'
+    router.replace({
+      name: routeName,
+    })
   },
   resetBlocksData({ state }) {
     state.blocksData = []
@@ -58,7 +64,7 @@ export const actions: ActionTree<IClipboardState, IRootState> = {
   },
   removeFromBlocksData({ state }, index: number) {
     state.blocksData.splice(index)
-  }
+  },
 }
 
 export const store: Module<IClipboardState, IRootState> = {

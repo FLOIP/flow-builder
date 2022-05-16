@@ -11,22 +11,7 @@
       v-if="isSimulatorActive"
       class="tree-sidebar-container"
       :class="{ 'slide-out': !$route.meta.isSidebarShown,}">
-      <div
-        class="sidebar-cue"
-        :class="{'sidebar-close': $route.meta.isSidebarShown}"
-        @click="showOrHideSidebar">
-        <font-awesome-icon
-          v-if="$route.meta.isSidebarShown"
-          :icon="['fac', 'minimize']"
-          class="fa-btn" />
-        <font-awesome-icon
-          v-else
-          :icon="['fac', 'expand']"
-          class="fa-btn" />
-      </div>
-
-      <div
-        class="tree-sidebar">
+      <div v-if="$route.name === 'flow-simulator' && hasSimulator" class="tree-sidebar">
         <clipboard-root />
       </div>
     </aside>
@@ -126,7 +111,7 @@ export default {
 
     ...mapGetters('flow', ['activeFlow']),
     ...mapGetters('builder', ['activeBlock', 'isEditable', 'interactionDesignerBoundingClientRect']),
-    ...mapGetters('clipboard', ['isSimulatorActive']),
+    ...mapGetters('clipboard', ['hasSimulator', 'isSimulatorActive']),
 
     jsKey() {
       return get(this.selectedBlock, 'jsKey')
@@ -202,6 +187,9 @@ export default {
       if (this.$route.meta?.isBlockEditorShown) {
         this.setIsBlockEditorOpen(true)
       }
+      if (this.$route.name === 'flow-simulator' && this.hasSimulator()) {
+        this.setSimulatorActive(true)
+      }
     }, 500)
     console.debug('Vuej tree interaction designer mounted!')
 
@@ -223,6 +211,7 @@ export default {
     ...mapMutations('builder', ['activateBlock', 'setIsBlockEditorOpen', 'setInteractionDesignerBoundingClientRect']),
     ...mapActions('builder', ['setIsEditable']),
     ...mapMutations('flow', ['flow_setActiveFlowId']),
+    ...mapActions('clipboard', ['setSimulatorActive']),
 
     ...mapActions([
       'attemptSaveTree',

@@ -457,12 +457,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
   }
 
-  get hasSimulator() {
-    return this.hasOfflineMode && this.isFeatureSimulatorEnabled
-  }
-
   // Methods #####################
-
   async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }): Promise<void> {
     const {uuid: blockId} = await this.flow_addBlankBlockByType({
       type,
@@ -642,6 +637,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
 
   // Clipboard
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
+  @clipboardVuexNamespace.Getter hasSimulator!: boolean
 
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined}) => void
 }
