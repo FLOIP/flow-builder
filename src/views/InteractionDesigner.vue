@@ -326,7 +326,7 @@ export default {
     left: 95px;
     float: left;
     width: calc(100vw - 125px);
-    margin-right: -100px;
+    margin-right: -100%;
   }
 
   .tree-sidebar-container {
