@@ -626,5 +626,43 @@ you may reduce its width by a certain amount in pixels, e.g. 80
 platformBuilderConfig.ui.pages.interactionDesigner.builderWidthAdjustment = 80
 ```
 
-TODO - add more
+### Setting default available languages
+Available languages can be configured as follows:
 
+```
+platformBuilderConfig.ui.languages = [lang1, lang2, ..., langN]
+```
+where each `lang` option follows the [ILanguage](https://github.com/FLOIP/flow-runner/blob/master/src/flow-spec/ILanguage.ts) schema.
+
+### Setting available contact property fields
+See below how we may configure available contact property fields:
+
+```
+platformBuilderConfig.ui.subscriberPropertyFields = [contactProp1, contactProp2, ..., contactPropN]
+```
+where each `contactProp` option follow the [IContactPropertyOption](https://github.com/FLOIP/flow-builder/blob/master/src/store/flow/block-types/Core_SetContactPropertyStore.ts#L9) schema.
+
+### Map contact property fields' data_type with relevant block class
+Override this to tell the builder which block could be relevant for which field data_type
+```
+platformBuilderConfig.ui.subscriberPropertyFieldDataTypesMapping: {
+      "text": ["MobilePrimitives.OpenResponse"],
+      "location": ["SmartDevices.LocationResponse"],
+      "number": ["MobilePrimitives.NumericResponse"],
+      "phone": ["MobilePrimitives.NumericResponse"],
+      "multiple_choice": ["MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
+      "media": ["SmartDevices.PhotoResponse"]
+    }
+```
+This will allow us to disable a contact property field in the "contact prop selector" if the block output type doesn't match with the field data_type.
+eg: In the block `MobilePrimitives.NumericResponse`, we only enable contact props having data_type `number` or `phone`.
+
+### Setting available contact groups
+See below how we may configure available contact groups:
+
+```
+platformBuilderConfig.ui.groups = [group1, group2, ..., groupN]
+```
+where each `group` option follow the [IGroupOption](https://github.com/FLOIP/flow-builder/blob/master/src/store/flow/block-types/Core_SetGroupMembershipStore.ts#L9) schema.
+
+TODO - add more

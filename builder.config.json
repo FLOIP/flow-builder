@@ -273,21 +273,71 @@
     "isEditableLocked": 0,
     "orgTimezone": "America/Toronto",
     "subscriberCount": 0,
-    "subscriberPropertyFields": [],
-    "subscriberPropertyFieldDataTypes": [
-      "text",
-      "location",
-      "number",
-      "map_coordinates",
-      "boolean",
-      "phone",
-      "multiple_choice",
-      "date"
+    "subscriberPropertyFields": [
+      {
+        "id": "10",
+        "name": "name",
+        "display_label": "Name (text)",
+        "data_type": "text"
+      },
+      {
+        "id": "11",
+        "name": "comment",
+        "display_label": "Comment (text)",
+        "data_type": "text"
+      },
+      {
+        "id": "12",
+        "name": "age",
+        "display_label": "Age (number)",
+        "data_type": "number"
+      },
+      {
+        "id": "13",
+        "name": "phone_number",
+        "display_label": "Phone number (phone)",
+        "data_type": "phone"
+      },
+      {
+        "id": "14",
+        "name": "favourite_fruits",
+        "display_label": "Favourite fruits (multiple_choice)",
+        "data_type": "multiple_choice"
+      },
+      {
+        "id": "15",
+        "name": "address",
+        "display_label": "Address (location)",
+        "data_type": "location"
+      },
+      {
+        "id": "16",
+        "name": "avatar",
+        "display_label": "Avatar (media)",
+        "data_type": "media"
+      }
     ],
+    "subscriberPropertyFieldDataTypesMapping": {
+      "text": ["MobilePrimitives.OpenResponse", "SmartDevices.LocationResponse", "MobilePrimitives.NumericResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
+      "location": ["SmartDevices.LocationResponse"],
+      "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse"],
+      "phone": ["MobilePrimitives.NumericResponse"],
+      "multiple_choice": ["MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
+      "media": ["SmartDevices.PhotoResponse"]
+    },
     "treeTitles": {},
     "treeSetTitles": {},
     "groupNames": {},
-    "groups": [],
+    "groups": [
+      {
+        "id": "12",
+        "name": "my group 1"
+      },
+      {
+        "id": "13",
+        "name": "my group 2"
+      }
+    ],
     "languageNames": {"1": "English", "2": "Spanish"},
     "languageSelectors": [],
     "apiKey": null,
