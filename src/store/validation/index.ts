@@ -13,7 +13,7 @@ import {
   SupportedMode,
   IResourceValue,
 } from '@floip/flow-runner'
-import {cloneDeep, each, filter, forIn, includes, intersection, isEmpty, map} from 'lodash'
+import {cloneDeep, each, filter, find, forIn, includes, intersection, isEmpty, isEqual, map} from 'lodash'
 import {
   debugValidationStatus,
   flatValidationStatuses,
@@ -102,6 +102,18 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     }
     debugValidationStatus(state.validationStatuses[key], `validation status for ${key}`)
     return state.validationStatuses[key]
+  },
+
+  /**
+   * Validate all existing blocks in current flow
+   * This is useful when the flow has changed, and may affect blocks' validation
+   */
+  async validate_allBlocksWithinFlow({rootGetters, dispatch}): Promise<void> {
+    await Promise.all(
+      rootGetters['flow/activeFlow'].blocks.map(async (currentBlock: IBlock) => {
+        await dispatch('validate_block', {block: currentBlock})
+      }),
+    )
   },
 
   async validate_flow({state, rootGetters}, {flow}: {flow: IFlow}): Promise<IValidationStatus> {

@@ -9,7 +9,7 @@
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.maximum-digits' | trans"
         :placeholder="'flow-builder.enter-value' | trans"
-        :sub-title="'flow-builder.max-digits-help-text' | trans"
+        :tooltip-hint="'flow-builder.max-digits-help-text' | trans"
         :valid-state="isValid" />
     </div>
   </validation-message>

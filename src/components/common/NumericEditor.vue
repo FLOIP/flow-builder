@@ -1,6 +1,13 @@
 <template>
   <div class="numeric-editor">
-    <label class="text-primary mb-0">{{ label }}</label>
+    <label class="text-primary mb-0 d-flex justify-content-between">
+      {{ label }}
+      <font-awesome-icon
+        v-if="tooltipHint"
+        v-b-tooltip.hover="tooltipHint"
+        :icon="['fas', 'info-circle']"
+        class="fa-btn text-primary" />
+    </label>
     <div class="small mb-2">{{subTitle}}</div>
     <div>
       <input
@@ -46,6 +53,12 @@ export const NumericEditor = {
     },
     subTitle: {
       type: [String],
+      required: false,
+      default: '',
+    },
+
+    tooltipHint: {
+      type: String,
       required: false,
       default: '',
     },
