@@ -69,7 +69,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         prompt: blankResource.uuid,
         validation_minimum: undefined,
         validation_maximum: undefined,
-        ...await dispatch('initialVendorExtraConfig'),
+        ...await dispatch('initiateExtraVendorConfig'),
       },
       tags: [],
       vendor_metadata: {},
@@ -83,7 +83,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    *   prop2: undefined,
    * }
    */
-  async initiateExtraVendorConfig(): Promise<object> {
+  async initiateExtraVendorConfig(_ctx: unknown): Promise<object> {
     return {}
   },
 
