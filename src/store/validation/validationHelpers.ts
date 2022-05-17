@@ -190,21 +190,32 @@ export function getOrCreateResourceValidator(schemaVersion: string): ValidateFun
   return validators.get(validationType)!
 }
 
-export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
+/**
+ * Validate Community block
+ *
+ * @param block
+ * @param schemaVersion
+ * @param validationLib, in community version this will be `@floip/flow-runner`,
+ * but in the consumer side this might be like `@CompanyName/flow-runner` (which could be a fork of `@floip/flow-runner`
+ *
+ * Important: the `@CompanyName/flow-runner` should be in the same folder as `@floip/flow-runner`, which is `node_modules/`
+ */
+export function validateCommunityBlock({block, schemaVersion, validationLib}: {block: IBlock, schemaVersion: string, validationLib?: string}): IValidationStatus {
   let validate = null
   if (isEmpty(validators) || !validators.has(block.type)) {
     const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]
     let blockJsonSchema
     try {
-      blockJsonSchema = require(
-        `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block.json`,
-      )
+      // Dynamic `require()` will need a minimum static string at the beginning of the path, so we have to hack it as follows
+      // eslint-disable-next-line import/no-dynamic-require,global-require
+      blockJsonSchema = require(`@floip/../${getValidationLibName(validationLib)}/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block.json`)
       validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema)
     } catch (e) {
       if (e.code === 'MODULE_NOT_FOUND') {
         console.info(`A Specific Validator for the ${blockTypeWithoutNameSpace}Block could not be found. `
           + `Falling back the generic Block validator for ${schemaVersion}`)
-        blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
+        // eslint-disable-next-line import/no-dynamic-require,global-require
+        blockJsonSchema = require(`@floip/../${getValidationLibName(validationLib)}/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
         validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema, '#/definitions/IBlock')
       } else {
         throw e
@@ -224,4 +235,11 @@ export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, s
       resourceUuid: get(block, 'config.prompt'),
     },
   }
+}
+
+export function getValidationLibName(validationLib?: string): string {
+  if (validationLib == null) {
+    return '@floip/flow-runner'
+  }
+  return validationLib
 }
