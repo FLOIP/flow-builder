@@ -268,33 +268,41 @@ You then have several options:
     - Extending base store
         - Provides a generic `createWith` action - pass props to this which your block defaults to on creation
         - Provides a generic `handleBranchingTypeChangedToUnified` action - defines what should happen if you set your block to have a unified exit (if your block supports this)
-        - Provides a generic validation action - `validate`. The basic method validates your block is a minimal spec compliant IBlock according to your schema version. See `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`. This can be overriden with validations specific to your custom block. See here for an example:
+        - Provides a generic validation action - `validateVendorBlock`, and specify the validation repo in `validationLib` param when calling `validateCommunityBlock()`. The basic method validates your block is a minimal spec compliant IBlock according to your schema version. See `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`.
 
   ```
-  export function validateCustomBlock({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
-    let validate = null
-    if (isEmpty(validators) || !validators.has(block.type)) {
-      const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]
-      let blockJsonSchema
-      try {
-        blockJsonSchema = require(`path/to/custom/block/schema.json`)
-        validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema)
-      } catch (e) {
-        console.info(`A Specific Validator for the ${blockTypeWithoutNameSpace}Block could not be found. Falling back the generic Block validator for ${schemaVersion}`)
-        //This gets the generic IBlock schema
-        blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
-        validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema, '#/definitions/IBlock')
-      }
-      validators.set(block.type, validate)
-    } else {
-      validate = validators.get(block.type)!
-    }
+  async validateVendorBlock({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
+      // Assuming we have a library named in node_module '@MyCompany/flow-runner' (a fork of `@floip/flow-runner` or a very different lib)
+      return validateCommunityBlock({block, schemaVersion, validationLib: '@MyCompany/flow-runner'})
+  },
+  ```
+  We can have a very flexible option by redefining `validateVendorBlock()` completely. This can be overriden with validations specific to your custom block. See here for an example:
 
-    return {
-      isValid: validate(block),
-      ajvErrors: validate.errors,
-      type: block.type,
+  ```
+  async validateVendorBlock({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
+  let validate = null
+  if (isEmpty(validators) || !validators.has(block.type)) {
+    const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]
+    let blockJsonSchema
+    try {
+      blockJsonSchema = require(`path/to/custom/block/schema.json`)
+      validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema)
+    } catch (e) {
+      console.info(`A Specific Validator for the ${blockTypeWithoutNameSpace}Block could not be found. Falling back the generic Block validator for ${schemaVersion}`)
+      //This gets the generic IBlock schema
+      blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
+      validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema, '#/definitions/IBlock')
     }
+    validators.set(block.type, validate)
+  } else {
+    validate = validators.get(block.type)!
+  }
+
+  return {
+    isValid: validate(block),
+    ajvErrors: validate.errors,
+    type: block.type,
+  }
   }
   ```
   Your block will need a component, store, BLOCK_TYPE and store installer.
@@ -303,7 +311,7 @@ You then have several options:
 
   ```
   import {
-    createDefaultBlockTypeInstallerFor
+  createDefaultBlockTypeInstallerFor
   } from '@floip/flow-builder'
   export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SomeBlockStore)
   ```
