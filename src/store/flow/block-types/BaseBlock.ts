@@ -1,14 +1,10 @@
-import {ActionContext, Dispatch, GetterTree, Module, MutationTree} from 'vuex'
+import {Dispatch, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlockConfig, IBlock, IBlockExit} from '@floip/flow-runner'
 import {defaults} from 'lodash'
 import {validateCommunityBlock} from '@/store/validation/validationHelpers'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IValidationStatus} from '@/store/validation'
-
-export type ActionHandlerTree<S, R> = {
-  [key: string]: (injectee: ActionContext<S, R>, payload?: any) => void,
-}
 
 export interface IEmptyState {}
 
