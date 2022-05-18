@@ -51,28 +51,31 @@ module.exports = {
       //     'timezone_type': 3,
       //     'timezone': 'UTC'
       //   },
-      //   'audio_uuid': '5fbc64e0c74e90.82972899'
+      //   'audio_uuid': '5fbc64e0c74e90.82972899',
+      //   'uri': 'some_uri_value',
       // }
       app.all('/audiofiles/upload', (req, res) => {
         const now = new Date()
           .toISOString()
           .split('T')
 
+        const audio_uuid = `${Math.random()
+          .toString(36)
+          .substr(2, 16)}.${Math.random()
+          .toString(36)
+          .substr(2, 10)}`
+        const original_extension = req.query.flowFilename.split('.').pop()
         const result = {
           audio_file_id: Math.floor(Math.random() * (1000 + 1)),
           duration_seconds: Math.random() * 10,
-          description: req.query.flowFilename,
+          description: `a description for ${req.query.flowFilename}`,
           created_at: {
             date: `${now[0]} ${now[1].split('.')[0]}`,
             timezone_type: 3,
             timezone: 'UTC',
           },
-          audio_uuid: `${Math.random()
-            .toString(36)
-            .substr(2, 16)}.${Math.random()
-            .toString(36)
-            .substr(2, 10)}`,
-          uri: 'some_uri_value_123',
+          audio_uuid,
+          uri: `https://your-domain/path/to/${audio_uuid}.${original_extension}`,
         }
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(result))
