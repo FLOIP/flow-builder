@@ -1,38 +1,44 @@
 <template>
   <div class="name-editor mt-3">
-    <validation-message
-      #input-control="{ isValid }"
-      :message-key="`block/${block.uuid}/name`">
-      <div v-if="editBlockName || isValid === false">
-        <h6>{{ 'flow-builder.edit-block-code' | trans }}</h6>
-        <div class="d-flex">
-          <text-editor
-            v-model="blockName"
-            class="w-100"
-            :label="''"
-            :placeholder="'flow-builder.enter-block-code' | trans"
-            :valid-state="isValid"
-            @keydown="filterName" />
+    <validation-message :message-key="`block/${block.uuid}/name`">
+      <template #input-control="{ isValid }">
+        <div v-if="editBlockName || isValid === false">
+          <h6>{{ 'flow-builder.edit-block-code' | trans }}</h6>
+          <div class="d-flex">
+            <text-editor
+              v-model="blockName"
+              class="w-100"
+              :label="''"
+              :placeholder="'flow-builder.enter-block-code' | trans"
+              :valid-state="isValid"
+              @keydown="filterName" />
+            <span
+              class="btn btn-primary btn-xs align-self-center ml-2"
+              @click="editBlockName = false">
+              <font-awesome-icon
+                :icon="['fas', 'check']"
+                class="fa-btn" />
+            </span>
+          </div>
+        </div>
+        <div
+          v-else
+          class="d-flex justify-content-between">
+          <div class="block-code align-self-center">
+            <h6 class="d-inline">
+              {{ 'flow-builder.code' | trans }}:
+            </h6>
+            <span> {{ blockName }} </span>
+          </div>
           <span
-            class="btn btn-primary btn-xs align-self-center ml-2"
-            @click="editBlockName = false">
+            class="btn btn-primary btn-xs align-self-baseline ml-2"
+            @click="editBlockName = true">
             <font-awesome-icon
-              :icon="['fas', 'check']"
+              :icon="['far', 'edit']"
               class="fa-btn" />
           </span>
         </div>
-      </div>
-      <div v-else class="d-flex justify-content-between">
-        <div class="block-code align-self-center">
-          <h6 class="d-inline">{{'flow-builder.code' | trans}}:</h6>
-          <span> {{ blockName }} </span>
-        </div>
-        <span class="btn btn-primary btn-xs align-self-baseline ml-2" @click="editBlockName = true">
-          <font-awesome-icon
-            :icon="['far', 'edit']"
-            class="fa-btn" />
-        </span>
-      </div>
+      </template>
     </validation-message>
   </div>
 </template>
