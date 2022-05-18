@@ -141,6 +141,7 @@ paths:
       operationId: Upload Audiofiles
       summary:
         # See also voto5/docs/api/audio_files.rst
+        # and voto5/resources/js/floip/schemas/flow-builder/split/audioFiles.schema.json
         All services are available through voice in multiple languages.
         This requires users to upload audio file segments to use for messages, survey questions, menus, etc.
         For example, each survey question would require one audio file in each language.

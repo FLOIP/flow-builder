@@ -1,6 +1,6 @@
 <template>
   <div
-    class="well well-sm audio-library-selection"
+    class="audio-library-selection well well-sm"
     :data-audio-file-container-language="langId"
     :class="{
       'tree-audio-control-text-container-selectable': selectable,
@@ -26,19 +26,26 @@
         <li>
           <a
             :href="audioFileUrl"
-            target="_blank"
-            class="tree-block-audio-files-download-original">{{ 'flow-builder.original-file'|trans }}</a>
+            target="_blank">
+            {{ 'flow-builder.original-file' | trans }}
+          </a>
         </li>
 
-        <!-- <li><a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">{{'flow-builder.download-X-format'|trans({kind: '.ogg'})}}</a></li>
-        <li><a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">{{'flow-builder.download-X-format'|trans({kind: '.ul'})}}</a></li> -->
+        <!--
+        <li><a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">
+          {{'flow-builder.download-X-format'|trans({kind: '.ogg'})}}
+        </a></li>
+        <li><a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">
+          {{'flow-builder.download-X-format'|trans({kind: '.ul'})}}
+        </a></li>
+        -->
       </ul>
     </div>
 
     <p
       class="audio-file-description"
-      :title="audioFileUrl">
-      {{ audioFileUrl }}
+      :title="audioFileName">
+      {{ audioFileName }}
     </p>
 
     <div class="btn-toolbar">
@@ -62,11 +69,16 @@ import momentFilters from '@/lib/filters/moment'
 export const AudioLibrarySelection = {
 
   mixins: [lang, momentFilters],
-  props: ['audioFile', 'selected', 'selectable', 'langId'],
+  props: [
+    'audioFileName',
+    // 'selected',
+    'selectable',
+    'langId',
+  ],
 
   computed: {
     audioFileUrl() {
-      return this.audioFile
+      return this.audioFileName
     },
   },
 

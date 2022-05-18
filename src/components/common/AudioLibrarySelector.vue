@@ -2,7 +2,7 @@
   <div class="audio-library-selector">
     <audio-library-selection
       v-if="selectedAudioFile"
-      :audio-file="selectedAudioFile"
+      :audio-file-name="selectedAudioFile"
       :lang-id="langId"
       @clear="clearSelection" />
 
@@ -26,7 +26,7 @@
 
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import {isEmpty} from 'lodash'
+// import {isEmpty} from 'lodash'
 import {mapActions} from 'vuex'
 import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
 
@@ -41,14 +41,17 @@ export const AudioLibrarySelector = {
     'resourceId',
   ],
 
-  computed: {
-    selectable() {
-      return !isEmpty(this.alternateSelections)
-    },
-  },
+  // computed: {
+  //   selectable() {
+  //     return !isEmpty(this.alternateSelections)
+  //   },
+  // },
 
   methods: {
-    ...mapActions('flow', ['resource_setOrCreateValueModeSpecific']),
+    ...mapActions('flow', [
+      'resource_setOrCreateValueModeSpecific',
+    ]),
+
     clearSelection() {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
@@ -56,6 +59,7 @@ export const AudioLibrarySelector = {
         value: '',
       })
     },
+
     selectAudioFile({value, langId}) {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
