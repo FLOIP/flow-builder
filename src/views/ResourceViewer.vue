@@ -1,30 +1,3 @@
-<style lang="scss">
-.resource-viewer {
-  .block-content-filter {
-    margin-top: 5px;
-    padding-right: 15px;
-  }
-
-  .block-content-filter-warning {
-    margin-left: 1em;
-    margin-right: 1em;
-  }
-
-  .label {
-    transition: all 200ms ease-in-out;
-
-    .small, small {
-      color: inherit !important;
-    }
-  }
-
-  .tree-block-container {
-    min-height: 0;
-    padding-bottom: 0;
-  }
-}
-</style>
-
 <template>
   <div class="resource-viewer panel panel-default">
     <div class="panel-heading resource-viewer-panel-heading">
@@ -128,11 +101,11 @@
                 <span
                   class="label"
                   :class="{
-                    'label-warning': totalPiecesOfBlockContenWithSms !== totalPiecesOfBlockContent,
-                    'label-success': totalPiecesOfBlockContenWithSms === totalPiecesOfBlockContent}">
+                    'label-warning': totalPiecesOfBlockContentWithSms !== totalPiecesOfBlockContent,
+                    'label-success': totalPiecesOfBlockContentWithSms === totalPiecesOfBlockContent}">
                   {{ 'trees.sms' | trans }}
                   <!--<i class="glyphicon glyphicon-alert"></i>-->
-                  {{ totalPiecesOfBlockContenWithSms }}
+                  {{ totalPiecesOfBlockContentWithSms }}
                   <small>/ {{ totalPiecesOfBlockContent }}</small>
                 </span>
               </a>
@@ -144,11 +117,11 @@
                 <span
                   class="label"
                   :class="{
-                    'label-warning': totalPiecesOfBlockContenWithUssd !== totalPiecesOfBlockContent,
-                    'label-success': totalPiecesOfBlockContenWithUssd === totalPiecesOfBlockContent}">
+                    'label-warning': totalPiecesOfBlockContentWithUssd !== totalPiecesOfBlockContent,
+                    'label-success': totalPiecesOfBlockContentWithUssd === totalPiecesOfBlockContent}">
                   {{ 'trees.ussd' | trans }}
                   <!--<i class="glyphicon glyphicon-alert"></i>-->
-                  {{ totalPiecesOfBlockContenWithUssd }}
+                  {{ totalPiecesOfBlockContentWithUssd }}
                   <small>/ {{ totalPiecesOfBlockContent }}</small>
                 </span>
               </a>
@@ -269,13 +242,18 @@
         <fieldset :disabled="isEditableLocked">
           <template v-for="block in (query.length >= 3 ? search(query) : blocks)">
             <template v-if="hasContent(block.type)">
-              <ul class="list-inline pull-right h4">
-                <li v-for="tag in block.customData.tags">
+              <ul
+                :key="block.uuid"
+                class="list-inline pull-right h4">
+                <li
+                  v-for="(tag, i) in block.customData.tags"
+                  :key="i">
                   <span class="badge badge-default">{{ tag }}</span>
                 </li>
               </ul>
 
               <h4
+                :key="block.uuid"
                 :class="{'text-muted': !block.customData.title}"
                 :title="'Block ID - ' + block.jsKey">
                 <span v-if="block.customData.label">{{ block.customData.label }} - </span>
@@ -288,7 +266,6 @@
                 :tree="tree"
                 :block="block"
                 :enabled-languages="enabledLanguages"
-                :block-types="blockTypes"
                 :alternate-audio-file-selections="batchMatchAudioData.results && batchMatchAudioData.results[block.jsKey]"
                 :language-names="languageNames" />
             </template>
@@ -296,8 +273,7 @@
             <block-content-editor-unsupported
               v-else
               :key="block.jsKey"
-              :block="block"
-              :block-types="blockTypes" />
+              :block="block" />
           </template>
         </fieldset>
       </div>
@@ -305,251 +281,267 @@
   </div>
 </template>
 
-<script lang="js">
+<script lang="ts">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 
-import {mapActions, mapGetters, mapState} from 'vuex'
-import fuse from 'fuse.js'
-import {lang} from '@/lib/filters/lang'
-import lodash from 'lodash'
+import Fuse from 'fuse.js'
+import {filter, forEach, get, identity, includes, isEmpty, pickBy, reduce, size} from 'lodash'
+import {mixins} from 'vue-class-component'
+import {Component} from 'vue-property-decorator'
+import {Action, Getter} from 'vuex-class'
+import Lang from '@/lib/filters/lang'
+import {IBatchMatchAudioData, IBlockExtended} from '@/lib/types'
+import {IBlock, IBlockConfig} from '@floip/flow-runner'
 import stores from '../store'
+import FuseResult = Fuse.FuseResult;
 
-export default {
-  mixins: [
-    lang,
-  ],
+@Component({})
+export class ResourceViewer extends mixins(Lang) {
+  batchMatchAudioDialogShown = false
+  showEmptyBlocksOnly = false
+  query = ''
 
-  data() {
-    return {
-      batchMatchAudioDialogShown: false,
-      showEmptyBlocksOnly: false,
-      query: '',
-    }
-  },
-
-  created() {
+  created(): void {
     if (!this.$store.state.trees) {
-      lodash.forEach(stores.modules, (v, k) => this.$store.registerModule(k, v))
+      forEach(stores.modules, (v, k) => this.$store.registerModule(k, v))
       this.initializeTreeModel()
     }
-  },
+  }
 
-  computed: {
-    // TODO: When the time comes to update finalized this `Resource viewer` feature, use vuex to get tree & ui instead of $store.state
-    // Preferably: transform the component to be class based
-    ...mapGetters([
-      'hasIssues',
-      'isFeatureTreesBatchLinkAudioEnabled',
-    ]),
+  mounted(): void {
+    console.debug('VueJS tree resources viewer mounted!')
+  }
 
-    id() {
-      return this.$route.params.id
-    },
+  @Getter hasIssues!: boolean
+  @Getter isFeatureTreesBatchLinkAudioEnabled!: boolean
 
-    pathToSendTree() {
-      return `/outgoing/new?tree=${this.tree.id}`
-    },
+  get id(): string {
+    return this.$route.params.id
+  }
 
-    isEditableLocked() {
-      return this.$store.state.trees.ui.isEditableLocked === 1
-    },
+  get pathToSendTree(): string {
+    return `/outgoing/new?tree=${this.tree.id}`
+  }
 
-    languageNames() {
-      return this.$store.state.trees.ui.languageNames
-    },
+  get isEditableLocked(): boolean {
+    return this.$store.state.trees.ui.isEditableLocked === 1
+  }
 
-    enabledLanguages() {
-      return this.$store.state.trees.tree.details.enabledLanguages
-    },
+  get languageNames(): string[] {
+    return this.$store.state.trees.ui.languageNames
+  }
 
-    contentBlockTypes() {
-      return this.$store.state.trees.ui.contentBlockTypes
-    },
+  get enabledLanguages(): string[] {
+    return this.$store.state.trees.tree.details.enabledLanguages
+  }
 
-    blockTypes() {
-      return this.$store.state.trees.ui.blockClasses
-    },
+  get contentBlockTypes(): string[] {
+    return this.$store.state.trees.ui.contentBlockTypes
+  }
 
-    tree() {
-      return this.$store.state.trees.tree
-    },
+  get tree(): any {
+    return this.$store.state.trees.tree
+  }
 
-    blocks() {
-      if (this.showEmptyBlocksOnly) {
-        // filter only empty content:
-        // Empty content could be like: {} or {smsContent:{44:''}
-        // Generally, if a block is missing any of the content for all of the content types that are enabled for the tree, the block should be considered “empty” and show up using this filter.
-        return lodash.filter(this.$store.state.trees.tree.blocks, (item) => {
-          if (!this.hasContent(item.type)) {
-            return false
-          }
-          const isEmptyVoice = this.$store.state.trees.tree.hasVoice && (lodash.isEmpty(item.audioFiles) || lodash.isEmpty(lodash.pickBy(
-            item.audioFiles,
-            lodash.identity,
-          )))
-          const isEmptySMS = this.$store.state.trees.tree.hasSms && (lodash.isEmpty(item.smsContent) || lodash.isEmpty(lodash.pickBy(
-            item.smsContent,
-            lodash.identity,
-          )))
-          const isEmptyUssd = this.$store.state.trees.tree.hasUssd && (lodash.isEmpty(item.ussdContent) || lodash.isEmpty(lodash.pickBy(
-            item.ussdContent,
-            lodash.identity,
-          )))
-          const isEmptyClipboard = this.$store.state.trees.tree.hasClipboard && (lodash.isEmpty(item.clipboardContent) || lodash.isEmpty(
-            lodash.pickBy(item.clipboardContent, lodash.identity),
-          ))
-          const isEmptySocial = this.$store.state.trees.tree.hasSocial && (lodash.isEmpty(item.socialContent) || lodash.isEmpty(lodash.pickBy(
-            item.socialContent,
-            lodash.identity,
-          )))
-          return isEmptyVoice || isEmptySMS || isEmptyUssd || isEmptyClipboard || isEmptySocial
-        })
-      }
-      return this.$store.state.trees.tree.blocks
-    },
+  get blocks(): IBlockExtended[] {
+    if (this.showEmptyBlocksOnly) {
+      // filter only empty content:
+      // Empty content could be like: {} or {smsContent:{44:''}
+      // Generally, if a block is missing any of the content for all the content types
+      // that are enabled for the tree, the block should be considered “empty” and show up using this filter.
+      return filter(this.$store.state.trees.tree.blocks, (item) => {
+        if (!this.hasContent(item.type)) {
+          return false
+        }
+        const isEmptyVoice = this.$store.state.trees.tree.hasVoice && (isEmpty(item.audioFiles) || isEmpty(pickBy(
+          item.audioFiles,
+          identity,
+        )))
+        const isEmptySMS = this.$store.state.trees.tree.hasSms && (isEmpty(item.smsContent) || isEmpty(pickBy(
+          item.smsContent,
+          identity,
+        )))
+        const isEmptyUssd = this.$store.state.trees.tree.hasUssd && (isEmpty(item.ussdContent) || isEmpty(pickBy(
+          item.ussdContent,
+          identity,
+        )))
+        const isEmptyClipboard = this.$store.state.trees.tree.hasClipboard && (isEmpty(item.clipboardContent) || isEmpty(
+          pickBy(item.clipboardContent, identity),
+        ))
+        const isEmptySocial = this.$store.state.trees.tree.hasSocial && (isEmpty(item.socialContent) || isEmpty(pickBy(
+          item.socialContent,
+          identity,
+        )))
+        return isEmptyVoice || isEmptySMS || isEmptyUssd || isEmptyClipboard || isEmptySocial
+      })
+    }
+    return this.$store.state.trees.tree.blocks
+  }
 
-    blocksWithContent() {
-      return lodash.filter(this.blocks, ({type}) => this.hasContent(type))
-    },
+  get blocksWithContent(): IBlock[] {
+    return filter(this.blocks, ({type}) => this.hasContent(type))
+  }
 
-    batchMatchAudioData() {
-      return this.$store.state.trees.ui.batchMatchAudio
-    },
+  get batchMatchAudioData(): IBatchMatchAudioData {
+    return this.$store.state.trees.ui.batchMatchAudio
+  }
 
-    isAudioLibraryEmpty() {
-      return !this.$store.state.audio.library.length
-    },
+  get isAudioLibraryEmpty(): boolean {
+    return !this.$store.state.audio.library.length
+  }
 
-    totalPiecesOfBlockContent() {
-      return this.blocks.length * lodash.size(this.enabledLanguages)
-    },
+  get totalPiecesOfBlockContent(): number {
+    return this.blocks.length * size(this.enabledLanguages)
+  }
 
-    percentagePiecesWithContent() {
-      if (!this.blocks.length) {
-        return 0
-      }
+  get percentagePiecesWithContent(): string | number {
+    if (!this.blocks.length) {
+      return 0
+    }
 
-      const
-        channels = this.tree.details.hasVoice
-          + this.tree.details.hasSms
-          + this.tree.details.hasUssd
-          // + 1 = reviewed
-          + 1
-      const completed = this.totalPiecesOfBlockContentWithVoice
-        + this.totalPiecesOfBlockContenWithSms
-        + this.totalPiecesOfBlockContenWithUssd
-        + this.totalPiecesOfBlockContentReviewed
-      const total = (this.totalPiecesOfBlockContent * channels)
+    const
+      channels = Number(this.tree.details.hasVoice)
+        + Number(this.tree.details.hasSms)
+        + Number(this.tree.details.hasUssd)
+        // + 1 = reviewed
+        + 1
+    const completed = this.totalPiecesOfBlockContentWithVoice
+      + this.totalPiecesOfBlockContentWithSms
+      + this.totalPiecesOfBlockContentWithUssd
+      + this.totalPiecesOfBlockContentReviewed
+    const total = (this.totalPiecesOfBlockContent * channels)
 
-      return ((completed / total) * 100).toFixed(0)
-    },
+    return ((completed / total) * 100).toFixed(0)
+  }
 
-    totalPiecesOfBlockContentWithVoice() {
-      if (!this.tree.details.hasVoice) {
-        return 0
-      }
+  get totalPiecesOfBlockContentWithVoice(): number {
+    if (!this.tree.details.hasVoice) {
+      return 0
+    }
 
-      return lodash.reduce(
-        this.enabledLanguages,
-        (sum, langId) => lodash.reduce(this.blocks, (sum, block) => sum + +!!block.audioFiles[langId], sum),
-        0,
-      )
-    },
+    return reduce(
+      this.enabledLanguages,
+      (sum, langId) => reduce(this.blocks, (sum, block) => sum + +!!block.audioFiles[langId], sum),
+      0,
+    )
+  }
 
-    totalPiecesOfBlockContenWithSms() {
-      if (!this.tree.details.hasSms) {
-        return 0
-      }
+  get totalPiecesOfBlockContentWithSms(): number {
+    if (!this.tree.details.hasSms) {
+      return 0
+    }
 
-      return lodash.reduce(
-        this.enabledLanguages,
-        (sum, langId) => lodash.reduce(this.blocks, (sum, block) => sum + +!!block.smsContent[langId], sum),
-        0,
-      )
-    },
+    return reduce(
+      this.enabledLanguages,
+      (sum, langId) => reduce(this.blocks, (sum, block) => sum + +!!block.smsContent[langId], sum),
+      0,
+    )
+  }
 
-    totalPiecesOfBlockContenWithUssd() {
-      if (!this.tree.details.hasUssd) {
-        return 0
-      }
+  get totalPiecesOfBlockContentWithUssd(): number {
+    if (!this.tree.details.hasUssd) {
+      return 0
+    }
 
-      return lodash.reduce(
-        this.enabledLanguages,
-        (sum, langId) => lodash.reduce(this.blocks, (sum, block) => sum + +!!block.ussdContent[langId], sum),
-        0,
-      )
-    },
+    return reduce(
+      this.enabledLanguages,
+      (sum, langId) => reduce(this.blocks, (sum, block) => sum + +!!block.ussdContent[langId], sum),
+      0,
+    )
+  }
 
-    totalPiecesOfBlockContentReviewed() {
-      return lodash.reduce(this.enabledLanguages, (sum, langId) =>
-          // using lodash to fetch this one because reviewed hash may be absent
-          lodash.reduce(this.blocks, (sum, block) => sum + +!!lodash.get(block, `customData.reviewed.${langId}`), sum),
-        0)
-    },
-  },
+  get totalPiecesOfBlockContentReviewed(): number {
+    return reduce(this.enabledLanguages, (sum, langId) =>
+        // using lodash to fetch this one because reviewed hash may be absent
+        reduce(this.blocks, (sum, block) => sum + +!!get(block, `customData.reviewed.${langId}`), sum),
+      0)
+  }
 
-  methods: {
-    ...mapActions(['initializeTreeModel']),
+  @Action initializeTreeModel!: () => void
 
-    handleTreeEditorSelected() {
-      this.$el.scrollIntoView(true)
-    },
+  handleTreeEditorSelected(): void {
+    this.$el.scrollIntoView(true)
+  }
 
-    toggleBatchMatchAudioDialog() {
-      this.batchMatchAudioDialogShown = !this.batchMatchAudioDialogShown
-    },
+  toggleBatchMatchAudioDialog(): void {
+    this.batchMatchAudioDialogShown = !this.batchMatchAudioDialogShown
+  }
 
-    toggleShowEmptyBlocks() {
-      this.showEmptyBlocksOnly = !this.showEmptyBlocksOnly
-    },
+  toggleShowEmptyBlocks(): void {
+    this.showEmptyBlocksOnly = !this.showEmptyBlocksOnly
+  }
 
-    dispatchBatchMatchAudio({value: pattern, replaceExisting}) {
-      const {id: treeId} = this.tree
+  dispatchBatchMatchAudio({value: pattern, replaceExisting} : {value: string, replaceExisting: boolean}): void {
+    const {id: treeId} = this.tree
 
-      this.$store.dispatch('batchMatchAudioTriggered', {treeId, pattern, replaceExisting})
-        // todo: this should be somewhere else
-        .then(() => {
-          const {isEmpty, isFailure} = this.batchMatchAudioData
-          if (isEmpty || isFailure) {
-            return
-          }
+    this.$store.dispatch('batchMatchAudioTriggered', {treeId, pattern, replaceExisting})
+      // todo: this should be somewhere else
+      .then(() => {
+        const {isEmpty, isFailure} = this.batchMatchAudioData
+        if (isEmpty || isFailure) {
+          return
+        }
 
-          this.toggleBatchMatchAudioDialog()
-        })
-    },
+        this.toggleBatchMatchAudioDialog()
+      })
+  }
 
-    hasContent(blockType) {
-      // special case -- we don't support this nested content type yet.
-      if (blockType === 'RandomOrderMultipleChoiceQuestionBlock') {
-        return false
-      }
+  hasContent(blockType: string): boolean {
+    // special case -- we don't support this nested content type yet.
+    if (blockType === 'RandomOrderMultipleChoiceQuestionBlock') {
+      return false
+    }
 
-      return lodash.includes(this.contentBlockTypes, blockType)
-    },
+    return includes(this.contentBlockTypes, blockType)
+  }
 
-    search(query) {
-      const
-        {enabledLanguages: languages} = this.$store.state.trees.tree.details
-      const keys = [
-        // todo: how can we get tags in here?
-        'customData.title',
-        'customData.label',
-        ...languages.map((langId) => `audioFiles.${langId}.filename`),
-        ...languages.map((langId) => `audioFiles.${langId}.description`),
-        ...languages.map((langId) => `ussdContent.${langId}`),
-        ...languages.map((langId) => `smsContent.${langId}`),
-      ]
+  search(query: string): FuseResult<IBlockExtended>[] {
+    const
+      {enabledLanguages: languages} = this.$store.state.trees.tree.details
+    const keys = [
+      // todo: how can we get tags in here?
+      'customData.title',
+      'customData.label',
+      ...languages.map((langId: string) => `audioFiles.${langId}.filename`),
+      ...languages.map((langId: string) => `audioFiles.${langId}.description`),
+      ...languages.map((langId: string) => `ussdContent.${langId}`),
+      ...languages.map((langId: string) => `smsContent.${langId}`),
+    ] as string[]
 
-      return new fuse(this.blocks, {keys}).search(query)
-    },
+    return new Fuse(this.blocks, {fieldNormWeight: 1, keys}).search(query)
+  }
 
-    clearSearch() {
-      this.query = ''
-    },
-  },
-
-  mounted() {
-    console.debug('Vuej tree resources viewer mounted!')
-  },
+  clearSearch(): void {
+    this.query = ''
+  }
 }
+
+export default ResourceViewer
 </script>
+
+<style lang="scss">
+.resource-viewer {
+  .block-content-filter {
+    margin-top: 5px;
+    padding-right: 15px;
+  }
+
+  .block-content-filter-warning {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
+  .label {
+    transition: all 200ms ease-in-out;
+
+    .small, small {
+      color: inherit !important;
+    }
+  }
+
+  .tree-block-container {
+    min-height: 0;
+    padding-bottom: 0;
+  }
+}
+</style>
