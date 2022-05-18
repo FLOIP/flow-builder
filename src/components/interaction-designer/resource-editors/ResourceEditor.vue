@@ -65,7 +65,8 @@
                         accept: 'audio/*'}"
                       class="btn btn-primary ivr-buttons"
                       @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
-                      @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)">
+                      @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
+                      @fileError="handleFileErrorFor($event)">
                       <font-awesome-icon
                         :icon="['fac', 'upload']"
                         class="fa-btn" />
@@ -175,6 +176,12 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
   }
 
+  /**
+   * handleFileSuccessFor
+   * @param key
+   * @param langId
+   * @param event, schema: {data: {file, uploader, json}}
+   */
   handleFileSuccessFor(key: string, langId: ILanguage['id'], event: any): void {
     const {data: {json}} = event
     const {
@@ -203,6 +210,15 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     // remove the focus from the `upload` Tab
     event.target.blur()
     this.pushAudioIntoLibrary(uploadedAudio)
+  }
+
+  /**
+   * handleFileErrorFor
+   * @param event, schema: {data: {file, message, uploader}}
+   */
+  handleFileErrorFor(event: any): void {
+    const {data: {message}} = event
+    console.debug('handleFileErrorFor', message)
   }
 
   findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter): string | null {
