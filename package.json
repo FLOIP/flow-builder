@@ -33,6 +33,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/vue-fontawesome": "^2.0.2",
+    "@types/flowjs__flow.js": "^2.13.0",
     "@types/json-schema": "^7.0.7",
     "@types/lodash": "^4.14.157",
     "@types/uuid": "^8.0.0",

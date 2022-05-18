@@ -3112,6 +3112,18 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/flowjs@*":
+  version "2.13.8"
+  resolved "https://registry.yarnpkg.com/@types/flowjs/-/flowjs-2.13.8.tgz#613c725ff839ed63d6981a94ad8d3cb69cc9b07e"
+  integrity sha512-CnKmtFoWXqXxCNWBj0I81lOXni7n3RNaze7yH9gN8gcnOVz0z+SMslxrW1intDO223sG5iCPnVd1ILvWHHlhvA==
+
+"@types/flowjs__flow.js@^2.13.0":
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/@types/flowjs__flow.js/-/flowjs__flow.js-2.13.0.tgz#c60687762572040be5748e44b23b895a8c117f9a"
+  integrity sha512-6u+lL2lefnMmByV9grnRqeALoQzUlr+lBnZnCV1LS+/8nv1PPMCNUsCj4+EErUQ9aGYiCG1EjRcJggYTXIhODA==
+  dependencies:
+    "@types/flowjs" "*"
+
 "@types/glob-base@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@types/glob-base/-/glob-base-0.3.0.tgz#a581d688347e10e50dd7c17d6f2880a10354319d"
