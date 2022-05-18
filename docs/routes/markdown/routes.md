@@ -2,7 +2,8 @@
 
 <h1 id="flow-builder-routes">Flow Builder Routes v1.0.0</h1>
 
-> Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
+> Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above
+> or the mobile navigation menu.
 
 This document describes the specification for any implementation of the server required for integration of the flow builder with a backend.
 
@@ -48,9 +49,9 @@ fetch('/flows/{id}',
 
 <h3 id="fetch-flow-parameters">Parameters</h3>
 
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|id|path|uuid|true|ID of flow to return.|
+| Name | In   | Type | Required | Description           |
+|------|------|------|----------|-----------------------|
+| id   | path | uuid | true     | ID of flow to return. |
 
 > Example responses
 
@@ -72,10 +73,10 @@ fetch('/flows/{id}',
 
 <h3 id="fetch-flow-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Returns the flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources|[FlowContainer](#schemaflowcontainer)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Flow not found|None|
+| Status | Meaning                                                        | Description                                                                                                                                                                                                                                                                  | Schema                                |
+|--------|----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)        | Returns the flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources | [FlowContainer](#schemaflowcontainer) |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4) | Flow not found                                                                                                                                                                                                                                                               | None                                  |
 
 <h3 id="fetch-flow-responseschema">Response Schema</h3>
 
@@ -128,9 +129,9 @@ fetch('/flows',
 
 <h3 id="save-flow-parameters">Parameters</h3>
 
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|[FlowContainer](#schemaflowcontainer)|true|none|
+| Name | In   | Type                                  | Required | Description |
+|------|------|---------------------------------------|----------|-------------|
+| body | body | [FlowContainer](#schemaflowcontainer) | true     | none        |
 
 > Example responses
 
@@ -152,10 +153,10 @@ fetch('/flows',
 
 <h3 id="save-flow-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources|[FlowContainer](#schemaflowcontainer)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Error in flow creation including validation errors (the builder should prevent these client side before we get to that point though)|None|
+| Status | Meaning                                                                    | Description                                                                                                                                                                                                                                                                          | Schema                                |
+|--------|----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources | [FlowContainer](#schemaflowcontainer) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error in flow creation including validation errors (the builder should prevent these client side before we get to that point though)                                                                                                                                                 | None                                  |
 
 <h3 id="save-flow-responseschema">Response Schema</h3>
 
@@ -208,9 +209,9 @@ fetch('/flows',
 
 <h3 id="update-flow-parameters">Parameters</h3>
 
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|[FlowContainer](#schemaflowcontainer)|true|none|
+| Name | In   | Type                                  | Required | Description |
+|------|------|---------------------------------------|----------|-------------|
+| body | body | [FlowContainer](#schemaflowcontainer) | true     | none        |
 
 > Example responses
 
@@ -232,10 +233,10 @@ fetch('/flows',
 
 <h3 id="update-flow-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources|[FlowContainer](#schemaflowcontainer)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Error in flow update including validation errors. The builder should prevent these client side before we get to that point but that cannot always be done due to race conditions around concurrent use.|None|
+| Status | Meaning                                                                    | Description                                                                                                                                                                                                                                                                          | Schema                                |
+|--------|----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | Echos back the sent flow in a container on success. See https://floip.gitbook.io/flow-specification/flows#containers for full spec. The 'flows' attribute of the returned container will contain the flow itself and any nested flows. 'resources' will contain any nested resources | [FlowContainer](#schemaflowcontainer) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error in flow update including validation errors. The builder should prevent these client side before we get to that point but that cannot always be done due to race conditions around concurrent use.                                                                              | None                                  |
 
 <h3 id="update-flow-responseschema">Response Schema</h3>
 
@@ -286,9 +287,9 @@ fetch('/languages',
 
 <h3 id="save-language-parameters">Parameters</h3>
 
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|[Language](#schemalanguage)|true|none|
+| Name | In   | Type                        | Required | Description |
+|------|------|-----------------------------|----------|-------------|
+| body | body | [Language](#schemalanguage) | true     | none        |
 
 > Example responses
 
@@ -306,10 +307,10 @@ fetch('/languages',
 
 <h3 id="save-language-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Echos back the language for pushing into the languages array in the vuex tree state - `ui.languages`. See https://floip.gitbook.io/flow-specification/flows#language-objects-and-identifiers for full spec. The backend may make any changes it needs to the posted language as long as the id stays the same and the returned language conforms to the spec|[Language](#schemalanguage)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Error in language creation including validation errors. The builder should prevent these client side before we get to that point but that cannot always be done due to race conditions around concurrent use.|None|
+| Status | Meaning                                                                    | Description                                                                                                                                                                                                                                                                                                                                                  | Schema                      |
+|--------|----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------|
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | Echos back the language for pushing into the languages array in the vuex tree state - `ui.languages`. See https://floip.gitbook.io/flow-specification/flows#language-objects-and-identifiers for full spec. The backend may make any changes it needs to the posted language as long as the id stays the same and the returned language conforms to the spec | [Language](#schemalanguage) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | Error in language creation including validation errors. The builder should prevent these client side before we get to that point but that cannot always be done due to race conditions around concurrent use.                                                                                                                                                | None                        |
 
 <h3 id="save-language-responseschema">Response Schema</h3>
 
@@ -343,15 +344,15 @@ This operation does not require authentication
 
 ### Properties
 
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|specification_version|string|false|none|none|
-|uuid|string|false|none|none|
-|name|string|false|none|none|
-|description|string|false|none|none|
-|vendor_metadata|object|false|none|none|
-|flows|[object]|false|none|none|
-|resources|object|false|none|none|
+| Name                  | Type     | Required | Restrictions | Description |
+|-----------------------|----------|----------|--------------|-------------|
+| specification_version | string   | false    | none         | none        |
+| uuid                  | string   | false    | none         | none        |
+| name                  | string   | false    | none         | none        |
+| description           | string   | false    | none         | none        |
+| vendor_metadata       | object   | false    | none         | none        |
+| flows                 | [object] | false    | none         | none        |
+| resources             | object   | false    | none         | none        |
 
 <h2 id="tocS_Language">Language</h2>
 <!-- backwards compatibility -->
@@ -373,11 +374,11 @@ This operation does not require authentication
 
 ### Properties
 
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|bcp_47|string|false|none|none|
-|id|string|false|none|none|
-|iso_639_3|string|false|none|none|
-|label|string|false|none|none|
-|variant|string|false|none|none|
+| Name      | Type   | Required | Restrictions | Description |
+|-----------|--------|----------|--------------|-------------|
+| bcp_47    | string | false    | none         | none        |
+| id        | string | false    | none         | none        |
+| iso_639_3 | string | false    | none         | none        |
+| label     | string | false    | none         | none        |
+| variant   | string | false    | none         | none        |
 

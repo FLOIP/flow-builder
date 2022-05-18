@@ -33,9 +33,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       }
     }
   },
-  blockUuidsOnActiveFlow: (state, getters): IBlock['uuid'][] => {
-    return getters.activeFlow?.blocks
-  },
+  blockUuidsOnActiveFlow: (state, getters): IBlock['uuid'][] => getters.activeFlow?.blocks,
   isActiveFlowValid: (state, getters, rootState) => {
     const flowValidationResult = get(rootState.validation.validationStatuses, `flow/${getters.activeFlow.uuid}`)
     if (flowValidationResult && !flowValidationResult.isValid) {
@@ -361,13 +359,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     )
 
     if (has(duplicatedBlock.config, 'prompt')) {
-      const sourceResourceUuid = duplicatedBlock.config!.prompt
+      const sourceResourceUuid = duplicatedBlock.config.prompt
       const targetResourceUuid = await (new IdGeneratorUuidV4()).generate()
       const duplicatedResource: IResource = cloneDeep(getters.resourcesByUuidOnActiveFlow[sourceResourceUuid])
 
       duplicatedResource.uuid = targetResourceUuid
       dispatch('resource_add', {resource: duplicatedResource})
-      Vue.set(duplicatedBlock.config!, 'prompt', targetResourceUuid)
+      Vue.set(duplicatedBlock.config, 'prompt', targetResourceUuid)
     }
 
     // Set UI positions
