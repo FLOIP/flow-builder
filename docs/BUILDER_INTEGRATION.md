@@ -665,4 +665,17 @@ platformBuilderConfig.ui.groups = [group1, group2, ..., groupN]
 ```
 where each `group` option follow the [IGroupOption](https://github.com/FLOIP/flow-builder/blob/master/src/store/flow/block-types/Core_SetGroupMembershipStore.ts#L9) schema.
 
+### Overriding default audio library
+```typescript
+platformBuilderConfig.audio.library = [
+  {
+    uri: 'some_uri_value_123',
+    duration_seconds: 2.802000,
+    description: "53f7f192c5fa82.79265819.wav",
+    audio_file_id: "918719",
+    created_at: "2022-03-24T15:01:35.000000Z",
+    audio_uuid: "623c87ceae7aa0.02375053"
+  },
+]
+```
 TODO - add more

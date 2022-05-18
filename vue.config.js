@@ -72,6 +72,7 @@ module.exports = {
             .substr(2, 16)}.${Math.random()
             .toString(36)
             .substr(2, 10)}`,
+          uri: 'some_uri_value_123',
         }
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify(result))

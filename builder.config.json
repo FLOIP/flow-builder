@@ -426,18 +426,20 @@
       {
         "id": "586533",
         "filename": "https://www.viamo.io/audiofiles/play/5cae2f49b605a6.45924131/mp3",
+        "uri": "some_uri_value_1",
         "description": "02_flowers_for_albert.mp3",
         "language_id": null,
-        "duration_seconds": "357.712",
+        "duration_seconds": 357.712,
         "original_extension": "mp3",
         "created_at": "2019-04-10 18:00:52"
       },
       {
         "id": "309466",
         "filename": "https://www.viamo.io/audiofiles/play/598283afde6f31.04148017/ogg",
+        "uri": "some_uri_value_2",
         "description": "59727a6e9aa807.99829966.ogg",
         "language_id": "206062",
-        "duration_seconds": "4.69462",
+        "duration_seconds": 4.69462,
         "original_extension": "ogg",
         "created_at": "2017-08-03 02:00:16"
       }
