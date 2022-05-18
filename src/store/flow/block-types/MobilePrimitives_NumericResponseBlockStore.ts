@@ -102,7 +102,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * instead edit the `validate()` if needed.
    */
   async validateVendorBlock({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
-    return validateCommunityBlock({block, schemaVersion})
+    const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]
+    return validateCommunityBlock({block, schemaVersion, customBlockJsonSchema: require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block.json`)})
   },
 
   async validate({rootGetters, dispatch}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {

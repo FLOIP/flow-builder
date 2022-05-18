@@ -271,9 +271,8 @@ You then have several options:
         - Provides a generic validation action - `validateVendorBlock`, and specify the validation repo in `validationLib` param when calling `validateCommunityBlock()`. The basic method validates your block is a minimal spec compliant IBlock according to your schema version. See `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`.
 
   ```
-  async validateVendorBlock({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
-      // Assuming we have a library named in node_module '@MyCompany/flow-runner' (a fork of `@floip/flow-runner` or a very different lib)
-      return validateCommunityBlock({block, schemaVersion, validationLib: '@MyCompany/flow-runner'})
+  async validateVendorBlock({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {=
+    return validateCommunityBlock({block, schemaVersion, customBlockJsonSchema: require(`path/to/CustomBlockJsonSchema.json`)})
   },
   ```
   We can have a very flexible option by redefining `validateVendorBlock()` completely. This can be overriden with validations specific to your custom block. See here for an example:
