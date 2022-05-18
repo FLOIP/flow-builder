@@ -22,7 +22,8 @@
         </thead>
         <tbody id="call-to-record-modal-list">
           <tr
-            v-for="recorder in recorders"
+            v-for="(recorder, i) in recorders"
+            :key="i"
             class="call-to-record-item">
             <td class="recorder-selector-field">
               <input
@@ -89,87 +90,83 @@
   </b-modal>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import {lang} from '@/lib/filters/lang'
-import {clone} from 'lodash'
-import {mapState} from 'vuex'
+<script lang="ts">
 import {BModal} from 'bootstrap-vue'
+import {clone} from 'lodash'
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import {State} from 'vuex-class'
+import Lang from '@/lib/filters/lang'
 
-export const PhoneRecordingRecorderSelector = {
-  components: {
-    BModal,
-  },
-  mixins: [lang],
+export type Recorder = {
+  name: string | null,
+  phone: string | null,
+  isNew: boolean,
+} | null
 
-  props: {
-    isModalVisible: Boolean,
-  },
+@Component({
+  components: {BModal},
+})
+export class PhoneRecordingRecorderSelector extends mixins(Lang) {
+  @Prop({type: Boolean, required: true}) readonly isModalVisible!: boolean
 
-  data() {
-    return {
-      selectedRecorder: null,
-      description: null,
-      draft: null,
-    }
-  },
+  description = null
+  draft: Recorder = null
+  selectedRecorder: Recorder = null
 
-  created() {
+  created(): void {
     this.reset()
-  },
+  }
 
-  computed: {
-    ...mapState({
-      recorders: ({audio: {recording: {recorders}}}) => recorders,
-    }),
-  },
+  selectNewRecorder(): void {
+    this.draft!.isNew = true
+    this.selectedRecorder = this.draft
+  }
 
-  methods: {
-    selectNewRecorder() {
-      this.draft.isNew = true
-      this.selectedRecorder = this.draft
-    },
-    setSelectedRecorder(recorder) {
-      this.selectedRecorder = recorder
-    },
-    reset() {
-      this.draft = {
-        name: null,
-        phone: null,
-        isNew: true,
-      }
-      this.description = null
-      this.selectedRecorder = null
-    },
+  setSelectedRecorder(recorder: Recorder): void {
+    this.selectedRecorder = recorder
+  }
 
-    handleModalClosed() {
-      const
-        {description} = this
-      const value = clone(this.selectedRecorder)
+  reset(): void {
+    this.draft = {
+      name: null,
+      phone: null,
+      isNew: true,
+    }
+    this.description = null
+    this.selectedRecorder = null
+  }
 
-      this.reset()
-      this.$emit('input', {
-        value,
-        recorder: value,
-        description,
-      })
-    },
+  handleModalClosed(): void {
+    const
+      {description} = this
+    const value = clone(this.selectedRecorder)
 
-    handleModalCancelled() {
-      this.reset()
+    this.reset()
+    this.$emit('input', {
+      value,
+      recorder: value,
+      description,
+    })
+  }
 
-      const
-        {description} = this
-      const value = clone(this.selectedRecorder)
+  handleModalCancelled(): void {
+    this.reset()
 
-      this.$emit('input', {
-        value,
-        recorder: value,
-        description,
-      })
-    },
-  },
+    const
+      {description} = this
+    const value = clone(this.selectedRecorder)
+
+    this.$emit('input', {
+      value,
+      recorder: value,
+      description,
+    })
+  }
+
+  @State(({audio: {recording: {recorders}}}) => recorders) recorders: unknown
 }
+
 export default PhoneRecordingRecorderSelector
 </script>
 

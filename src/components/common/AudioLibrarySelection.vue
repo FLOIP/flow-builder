@@ -30,8 +30,18 @@
             class="tree-block-audio-files-download-original">{{ 'flow-builder.original-file'|trans }}</a>
         </li>
 
-        <!-- <li><a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">{{'flow-builder.download-X-format'|trans({kind: '.ogg'})}}</a></li>
-        <li><a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">{{'flow-builder.download-X-format'|trans({kind: '.ul'})}}</a></li> -->
+        <!--
+        <li>
+          <a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">
+            {{'flow-builder.download-X-format'|trans({kind: '.ogg'})}}
+          </a>
+        </li>
+        <li>
+          <a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">
+            {{'flow-builder.download-X-format'|trans({kind: '.ul'})}}
+          </a>
+        </li>
+        -->
       </ul>
     </div>
 
@@ -54,32 +64,31 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import {lang} from '@/lib/filters/lang'
-import momentFilters from '@/lib/filters/moment'
+<script lang="ts">
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import Lang from '@/lib/filters/lang'
+import Moment from '@/lib/filters/moment'
 
-export const AudioLibrarySelection = {
+@Component({})
+export class AudioLibrarySelection extends mixins(Lang, Moment) {
+  @Prop({type: String, required: true}) audioFile!: string
+  @Prop() selectable?: boolean
+  @Prop() langId?: string
 
-  mixins: [lang, momentFilters],
-  props: ['audioFile', 'selected', 'selectable', 'langId'],
+  get audioFileUrl(): string {
+    return this.audioFile
+  }
 
-  computed: {
-    audioFileUrl() {
-      return this.audioFile
-    },
-  },
+  select(): void {
+    this.$emit('select')
+  }
 
-  methods: {
-    select() {
-      this.$emit('select')
-    },
-
-    clear() {
-      this.$emit('clear')
-    },
-  },
+  clear(): void {
+    this.$emit('clear')
+  }
 }
+
 export default AudioLibrarySelection
 </script>
 
