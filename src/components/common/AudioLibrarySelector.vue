@@ -2,7 +2,7 @@
   <div class="audio-library-selector">
     <audio-library-selection
       v-if="selectedAudioFile"
-      :audio-file-name="selectedAudioFile"
+      :audio-file-uri="selectedAudioFile"
       :lang-id="langId"
       @clear="clearSelection" />
 
@@ -64,7 +64,7 @@ export const AudioLibrarySelector = {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
         filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
-        value: value.description,
+        value: value.uri,
       })
     },
   },

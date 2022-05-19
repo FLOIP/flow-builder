@@ -44,8 +44,8 @@
 
     <p
       class="audio-file-description"
-      :title="audioFileName">
-      {{ audioFileName }}
+      :title="audioFileUri">
+      {{ audioFileUri }}
     </p>
 
     <div class="btn-toolbar">
@@ -70,7 +70,7 @@ export const AudioLibrarySelection = {
 
   mixins: [lang, momentFilters],
   props: [
-    'audioFileName',
+    'audioFileUri',
     // 'selected',
     'selectable',
     'langId',
@@ -78,7 +78,7 @@ export const AudioLibrarySelection = {
 
   computed: {
     audioFileUrl() {
-      return this.audioFileName
+      return this.audioFileUri
     },
   },
 

@@ -41,7 +41,7 @@
                   #input-control="{ isValid }"
                   :message-key="`resource/${resource.uuid}/values/${computeResourceIndex(langIndex, modeIndex)}/value`">
                   <audio-library-selector
-                    :audio-files="availableAudio"
+                    :audio-files="availableAudioFiles"
                     :lang-id="languageId"
                     :resource-id="resource.uuid"
                     :selected-audio-file="findOrGenerateStubbedVariantOn(
@@ -126,12 +126,13 @@ const builderVuexNamespace = namespace('builder')
 
 interface IAudioFile {
   id: string,
-  filename: string,
+  audio_uuid: string,
   description: string,
   language_id: string,
   duration_seconds: string,
   original_extension: string,
   created_at: string,
+  uri: string,
 }
 
 interface IResourceDefinitionVariantOverModesWithOptionalValue extends Partial<IResourceDefinitionVariantOverModes> {
@@ -186,7 +187,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     const {data: {json}} = event
     const {
       audio_file_id: id,
-      audio_uuid: filename,
+      audio_uuid,
       created_at: {date: created_at},
       description,
       duration_seconds,
@@ -195,12 +196,13 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     const extension = description.split('.')[description.split('.').length - 1]
     const uploadedAudio: IAudioFile = {
       id,
-      filename,
+      audio_uuid,
       description,
       language_id: langId,
       duration_seconds,
       original_extension: extension,
       created_at,
+      uri,
     }
 
     this.resource_setOrCreateValueModeSpecific({
@@ -244,7 +246,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     return langIndex * this.flow.supported_modes.length + modeIndex
   }
 
-  @Getter availableAudio!: IAudioFile[]
+  @Getter availableAudioFiles!: IAudioFile[]
 
   @Getter isFeatureAudioUploadEnabled!: boolean
 
