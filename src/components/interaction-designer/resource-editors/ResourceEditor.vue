@@ -190,6 +190,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
       created_at: {date: created_at},
       description,
       duration_seconds,
+      uri,
     } = JSON.parse(json)
     const extension = description.split('.')[description.split('.').length - 1]
     const uploadedAudio: IAudioFile = {
@@ -205,7 +206,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     this.resource_setOrCreateValueModeSpecific({
       resourceId: this.resource.uuid,
       filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
-      value: description,
+      value: uri,
     })
     // remove the focus from the `upload` Tab
     event.target.blur()
