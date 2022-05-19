@@ -19,7 +19,7 @@ export default {
     .value(),
 
   getters: {
-    availableAudio: (state) => state.library || [],
+    availableAudioFiles: (state) => state.library || [],
   },
 
   mutations: {

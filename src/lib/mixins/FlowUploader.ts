@@ -67,7 +67,7 @@ const dispatch = (el: HTMLElement, name: string, data: {}): void => {
           json,
           // uploader.cancel()
         }))
-        uploader.on('error', (message, file) => dispatch(el, 'fileSuccess', {
+        uploader.on('error', (message, file) => dispatch(el, 'fileError', {
           file,
           uploader,
           message,

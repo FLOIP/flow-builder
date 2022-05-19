@@ -167,7 +167,7 @@ export const AudioLibrarySearchField = {
 
       console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
 
-      const keys = ['filename', 'description']
+      const keys = ['uri', 'description']
       this.cache[query] = new fuse(this.audioFiles, {keys}).search(query)
       return this.cache[query]
     },

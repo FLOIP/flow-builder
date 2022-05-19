@@ -41,7 +41,7 @@
                   #input-control="{ isValid }"
                   :message-key="`resource/${resource.uuid}/values/${computeResourceIndex(langIndex, modeIndex)}/value`">
                   <audio-library-selector
-                    :audio-files="availableAudio"
+                    :audio-files="availableAudioFiles"
                     :lang-id="languageId"
                     :resource-id="resource.uuid"
                     :selected-audio-file="findOrGenerateStubbedVariantOn(
@@ -65,7 +65,8 @@
                         accept: 'audio/*'}"
                       class="btn btn-primary ivr-buttons"
                       @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
-                      @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)">
+                      @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
+                      @fileError="handleFileErrorFor($event)">
                       <font-awesome-icon
                         :icon="['fac', 'upload']"
                         class="fa-btn" />
@@ -125,12 +126,13 @@ const builderVuexNamespace = namespace('builder')
 
 interface IAudioFile {
   id: string,
-  filename: string,
+  audio_uuid: string,
   description: string,
   language_id: string,
   duration_seconds: string,
   original_extension: string,
   created_at: string,
+  uri: string,
 }
 
 interface IResourceDefinitionVariantOverModesWithOptionalValue extends Partial<IResourceDefinitionVariantOverModes> {
@@ -175,34 +177,51 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
   }
 
+  /**
+   * handleFileSuccessFor
+   * @param key
+   * @param langId
+   * @param event, schema: {data: {file, uploader, json}}
+   */
   handleFileSuccessFor(key: string, langId: ILanguage['id'], event: any): void {
     const {data: {json}} = event
     const {
       audio_file_id: id,
-      audio_uuid: filename,
+      audio_uuid,
       created_at: {date: created_at},
       description,
       duration_seconds,
+      uri,
     } = JSON.parse(json)
     const extension = description.split('.')[description.split('.').length - 1]
     const uploadedAudio: IAudioFile = {
       id,
-      filename,
+      audio_uuid,
       description,
       language_id: langId,
       duration_seconds,
       original_extension: extension,
       created_at,
+      uri,
     }
 
     this.resource_setOrCreateValueModeSpecific({
       resourceId: this.resource.uuid,
       filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
-      value: description,
+      value: uri,
     })
     // remove the focus from the `upload` Tab
     event.target.blur()
     this.pushAudioIntoLibrary(uploadedAudio)
+  }
+
+  /**
+   * handleFileErrorFor
+   * @param event, schema: {data: {file, message, uploader}}
+   */
+  handleFileErrorFor(event: any): void {
+    const {data: {message}} = event
+    console.debug('handleFileErrorFor', message)
   }
 
   findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter): string | null {
@@ -227,7 +246,7 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     return langIndex * this.flow.supported_modes.length + modeIndex
   }
 
-  @Getter availableAudio!: IAudioFile[]
+  @Getter availableAudioFiles!: IAudioFile[]
 
   @Getter isFeatureAudioUploadEnabled!: boolean
 
